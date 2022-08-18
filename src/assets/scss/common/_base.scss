@@ -249,61 +249,11 @@ body {
   input {
   }
 }
-.delete-icon{
-  margin-top: 3.8rem;
-  margin-left: 2rem;
-  cursor: pointer;
-}
 
 .add-more-section{
   text-align: center;
 }
 
-.status {
-  display: inline-block;
-  .circle {
-    margin: 0 0.8rem 0.2rem 0;
-    display: inline-block;
-
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    &.active {
-      background: $green-00A;
-    }
-    &.inactive {
-      background: $red;
-    }
-  }
-}
-
-.order-status{
-  border-radius: 4px;
-  // background-color: $yellow-FCF;
-  // color: $yellow-C09;
-  padding: 0.2rem 1rem;
-  width: max-content;
-  &.upcoming{
-    background-color: $yellow-FCF;
-    color: $yellow-C09;
-  }
-  &.ongoing{
-    background-color: $green-CCF;
-    color: $green-009;
-  }
-  &.cancelled{
-    background-color: $red-FFC;
-    color: $red-B00;
-  }
-  &.pending{
-    background-color: $purple-F4E;
-    color: $purple-723;
-  }
-  &.extended{
-    background-color: $yellow-2D4;
-    color: $yellow-E1A;
-  }
-}
 
 // UPLOADED IMAGE STYLE
 .img-preview-wrapper {
@@ -329,17 +279,6 @@ body {
       align-items: center;
       height: inherit;
     }
-    // .glyphicon {
-    //   position: absolute;
-    //   top: -7px;
-    //   right: -10px;
-    //   /* color: #fff; */
-    //   /* z-index: 2; */
-    //   background-color: #fff;
-    //   font-size: 3rem;
-    //   border-radius: 50%;
-    //   cursor: pointer;
-    // }
     .remove-circle {
       position: absolute;
       width: 2rem;
@@ -646,27 +585,7 @@ form {
   }
 }
 
-.pricing-tabs{
-  border-bottom: 0;
-  a{
-    @include font($grey-565, "RedHatDisplay-Medium", 1.4rem, 500, normal);
-    padding: 1rem 2rem;
-  }
-  &.nav-tabs{
-    .nav-link.active{
-      color: $primary;
-    }
-  }
-}
 
-.not-found-wrapper {
-  text-align: center;
-  padding: 13.5rem 0;
-  background-color: $secondary;
-  .red-hat-display-medium {
-    padding-top: 3rem;
-  }
-}
 
 // btn
 .btn {
@@ -758,126 +677,6 @@ form {
 .inactive-state {
   cursor: not-allowed !important;
   opacity: 0.6;
-}
-
-.submit-wrapper {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.circle {
-  display: block;
-  background-color: $red;
-  border-radius: 50%;
-}
-
-.cursor {
-  cursor: pointer;
-}
-
-.min-max-element {
-  display: flex;
-  div{
-    flex: 1;
-  }
-  div:first-child {
-    .form-group {
-      margin-right: 0.5rem;
-    }
-  }
-  div:last-child {
-    .form-group {
-      margin-top: 2.6rem;
-      margin-left: 0.5rem;
-    }
-  }
-}
-
-.state-wrapper {
-  .form-group {
-    margin-bottom: 3rem;
-  }
-}
-
-.map-wrapper {
-  height: 50rem;
-  .area-map {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.view-detail-page {
-  .basic-details {
-    padding: 1rem 0;
-    h4 {
-      font-size: 12px;
-      color: #333333;
-      opacity: 0.5;
-      padding: 2rem 0 0.5rem 0;
-    }
-    h3 {
-      font-size: 16px;
-    }
-    .map-vehicle-wrapper{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0rem 0 2rem;
-    }
-  }
-}
-
-// PROFILE PAGE SCSS
-
-.profile {
-  //background-color: $grey-38;
-  overflow: hidden;
-  transition: all 0.2s linear;
-  -webkit-transition: all 0.2s linear;
-
-  .photo-wrapper {
-      text-align: center;
-      //margin: 14rem 0 0 0 !important;
-      .p-c-wrapper {
-          position: relative;
-          margin: 12rem 0 2rem 0;
-          .profile-pic {
-              width: 16rem;
-              height: 16rem;
-              border-radius: 50%;
-              object-fit: cover;
-              margin: 0 auto;
-          }
-          .cam-icon {
-              background-color: $primary;
-              width: 4rem;
-              height: 4rem;
-              position: absolute;
-              bottom: 1.5rem;
-              left: 54.3%;
-              border-radius: 50%;
-              line-height: 4rem;
-              cursor: pointer;
-              img {
-                  margin: 1.3rem auto 0 auto;
-                  width: 2rem;
-                  height: 1.6rem;
-              }
-          }
-      }
-      h1 {
-          @include font($black-1A1, "red-hat-display-regular", 1.8rem, bold,0);
-          line-height: 1.2;
-          text-transform: uppercase;
-      }
-      h6 {
-        @include font($grey-1, "red-hat-display-regular", 1.6rem, normal,0);
-        letter-spacing: -0.5px;
-        margin: 2rem 0 3rem 0;
-      }
-  }
-
 }
 
 .react-datepicker{
@@ -1014,42 +813,3 @@ form {
     }
   }
 }
-
-.extend-booking-modal{
-  h2{
-    padding-bottom: 2.8rem;
-  }
-  .btn{
-    padding: 1.2rem 3rem;
-    width: 100%;
-    margin-top: 2rem;
-  }
-  .no-bike-wrapper{
-    text-align: center;
-    padding-top: 0rem;
-    h3{
-      padding: 3.6rem 0 1.2rem;
-    }
-  }
-  .extend-booking-payment{
-    text-align: center;
-    .extend-info{
-      background-color: #fafafa;
-      margin: 1.7rem 0 2.5rem;
-      div{
-        padding: 2.8rem 3rem;
-        display: inline-block;
-        h6{
-          padding-bottom: 0.7rem;
-        }
-      }
-    }
-    .pricing{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.6rem 0;
-    }
-  }
-}
-

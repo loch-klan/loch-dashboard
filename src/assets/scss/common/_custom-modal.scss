@@ -99,19 +99,4 @@
       }
     }
   }
-  &.extend{
-    .modal-content {
-      padding: 4rem 3rem;
-    }
-  }
-  &.qr-code-modal{
-    .modal-content{
-      .modal-body{
-        text-align: center;
-        svg{
-          margin: 3rem;
-        }
-      }
-    }
-  }
 }

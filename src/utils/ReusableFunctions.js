@@ -36,11 +36,6 @@ export const formatDate = (date) => {
   else return "NA"
 }
 
-export const getAssignedPermission = () => {
-  return JSON.parse(localStorage.getItem("userDetails")).account_permissions[0]
-    .permission_codes
-}
-
 export const formatDuration = (data) => {
   const dateFormat = "YYYY-MM-DD HH:mm:ss"
   const start = moment(data.startDate || data.start_datetime).format(dateFormat)

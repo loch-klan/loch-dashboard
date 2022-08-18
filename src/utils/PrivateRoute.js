@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { getToken } from "./ManageToken";
-import { Sidenav, Navbar } from '../app/common'
+// import { Sidenav, Navbar } from '../app/common'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -19,9 +19,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           // key ADDED TO MAKE EVERY ROUTE WITH DIFFERENT PARAMS ID UNIQUE AND CALL DID MOUNT
           // WHEN PARAM ID CHANGES.
           <div className='main-section'>
-            <Sidenav {...props} />
+            {/* <Sidenav {...props} /> */}
             <div className='main-section-right'>
-              <Navbar />
+              {/* <Navbar /> */}
               <div className='main-content-wrapper'>
                 <Component key={props.location.pathname} {...props} />
               </div>
