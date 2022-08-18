@@ -1,0 +1,23 @@
+.oem-details-wrapper {
+  .top {
+    background-color: $grey-E7E;
+    padding: 2.4rem 3rem;
+    margin-bottom: 2.5rem;
+    h1 {
+      margin-bottom: 1.8rem;
+    }
+    .items-wrapper {
+      display: flex;
+      .item {
+        margin-right: 10rem;
+        h5 {
+          @include font($grey-868, "RedHatDisplay-Regular", 1.2rem, normal, normal);
+        }
+        h6 {
+          @include font($black-2C2, "RedHatDisplay-Bold", 1.4rem, normal, normal);
+          margin-top: 0.5rem;
+        }
+      }
+    }
+  }
+}

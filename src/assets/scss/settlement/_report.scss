@@ -1,0 +1,30 @@
+.report-section{
+  .report-data{
+    .report-box{
+      background-color: $secondary;
+      border-radius: 8px;
+      padding: 3.5rem 3rem;
+      h4{
+        @include font($primary, "RedHatDisplay-Medium", 1.6rem, 500, 21px);
+        padding-bottom: 0.7rem
+      }
+      h6{
+        @include font($primary, "RedHatDisplay-Bold", 3rem, bold, 40px);
+      }
+    }
+  }
+  .analytic-data{
+    margin: 3rem 0;
+    background-color: $secondary;
+    border-radius: 8px;
+    // padding: 3rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .data{
+      text-align: left;
+      padding: 3rem;
+
+    }
+  }
+}

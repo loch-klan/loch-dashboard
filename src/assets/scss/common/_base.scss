@@ -1,0 +1,1055 @@
+@include font-face(RedHatDisplay-Regular, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Regular", normal, normal, ttf);
+@include font-face(RedHatDisplay-Bold, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Bold", bold, bold, ttf);
+@include font-face(RedHatDisplay-Medium, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Medium", 500, normal, ttf);
+@include font-face(RedHatDisplay-Black, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Black", 900, bold, ttf);
+@include font-face(RedHatDisplay-BoldItalic, "/assets/fonts/Red-Hat-Display/RedHatDisplay-BoldItalic", bold, bold, ttf);
+
+// SET THE BASE HTML REM, MAKING 1REM=10PX
+html {
+  font-size: 10px;
+  background-color: $grey-F6F;
+}
+
+#root {
+  background-color: $grey-F6F;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
+body {
+  // background-color: $primary;
+}
+
+.main-section {
+  display: flex;
+  height: 100vh;
+    overflow: scroll;
+  .main-section-right {
+    flex: 1;
+    .main-content-wrapper {
+      padding: 2rem 3rem;
+    }
+  }
+}
+
+//Fonts
+.red-hat-display-black {
+  @include font($primary, "RedHatDisplay-Black", 1.2rem, 900, normal);
+}
+.red-hat-display-bold {
+  @include font($primary, "RedHatDisplay-Bold", 1.2rem, bold, normal);
+}
+.red-hat-display-bold-italic {
+  @include font($primary, "RedHatDisplay-BoldItalic", 1.2rem, bold, normal);
+}
+.red-hat-display-regular {
+  @include font($primary, "RedHatDisplay-Regular", 1.2rem, normal, normal);
+}
+.red-hat-display-medium {
+  @include font($primary, "RedHatDisplay-Medium", 1.2rem, 500, normal);
+}
+
+.op-6 {
+  opacity: 0.6;
+}
+.op-7 {
+  opacity: 0.7;
+}
+.op-38 {
+  opacity: 0.38;
+}
+.op-54 {
+  opacity: 0.54;
+}
+.op-87 {
+  opacity: 0.87;
+}
+// FONT SIZE
+.f-s-10 {
+  font-size: 1rem;
+}
+.f-s-12 {
+  font-size: 1.2rem;
+}
+.f-s-13 {
+  font-size: 1.3rem;
+}
+.f-s-14 {
+  font-size: 1.4rem;
+}
+.f-s-16 {
+  font-size: 1.6rem;
+}
+.f-s-18 {
+  font-size: 1.8rem;
+}
+.f-s-20 {
+  font-size: 2rem;
+}
+.f-s-22 {
+  font-size: 2.2rem;
+}
+.f-s-24 {
+  font-size: 2.4rem;
+}
+.f-s-26 {
+  font-size: 2.6rem;
+}
+.f-s-28 {
+  font-size: 2.8rem;
+}
+.f-s-30 {
+  font-size: 3rem;
+}
+.f-s-34 {
+  font-size: 3.4rem;
+}
+.f-s-36 {
+  font-size: 3.6rem;
+}
+.f-s-38 {
+  font-size: 3.8rem;
+}
+.f-s-40 {
+  font-size: 4rem;
+}
+.f-s-48 {
+  font-size: 4.8rem;
+}
+.f-s-50 {
+  font-size: 5rem;
+}
+.f-s-52 {
+  font-size: 5.2rem;
+}
+.f-s-60 {
+  font-size: 6rem;
+}
+
+// LINE HEIGHT
+.lh-14 {
+  line-height: 14px;
+}
+.lh-20 {
+  line-height: 20px;
+}
+.lh-21 {
+  line-height: 21px;
+}
+.lh-24 {
+  line-height: 24px;
+}
+.lh-26 {
+  line-height: 26px;
+}
+.lh-27 {
+  line-height: 27px;
+}
+.lh-28 {
+  line-height: 28px;
+}
+.lh-30 {
+  line-height: 30px;
+}
+.lh-36 {
+  line-height: 36px;
+}
+.lh-38 {
+  line-height: 38px;
+}
+.lh-40 {
+  line-height: 40px;
+}
+.lh-44 {
+  line-height: 44px;
+}
+.lh-48 {
+  line-height: 48px;
+}
+.lh-50 {
+  line-height: 50px;
+}
+.lh-64 {
+  line-height: 64px;
+}
+
+.m-t-5{
+  margin-top: 5rem;
+}
+
+// COLOR
+.grey-757{
+  color: $grey-757;
+}
+.grey-999 {
+  color: $grey-999;
+}
+.secondary {
+  color: $secondary;
+}
+.grey-AAA {
+  color: $grey-AAA;
+}
+.black-404 {
+  color: $black-404;
+}
+.blue-407 {
+  color: $blue-407;
+}
+.green-40B{
+  color: $green-40B;
+}
+.image-wrapper{
+  display: flex;
+  flex-direction: column;
+}
+.upload-image-wrapper {
+  text-align: left;
+  border: 1px dashed $grey-E7E;
+  padding: 1rem;
+  margin-bottom: 0rem;
+  .plus-icon {
+    cursor: pointer;
+  }
+  label{
+    margin: 0;
+  }
+  p {
+    display: inline-block;
+    padding-left: 2rem;
+  }
+  label {
+    h2 {
+    }
+    /* span {
+      display: inline-block;
+      padding: 0.4rem 1.9rem 1rem;
+      border: 1px solid #cccccc;
+      font-size: 3rem;
+      background-color: #ffffff;
+      color: #ccc;
+      cursor: pointer;
+    } */
+  }
+  input {
+  }
+}
+.delete-icon{
+  margin-top: 3.8rem;
+  margin-left: 2rem;
+  cursor: pointer;
+}
+
+.add-more-section{
+  text-align: center;
+}
+
+.status {
+  display: inline-block;
+  .circle {
+    margin: 0 0.8rem 0.2rem 0;
+    display: inline-block;
+
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    &.active {
+      background: $green-00A;
+    }
+    &.inactive {
+      background: $red;
+    }
+  }
+}
+
+.order-status{
+  border-radius: 4px;
+  // background-color: $yellow-FCF;
+  // color: $yellow-C09;
+  padding: 0.2rem 1rem;
+  width: max-content;
+  &.upcoming{
+    background-color: $yellow-FCF;
+    color: $yellow-C09;
+  }
+  &.ongoing{
+    background-color: $green-CCF;
+    color: $green-009;
+  }
+  &.cancelled{
+    background-color: $red-FFC;
+    color: $red-B00;
+  }
+  &.pending{
+    background-color: $purple-F4E;
+    color: $purple-723;
+  }
+  &.extended{
+    background-color: $yellow-2D4;
+    color: $yellow-E1A;
+  }
+}
+
+// UPLOADED IMAGE STYLE
+.img-preview-wrapper {
+  display: flex;
+  .uploaded-img-wrapper {
+    width: 12rem;
+    height: 4.6rem;
+    position: relative;
+    margin-right: 2rem;
+    display: inline-block;
+    img {
+      object-fit: cover;
+      height: inherit;
+      width: 100%;
+    }
+    .option-card-extension {
+      font-size: 2.2rem;
+      color: $grey-1;
+      border: 4px solid $grey-DDD;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: inherit;
+    }
+    // .glyphicon {
+    //   position: absolute;
+    //   top: -7px;
+    //   right: -10px;
+    //   /* color: #fff; */
+    //   /* z-index: 2; */
+    //   background-color: #fff;
+    //   font-size: 3rem;
+    //   border-radius: 50%;
+    //   cursor: pointer;
+    // }
+    .remove-circle {
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      right: -1rem;
+      top: -1rem;
+      cursor: pointer;
+    }
+  }
+  .progress {
+    width: 12rem;
+    margin-top: 1rem;
+    height: 1rem;
+  }
+}
+
+form {
+  label {
+    max-width: 100%;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    color: $grey-868;
+  }
+  .form-group {
+    margin-bottom: 40px;
+    position: relative; //For tooltip
+    .form-control,
+    .custom-select__control {
+      font-family: "RedHatDisplay-Bold", Arial, Helvetica, sans-serif;
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: $primary;
+      line-height: 1.5;
+      padding: 11px 20px;
+      min-height: 46px;
+      border-radius: 2px;
+      border: 1px solid $grey-CFC;
+    }
+    .custom-select__menu {
+      .custom-select__menu-list {
+        padding: 1rem;
+        .custom-select__option {
+          @include font($primary, "RedHatDisplay-Bold", 1.4rem, bold, normal);
+          padding: 1rem;
+          &.custom-select__option--is-focused,
+          &.custom-select__option--is-selected {
+            background-color: $grey-F5F;
+          }
+        }
+      }
+    }
+    .form-control:focus {
+      outline: none;
+      box-shadow: none;
+      border: 1px solid $grey-CFC;
+    }
+    .form-control.is-invalid {
+      border: solid 1px $red;
+      background-image: none;
+    }
+    .form-control.is-valid {
+      border: solid 1px green;
+      background-image: none;
+    }
+    // FOR CHANGE PASSWORD
+    .input-group {
+      .form-control.is-valid {
+        border-color: $grey-CFC;
+      }
+      .form-control.is-invalid {
+        border-color: $grey-CFC;
+      }
+    }
+    .form-control::placeholder {
+      color: $grey-B6B;
+      font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+      line-height: 24px;
+      font-weight: 500;
+      font-size: 1.4rem;
+    }
+    .custom-select__control {
+      padding: 0;
+      .custom-select__value-container {
+        padding: 0.2rem 2rem;
+        .custom-select__single-value {
+          color: $primary;
+        }
+        .custom-select__placeholder {
+          padding: 0;
+          color: $grey-B6B;
+          font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+          font-weight: 500;
+          font-size: 1.4rem;
+        }
+      }
+    }
+    // different styling for search bar
+    .search-input {
+      padding: 0.75rem 1.6rem;
+      &::placeholder {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: $grey-B6B;
+        font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+        line-height: 24px;
+      }
+    }
+    .form-text {
+      display: block;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      color: #737373;
+      font-size: 10px;
+    }
+    .has-error {
+      color: #dc3545;
+      .custom-select__control {
+        // CUSTOM ERROR STYLE ADDED WITH ERROR ICON FOR REACT-SELECT
+        border: 1px solid #dc3545;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 4rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+      }
+      .custom-select__menu {
+        color: initial;
+      }
+    }
+  }
+  .input-group {
+    .input-group-prepend {
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: normal;
+      line-height: 1;
+      color: #555;
+      text-align: center;
+      background-color: #eee;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      // to make vertical align center
+      display: flex;
+      align-items: center;
+    }
+    .input-group-prepend:first-child {
+      border-right: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .input-group-prepend:last-child {
+      border-left: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  .radio-wrapper {
+    .radio-control {
+      display: flex;
+      margin-bottom: 1rem;
+      input {
+        margin-top: 0.1rem;
+      }
+      span {
+        font-family: "Roboto-Regular", Arial, Helvetica, sans-serif;
+        font-size: 1.4rem;
+        font-weight: normal;
+        color: #333333;
+        line-height: normal;
+        padding-left: 1rem;
+      }
+    }
+    &.inline {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 1.6rem;
+      .radio-control {
+        margin-right: 2rem;
+      }
+    }
+  }
+}
+
+// DATE PICKER CONTROL
+
+.form-control.date-picker-control {
+  background-color: white;
+  position: relative;
+}
+.date-icon {
+  position: absolute;
+  right: 2rem;
+  bottom: 1.4rem;
+}
+.date-picker-control-modal {
+  .modal-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+// DROPDOWN
+
+.options-icon {
+  cursor: pointer;
+}
+
+.dropdown {
+  text-align: right;
+  // z-index: 11;
+  #dropdown-basic {
+    background: transparent;
+    padding: 0;
+    border: 0;
+    &:active:focus,
+    &:active,
+    &:focus {
+      box-shadow: none;
+    }
+    &::after {
+      display: none;
+    }
+  }
+  .dropdown-menu {
+    padding: 1.2rem 1rem;
+    // transform: translate(-155px, 26px) !important;
+    width: 24rem;
+    box-shadow: 0 -4px 21px 0 rgba(0, 0, 0, 0.12);
+    border: 0;
+    .dropdown-item {
+      @include font($primary, "RedHatDisplay-Medium", 1.4rem, 500, 21px);
+      padding: 0.8rem 1.2rem;
+      border-radius: 4px;
+      &:hover {
+      }
+    }
+  }
+}
+
+// CUSTOM TABLE
+
+.custom-table-wrapper {
+  border-top: 1px solid $grey-E6E;
+  margin: 0 0 1.5rem 0;
+  .option-btn{
+    padding: 0.3rem 1.5rem;
+    font-size: 1.3rem;
+  }
+}
+
+.table-wrapper {
+  .form-group {
+    width: 8rem;
+    margin-left: 3rem;
+    // left: 100%;
+    // transform: translateX(-100%);
+  }
+  .ReactVirtualized__Table__headerColumn {
+    text-transform: none;
+    @include font($grey-999, "RedHatDisplay-Medium", 1.3rem, 500, normal);
+    .ReactVirtualized__Table__headerTruncatedText {
+      margin-top: 0.8rem;
+    }
+  }
+  .ReactVirtualized__Table__headerColumn,
+  .ReactVirtualized__Table__rowColumn {
+    margin-left: 3rem;
+    margin-right: 3rem;
+  }
+  .ReactVirtualized__Table__Grid {
+    // z-index: -1;
+    height: auto !important;
+    background-color: $secondary;
+    overflow: visible !important;
+    .ReactVirtualized__Grid__innerScrollContainer {
+      overflow: visible !important;
+    }
+  }
+  .ReactVirtualized__Table__row {
+    @include font($grey-565, "RedHatDisplay-Medium", 1.4rem, 500, 21px);
+    border-bottom: 1px solid $grey-F2F;
+    .red-hat-display-bold {
+      font-size: 1.4rem;
+      line-height: 21px;
+    }
+  }
+  .ReactVirtualized__Table__row{
+  overflow: visible !important;
+  }
+  .ReactVirtualized__Table__rowColumn {
+    &.options-column{
+      overflow: visible !important;
+    }
+  }
+  .header-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .pagination {
+      margin: 1rem 0;
+    }
+  }
+}
+
+.pricing-tabs{
+  border-bottom: 0;
+  a{
+    @include font($grey-565, "RedHatDisplay-Medium", 1.4rem, 500, normal);
+    padding: 1rem 2rem;
+  }
+  &.nav-tabs{
+    .nav-link.active{
+      color: $primary;
+    }
+  }
+}
+
+.not-found-wrapper {
+  text-align: center;
+  padding: 13.5rem 0;
+  background-color: $secondary;
+  .red-hat-display-medium {
+    padding-top: 3rem;
+  }
+}
+
+// btn
+.btn {
+  // @include font($black-1A1, "RedHatDisplay-Bold", 1.6rem, bold, normal);
+  @include font($black-1A1, "RedHatDisplay-Medium", 1.4rem, 500, 24px);
+  letter-spacing: -0.2px;
+  border-radius: 4px;
+  // border: 1px solid $primary;
+  padding: 1.1rem 6rem;
+  cursor: pointer;
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:not(:disabled),
+  &:not(.disabled) {
+    cursor: auto;
+  }
+
+  &.clear-btn {
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+    &.btn-primary:not(:disabled):not(:disabled):active,
+    &.btn-primary:not(:disabled):not(:disabled):active:focus,
+    &:hover,
+    &:active,
+    &:focus,
+    &:active:focus {
+      border: 0;
+      background-color: transparent;
+      color: $primary;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.black-btn {
+  background-color: $primary;
+  color: $secondary;
+  border: 1px solid $primary;
+  &.btn-primary:not(:disabled):not(:disabled):active,
+  &.btn-primary:not(:disabled):not(:disabled):active:focus,
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    box-shadow: none;
+    border: 1px solid $primary;
+    background-color: $primary;
+    color: $secondary;
+  }
+}
+.inactive-btn {
+  background-color: $grey-E7E;
+  color: $grey-9E9;
+  border: 1px solid $grey-E7E;
+  cursor: not-allowed;
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    border: 1px solid $grey-E7E;
+    background-color: $grey-E7E;
+    color: $grey-9E9;
+  }
+}
+.secondary-btn {
+  background: transparent;
+  color: $primary;
+  border: 1px solid $primary;
+  &.btn-primary:not(:disabled):not(:disabled):active,
+  &.btn-primary:not(:disabled):not(:disabled):active:focus,
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    box-shadow: none;
+    background: transparent;
+    color: $primary;
+    border: 1px solid $primary;
+  }
+}
+.inactive-state {
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}
+
+.submit-wrapper {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.circle {
+  display: block;
+  background-color: $red;
+  border-radius: 50%;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.min-max-element {
+  display: flex;
+  div{
+    flex: 1;
+  }
+  div:first-child {
+    .form-group {
+      margin-right: 0.5rem;
+    }
+  }
+  div:last-child {
+    .form-group {
+      margin-top: 2.6rem;
+      margin-left: 0.5rem;
+    }
+  }
+}
+
+.state-wrapper {
+  .form-group {
+    margin-bottom: 3rem;
+  }
+}
+
+.map-wrapper {
+  height: 50rem;
+  .area-map {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.view-detail-page {
+  .basic-details {
+    padding: 1rem 0;
+    h4 {
+      font-size: 12px;
+      color: #333333;
+      opacity: 0.5;
+      padding: 2rem 0 0.5rem 0;
+    }
+    h3 {
+      font-size: 16px;
+    }
+    .map-vehicle-wrapper{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0rem 0 2rem;
+    }
+  }
+}
+
+// PROFILE PAGE SCSS
+
+.profile {
+  //background-color: $grey-38;
+  overflow: hidden;
+  transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+
+  .photo-wrapper {
+      text-align: center;
+      //margin: 14rem 0 0 0 !important;
+      .p-c-wrapper {
+          position: relative;
+          margin: 12rem 0 2rem 0;
+          .profile-pic {
+              width: 16rem;
+              height: 16rem;
+              border-radius: 50%;
+              object-fit: cover;
+              margin: 0 auto;
+          }
+          .cam-icon {
+              background-color: $primary;
+              width: 4rem;
+              height: 4rem;
+              position: absolute;
+              bottom: 1.5rem;
+              left: 54.3%;
+              border-radius: 50%;
+              line-height: 4rem;
+              cursor: pointer;
+              img {
+                  margin: 1.3rem auto 0 auto;
+                  width: 2rem;
+                  height: 1.6rem;
+              }
+          }
+      }
+      h1 {
+          @include font($black-1A1, "red-hat-display-regular", 1.8rem, bold,0);
+          line-height: 1.2;
+          text-transform: uppercase;
+      }
+      h6 {
+        @include font($grey-1, "red-hat-display-regular", 1.6rem, normal,0);
+        letter-spacing: -0.5px;
+        margin: 2rem 0 3rem 0;
+      }
+  }
+
+}
+
+.react-datepicker{
+  display: flex;
+  border: none;
+  box-shadow: 0px -4px 21px rgba(0, 0, 0, 0.123661);
+  border-radius: 1rem;
+  .react-datepicker__navigation{
+    top: 1.8rem;
+  }
+  .react-datepicker__month-container{
+    .react-datepicker__header{
+      // padding: 1.6rem 2.5rem;
+      padding-top: 0;
+      border-bottom: 0;
+      border-color: $grey-EAE;
+      background-color: $secondary;
+      .react-datepicker__current-month{
+        // @extend .proximanova-bold;
+        font-size: 1.2rem;
+        border-bottom: 1px solid $grey-EAE;
+        padding: 1.45rem 1.8rem;
+      }
+      .react-datepicker__day-names{
+        margin-top: 1rem;
+        .react-datepicker__day-name{
+          width: 2.3rem;
+          font-size: 1rem;
+        }
+      }
+    }
+    .react-datepicker__month{
+      .react-datepicker__week{
+        .react-datepicker__day{
+          // @extend .proximanova-regular;
+          width: 2.3rem;
+          font-size: 1rem;
+          line-height: 21px;
+          &.react-datepicker__day--selected{
+            background-color: $blue-268;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+  .react-datepicker__time-container {
+    border-left: none;
+    .react-datepicker__header{
+      padding: 1.45rem 1.8rem;
+      border-color: $grey-EAE;
+      .react-datepicker-time__header{
+        font-size: 1.2rem;
+      }
+    }
+    .react-datepicker__header,
+    .react-datepicker__time{
+      background-color: $grey-F8F;
+    }
+    .react-datepicker__time{
+      .react-datepicker__time-box{
+        .react-datepicker__time-list{
+          .react-datepicker__time-list-item--selected{
+            background-color: $blue-268;
+              color: $secondary;
+          }
+          .react-datepicker__time-list-item {
+            padding: 1rem;
+            height: auto;
+            font-size: 1rem;
+            font-weight: normal;
+            &:hover{
+              background-color: $blue-268;
+              color: $secondary;
+            }
+          }
+        }
+      }
+
+    }
+  }
+}
+.react-datepicker__input-container{
+  input{
+    // @include font($primary, "ProximaNova-Medium", 1.6rem, 400, 22px);
+    @include font($primary, "RedHatDisplay-Medium", 1.6rem, 500, 22px);
+  }
+}
+
+.react-datepicker{
+  width: 100%;
+  display: inline-block;
+  box-shadow: none;
+  .react-datepicker__month-container{
+    width: 80.5%;
+    .react-datepicker__header {
+      .react-datepicker__day-names {
+        .react-datepicker__day-name{
+          width: 4rem;
+          line-height: 26px;
+        }
+      }
+    }
+    .react-datepicker__month {
+      .react-datepicker__week {
+        .react-datepicker__day{
+          width: 3.93rem;
+          line-height: 26px;
+        }}}
+  }
+  // .react-datepicker__time-container{
+  //   .react-datepicker__header--time{
+  //     padding: 1.85rem 0.5rem;
+  //   }
+  // }
+}
+
+.form-wrapper{
+  .react-datepicker {
+    .react-datepicker__month-container{
+      width: 74.4%;
+      .react-datepicker__header {
+        .react-datepicker__day-names {
+          .react-datepicker__day-name{
+            width: 3.1rem;
+          }
+        }
+      }
+      .react-datepicker__month {
+        .react-datepicker__week {
+          .react-datepicker__day{
+            width: 3.1rem;
+          }}}
+    }
+  }
+}
+
+.extend-booking-modal{
+  h2{
+    padding-bottom: 2.8rem;
+  }
+  .btn{
+    padding: 1.2rem 3rem;
+    width: 100%;
+    margin-top: 2rem;
+  }
+  .no-bike-wrapper{
+    text-align: center;
+    padding-top: 0rem;
+    h3{
+      padding: 3.6rem 0 1.2rem;
+    }
+  }
+  .extend-booking-payment{
+    text-align: center;
+    .extend-info{
+      background-color: #fafafa;
+      margin: 1.7rem 0 2.5rem;
+      div{
+        padding: 2.8rem 3rem;
+        display: inline-block;
+        h6{
+          padding-bottom: 0.7rem;
+        }
+      }
+    }
+    .pricing{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+    }
+  }
+}
+

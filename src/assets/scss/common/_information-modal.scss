@@ -1,0 +1,43 @@
+.info-modal {
+  .modal-content {
+    .modal-body {
+      padding: 2.5rem;
+      .info-modal-wrap {
+        display: flex;
+        margin-bottom: 2rem;
+        .icon {
+          flex: 0.1;
+        }
+        .content {
+          @include font($primary, "RedHatDisplay-Regular", 1.4rem, normal, normal);
+          letter-spacing: 0.1px;
+          flex: 0.8;
+          margin-top: 0.5rem;
+          p {
+            margin-top: 0.5rem;
+          }
+          span {
+            margin-top: 1rem;
+            display: inline-block;
+          }
+        }
+        .close {
+          flex: 0.1;
+          opacity: 1;
+          align-self: flex-start;
+          text-align: right;
+          .glyphicon {
+            color: $secondary;
+          }
+        }
+      }
+      .btn-wrap {
+        text-align: right;
+        .btn {
+          padding: 0.7rem 1.8rem;
+          margin-left: 1.5rem;
+        }
+      }
+    }
+  }
+}

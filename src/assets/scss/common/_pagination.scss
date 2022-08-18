@@ -1,0 +1,30 @@
+.pagination-wrapper {
+  text-align: center;
+  margin-bottom: 4rem;
+  margin-top: 4rem;
+  .right-arrow,
+  .left-arrow {
+    cursor: pointer;
+  }
+  button {
+    background-color: $primary;
+    border-color: $primary;
+    box-shadow: 0 0 10px #d3d3d3;
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: $primary;
+      color: $secondary;
+    }
+    &:disabled {
+      color: #000000;
+    }
+    img {
+      width: 2rem;
+    }
+  }
+  h5 {
+    display: inline-block;
+    margin: 0 2rem;
+  }
+}

@@ -1,0 +1,30 @@
+.add-edit-customer-wrapper {
+  .content {
+    background-color: white;
+    padding: 5rem 4rem;
+    border-radius: 4px;
+  }
+  .booking-content{
+    background-color: white;
+    padding: 3rem;
+    border-radius: 4px;
+    .header{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .order-status{
+        position: absolute;
+        top: -6.5rem;
+        right: 1.5rem;
+      }
+      .btn{
+        padding: 0.7rem 2rem;
+      }
+      .time-wrapper{
+        background-color: $grey-E7E;
+        padding: 0.5rem;
+      }
+    }
+
+  }
+}

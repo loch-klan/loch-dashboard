@@ -1,0 +1,30 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+
+class {{ pascalCase name }} extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {}
+    }
+
+    componentDidMount() { }
+
+    render() {
+        return (
+            <div>{{ pascalCase name }} Component {this.props.{{ name }}State}</div>
+        )
+    }
+}
+
+const mapStateToProps = state => ({
+    {{ name }}State: state.{{ pascalCase name }}State
+});
+const mapDispatchToProps = {
+    // getPosts: fetchPosts
+}
+{{ pascalCase name }}.propTypes = {
+    // getPosts: PropTypes.func
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)({{ pascalCase name }});

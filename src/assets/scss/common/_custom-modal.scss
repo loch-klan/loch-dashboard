@@ -1,0 +1,117 @@
+.custom-modal {
+  .modal-content {
+    // padding: 4rem 6rem;
+    .modal-header {
+      border-bottom: 1px solid $grey-EBE;
+      padding: 2rem 3rem;
+      align-items: center;
+      .close-icon {
+        cursor: pointer;
+        position: absolute;
+        // top: 3rem;
+        right: 3rem;
+      }
+    }
+    .modal-body {
+      padding: 0;
+      .modal-wrapper {
+        padding: 3.9rem 8.6rem 2.9rem;
+      }
+      .btn {
+        font-family: "RedHatDisplay-Bold", Arial, Helvetica, sans-serif;
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 24px;
+      }
+      .submit-wrapper {
+        margin-top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid $grey-EBE;
+        padding: 1.4rem 3rem;
+        .black-btn {
+          padding: 0.8rem 2rem;
+        }
+      }
+    }
+  }
+  &.change-password {
+    &.change-status{
+      .modal-content{
+        .modal-header{
+          padding: 2rem 3rem;
+        }
+      }
+    }
+    .modal-content {
+      padding: 4rem 6rem;
+      .modal-header {
+        border-bottom: 0;
+        padding: 0 0 4rem 0;
+        .close-icon {
+          cursor: pointer;
+          position: absolute;
+          top: 3rem;
+          right: 3rem;
+        }
+      }
+      .modal-body {
+        // padding: 0;
+        .radio-input{
+          margin: 0 0 1.8rem 0;
+        }
+        .form-group {
+          .input-group {
+            .form-control {
+              // position: relative;
+              border-right: 0;
+            }
+            .input-group-prepend {
+              background: transparent;
+              .eye-icon {
+                // position: absolute;
+                // right: 1.5rem;
+                // top: 3.7rem;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+        .submit-wrapper {
+          justify-content: center;
+          border-top: 0;
+          padding: 2rem 0 0 0;
+          .black-btn {
+            padding: 1.1rem 4rem;
+          }
+        }
+        .text-btn{
+          justify-content: center;
+          display: flex;
+          padding: 2rem 0 0 0;
+          .btn{
+            padding: 0;
+            background-color: #ffffff;
+            border-color: #ffffff;
+          }
+        }
+      }
+    }
+  }
+  &.extend{
+    .modal-content {
+      padding: 4rem 3rem;
+    }
+  }
+  &.qr-code-modal{
+    .modal-content{
+      .modal-body{
+        text-align: center;
+        svg{
+          margin: 3rem;
+        }
+      }
+    }
+  }
+}

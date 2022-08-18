@@ -1,0 +1,118 @@
+.component-header-wrapper {
+  .component-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 2rem;
+    .left {
+      display: flex;
+      align-items: flex-start;
+      .back-arrow {
+        margin-right: 1.5rem;
+        margin-top: 0.5rem;
+        .back-arrow-btn {
+          cursor: pointer;
+        }
+      }
+      .breadcrumb {
+        padding: 0;
+        background-color: transparent;
+        margin-bottom: 5px;
+        .breadcrumb-item {
+          a {
+            @include font($grey-999, "RedHatDisplay-Medium", 1.2rem, normal, 18px);
+          }
+          &.active {
+            @include font($primary, "RedHatDisplay-Medium", 1.2rem, normal, 18px);
+          }
+        }
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+      }
+      .page-title {
+        margin: 0;
+        @include font($primary, "RedHatDisplay-Bold", 2rem, normal, normal);
+        display: flex;
+        align-items: center;
+        padding-bottom: 0.4rem;
+      }
+    }
+    .right {
+      .setting-icon {
+        cursor: pointer;
+        margin-left: 1.6rem;
+        width: 3.6rem;
+      }
+      form {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        .form-group {
+          margin-bottom: 0;
+          margin-left: 1.2rem;
+          .form-control {
+            height: 36px;
+          }
+          .search-input {
+            padding-right: 4rem;
+            &.is-valid {
+              border-color: $grey-CFC;
+            }
+          }
+        }
+        .search-icon {
+          position: absolute;
+          top: 0.6rem;
+          right: 1rem;
+          &.clear-icon {
+            top: 1.3rem;
+            width: 1rem;
+            cursor: pointer;
+          }
+        }
+      }
+      .btn {
+        margin-left: 1.6rem;
+      }
+      .black-btn,
+      .secondary-btn {
+        // @include font($secondary, "RedHatDisplay-Medium", 1.4rem, 500, 20px);
+        padding: 0.7rem 2rem;
+        line-height: 20px; //EXPLICIT
+      }
+      .settlement{
+        form{
+          display: flex;
+          .form-group{
+            width: 20rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+.component-header-wrapper{
+  .component-header{
+    flex-direction: column;
+    align-items: flex-start;
+    .left{
+      .info{
+        .page-title{
+          font-size: 1.6rem;
+        }
+        .breadcrumb{
+          .breadcrumb-item{
+            font-size: 1rem;
+            a{
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+}

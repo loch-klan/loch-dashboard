@@ -1,0 +1,69 @@
+{
+  "name": "float-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@react-google-maps/api": "^2.7.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "date-fns": "^2.27.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "node-sass": "^6.0.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.6.1",
+    "react-date-range": "^1.4.0",
+    "react-datepicker": "^4.8.0",
+    "react-dom": "^17.0.2",
+    "react-google-maps": "^9.4.5",
+    "react-qr-code": "^2.0.7",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.1",
+    "react-scripts": "4.0.3",
+    "react-select": "^4.3.1",
+    "react-toastify": "^8.1.0",
+    "react-virtualized": "^9.22.3",
+    "redux": "^4.1.1",
+    "redux-thunk": "^2.3.0",
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start-dev": "sh -ac '. ./src/env/.development; react-scripts start'",
+    "start-prod": "sh -ac '. ./src/env/.production; react-scripts start'",
+    "build": "sh -ac '. ./src/env/.${ENV}; react-scripts build'",
+    "build:dev": "ENV=development npm run build",
+    "predeploy:dev": "npm run build:dev",
+    "deploy:dev": "aws s3 sync --profile ebikego build/ s3://ebg-float-dashboard-dev",
+    "build:prod": "GENERATE_SOURCEMAP=false ENV=production npm run build",
+    "predeploy:prod": "npm run build:prod",
+    "deploy:prod": "aws s3 sync --profile ebikego build/ s3://ebg-float-dashboard-dev",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "generate": "plop"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "plop": "^2.7.4"
+  }
+}
