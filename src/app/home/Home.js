@@ -14,7 +14,7 @@ class Home extends Component {
   render() {
     return (
       <>
-        <h1>Hello</h1>
+        <h1 className="red-hat-display-black f-s-50 lh-30 ">Hello</h1>
       </>
 
     )
