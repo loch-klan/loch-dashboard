@@ -64,128 +64,22 @@ body {
   @include font($primary, "RedHatDisplay-Medium", 1.2rem, 500, normal);
 }
 
-.op-6 {
-  opacity: 0.6;
-}
-.op-7 {
-  opacity: 0.7;
-}
-.op-38 {
-  opacity: 0.38;
-}
-.op-54 {
-  opacity: 0.54;
-}
-.op-87 {
-  opacity: 0.87;
-}
-// FONT SIZE
-.f-s-10 {
-  font-size: 1rem;
-}
-.f-s-12 {
-  font-size: 1.2rem;
-}
-.f-s-13 {
-  font-size: 1.3rem;
-}
-.f-s-14 {
-  font-size: 1.4rem;
-}
-.f-s-16 {
-  font-size: 1.6rem;
-}
-.f-s-18 {
-  font-size: 1.8rem;
-}
-.f-s-20 {
-  font-size: 2rem;
-}
-.f-s-22 {
-  font-size: 2.2rem;
-}
-.f-s-24 {
-  font-size: 2.4rem;
-}
-.f-s-26 {
-  font-size: 2.6rem;
-}
-.f-s-28 {
-  font-size: 2.8rem;
-}
-.f-s-30 {
-  font-size: 3rem;
-}
-.f-s-34 {
-  font-size: 3.4rem;
-}
-.f-s-36 {
-  font-size: 3.6rem;
-}
-.f-s-38 {
-  font-size: 3.8rem;
-}
-.f-s-40 {
-  font-size: 4rem;
-}
-.f-s-48 {
-  font-size: 4.8rem;
-}
-.f-s-50 {
-  font-size: 5rem;
-}
-.f-s-52 {
-  font-size: 5.2rem;
-}
-.f-s-60 {
-  font-size: 6rem;
+@for $i from 1 through 100 {
+  .f-s-#{$i} {
+    font-size: $i+px;
+  }
 }
 
-// LINE HEIGHT
-.lh-14 {
-  line-height: 14px;
+@for $x from 1 through 100 {
+  .lh-#{$x} {
+    line-height: $x+px;
+  }
 }
-.lh-20 {
-  line-height: 20px;
-}
-.lh-21 {
-  line-height: 21px;
-}
-.lh-24 {
-  line-height: 24px;
-}
-.lh-26 {
-  line-height: 26px;
-}
-.lh-27 {
-  line-height: 27px;
-}
-.lh-28 {
-  line-height: 28px;
-}
-.lh-30 {
-  line-height: 30px;
-}
-.lh-36 {
-  line-height: 36px;
-}
-.lh-38 {
-  line-height: 38px;
-}
-.lh-40 {
-  line-height: 40px;
-}
-.lh-44 {
-  line-height: 44px;
-}
-.lh-48 {
-  line-height: 48px;
-}
-.lh-50 {
-  line-height: 50px;
-}
-.lh-64 {
-  line-height: 64px;
+
+@for $y from 0 through 100 {
+  .op-#{$y} {
+    opacity: "0."+$y;
+  }
 }
 
 .m-t-5{
@@ -588,7 +482,7 @@ form {
 
 
 // btn
-.btn {
+.primary-btn {
   // @include font($black-1A1, "RedHatDisplay-Bold", 1.6rem, bold, normal);
   @include font($black-1A1, "RedHatDisplay-Medium", 1.4rem, 500, 24px);
   letter-spacing: -0.2px;
@@ -813,3 +707,5 @@ form {
     }
   }
 }
+
+// START FROM HERE
