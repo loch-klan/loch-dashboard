@@ -1,0 +1,38 @@
+.modal-content {
+    border-top-right-radius: 15px !important;
+    border-top-left-radius: 15px !important;;
+}
+
+.modal-header {
+    // padding: 0 !important;
+    position: relative !important;
+    display: contents !important;
+    
+    
+}
+.modal-header-title{
+    color: white;
+}
+
+// .modal-title {
+//     position: absolute !important;
+// }
+
+.ob-modal-title-icon{
+    position: absolute;
+    top: 0%;
+    left: 36%;
+}
+
+.ob-modal-title-h1{
+    top: 65%;
+    position: absolute;
+    left: 38%;
+}
+
+.ob-modal-title-p{
+    position: absolute;
+    top: 82%;
+    left: 34%;
+    opacity: 0.8;
+}
