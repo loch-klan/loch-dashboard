@@ -1,9 +1,19 @@
-@include font-face(RedHatDisplay-Regular, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Regular", normal, normal, ttf);
-@include font-face(RedHatDisplay-Bold, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Bold", bold, bold, ttf);
-@include font-face(RedHatDisplay-Medium, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Medium", 500, normal, ttf);
-@include font-face(RedHatDisplay-Black, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Black", 900, bold, ttf);
-@include font-face(RedHatDisplay-BoldItalic, "/assets/fonts/Red-Hat-Display/RedHatDisplay-BoldItalic", bold, bold, ttf);
+// @include font-face(RedHatDisplay-Regular, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Regular", normal, normal, ttf);
+// @include font-face(RedHatDisplay-Bold, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Bold", bold, bold, ttf);
+// @include font-face(RedHatDisplay-Medium, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Medium", 500, normal, ttf);
+// @include font-face(RedHatDisplay-Black, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Black", 900, bold, ttf);
+// @include font-face(RedHatDisplay-BoldItalic, "/assets/fonts/Red-Hat-Display/RedHatDisplay-BoldItalic", bold, bold, ttf);
+@include font-face(Inter-Regular,"/assets/fonts/Inter/Inter-Regular", normal, normal, ttf);
+@include font-face(Inter-Black, "/assets/fonts/Inter/Inter-Black", 900, bold, ttf);
+@include font-face(Inter-Bold, "/assets/fonts/Inter/Inter-Bold", bold, bold, ttf);
+@include font-face(Inter-Medium, "/assets/fonts/Inter/Inter-Medium", 500, normal, ttf);
+@include font-face(Inter-SemiBold, "/assets/fonts/Inter/Inter-SemiBold", bold, bold, ttf);
+@include font-face(Inter-ExtraBold, "/assets/fonts/Inter/Inter-ExtraBold", bold, bold, ttf);
+@include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 500, normal, ttf);
+@include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf);
+@include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf);
 
+// @include font-face(Inter-BoldItalic, "/assets/fonts/Inter/Inter-BoldItalic", bold, bold, ttf);
 // SET THE BASE HTML REM, MAKING 1REM=10PX
 html {
   font-size: 10px;
@@ -48,20 +58,47 @@ body {
 }
 
 //Fonts
-.red-hat-display-black {
-  @include font($primary, "RedHatDisplay-Black", 1.2rem, 900, normal);
+// .red-hat-display-black {
+//   @include font($primary, "RedHatDisplay-Black", 1.2rem, 900, normal);
+// }
+// .red-hat-display-bold {
+//   @include font($primary, "RedHatDisplay-Bold", 1.2rem, bold, normal);
+// }
+// .red-hat-display-bold-italic {
+//   @include font($primary, "RedHatDisplay-BoldItalic", 1.2rem, bold, normal);
+// }
+// .red-hat-display-regular {
+//   @include font($primary, "RedHatDisplay-Regular", 1.2rem, normal, normal);
+// }
+// .red-hat-display-medium {
+//   @include font($primary, "RedHatDisplay-Medium", 1.2rem, 500, normal);
+// }
+.inter-display-black {
+  @include font($primary, "Inter-Black", 1.2rem, 900, normal);
 }
-.red-hat-display-bold {
-  @include font($primary, "RedHatDisplay-Bold", 1.2rem, bold, normal);
+.inter-display-bold {
+  @include font($primary, "Inter-Bold", 1.2rem, bold, normal);
 }
-.red-hat-display-bold-italic {
-  @include font($primary, "RedHatDisplay-BoldItalic", 1.2rem, bold, normal);
+.inter-display-regular {
+  @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
 }
-.red-hat-display-regular {
-  @include font($primary, "RedHatDisplay-Regular", 1.2rem, normal, normal);
+.inter-display-medium {
+  @include font($primary, "Inter-Medium", 1.2rem, 500, normal);
 }
-.red-hat-display-medium {
-  @include font($primary, "RedHatDisplay-Medium", 1.2rem, 500, normal);
+.inter-display-extra-bold {
+  @include font($primary, "Inter-ExtraBold", 1.2rem, bold, normal);
+}
+.inter-display-semi-bold {
+  @include font($primary, "Inter-SemiBold", 1.2rem, bold, normal);
+}
+.inter-display-thin {
+  @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
+}
+.inter-display-extra-light {
+  @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
+}
+.inter-display-light {
+  @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
 }
 
 @for $i from 1 through 100 {
