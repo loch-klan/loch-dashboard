@@ -8,27 +8,44 @@ import infoicon from "../../image/Vector-info.svg";
 import { InfoBox } from '@react-google-maps/api';
 import deleteicon from "../../image/Vector-delete.svg";
 import plusicon from "../../image/Vector-plus.svg";
+import {BaseReactComponent} from '../../utils/form';
 
-const OnboardingModal = ({ show, onHide, title, showImage, children, modalClass = null }) => {
-    return (
-        <Modal show={show} onHide={onHide} dialogClassName={`${modalClass}`} keyboard={false} size='lg' backdrop="static" centered
-            aria-labelledby="contained-modal-title-vcenter" >
+
+class OnboardingModal extends BaseReactComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    }
+  }
+  componentDidMount() { }
+
+  onSubmit = () => {
+    // const data = new URLSearchParams();
+    // data.append('email', this.state.email);
+    // forgotPasswordApi(data, this.props.handleClose);
+  }
+
+render(){
+return (
+        <Modal
+          show={this.props.show}
+          onHide={this.props.onHide}
+          dialogClassName={"onboarding-modal"}
+          keyboard={false}
+          size='lg'
+          backdrop="static"
+          centered
+          aria-labelledby="contained-modal-title-vcenter"
+        >
             {
-                title &&
+                this.props.title &&
                 <Modal.Header>
-                    {/* <Modal.Title>{title}</Modal.Title> */
                     <Modal.Title>
-                        <img className='ob-modal-title-icon' src={walleticon}/>
-                        <h4 className='ob-modal-title-h4 inter-display-medium'>Welcome to Loch</h4>
-                        <p className='ob-modal-title-p inter-display-medium'>Add wallet address(es) to get started</p>
-                        </Modal.Title>}
-                        
-                    {/* {showImage && <Image src={bgimg} />} */}
-                    {/* <div className="modal-header-title">
-                            <img className='ob-modal-title-icon' src={walleticon}/>
-                            <h1 className='ob-modal-title-h1'>Welcome to Loch</h1>
-                            <h4 className='ob-modal-title-p'>Add wallet address(es) to get started</h4>
-                        </div> */}
+                        <Image className='ob-modal-title-icon' src={walleticon}/>
+                        <h1 className='inter-display-medium f-s-31 lh-37 white'>Welcome to Loch</h1>
+                        <p className='inter-display-medium f-s-13 lh-16 white op-.8'>Add wallet address(es) to get started</p>
+                        </Modal.Title>
                 </Modal.Header>
             }
             <Modal.Body>
@@ -42,7 +59,7 @@ const OnboardingModal = ({ show, onHide, title, showImage, children, modalClass 
                             <img src={plusicon}/> Add another
                     </Button>
                 </div>
-                
+
                 <div className='ob-modal-body-btn'>
                     <Button className="ob-modal-body-secondary-btn inter-display-semi-bold">
                         Preview demo instead
@@ -57,12 +74,13 @@ const OnboardingModal = ({ show, onHide, title, showImage, children, modalClass 
                     <p className='inter-display-medium'>Don't worry. All your information remains private and anonymous. <img src={infoicon} title="We do not link wallet addresses back to you unless you explicitly give us your email or phone number. "/> </p>
 
                 </div>
-                
-                    
-                
-                
+
+
+
+
             </Modal.Body>
         </Modal>
     );
 };
+}
 export default OnboardingModal;

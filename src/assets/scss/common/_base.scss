@@ -7,7 +7,7 @@
 @include font-face(Inter-Black, "/assets/fonts/Inter/Inter-Black", 900, bold, ttf);
 @include font-face(Inter-Bold, "/assets/fonts/Inter/Inter-Bold", bold, bold, ttf);
 @include font-face(Inter-Medium, "/assets/fonts/Inter/Inter-Medium", 500, normal, ttf);
-@include font-face(Inter-SemiBold, "/assets/fonts/Inter/Inter-SemiBold", bold, bold, ttf);
+@include font-face(Inter-SemiBold, "/assets/fonts/Inter/Inter-SemiBold", 600, bold, ttf);
 @include font-face(Inter-ExtraBold, "/assets/fonts/Inter/Inter-ExtraBold", bold, bold, ttf);
 @include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 500, normal, ttf);
 @include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf);
@@ -115,7 +115,7 @@ body {
 
 @for $y from 0 through 100 {
   .op-#{$y} {
-    opacity: "0."+$y;
+    opacity: 0$y;
   }
 }
 
@@ -124,6 +124,9 @@ body {
 }
 
 // COLOR
+.white{
+  color: $secondary;
+}
 .grey-757{
   color: $grey-757;
 }

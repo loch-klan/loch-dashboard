@@ -1,77 +1,49 @@
-.modal-content {
-    border-top-right-radius: 15px !important;
-    border-top-left-radius: 15px !important;
+
+.onboarding-modal{
+  .modal-content {
+    border-radius: 1.2rem !important;
     border: none;
     width: 780px;
-    //height: 455px;
+    .modal-header {
+      background-image: url("../../../image/Frame.png");
+      background-size: 100%;
+      background-repeat: no-repeat;
+      // color: $secondary;
+      padding: 3.6rem;
+      text-align: center;
+      display: block;
+      .ob-modal-title-icon {
+        width: 6rem;
+      }
+      h1{
+        padding: 2rem 0 0.4rem;
+      }
+    }
+    .modal-body{
+      padding: 4rem 9.4rem 3.6rem;
+      .ob-modal-body-1,
+      .ob-modal-body-2 {
+          margin-top: 1%;
+          display: block;
+          width: 100%;
+          position: relative;
+          .ob-modal-body-del {
+            border-radius: 8px;
+            // padding-top: 8px;
+            width: 60px;
+            position: absolute;
+            left: -7rem;
+        }
+        .ob-modal-body-add-btn{
+          margin: 1.2rem 0;
+        }
+      }
+    }
+  }
 }
 
-.modal-header {
-    // padding: 0 !important;
-    // position: relative !important;
-    // display: contents !important;
-    background-image: url("../../../image/Frame.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    color: white;
 
 
-
-
-}
-
-// .modal-header-title{
-//     color: white;
-// }
-
-.modal-title {
-    text-align: center;
-    margin-left: 33%;
-    margin-top: -40px;
-}
-
-// .ob-modal-title-icon{
-//     position: absolute;
-//     top: 0%;
-//     left: 36%;
-// }
-
-
-.ob-modal-title-h4 {
-    font-size: 31px;
-    line-height: 120%;
-    color: #FFFFFF;
-}
-
-.ob-modal-title-p {
-    opacity: 0.8;
-    color: #FFFFFF;
-    font-size: 13px;
-    line-height: 120%
-}
-
-.ob-modal-title-icon {
-
-    width: 184px;
-    margin-bottom: -58px;
-
-}
-
-.ob-modal-body-1 {
-    margin-top: 1%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.ob-modal-body-2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-}
 
 .ob-modal-body-add-btn,
 .ob-modal-body-add-btn:hover {
@@ -89,24 +61,20 @@
 
 }
 
-.ob-modal-body-del {
-    border-radius: 8px;
-    padding-top: 8px;
-    width: 60px;
-}
+
 
 .ob-modal-body-text {
     // margin-left: 10%;
-    width: 592px;
+    width: 59.2rem;
     // margin-top: 4%;
     background: #FFFFFF;
     border: 1px solid #D4D4D4;
     border-radius: 8px;
-    height: 40px;
+    height: 4rem;
     padding: 8px 12px;
     color: #19191A;
 
-    
+
 }
 
 .ob-modal-body-text::placeholder{
@@ -115,7 +83,7 @@
     color: #D4D4D4;
     font-weight: 400;
     line-height: 120%;
-    
+
 }
 
 
