@@ -30,10 +30,10 @@ class AddWallet extends Component {
                     </Button>
                 </div>
                 <div className='ob-modal-body-btn'>
-                    <Button className="inter-display-semi-bold f-s-16 lh-20 ob-modal-body-secondary-btn">
+                    <Button className="secondary-btn">
                         Preview demo instead
                     </Button>
-                    <Button className="inter-display-semi-bold f-s-16 lh-20 black-btn ob-modal-body-black-btn" >
+                    <Button className="primary-btn" >
                         Go
                     </Button>
                 </div>

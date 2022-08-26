@@ -63,7 +63,7 @@ class SignIn extends BaseReactComponent {
                             />
                         </Col>
                         <Col className='ob-modal-verification' md={12}>
-                            <CustomButton className="inter-display-semi-bold black-btn ob-modal-verification-btn" type={"submit"} handleClick={() => { this.setValue("now") }} variant="success" buttonText="Send Verification" />
+                            <CustomButton className="primary-btn" type={"submit"} handleClick={() => { this.setValue("now") }} variant="success" buttonText="Send Verification" />
                             {/* <CustomButton handleClick={() => { this.setValue("later") }} buttonText="Later" /> */}
                         </Col>
                     </Row>
