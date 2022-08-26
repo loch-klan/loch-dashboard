@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-
+import Sidebar from '../common/Sidebar';
 class Profile extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +12,7 @@ class Profile extends Component {
 
     render() {
         return (
-            <div>Profile Component</div>
+            <div><Sidebar/></div>
         )
     }
 }
