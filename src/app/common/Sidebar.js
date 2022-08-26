@@ -30,8 +30,8 @@ function Sidebar(props) {
                                 </li>
                                 <li>
                                     <NavLink to="/Intelligence"
-                                        className={isActive =>
-                                            "nav-link" + (isActive ? "active" : "")}><Image src={IntelligenceIcon} />Intelligence</NavLink>
+                                        className={isActive =>{
+                                            return("nav-link" + (isActive ? "active" : ""))}}><Image src={IntelligenceIcon} />Intelligence</NavLink>
                                 </li>
                                 <li>
 
