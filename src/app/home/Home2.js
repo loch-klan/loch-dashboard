@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import OnboardingModal from "../common/OnboardingModal";
 import "../../assets/scss/onboarding/_onboarding.scss";
 
-class Home extends Component {
+class Home2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,8 +40,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   // getPosts: fetchPosts
 }
-Home.propTypes = {
+Home2.propTypes = {
   // getPosts: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home2);
