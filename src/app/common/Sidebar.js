@@ -12,7 +12,7 @@ import ApiIcon from '../../image/ApiIcon.png'
 import LeaveIcon from '../../image/LeaveIcon.png'
 import DarkmodeIcon from '../../image/DarkmodeIcon.png'
 import bgImg from '../../image/Notice.png'
-function Sidebar() {
+function Sidebar(props) {
     return (
         <div className='sidebar-section'>
             <Container>
@@ -24,24 +24,34 @@ function Sidebar() {
                         <nav>
                             <ul>
                                 <li>
-                                    <Image src={HomeIcon} />
-                                    <NavLink to="/"  >Home</NavLink>
+                                    <NavLink to="/"
+                                        className={isActive =>
+                                            "nav-link" + (isActive ? "active" : "")}> <Image src={HomeIcon} />Home</NavLink>
                                 </li>
                                 <li>
-                                    <Image src={IntelligenceIcon} />
-                                    <NavLink to="/Intelligence">Intelligence</NavLink>
+                                    <NavLink to="/Intelligence"
+                                        className={isActive =>
+                                            "nav-link" + (isActive ? "active" : "")}><Image src={IntelligenceIcon} />Intelligence</NavLink>
                                 </li>
                                 <li>
-                                    <Image src={NavWalletIcon} />
-                                    <NavLink to="/Wallets">Wallets</NavLink>
+
+                                    <NavLink to="/Wallets"
+                                        className={isActive =>
+                                            "nav-link" + (isActive ? "active" : "")}><Image src={NavWalletIcon} />Wallets</NavLink>
                                 </li>
                                 <li>
-                                    <Image src={DollarIcon} />
-                                    <NavLink to="/Costs">Costs</NavLink>
+                                    <NavLink
+                                        to="/Costs"
+                                        className={isActive =>
+                                            "nav-link" + (isActive ? "active" : "")}>
+                                        <Image src={DollarIcon} />Costs</NavLink>
                                 </li>
                                 <li>
-                                    <Image src={ProfileIcon} />
-                                    <NavLink to="/profile">Profile</NavLink>
+                                    <NavLink
+                                        to="/profile"
+                                        className={isActive =>
+                                            "nav-link" + (isActive ? "active" : "")}
+                                    > <Image src={ProfileIcon} />Profile</NavLink>
                                 </li>
                             </ul>
                         </nav>
@@ -51,7 +61,7 @@ function Sidebar() {
                             <div className='wallet-info-para'>
                                 <p>Viewing in Demo Mode</p>
                                 <p>Showing sample data based
-                                    on <span>Vitalik Buterin’s </span> wallet</p>
+                                    on <span>{props.ownerName}</span> wallet</p>
                                 <Button className='addwallet-btn'>Add wallet</Button>
                             </div>
                         </div>
@@ -87,6 +97,7 @@ function Sidebar() {
                     </div>
                 </div>
             </Container>
+
         </div>
     )
 }
