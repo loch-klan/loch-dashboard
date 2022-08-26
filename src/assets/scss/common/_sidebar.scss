@@ -43,10 +43,24 @@
                         font-family: Inter-Medium;
                         font-size: 1.6rem;
                         font-weight: 500;
-                        background: rgba(229, 229, 230, 0.5);
-border-radius: 1.2rem;
-                        .nav-link{
-                            color:$grey-636;
+                        
+
+                        .nav-link {
+                            padding: 1.1rem 1.5rem;
+                            color: $grey-636;
+                            display: flex;
+                            align-items: center;
+                            width: 100%;
+
+                            img {
+                                margin-right: 1rem;
+                            }
+                        }
+
+                        .active {
+                            background-color: rgba(229, 229, 230, 0.5);
+                            border-radius: 1.2rem;
+                            color:$black-191;
                         }
                     }
                 }
