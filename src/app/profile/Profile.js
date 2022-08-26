@@ -12,7 +12,9 @@ class Profile extends Component {
 
     render() {
         return (
-            <div><Sidebar/></div>
+            <div>
+                <Sidebar ownerName="Vitalik Buterin’s"/>
+                </div>
         )
     }
 }
