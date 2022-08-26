@@ -1,0 +1,131 @@
+.sidebar-section {
+    // height: 100vh;
+    background-color: $secondary;
+    width: 20%;
+
+    .sidebar {
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 4.4rem 0rem 0rem 0.9rem;
+
+        .logo {
+            margin-bottom: 3rem;
+            margin-left: 1.4rem;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+
+        }
+
+        li:hover {
+            cursor: pointer;
+        }
+
+        .sidebar-body {
+            width: 100%;
+            // margin-bottom: 3.2rem;
+            margin-bottom: 20.4rem;
+            position: relative;
+
+            nav {
+                ul {
+
+                    li {
+                        margin-bottom: 1.6rem;
+                        font-family: Inter-Medium;
+                        font-size: 1.6rem;
+                        font-weight: 500;
+                        background: rgba(229, 229, 230, 0.5);
+border-radius: 1.2rem;
+                        .nav-link{
+                            color:$grey-636;
+                        }
+                    }
+                }
+            }
+
+            .nav-addwallet {
+                position: absolute;
+                top: 31rem;
+
+                .wallet-info-para {
+                    position: absolute;
+                    top: 2rem;
+                    left: 2.4rem;
+                    font-size: 1.3rem;
+                    font-weight: 500;
+                    font-family: Inter-Medium;
+                    color: white;
+
+                    p:nth-child(2) {
+                        opacity: 0.7;
+                        margin-bottom: 1.6rem;
+                    }
+
+                    p {
+                        width: 99%;
+
+                        span {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    .addwallet-btn {
+                        padding: 1.8rem 2.8rem;
+                        background-color: $secondary;
+                        border: none;
+                        font-size: 1.6rem;
+                        font-weight: 600;
+                        color: $black-191;
+                        line-height: 120%;
+                        box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                        border-radius: 0.8rem;
+                    }
+                }
+
+            }
+        }
+
+        .sidebar-footer{
+            width:100%;
+            border-top:0.1rem solid $grey-CAC;
+            padding-top: 3.5rem;
+            ul{
+                li{
+                    margin-bottom: 4.1rem;
+                    .navbar-button{
+                        background: none;
+                        border: none;
+                        font-size: 1.6rem;
+                        font-weight: 500;
+                        color: $grey-B0B;
+                    }
+                }
+            }
+
+            p {
+                font-size: 1.6rem;
+                font-weight: 500;
+            }
+            p:nth-child(2){
+                color: $grey-CAC;
+                margin-bottom:1.2rem
+            }
+
+            p:nth-child(3) {
+                font-weight: 600;
+                margin-bottom: 6.7rem;
+                font-family: Inter-SemiBold;
+                padding-left:2rem ;
+            }
+        }
+    }
+}

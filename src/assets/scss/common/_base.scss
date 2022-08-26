@@ -1,9 +1,4 @@
-// @include font-face(RedHatDisplay-Regular, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Regular", normal, normal, ttf);
-// @include font-face(RedHatDisplay-Bold, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Bold", bold, bold, ttf);
-// @include font-face(RedHatDisplay-Medium, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Medium", 500, normal, ttf);
-// @include font-face(RedHatDisplay-Black, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Black", 900, bold, ttf);
-// @include font-face(RedHatDisplay-BoldItalic, "/assets/fonts/Red-Hat-Display/RedHatDisplay-BoldItalic", bold, bold, ttf);
-@include font-face(Inter-Regular, "/assets/fonts/Inter/Inter-Regular", normal, normal, ttf);
+@include font-face(Inter-Regular,"/assets/fonts/Inter/Inter-Regular", normal, normal, ttf);
 @include font-face(Inter-Black, "/assets/fonts/Inter/Inter-Black", 900, bold, ttf);
 @include font-face(Inter-Bold, "/assets/fonts/Inter/Inter-Bold", bold, bold, ttf);
 @include font-face(Inter-Medium, "/assets/fonts/Inter/Inter-Medium", 500, normal, ttf);
@@ -12,16 +7,16 @@
 @include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 500, normal, ttf);
 @include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf);
 @include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf);
-
 // @include font-face(Inter-BoldItalic, "/assets/fonts/Inter/Inter-BoldItalic", bold, bold, ttf);
+
 // SET THE BASE HTML REM, MAKING 1REM=10PX
 html {
   font-size: 10px;
-  background-color: $grey-F6F;
+  background-color: $grey-F2F;
 }
 
 #root {
-  background-color: $grey-F6F;
+  background-color: $grey-F2F;
 }
 
 h1,
@@ -60,21 +55,6 @@ body {
 }
 
 //Fonts
-// .red-hat-display-black {
-//   @include font($primary, "RedHatDisplay-Black", 1.2rem, 900, normal);
-// }
-// .red-hat-display-bold {
-//   @include font($primary, "RedHatDisplay-Bold", 1.2rem, bold, normal);
-// }
-// .red-hat-display-bold-italic {
-//   @include font($primary, "RedHatDisplay-BoldItalic", 1.2rem, bold, normal);
-// }
-// .red-hat-display-regular {
-//   @include font($primary, "RedHatDisplay-Regular", 1.2rem, normal, normal);
-// }
-// .red-hat-display-medium {
-//   @include font($primary, "RedHatDisplay-Medium", 1.2rem, 500, normal);
-// }
 .inter-display-black {
   @include font($primary, "Inter-Black", 1.2rem, 900, normal);
 }
@@ -96,7 +76,7 @@ body {
 }
 
 .inter-display-semi-bold {
-  @include font($primary, "Inter-SemiBold", 1.2rem, bold, normal);
+  @include font($primary, "Inter-SemiBold", 1.2rem, 600, normal);
 }
 
 .inter-display-thin {
@@ -132,9 +112,24 @@ body {
 .m-t-5 {
   margin-top: 5rem;
 }
+.m-r-15{
+  margin-right: 1.5rem;
+}
 
+.cp{
+  cursor: pointer;
+}
 // COLOR
-.white {
+.grey-636{
+  color: $grey-636;
+}
+.grey-ADA{
+  color: $grey-ADA;
+}
+.blue-268{
+  color: $blue-268;
+}
+.white{
   color: $secondary;
 }
 
@@ -266,26 +261,26 @@ form {
     max-width: 100%;
     margin-bottom: 8px;
     font-weight: 500;
-    font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+    font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
     font-size: 1.2rem;
     color: $grey-868;
   }
 
   .form-group {
-    margin-bottom: 40px;
+    margin-bottom: 1rem;
     position: relative; //For tooltip
 
     .form-control,
     .custom-select__control {
-      font-family: "RedHatDisplay-Bold", Arial, Helvetica, sans-serif;
+      font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
       font-size: 1.6rem;
       font-weight: bold;
-      color: $primary;
-      line-height: 1.5;
-      padding: 11px 20px;
-      min-height: 46px;
-      border-radius: 2px;
-      border: 1px solid $grey-CFC;
+      color: $black-191;
+      line-height: 19px;
+      padding: 1.6rem;
+      min-height: 51px;
+      border-radius: 8px;
+      border: 1px solid $grey-D4D;
     }
 
     .custom-select__menu {
@@ -293,7 +288,7 @@ form {
         padding: 1rem;
 
         .custom-select__option {
-          @include font($primary, "RedHatDisplay-Bold", 1.4rem, bold, normal);
+          @include font($primary, "Inter-Bold", 1.4rem, bold, normal);
           padding: 1rem;
 
           &.custom-select__option--is-focused,
@@ -333,7 +328,7 @@ form {
 
     .form-control::placeholder {
       color: $grey-B6B;
-      font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+      font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
       line-height: 24px;
       font-weight: 500;
       font-size: 1.4rem;
@@ -352,7 +347,7 @@ form {
         .custom-select__placeholder {
           padding: 0;
           color: $grey-B6B;
-          font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+          font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
           font-weight: 500;
           font-size: 1.4rem;
         }
@@ -367,7 +362,7 @@ form {
         font-size: 1.4rem;
         font-weight: 500;
         color: $grey-B6B;
-        font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+        font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
         line-height: 24px;
       }
     }
@@ -513,7 +508,7 @@ form {
     border: 0;
 
     .dropdown-item {
-      @include font($primary, "RedHatDisplay-Medium", 1.4rem, 500, 21px);
+      @include font($primary, "Inter-Medium", 1.4rem, 500, 21px);
       padding: 0.8rem 1.2rem;
       border-radius: 4px;
 
@@ -544,8 +539,7 @@ form {
 
   .ReactVirtualized__Table__headerColumn {
     text-transform: none;
-    @include font($grey-999, "RedHatDisplay-Medium", 1.3rem, 500, normal);
-
+    @include font($grey-999, "Inter-Medium", 1.3rem, 500, normal);
     .ReactVirtualized__Table__headerTruncatedText {
       margin-top: 0.8rem;
     }
@@ -569,10 +563,9 @@ form {
   }
 
   .ReactVirtualized__Table__row {
-    @include font($grey-565, "RedHatDisplay-Medium", 1.4rem, 500, 21px);
+    @include font($grey-565, "Inter-Medium", 1.4rem, 500, 21px);
     border-bottom: 1px solid $grey-F2F;
-
-    .red-hat-display-bold {
+    .inter-bold {
       font-size: 1.4rem;
       line-height: 21px;
     }
@@ -603,85 +596,59 @@ form {
 
 // btn
 .primary-btn {
-  // @include font($black-1A1, "RedHatDisplay-Bold", 1.6rem, bold, normal);
-  @include font($black-1A1, "RedHatDisplay-Medium", 1.4rem, 500, 24px);
-  letter-spacing: -0.2px;
-  border-radius: 4px;
-  // border: 1px solid $primary;
-  padding: 1.1rem 6rem;
+  @include font($secondary, "Inter-SemiBold", 1.6rem, 600, normal);
+  border-radius: 8px;
+  background-color: $black-191;
+  border: 1px solid $black-191;
+  padding: 1.6rem 4rem;
   cursor: pointer;
-
+  &.btn-primary:not(:disabled):not(:disabled):active,
+  &.btn-primary:not(:disabled):not(:disabled):active:focus,
   &:hover,
   &:active,
   &:focus,
   &:active:focus {
     outline: none;
     box-shadow: none;
+    border: 1px solid $black-191;
+    background-color: $black-191;
   }
-
   &:not(:disabled),
   &:not(.disabled) {
     cursor: auto;
   }
-
-  &.clear-btn {
-    background-color: transparent;
-    padding: 0;
-    border: 0;
-
-    &.btn-primary:not(:disabled):not(:disabled):active,
-    &.btn-primary:not(:disabled):not(:disabled):active:focus,
-    &:hover,
-    &:active,
-    &:focus,
-    &:active:focus {
-      border: 0;
-      background-color: transparent;
-      color: $primary;
-      outline: none;
-      box-shadow: none;
-    }
-  }
 }
-
-.black-btn {
-  background-color: $primary;
-  color: $secondary;
-  border: 1px solid $primary;
-
-  &.btn-primary:not(:disabled):not(:disabled):active,
-  &.btn-primary:not(:disabled):not(:disabled):active:focus,
-  &:hover,
-  &:active,
-  &:focus,
-  &:active:focus {
-    box-shadow: none;
-    border: 1px solid $primary;
-    background-color: $primary;
-    color: $secondary;
-  }
-}
-
-.inactive-btn {
-  background-color: $grey-E7E;
-  color: $grey-9E9;
-  border: 1px solid $grey-E7E;
-  cursor: not-allowed;
-
-  &:hover,
-  &:active,
-  &:focus,
-  &:active:focus {
-    border: 1px solid $grey-E7E;
-    background-color: $grey-E7E;
-    color: $grey-9E9;
-  }
-}
-
 .secondary-btn {
-  background: transparent;
-  color: $primary;
-  border: 1px solid $primary;
+  @include font($black-191, "Inter-SemiBold", 1.6rem, 600, normal);
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid $black-191;
+  padding: 1.6rem 4rem;
+  cursor: pointer;
+  &.btn-primary:not(:disabled):not(:disabled):active,
+  &.btn-primary:not(:disabled):not(:disabled):active:focus,
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    outline: none;
+    box-shadow: none;
+    color: $black-191;
+    border: 1px solid $black-191;
+    background-color: transparent;
+  }
+  &:not(:disabled),
+  &:not(.disabled) {
+    cursor: auto;
+  }
+}
+.grey-btn{
+  @include font($grey-7C7, "Inter-Medium", 1.3rem, 500, normal);
+  border-radius: 8px;
+  background-color: rgba(229, 229, 230, 0.5);
+  border: 1px solid $grey-D4D;
+  padding: 1.2rem 4rem;
+  cursor: pointer;
 
   &.btn-primary:not(:disabled):not(:disabled):active,
   &.btn-primary:not(:disabled):not(:disabled):active:focus,
@@ -689,10 +656,15 @@ form {
   &:active,
   &:focus,
   &:active:focus {
+    outline: none;
     box-shadow: none;
-    background: transparent;
-    color: $primary;
-    border: 1px solid $primary;
+    color: $grey-7C7;
+    border: 1px solid $grey-D4D;
+    background-color: rgba(229, 229, 230, 0.5);
+  }
+  &:not(:disabled),
+  &:not(.disabled) {
+    cursor: auto;
   }
 }
 
@@ -799,7 +771,7 @@ form {
 .react-datepicker__input-container {
   input {
     // @include font($primary, "ProximaNova-Medium", 1.6rem, 400, 22px);
-    @include font($primary, "RedHatDisplay-Medium", 1.6rem, 500, 22px);
+    @include font($primary, "Inter-Medium", 1.6rem, 500, 22px);
   }
 }
 
