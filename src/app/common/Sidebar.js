@@ -1,6 +1,6 @@
 import React from 'react'
-import { Image, Container, NavLink, Button } from 'react-bootstrap'
-
+import { Image, Container, Button } from 'react-bootstrap'
+import { NavLink } from 'react-router-dom'
 import logo from '../../image/logo.png'
 import HomeIcon from '../../image/HomeIcon.png'
 import IntelligenceIcon from '../../image/IntelligenceIcon.png'
@@ -24,33 +24,39 @@ function Sidebar(props) {
                         <nav>
                             <ul>
                                 <li>
-                                    <NavLink to="/"
-                                        className={isActive =>
-                                            "nav-link" + (isActive ? "active" : "")}> <Image src={HomeIcon} />Home</NavLink>
-                                </li>
-                                <li>
-                                    <NavLink to="/Intelligence"
-                                        className={isActive =>{
-                                            return("nav-link" + (isActive ? "active" : ""))}}><Image src={IntelligenceIcon} />Intelligence</NavLink>
-                                </li>
-                                <li>
-
-                                    <NavLink to="/Wallets"
-                                        className={isActive =>
-                                            "nav-link" + (isActive ? "active" : "")}><Image src={NavWalletIcon} />Wallets</NavLink>
+                                    <NavLink
+                                    exact={true}
+                                    className="nav-link"    to="/"
+                                       activeclassname="active"> <Image src={HomeIcon} />Home</NavLink>
                                 </li>
                                 <li>
                                     <NavLink
-                                        to="/Costs"
-                                        className={isActive =>
-                                            "nav-link" + (isActive ? "active" : "")}>
+                                    exact={true}
+                                        className="nav-link" to="/intelligence"
+                                        activeclassname="active"
+                                        ><Image src={IntelligenceIcon} />Intelligence</NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                    exact={true}
+                                        className="nav-link" to="/wallets"
+                                      activeclassname="active"
+                                      ><Image src={NavWalletIcon} />Wallets</NavLink>
+                                </li>
+                                <li>
+                                    <NavLink
+                                        className="nav-link"
+                                        to="/costs"
+                                        activeclassname="active"
+                                    >
                                         <Image src={DollarIcon} />Costs</NavLink>
                                 </li>
                                 <li>
                                     <NavLink
+                                    exact={true}
+                                        className="nav-link"
                                         to="/profile"
-                                        className={isActive =>
-                                            "nav-link" + (isActive ? "active" : "")}
+                                        activeclassname="active"
                                     > <Image src={ProfileIcon} />Profile</NavLink>
                                 </li>
                             </ul>

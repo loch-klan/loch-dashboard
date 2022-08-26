@@ -32,7 +32,7 @@
         .sidebar-body {
             width: 100%;
             // margin-bottom: 3.2rem;
-            margin-bottom: 20.4rem;
+            margin-bottom: 21.8rem;
             position: relative;
 
             nav {
@@ -50,8 +50,8 @@
                             color: $grey-636;
                             display: flex;
                             align-items: center;
-                            width: 100%;
-
+                            width: 97%;
+                            
                             img {
                                 margin-right: 1rem;
                             }
@@ -68,7 +68,7 @@
 
             .nav-addwallet {
                 position: absolute;
-                top: 31rem;
+                top: 32.5rem;
 
                 .wallet-info-para {
                     position: absolute;
@@ -112,15 +112,18 @@
             width:100%;
             border-top:0.1rem solid $grey-CAC;
             padding-top: 3.5rem;
+            padding-left: 1.3rem;
             ul{
                 li{
-                    margin-bottom: 4.1rem;
+                    margin-bottom: 3.1rem;
                     .navbar-button{
                         background: none;
                         border: none;
                         font-size: 1.6rem;
                         font-weight: 500;
                         color: $grey-B0B;
+                        outline: none !important;
+                        box-shadow: none !important;
                     }
                 }
             }
@@ -131,14 +134,17 @@
             }
             p:nth-child(2){
                 color: $grey-CAC;
-                margin-bottom:1.2rem
+                font-family: Inter-Mixed;
+                font-style: italic;
+                margin-bottom:1.2rem;
+                padding-right: 5.2rem;
             }
 
             p:nth-child(3) {
                 font-weight: 600;
                 margin-bottom: 6.7rem;
                 font-family: Inter-SemiBold;
-                padding-left:2rem ;
+                color:$grey-B0B;
             }
         }
     }
