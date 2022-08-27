@@ -15,6 +15,8 @@ class OnBoarding extends Component {
         this.state = {
             showModal: true,
             signInReq: false,
+            isVerificationRequired: false,
+            isVerified: false
         }
         // this.onClose = this.onClose.bind(this);
         // this.switchSignIn = this.switchSignIn.bind(this);
@@ -27,7 +29,7 @@ class OnBoarding extends Component {
     }
 
     switchSignIn = () => {
-        this.setState({ signInReq: true })
+        this.setState({ signInReq: !this.state.signInReq })
     }
 
     render() {
@@ -40,11 +42,14 @@ class OnBoarding extends Component {
                     onHide={this.onClose}
                     title={this.state.signInReq ? "Sign In" : "Welcome to Loch"}
                     subTitle={this.state.signInReq ? "Get right back into your account" : "Add wallet address(es) to get started"}
-                    icon={this.state.signInReq ? SignInIcon : walleticon}>
-                    {this.state.signInReq ? <SignIn /> : <AddWallet />}
+                    icon={this.state.signInReq ? SignInIcon : walleticon}
+                    isSignInActive={this.state.signInReq}
+                    handleBack={this.switchSignIn}>
+
+                    {this.state.signInReq ? <SignIn isVerificationRequired={this.state.isVerificationRequired} /> : <AddWallet />}
                     <div className="ob-modal-body-info">
                         {this.state.signInReq ? null : <h4 className='inter-medium f-s-14 grey-636'>Already have an account? <span className='blue-268 cp' onClick={this.switchSignIn}>Sign in</span></h4>}
-                        <p className='inter-display-medium'>Don't worry. All your information remains private and anonymous. <img src={infoicon} title="We do not link wallet addresses back to you unless you explicitly give us your email or phone number. " /> </p>
+                        <p className='inter-display-medium lh-16'>Don't worry. All your information remains private and anonymous. <img src={infoicon} title="We do not link wallet addresses back to you unless you explicitly give us your email or phone number. " /> </p>
                     </div>
                 </OnboardingModal>
             </>

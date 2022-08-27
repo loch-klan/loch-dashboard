@@ -15,7 +15,8 @@ class SignIn extends BaseReactComponent {
         this.state = {
             showModal: true,
             signIn: false,
-            email: ""
+            email: "",
+            isVerificationRequired: props.isVerificationRequired
         }
         // this.onClose = this.onClose.bind(this);   
     }
@@ -28,9 +29,7 @@ class SignIn extends BaseReactComponent {
     };
 
     onValidSubmit = (done, event) => {
-        // console.log('hey', event);
-        console.log("Value submitted" + this.state.value);
-        console.log("Form Submitted" + this.state.name);
+        console.log("Value submitted" + this.state.email);
     };
 
     render() {
@@ -41,29 +40,29 @@ class SignIn extends BaseReactComponent {
                     <Row className="show-grid">
                         <Col md={12}>
                             <FormElement
-                                valueLink={this.linkState(this, "email")}
+                                valueLink={this.linkState(this, this.state.isVerificationRequired ? "text" : "email")}
                                 required
                                 validations={[
                                     {
                                         validate: FormValidator.isRequired,
                                         message: "Field cannot be empty"
                                     },
-                                    {
+                                    !this.state.isVerificationRequired ? {
                                         validate: FormValidator.isEmail,
                                         message: "Please enter valid email id"
-                                    }
+                                    } : null
                                 ]}
 
                                 control={{
                                     type: CustomTextControl,
                                     settings: {
-                                        placeholder: "Your Email"
+                                        placeholder: !this.state.isVerificationRequired ? "Your Email" : "Verification code"
                                     }
                                 }}
                             />
                         </Col>
                         <Col className='ob-modal-verification' md={12}>
-                            <CustomButton className="primary-btn" type={"submit"} handleClick={() => { this.setValue("now") }} variant="success" buttonText="Send Verification" />
+                            <CustomButton className="primary-btn" type={"submit"} variant="success" buttonText={!this.state.isVerificationRequired ? "Send Verification" : "Enter Code"} />
                             {/* <CustomButton handleClick={() => { this.setValue("later") }} buttonText="Later" /> */}
                         </Col>
                     </Row>

@@ -3,10 +3,10 @@
 @include font-face(Inter-Bold, "/assets/fonts/Inter/Inter-Bold", bold, bold, ttf);
 @include font-face(Inter-Medium, "/assets/fonts/Inter/Inter-Medium", 500, normal, ttf);
 @include font-face(Inter-SemiBold, "/assets/fonts/Inter/Inter-SemiBold", 600, bold, ttf);
-@include font-face(Inter-ExtraBold, "/assets/fonts/Inter/Inter-ExtraBold", bold, bold, ttf);
-@include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 500, normal, ttf);
-@include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf);
-@include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf);
+@include font-face(Inter-ExtraBold, "/assets/fonts/Inter/Inter-ExtraBold", 900, bold, ttf); //Need to change values
+@include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 400, normal, ttf);//Need to change values
+@include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf);//Need to change values
+@include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf);//Need to change values
 // @include font-face(Inter-BoldItalic, "/assets/fonts/Inter/Inter-BoldItalic", bold, bold, ttf);
 
 // SET THE BASE HTML REM, MAKING 1REM=10PX
