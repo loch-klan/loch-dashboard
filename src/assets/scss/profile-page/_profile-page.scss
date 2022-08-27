@@ -1,0 +1,71 @@
+.profile-page-section {
+    display: flex;
+
+    .profile-form-section {
+        // background-color: black;
+        padding-left: 13rem;
+        padding-top: 4rem;
+        padding-right: 13rem;
+
+        .title {
+            font-weight: 500;
+            line-height: 120%;
+            margin-bottom: 1.2rem;
+        }
+
+        p {
+            margin-bottom: 3.2rem;
+            color: $grey-ADA;
+
+        }
+
+        .profile-form {
+           
+            background-color: $secondary;
+            padding-left: 3.2rem;
+            padding-top: 3.2rem;
+            box-shadow: 0px 4px 6px -4px rgba(24, 39, 75, 0.12), 0px 8px 8px -4px rgba(24, 39, 75, 0.08);
+            border-radius: 1.6rem;
+
+            .form-title {
+                display: flex;
+                align-items: center;
+                margin-bottom: 2rem;
+
+                p {
+                    margin-bottom: 0px;
+                    color: $black-000;
+                    font-size: 1.6rem;
+                    margin-left: 1.2rem;
+                }
+            }
+
+            .form {
+                margin-right: 27rem;
+                .row{
+                    margin-bottom: 2.4rem;
+                }
+                .form-group {
+                    label {
+                        font-family:Inter-Medium;
+                        font-weight: 500;
+                        font-size: 1.3rem;
+                        color: $grey-313;
+
+                        span {
+                            display: none;
+                        }
+                    }
+                }
+
+                .submit-button {
+                    color: $black-191;
+                    margin-bottom: 3.2rem;
+                    border: none;
+                    font-weight: 590;
+                }
+            }
+        }
+    }
+
+}
