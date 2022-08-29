@@ -25,7 +25,7 @@ class AddWallet extends BaseReactComponent {
                 wallet1: ""
             }]
         }
-        // this.onClose = this.onClose.bind(this);  
+        // this.onClose = this.onClose.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
     }
 
@@ -93,13 +93,13 @@ class AddWallet extends BaseReactComponent {
                                     <FormElement className=" inter-display-regular f-s-16 lh-20 ob-modal-body-text"
                                         key={c}
                                         valueLink={this.linkState(this, `walletArray.wallet${index + 1}`, () => this.handleOnChange(index + 1))}
-                                        required
-                                        validations={[
-                                            {
-                                                validate: FormValidator.isRequired,
-                                                message: "Field cannot be empty"
-                                            }
-                                        ]}
+                                        // required
+                                        // validations={[
+                                        //     {
+                                        //         validate: FormValidator.isRequired,
+                                        //         message: "Field cannot be empty"
+                                        //     }
+                                        // ]}
                                         control={{
                                             type: CustomTextControl,
                                             settings: {
@@ -127,7 +127,7 @@ class AddWallet extends BaseReactComponent {
                     </Container>
                 </Form>
 
-                {/* 
+                {/*
                 <div className='ob-modal-body-1'>
                     {this.state.addButtonVisible ?
                         <img className='ob-modal-body-del' src={deleteicon} />

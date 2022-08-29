@@ -306,12 +306,12 @@ form {
     }
 
     .form-control.is-invalid {
-      border: solid 1px $red;
+      border: solid 1px $grey-D4D;
       background-image: none;
     }
 
     .form-control.is-valid {
-      border: solid 1px green;
+      border: solid 1px $black-191;
       background-image: none;
     }
 

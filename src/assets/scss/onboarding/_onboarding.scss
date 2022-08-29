@@ -50,7 +50,7 @@
                 // .ob-modal-body-2{
                 //     margin-top: 1.2rem;
                 // }
-                
+
                 .ob-modal-body-text {
                     // margin-left: 10%;
                     width: 59.2rem;
@@ -60,15 +60,15 @@
                     border-radius: 0.8rem;
                     height: 4rem;
                     padding: 0.8px 1.2rem;
-                    color: #19191A;  
+                    color: #19191A;
                 }
                 .ob-modal-body-text::placeholder {
                     // font-size: 16px;
                     //  opacity: 0.6;
                     color: #D4D4D4;
-               
+
                 }
-                
+
             }
             .ob-modal-body-btn {
                 margin:3.2rem 0 2rem;
@@ -79,7 +79,7 @@
                 // justify-content: center;
                 text-align: center;
                 margin: 1% 0 3% 0;
-            
+
             }
             .ob-modal-body-info {
                 // display: flex;
@@ -93,15 +93,14 @@
                   margin-bottom: 0.4rem;
                 }
                 p{
-                    color: #ADADAD;
+                  color: #ADADAD;
                 }
-
+                span{
+                  text-decoration: underline;
+                  font-weight: bold;
+                }
             }
-            
+
         }
     }
 }
-
-
-
-
