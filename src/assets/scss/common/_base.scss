@@ -892,7 +892,7 @@ form {
 
 .chip-container {
   position: absolute;
-  right: 0.5rem;
+  right: 9rem;
   top: 0.5rem;
   display: flex;
   flex-direction: row;
@@ -900,6 +900,7 @@ form {
   align-items: center;
   padding: 0.4rem 0.8rem;
   gap: 0.6rem;
+  width: 9.8rem;
   height: 3rem;
   background: rgba(229, 229, 230, 0.5);
   border: 0.1rem solid $grey-CAC;

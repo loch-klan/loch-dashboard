@@ -69,9 +69,10 @@ class AddWallet extends BaseReactComponent {
             <>
                 <Form onValidSubmit={this.onValidSubmit}>
                     <Container>
-                        <Row>
+                        <Row className="ob-modal-body-1">
                             {this.state.walletArray.map((c, index) => {
-                                return <Col md={12} className="ob-modal-body-1">
+                                return <>
+                                <Col md={12} >
                                     {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index + 1)} /> : null}
                                     <input
                                         autoFocus
@@ -84,6 +85,7 @@ class AddWallet extends BaseReactComponent {
                                         coinImage={Ether}
                                     ></CustomChip> */}
                                 </Col>
+                                </>
                             })}
                         </Row>
                         <Row>

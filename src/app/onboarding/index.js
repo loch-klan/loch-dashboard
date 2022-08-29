@@ -6,7 +6,7 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import WalletIcon from "../../assets/images/icons/wallet-icon.svg";
 import SignInIcon from "../../assets/images/icons/signin-icon.svg";
 import AddWallet from "./AddWallet";
-import SignIn from "./SignIn";
+import SignIn from "./signIn";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
 
