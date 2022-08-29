@@ -1,12 +1,12 @@
-@include font-face(Inter-Regular,"/assets/fonts/Inter/Inter-Regular", normal, normal, ttf);
+@include font-face(Inter-Regular, "/assets/fonts/Inter/Inter-Regular", normal, normal, ttf);
 @include font-face(Inter-Black, "/assets/fonts/Inter/Inter-Black", 900, bold, ttf);
 @include font-face(Inter-Bold, "/assets/fonts/Inter/Inter-Bold", bold, bold, ttf);
 @include font-face(Inter-Medium, "/assets/fonts/Inter/Inter-Medium", 500, normal, ttf);
 @include font-face(Inter-SemiBold, "/assets/fonts/Inter/Inter-SemiBold", 600, bold, ttf);
 @include font-face(Inter-ExtraBold, "/assets/fonts/Inter/Inter-ExtraBold", 900, bold, ttf); //Need to change values
-@include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 400, normal, ttf);//Need to change values
-@include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf);//Need to change values
-@include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf);//Need to change values
+@include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 400, normal, ttf); //Need to change values
+@include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf); //Need to change values
+@include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf); //Need to change values
 // @include font-face(Inter-BoldItalic, "/assets/fonts/Inter/Inter-BoldItalic", bold, bold, ttf);
 
 // SET THE BASE HTML REM, MAKING 1REM=10PX
@@ -112,24 +112,29 @@ body {
 .m-t-5 {
   margin-top: 5rem;
 }
-.m-r-15{
+
+.m-r-15 {
   margin-right: 1.5rem;
 }
 
-.cp{
+.cp {
   cursor: pointer;
 }
+
 // COLOR
-.grey-636{
+.grey-636 {
   color: $grey-636;
 }
-.grey-ADA{
+
+.grey-ADA {
   color: $grey-ADA;
 }
-.blue-268{
+
+.blue-268 {
   color: $blue-268;
 }
-.white{
+
+.white {
   color: $secondary;
 }
 
@@ -163,6 +168,10 @@ body {
 
 .grey-D4D {
   color: $grey-D4D;
+}
+
+.grey-313 {
+  color: $grey-313;
 }
 
 .image-wrapper {
@@ -540,6 +549,7 @@ form {
   .ReactVirtualized__Table__headerColumn {
     text-transform: none;
     @include font($grey-999, "Inter-Medium", 1.3rem, 500, normal);
+
     .ReactVirtualized__Table__headerTruncatedText {
       margin-top: 0.8rem;
     }
@@ -565,6 +575,7 @@ form {
   .ReactVirtualized__Table__row {
     @include font($grey-565, "Inter-Medium", 1.4rem, 500, 21px);
     border-bottom: 1px solid $grey-F2F;
+
     .inter-bold {
       font-size: 1.4rem;
       line-height: 21px;
@@ -602,6 +613,7 @@ form {
   border: 1px solid $black-191;
   padding: 1.6rem 4rem;
   cursor: pointer;
+
   &.btn-primary:not(:disabled):not(:disabled):active,
   &.btn-primary:not(:disabled):not(:disabled):active:focus,
   &:hover,
@@ -613,11 +625,18 @@ form {
     border: 1px solid $black-191;
     background-color: $black-191;
   }
+
+  &.btn-primary:disabled {
+    background-color: $grey-CAC;
+    border: none;
+  }
+
   &:not(:disabled),
   &:not(.disabled) {
     cursor: auto;
   }
 }
+
 .secondary-btn {
   @include font($black-191, "Inter-SemiBold", 1.6rem, 600, normal);
   border-radius: 8px;
@@ -625,6 +644,7 @@ form {
   border: 1px solid $black-191;
   padding: 1.6rem 4rem;
   cursor: pointer;
+
   &.btn-primary:not(:disabled):not(:disabled):active,
   &.btn-primary:not(:disabled):not(:disabled):active:focus,
   &:hover,
@@ -637,12 +657,14 @@ form {
     border: 1px solid $black-191;
     background-color: transparent;
   }
+
   &:not(:disabled),
   &:not(.disabled) {
     cursor: auto;
   }
 }
-.grey-btn{
+
+.grey-btn {
   @include font($grey-7C7, "Inter-Medium", 1.3rem, 500, normal);
   border-radius: 8px;
   background-color: rgba(229, 229, 230, 0.5);
@@ -662,6 +684,7 @@ form {
     border: 1px solid $grey-D4D;
     background-color: rgba(229, 229, 230, 0.5);
   }
+
   &:not(:disabled),
   &:not(.disabled) {
     cursor: auto;
@@ -672,6 +695,7 @@ form {
   cursor: not-allowed !important;
   opacity: 0.6;
 }
+
 
 .react-datepicker {
   display: flex;
@@ -834,3 +858,55 @@ form {
 }
 
 // START FROM HERE
+.tool-tip-container {
+  .tooltip-inner {
+    background-color: $secondary ;
+    max-width: 39.2rem;
+  }
+
+  .arrow::before {
+    border-top-color: $secondary;
+  }
+
+  .button-tooltip {
+    background-color: $secondary ;
+    color: $grey-313;
+    // border: 0.1rem solid $grey-E5E;
+    border-radius: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 1.2rem 1.6rem;
+    gap: 1.2rem;
+    width: 39.2rem;
+    height: 5.6rem;
+
+    span {
+      display: flex;
+      align-items: center;
+      color: $grey-313;
+    }
+  }
+}
+
+.chip-container {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  gap: 0.6rem;
+  height: 3rem;
+  background: rgba(229, 229, 230, 0.5);
+  border: 0.1rem solid $grey-CAC;
+  border-radius: 0.4rem;
+
+  img {
+    padding-right: 0.5rem;
+    padding-bottom: 0.3rem;
+  }
+}
