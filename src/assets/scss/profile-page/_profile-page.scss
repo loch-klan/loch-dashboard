@@ -6,27 +6,27 @@
         padding-left: 13rem;
         padding-top: 4rem;
         padding-right: 13rem;
-
+        width:100%;
         .title {
+            line-height: 20px;
             font-weight: 500;
-            line-height: 120%;
             margin-bottom: 1.2rem;
         }
 
         p {
+            line-height: 20px;
             margin-bottom: 3.2rem;
             color: $grey-ADA;
-
+            line-height: 20px;
         }
 
         .profile-form {
            
             background-color: $secondary;
-            padding-left: 3.2rem;
-            padding-top: 3.2rem;
+            padding: 3.2rem;
             box-shadow: 0px 4px 6px -4px rgba(24, 39, 75, 0.12), 0px 8px 8px -4px rgba(24, 39, 75, 0.08);
             border-radius: 1.6rem;
-
+            // width:100%;
             .form-title {
                 display: flex;
                 align-items: center;
@@ -41,14 +41,14 @@
             }
 
             .form {
-                margin-right: 27rem;
+               
                 .row{
                     margin-bottom: 2.4rem;
                 }
                 .form-group {
                     label {
                         font-family:Inter-Medium;
-                        font-weight: 500;
+                        line-height: 20px;
                         font-size: 1.3rem;
                         color: $grey-313;
 
@@ -62,7 +62,9 @@
                     color: $black-191;
                     margin-bottom: 3.2rem;
                     border: none;
-                    font-weight: 590;
+                    font-size:1.4rem;
+                    font-family: Inter-SemiBold;
+                    line-height: 24px;
                 }
             }
         }

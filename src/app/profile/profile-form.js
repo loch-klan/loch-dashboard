@@ -47,7 +47,7 @@ class ProfileForm extends BaseReactComponent{
                 <div className='form'>
                     <Form onValidSubmit={this.onValidSubmit} >
                         <Row>
-                            <Col>
+                            <Col md={4}>
                                 <FormElement
                                     valueLink={this.linkState(this, "name")}
                                     label="First Name"
@@ -69,7 +69,7 @@ class ProfileForm extends BaseReactComponent{
 
                                 />
                             </Col>
-                            <Col>
+                            <Col md={4}>
                                 <FormElement
                                     valueLink={this.linkState(this, "lastname")}
                                     label="Last Name"
@@ -91,7 +91,7 @@ class ProfileForm extends BaseReactComponent{
                             </Col>
                         </Row>
                         <Row>
-                            <Col>
+                            <Col md={8}>
                                 <FormElement
                                     valueLink={this.linkState(this, "email")}
                                     label="Email"
@@ -116,7 +116,7 @@ class ProfileForm extends BaseReactComponent{
                             </Col>
                         </Row>
                         <Row>
-                            <Col md={6}>
+                            <Col md={4}>
                                 <FormElement
                                     valueLink={this.linkState(this, "mobilenumber")}
                                     label="Mobile Number"

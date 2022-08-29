@@ -15,7 +15,7 @@ class Profile extends Component {
     render() {
         return (
             <div className="profile-page-section">
-                <Sidebar />
+                <Sidebar ownerName="Vitalik Buterin’s" />
                 <div className='profile-form-section'>
                     <h4 className='inter-display-medium title f-s-31' >Profile</h4>
                     <p className='f-s-16 inter-display-medium'>Manage your profile here</p>
