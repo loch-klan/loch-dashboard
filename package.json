@@ -35,10 +35,10 @@
     "build": "sh -ac '. ./src/env/.${ENV}; react-scripts build'",
     "build:dev": "ENV=development npm run build",
     "predeploy:dev": "npm run build:dev",
-    "deploy:dev": "aws s3 sync --profile ebikego build/ s3://ebg-float-dashboard-dev",
+    "deploy:dev": "aws s3 sync --profile loch build/ s3://staging.loch.com",
     "build:prod": "GENERATE_SOURCEMAP=false ENV=production npm run build",
     "predeploy:prod": "npm run build:prod",
-    "deploy:prod": "aws s3 sync --profile ebikego build/ s3://ebg-float-dashboard-dev",
+    "deploy:prod": "aws s3 sync --profile loch build/ s3://staging.loch.com",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "generate": "plop"
