@@ -73,17 +73,17 @@ class AddWallet extends BaseReactComponent {
                             {this.state.walletArray.map((c, index) => {
                                 return <>
                                 <Col md={12} >
-                                    {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index + 1)} /> : null}
+                                    {index >= 1 ? <Image key={index} className='ob-modal-body-del cp' src={DeleteIcon} onClick={() => this.deleteInputField(index + 1)} /> : null}
                                     <input
                                         autoFocus
                                         className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text walletArray.wallet${index + 1}`}
                                         placeholder='Paste your wallet address here'
                                         onChange={(e) => this.handleOnChange(e, `wallet${index + 1}`)} />
-                                    {/* <CustomChip
+                                    <CustomChip
                                         isIcon={true}
                                         coinText="Ethereum"
                                         coinImage={Ether}
-                                    ></CustomChip> */}
+                                    ></CustomChip>
                                 </Col>
                                 </>
                             })}
