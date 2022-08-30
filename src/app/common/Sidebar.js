@@ -30,7 +30,7 @@ function Sidebar(props) {
                     <div className='logo'>
                         <Image src={logo} />
                     </div>
-                    <div className='sidebar-body'>
+                    <div className={ props.ownerName ? 'sidebar-body':'sidebar-body nowallet'}>
                         <nav>
                             <ul>
                                 <li>
@@ -78,7 +78,7 @@ function Sidebar(props) {
 
                         {props.ownerName && <div 
                         className="nav-addwallet">
-                            <Image fluid src={bgImg} />
+                            <Image  src={bgImg} />
                             <div className='wallet-info-para'>
                                 <p>Viewing in Demo Mode</p>
                                 <p>Showing sample data based
