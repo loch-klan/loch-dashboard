@@ -1,2 +1,3 @@
 const COINS_LIST = 'COINS_LIST';
-export { COINS_LIST }
+const WALLET_LIST = 'WALLET_LIST';
+export { COINS_LIST, WALLET_LIST }

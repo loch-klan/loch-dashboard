@@ -37,21 +37,21 @@ class SignIn extends BaseReactComponent {
             <Form onValidSubmit={this.onValidSubmit} ref={el => this.form = el}>
                 <Container>
                     <Row className="show-grid">
-                        <Col md={12}>
+                        <Col md={12} className="sign-in-container">
                             <FormElement
                                 className="inter-display-regular f-s-16 lh-20 ob-modal-signin-text"
                                 valueLink={this.linkState(this, this.state.isVerificationRequired ? "text" : "email")}
-                                required
-                                validations={[
-                                    {
-                                        validate: FormValidator.isRequired,
-                                        message: "Field cannot be empty"
-                                    },
-                                    !this.state.isVerificationRequired ? {
-                                        validate: FormValidator.isEmail,
-                                        message: "Please enter valid email id"
-                                    } : null
-                                ]}
+                                // required
+                                // validations={[
+                                //     {
+                                //         validate: FormValidator.isRequired,
+                                //         message: "Field cannot be empty"
+                                //     },
+                                //     !this.state.isVerificationRequired ? {
+                                //         validate: FormValidator.isEmail,
+                                //         message: "Please enter valid email id"
+                                //     } : null
+                                // ]}
 
                                 control={{
                                     type: CustomTextControl,

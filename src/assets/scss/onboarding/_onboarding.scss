@@ -126,8 +126,17 @@
 
 }
 
-.ob-modal-signin-text {
-    height: 5.1rem;
-    width: 59.2rem;
-    margin-left: 7.2rem;
+.sign-in-container {
+
+    .form-group {
+        div {
+            display: flex;
+            justify-content: center;
+
+            input {
+                height: 5.1rem;
+                width: 59.2rem;
+            }
+        }
+    }
 }

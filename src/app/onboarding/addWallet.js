@@ -7,7 +7,7 @@ import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
 import Form from "../../utils/form/Form";
 import { Col, Container, Row } from 'react-bootstrap';
-import { getAllCoins } from "./Api";
+import { getAllCoins, detectCoin } from "./Api";
 
 class AddWallet extends BaseReactComponent {
     constructor(props) {
@@ -18,6 +18,7 @@ class AddWallet extends BaseReactComponent {
             addButtonVisible: false,
             walletInput: [{ "wallet1": "" }]
         }
+        this.timeout = 0
         this.handleOnChange = this.handleOnChange.bind(this);
     }
 
@@ -33,6 +34,23 @@ class AddWallet extends BaseReactComponent {
             addButtonVisible: this.state.walletInput['wallet1'],
             ...this.state.walletInput
         });
+        if (this.timeout) {
+            clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
+            this.getCoinBasedOnWalletAddress(value);
+        }, 300)
+    }
+
+    getCoinBasedOnWalletAddress = (value) => {
+        if (this.props.OnboardingState.coinsList && value) {
+            for (let i = 0; i < this.props.OnboardingState.coinsList.length; i++) {
+                this.props.detectCoin({
+                    coin: this.props.OnboardingState.coinsList[i].code,
+                    address: value
+                })
+            }
+        }
     }
 
     addInputField = (index) => {
@@ -59,7 +77,7 @@ class AddWallet extends BaseReactComponent {
                     <Container>
                         <Row className="ob-modal-body-1">
                             {this.state.walletInput.map((c, index) => {
-                                return <>
+                                return <div key={index}>
                                     <Col md={12} >
                                         {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index + 1)} /> : null}
                                         <input
@@ -74,7 +92,7 @@ class AddWallet extends BaseReactComponent {
                                         coinImage={Ether}
                                     ></CustomChip> */}
                                     </Col>
-                                </>
+                                </div>
                             })}
                         </Row>
                         <Row>
@@ -104,7 +122,8 @@ const mapStateToProps = state => ({
     OnboardingState: state.OnboardingState
 });
 const mapDispatchToProps = {
-    getAllCoins
+    getAllCoins,
+    detectCoin
 }
 AddWallet.propTypes = {
 };
