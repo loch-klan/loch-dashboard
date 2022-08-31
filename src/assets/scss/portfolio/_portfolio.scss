@@ -1,0 +1,67 @@
+.welcome-card-section {
+    margin-top: 2rem;
+    margin-left: 2rem;
+    padding: 6.8rem 3.3rem 6rem 3.3rem;
+    width: 89.6rem;
+    background-color: $secondary;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+    border-radius: 1.2rem;
+
+    .welcome-card {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        .welcome-section-left {
+            .welcome-title {
+                font-size: 2.5rem;
+                line-height: 1.92rem;
+                color: $black-191;
+                margin-bottom: 0.8rem;
+            }
+
+            p {
+                font-size: 1.6rem;
+                line-height: 1.92rem;
+                color: $grey-969;
+                margin-bottom: 2.4rem;
+            }
+
+            .welcome-btn {
+                button {
+                    padding: 1.8rem 2.8rem;
+                }
+                .secondary-btn{
+                    margin-right:2.4rem;
+                }
+            }
+        }
+
+        .welcome-section-right{
+           position: relative;
+            .wallet-amount{
+                font-size:3.9rem;
+                line-height: 1.92rem;
+                margin-bottom: 1.2rem;
+                color:$black-1D2;
+            }
+            button{
+                position: absolute;
+                right: 0px;
+                font-size: 1.6rem;
+                font-family: Inter-Medium;
+                line-height: 1.92rem;
+                padding: 0.8rem 1.2rem;
+                color:$grey-313;
+                background: $green-44F;
+                border: 0.1rem solid #000000;
+                border-radius: 0.812rem;
+
+                img{
+                    margin-right:0.98rem;
+                }
+            }
+            
+        }
+    }
+}

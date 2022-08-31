@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import Sidebar from '../common/Sidebar';
+import WelcomeCard from '../Portfolio/WelcomeCard';
 class Profile extends Component {
     constructor(props) {
         super(props);
@@ -13,8 +14,11 @@ class Profile extends Component {
     render() {
         return (
             <div>
-                <Sidebar ownerName="Vitalik Buterin’s"/>
-                </div>
+                {/* <Sidebar ownerName="Vitalik Buterin’s"/> */}
+                {/* <div> */}
+                <WelcomeCard />
+                {/* </div> */}
+            </div>
         )
     }
 }
