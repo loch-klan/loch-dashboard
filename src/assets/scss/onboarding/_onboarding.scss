@@ -43,6 +43,9 @@
                 overflow-y: auto;
                 max-height: 20rem;
                 margin-left: 0rem;
+                .is-valid{
+                  border-color: #19191A !important;
+                }
             }
 
             .ob-modal-body-1::-webkit-scrollbar {
@@ -90,11 +93,11 @@
 
                     &:active:focus,
                     &:active,
-                    &:focus {
-                        color: #19191A;
+                    &:focus,
+                    &:focus-visible {
+                        outline: none;
                     }
                 }
-
                 .ob-modal-body-text::placeholder {
                     color: #D4D4D4;
 
