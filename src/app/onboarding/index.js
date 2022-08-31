@@ -9,6 +9,7 @@ import AddWallet from "./AddWallet";
 import SignIn from "./signIn";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
+// export { default as OnboardingReducer } from "./OnboardingReducer";
 
 class OnBoarding extends Component {
     constructor(props) {

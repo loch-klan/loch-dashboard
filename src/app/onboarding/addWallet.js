@@ -5,13 +5,9 @@ import { Button, Image } from "react-bootstrap";
 import DeleteIcon from "../../assets/images/icons/delete-icon.svg";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
-import CustomTextControl from "../../utils/form/CustomTextControl";
 import Form from "../../utils/form/Form";
-import FormElement from "../../utils/form/FormElement";
 import { Col, Container, Row } from 'react-bootstrap';
-import ReactDOM from "react-dom";
-import CustomChip from '../../utils/commonComponent/CustomChip';
-import Ether from "../../assets/images/icons/ether-coin.svg";
+import { getAllCoins } from "./Api";
 
 class AddWallet extends BaseReactComponent {
     constructor(props) {
@@ -20,44 +16,35 @@ class AddWallet extends BaseReactComponent {
             showModal: true,
             signIn: false,
             addButtonVisible: false,
-            wallet: "",
-            walletArrayCount: 1,
-            walletArray: [{
-                wallet1: ""
-            }],
+            walletInput: [{ "wallet1": "" }]
         }
         this.handleOnChange = this.handleOnChange.bind(this);
     }
 
 
-    componentDidMount() { }
+    componentDidMount() {
+        this.props.getAllCoins()
+    }
 
-    handleOnChange = (e, index) => {
-        if (this.state.walletArrayCount > 1) {
-            this.state.walletArray.wallet1 = e.target.value;
-            this.setState({
-                addButtonVisible: this.state.walletArray.wallet1 != "",
-                ...this.state.walletArray
-            });
-        } else {
-            this.state.walletArray[index] = e.target.value
-            this.setState({
-                addButtonVisible: this.state.walletArray.wallet1 != "",
-                ...this.state.walletArray
-            });
-        }
+    handleOnChange = (e) => {
+        let { name, value } = e.target;
+        this.state.walletInput[name] = value
+        this.setState({
+            addButtonVisible: this.state.walletInput['wallet1'],
+            ...this.state.walletInput
+        });
     }
 
     addInputField = (index) => {
-        this.state.walletArray.push({ ['wallet' + index]: "" })
+        this.state.walletInput.push({ ['wallet' + index]: "" })
         this.setState({
-            ...this.state
+            ...this.state.walletInput
         });
     }
 
     deleteInputField = (index) => {
-        delete this.state.walletArray["wallet" + index];
-        delete this.state.walletArray[index - 1]
+        delete this.state.walletInput["wallet" + index];
+        delete this.state.walletInput[index - 1]
         this.setState({
             ...this.state
         });
@@ -65,26 +52,28 @@ class AddWallet extends BaseReactComponent {
     }
 
     render() {
+        console.log(this.props.OnboardingState.coinsList)
         return (
             <>
                 <Form onValidSubmit={this.onValidSubmit}>
                     <Container>
                         <Row className="ob-modal-body-1">
-                            {this.state.walletArray.map((c, index) => {
+                            {this.state.walletInput.map((c, index) => {
                                 return <>
-                                <Col md={12} >
-                                    {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index + 1)} /> : null}
-                                    <input
-                                        autoFocus
-                                        className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text walletArray.wallet${index + 1}`}
-                                        placeholder='Paste your wallet address here'
-                                        onChange={(e) => this.handleOnChange(e, `wallet${index + 1}`)} />
-                                    {/* <CustomChip
+                                    <Col md={12} >
+                                        {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index + 1)} /> : null}
+                                        <input
+                                            autoFocus
+                                            name={`wallet${index + 1}`}
+                                            className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text walletInput.wallet${index + 1}`}
+                                            placeholder='Paste your wallet address here'
+                                            onChange={this.handleOnChange} />
+                                        {/* <CustomChip
                                         isIcon={true}
                                         coinText="Ethereum"
                                         coinImage={Ether}
                                     ></CustomChip> */}
-                                </Col>
+                                    </Col>
                                 </>
                             })}
                         </Row>
@@ -101,7 +90,7 @@ class AddWallet extends BaseReactComponent {
                         <Row>
                             <Col className='ob-modal-body-btn' md={12}>
                                 <CustomButton className="secondary-btn m-r-15" buttonText="Preview demo instead" />
-                                <CustomButton className="primary-btn" type={"submit"} isDisabled={!this.state.walletArray.wallet1} buttonText="Go" />
+                                <CustomButton className="primary-btn" type={"submit"} isDisabled={!this.state.walletInput.wallet1} buttonText="Go" />
                             </Col>
                         </Row>
                     </Container>
@@ -112,8 +101,10 @@ class AddWallet extends BaseReactComponent {
 }
 
 const mapStateToProps = state => ({
+    OnboardingState: state.OnboardingState
 });
 const mapDispatchToProps = {
+    getAllCoins
 }
 AddWallet.propTypes = {
 };

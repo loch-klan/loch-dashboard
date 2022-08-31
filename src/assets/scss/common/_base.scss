@@ -911,3 +911,7 @@ form {
     padding-bottom: 0.3rem;
   }
 }
+
+.modal-backdrop.show {
+  opacity: 0 !important;
+}

@@ -39,6 +39,7 @@ class SignIn extends BaseReactComponent {
                     <Row className="show-grid">
                         <Col md={12}>
                             <FormElement
+                                className="inter-display-regular f-s-16 lh-20 ob-modal-signin-text"
                                 valueLink={this.linkState(this, this.state.isVerificationRequired ? "text" : "email")}
                                 required
                                 validations={[
