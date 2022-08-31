@@ -3,10 +3,12 @@ import { combineReducers } from 'redux';
 import { ProfileReducer } from '../app/profile';
 import { CommonReducer } from '../app/common';
 import { HomeReducer } from '../app/home';
+import OnboardingReducer from "../app/onboarding/OnboardingReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
-	ProfileState: ProfileReducer,
+  ProfileState: ProfileReducer,
   CommonState: CommonReducer,
   HomeState: HomeReducer,
+  OnboardingState: OnboardingReducer
 });
