@@ -2,6 +2,9 @@
 //     background: rgba(25, 25, 26, 0.8);
 //     backdrop-filter: blur(30px);
 // }
+.overlay-banner{
+  width: 100%;
+}
 .onboarding-modal {
     .modal-content {
         border-radius: 1.2rem !important;
@@ -40,6 +43,9 @@
                 overflow-y: auto;
                 max-height: 20rem;
                 margin-left: 0rem;
+                .is-valid{
+                  border-color: #19191A !important;
+                }
             }
 
             .ob-modal-body-1::-webkit-scrollbar {
@@ -64,6 +70,7 @@
 
                 .grey-btn {
                     width: 59.2rem;
+                    line-height: 13px;
                 }
 
                 .ob-modal-body-add-btn {
@@ -81,16 +88,16 @@
                     border: 0.1rem solid #D4D4D4;
                     border-radius: 0.8rem;
                     height: 4rem;
-                    padding: 0.8rem 13rem 0.8rem 1.2rem;
+                    padding: 1rem 13rem 1rem 1.2rem;
                     color: #19191A;
 
                     &:active:focus,
                     &:active,
-                    &:focus {
-                        color: #19191A;
+                    &:focus,
+                    &:focus-visible {
+                        outline: none;
                     }
                 }
-
                 .ob-modal-body-text::placeholder {
                     color: #D4D4D4;
 
@@ -100,6 +107,16 @@
             .ob-modal-body-btn {
                 margin: 3.2rem 0 2rem;
                 text-align: center;
+                .go-btn{
+                  padding-left: 6rem;
+                  padding-right: 6rem;
+                }
+                .preview{
+                  padding-left: 2.5rem;
+                  padding-right: 2.5rem;
+                  color: #636467;
+                  border-color: #636467;
+                }
             }
 
             .ob-modal-verification {
@@ -110,7 +127,10 @@
 
             .ob-modal-body-info {
                 text-align: center;
-
+                .info-icon{
+                  margin-left: 5px;
+                  margin-bottom: 1px;
+                }
                 h4 {
                     margin-bottom: 0.4rem;
                 }

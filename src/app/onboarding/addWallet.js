@@ -19,7 +19,7 @@ class AddWallet extends BaseReactComponent {
             walletInput: [{ "wallet1": "" }]
         }
         this.timeout = 0
-        this.handleOnChange = this.handleOnChange.bind(this);
+        // this.handleOnChange = this.handleOnChange.bind(this);
     }
 
 
@@ -85,7 +85,7 @@ class AddWallet extends BaseReactComponent {
                                             name={`wallet${index + 1}`}
                                             className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text walletInput.wallet${index + 1}`}
                                             placeholder='Paste your wallet address here'
-                                            onChange={this.handleOnChange} />
+                                            onChange={(e)=>this.handleOnChange(e)} />
                                         {/* <CustomChip
                                         isIcon={true}
                                         coinText="Ethereum"
@@ -107,8 +107,8 @@ class AddWallet extends BaseReactComponent {
                         </Row>
                         <Row>
                             <Col className='ob-modal-body-btn' md={12}>
-                                <CustomButton className="secondary-btn m-r-15" buttonText="Preview demo instead" />
-                                <CustomButton className="primary-btn" type={"submit"} isDisabled={!this.state.walletInput.wallet1} buttonText="Go" />
+                                <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
+                                <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={!this.state.walletInput.wallet1} buttonText="Go" />
                             </Col>
                         </Row>
                     </Container>

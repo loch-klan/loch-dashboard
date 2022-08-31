@@ -4,7 +4,7 @@ import OnboardingModal from "../common/OnboardingModal";
 import "../../assets/scss/onboarding/_onboarding.scss";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import WalletIcon from "../../assets/images/icons/wallet-icon.svg";
-import SignInIcon from "../../assets/images/icons/signin-icon.svg";
+import SignInIcon from "../../image/profile-icon.png";
 import AddWallet from "./addWallet";
 import SignIn from "./signIn";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -54,7 +54,7 @@ class OnBoarding extends Component {
                                 text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
                                 position="top"
                                 isIcon={true}
-                            ><Image src={InfoIcon} /></CustomOverlay> </p>
+                            ><Image src={InfoIcon} className="info-icon" /></CustomOverlay> </p>
                     </div>
                 </OnboardingModal>
             </>

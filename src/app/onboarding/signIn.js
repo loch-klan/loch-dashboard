@@ -56,13 +56,13 @@ class SignIn extends BaseReactComponent {
                                 control={{
                                     type: CustomTextControl,
                                     settings: {
-                                        placeholder: !this.state.isVerificationRequired ? "Your Email" : "Verification code"
+                                        placeholder: !this.state.isVerificationRequired ? "Your email" : "Verification code"
                                     }
                                 }}
                             />
                         </Col>
                         <Col className='ob-modal-verification' md={12}>
-                            <CustomButton className="primary-btn" type={"submit"} variant="success" buttonText={!this.state.isVerificationRequired ? "Send Verification" : "Enter Code"} />
+                            <CustomButton className="primary-btn" type={"submit"} variant="success" buttonText={!this.state.isVerificationRequired ? "Send verification" : "Enter code"} />
                         </Col>
                     </Row>
                 </Container>
