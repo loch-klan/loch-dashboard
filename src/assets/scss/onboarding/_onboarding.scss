@@ -38,7 +38,7 @@
 
             .ob-modal-body-1 {
                 overflow-y: auto;
-                max-height: 15rem;
+                max-height: 20rem;
                 margin-left: 0rem;
             }
 
@@ -83,6 +83,12 @@
                     height: 4rem;
                     padding: 0.8rem 13rem 0.8rem 1.2rem;
                     color: #19191A;
+
+                    &:active:focus,
+                    &:active,
+                    &:focus {
+                        color: #19191A;
+                    }
                 }
 
                 .ob-modal-body-text::placeholder {

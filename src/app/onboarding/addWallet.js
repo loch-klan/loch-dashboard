@@ -52,7 +52,7 @@ class AddWallet extends BaseReactComponent {
     }
 
     render() {
-        console.log(this.props.OnboardingState.coinsList)
+        // console.log(this.props.OnboardingState.coinsList)
         return (
             <>
                 <Form onValidSubmit={this.onValidSubmit}>
