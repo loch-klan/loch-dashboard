@@ -22,7 +22,7 @@ class Home extends Component {
       <>
         {this.signedIn ? null :
           <div>
-            <Image src={Banner} />
+            <Image src={Banner} className="overlay-banner" />
             <OnBoarding />
           </div>}
 

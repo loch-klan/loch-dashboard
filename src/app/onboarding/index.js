@@ -54,7 +54,7 @@ class OnBoarding extends Component {
                                 text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
                                 position="top"
                                 isIcon={true}
-                            ><Image src={InfoIcon} /></CustomOverlay> </p>
+                            ><Image src={InfoIcon} className="info-icon" /></CustomOverlay> </p>
                     </div>
                 </OnboardingModal>
             </>

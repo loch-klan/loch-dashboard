@@ -56,7 +56,7 @@ class SignIn extends BaseReactComponent {
                                 control={{
                                     type: CustomTextControl,
                                     settings: {
-                                        placeholder: !this.state.isVerificationRequired ? "Your Email" : "Verification code"
+                                        placeholder: !this.state.isVerificationRequired ? "Your email" : "Verification code"
                                     }
                                 }}
                             />
