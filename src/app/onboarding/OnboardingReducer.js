@@ -9,15 +9,20 @@ const OnboardingReducer = (state = INITIAL_STATE, action) => {
             return { ...state, coinsList: action.payload };
         case WALLET_LIST:
             let updateWalletList = state.walletList || [];
-            let index = state.walletList.findIndex(
+            let index = updateWalletList.findIndex(
                 walletList => walletList.id === action.payload.id
             );
             if (index > -1) {
-                updateWalletList[index].coins.push({
-                    coinCode: action.payload.coinCode,
-                    coinSymbol: action.payload.coinSymbol,
-                    coinName: action.payload.coinName,
-                })
+                let coinIndex = updateWalletList[index].coins.findIndex(
+                    walletList => walletList.coinName === action.payload.coinName
+                );
+                if (coinIndex <= -1) {
+                    updateWalletList[index].coins.push({
+                        coinCode: action.payload.coinCode,
+                        coinSymbol: action.payload.coinSymbol,
+                        coinName: action.payload.coinName,
+                    })
+                }
             } else {
                 updateWalletList.push({
                     id: action.payload.id,

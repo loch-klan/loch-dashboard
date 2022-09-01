@@ -95,9 +95,9 @@ class AddWallet extends BaseReactComponent {
                                             className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
                                             placeholder='Paste your wallet address here'
                                             onChange={(e) => this.handleOnChange(e)} />
-                                        {this.props.OnboardingState.walletList.map((e) => {
+                                        {this.props.OnboardingState.walletList.map((e, i) => {
                                             if (this.state.walletInput[index].address && e.id === `wallet${index + 1}` && e.coins && e.coins.length > 0) {
-                                                return <CustomChip coins={e.coins}></CustomChip>
+                                                return <CustomChip coins={e.coins} key={i}></CustomChip>
                                             }
                                         })}
                                     </Col>
