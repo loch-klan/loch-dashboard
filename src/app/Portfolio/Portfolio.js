@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import Sidebar from '../common/Sidebar';
-import WelcomeCard from '../Portfolio/WelcomeCard';
-class Profile extends Component {
+
+import WelcomeCard from './WelcomeCard';
+class Portfolio extends Component {
     constructor(props) {
         super(props);
         this.state = {}
@@ -13,24 +14,27 @@ class Profile extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar ownerName="Vitalik Buterin’s"/>
-                {/* <div> */}
-                {/* <WelcomeCard /> */}
-                {/* </div> */}
+            <div className="portfolio-page-section">
+                <Sidebar ownerName="" />
+                <div className='portfolio-section page'>
+                    <WelcomeCard />
+                </div>
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    profileState: state.ProfileState
+    portfolioState: state.PortfolioState
 });
 const mapDispatchToProps = {
     // getPosts: fetchPosts
 }
-Profile.propTypes = {
+Portfolio.propTypes = {
     // getPosts: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
+
+
+

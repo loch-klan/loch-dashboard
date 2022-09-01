@@ -1,0 +1,93 @@
+.intelligence-page-section {
+    display: flex;
+
+    .intelligence-section {
+
+        margin-top: 8rem;
+
+        .intell-welcome-card {
+
+            .page-title {
+                font-size: 3.1rem;
+                line-height: 37px;
+                color: $black-000;
+            }
+
+            .subtitle {
+                font-size: 1.6rem;
+                line-height: 19px;
+                color: $grey-ADA;
+            }
+
+            .row-card {
+                position: relative;
+
+                .bg-img {
+                    position: absolute;
+                    right: 0px;
+                    top: 0.7rem;
+                }
+
+                .welcome-card {
+                    background: $secondary;
+                    box-shadow: 0rem 0.6rem 1.2rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 0.8rem 2.4rem -0.4rem rgba(24, 39, 75, 0.08);
+                    border-radius: 1.2rem;
+                    padding: 6rem 4.8rem 5.2rem 4.8rem;
+
+                    .welcome-card-title {
+                        color: $black-191;
+                    }
+
+                    .card-subtitle {
+                        font-size: 1.3rem;
+                        line-height: 16px;
+                        color: $grey-969;
+
+                    }
+
+                    .info-container {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        .info {
+                            display: flex;
+                            align-items: center;
+                            z-index: 1;
+                            .icon {
+                                width: 4.8rem;
+                                height: 4.8rem;
+                                background: #E5F2FE;
+                                border-radius: 8px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                margin-right: 1.6rem;
+                            }
+
+                            .info-detail {
+                                .info-title {
+                                    font-size: 1.6rem;
+                                    line-height: 19px;
+                                    color: $grey-636;
+                                }
+
+                                .viewmore {
+                                    display: flex;
+
+                                    h4 {
+                                        font-size: 1.3rem;
+                                        line-height: 16px;
+                                        margin-right: 0.65rem;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // }
+
+                }
+            }
+        }
+    }
+}
