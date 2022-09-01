@@ -866,6 +866,38 @@ form {
   .tooltip-inner {
     background-color: $secondary ;
     max-width: 39.2rem;
+    border: 0.1rem solid $grey-E5E;
+
+    ul {
+      padding: inherit;
+      width: auto;
+      opacity: 0.9;
+
+      li {
+        height: 2rem;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        background: rgba(229, 229, 230, 0.5);
+        border: 0.1rem solid $grey-CAC;
+        border-radius: 0.4rem;
+        padding: 0.2rem 0.8rem;
+        margin-bottom: 0.5rem;
+
+        img {
+          width: 1.2rem;
+          margin-right:0.5rem;
+        }
+        span {
+          color: black;
+        }
+
+      }
+
+    }
+
   }
 
   .arrow::before {
@@ -875,7 +907,6 @@ form {
   .button-tooltip {
     background-color: $secondary ;
     color: $grey-313;
-    // border: 0.1rem solid $grey-E5E;
     border-radius: 0.8rem;
     display: flex;
     flex-direction: row;
@@ -883,7 +914,6 @@ form {
     align-items: center;
     padding: 1.2rem 1.6rem;
     gap: 1.2rem;
-    width: 39.2rem;
     height: 5.6rem;
 
     span {
@@ -894,18 +924,18 @@ form {
   }
 }
 
+.chip-container-dual {
+  right: 13rem;
+}
+
 .chip-container {
-  position: absolute;
   right: 9rem;
+}
+
+.chip-container,
+.chip-container-dual {
+  position: absolute;
   top: 0.7rem;
-  // display: flex;
-  // flex-direction: row;
-  // justify-content: center;
-  // align-items: center;
-  // padding: 0.4rem 0.8rem;
-  // gap: 0.6rem;
-  // width: 9.8rem;
-  // height: 3rem;
   height: 2.5rem;
   background: rgba(229, 229, 230, 0.5);
   border: 0.1rem solid $grey-CAC;
@@ -919,7 +949,6 @@ form {
     padding-right: 0.5rem;
     width: 1.6rem;
     height: 1.6rem;
-    // padding-bottom: 0.3rem;
   }
 }
 

@@ -32,7 +32,6 @@
         }
 
         .modal-body {
-            // padding: 4rem 9.4rem 3.6rem;
             padding: 4rem 0;
             text-align: center;
 
@@ -61,9 +60,9 @@
                     border-radius: 0.8rem;
                     width: 6rem;
                     position: absolute;
-                    // left: -5rem;
                     left: 1rem;
                     top: -0.6rem;
+                    cursor: pointer;
                 }
 
                 .grey-btn {

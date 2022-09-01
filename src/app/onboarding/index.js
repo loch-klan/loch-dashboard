@@ -9,6 +9,7 @@ import AddWallet from "./addWallet";
 import SignIn from "./signIn";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
 // export { default as OnboardingReducer } from "./OnboardingReducer";
 
 class OnBoarding extends Component {
@@ -54,6 +55,8 @@ class OnBoarding extends Component {
                                 text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
                                 position="top"
                                 isIcon={true}
+                                IconImage ={LockIcon}
+                                isInfo = {true}
                             ><Image src={InfoIcon} className="info-icon" /></CustomOverlay> </p>
                     </div>
                 </OnboardingModal>

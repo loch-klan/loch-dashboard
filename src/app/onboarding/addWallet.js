@@ -34,6 +34,12 @@ class AddWallet extends BaseReactComponent {
         if (foundIndex > -1) {
             walletCopy[foundIndex].address = value
         }
+        if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
+            let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === name);
+            if (findWalletEntry > -1) {
+                this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
+            }
+        }
         this.setState({
             addButtonVisible: this.state.walletInput[0].address,
             walletInput: walletCopy
@@ -71,7 +77,13 @@ class AddWallet extends BaseReactComponent {
     }
 
     deleteInputField = (index) => {
-        delete this.state.walletInput[index - 1];
+        this.state.walletInput.splice(index, 1);
+        if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
+            let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === `wallet${index + 1}`);
+            if (findWalletEntry > -1) {
+                this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
+            }
+        }
         this.setState({
             walletInput: this.state.walletInput
         });
@@ -88,7 +100,7 @@ class AddWallet extends BaseReactComponent {
                             {this.state.walletInput.map((c, index) => {
                                 return <div key={index}>
                                     <Col md={12} >
-                                        {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index + 1)} /> : null}
+                                        {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index)} /> : null}
                                         <input
                                             autoFocus
                                             name={`wallet${index + 1}`}
