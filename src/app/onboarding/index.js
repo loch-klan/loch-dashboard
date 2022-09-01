@@ -17,7 +17,7 @@ class OnBoarding extends Component {
         this.state = {
             showModal: true,
             signInReq: false,
-            isVerificationRequired: false,
+            isVerificationRequired: true,
             isVerified: false
         }
     }

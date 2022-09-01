@@ -1,10 +1,7 @@
-// .home-body{
-//     background: rgba(25, 25, 26, 0.8);
-//     backdrop-filter: blur(30px);
-// }
-.overlay-banner{
-  width: 100%;
+.overlay-banner {
+    width: 100%;
 }
+
 .onboarding-modal {
     .modal-content {
         border-radius: 1.2rem !important;
@@ -43,8 +40,9 @@
                 overflow-y: auto;
                 max-height: 20rem;
                 margin-left: 0rem;
-                .is-valid{
-                  border-color: #19191A !important;
+
+                .is-valid {
+                    border-color: #19191A !important;
                 }
             }
 
@@ -70,7 +68,7 @@
 
                 .grey-btn {
                     width: 59.2rem;
-                    line-height: 13px;
+                    line-height: 1.3rem;
                 }
 
                 .ob-modal-body-add-btn {
@@ -96,8 +94,10 @@
                     &:focus,
                     &:focus-visible {
                         outline: none;
+                        border-color: #19191A;
                     }
                 }
+
                 .ob-modal-body-text::placeholder {
                     color: #D4D4D4;
 
@@ -107,15 +107,17 @@
             .ob-modal-body-btn {
                 margin: 3.2rem 0 2rem;
                 text-align: center;
-                .go-btn{
-                  padding-left: 6rem;
-                  padding-right: 6rem;
+
+                .go-btn {
+                    padding-left: 6rem;
+                    padding-right: 6rem;
                 }
-                .preview{
-                  padding-left: 2.5rem;
-                  padding-right: 2.5rem;
-                  color: #636467;
-                  border-color: #636467;
+
+                .preview {
+                    padding-left: 2.5rem;
+                    padding-right: 2.5rem;
+                    color: #636467;
+                    border-color: #636467;
                 }
             }
 
@@ -127,10 +129,12 @@
 
             .ob-modal-body-info {
                 text-align: center;
-                .info-icon{
-                  margin-left: 5px;
-                  margin-bottom: 1px;
+
+                .info-icon {
+                    margin-left: 0.5rem;
+                    margin-bottom: 0.1rem;
                 }
+
                 h4 {
                     margin-bottom: 0.4rem;
                 }
@@ -146,16 +150,35 @@
 
 }
 
-.sign-in-container {
+.verification-input-field {
+    div {
+        display: flex;
+        justify-content: center;
 
-    .form-group {
-        div {
-            display: flex;
-            justify-content: center;
+        input {
+            height: 5.1rem;
+            width: 18.8rem;
 
-            input {
-                height: 5.1rem;
-                width: 59.2rem;
+            &::placeholder {
+                text-align: center;
+                color: #D4D4D4;
+            }
+        }
+    }
+}
+
+.email-input-field {
+    div {
+        display: flex;
+        justify-content: center;
+
+        input {
+            height: 5.1rem;
+            width: 59.2rem;
+
+            &::placeholder {
+                text-align: center;
+                color: #D4D4D4;
             }
         }
     }

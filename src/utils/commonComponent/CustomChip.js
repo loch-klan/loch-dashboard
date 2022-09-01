@@ -1,11 +1,13 @@
 import { Badge, Image } from "react-bootstrap";
 
-function CustomChip({ coinText, isIcon, coinImage, count, children }) {
+function CustomChip({ coins }) {
     return (
         <div className="chip-container">
-            <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
-                {isIcon ? <Image src={coinImage} /> : null}
-                {coinText}</Badge>
+            {coins && coins.length > 1 ? <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
+                +{coins.length}</Badge> :
+                <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
+                    <Image src={coins[0].coinSymbol} />
+                    {coins[0].coinName}</Badge>}
         </div>
     );
 }

@@ -8,6 +8,7 @@ import CustomButton from "../../utils/form/CustomButton";
 import Form from "../../utils/form/Form";
 import { Col, Container, Row } from 'react-bootstrap';
 import { getAllCoins, detectCoin } from "./Api";
+import CustomChip from "../../utils/commonComponent/CustomChip";
 
 class AddWallet extends BaseReactComponent {
     constructor(props) {
@@ -16,10 +17,9 @@ class AddWallet extends BaseReactComponent {
             showModal: true,
             signIn: false,
             addButtonVisible: false,
-            walletInput: [{ "wallet1": "" }]
+            walletInput: [{ id: "wallet1", address: "" }]
         }
         this.timeout = 0
-        // this.handleOnChange = this.handleOnChange.bind(this);
     }
 
 
@@ -29,48 +29,57 @@ class AddWallet extends BaseReactComponent {
 
     handleOnChange = (e) => {
         let { name, value } = e.target;
-        this.state.walletInput[name] = value
+        let walletCopy = [...this.state.walletInput];
+        let foundIndex = walletCopy.findIndex(obj => obj.id === name);
+        if (foundIndex > -1) {
+            walletCopy[foundIndex].address = value
+        }
         this.setState({
-            addButtonVisible: this.state.walletInput['wallet1'],
-            ...this.state.walletInput
+            addButtonVisible: this.state.walletInput[0].address,
+            walletInput: walletCopy
         });
         if (this.timeout) {
             clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-            this.getCoinBasedOnWalletAddress(value);
+            this.getCoinBasedOnWalletAddress(name, value);
         }, 300)
     }
 
-    getCoinBasedOnWalletAddress = (value) => {
+    getCoinBasedOnWalletAddress = (name, value) => {
         if (this.props.OnboardingState.coinsList && value) {
             for (let i = 0; i < this.props.OnboardingState.coinsList.length; i++) {
                 this.props.detectCoin({
-                    coin: this.props.OnboardingState.coinsList[i].code,
+                    id: name,
+                    coinCode: this.props.OnboardingState.coinsList[i].code,
+                    coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
+                    coinName: this.props.OnboardingState.coinsList[i].name,
                     address: value
                 })
             }
         }
     }
 
-    addInputField = (index) => {
-        this.state.walletInput.push({ ['wallet' + index]: "" })
+    addInputField = () => {
+        this.state.walletInput.push({
+            id: `wallet${this.state.walletInput.length + 1}`,
+            address: ""
+        })
         this.setState({
-            ...this.state.walletInput
+            walletInput: this.state.walletInput
         });
     }
 
     deleteInputField = (index) => {
-        delete this.state.walletInput["wallet" + index];
-        delete this.state.walletInput[index - 1]
+        delete this.state.walletInput[index - 1];
         this.setState({
-            ...this.state
+            walletInput: this.state.walletInput
         });
 
     }
 
     render() {
-        // console.log(this.props.OnboardingState.coinsList)
+        console.log(this.props.OnboardingState)
         return (
             <>
                 <Form onValidSubmit={this.onValidSubmit}>
@@ -83,14 +92,14 @@ class AddWallet extends BaseReactComponent {
                                         <input
                                             autoFocus
                                             name={`wallet${index + 1}`}
-                                            className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text walletInput.wallet${index + 1}`}
+                                            className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
                                             placeholder='Paste your wallet address here'
-                                            onChange={(e)=>this.handleOnChange(e)} />
-                                        {/* <CustomChip
-                                        isIcon={true}
-                                        coinText="Ethereum"
-                                        coinImage={Ether}
-                                    ></CustomChip> */}
+                                            onChange={(e) => this.handleOnChange(e)} />
+                                        {this.props.OnboardingState.walletList.map((e) => {
+                                            if (this.state.walletInput[index].address && e.id === `wallet${index + 1}` && e.coins && e.coins.length > 0) {
+                                                return <CustomChip coins={e.coins}></CustomChip>
+                                            }
+                                        })}
                                     </Col>
                                 </div>
                             })}
