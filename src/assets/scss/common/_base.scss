@@ -857,24 +857,33 @@ form {
   }
 }
 
+.tooltip.show {
+  opacity: 1;
+}
 // START FROM HERE
 .tool-tip-container {
-  .show {
-    opacity: 1;
-  }
+
+
 
   .tooltip-inner {
     background-color: $secondary ;
     max-width: 39.2rem;
     border: 0.1rem solid $grey-E5E;
+    border-radius: 8px;
+    opacity: 1;
 
     ul {
       padding: inherit;
       width: auto;
-      opacity: 0.9;
+      margin-left: -0.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: -0.4rem;
 
       li {
-        height: 2rem;
+        height: 2.5rem;
+        
         display: flex;
         align-content: center;
         align-items: center;
@@ -884,11 +893,12 @@ form {
         border: 0.1rem solid $grey-CAC;
         border-radius: 0.4rem;
         padding: 0.2rem 0.8rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
 
         img {
-          width: 1.2rem;
+          width: 1.6rem;
           margin-right:0.5rem;
+          margin-top: -0.1rem;
         }
         span {
           color: black;
@@ -934,21 +944,24 @@ form {
 
 .chip-container,
 .chip-container-dual {
+  cursor: pointer;
   position: absolute;
-  top: 0.8rem;
+  top: 0.7rem;
   height: 2.5rem;
   background: rgba(229, 229, 230, 0.5);
   border: 0.1rem solid $grey-CAC;
   border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
 
   .badge {
     padding: 0.35rem 0.8rem 0.4rem;
   }
 
   img {
-    margin-right: 0.6rem;
+    margin-right: 0.5rem;
     width: 1.6rem;
-    height: 1.6rem;
+    margin-top: -0.1rem;
   }
 }
 

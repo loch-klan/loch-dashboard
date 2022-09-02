@@ -4,7 +4,7 @@ import { Image, Tooltip } from "react-bootstrap";
 
 function CustomOverlay({ text, position, isIcon, children, IconImage, isInfo }) {
     const renderTooltip = (props) => (
-        <Tooltip className="tool-tip-container" id="button-tooltip" {...props}>
+        <Tooltip className="op-100 tool-tip-container" id="button-tooltip" {...props}>
             {isInfo ?
                 <div className='button-tooltip'>
                     {isIcon ? <Image src={IconImage} /> : null}
@@ -15,7 +15,7 @@ function CustomOverlay({ text, position, isIcon, children, IconImage, isInfo }) 
                     {text.map((e, i) =>
                         i != 0 ?
                             <li key={i}>
-                                <Image src={e.coinSymbol} /><span>{e.coinName}</span>
+                                <Image src={e.coinSymbol} /><span className='inter-display-medium'>{e.coinName}</span>
                             </li>
                             : null
                     )}
