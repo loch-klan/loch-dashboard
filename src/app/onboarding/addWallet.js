@@ -129,7 +129,7 @@ class AddWallet extends BaseReactComponent {
                         <Row>
                             <Col className='ob-modal-body-btn' md={12}>
                                 <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
-                                <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={!this.state.walletInput.wallet1} buttonText="Go" />
+                                <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={!this.state.walletInput[0].address} buttonText="Go" />
                             </Col>
                         </Row>
                     </Container>
