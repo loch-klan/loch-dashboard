@@ -22,17 +22,23 @@ export const getAllCoins = () => {
 export const detectCoin = (wallet) => {
     return function (dispatch, getState) {
         let data = new URLSearchParams();
-        data.append("chain", wallet.coin);
+        data.append("chain", wallet.coinCode);
         data.append("wallet_address", wallet.address);
-        // console.log(data)
         preLoginInstance
             .post("wallet/chain/detect-chain", data)
             .then((res) => {
-                console.log(res)
-                // dispatch({
-                //     type: WALLET_LIST,
-                //     payload: coinsList
-                // });
+                if (!res.error && res.data && res.data.data.chain_detected) {
+                    dispatch({
+                        type: WALLET_LIST,
+                        payload: {
+                            id: wallet.id,
+                            coinCode: wallet.coinCode,
+                            coinSymbol: wallet.coinSymbol,
+                            coinName: wallet.coinName,
+                            address: wallet.address
+                        }
+                    });
+                }
             })
             .catch((err) => {
                 console.log("Catch", err);
