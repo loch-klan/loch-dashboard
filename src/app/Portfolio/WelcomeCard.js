@@ -4,10 +4,9 @@ import arrowUpRight from '../../image/ArrowUpRight.svg'
 export default function WelcomeCard() {
   return (
     <div className="welcome-card-section">
-        <Container>
             <div className="welcome-card">
                 <div className='welcome-section-left'>
-                    <h1 className='welcome-title inter-display-semi-bold'>Welcome to Loch</h1>
+                    <h1 className='inter-display-semi-bold welcome-title'>Welcome to Loch</h1>
                     <p className='inter-display-medium'>Add your wallet address(es) to receive personalized  </p>
                     <p className="inter-display-medium m-b-24">financial intelligence immediately.</p>
                     <div className="welcome-btn">
@@ -16,7 +15,7 @@ export default function WelcomeCard() {
                     </div>
                 </div>
                 <div className='welcome-section-right'>
-                    <h3 className="wallet-amount inter-display-medium ">$317,068.00</h3>
+                    <h3 className="inter-display-medium wallet-amount">$317,068.00</h3>
                     
                     <Button className="inter-display-medium">
                         <Image src={arrowUpRight} />
@@ -24,7 +23,6 @@ export default function WelcomeCard() {
                     </Button>
                 </div>
             </div>
-        </Container>
     </div>
   )
 }

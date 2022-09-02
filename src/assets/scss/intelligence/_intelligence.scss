@@ -8,14 +8,10 @@
         .intell-welcome-card {
 
             .page-title {
-                font-size: 3.1rem;
-                line-height: 37px;
                 color: $black-000;
             }
 
             .subtitle {
-                font-size: 1.6rem;
-                line-height: 19px;
                 color: $grey-ADA;
             }
 
@@ -53,14 +49,19 @@
                             .icon {
                                 width: 4.8rem;
                                 height: 4.8rem;
-                                background: #E5F2FE;
                                 border-radius: 8px;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
+                                padding:1.2rem;
                                 margin-right: 1.6rem;
                             }
-
+                            .lightblue{
+                                background-color: $blue-E5F;
+                            }
+                            .lightyellow{
+                                background-color:$yellow-FEF ;
+                            }
+                            .lightpurple{
+                                background-color: $purple-E3C;
+                            }
                             .info-detail {
                                 .info-title {
                                     color: $grey-636;
@@ -76,8 +77,6 @@
                             }
                         }
                     }
-
-                    // }
 
                 }
             }

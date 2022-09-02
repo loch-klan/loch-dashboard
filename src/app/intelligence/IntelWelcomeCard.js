@@ -11,26 +11,29 @@ export default function IntelWelcomeCard() {
     const cardData = [
         {
             icon: TransactionIcon,
-            title: "Transaction History"
+            title: "Transaction History",
+            background:"lightblue"
         },
         {
             icon: ShuffleIcon,
-            title: "Traded by counterparty"
+            title: "Traded by counterparty",
+            background:"lightyellow"
         },
         {
             icon: InsightsIcon,
-            title: "Insights"
+            title: "Insights",
+            background:"lightpurple"
         }
     ]
 
     const cards = cardData.map((card) => {
         return (
             <div className='info'>
-                <div className='icon'>
+                <div className = {`icon ${card.background}`}>
                     <Image src={card.icon} />
                 </div>
                 <div className='info-detail'>
-                    <div className='info-title inter-display-medium m-b-4 lh-19 f-s-16'>
+                    <div className='inter-display-medium   f-s-16 lh-19 m-b-4 info-title'>
                         {card.title}
                     </div>
                     <div className='viewmore'>
@@ -44,22 +47,20 @@ export default function IntelWelcomeCard() {
 
     return (
         <div className='intell-welcome-card'>
-            <Container>
+                <h4 className="inter-display-medium f-s-31 lh-37 m-b-12 page-title ">Intelligence</h4>
 
-                <h4 className="page-title inter-display-medium m-b-12">Intelligence</h4>
-
-                <p className='subtitle inter-display-medium m-b-32'>Automated and personalized financial intelligence</p>
+                <p className=' inter-display-medium f-s-16 lh-19 m-b-32 subtitle'>Automated and personalized financial intelligence</p>
 
 
                 <div className="row-card">
                     <Image src={bgimg} className="bg-img" />
                     <div className='welcome-card'>
 
-                        <h3 className='f-s-25 lh-30 welcome-card-title inter-display-semi-bold'>Valuable intelligence,</h3>
+                        <h3 className='inter-display-semi-bold f-s-25 lh-30 welcome-card-title '>Valuable intelligence,</h3>
 
-                        <h3 className='m-b-12 f-s-25 lh-30 welcome-card-title inter-display-semi-bold'>personalized to you</h3>
+                        <h3 className='inter-display-semi-bold  f-s-25 lh-30 m-b-12 welcome-card-title '>personalized to you</h3>
 
-                        <p className='m-b-40 card-subtitle lh-16 f-s-13 inter-display-medium'>
+                        <p className='inter-display-medium f-s-13 lh-16 m-b-40 card-subtitle '>
                             Invest smarter with curated insights from your data
                         </p>
 
@@ -70,8 +71,6 @@ export default function IntelWelcomeCard() {
                     </div>
 
                 </div>
-
-            </Container>
         </div>
     )
 }
