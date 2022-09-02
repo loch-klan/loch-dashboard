@@ -2,7 +2,7 @@ import React from 'react';
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
 import { Button, Image } from "react-bootstrap";
-import DeleteIcon from "../../assets/images/icons/delete-icon.svg";
+import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
 import Form from "../../utils/form/Form";

@@ -915,11 +915,11 @@ form {
     padding: 1.2rem 1.6rem;
     gap: 1.2rem;
     height: 5.6rem;
-
     span {
       display: flex;
       align-items: center;
       color: $grey-313;
+      text-align: left;
     }
   }
 }
@@ -929,24 +929,24 @@ form {
 }
 
 .chip-container {
-  right: 9rem;
+  right: 9.2rem;
 }
 
 .chip-container,
 .chip-container-dual {
   position: absolute;
   top: 0.7rem;
-  height: 2.5rem;
+  // height: 2.5rem;
   background: rgba(229, 229, 230, 0.5);
   border: 0.1rem solid $grey-CAC;
   border-radius: 0.4rem;
 
   .badge {
-    padding: 0.2rem 0.8rem;
+    padding: 0.23rem 0.8rem;
   }
 
   img {
-    padding-right: 0.5rem;
+    margin-right: 0.6rem;
     width: 1.6rem;
     height: 1.6rem;
   }
