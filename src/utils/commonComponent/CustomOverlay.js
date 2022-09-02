@@ -1,14 +1,27 @@
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { Image, Tooltip } from "react-bootstrap";
-import infoicon from "../../assets/images/icons/lock-icon.svg";
 
-function CustomOverlay({ text, position, isIcon, children }) {
+
+function CustomOverlay({ text, position, isIcon, children, IconImage, isInfo }) {
     const renderTooltip = (props) => (
         <Tooltip className="tool-tip-container" id="button-tooltip" {...props}>
-            <div className='button-tooltip'>
-                {isIcon ? <Image src={infoicon} /> : null}
-                <span className="inter-display-medium f-s-13 lh-16">{text}</span>
-            </div>
+            {isInfo ?
+                <div className='button-tooltip'>
+                    {isIcon ? <Image src={IconImage} /> : null}
+                    <span className="inter-display-medium f-s-13 lh-16">{text}</span>
+                </div> :
+
+                <ul>
+                    {text.map((e, i) =>
+                        i != 0 ?
+                            <li key={i}>
+                                <Image src={e.coinSymbol} /><span>{e.coinName}</span>
+                            </li>
+                            : null
+                    )}
+                </ul>
+
+            }
         </Tooltip>
     );
 
