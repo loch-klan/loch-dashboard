@@ -8,7 +8,8 @@ export default function WelcomeCard() {
             <div className="welcome-card">
                 <div className='welcome-section-left'>
                     <h1 className='welcome-title inter-display-semi-bold'>Welcome to Loch</h1>
-                    <p className='inter-display-medium'>Add your wallet address(es) to receive personalized <br/> financial intelligence immediately. </p>
+                    <p className='inter-display-medium'>Add your wallet address(es) to receive personalized  </p>
+                    <p className="inter-display-medium m-b-24">financial intelligence immediately.</p>
                     <div className="welcome-btn">
                         <Button className='secondary-btn'>Manage wallets</Button>
                         <Button className="primary-btn">Add wallet address</Button>
@@ -17,7 +18,7 @@ export default function WelcomeCard() {
                 <div className='welcome-section-right'>
                     <h3 className="wallet-amount inter-display-medium ">$317,068.00</h3>
                     
-                    <Button>
+                    <Button className="inter-display-medium">
                         <Image src={arrowUpRight} />
                         330.10 (1%)
                     </Button>

@@ -21,16 +21,15 @@
                 .welcome-section-left {
                     .welcome-title {
                         font-size: 2.5rem;
-                        line-height: 1.92rem;
+                        line-height: 30px;
                         color: $black-191;
                         margin-bottom: 0.8rem;
                     }
 
                     p {
                         font-size: 1.6rem;
-                        line-height: 1.92rem;
+                        line-height: 19px;
                         color: $grey-969;
-                        margin-bottom: 2.4rem;
                     }
 
                     .welcome-btn {
@@ -51,7 +50,7 @@
                     align-items: flex-end;
                     .wallet-amount {
                         font-size: 3.9rem;
-                        line-height: 1.92rem;
+                        line-height: 47px;
                         margin-bottom: 1.2rem;
                         color: $black-1D2;
                     }
@@ -59,16 +58,16 @@
                     button {
                        
                         font-size: 1.6rem;
-                        font-family: Inter-Medium;
-                        line-height: 1.92rem;
-                        padding: 0.8rem 1.2rem;
+                       
+                        line-height: 19px;
+                        padding: 0.85rem 1.2rem;
                         color: $grey-313;
                         background: $green-44F;
                         border: 0.1rem solid #000000;
                         border-radius: 0.812rem;
                         box-shadow:none;
                         img {
-                            margin-right: 0.98rem;
+                            margin-right: 0.4rem;
                         }
                     }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { Container, Row, Col, Image } from 'react-bootstrap'
 import bgimg from '../../image/CardBackgroundImg.png'
 import TransactionIcon from '../../image/TransactionHistoryIcon.svg'
@@ -29,11 +30,11 @@ export default function IntelWelcomeCard() {
                     <Image src={card.icon} />
                 </div>
                 <div className='info-detail'>
-                    <div className='info-title inter-display-medium m-b-4'>
+                    <div className='info-title inter-display-medium m-b-4 lh-19 f-s-16'>
                         {card.title}
                     </div>
                     <div className='viewmore'>
-                        <h4 className="inter-display-semi-bold">View more</h4>
+                        <h4 className="inter-display-semi-bold f-s-13 lh-16">View more</h4>
                         <Image src={ArrowRight} />
                     </div>
                 </div>
@@ -58,7 +59,7 @@ export default function IntelWelcomeCard() {
 
                         <h3 className='m-b-12 f-s-25 lh-30 welcome-card-title inter-display-semi-bold'>personalized to you</h3>
 
-                        <p className='m-b-40 card-subtitle inter-display-medium'>
+                        <p className='m-b-40 card-subtitle lh-16 f-s-13 inter-display-medium'>
                             Invest smarter with curated insights from your data
                         </p>
 

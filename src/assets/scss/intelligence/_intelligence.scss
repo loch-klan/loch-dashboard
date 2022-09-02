@@ -39,10 +39,7 @@
                     }
 
                     .card-subtitle {
-                        font-size: 1.3rem;
-                        line-height: 16px;
                         color: $grey-969;
-
                     }
 
                     .info-container {
@@ -66,18 +63,14 @@
 
                             .info-detail {
                                 .info-title {
-                                    font-size: 1.6rem;
-                                    line-height: 19px;
                                     color: $grey-636;
                                 }
 
                                 .viewmore {
                                     display: flex;
-
+                                    cursor:pointer;
                                     h4 {
-                                        font-size: 1.3rem;
-                                        line-height: 16px;
-                                        margin-right: 0.65rem;
+                                        margin-right: 0.4rem;
                                     }
                                 }
                             }
