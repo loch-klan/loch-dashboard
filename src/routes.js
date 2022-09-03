@@ -6,6 +6,7 @@ import Sandbox from "./utils/form/Sandbox"
 import PrivateRoute from "./utils/PrivateRoute"
 import Portfolio from "./app/Portfolio/Portfolio"
 import Intelligence from "./app/intelligence/Intelligence"
+import Wallet from "./app/wallet/Wallet"
 const routes = [
   {
     path: "/",
@@ -36,6 +37,12 @@ const routes = [
     name: "Intelligence",
     type: Route,
     component: Intelligence
+  },
+  {
+    path: "/wallets",
+    name: "Wallet",
+    type: Route,
+    component: Wallet
   },
   {
     path: "/sandbox",
