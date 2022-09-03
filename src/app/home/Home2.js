@@ -1,31 +1,33 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import OnBoarding from "../onboarding";
+import OnboardingModal from "../common/OnboardingModal";
 import "../../assets/scss/onboarding/_onboarding.scss";
-import { Image } from "react-bootstrap";
-import Banner from "../../assets/images/Overlay.png";
 
-class Home extends Component {
+class Home2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: true,
-      signedIn: false,
+      showModal: true
     }
   }
 
   componentDidMount() { }
 
+  onClose = () => {
+    console.log("on close");
+    this.setState({ showModal: false })
+  }
+
   render() {
+
     return (
       <>
-        {this.signedIn ? null :
-          <div>
-            <Image src={Banner} className="overlay-banner" />
-            <OnBoarding />
-          </div>}
-
+        <OnboardingModal
+          show={this.state.showModal}
+          onHide={this.onClose}
+        >
+        </OnboardingModal>
       </>
 
     )
@@ -38,8 +40,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   // getPosts: fetchPosts
 }
-Home.propTypes = {
+Home2.propTypes = {
   // getPosts: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home2);

@@ -1,0 +1,184 @@
+.overlay-banner {
+    width: 100%;
+}
+
+.onboarding-modal {
+    .modal-content {
+        border-radius: 1.2rem !important;
+        border: none;
+        width: 78rem;
+
+        .modal-header {
+            background-image: url("../../../image/Frame.png");
+            background-size: 100%;
+            background-repeat: no-repeat;
+            padding: 3.6rem;
+            text-align: center;
+            display: block;
+
+            .ob-modal-title-icon {
+                width: 6rem;
+            }
+
+            h1 {
+                padding: 2rem 0 0.4rem;
+            }
+
+            .back-icon {
+                position: absolute;
+                left: 2.8rem;
+                top: 2.8rem;
+            }
+        }
+
+        .modal-body {
+            padding: 4rem 0;
+            text-align: center;
+
+            .ob-modal-body-1 {
+                overflow-y: auto;
+                max-height: 20rem;
+                margin-left: 0rem;
+
+                .is-valid {
+                    border-color: #19191A !important;
+                }
+            }
+
+            .ob-modal-body-1::-webkit-scrollbar {
+                display: none;
+            }
+
+            .ob-modal-body-1,
+            .ob-modal-body-2 {
+                display: block;
+                width: 100%;
+                position: relative;
+
+
+                .ob-modal-body-del {
+                    border-radius: 0.8rem;
+                    width: 3.8rem;
+                    position: absolute;
+                    left: 2.5rem;
+                    top: 0.15rem;
+                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+                    cursor: pointer;
+                }
+
+                .grey-btn {
+                    width: 59.2rem;
+                    line-height: 1.3rem;
+                }
+
+                .ob-modal-body-add-btn {
+                    margin: 1.2rem 0;
+                }
+
+                input {
+                    padding-right: 12rem;
+                }
+
+                .ob-modal-body-text {
+                    width: 59.2rem;
+                    margin-bottom: 1rem;
+                    background: #FFFFFF;
+                    border: 0.1rem solid #D4D4D4;
+                    border-radius: 0.8rem;
+                    height: 4rem;
+                    padding: 1rem 13rem 1.2rem 1.2rem;
+                    color: #19191A;
+
+                    &:active:focus,
+                    &:active,
+                    &:focus,
+                    &:focus-visible {
+                        outline: none;
+                        border-color: #19191A;
+                    }
+                }
+
+                .ob-modal-body-text::placeholder {
+                    color: #D4D4D4;
+
+                }
+            }
+
+            .ob-modal-body-btn {
+                margin: 3.2rem 0 2rem;
+                text-align: center;
+
+                .go-btn {
+                    padding-left: 6rem;
+                    padding-right: 6rem;
+                }
+
+                .preview {
+                    padding-left: 2.5rem;
+                    padding-right: 2.5rem;
+                    color: #636467;
+                    border-color: #636467;
+                }
+            }
+
+            .ob-modal-verification {
+                text-align: center;
+                margin: 1rem 0 2.5rem 0;
+
+            }
+
+            .ob-modal-body-info {
+                text-align: center;
+
+                .info-icon {
+                    margin-left: 0.5rem;
+                    margin-bottom: 0.1rem;
+                }
+
+                h4 {
+                    margin-bottom: 0.4rem;
+                }
+
+                span {
+                    text-decoration: underline;
+                    font-weight: bold;
+                }
+            }
+
+        }
+    }
+
+}
+
+.verification-input-field {
+    div {
+        display: flex;
+        justify-content: center;
+
+        input {
+            height: 5.1rem;
+            width: 18.8rem;
+
+            &::placeholder {
+                text-align: center;
+                color: #D4D4D4;
+            }
+        }
+    }
+}
+
+.email-input-field {
+    div {
+        display: flex;
+        justify-content: center;
+
+        input {
+            height: 5.1rem;
+            width: 59.2rem;
+
+            &::placeholder {
+                color: #D4D4D4;
+            }
+        }
+    }
+}

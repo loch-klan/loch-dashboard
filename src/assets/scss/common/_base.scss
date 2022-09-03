@@ -1,17 +1,22 @@
-@include font-face(RedHatDisplay-Regular, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Regular", normal, normal, ttf);
-@include font-face(RedHatDisplay-Bold, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Bold", bold, bold, ttf);
-@include font-face(RedHatDisplay-Medium, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Medium", 500, normal, ttf);
-@include font-face(RedHatDisplay-Black, "/assets/fonts/Red-Hat-Display/RedHatDisplay-Black", 900, bold, ttf);
-@include font-face(RedHatDisplay-BoldItalic, "/assets/fonts/Red-Hat-Display/RedHatDisplay-BoldItalic", bold, bold, ttf);
+@include font-face(Inter-Regular, "/assets/fonts/Inter/Inter-Regular", normal, normal, ttf);
+@include font-face(Inter-Black, "/assets/fonts/Inter/Inter-Black", 900, bold, ttf);
+@include font-face(Inter-Bold, "/assets/fonts/Inter/Inter-Bold", bold, bold, ttf);
+@include font-face(Inter-Medium, "/assets/fonts/Inter/Inter-Medium", 500, normal, ttf);
+@include font-face(Inter-SemiBold, "/assets/fonts/Inter/Inter-SemiBold", 600, bold, ttf);
+@include font-face(Inter-ExtraBold, "/assets/fonts/Inter/Inter-ExtraBold", 900, bold, ttf); //Need to change values
+@include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 400, normal, ttf); //Need to change values
+@include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf); //Need to change values
+@include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf); //Need to change values
+// @include font-face(Inter-BoldItalic, "/assets/fonts/Inter/Inter-BoldItalic", bold, bold, ttf);
 
 // SET THE BASE HTML REM, MAKING 1REM=10PX
 html {
   font-size: 10px;
-  background-color: $grey-F6F;
+  background-color: $grey-F2F;
 }
 
 #root {
-  background-color: $grey-F6F;
+  background-color: $grey-F2F;
 }
 
 h1,
@@ -38,9 +43,11 @@ body {
 .main-section {
   display: flex;
   height: 100vh;
-    overflow: scroll;
+  overflow: scroll;
+
   .main-section-right {
     flex: 1;
+
     .main-content-wrapper {
       padding: 2rem 3rem;
     }
@@ -48,20 +55,40 @@ body {
 }
 
 //Fonts
-.red-hat-display-black {
-  @include font($primary, "RedHatDisplay-Black", 1.2rem, 900, normal);
+.inter-display-black {
+  @include font($primary, "Inter-Black", 1.2rem, 900, normal);
 }
-.red-hat-display-bold {
-  @include font($primary, "RedHatDisplay-Bold", 1.2rem, bold, normal);
+
+.inter-display-bold {
+  @include font($primary, "Inter-Bold", 1.2rem, bold, normal);
 }
-.red-hat-display-bold-italic {
-  @include font($primary, "RedHatDisplay-BoldItalic", 1.2rem, bold, normal);
+
+.inter-display-regular {
+  @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
 }
-.red-hat-display-regular {
-  @include font($primary, "RedHatDisplay-Regular", 1.2rem, normal, normal);
+
+.inter-display-medium {
+  @include font($primary, "Inter-Medium", 1.2rem, 500, normal);
 }
-.red-hat-display-medium {
-  @include font($primary, "RedHatDisplay-Medium", 1.2rem, 500, normal);
+
+.inter-display-extra-bold {
+  @include font($primary, "Inter-ExtraBold", 1.2rem, bold, normal);
+}
+
+.inter-display-semi-bold {
+  @include font($primary, "Inter-SemiBold", 1.2rem, 600, normal);
+}
+
+.inter-display-thin {
+  @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
+}
+
+.inter-display-extra-light {
+  @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
+}
+
+.inter-display-light {
+  @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
 }
 
 @for $i from 1 through 100 {
@@ -78,58 +105,102 @@ body {
 
 @for $y from 0 through 100 {
   .op-#{$y} {
-    opacity: "0."+$y;
+    opacity: 0$y;
   }
 }
 
-.m-t-5{
+.m-t-5 {
   margin-top: 5rem;
 }
 
+.m-r-15 {
+  margin-right: 1.5rem;
+}
+
+.cp {
+  cursor: pointer;
+}
+
 // COLOR
-.grey-757{
+.grey-636 {
+  color: $grey-636;
+}
+
+.grey-ADA {
+  color: $grey-ADA;
+}
+
+.blue-268 {
+  color: $blue-268;
+}
+
+.white {
+  color: $secondary;
+}
+
+.grey-757 {
   color: $grey-757;
 }
+
 .grey-999 {
   color: $grey-999;
 }
+
 .secondary {
   color: $secondary;
 }
+
 .grey-AAA {
   color: $grey-AAA;
 }
+
 .black-404 {
   color: $black-404;
 }
+
 .blue-407 {
   color: $blue-407;
 }
-.green-40B{
+
+.green-40B {
   color: $green-40B;
 }
-.image-wrapper{
+
+.grey-D4D {
+  color: $grey-D4D;
+}
+
+.grey-313 {
+  color: $grey-313;
+}
+
+.image-wrapper {
   display: flex;
   flex-direction: column;
 }
+
 .upload-image-wrapper {
   text-align: left;
   border: 1px dashed $grey-E7E;
   padding: 1rem;
   margin-bottom: 0rem;
+
   .plus-icon {
     cursor: pointer;
   }
-  label{
+
+  label {
     margin: 0;
   }
+
   p {
     display: inline-block;
     padding-left: 2rem;
   }
+
   label {
-    h2 {
-    }
+    h2 {}
+
     /* span {
       display: inline-block;
       padding: 0.4rem 1.9rem 1rem;
@@ -140,11 +211,11 @@ body {
       cursor: pointer;
     } */
   }
-  input {
-  }
+
+  input {}
 }
 
-.add-more-section{
+.add-more-section {
   text-align: center;
 }
 
@@ -152,17 +223,20 @@ body {
 // UPLOADED IMAGE STYLE
 .img-preview-wrapper {
   display: flex;
+
   .uploaded-img-wrapper {
     width: 12rem;
     height: 4.6rem;
     position: relative;
     margin-right: 2rem;
     display: inline-block;
+
     img {
       object-fit: cover;
       height: inherit;
       width: 100%;
     }
+
     .option-card-extension {
       font-size: 2.2rem;
       color: $grey-1;
@@ -173,6 +247,7 @@ body {
       align-items: center;
       height: inherit;
     }
+
     .remove-circle {
       position: absolute;
       width: 2rem;
@@ -182,6 +257,7 @@ body {
       cursor: pointer;
     }
   }
+
   .progress {
     width: 12rem;
     margin-top: 1rem;
@@ -194,31 +270,36 @@ form {
     max-width: 100%;
     margin-bottom: 8px;
     font-weight: 500;
-    font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+    font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
     font-size: 1.2rem;
     color: $grey-868;
   }
+
   .form-group {
-    margin-bottom: 40px;
+    margin-bottom: 1rem;
     position: relative; //For tooltip
+
     .form-control,
     .custom-select__control {
-      font-family: "RedHatDisplay-Bold", Arial, Helvetica, sans-serif;
+      font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
       font-size: 1.6rem;
       font-weight: bold;
-      color: $primary;
-      line-height: 1.5;
-      padding: 11px 20px;
-      min-height: 46px;
-      border-radius: 2px;
-      border: 1px solid $grey-CFC;
+      color: $black-191;
+      line-height: 19px;
+      padding: 1.6rem;
+      min-height: 51px;
+      border-radius: 8px;
+      border: 1px solid $grey-D4D;
     }
+
     .custom-select__menu {
       .custom-select__menu-list {
         padding: 1rem;
+
         .custom-select__option {
-          @include font($primary, "RedHatDisplay-Bold", 1.4rem, bold, normal);
+          @include font($primary, "Inter-Bold", 1.4rem, bold, normal);
           padding: 1rem;
+
           &.custom-select__option--is-focused,
           &.custom-select__option--is-selected {
             background-color: $grey-F5F;
@@ -226,62 +307,75 @@ form {
         }
       }
     }
+
     .form-control:focus {
       outline: none;
       box-shadow: none;
       border: 1px solid $grey-CFC;
     }
+
     .form-control.is-invalid {
-      border: solid 1px $red;
+      border: solid 1px $grey-D4D;
       background-image: none;
     }
+
     .form-control.is-valid {
-      border: solid 1px green;
+      border: solid 1px $black-191;
       background-image: none;
     }
+
     // FOR CHANGE PASSWORD
     .input-group {
       .form-control.is-valid {
         border-color: $grey-CFC;
       }
+
       .form-control.is-invalid {
         border-color: $grey-CFC;
       }
     }
+
     .form-control::placeholder {
       color: $grey-B6B;
-      font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+      font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
       line-height: 24px;
       font-weight: 500;
       font-size: 1.4rem;
     }
+
     .custom-select__control {
       padding: 0;
+
       .custom-select__value-container {
         padding: 0.2rem 2rem;
+
         .custom-select__single-value {
           color: $primary;
         }
+
         .custom-select__placeholder {
           padding: 0;
           color: $grey-B6B;
-          font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+          font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
           font-weight: 500;
           font-size: 1.4rem;
         }
       }
     }
+
     // different styling for search bar
     .search-input {
       padding: 0.75rem 1.6rem;
+
       &::placeholder {
         font-size: 1.4rem;
         font-weight: 500;
         color: $grey-B6B;
-        font-family: "RedHatDisplay-Medium", Arial, Helvetica, sans-serif;
+        font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
         line-height: 24px;
       }
     }
+
     .form-text {
       display: block;
       margin-top: 5px;
@@ -289,8 +383,10 @@ form {
       color: #737373;
       font-size: 10px;
     }
+
     .has-error {
       color: #dc3545;
+
       .custom-select__control {
         // CUSTOM ERROR STYLE ADDED WITH ERROR ICON FOR REACT-SELECT
         border: 1px solid #dc3545;
@@ -299,11 +395,13 @@ form {
         background-position: right calc(0.375em + 4rem) center;
         background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
       }
+
       .custom-select__menu {
         color: initial;
       }
     }
   }
+
   .input-group {
     .input-group-prepend {
       padding: 6px 12px;
@@ -319,24 +417,29 @@ form {
       display: flex;
       align-items: center;
     }
+
     .input-group-prepend:first-child {
       border-right: 0;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
+
     .input-group-prepend:last-child {
       border-left: 0;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
   }
+
   .radio-wrapper {
     .radio-control {
       display: flex;
       margin-bottom: 1rem;
+
       input {
         margin-top: 0.1rem;
       }
+
       span {
         font-family: "Roboto-Regular", Arial, Helvetica, sans-serif;
         font-size: 1.4rem;
@@ -346,10 +449,12 @@ form {
         padding-left: 1rem;
       }
     }
+
     &.inline {
       display: flex;
       flex-wrap: wrap;
       margin-top: 1.6rem;
+
       .radio-control {
         margin-right: 2rem;
       }
@@ -363,11 +468,13 @@ form {
   background-color: white;
   position: relative;
 }
+
 .date-icon {
   position: absolute;
   right: 2rem;
   bottom: 1.4rem;
 }
+
 .date-picker-control-modal {
   .modal-body {
     display: flex;
@@ -384,32 +491,37 @@ form {
 
 .dropdown {
   text-align: right;
+
   // z-index: 11;
   #dropdown-basic {
     background: transparent;
     padding: 0;
     border: 0;
+
     &:active:focus,
     &:active,
     &:focus {
       box-shadow: none;
     }
+
     &::after {
       display: none;
     }
   }
+
   .dropdown-menu {
     padding: 1.2rem 1rem;
     // transform: translate(-155px, 26px) !important;
     width: 24rem;
     box-shadow: 0 -4px 21px 0 rgba(0, 0, 0, 0.12);
     border: 0;
+
     .dropdown-item {
-      @include font($primary, "RedHatDisplay-Medium", 1.4rem, 500, 21px);
+      @include font($primary, "Inter-Medium", 1.4rem, 500, 21px);
       padding: 0.8rem 1.2rem;
       border-radius: 4px;
-      &:hover {
-      }
+
+      &:hover {}
     }
   }
 }
@@ -419,7 +531,8 @@ form {
 .custom-table-wrapper {
   border-top: 1px solid $grey-E6E;
   margin: 0 0 1.5rem 0;
-  .option-btn{
+
+  .option-btn {
     padding: 0.3rem 1.5rem;
     font-size: 1.3rem;
   }
@@ -432,47 +545,58 @@ form {
     // left: 100%;
     // transform: translateX(-100%);
   }
+
   .ReactVirtualized__Table__headerColumn {
     text-transform: none;
-    @include font($grey-999, "RedHatDisplay-Medium", 1.3rem, 500, normal);
+    @include font($grey-999, "Inter-Medium", 1.3rem, 500, normal);
+
     .ReactVirtualized__Table__headerTruncatedText {
       margin-top: 0.8rem;
     }
   }
+
   .ReactVirtualized__Table__headerColumn,
   .ReactVirtualized__Table__rowColumn {
     margin-left: 3rem;
     margin-right: 3rem;
   }
+
   .ReactVirtualized__Table__Grid {
     // z-index: -1;
     height: auto !important;
     background-color: $secondary;
     overflow: visible !important;
+
     .ReactVirtualized__Grid__innerScrollContainer {
       overflow: visible !important;
     }
   }
+
   .ReactVirtualized__Table__row {
-    @include font($grey-565, "RedHatDisplay-Medium", 1.4rem, 500, 21px);
+    @include font($grey-565, "Inter-Medium", 1.4rem, 500, 21px);
     border-bottom: 1px solid $grey-F2F;
-    .red-hat-display-bold {
+
+    .inter-bold {
       font-size: 1.4rem;
       line-height: 21px;
     }
   }
-  .ReactVirtualized__Table__row{
-  overflow: visible !important;
+
+  .ReactVirtualized__Table__row {
+    overflow: visible !important;
   }
+
   .ReactVirtualized__Table__rowColumn {
-    &.options-column{
+    &.options-column {
       overflow: visible !important;
     }
   }
+
   .header-navigation {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
     .pagination {
       margin: 1rem 0;
     }
@@ -483,133 +607,140 @@ form {
 
 // btn
 .primary-btn {
-  // @include font($black-1A1, "RedHatDisplay-Bold", 1.6rem, bold, normal);
-  @include font($black-1A1, "RedHatDisplay-Medium", 1.4rem, 500, 24px);
-  letter-spacing: -0.2px;
-  border-radius: 4px;
-  // border: 1px solid $primary;
-  padding: 1.1rem 6rem;
+  @include font($secondary, "Inter-SemiBold", 1.6rem, 600, normal);
+  border-radius: 8px;
+  background-color: $black-191;
+  border: 1px solid $black-191;
+  padding: 1.6rem 4rem;
   cursor: pointer;
+
+  &.btn-primary:not(:disabled):not(:disabled):active,
+  &.btn-primary:not(:disabled):not(:disabled):active:focus,
   &:hover,
   &:active,
   &:focus,
   &:active:focus {
     outline: none;
     box-shadow: none;
+    border: 1px solid $black-191;
+    background-color: $black-191;
+  }
+
+  &.btn-primary:disabled {
+    background-color: $grey-CAC;
+    border-color: $grey-CAC;
   }
 
   &:not(:disabled),
   &:not(.disabled) {
     cursor: auto;
   }
-
-  &.clear-btn {
-    background-color: transparent;
-    padding: 0;
-    border: 0;
-    &.btn-primary:not(:disabled):not(:disabled):active,
-    &.btn-primary:not(:disabled):not(:disabled):active:focus,
-    &:hover,
-    &:active,
-    &:focus,
-    &:active:focus {
-      border: 0;
-      background-color: transparent;
-      color: $primary;
-      outline: none;
-      box-shadow: none;
-    }
-  }
 }
 
-.black-btn {
-  background-color: $primary;
-  color: $secondary;
-  border: 1px solid $primary;
-  &.btn-primary:not(:disabled):not(:disabled):active,
-  &.btn-primary:not(:disabled):not(:disabled):active:focus,
-  &:hover,
-  &:active,
-  &:focus,
-  &:active:focus {
-    box-shadow: none;
-    border: 1px solid $primary;
-    background-color: $primary;
-    color: $secondary;
-  }
-}
-.inactive-btn {
-  background-color: $grey-E7E;
-  color: $grey-9E9;
-  border: 1px solid $grey-E7E;
-  cursor: not-allowed;
-  &:hover,
-  &:active,
-  &:focus,
-  &:active:focus {
-    border: 1px solid $grey-E7E;
-    background-color: $grey-E7E;
-    color: $grey-9E9;
-  }
-}
 .secondary-btn {
-  background: transparent;
-  color: $primary;
-  border: 1px solid $primary;
+  @include font($black-191, "Inter-SemiBold", 1.6rem, 600, normal);
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid $black-191;
+  padding: 1.6rem 4rem;
+  cursor: pointer;
+
   &.btn-primary:not(:disabled):not(:disabled):active,
   &.btn-primary:not(:disabled):not(:disabled):active:focus,
   &:hover,
   &:active,
   &:focus,
   &:active:focus {
+    outline: none;
     box-shadow: none;
-    background: transparent;
-    color: $primary;
-    border: 1px solid $primary;
+    color: $black-191;
+    border: 1px solid $black-191;
+    background-color: transparent;
+  }
+
+  &:not(:disabled),
+  &:not(.disabled) {
+    cursor: auto;
   }
 }
+
+.grey-btn {
+  @include font($grey-7C7, "Inter-Medium", 1.3rem, 500, normal);
+  border-radius: 8px;
+  background-color: rgba(229, 229, 230, 0.5);
+  border: 1px solid $grey-D4D;
+  padding: 1.2rem 4rem;
+  cursor: pointer;
+
+  &.btn-primary:not(:disabled):not(:disabled):active,
+  &.btn-primary:not(:disabled):not(:disabled):active:focus,
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    outline: none;
+    box-shadow: none;
+    color: $grey-7C7;
+    border: 1px solid $grey-D4D;
+    background-color: rgba(229, 229, 230, 0.5);
+  }
+
+  &:not(:disabled),
+  &:not(.disabled) {
+    cursor: auto;
+  }
+}
+
 .inactive-state {
   cursor: not-allowed !important;
   opacity: 0.6;
 }
 
-.react-datepicker{
+
+.react-datepicker {
   display: flex;
   border: none;
   box-shadow: 0px -4px 21px rgba(0, 0, 0, 0.123661);
   border-radius: 1rem;
-  .react-datepicker__navigation{
+
+  .react-datepicker__navigation {
     top: 1.8rem;
   }
-  .react-datepicker__month-container{
-    .react-datepicker__header{
+
+  .react-datepicker__month-container {
+    .react-datepicker__header {
       // padding: 1.6rem 2.5rem;
       padding-top: 0;
       border-bottom: 0;
       border-color: $grey-EAE;
       background-color: $secondary;
-      .react-datepicker__current-month{
+
+      .react-datepicker__current-month {
         // @extend .proximanova-bold;
         font-size: 1.2rem;
         border-bottom: 1px solid $grey-EAE;
         padding: 1.45rem 1.8rem;
       }
-      .react-datepicker__day-names{
+
+      .react-datepicker__day-names {
         margin-top: 1rem;
-        .react-datepicker__day-name{
+
+        .react-datepicker__day-name {
           width: 2.3rem;
           font-size: 1rem;
         }
       }
     }
-    .react-datepicker__month{
-      .react-datepicker__week{
-        .react-datepicker__day{
+
+    .react-datepicker__month {
+      .react-datepicker__week {
+        .react-datepicker__day {
           // @extend .proximanova-regular;
           width: 2.3rem;
           font-size: 1rem;
           line-height: 21px;
-          &.react-datepicker__day--selected{
+
+          &.react-datepicker__day--selected {
             background-color: $blue-268;
             border-radius: 50%;
           }
@@ -617,32 +748,39 @@ form {
       }
     }
   }
+
   .react-datepicker__time-container {
     border-left: none;
-    .react-datepicker__header{
+
+    .react-datepicker__header {
       padding: 1.45rem 1.8rem;
       border-color: $grey-EAE;
-      .react-datepicker-time__header{
+
+      .react-datepicker-time__header {
         font-size: 1.2rem;
       }
     }
+
     .react-datepicker__header,
-    .react-datepicker__time{
+    .react-datepicker__time {
       background-color: $grey-F8F;
     }
-    .react-datepicker__time{
-      .react-datepicker__time-box{
-        .react-datepicker__time-list{
-          .react-datepicker__time-list-item--selected{
+
+    .react-datepicker__time {
+      .react-datepicker__time-box {
+        .react-datepicker__time-list {
+          .react-datepicker__time-list-item--selected {
             background-color: $blue-268;
-              color: $secondary;
+            color: $secondary;
           }
+
           .react-datepicker__time-list-item {
             padding: 1rem;
             height: auto;
             font-size: 1rem;
             font-weight: normal;
-            &:hover{
+
+            &:hover {
               background-color: $blue-268;
               color: $secondary;
             }
@@ -653,34 +791,41 @@ form {
     }
   }
 }
-.react-datepicker__input-container{
-  input{
+
+.react-datepicker__input-container {
+  input {
     // @include font($primary, "ProximaNova-Medium", 1.6rem, 400, 22px);
-    @include font($primary, "RedHatDisplay-Medium", 1.6rem, 500, 22px);
+    @include font($primary, "Inter-Medium", 1.6rem, 500, 22px);
   }
 }
 
-.react-datepicker{
+.react-datepicker {
   width: 100%;
   display: inline-block;
   box-shadow: none;
-  .react-datepicker__month-container{
+
+  .react-datepicker__month-container {
     width: 80.5%;
+
     .react-datepicker__header {
       .react-datepicker__day-names {
-        .react-datepicker__day-name{
+        .react-datepicker__day-name {
           width: 4rem;
           line-height: 26px;
         }
       }
     }
+
     .react-datepicker__month {
       .react-datepicker__week {
-        .react-datepicker__day{
+        .react-datepicker__day {
           width: 3.93rem;
           line-height: 26px;
-        }}}
+        }
+      }
+    }
   }
+
   // .react-datepicker__time-container{
   //   .react-datepicker__header--time{
   //     padding: 1.85rem 0.5rem;
@@ -688,24 +833,153 @@ form {
   // }
 }
 
-.form-wrapper{
+.form-wrapper {
   .react-datepicker {
-    .react-datepicker__month-container{
+    .react-datepicker__month-container {
       width: 74.4%;
+
       .react-datepicker__header {
         .react-datepicker__day-names {
-          .react-datepicker__day-name{
+          .react-datepicker__day-name {
             width: 3.1rem;
           }
         }
       }
+
       .react-datepicker__month {
         .react-datepicker__week {
-          .react-datepicker__day{
+          .react-datepicker__day {
             width: 3.1rem;
-          }}}
+          }
+        }
+      }
     }
   }
 }
 
+.tooltip.show {
+  opacity: 1;
+}
 // START FROM HERE
+.tool-tip-container {
+
+
+
+  .tooltip-inner {
+    background-color: $secondary ;
+    max-width: 39.2rem;
+    border: 0.1rem solid $grey-E5E;
+    border-radius: 8px;
+    opacity: 1;
+
+    ul {
+      // padding: inherit;
+      // width: auto;
+      // margin-left: -0.1rem;
+      // display: flex;
+      // flex-direction: column;
+      // justify-content: center;
+      // margin-bottom: -0.4rem;
+
+      li {
+        height: 2.5rem;
+
+        display: flex;
+        align-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        background: rgba(229, 229, 230, 0.5);
+        border: 0.1rem solid $grey-CAC;
+        border-radius: 0.4rem;
+        padding: 0.2rem 0.8rem;
+        margin-bottom: 0.4rem;
+
+        img {
+          width: 1.6rem;
+          margin-right:0.5rem;
+          margin-top: -0.1rem;
+        }
+      }
+
+    }
+
+  }
+
+  &.hover-chip{
+    .tooltip-inner{
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
+      border: 0;
+      border-radius: 4px;
+    }
+  }
+  &.question-hover{
+    .tooltip-inner{
+      padding: 1.2rem 1.6rem;
+      border: 0;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
+    }
+  }
+  &.bs-tooltip-top{
+    padding-bottom: 0.8rem;
+  }
+  .arrow::before {
+    border-top-color: $secondary;
+    top: -0.46rem;
+  }
+
+  .button-tooltip {
+    background-color: $secondary ;
+    color: $grey-313;
+    border-radius: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    // padding: 1.2rem 1.6rem;
+    // gap: 1.2rem;
+    // height: 5.6rem;
+    span {
+      display: flex;
+      align-items: center;
+      color: $grey-313;
+      text-align: left;
+      margin-left: 1.2rem;
+    }
+  }
+}
+
+.chip-container-dual {
+  right: 13rem;
+}
+
+.chip-container {
+  right: 9.2rem;
+}
+
+.chip-container,
+.chip-container-dual {
+  cursor: pointer;
+  position: absolute;
+  top: 0.7rem;
+  height: 2.5rem;
+  background: rgba(229, 229, 230, 0.5);
+  border: 0.1rem solid $grey-CAC;
+  border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+
+  .badge {
+    padding: 0.35rem 0.8rem 0.4rem;
+  }
+
+  img {
+    margin-right: 0.5rem;
+    width: 1.6rem;
+    margin-top: -0.1rem;
+  }
+}
+
+.modal-backdrop.show {
+  opacity: 0 !important;
+}

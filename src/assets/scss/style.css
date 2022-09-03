@@ -142,6 +142,10 @@ a:focus {
   opacity: 0.87;
 }
 
+.op-100{
+  opacity :1;
+}
+
 .f-s-10 {
   font-size: 1rem;
 }
@@ -225,7 +229,9 @@ a:focus {
 .lh-14 {
   line-height: 14px;
 }
-
+.lh-16{
+  line-height: 16px;
+}
 .lh-20 {
   line-height: 20px;
 }
