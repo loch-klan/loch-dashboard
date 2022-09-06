@@ -33,12 +33,12 @@ class AddWallet extends BaseReactComponent {
         let foundIndex = walletCopy.findIndex(obj => obj.id === name);
         if (foundIndex > -1) {
             walletCopy[foundIndex].address = value;
-            if (value.length > 50) {
+            if (value.length > 40) {
                 // let dots = "";
                 // for (var i = 0; i < value.length; i++) {
                 //     dots += ".";
                 // }
-                walletCopy[foundIndex].trucatedAddress = value.substring(0, 35) + "......" + value.substring(value.length - 5, value.length);
+                walletCopy[foundIndex].trucatedAddress = value.substring(0, 30) + "......" + value.substring(value.length - 5, value.length);
             } else {
                 walletCopy[foundIndex].trucatedAddress = value
             }
@@ -58,7 +58,7 @@ class AddWallet extends BaseReactComponent {
         }
         this.timeout = setTimeout(() => {
             this.getCoinBasedOnWalletAddress(name, value);
-        }, 300)
+        }, 50)
     }
 
     getCoinBasedOnWalletAddress = (name, value) => {
