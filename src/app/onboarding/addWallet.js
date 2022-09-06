@@ -32,7 +32,16 @@ class AddWallet extends BaseReactComponent {
         let walletCopy = [...this.state.walletInput];
         let foundIndex = walletCopy.findIndex(obj => obj.id === name);
         if (foundIndex > -1) {
-            walletCopy[foundIndex].address = value
+            walletCopy[foundIndex].address = value;
+            if (value.length > 50) {
+                let dots = "";
+                for (var i = 0; i < value.length; i++) {
+                    dots += ".";
+                }
+                walletCopy[foundIndex].trucatedAddress = value.substring(0, 5) + dots + value.substring(value.length - 5, value.length);
+            } else {
+                walletCopy[foundIndex].trucatedAddress = value
+            }
         }
         if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
             let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === name);
@@ -81,9 +90,11 @@ class AddWallet extends BaseReactComponent {
         this.state.walletInput.splice(index, 1);
         this.state.walletInput.map((w, i) => w.id = `wallet${i + 1}`)
         if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
+            this.props.OnboardingState.walletList.sort((a, b) => a.id > b.id ? 1 : -1);
             let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === `wallet${index + 1}`);
             if (findWalletEntry > -1) {
                 this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
+                this.props.OnboardingState.walletList.map((w, i) => w.id = `wallet${i + 1}`)
             }
         }
         this.setState({
@@ -101,15 +112,16 @@ class AddWallet extends BaseReactComponent {
                         <div className="ob-modal-body-1">
                             {this.state.walletInput.map((c, index) => {
                                 return <div className='ob-wallet-input-wrapper' key={index}>
-                                  {/* // <Col md={12} key={index}> */}
+                                    {/* // <Col md={12} key={index}> */}
 
                                     {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index)} /> : null}
                                     <input
                                         autoFocus
                                         name={`wallet${index + 1}`}
-                                        value={c.address || ""}
+                                        value={c.trucatedAddress || ""}
                                         className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${c.address && c.address.length > 50 ? 'text-ellipsis' : null} ${this.state.walletInput[index].address ? 'is-valid' : null}`}
                                         placeholder='Paste your wallet address here'
+                                        title={c.address || ""}
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.props.OnboardingState.walletList.map((e, i) => {
                                         if (this.state.walletInput[index].address && e.id === `wallet${index + 1}` && e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
@@ -121,27 +133,27 @@ class AddWallet extends BaseReactComponent {
                                         }
                                     })}
 
-                                {/* // </Col> */}
+                                    {/* // </Col> */}
                                 </div>
                             })}
                         </div>
+                    </div>
+                    {/* <Row> */}
+                    {this.state.addButtonVisible ?
+                        <div className='ob-modal-body-2'>
+                            <Button className="grey-btn" onClick={this.addInputField}>
+                                <img src={PlusIcon} /> Add another
+                            </Button>
                         </div>
-                        {/* <Row> */}
-                            {this.state.addButtonVisible ?
-                                <div className='ob-modal-body-2'>
-                                    <Button className="grey-btn" onClick={this.addInputField}>
-                                        <img src={PlusIcon} /> Add another
-                                    </Button>
-                                </div>
-                                : null
-                            }
-                        {/* </Row> */}
-                        {/* <Row> */}
-                            <div className='ob-modal-body-btn'>
-                                <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
-                                <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={!this.state.walletInput[0].address} buttonText="Go" />
-                            </div>
-                        {/* </Row> */}
+                        : null
+                    }
+                    {/* </Row> */}
+                    {/* <Row> */}
+                    <div className='ob-modal-body-btn'>
+                        <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
+                        <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={!this.state.walletInput[0].address} buttonText="Go" />
+                    </div>
+                    {/* </Row> */}
                     {/* </Container> */}
                 </Form>
             </>
