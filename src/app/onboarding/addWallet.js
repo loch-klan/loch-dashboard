@@ -108,7 +108,7 @@ class AddWallet extends BaseReactComponent {
                                         placeholder='Paste your wallet address here'
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.props.OnboardingState.walletList.map((e, i) => {
-                                        if (this.state.walletInput[index].address && e.id === `wallet${index + 1}` && e.coins && e.coins.length > 0) {
+                                        if (this.state.walletInput[index].address && e.id === `wallet${index + 1}` && e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                                             if (e.coinFound) {
                                                 return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i}></CustomChip>
                                             } else {
