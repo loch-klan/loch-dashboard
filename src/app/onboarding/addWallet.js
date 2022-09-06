@@ -33,12 +33,12 @@ class AddWallet extends BaseReactComponent {
         let foundIndex = walletCopy.findIndex(obj => obj.id === name);
         if (foundIndex > -1) {
             walletCopy[foundIndex].address = value;
-            if (value.length > 40) {
+            if (value.length > 44) {
                 // let dots = "";
                 // for (var i = 0; i < value.length; i++) {
                 //     dots += ".";
                 // }
-                walletCopy[foundIndex].trucatedAddress = value.substring(0, 30) + "......" + value.substring(value.length - 5, value.length);
+                walletCopy[foundIndex].trucatedAddress = value.substring(0, 32) + "......" + value.substring(value.length - 5, value.length);
             } else {
                 walletCopy[foundIndex].trucatedAddress = value
             }
@@ -113,13 +113,12 @@ class AddWallet extends BaseReactComponent {
                             {this.state.walletInput.map((c, index) => {
                                 return <div className='ob-wallet-input-wrapper' key={index}>
                                     {/* // <Col md={12} key={index}> */}
-
                                     {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index)} /> : null}
                                     <input
                                         autoFocus
                                         name={`wallet${index + 1}`}
                                         value={c.trucatedAddress || ""}
-                                        className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${c.address && c.address.length > 50 ? 'text-ellipsis' : null} ${this.state.walletInput[index].address ? 'is-valid' : null}`}
+                                        className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
                                         placeholder='Paste your wallet address here'
                                         title={c.address || ""}
                                         onChange={(e) => this.handleOnChange(e)} />

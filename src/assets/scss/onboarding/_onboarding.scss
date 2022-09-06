@@ -78,9 +78,11 @@
 
 
             }
-            .ob-modal-body-warapper{
-              padding: 0 9.4rem;
+
+            .ob-modal-body-warapper {
+                padding: 0 9.4rem;
             }
+
             .ob-modal-body-1,
             .ob-modal-body-2 {
 
@@ -90,6 +92,7 @@
                 position: relative;
                 margin: 0 0rem 0 2.4rem;
                 padding: 0 1rem 0 7rem;
+
                 .ob-modal-body-del {
                     border-radius: 0.8rem;
                     width: 3.8rem;
@@ -108,11 +111,13 @@
                 .ob-modal-body-add-btn {
                     margin: 1.2rem 0;
                 }
-                .ob-wallet-input-wrapper{
-                width: fit-content;
-                margin: auto;
-                position: relative;
+
+                .ob-wallet-input-wrapper {
+                    width: fit-content;
+                    margin: auto;
+                    position: relative;
                 }
+
                 input {
                     padding-right: 12rem;
                 }
@@ -124,7 +129,7 @@
                     border: 0.1rem solid #D4D4D4;
                     border-radius: 0.8rem;
                     height: 4rem;
-                    padding: 1rem 13rem 1.2rem 1.2rem;
+                    padding: 1rem 15rem 1.2rem 1.2rem;
                     color: #19191A;
 
                     &:active:focus,
