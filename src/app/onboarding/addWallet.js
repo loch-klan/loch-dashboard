@@ -79,6 +79,7 @@ class AddWallet extends BaseReactComponent {
 
     deleteInputField = (index) => {
         this.state.walletInput.splice(index, 1);
+        this.state.walletInput.map((w, i) => w.id = `wallet${i + 1}`)
         if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
             let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === `wallet${index + 1}`);
             if (findWalletEntry > -1) {
@@ -95,10 +96,13 @@ class AddWallet extends BaseReactComponent {
         return (
             <>
                 <Form onValidSubmit={this.onValidSubmit}>
-                    <Container>
-                        <Row className="ob-modal-body-1">
+                    {/* <Container> */}
+                    <div className='ob-modal-body-wrapper'>
+                        <div className="ob-modal-body-1">
                             {this.state.walletInput.map((c, index) => {
-                                return <Col md={12} key={index}>
+                                return <div className='ob-wallet-input-wrapper' key={index}>
+                                  {/* // <Col md={12} key={index}> */}
+
                                     {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index)} /> : null}
                                     <input
                                         autoFocus
@@ -116,27 +120,29 @@ class AddWallet extends BaseReactComponent {
                                             }
                                         }
                                     })}
-                                </Col>
 
+                                {/* // </Col> */}
+                                </div>
                             })}
-                        </Row>
-                        <Row>
+                        </div>
+                        </div>
+                        {/* <Row> */}
                             {this.state.addButtonVisible ?
-                                <Col md={12} className='ob-modal-body-2'>
+                                <div className='ob-modal-body-2'>
                                     <Button className="grey-btn" onClick={this.addInputField}>
                                         <img src={PlusIcon} /> Add another
                                     </Button>
-                                </Col>
+                                </div>
                                 : null
                             }
-                        </Row>
-                        <Row>
-                            <Col className='ob-modal-body-btn' md={12}>
+                        {/* </Row> */}
+                        {/* <Row> */}
+                            <div className='ob-modal-body-btn'>
                                 <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
                                 <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={!this.state.walletInput[0].address} buttonText="Go" />
-                            </Col>
-                        </Row>
-                    </Container>
+                            </div>
+                        {/* </Row> */}
+                    {/* </Container> */}
                 </Form>
             </>
         );
