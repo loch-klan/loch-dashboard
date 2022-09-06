@@ -335,12 +335,20 @@ form {
       }
     }
 
+    // .form-control::placeholder {
+    //   color: $grey-B6B;
+    //   font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+    //   line-height: 24px;
+    //   font-weight: 500;
+    //   font-size: 1.4rem;
+    // }
+
     .form-control::placeholder {
-      color: $grey-B6B;
-      font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
-      line-height: 24px;
-      font-weight: 500;
-      font-size: 1.4rem;
+      color: $grey-D4D;
+      font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
+      line-height: 1.9rem;
+      font-weight: 400;
+      font-size: 1.6rem;
     }
 
     .custom-select__control {

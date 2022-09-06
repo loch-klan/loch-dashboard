@@ -43,17 +43,48 @@
                 .is-valid {
                     border-color: #19191A !important;
                 }
+
+                // &::-webkit-scrollbar {
+                //     display: none;
+                // }
+
+                // #style-4::-webkit-scrollbar-track {
+                //     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                //     background-color: #F5F5F5;
+                // }
+
+                // #style-4::-webkit-scrollbar {
+                //     width: 10px;
+                //     background-color: #F5F5F5;
+                // }
+
+                // #style-4::-webkit-scrollbar-thumb {
+                //     background-color: #000000;
+                //     border: 2px solid #555555;
+                // }
+
+                &::-webkit-scrollbar {
+                    width: 0.4rem;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: rgb(90, 90, 90);
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: rgba(0, 0, 0, 0.2);
+                }
+
+
             }
 
-            .ob-modal-body-1::-webkit-scrollbar {
-                display: none;
-            }
 
             .ob-modal-body-1,
             .ob-modal-body-2 {
                 display: block;
                 width: 100%;
                 position: relative;
+
 
 
                 .ob-modal-body-del {
@@ -96,6 +127,11 @@
                         outline: none;
                         border-color: #19191A;
                     }
+                }
+
+                .text-ellipsis {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .ob-modal-body-text::placeholder {

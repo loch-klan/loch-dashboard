@@ -60,7 +60,8 @@ class AddWallet extends BaseReactComponent {
                     coinCode: this.props.OnboardingState.coinsList[i].code,
                     coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
                     coinName: this.props.OnboardingState.coinsList[i].name,
-                    address: value
+                    address: value,
+                    isLast: i === (this.props.OnboardingState.coinsList.length - 1)
                 })
             }
         }
@@ -91,29 +92,32 @@ class AddWallet extends BaseReactComponent {
     }
 
     render() {
-        console.log(this.props.OnboardingState)
         return (
             <>
                 <Form onValidSubmit={this.onValidSubmit}>
                     <Container>
                         <Row className="ob-modal-body-1">
                             {this.state.walletInput.map((c, index) => {
-                                return <div key={index}>
-                                    <Col md={12} >
-                                        {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index)} /> : null}
-                                        <input
-                                            autoFocus
-                                            name={`wallet${index + 1}`}
-                                            className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
-                                            placeholder='Paste your wallet address here'
-                                            onChange={(e) => this.handleOnChange(e)} />
-                                        {this.props.OnboardingState.walletList.map((e, i) => {
-                                            if (this.state.walletInput[index].address && e.id === `wallet${index + 1}` && e.coins && e.coins.length > 0) {
-                                                return <CustomChip coins={e.coins} key={i}></CustomChip>
+                                return <Col md={12} key={index}>
+                                    {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index)} /> : null}
+                                    <input
+                                        autoFocus
+                                        name={`wallet${index + 1}`}
+                                        value={c.address || ""}
+                                        className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${c.address && c.address.length > 50 ? 'text-ellipsis' : null} ${this.state.walletInput[index].address ? 'is-valid' : null}`}
+                                        placeholder='Paste your wallet address here'
+                                        onChange={(e) => this.handleOnChange(e)} />
+                                    {this.props.OnboardingState.walletList.map((e, i) => {
+                                        if (this.state.walletInput[index].address && e.id === `wallet${index + 1}` && e.coins && e.coins.length > 0) {
+                                            if (e.coinFound) {
+                                                return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i}></CustomChip>
+                                            } else {
+                                                return <CustomChip coins={null} key={i}></CustomChip>
                                             }
-                                        })}
-                                    </Col>
-                                </div>
+                                        }
+                                    })}
+                                </Col>
+
                             })}
                         </Row>
                         <Row>
