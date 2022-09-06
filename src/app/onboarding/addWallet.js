@@ -34,11 +34,11 @@ class AddWallet extends BaseReactComponent {
         if (foundIndex > -1) {
             walletCopy[foundIndex].address = value;
             if (value.length > 50) {
-                let dots = "";
-                for (var i = 0; i < value.length; i++) {
-                    dots += ".";
-                }
-                walletCopy[foundIndex].trucatedAddress = value.substring(0, 5) + dots + value.substring(value.length - 5, value.length);
+                // let dots = "";
+                // for (var i = 0; i < value.length; i++) {
+                //     dots += ".";
+                // }
+                walletCopy[foundIndex].trucatedAddress = value.substring(0, 35) + "......" + value.substring(value.length - 5, value.length);
             } else {
                 walletCopy[foundIndex].trucatedAddress = value
             }
