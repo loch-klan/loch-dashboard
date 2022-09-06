@@ -16,8 +16,15 @@ class Portfolio extends Component {
         return (
             <div className="portfolio-page-section">
                 <Sidebar ownerName="" />
-                <div className='portfolio-section page'>
-                    <WelcomeCard />
+                <div className='portfolio-container'>
+                    <div className='portfolio-section page'>
+                        <WelcomeCard />
+                    </div>
+                    <div className='portfolio-section page'>
+                        <div className=''>
+                            <h1 className='Inter-Medium'>Overview</h1>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
