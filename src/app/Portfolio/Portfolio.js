@@ -74,6 +74,7 @@ class Portfolio extends Component {
             chart: {
                 type: 'pie',
                 backgroundColor: null,
+                
                 events: {
                     render: function () {
                         var series = this.series[0],
@@ -103,7 +104,9 @@ class Portfolio extends Component {
                 }
 
             },
+            
             accessibility: {
+                
                 point: {
                     valueSuffix: '%'
                 }
@@ -119,9 +122,10 @@ class Portfolio extends Component {
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
+                    showInLegend: true,
                     dataLabels: {
-                        distance: '0%',
-                        format: '{point.name}: {y} %',
+                        distance: 0,
+                        format: '{point.name}',
                         backgroundColor: '#FFFFFF',
                         enabled: true,
                         crop: false,
@@ -130,10 +134,11 @@ class Portfolio extends Component {
                         borderRadius: 5,
                         verticalAlign: 'top',
                         style: {
-                            fontFamily: 'Helvetica, sans-serif',
+                            fontFamily: 'Inter-Regular',
                             fontSize: '10px',
                             fontWeight: 'normal',
-                            textShadow: 'none'
+                            // textShadow: 'none',
+                            // textOverflow: 'clip'
                         }
                     },
                 }
