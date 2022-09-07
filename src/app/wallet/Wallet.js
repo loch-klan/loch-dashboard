@@ -6,18 +6,17 @@ import WalletCard from './WalletCard';
 import { Image } from 'react-bootstrap';
 import Icon from "../../image/ArrowRight.svg"
 import { Button ,Dropdown , DropdownButton } from 'react-bootstrap';
-import DropDown from './DropDown';
+import DropDown from '../common/DropDown';
 import data from "./walletDate.js"
+import PageHeader from '../common/PageHeader';
+import CoinBadges from './../common/CoinBadges';
 
 class Wallet extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeBadge : 0,
             walletdata: data
-        };
-        this.badgeList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple"]
-
+        }
     }
 
     componentDidMount() { }
@@ -29,32 +28,13 @@ class Wallet extends Component {
                 <Sidebar ownerName="" />
                 <div className='wallet-section page'>
 
-                    <div className='m-b-36 wallet-page-header'>
-                        <div className='header'>
-                            <h4 className='inter-display-medium f-s-31 lh-37 m-b-12'>Wallets</h4>
-                            <p className="inter-display-medium f-s-16 lh-19">Manage all your wallets right here</p>
-                        </div>
-                        <Button className='primary-btn'>Add wallet</Button>
-                    </div>
-
-                    <div className='wallet-badges'>
-                        <div className='badge-list'>
-                            {this.badgeList.map((badge, index) => {
-                                const className = index == this.state.activeBadge ? "inter-display-medium f-s-13 lh-16 m-r-16 badge-name badge-active" : 
-                                "inter-display-medium f-s-13 lh-16 m-r-16 badge-name"
-                                return (
-                                    <div id={index} key={index} className={className}>{badge}</div>
-                                )
-                            })}
-                        </div>
-
-                        <DropDown 
-                        id="dropdown-basic-badge-button"
-                        title="Others"
-                        list={["Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple"]}
-                        />
-                    </div>
-
+                    <PageHeader
+                        title="Wallets"
+                        subTitle="Manage all your wallets right here"
+                        btnText="Add wallet"
+                    />
+                   
+                    <CoinBadges/>
                     <div className='m-b-32 sortby-section'>
                         <span className='inter-display-medium f-s-13 lh-16 m-r-24'>Sort by</span>
                         <div className='dropdown-section'>

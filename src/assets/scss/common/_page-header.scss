@@ -1,0 +1,21 @@
+        // page-header-begin
+        .page-header {
+
+            display: flex;
+            justify-content: space-between;
+            align-items:flex-start;
+            .header {
+                h4 {
+                    color: $primary;
+                }
+
+                p {
+                    color: $grey-ADA;
+                }
+            }
+            button{
+                padding: 1.5rem 2.6rem;
+            }
+        }
+
+        // page-header-end

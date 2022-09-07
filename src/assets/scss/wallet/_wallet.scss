@@ -3,78 +3,6 @@
 
     .wallet-section {
         margin-top: 8rem;
-
-        // page-header-begin
-        .wallet-page-header {
-
-            display: flex;
-            justify-content: space-between;
-            align-items:flex-start;
-            .header {
-                h4 {
-                    color: $primary;
-                }
-
-                p {
-                    color: $grey-ADA;
-                }
-            }
-            button{
-                padding: 1.5rem 2.6rem;
-            }
-        }
-
-        // page-header-end
-
-        // badge section start
-
-        .wallet-badges {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2.8rem;
-
-            .badge-list {
-                display: flex;
-                overflow-x: hidden;
-                background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
-
-                .badge-name {
-                    padding: 0.8rem 1.2rem;
-                    background: #FFFFFF;
-                    border: 0.1rem solid #E5E5E6;
-                    border-radius: 0.8rem;
-                    cursor: pointer;
-                }
-
-                .badge-active {
-                    background-color: $yellow-F5E ;
-                    border: 0.1rem solid #19191A;
-                }
-            }
-
-            .dropdown {
-                .dropdown-toggle {
-                    padding: 1.2rem 1.6rem;
-                    background: $secondary;
-                    border: 0.1rem solid #B0B1B3;
-                    border-radius: 0.8rem;
-                    color: $black-191;
-                    font-family: Inter-Medium;
-                    font-weight: 500;
-                    font-size: 1.3rem;
-                    line-height: 1.6rem;
-                    box-shadow: none;
-                }
-
-                .dropdown-toggle::after {
-                    margin-left: 1.2rem;
-
-                }
-            }
-        }
-
-        // badge section ends
-
         // sortby section begin
         .sortby-section {
             display: flex;
@@ -93,17 +21,9 @@
                     .dropdown-toggle {
                         border: none;
                         background: none;
-                        font-family: Inter-Medium;
-                        font-size: 1.3rem;
-                        line-height: 1.6rem;
                         color: $grey-7C7;
-                        cursor: pointer;
                         box-shadow: none;
                         padding: 0px;
-                    }
-
-                    .dropdown-toggle::after {
-                        margin-left: 1.235rem;
                     }
                 }
             }

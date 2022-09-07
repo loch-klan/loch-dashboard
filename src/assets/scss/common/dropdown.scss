@@ -1,0 +1,13 @@
+
+.dropdown{
+    .dropdown-toggle{
+        font-family: Inter-Medium;
+        font-size: 1.3rem;
+        font-weight: 500;
+        line-height: 1.6rem;
+        cursor: pointer;
+    }
+    .dropdown-toggle::after {
+        margin-left: 1.2rem;
+    }
+}
