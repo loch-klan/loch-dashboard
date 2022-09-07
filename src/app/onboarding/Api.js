@@ -27,7 +27,8 @@ export const detectCoin = (wallet) => {
         preLoginInstance
             .post("wallet/chain/detect-chain", data)
             .then((res) => {
-                if (!res.error && res.data && res.data.data.chain_detected) {
+                // && res.data.data.chain_detected
+                if (!res.error && res.data) {
                     dispatch({
                         type: WALLET_LIST,
                         payload: {
@@ -35,7 +36,9 @@ export const detectCoin = (wallet) => {
                             coinCode: wallet.coinCode,
                             coinSymbol: wallet.coinSymbol,
                             coinName: wallet.coinName,
-                            address: wallet.address
+                            address: wallet.address,
+                            chain_detected: res.data.data.chain_detected,
+                            isLast: wallet.isLast
                         }
                     });
                 }
