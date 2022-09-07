@@ -103,6 +103,16 @@ class AddWallet extends BaseReactComponent {
 
     }
 
+    isDisabled = () => {
+        let isDisableFlag = false;
+        this.state.walletInput.map((e) => {
+            if (!e.address) {
+                isDisableFlag = true;
+            }
+        })
+        return isDisableFlag;
+    }
+
     render() {
         return (
             <>
@@ -150,7 +160,7 @@ class AddWallet extends BaseReactComponent {
                     {/* <Row> */}
                     <div className='ob-modal-body-btn'>
                         <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
-                        <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={!this.state.walletInput[0].address} buttonText="Go" />
+                        <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={this.isDisabled()} buttonText="Go" />
                     </div>
                     {/* </Row> */}
                     {/* </Container> */}
