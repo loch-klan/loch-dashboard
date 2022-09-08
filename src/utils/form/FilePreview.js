@@ -27,7 +27,7 @@ const FilePreview = props => {
             progress && (
               <ProgressBar
                 striped
-                bsStyle="info"
+                bsstyle="info"
                 now={progress}
               />
             )

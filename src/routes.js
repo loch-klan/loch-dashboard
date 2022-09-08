@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom"
+import Login from "./app/common/Login"
 import { Home } from "./app/home"
-import Home2 from "./app/home/Home2"
 import { Profile } from "./app/profile"
 import Sandbox from "./utils/form/Sandbox"
 import PrivateRoute from "./utils/PrivateRoute"
@@ -8,20 +8,20 @@ import PrivateRoute from "./utils/PrivateRoute"
 const routes = [
   {
     path: "/",
-    name: "Home",
+    name: "Login",
     type: Route,
-    component: Home
+    component: Login
   },
   {
-    path: "/home2",
-    name: "Home2",
-    type: Route,
-    component: Home2
+    path: "/home",
+    name: "Home",
+    type: PrivateRoute,
+    component: Home
   },
   {
     path: "/profile",
     name: "Profile",
-    type: Route,
+    type: PrivateRoute,
     component: Profile
   },
   {

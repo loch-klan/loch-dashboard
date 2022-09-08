@@ -1,20 +1,9 @@
 const deleteToken = () => {
-  localStorage.removeItem('oemToken');
-  localStorage.removeItem('userDetails');
+  localStorage.removeItem('lochToken');
 };
 
 const getToken = () => {
-  const userDetails = localStorage.getItem('userDetails');
-  return userDetails ? JSON.parse(userDetails).token : null;
+  localStorage.getItem('lochToken');
 };
 
-const getScope = () => {
-  return JSON.parse(localStorage.getItem('userDetails')).account_permissions[0].account_id;
-};
-
-const getUserAccountType = () => {
-  const userDetails = localStorage.getItem('userDetails');
-  return userDetails ? JSON.parse(userDetails).user_account_type : null;
-};
-
-export { getToken, deleteToken, getScope, getUserAccountType };
+export { getToken, deleteToken };
