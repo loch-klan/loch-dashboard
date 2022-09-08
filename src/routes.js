@@ -18,12 +18,12 @@ const routes = [
     type: PrivateRoute,
     component: Home
   },
-  {
-    path: "/profile",
-    name: "Profile",
-    type: PrivateRoute,
-    component: Profile
-  },
+  // {
+  //   path: "/profile",
+  //   name: "Profile",
+  //   type: PrivateRoute,
+  //   component: Profile
+  // },
   {
     path: "/sandbox",
     name: "Sandox",
