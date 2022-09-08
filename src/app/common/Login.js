@@ -16,7 +16,7 @@ class Login extends BaseReactComponent {
 
   componentDidMount() {
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
-    deleteToken();
+    // deleteToken();
   }
 
   onValidSubmit = () => {
