@@ -7,6 +7,10 @@
 @include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 400, normal, ttf); //Need to change values
 @include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf); //Need to change values
 @include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf); //Need to change values
+@include font-face(SpaceGrotesk-Bold, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Bold", bold, bold, ttf); //Need to change values
+@include font-face(SpaceGrotesk-Light, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Light", 500, normal, ttf); //Need to change values
+@include font-face(SpaceGrotesk-Medium, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Medium", 500, normal, ttf);
+@include font-face(SpaceGrotesk-Regular, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Regular", normal, normal, ttf);
 // @include font-face(Inter-BoldItalic, "/assets/fonts/Inter/Inter-BoldItalic", bold, bold, ttf);
 
 // SET THE BASE HTML REM, MAKING 1REM=10PX
@@ -89,6 +93,22 @@ body {
 
 .inter-display-light {
   @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
+}
+
+.space-grotesk-bold {
+  @include font($primary, "SpaceGrotesk-Bold", 1.2rem, bold, normal);
+}
+
+.space-grotesk-light {
+  @include font($primary, "SpaceGrotesk-Light", 1.2rem, normal, normal);
+}
+
+.space-grotesk-medium {
+  @include font($primary, "SpaceGrotesk-Medium", 1.2rem, 500, normal);
+}
+
+.space-grotesk-regular {
+  @include font($primary, "SpaceGrotesk-Regular", 1.2rem, normal, normal);
 }
 
 @for $i from 1 through 100 {
@@ -179,7 +199,15 @@ body {
 }
 
 .grey-7C7 {
-  color: $grey-7C7
+  color: $grey-7C7;
+}
+
+.grey-5B5 {
+  color: $grey-5B5;
+}
+
+.grey-B0B {
+  color: $grey-B0B;
 }
 
 .image-wrapper {
