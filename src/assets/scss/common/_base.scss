@@ -48,12 +48,10 @@ body {
   display: flex;
   height: 100vh;
   overflow: scroll;
-
   .main-section-right {
     flex: 1;
-
     .main-content-wrapper {
-      padding: 2rem 3rem;
+      // padding: 2rem 3rem;
     }
   }
 }
@@ -317,11 +315,12 @@ form {
 
     .form-control,
     .custom-select__control {
-      font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: $black-191;
-      line-height: 19px;
+      @include font($black-191, "Inter-Regular", 1.6rem, normal, 19px);
+      // font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
+      // font-size: 1.6rem;
+      // font-weight: bold;
+      // color: $black-191;
+      // line-height: 19px;
       padding: 1.6rem;
       min-height: 51px;
       border-radius: 8px;

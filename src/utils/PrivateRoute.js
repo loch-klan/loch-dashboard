@@ -19,9 +19,14 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           // key ADDED TO MAKE EVERY ROUTE WITH DIFFERENT PARAMS ID UNIQUE AND CALL DID MOUNT
           // WHEN PARAM ID CHANGES.
           <div className='main-section'>
-            {/* <Sidenav {...props} /> */}
+            {/* {
+              props.location.pathname !== "home"
+              ?
+              {/* <Sidenav {...props} />
+              :
+              null
+            } */}
             <div className='main-section-right'>
-              {/* <Navbar /> */}
               <div className='main-content-wrapper'>
                 <Component key={props.location.pathname} {...props} />
               </div>
@@ -34,7 +39,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: "/",
               state: { from: props.location }
             }}
           />
