@@ -335,12 +335,20 @@ form {
       }
     }
 
+    // .form-control::placeholder {
+    //   color: $grey-B6B;
+    //   font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+    //   line-height: 24px;
+    //   font-weight: 500;
+    //   font-size: 1.4rem;
+    // }
+
     .form-control::placeholder {
-      color: $grey-B6B;
-      font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
-      line-height: 24px;
-      font-weight: 500;
-      font-size: 1.4rem;
+      color: $grey-D4D;
+      font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
+      line-height: 1.9rem;
+      font-weight: 400;
+      font-size: 1.6rem;
     }
 
     .custom-select__control {
@@ -956,19 +964,24 @@ form {
 .chip-container {
   right: 9.2rem;
 }
-
+.chip-wrapper{
+  display: flex;
+  position: absolute;
+  right: 1.2rem;
+  top: 0.7rem;
+}
 .chip-container,
 .chip-container-dual {
-  cursor: pointer;
-  position: absolute;
-  top: 0.7rem;
-  height: 2.5rem;
+  cursor: default;
+  // position: absolute;
+  // top: 0.7rem;
+  // height: 2.5rem;
   background: rgba(229, 229, 230, 0.5);
   border: 0.1rem solid $grey-CAC;
   border-radius: 0.4rem;
   display: flex;
   align-items: center;
-
+  margin-left: 0.7rem;
   .badge {
     padding: 0.35rem 0.8rem 0.4rem;
   }

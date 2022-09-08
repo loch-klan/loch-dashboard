@@ -41,7 +41,7 @@ class OnBoarding extends Component {
                     show={this.state.showModal}
                     showImage={true}
                     onHide={this.onClose}
-                    title={this.state.signInReq ? "Sign In" : "Welcome to Loch"}
+                    title={this.state.signInReq ? "Sign in" : "Welcome to Loch"}
                     subTitle={this.state.signInReq ? "Get right back into your account" : "Add your wallet address(es) to get started"}
                     icon={this.state.signInReq ? SignInIcon : WalletIcon}
                     isSignInActive={this.state.signInReq}
