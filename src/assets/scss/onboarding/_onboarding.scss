@@ -106,6 +106,7 @@
                 .grey-btn {
                     width: 59.2rem;
                     line-height: 1.3rem;
+                    margin-bottom: 1rem;
                 }
 
                 .ob-modal-body-add-btn {
@@ -150,10 +151,39 @@
                     color: #D4D4D4;
 
                 }
+                &.sign-in,
+                &.verification-code{
+                  .form-group{
+                    .form-control{
+                      width: 59.2rem;
+                      &::placeholder {
+                        color: #D4D4D4;
+                    }
+                    // &:active:focus,
+                    // &:active,
+                    // &:focus,
+                    // &:focus-visible {
+                    //     outline: none;
+                    //     border-color: #19191A;
+                    // }
+                    }
+                  }
+                }
+                &.verification-code{
+                  margin: auto;
+                  padding: inherit;
+                  .form-group{
+                    .form-control{
+                      width: 18.8rem;
+                      padding: 1.6rem 2.5rem;
+                      text-align: center;
+                    }
+                  }
+                }
             }
 
             .ob-modal-body-btn {
-                margin: 3.2rem 0 2rem;
+                margin: 2.2rem 0 2rem;
                 text-align: center;
 
                 .go-btn {
@@ -198,35 +228,39 @@
 
 }
 
-.verification-input-field {
-    div {
-        display: flex;
-        justify-content: center;
+// .verification-input-field {
+//     div {
+//         display: flex;
+//         justify-content: center;
 
-        input {
-            height: 5.1rem;
-            width: 18.8rem;
+//         input {
+//             height: 5.1rem;
+//             width: 18.8rem;
 
-            &::placeholder {
-                text-align: center;
-                color: #D4D4D4;
-            }
-        }
-    }
+//             &::placeholder {
+//                 text-align: center;
+//                 color: #D4D4D4;
+//             }
+//         }
+//     }
+// }
+
+.send-verification{
+  margin: 2rem 0 3rem;
 }
 
-.email-input-field {
-    div {
-        display: flex;
-        justify-content: center;
+// .email-input-field {
+//     div {
+//         display: flex;
+//         justify-content: center;
 
-        input {
-            height: 5.1rem;
-            width: 59.2rem;
+//         input {
+//             height: 5.1rem;
+//             width: 59.2rem;
 
-            &::placeholder {
-                color: #D4D4D4;
-            }
-        }
-    }
-}
+//             &::placeholder {
+//                 color: #D4D4D4;
+//             }
+//         }
+//     }
+// }
