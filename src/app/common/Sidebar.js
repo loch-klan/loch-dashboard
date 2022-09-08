@@ -26,7 +26,7 @@ function Sidebar(props) {
                                 <li>
                                     <NavLink
                                     exact={true}
-                                    className="nav-link"    to="/"
+                                    className="nav-link" to="/portfolio"
                                        activeclassname="active"> <Image src={HomeIcon} />Home</NavLink>
                                 </li>
                                 <li>

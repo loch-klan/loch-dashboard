@@ -174,7 +174,7 @@ class Portfolio extends Component {
                     },
                     states: {
                         hover: {
-                            enabled: true,                            
+                            enabled: true,
                             color: 'red'
                         }
                     }
@@ -183,8 +183,8 @@ class Portfolio extends Component {
             series: [{
                 name: 'Registrations',
                 // colorByPoint: true,
-                innerSize: '80%',
-                size: "85%",
+                innerSize: '75%',
+                size: "100%",
                 data: [{
                     name: 'Bitcoin',
                     y: 68.1,
@@ -209,14 +209,32 @@ class Portfolio extends Component {
                     borderColor: 'rgba(255, 206, 86, 1)',
                     borderWidth: 2,
                     color: 'rgba(255, 206, 86, 0.2)'
-                }, {
+                },
+                 {
                     name: 'Avalanche',
-                    y: 9.7,
+                    y: 2.5,
                     usd: "6,303",
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 2,
                     color: 'rgba(75, 192, 192, 0.2)'
-                }]
+                },
+                {
+                  name: 'Solana',
+                  y: 2.5,
+                  usd: "19,925",
+                  borderColor: 'rgba(255, 206, 86, 1)',
+                  borderWidth: 2,
+                  color: 'rgba(255, 206, 86, 0.2)'
+              },
+                {
+                  name: 'Avalanche',
+                  y: 4.7,
+                  usd: "6,303",
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  borderWidth: 2,
+                  color: 'rgba(75, 192, 192, 0.2)'
+              }
+              ]
             }]
         };
 
