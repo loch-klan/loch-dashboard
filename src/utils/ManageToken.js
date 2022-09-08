@@ -3,7 +3,8 @@ const deleteToken = () => {
 };
 
 const getToken = () => {
-  localStorage.getItem('lochToken');
+  const lochToken = localStorage.getItem('lochToken');
+  return lochToken;
 };
 
 export { getToken, deleteToken };
