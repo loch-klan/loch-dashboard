@@ -19,13 +19,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           // key ADDED TO MAKE EVERY ROUTE WITH DIFFERENT PARAMS ID UNIQUE AND CALL DID MOUNT
           // WHEN PARAM ID CHANGES.
           <div className='main-section'>
-            {
+            {/* {
               props.location.pathname !== "home"
               ?
-              {/* <Sidenav {...props} /> */}
+              {/* <Sidenav {...props} />
               :
               null
-            }
+            } */}
             <div className='main-section-right'>
               <div className='main-content-wrapper'>
                 <Component key={props.location.pathname} {...props} />
