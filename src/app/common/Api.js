@@ -6,8 +6,8 @@ export const loginApi = (ctx, data) => {
     .then(res => {
       console.log('res',res);
       if (!res.data.error) {
-        console.log('res', res.data.data);
-        console.log('ctx',ctx);
+        console.log('res', res.data.data.token);
+        console.log('ctx',ctx.props.history);
         localStorage.setItem('lochToken', res.data.data.token);
         ctx.props.history.push('/home');
       } else {
