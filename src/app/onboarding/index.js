@@ -9,6 +9,7 @@ import AddWallet from "./addWallet";
 import SignIn from "./signIn";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
 // export { default as OnboardingReducer } from "./OnboardingReducer";
 
 class OnBoarding extends Component {
@@ -40,7 +41,7 @@ class OnBoarding extends Component {
                     show={this.state.showModal}
                     showImage={true}
                     onHide={this.onClose}
-                    title={this.state.signInReq ? "Sign In" : "Welcome to Loch"}
+                    title={this.state.signInReq ? "Sign in" : "Welcome to Loch"}
                     subTitle={this.state.signInReq ? "Get right back into your account" : "Add your wallet address(es) to get started"}
                     icon={this.state.signInReq ? SignInIcon : WalletIcon}
                     isSignInActive={this.state.signInReq}
@@ -54,7 +55,9 @@ class OnBoarding extends Component {
                                 text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
                                 position="top"
                                 isIcon={true}
-                            ><Image src={InfoIcon} className="info-icon" /></CustomOverlay> </p>
+                                IconImage ={LockIcon}
+                                isInfo = {true}
+                            ><Image src={InfoIcon} className="info-icon cp" /></CustomOverlay> </p>
                     </div>
                 </OnboardingModal>
             </>

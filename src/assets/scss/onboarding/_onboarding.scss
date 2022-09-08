@@ -1,10 +1,8 @@
-// .home-body{
-//     background: rgba(25, 25, 26, 0.8);
-//     backdrop-filter: blur(30px);
-// }
-.overlay-banner{
-  width: 100%;
+.overlay-banner {
+    width: 100%;
+    height: 100vh;
 }
+
 .onboarding-modal {
     .modal-content {
         border-radius: 1.2rem !important;
@@ -35,7 +33,6 @@
         }
 
         .modal-body {
-            // padding: 4rem 9.4rem 3.6rem;
             padding: 4rem 0;
             text-align: center;
 
@@ -43,38 +40,82 @@
                 overflow-y: auto;
                 max-height: 20rem;
                 margin-left: 0rem;
-                .is-valid{
-                  border-color: #19191A !important;
+
+                .is-valid {
+                    border-color: #19191A !important;
                 }
+
+                // &::-webkit-scrollbar {
+                //     display: none;
+                // }
+
+                // #style-4::-webkit-scrollbar-track {
+                //     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                //     background-color: #F5F5F5;
+                // }
+
+                // #style-4::-webkit-scrollbar {
+                //     width: 10px;
+                //     background-color: #F5F5F5;
+                // }
+
+                // #style-4::-webkit-scrollbar-thumb {
+                //     background-color: #000000;
+                //     border: 2px solid #555555;
+                // }
+
+                &::-webkit-scrollbar {
+                    width: 0.4rem;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: rgb(90, 90, 90);
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: rgba(0, 0, 0, 0.2);
+                }
+
+
             }
 
-            .ob-modal-body-1::-webkit-scrollbar {
-                display: none;
+            .ob-modal-body-warapper {
+                padding: 0 9.4rem;
             }
 
             .ob-modal-body-1,
             .ob-modal-body-2 {
-                display: block;
-                width: 100%;
-                position: relative;
 
+                display: block;
+                width: fit-content;
+                margin: auto;
+                position: relative;
+                margin: 0 0rem 0 2.4rem;
+                padding: 0 1rem 0 7rem;
 
                 .ob-modal-body-del {
                     border-radius: 0.8rem;
-                    width: 6rem;
+                    width: 3.8rem;
                     position: absolute;
-                    // left: -5rem;
-                    left: 1rem;
-                    top: -0.6rem;
+                    left: -5.5rem;
+                    top: 0.14rem;
+                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+                    cursor: pointer;
                 }
 
                 .grey-btn {
                     width: 59.2rem;
-                    line-height: 13px;
+                    line-height: 1.3rem;
                 }
 
                 .ob-modal-body-add-btn {
                     margin: 1.2rem 0;
+                }
+
+                .ob-wallet-input-wrapper {
+                    width: fit-content;
+                    margin: auto;
+                    position: relative;
                 }
 
                 input {
@@ -88,7 +129,7 @@
                     border: 0.1rem solid #D4D4D4;
                     border-radius: 0.8rem;
                     height: 4rem;
-                    padding: 1rem 13rem 1rem 1.2rem;
+                    padding: 1rem 15rem 1.2rem 1.2rem;
                     color: #19191A;
 
                     &:active:focus,
@@ -96,8 +137,15 @@
                     &:focus,
                     &:focus-visible {
                         outline: none;
+                        border-color: #19191A;
                     }
                 }
+
+                .text-ellipsis {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
                 .ob-modal-body-text::placeholder {
                     color: #D4D4D4;
 
@@ -107,15 +155,17 @@
             .ob-modal-body-btn {
                 margin: 3.2rem 0 2rem;
                 text-align: center;
-                .go-btn{
-                  padding-left: 6rem;
-                  padding-right: 6rem;
+
+                .go-btn {
+                    padding-left: 6rem;
+                    padding-right: 6rem;
                 }
-                .preview{
-                  padding-left: 2.5rem;
-                  padding-right: 2.5rem;
-                  color: #636467;
-                  border-color: #636467;
+
+                .preview {
+                    padding-left: 2.5rem;
+                    padding-right: 2.5rem;
+                    color: #636467;
+                    border-color: #636467;
                 }
             }
 
@@ -127,10 +177,12 @@
 
             .ob-modal-body-info {
                 text-align: center;
-                .info-icon{
-                  margin-left: 5px;
-                  margin-bottom: 1px;
+
+                .info-icon {
+                    margin-left: 0.5rem;
+                    margin-bottom: 0.1rem;
                 }
+
                 h4 {
                     margin-bottom: 0.4rem;
                 }
@@ -146,16 +198,34 @@
 
 }
 
-.sign-in-container {
+.verification-input-field {
+    div {
+        display: flex;
+        justify-content: center;
 
-    .form-group {
-        div {
-            display: flex;
-            justify-content: center;
+        input {
+            height: 5.1rem;
+            width: 18.8rem;
 
-            input {
-                height: 5.1rem;
-                width: 59.2rem;
+            &::placeholder {
+                text-align: center;
+                color: #D4D4D4;
+            }
+        }
+    }
+}
+
+.email-input-field {
+    div {
+        display: flex;
+        justify-content: center;
+
+        input {
+            height: 5.1rem;
+            width: 59.2rem;
+
+            &::placeholder {
+                color: #D4D4D4;
             }
         }
     }

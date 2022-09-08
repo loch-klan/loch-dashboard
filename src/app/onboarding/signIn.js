@@ -6,7 +6,6 @@ import CustomButton from "../../utils/form/CustomButton";
 import CustomTextControl from "../../utils/form/CustomTextControl";
 import Form from "../../utils/form/Form";
 import FormElement from "../../utils/form/FormElement";
-import FormValidator from "../../utils/form/FormValidator";
 import { Col, Container, Row } from 'react-bootstrap';
 
 class SignIn extends BaseReactComponent {
@@ -37,9 +36,9 @@ class SignIn extends BaseReactComponent {
             <Form onValidSubmit={this.onValidSubmit} ref={el => this.form = el}>
                 <Container>
                     <Row className="show-grid">
-                        <Col md={12} className="sign-in-container">
+                        <Col md={12} className={`${this.state.isVerificationRequired ? "verification-input-field" : "email-input-field"}`}>
                             <FormElement
-                                className="inter-display-regular f-s-16 lh-20 ob-modal-signin-text"
+                                className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
                                 valueLink={this.linkState(this, this.state.isVerificationRequired ? "text" : "email")}
                                 // required
                                 // validations={[
