@@ -41,7 +41,7 @@ const routes = [
   {
     path: "/wallets",
     name: "Wallet",
-    type: Route,
+    type: PrivateRoute,
     component: Wallet
   },
   {
