@@ -22,7 +22,10 @@
                 align-items: flex-start;
                 justify-content: space-between;
 
+
+
                 .welcome-section-left {
+
                     .welcome-title {
                         font-size: 2.5rem;
                         line-height: 30px;
@@ -79,7 +82,30 @@
 
                 }
 
-                
+
+            }
+
+            .line-chart-section {
+                position: relative;
+
+                .chart-x-selection {
+                    .x-axis-selection-date {
+                        position: absolute;
+                        right: 4rem;
+                        bottom: 1.2rem;
+                        border: none;
+
+                    }
+
+                    .y-axis-selection-currency {
+                        position: absolute;
+                        /* top: 0rem; */
+                        z-index: 1;
+                        left: -0.7rem;
+                        top: 1.7rem;
+                        border: none;
+                    }
+                }
             }
         }
 
@@ -135,25 +161,4 @@
             }
         }
     }
-}
-
-
-.line-chart-section {
-    position: relative;
-}
-
-.x-axis-selection-date {
-    position: absolute;
-    right: 4rem;
-    bottom: 1.2rem;
-    border: none;
-    
-}
-.y-axis-selection-currency{
-    position: absolute;
-    /* top: 0rem; */
-    z-index: 1;
-    left: -0.7rem;
-    top: 1.7rem;
-    border: none;
 }
