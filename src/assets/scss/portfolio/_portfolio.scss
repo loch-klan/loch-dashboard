@@ -78,24 +78,28 @@
                     }
 
                 }
+
+                
             }
         }
+
         .highcharts-data-label-box {
             height: 3.5rem;
             text-align: center // padding: 0.8rem 1.2rem !important;
         }
-        
+
         .highcharts-xaxis-labels {
             font-family: 'Inter-Regular';
             font-weight: 400;
-            font-size: 1.2re,;
+            font-size: 1.2re, ;
             line-height: 2rem;
             color: $grey-869;
         }
-        .highcharts-yaxis-labels{
+
+        .highcharts-yaxis-labels {
             font-family: 'Inter-Regular';
             font-weight: 400;
-            font-size: 1.2re,;
+            font-size: 1.2re, ;
             line-height: 2rem;
             color: $grey-B0B;
         }
@@ -116,6 +120,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
 
             .pie-chart-middle-text-container {
                 text-align: center;
@@ -133,4 +138,22 @@
 }
 
 
+.line-chart-section {
+    position: relative;
+}
 
+.x-axis-selection-date {
+    position: absolute;
+    right: 4rem;
+    bottom: 1.2rem;
+    border: none;
+    
+}
+.y-axis-selection-currency{
+    position: absolute;
+    /* top: 0rem; */
+    z-index: 1;
+    left: -0.7rem;
+    top: 1.7rem;
+    border: none;
+}

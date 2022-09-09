@@ -108,11 +108,23 @@ class LineChart extends BaseReactComponent {
         }
         return (
             <div className="welcome-card-section">
-                <div className='chart-section'>
+                <div className='line-chart-section'>
+                    <div className='chart-x-selection'>
+                        <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 y-axis-selection-currency' >
+                            <option className=''> $ USD</option>
+                            <option className=''> $ USD</option>
+                        </select>
+                    </div>
                     <HighchartsReact
                         highcharts={Highcharts}
                         options={options}
                     />
+                    <div className='chart-x-selection'>
+                        <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 x-axis-selection-date' >
+                            <option className=''>By Month</option>
+                            <option className=''>By Year</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         );
