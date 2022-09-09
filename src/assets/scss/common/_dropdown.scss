@@ -1,6 +1,5 @@
-
-.dropdown{
-    .dropdown-toggle{
+.dropdown {
+    .dropdown-toggle {
         font-family: Inter-Medium;
         font-size: 1.3rem;
         font-weight: 500;
@@ -11,5 +10,8 @@
     }
     .dropdown-toggle::after {
         margin-left: 1.2rem;
+    }
+    .btn-primary.dropdown-toggle:focus {
+        box-shadow: none;
     }
 }

@@ -9,15 +9,18 @@ export default  [
         wallet_coins: [
             {
                 coin_img: "EthereumCoinIcon",
-                coin_percent: "20%"
+                coin_percent: "20%",
+                coin_name:"20%  1421.00 USD"
             },
             {
                 coin_img: "HeliumCoinIcon",
-                coin_percent: "30%"
+                coin_percent: "30%",
+                coin_name:"20%  1421.00 USD"
             },
             {
                 coin_img:"RenderCoinIcon",
-                coin_percent: "50%"
+                coin_percent: "50%",
+                coin_name:"20%  1421.00 USD"
             }
         ]
     },

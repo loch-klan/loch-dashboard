@@ -3,6 +3,7 @@
 
     .wallet-section {
         margin-top: 8rem;
+
         // sortby section begin
         .sortby-section {
             display: flex;
@@ -54,7 +55,7 @@
                             border-radius: 0.8rem;
                             background-color: #FFE7BD;
                             box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
-                            
+
 
                             img {
                                 width: 4.3rem;
@@ -85,6 +86,8 @@
 
                             span {
                                 color: $grey-B0B;
+                                width: 82%;
+                                overflow: hidden;
                             }
                         }
                     }
@@ -101,6 +104,7 @@
                         span {
                             letter-spacing: 0.125rem;
                             color: $grey-ADA;
+
                         }
                     }
                 }

@@ -4,23 +4,47 @@ import CopyClipboardIcon from '../../assets/images/CopyClipboardIcon.svg'
 import MetamaskIcon from '../../assets/images/MetamaskIcon.svg'
 import CoinChip from './CoinChip';
 import EditIcon from '../../assets/images/EditIcon.svg'
+import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
+import EditWalletModal from './EditWalletModal';
 
 export default function WalletCard(props) {
     console.log("PROPS")
     console.log(props)
 
-    
+    const [show, setShow] = React.useState(false);
 
-    const chips = props.wallet_coins.map((coin,index)=>{
-        return(
-            <CoinChip 
+    function handleClose() {
+        setShow(false);
+    }
+    function handleShow() {
+        console.log("show")
+        setShow(true)
+    }
+
+
+    console.log(show)
+    const chips = props.wallet_coins.map((coin, index) => {
+        return (
+            <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
                 key={index}
-                coin_img_src={coin.coin_img}
-                coin_percent = {coin.coin_percent}
-            />
+                isText={true}
+                text={coin.coin_name}
+            >
+                <div>
+                    <CoinChip
+                        key={index}
+                        coin_img_src={coin.coin_img}
+                        coin_percent={coin.coin_percent}
+                    />
+                </div>
+            </CustomOverlay>
+
         )
     })
-    const copyContent = ()=>{
+    const copyContent = () => {
         const text = document.getElementById("account_number").innerText
         console.log(text)
         navigator.clipboard.writeText(text)
@@ -32,7 +56,7 @@ export default function WalletCard(props) {
                 <div className='wallet-account-details'>
 
                     <div className='m-r-16 wallet-img'>
-                    <Image src={MetamaskIcon}/>
+                        <Image src={MetamaskIcon} />
                     </div>
 
                     <div className='m-r-16 wallet-name-details'>
@@ -42,7 +66,8 @@ export default function WalletCard(props) {
 
                     <div className='account-details' onClick={copyContent}>
                         <span className='inter-display-regular f-s-13 lh-16 m-r-5' id="account_number">{props.wallet_account_number}</span>
-                        <Image src={CopyClipboardIcon}/>
+                        <Image src={CopyClipboardIcon}
+                        />
                     </div>
 
                 </div>
@@ -54,10 +79,21 @@ export default function WalletCard(props) {
 
             <div className='coins-chip'>
                 <div className='chips-section'>
-                {chips}
+                    {chips}
                 </div>
-                <Image src={EditIcon} />
+                <Image src={EditIcon} onClick={handleShow} />
             </div>
+
+            {
+                show ?
+                    <EditWalletModal
+                        show={show}
+                        onHide={handleClose}
+                        walletIcon={MetamaskIcon}
+                        walletAddress="0x9450C3C62119A6A2268E249D4B837B4442733CB0"
+                    /> : ""
+            }
+
         </div>
     )
 }
