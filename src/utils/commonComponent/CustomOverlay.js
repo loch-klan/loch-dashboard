@@ -14,15 +14,16 @@ function CustomOverlay({ text, position, isIcon, children, IconImage, isInfo, is
                     {isIcon ? <Image src={IconImage} />  :  null}
                     <span className="inter-display-medium f-s-13 lh-16">{text}</span>
                 </div> :
-                    <ul>
-                        {text.map((e, i) =>
-                            i != 0 ?
-                                <li key={i}>
-                                    <Image src={e.coinSymbol} /><span>{e.coinName}</span>
-                                </li>
-                                : null
-                        )}
-                    </ul>
+
+                <ul>
+                    {text.map((e, i) =>
+                        i != 0 ?
+                            <li key={i}>
+                                <Image src={e.coinSymbol} /><span className='inter-display-medium f-s-13 grey-313 lh-16'>{e.coinName}</span>
+                            </li>
+                            : null
+                    )}
+                </ul>
 
             }
         </Tooltip>
