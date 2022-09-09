@@ -80,6 +80,25 @@
                 }
             }
         }
+        .highcharts-data-label-box {
+            height: 3.5rem;
+            text-align: center // padding: 0.8rem 1.2rem !important;
+        }
+        
+        .highcharts-xaxis-labels {
+            font-family: 'Inter-Regular';
+            font-weight: 400;
+            font-size: 1.2re,;
+            line-height: 2rem;
+            color: $grey-869;
+        }
+        .highcharts-yaxis-labels{
+            font-family: 'Inter-Regular';
+            font-weight: 400;
+            font-size: 1.2re,;
+            line-height: 2rem;
+            color: $grey-B0B;
+        }
     }
 
     .portfolio-over-container {
@@ -114,17 +133,4 @@
 }
 
 
-.highcharts-data-label-box {
-    height: 3.5rem;
-    text-align: center // padding: 0.8rem 1.2rem !important;
-}
 
-// .test1 {
-//     margin-left: 20px;
-//     margin-top: 20px;
-// }
-
-// .test2 {
-//     margin-bottom: 20px;
-//     font-size: 16px;
-// }
