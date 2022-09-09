@@ -13,6 +13,7 @@ class LineChart extends BaseReactComponent {
     }
 
     render() {
+        var UNDEFINED;
         const options = {
             title: {
                 text: null
@@ -38,7 +39,7 @@ class LineChart extends BaseReactComponent {
                 gridLineDashStyle: 'longdash',
                 labels: {
                     formatter: function () {
-                        return this.value;
+                        return Highcharts.numberFormat(this.value, -1, UNDEFINED, ',');
                     }
                 }
             },
