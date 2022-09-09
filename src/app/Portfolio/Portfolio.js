@@ -31,9 +31,9 @@ class Portfolio extends BaseReactComponent {
                         <LineChart />
 
                     </div>
-                    <div className='portfolio-section page'>
+                    {/* <div className='portfolio-section page'>
                         <WelcomeCard />  //temp
-                    </div>
+                    </div> */}
                 </div>
             </div>
         )
