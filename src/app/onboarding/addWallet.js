@@ -38,7 +38,8 @@ class AddWallet extends BaseReactComponent {
                 // for (var i = 0; i < value.length; i++) {
                 //     dots += ".";
                 // }
-                walletCopy[foundIndex].trucatedAddress = value.substring(0, 32) + "......" + value.substring(value.length - 5, value.length);
+                // walletCopy[foundIndex].trucatedAddress = value.substring(0, 32) + "......" + value.substring(value.length - 5, value.length);
+                walletCopy[foundIndex].trucatedAddress = value
             } else {
                 walletCopy[foundIndex].trucatedAddress = value
             }
@@ -103,6 +104,16 @@ class AddWallet extends BaseReactComponent {
 
     }
 
+    isDisabled = () => {
+        let isDisableFlag = false;
+        this.state.walletInput.map((e) => {
+            if (!e.address) {
+                isDisableFlag = true;
+            }
+        })
+        return isDisableFlag;
+    }
+
     render() {
         return (
             <>
@@ -119,7 +130,7 @@ class AddWallet extends BaseReactComponent {
                                         name={`wallet${index + 1}`}
                                         value={c.trucatedAddress || ""}
                                         className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
-                                        placeholder='Paste your wallet address here'
+                                        placeholder='Paste any wallet address here'
                                         title={c.address || ""}
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.props.OnboardingState.walletList.map((e, i) => {
@@ -150,7 +161,7 @@ class AddWallet extends BaseReactComponent {
                     {/* <Row> */}
                     <div className='ob-modal-body-btn'>
                         <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
-                        <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={!this.state.walletInput[0].address} buttonText="Go" />
+                        <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={this.isDisabled()} buttonText="Go" />
                     </div>
                     {/* </Row> */}
                     {/* </Container> */}
