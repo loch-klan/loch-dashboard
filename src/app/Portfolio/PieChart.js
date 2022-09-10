@@ -22,6 +22,17 @@ class PieChart extends BaseReactComponent {
                 //height: (9 / 16 * 100) + '%',
                 width: 1000,
                 events: {
+                    load: function (event) {
+                        //When is chart ready?
+                        event.target.series[0].data.map((e) => {
+                            if (e.colorIndex >= 4) {
+                                e.dataLabels[0].css({
+                                    opacity: 0,
+                                })
+                                    .add();
+                            }
+                        })
+                    },
                     render: function () {
                         var series = this.series[0],
                             seriesCenter = series.center,
@@ -41,7 +52,6 @@ class PieChart extends BaseReactComponent {
                                 })
                                 .add();
                         }
-
                         this.customTitle.attr({
                             x,
                             y: y + fontMetrics.f / 2
@@ -76,6 +86,8 @@ class PieChart extends BaseReactComponent {
                             enabled: true,
                         }
                     },
+                    shadow: false,
+                    allowPointSelect: true,
                     point: {
                         events: {
                             mouseOver: function () {
@@ -83,10 +95,16 @@ class PieChart extends BaseReactComponent {
                                 this.update({ color: color });
                                 var currentData = this;
                                 this.series.data.forEach(function (data) {
-                                    if (currentData.id !== data.id) {
+                                    if (currentData.colorIndex !== data.colorIndex) {
                                         data.update({ opacity: 0.2 }, true);
                                     } else {
                                         data.update({ opacity: 1 }, false);
+                                        if (data.colorIndex >= 4) {
+                                            data.dataLabels[0].css({
+                                                opacity: 1
+                                            })
+                                                .add();
+                                        }
                                     }
                                 })
                             },
@@ -95,6 +113,12 @@ class PieChart extends BaseReactComponent {
                                 this.update({ color: color });
                                 this.series.data.forEach(function (data) {
                                     data.update({ opacity: 1 }, false);
+                                    if (data.colorIndex >= 4) {
+                                        data.dataLabels[0].css({
+                                            opacity: 0
+                                        })
+                                            .add();
+                                    }
                                 });
                             }
                         },
@@ -103,6 +127,9 @@ class PieChart extends BaseReactComponent {
                         distance: 0,
                         tickWidth: 0,
                         padding: 12,
+                        style: {
+                            textShadow: false
+                        },
                         format: '<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16 test1" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16 test1" style="fill:#B0B1B3">${point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16 test1" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>',
                         backgroundColor: '#FFFFFF',
                         enabled: true,
@@ -121,6 +148,13 @@ class PieChart extends BaseReactComponent {
                 name: 'Registrations',
                 innerSize: '75%',
                 size: "100%",
+                states: {
+                    hover: {
+                        halo: {
+                            size: 0
+                        }
+                    }
+                },
                 data: [{
                     name: 'Bitcoin',
                     y: 68.1,
@@ -149,30 +183,30 @@ class PieChart extends BaseReactComponent {
                 },
                 {
                     name: 'Avalanche',
-                    y: 2.5,
-                    usd: "6,303",
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2,
-                    color: 'rgba(75, 192, 192, 0.2)',
-                    originalColor: 'rgba(75, 192, 192, 0.2)'
-                },
-                {
-                    name: 'Solana',
-                    y: 2.5,
-                    usd: "19,925",
-                    borderColor: 'rgba(255, 206, 86, 1)',
-                    borderWidth: 2,
-                    color: 'rgba(255, 206, 86, 0.2)',
-                    originalColor: 'rgba(255, 206, 86, 0.2)'
-                },
-                {
-                    name: 'Avalanche',
                     y: 4.7,
                     usd: "6,303",
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 2,
                     color: 'rgba(75, 192, 192, 0.2)',
                     originalColor: 'rgba(75, 192, 192, 0.2)'
+                },
+                {
+                    name: 'LiteCoin',
+                    y: 2.5,
+                    usd: "6,303",
+                    borderColor: '#7B44DA',
+                    borderWidth: 2,
+                    color: '#a07ddd',
+                    originalColor: '#a07ddd'
+                },
+                {
+                    name: 'Ripple',
+                    y: 2.5,
+                    usd: "19,925",
+                    borderColor: '#F19938',
+                    borderWidth: 2,
+                    color: '#e7c5a0',
+                    originalColor: '#e7c5a0'
                 }
                 ]
             }]

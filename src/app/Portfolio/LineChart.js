@@ -112,7 +112,12 @@ class LineChart extends BaseReactComponent {
                     <div className='chart-x-selection'>
                         <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 y-axis-selection-currency' >
                             <option className=''> $ USD</option>
-                            <option className=''> $ USD</option>
+                            <option className=''> ₫ VND</option>
+                            <option className=''> ₹ INR</option>
+                            <option className=''> Rs PKR</option>
+                            <option className=''> ₴ UAH</option>
+                            <option className=''> Ksh KES</option>
+
                         </select>
                     </div>
                     <HighchartsReact
@@ -120,9 +125,12 @@ class LineChart extends BaseReactComponent {
                         options={options}
                     />
                     <div className='chart-x-selection'>
-                        <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 x-axis-selection-date' >
-                            <option className=''>By Month</option>
-                            <option className=''>By Year</option>
+                        <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 x-axis-selection-date' >                            
+                            <option>Year</option>
+                            <option selected="selected">Month</option>
+                            <option>Day</option>
+                            <option>Week</option>
+                            <option>Hour</option>
                         </select>
                     </div>
                 </div>
