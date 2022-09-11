@@ -47,6 +47,22 @@ class LineChart extends BaseReactComponent {
                 align: 'right',
                 verticalAlign: 'top',
             },
+            tooltip: {
+                useHTML: true,
+                borderRadius: 8,
+                borderColor: "#fffff",
+                borderShadow: 0,
+                formatter: function () {
+                    return `<div style="display: flex;flex-direction:column;">
+                    <p style="padding-bottom:1.25rem"><span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100" style="">Potential External Factors</span></p>
+                    <p style="padding-bottom:1.25rem"><span class="inter-display-medium f-s-12 lh-16 black-191 w-100" style="background-color: #C6E4FF;padding:4px 8px 4px 8px; border-radius: 4px;">Increased Interests Rates</span><p>
+                    <p style="padding-bottom:1.25rem"><span class="inter-display-medium f-s-12 lh-16 black-191 lh-16 w-100" style="background-color: #F5E889;padding:4px 8px 4px 8px; border-radius: 4px;">Terra Collapse</span></p>
+                    <p style="padding-bottom:1.25rem"><span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100">INTERNAL Factors</span></p>
+                    <p style="padding-bottom:1.25rem"><span class="inter-display-medium f-s-12 lh-16 black-191 w-100" style="background-color: #F5E889;padding:4px 8px 4px 8px; border-radius: 4px;">0.7 BTC was deposited into a Coinbase Wallet </span></p>
+                    </div>`;
+                }
+            },
+
             // series: [
             //     {                    
             //         name: 'Bitcoin',
@@ -125,7 +141,7 @@ class LineChart extends BaseReactComponent {
                         options={options}
                     />
                     <div className='chart-x-selection'>
-                        <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 x-axis-selection-date' >                            
+                        <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 x-axis-selection-date' >
                             <option>Year</option>
                             <option selected="selected">Month</option>
                             <option>Day</option>
