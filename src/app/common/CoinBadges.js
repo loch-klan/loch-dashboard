@@ -1,6 +1,6 @@
 import React from 'react'
 import DropDown from './DropDown'
-export default function CoinBadges() {
+export default function CoinBadges(props) {
 
     const [activeBadge,setactiveBadge] = React.useState(0)
 
@@ -11,10 +11,10 @@ export default function CoinBadges() {
         <div className='coin-badges'>
             <div className='badge-list'>
                 {badgeList.map((badge, index) => {
-                    const className = index == activeBadge ? "inter-display-medium f-s-13 lh-16 m-r-16 badge-name badge-active" :
+                    const className = index == props.activeBadge ? "inter-display-medium f-s-13 lh-16 m-r-16 badge-name badge-active" :
                         "inter-display-medium f-s-13 lh-16 m-r-16 badge-name"
                     return (
-                        <div id={index} key={index} className={className}>{badge}</div>
+                        <div id={index} key={index} className={className} onClick={props.handleFunction}>{badge}</div>
                     )
                 })}
             </div>

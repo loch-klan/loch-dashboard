@@ -3,7 +3,8 @@
 
             display: flex;
             justify-content: space-between;
-            align-items:flex-start;
+            align-items: flex-start;
+
             .header {
                 h4 {
                     color: $primary;
@@ -13,7 +14,8 @@
                     color: $grey-ADA;
                 }
             }
-            button{
+
+            button {
                 padding: 1.5rem 2.6rem;
             }
         }

@@ -17,7 +17,9 @@ class Portfolio extends Component {
             <div className="portfolio-page-section">
                 <Sidebar ownerName="" />
                 <div className='portfolio-section page'>
-                    <WelcomeCard />
+                    <WelcomeCard 
+                        decrement ={true}
+                    />
                 </div>
             </div>
         )

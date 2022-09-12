@@ -7,6 +7,7 @@ import PrivateRoute from "./utils/PrivateRoute"
 import Portfolio from "./app/Portfolio/Portfolio"
 import Intelligence from "./app/intelligence/Intelligence"
 import Wallet from "./app/wallet/Wallet"
+import { Cost } from "./app/cost/Cost"
 const routes = [
   {
     path: "/",
@@ -43,6 +44,12 @@ const routes = [
     name: "Wallet",
     type: PrivateRoute,
     component: Wallet
+  },
+  {
+    path: "/costs",
+    name: "Costs",
+    type: Route,
+    component: Cost
   },
   {
     path: "/sandbox",
