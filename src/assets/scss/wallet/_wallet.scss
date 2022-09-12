@@ -86,8 +86,9 @@
 
                             span {
                                 color: $grey-B0B;
-                                width: 82%;
+                                width: 92%;
                                 overflow: hidden;
+                                text-overflow: ellipsis;
                             }
                         }
                     }
