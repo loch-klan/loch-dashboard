@@ -6,23 +6,19 @@ import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
 
-
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
         this.state = {}
-
     }
-
     componentDidMount() { }
-
     render() {
         return (
             <div className="portfolio-page-section" >
                 <Sidebar ownerName="" />
                 <div className='portfolio-container'>
                     <div className='portfolio-section page'>
-                        <WelcomeCard />
+                        <WelcomeCard decrement ={true} />
                     </div>
                     <div className='portfolio-section page'>
                         <PieChart />
@@ -36,7 +32,6 @@ class Portfolio extends BaseReactComponent {
     }
 }
 
-
 const mapStateToProps = state => ({
     portfolioState: state.PortfolioState
 });
@@ -48,6 +43,3 @@ Portfolio.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
-
-
-
