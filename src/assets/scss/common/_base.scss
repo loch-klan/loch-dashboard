@@ -7,6 +7,10 @@
 @include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 400, normal, ttf); //Need to change values
 @include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf); //Need to change values
 @include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf); //Need to change values
+@include font-face(SpaceGrotesk-Bold, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Bold", bold, bold, ttf); //Need to change values
+@include font-face(SpaceGrotesk-Light, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Light", 500, normal, ttf); //Need to change values
+@include font-face(SpaceGrotesk-Medium, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Medium", 500, normal, ttf);
+@include font-face(SpaceGrotesk-Regular, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Regular", normal, normal, ttf);
 // @include font-face(Inter-BoldItalic, "/assets/fonts/Inter/Inter-BoldItalic", bold, bold, ttf);
 
 // SET THE BASE HTML REM, MAKING 1REM=10PX
@@ -87,6 +91,22 @@ body {
 
 .inter-display-light {
   @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
+}
+
+.space-grotesk-bold {
+  @include font($primary, "SpaceGrotesk-Bold", 1.2rem, bold, normal);
+}
+
+.space-grotesk-light {
+  @include font($primary, "SpaceGrotesk-Light", 1.2rem, normal, normal);
+}
+
+.space-grotesk-medium {
+  @include font($primary, "SpaceGrotesk-Medium", 1.2rem, 500, normal);
+}
+
+.space-grotesk-regular {
+  @include font($primary, "SpaceGrotesk-Regular", 1.2rem, normal, normal);
 }
 
 @for $i from 1 through 100 {
@@ -170,6 +190,26 @@ body {
 
 .grey-313 {
   color: $grey-313;
+}
+
+.black-1D2 {
+  color: $black-1D2;
+}
+
+.grey-7C7 {
+  color: $grey-7C7;
+}
+
+.grey-5B5 {
+  color: $grey-5B5;
+}
+
+.grey-B0B {
+  color: $grey-B0B;
+}
+
+.black-191 {
+  color: $black-191;
 }
 
 .image-wrapper {
@@ -286,7 +326,7 @@ form {
       // color: $black-191;
       // line-height: 19px;
       padding: 1.6rem;
-      min-height: 51px;
+      min-height: 5.1rem;
       border-radius: 8px;
       border: 1px solid $grey-D4D;
     }
@@ -386,9 +426,9 @@ form {
     .form-text {
       display: block;
       margin-top: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 1rem;
       color: #737373;
-      font-size: 10px;
+      font-size: 1rem;
     }
 
     .has-error {
@@ -411,8 +451,8 @@ form {
 
   .input-group {
     .input-group-prepend {
-      padding: 6px 12px;
-      font-size: 14px;
+      padding: 0.6rem 1.2rem;
+      font-size: 1.4rem;
       font-weight: normal;
       line-height: 1;
       color: #555;
@@ -907,6 +947,7 @@ form {
           margin-right:0.5rem;
           margin-top: -0.1rem;
         }
+
       }
 
     }
@@ -968,7 +1009,7 @@ form {
     padding: 0.5rem 0.7rem;
     color: $black-191;
     background: $secondary;
-    
+
   }
 
   // .text-tooltip {
@@ -993,7 +1034,7 @@ form {
     padding: 0.5rem 0.7rem;
     color: $black-191;
     background: $secondary;
-    
+
   }
 }
 

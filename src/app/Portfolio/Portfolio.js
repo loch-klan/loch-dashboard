@@ -1,25 +1,31 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
 import Sidebar from '../common/Sidebar';
-
 import WelcomeCard from './WelcomeCard';
-class Portfolio extends Component {
+import PieChart from './PieChart';
+import LineChart from './LineChart';
+
+class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
         this.state = {}
     }
-
     componentDidMount() { }
-
     render() {
         return (
-            <div className="portfolio-page-section">
+            <div className="portfolio-page-section" >
                 <Sidebar ownerName="" />
-                <div className='portfolio-section page'>
-                    <WelcomeCard 
-                        decrement ={true}
-                    />
+                <div className='portfolio-container'>
+                    <div className='portfolio-section page'>
+                        <WelcomeCard decrement ={true} />
+                    </div>
+                    <div className='portfolio-section page'>
+                        <PieChart />
+                    </div>
+                    <div className='portfolio-section page'>
+                        <LineChart />
+                    </div>
                 </div>
             </div>
         )
@@ -37,6 +43,3 @@ Portfolio.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
-
-
-

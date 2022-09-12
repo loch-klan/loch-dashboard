@@ -1,3 +1,7 @@
+.portfolio-container {
+    width: 80%;
+}
+
 .portfolio-page-section {
 
     display: flex;
@@ -6,7 +10,7 @@
 
         .welcome-card-section {
             margin-top: 9.6rem;
-            
+
             padding: 6.8rem 4.8rem 6rem 4.8rem;
             // width: 89.6rem;
             background-color: $secondary;
@@ -18,7 +22,10 @@
                 align-items: flex-start;
                 justify-content: space-between;
 
+
+
                 .welcome-section-left {
+
                     .welcome-title {
                         font-size: 2.5rem;
                         line-height: 30px;
@@ -48,6 +55,7 @@
                     display: flex;
                     flex-direction: column;
                     align-items: flex-end;
+
                     .wallet-amount {
                         font-size: 3.9rem;
                         line-height: 47px;
@@ -56,16 +64,17 @@
                     }
 
                     button {
-                       
+
                         font-size: 1.6rem;
-                       
+
                         line-height: 19px;
                         padding: 0.85rem 1.2rem;
                         color: $grey-313;
                         background: $green-44F;
                         border: 0.1rem solid #000000;
                         border-radius: 0.812rem;
-                        box-shadow:none;
+                        box-shadow: none;
+
                         img {
                             margin-right: 0.4rem;
                         }
@@ -75,6 +84,83 @@
                     }
                     
 
+                }
+
+
+            }
+
+            .line-chart-section {
+                position: relative;
+
+                .chart-x-selection {
+                    .x-axis-selection-date {
+                        position: absolute;
+                        right: 4rem;
+                        bottom: 1.2rem;
+                        border: none;
+
+                    }
+
+                    .y-axis-selection-currency {
+                        position: absolute;
+                        /* top: 0rem; */
+                        z-index: 1;
+                        left: -0.7rem;
+                        top: 1.7rem;
+                        border: none;
+                    }
+                }
+            }
+        }
+
+        .highcharts-data-label-box {
+            height: 3.5rem;
+            text-align: center // padding: 0.8rem 1.2rem !important;
+        }
+
+        .highcharts-xaxis-labels {
+            font-family: 'Inter-Regular';
+            font-weight: 400;
+            font-size: 1.2re, ;
+            line-height: 2rem;
+            color: $grey-869;
+        }
+
+        .highcharts-yaxis-labels {
+            font-family: 'Inter-Regular';
+            font-weight: 400;
+            font-size: 1.2re, ;
+            line-height: 2rem;
+            color: $grey-B0B;
+        }
+    }
+
+    .portfolio-over-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding-top: 5rem;
+
+        .overview-heading {
+            width: 100%;
+        }
+
+        .chart-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+
+            .pie-chart-middle-text-container {
+                text-align: center;
+
+                .pie-chart-middle-text {
+                    display: flex;
+
+                    .pie-chart-middle-text-currency {
+                        margin-top: 1.2rem;
+                    }
                 }
             }
         }

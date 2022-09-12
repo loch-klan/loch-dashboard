@@ -1,9 +1,7 @@
 import React from 'react'
-import {Container , Button , Image} from "react-bootstrap"
+import { Button , Image} from "react-bootstrap"
 import arrowUpRight from '../../image/ArrowUpRight.svg'
-
 export default function WelcomeCard(props) {
-
   return (
     <div className="welcome-card-section">
             <div className="welcome-card">
@@ -18,7 +16,7 @@ export default function WelcomeCard(props) {
                 </div>
                 <div className='welcome-section-right'>
                     <h3 className="inter-display-medium wallet-amount">$317,068.00</h3>
-                    
+
                     <Button className={props.decrement ? "inter-display-medium downfall" : "inter-display-medium" }>
                         <Image src={arrowUpRight} />
                         330.10 (1%)
