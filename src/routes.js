@@ -4,7 +4,8 @@ import { Home } from "./app/home"
 import { Profile } from "./app/profile"
 import Sandbox from "./utils/form/Sandbox"
 import PrivateRoute from "./utils/PrivateRoute"
-
+import Portfolio from "./app/Portfolio/Portfolio"
+import Intelligence from "./app/intelligence/Intelligence"
 const routes = [
   {
     path: "/",
@@ -24,6 +25,18 @@ const routes = [
   //   type: PrivateRoute,
   //   component: Profile
   // },
+  {
+    path: "/portfolio",
+    name: "Portfolio",
+    type: Route,
+    component: Portfolio
+  },
+  {
+    path: "/intelligence",
+    name: "Intelligence",
+    type: Route,
+    component: Intelligence
+  },
   {
     path: "/sandbox",
     name: "Sandox",

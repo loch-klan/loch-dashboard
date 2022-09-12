@@ -38,6 +38,7 @@
 
             .ob-modal-body-1 {
                 overflow-y: auto;
+
                 max-height: 20rem;
                 margin-left: 0rem;
 
@@ -70,10 +71,14 @@
 
                 &::-webkit-scrollbar-thumb {
                     background: rgb(90, 90, 90);
+                    // border-radius: 2rem;
+                    border-radius: 0.8rem;
                 }
 
                 &::-webkit-scrollbar-track {
                     background: rgba(0, 0, 0, 0.2);
+                    // border-radius: 2rem;
+                    border-radius: 0.8rem;
                 }
 
 
@@ -151,34 +156,39 @@
                     color: #D4D4D4;
 
                 }
+
                 &.sign-in,
-                &.verification-code{
-                  .form-group{
-                    .form-control{
-                      width: 59.2rem;
-                      &::placeholder {
-                        color: #D4D4D4;
+                &.verification-code {
+                    .form-group {
+                        .form-control {
+                            width: 59.2rem;
+
+                            &::placeholder {
+                                color: #D4D4D4;
+                            }
+
+                            // &:active:focus,
+                            // &:active,
+                            // &:focus,
+                            // &:focus-visible {
+                            //     outline: none;
+                            //     border-color: #19191A;
+                            // }
+                        }
                     }
-                    // &:active:focus,
-                    // &:active,
-                    // &:focus,
-                    // &:focus-visible {
-                    //     outline: none;
-                    //     border-color: #19191A;
-                    // }
-                    }
-                  }
                 }
-                &.verification-code{
-                  margin: auto;
-                  padding: inherit;
-                  .form-group{
-                    .form-control{
-                      width: 18.8rem;
-                      padding: 1.6rem 2.5rem;
-                      text-align: center;
+
+                &.verification-code {
+                    margin: auto;
+                    padding: inherit;
+
+                    .form-group {
+                        .form-control {
+                            width: 18.8rem;
+                            padding: 1.6rem 2.5rem;
+                            text-align: center;
+                        }
                     }
-                  }
                 }
             }
 
@@ -214,7 +224,7 @@
                 }
 
                 h4 {
-                    margin-bottom: 0.4rem;
+                    margin: 3.4rem 0;
                 }
 
                 span {
@@ -245,8 +255,8 @@
 //     }
 // }
 
-.send-verification{
-  margin: 2rem 0 3rem;
+.send-verification {
+    margin: 2rem 0 3rem;
 }
 
 // .email-input-field {
