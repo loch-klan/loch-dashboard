@@ -4,16 +4,16 @@
     display: flex;
     align-items: center;
     margin-bottom: 2.8rem;
-    
+    justify-content: space-between;
     .badge-list {
         display: flex;
         overflow-x: hidden;
-        background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
+        // background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
 
         .badge-name {
             padding: 0.8rem 1.2rem;
             background: #FFFFFF;
-            border: 0.1rem solid #E5E5E6;
+            border: 0.1rem solid $grey-CAC;
             border-radius: 0.8rem;
             cursor: pointer;
         }

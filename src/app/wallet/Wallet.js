@@ -34,7 +34,9 @@ class Wallet extends Component {
                         btnText="Add wallet"
                     />
                    
-                    <CoinBadges/>
+                    <CoinBadges
+                        activeBadge={0}
+                    />
                     <div className='m-b-32 sortby-section'>
                         <span className='inter-display-medium f-s-13 lh-16 m-r-24'>Sort by</span>
                         <div className='dropdown-section'>

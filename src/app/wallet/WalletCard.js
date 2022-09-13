@@ -6,7 +6,7 @@ import CoinChip from './CoinChip';
 import EditIcon from '../../assets/images/EditIcon.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import EditWalletModal from './EditWalletModal';
-
+import EthereumTextIcon from '../../assets/images/icons/EthereumTextIcon.svg';
 export default function WalletCard(props) {
     console.log("PROPS")
     console.log(props)
@@ -27,11 +27,12 @@ export default function WalletCard(props) {
         return (
             <CustomOverlay
                 position="top"
-                isIcon={false}
+                isIcon={true}
                 isInfo={true}
                 key={index}
                 isText={true}
                 text={coin.coin_name}
+                IconImage={EthereumTextIcon}
             >
                 <div>
                     <CoinChip
@@ -65,7 +66,7 @@ export default function WalletCard(props) {
                     </div>
 
                     <div className='account-details' onClick={copyContent}>
-                        <span className='inter-display-regular f-s-13 lh-16 m-r-5' id="account_number">{props.wallet_account_number}</span>
+                        <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
                         <Image src={CopyClipboardIcon}
                         />
                     </div>

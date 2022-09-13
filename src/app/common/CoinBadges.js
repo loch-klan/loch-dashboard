@@ -18,7 +18,7 @@ export default function CoinBadges(props) {
                     )
                 })}
             </div>
-
+            
             <DropDown
                 id="dropdown-basic-badge-button"
                 title="Others"

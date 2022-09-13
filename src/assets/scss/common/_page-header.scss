@@ -3,7 +3,7 @@
 
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
 
             .header {
                 h4 {
@@ -16,7 +16,9 @@
             }
 
             button {
-                padding: 1.5rem 2.6rem;
+                padding: 1.3rem 2.6rem;
+                border:0.1rem solid $black-171;
+                line-height: 2.4rem;
             }
         }
 

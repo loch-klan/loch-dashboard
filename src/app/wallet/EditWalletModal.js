@@ -10,6 +10,7 @@ import CustomChip from '../../utils/commonComponent/CustomChip'
 import FormValidator from './../../utils/form/FormValidator';
 import Wallet from './Wallet';
 import BaseReactComponent from './../../utils/form/BaseReactComponent';
+import EtherIcon from '../../assets/images/icons/ether-coin.svg'
 
 class EditWalletModal extends BaseReactComponent {
 
@@ -25,16 +26,16 @@ class EditWalletModal extends BaseReactComponent {
         }
         this.chipJson = [
             {
-                coinSymbol: EthereumCoinIcon,
+                coinSymbol: EtherIcon,
                 coinName: "Ethereum"
             },
             {
-                coinSymbol: EthereumCoinIcon,
-                coinName: "Helium"
+                coinSymbol: EtherIcon,
+                coinName: "Ethereum"
             },
             {
-                coinSymbol: EthereumCoinIcon,
-                coinName: "Solana"
+                coinSymbol: EtherIcon,
+                coinName: "Ethereum"
             }
         ]
     }
@@ -54,6 +55,7 @@ class EditWalletModal extends BaseReactComponent {
                 <div className='chipcontainer'>
                     <Image src={e.coinSymbol} />
                     <div className='inter-display-medium f-s-13 lh-16'>{e.coinName}</div>
+                
                 </div>
             )
         })
