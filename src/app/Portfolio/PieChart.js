@@ -233,7 +233,6 @@ class PieChart extends BaseReactComponent {
                 ]
             }]
         };
-        console.log(this.state.pieSectionDataEnabled)
         return (
             <div className='portfolio-over-container'>
                 <h1 className='Inter-Medium overview-heading'>Overview</h1>

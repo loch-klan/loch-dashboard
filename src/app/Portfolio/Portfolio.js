@@ -129,15 +129,14 @@ class Portfolio extends BaseReactComponent {
     }
 
     render() {
-        //console.log(this.props);
-        console.log(this.props)
+        // console.log(this.props)
         return (
 
             <div className="portfolio-page-section" >
                 <Sidebar ownerName="" />
                 <div className='portfolio-container'>
                     <div className='portfolio-section page'>
-                        <WelcomeCard />
+                        <WelcomeCard decrement={true} />
                     </div>
                     <div className='portfolio-section page'>
                         <PieChart />
@@ -150,7 +149,6 @@ class Portfolio extends BaseReactComponent {
         )
     }
 }
-
 
 const mapStateToProps = state => ({
     portfolioState: state.PortfolioState

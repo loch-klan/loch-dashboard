@@ -1,9 +1,9 @@
 import React from 'react'
-import {Container , Button , Image} from "react-bootstrap"
+import { Button, Image } from "react-bootstrap"
 import arrowUpRight from '../../image/ArrowUpRight.svg'
-export default function WelcomeCard() {
-  return (
-    <div className="welcome-card-section">
+export default function WelcomeCard(props) {
+    return (
+        <div className="welcome-card-section">
             <div className="welcome-card">
                 <div className='welcome-section-left'>
                     <h1 className='inter-display-semi-bold f-s-25 l-h30 black-191 welcome-title'>Welcome to Loch</h1>
@@ -16,13 +16,13 @@ export default function WelcomeCard() {
                 </div>
                 <div className='welcome-section-right'>
                     <h3 className="space-grotesk-medium wallet-amount">$317,068.00</h3>
-                    
-                    <Button className="inter-display-medium">
+
+                    <Button className={props.decrement ? "inter-display-medium downfall" : "inter-display-medium"}>
                         <Image src={arrowUpRight} />
                         330.10 (1%)
                     </Button>
                 </div>
             </div>
-    </div>
-  )
+        </div>
+    )
 }

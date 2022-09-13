@@ -130,7 +130,7 @@ class AddWallet extends BaseReactComponent {
                                         name={`wallet${index + 1}`}
                                         value={c.trucatedAddress || ""}
                                         className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
-                                        placeholder='Paste your wallet address here'
+                                        placeholder='Paste any wallet address here'
                                         title={c.address || ""}
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.props.OnboardingState.walletList.map((e, i) => {
