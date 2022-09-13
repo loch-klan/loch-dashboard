@@ -9,11 +9,14 @@ class PieChart extends BaseReactComponent {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            pieSectionDataEnabled: {}
+        }
 
     }
 
     render() {
+        let self = this;
         const options = {
             chart: {
                 styledMode: false,
@@ -81,24 +84,37 @@ class PieChart extends BaseReactComponent {
                     cursor: 'pointer',
                     connectorPadding: 2,
                     states: {
-                        inactive: {
-                            opacity: 0,
-                            enabled: true,
-                        }
+                        // inactive: {
+                        //     enabled: true,
+                        //     opacity: 0,
+                        // }
                     },
                     shadow: false,
                     allowPointSelect: true,
                     point: {
                         events: {
+                            click: function () {
+                                let currentHoverData = Object.keys(self.state.pieSectionDataEnabled).length > 0 ? {} : this
+                                self.setState({ pieSectionDataEnabled: currentHoverData });
+                            },
                             mouseOver: function () {
                                 let color = this.options.borderColor;
                                 this.update({ color: color });
                                 var currentData = this;
+                                // self.setState({ pieSectionDataEnabled: currentData });
                                 this.series.data.forEach(function (data) {
                                     if (currentData.colorIndex !== data.colorIndex) {
                                         data.update({ opacity: 0.2 }, true);
+                                        data.dataLabel.css({
+                                            opacity: 0
+                                        })
+                                            .add();
                                     } else {
                                         data.update({ opacity: 1 }, false);
+                                        data.dataLabel.css({
+                                            opacity: 1
+                                        })
+                                            .add();
                                         if (data.colorIndex >= 4) {
                                             data.dataLabels[0].css({
                                                 opacity: 1
@@ -111,11 +127,17 @@ class PieChart extends BaseReactComponent {
                             mouseOut: function () {
                                 let color = this.options.originalColor;
                                 this.update({ color: color });
+                                // self.setState({ pieSectionDataEnabled: {} })
                                 this.series.data.forEach(function (data) {
                                     data.update({ opacity: 1 }, false);
                                     if (data.colorIndex >= 4) {
                                         data.dataLabels[0].css({
                                             opacity: 0
+                                        })
+                                            .add();
+                                    } else {
+                                        data.dataLabels[0].css({
+                                            opacity: 1
                                         })
                                             .add();
                                     }
@@ -130,7 +152,7 @@ class PieChart extends BaseReactComponent {
                         style: {
                             textShadow: false
                         },
-                        format: '<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16 test1" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16 test1" style="fill:#B0B1B3">${point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16 test1" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>',
+                        format: '<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">${point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>',
                         backgroundColor: '#FFFFFF',
                         enabled: true,
                         crop: false,
@@ -211,6 +233,7 @@ class PieChart extends BaseReactComponent {
                 ]
             }]
         };
+        console.log(this.state.pieSectionDataEnabled)
         return (
             <div className='portfolio-over-container'>
                 <h1 className='Inter-Medium overview-heading'>Overview</h1>
@@ -220,8 +243,11 @@ class PieChart extends BaseReactComponent {
                         options={options}
                     />
                 </div>
+                {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
+                    <div className='welcome-card-section'>
+                        <h1>Hey</h1>
+                    </div> : null}
             </div>
-
         )
 
     }
