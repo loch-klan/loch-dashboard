@@ -6,6 +6,7 @@ import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
 import { getCoinRate, getUserWallet } from "./Api";
+import { Loading } from 'react-loading-dot';
 
 class Portfolio extends BaseReactComponent {
     constructor(props) {
@@ -103,48 +104,81 @@ class Portfolio extends BaseReactComponent {
                     "address": "0xF977814e90dA44bFA03b6295A0616a897441aceC",
                     "coinFound": true
                 }
-            ]
+            ],
+            assetTotalValue: 0,
+            loader: true
         }
 
     }
 
     componentDidMount() {
-        if (this.state && this.state.userWalletList && this.state.userWalletList.length > 0) {
-            for (let i = 0; i < this.state.userWalletList.length; i++) {
-                if (this.state.userWalletList[i].coinFound) {
-                    for (let j = 0; j < this.state.userWalletList[i].coins.length; j++) {
-                        if (this.state.userWalletList[i].coins[j].chain_detected) {
-                            let userCoinWallet = {
-                                address: this.state.userWalletList[i].address,
-                                coinCode: this.state.userWalletList[i].coins[j].coinCode
+        this.props.getCoinRate()
+    }
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.portfolioState.coinRateList !== prevProps.portfolioState.coinRateList) {
+            if (this.state && this.state.userWalletList && this.state.userWalletList.length > 0) {
+                for (let i = 0; i < this.state.userWalletList.length; i++) {
+                    if (this.state.userWalletList[i].coinFound) {
+                        for (let j = 0; j < this.state.userWalletList[i].coins.length; j++) {
+                            if (this.state.userWalletList[i].coins[j].chain_detected) {
+                                let userCoinWallet = {
+                                    address: this.state.userWalletList[i].address,
+                                    coinCode: this.state.userWalletList[i].coins[j].coinCode
+                                }
+                                this.props.getUserWallet(userCoinWallet)
                             }
-                            this.props.getUserWallet(userCoinWallet)
                         }
+                    }
+                    if (i === (this.state.userWalletList.length - 1)) {
+                        this.setState({
+                            loader: false
+                        });
                     }
                 }
             }
         }
-
-        this.props.getCoinRate()
     }
 
-    render() {
-        // console.log(this.props)
-        return (
+    // assetTotal = () => {
+    //     let assetTotal = 0;
+    //     // for (let i = 0; i < this.state.userWalletList.length; i++) {
+    //     //     if (this.state.userWalletList[i].coinAssets) {
+    //     //         for (let j = 0; j < this.state.userWalletList[i].coinAssets.length; j++) {
+    //     //             assetTotal = assetTotal + this.state.userWalletList[i].coinAssets[j].assetValue;
+    //     //             return assetTotal
+    //     //         }
+    //     //     }
+    //     // }
+    // }
 
-            <div className="portfolio-page-section" >
-                <Sidebar ownerName="" />
-                <div className='portfolio-container'>
-                    <div className='portfolio-section page'>
-                        <WelcomeCard decrement={true} />
+    render() {
+        console.log(this.props)
+        return (
+            <div>
+                {this.state.loader ? <Loading /> :
+                    <div className="portfolio-page-section" >
+                        <Sidebar ownerName="" />
+                        <div className='portfolio-container'>
+                            <div className='portfolio-section page'>
+                                <WelcomeCard
+                                    decrement={true}
+                                    assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
+                                    loader={this.state.loader} />
+                            </div>
+                            <div className='portfolio-section page'>
+                                <PieChart
+                                    userWalletData={this.props.portfolioState && this.props.portfolioState.userWalletList && this.props.portfolioState.userWalletList[0] && this.props.portfolioState.userWalletList[0].coinAssets ? this.props.portfolioState.userWalletList[0].coinAssets : null}
+                                    assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
+                                    loader={this.state.loader} />
+                            </div>
+                            <div className='portfolio-section page'>
+                                <LineChart />
+                            </div>
+                        </div>
                     </div>
-                    <div className='portfolio-section page'>
-                        <PieChart />
-                    </div>
-                    <div className='portfolio-section page'>
-                        <LineChart />
-                    </div>
-                </div>
+                }
             </div>
         )
     }
