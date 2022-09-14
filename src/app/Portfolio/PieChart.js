@@ -35,24 +35,25 @@ class PieChart extends BaseReactComponent {
 
     render() {
         let self = this;
-        let colors = ['rgba(255, 99, 132, 0.2)','rgba(54, 162, 235, 0.2)','rgba(255, 206, 86, 0.2)','rgba(75, 192, 192, 0.2)','#a07ddd','#e7c5a0']
-        let borderColors = ['rgba(255, 99, 132, 1)','rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(75, 192, 192, 1)','#7B44DA','#F19938']
+        let colors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', '#a07ddd', '#e7c5a0']
+        let borderColors = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', '#7B44DA', '#F19938']
 
-        if (this.state.chartData && this.state.chartData.length > 0) {
-            this.state.assetData = []
-            for (let i = 0; i < this.state.chartData.length; i++) {
-                this.state.assetData.push({
-                    name: this.state.chartData[i].assetName,
-                    y: 20,
-                    usd: this.state.chartData[i].assetValue.toLocaleString(undefined, { maximumFractionDigits: 2 }),
-                    borderColor: borderColors[i%5],
+        if (self.state.chartData && self.state.chartData.length > 0) {
+            self.state.assetData = []
+            for (let i = 0; i < self.state.chartData.length; i++) {
+                self.state.assetData.push({
+                    name: self.state.chartData[i].assetName,
+                    // y: 20,
+                    y: parseFloat(parseFloat(self.state.chartData[i].assetValue) / parseFloat(self.state.assetTotal)) * 100,
+                    usd: self.state.chartData[i].assetValue.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                    borderColor: borderColors[i % 5],
                     borderWidth: 2,
-                    color: colors[i%5],
-                    originalColor: colors[i%5]
+                    color: colors[i % 5],
+                    originalColor: colors[i % 5]
                 })
             }
         }
-        console.log(this.state.assetData)
+        // console.log(this.state.assetData)
         const options = {
             chart: {
                 styledMode: false,
@@ -127,8 +128,6 @@ class PieChart extends BaseReactComponent {
                 shared: true,
                 // pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
                 formatter: function () {
-
-
                 }
 
             },
@@ -156,7 +155,6 @@ class PieChart extends BaseReactComponent {
                     dataLabels: {
                         distance: 0,
                         tickWidth: 0,
-
                         padding: 12,
                         style: {
                             textShadow: false
@@ -301,6 +299,8 @@ class PieChart extends BaseReactComponent {
                     <HighchartsReact
                         highcharts={Highcharts}
                         options={options}
+                        updateArgs={[true]}
+                        oneToOne={true}
                     />
                 </div>
                 {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?

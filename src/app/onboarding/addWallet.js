@@ -115,6 +115,14 @@ class AddWallet extends BaseReactComponent {
         return isDisableFlag;
     }
 
+    onValidSubmit = (e) => {
+        e.preventDefault();
+        this.props.history.push({
+            pathname: '/portfolio',
+            state: this.state.walletInput
+        });
+    }
+
     render() {
         return (
             <>
