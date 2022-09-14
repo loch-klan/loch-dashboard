@@ -92,27 +92,28 @@ function Sidebar(props) {
                         <ul>
                             <li>
                                 <Image src={ExportIcon} />
-                                <Button className="navbar-button">Export</Button>
+                                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Export</Button>
                             </li>
                             <li>
                                 <Image src={ApiIcon} />
-                                <Button className="navbar-button">Api</Button>
+                                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Api</Button>
                             </li>
                             <li>
                                 <Image src={DarkmodeIcon} />
-                                <Button className="navbar-button">Dark Mode</Button>
+                                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Dark Mode</Button>
                             </li>
                             <li>
                                 <Image src={LeaveIcon} />
-                                <Button className="navbar-button">Leave</Button>
+                                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Leave</Button>
                             </li>
                         </ul>
 
-                        <p >
-                            Sic Parvis Magna |
-                            Thus, great things from small things come.
-                        </p>
-                        <p >Sir Francis Drake</p>
+                        <div className='m-b-12 footer-divOne'>
+                            <p className='f-s-16 lh-19'>"Sic Parvis Magna</p> 
+                            <p className='f-s-16 lh-19'>Thus, great things from </p> 
+                            <p className='f-s-16 lh-19'>small things come."</p> 
+                        </div>
+                        <div className="inter-display-semi-bold f-s-16 lh-19 footer-divTwo">Sir Francis Drake</div>
 
 
                     </div>

@@ -2,15 +2,18 @@
     // height: 100vh;
     background-color: $secondary;
     width: 25%;
-    .container{
-      padding-left: 2.4rem;
-      padding-right: 2.4rem;
+
+    .container {
+        padding-left: 2.4rem;
+        padding-right: 2.4rem;
     }
+
     .sidebar {
 
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+
         // padding: 4.4rem 0rem 0rem 0.9rem;
         // padding: 0;
         .logo {
@@ -45,12 +48,14 @@
 
                     li {
                         margin-bottom: 1.2rem;
+
                         .nav-link {
-                          @include font($grey-636, "Inter-Medium", 1.6rem, 500, 19.2px);
+                            @include font($grey-636, "Inter-Medium", 1.6rem, 500, 19.2px);
                             padding: 1.2rem;
                             display: flex;
                             align-items: center;
                             width: 100%;
+
                             img {
                                 margin-right: 1rem;
                             }
@@ -70,6 +75,7 @@
                 // top: 32.5rem;
                 position: relative;
                 margin-top: 2rem;
+
                 .wallet-info-para {
                     right: 0px;
                     position: absolute;
@@ -110,9 +116,11 @@
 
             }
         }
-        .nowallet{
+
+        .nowallet {
             margin-bottom: 21rem;
         }
+
         .sidebar-footer {
             width: 100%;
             border-top: 0.1rem solid $grey-CAC;
@@ -121,40 +129,48 @@
 
             ul {
                 li {
-                    margin-bottom: 3.1rem;
+                    margin-bottom: 3.8rem;
 
                     .navbar-button {
                         background: none;
                         border: none;
-                        font-size: 1.6rem;
-                        font-weight: 500;
                         color: $grey-B0B;
                         outline: none !important;
                         box-shadow: none !important;
-                        line-height: 20px;
                     }
                 }
             }
 
-            p {
-                font-size: 1.6rem;
-                font-weight: 500;
-                line-height: 20px;
+            // p {
+            //     font-size: 1.6rem;
+            //     font-weight: 500;
+            //     line-height: 20px;
+            // }
+            .footer-divOne {
+                p {
+                    color: #CACBCC;
+                    font-style: italic;
+                    font-weight: 500;
+                }
             }
 
-            p:nth-child(2) {
-                color: $grey-CAC;
-                font-family: Inter-Mixed;
-                font-style: italic;
-                margin-bottom: 1.2rem;
-                padding-right: 5.2rem;
-            }
-
-            p:nth-child(3) {
-                margin-bottom: 6.7rem;
-                font-family: Inter-SemiBold;
+            .footer-divTwo {
                 color: $grey-B0B;
             }
+
+            // p:nth-child(2) {
+            //     color: $grey-CAC;
+            //     font-family: Inter-Mixed;
+            //     font-style: italic;
+            //     margin-bottom: 1.2rem;
+            //     padding-right: 5.2rem;
+            // }
+
+            // p:nth-child(3) {
+            //     margin-bottom: 6.7rem;
+            //     font-family: Inter-SemiBold;
+            //     color: $grey-B0B;
+            // }
         }
     }
 }
