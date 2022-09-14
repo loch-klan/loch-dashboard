@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, Container, Button } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import logo from '../../image/logo.png'
-import HomeIcon from '../../image/HomeIcon.png'
+import HomeIcon from '../../image/HomeIcon.svg'
 import IntelligenceIcon from '../../image/IntelligenceIcon.png'
 import NavWalletIcon from '../../image/NavWalletIcon.png'
 import ProfileIcon from '../../image/ProfileIcon.png'
@@ -62,7 +62,7 @@ function Sidebar(props) {
                             </ul>
                         </nav>
 
-                        <div className="nav-addwallet">
+                        {/* <div className="nav-addwallet">
                             <Image fluid src={bgImg} />
                             <div className='wallet-info-para'>
                                 <p>Viewing in Demo Mode</p>
@@ -70,7 +70,7 @@ function Sidebar(props) {
                                     on <span>{props.ownerName}</span> wallet</p>
                                 <Button className='addwallet-btn'>Add wallet</Button>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className='sidebar-footer'>
