@@ -169,7 +169,7 @@ class Portfolio extends BaseReactComponent {
                             </div>
                             <div className='portfolio-section page'>
                                 <PieChart
-                                    userWalletData={this.props.portfolioState && this.props.portfolioState.userWalletList && this.props.portfolioState.userWalletList[0] && this.props.portfolioState.userWalletList[0].coinAssets ? this.props.portfolioState.userWalletList[0].coinAssets : null}
+                                    userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? this.props.portfolioState.chainWallet : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader} />
                             </div>
