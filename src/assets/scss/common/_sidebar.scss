@@ -2,20 +2,21 @@
     // height: 100vh;
     background-color: $secondary;
     width: 25%;
-
     .container{
-        padding-left: 2.4rem;
-        padding-right: 2.4rem;
+      padding-left: 2.4rem;
+      padding-right: 2.4rem;
     }
     .sidebar {
 
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding-top: 4.4rem;
+        // padding: 4.4rem 0rem 0rem 0.9rem;
+        // padding: 0;
         .logo {
-            margin-bottom: 3rem;
-            margin-left: 1.4rem;
+            // margin-bottom: 3rem;
+            // margin-left: 1.4rem;
+            margin: 4.4rem 1.4rem;
         }
 
         ul {
@@ -31,30 +32,25 @@
         li:hover {
             cursor: pointer;
         }
-        
+
         .sidebar-body {
             width: 100%;
             // margin-bottom: 3.2rem;
             margin-bottom: 3.2rem;
-            
+
             position: relative;
 
             nav {
                 ul {
 
                     li {
-                        margin-bottom: 1.6rem;
-
+                        margin-bottom: 1.2rem;
                         .nav-link {
-                            font-family: Inter-Medium;
-                            font-size: 1.6rem;
-                            padding: 1.1rem 1.5rem;
-                            color: $grey-636;
+                          @include font($grey-636, "Inter-Medium", 1.6rem, 500, 19.2px);
+                            padding: 1.2rem;
                             display: flex;
                             align-items: center;
-                            width: 97%;
-                            line-height: 20px;
-
+                            width: 100%;
                             img {
                                 margin-right: 1rem;
                             }

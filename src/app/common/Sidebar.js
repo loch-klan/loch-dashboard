@@ -2,7 +2,8 @@ import React from 'react'
 import { Image, Container, Button } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import logo from '../../image/logo.png'
-import ActiveHomeIcon from '../../image/ActiveHomeIcon.png'
+
+import ActiveHomeIcon from '../../image/HomeIcon.svg'
 import InActiveHomeIcon from '../../image/InactiveHomeIcon.png'
 
 import IntelligenceIcon from '../../image/IntelligenceIcon.png'
@@ -21,7 +22,7 @@ import DarkmodeIcon from '../../image/DarkmodeIcon.png'
 import bgImg from '../../image/Notice.png'
 function Sidebar(props) {
 
-    
+
     const activeTab = window.location.pathname
     return (
         <div className='sidebar-section'>
@@ -68,24 +69,24 @@ function Sidebar(props) {
                                         className="nav-link"
                                         to="/profile"
                                         activeclassname="active"
-                                    > 
+                                    >
                                     <Image src={
-                                        activeTab === '/profile' ? ActiveProfileIcon : ProfileIcon 
+                                        activeTab === '/profile' ? ActiveProfileIcon : ProfileIcon
                                         } />Profile</NavLink>
                                 </li>
                             </ul>
                         </nav>
 
-                        {props.ownerName && <div 
-                        className="nav-addwallet">
-                            <Image  src={bgImg} />
+                        {/* {props.ownerName &&
+                        <div className="nav-addwallet">
+                            <Image fluid src={bgImg} />
                             <div className='wallet-info-para'>
                                 <p>Viewing in Demo Mode</p>
                                 <p>Showing sample data based
                                     on <span>{props.ownerName}</span> wallet</p>
                                 <Button className='addwallet-btn'>Add wallet</Button>
                             </div>
-                        </div>}
+                        </div> } */}
                     </div>
 
                     <div className='sidebar-footer'>

@@ -1,0 +1,85 @@
+.intelligence-page-section {
+    display: flex;
+
+    .intelligence-section {
+
+        margin-top: 8rem;
+
+        .intell-welcome-card {
+
+            .page-title {
+                color: $black-000;
+            }
+
+            .subtitle {
+                color: $grey-ADA;
+            }
+
+            .row-card {
+                position: relative;
+
+                .bg-img {
+                    position: absolute;
+                    right: 0px;
+                    top: 0.7rem;
+                }
+
+                .welcome-card {
+                    background: $secondary;
+                    box-shadow: 0rem 0.6rem 1.2rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 0.8rem 2.4rem -0.4rem rgba(24, 39, 75, 0.08);
+                    border-radius: 1.2rem;
+                    padding: 6rem 4.8rem 5.2rem 4.8rem;
+
+                    .welcome-card-title {
+                        color: $black-191;
+                    }
+
+                    .card-subtitle {
+                        color: $grey-969;
+                    }
+
+                    .info-container {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        .info {
+                            display: flex;
+                            align-items: center;
+                            z-index: 1;
+                            .icon {
+                                width: 4.8rem;
+                                height: 4.8rem;
+                                border-radius: 8px;
+                                padding:1.2rem;
+                                margin-right: 1.6rem;
+                            }
+                            .lightblue{
+                                background-color: $blue-E5F;
+                            }
+                            .lightyellow{
+                                background-color:$yellow-FEF ;
+                            }
+                            .lightpurple{
+                                background-color: $purple-E3C;
+                            }
+                            .info-detail {
+                                .info-title {
+                                    color: $grey-636;
+                                }
+
+                                .viewmore {
+                                    display: flex;
+                                    cursor:pointer;
+                                    h4 {
+                                        margin-right: 0.4rem;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}

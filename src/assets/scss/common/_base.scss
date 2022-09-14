@@ -1,12 +1,16 @@
-@include font-face(Inter-Regular,"/assets/fonts/Inter/Inter-Regular", normal, normal, ttf);
+@include font-face(Inter-Regular, "/assets/fonts/Inter/Inter-Regular", normal, normal, ttf);
 @include font-face(Inter-Black, "/assets/fonts/Inter/Inter-Black", 900, bold, ttf);
 @include font-face(Inter-Bold, "/assets/fonts/Inter/Inter-Bold", bold, bold, ttf);
 @include font-face(Inter-Medium, "/assets/fonts/Inter/Inter-Medium", 500, normal, ttf);
 @include font-face(Inter-SemiBold, "/assets/fonts/Inter/Inter-SemiBold", 600, bold, ttf);
-@include font-face(Inter-ExtraBold, "/assets/fonts/Inter/Inter-ExtraBold", bold, bold, ttf);
-@include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 500, normal, ttf);
-@include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf);
-@include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf);
+@include font-face(Inter-ExtraBold, "/assets/fonts/Inter/Inter-ExtraBold", 900, bold, ttf); //Need to change values
+@include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 400, normal, ttf); //Need to change values
+@include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf); //Need to change values
+@include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf); //Need to change values
+@include font-face(SpaceGrotesk-Bold, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Bold", bold, bold, ttf); //Need to change values
+@include font-face(SpaceGrotesk-Light, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Light", 500, normal, ttf); //Need to change values
+@include font-face(SpaceGrotesk-Medium, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Medium", 500, normal, ttf);
+@include font-face(SpaceGrotesk-Regular, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Regular", normal, normal, ttf);
 // @include font-face(Inter-BoldItalic, "/assets/fonts/Inter/Inter-BoldItalic", bold, bold, ttf);
 
 // SET THE BASE HTML REM, MAKING 1REM=10PX
@@ -49,7 +53,7 @@ body {
     flex: 1;
 
     .main-content-wrapper {
-      padding: 2rem 3rem;
+      // padding: 2rem 3rem;
     }
   }
 }
@@ -91,6 +95,22 @@ body {
   @include font($primary, "Inter-Regular", 1.2rem, normal, normal);
 }
 
+.space-grotesk-bold {
+  @include font($primary, "SpaceGrotesk-Bold", 1.2rem, bold, normal);
+}
+
+.space-grotesk-light {
+  @include font($primary, "SpaceGrotesk-Light", 1.2rem, normal, normal);
+}
+
+.space-grotesk-medium {
+  @include font($primary, "SpaceGrotesk-Medium", 1.2rem, 500, normal);
+}
+
+.space-grotesk-regular {
+  @include font($primary, "SpaceGrotesk-Regular", 1.2rem, normal, normal);
+}
+
 @for $i from 1 through 100 {
   .f-s-#{$i} {
     font-size: $i+px;
@@ -112,24 +132,29 @@ body {
 .m-t-5 {
   margin-top: 5rem;
 }
-.m-r-15{
+
+.m-r-15 {
   margin-right: 1.5rem;
 }
 
-.cp{
+.cp {
   cursor: pointer;
 }
+
 // COLOR
-.grey-636{
+.grey-636 {
   color: $grey-636;
 }
-.grey-ADA{
+
+.grey-ADA {
   color: $grey-ADA;
 }
-.blue-268{
+
+.blue-268 {
   color: $blue-268;
 }
-.white{
+
+.white {
   color: $secondary;
 }
 
@@ -163,6 +188,30 @@ body {
 
 .grey-D4D {
   color: $grey-D4D;
+}
+
+.grey-313 {
+  color: $grey-313;
+}
+
+.black-1D2 {
+  color: $black-1D2;
+}
+
+.grey-7C7 {
+  color: $grey-7C7;
+}
+
+.grey-5B5 {
+  color: $grey-5B5;
+}
+
+.grey-B0B {
+  color: $grey-B0B;
+}
+
+.black-191 {
+  color: $black-191;
 }
 
 .image-wrapper {
@@ -272,13 +321,14 @@ form {
 
     .form-control,
     .custom-select__control {
-      font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: $black-191;
-      line-height: 19px;
+      @include font($black-191, "Inter-Regular", 1.6rem, normal, 19px);
+      // font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
+      // font-size: 1.6rem;
+      // font-weight: bold;
+      // color: $black-191;
+      // line-height: 19px;
       padding: 1.6rem;
-      min-height: 51px;
+      min-height: 5.1rem;
       border-radius: 8px;
       border: 1px solid $grey-D4D;
     }
@@ -306,12 +356,12 @@ form {
     }
 
     .form-control.is-invalid {
-      border: solid 1px $red;
+      border: solid 1px $grey-D4D;
       background-image: none;
     }
 
     .form-control.is-valid {
-      border: solid 1px green;
+      border: solid 1px $black-191;
       background-image: none;
     }
 
@@ -326,12 +376,20 @@ form {
       }
     }
 
+    // .form-control::placeholder {
+    //   color: $grey-B6B;
+    //   font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+    //   line-height: 24px;
+    //   font-weight: 500;
+    //   font-size: 1.4rem;
+    // }
+
     .form-control::placeholder {
-      color: $grey-B6B;
-      font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
-      line-height: 24px;
-      font-weight: 500;
-      font-size: 1.4rem;
+      color: $grey-D4D;
+      font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
+      line-height: 1.9rem;
+      font-weight: 400;
+      font-size: 1.6rem;
     }
 
     .custom-select__control {
@@ -370,9 +428,9 @@ form {
     .form-text {
       display: block;
       margin-top: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 1rem;
       color: #737373;
-      font-size: 10px;
+      font-size: 1rem;
     }
 
     .has-error {
@@ -395,8 +453,8 @@ form {
 
   .input-group {
     .input-group-prepend {
-      padding: 6px 12px;
-      font-size: 14px;
+      padding: 0.6rem 1.2rem;
+      font-size: 1.4rem;
       font-weight: normal;
       line-height: 1;
       color: #555;
@@ -540,6 +598,7 @@ form {
   .ReactVirtualized__Table__headerColumn {
     text-transform: none;
     @include font($grey-999, "Inter-Medium", 1.3rem, 500, normal);
+
     .ReactVirtualized__Table__headerTruncatedText {
       margin-top: 0.8rem;
     }
@@ -565,6 +624,7 @@ form {
   .ReactVirtualized__Table__row {
     @include font($grey-565, "Inter-Medium", 1.4rem, 500, 21px);
     border-bottom: 1px solid $grey-F2F;
+
     .inter-bold {
       font-size: 1.4rem;
       line-height: 21px;
@@ -602,6 +662,7 @@ form {
   border: 1px solid $black-191;
   padding: 1.6rem 4rem;
   cursor: pointer;
+
   &.btn-primary:not(:disabled):not(:disabled):active,
   &.btn-primary:not(:disabled):not(:disabled):active:focus,
   &:hover,
@@ -613,11 +674,18 @@ form {
     border: 1px solid $black-191;
     background-color: $black-191;
   }
+
+  &.btn-primary:disabled {
+    background-color: $grey-CAC;
+    border-color: $grey-CAC;
+  }
+
   &:not(:disabled),
   &:not(.disabled) {
     cursor: auto;
   }
 }
+
 .secondary-btn {
   @include font($black-191, "Inter-SemiBold", 1.6rem, 600, normal);
   border-radius: 8px;
@@ -625,6 +693,7 @@ form {
   border: 1px solid $black-191;
   padding: 1.6rem 4rem;
   cursor: pointer;
+
   &.btn-primary:not(:disabled):not(:disabled):active,
   &.btn-primary:not(:disabled):not(:disabled):active:focus,
   &:hover,
@@ -637,12 +706,14 @@ form {
     border: 1px solid $black-191;
     background-color: transparent;
   }
+
   &:not(:disabled),
   &:not(.disabled) {
     cursor: auto;
   }
 }
-.grey-btn{
+
+.grey-btn {
   @include font($grey-7C7, "Inter-Medium", 1.3rem, 500, normal);
   border-radius: 8px;
   background-color: rgba(229, 229, 230, 0.5);
@@ -662,6 +733,7 @@ form {
     border: 1px solid $grey-D4D;
     background-color: rgba(229, 229, 230, 0.5);
   }
+
   &:not(:disabled),
   &:not(.disabled) {
     cursor: auto;
@@ -672,6 +744,7 @@ form {
   cursor: not-allowed !important;
   opacity: 0.6;
 }
+
 
 .react-datepicker {
   display: flex;
@@ -833,4 +906,261 @@ form {
   }
 }
 
+.tooltip.show {
+  opacity: 1;
+}
+
 // START FROM HERE
+.tool-tip-container {
+
+
+
+  .tooltip-inner {
+    background-color: $secondary ;
+    max-width: 39.2rem;
+    border: 0.1rem solid $grey-E5E;
+    border-radius: 8px;
+    opacity: 1;
+
+    ul {
+      // padding: inherit;
+      // width: auto;
+      // margin-left: -0.1rem;
+      // display: flex;
+      // flex-direction: column;
+      // justify-content: center;
+      // margin-bottom: -0.4rem;
+
+      li {
+        height: 2.5rem;
+
+        display: flex;
+        align-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        background: rgba(229, 229, 230, 0.5);
+        border: 0.1rem solid $grey-CAC;
+        border-radius: 0.4rem;
+        padding: 0.2rem 0.8rem;
+        margin-bottom: 0.4rem;
+
+        img {
+          width: 1.6rem;
+          margin-right: 0.5rem;
+          margin-top: -0.1rem;
+        }
+
+      }
+
+    }
+
+  }
+
+  &.hover-chip {
+    .tooltip-inner {
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
+      border: 0;
+      border-radius: 4px;
+    }
+  }
+
+  &.question-hover {
+    .tooltip-inner {
+      padding: 1.2rem 1.6rem;
+      border: 0;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &.bs-tooltip-top {
+    padding-bottom: 0.8rem;
+  }
+
+  .arrow::before {
+    border-top-color: $secondary;
+    top: -0.46rem;
+  }
+
+  .button-tooltip {
+    background-color: $secondary ;
+    color: $grey-313;
+    border-radius: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    // padding: 1.2rem 1.6rem;
+    // gap: 1.2rem;
+    // height: 5.6rem;
+    span {
+      display: flex;
+      align-items: center;
+      color: $grey-313;
+      text-align: left;
+      margin-left: 1.2rem;
+    }
+  }
+}
+
+// .text-tooltip-container{
+//   .tooltip-inner{
+//     background-color: $secondary;
+//     // border: 0.1rem solid $white-E5E;
+//     border-radius: 0.8rem;
+//   }
+//   .arrow::before {
+//     border-top-color: $secondary;
+//   }
+//   .text-tooltip {
+//     padding: 0.5rem 0.7rem;
+//     color: $black-191;
+//     background: $secondary;
+
+//   }
+
+//   // .text-tooltip {
+//   //   padding: 0.8rem 1.2rem;
+//   //   color: $black-191;
+//   //   background: $secondary;
+//   //   border: 0.1rem solid $white-E5E;
+//   //   border-radius: 0.8rem;
+//   // }
+// }
+
+.text-tooltip-container {
+
+  .arrow{
+    border-left: 0.5px solid #E5E5E6;
+    border-right: 0.5px solid #E5E5E6;
+    border-top: 1px solid #E5E5E6;
+    border-radius: 1px;
+    bottom: 0.5rem;
+    width: 0rem;
+    height: 0rem;
+  }
+  .tooltip-inner {
+    background-color: $secondary;
+    border: 0.1rem solid $white-E5E;
+    border-radius: 0.8rem;
+    padding: 0px;
+    .text-tooltip {
+      display: flex;
+      padding: 0.8rem 1rem;
+      border-radius: 0.8rem;
+      text-align: left;
+      color: $black-191;
+      background: $secondary;
+
+      img {
+        margin-right: 0.8rem;
+      }
+    }
+  }
+
+  .arrow::before {
+    border-top-color: $secondary;
+  }
+}
+
+.chip-container-dual {
+  right: 13rem;
+}
+
+.chip-container {
+  right: 9.2rem;
+}
+
+.chip-wrapper {
+  display: flex;
+  position: absolute;
+  right: 1.2rem;
+  top: 0.7rem;
+}
+
+.chip-container,
+.chip-container-dual {
+  cursor: default;
+  // position: absolute;
+  // top: 0.7rem;
+  // height: 2.5rem;
+  background: rgba(229, 229, 230, 0.5);
+  border: 0.1rem solid $grey-CAC;
+  border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+  margin-left: 0.7rem;
+
+  .badge {
+    padding: 0.35rem 0.8rem 0.4rem;
+  }
+
+  img {
+    margin-right: 0.5rem;
+    width: 1.6rem;
+    margin-top: -0.1rem;
+  }
+}
+
+.modal-backdrop.show {
+  opacity: 0 !important;
+}
+
+.page {
+  padding-left: 10rem;
+  padding-right: 10rem;
+  width: 100%;
+}
+
+.m-t-80 {
+  margin-top: 8rem;
+}
+
+.m-b-26 {
+  margin-bottom: 2.6rem;
+}
+
+.m-b-12 {
+  margin-bottom: 1.2rem;
+}
+
+.m-b-4 {
+  margin-bottom: 0.4rem;
+}
+
+.m-b-16 {
+  margin-bottom: 1.6rem;
+}
+
+.m-b-32 {
+  margin-bottom: 3.2rem;
+}
+
+.m-b-40 {
+  margin-bottom: 4rem;
+}
+
+.m-b-24 {
+  margin-bottom: 2.4rem;
+}
+
+.m-b-36 {
+  margin-bottom: 3.6rem;
+}
+
+.m-r-16 {
+  margin-right: 1.6rem;
+}
+
+.m-r-5 {
+  margin-right: 0.5rem;
+}
+
+.m-r-12 {
+  margin-right: 1.2rem;
+}
+
+.m-r-24 {
+  margin-right: 2.4rem;
+}

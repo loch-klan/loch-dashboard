@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import OnBoarding from "../onboarding";
 import "../../assets/scss/onboarding/_onboarding.scss";
+import { Image } from "react-bootstrap";
+import Banner from "../../assets/images/Overlay.png";
 
 class Home extends Component {
   constructor(props) {
@@ -18,8 +20,12 @@ class Home extends Component {
   render() {
     return (
       <>
-        {/* <h1 className="red-hat-display-black f-s-50 lh-30 ">Hello</h1> */}
-        {this.signedIn ? null : <OnBoarding />}
+        {this.signedIn ? null :
+          <div>
+            <Image src={Banner} className="overlay-banner" />
+            <OnBoarding />
+          </div>}
+
       </>
 
     )

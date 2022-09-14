@@ -1,0 +1,40 @@
+// badge section start
+
+.coin-badges {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.8rem;
+    justify-content: space-between;
+    .badge-list {
+        display: flex;
+        overflow-x: hidden;
+        // background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
+
+        .badge-name {
+            padding: 0.8rem 1.2rem;
+            background: #FFFFFF;
+            border: 0.1rem solid $grey-CAC;
+            border-radius: 0.8rem;
+            cursor: pointer;
+        }
+
+        .badge-active {
+            background-color: $yellow-F5E ;
+            border: 0.1rem solid $black-191;
+        }
+    }
+
+    .dropdown {
+        .dropdown-toggle {
+            padding: 1.2rem 1.6rem;
+            background: $secondary;
+            border: 0.1rem solid $grey-B0B;
+            border-radius: 0.8rem;
+            color: $black-191;
+            box-shadow: none;
+        }
+                
+    }
+}
+
+// badge section ends
