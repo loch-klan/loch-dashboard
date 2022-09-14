@@ -13,13 +13,13 @@ export default function CoinBadges(props) {
             <div className='badge-list'>
                 {badgeList.map((badge, index) => {
                     const className = index == props.activeBadge ? "inter-display-medium f-s-13 lh-16 m-r-16 badge-name badge-active" :
-                        "inter-display-medium f-s-13 lh-16 m-r-16 badge-name"
+                        "inter-display-medium f-s-13 lh-16 m-r-16 black-191 badge-name"
                     return (
                         <div id={index} key={index} className={className} onClick={props.handleFunction}>{badge}</div>
                     )
                 })}
             </div>
-            
+
             <DropDown
                 id="dropdown-basic-badge-button"
                 title="Others"

@@ -8,7 +8,7 @@
     .badge-list {
         display: flex;
         overflow-x: scroll;
-        width:79.1rem;
+        width:84rem;
         // background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
 
         .badge-name {
@@ -26,15 +26,22 @@
     }
 
     .dropdown {
+      .dropdown-menu{
+        width: auto;
+        padding: 0.4rem;
+      }
         .dropdown-toggle {
+          box-shadow: -25px 0px 24px 20px $grey-F2F;
             padding: 1.1rem  1.9rem 1.1rem 1.6rem;
             background: $secondary;
             border: 0.1rem solid $grey-B0B;
             border-radius: 0.8rem;
             color: $black-191;
-            box-shadow: none;
+            // box-shadow: none;
+            &:focus{
+              box-shadow: -25px 0px 24px 20px $grey-F2F !important;
+            }
         }
-                
     }
 }
 

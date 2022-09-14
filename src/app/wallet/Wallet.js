@@ -33,7 +33,7 @@ class Wallet extends Component {
                         subTitle="Manage all your wallets right here"
                         btnText="Add wallet"
                     />
-                   
+
                     <CoinBadges
                         activeBadge={0}
                     />
@@ -41,17 +41,20 @@ class Wallet extends Component {
                         <span className='inter-display-medium f-s-13 lh-16 m-r-24'>Sort by</span>
                         <div className='dropdown-section'>
                         <DropDown
-                            id="dropdown-amount-button" 
+                            id="dropdown-amount-button"
                             title="Amount"
-                            list={["Action" , "Action2" , "Action3"]}
+                            // list={["Action" , "Action2" , "Action3"]}
+                            list={[]}
                         />
                         <DropDown
                            id="dropdown-date-button" title="Date added"
-                           list={["Action" , "Action2" , "Action3"]}
+                          //  list={["Action" , "Action2" , "Action3"]}
+                          list={[]}
                         />
                         <DropDown
                             id="dropdown-name-button" title="Name"
-                            list={["Action" , "Action2" , "Action3"]}
+                            // list={["Action" , "Action2" , "Action3"]}
+                            list={[]}
                         />
                         </div>
 

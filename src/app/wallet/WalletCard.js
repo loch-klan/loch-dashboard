@@ -83,7 +83,8 @@ export default function WalletCard(props) {
                 <div className='chips-section'>
                     {chips}
                 </div>
-                <Image src={EditIcon} onClick={handleShow} />
+                <Image src={EditIcon} className="cp" />
+                {/* onClick={handleShow} */}
             </div>
 
             {
