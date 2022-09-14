@@ -17,7 +17,8 @@ class AddWallet extends BaseReactComponent {
             showModal: true,
             signIn: false,
             addButtonVisible: false,
-            walletInput: [{ id: "wallet1", address: "" }]
+            walletInput: [{ id: "wallet1", address: "" }],
+            loading: false
         }
         this.timeout = 0
     }
@@ -114,6 +115,14 @@ class AddWallet extends BaseReactComponent {
         return isDisableFlag;
     }
 
+    onValidSubmit = (e) => {
+        e.preventDefault();
+        this.props.history.push({
+            pathname: '/portfolio',
+            state: this.state.walletInput
+        });
+    }
+
     render() {
         return (
             <>
@@ -132,13 +141,19 @@ class AddWallet extends BaseReactComponent {
                                         className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
                                         placeholder='Paste any wallet address here'
                                         title={c.address || ""}
+                                        onKeyUp={(e) => this.setState({ loading: true })}
+                                        onKeyDown={(e) => this.setState({ loading: false })}
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.props.OnboardingState.walletList.map((e, i) => {
                                         if (this.state.walletInput[index].address && e.id === `wallet${index + 1}` && e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                                             if (e.coinFound) {
-                                                return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i}></CustomChip>
+                                                return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
                                             } else {
-                                                return <CustomChip coins={null} key={i}></CustomChip>
+                                                return <CustomChip coins={null} key={i} isLoaded={true}></CustomChip>
+                                            }
+                                        } else {
+                                            if (this.state.loading) {
+                                                // return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
                                             }
                                         }
                                     })}
