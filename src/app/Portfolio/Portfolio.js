@@ -106,7 +106,7 @@ class Portfolio extends BaseReactComponent {
                 }
             ],
             assetTotalValue: 0,
-            loader: true
+            loader: false
         }
 
     }
@@ -173,9 +173,9 @@ class Portfolio extends BaseReactComponent {
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader} />
                             </div>
-                            <div className='portfolio-section page'>
+                            {/* <div className='portfolio-section page'>
                                 <LineChart />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 }
