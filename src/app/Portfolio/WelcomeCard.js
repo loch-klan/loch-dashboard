@@ -17,11 +17,10 @@ export default function WelcomeCard(props) {
                 </div>
                 <div className='welcome-section-right'>
                     <h3 className="inter-display-medium wallet-amount">$317,068.00</h3>
-
-                    <Button className={props.decrement ? "inter-display-medium downfall" : "inter-display-medium" }>
+                    <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${props.decrement ? "downfall" : "" }`}>
                         <Image src={props.decrement ? arrowDowRight :arrowUpRight} />
                         330.10 (1%)
-                    </Button>
+                    </div>
                 </div>
             </div>
     </div>
