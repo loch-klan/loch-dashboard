@@ -4,21 +4,20 @@ import { NavLink } from 'react-router-dom'
 import logo from '../../image/logo.png'
 
 import ActiveHomeIcon from '../../image/HomeIcon.svg'
-import InActiveHomeIcon from '../../image/InactiveHomeIcon.png'
+import InActiveHomeIcon from '../../assets/images/icons/InactiveHomeIcon.svg'
+import ActiveIntelligenceIcon from '../../assets/images/icons/ActiveIntelligenceIcon.svg';
+import IntelligenceIcon from '../../assets/images/icons/InactiveIntelligenceIcon.svg';
+import NavWalletIcon from '../../assets/images/icons/InactiveWalletIcon.svg'
+import ActiveWalletIcon from '../../assets/images/icons/ActiveWalletIcon.svg'
+import ProfileIcon from '../../assets/images/icons/InactiveProfileIcon.svg'
+import ActiveProfileIcon from '../../assets/images/icons/ActiveProfileIcon.svg'
+import DollarIcon from '../../assets/images/icons/InactiveCostIcon.svg'
+import ActiveDollarIcon from '../../assets/images/icons/ActiveCostIcon.svg'
 
-import IntelligenceIcon from '../../image/IntelligenceIcon.png'
-import ActiveIntelligenceIcon from '../../image/ActiveIntelligenceIcon.png'
-import NavWalletIcon from '../../image/NavWalletIcon.png'
-import ActiveWalletIcon from '../../image/ActiveWalletIcon.png'
-import ProfileIcon from '../../image/ProfileIcon.png'
-import ActiveProfileIcon from '../../image/ActiveProfileIcon.png'
-import DollarIcon from '../../image/DollarIcon.png'
-import ActiveDollarIcon from '../../image/ActiveDollarIcon.png'
-
-import ExportIcon from '../../image/ExportIcon.png'
-import ApiIcon from '../../image/ApiIcon.png'
-import LeaveIcon from '../../image/LeaveIcon.png'
-import DarkmodeIcon from '../../image/DarkmodeIcon.png'
+import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
+import ApiIcon from '../../assets/images/icons/ApiIcon.svg'
+import LeaveIcon from '../../assets/images/icons/LeaveIcon.svg'
+import DarkmodeIcon from '../../assets/images/icons/DarkmodeIcon.svg'
 import bgImg from '../../image/Notice.png'
 function Sidebar(props) {
 
