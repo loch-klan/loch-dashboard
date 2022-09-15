@@ -166,28 +166,45 @@
     height: 9.3rem;
     margin-top: 6.8rem;
     margin-bottom: -3.2rem;
-    position: relative;
-    // padding: 6.8rem 4.8rem 6rem 4.8rem;
+    //position: relative;
+    display: flex;
+    justify-content: space-around;
+    //padding: 6.8rem 4.8rem 6rem 4.8rem;
     // width: 89.6rem;
     background-color: $secondary;
     box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
     border-radius: 1.2rem;
 
-    .coin-hover-display-icon {
-        width: 9.1rem;
-        position: absolute;
-        padding: 1.6rem 1.2rem 1.6rem 1.6rem;
+    .coin-hover-display-text {
+        display: flex;
+        align-items: center;
     }
 
+    .coin-hover-display-text-icon {
+        // padding: 1.6rem 1.6rem 1.6rem 1.2rem;
+    }
+
+    // .coin-hover-display-icon {
+    //     width: 9.1rem;
+    //     //position: absolute;
+    //     //
+    // }
+
     .coin-hover-display-text1 {
-        padding: 2rem 0 0 8.9rem;
-        position: absolute;
+        //padding: 2rem 0 0 8.9rem;
+
+        //padding-right: 3.8rem;
+        //padding-top: 2rem;
+        //position: absolute;
         //width: 25.4rem;
 
         .coin-hover-display-text1-upper {
 
             // display: flex;
             // justify-content: space-evenly;
+            .coin-hover-display-text1-upper-coin {
+                padding-left: 1.2rem;
+            }
             .coin-hover-display-text1-upper-percent {
                 padding-left: 0.8rem;
             }
@@ -198,51 +215,53 @@
             align-items: baseline;
             padding-top: 0.8rem;
 
-            // .coin-hover-display-text1-upper-coincount{
-            //     padding-left: 1.2rem;
-            // }
+            .coin-hover-display-text1-lower-coincount {
+                padding-left: 1.2rem;
+            }
         }
-        .coin-hover-display-text1-upper-coincode,
-            .coin-hover-display-text1-upper-coincurrency {
-                padding-left: 0.8rem;
-                letter-spacing: 1.25px;
-            }
 
-            .coin-hover-display-text1-upper-coinrevenue {
-                padding-left: 2rem;
-            }
+        .coin-hover-display-text1-lower-coincode,
+        .coin-hover-display-text1-lower-coincurrency {
+            padding-left: 0.8rem;
+            letter-spacing: 1.25px;
+        }
+
+        .coin-hover-display-text1-lower-coinrevenue {
+            padding-left: 2rem;
+        }
 
     }
 
     .coin-hover-display-text2 {
-        margin-left: 32.7rem;
+        //margin-left: 32.7rem;
     }
 
     .coin-hover-display-text3 {
-        margin-left: 51.1rem;
+        //margin-left: 51.1rem;
     }
+
     .coin-hover-display-text4 {
-        margin-left: 70.2rem;
+        //margin-left: 70.2rem;
     }
 
     .coin-hover-display-text2,
     .coin-hover-display-text3,
     .coin-hover-display-text4 {
-        margin-top: 1rem;
-        position: absolute;
+        margin-top: 1.2rem;
+        //position: absolute;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding: 1.2rem 2rem;
+        padding: 1rem 2rem;
         //width: 17.4rem;
-        height: 7rem;
+        // height: 7rem;
         border-left: 0.1rem solid #E5E5E6;
 
         .coin-hover-display-text2-lower,
         .coin-hover-display-text3-lower,
-        .coin-hover-display-text4-lower{
-            padding-top: 0.8rem;
+        .coin-hover-display-text4-lower {
+            padding-top: 1rem;
         }
 
         .coin-hover-display-text2-upper-percent,
@@ -263,7 +282,7 @@
 
         .coin-hover-display-text2-upper-coinrevenue,
         .coin-hover-display-text3-upper-coinrevenue,
-        .coin-hover-display-text4-upper-coinrevenue  {
+        .coin-hover-display-text4-upper-coinrevenue {
             padding-left: 2.2rem;
         }
     }

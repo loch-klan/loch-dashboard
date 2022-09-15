@@ -82,7 +82,7 @@ class PieChart extends BaseReactComponent {
                             seriesCenter = series.center,
                             x = seriesCenter[0] + this.plotLeft,
                             y = seriesCenter[1] + this.plotTop,
-                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-39 lh-20 black-1D2"> ${self.state.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">USD</p></div><span class="inter-display-medium f-s-13 lh-40 grey-7C7">Total Assets</span></div>`,
+                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-39 lh-20 black-1D2">$${self.state.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">USD</p></div><span class="inter-display-medium f-s-13 lh-40 grey-7C7">Total Assets</span></div>`,
                             fontMetrics = this.renderer.fontMetrics(16);
                         if (!this.customTitle) {
                             this.customTitle = this.renderer.text(
@@ -137,7 +137,7 @@ class PieChart extends BaseReactComponent {
             },
             plotOptions: {
                 pie: {
-                    size: 600,
+                    size: 1000,
                     cursor: 'pointer',
                     connectorPadding: 2,
                     states: {
@@ -152,6 +152,9 @@ class PieChart extends BaseReactComponent {
                         distance: 0,
                         tickWidth: 0,
                         padding: 12,
+                        // useHTML: true,
+                        // allowOverlap:true,
+
                         style: {
                             textShadow: false
                         },
@@ -164,7 +167,8 @@ class PieChart extends BaseReactComponent {
                         verticalAlign: 'top',
                         style: {
                             textOverflow: 'clip',
-                            whiteSpace: 'nowrap'
+                            whiteSpace: 'nowrap',
+                            width:'350px'
                         }
                     },
                 }
@@ -252,17 +256,22 @@ class PieChart extends BaseReactComponent {
                 </div>
                 {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
                     <div className='coin-hover-display'>
-                        <img className='coin-hover-display-icon' src={BitcoinIcon} />
-                        <div className='coin-hover-display-text1'>
-                            <div className='coin-hover-display-text1-upper'>
-                                <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>Bitcoin</span>
-                                <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>70.27%</span>
+                        <div className='coin-hover-display-text'>
+                            <div className='coin-hover-display-text-icon'>
+                                <img className='coin-hover-display-icon' src={BitcoinIcon} />
                             </div>
-                            <div className='coin-hover-display-text1-lower'>
-                                <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-upper-coincount'>9.431</span>
-                                <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-upper-coincode'>BTC</span>
-                                <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-upper-coinrevenue'>$222,798</span>
-                                <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-upper-coincurrency'>USD</span>
+                            <div className='coin-hover-display-text1'>
+
+                                <div className='coin-hover-display-text1-upper'>
+                                    <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>Bitcoin</span>
+                                    <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>70.27%</span>
+                                </div>
+                                <div className='coin-hover-display-text1-lower'>
+                                    <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>9.431</span>
+                                    <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>BTC</span>
+                                    <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>$222,798</span>
+                                    <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>USD</span>
+                                </div>
                             </div>
                         </div>
                         <div className='coin-hover-display-text2'>
