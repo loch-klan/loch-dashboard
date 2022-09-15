@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Image } from "react-bootstrap"
 import arrowUpRight from '../../image/ArrowUpRight.svg'
-
+import arrowDowRight from '../../assets/images/icons/arrow-down-right.svg'
 export default function WelcomeCard(props) {
     console.log(props)
     return (
@@ -19,11 +19,10 @@ export default function WelcomeCard(props) {
                 <div className='welcome-section-right'>
                     <h3 className="space-grotesk-medium wallet-amount">$
                     {props.assetTotal.toLocaleString(undefined, {maximumFractionDigits:2})}</h3>
-
-                    <Button className={props.decrement ? "inter-display-medium downfall" : "inter-display-medium"}>
-                        <Image src={arrowUpRight} />
+                    <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${props.decrement ? "downfall" : "" }`}>
+                        <Image src={props.decrement ? arrowDowRight :arrowUpRight} />
                         330.10 (1%)
-                    </Button>
+                    </div>
                 </div>
             </div>
         </div>

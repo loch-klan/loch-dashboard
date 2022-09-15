@@ -1026,7 +1026,6 @@ form {
     // border: 0.1rem solid $white-E5E;
     border-radius: 0.8rem;
   }
-
   .arrow::before {
     border-top-color: $secondary;
   }
@@ -1063,6 +1062,66 @@ form {
     color: $black-191;
     background: $secondary;
 
+  }
+}
+
+// .text-tooltip-container{
+//   .tooltip-inner{
+//     background-color: $secondary;
+//     // border: 0.1rem solid $white-E5E;
+//     border-radius: 0.8rem;
+//   }
+//   .arrow::before {
+//     border-top-color: $secondary;
+//   }
+//   .text-tooltip {
+//     padding: 0.5rem 0.7rem;
+//     color: $black-191;
+//     background: $secondary;
+
+//   }
+
+//   // .text-tooltip {
+//   //   padding: 0.8rem 1.2rem;
+//   //   color: $black-191;
+//   //   background: $secondary;
+//   //   border: 0.1rem solid $white-E5E;
+//   //   border-radius: 0.8rem;
+//   // }
+// }
+
+.text-tooltip-container {
+
+  .arrow{
+    border-left: 0.5px solid #E5E5E6;
+    border-right: 0.5px solid #E5E5E6;
+    border-top: 1px solid #E5E5E6;
+    border-radius: 1px;
+    bottom: 0.5rem;
+    width: 0rem;
+    height: 0rem;
+  }
+  .tooltip-inner {
+    background-color: $secondary;
+    border: 0.1rem solid $white-E5E;
+    border-radius: 0.8rem;
+    padding: 0px;
+    .text-tooltip {
+      display: flex;
+      padding: 0.8rem 1rem;
+      border-radius: 0.8rem;
+      text-align: left;
+      color: $black-191;
+      background: $secondary;
+
+      img {
+        margin-right: 0.8rem;
+      }
+    }
+  }
+
+  .arrow::before {
+    border-top-color: $secondary;
   }
 }
 
