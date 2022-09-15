@@ -93,13 +93,9 @@ function Sidebar(props) {
                             </li>
                         </ul>
 
-                        <p >
-                            Sic Parvis Magna |
-                            Thus, great things from small things come.
-                        </p>
-                        <p >Sir Francis Drake</p>
-
-
+                        <p className='inter-display-medium f-s-16 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
+                        <p className='inter-display-medium f-s-16 grey-CAC lh-19'>Thus, great things from small things come.</p>
+                        <p className='inter-display-semi-bold f-s-16 grey-B0B lh-19'>Sir Francis Drake</p>
                     </div>
                 </div>
             </Container>
