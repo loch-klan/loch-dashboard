@@ -45,7 +45,7 @@ body {
 }
 
 .main-section {
-  display: flex;
+  // display: flex;
   height: 100vh;
   overflow: scroll;
 
@@ -1111,7 +1111,8 @@ form {
 .page {
   padding-left: 10rem;
   padding-right: 10rem;
-  width: 100%;
+  // width: 100%;
+  overflow-x:hidden;
 }
 
 .m-t-80 {
