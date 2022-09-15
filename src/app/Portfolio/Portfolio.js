@@ -13,7 +13,6 @@ class Portfolio extends BaseReactComponent {
         super(props);
         props.location.state && localStorage.setItem("addWallet", JSON.stringify(props.location.state.addWallet))
         this.state = {
-
             // userWalletList: [
             //     {
             //         "id": "wallet1",
@@ -107,7 +106,6 @@ class Portfolio extends BaseReactComponent {
             //         "coinFound": true
             //     }
             // ],
-
             userWalletList: JSON.parse(localStorage.getItem("addWallet")),
             assetTotalValue: 0,
             loader: false

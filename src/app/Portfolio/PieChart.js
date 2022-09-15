@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import BitcoinIcon from "../../assets/images/icons/bitcoin-icon.svg";
+import CustomLoader from "../common/CustomLoader";
 
 
 class PieChart extends BaseReactComponent {
@@ -17,7 +18,8 @@ class PieChart extends BaseReactComponent {
             loader: props.loader,
             chartData: [],
             assetData: [],
-            chartOptions: []
+            chartOptions: [],
+            valueChanged: false
         }
 
     }
@@ -157,7 +159,7 @@ class PieChart extends BaseReactComponent {
                         tickWidth: 0,
                         padding: 12,
                         //useHTML: true,
-                        allowOverlap:false,
+                        allowOverlap: false,
                         style: {
                             textShadow: false
                         },
@@ -248,73 +250,80 @@ class PieChart extends BaseReactComponent {
         return (
             <div className='portfolio-over-container'>
                 <h1 className='Inter-Medium overview-heading'>Overview</h1>
-                <div className='chart-section'>
-                    <HighchartsReact
-                        highcharts={Highcharts}
-                        options={this.state.chartOptions}
-                        updateArgs={[true]}
-                        oneToOne={true}
-                        allowChartUpdate={true}
-                    />
-                </div>
-                {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
-                    <div className='coin-hover-display'>
-                        <div className='coin-hover-display-text'>
-                            <div className='coin-hover-display-text-icon'>
-                                <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol : null} />
-                            </div>
-                            <div className='coin-hover-display-text1'>
+                {Object.keys(this.state.assetData).length > 0 ?
+                    <>
+                        <div className='chart-section'>
+                            <HighchartsReact
+                                highcharts={Highcharts}
+                                options={this.state.chartOptions}
+                                updateArgs={[true]}
+                                oneToOne={true}
+                                allowChartUpdate={true}
+                            />
+                        </div>
+                        {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
+                            <div className='coin-hover-display'>
+                                <div className='coin-hover-display-text'>
+                                    <div className='coin-hover-display-text-icon'>
+                                        <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol : null} />
+                                    </div>
+                                    <div className='coin-hover-display-text1'>
 
-                                <div className='coin-hover-display-text1-upper'>
-                                    <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
-                                    <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.y : null}%</span>
+                                        <div className='coin-hover-display-text1-upper'>
+                                            <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
+                                            <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.y : null}%</span>
+                                        </div>
+                                        <div className='coin-hover-display-text1-lower'>
+                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.count : null}</span>
+                                            <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetCode : null}</span>
+                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.usd : null}</span>
+                                            <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>USD</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className='coin-hover-display-text1-lower'>
-                                    <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.count : null}</span>
-                                    <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetCode : null}</span>
-                                    <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.usd : null}</span>
-                                    <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>USD</span>
+                                <div className='coin-hover-display-text2'>
+                                    <div className='coin-hover-display-text2-upper'>
+                                        <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>Metamask</span>
+                                        <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>50%</span>
+                                    </div>
+                                    <div className='coin-hover-display-text2-lower'>
+                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>3.1</span>
+                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>BTC</span>
+                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>21310</span>
+                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className='coin-hover-display-text2'>
-                            <div className='coin-hover-display-text2-upper'>
-                                <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>Metamask</span>
-                                <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>50%</span>
-                            </div>
-                            <div className='coin-hover-display-text2-lower'>
-                                <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>3.1</span>
-                                <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>BTC</span>
-                                <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>21310</span>
-                                <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
-                            </div>
-                        </div>
-                        <div className='coin-hover-display-text3'>
-                            <div className='coin-hover-display-text3-upper'>
-                                <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text3-upper-coin'>Coinbase</span>
-                                <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text3-upper-percent'>30%</span>
-                            </div>
-                            <div className='coin-hover-display-text3-lower'>
-                                <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text3-upper-coincount'>1.3</span>
-                                <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text3-upper-coincode'>BTC</span>
-                                <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text3-upper-coinrevenue'>12,211</span>
-                                <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text3-upper-coincurrency'>USD</span>
-                            </div>
-                        </div>
-                        <div className='coin-hover-display-text4'>
-                            <div className='coin-hover-display-text4-upper'>
-                                <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text4-upper-coin'>Binance</span>
-                                <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text4-upper-percent'>20%</span>
-                            </div>
-                            <div className='coin-hover-display-text4-lower'>
-                                <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text4-upper-coincount'>0.01</span>
-                                <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text4-upper-coincode'>BTC</span>
-                                <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text4-upper-coinrevenue'>3120</span>
-                                <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text4-upper-coincurrency'>USD</span>
-                            </div>
-                        </div>
+                                <div className='coin-hover-display-text3'>
+                                    <div className='coin-hover-display-text3-upper'>
+                                        <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text3-upper-coin'>Coinbase</span>
+                                        <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text3-upper-percent'>30%</span>
+                                    </div>
+                                    <div className='coin-hover-display-text3-lower'>
+                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text3-upper-coincount'>1.3</span>
+                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text3-upper-coincode'>BTC</span>
+                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text3-upper-coinrevenue'>12,211</span>
+                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text3-upper-coincurrency'>USD</span>
+                                    </div>
+                                </div>
+                                <div className='coin-hover-display-text4'>
+                                    <div className='coin-hover-display-text4-upper'>
+                                        <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text4-upper-coin'>Binance</span>
+                                        <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text4-upper-percent'>20%</span>
+                                    </div>
+                                    <div className='coin-hover-display-text4-lower'>
+                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text4-upper-coincount'>0.01</span>
+                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text4-upper-coincode'>BTC</span>
+                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text4-upper-coinrevenue'>3120</span>
+                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text4-upper-coincurrency'>USD</span>
+                                    </div>
+                                </div>
 
-                    </div> : null}
+                            </div> : null}
+                    </> :
+                    <div className='chart-section-loader'>
+                        <CustomLoader chartType="pie" />
+                    </div>
+                }
             </div>
         )
 

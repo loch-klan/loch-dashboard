@@ -8,10 +8,11 @@ function CustomOverlay({ text, position, isIcon, children, IconImage, isInfo, is
 
 
     const renderTooltip = (props) => (
-        <Tooltip className={isText ? "text-tooltip-container" :"tool-tip-container"} id="button-tooltip" {...props}>
+        // <Tooltip className={isText ? "text-tooltip-container" : "op-100 tool-tip-container"} id="button-tooltip" {...props}></Tooltip>
+        <Tooltip className={`tool-tip-container ${isInfo ? "question-hover" : "hover-chip"}`} id="button-tooltip" {...props}>
             {isInfo ?
                 <div className={isText ? "text-tooltip" : "button-tooltip"}>
-                    {isIcon ? <Image src={IconImage} />  :  null}
+                    {isIcon ? <Image src={IconImage} /> : null}
                     <span className="inter-display-medium f-s-13 lh-16">{text}</span>
                 </div> :
 

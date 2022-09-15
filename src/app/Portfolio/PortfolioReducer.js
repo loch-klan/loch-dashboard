@@ -40,7 +40,8 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                     );
                 }
                 for (let i = 0; i < action.payload.userWalletList.assets.length; i++) {
-                    let value = state.coinRateList.filter((e) => e.code === action.payload.userWalletList.assets[i].asset.code)[0].quote
+                    let matchedCodeData = state.coinRateList.filter((e) => e.code === action.payload.userWalletList.assets[i].asset.code)
+                    let value = matchedCodeData && matchedCodeData[0] ? matchedCodeData[0].quote : 0;
                     let assetIndex = updateWalletList[index]["coinAssets"].findIndex(
                         assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
                     );

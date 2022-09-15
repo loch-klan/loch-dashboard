@@ -2,6 +2,8 @@ import React from 'react'
 import { Button, Image } from "react-bootstrap"
 import arrowUpRight from '../../image/ArrowUpRight.svg'
 import arrowDowRight from '../../assets/images/icons/arrow-down-right.svg'
+import CustomLoader from "../common/CustomLoader";
+
 export default function WelcomeCard(props) {
     console.log(props)
     return (
@@ -17,10 +19,15 @@ export default function WelcomeCard(props) {
                     </div>
                 </div>
                 <div className='welcome-section-right'>
-                    <h3 className="space-grotesk-medium wallet-amount">$
-                    {props.assetTotal.toLocaleString(undefined, {maximumFractionDigits:2})}</h3>
-                    <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${props.decrement ? "downfall" : "" }`}>
-                        <Image src={props.decrement ? arrowDowRight :arrowUpRight} />
+
+                    {props.assetTotal ?
+                        <h3 className="space-grotesk-medium wallet-amount">$
+                            {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })}</h3>
+                        :
+                        <CustomLoader chartType="text" />
+                    }
+                    <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${props.decrement ? "downfall" : ""}`}>
+                        <Image src={props.decrement ? arrowDowRight : arrowUpRight} />
                         330.10 (1%)
                     </div>
                 </div>

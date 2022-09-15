@@ -154,7 +154,7 @@ body {
   color: $grey-ADA;
 }
 
-.grey-CAC{
+.grey-CAC {
   color: $grey-CAC;
 }
 
@@ -939,6 +939,13 @@ form {
     opacity: 1;
 
     ul {
+      padding: inherit;
+      width: auto;
+      margin-left: -0.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: -0.4rem;
       // padding: inherit;
       // width: auto;
       // margin-left: -0.1rem;
@@ -995,7 +1002,8 @@ form {
 
   .arrow::before {
     border-top-color: $secondary;
-    top: -0.46rem;
+    position: relative;
+    // top: -0.46rem;
   }
 
   .button-tooltip {
@@ -1020,49 +1028,60 @@ form {
   }
 }
 
-.text-tooltip-container{
-  .tooltip-inner{
-    max-width:max-content;
+.text-tooltip-container {
+  .tooltip-inner {
+    max-width: max-content;
     background-color: $secondary;
     border: 0.1rem solid $grey-E5E;
     color: $black-191;
-    padding:0.8rem 1.2rem;
+    padding: 0.8rem 1.2rem;
     border-radius: 0.8rem;
-    .text-tooltip{
+
+    .text-tooltip {
       display: flex;
       align-items: center;
-      img{
+
+      img {
         margin-right: 0.8rem;
       }
     }
-    
-  }
-  .arrow::before,.arrow::after{
-    content: "";
-    border-style: solid;
-  }
-  .arrow::after{
-    border-color: $secondary transparent transparent transparent;
-  }
-  .arrow::before{
-    border-color: $grey-E5E transparent transparent transparent;
-  }.arrow::before,.arrow::after{
-    content: "";
-    border-style: solid;
-  }
-  .arrow::after{
-    border-color: $secondary transparent transparent transparent;
-    border-width: 0.6rem;  
-    position: absolute;
-      top:-0.1rem;
-      left:0.09rem;
 
   }
-  .arrow::before{
+
+  .arrow::before,
+  .arrow::after {
+    content: "";
+    border-style: solid;
+  }
+
+  .arrow::after {
+    border-color: $secondary transparent transparent transparent;
+  }
+
+  .arrow::before {
     border-color: $grey-E5E transparent transparent transparent;
-  border-width: 0.7rem;
-  }  
-  
+  }
+
+  .arrow::before,
+  .arrow::after {
+    content: "";
+    border-style: solid;
+  }
+
+  .arrow::after {
+    border-color: $secondary transparent transparent transparent;
+    border-width: 0.6rem;
+    position: absolute;
+    top: -0.1rem;
+    left: 0.09rem;
+
+  }
+
+  .arrow::before {
+    border-color: $grey-E5E transparent transparent transparent;
+    border-width: 0.7rem;
+  }
+
 }
 
 .chip-container-dual {
