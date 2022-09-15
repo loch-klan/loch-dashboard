@@ -44,8 +44,12 @@ function CustomChip({ coins, isLoaded }) {
                         </div>
                     :
                     <div className="chip-wrapper">
-                        <div className="chip-container">
-                            <Loading size="0.75rem" margin="0.1rem" background="black" />
+                        <div className="spinner-chip-container">
+                            <div class="spinner">
+                                <div class="bounce1"></div>
+                                <div class="bounce2"></div>
+                                <div class="bounce3"></div>
+                            </div>
                         </div>
                     </div>
             }

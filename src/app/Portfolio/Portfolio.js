@@ -11,100 +11,104 @@ import { Loading } from 'react-loading-dot';
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
+        localStorage.setItem("addWallet", JSON.stringify(this.props.location.state.addWallet))
         this.state = {
-            userWalletList: [
-                {
-                    "id": "wallet1",
-                    "coins": [
-                        {
-                            "coinCode": "ETH",
-                            "coinSymbol": "https://loch-public-assets.s3.ap-south-1.amazonaws.com/loch-ethereum.svg",
-                            "coinName": "Ethereum",
-                            "chain_detected": true
-                        },
-                        {
-                            "coinCode": "SOLANA",
-                            "coinSymbol": "https://loch-public-assets.s3.ap-south-1.amazonaws.com/loch-solana.svg",
-                            "coinName": "Solana",
-                            "chain_detected": false
-                        },
-                        {
-                            "coinCode": "BTC",
-                            "coinSymbol": "https://loch-public-assets.s3.ap-south-1.amazonaws.com/loch-bitcoin.svg",
-                            "coinName": "Bitcoin",
-                            "chain_detected": false
-                        },
-                        {
-                            "coinCode": "FANTOM",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/3513.png",
-                            "coinName": "Fantom",
-                            "chain_detected": true
-                        },
-                        {
-                            "coinCode": "POLYGON",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
-                            "coinName": "Polygon",
-                            "chain_detected": true
-                        },
-                        {
-                            "coinCode": "AVALANCHE",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png",
-                            "coinName": "Avalanche",
-                            "chain_detected": false
-                        },
-                        {
-                            "coinCode": "LITECOIN",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/2.png",
-                            "coinName": "Litecoin",
-                            "chain_detected": false
-                        },
-                        {
-                            "coinCode": "CELO",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/5567.png",
-                            "coinName": "Celo",
-                            "chain_detected": false
-                        },
-                        {
-                            "coinCode": "ALGORAND",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/4030.png",
-                            "coinName": "Algorand",
-                            "chain_detected": false
-                        },
-                        {
-                            "coinCode": "TRON",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/1958.png",
-                            "coinName": "Tron",
-                            "chain_detected": false
-                        },
-                        {
-                            "coinCode": "ADA",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/2010.png",
-                            "coinName": "Cardano",
-                            "chain_detected": false
-                        },
-                        {
-                            "coinCode": "BSC",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
-                            "coinName": "BSC",
-                            "chain_detected": true
-                        },
-                        {
-                            "coinCode": "OPTIMISM",
-                            "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/11840.png",
-                            "coinName": "Optimism",
-                            "chain_detected": true
-                        },
-                        {
-                            "coinCode": "ARBITRUM",
-                            "coinSymbol": "https://offchainlabs.com/wp-content/themes/offchain/images/home/arbitrum/arbirtum_logo.svg",
-                            "coinName": "Arbitrum",
-                            "chain_detected": false
-                        }
-                    ],
-                    "address": "0xF977814e90dA44bFA03b6295A0616a897441aceC",
-                    "coinFound": true
-                }
-            ],
+
+            // userWalletList: [
+            //     {
+            //         "id": "wallet1",
+            //         "coins": [
+            //             {
+            //                 "coinCode": "ETH",
+            //                 "coinSymbol": "https://loch-public-assets.s3.ap-south-1.amazonaws.com/loch-ethereum.svg",
+            //                 "coinName": "Ethereum",
+            //                 "chain_detected": true
+            //             },
+            //             {
+            //                 "coinCode": "SOLANA",
+            //                 "coinSymbol": "https://loch-public-assets.s3.ap-south-1.amazonaws.com/loch-solana.svg",
+            //                 "coinName": "Solana",
+            //                 "chain_detected": false
+            //             },
+            //             {
+            //                 "coinCode": "BTC",
+            //                 "coinSymbol": "https://loch-public-assets.s3.ap-south-1.amazonaws.com/loch-bitcoin.svg",
+            //                 "coinName": "Bitcoin",
+            //                 "chain_detected": false
+            //             },
+            //             {
+            //                 "coinCode": "FANTOM",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/3513.png",
+            //                 "coinName": "Fantom",
+            //                 "chain_detected": true
+            //             },
+            //             {
+            //                 "coinCode": "POLYGON",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
+            //                 "coinName": "Polygon",
+            //                 "chain_detected": true
+            //             },
+            //             {
+            //                 "coinCode": "AVALANCHE",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png",
+            //                 "coinName": "Avalanche",
+            //                 "chain_detected": false
+            //             },
+            //             {
+            //                 "coinCode": "LITECOIN",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/2.png",
+            //                 "coinName": "Litecoin",
+            //                 "chain_detected": false
+            //             },
+            //             {
+            //                 "coinCode": "CELO",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/5567.png",
+            //                 "coinName": "Celo",
+            //                 "chain_detected": false
+            //             },
+            //             {
+            //                 "coinCode": "ALGORAND",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/4030.png",
+            //                 "coinName": "Algorand",
+            //                 "chain_detected": false
+            //             },
+            //             {
+            //                 "coinCode": "TRON",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/1958.png",
+            //                 "coinName": "Tron",
+            //                 "chain_detected": false
+            //             },
+            //             {
+            //                 "coinCode": "ADA",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/2010.png",
+            //                 "coinName": "Cardano",
+            //                 "chain_detected": false
+            //             },
+            //             {
+            //                 "coinCode": "BSC",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
+            //                 "coinName": "BSC",
+            //                 "chain_detected": true
+            //             },
+            //             {
+            //                 "coinCode": "OPTIMISM",
+            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/11840.png",
+            //                 "coinName": "Optimism",
+            //                 "chain_detected": true
+            //             },
+            //             {
+            //                 "coinCode": "ARBITRUM",
+            //                 "coinSymbol": "https://offchainlabs.com/wp-content/themes/offchain/images/home/arbitrum/arbirtum_logo.svg",
+            //                 "coinName": "Arbitrum",
+            //                 "chain_detected": false
+            //             }
+            //         ],
+            //         "address": "0xF977814e90dA44bFA03b6295A0616a897441aceC",
+            //         "coinFound": true
+            //     }
+            // ],
+
+            userWalletList: JSON.parse(localStorage.getItem("addWallet")),
             assetTotalValue: 0,
             loader: false
         }

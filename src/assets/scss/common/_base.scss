@@ -48,8 +48,10 @@ body {
   display: flex;
   height: 100vh;
   overflow: scroll;
+
   .main-section-right {
     flex: 1;
+
     .main-content-wrapper {
       // padding: 2rem 3rem;
     }
@@ -123,11 +125,11 @@ body {
 
 @for $y from 0 through 100 {
   .op-#{$y} {
-    opacity: "0."+$y;
+    opacity: "0." +$y;
   }
 }
 
-.op-8{
+.op-8 {
   opacity: 0.8;
 }
 
@@ -219,9 +221,11 @@ body {
 .black-191 {
   color: $black-191;
 }
-.yellow-F4A{
+
+.yellow-F4A {
   color: $yellow-F4A;
 }
+
 .image-wrapper {
   display: flex;
   flex-direction: column;
@@ -917,6 +921,7 @@ form {
 .tooltip.show {
   opacity: 1;
 }
+
 // START FROM HERE
 .tool-tip-container {
 
@@ -954,7 +959,7 @@ form {
 
         img {
           width: 1.6rem;
-          margin-right:0.5rem;
+          margin-right: 0.5rem;
           margin-top: -0.1rem;
         }
 
@@ -964,23 +969,26 @@ form {
 
   }
 
-  &.hover-chip{
-    .tooltip-inner{
+  &.hover-chip {
+    .tooltip-inner {
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
       border: 0;
       border-radius: 4px;
     }
   }
-  &.question-hover{
-    .tooltip-inner{
+
+  &.question-hover {
+    .tooltip-inner {
       padding: 1.2rem 1.6rem;
       border: 0;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
     }
   }
-  &.bs-tooltip-top{
+
+  &.bs-tooltip-top {
     padding-bottom: 0.8rem;
   }
+
   .arrow::before {
     border-top-color: $secondary;
     top: -0.46rem;
@@ -994,6 +1002,7 @@ form {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
     // padding: 1.2rem 1.6rem;
     // gap: 1.2rem;
     // height: 5.6rem;
@@ -1006,15 +1015,18 @@ form {
     }
   }
 }
-.text-tooltip-container{
-  .tooltip-inner{
+
+.text-tooltip-container {
+  .tooltip-inner {
     background-color: $secondary;
     // border: 0.1rem solid $white-E5E;
     border-radius: 0.8rem;
   }
+
   .arrow::before {
     border-top-color: $secondary;
   }
+
   .text-tooltip {
     padding: 0.5rem 0.7rem;
     color: $black-191;
@@ -1031,15 +1043,17 @@ form {
   // }
 }
 
-.text-tooltip-container{
-  .tooltip-inner{
+.text-tooltip-container {
+  .tooltip-inner {
     background-color: $secondary;
     // border: 0.1rem solid $white-E5E;
     border-radius: 0.8rem;
   }
+
   .arrow::before {
     border-top-color: $secondary;
   }
+
   .text-tooltip {
     padding: 0.5rem 0.7rem;
     color: $black-191;
@@ -1055,12 +1069,14 @@ form {
 .chip-container {
   right: 9.2rem;
 }
-.chip-wrapper{
+
+.chip-wrapper {
   display: flex;
   position: absolute;
   right: 1.2rem;
   top: 0.7rem;
 }
+
 .chip-container,
 .chip-container-dual {
   cursor: default;
@@ -1073,6 +1089,7 @@ form {
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
+
   .badge {
     padding: 0.35rem 0.8rem 0.4rem;
   }
@@ -1089,17 +1106,19 @@ form {
 }
 
 .page {
-  padding-left: 10rem;
-  padding-right: 10rem;
+  padding-left: 15rem;
+  padding-right: 15rem;
   width: 100%;
 }
 
-.m-t-80{
+.m-t-80 {
   margin-top: 8rem;
 }
-.m-b-26{
+
+.m-b-26 {
   margin-bottom: 2.6rem;
 }
+
 .m-b-12 {
   margin-bottom: 1.2rem;
 }
@@ -1123,6 +1142,7 @@ form {
 .m-b-24 {
   margin-bottom: 2.4rem;
 }
+
 .m-b-36 {
   margin-bottom: 3.6rem;
 }

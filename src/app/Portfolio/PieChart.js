@@ -16,7 +16,8 @@ class PieChart extends BaseReactComponent {
             assetTotal: props.assetTotal,
             loader: props.loader,
             chartData: [],
-            assetData: []
+            assetData: [],
+            chartOptions: []
         }
 
     }
@@ -27,39 +28,42 @@ class PieChart extends BaseReactComponent {
             this.setState({ assetTotal: this.props.assetTotal })
         }
         if (this.props.userWalletData !== prevProps.userWalletData) {
-            this.setState({ chartData: this.props.userWalletData })
+            let colors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', '#a07ddd', '#e7c5a0']
+            let borderColors = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', '#7B44DA', '#F19938']
+
+            if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
+                this.state.assetData = []
+                for (let i = 0; i < this.props.userWalletData.length; i++) {
+                    let z = parseFloat(parseFloat((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100).toFixed(2));
+                    this.state.assetData.push({
+                        name: this.props.userWalletData[i].assetName,
+                        y: z,
+                        usd: this.props.userWalletData[i].assetValue.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                        borderColor: borderColors[i % 5],
+                        borderWidth: 2,
+                        color: colors[i % 5],
+                        originalColor: colors[i % 5]
+                    })
+                }
+            }
+            this.setState({
+                chartData: this.props.userWalletData,
+                assetData: this.state.assetData && this.state.assetData.length > 0 ? this.state.assetData.sort((a, b) => b.y - a.y) : [],
+                chartOptions: {}
+            })
         }
     }
 
 
-
     render() {
         let self = this;
-        let colors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', '#a07ddd', '#e7c5a0']
-        let borderColors = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', '#7B44DA', '#F19938']
-
-        if (self.state.chartData && self.state.chartData.length > 0) {
-            self.state.assetData = []
-            for (let i = 0; i < self.state.chartData.length; i++) {
-                self.state.assetData.push({
-                    name: self.state.chartData[i].assetName,
-                    // y: 20,
-                    y: parseFloat(parseFloat(self.state.chartData[i].assetValue) / parseFloat(self.state.assetTotal)) * 100,
-                    usd: self.state.chartData[i].assetValue.toLocaleString(undefined, { maximumFractionDigits: 2 }),
-                    borderColor: borderColors[i % 5],
-                    borderWidth: 2,
-                    color: colors[i % 5],
-                    originalColor: colors[i % 5]
-                })
-            }
-        }
-        // console.log(this.state.assetData)
-        const options = {
+        // if (this.state.assetData && this.state.assetData.length > 0 && self.props.assetTotal > 0) {
+        this.state.chartOptions = {
             chart: {
                 styledMode: false,
                 type: 'pie',
                 backgroundColor: null,
-                //height: (9 / 16 * 100) + '%',
+                height: (9 / 16 * 100) + '%',
                 width: 1000,
                 events: {
                     load: function (event) {
@@ -144,14 +148,6 @@ class PieChart extends BaseReactComponent {
                     },
                     shadow: false,
                     allowPointSelect: true,
-                    point: {
-                        events: {
-                            click: function () {
-                                //chart.reflow();
-                            },
-
-                        },
-                    },
                     dataLabels: {
                         distance: 0,
                         tickWidth: 0,
@@ -186,11 +182,14 @@ class PieChart extends BaseReactComponent {
                 },
                 point: {
                     events: {
+                        click: function () {
+                            var currentData = this;
+                            self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? {} : currentData });
+                        },
                         mouseOver: function () {
                             let color = this.options.borderColor;
                             this.update({ color: color });
                             var currentData = this;
-                            //self.setState({ pieSectionDataEnabled: currentData });
                             this.series.data.forEach(function (data) {
                                 if (currentData.colorIndex !== data.colorIndex) {
                                     data.update({ opacity: 0.2 }, true);
@@ -216,7 +215,6 @@ class PieChart extends BaseReactComponent {
                         mouseOut: function () {
                             let color = this.options.originalColor;
                             this.update({ color: color });
-                            //self.setState({ pieSectionDataEnabled: {} })
                             this.series.data.forEach(function (data) {
                                 data.update({ opacity: 1 }, false);
                                 if (data.colorIndex >= 4) {
@@ -235,72 +233,21 @@ class PieChart extends BaseReactComponent {
                     }
 
                 },
-                data: this.state.assetData
-                // data: [{
-                //     name: 'Bitcoin',
-                //     y: 68.1,
-                //     usd: "222,798",
-                //     borderColor: 'rgba(255, 99, 132, 1)',
-                //     borderWidth: 2,
-                //     color: 'rgba(255, 99, 132, 0.2)',
-                //     originalColor: 'rgba(255, 99, 132, 0.2)'
-                // }, {
-                //     name: 'Ethereum',
-                //     y: 11.0,
-                //     usd: "55,143",
-                //     borderColor: 'rgba(54, 162, 235, 1)',
-                //     borderWidth: 2,
-                //     color: 'rgba(54, 162, 235, 0.2)',
-                //     originalColor: 'rgba(54, 162, 235, 0.2)'
-
-                // }, {
-                //     name: 'Solana',
-                //     y: 11.2,
-                //     usd: "19,925",
-                //     borderColor: 'rgba(255, 206, 86, 1)',
-                //     borderWidth: 2,
-                //     color: 'rgba(255, 206, 86, 0.2)',
-                //     originalColor: 'rgba(255, 206, 86, 0.2)'
-                // },
-                // {
-                //     name: 'Avalanche',
-                //     y: 4.7,
-                //     usd: "6,303",
-                //     borderColor: 'rgba(75, 192, 192, 1)',
-                //     borderWidth: 2,
-                //     color: 'rgba(75, 192, 192, 0.2)',
-                //     originalColor: 'rgba(75, 192, 192, 0.2)'
-                // },
-                // {
-                //     name: 'LiteCoin',
-                //     y: 2.5,
-                //     usd: "6,303",
-                //     borderColor: '#7B44DA',
-                //     borderWidth: 2,
-                //     color: '#a07ddd',
-                //     originalColor: '#a07ddd'
-                // },
-                // {
-                //     name: 'Ripple',
-                //     y: 2.5,
-                //     usd: "19,925",
-                //     borderColor: '#F19938',
-                //     borderWidth: 2,
-                //     color: '#e7c5a0',
-                //     originalColor: '#e7c5a0'
-                // }
-                // ]
+                // data: this.chartDataRender()
+                data: self.state.assetData && self.state.assetData.length > 0 ? self.state.assetData : []
             }]
-        };
+            // }
+        }
         return (
             <div className='portfolio-over-container'>
                 <h1 className='Inter-Medium overview-heading'>Overview</h1>
                 <div className='chart-section'>
                     <HighchartsReact
                         highcharts={Highcharts}
-                        options={options}
+                        options={this.state.chartOptions}
                         updateArgs={[true]}
                         oneToOne={true}
+                        allowChartUpdate={true}
                     />
                 </div>
                 {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?

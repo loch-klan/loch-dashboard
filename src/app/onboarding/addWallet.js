@@ -9,10 +9,14 @@ import Form from "../../utils/form/Form";
 import { Col, Container, Row } from 'react-bootstrap';
 import { getAllCoins, detectCoin } from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
+import { useHistory } from "react-router-dom";
+import LoaderIcon from "../../assets/images/icons/dots-loading.gif";
+
 
 class AddWallet extends BaseReactComponent {
     constructor(props) {
         super(props);
+        // let history = useHistory();
         this.state = {
             showModal: true,
             signIn: false,
@@ -107,6 +111,14 @@ class AddWallet extends BaseReactComponent {
 
     isDisabled = () => {
         let isDisableFlag = false;
+        if (this.props.OnboardingState.walletList.length <= 0) {
+            isDisableFlag = true;
+        }
+        this.props.OnboardingState.walletList.map((e) => {
+            if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
+                isDisableFlag = true;
+            }
+        })
         this.state.walletInput.map((e) => {
             if (!e.address) {
                 isDisableFlag = true;
@@ -115,11 +127,13 @@ class AddWallet extends BaseReactComponent {
         return isDisableFlag;
     }
 
-    onValidSubmit = (e) => {
-        e.preventDefault();
+    onValidSubmit = () => {
         this.props.history.push({
             pathname: '/portfolio',
-            state: this.state.walletInput
+            state: {
+                addWallet:
+                    this.props.OnboardingState.walletList
+            }
         });
     }
 
@@ -142,18 +156,19 @@ class AddWallet extends BaseReactComponent {
                                         placeholder='Paste any wallet address here'
                                         title={c.address || ""}
                                         onKeyUp={(e) => this.setState({ loading: true })}
-                                        onKeyDown={(e) => this.setState({ loading: false })}
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.props.OnboardingState.walletList.map((e, i) => {
-                                        if (this.state.walletInput[index].address && e.id === `wallet${index + 1}` && e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                            if (e.coinFound) {
-                                                return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
+                                        if (this.state.walletInput[index].address && e.id === `wallet${index + 1}`) {
+                                            if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                                if (e.coinFound) {
+                                                    return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
+                                                } else {
+                                                    return <CustomChip coins={null} key={i} isLoaded={true}></CustomChip>
+                                                }
                                             } else {
-                                                return <CustomChip coins={null} key={i} isLoaded={true}></CustomChip>
-                                            }
-                                        } else {
-                                            if (this.state.loading) {
-                                                // return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
+                                                if (this.state.loading && c.address && c.address.length > 0 && e.coins.length !== this.props.OnboardingState.coinsList.length) {
+                                                    return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
+                                                }
                                             }
                                         }
                                     })}
