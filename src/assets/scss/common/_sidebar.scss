@@ -43,7 +43,7 @@
                         font-family: Inter-Medium;
                         font-size: 1.6rem;
                         font-weight: 500;
-                        
+
 
                         .nav-link {
                             padding: 1.1rem 1.5rem;
@@ -51,7 +51,7 @@
                             display: flex;
                             align-items: center;
                             width: 97%;
-                            
+
                             img {
                                 margin-right: 1rem;
                             }
@@ -127,25 +127,24 @@
                     }
                 }
             }
+            // p {
+            //     font-size: 1.6rem;
+            //     font-weight: 500;
+            // }
+            // p:nth-child(2){
+            //     color: $grey-CAC;
+            //     font-family: Inter-Medium;
+            //     font-style: italic;
+            //     margin-bottom:1.2rem;
+            //     padding-right: 5.2rem;
+            // }
 
-            p {
-                font-size: 1.6rem;
-                font-weight: 500;
-            }
-            p:nth-child(2){
-                color: $grey-CAC;
-                font-family: Inter-Mixed;
-                font-style: italic;
-                margin-bottom:1.2rem;
-                padding-right: 5.2rem;
-            }
-
-            p:nth-child(3) {
-                font-weight: 600;
-                margin-bottom: 6.7rem;
-                font-family: Inter-SemiBold;
-                color:$grey-B0B;
-            }
+            // p:nth-child(3) {
+            //     font-weight: 600;
+            //     margin-bottom: 6.7rem;
+            //     font-family: Inter-SemiBold;
+            //     color:$grey-B0B;
+            // }
         }
     }
 }

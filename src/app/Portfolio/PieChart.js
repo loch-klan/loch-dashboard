@@ -42,7 +42,10 @@ class PieChart extends BaseReactComponent {
                         borderColor: borderColors[i % 5],
                         borderWidth: 2,
                         color: colors[i % 5],
-                        originalColor: colors[i % 5]
+                        originalColor: colors[i % 5],
+                        assetSymbol: this.props.userWalletData[i].assetSymbol,
+                        assetCode: this.props.userWalletData[i].assetCode.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                        count: this.props.userWalletData[i].count
                     })
                 }
             }
@@ -63,8 +66,9 @@ class PieChart extends BaseReactComponent {
                 styledMode: false,
                 type: 'pie',
                 backgroundColor: null,
-                height: (9 / 16 * 100) + '%',
-                width: 1000,
+                // height: (9 / 16 * 100) + '%',
+                height: 445,
+                width: 900,
                 events: {
                     load: function (event) {
                         //When is chart ready?
@@ -82,7 +86,7 @@ class PieChart extends BaseReactComponent {
                             seriesCenter = series.center,
                             x = seriesCenter[0] + this.plotLeft,
                             y = seriesCenter[1] + this.plotTop,
-                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-39 lh-20 black-1D2">$${self.state.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">USD</p></div><span class="inter-display-medium f-s-13 lh-40 grey-7C7">Total Assets</span></div>`,
+                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-30 lh-20 black-1D2">$${self.state.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">USD</p></div><span class="inter-display-medium f-s-13 lh-40 grey-7C7">Total Assets</span></div>`,
                             fontMetrics = this.renderer.fontMetrics(16);
                         if (!this.customTitle) {
                             this.customTitle = this.renderer.text(
@@ -152,9 +156,8 @@ class PieChart extends BaseReactComponent {
                         distance: 0,
                         tickWidth: 0,
                         padding: 12,
-                        // useHTML: true,
-                        // allowOverlap:true,
-
+                        //useHTML: true,
+                        allowOverlap:false,
                         style: {
                             textShadow: false
                         },
@@ -168,7 +171,7 @@ class PieChart extends BaseReactComponent {
                         style: {
                             textOverflow: 'clip',
                             whiteSpace: 'nowrap',
-                            width:'350px'
+                            width: '350px'
                         }
                     },
                 }
@@ -188,7 +191,7 @@ class PieChart extends BaseReactComponent {
                     events: {
                         click: function () {
                             var currentData = this;
-                            self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? {} : currentData });
+                            self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
                         },
                         mouseOver: function () {
                             let color = this.options.borderColor;
@@ -258,18 +261,18 @@ class PieChart extends BaseReactComponent {
                     <div className='coin-hover-display'>
                         <div className='coin-hover-display-text'>
                             <div className='coin-hover-display-text-icon'>
-                                <img className='coin-hover-display-icon' src={BitcoinIcon} />
+                                <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol : null} />
                             </div>
                             <div className='coin-hover-display-text1'>
 
                                 <div className='coin-hover-display-text1-upper'>
-                                    <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>Bitcoin</span>
-                                    <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>70.27%</span>
+                                    <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
+                                    <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.y : null}%</span>
                                 </div>
                                 <div className='coin-hover-display-text1-lower'>
-                                    <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>9.431</span>
-                                    <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>BTC</span>
-                                    <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>$222,798</span>
+                                    <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.count : null}</span>
+                                    <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetCode : null}</span>
+                                    <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.usd : null}</span>
                                     <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>USD</span>
                                 </div>
                             </div>

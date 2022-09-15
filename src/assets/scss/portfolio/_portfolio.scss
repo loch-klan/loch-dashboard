@@ -163,12 +163,12 @@
 
 .coin-hover-display {
     width: 100%;
-    height: 9.3rem;
     margin-top: 6.8rem;
     margin-bottom: -3.2rem;
     //position: relative;
     display: flex;
-    justify-content: space-around;
+    padding: 1.6rem;
+    justify-content: space-between;
     //padding: 6.8rem 4.8rem 6rem 4.8rem;
     // width: 89.6rem;
     background-color: $secondary;
@@ -184,11 +184,12 @@
         // padding: 1.6rem 1.6rem 1.6rem 1.2rem;
     }
 
-    // .coin-hover-display-icon {
-    //     width: 9.1rem;
-    //     //position: absolute;
-    //     //
-    // }
+    .coin-hover-display-icon {
+        // width: 9.1rem;
+        height: 6.1rem;
+        width: 6.1rem;
+        border-radius: 1.2rem;
+    }
 
     .coin-hover-display-text1 {
         //padding: 2rem 0 0 8.9rem;
@@ -205,6 +206,7 @@
             .coin-hover-display-text1-upper-coin {
                 padding-left: 1.2rem;
             }
+
             .coin-hover-display-text1-upper-percent {
                 padding-left: 0.8rem;
             }
@@ -247,12 +249,11 @@
     .coin-hover-display-text2,
     .coin-hover-display-text3,
     .coin-hover-display-text4 {
-        margin-top: 1.2rem;
         //position: absolute;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+        // box-sizing: border-box;
+        // display: flex;
+        // flex-direction: column;
+        // align-items: flex-start;
         padding: 1rem 2rem;
         //width: 17.4rem;
         // height: 7rem;
