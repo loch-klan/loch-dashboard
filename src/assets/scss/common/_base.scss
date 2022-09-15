@@ -1020,109 +1020,49 @@ form {
   }
 }
 
-.text-tooltip-container {
-  .tooltip-inner {
+.text-tooltip-container{
+  .tooltip-inner{
+    max-width:max-content;
     background-color: $secondary;
-    // border: 0.1rem solid $white-E5E;
-    border-radius: 0.8rem;
-  }
-  .arrow::before {
-    border-top-color: $secondary;
-  }
-
-  .text-tooltip {
-    padding: 0.5rem 0.7rem;
+    border: 0.1rem solid $grey-E5E;
     color: $black-191;
-    background: $secondary;
-
-  }
-
-  // .text-tooltip {
-  //   padding: 0.8rem 1.2rem;
-  //   color: $black-191;
-  //   background: $secondary;
-  //   border: 0.1rem solid $white-E5E;
-  //   border-radius: 0.8rem;
-  // }
-}
-
-.text-tooltip-container {
-  .tooltip-inner {
-    background-color: $secondary;
-    // border: 0.1rem solid $white-E5E;
+    padding:0.8rem 1.2rem;
     border-radius: 0.8rem;
-  }
-
-  .arrow::before {
-    border-top-color: $secondary;
-  }
-
-  .text-tooltip {
-    padding: 0.5rem 0.7rem;
-    color: $black-191;
-    background: $secondary;
-
-  }
-}
-
-// .text-tooltip-container{
-//   .tooltip-inner{
-//     background-color: $secondary;
-//     // border: 0.1rem solid $white-E5E;
-//     border-radius: 0.8rem;
-//   }
-//   .arrow::before {
-//     border-top-color: $secondary;
-//   }
-//   .text-tooltip {
-//     padding: 0.5rem 0.7rem;
-//     color: $black-191;
-//     background: $secondary;
-
-//   }
-
-//   // .text-tooltip {
-//   //   padding: 0.8rem 1.2rem;
-//   //   color: $black-191;
-//   //   background: $secondary;
-//   //   border: 0.1rem solid $white-E5E;
-//   //   border-radius: 0.8rem;
-//   // }
-// }
-
-.text-tooltip-container {
-
-  .arrow{
-    border-left: 0.5px solid #E5E5E6;
-    border-right: 0.5px solid #E5E5E6;
-    border-top: 1px solid #E5E5E6;
-    border-radius: 1px;
-    bottom: 0.5rem;
-    width: 0rem;
-    height: 0rem;
-  }
-  .tooltip-inner {
-    background-color: $secondary;
-    border: 0.1rem solid $white-E5E;
-    border-radius: 0.8rem;
-    padding: 0px;
-    .text-tooltip {
+    .text-tooltip{
       display: flex;
-      padding: 0.8rem 1rem;
-      border-radius: 0.8rem;
-      text-align: left;
-      color: $black-191;
-      background: $secondary;
-
-      img {
+      align-items: center;
+      img{
         margin-right: 0.8rem;
       }
     }
+    
   }
+  .arrow::before,.arrow::after{
+    content: "";
+    border-style: solid;
+  }
+  .arrow::after{
+    border-color: $secondary transparent transparent transparent;
+  }
+  .arrow::before{
+    border-color: $grey-E5E transparent transparent transparent;
+  }.arrow::before,.arrow::after{
+    content: "";
+    border-style: solid;
+  }
+  .arrow::after{
+    border-color: $secondary transparent transparent transparent;
+    border-width: 0.6rem;  
+    position: absolute;
+      top:-0.1rem;
+      left:0.09rem;
 
-  .arrow::before {
-    border-top-color: $secondary;
   }
+  .arrow::before{
+    border-color: $grey-E5E transparent transparent transparent;
+  border-width: 0.7rem;
+  }  
+  
 }
 
 .chip-container-dual {

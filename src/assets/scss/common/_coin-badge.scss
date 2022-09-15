@@ -7,7 +7,7 @@
     justify-content: space-between;
     .badge-list {
         display: flex;
-        overflow-x: auto;
+        overflow-x: overlay;
         width:84rem;
         // background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
 
@@ -24,7 +24,7 @@
             border: 0.1rem solid $black-191;
         }
     }
-
+    
     .dropdown {
       .dropdown-menu{
         width: auto;
@@ -44,5 +44,12 @@
         }
     }
 }
+.badge-list::-webkit-scrollbar{
+  height: 0.5rem;
+}
 
+.badge-list::-webkit-scrollbar-thumb{
+  border-radius: 2rem;
+  background-color: $grey-999;
+}
 // badge section ends
