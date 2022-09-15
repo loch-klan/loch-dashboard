@@ -5,19 +5,21 @@ import Sidebar from '../common/Sidebar';
 import WalletCard from './WalletCard';
 import { Image } from 'react-bootstrap';
 import Icon from "../../image/ArrowRight.svg"
-import { Button ,Dropdown , DropdownButton } from 'react-bootstrap';
+import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import DropDown from '../common/DropDown';
 import data from "./walletDate.js"
 import PageHeader from '../common/PageHeader';
 import CoinBadges from './../common/CoinBadges';
-
+import sort from "../../image/sort.png"
 class Wallet extends Component {
     constructor(props) {
         super(props);
         this.state = {
             walletdata: data
         }
+        this.sortby = ["Amount", "Date added", "Name"]
     }
+
 
     componentDidMount() { }
 
@@ -38,24 +40,14 @@ class Wallet extends Component {
                         activeBadge={0}
                     />
                     <div className='m-b-32 sortby-section'>
-                        <span className='inter-display-medium f-s-13 lh-16 m-r-24'>Sort by</span>
+                        <span className='inter-display-medium f-s-13 lh-16 m-r-8 grey-313'>Sort by</span>
                         <div className='dropdown-section'>
-                        <DropDown
-                            id="dropdown-amount-button"
-                            title="Amount"
-                            // list={["Action" , "Action2" , "Action3"]}
-                            list={[]}
-                        />
-                        <DropDown
-                           id="dropdown-date-button" title="Date added"
-                          //  list={["Action" , "Action2" , "Action3"]}
-                          list={[]}
-                        />
-                        <DropDown
-                            id="dropdown-name-button" title="Name"
-                            // list={["Action" , "Action2" , "Action3"]}
-                            list={[]}
-                        />
+                            {this.sortby.map((e, index) => {
+                                return <span className=' sort-by-title'>
+                                    <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 '>{e}</span> <img src={sort} />
+                                </span>
+                            })}
+
                         </div>
 
                     </div>
