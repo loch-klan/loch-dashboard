@@ -30,7 +30,7 @@ const routes = [
   {
     path: "/portfolio",
     name: "Portfolio",
-    type: Route,
+    type: PrivateRoute,
     component: Portfolio
   },
   {

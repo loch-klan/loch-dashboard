@@ -11,7 +11,7 @@ import { Loading } from 'react-loading-dot';
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
-        localStorage.setItem("addWallet", JSON.stringify(this.props.location.state.addWallet))
+        props.location.state && localStorage.setItem("addWallet", JSON.stringify(props.location.state.addWallet))
         this.state = {
 
             // userWalletList: [

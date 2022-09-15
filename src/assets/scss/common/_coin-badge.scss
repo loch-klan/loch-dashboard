@@ -7,7 +7,7 @@
     justify-content: space-between;
     .badge-list {
         display: flex;
-        overflow-x: scroll;
+        overflow-x: auto;
         width:84rem;
         // background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
 

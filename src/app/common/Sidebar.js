@@ -36,7 +36,7 @@ function Sidebar(props) {
                                 <li>
                                     <NavLink
                                     exact={true}
-                                    className="nav-link"    to="/portfolio"
+                                    className="nav-link" to="/portfolio"
                                        activeclassname="active">
                                          <Image src={activeTab === '/portfolio' ? ActiveHomeIcon : InActiveHomeIcon} />Home</NavLink>
                                 </li>
@@ -109,11 +109,11 @@ function Sidebar(props) {
                         </ul>
 
                         <div className='m-b-12 footer-divOne'>
-                            <p className='f-s-16 lh-19'>"Sic Parvis Magna</p>
-                            <p className='f-s-16 lh-19'>Thus, great things from </p>
-                            <p className='f-s-16 lh-19'>small things come."</p>
+                            <p className='inter-display-medium f-s-16 grey-CAC lh-19' style={{fontStyle: "italic"}}>"Sic Parvis Magna</p>
+                            <p className='inter-display-medium f-s-16 grey-CAC lh-19'>Thus, great things from </p>
+                            <p className='inter-display-medium f-s-16 grey-CAC lh-19'>small things come."</p>
                         </div>
-                        <div className="inter-display-semi-bold f-s-16 lh-19 footer-divTwo m-b-40">Sir Francis Drake</div>
+                        <div className="inter-display-semi-bold f-s-16 grey-B0B lh-19 footer-divTwo m-b-40">Sir Francis Drake</div>
 
 {/* <p className='inter-display-medium f-s-16 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
                         <p className='inter-display-medium f-s-16 grey-CAC lh-19'>Thus, great things from small things come.</p>
