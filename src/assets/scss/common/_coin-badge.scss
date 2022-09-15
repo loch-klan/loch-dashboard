@@ -5,9 +5,12 @@
     align-items: center;
     margin-bottom: 2.8rem;
     justify-content: space-between;
+    position:relative;
+    padding-right:13rem;
     .badge-list {
         display: flex;
         overflow-x: scroll;
+        padding-bottom:0.8rem;
         // width:84rem;
         // background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
 
@@ -26,6 +29,9 @@
     }
     
     .dropdown {
+      position: absolute;
+      right: 0px;
+      top: -3px;
       .dropdown-menu{
         width: auto;
         padding: 0.4rem;
@@ -45,7 +51,7 @@
     }
 }
 .badge-list::-webkit-scrollbar{
-  height: 0.5rem;
+  height: 0.4rem;
 }
 
 .badge-list::-webkit-scrollbar-thumb{

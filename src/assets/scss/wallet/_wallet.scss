@@ -8,24 +8,24 @@
         .sortby-section {
             display: flex;
             align-items: center;
-
-            span {
-                color: $grey-313;
-            }
-
             .dropdown-section {
                 display: flex;
 
-                .dropdown {
-                    margin-right: 3.6rem;
-
-                    .dropdown-toggle {
-                        border: none;
-                        background: none;
-                        color: $grey-7C7;
-                        padding: 0px;
-                    }
+                .sort-by-title{
+                    display: flex;
+                    align-items: center;
+                    padding: 1.2rem 1.6rem ;
                 }
+                // .dropdown {
+                //     margin-right: 3.6rem;
+
+                //     .dropdown-toggle {
+                //         border: none;
+                //         background: none;
+                //         color: $grey-7C7;
+                //         padding: 0px;
+                //     }
+                // }
             }
         }
 
