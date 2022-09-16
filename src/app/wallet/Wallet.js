@@ -39,7 +39,7 @@ class Wallet extends Component {
                     <CoinBadges
                         activeBadge={0}
                     />
-                    <div className='m-b-32 sortby-section'>
+                    <div className='m-b-20 sortby-section'>
                         <span className='inter-display-medium f-s-13 lh-16 m-r-8 grey-313'>Sort by</span>
                         <div className='dropdown-section'>
                             {this.sortby.map((e, index) => {
