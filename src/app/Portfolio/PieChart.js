@@ -188,7 +188,8 @@ class PieChart extends BaseReactComponent {
                     shadow: false,
                     allowPointSelect: true,
                     dataLabels: {
-                        distance: 0,
+                        distance: 3,
+                        connectorWidth: 0,
                         tickWidth: 0,
                         padding: 12,
                         //useHTML: true,
@@ -202,6 +203,8 @@ class PieChart extends BaseReactComponent {
                                 `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.name}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$ ${numToCurrency(this.point.usd)} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y}% &nbsp;&nbsp;</p>`
                             )
                         },
+                        x:40,
+                        y:-20,
                         backgroundColor: '#FFFFFF',
                         enabled: true,
                         crop: false,
