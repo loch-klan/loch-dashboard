@@ -38,7 +38,7 @@ class PieChart extends BaseReactComponent {
                     this.state.assetData.push({
                         name: this.props.userWalletData[i].assetName,
                         y: z,
-                        usd: this.props.userWalletData[i].assetValue.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                        usd: numToCurrency(this.props.userWalletData[i].assetValue),
                         borderColor: borderColors[i % 5],
                         borderWidth: 2,
                         color: colors[i % 5],
@@ -73,7 +73,7 @@ class PieChart extends BaseReactComponent {
                     this.state.assetData.push({
                         name: this.props.userWalletData[i].assetName,
                         y: z,
-                        usd: this.props.userWalletData[i].assetValue.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                        usd: numToCurrency(this.props.userWalletData[i].assetValue),
                         borderColor: borderColors[i % 5],
                         borderWidth: 2,
                         color: colors[i % 5],
@@ -95,7 +95,6 @@ class PieChart extends BaseReactComponent {
 
     render() {
         let self = this;
-        // if (this.state.assetData && this.state.assetData.length > 0 && self.props.assetTotal > 0) {
         this.state.chartOptions = {
             chart: {
                 styledMode: false,
@@ -196,7 +195,7 @@ class PieChart extends BaseReactComponent {
                         style: {
                             textShadow: false
                         },
-                        format: `<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$ {point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>`,
+                        format: `<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">{point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$ {point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>`,
                         backgroundColor: '#FFFFFF',
                         enabled: true,
                         crop: false,
@@ -278,7 +277,6 @@ class PieChart extends BaseReactComponent {
                 // data: this.chartDataRender()
                 data: self.state.assetData && self.state.assetData.length > 0 ? self.state.assetData : []
             }]
-            // }
         }
         return (
             <div className='portfolio-over-container'>
