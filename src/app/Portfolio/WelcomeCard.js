@@ -5,7 +5,7 @@ import arrowDowRight from '../../assets/images/icons/arrow-down-right.svg'
 import CustomLoader from "../common/CustomLoader";
 
 export default function WelcomeCard(props) {
-    console.log(props)
+    // console.log(props)
     return (
         <div className="welcome-card-section">
             <div className="welcome-card">
