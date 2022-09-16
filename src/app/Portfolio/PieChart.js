@@ -24,6 +24,37 @@ class PieChart extends BaseReactComponent {
 
     }
 
+    componentDidMount() {
+        if (this.props.userWalletData && this.props.userWalletData.length > 0) {
+            let colors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', '#a07ddd', '#e7c5a0']
+            let borderColors = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', '#7B44DA', '#F19938']
+
+            if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
+                this.state.assetData = []
+                for (let i = 0; i < this.props.userWalletData.length; i++) {
+                    let z = parseFloat(parseFloat((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100).toFixed(2));
+                    this.state.assetData.push({
+                        name: this.props.userWalletData[i].assetName,
+                        y: z,
+                        usd: this.props.userWalletData[i].assetValue.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                        borderColor: borderColors[i % 5],
+                        borderWidth: 2,
+                        color: colors[i % 5],
+                        originalColor: colors[i % 5],
+                        assetSymbol: this.props.userWalletData[i].assetSymbol,
+                        assetCode: this.props.userWalletData[i].assetCode.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                        count: this.props.userWalletData[i].count
+                    })
+                }
+            }
+            this.setState({
+                chartData: this.props.userWalletData,
+                assetData: this.state.assetData && this.state.assetData.length > 0 ? this.state.assetData.sort((a, b) => b.y - a.y) : [],
+                chartOptions: {}
+            })
+        }
+    }
+
 
     componentDidUpdate(prevProps) {
         if (this.props.assetTotal !== prevProps.assetTotal) {
