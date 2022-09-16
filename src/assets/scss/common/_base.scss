@@ -977,7 +977,14 @@ form {
       }
 
     }
+    .text-tooltip {
+      display: flex;
+      align-items: center;
 
+      img {
+        margin-right: 0.8rem;
+      }
+    }
   }
 
   &.hover-chip {
@@ -1027,63 +1034,6 @@ form {
     }
   }
 }
-
-.text-tooltip-container {
-  .tooltip-inner {
-    max-width: max-content;
-    background-color: $secondary;
-    border: 0.1rem solid $grey-E5E;
-    color: $black-191;
-    padding: 0.8rem 1.2rem;
-    border-radius: 0.8rem;
-
-    .text-tooltip {
-      display: flex;
-      align-items: center;
-
-      img {
-        margin-right: 0.8rem;
-      }
-    }
-
-  }
-
-  .arrow::before,
-  .arrow::after {
-    content: "";
-    border-style: solid;
-  }
-
-  .arrow::after {
-    border-color: $secondary transparent transparent transparent;
-  }
-
-  .arrow::before {
-    border-color: $grey-E5E transparent transparent transparent;
-  }
-
-  .arrow::before,
-  .arrow::after {
-    content: "";
-    border-style: solid;
-  }
-
-  .arrow::after {
-    border-color: $secondary transparent transparent transparent;
-    border-width: 0.6rem;
-    position: absolute;
-    top: -0.1rem;
-    left: 0.09rem;
-
-  }
-
-  .arrow::before {
-    border-color: $grey-E5E transparent transparent transparent;
-    border-width: 0.7rem;
-  }
-
-}
-
 .chip-container-dual {
   right: 13rem;
 }
