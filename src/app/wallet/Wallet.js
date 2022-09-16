@@ -10,7 +10,7 @@ import DropDown from '../common/DropDown';
 import data from "./walletDate.js"
 import PageHeader from '../common/PageHeader';
 import CoinBadges from './../common/CoinBadges';
-import sort from "../../image/sort.png"
+import sort from "../../image/sort-1.png"
 class Wallet extends Component {
     constructor(props) {
         super(props);
@@ -43,8 +43,8 @@ class Wallet extends Component {
                         <span className='inter-display-medium f-s-13 lh-16 m-r-8 grey-313'>Sort by</span>
                         <div className='dropdown-section'>
                             {this.sortby.map((e, index) => {
-                                return <span className=' sort-by-title'>
-                                    <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 '>{e}</span> <img src={sort} />
+                                return <span className='sort-by-title'>
+                                    <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 '>{e}</span> <img src={sort} style={{width: "1rem"}}/>
                                 </span>
                             })}
 
