@@ -3,6 +3,7 @@ import { Button, Image } from "react-bootstrap"
 import arrowUpRight from '../../image/ArrowUpRight.svg'
 import arrowDowRight from '../../assets/images/icons/arrow-down-right.svg'
 import CustomLoader from "../common/CustomLoader";
+import { numToCurrency } from '../../utils/ReusableFunctions';
 
 export default function WelcomeCard(props) {
     // console.log(props)
@@ -22,7 +23,9 @@ export default function WelcomeCard(props) {
 
                     {props.assetTotal ?
                         <h3 className="space-grotesk-medium wallet-amount">$
-                            {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })}</h3>
+                            {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
+                            {numToCurrency(props.assetTotal)}
+                        </h3>
                         :
                         <CustomLoader chartType="text" />
                     }

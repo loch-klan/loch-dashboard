@@ -6,6 +6,8 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import BitcoinIcon from "../../assets/images/icons/bitcoin-icon.svg";
 import CustomLoader from "../common/CustomLoader";
+import { numToCurrency } from '../../utils/ReusableFunctions';
+import unrecognised from '../../image/unrecognised.png';
 
 
 class PieChart extends BaseReactComponent {
@@ -119,7 +121,7 @@ class PieChart extends BaseReactComponent {
                             seriesCenter = series.center,
                             x = seriesCenter[0] + this.plotLeft,
                             y = seriesCenter[1] + this.plotTop,
-                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-30 lh-20 black-1D2">$${self.state.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">USD</p></div><span class="inter-display-medium f-s-13 lh-40 grey-7C7">Total Assets</span></div>`,
+                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-30 lh-20 black-1D2">$${numToCurrency(self.state.assetTotal)}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">USD</p></div><span class="inter-display-medium f-s-13 lh-40 grey-7C7">Total Assets</span></div>`,
                             fontMetrics = this.renderer.fontMetrics(16);
                         if (!this.customTitle) {
                             this.customTitle = this.renderer.text(
@@ -194,7 +196,7 @@ class PieChart extends BaseReactComponent {
                         style: {
                             textShadow: false
                         },
-                        format: '<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">${point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>',
+                        format: `<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$ {point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>`,
                         backgroundColor: '#FFFFFF',
                         enabled: true,
                         crop: false,
@@ -290,13 +292,14 @@ class PieChart extends BaseReactComponent {
                                 updateArgs={[true]}
                                 oneToOne={true}
                                 allowChartUpdate={true}
+                                containerProps={{ className: "custom-highchart" }}
                             />
                         </div>
                         {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
                             <div className='coin-hover-display'>
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
-                                        <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol : null} />
+                                        <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognised : null} />
                                     </div>
                                     <div className='coin-hover-display-text1'>
 
@@ -305,9 +308,9 @@ class PieChart extends BaseReactComponent {
                                             <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.y : null}%</span>
                                         </div>
                                         <div className='coin-hover-display-text1-lower'>
-                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.count : null}</span>
+                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? numToCurrency(this.state.pieSectionDataEnabled.count) : null}</span>
                                             <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetCode : null}</span>
-                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.usd : null}</span>
+                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? numToCurrency(this.state.pieSectionDataEnabled.usd) : null}</span>
                                             <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>USD</span>
                                         </div>
                                     </div>

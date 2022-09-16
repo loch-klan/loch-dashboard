@@ -136,6 +136,11 @@
             justify-content: center;
             position: relative;
 
+            .custom-highchart,
+            .highcharts-container,
+            .highcharts-root{
+              overflow: visible !important;
+            }
             .pie-chart-middle-text-container {
                 text-align: center;
 
