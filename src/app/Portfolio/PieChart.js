@@ -38,7 +38,7 @@ class PieChart extends BaseReactComponent {
                     this.state.assetData.push({
                         name: this.props.userWalletData[i].assetName,
                         y: z,
-                        usd: this.props.userWalletData[i].assetValue.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                        usd: numToCurrency(this.props.userWalletData[i].assetValue),
                         borderColor: borderColors[i % 5],
                         borderWidth: 2,
                         color: colors[i % 5],
@@ -73,7 +73,7 @@ class PieChart extends BaseReactComponent {
                     this.state.assetData.push({
                         name: this.props.userWalletData[i].assetName,
                         y: z,
-                        usd: this.props.userWalletData[i].assetValue.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                        usd: numToCurrency(this.props.userWalletData[i].assetValue),
                         borderColor: borderColors[i % 5],
                         borderWidth: 2,
                         color: colors[i % 5],
@@ -95,7 +95,6 @@ class PieChart extends BaseReactComponent {
 
     render() {
         let self = this;
-        // if (this.state.assetData && this.state.assetData.length > 0 && self.props.assetTotal > 0) {
         this.state.chartOptions = {
             chart: {
                 styledMode: false,
@@ -286,7 +285,6 @@ class PieChart extends BaseReactComponent {
                 // data: this.chartDataRender()
                 data: self.state.assetData && self.state.assetData.length > 0 ? self.state.assetData : []
             }]
-            // }
         }
         return (
             <div className='portfolio-over-container'>

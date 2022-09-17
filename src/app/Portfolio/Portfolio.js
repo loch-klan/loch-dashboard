@@ -123,6 +123,9 @@ class Portfolio extends BaseReactComponent {
             if (this.state && this.state.userWalletList && this.state.userWalletList.length > 0) {
                 for (let i = 0; i < this.state.userWalletList.length; i++) {
                     if (this.state.userWalletList[i].coinFound) {
+                        this.props.portfolioState.userWalletList = [];
+                        this.props.portfolioState.walletTotal = 0;
+                        this.props.portfolioState.chainWallet = [];
                         for (let j = 0; j < this.state.userWalletList[i].coins.length; j++) {
                             if (this.state.userWalletList[i].coins[j].chain_detected) {
                                 let userCoinWallet = {
@@ -143,20 +146,7 @@ class Portfolio extends BaseReactComponent {
         }
     }
 
-    // assetTotal = () => {
-    //     let assetTotal = 0;
-    //     // for (let i = 0; i < this.state.userWalletList.length; i++) {
-    //     //     if (this.state.userWalletList[i].coinAssets) {
-    //     //         for (let j = 0; j < this.state.userWalletList[i].coinAssets.length; j++) {
-    //     //             assetTotal = assetTotal + this.state.userWalletList[i].coinAssets[j].assetValue;
-    //     //             return assetTotal
-    //     //         }
-    //     //     }
-    //     // }
-    // }
-
     render() {
-        console.log(this.props)
         return (
             <div>
                 {this.state.loader ? <Loading /> :
@@ -190,13 +180,11 @@ const mapStateToProps = state => ({
     portfolioState: state.PortfolioState
 });
 const mapDispatchToProps = {
-    // getPosts: fetchPosts
     getCoinRate,
     getUserWallet
 
 }
 Portfolio.propTypes = {
-    // getPosts: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
