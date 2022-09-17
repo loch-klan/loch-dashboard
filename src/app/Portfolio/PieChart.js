@@ -43,7 +43,7 @@ class PieChart extends BaseReactComponent {
                         borderWidth: 2,
                         color: colors[i % 5],
                         originalColor: colors[i % 5],
-                        assetSymbol: this.props.userWalletData[i].assetSymbol,
+                        chainSymbol: this.props.userWalletData[i].chainSymbol,
                         assetCode: this.props.userWalletData[i].assetCode.toLocaleString(undefined, { maximumFractionDigits: 2 }),
                         count: this.props.userWalletData[i].count
                     })
@@ -78,7 +78,7 @@ class PieChart extends BaseReactComponent {
                         borderWidth: 2,
                         color: colors[i % 5],
                         originalColor: colors[i % 5],
-                        assetSymbol: this.props.userWalletData[i].assetSymbol,
+                        chainSymbol: this.props.userWalletData[i].chainSymbol,
                         assetCode: this.props.userWalletData[i].assetCode.toLocaleString(undefined, { maximumFractionDigits: 2 }),
                         count: this.props.userWalletData[i].count
                     })
@@ -305,7 +305,7 @@ class PieChart extends BaseReactComponent {
                             <div className='coin-hover-display'>
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
-                                        <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognised : null} />
+                                        <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.chainSymbol || unrecognised : null} />
                                     </div>
                                     <div className='coin-hover-display-text1'>
 
