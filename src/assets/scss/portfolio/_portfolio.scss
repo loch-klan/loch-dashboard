@@ -7,7 +7,21 @@
     display: flex;
 
     .portfolio-section {
-
+        position: relative;
+        .fix-div{
+            display: flex;
+            border-top:0.1rem solid $grey-969;
+            padding: 2rem 0rem;
+            align-items: center;
+            position: absolute;
+            bottom: 4rem;
+            right: 11rem;
+            .secondary-btn{
+                line-height: 1.9rem;
+                border: 0.15rem solid $black-191;
+                padding: 1.8rem 2.8rem;
+            }
+        }
         .welcome-card-section {
             margin-top: 9.6rem;
 
@@ -95,7 +109,7 @@
                     }
                 }
             }
-        }
+        }   
 
         .highcharts-data-label-box {
             height: 3.5rem;
