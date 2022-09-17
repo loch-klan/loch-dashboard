@@ -1,3 +1,4 @@
+import { DEFAULT_PRICE } from "../../utils/Constant";
 import { COIN_RATE_LIST, USER_WALLET_LIST } from "./ActionTypes";
 const INITIAL_STATE = {
     coinRateList: [],
@@ -41,7 +42,12 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 }
                 for (let i = 0; i < action.payload.userWalletList.assets.length; i++) {
                     let matchedCodeData = state.coinRateList.filter((e) => e.code === action.payload.userWalletList.assets[i].asset.code)
-                    let value = matchedCodeData && matchedCodeData[0] ? matchedCodeData[0].quote : 0;
+                    // console.log('matchedCodedata',matchedCodeData);
+                    let value = matchedCodeData && matchedCodeData[0] ? matchedCodeData[0].quote : DEFAULT_PRICE;
+                    if(value === DEFAULT_PRICE || !value){
+                      continue;
+                    }
+                    let currentPrice = action.payload.userWalletList.assets[i].count*value.USD.price;
                     let assetIndex = updateWalletList[index]["coinAssets"].findIndex(
                         assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
                     );
@@ -57,14 +63,14 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                             chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
                             chainName: action.payload.userWalletList.assets[i].chain.name,
                             count: action.payload.userWalletList.assets[i].count,
-                            assetValue: value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count
+                            assetValue: value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE
                         })
                     } else {
+
                         updatedChainWallet[chainAssetIndex].count =
                             updatedChainWallet[chainAssetIndex].count + action.payload.userWalletList.assets[i].count
                         updatedChainWallet[chainAssetIndex].assetValue =
-                            updatedChainWallet[chainAssetIndex].assetValue + (value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count)
-
+                            updatedChainWallet[chainAssetIndex].assetValue + (value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE)
                     }
                     if (assetIndex <= -1) {
                         updateWalletList[index]["coinAssets"].push({
@@ -75,13 +81,15 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                             chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
                             chainName: action.payload.userWalletList.assets[i].chain.name,
                             count: action.payload.userWalletList.assets[i].count,
-                            assetValue: value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count
+                            assetValue: value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE
                         })
                     } else {
+
                         updateWalletList[index]["coinAssets"][assetIndex].count =
                             updateWalletList[index]["coinAssets"][assetIndex].count + action.payload.userWalletList.assets[i].count
                         updateWalletList[index]["coinAssets"][assetIndex].assetValue =
-                            updateWalletList[index]["coinAssets"][assetIndex].assetValue + (value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count)
+                            updateWalletList[index]["coinAssets"][assetIndex].assetValue + (value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE)
+
                     }
                     updateWalletList[index]["chains"][chainIndex]["assets"].push({
                         assetCode: action.payload.userWalletList.assets[i].asset.code,
@@ -97,13 +105,18 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                     //     assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
                     // );
                     // updateWalletTotal = updateWalletTotal + updateWalletList[index]["coinAssets"][updatedAssetIndex].assetValue;
-                    let updatedChainIndex = updatedChainWallet.findIndex(
-                        assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
-                    );
-                    updateWalletTotal = updateWalletTotal + updatedChainWallet[updatedChainIndex].assetValue;
+                    // let updatedChainIndex = updatedChainWallet.findIndex(
+                    //     assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
+                    // );
+
+                    // updateWalletTotal = updateWalletTotal + updatedChainWallet[updatedChainIndex].assetValue;
+
+                    updateWalletTotal = updateWalletTotal + currentPrice;
+
+                    // console.log('assetValue', updatedChainWallet[updatedChainIndex].assetValue, updatedChainWallet[updatedChainIndex].assetCode);
                 }
             }
-            return { ...state, userWalletList: updateWalletList, walletTotal: updateWalletTotal, chainWallet: updatedChainWallet };
+            return { ...state, userWalletList: updateWalletList, walletTotal: updateWalletTotal, chainWallet: [...updatedChainWallet] };
         default:
             return state
     }

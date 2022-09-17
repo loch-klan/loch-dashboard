@@ -17,27 +17,27 @@ export default function WelcomeCard(props) {
                     <p className="inter-display-medium m-b-24">financial intelligence immediately.</p>
                     <div className="welcome-btn">
                         <Button className='secondary-btn'>Manage wallets</Button>
-                        <Button className="primary-btn">Add wallet address</Button>
+                        <Button className="primary-btn" onClick={()=>props.history.push("/home")}>Add wallet address</Button>
                     </div>
                 </div>
                 <div className='welcome-section-right'>
 
                     {props.assetTotal ?
-                        <CustomOverlay 
+                        <CustomOverlay
                         position="top"
                         isIcon={false}
                         isInfo={true}
                         isText={true}
-                        text={props.assetTotal}
+                        text={"$" + parseFloat(props.assetTotal).toFixed(2) + "USD"}
                         >
                         <h3 className="space-grotesk-medium wallet-amount">$
                             {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                            {numToCurrency(props.assetTotal)}
+                           {numToCurrency(props.assetTotal)} USD
                         </h3>
                         </CustomOverlay>
-                        : 
+                        :
                         <CustomLoader chartType="text" />
-                    } 
+                    }
                     <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${props.decrement ? "downfall" : ""}`}>
                         <Image src={props.decrement ? arrowDowRight : arrowUpRight} />
                         330.10 (1%)

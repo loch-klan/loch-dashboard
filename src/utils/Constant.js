@@ -4,6 +4,7 @@ export const START_PAGE = 0
 export const GOOGLE_API_KEY = ""
 export const API_URL = "https://sapi-float.ebikego.com/api/"
 export const MEDIA_URL = "https://d1r1yzhyzim0p1.cloudfront.net/"
+export const DEFAULT_PRICE = 0
 
 export const Gender = {
   MALE: 10,

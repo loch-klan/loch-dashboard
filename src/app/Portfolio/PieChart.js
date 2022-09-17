@@ -30,15 +30,17 @@ class PieChart extends BaseReactComponent {
         if (this.props.userWalletData && this.props.userWalletData.length > 0) {
             let colors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', '#a07ddd', '#e7c5a0']
             let borderColors = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', '#7B44DA', '#F19938']
-
+            let assetData = []
             if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
-                this.state.assetData = []
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
-                    let z = parseFloat(parseFloat((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100).toFixed(2));
-                    this.state.assetData.push({
+                    // let z = parseFloat(parseFloat((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100).toFixed(2));
+                    let z = ((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100.0);
+                    // console.log('z',typeof(z));
+                    assetData.push({
                         name: this.props.userWalletData[i].assetName,
                         y: z,
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
+                        assetValue: parseFloat(this.props.userWalletData[i].assetValue),
                         borderColor: borderColors[i % 5],
                         borderWidth: 2,
                         color: colors[i % 5],
@@ -51,7 +53,7 @@ class PieChart extends BaseReactComponent {
             }
             this.setState({
                 chartData: this.props.userWalletData,
-                assetData: this.state.assetData && this.state.assetData.length > 0 ? this.state.assetData.sort((a, b) => b.y - a.y) : [],
+                assetData: assetData && assetData.length > 0 ? assetData.sort((a, b) => b.assetValue - a.assetValue) : [],
                 chartOptions: {}
             })
         }
@@ -59,21 +61,29 @@ class PieChart extends BaseReactComponent {
 
 
     componentDidUpdate(prevProps) {
+      // console.log('didupdate', prevProps.userWalletData);
+      // console.log('this.props.userWalletData',this.props.userWalletData);
         if (this.props.assetTotal !== prevProps.assetTotal) {
             this.setState({ assetTotal: this.props.assetTotal })
         }
         if (this.props.userWalletData !== prevProps.userWalletData) {
+          // console.log('Hey IF');
             let colors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', '#a07ddd', '#e7c5a0']
             let borderColors = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', '#7B44DA', '#F19938']
-
+            let assetData = [];
             if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
-                this.state.assetData = []
+                // this.state.assetData = []
+                // console.log('Hey IF 2');
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
-                    let z = parseFloat(parseFloat((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100).toFixed(2));
-                    this.state.assetData.push({
+                  // console.log('Hey FOR');
+                    // let z = parseFloat(parseFloat((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100).toFixed(2));
+                    let z = ((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100.0);
+                    // console.log('z',typeof(z));
+                    assetData.push({
                         name: this.props.userWalletData[i].assetName,
                         y: z,
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
+                        assetValue: parseFloat(this.props.userWalletData[i].assetValue),
                         borderColor: borderColors[i % 5],
                         borderWidth: 2,
                         color: colors[i % 5],
@@ -86,7 +96,7 @@ class PieChart extends BaseReactComponent {
             }
             this.setState({
                 chartData: this.props.userWalletData,
-                assetData: this.state.assetData && this.state.assetData.length > 0 ? this.state.assetData.sort((a, b) => b.y - a.y) : [],
+                assetData: assetData && assetData.length > 0 ? assetData.sort((a, b) => b.assetValue - a.assetValue) : [],
                 chartOptions: {}
             })
         }
@@ -198,8 +208,9 @@ class PieChart extends BaseReactComponent {
                         },
                         // format: `<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$ {point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>`,
                         formatter : function(){
+                          // console.log('this.point',this.point);
                             return(
-                                `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$ ${(this.point.usd)} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y}% &nbsp;&nbsp;</p>`
+                                `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$${(this.point.usd)} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(2)}% &nbsp;&nbsp;</p>`
                             )
                         },
                         x:40,
@@ -231,10 +242,10 @@ class PieChart extends BaseReactComponent {
                 },
                 point: {
                     events: {
-                        click: function () {
-                            var currentData = this;
-                            self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
-                        },
+                        // click: function () {
+                        //     var currentData = this;
+                        //     self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
+                        // },
                         mouseOver: function () {
                             let color = this.options.borderColor;
                             this.update({ color: color });
@@ -260,6 +271,8 @@ class PieChart extends BaseReactComponent {
                                     }
                                 }
                             })
+                            var currentData = this;
+                            self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
                         },
                         mouseOut: function () {
                             let color = this.options.originalColor;
@@ -278,6 +291,8 @@ class PieChart extends BaseReactComponent {
                                         .add();
                                 }
                             });
+                            var currentData = this;
+                            self.setState({ pieSectionDataEnabled: [] });
                         }
                     }
 
@@ -311,12 +326,12 @@ class PieChart extends BaseReactComponent {
 
                                         <div className='coin-hover-display-text1-upper'>
                                             <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
-                                            <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.y : null}%</span>
+                                            <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>
                                         </div>
                                         <div className='coin-hover-display-text1-lower'>
                                             <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? numToCurrency(this.state.pieSectionDataEnabled.count) : null}</span>
                                             <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetCode : null}</span>
-                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? numToCurrency(this.state.pieSectionDataEnabled.usd) : null}</span>
+                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.usd : null}</span>
                                             <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>USD</span>
                                         </div>
                                     </div>
