@@ -169,6 +169,9 @@ body {
 .grey-757 {
   color: $grey-757;
 }
+.grey-737{
+  color:$grey-737;
+}
 
 .grey-999 {
   color: $grey-999;
@@ -184,6 +187,9 @@ body {
 
 .black-404 {
   color: $black-404;
+}
+.black-262{
+  color:$black-262;
 }
 
 .blue-407 {
@@ -1080,8 +1086,8 @@ form {
 .page {
   padding-left: 10rem;
   padding-right: 10rem;
-  // width: 100%;
   overflow-x:hidden;
+  width: 100%;
 }
 
 .m-t-80 {

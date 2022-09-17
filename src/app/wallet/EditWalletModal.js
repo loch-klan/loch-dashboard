@@ -55,7 +55,6 @@ class EditWalletModal extends BaseReactComponent {
                 <div className='chipcontainer'>
                     <Image src={e.coinSymbol} />
                     <div className='inter-display-medium f-s-13 lh-16'>{e.coinName}</div>
-                
                 </div>
             )
         })

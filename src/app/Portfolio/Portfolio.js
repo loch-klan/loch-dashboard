@@ -7,6 +7,7 @@ import PieChart from './PieChart';
 import LineChart from './LineChart';
 import { getCoinRate, getUserWallet } from "./Api";
 import { Loading } from 'react-loading-dot';
+import { Button } from 'react-bootstrap';
 
 class Portfolio extends BaseReactComponent {
     constructor(props) {
@@ -108,7 +109,8 @@ class Portfolio extends BaseReactComponent {
             // ],
             userWalletList: JSON.parse(localStorage.getItem("addWallet")),
             assetTotalValue: 0,
-            loader: false
+            loader: false,
+            coinAvailable:true
         }
 
     }
@@ -135,6 +137,11 @@ class Portfolio extends BaseReactComponent {
                                 this.props.getUserWallet(userCoinWallet)
                             }
                         }
+                    }
+                    else{
+                        this.setState({
+                            coinAvailable : false
+                        })
                     }
                     if (i === (this.state.userWalletList.length - 1)) {
                         this.setState({
@@ -164,6 +171,16 @@ class Portfolio extends BaseReactComponent {
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? this.props.portfolioState.chainWallet : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader} />
+                                {this.state.coinAvailable === false 
+                                ?   
+                                    <div className='fix-div'>
+                                        <div className='m-r-8 decribe-div'>
+                                            <div className='inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262'>Wallet undected</div>
+                                            <div className='inter-display-medium f-s-13 lh-16 grey-737'>One or more wallets were not dected </div>
+                                        </div>
+                                        <Button className='secondary-btn'>Fix</Button>
+                                    </div>
+                                : ""}
                             </div>
                             {/* <div className='portfolio-section page'>
                                 <LineChart />
