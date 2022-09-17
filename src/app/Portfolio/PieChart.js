@@ -187,7 +187,7 @@ class PieChart extends BaseReactComponent {
                     shadow: false,
                     allowPointSelect: true,
                     dataLabels: {
-                        distance: 3,
+                        distance: 1,
                         connectorWidth: 0,
                         tickWidth: 0,
                         padding: 12,
