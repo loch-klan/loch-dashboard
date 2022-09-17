@@ -21,36 +21,36 @@ const routes = [
     type: PrivateRoute,
     component: Home
   },
-  {
-    path: "/profile",
-    name: "Profile",
-    type: PrivateRoute,
-    component: Profile
-  },
+  // {
+  //   path: "/profile",
+  //   name: "Profile",
+  //   type: PrivateRoute,
+  //   component: Profile
+  // },
   {
     path: "/portfolio",
     name: "Portfolio",
     type: PrivateRoute,
     component: Portfolio
   },
-  {
-    path: "/intelligence",
-    name: "Intelligence",
-    type: Route,
-    component: Intelligence
-  },
+  // {
+  //   path: "/intelligence",
+  //   name: "Intelligence",
+  //   type: Route,
+  //   component: Intelligence
+  // },
   {
     path: "/wallets",
     name: "Wallet",
     type: PrivateRoute,
     component: Wallet
   },
-  {
-    path: "/costs",
-    name: "Costs",
-    type: Route,
-    component: Cost
-  },
+  // {
+  //   path: "/costs",
+  //   name: "Costs",
+  //   type: Route,
+  //   component: Cost
+  // },
   {
     path: "/sandbox",
     name: "Sandox",
