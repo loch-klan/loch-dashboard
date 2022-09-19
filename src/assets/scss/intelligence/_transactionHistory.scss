@@ -1,21 +1,27 @@
+.history-table-section {
 
-.history-table-section{
-
-    .fillter_tabs_section{
+    .fillter_tabs_section {
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding: 1.2rem;
         background-color: $secondary;
         border-radius: 1.2rem;
 
-        .filter_tab{
-            margin-right: 1.73rem;
-            .dropdown-toggle{
-                background-color: rgba(229, 229, 230, 0.5);
-                color:$black-191;
-                
+        .tabs {
+            display: flex;
+            .filter_tab {
+
+                margin-right: 1.73rem;
+
+                .dropdown-toggle {
+                    background-color: rgba(229, 229, 230, 0.5);
+                    color: $black-191;
+                    padding: 1.2rem 6.2rem;
+                }
             }
+        }
+        .searchBar{
+            display: flex;
         }
     }
 }

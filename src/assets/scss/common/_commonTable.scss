@@ -1,0 +1,15 @@
+
+.table-section{
+    background-color: $secondary;
+    border-radius: 1.2rem;
+    box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+    .header{
+        padding: 2.4rem;
+        border-bottom: 0.1rem solid $grey-E5E;
+    }
+    .table-body{
+        .cell-grp{
+            padding : 1.6rem 2.4rem;
+        }
+    }
+}
