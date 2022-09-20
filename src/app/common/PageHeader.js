@@ -1,13 +1,19 @@
 import React from 'react'
-import { Button, Breadcrumb ,Image} from 'react-bootstrap'
+import { Button, Breadcrumb, Image } from 'react-bootstrap'
 import InActiveHomeSmallIcon from '../../assets/images/icons/InactiveHomeSmallIcon.svg'
 export default function PageHeader(props) {
 
-  const breadCrumb = <Breadcrumb>
-    <Breadcrumb.Item href="#"><Image src={InActiveHomeSmallIcon}/></Breadcrumb.Item>
-    <Breadcrumb.Item href="#">Intelligence</Breadcrumb.Item>
-    <Breadcrumb.Item active>Transaction History</Breadcrumb.Item>
-  </Breadcrumb>
+  const nav_list = window.location.pathname.split("/");
+
+  const breads = nav_list.map((e, index) => {
+    return e && <Breadcrumb.Item href="#" className="inter-display-medium f-s-13 lh-16" key={index}>{e}</Breadcrumb.Item>
+  })
+  const breadCrumb =
+    <Breadcrumb >
+      <Breadcrumb.Item href="#"><Image src={InActiveHomeSmallIcon} /></Breadcrumb.Item>
+      {breads}
+    </Breadcrumb >
+    
   return (
     <div className='m-b-36 page-header'>
       {props.showpath ? breadCrumb : ""}

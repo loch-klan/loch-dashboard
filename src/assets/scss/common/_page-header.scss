@@ -10,9 +10,27 @@
                     align-items: center;
                     background-color: $grey-F2F;
                     border: none;
-
+                    padding: 0rem;
+                    .breadcrumb{
+                        margin-bottom: 2rem;
+                    }
                     .breadcrumb-item+.breadcrumb-item::before{
                         content: url('../../images/icons/ChevronArrowRight.svg');
+                        position: relative;
+                        top: 0.1rem;
+                        padding-right: 1.4rem;
+                    }
+                    .breadcrumb-item{
+                        padding-left: 1.4rem;
+                        a{
+                            color:$grey-ADA;
+                        }
+                        .active{
+                            color:$grey-636;
+                        }
+                    }
+                    .breadcrumb-item:nth-child(1){
+                        padding: 0rem;
                     }
                 }
             }
