@@ -19,10 +19,17 @@ import ApiIcon from '../../assets/images/icons/ApiIcon.svg'
 import LeaveIcon from '../../assets/images/icons/LeaveIcon.svg'
 import DarkmodeIcon from '../../assets/images/icons/DarkmodeIcon.svg'
 import bgImg from '../../image/Notice.png'
+import ExitOverlay from './ExitOverlay'
 function Sidebar(props) {
 
 
     const activeTab = window.location.pathname
+
+    const [leave, setLeave] = React.useState(false);
+    
+    const handleLeave = () => {
+        setLeave(!leave)
+    }
     return (
         <div className='sidebar-section'>
             <Container>
@@ -30,29 +37,29 @@ function Sidebar(props) {
                     <div className='logo'>
                         <Image src={logo} />
                     </div>
-                    <div className={ props.ownerName ? 'sidebar-body':'sidebar-body nowallet'}>
+                    <div className={props.ownerName ? 'sidebar-body' : 'sidebar-body nowallet'}>
                         <nav>
                             <ul>
                                 <li>
                                     <NavLink
-                                    exact={true}
-                                    className="nav-link" to="/portfolio"
-                                       activeclassname="active">
-                                         <Image src={activeTab === '/portfolio' ? ActiveHomeIcon : InActiveHomeIcon} />Home</NavLink>
+                                        exact={true}
+                                        className="nav-link" to="/portfolio"
+                                        activeclassname="active">
+                                        <Image src={activeTab === '/portfolio' ? ActiveHomeIcon : InActiveHomeIcon} />Home</NavLink>
                                 </li>
                                 <li>
                                     <NavLink
-                                    exact={true}
+                                        exact={true}
                                         className="nav-link" to="/intelligence"
                                         activeclassname="active"
-                                        ><Image src={activeTab === "/intelligence" ? ActiveIntelligenceIcon :IntelligenceIcon } />Intelligence</NavLink>
+                                    ><Image src={activeTab === "/intelligence" ? ActiveIntelligenceIcon : IntelligenceIcon} />Intelligence</NavLink>
                                 </li>
                                 <li>
                                     <NavLink
-                                    exact={true}
+                                        exact={true}
                                         className="nav-link" to="/wallets"
-                                      activeclassname="active"
-                                      ><Image src={activeTab === "/wallets" ?ActiveWalletIcon:NavWalletIcon} />Wallets</NavLink>
+                                        activeclassname="active"
+                                    ><Image src={activeTab === "/wallets" ? ActiveWalletIcon : NavWalletIcon} />Wallets</NavLink>
                                 </li>
                                 <li>
                                     <NavLink
@@ -60,17 +67,17 @@ function Sidebar(props) {
                                         to="/costs"
                                         activeclassname="active"
                                     >
-                                        <Image src={activeTab === "/costs" ? ActiveDollarIcon:DollarIcon} />Costs</NavLink>
+                                        <Image src={activeTab === "/costs" ? ActiveDollarIcon : DollarIcon} />Costs</NavLink>
                                 </li>
                                 <li>
                                     <NavLink
-                                    exact={true}
+                                        exact={true}
                                         className="nav-link"
                                         to="/profile"
                                         activeclassname="active"
                                     >
-                                    <Image src={
-                                        activeTab === '/profile' ? ActiveProfileIcon : ProfileIcon
+                                        <Image src={
+                                            activeTab === '/profile' ? ActiveProfileIcon : ProfileIcon
                                         } />Profile</NavLink>
                                 </li>
                             </ul>
@@ -102,26 +109,34 @@ function Sidebar(props) {
                                 <Image src={DarkmodeIcon} />
                                 <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Dark Mode</Button>
                             </li>
-                            <li>
+                            <li onClick={handleLeave}>
                                 <Image src={LeaveIcon} />
                                 <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Leave</Button>
                             </li>
                         </ul>
 
                         <div className='m-b-12 footer-divOne'>
-                            <p className='inter-display-medium f-s-16 grey-CAC lh-19' style={{fontStyle: "italic"}}>"Sic Parvis Magna</p>
+                            <p className='inter-display-medium f-s-16 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
                             <p className='inter-display-medium f-s-16 grey-CAC lh-19'>Thus, great things from </p>
                             <p className='inter-display-medium f-s-16 grey-CAC lh-19'>small things come."</p>
                         </div>
                         <div className="inter-display-semi-bold f-s-16 grey-B0B lh-19 footer-divTwo m-b-40">Sir Francis Drake</div>
 
-{/* <p className='inter-display-medium f-s-16 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
+                        {/* <p className='inter-display-medium f-s-16 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
                         <p className='inter-display-medium f-s-16 grey-CAC lh-19'>Thus, great things from small things come.</p>
                         <p className='inter-display-semi-bold f-s-16 grey-B0B lh-19'>Sir Francis Drake</p> */}
                     </div>
                 </div>
             </Container>
 
+            {
+                leave ?
+                    <ExitOverlay
+                        show={leave}
+                        link="http://loch.one/a2y1jh2jsja"
+                        onHide={handleLeave}
+                    /> : ""
+            }
         </div>
     )
 }

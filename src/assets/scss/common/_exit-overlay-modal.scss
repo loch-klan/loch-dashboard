@@ -1,0 +1,173 @@
+
+.exitoverlaymodal.show {
+    opacity: 0.5 !important;
+}
+
+// .exit-overlay-modal {
+.exit-overlay-modal {
+    .modal-content {
+        border-radius: 1.2rem;
+
+        .modal-header {
+            padding: 2.8rem;
+            display: block;
+            text-align: center;
+            position: relative;
+            // margin-bottom: 4.2rem;
+            border: none;
+
+            .exitOverlayIcon{
+                width:6rem;
+                height:6rem;
+                box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+            }
+            .closebtn {
+                position: absolute;
+                top: 2.8rem;
+                right: 2.8rem;
+                padding: 1.3rem;
+                background-color: $grey-F2F;
+                border-radius: 5rem;
+                cursor: pointer;
+            }
+
+            // .exitOverlayIcon {
+            //     padding: 1.81rem 1.77rem;
+            //     background: $secondary;
+            //     box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+            //     border-radius: 2rem;
+            // }
+        }
+
+        .modal-body {
+            padding:0rem;
+            .exit-overlay-body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                h6 {
+                    color: $primary;
+                    margin-bottom: 0.6rem;
+                }
+
+                .email-section {
+                    margin-bottom: 2.2rem;
+
+                    form {
+                        display: flex;
+
+                        .form-group {
+                            margin-right: 2rem;
+
+                            .form-control {
+                                padding: 2.7rem 10.1rem 2.7rem 2.8rem
+                            }
+
+                            .is-valid {
+                                border: 0.1rem solid $black-191;
+                                border-radius: 0.8rem;
+                                box-shadow: 0rem 0.8rem 2.2rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.4rem 6.4rem -0.4rem rgba(24, 39, 75, 0.12);
+                                // padding: 2.7rem 10.1rem 2.7rem 2.8rem;
+                                padding-right: 10.1rem !important;
+                            }
+                            .is-invalid{
+                                padding-right: 10.1rem !important;
+                            }
+                        }
+
+                        .save-btn-section {
+                            .save-btn {
+                                padding: 1.8rem 5.1rem;
+                                background-color: $grey-B0B;
+                                border-radius: 0.8rem;
+                                border: none;
+                            }
+                            .active{
+                                background-color: $primary;
+                            }
+                            .save-btn:focus{
+                                box-shadow: none;
+                            }
+                        }
+                    }
+                }
+
+                .links {
+                    display: flex;
+                    align-items: center;
+
+                    .linkInfo {
+                        padding: 1.2rem 1.8rem;
+                        background-color: $grey-F2F;
+                        border-radius: 0.8rem;
+                    }
+                    .linkInfo:hover{
+                        background-color: $yellow-F5E;
+                    }
+
+                    .edit-options {
+                        display: flex;
+                        align-items: center;
+                        padding: 1.2rem 1.6rem;
+                        border: 0.1rem solid $grey-CAC;
+                        border-radius: 0.8rem;
+
+                        .dropdown {
+                            .btn-primary:not(:disabled):not(.disabled):active {
+                                border: none;
+                               
+                            }
+
+
+                            .dropdown-menu {
+                                width: 10.9rem;
+                                padding: 0.4rem;
+                            }
+
+                            .dropdown-item {
+                                border-radius: 0.2rem;
+                                padding: 0.8rem;
+                            }
+                            .active{
+                                background-color: $grey-F2F;
+                            }
+                            // .dropdown-item {
+                            //     .active {
+                            //         background-color: $grey-F2F;
+                            //     }
+                            // }
+
+                            .dropdown-item:active {
+                                background-color: $secondary;
+                            }
+
+                            button {
+                                padding: 0rem;
+                                background-color: $secondary;
+                                color: $black-191;
+                            }
+                        }
+                    }
+                }
+
+                .copy-link-section {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 3.5rem;
+
+                    .link {
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                    }
+                }
+
+                .footer {
+                    display: flex;
+
+                }
+            }
+        }
+    }
+}
