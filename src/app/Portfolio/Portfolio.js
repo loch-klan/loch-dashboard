@@ -5,7 +5,7 @@ import Sidebar from '../common/Sidebar';
 import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
-import { getCoinRate, getUserWallet } from "./Api";
+import { getCoinRate, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
 
@@ -110,7 +110,7 @@ class Portfolio extends BaseReactComponent {
             userWalletList: JSON.parse(localStorage.getItem("addWallet")),
             assetTotalValue: 0,
             loader: false,
-            coinAvailable:true
+            coinAvailable: true
         }
 
     }
@@ -121,26 +121,24 @@ class Portfolio extends BaseReactComponent {
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
+        // Check if the coin rate api values are changed
         if (this.props.portfolioState.coinRateList !== prevProps.portfolioState.coinRateList) {
             if (this.state && this.state.userWalletList && this.state.userWalletList.length > 0) {
-                for (let i = 0; i < this.state.userWalletList.length; i++) {
-                    if (this.state.userWalletList[i].coinFound) {
-                        this.props.portfolioState.userWalletList = [];
-                        this.props.portfolioState.walletTotal = 0;
-                        this.props.portfolioState.chainWallet = [];
-                        for (let j = 0; j < this.state.userWalletList[i].coins.length; j++) {
-                            if (this.state.userWalletList[i].coins[j].chain_detected) {
-                                let userCoinWallet = {
-                                    address: this.state.userWalletList[i].address,
-                                    coinCode: this.state.userWalletList[i].coins[j].coinCode
-                                }
-                                this.props.getUserWallet(userCoinWallet)
+                // Resetting the user wallet list, total and chain wallet
+                this.props.settingDefaultValues();
+                // Loops on coins to fetch details of each coin which exist in wallet
+                this.state.userWalletList.map((wallet, i) => {
+                    if (wallet.coinFound) {
+                        wallet.coins.map((coin) => {
+                            let userCoinWallet = {
+                                address: wallet.address,
+                                coinCode: coin.coinCode
                             }
-                        }
-                    }
-                    else{
+                            this.props.getUserWallet(userCoinWallet)
+                        })
+                    } else {
                         this.setState({
-                            coinAvailable : false
+                            coinAvailable: false
                         })
                     }
                     if (i === (this.state.userWalletList.length - 1)) {
@@ -148,7 +146,42 @@ class Portfolio extends BaseReactComponent {
                             loader: false
                         });
                     }
-                }
+                })
+
+                // for (let i = 0; i < this.state.userWalletList.length; i++) {
+                //     if (this.state.userWalletList[i].coinFound) {
+                //         this.props.portfolioState.userWalletList = [];
+                //         this.props.portfolioState.walletTotal = 0;
+                //         this.props.portfolioState.chainWallet = [];
+                //         this.state.userWalletList[i].coins.map((e) => {
+                //             let userCoinWallet = {
+                //                 address: this.state.userWalletList[i].address,
+                //                 coinCode: this.state.userWalletList[i].coins[j].coinCode
+                //             }
+                //             this.props.getUserWallet(userCoinWallet)
+                //         })
+                //         for (let j = 0; j < this.state.userWalletList[i].coins.length; j++) {
+                //             if (this.state.userWalletList[i].coins[j].chain_detected) {
+                //                 let userCoinWallet = {
+                //                     //
+                //                     address: this.state.userWalletList[i].address,
+                //                     coinCode: this.state.userWalletList[i].coins[j].coinCode
+                //                 }
+                //                 this.props.getUserWallet(userCoinWallet)
+                //             }
+                //         }
+                //     }
+                //     else {
+                //         this.setState({
+                //             coinAvailable: false
+                //         })
+                //     }
+                //     if (i === (this.state.userWalletList.length - 1)) {
+                //         this.setState({
+                //             loader: false
+                //         });
+                //     }
+                // }
             }
         }
     }
@@ -168,11 +201,11 @@ class Portfolio extends BaseReactComponent {
                             </div>
                             <div className='portfolio-section page'>
                                 <PieChart
-                                    userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? this.props.portfolioState.chainWallet : null}
+                                    userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader} />
                                 {this.state.coinAvailable === false
-                                ?
+                                    ?
                                     <div className='fix-div'>
                                         <div className='m-r-8 decribe-div'>
                                             <div className='inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262'>Wallet undected</div>
@@ -180,7 +213,7 @@ class Portfolio extends BaseReactComponent {
                                         </div>
                                         <Button className='secondary-btn'>Fix</Button>
                                     </div>
-                                : ""}
+                                    : ""}
                             </div>
                             {/* <div className='portfolio-section page'>
                                 <LineChart />
@@ -198,7 +231,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
     getCoinRate,
-    getUserWallet
+    getUserWallet,
+    settingDefaultValues
 
 }
 Portfolio.propTypes = {

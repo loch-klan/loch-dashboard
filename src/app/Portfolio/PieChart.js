@@ -45,9 +45,9 @@ class PieChart extends BaseReactComponent {
                         borderWidth: 2,
                         color: colors[i % 5],
                         originalColor: colors[i % 5],
-                        chainSymbol: this.props.userWalletData[i].chainSymbol,
+                        assetSymbol: this.props.userWalletData[i].assetSymbol,
                         assetCode: this.props.userWalletData[i].assetCode.toLocaleString(undefined, { maximumFractionDigits: 2 }),
-                        count: this.props.userWalletData[i].count
+                        count: this.props.userWalletData[i].totalCount
                     })
                 }
             }
@@ -61,24 +61,16 @@ class PieChart extends BaseReactComponent {
 
 
     componentDidUpdate(prevProps) {
-      // console.log('didupdate', prevProps.userWalletData);
-      // console.log('this.props.userWalletData',this.props.userWalletData);
         if (this.props.assetTotal !== prevProps.assetTotal) {
             this.setState({ assetTotal: this.props.assetTotal })
         }
         if (this.props.userWalletData !== prevProps.userWalletData) {
-          // console.log('Hey IF');
             let colors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', '#a07ddd', '#e7c5a0']
             let borderColors = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', '#7B44DA', '#F19938']
             let assetData = [];
             if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
-                // this.state.assetData = []
-                // console.log('Hey IF 2');
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
-                  // console.log('Hey FOR');
-                    // let z = parseFloat(parseFloat((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100).toFixed(2));
                     let z = ((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100.0);
-                    // console.log('z',typeof(z));
                     assetData.push({
                         name: this.props.userWalletData[i].assetName,
                         y: z,
@@ -88,9 +80,9 @@ class PieChart extends BaseReactComponent {
                         borderWidth: 2,
                         color: colors[i % 5],
                         originalColor: colors[i % 5],
-                        chainSymbol: this.props.userWalletData[i].chainSymbol,
+                        assetSymbol: this.props.userWalletData[i].assetSymbol,
                         assetCode: this.props.userWalletData[i].assetCode.toLocaleString(undefined, { maximumFractionDigits: 2 }),
-                        count: this.props.userWalletData[i].count
+                        count: this.props.userWalletData[i].totalCount
                     })
                 }
             }
@@ -169,12 +161,17 @@ class PieChart extends BaseReactComponent {
                     valueSuffix: '%'
                 }
             },
+            boost: {
+                useGPUTranslations: true,
+                usePreAllocated: true
+              },
             title: {
                 text: null
             },
             credits: {
                 enabled: false
             },
+            boost: { enabled: true },
             tooltip: {
                 enabled: false,
                 shared: true,
@@ -186,7 +183,7 @@ class PieChart extends BaseReactComponent {
             plotOptions: {
                 pie: {
                     size: 1000,
-                    cursor: 'pointer',
+                    cursor: 'pointer', 
                     connectorPadding: 2,
                     states: {
                         // inactive: {
@@ -207,14 +204,14 @@ class PieChart extends BaseReactComponent {
                             textShadow: false
                         },
                         // format: `<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$ {point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>`,
-                        formatter : function(){
-                          // console.log('this.point',this.point);
-                            return(
+                        formatter: function () {
+                            // console.log('this.point',this.point);
+                            return (
                                 `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$${(this.point.usd)} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(2)}% &nbsp;&nbsp;</p>`
                             )
                         },
-                        x:40,
-                        y:-20,
+                        x: 40,
+                        y: -20,
                         backgroundColor: '#FFFFFF',
                         enabled: true,
                         crop: false,
@@ -224,7 +221,7 @@ class PieChart extends BaseReactComponent {
                         style: {
                             textOverflow: 'clip',
                             whiteSpace: 'nowrap',
-                            width: 'max-content' ,
+                            width: 'max-content',
                         },
                     },
                 }
@@ -249,48 +246,47 @@ class PieChart extends BaseReactComponent {
                         mouseOver: function () {
                             let color = this.options.borderColor;
                             this.update({ color: color });
-                            var currentData = this;
-                            this.series.data.forEach(function (data) {
-                                if (currentData.colorIndex !== data.colorIndex) {
-                                    data.update({ opacity: 0.2 }, true);
-                                    data.dataLabel.css({
-                                        opacity: 0
-                                    })
-                                        .add();
-                                } else {
-                                    data.update({ opacity: 1 }, false);
-                                    data.dataLabel.css({
-                                        opacity: 1
-                                    })
-                                        .add();
-                                    if (data.colorIndex >= 4) {
-                                        data.dataLabels[0].css({
-                                            opacity: 1
-                                        })
-                                            .add();
-                                    }
-                                }
-                            })
+                            // this.series.data.forEach(function (data) {
+                            //     if (currentData.colorIndex !== data.colorIndex) {
+                            //         data.update({ opacity: 0.2 }, true);
+                            //         data.dataLabel.css({
+                            //             opacity: 0
+                            //         })
+                            //             .add();
+                            //     } else {
+                            //         data.update({ opacity: 1 }, false);
+                            //         data.dataLabel.css({
+                            //             opacity: 1
+                            //         })
+                            //             .add();
+                            //         if (data.colorIndex >= 4) {
+                            //             data.dataLabels[0].css({
+                            //                 opacity: 1
+                            //             })
+                            //                 .add();
+                            //         }
+                            //     }
+                            // })
                             var currentData = this;
                             self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
                         },
                         mouseOut: function () {
-                            let color = this.options.originalColor;
-                            this.update({ color: color });
-                            this.series.data.forEach(function (data) {
-                                data.update({ opacity: 1 }, false);
-                                if (data.colorIndex >= 4) {
-                                    data.dataLabels[0].css({
-                                        opacity: 0
-                                    })
-                                        .add();
-                                } else {
-                                    data.dataLabels[0].css({
-                                        opacity: 1
-                                    })
-                                        .add();
-                                }
-                            });
+                            // let color = this.options.originalColor;
+                            // this.update({ color: color });
+                            // this.series.data.forEach(function (data) {
+                            //     data.update({ opacity: 1 }, false);
+                            //     if (data.colorIndex >= 4) {
+                            //         data.dataLabels[0].css({
+                            //             opacity: 0
+                            //         })
+                            //             .add();
+                            //     } else {
+                            //         data.dataLabels[0].css({
+                            //             opacity: 1
+                            //         })
+                            //             .add();
+                            //     }
+                            // });
                             var currentData = this;
                             self.setState({ pieSectionDataEnabled: [] });
                         }
@@ -320,7 +316,7 @@ class PieChart extends BaseReactComponent {
                             <div className='coin-hover-display'>
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
-                                        <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.chainSymbol || unrecognised : null} />
+                                        <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognised : null} />
                                     </div>
                                     <div className='coin-hover-display-text1'>
 
