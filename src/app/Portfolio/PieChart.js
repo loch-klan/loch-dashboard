@@ -113,14 +113,14 @@ class PieChart extends BaseReactComponent {
                 events: {
                     load: function (event) {
                         //When is chart ready?
-                        event.target.series[0].data.map((e, i) => {
-                            if (i >= 4) {
-                                e.dataLabels[0].css({
-                                    opacity: 0,
-                                })
-                                    .add();
-                            }
-                        })
+                        // event.target.series[0].data.map((e, i) => {
+                        //     if (i >= 4) {
+                        //         e.dataLabels[0].css({
+                        //             opacity: 0,
+                        //         })
+                        //             .add();
+                        //     }
+                        // })
                     },
                     render: function () {
                         var series = this.series[0],
@@ -161,7 +161,6 @@ class PieChart extends BaseReactComponent {
                 }
             },
             accessibility: {
-
                 point: {
                     valueSuffix: '%'
                 }
@@ -207,9 +206,7 @@ class PieChart extends BaseReactComponent {
                         style: {
                             textShadow: false
                         },
-                        // format: `<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$ {point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>`,
                         formatter: function () {
-                            // console.log('this.point',this.point);
                             return (
                                 `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$${(this.point.usd)} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(2)}% &nbsp;&nbsp;</p>`
                             )
@@ -230,28 +227,29 @@ class PieChart extends BaseReactComponent {
                     },
                 },
                 series: {
+                  animation: false, // for faster loading
                     point: {
                         events: {
                             mouseOver: function () {
                                 // return function () {
-                                var currentData = this;
-                                this.graphic.attr({
-                                    fill: this.options.borderColor,
-                                    opacity: 1
-                                });
-                                this.series.data.forEach(function (data) {
-                                    if (currentData.assetCode !== data.assetCode) {
-                                        data.dataLabel.css({
-                                            opacity: 0
-                                        })
-                                            .add();
-                                    } else {
-                                        data.dataLabel.css({
-                                            opacity: 1
-                                        })
-                                            .add();
-                                    }
-                                })
+                                // var currentData = this;
+                                // this.graphic.attr({
+                                //     fill: this.options.borderColor,
+                                //     opacity: 1
+                                // });
+                                // this.series.data.forEach(function (data) {
+                                //     if (currentData.assetCode !== data.assetCode) {
+                                //         data.dataLabel.css({
+                                //             opacity: 0
+                                //         })
+                                //             .add();
+                                //     } else {
+                                //         data.dataLabel.css({
+                                //             opacity: 1
+                                //         })
+                                //             .add();
+                                //     }
+                                // })
                                 // self.setState({ pieSectionDataEnabled: currentData })
                                 // self.setHoverData(this)
                             }
@@ -267,20 +265,20 @@ class PieChart extends BaseReactComponent {
                             //             fill: '#CCCCCC'
                             //         });
                             //     });
-                            this.points.forEach(function (data, i) {
-                                if (i >= 4) {
-                                    data.dataLabels[0].css({
-                                        opacity: 0
-                                    })
-                                        .add();
-                                } else {
-                                    data.dataLabels[0].css({
-                                        opacity: 1
-                                    })
-                                        .add();
-                                }
-                            });
-                            self.setHoverData([])
+                            // this.points.forEach(function (data, i) {
+                            //     if (i >= 4) {
+                            //         data.dataLabels[0].css({
+                            //             opacity: 0
+                            //         })
+                            //             .add();
+                            //     } else {
+                            //         data.dataLabels[0].css({
+                            //             opacity: 1
+                            //         })
+                            //             .add();
+                            //     }
+                            // });
+                            // self.setHoverData([])
                             // self.setState({ pieSectionDataEnabled: [] });
                         }
                     }
@@ -299,10 +297,10 @@ class PieChart extends BaseReactComponent {
                 },
                 point: {
                     events: {
-                        // click: function () {
-                        //     var currentData = this;
-                        //     self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
-                        // },
+                        click: function () {
+                            var currentData = this;
+                            self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
+                        },
                         // mouseOver: function () {
                         // let color = this.options.borderColor;
                         // this.update({ color: color });
