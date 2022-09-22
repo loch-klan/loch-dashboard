@@ -95,6 +95,10 @@ class PieChart extends BaseReactComponent {
         }
     }
 
+    setHoverData = (e) => {
+        this.setState({ pieSectionDataEnabled: e })
+    }
+
 
     render() {
         let self = this;
@@ -109,8 +113,8 @@ class PieChart extends BaseReactComponent {
                 events: {
                     load: function (event) {
                         //When is chart ready?
-                        event.target.series[0].data.map((e) => {
-                            if (e.colorIndex >= 4) {
+                        event.target.series[0].data.map((e, i) => {
+                            if (i >= 4) {
                                 e.dataLabels[0].css({
                                     opacity: 0,
                                 })
@@ -172,13 +176,12 @@ class PieChart extends BaseReactComponent {
             credits: {
                 enabled: false
             },
-            boost: { enabled: true },
             tooltip: {
                 enabled: false,
                 shared: true,
                 // pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
-                formatter: function () {
-                }
+                // formatter: function () {
+                // }
 
             },
             plotOptions: {
@@ -230,13 +233,29 @@ class PieChart extends BaseReactComponent {
                     point: {
                         events: {
                             mouseOver: function () {
+                                // return function () {
+                                var currentData = this;
                                 this.graphic.attr({
                                     fill: this.options.borderColor,
                                     opacity: 1
                                 });
-                                // var currentData = this;
+                                this.series.data.forEach(function (data) {
+                                    if (currentData.assetCode !== data.assetCode) {
+                                        data.dataLabel.css({
+                                            opacity: 0
+                                        })
+                                            .add();
+                                    } else {
+                                        data.dataLabel.css({
+                                            opacity: 1
+                                        })
+                                            .add();
+                                    }
+                                })
                                 // self.setState({ pieSectionDataEnabled: currentData })
+                                // self.setHoverData(this)
                             }
+                            // })(this)
                         }
                     },
                     events: {
@@ -248,6 +267,20 @@ class PieChart extends BaseReactComponent {
                             //             fill: '#CCCCCC'
                             //         });
                             //     });
+                            this.points.forEach(function (data, i) {
+                                if (i >= 4) {
+                                    data.dataLabels[0].css({
+                                        opacity: 0
+                                    })
+                                        .add();
+                                } else {
+                                    data.dataLabels[0].css({
+                                        opacity: 1
+                                    })
+                                        .add();
+                                }
+                            });
+                            self.setHoverData([])
                             // self.setState({ pieSectionDataEnabled: [] });
                         }
                     }
@@ -266,10 +299,10 @@ class PieChart extends BaseReactComponent {
                 },
                 point: {
                     events: {
-                        click: function () {
-                            var currentData = this;
-                            self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
-                        },
+                        // click: function () {
+                        //     var currentData = this;
+                        //     self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
+                        // },
                         // mouseOver: function () {
                         // let color = this.options.borderColor;
                         // this.update({ color: color });
