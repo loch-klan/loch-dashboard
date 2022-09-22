@@ -33,12 +33,12 @@ const routes = [
     type: PrivateRoute,
     component: Portfolio
   },
-  // {
-  //   path: "/intelligence",
-  //   name: "Intelligence",
-  //   type: Route,
-  //   component: Intelligence
-  // },
+  {
+    path: "/intelligence",
+    name: "Intelligence",
+    type: Route,
+    component: Intelligence
+  },
   {
     path: "/wallets",
     name: "Wallet",

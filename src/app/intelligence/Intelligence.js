@@ -5,6 +5,7 @@ import Sidebar from '../common/Sidebar';
 import IntelWelcomeCard from './IntelWelcomeCard';
 import PageHeader from '../common/PageHeader';
 import { TransactionHistoryPage } from './TransactionHistoryPage';
+import { DoughnutChart } from '../doughnutchart/DoughnutChart.js';
 class Intelligence extends Component {
     constructor(props) {
         super(props);
@@ -22,8 +23,10 @@ class Intelligence extends Component {
                     title="Intelligence"
                     subTitle="Automated and personalized financial intelligence"
                 />
-                {/* <IntelWelcomeCard /> */}
-                <TransactionHistoryPage />
+                <IntelWelcomeCard />
+                
+                <DoughnutChart/>
+                {/* <TransactionHistoryPage /> */}
               </div>
             </div>
             
