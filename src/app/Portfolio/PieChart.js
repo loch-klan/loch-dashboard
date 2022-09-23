@@ -209,18 +209,23 @@ class PieChart extends BaseReactComponent {
                 },
                 series: {
                     animation: false, // for faster loading
+                    allowPointSelect: true,
                     point: {
                         events: {
+                            select: function () {
+                                var currentData = this;
+                                this.update({ color: this.options.borderColor });
+                                self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
+                            },
+                            unselect: function () {
+                                this.update({ color: this.options.originalColor });
+                            },
                             mouseOver: function () {
                                 var currentData = this;
                                 this.graphic.attr({
                                     fill: this.options.borderColor,
                                     opacity: 1
                                 });
-                                // currentData.dataLabel.css({
-                                //     opacity: 1
-                                // })
-                                //     .add();
                                 this.series.data.map((data, i) => {
                                     if (currentData.assetCode !== data.assetCode) {
                                         data.dataLabel.css({
@@ -239,33 +244,20 @@ class PieChart extends BaseReactComponent {
                     },
                     events: {
                         mouseOut: function () {
-                            
-                            this.points.map( (data, i)=>  {
-                                if(!self.state.pieSectionDataEnabled){
+                            this.points.map((data, i) => {
+                                if (Object.keys(self.state.pieSectionDataEnabled).length > 0) {
+                                    if (self.state.pieSectionDataEnabled.colorIndex != data.colorIndex) {
+                                        data.dataLabels[0].css({
+                                            opacity: 0
+                                        })
+                                            .add();
+                                    }
+                                } else {
                                     data.dataLabels[0].css({
                                         opacity: 0
-                                    })
-                                        .add();                                    
-                                }
-                                else{
-                                   if(self.state.pieSectionDataEnabled.assetCode!=data.assetCode){
-                                    data.dataLabels[0].css({
-                                        opacity: 0
-                                    })
-                                        .add();  
-                                   }else{
-                                    console.log('else')
-                                    // data.graphic.attr({
-                                    //     fill: this.options.borderColor,
-                                    //     opacity: 1
-                                    // });
-                                    data.dataLabels[0].css({
-                                        color: this.options.borderColor
                                     })
                                         .add();
-                                   }
                                 }
-                            
                             });
                         }
                     }
@@ -274,6 +266,7 @@ class PieChart extends BaseReactComponent {
             series: [{
                 name: 'Registrations',
                 innerSize: '75%',
+                colorByPoint: true,
                 size: "100%",
                 states: {
                     hover: {
@@ -282,15 +275,15 @@ class PieChart extends BaseReactComponent {
                         }
                     }
                 },
-                point: {
-                    events: {
-                        click: function () {
-                            var currentData = this;                           
-                            self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
-                        }
-                    }
+                // point: {
+                //     events: {
+                //         click: function () {
+                //             var currentData = this;                           
+                //             self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
+                //         }
+                //     }
 
-                },
+                // },
                 data: self.state.assetData && self.state.assetData.length > 0 ? self.state.assetData : []
             }]
         }
