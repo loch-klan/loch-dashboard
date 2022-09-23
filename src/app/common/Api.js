@@ -4,10 +4,10 @@ import { preLoginInstance } from "../../utils";
 export const loginApi = (ctx, data) => {
   preLoginInstance.post('common/test/temp-login', data)
     .then(res => {
-      console.log('res',res);
+      // console.log('res',res);
       if (!res.data.error) {
-        console.log('res', res.data.data.token);
-        console.log('ctx',ctx.props.history);
+        // console.log('res', res.data.data.token);
+        // console.log('ctx',ctx.props.history);
         localStorage.setItem('lochToken', res.data.data.token);
         ctx.props.history.push('/home');
       } else {

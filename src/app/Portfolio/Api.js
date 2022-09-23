@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
-import { COIN_RATE_LIST, USER_WALLET_LIST } from "./ActionTypes";
+import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES } from "./ActionTypes";
 
 export const getCoinRate = () => {
     return async function (dispatch, getState) {
@@ -56,5 +56,13 @@ export const getUserWallet = (wallet) => {
         //         }
         //     });
         // }
+    };
+};
+
+export const settingDefaultValues = (wallet) => {
+    return function (dispatch, getState) {
+        dispatch({
+            type: DEFAULT_VALUES
+        });
     };
 };

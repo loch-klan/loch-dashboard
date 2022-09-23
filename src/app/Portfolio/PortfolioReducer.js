@@ -1,122 +1,77 @@
 import { DEFAULT_PRICE } from "../../utils/Constant";
-import { COIN_RATE_LIST, USER_WALLET_LIST } from "./ActionTypes";
+import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES } from "./ActionTypes";
 const INITIAL_STATE = {
     coinRateList: [],
-    userWalletList: [],
+    // userWalletList: [],
     chainWallet: [],
     walletTotal: 0
 };
 const PortfolioReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case COIN_RATE_LIST:
-            return { ...state, coinRateList: Object.values(action.payload) };
+            return { ...state, coinRateList: action.payload };
         case USER_WALLET_LIST:
-            let updateWalletList = state.userWalletList || [];
             let updateWalletTotal = state.walletTotal || 0;
             let updatedChainWallet = state.chainWallet || [];
-            let index = updateWalletList.findIndex(
-                walletList => walletList.address === action.payload.address
-            );
-            if (index <= -1) {
-                updateWalletList.push({
-                    address: action.payload.address,
-                    chains: [],
-                    coinAssets: []
-                })
-                index = updateWalletList.findIndex(
-                    walletList => walletList.address === action.payload.address
-                );
-            }
-            if (action.payload.userWalletList.assets && action.payload.userWalletList.assets.length > 0) {
-                let chainIndex = updateWalletList[index]["chains"].findIndex(
-                    chainList => chainList.chainCode === action.payload.userWalletList.assets[0].chain.code
-                );
-                if (chainIndex <= -1) {
-                    updateWalletList[index]["chains"].push({
-                        chainCode: action.payload.userWalletList.assets[0].chain.code,
-                        assets: []
-                    })
-                    chainIndex = updateWalletList[index]["chains"].findIndex(
-                        chainList => chainList.chainCode === action.payload.userWalletList.assets[0].chain.code
-                    );
-                }
+            if (action.payload && action.payload.userWalletList && action.payload.userWalletList.assets && action.payload.userWalletList.assets.length > 0) {
                 for (let i = 0; i < action.payload.userWalletList.assets.length; i++) {
-                    let matchedCodeData = state.coinRateList.filter((e) => e.code === action.payload.userWalletList.assets[i].asset.code)
-                    // console.log('matchedCodedata',matchedCodeData);
-                    let value = matchedCodeData && matchedCodeData[0] ? matchedCodeData[0].quote : DEFAULT_PRICE;
-                    if(value === DEFAULT_PRICE || !value){
-                      continue;
+                    // Filter coin rate from coinRate state variable
+                    if(action.payload.userWalletList.assets[i].asset.code === 'PAXG'){
+                        console.log(action.payload.userWalletList.assets[i])
                     }
-                    let currentPrice = action.payload.userWalletList.assets[i].count*value.USD.price;
-                    let assetIndex = updateWalletList[index]["coinAssets"].findIndex(
-                        assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
-                    );
-                    let chainAssetIndex = updatedChainWallet.findIndex(
-                        assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
-                    );
-                    if (chainAssetIndex <= -1) {
-                        updatedChainWallet.push({
-                            assetCode: action.payload.userWalletList.assets[i].asset.code,
-                            assetName: action.payload.userWalletList.assets[i].asset.name,
-                            assetSymbol: action.payload.userWalletList.assets[i].asset.symbol,
-                            chainCode: action.payload.userWalletList.assets[i].chain.code,
-                            chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
-                            chainName: action.payload.userWalletList.assets[i].chain.name,
-                            count: action.payload.userWalletList.assets[i].count,
-                            assetValue: value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE
-                        })
-                    } else {
-
-                        updatedChainWallet[chainAssetIndex].count =
-                            updatedChainWallet[chainAssetIndex].count + action.payload.userWalletList.assets[i].count
-                        updatedChainWallet[chainAssetIndex].assetValue =
-                            updatedChainWallet[chainAssetIndex].assetValue + (value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE)
-                    }
-                    if (assetIndex <= -1) {
-                        updateWalletList[index]["coinAssets"].push({
-                            assetCode: action.payload.userWalletList.assets[i].asset.code,
-                            assetName: action.payload.userWalletList.assets[i].asset.name,
-                            assetSymbol: action.payload.userWalletList.assets[i].asset.symbol,
-                            chainCode: action.payload.userWalletList.assets[i].chain.code,
-                            chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
-                            chainName: action.payload.userWalletList.assets[i].chain.name,
-                            count: action.payload.userWalletList.assets[i].count,
-                            assetValue: value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE
-                        })
-                    } else {
-
-                        updateWalletList[index]["coinAssets"][assetIndex].count =
-                            updateWalletList[index]["coinAssets"][assetIndex].count + action.payload.userWalletList.assets[i].count
-                        updateWalletList[index]["coinAssets"][assetIndex].assetValue =
-                            updateWalletList[index]["coinAssets"][assetIndex].assetValue + (value ? action.payload.userWalletList.assets[i].count * value.USD.price : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE)
-
-                    }
-                    updateWalletList[index]["chains"][chainIndex]["assets"].push({
-                        assetCode: action.payload.userWalletList.assets[i].asset.code,
-                        assetName: action.payload.userWalletList.assets[i].asset.name,
-                        assetSymbol: action.payload.userWalletList.assets[i].asset.symbol,
-                        chainCode: action.payload.userWalletList.assets[i].chain.code,
-                        chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
-                        chainName: action.payload.userWalletList.assets[i].chain.name,
-                        count: action.payload.userWalletList.assets[i].count
-                    })
-
-                    // let updatedAssetIndex = updateWalletList[index]["coinAssets"].findIndex(
-                    //     assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
-                    // );
-                    // updateWalletTotal = updateWalletTotal + updateWalletList[index]["coinAssets"][updatedAssetIndex].assetValue;
-                    // let updatedChainIndex = updatedChainWallet.findIndex(
+                    let matchedCodeData = state.coinRateList[action.payload.userWalletList.assets[i].asset.code]
+                    let value = matchedCodeData && matchedCodeData ? matchedCodeData.quote : DEFAULT_PRICE;
+                    let currentPrice = action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE);
+                    // Get coin asset index
+                    // let assetIndex = updatedChainWallet.findIndex(
                     //     assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
                     // );
 
-                    // updateWalletTotal = updateWalletTotal + updatedChainWallet[updatedChainIndex].assetValue;
-
+                    // if (assetIndex <= -1) {
+                    if (updatedChainWallet[action.payload.userWalletList.assets[i].asset.code] === undefined) {
+                        // updatedChainWallet.push({
+                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.code] = {
+                            assetCode: action.payload.userWalletList.assets[i].asset.code,
+                            assetName: action.payload.userWalletList.assets[i].asset.name,
+                            assetSymbol: action.payload.userWalletList.assets[i].asset.symbol,
+                            chain: [{
+                                chainCode: action.payload.userWalletList.assets[i].chain.code,
+                                chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
+                                chainName: action.payload.userWalletList.assets[i].chain.name,
+                                assetCount: action.payload.userWalletList.assets[i].count
+                            }],
+                            totalCount: action.payload.userWalletList.assets[i].count,
+                            assetValue: value ? action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE) : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE
+                        }
+                        // assetIndex = (updatedChainWallet.length - 1)
+                    } else {
+                        // Check if chain exist in the asset
+                        // let chainExist = updatedChainWallet[assetIndex]["chain"].findIndex(
+                        //     chainList => chainList.chainCode === action.payload.userWalletList.assets[i].chain.code
+                        // );
+                        // If chain doesn't exist
+                        // if (chainExist <= -1) {
+                        // if (updatedChainWallet[action.payload.userWalletList.assets[i].asset.code]["chain"] === undefined) {
+                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.code]["chain"].push({
+                            chainCode: action.payload.userWalletList.assets[i].chain.code,
+                            chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
+                            chainName: action.payload.userWalletList.assets[i].chain.name,
+                            assetCount: action.payload.userWalletList.assets[i].count
+                        })
+                        // }
+                        // Update the total count and asset value
+                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.code].totalCount =
+                            updatedChainWallet[action.payload.userWalletList.assets[i].asset.code].totalCount + action.payload.userWalletList.assets[i].count
+                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.code].assetValue =
+                            updatedChainWallet[action.payload.userWalletList.assets[i].asset.code].assetValue + (value ? action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE) : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE)
+                    }
                     updateWalletTotal = updateWalletTotal + currentPrice;
-
-                    // console.log('assetValue', updatedChainWallet[updatedChainIndex].assetValue, updatedChainWallet[updatedChainIndex].assetCode);
                 }
             }
-            return { ...state, userWalletList: updateWalletList, walletTotal: updateWalletTotal, chainWallet: [...updatedChainWallet] };
+            // userWalletList: updateWalletList,
+            return { ...state, walletTotal: updateWalletTotal, chainWallet: { ...updatedChainWallet } };
+        case DEFAULT_VALUES:
+            return { ...state, chainWallet: [], walletTotal: 0 }
         default:
             return state
     }
