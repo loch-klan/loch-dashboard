@@ -1,309 +1,173 @@
-// import React from 'react'
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-// import { Doughnut } from 'react-chartjs-2';
-// // import  {chartdata,options }from './chartdata.js'
-// ChartJS.register(ArcElement, Tooltip, Legend);
-// export const DoughnutChart = () => {
-
-
-//     const [div , setdiv] = React.useState(0)
-
-//     const handleClick = ()=>{
-//         console.log("CLICK")
-//         setdiv(!div)
-//     }
-
-//     const setHover = ()=>{
-//         setdiv(!div)
-//     }
-
-//     const textCenterPlugin = {
-//         id : "textCenterPlugin",
-//         beforeDraw: function(chart , args,options) {
-//             // var width = chart.chart.width,
-//             //     height = chart.chart.height,
-//             //     ctx = chart.chart.ctx;
-//             // ctx.restore();
-//             // var fontSize = (height / 114).toFixed(2);
-//             // ctx.font = fontSize + "em sans-serif";
-//             // ctx.textBaseline = "middle";
-//             // var text = "75%",
-//             //     textX = Math.round((width - ctx.measureText(text).width) / 2),
-//             //     textY = height / 2;
-//             // ctx.fillText(text, textX, textY);
-//             // ctx.save();
-//             // console.log(chart)
-//             const {
-//                 ctx,
-//                 chartArea: { top, right, bottom, left, width, height },
-//               } = chart;
-//               ctx.save();
-          
-//               //1st How to get Position of label
-//               const yCenter = top + height / 2;
-          
-//               //2nd How to set Styling of label
-//               ctx.font = "bold 12px Helvetica Neue";
-//               ctx.textAlign = "center";
-//               ctx.fillStyle = options.fontColor;
-//               ctx.fillText(options.text, width / 2 , yCenter);
-//           }
-//     }
-
-//     // const AnimationOnHover = (e,legendItem,Legend)=>{
-
-//     // }
-//     ChartJS.register(textCenterPlugin);
-//    const options = {
-//         responsive : true,
-//         aspectRatio:1,
-//         maintainAspectRatio: false,
-//         legend : {
-//             label :{
-//                 display : false,
-//             }
-//         },
-//         parsing: {
-//             key: 'nested.value'
-//         },
-//         plugins:{
-//             textCenterPlugin : {
-//                 text:"$27876"
-//             },
-//         },
-//         onClick(click,element,chart){
-//             console.log(chart)
-//             setdiv(!div)
-//         },
-//         // onHover: (e, activeElements, chart) => {
-//         //     if (activeElements[0]) {
-//         //       let ctx = activeElements[0].element.$context;
-//         //       let label = chart.data.labels[ctx.dataIndex];
-//         //       let value = chart.data.datasets[0].data[ctx.dataIndex];
-//         //       console.log(label + ': ' + value);
-//         //       setHover(!div)
-//         //     }
-//         //   }
-//     }
-//     const chartdata =  {
-//         labels: ['Bitcoin', 'Ethereum', 'Solana', 'Avalanche', 'Helium', 'Eth','Bit'],
-        
-//         datasets: [
-//             {
-//               label: '# of Votes',
-//               data: [12, 19, 3, 5, 2, 3],
-//               backgroundColor: [
-//                 'rgba(255, 99, 132, 0.2)',
-//                 'rgba(54, 162, 235, 0.2)',
-//                 'rgba(255, 206, 86, 0.2)',
-//                 'rgba(75, 192, 192, 0.2)',
-//                 'rgba(153, 102, 255, 0.2)',
-//                 'rgba(255, 159, 64, 0.2)',
-//               ],
-//               borderColor: [
-//                 'rgba(255, 99, 132, 1)',
-//                 'rgba(54, 162, 235, 1)',
-//                 'rgba(255, 206, 86, 1)',
-//                 'rgba(75, 192, 192, 1)',
-//                 'rgba(153, 102, 255, 1)',
-//                 'rgba(255, 159, 64, 1)',
-//               ],
-//               borderWidth: 1,
-//               hoverOffset : 5
-//             },
-//           ],
-//         // datasets: [
-//         //   {
-//         //     // label: '# of Votes',
-//         //     data: [
-//         //     {
-//         //         id : "Bitcoin",
-//         //         nested :{
-//         //              value:222798.00,
-//         //         }
-//         //        ,
-//         //     },
-//         //     {
-//         //         id : "Ethereum",
-//         //         nested :{
-//         //              value:55143,
-//         //         }
-//         //        ,
-//         //     },
-//         //     {
-//         //         id : "Solana",
-//         //         nested :{
-//         //             value:19925
-//         //         }
-               
-//         //     },
-//         //     {
-//         //         id : "Avalanche",
-//         //         nested :{
-//         //              value:6303,
-//         //         }
-               
-//         //     },
-//         //     {
-//         //         id : "Helium",
-//         //         nested :{
-//         //              value:4303,
-//         //         }
-               
-//         //     },
-//         //     {
-//         //         id : "Eth",
-//         //         nested :{
-//         //              value:4303,
-//         //         }
-               
-//         //     },
-//         //     {
-//         //         id : "Bit",
-//         //         nested :{
-//         //              value:6303,
-//         //         }
-               
-//         //     }
-//         //     ],
-//         //     backgroundColor: [
-//         //       'rgba(255, 99, 132, 0.2)',
-//         //       'rgba(54, 162, 235, 0.2)',
-//         //       'rgba(255, 206, 86, 0.2)',
-//         //       'rgba(75, 192, 192, 0.2)',
-//         //       'rgba(153, 102, 255, 0.2)',
-//         //       'rgba(255, 159, 64, 0.2)',
-//         //       'rgba(75, 192, 192, 0.2)',
-//         //     ],
-//         //     borderColor: [
-//         //       'rgba(255, 99, 132, 1)',
-//         //       'rgba(54, 162, 235, 1)',
-//         //       'rgba(255, 206, 86, 1)',
-//         //       'rgba(75, 192, 192, 1)',
-//         //       'rgba(153, 102, 255, 1)',
-//         //       'rgba(255, 159, 64, 1)',
-//         //       'rgba(75, 192, 192, 1)',
-//         //     ],
-//         //     borderWidth: 1,
-//         //     hoverOffset : 5, // doughnut slice standout on hover
-//         //   },
-//         // ],
-//       };
-
-      
-//   return (
-//     <div>
-//         <Doughnut  
-//              data = {chartdata}
-//             options = {options}
-//         />
-//         {
-//             div == true ? <div> HELLO </div> : ""
-//         }
-//     </div>
-//   )
-// }
 
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut , getElementsAtEvent , getDatasetAtEvent } from 'react-chartjs-2';
-// import { DoughnutChart } from './DoughnutChart';
+import { Doughnut, getElementsAtEvent, getDatasetAtEvent, Chart } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-
-
-
 export function DoughnutChart() {
-
-
-    const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [
-          {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1,
-          },
+  const data = {
+    labels: ['lightgreen', 'red', 'Yellow', 'Grey', 'pink', 'lightblue'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132,0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
         ],
-      };
-    const chartRef = React.useRef();
-    const onClick = (event) => {
-        console.log(getElementsAtEvent(chartRef.current, event));
-        // console.log(getDatasetAtEvent(chartRef.current, event));
-      }
-    const [show,setshow] = React.useState(false)
-    const [value,setvalue] = React.useState("")
-    function handleHover(evt,element,chart) {
-        // console.log(element)
-        // let index = element[0].index
-        // if(index !== undefined ){
+        borderColor: [
+          'lightgreen',
+          'red',
+          'yellow',
+          'grey',
+          'pink',
+          'lightblue',
+        ],
+        cutout: "80%",
+        borderWidth: 2,
+        hoverOffset: 50,
+        // hoverBorderWidth: 5,
 
-        //     console.log(chart.data) 
-        //     // console.log(element[0].index)
-        //     console.log(data.datasets[0].data[index])
-        //     setvalue(data.datasets[0].data[index])
-        //     // setshow(!show)
-        // }
-        let currentIndex = -1;
-        console.log(chart)
-        chart.listeners.mousemove = function(e,x,y) {
-            // if(x[0]) {
-            //     var index = x[0]._index;
-            //     if (index !== currentIndex) {
-            //         currentIndex = index;
-            //         console.log(x[0]._model.label + ': ' + x[0]._chart.config.data.datasets[0].data[index]);
-            //     }
-            // }
-            console.log(e , x  ,y)
-        };
+      },
+    ],
+  };
+  const chartRef = React.useRef();
+
+  const textCenterPlugin = {
+    id: "textCenterPlugin",
+    afterDraw: function (chart, args, options) {
+      const { ctx, chartArea: { left, right, top, bottom, width, height } } = chart;
+      ctx.save()
+      ctx.fillStyle = options.fontColor;
+      const ycenter = top + (height / 2);
+
+      ctx.font = "60px Arial"
+      // console.log(ctx.font)
+
+      ctx.textAlign = "center"
+      ctx.fillText(options.text, (width / 2 )+ left, ycenter)
+      ctx.restore()
+    }
+  }
+  const hoverslice = {
+    id: "hoverslice",
+    afterEvent(chart, args, options) {
+      const { ctx, chartArea: { left, right, top, bottom, width, height } } = chart;
+      ctx.save()
+      // console.log(ctx)
+      if (args.event.type === "mouseout" && chart._active.length > 0) {
+        chart.options.showAllTooltip = true
+        chart.tooltip.options.enabled = false
+        setvalue("")
       }
-    function handleClick(evt,element,chart){
-        // console.log(element[0].index)
-        // let index = element[0].index
-        // console.log(data.datasets[0].data[index])
+      else if (args.event.type === "mousemove" && chart._active.length > 0) {
+        chart.options.showAllTooltip = false
+        chart.tooltip.options.enabled = true
+      }
+      if (chart._active.length > 0) {
+        const index = chart._active[0].index
+        const text = chart.config._config.data.labels[index]
+
+        const bordercolor = chart.config._config.data.datasets[0].borderColor
+        const Colorarr = chart.config._config.data.datasets[0].backgroundColor
+        const Colors = Colorarr.map((e, i) => {
+          // console.log(e,i)
+          return i != index ? e : bordercolor[index]
+        })
+        chart.config.data.datasets[0].hoverBackgroundColor = Colors;
+        setvalue(text)
+      }
+      else{
+        setvalue("")
+      }
     }
-    const options = {
-        responsive : true,
-        aspectRatio:1,
-        maintainAspectRatio: false,
-        // onHover : (event)=>{
-        //     console.log("HEy")
-        //     // console.log(getElementsAtEvent(chartRef.current, event));
-        // },
-       
-        onHover: (e)=>{
-            console.log("HEE")
-            console.log(e)
-            setvalue("hello")
-        },
-        // onClick:handleClick
+  }
+  const showToolTip = {
+    id: "showToolTip",
+    afterDraw: (chart, args, options) => {
+      const { ctx } = chart
+      ctx.save();
+      if (chart.options.showAllTooltip) {
+        chart.data.datasets.forEach((dataset, i) => {
+          chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
+            if (index < 4) {
+              // console.log(datapoint)
+              const { x, y } = datapoint.tooltipPosition()
+              // console.log(x, y)
+              const text = chart.data.labels[index] + ":" + chart.data.datasets[i].data[index];
+              const textWidth = ctx.measureText(text).width;
+
+              ctx.fillStyle = 'rgba(0,0,0,0.8)';
+              ctx.fillRect(x - ((textWidth + 10) / 2), y - 25, textWidth + 10, 20)  // x,y,w,h
+              // ctx.restore();
+
+              // triangle
+              ctx.beginPath();
+              ctx.moveTo(x, y)
+              ctx.lineTo(x - 5, y - 5)
+              ctx.lineTo(x + 5, y - 5)
+
+              ctx.fill();
+              ctx.restore()
+              // text
+              ctx.font = "15px Arial";
+              ctx.fillStyle = "white";
+              ctx.fillText(text, x - (textWidth / 2), y - 10);
+              ctx.restore()
+            }
+          })
+        })
+      }
     }
-    // const onClick = (event) => {
-    //     console.log(event);
-    //   }
-    return (
-        <div style={{width:"300px"}}>
-        <Doughnut data={data} options={options}  ref={chartRef}/>
-        {value && <div>{value}</div> }
-        </div>
-    );
+  }
+
+  const [show, setshow] = React.useState(false)
+  const [value, setvalue] = React.useState("")
+
+
+  ChartJS.register({ textCenterPlugin, showToolTip, hoverslice });
+  const options = {
+    responsive: true,
+    aspectRatio: 1,
+    maintainAspectRatio: false,
+    text: "44",
+    plugins: {
+      legend: {
+        display: false
+      },
+      textCenterPlugin: {
+        fontColor: "black",
+        text: "44",
+        fontColor: "black",
+        fontSize: "60px",
+        fontFamily: "sans-serif"
+      },
+      showToolTip,
+      hoverslice,
+
+      tooltip: {
+        enabled: false,
+      },
+    },
+    layout: {
+      padding: 30
+    },
+    showAllTooltip: true,
+  }
+
+  return (
+    <>
+      <div style={{ width: "500px", height: "500px" }}>
+        <Doughnut data={data} options={options} ref={chartRef} />
+
+      </div>
+      {value && <div>{value}</div>}
+    </>
+  );
 }
 
-// export default DoughnutChart;
