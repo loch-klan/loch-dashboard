@@ -23,7 +23,7 @@ class PieChart extends BaseReactComponent {
             chartOptions: [],
             valueChanged: false
         }
-
+    
     }
 
     componentDidMount() {
@@ -101,8 +101,13 @@ class PieChart extends BaseReactComponent {
             })
         }
     }
+    mouseEnter = ()=>{
+        document.getElementById("fixbtn").style.display = "none"
+    }   
 
-
+    mouseLeave = ()=>{
+        document.getElementById("fixbtn").style.display = "flex"
+    }
     render() {
         let self = this;
         this.state.chartOptions = {
@@ -207,9 +212,9 @@ class PieChart extends BaseReactComponent {
                             textShadow: false
                         },
                         // format: `<span class="f-s-16" style="color:{point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">{point.name}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$ {point.usd} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> {point.y}% &nbsp;&nbsp;</p>`,
-                        formatter : function(){
+                        formatter:function(){
                           // console.log('this.point',this.point);
-                            return(
+                            return (
                                 `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$${(this.point.usd)} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(2)}% &nbsp;&nbsp;</p>`
                             )
                         },
@@ -271,8 +276,10 @@ class PieChart extends BaseReactComponent {
                                     }
                                 }
                             })
+                            {self.mouseEnter()}
                             var currentData = this;
                             self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
+                            
                         },
                         mouseOut: function () {
                             let color = this.options.originalColor;
@@ -291,8 +298,10 @@ class PieChart extends BaseReactComponent {
                                         .add();
                                 }
                             });
+                            {self.mouseLeave()}
                             var currentData = this;
-                            self.setState({ pieSectionDataEnabled: [] });
+                            self.setState({ pieSectionDataEnabled: []});
+
                         }
                     }
 
@@ -317,13 +326,12 @@ class PieChart extends BaseReactComponent {
                             />
                         </div>
                         {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
-                            <div className='coin-hover-display'>
+                            <div className='coin-hover-display' >
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
                                         <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.chainSymbol || unrecognised : null} />
                                     </div>
                                     <div className='coin-hover-display-text1'>
-
                                         <div className='coin-hover-display-text1-upper'>
                                             <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
                                             <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>

@@ -110,7 +110,8 @@ class Portfolio extends BaseReactComponent {
             userWalletList: JSON.parse(localStorage.getItem("addWallet")),
             assetTotalValue: 0,
             loader: false,
-            coinAvailable:true
+            coinAvailable: true,
+            
         }
 
     }
@@ -118,6 +119,7 @@ class Portfolio extends BaseReactComponent {
     componentDidMount() {
         this.props.getCoinRate()
     }
+
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
@@ -138,9 +140,9 @@ class Portfolio extends BaseReactComponent {
                             }
                         }
                     }
-                    else{
+                    else {
                         this.setState({
-                            coinAvailable : false
+                            coinAvailable: false
                         })
                     }
                     if (i === (this.state.userWalletList.length - 1)) {
@@ -151,9 +153,8 @@ class Portfolio extends BaseReactComponent {
                 }
             }
         }
-    }
-
-    render() {
+    }    
+    render() {   
         return (
             <div>
                 {this.state.loader ? <Loading /> :
@@ -170,17 +171,18 @@ class Portfolio extends BaseReactComponent {
                                 <PieChart
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? this.props.portfolioState.chainWallet : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader} />
-                                {this.state.coinAvailable === false
-                                ?
-                                    <div className='fix-div'>
+                                    loader={this.state.loader}
+                                />
+                                {this.state.coinAvailable === false 
+                                    ?
+                                    <div className='fix-div' id="fixbtn">
                                         <div className='m-r-8 decribe-div'>
                                             <div className='inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262'>Wallet undected</div>
                                             <div className='inter-display-medium f-s-13 lh-16 grey-737'>One or more wallets were not dected </div>
                                         </div>
                                         <Button className='secondary-btn'>Fix</Button>
                                     </div>
-                                : ""}
+                                    : ""}
                             </div>
                             {/* <div className='portfolio-section page'>
                                 <LineChart />
