@@ -13,13 +13,15 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         case USER_WALLET_LIST:
             let updateWalletTotal = state.walletTotal || 0;
             let updatedChainWallet = state.chainWallet || [];
+            // console.log('updatedChainWallet',updatedChainWallet);
             if (action.payload && action.payload.userWalletList && action.payload.userWalletList.assets && action.payload.userWalletList.assets.length > 0) {
                 for (let i = 0; i < action.payload.userWalletList.assets.length; i++) {
                     // Filter coin rate from coinRate state variable
-                    if(action.payload.userWalletList.assets[i].asset.code === 'PAXG'){
-                        console.log(action.payload.userWalletList.assets[i])
-                    }
-                    let matchedCodeData = state.coinRateList[action.payload.userWalletList.assets[i].asset.code]
+                    // if(action.payload.userWalletList.assets[i].asset.code === 'PAXG'){
+                    //     console.log(action.payload.userWalletList.assets[i])
+                    // }
+                    // console.log('action.payload.userWalletList',action.payload.userWalletList);
+                    let matchedCodeData = state.coinRateList[action.payload.userWalletList.assets[i].asset.id]
                     let value = matchedCodeData && matchedCodeData ? matchedCodeData.quote : DEFAULT_PRICE;
                     let currentPrice = action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE);
                     // Get coin asset index
@@ -28,17 +30,19 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                     // );
 
                     // if (assetIndex <= -1) {
-                    if (updatedChainWallet[action.payload.userWalletList.assets[i].asset.code] === undefined) {
+                    if (updatedChainWallet[action.payload.userWalletList.assets[i].asset.id] === undefined) {
                         // updatedChainWallet.push({
-                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.code] = {
+                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.id] = {
                             assetCode: action.payload.userWalletList.assets[i].asset.code,
+                            assetId: action.payload.userWalletList.assets[i].asset.id,
                             assetName: action.payload.userWalletList.assets[i].asset.name,
                             assetSymbol: action.payload.userWalletList.assets[i].asset.symbol,
                             chain: [{
                                 chainCode: action.payload.userWalletList.assets[i].chain.code,
                                 chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
                                 chainName: action.payload.userWalletList.assets[i].chain.name,
-                                assetCount: action.payload.userWalletList.assets[i].count
+                                assetCount: action.payload.userWalletList.assets[i].count,
+                                color: action.payload.userWalletList.assets[i].chain.color,
                             }],
                             totalCount: action.payload.userWalletList.assets[i].count,
                             assetValue: value ? action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE) : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE
@@ -52,18 +56,19 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                         // If chain doesn't exist
                         // if (chainExist <= -1) {
                         // if (updatedChainWallet[action.payload.userWalletList.assets[i].asset.code]["chain"] === undefined) {
-                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.code]["chain"].push({
+                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.id]["chain"].push({
                             chainCode: action.payload.userWalletList.assets[i].chain.code,
                             chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
                             chainName: action.payload.userWalletList.assets[i].chain.name,
-                            assetCount: action.payload.userWalletList.assets[i].count
+                            assetCount: action.payload.userWalletList.assets[i].count,
+                            color: action.payload.userWalletList.assets[i].chain.color,
                         })
                         // }
                         // Update the total count and asset value
-                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.code].totalCount =
-                            updatedChainWallet[action.payload.userWalletList.assets[i].asset.code].totalCount + action.payload.userWalletList.assets[i].count
-                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.code].assetValue =
-                            updatedChainWallet[action.payload.userWalletList.assets[i].asset.code].assetValue + (value ? action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE) : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE)
+                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.id].totalCount =
+                            updatedChainWallet[action.payload.userWalletList.assets[i].asset.id].totalCount + action.payload.userWalletList.assets[i].count
+                        updatedChainWallet[action.payload.userWalletList.assets[i].asset.id].assetValue =
+                            updatedChainWallet[action.payload.userWalletList.assets[i].asset.id].assetValue + (value ? action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE) : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE)
                     }
                     updateWalletTotal = updateWalletTotal + currentPrice;
                 }

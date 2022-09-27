@@ -6,17 +6,12 @@ import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
 import Form from "../../utils/form/Form";
-import { Col, Container, Row } from 'react-bootstrap';
 import { getAllCoins, detectCoin } from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
-import { useHistory } from "react-router-dom";
-import LoaderIcon from "../../assets/images/icons/dots-loading.gif";
-
 
 class AddWallet extends BaseReactComponent {
     constructor(props) {
         super(props);
-        // let history = useHistory();
         this.state = {
             showModal: true,
             signIn: false,
@@ -37,17 +32,8 @@ class AddWallet extends BaseReactComponent {
         let walletCopy = [...this.state.walletInput];
         let foundIndex = walletCopy.findIndex(obj => obj.id === name);
         if (foundIndex > -1) {
-            walletCopy[foundIndex].address = value;
-            if (value.length > 44) {
-                // let dots = "";
-                // for (var i = 0; i < value.length; i++) {
-                //     dots += ".";
-                // }
-                // walletCopy[foundIndex].trucatedAddress = value.substring(0, 32) + "......" + value.substring(value.length - 5, value.length);
-                walletCopy[foundIndex].trucatedAddress = value
-            } else {
-                walletCopy[foundIndex].trucatedAddress = value
-            }
+          walletCopy[foundIndex].address = value;
+          walletCopy[foundIndex].trucatedAddress = value
         }
         if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
             let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === name);
@@ -62,9 +48,10 @@ class AddWallet extends BaseReactComponent {
         if (this.timeout) {
             clearTimeout(this.timeout)
         }
+        // timeout;
         this.timeout = setTimeout(() => {
             this.getCoinBasedOnWalletAddress(name, value);
-        }, 50)
+        }, 1000)
     }
 
     getCoinBasedOnWalletAddress = (name, value) => {
@@ -163,17 +150,17 @@ class AddWallet extends BaseReactComponent {
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.props.OnboardingState.walletList.map((e, i) => {
                                         if (this.state.walletInput[index].address && e.id === `wallet${index + 1}`) {
-                                            if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                            // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                                                 if (e.coinFound) {
                                                     return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
                                                 } else {
                                                     return <CustomChip coins={null} key={i} isLoaded={true}></CustomChip>
                                                 }
-                                            } else {
-                                                if (this.state.loading && c.address && c.address.length > 0 && e.coins.length !== this.props.OnboardingState.coinsList.length) {
-                                                    return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
-                                                }
-                                            }
+                                            // } else {
+                                            //     if (this.state.loading && c.address && c.address.length > 0 && e.coins.length !== this.props.OnboardingState.coinsList.length) {
+                                            //         return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
+                                            //     }
+                                            // }
                                         }
                                     })}
 

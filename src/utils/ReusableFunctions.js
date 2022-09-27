@@ -79,3 +79,29 @@ export const numToCurrency = (num) => {
   }
   return (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[index].s;
 }
+
+export const lightenDarkenColor = (hex, lum) => {
+  // var num = parseInt(col, 16);
+  // var r = (num >> 16) + amt;
+  // var b = ((num >> 8) & 0x00FF) + amt;
+  // var g = (num & 0x0000FF) + amt;
+  // var newColor = g | (b << 8) | (r << 16);
+  // return newColor.toString(16);
+
+  // validate hex string
+	hex = String(hex).replace(/[^0-9a-f]/gi, '');
+	if (hex.length < 6) {
+		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+	}
+	lum = lum || 0;
+
+	// convert to decimal and change luminosity
+	var rgb = "#", c, i;
+	for (i = 0; i < 3; i++) {
+		c = parseInt(hex.substr(i*2,2), 16);
+		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+		rgb += ("00"+c).substr(c.length);
+	}
+
+	return rgb;
+}

@@ -6,7 +6,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import BitcoinIcon from "../../assets/images/icons/bitcoin-icon.svg";
 import CustomLoader from "../common/CustomLoader";
-import { numToCurrency } from '../../utils/ReusableFunctions';
+import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
 import unrecognised from '../../image/unrecognised.png';
 
 
@@ -40,10 +40,13 @@ class PieChart extends BaseReactComponent {
                         y: z,
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
                         assetValue: parseFloat(this.props.userWalletData[i].assetValue),
-                        borderColor: borderColors[i % 5],
+                        // borderColor: borderColors[i % 5],
+                        borderColor: this.props.userWalletData[i].chain[0].color,
                         borderWidth: 2,
-                        color: colors[i % 5],
-                        originalColor: colors[i % 5],
+                        color: lightenDarkenColor(this.props.userWalletData[i].chain[0].color.slice(1), 0.2),
+                        originalColor: lightenDarkenColor(this.props.userWalletData[i].chain[0].color.slice(1), 0.2),
+                        // color: colors[i % 5],
+                        // originalColor: colors[i % 5],
                         assetSymbol: this.props.userWalletData[i].assetSymbol,
                         assetCode: this.props.userWalletData[i].assetCode.toLocaleString(undefined, { maximumFractionDigits: 2 }),
                         count: this.props.userWalletData[i].totalCount
@@ -75,10 +78,13 @@ class PieChart extends BaseReactComponent {
                         y: z,
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
                         assetValue: parseFloat(this.props.userWalletData[i].assetValue),
-                        borderColor: borderColors[i % 5],
+                        // borderColor: borderColors[i % 5],
+                        borderColor: this.props.userWalletData[i].chain[0].color,
                         borderWidth: 2,
-                        color: colors[i % 5],
-                        originalColor: colors[i % 5],
+                        color: lightenDarkenColor(this.props.userWalletData[i].chain[0].color.slice(1), 0.2),
+                        originalColor: lightenDarkenColor(this.props.userWalletData[i].chain[0].color.slice(1), 0.2),
+                        // color: colors[i % 5],
+                        // originalColor: colors[i % 5],
                         assetSymbol: this.props.userWalletData[i].assetSymbol,
                         assetCode: this.props.userWalletData[i].assetCode.toLocaleString(undefined, { maximumFractionDigits: 2 }),
                         count: this.props.userWalletData[i].totalCount
@@ -278,7 +284,7 @@ class PieChart extends BaseReactComponent {
                 // point: {
                 //     events: {
                 //         click: function () {
-                //             var currentData = this;                           
+                //             var currentData = this;
                 //             self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
                 //         }
                 //     }
