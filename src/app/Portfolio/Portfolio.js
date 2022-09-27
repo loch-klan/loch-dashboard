@@ -5,117 +5,38 @@ import Sidebar from '../common/Sidebar';
 import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
-import { getCoinRate, getUserWallet } from "./Api";
+import { getCoinRate, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
-
+import CloseIcon from '../../assets/images/icons/close-icon.svg'
+import AddWalletModalIcon from'../../assets/images/icons/AddWalletModalIcon.svg'
+import FixAddModal from '../common/FixAddModal';
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
         props.location.state && localStorage.setItem("addWallet", JSON.stringify(props.location.state.addWallet))
         this.state = {
-            // userWalletList: [
-            //     {
-            //         "id": "wallet1",
-            //         "coins": [
-            //             {
-            //                 "coinCode": "ETH",
-            //                 "coinSymbol": "https://loch-public-assets.s3.ap-south-1.amazonaws.com/loch-ethereum.svg",
-            //                 "coinName": "Ethereum",
-            //                 "chain_detected": true
-            //             },
-            //             {
-            //                 "coinCode": "SOLANA",
-            //                 "coinSymbol": "https://loch-public-assets.s3.ap-south-1.amazonaws.com/loch-solana.svg",
-            //                 "coinName": "Solana",
-            //                 "chain_detected": false
-            //             },
-            //             {
-            //                 "coinCode": "BTC",
-            //                 "coinSymbol": "https://loch-public-assets.s3.ap-south-1.amazonaws.com/loch-bitcoin.svg",
-            //                 "coinName": "Bitcoin",
-            //                 "chain_detected": false
-            //             },
-            //             {
-            //                 "coinCode": "FANTOM",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/3513.png",
-            //                 "coinName": "Fantom",
-            //                 "chain_detected": true
-            //             },
-            //             {
-            //                 "coinCode": "POLYGON",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
-            //                 "coinName": "Polygon",
-            //                 "chain_detected": true
-            //             },
-            //             {
-            //                 "coinCode": "AVALANCHE",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/5805.png",
-            //                 "coinName": "Avalanche",
-            //                 "chain_detected": false
-            //             },
-            //             {
-            //                 "coinCode": "LITECOIN",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/2.png",
-            //                 "coinName": "Litecoin",
-            //                 "chain_detected": false
-            //             },
-            //             {
-            //                 "coinCode": "CELO",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/5567.png",
-            //                 "coinName": "Celo",
-            //                 "chain_detected": false
-            //             },
-            //             {
-            //                 "coinCode": "ALGORAND",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/4030.png",
-            //                 "coinName": "Algorand",
-            //                 "chain_detected": false
-            //             },
-            //             {
-            //                 "coinCode": "TRON",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/1958.png",
-            //                 "coinName": "Tron",
-            //                 "chain_detected": false
-            //             },
-            //             {
-            //                 "coinCode": "ADA",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/2010.png",
-            //                 "coinName": "Cardano",
-            //                 "chain_detected": false
-            //             },
-            //             {
-            //                 "coinCode": "BSC",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png",
-            //                 "coinName": "BSC",
-            //                 "chain_detected": true
-            //             },
-            //             {
-            //                 "coinCode": "OPTIMISM",
-            //                 "coinSymbol": "https://s2.coinmarketcap.com/static/img/coins/64x64/11840.png",
-            //                 "coinName": "Optimism",
-            //                 "chain_detected": true
-            //             },
-            //             {
-            //                 "coinCode": "ARBITRUM",
-            //                 "coinSymbol": "https://offchainlabs.com/wp-content/themes/offchain/images/home/arbitrum/arbirtum_logo.svg",
-            //                 "coinName": "Arbitrum",
-            //                 "chain_detected": false
-            //             }
-            //         ],
-            //         "address": "0xF977814e90dA44bFA03b6295A0616a897441aceC",
-            //         "coinFound": true
-            //     }
-            // ],
             userWalletList: JSON.parse(localStorage.getItem("addWallet")),
             assetTotalValue: 0,
             loader: false,
             coinAvailable: true,
-            
+            fixModal : false,
+            addModal:false,
         }
-
+        this.handleFixModal = this.handleFixModal.bind(this)
+        this.handleAddModal = this.handleAddModal.bind(this)
     }
 
+    handleFixModal(){
+        this.setState((prev)=>({
+            fixModal:!prev.fixModal
+        }))
+    }
+    handleAddModal(){
+        this.setState((prev)=>({
+            addModal : !prev.addModal
+        }))
+    }
     componentDidMount() {
         this.props.getCoinRate()
     }
@@ -123,24 +44,22 @@ class Portfolio extends BaseReactComponent {
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
+        // Check if the coin rate api values are changed
         if (this.props.portfolioState.coinRateList !== prevProps.portfolioState.coinRateList) {
             if (this.state && this.state.userWalletList && this.state.userWalletList.length > 0) {
-                for (let i = 0; i < this.state.userWalletList.length; i++) {
-                    if (this.state.userWalletList[i].coinFound) {
-                        this.props.portfolioState.userWalletList = [];
-                        this.props.portfolioState.walletTotal = 0;
-                        this.props.portfolioState.chainWallet = [];
-                        for (let j = 0; j < this.state.userWalletList[i].coins.length; j++) {
-                            if (this.state.userWalletList[i].coins[j].chain_detected) {
-                                let userCoinWallet = {
-                                    address: this.state.userWalletList[i].address,
-                                    coinCode: this.state.userWalletList[i].coins[j].coinCode
-                                }
-                                this.props.getUserWallet(userCoinWallet)
+                // Resetting the user wallet list, total and chain wallet
+                this.props.settingDefaultValues();
+                // Loops on coins to fetch details of each coin which exist in wallet
+                this.state.userWalletList.map((wallet, i) => {
+                    if (wallet.coinFound) {
+                        wallet.coins.map((coin) => {
+                            let userCoinWallet = {
+                                address: wallet.address,
+                                coinCode: coin.coinCode
                             }
-                        }
-                    }
-                    else {
+                            this.props.getUserWallet(userCoinWallet)
+                        })
+                    } else {
                         this.setState({
                             coinAvailable: false
                         })
@@ -150,7 +69,7 @@ class Portfolio extends BaseReactComponent {
                             loader: false
                         });
                     }
-                }
+                })
             }
         }
     }    
@@ -165,14 +84,16 @@ class Portfolio extends BaseReactComponent {
                                 <WelcomeCard
                                     decrement={true}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader} history={this.props.history} />
+                                    loader={this.state.loader} history={this.props.history} 
+                                    handleAddModal = {this.handleAddModal}
+                                />
                             </div>
                             <div className='portfolio-section page'>
-                                <PieChart
-                                    userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? this.props.portfolioState.chainWallet : null}
+                                {/* <PieChart
+                                    userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader}
-                                />
+                                /> */}
                                 {this.state.coinAvailable === false 
                                     ?
                                     <div className='fix-div' id="fixbtn">
@@ -180,7 +101,7 @@ class Portfolio extends BaseReactComponent {
                                             <div className='inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262'>Wallet undected</div>
                                             <div className='inter-display-medium f-s-13 lh-16 grey-737'>One or more wallets were not dected </div>
                                         </div>
-                                        <Button className='secondary-btn'>Fix</Button>
+                                        <Button className='secondary-btn' onClick={this.handleFixModal}>Fix</Button>
                                     </div>
                                     : ""}
                             </div>
@@ -190,6 +111,32 @@ class Portfolio extends BaseReactComponent {
                         </div>
                     </div>
                 }
+                {
+                    this.state.fixModal && 
+                    <FixAddModal
+                     show={this.state.fixModal}
+                     onHide={this.handleFixModal}
+                     closeIcon={CloseIcon}
+                    //  modalIcon={AddWalletModalIcon}
+                     title="Fix your wallet connection"
+                     subtitle="Add your wallet address to get started"
+                     fixWalletAddress={["0x9450C3C62119A6A2268E249D4B837B4442733CB0","0x9450C3C62119A6A2268E249D4B837B4442733CB0"]}
+                     btnText="Done"
+                     btnStatus="active"
+                     modalType="fixwallet"
+                    />
+                }
+                {this.state.addModal && 
+                <FixAddModal 
+                    show={this.state.addModal}
+                    onHide={this.handleAddModal}
+                    closeIcon={CloseIcon}
+                    modalIcon={AddWalletModalIcon}
+                    title="Add wallet address"
+                    subtile="Add more wallet address"
+                    modalType="addwallet"
+                    btnText="Add wallet"
+                />}
             </div>
         )
     }
@@ -200,7 +147,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
     getCoinRate,
-    getUserWallet
+    getUserWallet,
+    settingDefaultValues
 
 }
 Portfolio.propTypes = {

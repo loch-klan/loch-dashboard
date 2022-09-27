@@ -132,7 +132,11 @@ class AddWallet extends BaseReactComponent {
             pathname: '/portfolio',
             state: {
                 addWallet:
-                    this.props.OnboardingState.walletList
+                    this.props.OnboardingState.walletList.map(function (el) {
+                        el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
+                        return el;
+                    })
+                // this.props.OnboardingState.walletList
             }
         });
     }
