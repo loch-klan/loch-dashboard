@@ -19,13 +19,14 @@ import ApiIcon from '../../assets/images/icons/ApiIcon.svg'
 import LeaveIcon from '../../assets/images/icons/LeaveIcon.svg'
 import DarkmodeIcon from '../../assets/images/icons/DarkmodeIcon.svg'
 import bgImg from '../../image/Notice.png'
+import {useHistory} from 'react-router-dom'
 import ExitOverlay from './ExitOverlay'
 function Sidebar(props) {
 
 
     const activeTab = window.location.pathname
-
-    const [leave, setLeave] = React.useState(false);
+    const history = useHistory();
+    const [leave, setLeave] = React.useState(true);
     
     const handleLeave = () => {
         setLeave(!leave)
@@ -135,6 +136,7 @@ function Sidebar(props) {
                         show={leave}
                         link="http://loch.one/a2y1jh2jsja"
                         onHide={handleLeave}
+                        history={history}
                     /> : ""
             }
         </div>

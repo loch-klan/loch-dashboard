@@ -24,7 +24,7 @@ class PieChart extends BaseReactComponent {
             valueChanged: false,
             flag: false
         }
-
+    
     }
 
     componentDidMount() {
@@ -98,11 +98,9 @@ class PieChart extends BaseReactComponent {
             })
         }
     }
-
     setHoverData = (e) => {
         this.setState({ pieSectionDataEnabled: e })
     }
-
 
     render() {
         let self = this;
@@ -219,12 +217,19 @@ class PieChart extends BaseReactComponent {
                     point: {
                         events: {
                             select: function () {
+                                console.log("SELECT")
                                 var currentData = this;
                                 this.update({ color: this.options.borderColor });
                                 self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
+                                // {document.getElementById("fixbtn").style.display = "none"}
+                                // console.log(this.state.currentData)
+                               
                             },
                             unselect: function () {
+                                console.log("UNSELECT")
                                 this.update({ color: this.options.originalColor });
+                                // self.setState({pieSectionDataEnabled :{}})
+                                // {document.getElementById("fixbtn").style.display = "flex"}
                             },
                             mouseOver: function () {
                                 var currentData = this;
@@ -293,6 +298,7 @@ class PieChart extends BaseReactComponent {
                 data: self.state.assetData && self.state.assetData.length > 0 ? self.state.assetData : []
             }]
         }
+        
         return (
             <div className='portfolio-over-container' >
                 <h1 className='Inter-Medium overview-heading'>Overview</h1>
@@ -308,14 +314,14 @@ class PieChart extends BaseReactComponent {
                                 containerProps={{ className: "custom-highchart" }}
                             />
                         </div>
+                        
                         {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
-                            <div className='coin-hover-display'>
+                            <div className='coin-hover-display' >
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
                                         <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognised : null} />
                                     </div>
                                     <div className='coin-hover-display-text1'>
-
                                         <div className='coin-hover-display-text1-upper'>
                                             <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
                                             <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>

@@ -8,7 +8,9 @@ import LineChart from './LineChart';
 import { getCoinRate, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
-
+import CloseIcon from '../../assets/images/icons/close-icon.svg'
+import AddWalletModalIcon from'../../assets/images/icons/AddWalletModalIcon.svg'
+import FixAddModal from '../common/FixAddModal';
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -17,14 +19,28 @@ class Portfolio extends BaseReactComponent {
             userWalletList: JSON.parse(localStorage.getItem("addWallet")),
             assetTotalValue: 0,
             loader: false,
-            coinAvailable: true
+            coinAvailable: true,
+            fixModal : false,
+            addModal:false,
         }
-
+        this.handleFixModal = this.handleFixModal.bind(this)
+        this.handleAddModal = this.handleAddModal.bind(this)
     }
 
+    handleFixModal(){
+        this.setState((prev)=>({
+            fixModal:!prev.fixModal
+        }))
+    }
+    handleAddModal(){
+        this.setState((prev)=>({
+            addModal : !prev.addModal
+        }))
+    }
     componentDidMount() {
         this.props.getCoinRate()
     }
+
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
@@ -56,9 +72,8 @@ class Portfolio extends BaseReactComponent {
                 })
             }
         }
-    }
-
-    render() {
+    }    
+    render() {   
         return (
             <div>
                 {this.state.loader ? <Loading /> :
@@ -69,21 +84,24 @@ class Portfolio extends BaseReactComponent {
                                 <WelcomeCard
                                     decrement={true}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader} history={this.props.history} />
+                                    loader={this.state.loader} history={this.props.history} 
+                                    handleAddModal = {this.handleAddModal}
+                                />
                             </div>
                             <div className='portfolio-section page'>
-                                <PieChart
+                                {/* <PieChart
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader} />
-                                {this.state.coinAvailable === false
+                                    loader={this.state.loader}
+                                /> */}
+                                {this.state.coinAvailable === false 
                                     ?
-                                    <div className='fix-div'>
+                                    <div className='fix-div' id="fixbtn">
                                         <div className='m-r-8 decribe-div'>
                                             <div className='inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262'>Wallet undected</div>
                                             <div className='inter-display-medium f-s-13 lh-16 grey-737'>One or more wallets were not dected </div>
                                         </div>
-                                        <Button className='secondary-btn'>Fix</Button>
+                                        <Button className='secondary-btn' onClick={this.handleFixModal}>Fix</Button>
                                     </div>
                                     : ""}
                             </div>
@@ -93,6 +111,32 @@ class Portfolio extends BaseReactComponent {
                         </div>
                     </div>
                 }
+                {
+                    this.state.fixModal && 
+                    <FixAddModal
+                     show={this.state.fixModal}
+                     onHide={this.handleFixModal}
+                     closeIcon={CloseIcon}
+                    //  modalIcon={AddWalletModalIcon}
+                     title="Fix your wallet connection"
+                     subtitle="Add your wallet address to get started"
+                     fixWalletAddress={["0x9450C3C62119A6A2268E249D4B837B4442733CB0","0x9450C3C62119A6A2268E249D4B837B4442733CB0"]}
+                     btnText="Done"
+                     btnStatus="active"
+                     modalType="fixwallet"
+                    />
+                }
+                {this.state.addModal && 
+                <FixAddModal 
+                    show={this.state.addModal}
+                    onHide={this.handleAddModal}
+                    closeIcon={CloseIcon}
+                    modalIcon={AddWalletModalIcon}
+                    title="Add wallet address"
+                    subtile="Add more wallet address"
+                    modalType="addwallet"
+                    btnText="Add wallet"
+                />}
             </div>
         )
     }
