@@ -106,7 +106,7 @@ class ExitOverlay extends BaseReactComponent {
                                         {
                                             type: CustomTextControl,
                                             settings: {
-                                                placeholder: "Enter Email"
+                                                placeholder: "Email"
                                             }
                                         }
                                     }

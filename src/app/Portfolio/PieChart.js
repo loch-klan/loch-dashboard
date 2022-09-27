@@ -218,15 +218,18 @@ class PieChart extends BaseReactComponent {
                                 var currentData = this;
                                 this.update({ color: this.options.borderColor });
                                 self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
-                                // {document.getElementById("fixbtn").style.display = "none"}
+                                {document.getElementById("fixbtn").style.display = "none"}
                                 // console.log(this.state.currentData)
 
                             },
                             unselect: function () {
                                 console.log("UNSELECT")
+                                var currentData = this;
                                 this.update({ color: this.options.originalColor });
-                                self.setState({pieSectionDataEnabled :{}})
-                                // {document.getElementById("fixbtn").style.display = "flex"}
+                                if(currentData.assetCode === self.state.pieSectionDataEnabled.assetCode){
+                                  self.setState({pieSectionDataEnabled :{}})
+                                  {document.getElementById("fixbtn").style.display = "flex"}
+                                }
                             },
                             mouseOver: function () {
                                 var currentData = this;
