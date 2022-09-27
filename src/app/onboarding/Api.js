@@ -48,3 +48,38 @@ export const detectCoin = (wallet) => {
             });
     };
 };
+
+export const signIn = (ctx,data)=>{
+    preLoginInstance.post('organisation/user/send-otp',data)
+    .then(res =>{
+        if(res.data.error)
+        {
+            toast.error(res.data.message || "Something went Wrong")
+        }
+        else if(res.data.error === false){
+            ctx.setState({
+                isVerificationRequired:true
+            })
+        }
+    })
+    .catch(err =>{
+        console.log("error while signing",err)
+    })
+}
+
+export const verifyUser = (ctx,info)=>{
+    preLoginInstance.post('organisation/user/verify-otp',info)
+    .then(res=>{
+        console.log(res.data.data.user)
+        if(!res.data.error){
+            localStorage.setItem("userDetail",JSON.stringify(res.data.data.user));
+            ctx.props.history.push("/portfolio")
+        }
+        else{
+            toast.error(res.data.message || "Something Went Wrong")
+        }
+    })
+    .catch(err =>{
+        console.log("error while verifying",err)
+    })
+}

@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
-
+import postLoginInstance from './../../utils/PostLoginAxios';
 export const loginApi = (ctx, data) => {
   preLoginInstance.post('common/test/temp-login', data)
     .then(res => {
@@ -23,6 +23,22 @@ export const loginApi = (ctx, data) => {
       });
     });
 }
+
+export const fixWallet = (ctx,info) =>{
+      postLoginInstance.post("organisation/user/create-user",info)
+      .then((res)=>{
+        if(!res.data.error){  
+          ctx.props.history.push('/home');
+        }
+        else{
+          toast.error(res.data.message || "Something went wrong");
+        }
+      })
+      .catch((err)=>{
+        console.log("fixwallet",err)
+      })
+}
+
 // export const resetPasswordApi = (ctx, data) => {
 //   preLoginInstance
 //     .post("organisation/user/set-reset-password", data)

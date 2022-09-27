@@ -1,0 +1,166 @@
+.fixaddmodal.show {
+    opacity: 0.5 !important;
+}
+
+.fix-add-modal {
+    .modal-content {
+        border-radius: 1.2rem;
+        width:78rem;
+        .modal-header {
+            display: block;
+            text-align: center;
+            position: relative;
+            padding: 2.8rem;
+            border: none;
+
+            .closebtn {
+                position: absolute;
+                top: 2.8rem;
+                right: 2.8rem;
+                padding: 1.3rem;
+                background-color: $grey-F2F;
+                border-radius: 5rem;
+                cursor: pointer;
+            }
+        }
+
+        .modal-body {
+
+            .fix-add-modal-body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                h6 {
+                    color: $primary;
+                    margin-bottom: 0.6rem;
+                }
+
+                .fix-modal-input {
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 6.2rem;
+
+                    .fix-wallet-input {
+                        display: flex;
+
+                        padding: 0.8rem 1.2rem;
+                        align-items: center;
+                        border: 0.1rem solid $black-191;
+                        box-shadow: 0rem 0.8rem 1.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.2rem 4.2rem -0.4rem rgba(24, 39, 75, 0.12);
+                        border-radius: 0.8rem;
+
+
+                        input {
+                            border: none;
+                            outline: none;
+                            width: 42.9rem;
+                            margin-right: 3.14rem;
+                        }
+
+                        .fix-dropdowns {
+                            display: flex;
+                            align-items: center;
+
+                            .dropdown:nth-child(1) {
+                                margin-right: 0.8rem;
+                            }
+
+                            .dropdown {
+                                button {
+                                    border: 0.1rem solid $grey-CAC;
+                                    border-radius: 0.4rem;
+                                    padding: 0.4rem 0.8rem;
+                                    background-color: $grey-F2F;
+                                    color: $grey-B0B;
+                                }
+
+                                .dropdown-toggle::after {
+                                    color: $grey-969;
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                .btn-section {
+                    margin-bottom: 2.3rem;
+
+                    button {
+                        border: none;
+                    }
+
+                    .fix-btn {
+                        padding: 1.8rem 4.9rem;
+                    }
+
+                    .add-btn {
+                        background-color: $grey-B0B;
+                        padding: 1.8rem 2.8rem;
+                    }
+
+                    .activebtn{
+                        background-color: $black-191;
+                    }
+                }
+
+                .footer {
+                    display: flex;
+                }
+
+                .add-wallet-btn{
+                    width: 100%;
+                    padding: 0rem 8.4rem;
+                    .grey-btn{
+                        width: 100%;
+                    }
+                }
+            }
+
+            .add-modal-inputs {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                padding: 0rem 8.4rem 0rem 8.4rem;
+                .add-wallet-input-section {
+                    display: flex;
+                    align-items: center;
+                    position: relative;
+
+                    .delete-icon {
+                        width: 3.8rem;
+                        height: 3.8rem;
+                        box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                        position: absolute;
+                        left:-5rem;
+                        cursor: pointer;
+                    }
+
+                    input {
+                        width: 100%;
+                        border: 0.1rem solid $grey-D4D;
+                        border-radius: 0.8rem;
+                        padding: 1.05rem 15.7rem 1.05rem 1.2rem;
+                    }
+
+                    .customchip {
+                        display:block;
+                        text-align: center;
+                        position: absolute;
+                        right: 1.2rem;
+                        top: 0.8rem;
+                        background: rgba(229, 229, 230, 0.5);
+                        border: 0.1rem solid $grey-CAC;
+                        border-radius: 0.4rem;
+                        padding: 0.4rem 0.8rem;
+                        img{
+                            margin-right: 0.6rem;
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+}

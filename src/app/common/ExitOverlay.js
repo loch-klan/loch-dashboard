@@ -13,7 +13,7 @@ import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
 import Dropdown from '../common/DropDown.js';
 import CopyLink from '../../assets/images/icons/CopyLink.svg';
 import ShareLink from '../../assets/images/icons/ShareLink.svg'
-
+import {fixWallet} from './Api.js'
 class ExitOverlay extends BaseReactComponent {
 
     constructor(props) {
@@ -29,14 +29,22 @@ class ExitOverlay extends BaseReactComponent {
         }
     }
 
-    onValidSubmit = (done,event)=>{
-        console.log("Value Submitted")
-    }
     copyLink = ()=>{
         navigator.clipboard.writeText(this.state.link);
     }
     handleSave = ()=>{
         console.log("Save")
+        let email_arr = []
+        let data =JSON.parse(localStorage.getItem("addWallet"))
+        if(data){
+            data.map((info)=>{
+                email_arr.push(info.address)
+            })
+            const url = new URLSearchParams()
+            url.append('user_name',this.state.Email);
+            url.append('wallet_addresses',JSON.stringify(email_arr));
+            this.props.fixWallet(this,url)
+        }
     }
     handleSelect = (e)=>{
         console.log(e)
@@ -79,7 +87,7 @@ class ExitOverlay extends BaseReactComponent {
                             or link your email or mobile number
                         </p>
                         <div className="email-section">
-                            <Form onValidSubmit={this.onValidSubmit}>
+                            <Form>
                                 <FormElement
                                     valueLink={this.linkState(this, "Email")}
                                     // label="Email Info"
@@ -98,7 +106,7 @@ class ExitOverlay extends BaseReactComponent {
                                         {
                                             type: CustomTextControl,
                                             settings: {
-                                                placeholder: "Mobile number or email"
+                                                placeholder: "Enter Email"
                                             }
                                         }
                                     }
@@ -149,6 +157,7 @@ class ExitOverlay extends BaseReactComponent {
 const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
+    fixWallet
 }
 ExitOverlay.propTypes = {
 };

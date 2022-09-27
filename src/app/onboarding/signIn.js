@@ -7,7 +7,7 @@ import CustomTextControl from "../../utils/form/CustomTextControl";
 import Form from "../../utils/form/Form";
 import FormElement from "../../utils/form/FormElement";
 import { Col, Container, Row } from 'react-bootstrap';
-
+import {signIn,verifyUser }from './Api.js'
 class SignIn extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -15,7 +15,9 @@ class SignIn extends BaseReactComponent {
             showModal: true,
             signIn: false,
             email: "",
-            isVerificationRequired: props.isVerificationRequired
+            isVerificationRequired: props.isVerificationRequired,
+            text:"",
+            isVallidSignIn:false,
         }
     }
 
@@ -28,6 +30,16 @@ class SignIn extends BaseReactComponent {
 
     onValidSubmit = (done, event) => {
         console.log("Value submitted" + this.state.email);
+        const data = new URLSearchParams()
+        if(this.state.email != "" && this.state.text === "" ){
+            data.append("email",this.state.email)
+            signIn(this,data)
+        }
+        else if (this.state.email != "" && this.state.text !== "" && this.state.isVerificationRequired){
+            data.append("email",this.state.email)
+            data.append("otp_token",this.state.text)
+            verifyUser(this,data)
+        }
     };
 
     render() {
@@ -65,7 +77,7 @@ class SignIn extends BaseReactComponent {
                             </div>
                         {/* </Col> */}
                         {/* <Col className='ob-modal-verification' md={12}> */}
-                            <CustomButton className="primary-btn send-verification" type={"submit"} variant="success" buttonText={!this.state.isVerificationRequired ? "Send verification" : "Enter code"} />
+                            <CustomButton className="primary-btn send-verification" type={"submit"} variant="success" buttonText={!this.state.isVerificationRequired ? "Send verification" :"Enter code"} />
                         {/* </Col> */}
                     {/* </Row> */}
                 {/* </Container> */}
