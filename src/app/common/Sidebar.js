@@ -26,8 +26,8 @@ function Sidebar(props) {
 
     const activeTab = window.location.pathname
     const history = useHistory();
-    const [leave, setLeave] = React.useState(true);
-    
+    const [leave, setLeave] = React.useState(false);
+
     const handleLeave = () => {
         setLeave(!leave)
     }

@@ -72,8 +72,8 @@ class Portfolio extends BaseReactComponent {
                 })
             }
         }
-    }    
-    render() {   
+    }
+    render() {
         return (
             <div>
                 {this.state.loader ? <Loading /> :
@@ -84,21 +84,21 @@ class Portfolio extends BaseReactComponent {
                                 <WelcomeCard
                                     decrement={true}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader} history={this.props.history} 
+                                    loader={this.state.loader} history={this.props.history}
                                     handleAddModal = {this.handleAddModal}
                                 />
                             </div>
                             <div className='portfolio-section page'>
-                                {/* <PieChart
+                                <PieChart
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader}
-                                /> */}
-                                {this.state.coinAvailable === false 
+                                />
+                                {this.state.coinAvailable === false
                                     ?
                                     <div className='fix-div' id="fixbtn">
                                         <div className='m-r-8 decribe-div'>
-                                            <div className='inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262'>Wallet undected</div>
+                                            <div className='inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262'>Wallet undetected</div>
                                             <div className='inter-display-medium f-s-13 lh-16 grey-737'>One or more wallets were not dected </div>
                                         </div>
                                         <Button className='secondary-btn' onClick={this.handleFixModal}>Fix</Button>
@@ -112,7 +112,7 @@ class Portfolio extends BaseReactComponent {
                     </div>
                 }
                 {
-                    this.state.fixModal && 
+                    this.state.fixModal &&
                     <FixAddModal
                      show={this.state.fixModal}
                      onHide={this.handleFixModal}
@@ -126,8 +126,8 @@ class Portfolio extends BaseReactComponent {
                      modalType="fixwallet"
                     />
                 }
-                {this.state.addModal && 
-                <FixAddModal 
+                {this.state.addModal &&
+                <FixAddModal
                     show={this.state.addModal}
                     onHide={this.handleAddModal}
                     closeIcon={CloseIcon}

@@ -51,10 +51,10 @@ class ExitOverlay extends BaseReactComponent {
         this.setState({
             dropdowntitle : e,
             activeli:e,
-            
+
         })
     }
-    
+
 
     render() {
 
@@ -72,7 +72,7 @@ class ExitOverlay extends BaseReactComponent {
                 <Modal.Header>
                     <Image src={ExitOverlayIcon}
                         className="exitOverlayIcon" />
-                    
+
                     <div className="closebtn" onClick={this.state.onHide}>
                         <Image src={CloseIcon} />
                     </div>
@@ -84,7 +84,7 @@ class ExitOverlay extends BaseReactComponent {
                             Access your data again through the unique reusable link,
                         </p>
                         <p className='inter-display-medium f-s-16 lh-19 grey-7C7 m-b-10'>
-                            or link your email or mobile number
+                            or link your email
                         </p>
                         <div className="email-section">
                             <Form>

@@ -77,8 +77,8 @@ class CommonModal extends BaseReactComponent {
         // let {id} = e.target
         // let name = `wallet${id}`
         let prevaddress = [...this.state.addwalletlist]
-        console.log(index)
-        console.log(prevaddress[index])
+        // console.log(index)
+        // console.log(prevaddress[index])
         // console.log(prevaddress)
         let temp = `wallet${index}`
         let new_arr = prevaddress.filter((e)=> e.name !== temp )
@@ -114,7 +114,7 @@ class CommonModal extends BaseReactComponent {
             }) : ""
 
 
-        const wallets = 
+        const wallets =
             this.state.addwalletlist.map((elem, index) => {
 
                 return (<div className='m-b-12 add-wallet-input-section' key={index} >
@@ -138,7 +138,7 @@ class CommonModal extends BaseReactComponent {
                 </div>)
             })
 
-            
+
 
         return (
 
