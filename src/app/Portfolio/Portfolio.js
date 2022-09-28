@@ -8,9 +8,10 @@ import LineChart from './LineChart';
 import { getCoinRate, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
-import CloseIcon from '../../assets/images/icons/close-icon.svg'
-import AddWalletModalIcon from'../../assets/images/icons/AddWalletModalIcon.svg'
+
+import AddWalletModalIcon from'../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
+
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -116,7 +117,6 @@ class Portfolio extends BaseReactComponent {
                     <FixAddModal
                      show={this.state.fixModal}
                      onHide={this.handleFixModal}
-                     closeIcon={CloseIcon}
                     //  modalIcon={AddWalletModalIcon}
                      title="Fix your wallet connection"
                      subtitle="Add your wallet address to get started"
@@ -130,12 +130,11 @@ class Portfolio extends BaseReactComponent {
                 <FixAddModal
                     show={this.state.addModal}
                     onHide={this.handleAddModal}
-                    closeIcon={CloseIcon}
                     modalIcon={AddWalletModalIcon}
                     title="Add wallet address"
-                    subtile="Add more wallet address"
+                    subtitle="Add more wallet address here"
                     modalType="addwallet"
-                    btnText="Add wallet"
+                    btnText="Go"
                 />}
             </div>
         )

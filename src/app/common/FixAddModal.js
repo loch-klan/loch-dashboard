@@ -10,9 +10,13 @@ import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import Dropdown from '../common/DropDown.js';
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
-
+import Banner from "../../image/Frame.png"
 import EthereumCoin from '../../assets/images/icons/ether-coin.svg'
-
+import CustomChip from "../../utils/commonComponent/CustomChip";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import CloseBtn from "../../assets/images/icons/CloseBtn.svg"
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 class CommonModal extends BaseReactComponent {
 
     constructor(props) {
@@ -20,7 +24,6 @@ class CommonModal extends BaseReactComponent {
         this.state = {
             onHide: props.onHide,
             show: props.show,
-            closeIcon: props.closeIcon,
             modalIcon: props.modalIcon,
             title: props.title,
             subtitle: props.subtitle,
@@ -28,8 +31,10 @@ class CommonModal extends BaseReactComponent {
             btnText: props.btnText,
             btnStatus: props.btnStatus,
             modalType: props.modalType,
-            addwalletlist: [{name:"wallet0",address:""}],
+            addwalletlist: [],
             showelement: false,
+            walletTitle: "Metamask",
+            chainTitle: "Ethereum"
         }
     }
 
@@ -39,19 +44,19 @@ class CommonModal extends BaseReactComponent {
 
     handleOnchange = (e) => {
         // console.log(e.target)
-        let { name, value, id } = e.target
-        console.log(name, value, id)
+        let { name, value ,id} = e.target
+        console.log(name, value)
         let addresslist = [...this.state.addwalletlist]
-        // console.log(address)
+        console.log(addresslist)
         let obj = {
-            name:`wallet${id}`,
-            address:value
+            name: `wallet${id}`,
+            address: value
         }
         addresslist[id] = obj
         if (addresslist[0].address !== "") {
             this.setState({
                 showelement: true,
-                addwalletlist : addresslist,
+                addwalletlist: addresslist,
             })
         }
         else {
@@ -61,7 +66,16 @@ class CommonModal extends BaseReactComponent {
             })
         }
     }
-
+    componentDidMount() {
+        if (this.state.modalType === "addwallet") {
+            let localdata = JSON.parse(localStorage.getItem("addWallet"))
+            if (localdata) {
+                this.setState({
+                    addwalletlist: localdata
+                })
+            }
+        }
+    }
     addAddress = ()=>{
         this.state.addwalletlist.push({
             name:`wallet${this.state.addwalletlist.length}`,
@@ -88,6 +102,17 @@ class CommonModal extends BaseReactComponent {
         })
     }
 
+    handleSelectWallet = (e) => {
+        console.log(e)
+        this.setState({
+            walletTitle: e,
+        })
+    }
+    handleSelectChain = (e) => {
+        this.setState({
+            chainTitle: e,
+        })
+    }
 
 
     render() {
@@ -102,12 +127,16 @@ class CommonModal extends BaseReactComponent {
                                 id="fix-wallet-dropdown"
                                 title="Wallet"
                                 list={["Metamask", "Phantom", "Coinbase", "Gamestop", "Brave", "Rabby", "Portis", "Trust Wallet by Binance", "Others"]}
+                                onSelect={this.handleSelectWallet}
+                                activetab={this.state.walletTitle}
 
                             />
                             <Dropdown
                                 id="fix-chain-dropdown"
                                 title="Chain"
                                 list={["Ethereum", "Bitcoin", "Helium", "Avalanche", "Unicoin", "Maker", "Matic", "Matic", "Flow", "Cosmos", "Others"]}
+                                onSelect={this.handleSelectChain}
+                                activetab={this.state.chainTitle}
                             />
                         </div>
                     </div>)
@@ -118,22 +147,26 @@ class CommonModal extends BaseReactComponent {
             this.state.addwalletlist.map((elem, index) => {
 
                 return (<div className='m-b-12 add-wallet-input-section' key={index} >
-                    {this.state.showelement && index >= 1 ? <Image src={DeleteIcon} className="delete-icon" onClick={()=>this.deleteAddress(index)} /> :""}
+                    {index >= 1 ? <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteAddress(elem.id)} /> : ""}
 
                     <input
                         autoFocus
-                        name={`wallet${index}`}
+                        name={`wallet${index + 1}`}
                         value={elem.address || ""}
                         placeholder="Paste any wallet address here"
-                        className='`inter-display-regular f-s-16 lh-20'
+                        className='inter-display-regular f-s-16 lh-20'
                         onChange={(e) => this.handleOnchange(e)}
-                        id={index}
+                        id={elem.id}
                     />
 
-                    {this.state.showelement && <div className='inter-display-medium f-s-13 lh-16 customchip'>
-                        <Image src={EthereumCoin}/>
-                        Ethereum
-                    </div>}
+                    {elem.coinFound ?
+                        <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} isLoaded={true}></CustomChip>
+                        :
+                        elem.address !== "" ?
+                            <CustomChip coins={null} isLoaded={true}></CustomChip>
+                            : ""
+                    }
+
 
                 </div>)
             })
@@ -154,25 +187,42 @@ class CommonModal extends BaseReactComponent {
                     aria-labelledby="contained-modal-title-vcenter"
                     backdropClassName="fixaddmodal"
                 >
-                    <Modal.Header>
-                        {this.state.modalType === "addwallet" && <Image src={this.state.modalIcon} className="m-t-8" />}
+                    <Modal.Header
+                        style={{ padding: `${this.state.modalType === "fixwallet" ? '2.8rem ' : ''}` }}
+                        className={this.state.modalType==="addwallet"?
+                        "add-wallet":""}
+                        >
+                        {this.state.modalType === "addwallet" &&
+                            <div>
+                                <Image src={Banner} className="banner-img" />
+                                <div className='wallet-header'>
+                                    <Image src={this.state.modalIcon} className="m-b-20" />
+                                    <h4 className="inter-display-medium f-s-31 lh-37 white m-b-4">{this.state.title}</h4>
+                                    <p className={"inter-display-medium f-s-13 lh-16 white op-8 "}>{this.state.subtitle}</p>
+                                </div>
+                            </div>
+                        }
                         <div className="closebtn" onClick={this.state.onHide}>
-                            <Image src={this.state.closeIcon} />
+                            <Image src={this.state.modalType ==="fixwallet" ? CloseIcon : CloseBtn} />
                         </div>
                     </Modal.Header>
                     <Modal.Body>
-                        <div className='fix-add-modal-body'>
-                            <h6 className="inter-display-medium f-s-20 lh-24 ">{this.state.title}</h6>
-                            <p className={`inter-display-medium f-s-16 lh-19 grey-7C7 ${this.modalIcon ? "m-b-52" : "m-b-77"}`}>{this.state.subtitle}</p>
+                        <div className={`fix-add-modal-body ${this.state.modalType === "addwallet" ? 'm-t-30' : ""}`}>
+                            {this.state.modalType === "fixwallet" &&
+                                <div>
+                                    <h6 className="inter-display-medium f-s-20 lh-24 ">{this.state.title}</h6>
+                                    <p className={`inter-display-medium f-s-16 lh-19 grey-7C7 ${this.modalIcon ? "m-b-52" : "m-b-77"}`}>{this.state.subtitle}</p>
+                                </div>
+                            }
 
                             {this.state.modalType === "fixwallet" && <div className="fix-modal-input">
                                 {inputs}
                             </div>}
-                            {this.state.modalType === "addwallet" && <div className={`add-modal-inputs ${this.state.showelement ? "" : "m-b-63"}`}>
+                            {this.state.modalType === "addwallet" && <div className="add-modal-inputs">
                                 {wallets}
                             </div>}
 
-                            {this.state.showelement &&
+                            {this.state.addwalletlist.length >= 1 &&
                                 <div className="m-b-32 add-wallet-btn">
                                     <Button className="grey-btn" onClick={this.addAddress} >
                                         <img src={PlusIcon} /> Add another
@@ -180,11 +230,19 @@ class CommonModal extends BaseReactComponent {
                                 </div>}
                             {/* input field for add wallet */}
                             <div className='btn-section'>
-                                <Button className={`primary-btn ${this.state.btnStatus === "active" || this.state.showelement  ? "activebtn" : ""} ${this.state.modalType === "fixwallet" ? "fix-btn" : this.state.modalType === "addwallet" ? "add-btn" : ""}`}>{this.state.btnText}</Button>
+                                <Button className={`primary-btn ${this.state.btnStatus === "active" || this.state.showelement || this.state.modalType === "addwallet"? "activebtn" : ""} ${this.state.modalType === "fixwallet" ? "fix-btn" : this.state.modalType === "addwallet" ? "add-btn" : ""}`}>{this.state.btnText}</Button>
                             </div>
                             <div className='m-b-26 footer'>
-                                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">Don't worry. All your information remains private and anonymous.</p>
-                                <Image src={InfoIcon} />
+                                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">Don't worry. All your information remains private and anonymous.
+                                    <CustomOverlay
+                                        text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                                        position="top"
+                                        isIcon={true}
+                                        IconImage={LockIcon}
+                                        isInfo={true}
+                                    ><Image src={InfoIcon} className="info-icon cp" /></CustomOverlay>
+                                </p>
+                                
                             </div>
                         </div>
                     </Modal.Body>
