@@ -100,7 +100,7 @@ class Portfolio extends BaseReactComponent {
                                     <div className='fix-div' id="fixbtn">
                                         <div className='m-r-8 decribe-div'>
                                             <div className='inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262'>Wallet undetected</div>
-                                            <div className='inter-display-medium f-s-13 lh-16 grey-737'>One or more wallets were not dected </div>
+                                            <div className='inter-display-medium f-s-13 lh-16 grey-737'>One or more wallets were not detected </div>
                                         </div>
                                         <Button className='secondary-btn' onClick={this.handleFixModal}>Fix</Button>
                                     </div>

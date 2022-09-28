@@ -8,6 +8,7 @@ import BitcoinIcon from "../../assets/images/icons/bitcoin-icon.svg";
 import CustomLoader from "../common/CustomLoader";
 import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
 import unrecognised from '../../image/unrecognised.png';
+import { DEFAULT_COLOR } from '../../utils/Constant';
 
 
 class PieChart extends BaseReactComponent {
@@ -29,8 +30,6 @@ class PieChart extends BaseReactComponent {
 
     componentDidMount() {
         if (this.props.userWalletData && this.props.userWalletData.length > 0) {
-            let colors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', '#a07ddd', '#e7c5a0']
-            let borderColors = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', '#7B44DA', '#F19938']
             let assetData = []
             if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
@@ -41,10 +40,10 @@ class PieChart extends BaseReactComponent {
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
                         assetValue: parseFloat(this.props.userWalletData[i].assetValue),
                         // borderColor: borderColors[i % 5],
-                        borderColor: this.props.userWalletData[i].chain[0].color,
+                        borderColor: this.props.userWalletData[i].color ? this.props.userWalletData[i].color : DEFAULT_COLOR,
                         borderWidth: 2,
-                        color: lightenDarkenColor(this.props.userWalletData[i].chain[0].color.slice(1), 0.2),
-                        originalColor: lightenDarkenColor(this.props.userWalletData[i].chain[0].color.slice(1), 0.2),
+                        color: this.props.userWalletData[i].color ? lightenDarkenColor(this.props.userWalletData[i].color.slice(1), 0.2) : DEFAULT_COLOR,
+                        originalColor: this.props.userWalletData[i].color ? lightenDarkenColor(this.props.userWalletData[i].color.slice(1), 0.2) : DEFAULT_COLOR,
                         // color: colors[i % 5],
                         // originalColor: colors[i % 5],
                         assetSymbol: this.props.userWalletData[i].assetSymbol,
@@ -67,8 +66,6 @@ class PieChart extends BaseReactComponent {
             this.setState({ assetTotal: this.props.assetTotal })
         }
         if (this.props.userWalletData !== prevProps.userWalletData) {
-            let colors = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', '#a07ddd', '#e7c5a0']
-            let borderColors = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', '#7B44DA', '#F19938']
             let assetData = [];
             if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
@@ -79,10 +76,10 @@ class PieChart extends BaseReactComponent {
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
                         assetValue: parseFloat(this.props.userWalletData[i].assetValue),
                         // borderColor: borderColors[i % 5],
-                        borderColor: this.props.userWalletData[i].chain[0].color,
+                        borderColor: this.props.userWalletData[i].color ? this.props.userWalletData[i].color : DEFAULT_COLOR,
                         borderWidth: 2,
-                        color: lightenDarkenColor(this.props.userWalletData[i].chain[0].color.slice(1), 0.2),
-                        originalColor: lightenDarkenColor(this.props.userWalletData[i].chain[0].color.slice(1), 0.2),
+                        color: this.props.userWalletData[i].color ? lightenDarkenColor(this.props.userWalletData[i].color.slice(1), 0.2) : DEFAULT_COLOR,
+                        originalColor: this.props.userWalletData[i].color ? lightenDarkenColor(this.props.userWalletData[i].color.slice(1), 0.2) : DEFAULT_COLOR,
                         // color: colors[i % 5],
                         // originalColor: colors[i % 5],
                         assetSymbol: this.props.userWalletData[i].assetSymbol,
@@ -227,9 +224,12 @@ class PieChart extends BaseReactComponent {
                             },
                             unselect: function () {
                                 console.log("UNSELECT")
+                                var currentData = this;
                                 this.update({ color: this.options.originalColor });
-                                self.setState({pieSectionDataEnabled :{}})
-                                {document.getElementById("fixbtn").style.display = "flex"}
+                                if(currentData.assetCode === self.state.pieSectionDataEnabled.assetCode){
+                                  self.setState({pieSectionDataEnabled :{}})
+                                  {document.getElementById("fixbtn").style.display = "flex"}
+                                }
                             },
                             mouseOver: function () {
                                 var currentData = this;

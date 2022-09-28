@@ -37,12 +37,12 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                             assetId: action.payload.userWalletList.assets[i].asset.id,
                             assetName: action.payload.userWalletList.assets[i].asset.name,
                             assetSymbol: action.payload.userWalletList.assets[i].asset.symbol,
+                            color: action.payload.userWalletList.assets[i].asset.color,
                             chain: [{
                                 chainCode: action.payload.userWalletList.assets[i].chain.code,
                                 chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
                                 chainName: action.payload.userWalletList.assets[i].chain.name,
                                 assetCount: action.payload.userWalletList.assets[i].count,
-                                color: action.payload.userWalletList.assets[i].chain.color,
                             }],
                             totalCount: action.payload.userWalletList.assets[i].count,
                             assetValue: value ? action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE) : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE
@@ -61,7 +61,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                             chainSymbol: action.payload.userWalletList.assets[i].chain.symbol,
                             chainName: action.payload.userWalletList.assets[i].chain.name,
                             assetCount: action.payload.userWalletList.assets[i].count,
-                            color: action.payload.userWalletList.assets[i].chain.color,
+                            // color: action.payload.userWalletList.assets[i].asset.color,
                         })
                         // }
                         // Update the total count and asset value
