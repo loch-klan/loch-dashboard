@@ -27,7 +27,7 @@ class Wallet extends Component {
 
         return (
             <div className="wallet-page-section">
-                <Sidebar ownerName="" />
+                {/* <Sidebar ownerName="" /> */}
                 <div className='wallet-section page'>
 
                     <PageHeader

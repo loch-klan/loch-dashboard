@@ -1,14 +1,12 @@
 import React from 'react';
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import PropTypes from 'prop-types';
-import { connect } from "react-redux";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import BitcoinIcon from "../../assets/images/icons/bitcoin-icon.svg";
 import CustomLoader from "../common/CustomLoader";
 import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
 import unrecognised from '../../image/unrecognised.png';
 import { DEFAULT_COLOR } from '../../utils/Constant';
+import { Image } from 'react-bootstrap';
 
 
 class PieChart extends BaseReactComponent {
@@ -185,9 +183,6 @@ class PieChart extends BaseReactComponent {
                         tickWidth: 0,
                         padding: 12,
                         allowOverlap: false,
-                        style: {
-                            textShadow: false
-                        },
                         formatter: function () {
                             return (
                                 `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$${(this.point.usd)} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(2)}% &nbsp;&nbsp;</p>`
@@ -202,6 +197,7 @@ class PieChart extends BaseReactComponent {
                         borderRadius: 8,
                         verticalAlign: 'top',
                         style: {
+                            textShadow: false,
                             textOverflow: 'clip',
                             whiteSpace: 'nowrap',
                             width: 'max-content',
@@ -220,7 +216,6 @@ class PieChart extends BaseReactComponent {
                                 self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
                                 {document.getElementById("fixbtn").style.display = "none"}
                                 // console.log(this.state.currentData)
-
                             },
                             unselect: function () {
                                 console.log("UNSELECT")
@@ -319,7 +314,7 @@ class PieChart extends BaseReactComponent {
                             <div className='coin-hover-display' >
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
-                                        <img className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognised : null} />
+                                        <Image className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognised : null} />
                                     </div>
                                     <div className='coin-hover-display-text1'>
                                         <div className='coin-hover-display-text1-upper'>

@@ -20,7 +20,7 @@ class OnBoarding extends Component {
             showModal: true,
             signInReq: false,
             isVerificationRequired: false,
-            isVerified: false
+            isVerified: false,
         }
     }
 
@@ -31,7 +31,9 @@ class OnBoarding extends Component {
     }
 
     switchSignIn = () => {
-        this.setState({ signInReq: !this.state.signInReq })
+        this.setState({
+          signInReq: !this.state.signInReq,
+        })
     }
 
     render() {
@@ -46,11 +48,18 @@ class OnBoarding extends Component {
                     subTitle={this.state.signInReq ? "Get right back into your account" : "Add any wallet address(es) to get started"}
                     icon={this.state.signInReq ? SignInIcon : WalletIcon}
                     isSignInActive={this.state.signInReq}
-                    handleBack={this.switchSignIn}>
-
-                    {this.state.signInReq ? <SignIn isVerificationRequired={this.state.isVerificationRequired}
-                    history={this.props.history} 
-                    /> : <AddWallet {...this.props}/>}
+                    handleBack={this.switchSignIn}
+                >
+                    {
+                      this.state.signInReq
+                        ?
+                        <SignIn
+                          isVerificationRequired={this.state.isVerificationRequired}
+                          history={this.props.history}
+                        />
+                        :
+                        <AddWallet {...this.props}/>
+                    }
                     <div className="ob-modal-body-info">
                         {this.state.signInReq ? null : <h4 className='inter-display-medium f-s-14 grey-636'>Already have an account? <span className='black-191 cp' onClick={this.switchSignIn}>Sign in</span></h4>}
                         <p className='inter-display-medium lh-16 grey-ADA'>Don't worry. All your information remains private and anonymous.

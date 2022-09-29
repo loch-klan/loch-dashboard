@@ -30,7 +30,7 @@ CustomButton.propTypes = {
   isActive: PropTypes.bool,
   isBlock: PropTypes.bool,
   href: PropTypes.string,
-  handleClick: PropTypes.func.isRequired,
+  handleClick: PropTypes.func,
   buttonText: PropTypes.string,
   className: PropTypes.string,
   // valueLink: PropTypes.object.isRequired,

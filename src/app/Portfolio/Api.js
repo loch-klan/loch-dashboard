@@ -1,5 +1,4 @@
-import { toast } from "react-toastify";
-import { postLoginInstance, preLoginInstance } from "../../utils";
+import { postLoginInstance } from "../../utils";
 import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES } from "./ActionTypes";
 
 export const getCoinRate = () => {

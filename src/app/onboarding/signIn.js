@@ -8,6 +8,7 @@ import Form from "../../utils/form/Form";
 import FormElement from "../../utils/form/FormElement";
 import { Col, Container, Row } from 'react-bootstrap';
 import {signIn,verifyUser }from './Api.js'
+import FormValidator from '../../utils/form/FormValidator';
 class SignIn extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -31,11 +32,10 @@ class SignIn extends BaseReactComponent {
     onValidSubmit = (done, event) => {
         console.log("Value submitted" + this.state.email);
         const data = new URLSearchParams()
-        if(this.state.email != "" && this.state.text === "" ){
+        if(this.state.email && !this.state.isVerificationRequired){
             data.append("email",this.state.email)
             signIn(this,data)
-        }
-        else if (this.state.email != "" && this.state.text !== "" && this.state.isVerificationRequired){
+        } else if (this.state.text && this.state.isVerificationRequired){
             data.append("email",this.state.email)
             data.append("otp_token",this.state.text)
             verifyUser(this,data)
@@ -46,41 +46,56 @@ class SignIn extends BaseReactComponent {
 
         return (
             <Form onValidSubmit={this.onValidSubmit} ref={el => this.form = el}>
-                {/* <Container> */}
-                    {/* <Row className="show-grid"> */}
-                        {/* <Col md={12} className={`${this.state.isVerificationRequired ? "verification-input-field" : "email-input-field"}`}> */}
-                        <div className='ob-modal-body-wrapper'>
-                        <div className={`ob-modal-body-1 sign-in ${this.state.isVerificationRequired ? "verification-code" : ""}`}>
-                            <FormElement
+              <div className='ob-modal-body-wrapper'>
+                <div
+                  className={`ob-modal-body-1 sign-in ${this.state.isVerificationRequired ? "verification-code" : ""}`}
+                >
+                  {
+                    !this.state.isVerificationRequired
+                      ?
+                      <FormElement
+                        className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
+                        valueLink={this.linkState(this, "email")}
+                        required
+                        validations={[
+                          {
+                            validate: FormValidator.isRequired,
+                            message: "Field cannot be empty"
+                          },
+                          {
+                            validate: FormValidator.isEmail,
+                            message: "Please enter valid email id"
+                          }
+                        ]}
+                        control={{
+                          type: CustomTextControl,
+                          settings: {
+                            placeholder: "Your email"
+                          }
+                        }}
+                      />
+                            :
+                              <FormElement
                                 className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
-                                valueLink={this.linkState(this, this.state.isVerificationRequired ? "text" : "email")}
-                                // required
-                                // validations={[
-                                //     {
-                                //         validate: FormValidator.isRequired,
-                                //         message: "Field cannot be empty"
-                                //     },
-                                //     !this.state.isVerificationRequired ? {
-                                //         validate: FormValidator.isEmail,
-                                //         message: "Please enter valid email id"
-                                //     } : null
-                                // ]}
-
+                                valueLink={this.linkState(this, "text")}
+                                required
+                                validations={[
+                                    {
+                                        validate: FormValidator.isRequired,
+                                        message: "Field cannot be empty"
+                                    }
+                                ]}
                                 control={{
                                     type: CustomTextControl,
                                     settings: {
-                                        placeholder: !this.state.isVerificationRequired ? "Your email" : "Verification code"
+                                        placeholder: "Verification code"
                                     }
                                 }}
                             />
-                            </div>
-                            </div>
-                        {/* </Col> */}
-                        {/* <Col className='ob-modal-verification' md={12}> */}
-                            <CustomButton className="primary-btn send-verification" type={"submit"} variant="success" buttonText={!this.state.isVerificationRequired ? "Send verification" :"Enter code"} />
-                        {/* </Col> */}
-                    {/* </Row> */}
-                {/* </Container> */}
+                          }
+                          </div>
+                          </div>
+                            <CustomButton className={`primary-btn send-verification ${(this.state.email || this.state.text) ? "" : "inactive-state"}`} type={"submit"} buttonText={!this.state.isVerificationRequired ? "Send verification" :"Enter code"} />
             </Form>
 
         )
