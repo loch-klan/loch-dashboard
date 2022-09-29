@@ -17,10 +17,14 @@ import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CloseBtn from "../../assets/images/icons/CloseBtn.svg"
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
+import { getAllCoins, detectCoin } from "../onboarding//Api";
+
+
 class CommonModal extends BaseReactComponent {
 
     constructor(props) {
         super(props);
+        const addWalletList = JSON.parse(localStorage.getItem("addWallet")) || []
         this.state = {
             onHide: props.onHide,
             show: props.show,
@@ -31,79 +35,99 @@ class CommonModal extends BaseReactComponent {
             btnText: props.btnText,
             btnStatus: props.btnStatus,
             modalType: props.modalType,
-            addwalletlist: [],
+            addWalletList,
+            currentCoinList:[],
             showelement: false,
             walletTitle: "Metamask",
-            chainTitle: "Ethereum"
+            chainTitle: "Ethereum",
         }
+        this.timeout = 0
+        
     }
-
-    onValidSubmit = (done, event) => {
-        console.log("Value Submitted")
-    }
+    
+    
 
     handleOnchange = (e) => {
-        // console.log(e.target)
-        let { name, value ,id} = e.target
-        console.log(name, value)
-        let addresslist = [...this.state.addwalletlist]
-        console.log(addresslist)
-        let obj = {
-            name: `wallet${id}`,
-            address: value
+        
+        let {name,value} = e.target
+        let prevWallets = [...this.state.addWalletList]
+        let currentIndex = prevWallets.findIndex(elem => elem.id === name)
+        if(currentIndex > -1)
+        {
+            prevWallets[currentIndex].address = value   
+            if(value === ""){
+                prevWallets[currentIndex].coins = []
+            }
         }
-        addresslist[id] = obj
-        if (addresslist[0].address !== "") {
-            this.setState({
-                showelement: true,
-                addwalletlist: addresslist,
-            })
+        this.setState({
+          addWalletList:prevWallets
+        })
+        if (this.timeout) {
+            clearTimeout(this.timeout)
         }
-        else {
-            this.setState({
-                showelement: false,
-                // addwalletlist : addresslist,
-            })
-        }
+        this.timeout = setTimeout(() => {
+            this.getCoinBasedOnAddress(name, value);
+        }, 1000)
     }
-    componentDidMount() {
-        if (this.state.modalType === "addwallet") {
-            let localdata = JSON.parse(localStorage.getItem("addWallet"))
-            if (localdata) {
-                this.setState({
-                    addwalletlist: localdata
-                })
+
+    getCoinBasedOnAddress = (name, value) => {
+        if (this.props.OnboardingState.coinsList && value) {
+            for (let i = 0; i < this.props.OnboardingState.coinsList.length; i++) {
+                this.props.detectCoin({
+                    id: name,
+                    coinCode: this.props.OnboardingState.coinsList[i].code,
+                    coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
+                    coinName: this.props.OnboardingState.coinsList[i].name,
+                    address: value,
+                    isLast: i === (this.props.OnboardingState.coinsList.length - 1)
+                },this)
             }
         }
     }
+    handleSetCoin =(data)=>{
+       
+        let coinList = {
+            chain_detected:true,
+            coinCode:data.coinCode,
+            coinName:data.coinName,
+            coinSymbol:data.coinSymbol
+        }
+        let i = this.state.addWalletList.findIndex(obj=>obj.id === data.id )
+        let newAddress = [...this.state.addWalletList]
+        newAddress[i].coins.push(coinList)
+        newAddress[i].coinFound = true
+        this.setState({
+            addWalletList:newAddress
+        })
+    }
+    componentDidMount() {
+        this.props.getAllCoins()
+        
+    }
     addAddress = ()=>{
-        this.state.addwalletlist.push({
-            name:`wallet${this.state.addwalletlist.length}`,
-            address:""
+        this.state.addWalletList.push({
+            id:`wallet${this.state.addWalletList.length + 1}`,
+            address:"",
+            coins:[],
         })
         this.setState({
-            addwalletlist : this.state.addwalletlist
+            addWalletList : this.state.addWalletList
         })
     }
 
     deleteAddress = (index)=>{
-        // console.log(.target)
-        // let {id} = e.target
-        // let name = `wallet${id}`
-        let prevaddress = [...this.state.addwalletlist]
-        // console.log(index)
-        // console.log(prevaddress[index])
-        // console.log(prevaddress)
-        let temp = `wallet${index}`
-        let new_arr = prevaddress.filter((e)=> e.name !== temp )
-
+      
+        this.state.addWalletList.splice(index,1)
+        this.state.addWalletList.map((w,i)=>{w.id = `wallet${i+1}` })
+        
         this.setState({
-            addwalletlist: new_arr
+            addWalletList: this.state.addWalletList
         })
+
     }
 
     handleSelectWallet = (e) => {
-        console.log(e)
+
         this.setState({
             walletTitle: e,
         })
@@ -112,6 +136,37 @@ class CommonModal extends BaseReactComponent {
         this.setState({
             chainTitle: e,
         })
+    }
+
+    handleAddWallet = ()=>{
+        if(this.state.addWalletList){
+            localStorage.setItem("addWallet",JSON.stringify(this.state.addWalletList))
+            this.state.onHide()
+            this.props.history.push({
+                pathname:"/portfolio",
+                state:{
+                    addWallet:this.state.addWalletList
+                }
+            })
+        }
+    }
+
+    handleFixWallet = ()=>{
+        console.log("HELLo")
+    }
+
+    isDisabled = () => {
+        let isDisableFlag = false;
+        if (this.state.addWalletList.length <= 0) {
+            isDisableFlag = true;
+        }
+        
+        this.state.addWalletList.map((e) => {
+            if (!e.address) {
+                isDisableFlag = true;
+            }
+        })
+        return isDisableFlag;
     }
 
 
@@ -144,10 +199,9 @@ class CommonModal extends BaseReactComponent {
 
 
         const wallets =
-            this.state.addwalletlist.map((elem, index) => {
-
+            this.state.addWalletList.map((elem, index) => {
                 return (<div className='m-b-12 add-wallet-input-section' key={index} >
-                    {index >= 1 ? <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteAddress(elem.id)} /> : ""}
+                    {index >= 1 ? <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteAddress(index)} /> : ""}
 
                     <input
                         autoFocus
@@ -158,16 +212,13 @@ class CommonModal extends BaseReactComponent {
                         onChange={(e) => this.handleOnchange(e)}
                         id={elem.id}
                     />
-
-                    {elem.coinFound ?
+                    {
+                        elem.address ? elem.coinFound ?
                         <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} isLoaded={true}></CustomChip>
-                        :
-                        elem.address !== "" ?
-                            <CustomChip coins={null} isLoaded={true}></CustomChip>
-                            : ""
+                        :  
+                        <CustomChip coins={null} isLoaded={true}></CustomChip>
+                        :""
                     }
-
-
                 </div>)
             })
 
@@ -176,7 +227,7 @@ class CommonModal extends BaseReactComponent {
         return (
 
             <>
-                {console.log(this.state)}
+                {/* {console.log(this.state)} */}
                 <Modal
                     show={this.state.show}
                     className="fix-add-modal"
@@ -207,9 +258,9 @@ class CommonModal extends BaseReactComponent {
                         </div>
                     </Modal.Header>
                     <Modal.Body>
-                        <div className={`fix-add-modal-body ${this.state.modalType === "addwallet" ? 'm-t-30' : ""}`}>
+                        <div className={`fix-add-modal-body ${this.state.modalType === "addwallet" ? 'm-t-30' : "fix-wallet"}`}>
                             {this.state.modalType === "fixwallet" &&
-                                <div>
+                                <div className='fix-wallet-title'>
                                     <h6 className="inter-display-medium f-s-20 lh-24 ">{this.state.title}</h6>
                                     <p className={`inter-display-medium f-s-16 lh-19 grey-7C7 ${this.modalIcon ? "m-b-52" : "m-b-77"}`}>{this.state.subtitle}</p>
                                 </div>
@@ -222,7 +273,7 @@ class CommonModal extends BaseReactComponent {
                                 {wallets}
                             </div>}
 
-                            {this.state.addwalletlist.length >= 1 &&
+                            {this.state.addWalletList.length >= 1 &&this.state.modalType==="addwallet" &&
                                 <div className="m-b-32 add-wallet-btn">
                                     <Button className="grey-btn" onClick={this.addAddress} >
                                         <img src={PlusIcon} /> Add another
@@ -230,7 +281,10 @@ class CommonModal extends BaseReactComponent {
                                 </div>}
                             {/* input field for add wallet */}
                             <div className='btn-section'>
-                                <Button className={`primary-btn ${this.state.btnStatus === "active" || this.state.showelement || this.state.modalType === "addwallet"? "activebtn" : ""} ${this.state.modalType === "fixwallet" ? "fix-btn" : this.state.modalType === "addwallet" ? "add-btn" : ""}`}>{this.state.btnText}</Button>
+                                <Button className={`primary-btn ${this.state.btnStatus ? "activebtn" : ""} ${this.state.modalType === "fixwallet" ? "fix-btn" : this.state.modalType === "addwallet" ? "add-btn" : ""}`}
+                                disabled={this.state.modalType==="addwallet" ? this.isDisabled() : false}
+                                onClick={this.state.modalType ==="addwallet" ? this.handleAddWallet : this.handleFixWallet}
+                                >{this.state.btnText}</Button>
                             </div>
                             <div className='m-b-26 footer'>
                                 <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">Don't worry. All your information remains private and anonymous.
@@ -253,8 +307,13 @@ class CommonModal extends BaseReactComponent {
 }
 
 const mapStateToProps = state => ({
+    // AddWalletState: state.AddWalletState
+    OnboardingState:state.OnboardingState
 });
-const mapDispatchToProps = {
+const mapDispatchToProps =  {
+    getAllCoins,
+    detectCoin
+    // getCoinList
 }
 CommonModal.propTypes = {
 };

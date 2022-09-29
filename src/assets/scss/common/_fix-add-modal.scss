@@ -37,24 +37,32 @@
 
         .modal-body {
 
+            .fix-wallet{
+                padding: 0rem 7rem;
+            }
             .fix-add-modal-body {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                .fix-wallet-title{
+                    display: flex;
+                flex-direction: column;
+                align-items: center;   
                 h6 {
                     color: $primary;
                     margin-bottom: 0.6rem;
+                }
                 }
 
                 .fix-modal-input {
                     display: flex;
                     flex-direction: column;
                     margin-bottom: 6.2rem;
-
+                    width:100%;
                     .fix-wallet-input {
                         display: flex;
 
-                        padding: 0.8rem 1.2rem;
+                        padding: 0.6rem 1.2rem;
                         align-items: center;
                         border: 0.1rem solid $black-191;
                         box-shadow: 0rem 0.8rem 1.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.2rem 4.2rem -0.4rem rgba(24, 39, 75, 0.12);
@@ -115,7 +123,9 @@
 
                 .btn-section {
                     margin-bottom: 2.3rem;
-
+                    .primary-btn.btn-primary:not(:disabled):not(:disabled):active, .primary-btn.btn-primary:not(:disabled):not(:disabled):active:focus,.primary-btn:active, .primary-btn:focus, .primary-btn:active:focus{
+                        border:none
+                    }
                     button {
                         border: none;
                     }
@@ -161,13 +171,15 @@
                     display: flex;
                     align-items: center;
                     position: relative;
-
+                    .chip-wrapper{
+                        top:0.8rem
+                    }
                     .delete-icon {
                         width: 3.8rem;
                         height: 3.8rem;
                         box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
                         position: absolute;
-                        left:-5rem;
+                        left:-5.34rem;
                         cursor: pointer;
                     }
 

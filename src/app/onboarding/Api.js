@@ -19,7 +19,7 @@ export const getAllCoins = () => {
     };
 };
 
-export const detectCoin = (wallet) => {
+export const detectCoin = (wallet,ctx=null) => {
     return function (dispatch, getState) {
         let data = new URLSearchParams();
         data.append("chain", wallet.coinCode);
@@ -41,6 +41,9 @@ export const detectCoin = (wallet) => {
                             isLast: wallet.isLast
                         }
                     });
+                    if(ctx && res.data.data.chain_detected){
+                        ctx.handleSetCoin(wallet)
+                    }
                 }
             })
             .catch((err) => {

@@ -20,6 +20,7 @@
                 width:6rem;
                 height:6rem;
                 box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+                margin-top:0.9rem
             }
             .closebtn {
                 position: absolute;
@@ -45,7 +46,7 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                padding: 0rem 15.7rem;
+                padding: 0rem 15.5rem;
                 h6 {
                     color: $primary;
                     margin-bottom: 0.6rem;
@@ -99,7 +100,7 @@
                     align-items: center;
 
                     .linkInfo {
-                        padding: 1.2rem 1.8rem;
+                        padding: 1.2rem 1.85rem;
                         background-color: $grey-F2F;
                         border-radius: 0.8rem;
                     }
@@ -110,7 +111,7 @@
                     .edit-options {
                         display: flex;
                         align-items: center;
-                        padding: 1.2rem 1.6rem;
+                        padding: 1.2rem 1.63rem;
                         border: 0.1rem solid $grey-CAC;
                         border-radius: 0.8rem;
 

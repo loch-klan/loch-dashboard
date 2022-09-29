@@ -17,8 +17,8 @@ export default function WelcomeCard(props) {
                     <p className="inter-display-medium m-b-24">financial intelligence immediately.</p>
                     <div className="welcome-btn">
                         <Button className='secondary-btn'>Manage wallets</Button>
-                        <Button className="primary-btn" onClick={()=>props.history.push("/home")}>Add wallet address</Button>
-                        {/* <Button className="primary-btn" onClick={props.handleAddModal}>Add wallet address</Button> */}
+                        {/* <Button className="primary-btn" onClick={()=>props.history.push("/home")}>Add wallet address</Button> */}
+                        <Button className="primary-btn" onClick={props.handleAddModal}>Add wallet address</Button>
                     </div>
                 </div>
                 <div className='welcome-section-right'>

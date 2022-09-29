@@ -122,7 +122,7 @@ class Portfolio extends BaseReactComponent {
                      subtitle="Add your wallet address to get started"
                      fixWalletAddress={["0x9450C3C62119A6A2268E249D4B837B4442733CB0","0x9450C3C62119A6A2268E249D4B837B4442733CB0"]}
                      btnText="Done"
-                     btnStatus="active"
+                     btnStatus={false}
                      modalType="fixwallet"
                     />
                 }
@@ -134,7 +134,9 @@ class Portfolio extends BaseReactComponent {
                     title="Add wallet address"
                     subtitle="Add more wallet address here"
                     modalType="addwallet"
+                    btnStatus={true}
                     btnText="Go"
+                    history={this.props.history}
                 />}
             </div>
         )
