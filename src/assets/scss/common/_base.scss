@@ -46,12 +46,12 @@ body {
 
 .main-section {
   // display: flex;
-  height: 100vh;
+  // height: 100vh;
   overflow: scroll;
 
   .main-section-right {
-    flex: 1;
-
+    // flex: 1;
+    // margin-left: 27.2rem;
     .main-content-wrapper {
       // padding: 2rem 3rem;
     }
@@ -142,6 +142,10 @@ body {
 
 .m-r-15 {
   margin-right: 1.5rem;
+}
+
+.m-l-27{
+  margin-left: 27.2rem;
 }
 
 .cp {
@@ -459,11 +463,10 @@ form {
     }
 
     .has-error {
-      color: #dc3545;
-
+      @include font($red, "Inter-Regular", 1rem, normal, 19px);
       .custom-select__control {
         // CUSTOM ERROR STYLE ADDED WITH ERROR ICON FOR REACT-SELECT
-        border: 1px solid #dc3545;
+        border: 1px solid $red;
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
         background-repeat: no-repeat;
         background-position: right calc(0.375em + 4rem) center;

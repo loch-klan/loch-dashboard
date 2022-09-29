@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Sidebar from '../common/Sidebar';
 import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
-import LineChart from './LineChart';
+// import LineChart from './LineChart';
 import { getCoinRate, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
@@ -79,7 +79,7 @@ class Portfolio extends BaseReactComponent {
             <div>
                 {this.state.loader ? <Loading /> :
                     <div className="portfolio-page-section" >
-                        <Sidebar ownerName="" />
+                        {/* <Sidebar ownerName="" /> */}
                         <div className='portfolio-container'>
                             <div className='portfolio-section page'>
                                 <WelcomeCard
