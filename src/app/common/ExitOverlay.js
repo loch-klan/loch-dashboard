@@ -119,8 +119,8 @@ class ExitOverlay extends BaseReactComponent {
                         </div>
                         <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-28">or</p>
                         <div className='m-b-24 links'>
-                            <div className="inter-display-medium f-s-16 lh-19 black-191 m-r-16 linkInfo">{this.state.link}</div>
-                            <div className='edit-options'>
+                            <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">{this.state.link}</div>
+                            {/* <div className='edit-options'>
                                 <Image src={EditBtnImage} className="m-r-8"/>
                                 <Dropdown
                                     id="edit-option-dropdown"
@@ -129,7 +129,7 @@ class ExitOverlay extends BaseReactComponent {
                                     onSelect={this.handleSelect}
                                     activetab = {this.state.activeli}
                                 />
-                            </div>
+                            </div> */}
                         </div>
                         <div className='copy-link-section'>
                             <div className='m-r-42 link' onClick={this.copyLink}>
