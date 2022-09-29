@@ -1,14 +1,12 @@
 import React from 'react';
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
-import Sidebar from '../common/Sidebar';
 import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 // import LineChart from './LineChart';
 import { getCoinRate, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
-
 import AddWalletModalIcon from'../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
 
@@ -24,19 +22,17 @@ class Portfolio extends BaseReactComponent {
             fixModal : false,
             addModal:false,
         }
-        this.handleFixModal = this.handleFixModal.bind(this)
-        this.handleAddModal = this.handleAddModal.bind(this)
     }
 
-    handleFixModal(){
-        this.setState((prev)=>({
-            fixModal:!prev.fixModal
-        }))
+    handleFixModal=()=>{
+        this.setState({
+            fixModal:!this.state.fixModal
+        })
     }
-    handleAddModal(){
-        this.setState((prev)=>({
-            addModal : !prev.addModal
-        }))
+    handleAddModal = ()=>{
+        this.setState({
+            addModal : !this.state.addModal
+        })
     }
     componentDidMount() {
         this.props.getCoinRate()
