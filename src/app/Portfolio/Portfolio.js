@@ -7,8 +7,9 @@ import PieChart from './PieChart';
 import { getCoinRate, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
-import AddWalletModalIcon from'../../assets/images/icons/wallet-icon.svg'
+import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
+
 
 class Portfolio extends BaseReactComponent {
     constructor(props) {
@@ -24,14 +25,21 @@ class Portfolio extends BaseReactComponent {
         }
     }
 
-    handleFixModal=()=>{
+    handleChangeList = (value) => {
         this.setState({
-            fixModal:!this.state.fixModal
+            userWalletList: value
+        })
+        this.props.getCoinRate()
+    }
+    handleFixModal = () => {
+        this.setState({
+            fixModal: !this.state.fixModal
         })
     }
-    handleAddModal = ()=>{
+
+    handleAddModal = () => {
         this.setState({
-            addModal : !this.state.addModal
+            addModal: !this.state.addModal
         })
     }
     componentDidMount() {
@@ -82,7 +90,7 @@ class Portfolio extends BaseReactComponent {
                                     decrement={true}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader} history={this.props.history}
-                                    handleAddModal = {this.handleAddModal}
+                                    handleAddModal={this.handleAddModal}
                                 />
                             </div>
                             <div className='portfolio-section page'>
@@ -111,29 +119,30 @@ class Portfolio extends BaseReactComponent {
                 {
                     this.state.fixModal &&
                     <FixAddModal
-                     show={this.state.fixModal}
-                     onHide={this.handleFixModal}
-                    //  modalIcon={AddWalletModalIcon}
-                     title="Fix your wallet connection"
-                     subtitle="Add your wallet address to get started"
-                     fixWalletAddress={["0x9450C3C62119A6A2268E249D4B837B4442733CB0","0x9450C3C62119A6A2268E249D4B837B4442733CB0"]}
-                     btnText="Done"
-                     btnStatus={false}
-                     modalType="fixwallet"
+                        show={this.state.fixModal}
+                        onHide={this.handleFixModal}
+                        //  modalIcon={AddWalletModalIcon}
+                        title="Fix your wallet connection"
+                        subtitle="Add your wallet address to get started"
+                        fixWalletAddress={["0x9450C3C62119A6A2268E249D4B837B4442733CB0", "0x9450C3C62119A6A2268E249D4B837B4442733CB0"]}
+                        btnText="Done"
+                        btnStatus={false}
+                        modalType="fixwallet"
                     />
                 }
                 {this.state.addModal &&
-                <FixAddModal
-                    show={this.state.addModal}
-                    onHide={this.handleAddModal}
-                    modalIcon={AddWalletModalIcon}
-                    title="Add wallet address"
-                    subtitle="Add more wallet address here"
-                    modalType="addwallet"
-                    btnStatus={true}
-                    btnText="Go"
-                    history={this.props.history}
-                />}
+                    <FixAddModal
+                        show={this.state.addModal}
+                        onHide={this.handleAddModal}
+                        modalIcon={AddWalletModalIcon}
+                        title="Add wallet address"
+                        subtitle="Add more wallet address here"
+                        modalType="addwallet"
+                        btnStatus={true}
+                        btnText="Go"
+                        history={this.props.history}
+                        changeWalletList={this.handleChangeList}
+                    />}
             </div>
         )
     }
