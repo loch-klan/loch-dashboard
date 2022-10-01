@@ -155,7 +155,7 @@ class ExitOverlay extends BaseReactComponent {
                                 isIcon={true}
                                 IconImage={LockIcon}
                                 isInfo={true}
-                            ><Image src={InfoIcon} className="info-icon cp" /></CustomOverlay>
+                            ><Image src={InfoIcon} className="info-icon" /></CustomOverlay>
                         </div>
                     </div>
 

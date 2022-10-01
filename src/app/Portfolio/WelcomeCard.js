@@ -23,7 +23,7 @@ export default function WelcomeCard(props) {
                 </div>
                 <div className='welcome-section-right'>
 
-                    {props.assetTotal ?
+                    {props.assetTotal !== null ?
                         <CustomOverlay
                         position="top"
                         isIcon={false}

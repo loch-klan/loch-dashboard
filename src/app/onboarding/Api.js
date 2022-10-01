@@ -110,7 +110,7 @@ export const verifyUser = (ctx,info)=>{
 }
 
 export const createAnonymousUserApi = (data, ctx, addWallet) =>{
-  preLoginInstance.post('organisation/user/create-user',data)
+  postLoginInstance.post('organisation/user/create-user',data)
   .then(res=>{
     if(!res.data.error){
       localStorage.setItem("lochDummyUser", res.data.data.user.link)

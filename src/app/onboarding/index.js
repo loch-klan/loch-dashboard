@@ -93,7 +93,7 @@ class OnBoarding extends Component {
                                 isIcon={true}
                                 IconImage={LockIcon}
                                 isInfo={true}
-                            ><Image src={InfoIcon} className="info-icon cp" /></CustomOverlay> </p>
+                            ><Image src={InfoIcon} className="info-icon" /></CustomOverlay> </p>
                     </div>
                 </OnboardingModal>
             </>

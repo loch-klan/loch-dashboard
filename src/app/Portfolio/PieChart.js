@@ -7,6 +7,7 @@ import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions
 import unrecognised from '../../image/unrecognised.png';
 import { DEFAULT_COLOR } from '../../utils/Constant';
 import { Image } from 'react-bootstrap';
+import noDataImage from '../../image/no-data.png';
 
 
 class PieChart extends BaseReactComponent {
@@ -300,11 +301,11 @@ class PieChart extends BaseReactComponent {
                 data: self.state.assetData && self.state.assetData.length > 0 ? self.state.assetData : []
             }]
         }
-
         return (
             <div className='portfolio-over-container' >
                 <h1 className='Inter-Medium overview-heading'>Overview</h1>
-                {Object.keys(this.state.assetData).length > 0 ?
+                {
+                Object.keys(this.state.assetData).length > 0 ?
                     <>
                         <div className='chart-section'>
                             <HighchartsReact
@@ -374,7 +375,16 @@ class PieChart extends BaseReactComponent {
                                 </div>
 
                             </div> : null}
-                    </> :
+                    </>
+                    :
+                    this.state.loader === false && this.state.assetTotal === 0
+                    ?
+                    <>
+                    <Image src={noDataImage} className="no-data" />
+                    <h3 className='inter-display-medium f-s-14 lh-19'>No data found</h3>
+                    </>
+
+                    :
                     <div className='chart-section-loader'>
                         <CustomLoader loaderType="pie" />
                     </div>
