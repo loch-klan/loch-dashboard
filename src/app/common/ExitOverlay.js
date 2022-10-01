@@ -14,18 +14,21 @@ import Dropdown from '../common/DropDown.js';
 import CopyLink from '../../assets/images/icons/CopyLink.svg';
 import ShareLink from '../../assets/images/icons/ShareLink.svg'
 import {fixWallet} from './Api.js'
+import { BASE_URL_S3 } from '../../utils/Constant';
 class ExitOverlay extends BaseReactComponent {
 
     constructor(props) {
         super(props);
+        const dummyUser= localStorage.getItem("lochDummyUser");
         this.state = {
-            show: props.show,
-            link:props.link,
-            isactive:false,
-            Email:"",
-            dropdowntitle : "View and edit",
-            activeli:"View and edit",
-            onHide : props.onHide
+          dummyUser,
+          show: props.show,
+          link: `${BASE_URL_S3}portfolio/${dummyUser}`,
+          isactive:false,
+          Email:"",
+          dropdowntitle : "View and edit",
+          activeli:"View and edit",
+          onHide : props.onHide
         }
     }
 

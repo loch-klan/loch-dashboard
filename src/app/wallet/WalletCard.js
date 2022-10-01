@@ -7,15 +7,15 @@ import EditIcon from '../../assets/images/EditIcon.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import EditWalletModal from './EditWalletModal';
 import EthereumTextIcon from '../../assets/images/icons/EthereumTextIcon.svg';
-import PhantomWalletIcon from '../../assets/images/icons/PhantomWalletIcon.svg'
+// import PhantomWalletIcon from '../../assets/images/icons/PhantomWalletIcon.svg'
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
     function handleClose() {
         setShow(false);
     }
-    function handleShow() {
-        setShow(true)
-    }
+    // function handleShow() {
+    //     setShow(true)
+    // }
     const chips = props.wallet_coins.map((coin, index) => {
         return (
             <CustomOverlay

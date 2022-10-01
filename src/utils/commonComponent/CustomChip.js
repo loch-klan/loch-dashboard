@@ -1,7 +1,6 @@
 import { Badge, Image } from "react-bootstrap";
 import CustomOverlay from "./CustomOverlay";
 import unrecognised from '../../image/unrecognised.png';
-import { Loading } from 'react-loading-dot';
 
 function CustomChip({ coins, isLoaded }) {
     let sortedCoins = coins ? coins.sort((a, b) => a.coinName - b.coinName) : null;
@@ -45,10 +44,10 @@ function CustomChip({ coins, isLoaded }) {
                     :
                     <div className="chip-wrapper">
                         <div className="spinner-chip-container">
-                            <div class="spinner">
-                                <div class="bounce1"></div>
-                                <div class="bounce2"></div>
-                                <div class="bounce3"></div>
+                            <div className="spinner">
+                                <div className="bounce1"></div>
+                                <div className="bounce2"></div>
+                                <div className="bounce3"></div>
                             </div>
                         </div>
                     </div>

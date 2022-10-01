@@ -37,12 +37,12 @@ export default function WelcomeCard(props) {
                         </h3>
                         </CustomOverlay>
                         :
-                        <CustomLoader chartType="text" />
+                        <CustomLoader loaderType="text" />
                     }
-                    <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${props.decrement ? "downfall" : ""}`}>
+                    {/* <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${props.decrement ? "downfall" : ""}`}>
                         <Image src={props.decrement ? arrowDowRight : arrowUpRight} />
                         330.10 (1%)
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

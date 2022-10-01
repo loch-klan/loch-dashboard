@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
 import { COINS_LIST, WALLET_LIST } from "./ActionTypes";
+import addWallet from "./addWallet";
 export const getAllCoins = () => {
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
@@ -75,8 +76,26 @@ export const verifyUser = (ctx,info)=>{
     .then(res=>{
         console.log(res.data.data.user)
         if(!res.data.error){
-            localStorage.setItem("userDetail",JSON.stringify(res.data.data.user));
-            ctx.props.history.push("/portfolio")
+            localStorage.setItem("lochUser",JSON.stringify(res.data.data.user));
+            let addWallet = [];
+            for (let i = 0; i < res.data.data.user.wallets.length; i++){
+              let obj = {}; // <----- new Object
+              obj['address'] = res.data.data.user.wallets[i];
+              obj['coins'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains.map((item)=>{
+                return ({coinCode: item.code,
+                coinSymbol: item.symbol,
+                coinName: item.name,
+                chain_detected: item ? true : false})
+              });
+              obj['id'] = `wallet${i+1}`;
+              obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
+              addWallet.push(obj);
+          }
+            console.log('addWallet',addWallet);
+            ctx.props.history.push({
+              pathname: "/portfolio",
+              state: {addWallet}
+            })
         }
         else{
             toast.error(res.data.message || "Something Went Wrong")
@@ -85,4 +104,19 @@ export const verifyUser = (ctx,info)=>{
     .catch(err =>{
         console.log("error while verifying",err)
     })
+}
+
+export const createAnonymousUserApi = (data, ctx, addWallet) =>{
+  preLoginInstance.post('organisation/user/create-user',data)
+  .then(res=>{
+    if(!res.data.error){
+      localStorage.setItem("lochDummyUser", res.data.data.user.link)
+      ctx.props.history.push({
+        pathname: '/portfolio',
+        state: {addWallet}
+      })
+  }else{
+      toast.error(res.data.message || "Something Went Wrong")
+  }
+  })
 }

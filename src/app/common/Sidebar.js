@@ -22,14 +22,19 @@ import bgImg from '../../image/Notice.png'
 import {useHistory} from 'react-router-dom'
 import ExitOverlay from './ExitOverlay'
 function Sidebar(props) {
-
+console.log('props',props);
 
     const activeTab = window.location.pathname
     const history = useHistory();
     const [leave, setLeave] = React.useState(false);
 
     const handleLeave = () => {
+      const isDummy = localStorage.getItem("lochDummyUser");
+      if(isDummy){
         setLeave(!leave)
+      } else{
+        props.history.push('/home');
+      }
     }
     return (
         <div className='sidebar-section'>
@@ -134,7 +139,7 @@ function Sidebar(props) {
                 leave ?
                     <ExitOverlay
                         show={leave}
-                        link="http://loch.one/a2y1jh2jsja"
+                        // link="http://loch.one/a2y1jh2jsja"
                         onHide={handleLeave}
                         history={history}
                     /> : ""

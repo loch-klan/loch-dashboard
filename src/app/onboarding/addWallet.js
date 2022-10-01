@@ -6,7 +6,7 @@ import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
 import Form from "../../utils/form/Form";
-import { getAllCoins, detectCoin } from "./Api";
+import { getAllCoins, detectCoin, createAnonymousUserApi } from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 
 class AddWallet extends BaseReactComponent {
@@ -115,17 +115,21 @@ class AddWallet extends BaseReactComponent {
     }
 
     onValidSubmit = () => {
-        this.props.history.push({
-            pathname: '/portfolio',
-            state: {
-                addWallet:
-                    this.props.OnboardingState.walletList.map(function (el) {
-                        el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
-                        return el;
-                    })
-                // this.props.OnboardingState.walletList
-            }
-        });
+      let walletAddress = [];
+      let addWallet = this.props.OnboardingState.walletList.map((el)=> {
+          walletAddress.push(el.address)
+          el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
+          return el;
+      })
+      const data = new URLSearchParams();
+      data.append("wallet_addresses",JSON.stringify(walletAddress))
+      console.log('walletAddress',walletAddress);
+      console.log('addWallet',addWallet);
+      createAnonymousUserApi(data, this, addWallet);
+      // this.props.history.push({
+      //     pathname: '/portfolio',
+      //     state: {addWallet}
+      // });
     }
 
     render() {
@@ -146,7 +150,7 @@ class AddWallet extends BaseReactComponent {
                                         className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
                                         placeholder='Paste any wallet address here'
                                         title={c.address || ""}
-                                        onKeyUp={(e) => this.setState({ loading: true })}
+                                        // onKeyUp={(e) => this.setState({ loading: true })}
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.props.OnboardingState.walletList.map((e, i) => {
                                         if (this.state.walletInput[index].address && e.id === `wallet${index + 1}`) {
@@ -154,7 +158,12 @@ class AddWallet extends BaseReactComponent {
                                                 if (e.coinFound) {
                                                     return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
                                                 } else {
+                                                  if(e.coins.length === this.props.OnboardingState.coinsList.length){
                                                     return <CustomChip coins={null} key={i} isLoaded={true}></CustomChip>
+                                                  } else {
+                                                    return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
+                                                  }
+
                                                 }
                                             // } else {
                                             //     if (this.state.loading && c.address && c.address.length > 0 && e.coins.length !== this.props.OnboardingState.coinsList.length) {
@@ -197,7 +206,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
     getAllCoins,
-    detectCoin
+    detectCoin,
+    createAnonymousUserApi
 }
 AddWallet.propTypes = {
 };

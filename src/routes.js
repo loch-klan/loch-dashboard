@@ -1,13 +1,13 @@
 import { Route } from "react-router-dom"
 import Login from "./app/common/Login"
 import { Home } from "./app/home"
-import { Profile } from "./app/profile"
+// import { Profile } from "./app/profile"
 import Sandbox from "./utils/form/Sandbox"
 import PrivateRoute from "./utils/PrivateRoute"
 import Portfolio from "./app/Portfolio/Portfolio"
-import Intelligence from "./app/intelligence/Intelligence"
+// import Intelligence from "./app/intelligence/Intelligence"
 import Wallet from "./app/wallet/Wallet"
-import { Cost } from "./app/cost/Cost"
+// import { Cost } from "./app/cost/Cost"
 const routes = [
   {
     path: "/",
@@ -28,7 +28,7 @@ const routes = [
   //   component: Profile
   // },
   {
-    path: "/portfolio",
+    path: ["/portfolio","/portfolio/:id"],
     name: "Portfolio",
     type: PrivateRoute,
     component: Portfolio

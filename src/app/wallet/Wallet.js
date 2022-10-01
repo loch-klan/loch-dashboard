@@ -7,7 +7,7 @@ import { Image } from 'react-bootstrap';
 import Icon from "../../image/ArrowRight.svg"
 import { Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import DropDown from '../common/DropDown';
-import data from "./walletDate.js"
+import {data} from "./walletDate.js"
 import PageHeader from '../common/PageHeader';
 import CoinBadges from './../common/CoinBadges';
 import sort from "../../image/sort-1.png"

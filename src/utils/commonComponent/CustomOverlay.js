@@ -18,7 +18,7 @@ function CustomOverlay({ text, position, isIcon, children, IconImage, isInfo, is
 
                 <ul>
                     {text.map((e, i) =>
-                        i != 0 ?
+                        i !== 0 ?
                             <li key={i}>
                                 <Image src={e.coinSymbol} /><span className='inter-display-medium f-s-13 grey-313 lh-16'>{e.coinName}</span>
                             </li>

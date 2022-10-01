@@ -369,7 +369,7 @@ class PieChart extends BaseReactComponent {
                             </div> : null}
                     </> :
                     <div className='chart-section-loader'>
-                        <CustomLoader chartType="pie" />
+                        <CustomLoader loaderType="pie" />
                     </div>
                 }
             </div >
