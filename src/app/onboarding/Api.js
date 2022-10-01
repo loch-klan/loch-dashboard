@@ -78,6 +78,7 @@ export const verifyUser = (ctx,info)=>{
         console.log(res.data.data.user)
         if(!res.data.error){
             localStorage.setItem("lochUser",JSON.stringify(res.data.data.user));
+            localStorage.setItem('lochToken', res.data.data.token);
             let addWallet = [];
             for (let i = 0; i < res.data.data.user.wallets.length; i++){
               let obj = {}; // <----- new Object

@@ -1,5 +1,6 @@
-import { postLoginInstance } from "../../utils";
+import { postLoginInstance, preLoginInstance } from "../../utils";
 import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES } from "./ActionTypes";
+import { toast } from "react-toastify";
 
 export const getCoinRate = () => {
     return async function (dispatch, getState) {
@@ -64,4 +65,34 @@ export const settingDefaultValues = (wallet) => {
             type: DEFAULT_VALUES
         });
     };
+};
+
+export const getDetailsByLinkApi = (link,ctx) => {
+  const data = new URLSearchParams();
+  data.append("token",link);
+  preLoginInstance
+          .post("organisation/user/get-portfolio-by-link", data)
+          .then((res) => {
+              if(!res.data.error){
+                let addWallet = [];
+                for (let i = 0; i < res.data.data.user.wallets.length; i++){
+                  let obj = {}; // <----- new Object
+                  obj['address'] = res.data.data.user.wallets[i];
+                  obj['coins'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains.map((item)=>{
+                    return ({coinCode: item.code,
+                    coinSymbol: item.symbol,
+                    coinName: item.name,
+                    chain_detected: item ? true : false})
+                  });
+                  obj['id'] = `wallet${i+1}`;
+                  obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
+                  addWallet.push(obj);
+              }
+              } else{
+                toast.error(res.data.message || "Something Went Wrong")
+              }
+          })
+          .catch((err) => {
+              console.log("Catch", err);
+          });
 };

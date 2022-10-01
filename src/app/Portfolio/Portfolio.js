@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 // import LineChart from './LineChart';
-import { getCoinRate, getUserWallet, settingDefaultValues } from "./Api";
+import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
@@ -43,6 +43,10 @@ class Portfolio extends BaseReactComponent {
         })
     }
     componentDidMount() {
+      if(this.props.match.params.id){
+        console.log('Hey',this.props.match.params.id);
+        getDetailsByLinkApi(this.props.match.params.id,this)
+      }
         this.props.getCoinRate()
     }
 
