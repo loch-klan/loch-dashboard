@@ -21,6 +21,7 @@ class OnBoarding extends Component {
             signInReq: false,
             isVerificationRequired: false,
             isVerified: false,
+            currentActiveModal: "signIn"
         }
     }
 
@@ -30,10 +31,32 @@ class OnBoarding extends Component {
         this.setState({ showModal: false })
     }
 
-    switchSignIn = () => {
-        this.setState({
-          signInReq: !this.state.signInReq,
-        })
+    handleStateChange=(value)=>{
+        if(value === "verifyCode"){
+            this.setState({
+                currentActiveModal:value
+            })
+        }
+        else{
+            this.setState({
+                currentActiveModal:"signIn"
+            })
+        }
+    }
+    switchSignIn = (e) => {
+        console.log("active modalin indexx",this.state.currentActiveModal)
+        console.log("verification req indexx",this.state.isVerificationRequired)
+        if (this.state.currentActiveModal === "verifyCode") {
+            this.setState({
+                // isVerificationRequired:false,
+                signInReq:true,
+                currentActiveModal:"signIn"
+            })
+        } else {
+            this.setState({
+                signInReq: !this.state.signInReq,
+            })
+        }
     }
 
     render() {
@@ -51,14 +74,17 @@ class OnBoarding extends Component {
                     handleBack={this.switchSignIn}
                 >
                     {
-                      this.state.signInReq
-                        ?
-                        <SignIn
-                          isVerificationRequired={this.state.isVerificationRequired}
-                          history={this.props.history}
-                        />
-                        :
-                        <AddWallet {...this.props}/>
+                        this.state.signInReq
+                            ?
+                            <SignIn
+                                isVerificationRequired={this.state.isVerificationRequired}
+                                history={this.props.history}
+                                activemodal={this.state.currentActiveModal}
+                                signInReq={this.state.signInReq}
+                                handleStateChange={this.handleStateChange}
+                            />
+                            :
+                            <AddWallet {...this.props} />
                     }
                     <div className="ob-modal-body-info">
                         {this.state.signInReq ? null : <h4 className='inter-display-medium f-s-14 grey-636'>Already have an account? <span className='black-191 cp' onClick={this.switchSignIn}>Sign in</span></h4>}
@@ -67,8 +93,8 @@ class OnBoarding extends Component {
                                 text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
                                 position="top"
                                 isIcon={true}
-                                IconImage ={LockIcon}
-                                isInfo = {true}
+                                IconImage={LockIcon}
+                                isInfo={true}
                             ><Image src={InfoIcon} className="info-icon cp" /></CustomOverlay> </p>
                     </div>
                 </OnboardingModal>
