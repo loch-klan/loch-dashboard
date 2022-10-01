@@ -9,8 +9,8 @@ import FormValidator from './../../utils/form/FormValidator';
 import CloseIcon from '../../assets/images/icons/close-icon.svg'
 import CustomTextControl from './../../utils/form/CustomTextControl';
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
-import Dropdown from '../common/DropDown.js';
+// import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
+// import Dropdown from '../common/DropDown.js';
 import CopyLink from '../../assets/images/icons/CopyLink.svg';
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";

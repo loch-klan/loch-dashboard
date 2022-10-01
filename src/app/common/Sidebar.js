@@ -22,7 +22,7 @@ import bgImg from '../../image/Notice.png'
 import {useHistory} from 'react-router-dom'
 import ExitOverlay from './ExitOverlay'
 function Sidebar(props) {
-console.log('props',props);
+// console.log('props',props);
 
     const activeTab = window.location.pathname
     const history = useHistory();

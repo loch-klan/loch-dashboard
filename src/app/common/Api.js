@@ -27,7 +27,7 @@ export const loginApi = (ctx, data) => {
 export const fixWallet = (ctx,info) =>{
       postLoginInstance.post("organisation/user/create-user",info)
       .then((res)=>{
-        if(!res.data.error){  
+        if(!res.data.error){
           ctx.props.history.push('/home');
         }
         else{
@@ -37,6 +37,23 @@ export const fixWallet = (ctx,info) =>{
       .catch((err)=>{
         console.log("fixwallet",err)
       })
+}
+
+export const updateUserWalletApi = (data,ctx) =>{
+  postLoginInstance.post("organisation/user/update-user-wallet",data)
+  .then((res)=>{
+    if(!res.data.error){
+      ctx.props.history.push({
+        pathname: '/portfolio',
+        state: {addWallet: ctx.state.addWalletList}
+      });
+    } else{
+      toast.error(res.data.message || "Something went wrong");
+    }
+  })
+  .catch((err)=>{
+    console.log("fixwallet",err)
+  })
 }
 
 // export const resetPasswordApi = (ctx, data) => {

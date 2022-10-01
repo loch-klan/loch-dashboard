@@ -18,6 +18,7 @@ import CloseBtn from "../../assets/images/icons/CloseBtn.svg"
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin } from "../onboarding//Api";
+import { updateUserWalletApi } from './Api';
 
 
 class FixAddModal extends BaseReactComponent {
@@ -43,19 +44,19 @@ class FixAddModal extends BaseReactComponent {
             changeList:props.changeWalletList
         }
         this.timeout = 0
-        
+
     }
-    
-    
+
+
 
     handleOnchange = (e) => {
-        
+
         let {name,value} = e.target
         let prevWallets = [...this.state.addWalletList]
         let currentIndex = prevWallets.findIndex(elem => elem.id === name)
         if(currentIndex > -1)
         {
-            prevWallets[currentIndex].address = value   
+            prevWallets[currentIndex].address = value
             if(value === ""){
                 prevWallets[currentIndex].coins = []
             }
@@ -86,7 +87,7 @@ class FixAddModal extends BaseReactComponent {
         }
     }
     handleSetCoin =(data)=>{
-       
+
         let coinList = {
             chain_detected:true,
             coinCode:data.coinCode,
@@ -103,7 +104,7 @@ class FixAddModal extends BaseReactComponent {
     }
     componentDidMount() {
         this.props.getAllCoins()
-        
+
     }
     addAddress = ()=>{
         this.state.addWalletList.push({
@@ -117,10 +118,10 @@ class FixAddModal extends BaseReactComponent {
     }
 
     deleteAddress = (index)=>{
-      
+
         this.state.addWalletList.splice(index,1)
         this.state.addWalletList.map((w,i)=>{w.id = `wallet${i+1}` })
-        
+
         this.setState({
             addWalletList: this.state.addWalletList
         })
@@ -146,16 +147,20 @@ class FixAddModal extends BaseReactComponent {
 
     handleAddWallet = ()=>{
         if(this.state.addWalletList){
-            
             localStorage.setItem("addWallet",JSON.stringify(this.state.addWalletList))
             this.state.changeList(this.state.addWalletList)
             this.state.onHide()
-            this.props.history.push({
-                pathname:"/portfolio",
-                state:{
-                    addWallet:this.state.addWalletList
-                }
-            })
+            let walletList = []
+            this.state.addWalletList.map((list)=>walletList.push(list.address))
+            const data = new URLSearchParams();
+            data.append("wallet_addresses",JSON.stringify(walletList))
+            updateUserWalletApi(data, this);
+            // this.props.history.push({
+            //     pathname:"/portfolio",
+            //     state:{
+            //         addWallet:this.state.addWalletList
+            //     }
+            // })
         }
     }
 
@@ -168,7 +173,7 @@ class FixAddModal extends BaseReactComponent {
         if (this.state.addWalletList.length <= 0) {
             isDisableFlag = true;
         }
-        
+
         this.state.addWalletList.map((e) => {
             if (!e.address) {
                 isDisableFlag = true;
@@ -216,14 +221,15 @@ class FixAddModal extends BaseReactComponent {
                         name={`wallet${index + 1}`}
                         value={elem.address || ""}
                         placeholder="Paste any wallet address here"
-                        className='inter-display-regular f-s-16 lh-20'
+                        // className='inter-display-regular f-s-16 lh-20'
+                        className={`inter-display-regular f-s-16 lh-20 ${elem.address ? 'is-valid' : null}`}
                         onChange={(e) => this.handleOnchange(e)}
                         id={elem.id}
                     />
                     {
                         elem.address ? elem.coinFound && elem.coins.length>0 ?
                         <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} isLoaded={true}></CustomChip>
-                        :  
+                        :
                         <CustomChip coins={null} isLoaded={true}></CustomChip>
                         :""
                     }
@@ -304,7 +310,7 @@ class FixAddModal extends BaseReactComponent {
                                         isInfo={true}
                                     ><Image src={InfoIcon} className="info-icon cp" /></CustomOverlay>
                                 </p>
-                                
+
                             </div>
                         </div>
                     </Modal.Body>

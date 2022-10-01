@@ -11,8 +11,6 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 // export { default as OnboardingReducer } from "./OnboardingReducer";
-
-import { useHistory } from 'react-router-dom';
 class OnBoarding extends Component {
     constructor(props) {
         super(props);
