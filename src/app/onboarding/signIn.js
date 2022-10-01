@@ -19,6 +19,8 @@ class SignIn extends BaseReactComponent {
             isVerificationRequired: props.isVerificationRequired,
             text:"",
             isVallidSignIn:false,
+            activemodal : props.activemodal,
+            signinReq:props.signinReq
         }
     }
 
@@ -30,9 +32,12 @@ class SignIn extends BaseReactComponent {
     };
 
     onValidSubmit = (done, event) => {
+      console.log(event.target)
+      console.log("verificationReq",this.state.isVerificationRequired)
         console.log("Value submitted" + this.state.email);
         const data = new URLSearchParams()
-        if(this.state.email && !this.state.isVerificationRequired){
+        if(this.state.email && !this.state.isVerificationRequired|| this.props.activemodal==="signIn"){
+            
             data.append("email",this.state.email)
             signIn(this,data)
         } else if (this.state.text && this.state.isVerificationRequired){
@@ -40,7 +45,7 @@ class SignIn extends BaseReactComponent {
             data.append("otp_token",this.state.text)
             verifyUser(this,data)
         }
-    };
+      };
 
     render() {
 
@@ -48,10 +53,11 @@ class SignIn extends BaseReactComponent {
             <Form onValidSubmit={this.onValidSubmit} ref={el => this.form = el}>
               <div className='ob-modal-body-wrapper'>
                 <div
-                  className={`ob-modal-body-1 sign-in ${this.state.isVerificationRequired ? "verification-code" : ""}`}
+                  className={`ob-modal-body-1 sign-in ${this.state.isVerificationRequired && this.props.activemodal ==="verifyCode"? "verification-code" : ""}`}
                 >
+                    {console.log("ACTVIVEMODAL",this.props.activemodal)}
                   {
-                    !this.state.isVerificationRequired
+                    !this.state.isVerificationRequired || this.props.activemodal === "signIn"
                       ?
                       <FormElement
                         className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
@@ -95,7 +101,7 @@ class SignIn extends BaseReactComponent {
                           }
                           </div>
                           </div>
-                            <CustomButton className={`primary-btn send-verification ${(this.state.email || this.state.text) ? "" : "inactive-state"}`} type={"submit"} buttonText={!this.state.isVerificationRequired ? "Send verification" :"Enter code"} />
+                            <CustomButton className={`primary-btn send-verification ${(this.state.email || this.state.text) ? "" : "inactive-state"}`} type={"submit"} buttonText={!this.state.isVerificationRequired || this.props.activemodal ==="signIn"  ? "Send verification" :"Enter code"} />
             </Form>
 
         )
