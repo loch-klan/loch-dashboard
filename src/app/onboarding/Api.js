@@ -62,7 +62,8 @@ export const signIn = (ctx,data)=>{
         }
         else if(res.data.error === false){
             ctx.setState({
-                isVerificationRequired:true
+                isVerificationRequired:true,
+                text:""
             })
             ctx.props.handleStateChange("verifyCode")
         }
