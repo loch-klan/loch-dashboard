@@ -114,6 +114,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
   .then(res=>{
     if(!res.data.error){
       localStorage.setItem("lochDummyUser", res.data.data.user.link)
+      localStorage.setItem("lochToken", res.data.data.token)
       ctx.props.history.push({
         pathname: '/portfolio',
         state: {addWallet}
