@@ -20,7 +20,7 @@ import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin } from "../onboarding//Api";
 
 
-class CommonModal extends BaseReactComponent {
+class FixAddModal extends BaseReactComponent {
 
     constructor(props) {
         super(props);
@@ -38,8 +38,9 @@ class CommonModal extends BaseReactComponent {
             addWalletList,
             currentCoinList:[],
             showelement: false,
-            walletTitle: "Metamask",
-            chainTitle: "Ethereum",
+            walletTitleList: [],
+            chainTitleList: [],
+            changeList:props.changeWalletList
         }
         this.timeout = 0
         
@@ -127,20 +128,27 @@ class CommonModal extends BaseReactComponent {
     }
 
     handleSelectWallet = (e) => {
-
+        let current = e.split(' ')
+        let newWalletList = [...this.state.walletTitleList]
+        newWalletList[current[0]] = current[1]
         this.setState({
-            walletTitle: e,
+            walletTitleList:newWalletList ,
         })
     }
     handleSelectChain = (e) => {
+        let current = e.split(' ')
+        let newChainList = [...this.state.chainTitleList]
+        newChainList[current[0]] = current[1]
         this.setState({
-            chainTitle: e,
+            chainTitleList: newChainList,
         })
     }
 
     handleAddWallet = ()=>{
         if(this.state.addWalletList){
+            
             localStorage.setItem("addWallet",JSON.stringify(this.state.addWalletList))
+            this.state.changeList(this.state.addWalletList)
             this.state.onHide()
             this.props.history.push({
                 pathname:"/portfolio",
@@ -175,23 +183,23 @@ class CommonModal extends BaseReactComponent {
         const inputs = this.state.modalType == "fixwallet" ?
             this.state.fixWalletAddress.map((address, index) => {
                 return (
-                    <div className="m-b-12 fix-wallet-input">
+                    <div className="m-b-12 fix-wallet-input" key={index}>
                         <input value={address} className="inter-display-regular f-s-16  lh-19 black-191" type="text" />
                         <div className="fix-dropdowns">
                             <Dropdown
-                                id="fix-wallet-dropdown"
+                                id={index}
                                 title="Wallet"
                                 list={["Metamask", "Phantom", "Coinbase", "Gamestop", "Brave", "Rabby", "Portis", "Trust Wallet by Binance", "Others"]}
                                 onSelect={this.handleSelectWallet}
-                                activetab={this.state.walletTitle}
+                                activetab={this.state.walletTitleList[index]}
 
                             />
                             <Dropdown
-                                id="fix-chain-dropdown"
+                                id={index}
                                 title="Chain"
                                 list={["Ethereum", "Bitcoin", "Helium", "Avalanche", "Unicoin", "Maker", "Matic", "Matic", "Flow", "Cosmos", "Others"]}
                                 onSelect={this.handleSelectChain}
-                                activetab={this.state.chainTitle}
+                                activetab={this.state.chainTitleList[index]}
                             />
                         </div>
                     </div>)
@@ -213,7 +221,7 @@ class CommonModal extends BaseReactComponent {
                         id={elem.id}
                     />
                     {
-                        elem.address ? elem.coinFound ?
+                        elem.address ? elem.coinFound && elem.coins.length>0 ?
                         <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} isLoaded={true}></CustomChip>
                         :  
                         <CustomChip coins={null} isLoaded={true}></CustomChip>
@@ -307,7 +315,6 @@ class CommonModal extends BaseReactComponent {
 }
 
 const mapStateToProps = state => ({
-    // AddWalletState: state.AddWalletState
     OnboardingState:state.OnboardingState
 });
 const mapDispatchToProps =  {
@@ -315,7 +322,7 @@ const mapDispatchToProps =  {
     detectCoin
     // getCoinList
 }
-CommonModal.propTypes = {
+FixAddModal.propTypes = {
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommonModal);
+export default connect(mapStateToProps, mapDispatchToProps)(FixAddModal);

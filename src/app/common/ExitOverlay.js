@@ -12,6 +12,8 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
 import Dropdown from '../common/DropDown.js';
 import CopyLink from '../../assets/images/icons/CopyLink.svg';
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import ShareLink from '../../assets/images/icons/ShareLink.svg'
 import {fixWallet} from './Api.js'
 import { BASE_URL_S3 } from '../../utils/Constant';
@@ -25,35 +27,35 @@ class ExitOverlay extends BaseReactComponent {
           show: props.show,
           link: `${BASE_URL_S3}portfolio/${dummyUser}`,
           isactive:false,
-          Email:"",
+          email: "",
           dropdowntitle : "View and edit",
           activeli:"View and edit",
           onHide : props.onHide
         }
     }
 
-    copyLink = ()=>{
+    copyLink = () => {
         navigator.clipboard.writeText(this.state.link);
     }
-    handleSave = ()=>{
+    handleSave = () => {
         console.log("Save")
         let email_arr = []
-        let data =JSON.parse(localStorage.getItem("addWallet"))
-        if(data){
-            data.map((info)=>{
+        let data = JSON.parse(localStorage.getItem("addWallet"))
+        if (data) {
+            data.map((info) => {
                 email_arr.push(info.address)
             })
             const url = new URLSearchParams()
-            url.append('user_name',this.state.Email);
-            url.append('wallet_addresses',JSON.stringify(email_arr));
-            this.props.fixWallet(this,url)
+            url.append('user_name', this.state.email);
+            url.append('wallet_addresses', JSON.stringify(email_arr));
+            this.props.fixWallet(this, url)
         }
     }
-    handleSelect = (e)=>{
+    handleSelect = (e) => {
         console.log(e)
         this.setState({
-            dropdowntitle : e,
-            activeli:e,
+            dropdowntitle: e,
+            activeli: e,
 
         })
     }
@@ -90,9 +92,9 @@ class ExitOverlay extends BaseReactComponent {
                             or link your email
                         </p>
                         <div className="email-section">
-                            <Form>
+                            <Form onValidSubmit={this.handleSave}>
                                 <FormElement
-                                    valueLink={this.linkState(this, "Email")}
+                                    valueLink={this.linkState(this, "email")}
                                     // label="Email Info"
                                     required
                                     validations={[
@@ -115,8 +117,8 @@ class ExitOverlay extends BaseReactComponent {
                                     }
                                 />
                                 <div className='save-btn-section'>
-                                    <Button className={`inter-semi-bold f-s-16 lh-19 white save-btn ${this.state.Email ? "active" : ""}`}
-                                    onClick={this.state.Email &&this.handleSave }>Save</Button>
+                                    <Button className={`inter-semi-bold f-s-16 lh-19 white save-btn ${this.state.email ? "active" : ""}`}
+                                        type="submit">Save</Button>
                                 </div>
                             </Form>
                         </div>
@@ -147,7 +149,13 @@ class ExitOverlay extends BaseReactComponent {
 
                         <div className='m-b-36 footer'>
                             <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">Don't worry. All your information remains private and anonymous.</p>
-                            <Image src={InfoIcon} />
+                            <CustomOverlay
+                                text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                                position="top"
+                                isIcon={true}
+                                IconImage={LockIcon}
+                                isInfo={true}
+                            ><Image src={InfoIcon} className="info-icon cp" /></CustomOverlay>
                         </div>
                     </div>
 
