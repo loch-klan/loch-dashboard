@@ -87,7 +87,6 @@ class FixAddModal extends BaseReactComponent {
         }
     }
     handleSetCoin =(data)=>{
-
         let coinList = {
             chain_detected:true,
             coinCode:data.coinCode,
@@ -295,7 +294,7 @@ class FixAddModal extends BaseReactComponent {
                                 </div>}
                             {/* input field for add wallet */}
                             <div className='btn-section'>
-                                <Button className={`primary-btn ${this.state.btnStatus ? "activebtn" : ""} ${this.state.modalType === "fixwallet" ? "fix-btn" : this.state.modalType === "addwallet" ? "add-btn" : ""}`}
+                                <Button className={`primary-btn ${this.state.btnStatus ? "activebtn" : ""} ${this.state.modalType === "fixwallet" ? "fix-btn" : this.state.modalType === "addwallet" && !this.isDisabled() ? "add-btn activebtn" : "add-btn"}`}
                                 disabled={this.state.modalType==="addwallet" ? this.isDisabled() : false}
                                 onClick={this.state.modalType ==="addwallet" ? this.handleAddWallet : this.handleFixWallet}
                                 >{this.state.btnText}</Button>

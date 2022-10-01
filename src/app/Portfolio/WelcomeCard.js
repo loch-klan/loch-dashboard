@@ -5,7 +5,7 @@ import arrowDowRight from '../../assets/images/icons/arrow-down-right.svg'
 import CustomLoader from "../common/CustomLoader";
 import { numToCurrency } from '../../utils/ReusableFunctions';
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
-
+import { AmountFormat } from '../../utils/ReusableFunctions';
 export default function WelcomeCard(props) {
     // console.log(props)
     return (
@@ -29,7 +29,7 @@ export default function WelcomeCard(props) {
                         isIcon={false}
                         isInfo={true}
                         isText={true}
-                        text={"$" + parseFloat(props.assetTotal).toFixed(2) + "USD"}
+                        text={"$" + AmountFormat(props.assetTotal,'en-US','USD') + "USD"}
                         >
                         <h3 className="space-grotesk-medium wallet-amount">$
                             {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
