@@ -11,17 +11,32 @@ import {data} from "./walletDate.js"
 import PageHeader from '../common/PageHeader';
 import CoinBadges from './../common/CoinBadges';
 import sort from "../../image/sort-1.png"
+import { getwallets } from './Api';
+
 class Wallet extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            walletdata: data
+            walletData: [],
+            start:0,
+            sorts:[],
+            limit:10,
+            conditions:[]
         }
         this.sortby = ["Amount", "Date added", "Name"]
     }
 
 
-    componentDidMount() { }
+    componentDidMount() { 
+        let data = new URLSearchParams()
+        data.append("start",this.state.start)
+        data.append("conditions",JSON.stringify(this.state.conditions))
+        data.append("limit",this.state.limit)
+        data.append("sorts",JSON.stringify(this.state.sorts))
+        this.props.getwallets(this,data)
+
+        // console.log("WalletData", this.state.walletData)
+    }
 
     render() {
 
@@ -53,17 +68,18 @@ class Wallet extends Component {
                     </div>
 
                     <div className='cards'>
-                        {this.state.walletdata.map((wallet, index) => {
+                        {this.state.walletData.length > 0 && this.state.walletData.map((wallet, index) => {
+                            // console.log("wallet",wallet)
 
                             return (
                                 <WalletCard
                                     key={index}
-                                    wallet_icon={wallet.wallet_icon}
-                                    coin_name={wallet.coin_name}
-                                    wallet_name={wallet.wallet_name}
-                                    wallet_account_number={wallet.wallet_account_number}
-                                    wallet_amount={wallet.wallet_amount}
-                                    wallet_coins={wallet.wallet_coins}
+                                    // wallet_icon={wallet.wallet_icon}
+                                    // coin_name={wallet.coin_name}
+                                    // wallet_name={wallet.wallet_name}
+                                    wallet_account_number={wallet.address}
+                                    wallet_amount={wallet.total_value}
+                                    wallet_coins={wallet.chain}
                                 />
                             )
                         })}
@@ -79,6 +95,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
     // getPosts: fetchPosts
+    getwallets,
 }
 Wallet.propTypes = {
     // getPosts: PropTypes.func

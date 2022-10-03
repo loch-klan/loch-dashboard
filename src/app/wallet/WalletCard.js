@@ -8,6 +8,7 @@ import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import EditWalletModal from './EditWalletModal';
 import EthereumTextIcon from '../../assets/images/icons/EthereumTextIcon.svg';
 // import PhantomWalletIcon from '../../assets/images/icons/PhantomWalletIcon.svg'
+import { numToCurrency } from './../../utils/ReusableFunctions';
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
     function handleClose() {
@@ -24,14 +25,14 @@ export default function WalletCard(props) {
                 isInfo={true}
                 key={index}
                 isText={true}
-                text={coin.coin_name}
+                text={coin.value}
                 IconImage={EthereumTextIcon}
             >
                 <div>
                     <CoinChip
                         key={index}
-                        coin_img_src={coin.coin_img}
-                        coin_percent={coin.coin_percent}
+                        coin_img_src={coin.symbol}
+                        coin_percent={coin.value.toFixed(2)}
                     />
                 </div>
             </CustomOverlay>
@@ -66,7 +67,7 @@ export default function WalletCard(props) {
 
                 </div>
                 <div className='amount-details'>
-                    <h6 className='inter-display-medium f-s-20 lh-24' >{props.wallet_amount}</h6>
+                    <h6 className='inter-display-medium f-s-20 lh-24' >{numToCurrency(props.wallet_amount)}</h6>
                     <span className='inter-display-semi-bold f-s-10 lh-12'>USD</span>
                 </div>
             </div>
