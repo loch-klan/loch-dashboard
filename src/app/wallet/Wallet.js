@@ -12,6 +12,7 @@ import PageHeader from '../common/PageHeader';
 import CoinBadges from './../common/CoinBadges';
 import sort from "../../image/sort-1.png"
 import { getwallets } from './Api';
+import {getAllCoins} from '../onboarding/Api.js'
 
 class Wallet extends Component {
     constructor(props) {
@@ -28,6 +29,8 @@ class Wallet extends Component {
 
 
     componentDidMount() { 
+
+        this.props.getAllCoins()
         let data = new URLSearchParams()
         data.append("start",this.state.start)
         data.append("conditions",JSON.stringify(this.state.conditions))
@@ -53,9 +56,10 @@ class Wallet extends Component {
 
                     <CoinBadges
                         activeBadge={0}
+                        chainList={this.props.OnboardingState.coinsList}
                     />
-                    <div className='m-b-20 sortby-section'>
-                        <span className='inter-display-medium f-s-13 lh-16 m-r-8 grey-313'>Sort by</span>
+                    <div className='m-b-32 sortby-section'>
+                        <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-313'>Sort by</span>
                         <div className='dropdown-section'>
                             {this.sortby.map((e, index) => {
                                 return <span className='sort-by-title'>
@@ -91,10 +95,12 @@ class Wallet extends Component {
 }
 
 const mapStateToProps = state => ({
-    walletState: state.WalletState
+    // walletState: state.WalletState,
+    OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
     // getPosts: fetchPosts
+    getAllCoins,
     getwallets,
 }
 Wallet.propTypes = {

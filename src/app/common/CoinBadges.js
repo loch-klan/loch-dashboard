@@ -5,9 +5,13 @@ export default function CoinBadges(props) {
     const [activeBadge,setactiveBadge] = React.useState(0)
 
     // const badgeList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple"]
-    const badgeList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple","Avalanche" ,"Unicoin","Maker","Matic","Render","Flow","Cosmos","Luna","Algorand","Aurora","Cardano","Fantom","Polygon","Near","Tron","Optimism","Polkadot","Filecoin","Binance"]
-
-    const dropdownList = ["Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple"]
+    // const badgeList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple","Avalanche" ,"Unicoin","Maker","Matic","Render","Flow","Cosmos","Luna","Algorand","Aurora","Cardano","Fantom","Polygon","Near","Tron","Optimism","Polkadot","Filecoin","Binance"]
+    // console.log(props.chainList)
+    let badgeList = ["All"]
+    props.chainList.map((chain)=>{
+      badgeList.push(chain.name)
+    })
+    const dropdownList = badgeList
     return (
         <div className='coin-badges'>
             <div className='badge-list'>

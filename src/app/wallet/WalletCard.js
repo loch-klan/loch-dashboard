@@ -25,7 +25,8 @@ export default function WalletCard(props) {
                 isInfo={true}
                 key={index}
                 isText={true}
-                text={coin.value}
+                // text={coin.value}
+                text={coin.value.toFixed(2)}
                 IconImage={EthereumTextIcon}
             >
                 <div>
