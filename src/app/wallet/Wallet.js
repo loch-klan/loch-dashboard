@@ -13,34 +13,102 @@ import CoinBadges from './../common/CoinBadges';
 import sort from "../../image/sort-1.png"
 import { getwallets } from './Api';
 import {getAllCoins} from '../onboarding/Api.js'
-
+import {SEARCH_BY_CHAIN_IN }from "../../utils/Constant.js"
 class Wallet extends Component {
     constructor(props) {
         super(props);
         this.state = {
             walletData: [],
-            start:0,
-            sorts:[],
-            limit:10,
-            conditions:[]
+            start: 0,
+            sorts: [],
+            limit: 10,
+            activeBadge: [{name:"All",id:""}],
         }
         this.sortby = ["Amount", "Date added", "Name"]
     }
 
 
-    componentDidMount() { 
+    componentDidMount() {
 
         this.props.getAllCoins()
         let data = new URLSearchParams()
-        data.append("start",this.state.start)
-        data.append("conditions",JSON.stringify(this.state.conditions))
-        data.append("limit",this.state.limit)
-        data.append("sorts",JSON.stringify(this.state.sorts))
-        this.props.getwallets(this,data)
+        data.append("start", this.state.start)
+        // data.append("conditions", JSON.stringify(this.state.conditions))
+        data.append("conditions", JSON.stringify([]))
+        data.append("limit", this.state.limit)
+        data.append("sorts", JSON.stringify(this.state.sorts))
+        this.props.getwallets(this, data)
 
         // console.log("WalletData", this.state.walletData)
     }
 
+    handleFunction = (badge) => {
+        // console.log(badge)
+        let newArr = [...this.state.activeBadge]
+        if (this.state.activeBadge.some(e => e.name === badge.name)) {
+            // console.log("INCLUDE in LIST",badge)
+            let index = newArr.findIndex(x => x.name === badge.name)
+            console.log(index)
+            newArr.splice(index, 1)
+            if (newArr.length === 0) {
+                this.setState({
+                    activeBadge: [{name:"All",id:""}]
+                })
+            }
+            else {
+                this.setState({
+                    activeBadge: newArr
+                })
+            }
+        }
+        else if(badge.name === "All")
+        {
+            this.setState({
+                activeBadge:[{name:"All",id:""}]
+            })
+        }
+        else {
+            let index = newArr.findIndex(x => x.name ==="All")
+            if (index !== -1) {
+                newArr.splice(index, 1)
+            }
+            // console.log("index", index)
+            newArr.push(badge)
+            this.setState({
+                activeBadge: newArr
+            })
+        }
+
+        // console.log("NEW ARRSY", newArr)
+    }
+    
+    componentDidUpdate(prevProps , prevState) {
+        if (prevState.activeBadge !== this.state.activeBadge ) {
+            
+        //   console.log("MADE API CALL",this.state.activeBadge)
+        //   console.log("MADE API CALL prev" ,prevProps)
+        //   console.log("MADE API CALL state",prevState)
+          let data = new URLSearchParams()
+          let arr = [...this.state.activeBadge]
+          let index = arr.findIndex(e => e.id === "")
+          if(index !== -1) 
+          {
+            arr.splice(index,1)
+          }
+          let condition = [{key:SEARCH_BY_CHAIN_IN,value:[]}]
+            arr.map((badge)=>{
+              condition[0].value.push(badge.id)
+            })
+            console.log(condition)
+              data.append("start", this.state.start)
+              data.append("conditions", JSON.stringify(condition))
+              data.append("limit", this.state.limit)
+              data.append("sorts", JSON.stringify(this.state.sorts))
+              this.props.getwallets(this, data)
+        //   console.log("after call",index)
+        }
+
+    }
     render() {
 
         return (
@@ -55,8 +123,9 @@ class Wallet extends Component {
                     />
 
                     <CoinBadges
-                        activeBadge={0}
+                        activeBadge={this.state.activeBadge}
                         chainList={this.props.OnboardingState.coinsList}
+                        handleFunction={this.handleFunction}
                     />
                     <div className='m-b-32 sortby-section'>
                         <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-313'>Sort by</span>

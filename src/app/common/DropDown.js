@@ -4,7 +4,7 @@ export default function DropDown(props) {
 
     const list = props.list.map((li,index)=>{
         return(
-            <Dropdown.Item  eventKey={`${props.id} ${li} `} key={index} className={props.activetab === li ? "active" : ""}>{li}</Dropdown.Item>
+            <Dropdown.Item  eventKey={`${props.id} ${li} `} key={index} className={props.activetab === li ? "active" : ""}>{li.name?li.name : li}</Dropdown.Item>
         )
     })
     return (

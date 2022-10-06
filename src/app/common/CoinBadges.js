@@ -4,22 +4,26 @@ export default function CoinBadges(props) {
 
     const [activeBadge,setactiveBadge] = React.useState(0)
 
-    // const badgeList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple"]
+    // const dropList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple"]
     // const badgeList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple","Avalanche" ,"Unicoin","Maker","Matic","Render","Flow","Cosmos","Luna","Algorand","Aurora","Cardano","Fantom","Polygon","Near","Tron","Optimism","Polkadot","Filecoin","Binance"]
     // console.log(props.chainList)
-    let badgeList = ["All"]
+    
+    let badgeList = [{name:"All",id:""}]
+
     props.chainList.map((chain)=>{
-      badgeList.push(chain.name)
+        // console.log(chain)
+      badgeList.push({name:chain.name,id:chain.id})
     })
+    // console.log(badgeList)
     const dropdownList = badgeList
     return (
         <div className='coin-badges'>
             <div className='badge-list'>
                 {badgeList.map((badge, index) => {
-                    const className = index == props.activeBadge ? "inter-display-medium f-s-13 lh-16 m-r-16 badge-name badge-active" :
+                    const className = props.activeBadge.some(e => e.name === badge.name) ? "inter-display-medium f-s-13 lh-16 m-r-16 badge-name badge-active" :
                         "inter-display-medium f-s-13 lh-16 m-r-16 black-191 badge-name"
                     return (
-                        <div id={index} key={index} className={className} onClick={props.handleFunction}>{badge}</div>
+                        <div id={index} key={index} className={className} onClick={()=>props.handleFunction(badge)}>{badge.name}</div>
                     )
                 })}
             </div>
