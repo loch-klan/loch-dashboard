@@ -244,7 +244,8 @@ class FixAddModal extends BaseReactComponent {
                 <Modal
                     show={this.state.show}
                     className="fix-add-modal"
-                    backdrop="static"
+                    // backdrop="static"
+                    onHide={this.state.onHide}
                     size="lg"
                     dialogClassName={"fix-add-modal"}
                     centered
