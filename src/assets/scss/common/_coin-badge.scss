@@ -33,9 +33,12 @@
       position: absolute;
       right: 0px;
       top: -3px;
+      
       .dropdown-menu{
         width: auto;
         padding: 0.4rem;
+        height:37rem;
+        overflow-y: scroll;
       }
         .dropdown-toggle {
           box-shadow: -25px 0px 24px 20px $grey-F2F;
@@ -54,14 +57,17 @@
 .badge-list::-webkit-scrollbar{
   height: 0.4rem;
 }
+.dropdown-menu::-webkit-scrollbar{
+  width: 0.4rem;
+}
 
-.badge-list::-webkit-scrollbar-thumb{
+.dropdown-menu::-webkit-scrollbar-thumb,.badge-list::-webkit-scrollbar-thumb{
   // border-radius: 2rem;
   border-radius: 0.8rem;
   // background-color: $grey-999;
   background: rgb(90, 90, 90);
 }
-.badge-list::-webkit-scrollbar-track {
+.dropdown-menu::-webkit-scrollbar,.badge-list::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 0.8rem;
 }
