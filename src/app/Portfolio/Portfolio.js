@@ -21,7 +21,7 @@ class Portfolio extends BaseReactComponent {
             loader: false,
             coinAvailable: true,
             fixModal : false,
-            addModal:true,
+            addModal:false,
         }
     }
 
