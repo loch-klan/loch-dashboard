@@ -24,7 +24,7 @@ const OnboardingModal = ({ show, onHide, title, icon, subTitle, isSignInActive, 
                             <Image className='back-icon cp' src={backIcon} />
                         </div> : null}
                         <Image className='ob-modal-title-icon' src={icon} />
-                        <h1 className='inter-display-medium f-s-31 lh-37 white'>{title}</h1>
+                        <h1 className='inter-display-medium f-s-25 lh-31 white'>{title}</h1>
                         <p className='inter-display-medium f-s-13 lh-16 white op-8'>{subTitle}</p>
                     </Modal.Title>
                 </Modal.Header>

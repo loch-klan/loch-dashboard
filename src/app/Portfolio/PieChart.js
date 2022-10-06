@@ -6,7 +6,7 @@ import CustomLoader from "../common/CustomLoader";
 import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
 import unrecognised from '../../image/unrecognised.png';
 import { DEFAULT_COLOR } from '../../utils/Constant';
-import { Image } from 'react-bootstrap';
+import { Image} from 'react-bootstrap';
 import noDataImage from '../../image/no-data.png';
 
 
@@ -113,7 +113,7 @@ class PieChart extends BaseReactComponent {
                             seriesCenter = series.center,
                             x = seriesCenter[0] + this.plotLeft,
                             y = seriesCenter[1] + this.plotTop,
-                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-30 lh-20 black-1D2">$${numToCurrency(self.state.assetTotal)}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">USD</p></div><span class="inter-display-medium f-s-13 lh-40 grey-7C7">Total Assets</span></div>`,
+                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-32 lh-38 black-1D2">$${numToCurrency(self.state.assetTotal)}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">USD</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total Assets</span></div>`,
                             fontMetrics = this.renderer.fontMetrics(16);
                         series.data.map((e, i) => {
                             e.dataLabel.css({
@@ -303,7 +303,8 @@ class PieChart extends BaseReactComponent {
         }
         return (
             <div className='portfolio-over-container' >
-                <h1 className='Inter-Medium overview-heading'>Overview</h1>
+
+                <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
                 Object.keys(this.state.assetData).length > 0 ?
                     <>
@@ -389,6 +390,8 @@ class PieChart extends BaseReactComponent {
                         <CustomLoader loaderType="pie" />
                     </div>
                 }
+
+
             </div >
         )
 

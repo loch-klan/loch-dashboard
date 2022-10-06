@@ -23,8 +23,8 @@
             }
         }
         .welcome-card-section {
-            margin: 9.6rem 0 2rem;
-            padding: 6.8rem 4.8rem 6rem 4.8rem;
+            margin: 8rem 0 2rem;
+            padding: 4.8rem;
             // width: 89.6rem;
             background-color: $secondary;
             box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
@@ -51,7 +51,7 @@
 
                     .welcome-btn {
                         button {
-                            padding: 1.8rem 2.8rem;
+                            padding: 1.65rem 2.8rem;
                         }
 
                         .secondary-btn {
@@ -67,9 +67,9 @@
                     align-items: flex-end;
 
                     .wallet-amount {
-                        font-size: 3.9rem;
-                        line-height: 47px;
-                        margin-bottom: 1.2rem;
+                        font-size: 3.2rem;
+                        line-height: 38px;
+                        // margin-top: 1.2rem;
                         color: $black-1D2;
                     }
 
@@ -158,10 +158,10 @@
                 text-align: center;
 
                 .pie-chart-middle-text {
-                    display: flex;
+                    // display: flex;
 
                     .pie-chart-middle-text-currency {
-                        margin-top: 1.2rem;
+                        margin: 0.4rem 0;
                     }
                 }
             }
