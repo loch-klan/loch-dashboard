@@ -7,7 +7,7 @@
     .modal-content {
         border: none;
         border-radius: 1.4rem !important;
-        width: 78rem;
+        width: 74.4rem;
 
         .modal-header {
             background-image: url("../../../image/Frame.png");
@@ -16,7 +16,7 @@
             padding: 3.6rem;
             text-align: center;
             display: block;
-
+            border-top-right-radius: 1.4rem;
             .ob-modal-title-icon {
                 width: 6rem;
             }
@@ -95,8 +95,10 @@
                 width: fit-content;
                 margin: auto;
                 position: relative;
-                margin: 0 0rem 0 2.4rem;
-                padding: 0 1.6rem 0 7rem;
+                // margin: 0 0rem 0 2.4rem;
+                // padding: 0 1.6rem 0 7rem;
+                margin: 0 2.4rem;
+                padding: 0 3.8rem 0 5.6rem;
 
                 .ob-modal-body-del {
                     border-radius: 0.8rem;
@@ -199,6 +201,7 @@
                 .go-btn {
                     padding-left: 6rem;
                     padding-right: 6rem;
+                    opacity: 1;
                 }
 
                 .preview {

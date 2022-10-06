@@ -226,11 +226,15 @@ class FixAddModal extends BaseReactComponent {
                         id={elem.id}
                     />
                     {
-                        elem.address ? elem.coinFound && elem.coins.length>0 ?
-                        <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} isLoaded={true}></CustomChip>
+                        elem.address
+                        ?
+                          elem.coinFound && elem.coins.length>0
+                          ?
+                          <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} isLoaded={true}></CustomChip>
+                          :
+                          <CustomChip coins={null} isLoaded={true}></CustomChip>
                         :
-                        <CustomChip coins={null} isLoaded={true}></CustomChip>
-                        :""
+                        ""
                     }
                 </div>)
             })
@@ -261,7 +265,7 @@ class FixAddModal extends BaseReactComponent {
                                 <Image src={Banner} className="banner-img" />
                                 <div className='wallet-header'>
                                     <Image src={this.state.modalIcon} className="m-b-20" />
-                                    <h4 className="inter-display-medium f-s-31 lh-37 white m-b-4">{this.state.title}</h4>
+                                    <h4 className="inter-display-medium f-s-25 lh-31 white m-b-4">{this.state.title}</h4>
                                     <p className={"inter-display-medium f-s-13 lh-16 white op-8 "}>{this.state.subtitle}</p>
                                 </div>
                             </div>
