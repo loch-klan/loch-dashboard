@@ -81,17 +81,17 @@ class Wallet extends Component {
 
         // console.log("NEW ARRSY", newArr)
     }
-    
+
     componentDidUpdate(prevProps , prevState) {
         if (prevState.activeBadge !== this.state.activeBadge ) {
-            
+
         //   console.log("MADE API CALL",this.state.activeBadge)
         //   console.log("MADE API CALL prev" ,prevProps)
         //   console.log("MADE API CALL state",prevState)
           let data = new URLSearchParams()
           let arr = [...this.state.activeBadge]
           let index = arr.findIndex(e => e.id === "")
-          if(index !== -1) 
+          if(index !== -1)
           {
             arr.splice(index,1)
           }
@@ -147,6 +147,7 @@ class Wallet extends Component {
                             return (
                                 <WalletCard
                                     key={index}
+                                    wallet_metadata={wallet.wallet_metadata}
                                     // wallet_icon={wallet.wallet_icon}
                                     // coin_name={wallet.coin_name}
                                     // wallet_name={wallet.wallet_name}

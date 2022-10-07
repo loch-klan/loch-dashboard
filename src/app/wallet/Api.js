@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 export const getwallets = (ctx,data)=>{
     return  async function (dispatch, getState) {
-     
+
        postLoginInstance.post("wallet/user-wallet/search-wallet",data)
        .then((res)=>{
         console.log(res)
@@ -26,13 +26,14 @@ export const getwallets = (ctx,data)=>{
                         })
                     })
                     obj['total_value'] = item[1].total_value
+                    obj['wallet_metadata'] = item[1].wallet_metadata
                     walletList.push(obj)
                 })
-                
+
                 ctx.setState({
                     walletData :walletList
                 })
-                
+
             }
             else{
                 toast.error(res.data.message || "Something Went Wrong")

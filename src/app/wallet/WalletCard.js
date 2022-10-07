@@ -7,16 +7,16 @@ import EditIcon from '../../assets/images/EditIcon.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import EditWalletModal from './EditWalletModal';
 import EthereumTextIcon from '../../assets/images/icons/EthereumTextIcon.svg';
-// import PhantomWalletIcon from '../../assets/images/icons/PhantomWalletIcon.svg'
+import unrecognisedIcon from '../../image/unrecognised.png';
 import { numToCurrency } from './../../utils/ReusableFunctions';
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
     function handleClose() {
         setShow(false);
     }
-    // function handleShow() {
-    //     setShow(true)
-    // }
+    function handleShow() {
+        setShow(true)
+    }
     const chips = props.wallet_coins.map((coin, index) => {
         return (
             <CustomOverlay
@@ -52,11 +52,11 @@ export default function WalletCard(props) {
                 <div className='wallet-account-details'>
 
                     <div className='m-r-16 wallet-img'>
-                        <Image src={props.wallet_icon} />
+                        <Image src={props.wallet_icon || unrecognisedIcon} />
                     </div>
 
                     <div className='m-r-16 wallet-name-details'>
-                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.coin_name}</h6>
+                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.coin_name || "Undefined"}</h6>
                         {props.wallet_name && <div className='inter-display-medium f-s-16 lh-19 wallet-name'>{props.wallet_name} </div>}
                     </div>
 
@@ -77,7 +77,7 @@ export default function WalletCard(props) {
                 <div className='chips-section'>
                     {chips}
                 </div>
-                <Image src={EditIcon} className="cp" />
+                <Image src={EditIcon} className="cp" onClick={handleShow} />
                 {/* onClick={handleShow} */}
             </div>
 
