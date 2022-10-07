@@ -12,7 +12,7 @@ export default function WelcomeCard(props) {
         <div className="welcome-card-section">
             <div className="welcome-card">
                 <div className='welcome-section-left'>
-                    <h1 className='inter-display-semi-bold f-s-25 l-h30 black-191 welcome-title'>Welcome to Loch</h1>
+                    <h1 className='inter-display-medium f-s-25 lh-30 black-191 welcome-title'>Welcome to Loch</h1>
                     <p className='inter-display-medium'>Add your wallet address(es) to receive personalized  </p>
                     <p className="inter-display-medium m-b-24">financial intelligence immediately.</p>
                     <div className="welcome-btn">

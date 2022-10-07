@@ -105,10 +105,13 @@ class PieChart extends BaseReactComponent {
                 styledMode: false,
                 type: 'pie',
                 backgroundColor: null,
-                height: 445,
-                width: 900,
+                height: 365,
+                width: 765,
                 events: {
                     render: function () {
+                      console.log('this.series[0]',this.series[0]);
+                      console.log('this.plotLeft',this.plotLeft);
+                      console.log('this.plotTop',this.plotTop);
                         var series = this.series[0],
                             seriesCenter = series.center,
                             x = seriesCenter[0] + this.plotLeft,
@@ -130,6 +133,7 @@ class PieChart extends BaseReactComponent {
                             )
                                 .css({
                                     transform: 'translate(-50%)',
+                                    top: "150px"
                                 })
                                 .add()
                         } else {
@@ -142,12 +146,13 @@ class PieChart extends BaseReactComponent {
                             )
                                 .css({
                                     transform: 'translate(-50%)',
+                                    top: "150px"
                                 })
                                 .add()
                         }
                         this.customTitle.attr({
                             x,
-                            y: y + fontMetrics.f / 2
+                            y: y - (fontMetrics.f + 5)
                         });
                     }
                 }
