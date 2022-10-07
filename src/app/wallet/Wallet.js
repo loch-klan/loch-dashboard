@@ -11,7 +11,7 @@ import {data} from "./walletDate.js"
 import PageHeader from '../common/PageHeader';
 import CoinBadges from './../common/CoinBadges';
 import sort from "../../image/sort-1.png"
-import { getwallets } from './Api';
+import { getwallets ,getallwallets} from './Api';
 import {getAllCoins} from '../onboarding/Api.js'
 import {SEARCH_BY_CHAIN_IN }from "../../utils/Constant.js"
 class Wallet extends Component {
@@ -22,6 +22,7 @@ class Wallet extends Component {
             start: 0,
             sorts: [],
             limit: 10,
+            dropDownListModal : [],
             activeBadge: [{name:"All",id:""}],
         }
         this.sortby = ["Amount", "Date added", "Name"]
@@ -38,7 +39,7 @@ class Wallet extends Component {
         data.append("limit", this.state.limit)
         data.append("sorts", JSON.stringify(this.state.sorts))
         this.props.getwallets(this, data)
-
+        this.props.getallwallets(this,data)
         // console.log("WalletData", this.state.walletData)
     }
 
@@ -83,6 +84,7 @@ class Wallet extends Component {
     }
 
     componentDidUpdate(prevProps , prevState) {
+        console.log("Update")
         if (prevState.activeBadge !== this.state.activeBadge ) {
 
         //   console.log("MADE API CALL",this.state.activeBadge)
@@ -151,6 +153,7 @@ class Wallet extends Component {
                                     // wallet_icon={wallet.wallet_icon}
                                     // coin_name={wallet.coin_name}
                                     // wallet_name={wallet.wallet_name}
+                                    dropDrowList={this.state.dropDownListModal}
                                     wallet_account_number={wallet.address}
                                     wallet_amount={wallet.total_value}
                                     wallet_coins={wallet.chain}
@@ -172,6 +175,7 @@ const mapDispatchToProps = {
     // getPosts: fetchPosts
     getAllCoins,
     getwallets,
+    getallwallets
 }
 Wallet.propTypes = {
     // getPosts: PropTypes.func

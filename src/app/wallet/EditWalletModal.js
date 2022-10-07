@@ -11,7 +11,8 @@ import FormValidator from './../../utils/form/FormValidator';
 import Wallet from './Wallet';
 import BaseReactComponent from './../../utils/form/BaseReactComponent';
 import EtherIcon from '../../assets/images/icons/ether-coin.svg'
-
+import DropDown from './../common/DropDown';
+import {updatewallet , getwallets} from './Api.js'
 class EditWalletModal extends BaseReactComponent {
 
     constructor(props) {
@@ -22,39 +23,44 @@ class EditWalletModal extends BaseReactComponent {
             walletIcon: props.walletIcon,
             onHide: props.onHide,
             walletAddress: props.walletAddress,
-            walletTag: ""
+            walletTag: "",
+            dropDownList:props.dropDownList,
+            dropDownActive:{},
+            coinchips:props.coinchips
         }
-        this.chipJson = [
-            {
-                coinSymbol: EtherIcon,
-                coinName: "Ethereum"
-            },
-            {
-                coinSymbol: EtherIcon,
-                coinName: "Ethereum"
-            },
-            {
-                coinSymbol: EtherIcon,
-                coinName: "Ethereum"
-            }
-        ]
     }
 
 
+    handleDroDownSelect = (title)=>{
+        console.log(title.split(' '))
+        let id = title.split(' ')[3]
+        let index = this.state.dropDownList.findIndex(e => e.id === id)
+        let coin  = this.state.dropDownList[index]
+        // console.log("Active",coin)
+        this.setState({
+            dropDownActive: coin
+        })
+    }
 
     onValidSubmit = (done, event) => {
         console.log("Value submitted");
         console.log("Form Submitted");
+        let data = new URLSearchParams()
+        data.append("wallet_address",this.state.walletAddress)
+        data.append("wallet_id",this.state.dropDownActive.id ? this.state.dropDownActive.id : "")
+        data.append("tag",this.state.walletTag)
+
+        this.props.updatewallet(this,data)
+       
     };
 
 
-
     render() {
-        const chips = this.chipJson.map((e, index) => {
+        const chips = this.state.coinchips.map((e, index) => {
             return (
-                <div className='chipcontainer'>
-                    <Image src={e.coinSymbol} />
-                    <div className='inter-display-medium f-s-13 lh-16'>{e.coinName}</div>
+                <div className='chipcontainer' key={index}>
+                    <Image src={e.symbol} />
+                    <div className='inter-display-medium f-s-13 lh-16' >{e.name}</div>
                 </div>
             )
         })
@@ -63,7 +69,7 @@ class EditWalletModal extends BaseReactComponent {
                 show={this.state.show}
                 onClick={this.state.handleClose}
                 className="edit-wallet-form"
-                backdrop="static"
+                onHide={this.state.onHide}
                 size="lg"
                 dialogClassName={"edit-wallet-modal"}
                 centered
@@ -82,7 +88,14 @@ class EditWalletModal extends BaseReactComponent {
                 <Modal.Body>
 
                     <div className='edit-wallet-body'>
-                        <h6 className='inter-display-medium f-s-20 lh-24 m-b-4 title'>Metamask</h6>
+                        {/* <h6 className='inter-display-medium f-s-20 lh-24 m-b-4 title'>Metamask</h6> */}
+                        <DropDown
+                            id="dropdown-basic-editwallet-button"
+                            title={this.state.dropDownActive.name ? this.state.dropDownActive.name : "" }
+                            list={this.state.dropDownList}
+                            class={this.state.dropDownActive.name ? "":"arrowdown" }
+                            onSelect={this.handleDroDownSelect}
+                        />
                         <p className='inter-display-regular f-s-13 lh-16 m-b-16 subtitle'>added 3 days ago</p>
 
                         <div className='m-b-32 coinchips'>
@@ -97,17 +110,16 @@ class EditWalletModal extends BaseReactComponent {
                                         this, "walletAddress"
                                     )}
                                     label="Wallet Address"
-                                    required
+                                    // required
+                                    disabled
                                     validations={[
                                         {
                                             validate: FormValidator.isRequired,
                                             message: "Field cannot be empty"
                                         }
                                     ]}
-                                    
                                     control={{
                                         type: CustomTextControl,
-                                       
                                     }}
                                 />
 
@@ -150,6 +162,8 @@ class EditWalletModal extends BaseReactComponent {
 const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
+    updatewallet,
+    getwallets,
 }
 EditWalletModal.propTypes = {
 };

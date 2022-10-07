@@ -44,3 +44,54 @@ export const getwallets = (ctx,data)=>{
        })
     };
 }
+
+export const getallwallets = (ctx,data)=>{
+    return  async function (dispatch, getState) {
+
+       postLoginInstance.post("wallet/user-wallet/get-all-wallets",data)
+       .then((res)=>{
+        console.log(res)
+            if(!res.data.error){
+                console.log("getallwallets",res.data.data)
+                let dropdownlistmodal = []
+                let allwalletdata = res.data.data.wallets
+                allwalletdata.map((item)=>{
+                    let obj = {...item,value:item.name}
+
+                    // console.log("item",item)
+                    // console.log("obj",obj)
+                    dropdownlistmodal.push(obj)
+                })
+
+                ctx.setState({
+                   dropDownListModal :dropdownlistmodal
+                })
+            }
+            else{
+                toast.error(res.data.message || "Something Went Wrong")
+            }
+       })
+       .catch((err)=>{
+        console.log("getallwallets-Api",err)
+       })
+    };
+}
+
+export const updatewallet = (ctx,data)=>{
+    return  async function (dispatch, getState) {
+
+       postLoginInstance.post("wallet/user-wallet/update-wallet",data)
+       .then((res)=>{
+        console.log(res)
+            if(!res.data.error){
+                console.log(res.data.message)
+            }
+            else{
+                toast.error(res.data.message || "Something Went Wrong")
+            }
+       })
+       .catch((err)=>{
+        console.log("updateWallet-Api start",err)
+       })
+    };
+}

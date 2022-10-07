@@ -7,7 +7,7 @@
         border-radius: 1.4rem !important;
         border: none;
         box-shadow: 0px 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12), 0px 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
-        width:78rem;
+        width: 78rem;
     }
 
     .modal-header {
@@ -61,6 +61,32 @@
             flex-direction: column;
             align-items: center;
 
+            .dropdown {
+                .dropdown-menu {
+                    width: auto;
+                    padding: 0.4rem;
+                    height: 19rem;
+                    overflow-y: scroll;
+                }
+
+                .dropdown-toggle {
+                    padding: 1.1rem 1.9rem 1.1rem 1.6rem;
+                    background: $secondary;
+                    border: 0.1rem solid $grey-B0B;
+                    border-radius: 0.8rem;
+                    color: $black-191;
+                    // box-shadow: none;
+                }
+            }
+            .arrowdown{
+                .dropdown-toggle{
+                    padding:1.5rem 1.9rem 1.1rem 1.9rem;
+                }
+                .dropdown-toggle::after{
+                    margin-left:0rem;
+                }
+            }
+
             .title {
                 color: $black-000;
             }
@@ -71,6 +97,8 @@
 
             .coinchips {
                 display: flex;
+                width: 26rem;
+                overflow-x: scroll;
 
                 .chipcontainer {
                     display: flex;
@@ -80,9 +108,11 @@
                     border: 0.1rem solid #CACBCC;
                     border-radius: 0.4rem;
                     padding:0.4rem 0.8rem;
+                    margin-bottom:0.2rem;
 
-                    img{
-                        margin-right:0.6rem;
+                    img {
+                        margin-right: 0.6rem;
+                        width: 1.6rem;
                     }
                 }
             }

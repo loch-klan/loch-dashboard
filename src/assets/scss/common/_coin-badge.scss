@@ -54,20 +54,20 @@
         }
     }
 }
-.badge-list::-webkit-scrollbar{
+.coinchips::-webkit-scrollbar,.badge-list::-webkit-scrollbar{
   height: 0.4rem;
 }
 .dropdown-menu::-webkit-scrollbar{
   width: 0.4rem;
 }
 
-.dropdown-menu::-webkit-scrollbar-thumb,.badge-list::-webkit-scrollbar-thumb{
+.coinchips::-webkit-scrollbar-thumb,.dropdown-menu::-webkit-scrollbar-thumb,.badge-list::-webkit-scrollbar-thumb{
   // border-radius: 2rem;
   border-radius: 0.8rem;
   // background-color: $grey-999;
   background: rgb(90, 90, 90);
 }
-.dropdown-menu::-webkit-scrollbar,.badge-list::-webkit-scrollbar-track {
+.coinchips::-webkit-scrollbar-track,.dropdown-menu::-webkit-scrollbar,.badge-list::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 0.8rem;
 }

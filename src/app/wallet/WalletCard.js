@@ -41,8 +41,7 @@ export default function WalletCard(props) {
         )
     })
     const copyContent = () => {
-        const text = document.getElementById("account_number").innerText
-        console.log(text)
+        const text = props.wallet_account_number
         navigator.clipboard.writeText(text)
     }
     return (
@@ -87,7 +86,9 @@ export default function WalletCard(props) {
                         show={show}
                         onHide={handleClose}
                         walletIcon={MetamaskIcon}
-                        walletAddress="0x9450C3C62119A6A2268E249D4B837B4442733CB0"
+                        walletAddress={props.wallet_account_number}
+                        dropDownList={props.dropDrowList}
+                        coinchips={props.wallet_coins}
                     /> : ""
             }
 
