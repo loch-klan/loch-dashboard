@@ -41,9 +41,10 @@
                 padding: 0rem 7rem;
             }
             .fix-add-modal-body {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+                // display: flex;
+                // flex-direction: column;
+                // align-items: center;
+                text-align: center;
                 .fix-wallet-title{
                     display: flex;
                 flex-direction: column;
@@ -164,14 +165,17 @@
             }
 
             .add-modal-inputs {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
+                // display: flex;
+                // flex-direction: column;
+                // width: 100%;
                 // padding: 0rem 8.4rem 0rem 8.4rem;
-                padding: 0rem 6.2rem 0rem 7rem;
+                padding: 0rem 2.5rem 0rem 7rem;
+                max-height: 22rem;
+                overflow-y: auto;
+                margin: 0 3.7rem 0 0rem;
                 .add-wallet-input-section {
-                    display: flex;
-                    align-items: center;
+                    // display: flex;
+                    // align-items: center;
                     position: relative;
                     .chip-wrapper{
                         top:0.8rem
