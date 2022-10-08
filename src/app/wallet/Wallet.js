@@ -33,14 +33,25 @@ class Wallet extends Component {
 
         this.props.getAllCoins()
         let data = new URLSearchParams()
+        // data.append("start", this.state.start)
+        // // data.append("conditions", JSON.stringify(this.state.conditions))
+        // data.append("conditions", JSON.stringify([]))
+        // data.append("limit", this.state.limit)
+        // data.append("sorts", JSON.stringify(this.state.sorts))
+        // this.props.getwallets(this, data)
+        this.makeApiCall()
+        this.props.getallwallets(this,data)
+        // console.log("WalletData", this.state.walletData)
+    }
+    
+    makeApiCall = (cond)=>{
+        let data = new URLSearchParams()
         data.append("start", this.state.start)
         // data.append("conditions", JSON.stringify(this.state.conditions))
-        data.append("conditions", JSON.stringify([]))
+        data.append("conditions", JSON.stringify(cond ? cond : []))
         data.append("limit", this.state.limit)
         data.append("sorts", JSON.stringify(this.state.sorts))
         this.props.getwallets(this, data)
-        this.props.getallwallets(this,data)
-        // console.log("WalletData", this.state.walletData)
     }
 
     handleFunction = (badge) => {
@@ -82,7 +93,6 @@ class Wallet extends Component {
 
         // console.log("NEW ARRSY", newArr)
     }
-
     componentDidUpdate(prevProps , prevState) {
         console.log("Update")
         if (prevState.activeBadge !== this.state.activeBadge ) {
@@ -90,7 +100,7 @@ class Wallet extends Component {
         //   console.log("MADE API CALL",this.state.activeBadge)
         //   console.log("MADE API CALL prev" ,prevProps)
         //   console.log("MADE API CALL state",prevState)
-          let data = new URLSearchParams()
+        //   let data = new URLSearchParams()
           let arr = [...this.state.activeBadge]
           let index = arr.findIndex(e => e.id === "")
           if(index !== -1)
@@ -102,12 +112,13 @@ class Wallet extends Component {
               condition[0].value.push(badge.id)
             })
             console.log(condition)
-              data.append("start", this.state.start)
-              data.append("conditions", JSON.stringify(condition))
-              data.append("limit", this.state.limit)
-              data.append("sorts", JSON.stringify(this.state.sorts))
-              this.props.getwallets(this, data)
+            //   data.append("start", this.state.start)
+            //   data.append("conditions", JSON.stringify(condition))
+            //   data.append("limit", this.state.limit)
+            //   data.append("sorts", JSON.stringify(this.state.sorts))
+            //   this.props.getwallets(this, data)
         //   console.log("after call",index)
+        this.makeApiCall(condition)
         }
 
     }
@@ -157,6 +168,7 @@ class Wallet extends Component {
                                     wallet_account_number={wallet.address}
                                     wallet_amount={wallet.total_value}
                                     wallet_coins={wallet.chain}
+                                    makeApiCall={this.makeApiCall}
                                 />
                             )
                         })}

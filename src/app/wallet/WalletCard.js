@@ -55,7 +55,7 @@ export default function WalletCard(props) {
                     </div>
 
                     <div className='m-r-16 wallet-name-details'>
-                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.coin_name || "Undefined"}</h6>
+                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata ? props.wallet_metadata.name : "Undefined"}</h6>
                         {props.wallet_name && <div className='inter-display-medium f-s-16 lh-19 wallet-name'>{props.wallet_name} </div>}
                     </div>
 
@@ -89,6 +89,7 @@ export default function WalletCard(props) {
                         walletAddress={props.wallet_account_number}
                         dropDownList={props.dropDrowList}
                         coinchips={props.wallet_coins}
+                        makeApiCall={props.makeApiCall}
                     /> : ""
             }
 

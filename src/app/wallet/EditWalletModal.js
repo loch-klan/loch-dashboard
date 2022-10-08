@@ -26,7 +26,8 @@ class EditWalletModal extends BaseReactComponent {
             walletTag: "",
             dropDownList:props.dropDownList,
             dropDownActive:{},
-            coinchips:props.coinchips
+            coinchips:props.coinchips,
+            makeApiCall:props.makeApiCall
         }
     }
 

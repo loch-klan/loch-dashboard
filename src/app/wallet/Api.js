@@ -85,6 +85,8 @@ export const updatewallet = (ctx,data)=>{
         console.log(res)
             if(!res.data.error){
                 console.log(res.data.message)
+                ctx.state.onHide()
+                ctx.state.makeApiCall()
             }
             else{
                 toast.error(res.data.message || "Something Went Wrong")
