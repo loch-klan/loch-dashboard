@@ -51,7 +51,7 @@ export default function WalletCard(props) {
                 <div className='wallet-account-details'>
 
                     <div className='m-r-16 wallet-img'>
-                        <Image src={props.wallet_icon || unrecognisedIcon} />
+                        <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognisedIcon} />
                     </div>
 
                     <div className='m-r-16 wallet-name-details'>
