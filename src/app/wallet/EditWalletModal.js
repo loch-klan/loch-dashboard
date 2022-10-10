@@ -2,7 +2,7 @@ import React from 'react'
 import { Modal, Image, Button } from 'react-bootstrap'
 import closeIcon from '../../assets/images/icons/close-icon.svg'
 import { connect } from 'react-redux';
-import {updateWalletApi , getAllWalletListApi, getAllWalletApi} from './Api.js'
+import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
 import unrecognisedIcon from '../../image/unrecognised.png';
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
 class EditWalletModal extends BaseReactComponent {
@@ -30,6 +30,12 @@ class EditWalletModal extends BaseReactComponent {
         data.append("tag",this.state.walletTag)
         updateWalletApi(this,data);
     };
+
+    handleDelete = ()=>{
+        let data = new URLSearchParams()
+        data.append("wallet_address",this.state.walletAddress)
+        deleteWallet(this,data)
+    }
 
     render() {
         const chips = this.state.coinchips.map((e, index) => {
@@ -107,7 +113,7 @@ class EditWalletModal extends BaseReactComponent {
                                     }}
                                 />
                                 <div className='edit-btns'>
-                                    <Button className="inter-display-semi-bold f-s-16 lh-19 m-r-24 delete-btn">
+                                    <Button className="inter-display-semi-bold f-s-16 lh-19 m-r-24 delete-btn" onClick={this.handleDelete}>
                                         Delete wallet
                                     </Button>
                                     <Button className='primary-btn' type="submit">Save changes</Button>
@@ -123,10 +129,12 @@ class EditWalletModal extends BaseReactComponent {
 }
 
 const mapStateToProps = state => ({
+    walletState: state.WalletState,
 });
 const mapDispatchToProps = {
   updateWalletApi,
   getAllWalletListApi,
+  deleteWallet,
 }
 EditWalletModal.propTypes = {
 };

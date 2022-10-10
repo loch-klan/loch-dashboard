@@ -23,9 +23,9 @@ export default function WalletCard(props) {
                 isInfo={true}
                 key={index}
                 isText={true}
-                isName={coin.name}
+                isName={coin.chain.name}
                 colorCode={coin.color}
-                text={coin.chain.percentage.toFixed(2) + "%  " + coin.value.toFixed(2) + " USD"}
+                text={ coin.chain.percentage.toFixed(2) + "%  " + coin.value.toFixed(2) + " USD"}
             >
                 <div>
                     <CoinChip
