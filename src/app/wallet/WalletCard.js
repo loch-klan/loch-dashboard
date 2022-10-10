@@ -1,12 +1,10 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
 import CopyClipboardIcon from '../../assets/images/CopyClipboardIcon.svg'
-import MetamaskIcon from '../../assets/images/MetamaskIcon.svg'
 import CoinChip from './CoinChip';
 import EditIcon from '../../assets/images/EditIcon.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import EditWalletModal from './EditWalletModal';
-import EthereumTextIcon from '../../assets/images/icons/EthereumTextIcon.svg';
 import unrecognisedIcon from '../../image/unrecognised.png';
 import { numToCurrency } from './../../utils/ReusableFunctions';
 export default function WalletCard(props) {
@@ -25,15 +23,15 @@ export default function WalletCard(props) {
                 isInfo={true}
                 key={index}
                 isText={true}
-                // text={coin.value}
-                text={coin.value.toFixed(2)}
-                IconImage={EthereumTextIcon}
+                isName={coin.name}
+                colorCode={coin.color}
+                text={coin.chain.percentage.toFixed(2) + "%  " + coin.value.toFixed(2) + " USD"}
             >
                 <div>
                     <CoinChip
                         key={index}
-                        coin_img_src={coin.symbol}
-                        coin_percent={coin.value.toFixed(2)}
+                        coin_img_src={coin.chain.symbol}
+                        coin_percent={coin.chain.percentage.toFixed(2) + "%"}
                     />
                 </div>
             </CustomOverlay>
@@ -46,53 +44,43 @@ export default function WalletCard(props) {
     }
     return (
         <div className="walletcard">
-
             <div className='m-b-32 wallet-details'>
                 <div className='wallet-account-details'>
-
                     <div className='m-r-16 wallet-img'>
                         <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognisedIcon} />
                     </div>
-
                     <div className='m-r-16 wallet-name-details'>
                         <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata ? props.wallet_metadata.name : "Undefined"}</h6>
-                        {props.wallet_name && <div className='inter-display-medium f-s-16 lh-19 wallet-name'>{props.wallet_name} </div>}
+                        {props.wallet_metadata && <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} </div>}
                     </div>
-
                     <div className='account-details' onClick={copyContent}>
                         <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
-                        <Image src={CopyClipboardIcon}
-                        />
+                        <Image src={CopyClipboardIcon} />
                     </div>
-
                 </div>
                 <div className='amount-details'>
                     <h6 className='inter-display-medium f-s-20 lh-24' >{numToCurrency(props.wallet_amount)}</h6>
                     <span className='inter-display-semi-bold f-s-10 lh-12'>USD</span>
                 </div>
             </div>
-
             <div className='coins-chip'>
-                <div className='chips-section'>
-                    {chips}
-                </div>
+                <div className='chips-section'>{chips}</div>
                 <Image src={EditIcon} className="cp" onClick={handleShow} />
-                {/* onClick={handleShow} */}
             </div>
-
             {
-                show ?
+                show
+                  ?
                     <EditWalletModal
                         show={show}
                         onHide={handleClose}
-                        walletIcon={MetamaskIcon}
                         walletAddress={props.wallet_account_number}
-                        dropDownList={props.dropDrowList}
+                        walletMetaData={props.wallet_metadata}
                         coinchips={props.wallet_coins}
                         makeApiCall={props.makeApiCall}
-                    /> : ""
+                    />
+                    :
+                    ""
             }
-
         </div>
     )
 }

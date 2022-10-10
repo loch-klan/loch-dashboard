@@ -1,99 +1,80 @@
 import { postLoginInstance} from "../../utils";
 import { toast } from "react-toastify";
+import { getAllWalletList } from "./WalletAction";
 
-export const getwallets = (ctx,data)=>{
-    return  async function (dispatch, getState) {
-
+export const getAllWalletListApi = (data)=>{
+    return function (dispatch, getState) {
        postLoginInstance.post("wallet/user-wallet/search-wallet",data)
        .then((res)=>{
-        console.log(res)
             if(!res.data.error){
-                let walletList = []
-                let walletdata = res.data.data.wallets
-                // walletList.push(res.data.data.wallets)
-                // console.log(walletdata)
-                Object.entries(walletdata).map(item => {
-                    let obj = {}
-                    obj['address'] = item[0]
-                    obj['chain'] = item[1].chains.map((ch)=>{
-                        // console.log(item[1].total_value)
-                        return({
-                            code:ch.chain.code,
-                            color:ch.chain.color,
-                            symbol:ch.chain.symbol,
-                            name:ch.chain.name,
-                            value : (ch.value*100 / item[1].total_value),
-                        })
+                let walletdata = res.data.data.user_wallets
+                walletdata = walletdata.map((wallet)=>{
+                  return({
+                    ...wallet,
+                    chains: wallet.chains.map((chain)=>{
+                      return({
+                        ...chain,
+                        chain: {
+                          ...chain.chain,
+                          percentage : (chain.value*100 / wallet.total_value),
+                        }
+                      })
                     })
-                    obj['total_value'] = item[1].total_value
-                    obj['wallet_metadata'] = item[1].wallet_metadata
-                    walletList.push(obj)
+                  })
                 })
-
-                ctx.setState({
-                    walletData :walletList
-                })
-
-            }
-            else{
+                dispatch(getAllWalletList(walletdata))
+            } else{
                 toast.error(res.data.message || "Something Went Wrong")
             }
        })
        .catch((err)=>{
-        console.log("getwallets-Api",err)
+        console.log("getAllWalletListApi-Api",err)
        })
     };
 }
 
-export const getallwallets = (ctx,data)=>{
-    return  async function (dispatch, getState) {
-
+export const getAllWalletApi = (ctx)=>{
+  const data = new URLSearchParams();
        postLoginInstance.post("wallet/user-wallet/get-all-wallets",data)
        .then((res)=>{
-        console.log(res)
             if(!res.data.error){
-                console.log("getallwallets",res.data.data)
-                let dropdownlistmodal = []
+                let walletNameList = []
                 let allwalletdata = res.data.data.wallets
                 allwalletdata.map((item)=>{
-                    let obj = {...item,value:item.name}
-
-                    // console.log("item",item)
-                    // console.log("obj",obj)
-                    dropdownlistmodal.push(obj)
+                    let obj = {
+                      ...item,
+                      label: item.name,
+                      value:item.id
+                    }
+                    walletNameList.push(obj)
                 })
 
                 ctx.setState({
-                   dropDownListModal :dropdownlistmodal
+                   walletNameList :walletNameList
                 })
-            }
-            else{
+            } else{
                 toast.error(res.data.message || "Something Went Wrong")
             }
        })
        .catch((err)=>{
-        console.log("getallwallets-Api",err)
+        console.log("getAllWalletApi-Api",err)
        })
-    };
 }
 
-export const updatewallet = (ctx,data)=>{
-    return  async function (dispatch, getState) {
-
+export const updateWalletApi = (ctx,data)=>{
        postLoginInstance.post("wallet/user-wallet/update-wallet",data)
        .then((res)=>{
         console.log(res)
             if(!res.data.error){
                 console.log(res.data.message)
-                ctx.state.onHide()
-                ctx.state.makeApiCall()
-            }
-            else{
+                ctx.props.onHide()
+                ctx.props.makeApiCall()
+                toast.success(res.data.message);
+            } else {
                 toast.error(res.data.message || "Something Went Wrong")
             }
        })
        .catch((err)=>{
         console.log("updateWallet-Api start",err)
        })
-    };
 }

@@ -105,32 +105,32 @@ function Sidebar(props) {
                         <ul>
                             <li>
                                 <Image src={ExportIcon} />
-                                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Export</Button>
+                                <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Export</Button>
                             </li>
                             <li>
                                 <Image src={ApiIcon} />
-                                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Api</Button>
+                                <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Api</Button>
                             </li>
                             <li>
                                 <Image src={DarkmodeIcon} />
-                                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Dark Mode</Button>
+                                <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Dark Mode</Button>
                             </li>
                             <li onClick={handleLeave}>
                                 <Image src={LeaveIcon} />
-                                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">Leave</Button>
+                                <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Leave</Button>
                             </li>
                         </ul>
 
                         <div className='m-b-12 footer-divOne'>
-                            <p className='inter-display-medium f-s-16 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
-                            <p className='inter-display-medium f-s-16 grey-CAC lh-19'>Thus, great things from </p>
-                            <p className='inter-display-medium f-s-16 grey-CAC lh-19'>small things come."</p>
+                            <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
+                            <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from </p>
+                            <p className='inter-display-medium f-s-15 grey-CAC lh-19'>small things come."</p>
                         </div>
-                        <div className="inter-display-semi-bold f-s-16 grey-B0B lh-19 footer-divTwo m-b-40">Sir Francis Drake</div>
+                        <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo m-b-40">Sir Francis Drake</div>
 
-                        {/* <p className='inter-display-medium f-s-16 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
-                        <p className='inter-display-medium f-s-16 grey-CAC lh-19'>Thus, great things from small things come.</p>
-                        <p className='inter-display-semi-bold f-s-16 grey-B0B lh-19'>Sir Francis Drake</p> */}
+                        {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
+                        <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from small things come.</p>
+                        <p className='inter-display-semi-bold f-s-15 grey-B0B lh-19'>Sir Francis Drake</p> */}
                     </div>
                 </div>
             </Container>

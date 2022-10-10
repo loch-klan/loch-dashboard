@@ -22,10 +22,10 @@
         .walletIcon {
 
             width: 6rem;
-            height: 6rem;
-            background-color: #FFE7BD;
-            filter: drop-shadow(0px 4px 8px rgba(206, 108, 27, 0.5)) drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.05));
-            border-radius: 0.8rem;
+            // height: 6rem;
+            // background-color: #FFE7BD;
+            // filter: drop-shadow(0px 4px 8px rgba(206, 108, 27, 0.5)) drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.05));
+            // border-radius: 0.8rem;
         }
 
         .closebtn {
@@ -57,55 +57,50 @@
 
 
         .edit-wallet-body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            // display: flex;
+            // flex-direction: column;
+            // align-items: center;
 
-            .dropdown {
-                .dropdown-menu {
-                    width: auto;
-                    padding: 0.4rem;
-                    height: 19rem;
-                    overflow-y: scroll;
-                }
+            // .dropdown {
+            //     .dropdown-menu {
+            //         width: auto;
+            //         padding: 0.4rem;
+            //         height: 19rem;
+            //         overflow-y: scroll;
+            //     }
 
-                .dropdown-toggle {
-                    padding: 1.1rem 1.9rem 1.1rem 1.6rem;
-                    background: $secondary;
-                    border: 0.1rem solid $grey-B0B;
-                    border-radius: 0.8rem;
-                    color: $black-191;
-                    // box-shadow: none;
-                }
-            }
-            .arrowdown{
-                .dropdown-toggle{
-                    padding:1.5rem 1.9rem 1.1rem 1.9rem;
-                }
-                .dropdown-toggle::after{
-                    margin-left:0rem;
-                }
-            }
-
-            .title {
-                color: $black-000;
-            }
-
+            //     .dropdown-toggle {
+            //         padding: 1.1rem 1.9rem 1.1rem 1.6rem;
+            //         background: $secondary;
+            //         border: 0.1rem solid $grey-B0B;
+            //         border-radius: 0.8rem;
+            //         color: $black-191;
+            //         // box-shadow: none;
+            //     }
+            // }
+            // .arrowdown{
+            //     .dropdown-toggle{
+            //         padding:1.5rem 1.9rem 1.1rem 1.9rem;
+            //     }
+            //     .dropdown-toggle::after{
+            //         margin-left:0rem;
+            //     }
+            // }
             .subtitle {
                 color: $grey-B0B;
+                text-align: center;
             }
-
             .coinchips {
                 display: flex;
-                width: 26rem;
-                overflow-x: scroll;
+                width: 34rem;
+                overflow-x: auto;
 
                 .chipcontainer {
                     display: flex;
                     align-items: center;
                     margin-right: 1.2rem;
                     background: rgba(229, 229, 230, 0.5);
-                    border: 0.1rem solid #CACBCC;
+                    border: 0.1rem solid $grey-CAC;
                     border-radius: 0.4rem;
                     padding:0.4rem 0.8rem;
                     margin-bottom:0.2rem;
@@ -118,8 +113,7 @@
             }
 
             .edit-form {
-                width: 100%;
-
+                // width: 100%;
                 form {
                     .form-group {
                         margin-bottom: 2rem;
@@ -144,28 +138,26 @@
                             padding:1.2rem 1.6rem;
                         }
                     }
-
-                    .edit-btns {
-                        margin-top: 4rem;
-                        display: flex;
-                        justify-content: center;
-
-                        .delete-btn {
-                            background-color: $pink-FCF;
-                            border: 0.15rem solid $pink-DA2;
-                            border-radius: 0.8rem;
-                            color: $pink-DA2;
-                            padding: 1.6rem 2.8rem;
-                            box-shadow: none;
-                        }
-
-                        .primary-btn {
-                            padding: 1.6rem 2.8rem;
-                            line-height: 1.9rem;
-                        }
-                    }
                 }
+                .edit-btns {
+                  margin-top: 4rem;
+                  display: flex;
+                  justify-content: center;
 
+                  .delete-btn {
+                      background-color: $pink-FCF;
+                      border: 0.15rem solid $pink-DA2;
+                      border-radius: 0.8rem;
+                      color: $pink-DA2;
+                      padding: 1.6rem 2.8rem;
+                      box-shadow: none;
+                  }
+
+                  .primary-btn {
+                      padding: 1.6rem 2.8rem;
+                      line-height: 1.9rem;
+                  }
+              }
             }
 
 

@@ -5,6 +5,7 @@ import { CommonReducer } from '../app/common';
 import { HomeReducer } from '../app/home';
 import OnboardingReducer from "../app/onboarding/OnboardingReducer";
 import PortfolioReducer from "../app/Portfolio/PortfolioReducer";
+import WalletReducer from '../app/wallet/WalletReducer';
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -12,5 +13,6 @@ export default combineReducers({
   CommonState: CommonReducer,
   HomeState: HomeReducer,
   OnboardingState: OnboardingReducer,
-  PortfolioState: PortfolioReducer
+  PortfolioState: PortfolioReducer,
+  WalletState: WalletReducer,
 });

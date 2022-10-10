@@ -3,61 +3,51 @@
     // height: 100vh;
     background-color: $secondary;
     width: 27.2rem;
-
     .container {
       width: 27.2rem;
         padding-left: 2.4rem;
         padding-right: 2.4rem;
     }
-
     .sidebar {
-
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-
         // padding: 4.4rem 0rem 0rem 0.9rem;
         // padding: 0;
         .logo {
             // margin-bottom: 3rem;
             // margin-left: 1.4rem;
-            margin: 4.4rem 1.4rem;
+            margin: 4rem 1.4rem;
+            img{
+              width: 8.7rem;
+            }
         }
-
         ul {
             list-style: none;
         }
-
         li {
             display: flex;
             align-items: center;
 
         }
-
         li:hover {
             cursor: pointer;
         }
-
         .sidebar-body {
             width: 100%;
             // margin-bottom: 3.2rem;
-            margin-bottom: 3.2rem;
-
+            margin-bottom: 1rem;
             position: relative;
-
             nav {
                 ul {
-
                     li {
-                        margin-bottom: 2rem;
-
+                        margin-bottom: 1.8rem;
                         .nav-link {
-                            @include font($grey-636, "Inter-Medium", 1.6rem, 500, 19.2px);
+                            @include font($grey-636, "Inter-Medium", 1.5rem, 500, 19.2px);
                             padding: 1.2rem;
                             display: flex;
                             align-items: center;
                             width: 100%;
-
                             img {
                                 margin-right: 1rem;
                             }
@@ -66,7 +56,6 @@
                               border-radius: 1.2rem;
                             }
                         }
-
                         .active {
                             background-color: rgba(229, 229, 230, 0.5);
                             border-radius: 1.2rem;
@@ -79,13 +68,11 @@
                     }
                 }
             }
-
             .nav-addwallet {
                 // position: absolute;
                 // top: 32.5rem;
                 position: relative;
                 margin-top: 2rem;
-
                 .wallet-info-para {
                     right: 0px;
                     position: absolute;
@@ -96,21 +83,17 @@
                     color: white;
                     bottom: 0;
                     padding: 2rem;
-
                     p:nth-child(2) {
                         opacity: 0.7;
                         margin-bottom: 1.6rem;
                     }
-
                     p {
                         width: 99%;
                         margin-bottom: 0.4rem;
-
                         span {
                             text-decoration: underline;
                         }
                     }
-
                     .addwallet-btn {
                         padding: 1.8rem 2.8rem;
                         background-color: $secondary;
@@ -123,24 +106,19 @@
                         border-radius: 0.8rem;
                     }
                 }
-
             }
         }
-
         .nowallet {
-            margin-bottom: 21rem;
+            // margin-bottom: 21rem;
         }
-
         .sidebar-footer {
             width: 100%;
             border-top: 0.1rem solid $grey-CAC;
-            padding-top: 3.5rem;
+            padding-top: 4rem;
             padding-left: 1.3rem;
-
             ul {
                 li {
-                    margin-bottom: 3.8rem;
-
+                    margin-bottom: 2.8rem;
                     .navbar-button {
                         background: none;
                         border: none;
@@ -150,7 +128,6 @@
                     }
                 }
             }
-
             // p {
             //     font-size: 1.6rem;
             //     font-weight: 500;
