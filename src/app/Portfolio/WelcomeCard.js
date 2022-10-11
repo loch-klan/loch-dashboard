@@ -16,7 +16,7 @@ export default function WelcomeCard(props) {
                     <p className='inter-display-medium'>Add your wallet address(es) to receive personalized  </p>
                     <p className="inter-display-medium m-b-24">financial intelligence immediately.</p>
                     <div className="welcome-btn">
-                        <Button className='secondary-btn'>Manage wallets</Button>
+                        <Button className='secondary-btn' onClick={props.handleManage} >Manage wallets</Button>
                         <Button className="primary-btn" onClick={props.handleAddModal}>Add wallet address</Button>
                     </div>
                 </div>

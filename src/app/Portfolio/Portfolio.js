@@ -95,6 +95,7 @@ class Portfolio extends BaseReactComponent {
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader} history={this.props.history}
                                     handleAddModal={this.handleAddModal}
+                                    handleManage={()=>this.props.history.push('/wallets')}
                                 />
                             </div>
                             <div className='portfolio-section page'>
