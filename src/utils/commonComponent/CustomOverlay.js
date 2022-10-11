@@ -11,7 +11,7 @@ function CustomOverlay({ text, position, isIcon, children, IconImage, isInfo = n
             {isInfo ?
                 <div className={isText ? "text-tooltip" : "button-tooltip"}>
                     {isIcon ? <Image src={IconImage} /> : null}
-                    {isName ? <span className={`inter-display-medium f-s-13 lh-16 m-r-8 ${colorCode}`}>{isName}</span> : ""}
+                    {isName ? <span className={`inter-display-medium f-s-13 lh-16 m-r-8`} style={{color: colorCode ? colorCode : "#19191A"}}>{isName}</span> : ""}
                     <span className="inter-display-medium f-s-13 lh-16">{text}</span>
                 </div> :
 
