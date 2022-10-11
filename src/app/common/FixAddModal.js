@@ -155,12 +155,11 @@ class FixAddModal extends BaseReactComponent {
             const data = new URLSearchParams();
             data.append("wallet_addresses",JSON.stringify(walletList))
 
+            updateUserWalletApi(data, this);
             if(this.props.handleUpdateWallet){
                 this.props.handleUpdateWallet()
             }
-            else{
-            updateUserWalletApi(data, this);
-            }
+            
             // this.props.history.push({
             //     pathname:"/portfolio",
             //     state:{
