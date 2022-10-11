@@ -133,7 +133,7 @@ class Wallet extends Component {
             addModal: !this.state.addModal
         })
     }
-    
+
     handleUpdateWallet = ()=>{
         console.log("YES API")
         this.makeApiCall()
@@ -170,7 +170,7 @@ class Wallet extends Component {
                         chainList={this.props.OnboardingState.coinsList}
                         handleFunction={this.handleFunction}
                     />
-                    <div className='m-b-32 sortby-section'>
+                    <div className='m-b-22 sortby-section'>
                         <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-313'>Sort by</span>
                         <div className='dropdown-section'>
                             {this.sortby.map((e, index) => {

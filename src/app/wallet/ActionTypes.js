@@ -1,1 +1,1 @@
-export const WALLET_LIST = 'WALLET_LIST';
+export const ALL_WALLET = 'ALL_WALLET';

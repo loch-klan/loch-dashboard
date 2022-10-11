@@ -18,7 +18,7 @@
         .logo {
             // margin-bottom: 3rem;
             // margin-left: 1.4rem;
-            margin: 4rem 1.4rem;
+            margin: 3.6rem 1.4rem;
             img{
               width: 8.7rem;
             }
@@ -42,7 +42,7 @@
             nav {
                 ul {
                     li {
-                        margin-bottom: 1.8rem;
+                        margin-bottom: 1.6rem;
                         .nav-link {
                             @include font($grey-636, "Inter-Medium", 1.5rem, 500, 19.2px);
                             padding: 1.2rem;

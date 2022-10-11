@@ -87,9 +87,13 @@ export const deleteWallet = (ctx, data) => {
         let newArr = []
         for (let i = 0; i < arr.length; i++) {
           if (arr[i].address !== walletAddress) {
-            newArr.push(arr[i])
+            newArr.push(arr[i]);
           }
         }
+        newArr = newArr.map((item,index)=>{return({
+          ...item,
+          id: `wallet${index+1}`
+        })})
         localStorage.setItem("addWallet", JSON.stringify(newArr))
         ctx.props.onHide()
         ctx.props.makeApiCall()

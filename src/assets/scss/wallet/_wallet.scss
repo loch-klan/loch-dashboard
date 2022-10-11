@@ -114,11 +114,13 @@
                     padding-top: 2rem;
                     border-top: 1px solid rgba(229, 229, 230, 0.5);
                     justify-content: space-between;
-
+                    align-items: center;
                     .chips-section {
                         display: flex;
                         // cursor: pointer;
-
+                        width: 100%;
+                        overflow-x: auto;
+                        margin-right: 2rem;
                         .chip {
                             display: flex;
                             border-radius: 0.6rem;
@@ -140,6 +142,11 @@
                                 // border-right: 1px solid #CACBCC;
                             }
                         }
+                    }
+                    .secondary-btn{
+                      padding: 1.65rem 2.7rem;
+                      border-color: $grey-636;
+                      color: $grey-636;
                     }
                 }
             }

@@ -1,6 +1,6 @@
-import { WALLET_LIST } from "./ActionTypes";
+import { ALL_WALLET } from "./ActionTypes";
 
 export const getAllWalletList = (payload) => ({
-  type: WALLET_LIST,
+  type: ALL_WALLET,
   payload,
 });

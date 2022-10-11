@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image } from 'react-bootstrap'
+import { Button, Image } from 'react-bootstrap'
 import CopyClipboardIcon from '../../assets/images/CopyClipboardIcon.svg'
 import CoinChip from './CoinChip';
 import EditIcon from '../../assets/images/EditIcon.svg'
@@ -50,12 +50,12 @@ export default function WalletCard(props) {
                         <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognisedIcon} />
                     </div>
                     <div className='m-r-16 wallet-name-details'>
-                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata ? props.wallet_metadata.name : "Undefined"}</h6>
-                        {props.wallet_metadata && <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} </div>}
+                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata && props.wallet_coins.length>0 ? props.wallet_metadata.name ? props.wallet_metadata.name : "Undefined" : "Unrecognised wallet"}</h6>
+                        {props.wallet_metadata && props.wallet_metadata.tag && <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} </div>}
                     </div>
                     <div className='account-details' onClick={copyContent}>
                         <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
-                        <Image src={CopyClipboardIcon} />
+                        <Image src={CopyClipboardIcon} className="m-l-10" />
                     </div>
                 </div>
                 <div className='amount-details'>
@@ -64,8 +64,19 @@ export default function WalletCard(props) {
                 </div>
             </div>
             <div className='coins-chip'>
+              {
+                props.wallet_coins.length>0
+                ?
+                <>
                 <div className='chips-section'>{chips}</div>
                 <Image src={EditIcon} className="cp" onClick={handleShow} />
+                </>
+                :
+                <>
+                <h6 className='inter-display-medium f-s-16 lh-19 grey-B0B'>This wallet address is not dected, please fix it now.</h6>
+                <Button className='secondary-btn'>Fix now</Button>
+                </>
+              }
             </div>
             {
                 show
