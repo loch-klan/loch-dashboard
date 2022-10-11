@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import Sidebar from '../common/Sidebar';
 import WalletCard from './WalletCard';
 import PageHeader from '../common/PageHeader';
 import CoinBadges from './../common/CoinBadges';
@@ -9,6 +8,8 @@ import sort from "../../image/sort-1.png"
 import { getAllWalletListApi, getAllWalletApi } from './Api';
 import { getAllCoins } from '../onboarding/Api.js'
 import { API_LIMIT, SEARCH_BY_CHAIN_IN, SORT_BY_NAME ,SORT_BY_PORTFOLIO_AMOUNT,SORT_BY_CREATED_ON} from "../../utils/Constant.js"
+import FixAddModal from '../common/FixAddModal';
+import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 class Wallet extends Component {
     constructor(props) {
         super(props);
@@ -21,6 +22,7 @@ class Wallet extends Component {
             sortByName:false,
             walletNameList: [],
             activeBadge: [{name:"All",id:""}],
+            addModal:false,
         }
         this.sortby = ["Amount", "Date added", "Name"]
     }
@@ -39,7 +41,7 @@ class Wallet extends Component {
         this.props.getAllWalletListApi(data)
     }
     handleSort = (e) => {
-        
+
         if(e === "Amount"){
             let obj=[{
                 key : SORT_BY_PORTFOLIO_AMOUNT,
@@ -70,7 +72,7 @@ class Wallet extends Component {
                 sortByName:!this.state.sortByName
             })
         }
-        
+
         // this.makeApiCall()
     }
     handleFunction = (badge) => {
@@ -124,16 +126,41 @@ class Wallet extends Component {
             this.makeApiCall()
         }
     }
+    handleAddModal = () => {
+      this.setState({
+          addModal: !this.state.addModal
+      })
+  }
+  handleChangeList = (value) => {
+    this.setState({
+        userWalletList: value
+    })
+    this.props.getCoinRate()
+}
     render() {
         const { walletList } = this.props.walletState;
         return (
             <div className="wallet-page-section">
                 {/* <Sidebar ownerName="" /> */}
+                {this.state.addModal &&
+                    <FixAddModal
+                        show={this.state.addModal}
+                        onHide={this.handleAddModal}
+                        modalIcon={AddWalletModalIcon}
+                        title="Add wallet address"
+                        subtitle="Add more wallet address here"
+                        modalType="addwallet"
+                        btnStatus={false}
+                        btnText="Go"
+                        history={this.props.history}
+                        changeWalletList={this.handleChangeList}
+                    />}
                 <div className='wallet-section page'>
                     <PageHeader
                         title="Wallets"
                         subTitle="Manage all your wallets right here"
                         btnText="Add wallet"
+                        handleBtn={this.handleAddModal}
                     />
                     <CoinBadges
                         activeBadge={this.state.activeBadge}

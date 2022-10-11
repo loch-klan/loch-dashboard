@@ -86,7 +86,7 @@ class EditWalletModal extends BaseReactComponent {
                             multiple: false,
                             searchable: true,
                             onChangeCallback: (onBlur) => {
-                              onBlur(this.state.searchableSingleRegion);
+                              onBlur(this.state.walletName);
                             }
                           }
                         }}
