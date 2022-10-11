@@ -132,6 +132,7 @@ class Portfolio extends BaseReactComponent {
                         btnText="Done"
                         btnStatus={true}
                         modalType="fixwallet"
+                        pathName="/portfolio"
                     />
                 }
                 {this.state.addModal &&

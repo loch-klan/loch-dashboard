@@ -44,7 +44,7 @@ export const updateUserWalletApi = (data,ctx) =>{
   .then((res)=>{
     if(!res.data.error){
       ctx.props.history.push({
-        pathname: '/portfolio',
+        pathname: ctx.props.pathName,
         state: {addWallet: ctx.state.addWalletList}
       });
     } else{
@@ -55,6 +55,7 @@ export const updateUserWalletApi = (data,ctx) =>{
     console.log("fixwallet",err)
   })
 }
+
 
 // export const resetPasswordApi = (ctx, data) => {
 //   preLoginInstance
