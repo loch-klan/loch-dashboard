@@ -11,7 +11,7 @@
     }
 
     .modal-header {
-        background: linear-gradient(0deg, #E98430, #E98430), linear-gradient(180deg, rgba(255, 255, 255, 0) 28.03%, #FFFFFF 65.02%);
+        // background: linear-gradient(0deg, #E98430, #E98430), linear-gradient(180deg, rgba(255, 255, 255, 0) 28.03%, #FFFFFF 65.02%);
         border-top-right-radius: 1.2rem;
         border-top-left-radius: 1.2rem;
         display: block;
@@ -113,14 +113,16 @@
             }
 
             .edit-form {
+              .form-group{
+                margin-bottom: 2rem;
+              }
+            }
                 // width: 100%;
-                form {
+                // form {
                     .form-group {
-                        margin-bottom: 2rem;
-
                         label {
                             font-family: Inter-Medium;
-                            line-height: 1.6rem;
+                            line-height: 16px;
                             font-size: 1.3rem;
                             color: $grey-313;
                             margin-bottom: 1.2rem;
@@ -130,15 +132,37 @@
                             }
                         }
 
-                        .form-control {
+                        .form-control{
                             font-size: 1.3rem;
-                            line-height: 1.6rem;
+                            line-height: 16px;
                             color: $grey-B0B;
                             font-weight: 400;
                             padding:1.2rem 1.6rem;
+                            min-height: 4rem;
+                            &::placeholder{
+                              font-size: 1.3rem;
+                            line-height: 16px;
+                            color: $grey-B0B;
+                            }
+                        }
+                        .disabled-input{
+                          background-color: $secondary;
+                          // color: $grey-B0B;
+                        }
+                        .custom-select__control {
+                          font-size: 1.3rem;
+                          line-height: 16px;
+                          color: $grey-B0B;
+                          font-weight: 400;
+                          min-height: 4rem;
+                            &::placeholder{
+                              font-size: 1.3rem;
+                            line-height: 16px;
+                            color: $grey-B0B;
+                            }
                         }
                     }
-                }
+                // }
                 .edit-btns {
                   margin-top: 4rem;
                   display: flex;
@@ -158,7 +182,7 @@
                       line-height: 1.9rem;
                   }
               }
-            }
+            // }
 
 
         }

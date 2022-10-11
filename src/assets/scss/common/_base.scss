@@ -434,15 +434,14 @@ form {
     .form-control,
     .custom-select__control {
       @include font($black-191, "Inter-Regular", 1.6rem, normal, 19px);
-      // font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
-      // font-size: 1.6rem;
-      // font-weight: bold;
-      // color: $black-191;
-      // line-height: 19px;
       padding: 1.6rem;
       min-height: 5.1rem;
       border-radius: 8px;
       border: 1px solid $grey-D4D;
+      &.custom-select__control--is-focused,
+      &.custom-select__control--is-selected {
+        box-shadow: none;
+      }
     }
 
     .custom-select__menu {
@@ -450,12 +449,13 @@ form {
         padding: 1rem;
 
         .custom-select__option {
-          @include font($primary, "Inter-Bold", 1.4rem, bold, normal);
-          padding: 1rem;
-
+          @include font($grey-313, "Inter-Medium", 1.3rem, 500, normal);
+          padding: 0.8rem;
           &.custom-select__option--is-focused,
           &.custom-select__option--is-selected {
             background-color: $grey-F5F;
+            border-color: $black-191;
+            border-radius: 2px;
           }
         }
       }
@@ -511,7 +511,7 @@ form {
         padding: 0.2rem 2rem;
 
         .custom-select__single-value {
-          color: $primary;
+          color: $grey-313;
         }
 
         .custom-select__placeholder {
