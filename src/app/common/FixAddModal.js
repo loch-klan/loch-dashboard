@@ -41,7 +41,8 @@ class FixAddModal extends BaseReactComponent {
             showelement: false,
             walletTitleList: [],
             chainTitleList: [],
-            changeList:props.changeWalletList
+            changeList:props.changeWalletList,
+            pathName:props.pathName
         }
         this.timeout = 0
 
@@ -147,13 +148,18 @@ class FixAddModal extends BaseReactComponent {
     handleAddWallet = ()=>{
         if(this.state.addWalletList){
             localStorage.setItem("addWallet",JSON.stringify(this.state.addWalletList))
-            this.state.changeList(this.state.addWalletList)
+            {this.state.changeList && this.state.changeList(this.state.addWalletList)}
             this.state.onHide()
             let walletList = []
             this.state.addWalletList.map((list)=>walletList.push(list.address))
             const data = new URLSearchParams();
             data.append("wallet_addresses",JSON.stringify(walletList))
+
             updateUserWalletApi(data, this);
+            if(this.props.handleUpdateWallet){
+                this.props.handleUpdateWallet()
+            }
+            
             // this.props.history.push({
             //     pathname:"/portfolio",
             //     state:{

@@ -2,20 +2,27 @@ import React from 'react'
 import DropDown from './DropDown'
 export default function CoinBadges(props) {
 
-    const [activeBadge,setactiveBadge] = React.useState(0)
 
     // const dropList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple"]
     // const badgeList = ["All", "Bitcoin", "Solana", "Ethereum", "Helium", "Fantom", "Near", "Litecoin", "Ripple","Avalanche" ,"Unicoin","Maker","Matic","Render","Flow","Cosmos","Luna","Algorand","Aurora","Cardano","Fantom","Polygon","Near","Tron","Optimism","Polkadot","Filecoin","Binance"]
     // console.log(props.chainList)
     
     let badgeList = [{name:"All",id:""}]
+    let dropdownList = []
 
     props.chainList.map((chain)=>{
         // console.log(chain)
-      badgeList.push({name:chain.name,id:chain.id})
+        badgeList.push({name:chain.name,id:chain.id})
+        dropdownList.push({name:chain.name,id:chain.id})  
     })
-    // console.log(badgeList)
-    const dropdownList = badgeList
+
+    const handleFunction = (e)=>{
+        // console.log("drop",e.split(' '))
+        const badgeId = e.split(' ')[3]
+        const currentBadge = badgeList.find(e => e.id === badgeId)
+        // console.log(currentBadge)
+        props.handleFunction(currentBadge)
+    }
     return (
         <div className='coin-badges'>
             <div className='badge-list'>
@@ -32,6 +39,7 @@ export default function CoinBadges(props) {
                 id="dropdown-basic-badge-button"
                 title="Others"
                 list={dropdownList}
+                onSelect={handleFunction}
             />
         </div>
     )

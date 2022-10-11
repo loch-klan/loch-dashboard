@@ -7,9 +7,10 @@ import CoinBadges from './../common/CoinBadges';
 import sort from "../../image/sort-1.png"
 import { getAllWalletListApi, getAllWalletApi } from './Api';
 import { getAllCoins } from '../onboarding/Api.js'
-import { API_LIMIT, SEARCH_BY_CHAIN_IN, SORT_BY_NAME ,SORT_BY_PORTFOLIO_AMOUNT,SORT_BY_CREATED_ON} from "../../utils/Constant.js"
+import { API_LIMIT, SEARCH_BY_CHAIN_IN, SORT_BY_NAME, SORT_BY_PORTFOLIO_AMOUNT, SORT_BY_CREATED_ON } from "../../utils/Constant.js"
 import FixAddModal from '../common/FixAddModal';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
+import {getCoinRate} from '../Portfolio/Api.js'
 class Wallet extends Component {
     constructor(props) {
         super(props);
@@ -17,12 +18,13 @@ class Wallet extends Component {
             walletList: [],
             start: 0,
             sorts: [],
-            sortByAmount:false,
-            sortByDate:false,
-            sortByName:false,
+            sortByAmount: false,
+            sortByDate: false,
+            sortByName: false,
             walletNameList: [],
-            activeBadge: [{name:"All",id:""}],
-            addModal:false,
+            userWalletList: [],
+            activeBadge: [{ name: "All", id: "" }],
+            addModal: false,
         }
         this.sortby = ["Amount", "Date added", "Name"]
     }
@@ -32,7 +34,7 @@ class Wallet extends Component {
         this.makeApiCall()
     }
 
-    makeApiCall = (cond)=>{
+    makeApiCall = (cond) => {
         let data = new URLSearchParams()
         data.append("start", this.state.start)
         data.append("conditions", JSON.stringify(cond ? cond : []))
@@ -42,34 +44,34 @@ class Wallet extends Component {
     }
     handleSort = (e) => {
 
-        if(e === "Amount"){
-            let obj=[{
-                key : SORT_BY_PORTFOLIO_AMOUNT,
-                value : !this.state.sortByAmount
+        if (e === "Amount") {
+            let obj = [{
+                key: SORT_BY_PORTFOLIO_AMOUNT,
+                value: !this.state.sortByAmount
             }]
             this.setState({
-                sorts:obj,
-                sortByAmount:!this.state.sortByAmount
+                sorts: obj,
+                sortByAmount: !this.state.sortByAmount
             })
         }
-        else if (e === "Date added"){
-            let obj=[{
-                key : SORT_BY_CREATED_ON,
-                value : !this.state.sortByDate
+        else if (e === "Date added") {
+            let obj = [{
+                key: SORT_BY_CREATED_ON,
+                value: !this.state.sortByDate
             }]
             this.setState({
-                sorts:obj,
-                sortByDate:!this.state.sortByDate
+                sorts: obj,
+                sortByDate: !this.state.sortByDate
             })
         }
-        else if(e === "Name"){
-            let obj=[{
-                key : SORT_BY_NAME,
-                value : !this.state.sortByName
+        else if (e === "Name") {
+            let obj = [{
+                key: SORT_BY_NAME,
+                value: !this.state.sortByName
             }]
             this.setState({
-                sorts:obj,
-                sortByName:!this.state.sortByName
+                sorts: obj,
+                sortByName: !this.state.sortByName
             })
         }
 
@@ -82,7 +84,7 @@ class Wallet extends Component {
             newArr.splice(index, 1)
             if (newArr.length === 0) {
                 this.setState({
-                    activeBadge: [{name:"All",id:""}]
+                    activeBadge: [{ name: "All", id: "" }]
                 })
             } else {
                 this.setState({
@@ -91,7 +93,7 @@ class Wallet extends Component {
             }
         } else if (badge.name === "All") {
             this.setState({
-                activeBadge: [{name:"All",id:""}]
+                activeBadge: [{ name: "All", id: "" }]
             })
         } else {
             let index = newArr.findIndex(x => x.name === "All")
@@ -127,16 +129,16 @@ class Wallet extends Component {
         }
     }
     handleAddModal = () => {
-      this.setState({
-          addModal: !this.state.addModal
-      })
-  }
-  handleChangeList = (value) => {
-    this.setState({
-        userWalletList: value
-    })
-    this.props.getCoinRate()
-}
+        this.setState({
+            addModal: !this.state.addModal
+        })
+    }
+    
+    handleUpdateWallet = ()=>{
+        console.log("YES API")
+        this.makeApiCall()
+    }
+
     render() {
         const { walletList } = this.props.walletState;
         return (
@@ -153,7 +155,8 @@ class Wallet extends Component {
                         btnStatus={false}
                         btnText="Go"
                         history={this.props.history}
-                        changeWalletList={this.handleChangeList}
+                        handleUpdateWallet={this.handleUpdateWallet}
+                        pathName="/wallets"
                     />}
                 <div className='wallet-section page'>
                     <PageHeader
@@ -171,7 +174,7 @@ class Wallet extends Component {
                         <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-313'>Sort by</span>
                         <div className='dropdown-section'>
                             {this.sortby.map((e, index) => {
-                                return <span className='sort-by-title' key={index} onClick={()=>this.handleSort(e)}>
+                                return <span className='sort-by-title' key={index} onClick={() => this.handleSort(e)}>
                                     <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 '>{e}</span> <img src={sort} style={{ width: "1rem" }} />
                                 </span>
                             })}
@@ -205,7 +208,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     getAllCoins,
     getAllWalletListApi,
-    getAllWalletApi
+    getAllWalletApi,
+    getCoinRate
 }
 Wallet.propTypes = {
     // getPosts: PropTypes.func
