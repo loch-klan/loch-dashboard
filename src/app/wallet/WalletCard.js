@@ -42,7 +42,14 @@ export default function WalletCard(props) {
     })
     const copyContent = () => {
         const text = props.wallet_account_number
-        navigator.clipboard.writeText(text)
+        navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        console.log("successfully copied");
+      })
+      .catch(() => {
+        console.log("something went wrong");
+      });
         // toggleCopied(true)
     }
     return (
