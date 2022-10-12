@@ -109,9 +109,6 @@ class PieChart extends BaseReactComponent {
                 width: 765,
                 events: {
                     render: function () {
-                      console.log('this.series[0]',this.series[0]);
-                      console.log('this.plotLeft',this.plotLeft);
-                      console.log('this.plotTop',this.plotTop);
                         var series = this.series[0],
                             seriesCenter = series.center,
                             x = seriesCenter[0] + this.plotLeft,
