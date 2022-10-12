@@ -59,9 +59,9 @@ export default function WalletCard(props) {
                         <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognised wallet"}</h6>
                         {props.wallet_metadata && props.wallet_metadata.tag && <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} </div>}
                     </div>
-                    <div className='account-details' onClick={copyContent}>
+                    <div className='account-details'>
                         <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
-                        <Image src={CopyClipboardIcon} className="m-l-10" />
+                        <Image src={CopyClipboardIcon} onClick={copyContent} className="m-l-10 cp" />
                     </div>
                 </div>
                 <div className='amount-details'>
