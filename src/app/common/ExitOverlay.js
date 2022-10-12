@@ -147,7 +147,7 @@ class ExitOverlay extends BaseReactComponent {
                         </div>
 
                         <div className='m-b-36 footer'>
-                            <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">Don't worry. All your information remains private and anonymous.</p>
+                            <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">At Loch, we care intensely about your privacy and anonymity.</p>
                             <CustomOverlay
                                 text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
                                 position="top"

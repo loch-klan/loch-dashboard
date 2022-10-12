@@ -159,7 +159,7 @@ class FixAddModal extends BaseReactComponent {
             if(this.props.handleUpdateWallet){
                 this.props.handleUpdateWallet()
             }
-            
+
             // this.props.history.push({
             //     pathname:"/portfolio",
             //     state:{
@@ -311,7 +311,7 @@ class FixAddModal extends BaseReactComponent {
                                 >{this.state.btnText}</Button>
                             </div>
                             <div className='m-b-26 footer'>
-                                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">Don't worry. All your information remains private and anonymous.
+                                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">At Loch, we care intensely about your privacy and anonymity.
                                     <CustomOverlay
                                         text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
                                         position="top"
