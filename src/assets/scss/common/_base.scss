@@ -242,7 +242,9 @@ body {
 .grey-636 {
   color: $grey-636;
 }
-
+.grey-4F4{
+  color:$grey-4F4;
+}
 .grey-ADA {
   color: $grey-ADA;
 }
@@ -691,14 +693,17 @@ form {
 
 // CUSTOM TABLE
 
-.custom-table-wrapper {
-  border-top: 1px solid $grey-E6E;
-  margin: 0 0 1.5rem 0;
+// .custom-table-wrapper {
+//   border-top: 1px solid $grey-E6E;
+//   margin: 0 0 1.5rem 0;
 
-  .option-btn {
-    padding: 0.3rem 1.5rem;
-    font-size: 1.3rem;
-  }
+//   .option-btn {
+//     padding: 0.3rem 1.5rem;
+//     font-size: 1.3rem;
+//   }
+// }
+.custom-table{
+
 }
 
 .table-wrapper {
