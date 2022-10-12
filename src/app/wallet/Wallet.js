@@ -186,11 +186,13 @@ class Wallet extends Component {
                             return (
                                 <WalletCard
                                     key={index}
+                                    createdOn={wallet.created_on}
                                     wallet_metadata={wallet.wallet_metadata}
                                     wallet_account_number={wallet.address}
                                     wallet_amount={wallet.total_value}
                                     wallet_coins={wallet.chains}
                                     makeApiCall={this.makeApiCall}
+                                    index={index}
                                 />
                             )
                         })}

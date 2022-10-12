@@ -5,13 +5,15 @@ import { connect } from 'react-redux';
 import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
 import unrecognisedIcon from '../../image/unrecognised.png';
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
+import moment from 'moment';
 class EditWalletModal extends BaseReactComponent {
     constructor(props) {
         super(props);
         this.state = {
+            createdOn:props.createdOn,
             walletAddress: props.walletAddress,
-            walletName: props.walletMetaData?.id,
-            walletTag: props.walletMetaData?.tag,
+            walletName: props.walletMetaData ? props.walletMetaData.id : "",
+            walletTag: props.walletMetaData ? props.walletMetaData.tag : "",
             walletMetaData: props.walletMetaData,
             walletNameList: [],
             dropDownActive:{},
@@ -46,7 +48,7 @@ class EditWalletModal extends BaseReactComponent {
                 </div>
             )
         })
-        const { walletMetaData, walletNameList} = this.state;
+        const { walletMetaData, walletNameList, createdOn} = this.state;
         const {show, handleClose, onHide } = this.props;
         return (
             <Modal
@@ -91,7 +93,7 @@ class EditWalletModal extends BaseReactComponent {
                           }
                         }}
                       />
-                      <p className='inter-display-regular f-s-13 lh-16 m-b-16 subtitle'>added 3 days ago</p>
+                      <p className='inter-display-regular f-s-13 lh-16 m-b-16 subtitle'>{ "added" + " 3 " + "days ago"}</p>
                       <div className='m-b-32 coinchips'>{chips}</div>
                       <div className='edit-form'>
                           <FormElement
@@ -113,6 +115,9 @@ class EditWalletModal extends BaseReactComponent {
                                         settings: {
                                             placeholder: "My main wallet",
                                         }
+                                    }}
+                                    classes={{
+                                      inputField: "tag-input",
                                     }}
                                 />
                                 <div className='edit-btns'>

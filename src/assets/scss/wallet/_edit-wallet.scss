@@ -92,7 +92,7 @@
             }
             .coinchips {
                 display: flex;
-                width: 34rem;
+                width: 100%;
                 overflow-x: auto;
 
                 .chipcontainer {
@@ -148,6 +148,9 @@
                         .disabled-input{
                           background-color: $secondary;
                           // color: $grey-B0B;
+                        }
+                        .tag-input{
+                          color: $black-191;
                         }
                         .custom-select__control {
                           font-size: 1.3rem;
