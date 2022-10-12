@@ -39,6 +39,14 @@ class EditWalletModal extends BaseReactComponent {
         deleteWallet(this,data)
     }
 
+    getDays = (d)=>{
+      const date = new Date()
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+      let today = `${year}-${month}-${day}`
+      return (new Date(today).getTime() - new Date(d.split(' ')[0]).getTime()) / (1000*3600*24)
+    }
     render() {
         const chips = this.state.coinchips.map((e, index) => {
             return (
@@ -93,7 +101,7 @@ class EditWalletModal extends BaseReactComponent {
                           }
                         }}
                       />
-                      <p className='inter-display-regular f-s-13 lh-16 m-b-16 subtitle'>{ "added" + " 3 " + "days ago"}</p>
+                      <p className='inter-display-regular f-s-13 lh-16 m-b-16 subtitle'>{ `added ${this.getDays(this.state.createdOn)} days ago`}</p>
                       <div className='m-b-32 coinchips'>{chips}</div>
                       <div className='edit-form'>
                           <FormElement
