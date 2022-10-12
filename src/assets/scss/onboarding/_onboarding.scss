@@ -5,9 +5,9 @@
 
 .onboarding-modal {
     .modal-content {
-        border-radius: 1.2rem !important;
         border: none;
-        width: 78rem;
+        border-radius: 1.4rem !important;
+        width: 74.4rem;
 
         .modal-header {
             background-image: url("../../../image/Frame.png");
@@ -16,13 +16,13 @@
             padding: 3.6rem;
             text-align: center;
             display: block;
-
+            border-top-right-radius: 1.4rem;
             .ob-modal-title-icon {
                 width: 6rem;
             }
 
             h1 {
-                padding: 2rem 0 0.4rem;
+                padding: 2.8rem 0 1.2rem;
             }
 
             .back-icon {
@@ -33,7 +33,7 @@
         }
 
         .modal-body {
-            padding: 4rem 0;
+            padding: 4rem 0 3.6rem;
             text-align: center;
 
             .ob-modal-body-1 {
@@ -95,8 +95,12 @@
                 width: fit-content;
                 margin: auto;
                 position: relative;
-                margin: 0 0rem 0 2.4rem;
-                padding: 0 1.6rem 0 7rem;
+                // margin: 0 0rem 0 2.4rem;
+                // padding: 0 1.6rem 0 7rem;
+                // margin: 0 2.4rem;
+                // padding: 0 4.8rem 0 5.6rem;
+                margin: 0 5.4rem 0 2.4rem;
+                padding: 0 1.8rem 0 5.6rem;
 
                 .ob-modal-body-del {
                     border-radius: 0.8rem;
@@ -199,6 +203,7 @@
                 .go-btn {
                     padding-left: 6rem;
                     padding-right: 6rem;
+                    opacity: 1;
                 }
 
                 .preview {
@@ -217,18 +222,12 @@
 
             .ob-modal-body-info {
                 text-align: center;
-
                 .info-icon {
                     margin-left: 0.5rem;
                     margin-bottom: 0.1rem;
                 }
-
                 h4 {
-                    margin: 3.4rem 0;
-                }
-
-                span {
-                    font-weight: bold;
+                    margin: 3rem 0 3.4rem;
                 }
             }
 
@@ -273,3 +272,66 @@
 //         }
 //     }
 // }
+
+
+.spinner-chip-container {
+    cursor: default;
+    border-radius: 0.4rem;
+    display: flex;
+    align-items: center;
+    margin-left: 0.7rem;
+
+    .spinner {
+        margin: 6px auto 0px;
+        width: 40px;
+        text-align: center;
+
+        div {
+            width: 8px;
+            height: 8px;
+            background-color: #D9D9D9;
+            border-radius: 100%;
+            display: inline-block;
+            -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+            animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+        }
+
+        .bounce1 {
+            -webkit-animation-delay: -0.32s;
+            animation-delay: -0.32s;
+        }
+
+        .bounce2 {
+            -webkit-animation-delay: -0.16s;
+            animation-delay: -0.16s;
+        }
+
+        @-webkit-keyframes sk-bouncedelay {
+
+            0%,
+            80%,
+            100% {
+                -webkit-transform: scale(0)
+            }
+
+            40% {
+                -webkit-transform: scale(1.0)
+            }
+        }
+
+        @keyframes sk-bouncedelay {
+
+            0%,
+            80%,
+            100% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            40% {
+                -webkit-transform: scale(1.0);
+                transform: scale(1.0);
+            }
+        }
+    }
+}

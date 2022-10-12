@@ -1,0 +1,155 @@
+.wallet-page-section {
+    display: flex;
+
+    .wallet-section {
+        margin-top: 8rem;
+
+        // sortby section begin
+        .sortby-section {
+            display: flex;
+            align-items: center;
+            .dropdown-section {
+                display: flex;
+
+                .sort-by-title{
+                    display: flex;
+                    align-items: center;
+                    padding: 1.2rem 1.6rem;
+                    cursor: pointer;
+                }
+                // .dropdown {
+                //     margin-right: 3.6rem;
+
+                //     .dropdown-toggle {
+                //         border: none;
+                //         background: none;
+                //         color: $grey-7C7;
+                //         padding: 0px;
+                //     }
+                // }
+            }
+        }
+
+        // sortby section ends
+
+
+
+        // walletcard section begin
+        .cards {
+            .walletcard {
+                padding: 2.4rem;
+                background-color: $secondary;
+                box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                border-radius: 1.6rem;
+                margin-bottom: 2rem;
+
+                .wallet-details {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .wallet-account-details {
+                        display: flex;
+                        align-items: center;
+                        // margin-right: 4.9rem;
+
+                        .wallet-img {
+                            // border-radius: 0.8rem;
+                            // background-color: #FFE7BD;
+                            // box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+
+
+                            img {
+                                width: 4.3rem;
+                            }
+                        }
+
+                        .wallet-name-details {
+                            display: flex;
+                            align-items: center;
+                            h6 {
+                                color: $black-000;
+                            }
+                            .wallet-name {
+                                padding: 0.8rem 1.2rem;
+                                background: $secondary;
+                                border: 0.1rem solid rgba(229, 229, 230, 0.5);
+                                border-radius: 0.8rem;
+                                color: $grey-7C7;
+                            }
+                        }
+
+                        .account-details {
+                            display: flex;
+                            align-items: center;
+                            span {
+                                color: $grey-B0B;
+                                width: 92%;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+                        }
+                    }
+
+                    .amount-details {
+                        display: flex;
+                        align-items: center;
+
+                        h6 {
+                            margin-right: 0.6rem;
+                            color: $black-191;
+                        }
+
+                        span {
+                            letter-spacing: 0.125rem;
+                            color: $grey-ADA;
+
+                        }
+                    }
+                }
+
+                .coins-chip {
+                    display: flex;
+                    padding-top: 2rem;
+                    border-top: 1px solid rgba(229, 229, 230, 0.5);
+                    justify-content: space-between;
+                    align-items: center;
+                    .chips-section {
+                        display: flex;
+                        // cursor: pointer;
+                        width: 100%;
+                        overflow-x: auto;
+                        margin-right: 2rem;
+                        .chip {
+                            display: flex;
+                            border-radius: 0.6rem;
+                            border:0.1rem solid $grey-CAC;
+                            background-color:rgba(229, 229, 230, 0.5);
+                            cursor: default;
+                            img{
+                                width:2.6rem;
+                                height:2.6rem;
+                            }
+                            .coin-percent {
+                                // border-top: 1px solid #CACBCC;
+                                color: $grey-313;
+                                // background: rgba(229, 229, 230, 0.5);
+                                padding: 0.4rem 0.6rem;
+                                // border-top-right-radius: 0.6rem;
+                                // border-bottom-right-radius: 0.6rem;
+                                // border-bottom: 1px solid #CACBCC;
+                                // border-right: 1px solid #CACBCC;
+                            }
+                        }
+                    }
+                    .secondary-btn{
+                      padding: 1.65rem 2.7rem;
+                      border-color: $grey-636;
+                      color: $grey-636;
+                    }
+                }
+            }
+        }
+
+        //  walletcard section end
+    }
+}

@@ -28,7 +28,7 @@ class FormSubmitButtonComponent extends BaseReactComponent {
   };
 
   render() {
-    const { progressMessage, fullWidth, children, formError = false, customClass = '', name = "" } = this.props;
+    const { progressMessage, children, formError = false, customClass = '', name = "" } = this.props;
     const inProgress = (this.state.inProgress && formError);
     return (
       <Button

@@ -1,13 +1,13 @@
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
-
+import postLoginInstance from './../../utils/PostLoginAxios';
 export const loginApi = (ctx, data) => {
   preLoginInstance.post('common/test/temp-login', data)
     .then(res => {
-      console.log('res',res);
+      // console.log('res',res);
       if (!res.data.error) {
-        console.log('res', res.data.data.token);
-        console.log('ctx',ctx.props.history);
+        // console.log('res', res.data.data.token);
+        // console.log('ctx',ctx.props.history);
         localStorage.setItem('lochToken', res.data.data.token);
         ctx.props.history.push('/home');
       } else {
@@ -23,6 +23,40 @@ export const loginApi = (ctx, data) => {
       });
     });
 }
+
+export const fixWallet = (ctx,info) =>{
+      postLoginInstance.post("organisation/user/create-user",info)
+      .then((res)=>{
+        if(!res.data.error){
+          ctx.props.history.push('/home');
+        }
+        else{
+          toast.error(res.data.message || "Something went wrong");
+        }
+      })
+      .catch((err)=>{
+        console.log("fixwallet",err)
+      })
+}
+
+export const updateUserWalletApi = (data,ctx) =>{
+  postLoginInstance.post("organisation/user/update-user-wallet",data)
+  .then((res)=>{
+    if(!res.data.error){
+      ctx.props.history.push({
+        pathname: ctx.props.pathName,
+        state: {addWallet: ctx.state.addWalletList}
+      });
+    } else{
+      toast.error(res.data.message || "Something went wrong");
+    }
+  })
+  .catch((err)=>{
+    console.log("fixwallet",err)
+  })
+}
+
+
 // export const resetPasswordApi = (ctx, data) => {
 //   preLoginInstance
 //     .post("organisation/user/set-reset-password", data)

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import Sidebar from '../common/Sidebar';
 import IntelWelcomeCard from './IntelWelcomeCard';
-
+import PageHeader from '../common/PageHeader';
+import { TransactionHistoryPage } from './TransactionHistoryPage';
 class Intelligence extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +18,12 @@ class Intelligence extends Component {
             <div className="intelligence-page-section">
               <Sidebar ownerName=""/>
               <div className='intelligence-section page'>
-                <IntelWelcomeCard />
+                <PageHeader
+                    title="Intelligence"
+                    subTitle="Automated and personalized financial intelligence"
+                />
+                {/* <IntelWelcomeCard /> */}
+                <TransactionHistoryPage />
               </div>
             </div>
             

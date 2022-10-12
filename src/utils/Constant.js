@@ -4,6 +4,19 @@ export const START_PAGE = 0
 export const GOOGLE_API_KEY = ""
 export const API_URL = "https://sapi-float.ebikego.com/api/"
 export const MEDIA_URL = "https://d1r1yzhyzim0p1.cloudfront.net/"
+export const DEFAULT_PRICE = 0
+export const DEFAULT_COLOR = "#2c2c2c"
+export const BASE_URL_S3 = "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
+
+export const SEARCH_IN_ID = 'SEARCH_IN_ID'
+export const SEARCH_BY_ACTIVE = 'SEARCH_BY_ACTIVE'
+export const SEARCH_BY_CHAIN_IN = 'SEARCH_BY_CHAIN_IN'
+export const SEARCH_BY_WALLET_ADDRESS = 'SEARCH_BY_WALLET_ADDRESS'
+export const SEARCH_BY_WALLET_ADDRESS_IN = 'SEARCH_BY_WALLET_ADDRESS_IN'
+export const SEARCH_BY_TEXT = 'SEARCH_BY_TEXT'
+export const SORT_BY_PORTFOLIO_AMOUNT = 'SORT_BY_PORTFOLIO_AMOUNT'
+export const SORT_BY_CREATED_ON = 'SORT_BY_CREATED_ON'
+export const SORT_BY_NAME = 'SORT_BY_NAME'
 
 export const Gender = {
   MALE: 10,
@@ -60,4 +73,5 @@ export const YesNoOptions = [
   { label: "Yes", value: "true" },
   { label: "No", value: "false" }
 ]
+
 

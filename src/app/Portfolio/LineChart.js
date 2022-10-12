@@ -1,7 +1,6 @@
-import react from 'react';
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import PropTypes from 'prop-types';
-import { connect } from "react-redux";
+// import PropTypes from 'prop-types';
+// import { connect } from "react-redux";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -64,7 +63,7 @@ class LineChart extends BaseReactComponent {
             },
 
             // series: [
-            //     {                    
+            //     {
             //         name: 'Bitcoin',
             //         color: 'rgba(255, 99, 132, 1)',
             //         marker: {

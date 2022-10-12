@@ -1,0 +1,29 @@
+        // page-header-begin
+        .page-header {
+
+            display: flex;
+            justify-content: space-between;
+            // align-items: baseline;
+            align-items: center;
+
+            .header {
+                h4 {
+                    color: $primary;
+                }
+
+                p {
+                    color: $grey-ADA;
+                }
+            }
+            
+            button {
+                // padding: 1.3rem 2.6rem;
+                // border:0.1rem solid $black-171;
+                // line-height: 2.4rem;
+                padding: 1.65rem 2.76rem;
+                border: 0.1rem solid #171717;
+                line-height: 1.9rem;
+            }
+        }
+
+        // page-header-end

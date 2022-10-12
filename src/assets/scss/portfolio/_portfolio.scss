@@ -1,17 +1,30 @@
 .portfolio-container {
-    width: 80%;
+    // width: 80%;
 }
 
 .portfolio-page-section {
 
-    display: flex;
+    // display: flex;
 
     .portfolio-section {
-
+        position: relative;
+        .fix-div{
+            display: flex;
+            border-top:0.1rem solid $grey-969;
+            padding: 2rem 0rem;
+            align-items: center;
+            position: absolute;
+            bottom: 1rem;
+            right: 11rem;
+            .secondary-btn{
+                line-height: 1.9rem;
+                border: 0.15rem solid $black-191;
+                padding: 1.8rem 2.8rem;
+            }
+        }
         .welcome-card-section {
-            margin-top: 9.6rem;
-
-            padding: 6.8rem 4.8rem 6rem 4.8rem;
+            margin: 8rem 0 2rem;
+            padding: 4.8rem;
             // width: 89.6rem;
             background-color: $secondary;
             box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
@@ -27,9 +40,6 @@
                 .welcome-section-left {
 
                     .welcome-title {
-                        font-size: 2.5rem;
-                        line-height: 30px;
-                        color: $black-191;
                         margin-bottom: 0.8rem;
                     }
 
@@ -41,11 +51,22 @@
 
                     .welcome-btn {
                         button {
-                            padding: 1.8rem 2.8rem;
+                            padding: 1.65rem 2.8rem;
                         }
-
+                        .primary-btn{
+                          &:hover{
+                            border-color: $secondary;
+                            box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                            color: $black-191;
+                            background-color: $secondary;
+                          }
+                        }
                         .secondary-btn {
                             margin-right: 2.4rem;
+                            &:hover{
+                              background-color: $black-191;
+                              color: $secondary;
+                            }
                         }
                     }
                 }
@@ -57,44 +78,35 @@
                     align-items: flex-end;
 
                     .wallet-amount {
-                        font-size: 3.9rem;
-                        line-height: 47px;
-                        margin-bottom: 1.2rem;
+                        font-size: 3.2rem;
+                        line-height: 38px;
+                        // margin-top: 1.2rem;
                         color: $black-1D2;
                     }
 
-                    button {
-
-                        font-size: 1.6rem;
-
-                        line-height: 19px;
+                    .growth-div {
                         padding: 0.85rem 1.2rem;
-                        color: $grey-313;
                         background: $green-44F;
-                        border: 0.1rem solid #000000;
                         border-radius: 0.812rem;
                         box-shadow: none;
-
                         img {
                             margin-right: 0.4rem;
                         }
                     }
-
+                    .downfall{
+                        background-color:$red-FFE ;
+                    }
                 }
-
-
             }
 
             .line-chart-section {
                 position: relative;
-
                 .chart-x-selection {
                     .x-axis-selection-date {
                         position: absolute;
                         right: 4rem;
                         bottom: 1.2rem;
                         border: none;
-
                     }
 
                     .y-axis-selection-currency {
@@ -136,8 +148,8 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        padding-top: 5rem;
-
+        padding-top: 2rem;
+        padding-bottom: 10rem;
         .overview-heading {
             width: 100%;
         }
@@ -148,17 +160,156 @@
             justify-content: center;
             position: relative;
 
+            .custom-highchart,
+            .highcharts-container,
+            .highcharts-root{
+              overflow: visible !important;
+            }
             .pie-chart-middle-text-container {
                 text-align: center;
 
                 .pie-chart-middle-text {
-                    display: flex;
+                    // display: flex;
 
                     .pie-chart-middle-text-currency {
-                        margin-top: 1.2rem;
+                        margin: 0.4rem 0;
                     }
                 }
             }
         }
     }
+}
+
+
+.coin-hover-display {
+    width: 100%;
+    margin-top: 6.8rem;
+    margin-bottom: -3.2rem;
+    //position: relative;
+    display: flex;
+    padding: 1.6rem;
+    justify-content: space-between;
+    //padding: 6.8rem 4.8rem 6rem 4.8rem;
+    // width: 89.6rem;
+    background-color: $secondary;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+    border-radius: 1.2rem;
+
+    .coin-hover-display-text {
+        display: flex;
+        align-items: center;
+    }
+
+    .coin-hover-display-text-icon {
+        // padding: 1.6rem 1.6rem 1.6rem 1.2rem;
+    }
+
+    .coin-hover-display-icon {
+        // width: 9.1rem;
+        height: 6.1rem;
+        width: 6.1rem;
+        border-radius: 1.2rem;
+    }
+
+    .coin-hover-display-text1 {
+        //padding: 2rem 0 0 8.9rem;
+
+        //padding-right: 3.8rem;
+        //padding-top: 2rem;
+        //position: absolute;
+        //width: 25.4rem;
+
+        .coin-hover-display-text1-upper {
+
+            // display: flex;
+            // justify-content: space-evenly;
+            .coin-hover-display-text1-upper-coin {
+                padding-left: 1.2rem;
+            }
+
+            .coin-hover-display-text1-upper-percent {
+                padding-left: 0.8rem;
+            }
+        }
+
+        .coin-hover-display-text1-lower {
+            display: flex;
+            align-items: baseline;
+            padding-top: 0.8rem;
+
+            .coin-hover-display-text1-lower-coincount {
+                padding-left: 1.2rem;
+            }
+        }
+
+        .coin-hover-display-text1-lower-coincode,
+        .coin-hover-display-text1-lower-coincurrency {
+            padding-left: 0.8rem;
+            letter-spacing: 1.25px;
+        }
+
+        .coin-hover-display-text1-lower-coinrevenue {
+            padding-left: 2rem;
+        }
+
+    }
+
+    .coin-hover-display-text2 {
+        //margin-left: 32.7rem;
+    }
+
+    .coin-hover-display-text3 {
+        //margin-left: 51.1rem;
+    }
+
+    .coin-hover-display-text4 {
+        //margin-left: 70.2rem;
+    }
+
+    .coin-hover-display-text2,
+    .coin-hover-display-text3,
+    .coin-hover-display-text4 {
+        //position: absolute;
+        // box-sizing: border-box;
+        // display: flex;
+        // flex-direction: column;
+        // align-items: flex-start;
+        padding: 1rem 2rem;
+        //width: 17.4rem;
+        // height: 7rem;
+        border-left: 0.1rem solid #E5E5E6;
+
+        .coin-hover-display-text2-lower,
+        .coin-hover-display-text3-lower,
+        .coin-hover-display-text4-lower {
+            padding-top: 1rem;
+        }
+
+        .coin-hover-display-text2-upper-percent,
+        .coin-hover-display-text3-upper-percent,
+        .coin-hover-display-text4-upper-percent {
+            padding-left: 0.8rem;
+        }
+
+        .coin-hover-display-text2-upper-coincode,
+        .coin-hover-display-text2-upper-coincurrency,
+        .coin-hover-display-text3-upper-coincode,
+        .coin-hover-display-text3-upper-coincurrency,
+        .coin-hover-display-text4-upper-coincode,
+        .coin-hover-display-text4-upper-coincurrency {
+            padding-left: 0.3rem;
+            letter-spacing: 1.25px;
+        }
+
+        .coin-hover-display-text2-upper-coinrevenue,
+        .coin-hover-display-text3-upper-coinrevenue,
+        .coin-hover-display-text4-upper-coinrevenue {
+            padding-left: 2.2rem;
+        }
+    }
+
+}
+
+.welcome-section-level1{
+    display: contents;
 }
