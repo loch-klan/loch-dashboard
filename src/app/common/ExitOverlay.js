@@ -38,7 +38,6 @@ class ExitOverlay extends BaseReactComponent {
         navigator.clipboard.writeText(this.state.link);
     }
     handleSave = () => {
-        console.log("Save")
         let email_arr = []
         let data = JSON.parse(localStorage.getItem("addWallet"))
         if (data) {
