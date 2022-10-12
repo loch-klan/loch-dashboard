@@ -3,17 +3,18 @@
 
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            flex-direction: column;
+            align-items: center;
+            // align-items: baseline;
+            // flex-direction: column;
             nav{
                 ol{
                     align-items: center;
                     background-color: $grey-F2F;
                     border: none;
                     padding: 0rem;
-                    .breadcrumb{
-                        margin-bottom: 2rem;
-                    }
+                    margin-bottom: 2.4rem;
+                    // .breadcrumb{
+                    // }
                     .breadcrumb-item+.breadcrumb-item::before{
                         content: url('../../images/icons/ChevronArrowRight.svg');
                         position: relative;
@@ -53,5 +54,9 @@
                 line-height: 1.9rem;
             }
         }
-
+        .history-header{
+            flex-direction:column;
+            align-items: baseline;
+            margin-bottom:2.4rem;
+        }
         // page-header-end

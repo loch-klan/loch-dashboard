@@ -8,14 +8,14 @@ export const CommonPagination = (props) => {
 
     let items = [];
     const [page, setPage] = React.useState(1)
-    const [active, setactive] = React.useState(1)
+    // const [active, setactive] = React.useState(1)
     let totalPages = props.numOfPages
     const setCurrentPage = (p) => {
         props.setValue(p)
     }
     for (let number = 1; number <= totalPages; number++) {
         items.push(
-            <Pagination.Item key={number} active={number === active} className="inter-display-medium f-s-16 lh-19">
+            <Pagination.Item key={number} active={number === page} className="inter-display-medium f-s-16 lh-19">
                 {number}
             </Pagination.Item>,
         );
@@ -38,7 +38,7 @@ export const CommonPagination = (props) => {
     return (
         <div className='pagination-section'>
             <Image src={
-                props.page === 1 ? InactivePrevBtn
+                page === 1 ? InactivePrevBtn
                     :
                     ActivePrevBtn
             }

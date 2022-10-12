@@ -22,6 +22,36 @@ class CustomTable extends BaseReactComponent {
   onValidSubmit = () => {
 
   }
+
+  columnDataMapping = ({
+    cellData,
+    dataKey
+  }) => {
+    console.log(cellData,dataKey)
+      if(dataKey === "From" || dataKey === "To")
+      {
+        return (
+          <img src={cellData} className="history-table-icon" />
+        )
+      }
+      else if (dataKey === "Asset"){
+        console.log("ASSET")
+        return(
+          <div className='inter-display-medium f-s-13 lh-16 history-table-coin-icon'><img src={cellData}/> Ethereum</div>
+        )
+      }
+      else if (dataKey === "Method")
+      {
+        return (
+          <div className="inter-display-medium f-s-13 lh-16 history-table-method">{cellData}</div>
+        )
+      }
+      else{
+        return(
+          cellData
+        )
+      }
+    }
   render() {
     const { istopPagination = false, tableData, className = "", columnList = [], notFoundImage = notFoundDefault, moduleName, message = "", isButton, buttonText, linkUrl, linkText, currentPage = 1, totalPages, history, location, pageSize = false, pageSizeOptions = [], handlePageSize = "" } = this.props;
     return (
@@ -94,47 +124,49 @@ class CustomTable extends BaseReactComponent {
                           className={item.className}
                           label={item.labelName}
                           dataKey={item.dataKey}
-                          cellRenderer={({ rowData }) => { return item.cell(rowData, item.dataKey) }}
+                          // cellRenderer={({ rowData }) => { return item.cell(rowData, item.dataKey) }}
+                          cellRenderer={this.columnDataMapping}
                         />
                       )
                     })
                   }
-                </Table>
-              )}
-            </AutoSizer>
+                  
+                      </Table>
+                    )}
+                </AutoSizer>
             :
-            <div className="not-found-wrapper">
-              <Image src={notFoundImage} />
-              <p className="red-hat-display-medium f-s-16 black-404"> {moduleName ? "No " + moduleName + " Found" : message}</p>
-              {
-                isButton &&
-                <Button
-                  className="primary-btn"
-                  onClick={isButton}
-                >
-                  {buttonText}
-                </Button>
-              }
-              {
-                linkUrl &&
-                <Link className="primary-btn" to={linkUrl}>
-                  {linkText}
-                </Link>
-              }
-            </div>
+                  <div className="not-found-wrapper">
+                    <Image src={notFoundImage} />
+                    <p className="red-hat-display-medium f-s-16 black-404"> {moduleName ? "No " + moduleName + " Found" : message}</p>
+                    {
+                      isButton &&
+                      <Button
+                        className="primary-btn"
+                        onClick={isButton}
+                      >
+                        {buttonText}
+                      </Button>
+                    }
+                    {
+                      linkUrl &&
+                      <Link className="primary-btn" to={linkUrl}>
+                        {linkText}
+                      </Link>
+                    }
+                  </div>
         }
-        {
-          tableData && tableData.length >= 1 && totalPages > 1 &&
-          <Pagination
-            history={history}
-            location={location}
-            page={currentPage + 1}
-            pageCount={totalPages}
-          />
-        }
-      </div>
-    );
+                  {
+                    tableData && tableData.length >= 1 && totalPages > 1 &&
+                    <Pagination
+                      history={history}
+                      location={location}
+                      page={currentPage + 1}
+                      pageCount={totalPages}
+                    />
+                  }
+                </div>
+              );
   };
 }
 
-export default CustomTable;
+              export default CustomTable;

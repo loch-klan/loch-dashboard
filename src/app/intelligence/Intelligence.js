@@ -18,10 +18,10 @@ class Intelligence extends Component {
             <div className="intelligence-page-section">
               {/* <Sidebar ownerName=""/> */}
               <div className='intelligence-section page'>
-                <PageHeader
+                {/* <PageHeader
                     title="Intelligence"
                     subTitle="Automated and personalized financial intelligence"
-                />
+                /> */}
                 {/* <IntelWelcomeCard /> */}
                 <TransactionHistoryPage />
               </div>

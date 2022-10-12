@@ -99,6 +99,26 @@
                             line-height: 1.6rem;
                             color: $grey-313;
                             text-align: center;
+                            margin: 0rem;
+                            .history-table-icon{
+                                width:2.4rem;
+                                height:2.4rem;
+                            }
+                            .history-table-coin-icon{
+                                padding:0.4rem 0.8rem;
+                                background-color: rgba(229, 229, 230, 0.5);
+                                border:0.1rem solid $grey-CAC;
+                                border-radius: 0.4rem;
+                                img{
+                                    margin-right: 0.6rem;
+                                }
+                            }
+                            .history-table-method{
+                                border:0.1rem solid $black-191;
+                                padding: 0.4rem 0.8rem;
+                                border-radius: 0.4rem;
+                                background-color: $red-FFE;
+                            }
                         }
                     }
                 }
