@@ -106,6 +106,6 @@ export const lightenDarkenColor = (hex, lum) => {
 	return rgb;
 }
 
-export const AmountFormat = (number,locals,currency_type) => {
+export const amountFormat = (number,locals,currency_type) => {
   return new Intl.NumberFormat(locals, {currency:currency_type}).format(number)
 }

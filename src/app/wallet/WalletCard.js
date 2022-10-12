@@ -6,9 +6,11 @@ import EditIcon from '../../assets/images/EditIcon.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import EditWalletModal from './EditWalletModal';
 import unrecognisedIcon from '../../image/unrecognised.png';
-import { numToCurrency } from './../../utils/ReusableFunctions';
+import { amountFormat, numToCurrency } from './../../utils/ReusableFunctions';
+import CopiedModal from '../common/_utils/CopiedModal';
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
+    const [showModal, toggleCopied] = React.useState(false);
     function handleClose() {
         setShow(false);
     }
@@ -25,7 +27,7 @@ export default function WalletCard(props) {
                 isText={true}
                 isName={coin.chain.name}
                 colorCode={coin.chain.color}
-                text={ coin.chain.percentage.toFixed(2) + "%  " + coin.value.toFixed(2) + " USD"}
+                text={ coin.chain.percentage.toFixed(2) + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + " USD"}
             >
                 <div>
                     <CoinChip
@@ -41,16 +43,20 @@ export default function WalletCard(props) {
     const copyContent = () => {
         const text = props.wallet_account_number
         navigator.clipboard.writeText(text)
+        // toggleCopied(true)
     }
     return (
         <div className="walletcard">
+          {/* {
+            <CopiedModal show={showModal} onHide={()=>toggleCopied(false)} />
+          } */}
             <div className='m-b-32 wallet-details'>
                 <div className='wallet-account-details'>
                     <div className='m-r-16 wallet-img'>
                         <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognisedIcon} />
                     </div>
                     <div className='m-r-16 wallet-name-details'>
-                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata && props.wallet_coins.length>0 ? props.wallet_metadata.name ? props.wallet_metadata.name : "Undefined" : "Unrecognised wallet"}</h6>
+                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : "Undefined" : "Unrecognised wallet"}</h6>
                         {props.wallet_metadata && props.wallet_metadata.tag && <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} </div>}
                     </div>
                     <div className='account-details' onClick={copyContent}>
