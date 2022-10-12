@@ -192,7 +192,6 @@ class Wallet extends Component {
                                     wallet_amount={wallet.total_value}
                                     wallet_coins={wallet.chains}
                                     makeApiCall={this.makeApiCall}
-                                    index={index}
                                 />
                             )
                         })}
