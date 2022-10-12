@@ -16,7 +16,7 @@ class Intelligence extends Component {
     render() {
         return (
             <div className="intelligence-page-section">
-              <Sidebar ownerName=""/>
+              {/* <Sidebar ownerName=""/> */}
               <div className='intelligence-section page'>
                 <PageHeader
                     title="Intelligence"
