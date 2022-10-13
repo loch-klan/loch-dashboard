@@ -109,6 +109,8 @@
                                 background-color: rgba(229, 229, 230, 0.5);
                                 border:0.1rem solid $grey-CAC;
                                 border-radius: 0.4rem;
+                                width: max-content;
+                                margin: 0 auto;
                                 img{
                                     margin-right: 0.6rem;
                                 }
@@ -118,6 +120,8 @@
                                 padding: 0.4rem 0.8rem;
                                 border-radius: 0.4rem;
                                 background-color: $red-FFE;
+                                margin: 0 auto;
+                                width: max-content;
                             }
                         }
                     }

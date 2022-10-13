@@ -27,47 +27,47 @@ export default {
             Method :"Burn"
         }
     ],
-    columnList:[{labelName:"Time",dataKey:"Time",coumnWidth:99,isCell: true,
+    columnList:[{labelName:"Time",dataKey:"Time",coumnWidth:90,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "Time") {
         return rowData.Time
       }
-    }},{labelName:"From",dataKey:"From",coumnWidth:99,isCell: true,
+    }},{labelName:"From",dataKey:"From",coumnWidth:90,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "From") {
         return rowData.From
       }
-    }},{labelName:"To",dataKey:"To",coumnWidth:99,isCell: true,
+    }},{labelName:"To",dataKey:"To",coumnWidth:90,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "To") {
         return rowData.To
       }
-    }},{labelName:"Asset",dataKey:"Asset",coumnWidth:99,isCell: true,
+    }},{labelName:"Asset",dataKey:"Asset",coumnWidth:130,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "Asset") {
         return rowData.Asset
       }
-    }},{labelName:"Amount",dataKey:"Amount",coumnWidth:99,isCell: true,
+    }},{labelName:"Amount",dataKey:"Amount",coumnWidth:100,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "Amount") {
         return rowData.Amount
       }
-    }},{labelName:"USD Value Then",dataKey:"USDValueThen",coumnWidth:99,isCell: true,
+    }},{labelName:"USD Value Then",dataKey:"USDValueThen",coumnWidth:100,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "USDValueThen") {
         return rowData.USDValueThen
       }
-    }},{labelName:"USD Value Today",dataKey:"USDValueToday",coumnWidth:99,isCell: true,
+    }},{labelName:"USD Value Today",dataKey:"USDValueToday",coumnWidth:100,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "USDValueToday") {
         return rowData.USDValueToday
       }
-    }},{labelName:"USD Transaction Fee",dataKey:"USDTransactionFee",coumnWidth:99,isCell: true,
+    }},{labelName:"USD Transaction Fee",dataKey:"USDTransactionFee",coumnWidth:100,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "USDTransactionFee") {
         return rowData.USDTransactionFee
       }
-    }},{labelName:"Method",dataKey:"Method",coumnWidth:99,isCell: true,
+    }},{labelName:"Method",dataKey:"Method",coumnWidth:100,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "Method") {
         return rowData.Method

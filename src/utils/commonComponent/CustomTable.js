@@ -107,9 +107,9 @@ class CustomTable extends BaseReactComponent {
               {({ width }) => (
                 <Table
                   width={width}
-                  height={(50 * (tableData.length + 1)) - 10}
-                  headerHeight={50}
-                  rowHeight={50}
+                  height={(60 * (tableData.length + 1)) - 10}
+                  headerHeight={80}
+                  rowHeight={60}
                   rowCount={tableData.length}
                   rowGetter={({ index }) => tableData[index]}
                   className={`custom-table ${className}`}
@@ -130,7 +130,7 @@ class CustomTable extends BaseReactComponent {
                       )
                     })
                   }
-                  
+
                       </Table>
                     )}
                 </AutoSizer>
