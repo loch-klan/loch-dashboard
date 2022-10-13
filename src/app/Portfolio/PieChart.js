@@ -340,7 +340,7 @@ class PieChart extends BaseReactComponent {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='coin-hover-display-text2'>
+                                {/* <div className='coin-hover-display-text2'>
                                     <div className='coin-hover-display-text2-upper'>
                                         <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>Metamask</span>
                                         <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>50%</span>
@@ -375,7 +375,7 @@ class PieChart extends BaseReactComponent {
                                         <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text4-upper-coinrevenue'>3120</span>
                                         <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text4-upper-coincurrency'>USD</span>
                                     </div>
-                                </div>
+                                </div> */}
 
                             </div> : null}
                     </>
