@@ -19,8 +19,8 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin } from "../onboarding//Api";
 import { updateUserWalletApi } from './Api';
-
-
+import { updateWalletApi } from './../wallet/Api';
+import {getAllWalletApi} from '../wallet/Api'
 class FixAddModal extends BaseReactComponent {
 
     constructor(props) {
@@ -42,7 +42,8 @@ class FixAddModal extends BaseReactComponent {
             walletTitleList: [],
             chainTitleList: [],
             changeList:props.changeWalletList,
-            pathName:props.pathName
+            pathName:props.pathName,
+            walletNameList:[]
         }
         this.timeout = 0
 
@@ -104,7 +105,7 @@ class FixAddModal extends BaseReactComponent {
     }
     componentDidMount() {
         this.props.getAllCoins()
-
+        getAllWalletApi(this)
     }
     addAddress = ()=>{
         this.state.addWalletList.push({
@@ -130,30 +131,45 @@ class FixAddModal extends BaseReactComponent {
 
     handleSelectWallet = (e) => {
         let current = e.split(' ')
-        let newWalletList = [...this.state.walletTitleList]
-        newWalletList[current[0]] = current[1]
+        console.log(current[3])
+        // let newWalletList = [...this.state.walletTitleList]
+        // newWalletList[current[0]] = current[1]
         this.setState({
-            walletTitleList:newWalletList ,
+            walletTitleList:current[3] ,
         })
     }
     handleSelectChain = (e) => {
         let current = e.split(' ')
-        let newChainList = [...this.state.chainTitleList]
-        newChainList[current[0]] = current[1]
+        console.log(current[3])
+        // let newChainList = [...this.state.chainTitleList]
+        // newChainList[current[0]] = current[3]
         this.setState({
-            chainTitleList: newChainList,
+            chainTitleList: current[3],
         })
     }
 
     handleAddWallet = ()=>{
         if(this.state.addWalletList){
-            localStorage.setItem("addWallet",JSON.stringify(this.state.addWalletList))
-            {this.state.changeList && this.state.changeList(this.state.addWalletList)}
-            this.state.onHide()
+
+            let arr = []
             let walletList = []
-            this.state.addWalletList.map((list)=>walletList.push(list.address))
+            for(let i = 0;i<this.state.addWalletList.length ; i++)
+            {
+                let curr = this.state.addWalletList[i]
+                if(!arr.includes(curr.address)){
+                    walletList.push(curr)
+                    arr.push(curr.address)
+                }
+            }
+
+            // console.log("Arr" , arr)
+            // console.log("walletList" ,walletList)
+            localStorage.setItem("addWallet",JSON.stringify(walletList))
+            {this.state.changeList && this.state.changeList(walletList)}
+            this.state.onHide()
+            // this.state.addWalletList.map((list)=>walletList.push(list.address))
             const data = new URLSearchParams();
-            data.append("wallet_addresses",JSON.stringify(walletList))
+            data.append("wallet_addresses",JSON.stringify(arr))
 
             updateUserWalletApi(data, this);
             if(this.props.handleUpdateWallet){
@@ -169,8 +185,23 @@ class FixAddModal extends BaseReactComponent {
         }
     }
 
+    handleFixWalletChange = (e)=>{
+        let {id,value} = e.target
+        console.log(id,value)
+        let newArr = [...this.state.fixWalletAddress]
+        newArr[id] = value
+        this.setState({
+            fixWalletAddress:newArr
+        })
+    }
+
     handleFixWallet = ()=>{
-        console.log("HELLo")
+        console.log("HELLo Fixing Wallet")
+        let data = new URLSearchParams()
+        data.append("wallet_address",this.state.fixWalletAddress)
+        data.append("wallet_id",this.state.walletTitleList)
+        data.append("chain_id",this.state.chainTitleList)
+        updateWalletApi(this,data);
     }
 
     isDisabled = () => {
@@ -189,17 +220,29 @@ class FixAddModal extends BaseReactComponent {
 
 
     render() {
-
+        let walletDropDownList = []
+        this.state.walletNameList.map((wallet)=>{
+            walletDropDownList.push({name:wallet.name , id:wallet.id})
+        })
         const inputs = this.state.modalType == "fixwallet" ?
             this.state.fixWalletAddress.map((address, index) => {
                 return (
                     <div className="m-b-12 fix-wallet-input" key={index}>
-                        <input value={address} className="inter-display-regular f-s-16  lh-19 black-191" type="text" />
+                        <input 
+                            value={address} 
+                            className="inter-display-regular f-s-16  lh-19 black-191" 
+                            type="text" 
+                            id={index}
+                            autoFocus
+                            onChange={(e)=>this.handleFixWalletChange(e)}    
+                        />
                         <div className="fix-dropdowns">
+                            
                             <Dropdown
                                 id={index}
                                 title="Wallet"
-                                list={["Metamask", "Phantom", "Coinbase", "Gamestop", "Brave", "Rabby", "Portis", "Trust Wallet by Binance", "Others"]}
+                                // list={["Metamask", "Phantom", "Coinbase", "Gamestop", "Brave", "Rabby", "Portis", "Trust Wallet by Binance", "Others"]}
+                                list={walletDropDownList}
                                 onSelect={this.handleSelectWallet}
                                 activetab={this.state.walletTitleList[index]}
 
@@ -207,9 +250,10 @@ class FixAddModal extends BaseReactComponent {
                             <Dropdown
                                 id={index}
                                 title="Chain"
-                                list={["Ethereum", "Bitcoin", "Helium", "Avalanche", "Unicoin", "Maker", "Matic", "Matic", "Flow", "Cosmos", "Others"]}
+                                list={this.props.OnboardingState.coinsList}
                                 onSelect={this.handleSelectChain}
                                 activetab={this.state.chainTitleList[index]}
+                                showChain={true}
                             />
                         </div>
                     </div>)
@@ -335,7 +379,9 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps =  {
     getAllCoins,
-    detectCoin
+    detectCoin,
+    updateWalletApi,
+    getAllWalletApi,
     // getCoinList
 }
 FixAddModal.propTypes = {

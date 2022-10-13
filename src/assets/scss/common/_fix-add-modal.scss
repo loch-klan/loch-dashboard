@@ -89,12 +89,21 @@
 
                                 .dropdown-menu{
                                     padding:0.4rem;
-                                    width:13.1rem;
+                                    width:auto;
+                                    height:16rem;
+                                    overflow-y: scroll;
                                 }
                                 .dropdown-item {
                                     border-radius: 0.2rem;
                                     padding: 0.55rem;
                                     font-size: 1.3rem;
+                                }
+                                .chain-dropdown{
+                                    padding:0.4rem 0.8rem;
+                                    border-radius: 0.4rem;
+                                    img{
+                                        width:1.6rem;
+                                    }
                                 }
                                 .active{
                                     background-color: $grey-F2F;

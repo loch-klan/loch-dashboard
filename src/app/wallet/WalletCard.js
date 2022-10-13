@@ -8,6 +8,7 @@ import EditWalletModal from './EditWalletModal';
 import unrecognisedIcon from '../../image/unrecognised.png';
 import { amountFormat, numToCurrency } from './../../utils/ReusableFunctions';
 import CopiedModal from '../common/_utils/CopiedModal';
+import FixAddModal from '../common/FixAddModal';
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
     const [showModal, toggleCopied] = React.useState(false);
@@ -52,6 +53,10 @@ export default function WalletCard(props) {
       });
         // toggleCopied(true)
     }
+    const [showFixModal , setShowFixModal] = React.useState(0)
+    const handleFixModal = ()=>{
+        setShowFixModal(prev => !prev)
+    }
     return (
         <div className="walletcard">
           {/* {
@@ -87,7 +92,7 @@ export default function WalletCard(props) {
                 :
                 <>
                 <h6 className='inter-display-medium f-s-16 lh-19 grey-B0B'>This wallet address is not dected, please fix it now.</h6>
-                <Button className='secondary-btn'>Fix now</Button>
+                <Button className='secondary-btn' onClick={handleFixModal}>Fix now</Button>
                 </>
               }
             </div>
@@ -105,6 +110,21 @@ export default function WalletCard(props) {
                     />
                     :
                     ""
+            }
+            {showFixModal ?
+               <FixAddModal
+               show={showFixModal}
+               onHide={handleFixModal}
+               //  modalIcon={AddWalletModalIcon}
+               title="Fix your wallet connection"
+               subtitle="Add your wallet address to get started"
+               fixWalletAddress={[props.wallet_account_number]}
+               btnText="Done"
+               btnStatus={true}
+               modalType="fixwallet"
+               pathName="/wallets"
+               makeApiCall={props.makeApiCall}
+           />:""
             }
         </div>
     )
