@@ -115,21 +115,39 @@ class AddWallet extends BaseReactComponent {
     }
 
     onValidSubmit = () => {
-      let walletAddress = [];
-      let addWallet = this.props.OnboardingState.walletList.map((el)=> {
-          walletAddress.push(el.address)
-          el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
-          return el;
-      })
-      const data = new URLSearchParams();
-      data.append("wallet_addresses",JSON.stringify(walletAddress))
-      console.log('walletAddress',walletAddress);
-      console.log('addWallet',addWallet);
-      createAnonymousUserApi(data, this, addWallet);
-      // this.props.history.push({
-      //     pathname: '/portfolio',
-      //     state: {addWallet}
-      // });
+
+        let walletAddress = [];
+
+        let addWallet = this.props.OnboardingState.walletList.map((el) => {
+            //   walletAddress.push(el.address)
+            el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
+            return el;
+        })
+        let finalArr = []
+        for (let i = 0; i < addWallet.length; i++) {
+            let curr = addWallet[i]
+            if (!walletAddress.includes(curr.address)) {
+                finalArr.push(curr)
+                walletAddress.push(curr.address)
+            }
+        }
+
+        finalArr = finalArr.map((item,index)=>{return({
+            ...item,
+            id: `wallet${index+1}`
+          })})
+
+        const data = new URLSearchParams();
+        data.append("wallet_addresses", JSON.stringify(walletAddress))
+        console.log('walletAddress', walletAddress);
+        //   console.log('addWallet',addWallet);
+        console.log('addWallet', finalArr);
+        //   createAnonymousUserApi(data, this, addWallet);
+        createAnonymousUserApi(data, this, finalArr);
+        // this.props.history.push({
+        //     pathname: '/portfolio',
+        //     state: {addWallet}
+        // });
     }
 
     render() {
@@ -155,16 +173,16 @@ class AddWallet extends BaseReactComponent {
                                     {this.props.OnboardingState.walletList.map((e, i) => {
                                         if (this.state.walletInput[index].address && e.id === `wallet${index + 1}`) {
                                             // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                                if (e.coinFound) {
-                                                    return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
-                                                } else {
-                                                  if(e.coins.length === this.props.OnboardingState.coinsList.length){
+                                            if (e.coinFound) {
+                                                return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
+                                            } else {
+                                                if(e.coins.length === this.props.OnboardingState.coinsList.length){
                                                     return <CustomChip coins={null} key={i} isLoaded={true}></CustomChip>
-                                                  } else {
+                                                } else {
                                                     return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
-                                                  }
-
                                                 }
+
+                                            }
                                             // } else {
                                             //     if (this.state.loading && c.address && c.address.length > 0 && e.coins.length !== this.props.OnboardingState.coinsList.length) {
                                             //         return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
