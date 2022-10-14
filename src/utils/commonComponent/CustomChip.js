@@ -14,8 +14,8 @@ function CustomChip({ coins, isLoaded }) {
                             ?
                             <div className="chip-wrapper">
                                 <div className="chip-container-dual">
+                                <Image src={sortedCoins[0].coinSymbol} />
                                     <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
-                                        <Image src={sortedCoins[0].coinSymbol} />
                                         {sortedCoins[0].coinName}</Badge>
                                 </div>
                                 <div className="chip-container">
@@ -30,15 +30,16 @@ function CustomChip({ coins, isLoaded }) {
                             :
                             <div className="chip-wrapper">
                                 <div className="chip-container">
+                                <Image src={sortedCoins[0].coinSymbol} />
                                     <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
-                                        <Image src={sortedCoins[0].coinSymbol} />
                                         {sortedCoins[0].coinName}</Badge>
                                 </div>
                             </div>
                         :
                         <div className="chip-wrapper">
                             <div className="chip-container">
-                                <Badge className="inter-display-medium f-s-13 lh-16 grey-313"> <Image src={unrecognised} className="unrecognised" /> Unrecognized</Badge>
+                            <Image src={unrecognised} className="unrecognised" />
+                                <Badge className="inter-display-medium f-s-13 lh-16 grey-313">Unrecognized</Badge>
                             </div>
                         </div>
                     :

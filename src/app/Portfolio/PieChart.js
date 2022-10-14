@@ -383,7 +383,7 @@ class PieChart extends BaseReactComponent {
                     this.state.loader === false && this.state.assetTotal === 0
                     ?
                     <>
-                    <Image src={noDataImage} className="no-data" />
+                    <Image src={noDataImage} className="no-data m-b-20" />
                     <h3 className='inter-display-medium f-s-14 lh-19'>No data found</h3>
                     </>
 

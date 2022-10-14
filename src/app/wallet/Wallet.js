@@ -11,6 +11,9 @@ import { API_LIMIT, SEARCH_BY_CHAIN_IN, SORT_BY_NAME, SORT_BY_PORTFOLIO_AMOUNT, 
 import FixAddModal from '../common/FixAddModal';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import {getCoinRate} from '../Portfolio/Api.js'
+import noDataImage from '../../image/no-data.png';
+import { Image} from 'react-bootstrap';
+
 class Wallet extends Component {
     constructor(props) {
         super(props);
@@ -182,7 +185,7 @@ class Wallet extends Component {
                     </div>
 
                     <div className='cards'>
-                        {walletList.length > 0 && walletList.map((wallet, index) => {
+                        {walletList.length > 0 ? walletList.map((wallet, index) => {
                             return (
                                 <WalletCard
                                     key={index}
@@ -191,12 +194,18 @@ class Wallet extends Component {
                                     wallet_account_number={wallet.address}
                                     wallet_amount={wallet.total_value}
                                     wallet_coins={wallet.chains}
-                                    // makeApiCall={this.makeApiCall}
+                                    makeApiCall={this.makeApiCall}
                                     handleUpdateWallet = {this.handleUpdateWallet}
                                     history={this.props.history}
                                 />
                             )
-                        })}
+                        })
+                      :
+                      <div style={{textAlign: "center"}}>
+                    <Image src={noDataImage} className="no-data m-b-20" />
+                    <h3 className='inter-display-medium f-s-14 lh-19'>No data found</h3>
+                    </div>
+                      }
                     </div>
                 </div>
             </div>

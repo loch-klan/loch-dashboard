@@ -1062,23 +1062,26 @@ form {
       // margin-bottom: -0.4rem;
 
       li {
-        height: 2.5rem;
-
+        height: 2.4rem;
         display: flex;
-        align-content: center;
+        justify-content: center;
         align-items: center;
         flex-wrap: nowrap;
         flex-direction: row;
         background: rgba(229, 229, 230, 0.5);
         border: 0.1rem solid $grey-CAC;
         border-radius: 0.4rem;
-        padding: 0.2rem 0.8rem;
-        margin-bottom: 0.4rem;
 
+        margin-bottom: 0.4rem;
+        span{
+          padding: 0.2rem 0.8rem;
+        }
         img {
-          width: 1.6rem;
-          margin-right: 0.5rem;
-          margin-top: -0.1rem;
+          position: relative;
+          left: -1px;
+          width: 2.4rem;
+          margin-right: 0rem;
+          margin-top: 0rem;
         }
 
       }
@@ -1164,7 +1167,7 @@ form {
   // height: 2.5rem;
   background: rgba(229, 229, 230, 0.5);
   border: 0.1rem solid $grey-CAC;
-  border-radius: 0.4rem;
+  border-radius: 0.6rem;
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
@@ -1174,9 +1177,10 @@ form {
   }
 
   img {
-    margin-right: 0.5rem;
-    width: 1.6rem;
-    margin-top: -0.1rem;
+    // margin-right: 0.5rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    // margin-top: -0.1rem;
   }
 }
 
