@@ -70,7 +70,7 @@ class EditWalletModal extends BaseReactComponent {
                 aria-labelledby="contained-modal-title-vcenter"
                 backdropClassName="editmodal"
             >
-                <Modal.Header style={{backgroundColor: walletMetaData && walletMetaData.color ? walletMetaData.color : "#D4D4D4"}}>
+                <Modal.Header style={{backgroundColor: walletMetaData && walletMetaData.color ? walletMetaData.color : "#E98430"}}>
                     <Image src={walletMetaData && walletMetaData.symbol ? walletMetaData.symbol : unrecognisedIcon} className="walletIcon" />
                     <div className="closebtn" onClick={onHide}>
                         <Image src={closeIcon} />
@@ -92,6 +92,7 @@ class EditWalletModal extends BaseReactComponent {
                         control={{
                           type: SelectControl,
                           settings: {
+                            placeholder: "Select wallet type",
                             options: walletNameList,
                             multiple: false,
                             searchable: true,

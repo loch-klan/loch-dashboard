@@ -63,7 +63,7 @@ class AddWallet extends BaseReactComponent {
                     coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
                     coinName: this.props.OnboardingState.coinsList[i].name,
                     address: value,
-                    isLast: i === (this.props.OnboardingState.coinsList.length - 1)
+                    // isLast: i === (this.props.OnboardingState.coinsList.length - 1)
                 })
             }
         }

@@ -39,7 +39,7 @@ export const detectCoin = (wallet,ctx=null) => {
                             coinName: wallet.coinName,
                             address: wallet.address,
                             chain_detected: res.data.data.chain_detected,
-                            isLast: wallet.isLast
+                            // isLast: wallet.isLast
                         }
                     });
                     if(ctx && res.data.data.chain_detected){
@@ -94,7 +94,7 @@ export const verifyUser = (ctx,info)=>{
               obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
               addWallet.push(obj);
           }
-            console.log('addWallet',addWallet);
+            // console.log('addWallet',addWallet);
             ctx.props.history.push({
               pathname: "/portfolio",
               state: {addWallet}

@@ -56,8 +56,7 @@ class FixAddModal extends BaseReactComponent {
         let {name,value} = e.target
         let prevWallets = [...this.state.addWalletList]
         let currentIndex = prevWallets.findIndex(elem => elem.id === name)
-        if(currentIndex > -1)
-        {
+        if(currentIndex > -1){
             prevWallets[currentIndex].address = value
             if(value === ""){
                 prevWallets[currentIndex].coins = []
@@ -83,7 +82,7 @@ class FixAddModal extends BaseReactComponent {
                     coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
                     coinName: this.props.OnboardingState.coinsList[i].name,
                     address: value,
-                    isLast: i === (this.props.OnboardingState.coinsList.length - 1)
+                    // isLast: i === (this.props.OnboardingState.coinsList.length - 1)
                 },this)
             }
         }
@@ -196,7 +195,7 @@ class FixAddModal extends BaseReactComponent {
     }
 
     handleFixWallet = ()=>{
-        console.log("HELLo Fixing Wallet")
+        // console.log("HELLo Fixing Wallet")
         let data = new URLSearchParams()
         data.append("wallet_address",this.state.fixWalletAddress)
         data.append("wallet_id",this.state.walletTitleList)
@@ -228,16 +227,16 @@ class FixAddModal extends BaseReactComponent {
             this.state.fixWalletAddress.map((address, index) => {
                 return (
                     <div className="m-b-12 fix-wallet-input" key={index}>
-                        <input 
-                            value={address} 
-                            className="inter-display-regular f-s-16  lh-19 black-191" 
-                            type="text" 
+                        <input
+                            value={address}
+                            className="inter-display-regular f-s-16  lh-19 black-191"
+                            type="text"
                             id={index}
                             autoFocus
-                            onChange={(e)=>this.handleFixWalletChange(e)}    
+                            onChange={(e)=>this.handleFixWalletChange(e)}
                         />
                         <div className="fix-dropdowns">
-                            
+
                             <Dropdown
                                 id={index}
                                 title="Wallet"
@@ -262,6 +261,8 @@ class FixAddModal extends BaseReactComponent {
 
         const wallets =
             this.state.addWalletList.map((elem, index) => {
+              // console.log('elem',elem);
+              // console.log('this.props',this.props.OnboardingState.coinsList);
                 return (<div className='m-b-12 add-wallet-input-section' key={index} >
                     {index >= 1 ? <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteAddress(index)} /> : ""}
 
@@ -280,9 +281,13 @@ class FixAddModal extends BaseReactComponent {
                         ?
                           elem.coinFound && elem.coins.length>0
                           ?
-                          <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} isLoaded={true}></CustomChip>
+                          <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} key={index} isLoaded={true}></CustomChip>
                           :
-                          <CustomChip coins={null} isLoaded={true}></CustomChip>
+                          elem.coins.length === this.props.OnboardingState.coinsList.length
+                          ?
+                          <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
+                          :
+                          <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
                         :
                         ""
                     }
@@ -341,7 +346,7 @@ class FixAddModal extends BaseReactComponent {
                                 {wallets}
                             </div>}
 
-                            {this.state.addWalletList.length >= 1 &&this.state.modalType==="addwallet" &&
+                            {this.state.addWalletList.length >= 0 &&this.state.modalType==="addwallet" &&
                                 <div className="m-b-32 add-wallet-btn">
                                     <Button className="grey-btn" onClick={this.addAddress} >
                                         <img src={PlusIcon} /> Add another
@@ -349,10 +354,13 @@ class FixAddModal extends BaseReactComponent {
                                 </div>}
                             {/* input field for add wallet */}
                             <div className='btn-section'>
-                                <Button className={`primary-btn ${this.state.btnStatus ? "activebtn" : ""} ${this.state.modalType === "fixwallet" ? "fix-btn" : this.state.modalType === "addwallet" && !this.isDisabled() ? "add-btn activebtn" : "add-btn"}`}
-                                disabled={this.state.modalType==="addwallet" ? this.isDisabled() : false}
-                                onClick={this.state.modalType ==="addwallet" ? this.handleAddWallet : this.handleFixWallet}
-                                >{this.state.btnText}</Button>
+                                <Button
+                                  className={`primary-btn ${this.state.btnStatus ? "activebtn" : ""} ${this.state.modalType === "fixwallet" ? "fix-btn" : this.state.modalType === "addwallet" && !this.isDisabled() ? "add-btn activebtn" : "add-btn"}`}
+                                  disabled={this.state.modalType==="addwallet" ? this.isDisabled() : false}
+                                  onClick={this.state.modalType ==="addwallet" ? this.handleAddWallet : this.handleFixWallet}
+                                >
+                                  {this.state.btnText}
+                                </Button>
                             </div>
                             <div className='m-b-26 footer'>
                                 <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">At Loch, we care intensely about your privacy and anonymity.
