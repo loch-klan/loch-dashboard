@@ -191,7 +191,9 @@ class Wallet extends Component {
                                     wallet_account_number={wallet.address}
                                     wallet_amount={wallet.total_value}
                                     wallet_coins={wallet.chains}
-                                    makeApiCall={this.makeApiCall}
+                                    // makeApiCall={this.makeApiCall}
+                                    handleUpdateWallet = {this.handleUpdateWallet}
+                                    history={this.props.history}
                                 />
                             )
                         })}

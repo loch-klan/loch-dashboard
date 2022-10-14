@@ -62,14 +62,24 @@
                     width:100%;
                     .fix-wallet-input {
                         display: flex;
-
+                        position: relative;
                         padding: 0.6rem 1.2rem;
                         align-items: center;
                         border: 0.1rem solid $black-191;
                         box-shadow: 0rem 0.8rem 1.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.2rem 4.2rem -0.4rem rgba(24, 39, 75, 0.12);
                         border-radius: 0.8rem;
 
-
+                        .chip-wrapper{
+                            top:0.35rem;
+                        }
+                        .delete-icon {
+                            width: 3.8rem;
+                            height: 3.8rem;
+                            box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                            position: absolute;
+                            left:-5.34rem;
+                            cursor: pointer;
+                        }
                         input {
                             border: none;
                             outline: none;
