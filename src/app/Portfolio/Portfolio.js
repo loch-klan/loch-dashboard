@@ -20,8 +20,8 @@ class Portfolio extends BaseReactComponent {
             assetTotalValue: 0,
             loader: false,
             coinAvailable: true,
-            fixModal : false,
-            addModal:false,
+            fixModal: false,
+            addModal: false,
         }
     }
 
@@ -43,16 +43,18 @@ class Portfolio extends BaseReactComponent {
         })
     }
     componentDidMount() {
-      if(this.props.match.params.id){
-        getDetailsByLinkApi(this.props.match.params.id,this)
-      }
+        if (this.props.match.params.id) {
+            getDetailsByLinkApi(this.props.match.params.id, this)
+        }
         this.props.getCoinRate()
+
     }
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         // Check if the coin rate api values are changed
         if (this.props.portfolioState.coinRateList !== prevProps.portfolioState.coinRateList) {
             if (this.state && this.state.userWalletList && this.state.userWalletList.length > 0) {
+                console.log("ComponentdidUpdate")
                 // Resetting the user wallet list, total and chain wallet
                 this.props.settingDefaultValues();
                 // Loops on coins to fetch details of each coin which exist in wallet
@@ -64,10 +66,6 @@ class Portfolio extends BaseReactComponent {
                                 coinCode: coin.coinCode
                             }
                             this.props.getUserWallet(userCoinWallet)
-                        })
-                    } else {
-                        this.setState({
-                            coinAvailable: false
                         })
                     }
                     if (i === (this.state.userWalletList.length - 1)) {
@@ -93,16 +91,17 @@ class Portfolio extends BaseReactComponent {
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader} history={this.props.history}
                                     handleAddModal={this.handleAddModal}
-                                    handleManage={()=>this.props.history.push('/wallets')}
+                                    handleManage={() => this.props.history.push('/wallets')}
                                 />
                             </div>
                             <div className='portfolio-section page'>
-                                  <PieChart
+                                <PieChart
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader}
                                 />
-                                {this.state.coinAvailable === false
+                                {this.state.userWalletList.findIndex(w => w.coinFound !== true) > -1
+                                
                                     ?
                                     <div className='fix-div' id="fixbtn">
                                         <div className='m-r-8 decribe-div'>
@@ -127,11 +126,12 @@ class Portfolio extends BaseReactComponent {
                         //  modalIcon={AddWalletModalIcon}
                         title="Fix your wallet connection"
                         subtitle="Add your wallet address to get started"
-                        fixWalletAddress={["0x9450C3C62119A6A2268E249D4B837B4442733CB0", "0x9450C3C62119A6A2268E249D4B837B4442733CB0"]}
+                        // fixWalletAddress={fixWalletAddress}
                         btnText="Done"
                         btnStatus={true}
+                        history={this.props.history}
                         modalType="fixwallet"
-                        pathName="/portfolio"
+                        changeWalletList={this.handleChangeList}
                     />
                 }
                 {this.state.addModal &&

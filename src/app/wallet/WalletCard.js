@@ -123,7 +123,9 @@ export default function WalletCard(props) {
                btnStatus={true}
                modalType="fixwallet"
                pathName="/wallets"
-               makeApiCall={props.makeApiCall}
+               history={props.history}
+            //    makeApiCall={props.makeApiCall}
+            handleUpdateWallet = {props.handleUpdateWallet}
            />:""
             }
         </div>

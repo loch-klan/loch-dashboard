@@ -45,7 +45,7 @@ export const updateUserWalletApi = (data,ctx) =>{
     if(!res.data.error){
       ctx.props.history.push({
         pathname: ctx.props.pathName,
-        state: {addWallet: ctx.state.addWalletList}
+        state: {addWallet: JSON.parse(localStorage.getItem("addWallet"))}
       });
     } else{
       toast.error(res.data.message || "Something went wrong");
