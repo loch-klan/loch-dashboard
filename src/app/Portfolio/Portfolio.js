@@ -44,13 +44,10 @@ class Portfolio extends BaseReactComponent {
     }
     componentDidMount() {
       if(this.props.match.params.id){
-        console.log('Hey',this.props.match.params.id);
         getDetailsByLinkApi(this.props.match.params.id,this)
       }
         this.props.getCoinRate()
     }
-
-
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         // Check if the coin rate api values are changed
@@ -82,6 +79,7 @@ class Portfolio extends BaseReactComponent {
             }
         }
     }
+
     render() {
         return (
             <div>

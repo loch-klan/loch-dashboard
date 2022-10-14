@@ -42,8 +42,8 @@ class OnBoarding extends Component {
         }
     }
     switchSignIn = (e) => {
-        console.log("active modalin indexx",this.state.currentActiveModal)
-        console.log("verification req indexx",this.state.isVerificationRequired)
+        // console.log("active modalin indexx",this.state.currentActiveModal)
+        // console.log("verification req indexx",this.state.isVerificationRequired)
         if (this.state.currentActiveModal === "verifyCode") {
             this.setState({
                 // isVerificationRequired:false,
