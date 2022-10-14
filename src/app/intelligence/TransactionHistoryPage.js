@@ -26,6 +26,7 @@ export const TransactionHistoryPage = () => {
         title={"Transaction history"}
         subTitle={"Valuable insights based on your assets"}
         showpath={true}
+        currentPage={"Transaction History"}
       />
 
       <div className='fillter_tabs_section'>

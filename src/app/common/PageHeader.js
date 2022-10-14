@@ -6,14 +6,19 @@ export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
 
   const breads = nav_list.map((e, index) => {
-    return e && <Breadcrumb.Item href="#" className="inter-display-medium f-s-13 lh-16" key={index}>{e}</Breadcrumb.Item>
+    return e &&
+      <>
+      <Breadcrumb.Item href="#" className="inter-display-medium f-s-13 lh-16" key={index}>{e}</Breadcrumb.Item>
+      {/* <Breadcrumb.Item className="inter-display-medium f-s-13 lh-16 active" key={index}>Transaction History</Breadcrumb.Item> */}
+      <Breadcrumb.Item className='inter-display-medium f-s-13 lh-16' active>{props.currentPage}</Breadcrumb.Item>
+      </>
   })
   const breadCrumb =
     <Breadcrumb >
       <Breadcrumb.Item href="#"><Image src={InActiveHomeSmallIcon} /></Breadcrumb.Item>
       {breads}
     </Breadcrumb >
-    
+
   return (
     <div className={`m-b-45 page-header ${props.showpath ? "history-header" : ""}`}>
       {props.showpath ? breadCrumb : ""}
