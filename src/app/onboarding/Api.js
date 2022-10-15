@@ -76,7 +76,7 @@ export const signIn = (ctx,data)=>{
 export const verifyUser = (ctx,info)=>{
     preLoginInstance.post('organisation/user/verify-otp',info)
     .then(res=>{
-        console.log(res.data.data.user)
+        // console.log(res.data.data.user)
         if(!res.data.error){
             localStorage.setItem("lochUser",JSON.stringify(res.data.data.user));
             localStorage.setItem('lochToken', res.data.data.token);

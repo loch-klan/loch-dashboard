@@ -40,7 +40,7 @@ function Sidebar(props) {
         <div className='sidebar-section'>
             <Container>
                 <div className="sidebar">
-                  <div>
+                  <div style={{width: "100%"}}>
                     <div className='logo'>
                         <Image src={logo} />
                     </div>
