@@ -91,7 +91,7 @@ export const verifyUser = (ctx,info)=>{
                 chain_detected: item ? true : false})
               });
               obj['id'] = `wallet${i+1}`;
-              obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
+              obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains.length > 0 ? true : false;
               addWallet.push(obj);
           }
             // console.log('addWallet',addWallet);

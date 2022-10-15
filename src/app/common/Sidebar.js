@@ -40,6 +40,7 @@ function Sidebar(props) {
         <div className='sidebar-section'>
             <Container>
                 <div className="sidebar">
+                  <div>
                     <div className='logo'>
                         <Image src={logo} />
                     </div>
@@ -100,7 +101,7 @@ function Sidebar(props) {
                             </div>
                         </div> } */}
                     </div>
-
+                    </div>
                     <div className='sidebar-footer'>
                         <ul>
                             <li>
@@ -111,10 +112,14 @@ function Sidebar(props) {
                                 <Image src={ApiIcon} />
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Api</Button>
                             </li>
-                            <li>
+                            {
+                              JSON.parse(localStorage.getItem('lochUser')) &&
+<li>
                                 <Image src={DarkmodeIcon} />
-                                <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Dark Mode</Button>
+                                <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Share Profile</Button>
                             </li>
+                            }
+
                             <li onClick={handleLeave}>
                                 <Image src={LeaveIcon} />
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Leave</Button>
