@@ -6,8 +6,9 @@ import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
 import Form from "../../utils/form/Form";
-import { getAllCoins, detectCoin, createAnonymousUserApi } from "./Api";
+import { getAllCoins, detectCoin, createAnonymousUserApi} from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
+
 
 class AddWallet extends BaseReactComponent {
     constructor(props) {
@@ -32,8 +33,8 @@ class AddWallet extends BaseReactComponent {
         let walletCopy = [...this.state.walletInput];
         let foundIndex = walletCopy.findIndex(obj => obj.id === name);
         if (foundIndex > -1) {
-          walletCopy[foundIndex].address = value;
-          walletCopy[foundIndex].trucatedAddress = value
+            walletCopy[foundIndex].address = value;
+            walletCopy[foundIndex].trucatedAddress = value
         }
         if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
             let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === name);
@@ -79,22 +80,27 @@ class AddWallet extends BaseReactComponent {
         });
     }
 
-    deleteInputField = (index) => {
-        this.state.walletInput.splice(index, 1);
-        this.state.walletInput.map((w, i) => w.id = `wallet${i + 1}`)
-        if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
-            this.props.OnboardingState.walletList.sort((a, b) => a.id > b.id ? 1 : -1);
-            let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === `wallet${index + 1}`);
-            if (findWalletEntry > -1) {
-                this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
-                this.props.OnboardingState.walletList.map((w, i) => w.id = `wallet${i + 1}`)
+    deleteInputField = (index,wallet) => {
+        // console.log()
+        if (!this.isDisabled() || wallet.address === "") {
+            this.state.walletInput.splice(index, 1);
+            this.state.walletInput.map((w, i) => w.id = `wallet${i + 1}`)
+            if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
+                this.props.OnboardingState.walletList.sort((a, b) => a.id > b.id ? 1 : -1);
+                let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === `wallet${index + 1}`);
+                console.log("entery",findWalletEntry)
+                if (findWalletEntry > -1) {
+                    this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
+                    this.props.OnboardingState.walletList.map((w, i) => w.id = `wallet${i + 1}`)
+                }
             }
-        }
-        this.setState({
-            walletInput: this.state.walletInput
-        });
+            this.setState({
+                walletInput: this.state.walletInput
+            });
 
+        }
     }
+
 
     isDisabled = () => {
         let isDisableFlag = false;
@@ -106,6 +112,7 @@ class AddWallet extends BaseReactComponent {
                 isDisableFlag = true;
             }
         })
+
         this.state.walletInput.map((e) => {
             if (!e.address) {
                 isDisableFlag = true;
@@ -132,10 +139,12 @@ class AddWallet extends BaseReactComponent {
             }
         }
 
-        finalArr = finalArr.map((item,index)=>{return({
-            ...item,
-            id: `wallet${index+1}`
-          })})
+        finalArr = finalArr.map((item, index) => {
+            return ({
+                ...item,
+                id: `wallet${index + 1}`
+            })
+        })
 
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(walletAddress))
@@ -160,7 +169,17 @@ class AddWallet extends BaseReactComponent {
                             {this.state.walletInput.map((c, index) => {
                                 return <div className='ob-wallet-input-wrapper' key={index}>
                                     {/* // <Col md={12} key={index}> */}
-                                    {index >= 1 ? <Image key={index} className='ob-modal-body-del' src={DeleteIcon} onClick={() => this.deleteInputField(index)} /> : null}
+                                    {
+                                        index >= 1
+                                            ?
+                                            <Image
+                                                key={index}
+                                                className={`ob-modal-body-del ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}`}
+                                                src={DeleteIcon}
+                                                onClick={() => this.deleteInputField(index,c) }
+                                            />
+                                            : null
+                                    }
                                     <input
                                         autoFocus
                                         name={`wallet${index + 1}`}
@@ -176,7 +195,7 @@ class AddWallet extends BaseReactComponent {
                                             if (e.coinFound) {
                                                 return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
                                             } else {
-                                                if(e.coins.length === this.props.OnboardingState.coinsList.length){
+                                                if (e.coins.length === this.props.OnboardingState.coinsList.length) {
                                                     return <CustomChip coins={null} key={i} isLoaded={true}></CustomChip>
                                                 } else {
                                                     return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>

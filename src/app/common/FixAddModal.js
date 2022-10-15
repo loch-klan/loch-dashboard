@@ -2,16 +2,10 @@ import React from 'react'
 import BaseReactComponent from '../../utils/form/BaseReactComponent';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
-import Form from '../../utils/form/Form'
-import FormElement from '../../utils/form/FormElement'
-import FormValidator from './../../utils/form/FormValidator';
-import CustomTextControl from './../../utils/form/CustomTextControl';
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import Dropdown from '../common/DropDown.js';
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import Banner from "../../image/Frame.png"
-import EthereumCoin from '../../assets/images/icons/ether-coin.svg'
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CloseBtn from "../../assets/images/icons/CloseBtn.svg"
@@ -47,10 +41,7 @@ class FixAddModal extends BaseReactComponent {
             walletNameList: []
         }
         this.timeout = 0
-
     }
-
-
 
     handleOnchange = (e) => {
 
@@ -58,8 +49,9 @@ class FixAddModal extends BaseReactComponent {
         let prevWallets = [...this.state.addWalletList]
         let currentIndex = prevWallets.findIndex(elem => elem.id === name)
         if (currentIndex > -1) {
+            let prevValue = prevWallets[currentIndex].address
             prevWallets[currentIndex].address = value
-            if (value === "") {
+            if (value === "" || prevValue !== value) {
                 prevWallets[currentIndex].coins = []
             }
         }
@@ -83,14 +75,13 @@ class FixAddModal extends BaseReactComponent {
                     coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
                     coinName: this.props.OnboardingState.coinsList[i].name,
                     address: value,
-                    // isLast: i === (this.props.OnboardingState.coinsList.length - 1)
                 }, this)
             }
         }
     }
     handleSetCoin = (data) => {
         let coinList = {
-            chain_detected: true,
+            chain_detected: data.chain_detected,
             coinCode: data.coinCode,
             coinName: data.coinName,
             coinSymbol: data.coinSymbol
@@ -98,14 +89,15 @@ class FixAddModal extends BaseReactComponent {
         let i = this.state.addWalletList.findIndex(obj => obj.id === data.id)
         let newAddress = this.state.modalType === "addwallet" ? [...this.state.addWalletList] : [...this.state.fixWalletAddress]
         newAddress[i].coins.push(coinList)
-        newAddress[i].coinFound = true
-        if(this.state.modalType === "addwallet"){
-        this.setState({
-            addWalletList: newAddress
-        })}
-        else if(this.state.modalType==="fixwallet"){
+        newAddress[i].coinFound = newAddress[i].coins.some((e) => e.chain_detected === true)
+        if (this.state.modalType === "addwallet") {
             this.setState({
-                fixWalletAddress : newAddress
+                addWalletList: newAddress
+            })
+        }
+        else if (this.state.modalType === "fixwallet") {
+            this.setState({
+                fixWalletAddress: newAddress
             })
         }
     }
@@ -114,13 +106,13 @@ class FixAddModal extends BaseReactComponent {
         getAllWalletApi(this)
 
         const fixWallet = []
-        JSON.parse(localStorage.getItem("addWallet")).map((e)=>{
-            if(e.coinFound !== true){
-                fixWallet.push({...e ,id:`wallet${fixWallet.length + 1}`})
+        JSON.parse(localStorage.getItem("addWallet")).map((e) => {
+            if (e.coinFound !== true) {
+                fixWallet.push({ ...e, id: `wallet${fixWallet.length + 1}` })
             }
         })
         this.setState({
-            fixWalletAddress : fixWallet
+            fixWalletAddress: fixWallet
         })
     }
     addAddress = () => {
@@ -144,58 +136,19 @@ class FixAddModal extends BaseReactComponent {
         })
 
     }
-    deleteFixWalletAddress = (e) =>{
-        let {id , address} = e
-        console.log(id,address)
-
-        // remove from fixwalletState
+    deleteFixWalletAddress = (e) => {
+        let { id, address } = e
         let fixWalletNewArr = []
-        this.state.fixWalletAddress.map((wallet,index)=>{
-            if(wallet.id !== id)
-            {
+        this.state.fixWalletAddress.map((wallet, index) => {
+            if (wallet.id !== id) {
                 fixWalletNewArr.push(wallet)
             }
         })
+        this.setState({
+            fixWalletAddress: fixWalletNewArr
+        })
+    }
 
-        // fixWalletNewArr.map((wallet,index)=>{
-        //     wallet.id = `wallet${index+1}`
-        // })
-        // remove from localStorage
-        // let arr = JSON.parse(localStorage.getItem("addWallet"))
-        // let localArr = []
-        // arr.map((wallet,index)=>{
-        //     if(wallet.id !== actId){
-        //         localArr.push(wallet)
-        //     }
-        // })
-        // localArr.map((wallet,index)=>{
-        //     wallet.id = `wallet${index+1}`
-        // })
-        // console.log("LocalStorage localArr" , localArr)
-        // console.log("FixWallet Arr" , fixWalletNewArr)
-        // localStorage.setItem("addWallet",JSON.stringify(localArr))
-        this.setState({
-            fixWalletAddress : fixWalletNewArr 
-        })
-    }
-    handleSelectWallet = (e) => {
-        let current = e.split(' ')
-        console.log(current[3])
-        // let newWalletList = [...this.state.walletTitleList]
-        // newWalletList[current[0]] = current[1]
-        this.setState({
-            walletTitleList: current[3],
-        })
-    }
-    handleSelectChain = (e) => {
-        let current = e.split(' ')
-        console.log(current[3])
-        // let newChainList = [...this.state.chainTitleList]
-        // newChainList[current[0]] = current[3]
-        this.setState({
-            chainTitleList: current[3],
-        })
-    }
 
     handleAddWallet = () => {
         if (this.state.addWalletList) {
@@ -209,13 +162,14 @@ class FixAddModal extends BaseReactComponent {
                     arr.push(curr.address)
                 }
             }
-
-            // console.log("Arr" , arr)
-            // console.log("walletList" ,walletList)
-            localStorage.setItem("addWallet", JSON.stringify(walletList))
+            // code for filtering coins
+            let addWallet = walletList.map((el) => {
+                el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
+                return el;
+            })
+            localStorage.setItem("addWallet", JSON.stringify(addWallet))
             { this.state.changeList && this.state.changeList(walletList) }
             this.state.onHide()
-            // this.state.addWalletList.map((list)=>walletList.push(list.address))
             const data = new URLSearchParams();
             data.append("wallet_addresses", JSON.stringify(arr))
 
@@ -223,25 +177,22 @@ class FixAddModal extends BaseReactComponent {
             if (this.props.handleUpdateWallet) {
                 this.props.handleUpdateWallet()
             }
-
-            // this.props.history.push({
-            //     pathname:"/portfolio",
-            //     state:{
-            //         addWallet:this.state.addWalletList
-            //     }
-            // })
         }
-        
+
     }
 
     handleFixWalletChange = (e) => {
         let { name, value } = e.target
         let prevWallets = [...this.state.fixWalletAddress]
         let currentIndex = prevWallets.findIndex(elem => elem.id === name)
+        let prevValue = prevWallets[currentIndex].address
         prevWallets[currentIndex].address = value
-        console.log(name,value,currentIndex)
+        if (value === "" || prevValue !== value) {
+            prevWallets[currentIndex].coins = []
+        }
+        // prevWallets[currentIndex].address = value
         this.setState({
-           fixWalletAddress : prevWallets
+            fixWalletAddress: prevWallets
         })
         if (this.timeout) {
             clearTimeout(this.timeout)
@@ -249,52 +200,27 @@ class FixAddModal extends BaseReactComponent {
         this.timeout = setTimeout(() => {
             this.getCoinBasedOnAddress(name, value);
         }, 1000)
-        // let { name, value } = e.target
-        // // console.log(id, value)
-        // let newArr = [...this.state.fixWalletAddress]
-        // let currentIndex = newArr.findIndex(elem => elem.id === name)
-        // newArr[currentIndex] = value
-        // console.log("newArr",newArr)
-        // this.setState({
-        //     fixWalletAddress: newArr
-        // })
-        // if (this.timeout) {
-        //     clearTimeout(this.timeout)
-        // }
-        // this.timeout = setTimeout(() => {
-        //     // this.getCoinBasedOnAddress(name, value);
-        // }, 1000)
     }
 
     handleFixWallet = () => {
-        // console.log("HELLo Fixing Wallet")
-         
         let wallets = JSON.parse(localStorage.getItem("addWallet"))
-        
         let localArr = []
-        for(let i  = 0 ;i < wallets.length ;i++)
-        {
+        for (let i = 0; i < wallets.length; i++) {
             let curr = wallets[i];
-            if(!curr.coinFound)
-            {
-                this.state.fixWalletAddress.map((wallet)=>{
-                    if(wallet.address === curr.address )
-                    {
+            if (!curr.coinFound) {
+                this.state.fixWalletAddress.map((wallet) => {
+                    if (wallet.address === curr.address) {
                         localArr.push(wallet)
                     }
-                    else if(wallet.coinFound === true)
-                    {
+                    else if (wallet.coinFound === true) {
                         localArr.push(wallet)
                     }
                 })
             }
-            else{
+            else {
                 localArr.push(wallets[i])
             }
         }
-
-        // localArr.map((w,index) =>w.id = `wallet${index+1}` )
-        console.log("FixWallet - local Prev",localArr )
         // remove repeat address if same address added for unrecognised wallet
         let newArr = []
         let walletList = []
@@ -305,26 +231,16 @@ class FixAddModal extends BaseReactComponent {
                 newArr.push(curr.address)
             }
         }
-        console.log("FixWallet - local",walletList )
-        console.log("FixWallet - newArr",newArr )
-        walletList.map((w,index) =>w.id = `wallet${index+1}` )
-        localStorage.setItem("addWallet",JSON.stringify(walletList))
+        walletList.map((w, index) => w.id = `wallet${index + 1}`)
+        localStorage.setItem("addWallet", JSON.stringify(walletList))
         this.state.onHide()
-            // this.state.addWalletList.map((list)=>walletList.push(list.address))
         { this.state.changeList && this.state.changeList(walletList) }
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(newArr))
-
         updateUserWalletApi(data, this);
-        if(this.props.handleUpdateWallet)
-        {
+        if (this.props.handleUpdateWallet) {
             this.props.handleUpdateWallet()
         }
-        // let data = new URLSearchParams()
-        // data.append("wallet_address", this.state.fixWalletAddress)
-        // data.append("wallet_id", this.state.walletTitleList)
-        // data.append("chain_id", this.state.chainTitleList)
-        // updateWalletApi(this, data);
     }
 
     isDisabled = () => {
@@ -351,18 +267,16 @@ class FixAddModal extends BaseReactComponent {
             this.state.fixWalletAddress.map((elem, index) => {
                 return (
                     <div className="m-b-12 fix-wallet-input" key={index}>
-                       <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteFixWalletAddress(elem)} /> 
+                        <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteFixWalletAddress(elem)} />
                         <input
                             value={elem.address || ""}
                             className="inter-display-regular f-s-16  lh-19 black-191"
                             type="text"
-                            // id={index}
                             id={elem.id}
                             name={`wallet${index + 1}`}
                             autoFocus
                             onChange={(e) => this.handleFixWalletChange(e)}
                         />
-                        {/* <div className="fix-dropdowns"> */}
                         {
                             elem.address
                                 ?
@@ -370,44 +284,24 @@ class FixAddModal extends BaseReactComponent {
                                     ?
                                     <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} key={index} isLoaded={true}></CustomChip>
                                     :
-                                    elem.coins.length === this.props.OnboardingState.coinsList.length
+                                    elem.coins.length === 0
                                         ?
-                                        <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
-                                        :
                                         <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
+                                        :
+                                        elem.coins.length === this.props.OnboardingState.coinsList.length
+                                            ?
+                                            <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
+                                            :
+                                            <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
                                 :
                                 ""
                         }
-                        {/* </div> */}
-                        {/* <div className="fix-dropdowns">
-
-                            <Dropdown
-                                id={index}
-                                title="Wallet"
-                                // list={["Metamask", "Phantom", "Coinbase", "Gamestop", "Brave", "Rabby", "Portis", "Trust Wallet by Binance", "Others"]}
-                                list={walletDropDownList}
-                                onSelect={this.handleSelectWallet}
-                                activetab={this.state.walletTitleList[index]}
-
-                            />
-                            <Dropdown
-                                id={index}
-                                title="Chain"
-                                list={this.props.OnboardingState.coinsList}
-                                onSelect={this.handleSelectChain}
-                                activetab={this.state.chainTitleList[index]}
-                                showChain={true}
-                            />
-                        </div> */}
-
                     </div>)
             }) : ""
 
 
         const wallets =
             this.state.addWalletList.map((elem, index) => {
-                // console.log('elem',elem);
-                // console.log('this.props',this.props.OnboardingState.coinsList);
                 return (<div className='m-b-12 add-wallet-input-section' key={index} >
                     {index >= 1 ? <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteAddress(index)} /> : ""}
 
@@ -430,9 +324,9 @@ class FixAddModal extends BaseReactComponent {
                                 :
                                 elem.coins.length === this.props.OnboardingState.coinsList.length
                                     ?
-                                    <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
-                                    :
                                     <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
+                                    :
+                                    <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
                             :
                             ""
                     }
@@ -444,11 +338,9 @@ class FixAddModal extends BaseReactComponent {
         return (
 
             <>
-                {/* {console.log(this.state)} */}
                 <Modal
                     show={this.state.show}
                     className="fix-add-modal"
-                    // backdrop="static"
                     onHide={this.state.onHide}
                     size="lg"
                     dialogClassName={"fix-add-modal"}
@@ -496,8 +388,8 @@ class FixAddModal extends BaseReactComponent {
                                     <Button className="grey-btn" onClick={this.addAddress} >
                                         <img src={PlusIcon} /> Add another
                                     </Button>
-                                </div>} 
-                            
+                                </div>}
+
                             {/* input field for add wallet */}
                             <div className='btn-section'>
                                 <Button

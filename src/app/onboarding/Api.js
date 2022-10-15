@@ -1,7 +1,8 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
-import { COINS_LIST, WALLET_LIST } from "./ActionTypes";
+import { COINS_LIST, WALLET_LIST,UPDATE_LIST } from "./ActionTypes";
 import addWallet from "./addWallet";
+import { dispatch } from 'react-redux';
 export const getAllCoins = () => {
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
@@ -42,8 +43,11 @@ export const detectCoin = (wallet,ctx=null) => {
                             // isLast: wallet.isLast
                         }
                     });
-                    if(ctx && res.data.data.chain_detected){
-                        ctx.handleSetCoin(wallet)
+                    // if(ctx && res.data.data.chain_detected){
+                    //     ctx.handleSetCoin(wallet)
+                    // }
+                    if(ctx ){
+                        ctx.handleSetCoin({...wallet,chain_detected:res.data.data.chain_detected})
                     }
                 }
             })
@@ -124,3 +128,4 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
   }
   })
 }
+
