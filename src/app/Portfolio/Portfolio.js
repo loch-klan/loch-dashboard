@@ -3,7 +3,7 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
 import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
-// import LineChart from './LineChart';
+import LineChart from './LineChart';
 import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
@@ -112,9 +112,9 @@ class Portfolio extends BaseReactComponent {
                                     </div>
                                     : ""}
                             </div>
-                            {/* <div className='portfolio-section page'>
+                            <div className='portfolio-section page'>
                                 <LineChart />
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 }
