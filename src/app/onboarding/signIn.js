@@ -32,12 +32,8 @@ class SignIn extends BaseReactComponent {
     };
 
     onValidSubmit = (done, event) => {
-      // console.log(event.target)
-      // console.log("verificationReq",this.state.isVerificationRequired)
-        // console.log("Value submitted" + this.state.email);
         const data = new URLSearchParams()
-        if(this.state.email && !this.state.isVerificationRequired|| this.props.activemodal==="signIn"){
-
+        if(this.state.email && !this.state.isVerificationRequired || this.props.activemodal === "signIn"){
             data.append("email",this.state.email)
             signIn(this,data)
         } else if (this.state.text && this.state.isVerificationRequired){
@@ -109,6 +105,7 @@ class SignIn extends BaseReactComponent {
 }
 
 const mapStateToProps = state => ({
+  OnboardingState: state.OnboardingState
 });
 const mapDispatchToProps = {
 }

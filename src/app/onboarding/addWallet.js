@@ -1,11 +1,10 @@
 import React from 'react';
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import {BaseReactComponent, Form} from "../../utils/form";
 import { connect } from "react-redux";
 import { Button, Image } from "react-bootstrap";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
-import Form from "../../utils/form/Form";
 import { getAllCoins, detectCoin, createAnonymousUserApi} from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 
@@ -22,7 +21,6 @@ class AddWallet extends BaseReactComponent {
         }
         this.timeout = 0
     }
-
 
     componentDidMount() {
         this.props.getAllCoins()
@@ -64,7 +62,6 @@ class AddWallet extends BaseReactComponent {
                     coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
                     coinName: this.props.OnboardingState.coinsList[i].name,
                     address: value,
-                    // isLast: i === (this.props.OnboardingState.coinsList.length - 1)
                 })
             }
         }
@@ -81,7 +78,6 @@ class AddWallet extends BaseReactComponent {
     }
 
     deleteInputField = (index,wallet) => {
-        // console.log()
         if (!this.isDisabled() || wallet.address === "") {
             this.state.walletInput.splice(index, 1);
             this.state.walletInput.map((w, i) => w.id = `wallet${i + 1}`)
@@ -97,7 +93,6 @@ class AddWallet extends BaseReactComponent {
             this.setState({
                 walletInput: this.state.walletInput
             });
-
         }
     }
 
@@ -112,24 +107,25 @@ class AddWallet extends BaseReactComponent {
                 isDisableFlag = true;
             }
         })
-
         this.state.walletInput.map((e) => {
             if (!e.address) {
                 isDisableFlag = true;
             }
         })
+        this.props.OnboardingState.walletList.map((e) => {
+          (e.address && e.coins.length === this.props.OnboardingState.coinsList.length) ? isDisableFlag = false : isDisableFlag=true
+        })
         return isDisableFlag;
     }
 
     onValidSubmit = () => {
-
         let walletAddress = [];
-
-        let addWallet = this.props.OnboardingState.walletList.map((el) => {
-            //   walletAddress.push(el.address)
-            el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
-            return el;
-        })
+        // let addWallet = this.props.OnboardingState.walletList.map((el) => {
+        //     //   walletAddress.push(el.address)
+        //     el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
+        //     return el;
+        // })
+        let addWallet = this.props.OnboardingState.walletList;
         let finalArr = []
         for (let i = 0; i < addWallet.length; i++) {
             let curr = addWallet[i]
@@ -163,18 +159,17 @@ class AddWallet extends BaseReactComponent {
         return (
             <>
                 <Form onValidSubmit={this.onValidSubmit}>
-                    {/* <Container> */}
                     <div className='ob-modal-body-wrapper'>
                         <div className="ob-modal-body-1">
                             {this.state.walletInput.map((c, index) => {
                                 return <div className='ob-wallet-input-wrapper' key={index}>
-                                    {/* // <Col md={12} key={index}> */}
                                     {
                                         index >= 1
                                             ?
                                             <Image
                                                 key={index}
-                                                className={`ob-modal-body-del ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}`}
+                                                className={`ob-modal-body-del`}
+                                                // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
                                                 src={DeleteIcon}
                                                 onClick={() => this.deleteInputField(index,c) }
                                             />
@@ -200,38 +195,25 @@ class AddWallet extends BaseReactComponent {
                                                 } else {
                                                     return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
                                                 }
-
                                             }
-                                            // } else {
-                                            //     if (this.state.loading && c.address && c.address.length > 0 && e.coins.length !== this.props.OnboardingState.coinsList.length) {
-                                            //         return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
-                                            //     }
-                                            // }
                                         }
                                     })}
-
-                                    {/* // </Col> */}
                                 </div>
                             })}
                         </div>
                     </div>
-                    {/* <Row> */}
                     {this.state.addButtonVisible ?
                         <div className='ob-modal-body-2'>
                             <Button className="grey-btn" onClick={this.addInputField}>
-                                <img src={PlusIcon} /> Add another
+                                <Image src={PlusIcon} /> Add another
                             </Button>
                         </div>
                         : null
                     }
-                    {/* </Row> */}
-                    {/* <Row> */}
                     <div className='ob-modal-body-btn'>
                         <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
                         <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={this.isDisabled()} buttonText="Go" />
                     </div>
-                    {/* </Row> */}
-                    {/* </Container> */}
                 </Form>
             </>
         );

@@ -178,7 +178,7 @@ class Wallet extends Component {
                         <div className='dropdown-section'>
                             {this.sortby.map((e, index) => {
                                 return <span className='sort-by-title' key={index} onClick={() => this.handleSort(e)}>
-                                    <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 '>{e}</span> <img src={sort} style={{ width: "1rem" }} />
+                                    <span className='inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 '>{e}</span> <Image src={sort} style={{ width: "1rem" }} />
                                 </span>
                             })}
                         </div>

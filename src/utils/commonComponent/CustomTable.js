@@ -1,16 +1,10 @@
 import React from 'react';
-import { AutoSizer, Table } from "react-virtualized";
-import { Column } from "react-virtualized";
+import { AutoSizer, Table, Column } from "react-virtualized";
 import { Link } from "react-router-dom";
 import { Button, Image } from "react-bootstrap";
 import notFoundDefault from '../../assets/images/empty-table.png';
 import Pagination from './Pagination';
-import FormElement from '../form/FormElement';
-import BaseReactComponent from '../form/BaseReactComponent';
-import FormValidator from '../form/FormValidator';
-import SelectControl from "../form/SelectControl";
-import Form from '../form/Form';
-
+import {Form, SelectControl, FormValidator, BaseReactComponent, FormElement} from '../form';
 
 class CustomTable extends BaseReactComponent {
   constructor(props) {
@@ -31,13 +25,13 @@ class CustomTable extends BaseReactComponent {
       if(dataKey === "From" || dataKey === "To")
       {
         return (
-          <img src={cellData} className="history-table-icon" />
+          <Image src={cellData} className="history-table-icon" />
         )
       }
       else if (dataKey === "Asset"){
         console.log("ASSET")
         return(
-          <div className='inter-display-medium f-s-13 lh-16 history-table-coin-icon'><img src={cellData}/> Ethereum</div>
+          <div className='inter-display-medium f-s-13 lh-16 history-table-coin-icon'><Image src={cellData}/> Ethereum</div>
         )
       }
       else if (dataKey === "Method")

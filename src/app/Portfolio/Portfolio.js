@@ -101,7 +101,7 @@ class Portfolio extends BaseReactComponent {
                                     loader={this.state.loader}
                                 />
                                 {this.state.userWalletList.findIndex(w => w.coinFound !== true) > -1
-                                
+
                                     ?
                                     <div className='fix-div' id="fixbtn">
                                         <div className='m-r-8 decribe-div'>

@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseReactComponent from '../../utils/form/BaseReactComponent';
+import {BaseReactComponent} from '../../utils/form';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
@@ -13,8 +13,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin } from "../onboarding//Api";
 import { updateUserWalletApi } from './Api';
-import { updateWalletApi } from './../wallet/Api';
-import { getAllWalletApi } from '../wallet/Api'
+import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 class FixAddModal extends BaseReactComponent {
 
     constructor(props) {
@@ -26,7 +25,6 @@ class FixAddModal extends BaseReactComponent {
             modalIcon: props.modalIcon,
             title: props.title,
             subtitle: props.subtitle,
-            fixWalletAddress: props.fixWalletAddress,
             fixWalletAddress: [],
             btnText: props.btnText,
             btnStatus: props.btnStatus,
@@ -111,6 +109,7 @@ class FixAddModal extends BaseReactComponent {
                 fixWallet.push({ ...e, id: `wallet${fixWallet.length + 1}` })
             }
         })
+        console.log('fixWallet',fixWallet);
         this.setState({
             fixWalletAddress: fixWallet
         })
@@ -137,7 +136,7 @@ class FixAddModal extends BaseReactComponent {
 
     }
     deleteFixWalletAddress = (e) => {
-        let { id, address } = e
+        let { id } = e
         let fixWalletNewArr = []
         this.state.fixWalletAddress.map((wallet, index) => {
             if (wallet.id !== id) {
@@ -163,10 +162,11 @@ class FixAddModal extends BaseReactComponent {
                 }
             }
             // code for filtering coins
-            let addWallet = walletList.map((el) => {
-                el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
-                return el;
-            })
+            // let addWallet = walletList.map((el) => {
+            //     el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
+            //     return el;
+            // })
+            let addWallet = walletList;
             localStorage.setItem("addWallet", JSON.stringify(addWallet))
             { this.state.changeList && this.state.changeList(walletList) }
             this.state.onHide()
@@ -264,7 +264,7 @@ class FixAddModal extends BaseReactComponent {
             walletDropDownList.push({ name: wallet.name, id: wallet.id })
         })
         const inputs = this.state.modalType == "fixwallet" ?
-            this.state.fixWalletAddress.map((elem, index) => {
+          this.state.fixWalletAddress.map((elem, index) => {
                 return (
                     <div className="m-b-12 fix-wallet-input" key={index}>
                         <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteFixWalletAddress(elem)} />
@@ -386,7 +386,7 @@ class FixAddModal extends BaseReactComponent {
                             {this.state.addWalletList.length >= 0 && this.state.modalType === "addwallet" &&
                                 <div className="m-b-32 add-wallet-btn">
                                     <Button className="grey-btn" onClick={this.addAddress} >
-                                        <img src={PlusIcon} /> Add another
+                                        <Image src={PlusIcon} /> Add another
                                     </Button>
                                 </div>}
 

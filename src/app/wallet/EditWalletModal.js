@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
 import unrecognisedIcon from '../../image/unrecognised.png';
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
-import moment from 'moment';
 class EditWalletModal extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -56,7 +55,7 @@ class EditWalletModal extends BaseReactComponent {
                 </div>
             )
         })
-        const { walletMetaData, walletNameList, createdOn} = this.state;
+        const { walletMetaData, walletNameList } = this.state;
         const {show, handleClose, onHide } = this.props;
         return (
             <Modal
