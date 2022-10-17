@@ -16,7 +16,7 @@ class AddWallet extends BaseReactComponent {
             showModal: true,
             signIn: false,
             addButtonVisible: false,
-            walletInput: [{ id: "wallet1", address: "" }],
+            walletInput: [{ id: "wallet1", address: "", coins:[] }],
             loading: false
         }
         this.timeout = 0
@@ -34,12 +34,18 @@ class AddWallet extends BaseReactComponent {
             walletCopy[foundIndex].address = value;
             walletCopy[foundIndex].trucatedAddress = value
         }
-        if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
-            let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === name);
-            if (findWalletEntry > -1) {
-                this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
-            }
-        }
+
+        // if (
+        //   this.props &&
+        //   this.props.OnboardingState &&
+        //   this.props.OnboardingState.walletList &&
+        //   this.props.OnboardingState.walletList.length > 0
+        //   ) {
+        //     let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === name);
+        //     if (findWalletEntry > -1) {
+        //         this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
+        //     }
+        // }
         this.setState({
             addButtonVisible: this.state.walletInput[0].address,
             walletInput: walletCopy
@@ -62,15 +68,32 @@ class AddWallet extends BaseReactComponent {
                     coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
                     coinName: this.props.OnboardingState.coinsList[i].name,
                     address: value,
-                })
+                }, this)
             }
         }
+    }
+
+    handleSetCoin = (data)=>{
+      let coinList = {
+        chain_detected: data.chain_detected,
+        coinCode: data.coinCode,
+        coinName: data.coinName,
+        coinSymbol: data.coinSymbol
+    }
+    let i = this.state.walletInput.findIndex(obj => obj.id === data.id)
+    let newAddress = [...this.state.walletInput]
+    newAddress[i].coins.push(coinList)
+    newAddress[i].coinFound = newAddress[i].coins.some((e) => e.chain_detected === true)
+    this.setState({
+      walletInput: newAddress
+  })
     }
 
     addInputField = () => {
         this.state.walletInput.push({
             id: `wallet${this.state.walletInput.length + 1}`,
-            address: ""
+            address: "",
+            coins: []
         })
         this.setState({
             walletInput: this.state.walletInput
@@ -81,15 +104,15 @@ class AddWallet extends BaseReactComponent {
         if (!this.isDisabled() || wallet.address === "") {
             this.state.walletInput.splice(index, 1);
             this.state.walletInput.map((w, i) => w.id = `wallet${i + 1}`)
-            if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
-                this.props.OnboardingState.walletList.sort((a, b) => a.id > b.id ? 1 : -1);
-                let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === `wallet${index + 1}`);
-                console.log("entery",findWalletEntry)
-                if (findWalletEntry > -1) {
-                    this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
-                    this.props.OnboardingState.walletList.map((w, i) => w.id = `wallet${i + 1}`)
-                }
-            }
+            // if (this.props && this.props.OnboardingState && this.props.OnboardingState.walletList && this.props.OnboardingState.walletList.length > 0) {
+            //     this.props.OnboardingState.walletList.sort((a, b) => a.id > b.id ? 1 : -1);
+            //     let findWalletEntry = this.props.OnboardingState.walletList.findIndex(obj => obj.id === `wallet${index + 1}`);
+            //     console.log("entery",findWalletEntry)
+            //     if (findWalletEntry > -1) {
+            //         this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
+            //         this.props.OnboardingState.walletList.map((w, i) => w.id = `wallet${i + 1}`)
+            //     }
+            // }
             this.setState({
                 walletInput: this.state.walletInput
             });
@@ -99,37 +122,32 @@ class AddWallet extends BaseReactComponent {
 
     isDisabled = () => {
         let isDisableFlag = false;
-        if (this.props.OnboardingState.walletList.length <= 0) {
+        if (this.state.walletInput.length <= 0) {
             isDisableFlag = true;
         }
-        this.props.OnboardingState.walletList.map((e) => {
-            if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
-                isDisableFlag = true;
-            }
-        })
         this.state.walletInput.map((e) => {
-            if (!e.address) {
+            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
                 isDisableFlag = true;
             }
         })
-        this.props.OnboardingState.walletList.map((e) => {
-          (e.address && e.coins.length === this.props.OnboardingState.coinsList.length) ? isDisableFlag = false : isDisableFlag=true
-        })
+        // this.state.walletInput.map((e) => {
+        //     if (!e.address) {
+        //         isDisableFlag = true;
+        //     }
+        // })
+        // this.state.walletInput.map((e) => {
+        //   (e.address && e.coins.length === this.props.OnboardingState.coinsList.length) ? isDisableFlag = false : isDisableFlag=true
+        // })
         return isDisableFlag;
     }
 
     onValidSubmit = () => {
         let walletAddress = [];
-        // let addWallet = this.props.OnboardingState.walletList.map((el) => {
-        //     //   walletAddress.push(el.address)
-        //     el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
-        //     return el;
-        // })
-        let addWallet = this.props.OnboardingState.walletList;
+        let addWallet = this.state.walletInput;
         let finalArr = []
         for (let i = 0; i < addWallet.length; i++) {
             let curr = addWallet[i]
-            if (!walletAddress.includes(curr.address)) {
+            if (!walletAddress.includes(curr.address) && curr.address) {
                 finalArr.push(curr)
                 walletAddress.push(curr.address)
             }
@@ -144,15 +162,7 @@ class AddWallet extends BaseReactComponent {
 
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(walletAddress))
-        console.log('walletAddress', walletAddress);
-        //   console.log('addWallet',addWallet);
-        console.log('addWallet', finalArr);
-        //   createAnonymousUserApi(data, this, addWallet);
         createAnonymousUserApi(data, this, finalArr);
-        // this.props.history.push({
-        //     pathname: '/portfolio',
-        //     state: {addWallet}
-        // });
     }
 
     render() {
@@ -184,7 +194,7 @@ class AddWallet extends BaseReactComponent {
                                         title={c.address || ""}
                                         // onKeyUp={(e) => this.setState({ loading: true })}
                                         onChange={(e) => this.handleOnChange(e)} />
-                                    {this.props.OnboardingState.walletList.map((e, i) => {
+                                    {this.state.walletInput.map((e, i) => {
                                         if (this.state.walletInput[index].address && e.id === `wallet${index + 1}`) {
                                             // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                                             if (e.coinFound) {

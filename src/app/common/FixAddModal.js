@@ -87,7 +87,7 @@ class FixAddModal extends BaseReactComponent {
         let i = this.state.addWalletList.findIndex(obj => obj.id === data.id)
         let newAddress = this.state.modalType === "addwallet" ? [...this.state.addWalletList] : [...this.state.fixWalletAddress]
         newAddress[i].coins.push(coinList)
-        newAddress[i].coinFound = newAddress[i].coins.some((e) => e.chain_detected === true)
+        newAddress[i].coinFound = newAddress[i].coins && newAddress[i].coins.some((e) => e.chain_detected === true)
         if (this.state.modalType === "addwallet") {
             this.setState({
                 addWalletList: newAddress
@@ -109,7 +109,7 @@ class FixAddModal extends BaseReactComponent {
                 fixWallet.push({ ...e, id: `wallet${fixWallet.length + 1}` })
             }
         })
-        console.log('fixWallet',fixWallet);
+        // console.log('fixWallet',fixWallet);
         this.setState({
             fixWalletAddress: fixWallet
         })
@@ -151,24 +151,19 @@ class FixAddModal extends BaseReactComponent {
 
     handleAddWallet = () => {
         if (this.state.addWalletList) {
-
             let arr = []
             let walletList = []
             for (let i = 0; i < this.state.addWalletList.length; i++) {
                 let curr = this.state.addWalletList[i]
-                if (!arr.includes(curr.address)) {
+                if (!arr.includes(curr.address) && curr.address) {
                     walletList.push(curr)
                     arr.push(curr.address)
                 }
             }
-            // code for filtering coins
-            // let addWallet = walletList.map((el) => {
-            //     el.coins = el.coins.filter(function (x) { return x.chain_detected === true });
-            //     return el;
-            // })
             let addWallet = walletList;
+            addWallet.map((w, i) => { w.id = `wallet${i + 1}` })
             localStorage.setItem("addWallet", JSON.stringify(addWallet))
-            { this.state.changeList && this.state.changeList(walletList) }
+            // { this.state.changeList && this.state.changeList(walletList) }
             this.state.onHide()
             const data = new URLSearchParams();
             data.append("wallet_addresses", JSON.stringify(arr))
@@ -185,8 +180,11 @@ class FixAddModal extends BaseReactComponent {
         let { name, value } = e.target
         let prevWallets = [...this.state.fixWalletAddress]
         let currentIndex = prevWallets.findIndex(elem => elem.id === name)
+        // console.log('prevWallets',prevWallets);
+        // console.log('currentIndex',currentIndex);
         let prevValue = prevWallets[currentIndex].address
         prevWallets[currentIndex].address = value
+        // prevWallets[currentIndex].coins = []
         if (value === "" || prevValue !== value) {
             prevWallets[currentIndex].coins = []
         }
@@ -204,23 +202,26 @@ class FixAddModal extends BaseReactComponent {
 
     handleFixWallet = () => {
         let wallets = JSON.parse(localStorage.getItem("addWallet"))
+        // console.log('wallet',wallets);
         let localArr = []
         for (let i = 0; i < wallets.length; i++) {
             let curr = wallets[i];
             if (!curr.coinFound) {
                 this.state.fixWalletAddress.map((wallet) => {
-                    if (wallet.address === curr.address) {
-                        localArr.push(wallet)
-                    }
-                    else if (wallet.coinFound === true) {
-                        localArr.push(wallet)
-                    }
+                  // console.log('wallettt',wallet);
+                  localArr.push(wallet);
+                    // if (wallet.address === curr.address) {
+                    //     localArr.push(wallet)
+                    // }
+                    // else if (wallet.coinFound === true) {
+                    //     localArr.push(wallet)
+                    // }
                 })
-            }
-            else {
+            } else {
                 localArr.push(wallets[i])
             }
         }
+        // console.log('localArr',localArr);
         // remove repeat address if same address added for unrecognised wallet
         let newArr = []
         let walletList = []
@@ -232,9 +233,10 @@ class FixAddModal extends BaseReactComponent {
             }
         }
         walletList.map((w, index) => w.id = `wallet${index + 1}`)
+        // console.log('walletList',walletList);
         localStorage.setItem("addWallet", JSON.stringify(walletList))
         this.state.onHide()
-        { this.state.changeList && this.state.changeList(walletList) }
+        // { this.state.changeList && this.state.changeList(walletList) }
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(newArr))
         updateUserWalletApi(data, this);
@@ -245,13 +247,16 @@ class FixAddModal extends BaseReactComponent {
 
     isDisabled = () => {
         let isDisableFlag = false;
-        if (this.state.addWalletList.length <= 0) {
-            isDisableFlag = true;
-        }
+        // if (this.state.addWalletList.length <= 0) {
+        //     isDisableFlag = true;
+        // }
 
         this.state.addWalletList.map((e) => {
-            if (!e.address) {
-                isDisableFlag = true;
+            // if (!e.address) {
+            //     isDisableFlag = true;
+            // }
+            if(e.address && e.coins.length !== this.props.OnboardingState.coinsList.length){
+              isDisableFlag = true;
             }
         })
         return isDisableFlag;
@@ -284,10 +289,10 @@ class FixAddModal extends BaseReactComponent {
                                     ?
                                     <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} key={index} isLoaded={true}></CustomChip>
                                     :
-                                    elem.coins.length === 0
-                                        ?
-                                        <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
-                                        :
+                                    // elem.coins.length === 0
+                                    //     ?
+                                    //     <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
+                                        // :
                                         elem.coins.length === this.props.OnboardingState.coinsList.length
                                             ?
                                             <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
@@ -320,12 +325,15 @@ class FixAddModal extends BaseReactComponent {
                             ?
                             elem.coinFound && elem.coins.length > 0
                                 ?
+                                // COIN FOUND STATE
                                 <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} key={index} isLoaded={true}></CustomChip>
                                 :
                                 elem.coins.length === this.props.OnboardingState.coinsList.length
                                     ?
+                                    // UNRECOGNISED WALLET
                                     <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
                                     :
+                                    // LOADING STATE
                                     <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
                             :
                             ""

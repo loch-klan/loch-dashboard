@@ -74,6 +74,9 @@ class Portfolio extends BaseReactComponent {
                         });
                     }
                 })
+            } else{
+              console.log('Heyyy');
+              this.props.settingDefaultValues();
             }
         }
     }

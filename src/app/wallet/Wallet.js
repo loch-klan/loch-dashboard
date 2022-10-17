@@ -41,7 +41,8 @@ class Wallet extends Component {
         let data = new URLSearchParams()
         data.append("start", this.state.start)
         data.append("conditions", JSON.stringify(cond ? cond : []))
-        data.append("limit", API_LIMIT)
+        data.append("limit", 50)
+        // data.append("limit", API_LIMIT)
         data.append("sorts", JSON.stringify(this.state.sorts))
         this.props.getAllWalletListApi(data)
     }
@@ -138,7 +139,7 @@ class Wallet extends Component {
     }
 
     handleUpdateWallet = ()=>{
-        console.log("YES API")
+        // console.log("YES API")
         this.makeApiCall()
     }
 

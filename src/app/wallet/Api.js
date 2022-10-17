@@ -64,9 +64,9 @@ export const getAllWalletApi = (ctx) => {
 export const updateWalletApi = (ctx, data) => {
   postLoginInstance.post("wallet/user-wallet/update-wallet", data)
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       if (!res.data.error) {
-        console.log(res.data.message)
+        // console.log(res.data.message)
         ctx.props.onHide()
         ctx.props.makeApiCall()
         toast.success(res.data.message);
