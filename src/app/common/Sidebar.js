@@ -21,6 +21,8 @@ import DarkmodeIcon from '../../assets/images/icons/DarkmodeIcon.svg'
 import bgImg from '../../image/Notice.png'
 import {useHistory} from 'react-router-dom'
 import ExitOverlay from './ExitOverlay'
+import { BASE_URL_S3 } from '../../utils/Constant'
+import { toast } from 'react-toastify'
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -35,6 +37,12 @@ function Sidebar(props) {
       } else{
         props.history.push('/home');
       }
+    }
+
+    const handleShare=()=>{
+      const link= `${BASE_URL_S3}portfolio/${localStorage.getItem("lochDummyUser")}`
+      navigator.clipboard.writeText(link);
+      toast.success("Share link has been copied");
     }
     return (
         <div className='sidebar-section'>
@@ -114,10 +122,15 @@ function Sidebar(props) {
                             </li>
                             {
                               JSON.parse(localStorage.getItem('lochUser')) &&
-<li>
+                              <li>
                                 <Image src={DarkmodeIcon} />
-                                <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Share Profile</Button>
-                            </li>
+                                <Button
+                                  className="inter-display-medium f-s-15 lh-19 navbar-button"
+                                  onClick={handleShare}
+                                >
+                                  Share Profile
+                                </Button>
+                              </li>
                             }
 
                             <li onClick={handleLeave}>

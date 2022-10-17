@@ -18,7 +18,20 @@ function App() {
           {/* <Route exact path="/" component={Home} /> */}
         </Switch>
       </BrowserRouter>
-      <ToastContainer hideProgressBar />
+      {/* <ToastContainer hideProgressBar /> */}
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        // closeOnClick
+        closeButton={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

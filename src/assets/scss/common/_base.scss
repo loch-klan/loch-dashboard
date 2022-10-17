@@ -376,6 +376,40 @@ body {
   text-align: center;
 }
 
+.Toastify__toast-container{
+  width: 40rem;
+}
+.Toastify__toast{
+  padding: 2.5rem;
+  .Toastify__toast-body{
+    flex-direction: row-reverse;
+    margin: 0;
+    padding: 0;
+    @include font($black-262, "Inter-SemiBold", 1.6rem, 600, 19px);
+    .Toastify__toast-icon{
+      margin-right: 0;
+      background-image: url(../../images/icons/success.svg);
+      background-size: 100% 100%;
+      width: 4rem;
+      height: 4rem;
+      svg{
+        display: none;
+      }
+    }
+  }
+  &.Toastify__toast--error{
+    .Toastify__toast-body{
+      .Toastify__toast-icon{
+        background-image: none;
+        svg{
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+
 
 // UPLOADED IMAGE STYLE
 .img-preview-wrapper {

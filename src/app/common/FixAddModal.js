@@ -163,7 +163,7 @@ class FixAddModal extends BaseReactComponent {
             let addWallet = walletList;
             addWallet.map((w, i) => { w.id = `wallet${i + 1}` })
             localStorage.setItem("addWallet", JSON.stringify(addWallet))
-            // { this.state.changeList && this.state.changeList(walletList) }
+            this.state.changeList && this.state.changeList(walletList)
             this.state.onHide()
             const data = new URLSearchParams();
             data.append("wallet_addresses", JSON.stringify(arr))
@@ -236,7 +236,7 @@ class FixAddModal extends BaseReactComponent {
         // console.log('walletList',walletList);
         localStorage.setItem("addWallet", JSON.stringify(walletList))
         this.state.onHide()
-        // { this.state.changeList && this.state.changeList(walletList) }
+        this.state.changeList && this.state.changeList(walletList)
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(newArr))
         updateUserWalletApi(data, this);
@@ -260,6 +260,16 @@ class FixAddModal extends BaseReactComponent {
             }
         })
         return isDisableFlag;
+    }
+
+    isFixDisabled = () =>{
+      let isDisableFlag = false;
+      this.state.fixWalletAddress.map((e) => {
+        if(e.address && e.coins.length !== this.props.OnboardingState.coinsList.length){
+          isDisableFlag = true;
+        }
+      })
+      return isDisableFlag;
     }
 
 
@@ -402,7 +412,7 @@ class FixAddModal extends BaseReactComponent {
                             <div className='btn-section'>
                                 <Button
                                     className={`primary-btn ${this.state.btnStatus ? "activebtn" : ""} ${this.state.modalType === "fixwallet" ? "fix-btn" : this.state.modalType === "addwallet" && !this.isDisabled() ? "add-btn activebtn" : "add-btn"}`}
-                                    disabled={this.state.modalType === "addwallet" ? this.isDisabled() : false}
+                                    disabled={this.state.modalType === "addwallet" ? this.isDisabled() : this.isFixDisabled()}
                                     onClick={this.state.modalType === "addwallet" ? this.handleAddWallet : this.handleFixWallet}
                                 >
                                     {this.state.btnText}
