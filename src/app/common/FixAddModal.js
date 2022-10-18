@@ -86,7 +86,7 @@ class FixAddModal extends BaseReactComponent {
         }
         let i = this.state.addWalletList.findIndex(obj => obj.id === data.id)
         let newAddress = this.state.modalType === "addwallet" ? [...this.state.addWalletList] : [...this.state.fixWalletAddress]
-        newAddress[i].coins.push(coinList)
+        data.address === newAddress[i].address && newAddress[i].coins.push(coinList)
         newAddress[i].coinFound = newAddress[i].coins && newAddress[i].coins.some((e) => e.chain_detected === true)
         if (this.state.modalType === "addwallet") {
             this.setState({

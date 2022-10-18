@@ -56,7 +56,7 @@ class AddWallet extends BaseReactComponent {
         // timeout;
         this.timeout = setTimeout(() => {
             this.getCoinBasedOnWalletAddress(name, value);
-        }, 1000)
+        }, 2000)
     }
 
     getCoinBasedOnWalletAddress = (name, value) => {
@@ -82,7 +82,7 @@ class AddWallet extends BaseReactComponent {
     }
     let i = this.state.walletInput.findIndex(obj => obj.id === data.id)
     let newAddress = [...this.state.walletInput]
-    newAddress[i].coins.push(coinList)
+    data.address === newAddress[i].address && newAddress[i].coins.push(coinList)
     newAddress[i].coinFound = newAddress[i].coins.some((e) => e.chain_detected === true)
     this.setState({
       walletInput: newAddress
