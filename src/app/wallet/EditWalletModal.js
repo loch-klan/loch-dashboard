@@ -55,8 +55,17 @@ class EditWalletModal extends BaseReactComponent {
                 </div>
             )
         })
-        const { walletMetaData, walletNameList } = this.state;
+        const { walletMetaData, walletNameList, walletName } = this.state;
         const {show, handleClose, onHide } = this.props;
+        let walletIcon, walletBdColor;
+        walletNameList.map((item)=>{
+          if(item.id === walletName){
+            return (
+              walletIcon = item.symbol,
+              walletBdColor = item.color
+              )
+          }
+        })
         return (
             <Modal
                 show={show}
@@ -69,8 +78,8 @@ class EditWalletModal extends BaseReactComponent {
                 aria-labelledby="contained-modal-title-vcenter"
                 backdropClassName="editmodal"
             >
-                <Modal.Header style={{backgroundColor: walletMetaData && walletMetaData.color ? walletMetaData.color : "#E98430"}}>
-                    <Image src={walletMetaData && walletMetaData.symbol ? walletMetaData.symbol : unrecognisedIcon} className="walletIcon" />
+                <Modal.Header style={{backgroundColor: walletBdColor ? walletBdColor : "#E98430"}}>
+                    <Image src={walletIcon ? walletIcon : unrecognisedIcon} className="walletIcon" />
                     <div className="closebtn" onClick={onHide}>
                         <Image src={closeIcon} />
                     </div>
