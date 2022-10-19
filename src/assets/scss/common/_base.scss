@@ -771,6 +771,9 @@ form {
 
     .ReactVirtualized__Grid__innerScrollContainer {
       overflow: visible !important;
+      .ReactVirtualized__Table__row{
+        border: none
+      }
     }
   }
 

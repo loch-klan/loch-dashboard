@@ -1,16 +1,47 @@
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import PropTypes from 'prop-types';
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-
+import { GraphHeader } from '../common/GraphHeader'
+import CoinBadges from './../common/CoinBadges';
 class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            activeBadge : [{ name: "All", id: "" }]
+        }
 
     }
-
+    handleFunction = (badge) => {
+        let newArr = [...this.state.activeBadge]
+        if (this.state.activeBadge.some(e => e.name === badge.name)) {
+            let index = newArr.findIndex(x => x.name === badge.name)
+            newArr.splice(index, 1)
+            if (newArr.length === 0) {
+                this.setState({
+                    activeBadge: [{ name: "All", id: "" }]
+                })
+            } else {
+                this.setState({
+                    activeBadge: newArr
+                })
+            }
+        } else if (badge.name === "All") {
+            this.setState({
+                activeBadge: [{ name: "All", id: "" }]
+            })
+        } else {
+            let index = newArr.findIndex(x => x.name === "All")
+            if (index !== -1) {
+                newArr.splice(index, 1)
+            }
+            newArr.push(badge)
+            this.setState({
+                activeBadge: newArr
+            })
+        }
+    }
     render() {
         var UNDEFINED;
         const options = {
@@ -124,6 +155,18 @@ class LineChart extends BaseReactComponent {
         return (
             <div className="welcome-card-section">
                 <div className='line-chart-section'>
+
+                    <GraphHeader
+                        title="Asset Value"
+                        subtitle="Updated 3mins ago"
+                    />
+
+                    <CoinBadges
+                        activeBadge={this.state.activeBadge}
+                        chainList={this.props.OnboardingState.coinsList}
+                        handleFunction={this.handleFunction}
+                        
+                    />
                     <div className='chart-x-selection'>
                         <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 y-axis-selection-currency' >
                             <option className=''> $ USD</option>
@@ -153,5 +196,8 @@ class LineChart extends BaseReactComponent {
         );
     }
 }
-
-export default LineChart;
+const mapStateToProps = state => ({
+    OnboardingState: state.OnboardingState,
+});
+export default connect(mapStateToProps)(LineChart);
+// export default LineChart;

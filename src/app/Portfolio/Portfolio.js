@@ -9,7 +9,7 @@ import { Loading } from 'react-loading-dot';
 import { Button } from 'react-bootstrap';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
-
+import { getAllCoins } from '../onboarding/Api.js'
 
 class Portfolio extends BaseReactComponent {
     constructor(props) {
@@ -47,7 +47,7 @@ class Portfolio extends BaseReactComponent {
             getDetailsByLinkApi(this.props.match.params.id, this)
         }
         this.props.getCoinRate()
-
+        this.props.getAllCoins()
     }
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
@@ -116,7 +116,9 @@ class Portfolio extends BaseReactComponent {
                                     : ""}
                             </div>
                             <div className='portfolio-section page'>
-                                <LineChart />
+                                <LineChart
+                                    coinLists = {this.props.OnboardingState.coinsLists}
+                                />
                             </div>
                         </div>
                     </div>
@@ -156,13 +158,14 @@ class Portfolio extends BaseReactComponent {
 }
 
 const mapStateToProps = state => ({
-    portfolioState: state.PortfolioState
+    portfolioState: state.PortfolioState,
+    OnboardingState: state.OnboardingState
 });
 const mapDispatchToProps = {
     getCoinRate,
     getUserWallet,
-    settingDefaultValues
-
+    settingDefaultValues,
+    getAllCoins
 }
 Portfolio.propTypes = {
 };

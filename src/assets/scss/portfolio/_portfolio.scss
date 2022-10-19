@@ -114,8 +114,16 @@
                         /* top: 0rem; */
                         z-index: 1;
                         left: -0.7rem;
-                        top: 1.7rem;
+                        // top: 1.7rem;
+                        top: 14.5rem;
                         border: none;
+                    }
+                }
+                .coin-badges{
+                    .dropdown{
+                        .dropdown-toggle , .dropdown-toggle:focus{
+                            box-shadow: -2.5rem 0rem 2.4rem 2rem $secondary !important;
+                        }
                     }
                 }
             }

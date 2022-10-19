@@ -5,36 +5,46 @@ import profileInfoIcon from "../../image/ProfileInfoIcon.png"
 import CustomButton from "../../utils/form/CustomButton";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import ReactDOM from 'react-dom';
+import {updateUser} from  './Api.js'
+import { connect } from 'react-redux';
 
 class ProfileForm extends BaseReactComponent{
 
     constructor(props) {
         super(props);
         this.state = {
-            name:"",
-            lastname:"",
+            firstName:"",
+            lastName:"",
             email: "",
-            mobilenumber:""
+            mobileNumber:""
         }
         // this.onClose = this.onClose.bind(this);   
     }
-    componentDidMount() { }
+    componentDidMount() { 
+        const userDetails = JSON.parse(localStorage.getItem("userDetail"))
+        console.log(userDetails)
+        const firstName = userDetails.first_name ? userDetails.first_name : ""
+        const lastName = userDetails.last_name ? userDetails.last_name : ""
+        const email = userDetails.email ? userDetails.email : ""
+        const mobileNumber = userDetails.mobile ? userDetails.mobile : ""
 
-    setValue = (value) => {
-        console.log(this.state)
-        console.log(value)
-        this.setState({ value });
+        console.log(firstName , lastName  , email , mobileNumber)
         this.setState({
-            name:"",
-            lastname:"",
-            email: "",
-            mobilenumber:""
+            firstName : firstName,
+            lastName :lastName,
+            email : email,
+            mobileNumber : mobileNumber
         })
-    };
+        
+    }
 
-    onValidSubmit = (done, event) => {
-        console.log("Value submitted" + this.state.value);
-        console.log("Form Submitted" + this.state.name);
+    onValidSubmit = () => {
+        const data = new URLSearchParams()
+        data.append("first_name",this.state.firstName)
+        data.append("last_name",this.state.lastName)
+        data.append("email",this.state.email)
+        data.append("mobile",this.state.mobileNumber)
+        updateUser(data , this)        
     };
     render(){
         return (
@@ -49,7 +59,7 @@ class ProfileForm extends BaseReactComponent{
                         <Row>
                             <Col md={4}>
                                 <FormElement
-                                    valueLink={this.linkState(this, "name")}
+                                    valueLink={this.linkState(this, "firstName")}
                                     label="First Name"
                                     required
                                     validations={[
@@ -71,7 +81,7 @@ class ProfileForm extends BaseReactComponent{
                             </Col>
                             <Col md={4}>
                                 <FormElement
-                                    valueLink={this.linkState(this, "lastname")}
+                                    valueLink={this.linkState(this, "lastName")}
                                     label="Last Name"
                                     required
                                     validations={[
@@ -118,7 +128,7 @@ class ProfileForm extends BaseReactComponent{
                         <Row>
                             <Col md={4}>
                                 <FormElement
-                                    valueLink={this.linkState(this, "mobilenumber")}
+                                    valueLink={this.linkState(this, "mobileNumber")}
                                     label="Mobile Number"
                                     required
                                     validations={[
@@ -141,9 +151,7 @@ class ProfileForm extends BaseReactComponent{
                             </Col>
                         </Row>
 
-                        <Button className="grey-btn submit-button" onClick={()=>{
-                            this.setValue(this.state)
-                        }}>
+                        <Button className="grey-btn submit-button" type="submit">
                             Save changes
                         </Button>
 
@@ -153,5 +161,14 @@ class ProfileForm extends BaseReactComponent{
         )
     }
 }
+const mapStateToProps = state => ({
+  
+});
+const mapDispatchToProps = {
+    updateUser
+}
+ProfileForm.propTypes = {
+    
+};
 
-export default ProfileForm;
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
