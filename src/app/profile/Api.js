@@ -14,7 +14,7 @@ export const updateUser = (data,ctx) =>{
             mobile:ctx.state.mobileNumber
         }
         localStorage.setItem("userDetail",JSON.stringify(obj))
-        toast.success("Share link has been copied");
+        toast.success("Profile Successfully Updated");
       } else{
         toast.error(res.data.message || "Something went wrong");
       }
