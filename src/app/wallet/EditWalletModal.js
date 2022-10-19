@@ -78,7 +78,7 @@ class EditWalletModal extends BaseReactComponent {
                 aria-labelledby="contained-modal-title-vcenter"
                 backdropClassName="editmodal"
             >
-                <Modal.Header style={{backgroundColor: walletBdColor ? walletBdColor : "#E98430"}}>
+                <Modal.Header style={{backgroundColor: walletBdColor ? walletBdColor : "#0d0d0d"}}>
                     <Image src={walletIcon ? walletIcon : unrecognisedIcon} className="walletIcon" />
                     <div className="closebtn" onClick={onHide}>
                         <Image src={closeIcon} />

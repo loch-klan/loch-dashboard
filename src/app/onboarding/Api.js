@@ -42,7 +42,7 @@ export const detectCoin = (wallet,ctx=null) => {
                             chain_detected: res.data.data.chain_detected,
                         }
                     });
-                    if(ctx ){
+                    if(ctx){
                         ctx.handleSetCoin({...wallet,chain_detected:res.data.data.chain_detected})
                     }
                 }

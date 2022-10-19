@@ -203,8 +203,8 @@ class Wallet extends Component {
                         })
                       :
                       <div style={{textAlign: "center"}}>
-                    <Image src={noDataImage} className="no-data m-b-20" />
-                    <h3 className='inter-display-medium f-s-14 lh-19'>No data found</h3>
+                    {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
+                    <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
                     </div>
                       }
                     </div>

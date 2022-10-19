@@ -109,3 +109,15 @@ export const lightenDarkenColor = (hex, lum) => {
 export const amountFormat = (number,locals,currency_type) => {
   return new Intl.NumberFormat(locals, {currency:currency_type}).format(number)
 }
+
+export const loadingAnimation = () =>{
+  return (
+    <div className="spinner-chip-container">
+                            <div className="spinner">
+                                <div className="bounce1"></div>
+                                <div className="bounce2"></div>
+                                <div className="bounce3"></div>
+                            </div>
+                        </div>
+  )
+}

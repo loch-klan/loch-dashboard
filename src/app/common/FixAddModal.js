@@ -14,6 +14,7 @@ import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin } from "../onboarding//Api";
 import { updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
+import { loadingAnimation } from '../../utils/ReusableFunctions';
 class FixAddModal extends BaseReactComponent {
 
     constructor(props) {
@@ -415,7 +416,14 @@ class FixAddModal extends BaseReactComponent {
                                     disabled={this.state.modalType === "addwallet" ? this.isDisabled() : this.isFixDisabled()}
                                     onClick={this.state.modalType === "addwallet" ? this.handleAddWallet : this.handleFixWallet}
                                 >
-                                    {this.state.btnText}
+                                    {/* {this.state.btnText} */}
+                                    {
+                                      (this.isDisabled() || this.isFixDisabled())
+                                      ?
+                                      loadingAnimation()
+                                      :
+                                      this.state.btnText
+                                    }
                                 </Button>
                             </div>
                             <div className='m-b-26 footer'>

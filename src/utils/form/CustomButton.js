@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from 'react-bootstrap/Button'
 import { Image } from "react-bootstrap";
+import { loadingAnimation } from "../ReusableFunctions";
 
 const CustomButton = props => {
   const {
-    isActive, isBlock, isDisabled, href, variant, handleClick, type, buttonText, buttonImage, className = ""
+    isActive, isLoading=null, isBlock, isDisabled, href, variant, handleClick, type, buttonText, buttonImage, className = ""
   } = props;
   return (
     <Button
@@ -18,7 +19,7 @@ const CustomButton = props => {
       onClick={handleClick}
       className={className}
     >
-      {buttonText || <Image src={buttonImage} />}
+      {isLoading ? loadingAnimation() : buttonText || <Image src={buttonImage} />}
     </Button>
   );
 };

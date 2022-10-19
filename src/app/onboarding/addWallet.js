@@ -32,7 +32,7 @@ class AddWallet extends BaseReactComponent {
         let foundIndex = walletCopy.findIndex(obj => obj.id === name);
         if (foundIndex > -1) {
             walletCopy[foundIndex].address = value;
-            walletCopy[foundIndex].trucatedAddress = value
+            // walletCopy[foundIndex].trucatedAddress = value
         }
 
         // if (
@@ -56,7 +56,7 @@ class AddWallet extends BaseReactComponent {
         // timeout;
         this.timeout = setTimeout(() => {
             this.getCoinBasedOnWalletAddress(name, value);
-        }, 2000)
+        }, 1000)
     }
 
     getCoinBasedOnWalletAddress = (name, value) => {
@@ -82,7 +82,8 @@ class AddWallet extends BaseReactComponent {
     }
     let i = this.state.walletInput.findIndex(obj => obj.id === data.id)
     let newAddress = [...this.state.walletInput]
-    data.address === newAddress[i].address && newAddress[i].coins.push(coinList)
+    // data.address === newAddress[i].address && console.log("heyyy", newAddress[i].address, data.address)
+    data.address !== newAddress[i].address ? newAddress[i].coins = [] : newAddress[i].coins.push(coinList)
     newAddress[i].coinFound = newAddress[i].coins.some((e) => e.chain_detected === true)
     this.setState({
       walletInput: newAddress
@@ -166,6 +167,12 @@ class AddWallet extends BaseReactComponent {
     }
 
     render() {
+      // console.log('document.getElementById',document.getElementById('coin-div'));
+      let coinDiv = document.getElementById('coin-div');
+      let divWidth = 0;
+      if(coinDiv)
+        divWidth = coinDiv.offsetWidth + 10
+      // console.log("divWidth",divWidth)
         return (
             <>
                 <Form onValidSubmit={this.onValidSubmit}>
@@ -188,22 +195,23 @@ class AddWallet extends BaseReactComponent {
                                     <input
                                         autoFocus
                                         name={`wallet${index + 1}`}
-                                        value={c.trucatedAddress || ""}
+                                        value={c.address || ""}
                                         className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
                                         placeholder='Paste any wallet address here'
                                         title={c.address || ""}
+                                        style={{paddingRight: divWidth}}
                                         // onKeyUp={(e) => this.setState({ loading: true })}
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.state.walletInput.map((e, i) => {
                                         if (this.state.walletInput[index].address && e.id === `wallet${index + 1}`) {
                                             // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                                             if (e.coinFound) {
-                                                return <CustomChip coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
+                                                return <CustomChip id={"coin-div"} coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
                                             } else {
                                                 if (e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                                    return <CustomChip coins={null} key={i} isLoaded={true}></CustomChip>
+                                                    return <CustomChip id={"coin-div"} coins={null} key={i} isLoaded={true}></CustomChip>
                                                 } else {
-                                                    return <CustomChip coins={null} key={i} isLoaded={false}></CustomChip>
+                                                    return <CustomChip id={"coin-div"} coins={null} key={i} isLoaded={false}></CustomChip>
                                                 }
                                             }
                                         }
@@ -222,7 +230,7 @@ class AddWallet extends BaseReactComponent {
                     }
                     <div className='ob-modal-body-btn'>
                         <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
-                        <CustomButton className="primary-btn go-btn" type={"submit"} isDisabled={this.isDisabled()} buttonText="Go" />
+                        <CustomButton className="primary-btn go-btn" type={"submit"} isLoading={this.isDisabled()} isDisabled={this.isDisabled()} buttonText="Go" />
                     </div>
                 </Form>
             </>
