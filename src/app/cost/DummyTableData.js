@@ -12,11 +12,11 @@ export default {
             CurrentPrice : "$1,390.00",
             Amount : 0,
             CostBasis:1.75,
-            CurrentValue :"Burn",
-            GainLoss : 
+            CurrentValue :"$5,514.00",
+            // GainLoss : {
             //   status : "gain",
             //   symbol : GainIcon,
-               "42.45%"
+            //    value : "42.45%",
             // }
         },
       {
@@ -25,26 +25,26 @@ export default {
           CurrentPrice : "$21,080.00",
           Amount : 0,
           CostBasis:2.56,
-          CurrentValue :"Burn",
-          GainLoss : 
+          CurrentValue :"$22,280.50",
+          // GainLoss : {
           //   status : "loss",
           //   symbol : LossIcon,
-             "-18.45%"
+          //   value : "-18.45%"
           // }
         }
     ],
     columnList:[
-    {labelName:"Asset",dataKey:"Asset",coumnWidth:130,isCell: true,className:"cost-assets",
-    cell: (rowData, dataKey) => {
+    {labelName:"Asset",dataKey:"Asset",coumnWidth:130,isCell: true,
+    cell: (rowData, dataKey ,) => {
       if (dataKey === "Asset") {
         return rowData.Asset
       }
-    }},{labelName:"Average Cost Price",dataKey:"AverageCostPrice",coumnWidth:136,isCell: true,className:"cost-common",
+    }},{labelName:"Average Cost Price",dataKey:"AverageCostPrice",coumnWidth:136,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "AverageCostPrice") {
         return rowData.AverageCostPrice
       }
-    }},{labelName:"Current Price",dataKey:"CurrentPrice",coumnWidth:100,isCell: true,className:"cost-common",
+    }},{labelName:"Current Price",dataKey:"CurrentPrice",coumnWidth:100,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "CurrentPrice") {
         return rowData.CurrentPrice
@@ -64,7 +64,7 @@ export default {
       if (dataKey === "CurrentValue") {
         return rowData.CurrentValue
       }
-    }},{labelName:"GainLoss",dataKey:"GainLoss",coumnWidth:101,isCell: true,className:"cost-gainLoss",
+    }},{labelName:"% Gain / Loss",dataKey:"GainLoss",coumnWidth:101,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "GainLoss") {
         return rowData.GainLoss

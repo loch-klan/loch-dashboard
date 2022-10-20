@@ -20,7 +20,7 @@ export default function PageHeader(props) {
     </Breadcrumb >
 
   return (
-    <div className={`m-b-45 page-header ${props.showpath ? "history-header" : ""}`}>
+    <div className={`m-b-40 page-header ${props.showpath ? "history-header" : ""}`}>
       {props.showpath ? breadCrumb : ""}
     <div className='header'>
         <h4 className='inter-display-medium f-s-25 lh-30 m-b-8'>{props.title}</h4>

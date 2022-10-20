@@ -5,7 +5,6 @@ import { Button, Image } from "react-bootstrap";
 import notFoundDefault from '../../assets/images/empty-table.png';
 import Pagination from './Pagination';
 import {Form, SelectControl, FormValidator, BaseReactComponent, FormElement} from '../form';
-
 class CustomTable extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -17,35 +16,7 @@ class CustomTable extends BaseReactComponent {
 
   }
 
-  columnDataMapping = ({
-    cellData,
-    dataKey
-  }) => {
-    console.log(cellData,dataKey)
-      if(dataKey === "From" || dataKey === "To")
-      {
-        return (
-          <Image src={cellData} className="history-table-icon" />
-        )
-      }
-      else if (dataKey === "Asset"){
-        console.log("ASSET")
-        return(
-          <div className='inter-display-medium f-s-13 lh-16 history-table-coin-icon'><Image src={cellData}/> Ethereum</div>
-        )
-      }
-      else if (dataKey === "Method")
-      {
-        return (
-          <div className="inter-display-medium f-s-13 lh-16 history-table-method">{cellData}</div>
-        )
-      }
-      else{
-        return(
-          cellData
-        )
-      }
-    }
+  
   render() {
     const { istopPagination = false, tableData, className = "", columnList = [], notFoundImage = notFoundDefault, moduleName, message = "", isButton, buttonText, linkUrl, linkText, currentPage = 1, totalPages, history, location, pageSize = false, pageSizeOptions = [], handlePageSize = "" } = this.props;
     return (
@@ -118,8 +89,7 @@ class CustomTable extends BaseReactComponent {
                           className={item.className}
                           label={item.labelName}
                           dataKey={item.dataKey}
-                          // cellRenderer={({ rowData }) => { return item.cell(rowData, item.dataKey) }}
-                          cellRenderer={this.columnDataMapping}
+                          cellRenderer={({ rowData }) => { return item.cell(rowData, item.dataKey) }}
                         />
                       )
                     })

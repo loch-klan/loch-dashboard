@@ -5,9 +5,10 @@
     padding-left: 2.7rem;
 
     .timeBadge {
-        padding: 1.05rem 3.15rem;
+        padding: 1.05rem 3.14rem;
         background-color: $grey-F2F;
         border-radius: 0.8rem;
+        border: 0.15rem solid $grey-F2F;
         color: $black-191;
         cursor: pointer;
     }

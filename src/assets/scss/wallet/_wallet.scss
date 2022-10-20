@@ -119,26 +119,13 @@
                         width: 100%;
                         overflow-x: auto;
                         margin-right: 2rem;
-                        .chip {
-                            display: flex;
-                            border-radius: 0.6rem;
-                            border:0.1rem solid $grey-CAC;
-                            background-color:rgba(229, 229, 230, 0.5);
-                            cursor: default;
+                        .coin-chip {
+                            margin-right: 1.2rem;
                             img{
                                 width:2.6rem;
                                 height:2.6rem;
                             }
-                            .coin-percent {
-                                // border-top: 1px solid #CACBCC;
-                                color: $grey-313;
-                                // background: rgba(229, 229, 230, 0.5);
-                                padding: 0.4rem 0.6rem;
-                                // border-top-right-radius: 0.6rem;
-                                // border-bottom-right-radius: 0.6rem;
-                                // border-bottom: 1px solid #CACBCC;
-                                // border-right: 1px solid #CACBCC;
-                            }
+                            
                         }
                     }
                     .secondary-btn{

@@ -119,9 +119,20 @@
                                 border:0.1rem solid $black-191;
                                 padding: 0.4rem 0.8rem;
                                 border-radius: 0.4rem;
-                                background-color: $red-FFE;
                                 margin: 0 auto;
                                 width: max-content;
+                            }
+                            .burn{
+                                background-color: $red-FFE;
+                            }
+                            .transfer{
+                                background-color: $blue-E1F;
+                            }
+                            .commit{
+                                background-color: $grey-EFE;
+                            }
+                            .mint{
+                                background-color: $green-DEF;
                             }
                         }
                     }
