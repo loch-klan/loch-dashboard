@@ -12,30 +12,16 @@ class ProfileForm extends BaseReactComponent{
 
     constructor(props) {
         super(props);
+        const userDetails = JSON.parse(localStorage.getItem("lochUser"))
         this.state = {
-            firstName:"",
-            lastName:"",
-            email: "",
-            mobileNumber:""
+            firstName:userDetails?.first_name || "",
+            lastName:userDetails?.last_name || "",
+            email: userDetails?.email || "",
+            mobileNumber:userDetails?.mobile || ""
         }
-        // this.onClose = this.onClose.bind(this);   
+        // this.onClose = this.onClose.bind(this);
     }
-    componentDidMount() { 
-        const userDetails = JSON.parse(localStorage.getItem("userDetail"))
-        console.log(userDetails)
-        const firstName = userDetails.first_name ? userDetails.first_name : ""
-        const lastName = userDetails.last_name ? userDetails.last_name : ""
-        const email = userDetails.email ? userDetails.email : ""
-        const mobileNumber = userDetails.mobile ? userDetails.mobile : ""
-
-        console.log(firstName , lastName  , email , mobileNumber)
-        this.setState({
-            firstName : firstName,
-            lastName :lastName,
-            email : email,
-            mobileNumber : mobileNumber
-        })
-        
+    componentDidMount() {
     }
 
     onValidSubmit = () => {
@@ -44,7 +30,7 @@ class ProfileForm extends BaseReactComponent{
         data.append("last_name",this.state.lastName)
         data.append("email",this.state.email)
         data.append("mobile",this.state.mobileNumber)
-        updateUser(data , this)        
+        updateUser(data , this)
     };
     render(){
         return (
@@ -162,13 +148,13 @@ class ProfileForm extends BaseReactComponent{
     }
 }
 const mapStateToProps = state => ({
-  
+
 });
 const mapDispatchToProps = {
     updateUser
 }
 ProfileForm.propTypes = {
-    
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);

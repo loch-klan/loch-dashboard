@@ -4,7 +4,7 @@ export const updateUser = (data,ctx) =>{
     postLoginInstance.post("organisation/user/update-user",data)
     .then((res)=>{
       if(!res.data.error){
-        console.log(data) 
+        console.log(data)
         let obj =  JSON.parse(localStorage.getItem("userDetail"))
         obj = {
             ...obj,
@@ -13,7 +13,7 @@ export const updateUser = (data,ctx) =>{
             email : ctx.state.email,
             mobile:ctx.state.mobileNumber
         }
-        localStorage.setItem("userDetail",JSON.stringify(obj))
+        localStorage.setItem("lochUser",JSON.stringify(obj))
         toast.success("Profile Successfully Updated");
       } else{
         toast.error(res.data.message || "Something went wrong");
