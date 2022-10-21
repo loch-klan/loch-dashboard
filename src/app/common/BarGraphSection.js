@@ -83,8 +83,8 @@ class BarGraphSection extends Component {
                     subtitle={this.state.headerSubTitle}
                     isArrow={this.state.isArrow}
                 />
-                {this.state.showBadges ? 
-                <CoinBadges 
+                {this.state.showBadges ?
+                <CoinBadges
                 handleFunction={this.handleFunction}
                 activeBadge = {this.state.activeBadge}
                 chainList = {this.props.coinsList}
@@ -94,13 +94,13 @@ class BarGraphSection extends Component {
                 }
                 <div>
                 <Bar
-                    width={this.props.width} // 824
-                    height={this.props.height} //400
+                    // width={this.props.width} // 824
+                    // height={this.props.height} //400
                     options={this.state.options}
                     data={this.state.data}
                 />
                 </div>
-                {this.state.showFooter ? 
+                {this.state.showFooter ?
                 <BarGraphFooter
                     handleFooterClick={this.handleFooter}
                     active={this.state.activeFooter}

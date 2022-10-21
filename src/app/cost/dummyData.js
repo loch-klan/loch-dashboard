@@ -2,8 +2,8 @@
    const labels = ["AAVE" , "Binance" , "Kraken" ,"Gemini","Coinbase","Compound","Convex","Curve","FTX","Lido","MakerDao","Pancake Swap"]
 
     const options = {
-        responsive:false,
-        maintainAspectRatio: false,
+        responsive:true,
+        maintainAspectRatio: true,
         plugins: {
             legend: {
                 display:false
@@ -13,7 +13,7 @@
             y:{
                 min:0,
                 max:500,
-                
+
                 ticks:{
                     stepSize:125,
                     padding:8,
@@ -85,7 +85,7 @@ const data = {
                 topRight:6
             },
             borderSkipped:false,
-            
+
         }
     ]
 }
@@ -101,7 +101,7 @@ const optionsyear5 = {
         y:{
             min:0,
             max:500,
-            
+
             ticks:{
                 stepSize:125,
                 padding:8,
@@ -173,7 +173,7 @@ datasets: [
             topRight:6
         },
         borderSkipped:false,
-        
+
     }
 ]
 }
@@ -196,7 +196,7 @@ const ethdata = {
             topRight:6
         },
         borderSkipped:false,
-        
+
     }
 ]
 }
@@ -210,7 +210,7 @@ const ethoptions = { responsive:true,
         y:{
             min:0,
             max:500,
-            
+
             ticks:{
                 stepSize:125,
                 padding:8,
