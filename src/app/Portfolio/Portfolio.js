@@ -6,11 +6,16 @@ import PieChart from './PieChart';
 import LineChart from './LineChart';
 import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
-import { Button } from 'react-bootstrap';
+import { Button ,Image} from 'react-bootstrap';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
 import { getAllCoins } from '../onboarding/Api.js'
-
+import Metamask from '../../assets/images/MetamaskIcon.svg'
+import Ethereum from '../../assets/images/icons/ether-coin.svg'
+import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
+import TransactionTable from '../intelligence/TransactionTable';
+import CoinChip from './../wallet/CoinChip';
+import BarGraphSection from './../common/BarGraphSection';
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -81,7 +86,237 @@ class Portfolio extends BaseReactComponent {
         }
     }
 
+    
     render() {
+        const tableData = [
+            {
+                time: "4/22",
+                from: Metamask,
+                to: Metamask,
+                asset: Ethereum,
+                usdValue: 0,
+                method: "Burn"
+            },
+            {
+                time: "4/22",
+                from: Metamask,
+                to: Metamask,
+                asset: Ethereum,
+                usdValue: 0,
+                method: "Mint"
+            },
+            {
+                time: "4/22",
+                from: Metamask,
+                to: Metamask,
+                asset: Ethereum,
+                usdValue: 0,
+                method: "Transfer"
+            },
+            {
+                time: "4/22",
+                from: Metamask,
+                to: Metamask,
+                asset: Ethereum,
+                usdValue: 0,
+                method: "Commit"
+            },
+
+        ]
+        
+        const columnList = [
+            {
+                labelName: "Time",
+                dataKey: "time",
+                coumnWidth: 44,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "time") {
+                        return rowData.time
+                    }
+                }
+            },
+            {
+                labelName: "From",
+                dataKey: "from",
+                coumnWidth: 46,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "from") {
+                        return (
+                            <CustomOverlay
+                                position="top"
+                                isIcon={true}
+                                isInfo={true}
+                                isText={true}
+                                text={"0xF977814e90dA44bFA03b6295A0616a897441aceC"}
+                            >
+                                <Image src={rowData.from} className="history-table-icon" />
+                            </CustomOverlay>
+                        )
+                    }
+                }
+            },
+            {
+                labelName: "To",
+                dataKey: "to",
+                coumnWidth: 30,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "to") {
+                        return (
+                            <CustomOverlay
+                                position="top"
+                                isIcon={true}
+                                isInfo={true}
+                                isText={true}
+                                text={"0xF977814e90dA44bFA03b6295A0616a897441aceC"}
+                            >
+                                <Image src={rowData.to} className="history-table-icon" />
+                            </CustomOverlay>
+                        )
+                    }
+                }
+            },
+            {
+                labelName: "Asset",
+                dataKey: "asset",
+                coumnWidth: 66,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "asset") {
+                        return (
+                            <CoinChip
+                            coin_img_src = {rowData.asset}
+                            coin_code = "ETH"
+                            />
+                        )
+                    }
+                }
+            },
+            {
+                labelName: "USD Value",
+                dataKey: "usdValue",
+                coumnWidth: 83,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "usdValue") {
+                        return rowData.usdValue
+                    }
+                }
+            },
+            {
+                labelName: "Method",
+                dataKey: "method",
+                coumnWidth: 70,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "method") {
+                        return (
+                            <div
+                                className={
+                                    `inter-display-medium f-s-13 lh-16 history-table-method 
+                                    ${rowData.method === "Burn" ? "burn"
+                                        :
+                                        rowData.method === "Transfer" ? "transfer"
+                                        :
+                                        rowData.method === "Mint" ? "mint"
+                                        :
+                                        rowData.method === "Commit" ? "commit"
+                                        :
+                                        ""
+                                    }`
+                                }
+                            >
+                                {rowData.method}
+                            </div>
+                        )
+                    }
+                }
+            }
+        ]
+
+        const labels = ["AAVE" , "Binance" , "Kraken" ,"Gemini","Coinbase"]
+
+        const options = {
+            responsive:true,
+            // maintainAspectRatio:false,
+            plugins: {
+                legend: {
+                    display:false
+                },
+            },
+            scales:{
+                y:{
+                    min:0,
+                    max:40000,
+                    
+                    ticks:{
+                        stepSize:8000,
+                        padding:8,
+                        size:12,
+                        lineHeight:20,
+                        family:"Helvetica Neue",
+                        weight:400,
+                        color: "#B0B1B3"
+                    },
+                    grid:{
+                        drawBorder:false,
+                        display:true,
+                        borderDash: ctx=>ctx.index == 0 ? [0] : [4],
+                        drawTicks:false
+                    }
+                },
+                x:{
+                    ticks:{
+                        font:"Inter-SemiBold",
+                        size:10,
+                        lineHeight:12,
+                        weight:600,
+                        color:"#86909C",
+                        maxRotation:0,
+                        minRotation:0,
+
+
+                    },
+                    grid:{
+                        display:false,
+                        borderWidth:1,
+                    }
+                }
+            }
+        }
+
+        const data = {
+            labels,
+            datasets: [
+                {
+                    data: [26000, 32300, 7600, 6000, 800],
+                    backgroundColor: [
+                        "rgba(100, 190, 205, 0.3)",
+                        "rgba(34, 151, 219, 0.3)",
+                        "rgba(114, 87, 211, 0.3)",
+                        "rgba(141, 141, 141, 0.3)",
+                        " rgba(84, 84, 191, 0.3)",
+                    ],
+                    borderColor: [
+                        "#64BECD",
+                        "#2297DB",
+                        "#7257D3",
+                        "#8D8D8D",
+                        "#5454BF",
+                    ],
+                    borderWidth: 2,
+                    borderRadius:{
+                        topLeft:6,
+                        topRight:6
+                    },
+                    borderSkipped:false,
+                    
+                }
+            ]
+        }
+        
         return (
             <div>
                 {this.state.loader ? <Loading /> :
@@ -115,10 +350,31 @@ class Portfolio extends BaseReactComponent {
                                     </div>
                                     : ""}
                             </div>
-                            <div className='portfolio-section page'>
+                            <div className='portfolio-section page m-b-32'>
                                 <LineChart
                                     coinLists = {this.props.OnboardingState.coinsLists}
                                 />
+                            </div>
+                            <div className='m-b-32 page graph-table-section'>
+                                <div className='m-r-16 section-table'>
+                                    <TransactionTable
+                                        title ="Transaction History"
+                                        subTitle="In the last month"
+                                        tableData={tableData}
+                                        columnList={columnList}
+                                    />
+                                </div>
+                                <div className='section-chart'>
+                                    <BarGraphSection
+                                        headerTitle = "Volume Traded by Counterparty"
+                                        headerSubTitle = "In the last month"
+                                        isArrow={true}
+                                        data={data}
+                                        options={options}
+                                        width={"100%"}
+                                        height={"100%"}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

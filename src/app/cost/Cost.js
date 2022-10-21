@@ -42,6 +42,10 @@ class Cost extends Component {
             options={this.state.durationgraphdata.options}
             coinsList = {this.props.OnboardingState.coinsList}
             marginBottom = 'm-b-32'
+            showFooter = {true}
+            showBadges = {true}
+            height={"400px"}
+            width={"824px"}
           />
 
           <BarGraphSection
@@ -51,6 +55,11 @@ class Cost extends Component {
             options={this.state.durationgraphdata.options}
             coinsList = {this.props.OnboardingState.coinsList}
             marginBottom = 'm-b-32'
+            showFooter = {true}
+            showBadges = {true}
+            height={"400px"}
+            width={"824px"}
+
           />
 
           <CostTable

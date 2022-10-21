@@ -90,7 +90,7 @@ const data = {
 }
 
 const optionsyear5 = {
-    responsive:false,
+    responsive:true,
     plugins: {
         legend: {
             display:false
@@ -199,7 +199,7 @@ const ethdata = {
     }
 ]
 }
-const ethoptions = { responsive:false,
+const ethoptions = { responsive:true,
     plugins: {
         legend: {
             display:false

@@ -126,6 +126,18 @@
                         }
                     }
                 }
+                // .highcharts-container {
+                //     svg{
+                //         .highcharts-legend {
+                //             .highcharts-legend-item{
+                //                 text{
+                //                 font-family: "inter-medium";
+                //                 font-size: 1rem;
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
             }
         }
 
@@ -182,6 +194,42 @@
                     .pie-chart-middle-text-currency {
                         margin: 0.4rem 0;
                     }
+                }
+            }
+        }
+    }
+    .graph-table-section{
+        display: flex;
+
+        .section-table,.section-chart{
+        background-color: $secondary;
+        border-radius: 1.2rem;
+        box-shadow: 0rem 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12), 0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
+        }
+        .section-table{
+            width: 50%;
+            // padding: 3.6rem 2rem 1.8rem 2rem;
+            .transaction-table-section{
+                .graph-header{
+                    padding:3.6rem 0rem 0rem 3.2rem;
+
+                }
+                .table-wrapper{
+                    .ReactVirtualized__Table__headerRow{
+                        padding-left: 2rem;
+                    }
+                    .ReactVirtualized__Table__Grid{
+                        padding-left: 2rem;
+                    }
+                }
+            }
+        }
+        .section-chart{
+            width: 50%;
+            .bar-graph-section {
+                padding:3.2rem 2.4rem 3rem 1.6rem;
+                .graph-header{
+                    padding-left: 1.6rem;
                 }
             }
         }

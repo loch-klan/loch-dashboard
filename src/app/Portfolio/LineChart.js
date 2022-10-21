@@ -76,6 +76,8 @@ class LineChart extends BaseReactComponent {
             legend: {
                 align: 'right',
                 verticalAlign: 'top',
+                fontFamily:"inter-medium",
+                fontSize:"10px"
             },
             tooltip: {
                 useHTML: true,

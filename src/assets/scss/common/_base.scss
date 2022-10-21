@@ -50,6 +50,7 @@ body {
   // overflow: scroll;
 
   .main-section-right {
+
     // flex: 1;
     // margin-left: 27.2rem;
     .main-content-wrapper {
@@ -209,9 +210,10 @@ body {
   margin-bottom: 1.2rem;
 }
 
-.m-b-13{
+.m-b-13 {
   margin-bottom: 1.3rem;
 }
+
 .m-b-16 {
   margin-bottom: 1.6rem;
 }
@@ -247,9 +249,11 @@ body {
 .m-b-40 {
   margin-bottom: 4rem;
 }
-.m-b-43{
-  margin-bottom:4.3rem;
+
+.m-b-43 {
+  margin-bottom: 4.3rem;
 }
+
 .m-b-45 {
   margin-bottom: 4.5rem;
 }
@@ -278,9 +282,11 @@ body {
 .cp {
   cursor: pointer;
 }
-.p-r-0{
-  padding-right:0rem;
+
+.p-r-0 {
+  padding-right: 0rem;
 }
+
 // COLOR
 .grey-636 {
   color: $grey-636;
@@ -1310,10 +1316,15 @@ form {
   border: 0.1rem solid $grey-CAC;
   background-color: rgba(229, 229, 230, 0.5);
   cursor: default;
+  width: max-content;
 
+  img {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
   .coin-percent {
     color: $grey-313;
-    padding: 0.4rem 0.6rem;
+    padding: 0.5rem 0.6rem;
   }
 }
 
@@ -1353,19 +1364,6 @@ form {
           margin: 0rem;
         }
 
-        .coin-chip {
-          width: max-content;
-
-          img {
-            width: 2.6rem;
-            height: 2.6rem;
-          }
-
-          .coin-code {
-            padding: 0.5rem 0.6rem;
-          }
-        }
-
         .cost-common {
           background: rgba(229, 229, 230, 0.5);
           border-radius: 0.4rem;
@@ -1392,6 +1390,91 @@ form {
 
         .loss {
           background: rgba(250, 217, 217, 0.5);
+        }
+      }
+    }
+  }
+}
+
+.transaction-table-section {
+  .ReactVirtualized__Table__row {
+    border: none;
+  }
+
+  .ReactVirtualized__Table__headerRow {
+    height: auto;
+    // padding: 2.4rem;
+    border-bottom: 0.1rem solid $grey-E5E;
+
+    .ReactVirtualized__Table__headerColumn {
+      margin: 0rem;
+      text-align: center;
+
+      .ReactVirtualized__Table__headerTruncatedText {
+        white-space: normal;
+        overflow: visible;
+        line-height: 1.6rem;
+        color: $grey-4F4;
+        margin: 0rem;
+      }
+    }
+  }
+
+  .ReactVirtualized__Table__Grid {
+    border-radius: 1.2rem;
+
+    .ReactVirtualized__Grid__innerScrollContainer {
+      .ReactVirtualized__Table__row {
+        border: none;
+
+        .ReactVirtualized__Table__rowColumn {
+          font-size: 1.3rem;
+          line-height: 1.6rem;
+          color: $grey-313;
+          text-align: center;
+          margin: 0rem;
+
+          .history-table-icon {
+            width: 2.4rem;
+            height: 2.4rem;
+          }
+
+          .history-table-coin-icon {
+            padding: 0.4rem 0.8rem;
+            background-color: rgba(229, 229, 230, 0.5);
+            border: 0.1rem solid $grey-CAC;
+            border-radius: 0.4rem;
+            width: max-content;
+            margin: 0 auto;
+
+            img {
+              margin-right: 0.6rem;
+            }
+          }
+
+          .history-table-method {
+            border: 0.1rem solid $black-191;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.4rem;
+            margin: 0 auto;
+            width: max-content;
+          }
+
+          .burn {
+            background-color: $red-FFE;
+          }
+
+          .transfer {
+            background-color: $blue-E1F;
+          }
+
+          .commit {
+            background-color: $grey-EFE;
+          }
+
+          .mint {
+            background-color: $green-DEF;
+          }
         }
       }
     }

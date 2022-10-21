@@ -46,7 +46,7 @@ function CostTable(props) {
       <GraphHeader
         title={props.title}
         subtitle={props.subTitle}
-        isArrow={ArrowRight}
+        isArrow={ true }
       />
 
       <CustomTable

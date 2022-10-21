@@ -64,80 +64,80 @@
         border-radius: 1.2rem;
 
         .custom-table {
-            .ReactVirtualized__Table__row {
-                border: none;
-            }
+            // .ReactVirtualized__Table__row {
+            //     border: none;
+            // }
 
-            .ReactVirtualized__Table__headerRow {
-                height: auto;
-                // padding: 2.4rem;
-                border-bottom: 0.1rem solid $grey-E5E;
+            // .ReactVirtualized__Table__headerRow {
+            //     height: auto;
+            //     // padding: 2.4rem;
+            //     border-bottom: 0.1rem solid $grey-E5E;
 
-                .ReactVirtualized__Table__headerColumn {
-                    margin: 0rem;
-                    text-align: center;
+            //     .ReactVirtualized__Table__headerColumn {
+            //         margin: 0rem;
+            //         text-align: center;
 
-                    .ReactVirtualized__Table__headerTruncatedText {
-                        white-space: normal;
-                        overflow: visible;
-                        line-height: 1.6rem;
-                        color: $grey-4F4;
-                        margin: 0rem;
-                    }
-                }
-            }
+            //         .ReactVirtualized__Table__headerTruncatedText {
+            //             white-space: normal;
+            //             overflow: visible;
+            //             line-height: 1.6rem;
+            //             color: $grey-4F4;
+            //             margin: 0rem;
+            //         }
+            //     }
+            // }
 
-            .ReactVirtualized__Table__Grid {
-                border-radius: 1.2rem;
+            // .ReactVirtualized__Table__Grid {
+            //     border-radius: 1.2rem;
 
-                .ReactVirtualized__Grid__innerScrollContainer {
-                    .ReactVirtualized__Table__row {
-                        border: none;
+            //     .ReactVirtualized__Grid__innerScrollContainer {
+            //         .ReactVirtualized__Table__row {
+            //             border: none;
 
-                        .ReactVirtualized__Table__rowColumn {
-                            font-size: 1.3rem;
-                            line-height: 1.6rem;
-                            color: $grey-313;
-                            text-align: center;
-                            margin: 0rem;
-                            .history-table-icon{
-                                width:2.4rem;
-                                height:2.4rem;
-                            }
-                            .history-table-coin-icon{
-                                padding:0.4rem 0.8rem;
-                                background-color: rgba(229, 229, 230, 0.5);
-                                border:0.1rem solid $grey-CAC;
-                                border-radius: 0.4rem;
-                                width: max-content;
-                                margin: 0 auto;
-                                img{
-                                    margin-right: 0.6rem;
-                                }
-                            }
-                            .history-table-method{
-                                border:0.1rem solid $black-191;
-                                padding: 0.4rem 0.8rem;
-                                border-radius: 0.4rem;
-                                margin: 0 auto;
-                                width: max-content;
-                            }
-                            .burn{
-                                background-color: $red-FFE;
-                            }
-                            .transfer{
-                                background-color: $blue-E1F;
-                            }
-                            .commit{
-                                background-color: $grey-EFE;
-                            }
-                            .mint{
-                                background-color: $green-DEF;
-                            }
-                        }
-                    }
-                }
-            }
+            //             .ReactVirtualized__Table__rowColumn {
+            //                 font-size: 1.3rem;
+            //                 line-height: 1.6rem;
+            //                 color: $grey-313;
+            //                 text-align: center;
+            //                 margin: 0rem;
+            //                 .history-table-icon{
+            //                     width:2.4rem;
+            //                     height:2.4rem;
+            //                 }
+            //                 .history-table-coin-icon{
+            //                     padding:0.4rem 0.8rem;
+            //                     background-color: rgba(229, 229, 230, 0.5);
+            //                     border:0.1rem solid $grey-CAC;
+            //                     border-radius: 0.4rem;
+            //                     width: max-content;
+            //                     margin: 0 auto;
+            //                     img{
+            //                         margin-right: 0.6rem;
+            //                     }
+            //                 }
+            //                 .history-table-method{
+            //                     border:0.1rem solid $black-191;
+            //                     padding: 0.4rem 0.8rem;
+            //                     border-radius: 0.4rem;
+            //                     margin: 0 auto;
+            //                     width: max-content;
+            //                 }
+            //                 .burn{
+            //                     background-color: $red-FFE;
+            //                 }
+            //                 .transfer{
+            //                     background-color: $blue-E1F;
+            //                 }
+            //                 .commit{
+            //                     background-color: $grey-EFE;
+            //                 }
+            //                 .mint{
+            //                     background-color: $green-DEF;
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
         }
 
 

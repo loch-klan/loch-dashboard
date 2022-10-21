@@ -5,6 +5,7 @@ import Sidebar from '../common/Sidebar';
 import IntelWelcomeCard from './IntelWelcomeCard';
 import PageHeader from '../common/PageHeader';
 import { TransactionHistoryPage } from './TransactionHistoryPage';
+
 class Intelligence extends Component {
     constructor(props) {
         super(props);
@@ -16,17 +17,17 @@ class Intelligence extends Component {
     render() {
         return (
             <div className="intelligence-page-section">
-              {/* <Sidebar ownerName=""/> */}
-              <div className='intelligence-section page'>
-                {/* <PageHeader
+                {/* <Sidebar ownerName=""/> */}
+                <div className='intelligence-section page'>
+                    {/* <PageHeader
                     title="Intelligence"
                     subTitle="Automated and personalized financial intelligence"
                 /> */}
-                {/* <IntelWelcomeCard /> */}
-                <TransactionHistoryPage />
-              </div>
+                    {/* <IntelWelcomeCard /> */}
+                    <TransactionHistoryPage/>
+                </div>
             </div>
-            
+
         )
     }
 }
