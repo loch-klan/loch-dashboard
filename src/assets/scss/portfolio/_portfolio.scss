@@ -104,9 +104,11 @@
                 .chart-x-selection {
                     .x-axis-selection-date {
                         position: absolute;
-                        right: 4rem;
-                        bottom: 1.2rem;
+                        right: 0rem;
+                        bottom: 1.3rem;
                         border: none;
+                        outline:none;
+                        padding-left:1.5rem;
                     }
 
                     .y-axis-selection-currency {
@@ -117,7 +119,9 @@
                         // top: 1.7rem;
                         top: 14.5rem;
                         border: none;
+                        outline:none;
                     }
+                    
                 }
                 .coin-badges{
                     .dropdown{

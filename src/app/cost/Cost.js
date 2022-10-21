@@ -44,8 +44,8 @@ class Cost extends Component {
             marginBottom = 'm-b-32'
             showFooter = {true}
             showBadges = {true}
-            height={"400px"}
-            width={"824px"}
+            height={420}
+            width={824}
           />
 
           {/* <BarGraphSection

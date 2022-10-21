@@ -2,7 +2,8 @@
    const labels = ["AAVE" , "Binance" , "Kraken" ,"Gemini","Coinbase","Compound","Convex","Curve","FTX","Lido","MakerDao","Pancake Swap"]
 
     const options = {
-        responsive:true,
+        responsive:false,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 display:false

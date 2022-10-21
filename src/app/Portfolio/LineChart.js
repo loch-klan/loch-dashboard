@@ -76,8 +76,13 @@ class LineChart extends BaseReactComponent {
             legend: {
                 align: 'right',
                 verticalAlign: 'top',
-                fontFamily:"inter-medium",
-                fontSize:"10px"
+                itemStyle : {
+                    fontFamily:"Inter-SemiBold",
+                    fontSize:"10px",
+                    color:"#636467",
+                    fontWeight:"600" ,
+                    lineHeight:"12px"
+                }
             },
             tooltip: {
                 useHTML: true,
@@ -169,7 +174,7 @@ class LineChart extends BaseReactComponent {
                         handleFunction={this.handleFunction}
                         
                     />
-                    <div className='chart-x-selection'>
+                    {/* <div className='chart-x-selection'>
                         <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 y-axis-selection-currency' >
                             <option className=''> $ USD</option>
                             <option className=''> ₫ VND</option>
@@ -179,7 +184,7 @@ class LineChart extends BaseReactComponent {
                             <option className=''> Ksh KES</option>
 
                         </select>
-                    </div>
+                    </div> */}
                     <HighchartsReact
                         highcharts={Highcharts}
                         options={options}

@@ -59,7 +59,7 @@ class Portfolio extends BaseReactComponent {
         // Check if the coin rate api values are changed
         if (this.props.portfolioState.coinRateList !== prevProps.portfolioState.coinRateList) {
             if (this.state && this.state.userWalletList && this.state.userWalletList.length > 0) {
-                console.log("ComponentdidUpdate")
+                // console.log("ComponentdidUpdate")
                 // Resetting the user wallet list, total and chain wallet
                 this.props.settingDefaultValues();
                 // Loops on coins to fetch details of each coin which exist in wallet
@@ -355,7 +355,7 @@ class Portfolio extends BaseReactComponent {
                                     coinLists = {this.props.OnboardingState.coinsLists}
                                 />
                             </div>
-                            <div className='m-b-32 page graph-table-section'>
+                            {/* <div className='m-b-32 page graph-table-section'>
                                 <div className='m-r-16 section-table'>
                                     <TransactionTable
                                         title ="Transaction History"
@@ -375,7 +375,7 @@ class Portfolio extends BaseReactComponent {
                                         height={"100%"}
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 }

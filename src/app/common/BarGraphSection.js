@@ -92,14 +92,14 @@ class BarGraphSection extends Component {
                 :
                 ""
                 }
-
+                <div>
                 <Bar
-                    options={this.state.options}
-                    data={this.state.data}
                     width={this.props.width} // 824
                     height={this.props.height} //400
+                    options={this.state.options}
+                    data={this.state.data}
                 />
-                
+                </div>
                 {this.state.showFooter ? 
                 <BarGraphFooter
                     handleFooterClick={this.handleFooter}
