@@ -1,73 +1,54 @@
 .profile-page-section {
     display: flex;
-
+    .profile-section{
+        margin-top: 8rem;
     .profile-form-section {
-        // background-color: black;
-        padding-left: 13rem;
-        padding-top: 4rem;
-        padding-right: 13rem;
+        margin-bottom: 4rem;
         width:100%;
-        .title {
-            line-height: 20px;
-            font-weight: 500;
-            margin-bottom: 1.2rem;
-        }
-
-        p {
-            line-height: 20px;
-            margin-bottom: 3.2rem;
-            color: $grey-ADA;
-            line-height: 20px;
-        }
-
         .profile-form {
 
             background-color: $secondary;
             padding: 3.2rem;
             box-shadow: 0px 4px 6px -4px rgba(24, 39, 75, 0.12), 0px 8px 8px -4px rgba(24, 39, 75, 0.08);
             border-radius: 1.6rem;
-            // width:100%;
             .form-title {
                 display: flex;
                 align-items: center;
                 margin-bottom: 2rem;
-
-                p {
-                    margin-bottom: 0px;
-                    color: $black-000;
-                    font-size: 1.6rem;
-                    margin-left: 1.2rem;
-                }
             }
-
             .form {
-
-                .row{
-                    margin-bottom: 2.4rem;
-                }
                 .form-group {
                     label {
-                        font-family:Inter-Medium;
-                        line-height: 20px;
-                        font-size: 1.3rem;
-                        color: $grey-313;
-
+                        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+                        margin-bottom: 1.2rem;
                         span {
                             display: none;
                         }
                     }
+                    .form-control{
+                        padding: 1.2rem 1.6rem;
+                        min-height: 4.3rem;
+                    }
+                    .form-control:hover{
+                        border:0.1rem solid $black-191;
+                    }
+                    .is-valid{
+                        box-shadow: 0 0 10px #d3d3d3;
+                    }
+                    
                 }
 
                 .submit-button {
-                    color: $black-191;
-                    // margin-bottom: 3.2rem;
+                    padding: 1.8rem 2.8rem;
                     border: none;
-                    font-size:1.4rem;
-                    font-family: Inter-SemiBold;
-                    line-height: 24px;
+                    border-radius: 0.8rem;
+                    background-color: $grey-E5E;
+                }
+                .submit-button:hover{
+                    background-color: $black-000;
                 }
             }
         }
     }
-
+}
 }

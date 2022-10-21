@@ -37,13 +37,14 @@ class ProfileForm extends BaseReactComponent{
             <div className='profile-form'>
 
                 <div className='form-title'>
-                    <Image src={profileInfoIcon} />
-                    <p className='inter-display-semi-bold '>Basic Information</p>
+                    <Image src={profileInfoIcon} className="m-r-12" />
+                    <p className='inter-display-semi-bold f-s-16 lh-19'>Basic Information</p>
                 </div>
                 <div className='form'>
                     <Form onValidSubmit={this.onValidSubmit} >
+                        <div className="m-b-13">
                         <Row>
-                            <Col md={4}>
+                            <Col md={4} className="p-r-0">
                                 <FormElement
                                     valueLink={this.linkState(this, "firstName")}
                                     label="First Name"
@@ -61,8 +62,6 @@ class ProfileForm extends BaseReactComponent{
                                             placeholder: "John",
                                         }
                                     }}
-
-
                                 />
                             </Col>
                             <Col md={4}>
@@ -86,6 +85,8 @@ class ProfileForm extends BaseReactComponent{
                                 />
                             </Col>
                         </Row>
+                        </div>
+                        <div className="m-b-13">
                         <Row>
                             <Col md={8}>
                                 <FormElement
@@ -111,8 +112,10 @@ class ProfileForm extends BaseReactComponent{
                                 />
                             </Col>
                         </Row>
+                        </div>
+                        <div className="m-b-13">
                         <Row>
-                            <Col md={4}>
+                            <Col md={4} className="p-r-0">
                                 <FormElement
                                     valueLink={this.linkState(this, "mobileNumber")}
                                     label="Mobile Number"
@@ -136,8 +139,9 @@ class ProfileForm extends BaseReactComponent{
                                 />
                             </Col>
                         </Row>
+                        </div>
 
-                        <Button className="grey-btn submit-button" type="submit">
+                        <Button className="inter-display-semi-bold f-s-14 lh-24 black-191  submit-button" type="submit">
                             Save changes
                         </Button>
 
