@@ -220,6 +220,12 @@
                     //   box-shadow: inherit;
                     //   border-color: inherit;
                     // }
+                    .spinner-chip-container{
+                      margin: 0;
+                      .spinner{
+                        margin: 0 auto;
+                      }
+                    }
                 }
 
                 .preview {

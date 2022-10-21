@@ -21,8 +21,8 @@ class Cost extends Component {
 
   componentDidMount() {
       this.props.getAllCoins()
-  }  
-  
+  }
+
 
   render() {
     return (
@@ -48,7 +48,7 @@ class Cost extends Component {
             width={"824px"}
           />
 
-          <BarGraphSection
+          {/* <BarGraphSection
             headerTitle="Counterparty Fees Over Time"
             headerSubTitle="Understand how much your counterparty charges you"
             data={this.state.durationgraphdata.data}
@@ -67,7 +67,7 @@ class Cost extends Component {
             columnList={TableData.columnList}
             title="Average Cost Basis"
             subTitle="Understand your average entry price"
-          />
+          /> */}
         </div>
       </div>
 
