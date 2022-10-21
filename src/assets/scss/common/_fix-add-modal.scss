@@ -158,6 +158,12 @@
                     }
                     button {
                         border: none;
+                        .spinner-chip-container{
+                          margin: 0;
+                          .spinner{
+                            margin: 0 auto;
+                          }
+                        }
                     }
 
                     .fix-btn {
@@ -172,6 +178,7 @@
                     .activebtn{
                         background-color: $black-191;
                     }
+
                 }
 
                 .footer {
