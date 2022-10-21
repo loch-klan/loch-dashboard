@@ -57,7 +57,7 @@ export const getAllWalletApi = (ctx) => {
           if (a.name > b.name) {
             return 1;
           }
-          } 
+          }
           return 0;
         });
         ctx.setState({
@@ -80,7 +80,16 @@ export const updateWalletApi = (ctx, data) => {
         // console.log(res.data.message)
         ctx.props.onHide()
         ctx.props.makeApiCall()
-        toast.success(res.data.message);
+        toast.success(
+        <div className="custom-toast-msg">
+          <div>
+          {res.data.message}
+          </div>
+          <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+          You’ve sucessfully updated your wallet
+          </div>
+        </div>
+        );
       } else {
         toast.error(res.data.message || "Something Went Wrong")
       }
