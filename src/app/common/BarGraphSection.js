@@ -94,8 +94,8 @@ class BarGraphSection extends Component {
                 }
                 <div>
                 <Bar
-                    // width={this.props.width} // 824
-                    // height={this.props.height} //400
+                    width={this.props.width} // 824
+                    height={this.props.height} //400
                     options={this.state.options}
                     data={this.state.data}
                 />

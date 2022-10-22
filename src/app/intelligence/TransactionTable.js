@@ -22,6 +22,7 @@ function TransactionTable(props) {
                 className="transaction-table"
                 tableData={props.tableData}
                 columnList={props.columnList}
+                headerHeight={props.headerHeight}
             />
 
         </div>

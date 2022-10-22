@@ -8,20 +8,23 @@
 
     .portfolio-section {
         position: relative;
-        .fix-div{
+
+        .fix-div {
             display: flex;
-            border-top:0.1rem solid $grey-969;
+            border-top: 0.1rem solid $grey-969;
             padding: 2rem 0rem;
             align-items: center;
             position: absolute;
             bottom: 1rem;
             right: 13.2rem;
-            .secondary-btn{
+
+            .secondary-btn {
                 line-height: 1.9rem;
                 border: 0.15rem solid $black-191;
                 padding: 1.8rem 2.8rem;
             }
         }
+
         .welcome-card-section {
             margin: 8rem 0 2rem;
             padding: 4.8rem;
@@ -53,19 +56,22 @@
                         button {
                             padding: 1.65rem 2.8rem;
                         }
-                        .primary-btn{
-                          &:hover:not([disabled]){
-                            border-color: $secondary;
-                            box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
-                            color: $black-191;
-                            background-color: $secondary;
-                          }
+
+                        .primary-btn {
+                            &:hover:not([disabled]) {
+                                border-color: $secondary;
+                                box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                                color: $black-191;
+                                background-color: $secondary;
+                            }
                         }
+
                         .secondary-btn {
                             margin-right: 2.4rem;
-                            &:hover{
-                              background-color: $black-191;
-                              color: $secondary;
+
+                            &:hover {
+                                background-color: $black-191;
+                                color: $secondary;
                             }
                         }
                     }
@@ -89,26 +95,29 @@
                         background: $green-44F;
                         border-radius: 0.812rem;
                         box-shadow: none;
+
                         img {
                             margin-right: 0.4rem;
                         }
                     }
-                    .downfall{
-                        background-color:$red-FFE ;
+
+                    .downfall {
+                        background-color: $red-FFE ;
                     }
                 }
             }
 
             .line-chart-section {
                 position: relative;
+
                 .chart-x-selection {
                     .x-axis-selection-date {
                         position: absolute;
                         right: 0rem;
                         bottom: 1.3rem;
                         border: none;
-                        outline:none;
-                        padding-left:1.5rem;
+                        outline: none;
+                        padding-left: 1.5rem;
                     }
 
                     .y-axis-selection-currency {
@@ -119,17 +128,21 @@
                         // top: 1.7rem;
                         top: 14.5rem;
                         border: none;
-                        outline:none;
+                        outline: none;
                     }
 
                 }
-                .coin-badges{
-                    .dropdown{
-                        .dropdown-toggle , .dropdown-toggle:focus{
+
+                .coin-badges {
+                    .dropdown {
+
+                        .dropdown-toggle,
+                        .dropdown-toggle:focus {
                             box-shadow: -2.5rem 0rem 2.4rem 2rem $secondary !important;
                         }
                     }
                 }
+
                 // .highcharts-container {
                 //     svg{
                 //         .highcharts-legend {
@@ -174,6 +187,7 @@
         flex-direction: column;
         padding-top: 2rem;
         padding-bottom: 10rem;
+
         .overview-heading {
             width: 100%;
         }
@@ -186,9 +200,10 @@
 
             .custom-highchart,
             .highcharts-container,
-            .highcharts-root{
-              overflow: visible !important;
+            .highcharts-root {
+                overflow: visible !important;
             }
+
             .pie-chart-middle-text-container {
                 text-align: center;
 
@@ -202,41 +217,61 @@
             }
         }
     }
-    .graph-table-section{
+
+    .graph-table-section {
         display: flex;
 
-        .section-table,.section-chart{
-        background-color: $secondary;
-        border-radius: 1.2rem;
-        box-shadow: 0rem 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12), 0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
+        .section-table,
+        .section-chart {
+            background-color: $secondary;
+            border-radius: 1.2rem;
+            box-shadow: 0px 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12), 0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
         }
-        .section-table{
-            width: 50%;
-            // padding: 3.6rem 2rem 1.8rem 2rem;
-            .transaction-table-section{
-                .graph-header{
-                    padding:3.6rem 0rem 0rem 3.2rem;
 
-                }
-                .table-wrapper{
-                    .ReactVirtualized__Table__headerRow{
-                        padding-left: 2rem;
-                    }
-                    .ReactVirtualized__Table__Grid{
-                        padding-left: 2rem;
+        .section-table {
+            width: 50%;
+
+            .transaction-table-section {
+                .graph-header {
+                    p {
+                        margin-bottom: 0.3rem;
                     }
                 }
             }
         }
-        .section-chart{
+
+        .section-chart {
             width: 50%;
+
             .bar-graph-section {
-                padding:3.2rem 2.4rem 3rem 1.6rem;
-                .graph-header{
+                padding: 3.2rem 2.4rem 3rem 1.6rem;
+                width: 44.3rem;
+                box-shadow: none;
+
+                .graph-header {
                     padding-left: 1.6rem;
                 }
             }
         }
+    }
+
+    .portfolio-cost-table-section {
+
+        .portfolio-cost-table {
+            background-color: $secondary;
+            border-radius: 1.2rem;
+            box-shadow: 0px 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12), 0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
+            padding-bottom: 1.6rem;
+            .transaction-table-section{
+                .ReactVirtualized__Table__headerRow{
+                    .ReactVirtualized__Table__headerColumn{
+                        text-align: left;
+                        padding-left: 2.5rem ;
+                    }
+                }
+            }
+        }
+
     }
 }
 

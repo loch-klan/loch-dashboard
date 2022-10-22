@@ -18,7 +18,7 @@ class CustomTable extends BaseReactComponent {
 
   
   render() {
-    const { istopPagination = false, tableData, className = "", columnList = [], notFoundImage = notFoundDefault, moduleName, message = "", isButton, buttonText, linkUrl, linkText, currentPage = 1, totalPages, history, location, pageSize = false, pageSizeOptions = [], handlePageSize = "" } = this.props;
+    const { istopPagination = false, tableData, className = "", columnList = [], notFoundImage = notFoundDefault, moduleName, message = "", isButton, buttonText, linkUrl, linkText, currentPage = 1, totalPages, history, location, pageSize = false, pageSizeOptions = [], handlePageSize = "" ,headerHeight} = this.props;
     return (
       <div className="table-wrapper">
         <div className="header-navigation">
@@ -73,7 +73,7 @@ class CustomTable extends BaseReactComponent {
                 <Table
                   width={width}
                   height={(60 * (tableData.length + 1)) - 10}
-                  headerHeight={80}
+                  headerHeight={headerHeight ? headerHeight :80}
                   rowHeight={60}
                   rowCount={tableData.length}
                   rowGetter={({ index }) => tableData[index]}

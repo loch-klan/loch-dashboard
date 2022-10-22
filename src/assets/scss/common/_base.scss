@@ -138,6 +138,7 @@ body {
 .m-t-04{
   margin-top: 0.4rem;
 }
+
 .m-t-5 {
   margin-top: 5rem;
 }
@@ -1313,6 +1314,7 @@ form {
   }
 }
 
+//  coin chip is common chip component used in wallet and in tables 
 .coin-chip {
   display: flex;
   border-radius: 0.6rem;
@@ -1325,88 +1327,28 @@ form {
     width: 2.6rem;
     height: 2.6rem;
   }
+
   .coin-percent {
     color: $grey-313;
     padding: 0.5rem 0.6rem;
   }
 }
 
-.average-cost-basic-table {
-  .ReactVirtualized__Table__headerRow {
-    height: auto;
-    // padding: 2.4rem;
-    border-bottom: 0.1rem solid $grey-E5E;
-
-    .ReactVirtualized__Table__headerColumn {
-      margin: 0rem;
-      text-align: center;
-
-      .ReactVirtualized__Table__headerTruncatedText {
-        white-space: normal;
-        overflow: visible;
-        line-height: 1.6rem;
-        color: $grey-4F4;
-        margin: 0rem;
-      }
-    }
-  }
-
-  .ReactVirtualized__Table__Grid {
-    border-radius: 1.2rem;
-    padding: 0rem 2.4rem 3.1rem 2.4rem;
-
-    .ReactVirtualized__Grid__innerScrollContainer {
-      .ReactVirtualized__Table__row {
-        border: none;
-
-        .ReactVirtualized__Table__rowColumn {
-          font-size: 1.3rem;
-          line-height: 1.6rem;
-          color: $grey-313;
-          text-align: center;
-          margin: 0rem;
-        }
-
-        .cost-common {
-          background: rgba(229, 229, 230, 0.5);
-          border-radius: 0.4rem;
-          padding: 0.6rem;
-          width: max-content;
-          margin: 0 auto;
-        }
-
-        .gainLoss {
-
-          border-radius: 0.8rem;
-          padding: 0.8rem;
-          display: flex;
-          width: max-content;
-
-          img {
-            margin-right: 0.8rem;
-          }
-        }
-
-        .gain {
-          background: rgba(208, 252, 234, 0.5);
-        }
-
-        .loss {
-          background: rgba(250, 217, 217, 0.5);
-        }
-      }
-    }
-  }
-}
-
 .transaction-table-section {
+  .graph-header {
+    padding: 3.6rem 0rem 0rem 3.2rem;
+    p{
+      margin-bottom: 0.3rem;
+    }
+  }
+
   .ReactVirtualized__Table__row {
     border: none;
   }
 
   .ReactVirtualized__Table__headerRow {
     height: auto;
-    // padding: 2.4rem;
+    // padding-left: 2.5rem;
     border-bottom: 0.1rem solid $grey-E5E;
 
     .ReactVirtualized__Table__headerColumn {
@@ -1425,7 +1367,7 @@ form {
 
   .ReactVirtualized__Table__Grid {
     border-radius: 1.2rem;
-
+    // padding-left: 2.5rem;
     .ReactVirtualized__Grid__innerScrollContainer {
       .ReactVirtualized__Table__row {
         border: none;
@@ -1477,6 +1419,34 @@ form {
 
           .mint {
             background-color: $green-DEF;
+          }
+          .coin-chip{
+            margin: 0 auto;
+          }
+          .cost-common {
+            background: rgba(229, 229, 230, 0.5);
+            border-radius: 0.4rem;
+            padding: 0.6rem;
+            width: max-content;
+            margin: 0 auto;
+          }
+
+          .gainLoss {
+            border-radius: 0.8rem;
+            padding: 0.8rem;
+            display: flex;
+            width: max-content;
+            margin: 0 auto ;
+            img {
+              margin-right: 0.8rem;
+            }
+          }
+          .gain {
+            background: rgba(208, 252, 234, 0.5);
+          }
+  
+          .loss {
+            background: rgba(250, 217, 217, 0.5);
           }
         }
       }

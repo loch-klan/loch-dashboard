@@ -3,10 +3,7 @@ import { Button, Form, Image } from 'react-bootstrap';
 import PageHeader from '../common/PageHeader';
 import DropDown from './../common/DropDown';
 import searchIcon from '../../assets/images/icons/search-icon.svg'
-import TableData from './DummyTableData.js'
-import CommonTable from '../common/CommonTable';
 import { CommonPagination } from '../common/CommonPagination';
-import CustomTable from './../../utils/commonComponent/CustomTable';
 import TransactionTable from './TransactionTable';
 import Metamask from '../../assets/images/MetamaskIcon.svg'
 import Ethereum from '../../assets/images/icons/ether-coin.svg'
@@ -25,48 +22,48 @@ export const TransactionHistoryPage = (props) => {
 
   const tableData = [
     {
-        Time: "4/22",
-        From: Metamask,
-        To: Metamask,
-        Asset: Ethereum,
-        Amount: 0,
-        USDValueThen: 0,
-        USDValueToday: 0,
-        USDTransactionFee: 1.75,
-        Method: "Burn"
+        time: "4/22",
+        from: Metamask,
+        to: Metamask,
+        asset: Ethereum,
+        amount: 0,
+        usdValueThen: 0,
+        usdValueToday: 0,
+        usdTransactionFee: 1.75,
+        method: "Burn"
     },
     {
-        Time: "4/22",
-        From: Metamask,
-        To: Metamask,
-        Asset: Ethereum,
-        Amount: 0,
-        USDValueThen: 0,
-        USDValueToday: 0,
-        USDTransactionFee: 2.56,
-        Method: "Mint"
+        time: "4/22",
+        from: Metamask,
+        to: Metamask,
+        asset: Ethereum,
+        amount: 0,
+        usdValueThen: 0,
+        usdValueToday: 0,
+        usdTransactionFee: 2.56,
+        method: "Mint"
     },
     {
-        Time: "4/22",
-        From: Metamask,
-        To: Metamask,
-        Asset: Ethereum,
-        Amount: 0,
-        USDValueThen: 0,
-        USDValueToday: 0,
-        USDTransactionFee: 2.56,
-        Method: "Transfer"
+        time: "4/22",
+        from: Metamask,
+        to: Metamask,
+        asset: Ethereum,
+        amount: 0,
+        usdValueThen: 0,
+        usdValueToday: 0,
+        usdTransactionFee: 2.56,
+        method: "Transfer"
     },
     {
-        Time: "4/22",
-        From: Metamask,
-        To: Metamask,
-        Asset: Ethereum,
-        Amount: 0,
-        USDValueThen: 0,
-        USDValueToday: 0,
-        USDTransactionFee: 2.56,
-        Method: "Commit"
+        time: "4/22",
+        from: Metamask,
+        to: Metamask,
+        asset: Ethereum,
+        amount: 0,
+        usdValueThen: 0,
+        usdValueToday: 0,
+        usdTransactionFee: 2.56,
+        method: "Commit"
     },
 
 ]
@@ -74,22 +71,22 @@ export const TransactionHistoryPage = (props) => {
 const columnList = [
     {
         labelName: "Time",
-        dataKey: "Time",
+        dataKey: "time",
         coumnWidth: 90,
         isCell: true,
         cell: (rowData, dataKey) => {
-            if (dataKey === "Time") {
-                return rowData.Time
+            if (dataKey === "time") {
+                return rowData.time
             }
         }
     },
     {
         labelName: "From",
-        dataKey: "From",
+        dataKey: "from",
         coumnWidth: 90,
         isCell: true,
         cell: (rowData, dataKey) => {
-            if (dataKey === "From") {
+            if (dataKey === "from") {
                 return (
                     <CustomOverlay
                         position="top"
@@ -98,7 +95,7 @@ const columnList = [
                         isText={true}
                         text={"0xF977814e90dA44bFA03b6295A0616a897441aceC"}
                     >
-                        <Image src={rowData.From} className="history-table-icon" />
+                        <Image src={rowData.from} className="history-table-icon" />
                     </CustomOverlay>
                 )
             }
@@ -106,11 +103,11 @@ const columnList = [
     },
     {
         labelName: "To",
-        dataKey: "To",
+        dataKey: "to",
         coumnWidth: 90,
         isCell: true,
         cell: (rowData, dataKey) => {
-            if (dataKey === "To") {
+            if (dataKey === "to") {
                 return (
                     <CustomOverlay
                         position="top"
@@ -119,7 +116,7 @@ const columnList = [
                         isText={true}
                         text={"0xF977814e90dA44bFA03b6295A0616a897441aceC"}
                     >
-                        <Image src={rowData.To} className="history-table-icon" />
+                        <Image src={rowData.to} className="history-table-icon" />
                     </CustomOverlay>
                 )
             }
@@ -127,83 +124,83 @@ const columnList = [
     },
     {
         labelName: "Asset",
-        dataKey: "Asset",
+        dataKey: "asset",
         coumnWidth: 130,
         isCell: true,
         cell: (rowData, dataKey) => {
-            if (dataKey === "Asset") {
-                return (<div className='inter-display-medium f-s-13 lh-16 history-table-coin-icon'><Image src={rowData.Asset} /> Ethereum</div>)
+            if (dataKey === "asset") {
+                return (<div className='inter-display-medium f-s-13 lh-16 history-table-coin-icon'><Image src={rowData.asset} /> Ethereum</div>)
             }
         }
     },
     {
         labelName: "Amount",
-        dataKey: "Amount",
+        dataKey: "amount",
         coumnWidth: 100,
         isCell: true,
         cell: (rowData, dataKey) => {
-            if (dataKey === "Amount") {
-                return rowData.Amount
+            if (dataKey === "amount") {
+                return rowData.amount
             }
         }
     },
     {
         labelName: "USD Value Then",
-        dataKey: "USDValueThen",
+        dataKey: "usdValueThen",
         coumnWidth: 100,
         isCell: true,
         cell: (rowData, dataKey) => {
-            if (dataKey === "USDValueThen") {
-                return rowData.USDValueThen
+            if (dataKey === "usdValueThen") {
+                return rowData.usdValueThen
             }
         }
     },
     {
-        labelName: "USD Value Today",
-        dataKey: "USDValueToday",
+        labelName: "USD Value today",
+        dataKey: "usdValueToday",
         coumnWidth: 100,
         isCell: true,
         cell: (rowData, dataKey) => {
-            if (dataKey === "USDValueToday") {
-                return rowData.USDValueToday
+            if (dataKey === "usdValueToday") {
+                return rowData.usdValueToday
             }
         }
     },
     {
         labelName: "USD Transaction Fee",
-        dataKey: "USDTransactionFee",
+        dataKey: "usdTransactionFee",
         coumnWidth: 100,
         isCell: true,
         cell: (rowData, dataKey) => {
-            if (dataKey === "USDTransactionFee") {
-                return rowData.USDTransactionFee
+            if (dataKey === "usdTransactionFee") {
+                return rowData.usdTransactionFee
             }
         }
     },
     {
         labelName: "Method",
-        dataKey: "Method",
+        dataKey: "method",
         coumnWidth: 100,
         isCell: true,
         cell: (rowData, dataKey) => {
-            if (dataKey === "Method") {
+            if (dataKey === "method") {
                 return (
                     <div
                         className={
-                            `inter-display-medium f-s-13 lh-16 history-table-method 
-                            ${rowData.Method === "Burn" ? "burn"
+                            `inter-display-medium f-s-13 lh-16 black-191 history-table-method 
+                            ${rowData.method === "Burn" ? "burn"
                                 :
-                                rowData.Method === "Transfer" ? "transfer"
+                                rowData.method === "Transfer" ? "transfer"
                                 :
-                                rowData.Method === "Mint" ? "mint"
+                                rowData.method === "Mint" ? "mint"
                                 :
-                                rowData.Method === "Commit" ? "commit"
+                                rowData.method === "Commit" ? "commit"
                                 :
                                 ""
                             }`
                         }
                     >
-                        {rowData.Method}
+                        {rowData.method}
                     </div>
                 )
             }
