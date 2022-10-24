@@ -6,7 +6,7 @@ import PieChart from './PieChart';
 import LineChart from './LineChart';
 import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
-import { Button ,Image} from 'react-bootstrap';
+import { Button, Image, Row, Col} from 'react-bootstrap';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
 import { getAllCoins } from '../onboarding/Api.js'
@@ -81,14 +81,14 @@ class Portfolio extends BaseReactComponent {
                         });
                     }
                 })
-            } else{
-              console.log('Heyyy');
-              this.props.settingDefaultValues();
+            } else {
+                // console.log('Heyyy');
+                this.props.settingDefaultValues();
             }
         }
     }
 
-    
+
     render() {
         const tableData = [
             {
@@ -140,12 +140,13 @@ class Portfolio extends BaseReactComponent {
                 method: "Commit"
             }
         ]
-        
+
         const columnList = [
             {
                 labelName: "Time",
                 dataKey: "time",
-                coumnWidth: 73,
+                // coumnWidth: 73,
+                coumnWidth: 0.12,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
@@ -156,7 +157,8 @@ class Portfolio extends BaseReactComponent {
             {
                 labelName: "From",
                 dataKey: "from",
-                coumnWidth: 61,
+                // coumnWidth: 61,
+                coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "from") {
@@ -177,7 +179,7 @@ class Portfolio extends BaseReactComponent {
             {
                 labelName: "To",
                 dataKey: "to",
-                coumnWidth: 60,
+                coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "to") {
@@ -198,14 +200,14 @@ class Portfolio extends BaseReactComponent {
             {
                 labelName: "Asset",
                 dataKey: "asset",
-                coumnWidth: 81,
+                coumnWidth: 0.25,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "asset") {
                         return (
                             <CoinChip
-                            coin_img_src = {rowData.asset}
-                            coin_code = "ETH"
+                                coin_img_src={rowData.asset}
+                                coin_code="ETH"
                             />
                         )
                     }
@@ -214,7 +216,7 @@ class Portfolio extends BaseReactComponent {
             {
                 labelName: "USD Value",
                 dataKey: "usdValue",
-                coumnWidth: 80,
+                coumnWidth: 0.12,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "usdValue") {
@@ -225,7 +227,7 @@ class Portfolio extends BaseReactComponent {
             {
                 labelName: "Method",
                 dataKey: "method",
-                coumnWidth: 118,
+                coumnWidth: 0.25,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "method") {
@@ -236,12 +238,12 @@ class Portfolio extends BaseReactComponent {
                                     ${rowData.method === "Burn" ? "burn"
                                         :
                                         rowData.method === "Transfer" ? "transfer"
-                                        :
-                                        rowData.method === "Mint" ? "mint"
-                                        :
-                                        rowData.method === "Commit" ? "commit"
-                                        :
-                                        ""
+                                            :
+                                            rowData.method === "Mint" ? "mint"
+                                                :
+                                                rowData.method === "Commit" ? "commit"
+                                                    :
+                                                    ""
                                     }`
                                 }
                             >
@@ -253,52 +255,52 @@ class Portfolio extends BaseReactComponent {
             }
         ]
 
-        const labels = ["AAVE" , "Binance" , "Kraken" ,"Gemini","Coinbase"]
+        const labels = ["AAVE", "Binance", "Kraken", "Gemini", "Coinbase"]
 
         const options = {
-            responsive:true,
+            responsive: true,
             maintainAspectRatio:false,
             plugins: {
                 legend: {
-                    display:false
+                    display: false
                 },
             },
-            scales:{
-                y:{
-                    min:0,
-                    max:40000,
-                    
-                    ticks:{
-                        stepSize:8000,
-                        padding:8,
-                        size:12,
-                        lineHeight:20,
-                        family:"Helvetica Neue",
-                        weight:400,
+            scales: {
+                y: {
+                    min: 0,
+                    max: 40000,
+
+                    ticks: {
+                        stepSize: 8000,
+                        padding: 8,
+                        size: 12,
+                        lineHeight: 20,
+                        family: "Helvetica Neue",
+                        weight: 400,
                         color: "#B0B1B3"
                     },
-                    grid:{
-                        drawBorder:false,
-                        display:true,
-                        borderDash: ctx=>ctx.index == 0 ? [0] : [4],
-                        drawTicks:false
+                    grid: {
+                        drawBorder: false,
+                        display: true,
+                        borderDash: ctx => ctx.index == 0 ? [0] : [4],
+                        drawTicks: false
                     }
                 },
-                x:{
-                    ticks:{
-                        font:"Inter-SemiBold",
-                        size:10,
-                        lineHeight:12,
-                        weight:600,
-                        color:"#86909C",
-                        maxRotation:0,
-                        minRotation:0,
+                x: {
+                    ticks: {
+                        font: "Inter-SemiBold",
+                        size: 10,
+                        lineHeight: 12,
+                        weight: 600,
+                        color: "#86909C",
+                        maxRotation: 0,
+                        minRotation: 0,
 
 
                     },
-                    grid:{
-                        display:false,
-                        borderWidth:1,
+                    grid: {
+                        display: false,
+                        borderWidth: 1,
                     }
                 }
             }
@@ -324,126 +326,133 @@ class Portfolio extends BaseReactComponent {
                         "#5454BF",
                     ],
                     borderWidth: 2,
-                    borderRadius:{
-                        topLeft:6,
-                        topRight:6
+                    borderRadius: {
+                        topLeft: 6,
+                        topRight: 6
                     },
-                    borderSkipped:false,
-                    
+                    borderSkipped: false,
+
                 }
             ]
         }
         const costColumnData = [
             {
-              labelName: "Asset",
-              dataKey: "Asset",
-              coumnWidth: 118,
-              isCell: true,
-              cell: (rowData, dataKey) => {
-                if (dataKey === "Asset") {
-                return (
-                  <CoinChip
-                    coin_img_src={rowData.Asset}
-                    coin_code="ETH"
-                  />
-                )
+                labelName: "Asset",
+                dataKey: "Asset",
+                coumnWidth: 0.2,
+                // coumnWidth: 118,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "Asset") {
+                        return (
+                            <CoinChip
+                                coin_img_src={rowData.Asset}
+                                coin_code="ETH"
+                            />
+                        )
+                    }
                 }
-              }
             }, {
-              labelName: "Average Cost Price",
-              dataKey: "AverageCostPrice",
-              coumnWidth: 153,
-              isCell: true,
-              cell: (rowData, dataKey) => {
-                if (dataKey === "AverageCostPrice") {
-                return <div className='inter-display-medium f-s-13 lh-16 grey-313 cost-common'>{rowData.AverageCostPrice}</div>
+                labelName: "Average Cost Price",
+                dataKey: "AverageCostPrice",
+                // coumnWidth: 153,
+                coumnWidth: 0.2,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "AverageCostPrice") {
+                        return <div className='inter-display-medium f-s-13 lh-16 grey-313 cost-common'>{rowData.AverageCostPrice}</div>
+                    }
                 }
-              }
             }, {
-              labelName: "Current Price",
-              dataKey: "CurrentPrice",
-              coumnWidth: 128,
-              isCell: true,
-              cell: (rowData, dataKey) => {
-                if (dataKey === "CurrentPrice") {
-                return <div className='inter-display-medium f-s-13 lh-16 grey-313 cost-common'>{rowData.CurrentPrice}</div>
+                labelName: "Current Price",
+                dataKey: "CurrentPrice",
+                // coumnWidth: 128,
+                coumnWidth: 0.2,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "CurrentPrice") {
+                        return <div className='inter-display-medium f-s-13 lh-16 grey-313 cost-common'>{rowData.CurrentPrice}</div>
+                    }
                 }
-              }
             }, {
-              labelName: "Amount",
-              dataKey: "Amount",
-              coumnWidth: 108,
-              isCell: true,
-              cell: (rowData, dataKey) => {
-                if (dataKey === "Amount") {
-                  return rowData.Amount
+                labelName: "Amount",
+                dataKey: "Amount",
+                // coumnWidth: 108,
+                coumnWidth: 0.2,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "Amount") {
+                        return rowData.Amount
+                    }
                 }
-              }
             }, {
-              labelName: "Cost Basis",
-              dataKey: "CostBasis",
-              coumnWidth: 100,
-              isCell: true,
-              cell: (rowData, dataKey) => {
-                if (dataKey === "CostBasis") {
-                  return rowData.CostBasis
+                labelName: "Cost Basis",
+                dataKey: "CostBasis",
+                // coumnWidth: 100,
+                coumnWidth: 0.2,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "CostBasis") {
+                        return rowData.CostBasis
+                    }
                 }
-              }
             }, {
-              labelName: "CurrentValue",
-              dataKey: "CurrentValue",
-              coumnWidth: 140,
-              isCell: true,
-              cell: (rowData, dataKey) => {
-                if (dataKey === "CurrentValue") {
-                  return rowData.CurrentValue
+                labelName: "CurrentValue",
+                dataKey: "CurrentValue",
+                // coumnWidth: 140,
+                coumnWidth: 0.2,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "CurrentValue") {
+                        return rowData.CurrentValue
+                    }
                 }
-              }
             }, {
-              labelName: "% Gain / Loss",
-              dataKey: "GainLoss",
-              coumnWidth: 128,
-              isCell: true,
-              cell: (rowData, dataKey) => {
-                if (dataKey === "GainLoss") {
-                  return (
-                  <div className={`gainLoss ${rowData.GainLoss.status === "loss" ? "loss" : "gain"}`}>
-                    <Image src={rowData.GainLoss.symbol} />
-                    <div className="inter-display-medium f-s-13 lh-16 grey-313">{rowData.GainLoss.value}</div>
-                  </div>)
+                labelName: "% Gain / Loss",
+                dataKey: "GainLoss",
+                // coumnWidth: 128,
+                coumnWidth: 0.25,
+                isCell: true,
+                cell: (rowData, dataKey) => {
+                    if (dataKey === "GainLoss") {
+                        return (
+                            <div className={`gainLoss ${rowData.GainLoss.status === "loss" ? "loss" : "gain"}`}>
+                                <Image src={rowData.GainLoss.symbol} />
+                                <div className="inter-display-medium f-s-13 lh-16 grey-313">{rowData.GainLoss.value}</div>
+                            </div>)
+                    }
                 }
-              }
             }]
         const costTableData = [
             {
-              Asset: Ethereum,
-              AverageCostPrice: "$800.00",
-              CurrentPrice: "$1,390.00",
-              Amount: 3.97,
-              CostBasis: 1.75,
-              CurrentValue: "$5,514.00",
-              GainLoss:{
-                  status: "gain",
-                  symbol: GainIcon,
-                // "42.45%",
-                value: "42.45%",
-              }
+                Asset: Ethereum,
+                AverageCostPrice: "$800.00",
+                CurrentPrice: "$1,390.00",
+                Amount: 3.97,
+                CostBasis: 1.75,
+                CurrentValue: "$5,514.00",
+                GainLoss: {
+                    status: "gain",
+                    symbol: GainIcon,
+                    // "42.45%",
+                    value: "42.45%",
+                }
             },
             {
-              Asset: Ethereum,
-              AverageCostPrice: "$25,000.00",
-              CurrentPrice: "$21,080.00",
-              Amount: 3.97,
-              CostBasis: 2.56,
-              CurrentValue: "$22,280.50",
-              GainLoss:{
-                  status: "loss",
-                  symbol: LossIcon,
-                // "-18.45%"
-                value: "-18.45%"
-              }
+                Asset: Ethereum,
+                AverageCostPrice: "$25,000.00",
+                CurrentPrice: "$21,080.00",
+                Amount: 3.97,
+                CostBasis: 2.56,
+                CurrentValue: "$22,280.50",
+                GainLoss: {
+                    status: "loss",
+                    symbol: LossIcon,
+                    // "-18.45%"
+                    value: "-18.45%"
+                }
             }
-          ]
+        ]
         return (
             <div>
                 {this.state.loader ? <Loading /> :
@@ -483,36 +492,42 @@ class Portfolio extends BaseReactComponent {
                                 />
                             </div>
                             <div className='m-b-32 page graph-table-section'>
-                                <div className='m-r-16 section-table'>
-                                    <TransactionTable
-                                        title ="Transaction History"
-                                        subTitle="In the last month"
-                                        tableData={tableData}
-                                        columnList={columnList}
-                                        headerHeight={60}
-                                    />
-                                </div>
-                                <div className='section-chart'>
-                                    <BarGraphSection
-                                        headerTitle = "Volume Traded by Counterparty"
-                                        headerSubTitle = "In the last month"
-                                        isArrow={true}
-                                        data={data}
-                                        options={options}
-                                        // width={440}
-                                        height={375}
-                                    />
-                                </div>
+                                    <Row>
+                                        <Col md={6}>
+                                            <div className='m-r-16 section-table'>
+                                                <TransactionTable
+                                                    title="Transaction History"
+                                                    subTitle="In the last month"
+                                                    tableData={tableData}
+                                                    columnList={columnList}
+                                                    headerHeight={60}
+                                                />
+                                            </div>
+                                        </Col>
+                                        <Col md={6}>
+                                            <div className='section-chart'>
+                                                <BarGraphSection
+                                                    headerTitle="Volume Traded by Counterparty"
+                                                    headerSubTitle="In the last month"
+                                                    isArrow={true}
+                                                    data={data}
+                                                    options={options}
+                                                    // width="100%"
+                                                    // height="100%"
+                                                />
+                                            </div>
+                                        </Col>
+                                    </Row>
                             </div>
                             <div className='m-b-40 portfolio-cost-table-section page'>
                                 <div className='portfolio-cost-table'>
-                                <TransactionTable 
-                                    title ="Average Cost Basis"
-                                    subTitle="Understand your average entry price"
-                                    tableData={costTableData}
-                                    columnList={costColumnData}
-                                    headerHeight={64}
-                                />
+                                    <TransactionTable
+                                        title="Average Cost Basis"
+                                        subTitle="Understand your average entry price"
+                                        tableData={costTableData}
+                                        columnList={costColumnData}
+                                        headerHeight={64}
+                                    />
                                 </div>
                             </div>
                         </div>

@@ -72,7 +72,8 @@ const columnList = [
     {
         labelName: "Time",
         dataKey: "time",
-        coumnWidth: 90,
+        // coumnWidth: 90,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey) => {
             if (dataKey === "time") {
@@ -83,7 +84,8 @@ const columnList = [
     {
         labelName: "From",
         dataKey: "from",
-        coumnWidth: 90,
+        // coumnWidth: 90,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
             if (dataKey === "from") {
@@ -104,7 +106,8 @@ const columnList = [
     {
         labelName: "To",
         dataKey: "to",
-        coumnWidth: 90,
+        // coumnWidth: 90,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
             if (dataKey === "to") {
@@ -125,7 +128,8 @@ const columnList = [
     {
         labelName: "Asset",
         dataKey: "asset",
-        coumnWidth: 130,
+        // coumnWidth: 130,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
             if (dataKey === "asset") {
@@ -136,7 +140,8 @@ const columnList = [
     {
         labelName: "Amount",
         dataKey: "amount",
-        coumnWidth: 100,
+        // coumnWidth: 100,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
             if (dataKey === "amount") {
@@ -147,7 +152,8 @@ const columnList = [
     {
         labelName: "USD Value Then",
         dataKey: "usdValueThen",
-        coumnWidth: 100,
+        // coumnWidth: 100,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
             if (dataKey === "usdValueThen") {
@@ -158,7 +164,8 @@ const columnList = [
     {
         labelName: "USD Value today",
         dataKey: "usdValueToday",
-        coumnWidth: 100,
+        // coumnWidth: 100,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
             if (dataKey === "usdValueToday") {
@@ -169,7 +176,8 @@ const columnList = [
     {
         labelName: "USD Transaction Fee",
         dataKey: "usdTransactionFee",
-        coumnWidth: 100,
+        // coumnWidth: 100,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
             if (dataKey === "usdTransactionFee") {
@@ -180,7 +188,8 @@ const columnList = [
     {
         labelName: "Method",
         dataKey: "method",
-        coumnWidth: 100,
+        // coumnWidth: 100,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
             if (dataKey === "method") {

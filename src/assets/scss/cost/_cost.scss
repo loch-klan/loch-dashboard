@@ -2,21 +2,27 @@
     display: flex;
 
     .cost-section {
-       
+        
+        .bar-graph-section{
+            width:100%;
+            .chartArea{
+                height: 37rem;
+            }
+        }
         .cost-table-section {
             background-color: $secondary;
             border-radius: 1.2rem;
             box-shadow: 0rem 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12), 0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
             padding-bottom: 1.6rem;
             
-            .transaction-table-section{
-                .ReactVirtualized__Table__headerRow{
-                    .ReactVirtualized__Table__headerColumn{
-                        text-align: left;
-                        padding-left: 2.5rem ;
-                    }
-                }
-            }
+            // .transaction-table-section{
+            //     .ReactVirtualized__Table__headerRow{
+            //         .ReactVirtualized__Table__headerColumn{
+            //             // text-align: left;
+            //             // padding-left: 2.5rem ;
+            //         }
+            //     }
+            // }
             .table-wrapper{
                
                 .ReactVirtualized__Table__Grid{

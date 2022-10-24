@@ -63,7 +63,8 @@ class Cost extends Component {
       {
         labelName: "Asset",
         dataKey: "Asset",
-        coumnWidth: 118,
+        // coumnWidth: 118,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -78,7 +79,8 @@ class Cost extends Component {
       }, {
         labelName: "Average Cost Price",
         dataKey: "AverageCostPrice",
-        coumnWidth: 153,
+        // coumnWidth: 153,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -88,7 +90,8 @@ class Cost extends Component {
       }, {
         labelName: "Current Price",
         dataKey: "CurrentPrice",
-        coumnWidth: 128,
+        // coumnWidth: 128,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -98,7 +101,8 @@ class Cost extends Component {
       }, {
         labelName: "Amount",
         dataKey: "Amount",
-        coumnWidth: 108,
+        // coumnWidth: 108,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -108,7 +112,8 @@ class Cost extends Component {
       }, {
         labelName: "Cost Basis",
         dataKey: "CostBasis",
-        coumnWidth: 100,
+        // coumnWidth: 100,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -118,7 +123,8 @@ class Cost extends Component {
       }, {
         labelName: "CurrentValue",
         dataKey: "CurrentValue",
-        coumnWidth: 140,
+        // coumnWidth: 140,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -128,7 +134,8 @@ class Cost extends Component {
       }, {
         labelName: "% Gain / Loss",
         dataKey: "GainLoss",
-        coumnWidth: 128,
+        // coumnWidth: 128,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
