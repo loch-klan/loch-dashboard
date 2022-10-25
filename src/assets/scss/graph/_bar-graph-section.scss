@@ -4,9 +4,26 @@
     border-radius: 1.2rem;
     padding: 3.2rem 3.2rem 5rem 3.2rem;
     width: 90rem;
-    .coin-badges{
-        .dropdown{
-            .dropdown-toggle , .dropdown-toggle:focus{
+
+    .show-percentage-div {
+        display: flex;
+        justify-content: flex-end;
+        .content {
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.8rem;
+            display: flex;
+        }
+
+        .inc {
+            background-color: $green-E3F;
+        }
+    }
+
+    .coin-badges {
+        .dropdown {
+
+            .dropdown-toggle,
+            .dropdown-toggle:focus {
                 box-shadow: -2.5rem 0rem 2.4rem 2rem $secondary !important;
             }
         }

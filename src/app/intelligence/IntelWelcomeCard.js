@@ -45,7 +45,7 @@ export default function IntelWelcomeCard() {
     })
 
     return (
-        <div className='intell-welcome-card'>
+        <div className='m-b-60 intell-welcome-card'>
                 {/* <h4 className="inter-display-medium f-s-31 lh-37 m-b-12 page-title ">Intelligence</h4>
                 <p className=' inter-display-medium f-s-16 lh-19 m-b-32 subtitle'>Automated and personalized financial intelligence</p> */}
                 <div className="row-card">

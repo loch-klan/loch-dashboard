@@ -1,16 +1,22 @@
 .bar-graph-footer {
     margin-top: 3.4rem;
-    display: flex;
-    justify-content: space-around;
-    padding-left: 2.7rem;
-
+    // display: flex;
+    // justify-content: space-around;
+    // padding-left: 2.7rem;
+    .row{
+        margin-left: 1.8rem;
+        .col-md-2{
+            padding: 0rem;
+        }
+    }
     .timeBadge {
-        padding: 1.05rem 3.14rem;
+        padding: 1.2rem 0rem;
         background-color: $grey-F2F;
         border-radius: 0.8rem;
         border: 0.15rem solid $grey-F2F;
         color: $black-191;
         cursor: pointer;
+        text-align: center;
     }
 
     .active {

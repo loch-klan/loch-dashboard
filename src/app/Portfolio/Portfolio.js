@@ -474,7 +474,7 @@ class Portfolio extends BaseReactComponent {
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader}
                                 />
-                                {this.state.userWalletList.findIndex(w => w.coinFound !== true) > -1
+                                {this.state.userWalletList.findIndex(w => w.coinFound !== true) > -1 && this.state.userWalletList[0].address !== ""
 
                                     ?
                                     <div className='fix-div' id="fixbtn">

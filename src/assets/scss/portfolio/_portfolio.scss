@@ -111,13 +111,32 @@
                 position: relative;
 
                 .chart-x-selection {
-                    .x-axis-selection-date {
+                    position: relative;
+                    // .x-axis-selection-date {
+                    //     position: absolute;
+                    //     right: 0rem;
+                    //     bottom: 1.3rem;
+                    //     border: none;
+                    //     outline: none;
+                    //     padding-left: 1.5rem;
+                    // }
+                    .dropdown{
                         position: absolute;
+                        top: -3rem;
                         right: 0rem;
-                        bottom: 1.3rem;
-                        border: none;
-                        outline: none;
-                        padding-left: 1.5rem;
+                        .dropdown-menu{
+                            width: auto;
+                            padding: 0.4rem;
+                            overflow-y: scroll;
+                            height: 7rem;
+                            
+                        }
+                        .dropdown-toggle {
+                            @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
+                              background: $secondary;
+                              padding-left: 4rem;
+                          }
+
                     }
 
                     .y-axis-selection-currency {

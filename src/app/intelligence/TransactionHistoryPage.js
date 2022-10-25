@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Form, Image } from 'react-bootstrap';
+import { Button, Form, Image ,Row,Col} from 'react-bootstrap';
 import PageHeader from '../common/PageHeader';
 import DropDown from './../common/DropDown';
 import searchIcon from '../../assets/images/icons/search-icon.svg'
@@ -12,11 +12,14 @@ export const TransactionHistoryPage = (props) => {
 
   const fillters = ["This year", "All assets", "All methods"]
   const fillter_tabs = fillters.map((e) => {
-    return <DropDown
+    return (
+    <Col md={3}>
+    <DropDown
       id="dropdown-transaction-fillter-tab"
       title={e}
       list={[1, 2, 3]}
     />
+    </Col>)
 
   })
 
@@ -228,7 +231,9 @@ const columnList = [
       />
 
       <div className='fillter_tabs_section'>
+        <Row>
         {fillter_tabs}
+        <Col md={3}>
         <Form className="searchBar">
           <Image src={searchIcon} />
           <Form.Control
@@ -237,6 +242,8 @@ const columnList = [
             aria-label="Search"
           />
         </Form>
+        </Col>
+        </Row>
       </div>
       {/* <CustomTable
         tableData={props.table_data}

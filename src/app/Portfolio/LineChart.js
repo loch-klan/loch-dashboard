@@ -5,11 +5,13 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { GraphHeader } from '../common/GraphHeader'
 import CoinBadges from './../common/CoinBadges';
+import DropDown from "../common/DropDown";
 class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
         this.state = {
-            activeBadge : [{ name: "All", id: "" }]
+            activeBadge : [{ name: "All", id: "" }],
+            title:"Month"
         }
 
     }
@@ -41,6 +43,13 @@ class LineChart extends BaseReactComponent {
                 activeBadge: newArr
             })
         }
+    }
+    handleSelect = (opt)=>{
+        // console.log("Selected Option ", opt.split(' '))
+        const t = opt.split(' ')[1]
+        this.setState({
+            title:t
+        })
     }
     render() {
         var UNDEFINED;
@@ -190,13 +199,20 @@ class LineChart extends BaseReactComponent {
                         options={options}
                     />
                     <div className='chart-x-selection'>
-                        <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 x-axis-selection-date' >
+                        {/* <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 x-axis-selection-date' >
                             <option>Year</option>
                             <option selected="selected">Month</option>
                             <option>Day</option>
                             <option>Week</option>
                             <option>Hour</option>
-                        </select>
+                        </select> */}
+
+                        <DropDown 
+                            class="line-chart-dropdown"  
+                            list={["Year","Month","Day","Week","Hour"]}
+                            onSelect={this.handleSelect}
+                            title={this.state.title}
+                        />
                     </div>
                 </div>
             </div>

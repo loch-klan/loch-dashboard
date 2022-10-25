@@ -1,14 +1,19 @@
 .history-table-section {
 
     .fillter_tabs_section {
-        display: flex;
-        align-items: center;
+        // display: flex;
+        // align-items: center;
         padding: 1.2rem;
         background-color: $secondary;
         border-radius: 1.2rem;
         margin-bottom: 2rem;
-        justify-content: space-between;
-
+        // justify-content: space-between;
+        .row{
+            margin: 0rem;
+            .col-md-3{
+                padding: 0rem;
+            }
+        }
         .dropdown {
             margin-right: 1.7rem;
 
@@ -22,6 +27,7 @@
                 color: $black-191;
                 padding: 1.2rem 6.2rem;
                 border-radius: 0.8rem;
+                width: 100%;
             }
 
             .dropdown-toggle::after {

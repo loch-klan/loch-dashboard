@@ -19,7 +19,11 @@ class FixAddModal extends BaseReactComponent {
 
     constructor(props) {
         super(props);
-        const addWalletList = JSON.parse(localStorage.getItem("addWallet")) || []
+        const addWalletList = JSON.parse(localStorage.getItem("addWallet")) || [{
+            id: `wallet${this.state.addWalletList.length + 1}`,
+            address: "",
+            coins: [],
+        }]
         this.state = {
             onHide: props.onHide,
             show: props.show,
@@ -235,6 +239,14 @@ class FixAddModal extends BaseReactComponent {
         }
         walletList.map((w, index) => w.id = `wallet${index + 1}`)
         // console.log('walletList',walletList);
+        if(walletList.length === 0)
+        {
+            walletList.push({
+                id: 'wallet1',
+                address: "",
+                coins: [],
+            })
+        }
         localStorage.setItem("addWallet", JSON.stringify(walletList))
         this.state.onHide()
         this.state.changeList && this.state.changeList(walletList)

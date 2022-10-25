@@ -37,6 +37,13 @@
                 }
             }
             .header {
+                display: flex;
+                align-items:center;
+                .show-img{
+                    padding:1.8rem;
+                    background-color: $grey-E5E;
+                    border-radius: 1.6rem;
+                }
                 h4 {
                     color: $primary;
                 }
