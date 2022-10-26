@@ -11,7 +11,8 @@ export const updateUser = (data,ctx) =>{
             first_name  : ctx.state.firstName,
             last_name : ctx.state.lastName,
             email : ctx.state.email,
-            mobile:ctx.state.mobileNumber
+            mobile:ctx.state.mobileNumber,
+            link: ctx.state.link,
         }
         localStorage.setItem("lochUser",JSON.stringify(obj))
         // toast.success("Profile Successfully Updated");
