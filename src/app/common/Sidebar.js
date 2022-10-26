@@ -84,9 +84,7 @@ function Sidebar(props) {
                                     >
                                         <Image src={activeTab === "/costs" ? ActiveDollarIcon : DollarIcon} />Costs</NavLink>
                                 </li>
-                                {
-                                  JSON.parse(localStorage.getItem("lochUser"))
-                                  &&
+
                                   <li>
                                     <NavLink
                                         exact={true}
@@ -98,7 +96,6 @@ function Sidebar(props) {
                                             activeTab === '/profile' ? ActiveProfileIcon : ProfileIcon
                                         } />Profile</NavLink>
                                 </li>
-                                }
                             </ul>
                         </nav>
 

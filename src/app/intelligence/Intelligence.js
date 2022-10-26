@@ -23,7 +23,7 @@ class Intelligence extends Component {
         }
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         this.props.getAllCoins()
     }
 
@@ -60,7 +60,7 @@ class Intelligence extends Component {
                     }
                 },
                 x: {
-                    
+
                     ticks: {
                         font: "Inter-SemiBold",
                         size: 10,
@@ -103,7 +103,6 @@ class Intelligence extends Component {
         }
         return (
             <div className="intelligence-page-section">
-                {/* <Sidebar ownerName=""/> */}
                 <div className='intelligence-section page'>
                     <PageHeader
                         title="Intelligence"

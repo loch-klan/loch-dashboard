@@ -199,7 +199,7 @@ const columnList = [
                 return (
                     <div
                         className={
-                            `inter-display-medium f-s-13 lh-16 black-191 history-table-method 
+                            `inter-display-medium f-s-13 lh-16 black-191 history-table-method
                             ${rowData.method === "Burn" ? "burn"
                                 :
                                 rowData.method === "Transfer" ? "transfer"
@@ -219,9 +219,11 @@ const columnList = [
         }
     }
 ]
-  
+
 
   return (
+    <div className="intelligence-page-section">
+                <div className='intelligence-section page'>
     <div className="history-table-section ">
       <PageHeader
         title={"Transaction history"}
@@ -249,7 +251,7 @@ const columnList = [
         tableData={props.table_data}
         columnList={props.columnList}
       /> */}
-      <TransactionTable 
+      <TransactionTable
         tableData = {tableData}
         columnList = {columnList}
       />
@@ -260,6 +262,8 @@ const columnList = [
 
 
 
+    </div>
+    </div>
     </div>
   )
 }
