@@ -12,6 +12,7 @@ import FixAddModal from '../common/FixAddModal';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import {getCoinRate} from '../Portfolio/Api.js'
 import noDataImage from '../../image/no-data.png';
+import lochClean from '../../assets/images/LochClean.gif';
 import { Image} from 'react-bootstrap';
 
 class Wallet extends Component {
@@ -202,10 +203,17 @@ class Wallet extends Component {
                             )
                         })
                       :
-                      <div style={{textAlign: "center"}}>
-                    {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                    <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
-                    </div>
+                      (walletList.length==0
+                        ?
+                        (<div style={{textAlign: "center"}}>
+                            <Image src={lochClean} className="no-data m-b-20 walletcard"/>
+                            {/* <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3> */}
+                        </div>)
+                        :
+                        <div style={{textAlign: "center"}}>
+                            {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
+                            <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                        </div>)
                       }
                     </div>
                 </div>

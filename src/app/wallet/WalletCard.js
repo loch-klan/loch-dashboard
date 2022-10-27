@@ -58,6 +58,8 @@ export default function WalletCard(props) {
         setShowFixModal(prev => !prev)
     }
     return (
+
+        
         <div className="walletcard">
           {/* {
             <CopiedModal show={showModal} onHide={()=>toggleCopied(false)} />
