@@ -6,7 +6,7 @@ import PieChart from './PieChart';
 import LineChart from './LineChart';
 import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
 import { Loading } from 'react-loading-dot';
-import { Button, Image, Row, Col} from 'react-bootstrap';
+import { Button, Image, Row, Col } from 'react-bootstrap';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
 import { getAllCoins } from '../onboarding/Api.js'
@@ -18,6 +18,9 @@ import CoinChip from './../wallet/CoinChip';
 import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
+import { searchTransactionApi } from '../intelligence/Api.js'
+import { SEARCH_BY_WALLET_ADDRESS_IN } from '../../utils/Constant'
+import moment from "moment"
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -29,6 +32,10 @@ class Portfolio extends BaseReactComponent {
             coinAvailable: true,
             fixModal: false,
             addModal: false,
+            table: [],
+            sort: [],
+            start: 0,
+            limit: 10,
         }
     }
 
@@ -55,6 +62,24 @@ class Portfolio extends BaseReactComponent {
         }
         this.props.getCoinRate()
         this.props.getAllCoins()
+        this.getTableData()
+    }
+    getTableData = () => {
+
+        let arr = JSON.parse(localStorage.getItem("addWallet"))
+        let address = arr.map((wallet) => {
+            return wallet.address
+        })
+        let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }]
+        let data = new URLSearchParams()
+        data.append("start", this.state.start)
+        data.append("conditions", JSON.stringify(condition))
+        data.append("limit", this.state.limit)
+        data.append("sorts", JSON.stringify(this.state.sort))
+        // console.log(data)
+        this.props.searchTransactionApi(this, data)
+        // console.log(d)
+
     }
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
@@ -90,56 +115,36 @@ class Portfolio extends BaseReactComponent {
 
 
     render() {
-        const tableData = [
-            {
-                time: "4/22",
-                from: Metamask,
-                to: Metamask,
-                asset: Ethereum,
-                usdValue: 0,
-                method: "Burn"
-            },
-            {
-                time: "4/22",
-                from: Metamask,
-                to: Metamask,
-                asset: Ethereum,
-                usdValue: 0,
-                method: "Mint"
-            },
-            {
-                time: "4/22",
-                from: Metamask,
-                to: Metamask,
-                asset: Ethereum,
-                usdValue: 0,
-                method: "Transfer"
-            },
-            {
-                time: "4/22",
-                from: Metamask,
-                to: Metamask,
-                asset: Ethereum,
-                usdValue: 0,
-                method: "Commit"
-            },
-            {
-                time: "4/22",
-                from: Metamask,
-                to: Metamask,
-                asset: Ethereum,
-                usdValue: 0,
-                method: "Transfer"
-            },
-            {
-                time: "4/22",
-                from: Metamask,
-                to: Metamask,
-                asset: Ethereum,
-                usdValue: 0,
-                method: "Commit"
+        let tableData = this.state.table.map((row) => {
+            return {
+                time: row.timestamp,
+                from: {
+                    address: row.from_wallet.address,
+                    // wallet_metaData: row.from_wallet.wallet_metaData
+                    wallet_metaData: {
+                        symbol: Metamask
+                    }
+                },
+                to: {
+                    address: row.to_wallet.address,
+                    // wallet_metaData: row.to_wallet.wallet_metaData,
+                    wallet_metaData: {
+                        symbol: Metamask
+                    },
+                },
+                asset: {
+                    code: row.chain.code,
+                    symbol: row.chain.symbol
+                },
+
+                // usdValueThen: 0,
+                usdValueToday: {
+                    id: row.asset.id
+                },
+                method: row.transaction_type
             }
-        ]
+        })
+
 
         const columnList = [
             {
@@ -150,7 +155,7 @@ class Portfolio extends BaseReactComponent {
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
-                        return rowData.time
+                        return moment(rowData.time).format('L')
                     }
                 }
             },
@@ -168,9 +173,9 @@ class Portfolio extends BaseReactComponent {
                                 isIcon={true}
                                 isInfo={true}
                                 isText={true}
-                                text={"0xF977814e90dA44bFA03b6295A0616a897441aceC"}
+                                text={rowData.from.address}
                             >
-                                <Image src={rowData.from} className="history-table-icon" />
+                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
                             </CustomOverlay>
                         )
                     }
@@ -189,9 +194,9 @@ class Portfolio extends BaseReactComponent {
                                 isIcon={true}
                                 isInfo={true}
                                 isText={true}
-                                text={"0xF977814e90dA44bFA03b6295A0616a897441aceC"}
+                                text={rowData.to.address}
                             >
-                                <Image src={rowData.to} className="history-table-icon" />
+                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
                             </CustomOverlay>
                         )
                     }
@@ -206,8 +211,8 @@ class Portfolio extends BaseReactComponent {
                     if (dataKey === "asset") {
                         return (
                             <CoinChip
-                                coin_img_src={rowData.asset}
-                                coin_code="ETH"
+                                coin_img_src={rowData.asset.symbol}
+                                coin_code={rowData.asset.code}
                             />
                         )
                     }
@@ -219,8 +224,17 @@ class Portfolio extends BaseReactComponent {
                 coumnWidth: 0.12,
                 isCell: true,
                 cell: (rowData, dataKey) => {
+
                     if (dataKey === "usdValue") {
-                        return rowData.usdValue
+                        let chain = Object.entries(this.props.portfolioState.coinRateList)
+                        let value ;
+                        chain.find((chain)=>{
+                            if(chain[0] === rowData.usdValueToday.id){
+                               value = chain[1].quote.USD.price
+                               return 
+                            }
+                        })
+                        return value;
                     }
                 }
             },
@@ -235,19 +249,26 @@ class Portfolio extends BaseReactComponent {
                             <div
                                 className={
                                     `inter-display-medium f-s-13 lh-16 black-191 history-table-method 
-                                    ${rowData.method === "Burn" ? "burn"
+                                    ${rowData.method === 10 ? "burn"
                                         :
-                                        rowData.method === "Transfer" ? "transfer"
+                                        rowData.method === 20 ? "transfer"
                                             :
-                                            rowData.method === "Mint" ? "mint"
+                                            rowData.method === 30 ? "mint"
                                                 :
-                                                rowData.method === "Commit" ? "commit"
+                                                rowData.method === 40 ? "commit"
                                                     :
                                                     ""
                                     }`
                                 }
                             >
-                                {rowData.method}
+                                {rowData.method === 10 ? "Burn"
+                                    :
+                                    rowData.method === 20 ? "Transfer"
+                                        :
+                                        rowData.method === 30 ? "Mint"
+                                            :
+                                            "Commit"
+                                }
                             </div>
                         )
                     }
@@ -259,7 +280,7 @@ class Portfolio extends BaseReactComponent {
 
         const options = {
             responsive: true,
-            maintainAspectRatio:false,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false
@@ -488,36 +509,36 @@ class Portfolio extends BaseReactComponent {
                             </div>
                             <div className='portfolio-section page m-b-32'>
                                 <LineChart
-                                    coinLists = {this.props.OnboardingState.coinsLists}
+                                    coinLists={this.props.OnboardingState.coinsLists}
                                 />
                             </div>
                             <div className='m-b-32 page graph-table-section'>
-                                    <Row>
-                                        <Col md={6}>
-                                            <div className='m-r-16 section-table'>
-                                                <TransactionTable
-                                                    title="Transaction History"
-                                                    subTitle="In the last month"
-                                                    tableData={tableData}
-                                                    columnList={columnList}
-                                                    headerHeight={60}
-                                                />
-                                            </div>
-                                        </Col>
-                                        <Col md={6}>
-                                            <div className='section-chart'>
-                                                <BarGraphSection
-                                                    headerTitle="Volume Traded by Counterparty"
-                                                    headerSubTitle="In the last month"
-                                                    isArrow={true}
-                                                    data={data}
-                                                    options={options}
-                                                    // width="100%"
-                                                    // height="100%"
-                                                />
-                                            </div>
-                                        </Col>
-                                    </Row>
+                                <Row>
+                                    <Col md={6}>
+                                        <div className='m-r-16 section-table'>
+                                            <TransactionTable
+                                                title="Transaction History"
+                                                subTitle="In the last month"
+                                                tableData={tableData}
+                                                columnList={columnList}
+                                                headerHeight={60}
+                                            />
+                                        </div>
+                                    </Col>
+                                    <Col md={6}>
+                                        <div className='section-chart'>
+                                            <BarGraphSection
+                                                headerTitle="Volume Traded by Counterparty"
+                                                headerSubTitle="In the last month"
+                                                isArrow={true}
+                                                data={data}
+                                                options={options}
+                                            // width="100%"
+                                            // height="100%"
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
                             </div>
                             <div className='m-b-40 portfolio-cost-table-section page'>
                                 <div className='portfolio-cost-table'>
@@ -575,7 +596,8 @@ const mapDispatchToProps = {
     getCoinRate,
     getUserWallet,
     settingDefaultValues,
-    getAllCoins
+    getAllCoins,
+    searchTransactionApi
 }
 Portfolio.propTypes = {
 };

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Sidebar from '../common/Sidebar';
 import IntelWelcomeCard from './IntelWelcomeCard';
 import PageHeader from '../common/PageHeader';
-import { TransactionHistoryPage } from './TransactionHistoryPage';
+import TransactionHistoryPage  from './TransactionHistoryPage';
 import eyeIcon from '../../assets/images/icons/eyeIcon.svg'
 import BarGraphSection from '../common/BarGraphSection';
 import { getAllCoins } from '../onboarding/Api.js'
@@ -105,7 +105,7 @@ class Intelligence extends Component {
             <div className="intelligence-page-section">
                 {/* <Sidebar ownerName=""/> */}
                 <div className='intelligence-section page'>
-                    <PageHeader
+                    {/*<PageHeader
                         title="Intelligence"
                         subTitle="Automated and personalized financial intelligence"
                     />
@@ -124,9 +124,9 @@ class Intelligence extends Component {
                         showBadges={true}
                         showPercentage = {this.state.showPercentage}
                         footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Month","1 Week"]}
-                    />
-                    </div>
-                    {/* <TransactionHistoryPage/> */}
+                    /> */}
+                    {/* </div> */}
+                    <TransactionHistoryPage/>
                 </div>
             </div>
 
