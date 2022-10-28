@@ -199,6 +199,14 @@
             line-height: 2rem;
             color: $grey-B0B;
         }
+        .highcharts-tooltip {
+        
+            .span-bottom{
+               
+                white-space: normal !important;
+                word-wrap: break-word;
+            }
+        }
     }
 
     .portfolio-over-container {

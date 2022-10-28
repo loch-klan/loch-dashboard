@@ -8,12 +8,13 @@ import pageNext from '../../assets/images/page-next.svg';
 // import CustomButton from '../form/CustomButton';
 
 const onLeftClick = (props) => {
-  // console.log('props', props);
+  // console.log('prev', props);
   if (props.noUrl) {
     props.loadData(props.page - 1);
   } else {
     // console.log('Heyaa Prev');
     if (props.page > 1) {
+      // console.log("HEllo")
       const params = new URLSearchParams(props.location.search);
       params.set("p", props.page - 1);
       props.history.push(`${props.history.location.pathname}?${params}`);
@@ -24,13 +25,16 @@ const onLeftClick = (props) => {
 }
 
 const onNextClick = (props) => {
+  // console.log("next",props)
   if (props.noUrl) {
     props.loadData(props.page + 1);
   } else {
     // console.log('Heyaa Next');
     if (props.page < props.pageCount) {
+      // console.log("Hello")
       const params = new URLSearchParams(props.location.search);
       params.set("p", props.page + 1);
+      // console.log(params)
       props.history.push(`${props.history.location.pathname}?${params}`)
       // props.loadData(props.page + 1);
     }
@@ -47,7 +51,7 @@ const Pagination = props => {
         className="left-arrow" /> */}
       {/* <Button className="primary-btn inverse" onClick={() => onLeftClick(props)} disabled={props.page === 1} > */}
       {/* <Glyphicon glyph="chevron-left" className="left-arrow" /> */}
-      <Image src={pagePrev} onClick={() => onLeftClick(props)} className="left-arrow" />
+      <Image src={props.pagePrev ? props.pagePrev : pagePrev} onClick={() => onLeftClick(props)} className="left-arrow" />
       {/* </Button> */}
       <h5 className='red-hat-display-medium f-s-14'>{props.page} of {props.pageCount}</h5>
       {/* <CustomButton
@@ -56,7 +60,7 @@ const Pagination = props => {
         className="right-arrow" /> */}
       {/* <Button className="primary-btn inverse" onClick={() => onNextClick(props)} disabled={props.page === props.pageCount}> */}
       {/* <Glyphicon glyph="chevron-right" className="right-arrow" /> */}
-      <Image src={pageNext} onClick={() => onNextClick(props)} className="right-arrow" />
+      <Image src={props.pageNext ? props.pageNext : pageNext} onClick={() => onNextClick(props)} className="right-arrow" />
       {/* </Button> */}
     </div >
   );

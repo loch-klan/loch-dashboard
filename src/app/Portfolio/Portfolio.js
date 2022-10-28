@@ -150,7 +150,7 @@ class Portfolio extends BaseReactComponent {
                 labelName: "Time",
                 dataKey: "time",
                 // coumnWidth: 73,
-                coumnWidth: 0.12,
+                coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
