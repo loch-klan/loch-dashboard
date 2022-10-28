@@ -31,7 +31,12 @@ class AddWallet extends BaseReactComponent {
         let walletCopy = [...this.state.walletInput];
         let foundIndex = walletCopy.findIndex(obj => obj.id === name);
         if (foundIndex > -1) {
+            let prevValue = walletCopy[foundIndex].address
+            // console.log(prevValue)
             walletCopy[foundIndex].address = value;
+            if(value === "" || prevValue !== value){
+                walletCopy[foundIndex].coins = []
+            }
             // walletCopy[foundIndex].trucatedAddress = value
         }
 
@@ -205,7 +210,7 @@ class AddWallet extends BaseReactComponent {
                                     {this.state.walletInput.map((e, i) => {
                                         if (this.state.walletInput[index].address && e.id === `wallet${index + 1}`) {
                                             // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                            if (e.coinFound) {
+                                            if (e.coinFound && e.coins.length> 0) {
                                                 return <CustomChip id={"coin-div"} coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
                                             } else {
                                                 if (e.coins.length === this.props.OnboardingState.coinsList.length) {

@@ -162,7 +162,7 @@ class Portfolio extends BaseReactComponent {
                 labelName: "From",
                 dataKey: "from",
                 // coumnWidth: 61,
-                coumnWidth: 0.15,
+                coumnWidth: 0.13,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "from") {
@@ -183,7 +183,7 @@ class Portfolio extends BaseReactComponent {
             {
                 labelName: "To",
                 dataKey: "to",
-                coumnWidth: 0.15,
+                coumnWidth: 0.13,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "to") {
@@ -220,7 +220,7 @@ class Portfolio extends BaseReactComponent {
             {
                 labelName: "USD Value",
                 dataKey: "usdValue",
-                coumnWidth: 0.12,
+                coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
 
@@ -290,7 +290,8 @@ class Portfolio extends BaseReactComponent {
                         padding: 8,
                         size: 12,
                         lineHeight: 20,
-                        family: "Helvetica Neue",
+                        // family: "Helvetica Neue",
+                        family: "Inter-Regular",
                         weight: 400,
                         color: "#B0B1B3"
                     },

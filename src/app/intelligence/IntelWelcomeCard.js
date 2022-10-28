@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
-import bgimg from '../../image/CardBackgroundImg.png'
+// import bgimg from '../../image/CardBackgroundImg.png'
+import bgimg from '../../assets/images/IntelCardBackgroundImg.png'
 import TransactionIcon from '../../image/TransactionHistoryIcon.svg'
 import ShuffleIcon from '../../image/ShuffleIcon.svg'
 import InsightsIcon from '../../image/InsightsIcon.svg'
@@ -39,7 +40,7 @@ export default function IntelWelcomeCard(props) {
                         {card.title}
                     </div>
                     <div className='viewmore'>
-                        <h4 className="inter-display-semi-bold f-s-13 lh-16">View more</h4>
+                        <h4 className="inter-display-semi-bold f-s-13 lh-16 black-191">View more</h4>
                         <Image src={ArrowRight} />
                     </div>
                 </div>
