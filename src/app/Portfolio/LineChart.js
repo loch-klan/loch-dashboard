@@ -105,25 +105,25 @@ class LineChart extends BaseReactComponent {
                 formatter: function () {
                     return `
                     <div style="display: flex;flex-direction:column;" >
-                    <p style="padding-bottom:0.8rem">
+                    <div class="m-b-8">
                     <span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100" style="text-transform:uppercase;letter-spacing: 1.25px;">Potential External Factors</span>
-                    </p>
-                    <p style="padding-bottom:0.8rem">
-                    <span class="inter-display-medium f-s-12 lh-16 black-191 w-100" style="background-color: #C6E4FF;padding:4px 8px 4px 8px; border-radius: 4px;">
+                    </div>
+                    <div class="m-b-8" style="background-color: #C6E4FF;padding:4px 8px 4px 8px; border-radius: 4px;">
+                    <span class="inter-display-medium f-s-12 lh-16 black-191 w-100" >
                     <img src=${TrendingUp} class="m-r-8" />
                     Increased Interests Rates</span>
-                    <p>
-                    <p style="padding-bottom:1.2rem">
-                    <span class="inter-display-medium f-s-12 lh-12 black-191  w-100" style="background-color: rgba(245, 232, 137, 0.5);padding:4px 8px 4px 8px; border-radius: 4px;">
+                    </div>
+                    <div class="m-b-12" style="background-color: rgba(245, 232, 137, 0.5);padding:4px 8px 4px 8px; border-radius: 4px;">
+                    <span class="inter-display-medium f-s-12 lh-12 black-191  w-100" >
                     <img src=${TrendingDown} class="m-r-8" />
                     Terra Collapse</span>
-                    </p>
-                    <p style="padding-bottom:0.8rem">
+                    </div>
+                    <div class="m-b-8">
                     <span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100" style="text-transform:uppercase;letter-spacing: 1.25px;">INTERNAL Factors</span>
-                    </p>
-                    <p>
+                    </div>
+                    <div>
                     <div class="inter-display-medium f-s-12 lh-16 black-191 w-100 span-bottom" style="background-color: rgba(245,232,137,0.5);padding:4px 8px 4px 8px; border-radius: 4px;">0.7 BTC was deposited into a Coinbase Wallet </div>
-                    </p>
+                    </div>
                     </div>`;
                 }
             },
