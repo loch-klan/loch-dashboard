@@ -19,7 +19,7 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN } from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN ,Method} from '../../utils/Constant'
 import moment from "moment"
 class Portfolio extends BaseReactComponent {
     constructor(props) {
@@ -35,7 +35,7 @@ class Portfolio extends BaseReactComponent {
             table: [],
             sort: [],
             start: 0,
-            limit: 10,
+            limit: 6,
         }
     }
 
@@ -137,7 +137,6 @@ class Portfolio extends BaseReactComponent {
                     symbol: row.chain.symbol
                 },
 
-                // usdValueThen: 0,
                 usdValueToday: {
                     id: row.asset.id
                 },
@@ -155,7 +154,7 @@ class Portfolio extends BaseReactComponent {
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
-                        return moment(rowData.time).format('L')
+                        return moment(rowData.time).format('DD/MM')
                     }
                 }
             },
@@ -234,7 +233,7 @@ class Portfolio extends BaseReactComponent {
                                return 
                             }
                         })
-                        return value;
+                        return value?.toFixed(2);
                     }
                 }
             },
@@ -249,25 +248,20 @@ class Portfolio extends BaseReactComponent {
                             <div
                                 className={
                                     `inter-display-medium f-s-13 lh-16 black-191 history-table-method 
-                                    ${rowData.method === 10 ? "burn"
+                                    ${rowData.method === Method.BURN ? "burn"
                                         :
-                                        rowData.method === 20 ? "transfer"
+                                        rowData.method === Method.TRANSFER ? "transfer"
                                             :
-                                            rowData.method === 30 ? "mint"
+                                            rowData.method === Method.MINT ? "mint"
                                                 :
-                                                rowData.method === 40 ? "commit"
+                                                rowData.method === Method.COMMIT ? "commit"
                                                     :
                                                     ""
                                     }`
                                 }
                             >
-                                {rowData.method === 10 ? "Burn"
-                                    :
-                                    rowData.method === 20 ? "Transfer"
-                                        :
-                                        rowData.method === 30 ? "Mint"
-                                            :
-                                            "Commit"
+                                {
+                                    Method.getText(rowData.method)
                                 }
                             </div>
                         )

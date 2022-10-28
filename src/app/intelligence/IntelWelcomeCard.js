@@ -5,29 +5,32 @@ import TransactionIcon from '../../image/TransactionHistoryIcon.svg'
 import ShuffleIcon from '../../image/ShuffleIcon.svg'
 import InsightsIcon from '../../image/InsightsIcon.svg'
 import ArrowRight from '../../image/ArrowRight.svg'
-export default function IntelWelcomeCard() {
+export default function IntelWelcomeCard(props) {
 
     const cardData = [
         {
             icon: TransactionIcon,
             title: "Transaction History",
-            background:"lightblue"
+            background:"lightblue",
+            path:'/intelligence/transaction-history'
         },
         {
             icon: ShuffleIcon,
             title: "Traded by counterparty",
-            background:"lightyellow"
+            background:"lightyellow",
+            path:'/intelligence/transaction-history'
         },
         {
             icon: InsightsIcon,
             title: "Insights",
-            background:"lightpurple"
+            background:"lightpurple",
+            path:'/intelligence/transaction-history'
         }
     ]
 
     const cards = cardData.map((card) => {
         return (
-            <div className='info'>
+            <div className='info' onClick={()=>props.history.push(card.path)}>
                 <div className = {`icon ${card.background}`}>
                     <Image src={card.icon} />
                 </div>

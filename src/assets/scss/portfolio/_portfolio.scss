@@ -258,28 +258,14 @@
 
             .transaction-table-section {
                 .graph-header {
+                    h4{
+                        cursor: pointer;
+                    }
                     p {
                         margin-bottom: 0.3rem;
                     }
                 }
-                .table-wrapper{
-                    .ReactVirtualized__Grid{
-                        overflow-y:scroll !important;
-                        height:35.9rem !important;
-                        overflow-x: hidden !important;
-                    }
-                    .ReactVirtualized__Grid::-webkit-scrollbar{
-                        width: 0.4rem;
-                    }
-                    .ReactVirtualized__Grid::-webkit-scrollbar-thumb{
-                        border-radius: 0.8rem;
-                        background: rgb(90, 90, 90);
-                    }
-                    .ReactVirtualized__Grid::-webkit-scrollbar-track {
-                        background: rgba(0, 0, 0, 0.2);
-                        border-radius: 0.8rem;
-                    }
-                }
+                
             }
         }
 

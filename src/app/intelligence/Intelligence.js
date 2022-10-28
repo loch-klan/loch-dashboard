@@ -104,11 +104,13 @@ class Intelligence extends Component {
         return (
             <div className="intelligence-page-section">
                 <div className='intelligence-section page'>
-                    {/*<PageHeader
+                    <PageHeader
                         title="Intelligence"
                         subTitle="Automated and personalized financial intelligence"
                     />
-                    <IntelWelcomeCard />
+                    <IntelWelcomeCard 
+                        history={this.props.history}
+                    />
                     <div className="portfolio-bar-graph">
                     <PageHeader
                         title="Portfolio Performance"
@@ -123,9 +125,9 @@ class Intelligence extends Component {
                         showBadges={true}
                         showPercentage = {this.state.showPercentage}
                         footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Month","1 Week"]}
-                    /> */}
-                    {/* </div> */}
-                    <TransactionHistoryPage/>
+                    />
+                    </div>
+                    {/* <TransactionHistoryPage/> */}
                 </div>
             </div>
 

@@ -69,6 +69,28 @@ export const DayOptions = Object.keys(Days.presentable).map((day) => ({
   value: day
 }))
 
+export const Method = {
+  BURN: 10,
+  TRANSFER: 20,
+  MINT: 30,
+  COMMIT: 40,
+  presentable: {
+    10: "Burn",
+    20: "Transfer",
+    30: "Mint",
+    40: "Commit",
+  },
+  opt:["Burn","Transfer","Mint","Commit"],
+  getText : function(value){
+    return this.presentable[value]
+  }
+}
+
+export const MethodOptions = Object.keys(Method.presentable).map((day) => ({
+  label:Method.presentable[day],
+  value: day
+}))
+
 export const YesNoOptions = [
   { label: "Yes", value: "true" },
   { label: "No", value: "false" }

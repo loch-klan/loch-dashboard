@@ -8,7 +8,7 @@ import Portfolio from "./app/Portfolio/Portfolio"
 import Intelligence from "./app/intelligence/Intelligence"
 import Wallet from "./app/wallet/Wallet"
 import Cost  from "./app/cost/Cost"
-import { TransactionHistoryPage } from "./app/intelligence/TransactionHistoryPage"
+import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage"
 const routes = [
   {
     path: "/",

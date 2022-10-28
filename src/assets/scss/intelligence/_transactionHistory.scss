@@ -1,7 +1,7 @@
 .history-table-section {
-    // display: flex;
+    display: flex;
     .history-table {
-        // margin-top: 8rem;
+        margin-top: 8rem;
 
 
         .fillter_tabs_section {
@@ -26,6 +26,11 @@
 
                 .dropdown-menu {
                     width: auto;
+                    padding:0.4rem;
+                    .dropdown-item{
+                        padding:0.8rem;
+                        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+                    }
                 }
 
                 .btn-primary:not(:disabled):not(.disabled):active {

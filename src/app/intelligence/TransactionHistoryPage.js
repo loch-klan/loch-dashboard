@@ -10,7 +10,7 @@ import Ethereum from '../../assets/images/icons/ether-coin.svg'
 import CoinChip from '../wallet/CoinChip';
 import { connect } from "react-redux";
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
-import { SEARCH_BY_WALLET_ADDRESS_IN } from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN ,Method} from '../../utils/Constant'
 import { searchTransactionApi} from './Api';
 import { getCoinRate } from '../Portfolio/Api.js'
 import moment from "moment"
@@ -30,7 +30,7 @@ class TransactionHistoryPage extends Component {
                 },
                 {
                     title: "All methods",
-                    data: [10, 20, 30, 40]
+                    data: Method.opt
                 }],
             table: [],
             sort: [],
@@ -113,7 +113,7 @@ class TransactionHistoryPage extends Component {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
 
-                        return moment(rowData.time).format('L')
+                        return moment(rowData.time).format('DD/MM')
                     }
                 }
             },
@@ -169,7 +169,6 @@ class TransactionHistoryPage extends Component {
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "asset") {
-                        // return (<div className='inter-display-medium f-s-13 lh-16 history-table-coin-icon'><Image src={rowData.asset.symbol} /> {rowData.asset.code}</div>)
 
                         return (
                             <CoinChip
@@ -192,12 +191,12 @@ class TransactionHistoryPage extends Component {
                         let value ;
                         chain.find((chain) => {
                             if(chain[0] === rowData.amount.id){
-                                value = (rowData.amount.amount * chain[1].quote.USD.price).toFixed(2)
+                                value = (rowData.amount.amount * chain[1].quote.USD.price)
                                 return
                             }
                         })
-                        console.log(value)
-                        return value
+                        // console.log(value)
+                        return value?.toFixed(2)
                     }
                 }
             },
@@ -209,7 +208,7 @@ class TransactionHistoryPage extends Component {
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "usdValueThen") {
-                        return rowData.usdValueThen
+                        return rowData.usdValueThen?.toFixed(2)
                     }
                 }
             },
@@ -230,7 +229,7 @@ class TransactionHistoryPage extends Component {
                                 return
                             }
                         })
-                        return value
+                        return value?.toFixed(2)
                     }
                 }
             },
@@ -241,16 +240,17 @@ class TransactionHistoryPage extends Component {
                 coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
-                    console.log(rowData)
+                    // console.log(rowData)
                     if (dataKey === "usdTransactionFee") {
                         let chain = Object.entries(this.props.portfolioState.coinRateList)
                         let value ;
                         chain.find((chain)=>{
                             if(chain[0] === rowData.amount.id){
-                                value = (rowData.usdTransactionFee * chain[1].quote.USD.price).toFixed(2) 
+                                value = (rowData.usdTransactionFee * chain[1].quote.USD.price)
+                                return
                             }
                         })
-                        return value
+                        return value?.toFixed(2)
                        
                     }
                 }
@@ -267,25 +267,20 @@ class TransactionHistoryPage extends Component {
                             <div
                                 className={
                                     `inter-display-medium f-s-13 lh-16 black-191 history-table-method 
-                                    ${rowData.method === 10 ? "burn"
+                                    ${rowData.method === Method.BURN ? "burn"
                                         :
-                                        rowData.method === 20 ? "transfer"
+                                        rowData.method === Method.TRANSFER ? "transfer"
                                             :
-                                            rowData.method === 30 ? "mint"
+                                            rowData.method === Method.MINT ? "mint"
                                                 :
-                                                rowData.method === 40 ? "commit"
+                                                rowData.method === Method.COMMIT ? "commit"
                                                     :
                                                     ""
                                     }`
                                 }
                             >
-                                {rowData.method === 10 ? "Burn"
-                                    :
-                                    rowData.method === 20 ? "Transfer"
-                                        :
-                                        rowData.method === 30 ? "Mint"
-                                            :
-                                            "Commit"
+                                {
+                                    Method.getText(rowData.method)
                                 }
                             </div>
                         )
@@ -297,12 +292,14 @@ class TransactionHistoryPage extends Component {
 
         return (
             <div className="history-table-section">
-                <div className='history-table '>
+                <div className='history-table page'>
+            
                     <PageHeader
                         title={"Transaction history"}
                         subTitle={"Valuable insights based on your assets"}
                         showpath={true}
-                        currentPage={"transactionHistory"}
+                        currentPage={"transaction-history"}
+                        history={this.props.history}
                     />
 
                     <div className='fillter_tabs_section'>
