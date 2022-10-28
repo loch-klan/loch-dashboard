@@ -170,7 +170,7 @@ class Cost extends Component {
             // width={824}
           />
 
-          {/* <BarGraphSection
+          <BarGraphSection
             headerTitle="Counterparty Fees Over Time"
             headerSubTitle="Understand how much your counterparty charges you"
             data={this.state.durationgraphdata.data}
@@ -179,10 +179,10 @@ class Cost extends Component {
             marginBottom = 'm-b-32'
             showFooter = {true}
             showBadges = {true}
-            height={"400px"}
-            width={"824px"}
+            // height={"400px"}
+            // width={"824px"}
 
-          /> */}
+          />
 
           <div className='m-b-40 cost-table-section'>
           <TransactionTable

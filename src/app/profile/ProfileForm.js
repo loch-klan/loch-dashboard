@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, FormElement, FormValidator, CustomTextControl, FormSubmitButton } from '../../utils/form'
 import { Container, Row, Col, Image, Button } from 'react-bootstrap';
-import profileInfoIcon from "../../image/ProfileInfoIcon.png"
+import profileInfoIcon from "../../image/ProfileInfoIcon.svg"
 import CustomButton from "../../utils/form/CustomButton";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import ReactDOM from 'react-dom';
@@ -17,7 +17,8 @@ class ProfileForm extends BaseReactComponent{
             firstName:userDetails?.first_name || "",
             lastName:userDetails?.last_name || "",
             email: userDetails?.email || "",
-            mobileNumber:userDetails?.mobile || ""
+            mobileNumber:userDetails?.mobile || "",
+            link: userDetails?.link || localStorage.getItem("lochDummyUser") || "",
         }
         // this.onClose = this.onClose.bind(this);
     }
@@ -48,14 +49,6 @@ class ProfileForm extends BaseReactComponent{
                                 <FormElement
                                     valueLink={this.linkState(this, "firstName")}
                                     label="First Name"
-                                    required
-                                    validations={[
-                                        {
-                                            validate: FormValidator.isRequired,
-                                            message: "Field cannot be empty"
-                                        }
-                                    ]}
-
                                     control={{
                                         type: CustomTextControl,
                                         settings: {
@@ -68,14 +61,6 @@ class ProfileForm extends BaseReactComponent{
                                 <FormElement
                                     valueLink={this.linkState(this, "lastName")}
                                     label="Last Name"
-                                    required
-                                    validations={[
-                                        {
-                                            validate: FormValidator.isRequired,
-                                            message: "Field cannot be empty"
-                                        }
-                                    ]}
-
                                     control={{
                                         type: CustomTextControl,
                                         settings: {
@@ -92,17 +77,6 @@ class ProfileForm extends BaseReactComponent{
                                 <FormElement
                                     valueLink={this.linkState(this, "email")}
                                     label="Email"
-                                    required
-                                    validations={[
-                                        {
-                                            validate: FormValidator.isRequired,
-                                            message: "Field cannot be empty"
-                                        },
-                                        {
-                                            validate: FormValidator.isEmail,
-                                            message: "Please enter a valid email"
-                                        },
-                                    ]}
                                     control={{
                                         type: CustomTextControl,
                                         settings: {
@@ -119,17 +93,6 @@ class ProfileForm extends BaseReactComponent{
                                 <FormElement
                                     valueLink={this.linkState(this, "mobileNumber")}
                                     label="Mobile Number"
-                                    required
-                                    validations={[
-                                        {
-                                            validate: FormValidator.isRequired,
-                                            message: "Field cannot be empty"
-                                        },
-                                        {
-                                            validate: FormValidator.isPhone,
-                                            message: "Please enter a valid mobile number"
-                                        },
-                                    ]}
                                     control={{
                                         type: CustomTextControl,
                                         settings: {

@@ -518,6 +518,7 @@ class Portfolio extends BaseReactComponent {
                                         <div className='m-r-16 section-table'>
                                             <TransactionTable
                                                 title="Transaction History"
+                                                handleClick={()=>this.props.history.push("/intelligence/transaction-history")}
                                                 subTitle="In the last month"
                                                 tableData={tableData}
                                                 columnList={columnList}

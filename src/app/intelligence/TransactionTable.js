@@ -13,6 +13,7 @@ function TransactionTable(props) {
                 title={props.title}
                 subtitle={props.subTitle}
                 isArrow={true}
+                handleClick={props.handleClick}
             />
                 :
                 ""

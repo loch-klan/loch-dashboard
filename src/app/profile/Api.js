@@ -5,13 +5,14 @@ export const updateUser = (data,ctx) =>{
     .then((res)=>{
       if(!res.data.error){
         console.log(data)
-        let obj =  JSON.parse(localStorage.getItem("userDetail"))
+        let obj =  JSON.parse(localStorage.getItem("lochUser"))
         obj = {
             ...obj,
             first_name  : ctx.state.firstName,
             last_name : ctx.state.lastName,
             email : ctx.state.email,
-            mobile:ctx.state.mobileNumber
+            mobile:ctx.state.mobileNumber,
+            link: ctx.state.link,
         }
         localStorage.setItem("lochUser",JSON.stringify(obj))
         // toast.success("Profile Successfully Updated");
