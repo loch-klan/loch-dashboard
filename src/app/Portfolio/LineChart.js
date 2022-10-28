@@ -169,7 +169,7 @@ class LineChart extends BaseReactComponent {
                 }]
         }
         return (
-            <div className="welcome-card-section">
+            <div className="welcome-card-section line">
                 <div className='line-chart-section'>
 
                     <GraphHeader
@@ -181,7 +181,7 @@ class LineChart extends BaseReactComponent {
                         activeBadge={this.state.activeBadge}
                         chainList={this.props.OnboardingState.coinsList}
                         handleFunction={this.handleFunction}
-                        
+
                     />
                     {/* <div className='chart-x-selection'>
                         <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 y-axis-selection-currency' >
@@ -207,8 +207,8 @@ class LineChart extends BaseReactComponent {
                             <option>Hour</option>
                         </select> */}
 
-                        <DropDown 
-                            class="line-chart-dropdown"  
+                        <DropDown
+                            class="line-chart-dropdown"
                             list={["Year","Month","Day","Week","Hour"]}
                             onSelect={this.handleSelect}
                             title={this.state.title}

@@ -1,6 +1,6 @@
 export const API_LIMIT = 10
 export const MAX_LIMIT = 1000
-export const START_PAGE = 0
+export const START_INDEX = 0
 export const GOOGLE_API_KEY = ""
 export const API_URL = "https://sapi-float.ebikego.com/api/"
 export const MEDIA_URL = "https://d1r1yzhyzim0p1.cloudfront.net/"

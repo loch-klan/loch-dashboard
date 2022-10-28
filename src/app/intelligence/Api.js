@@ -1,14 +1,16 @@
 import { postLoginInstance } from "../../utils";
 import { toast } from "react-toastify";
-export const searchTransactionApi = (ctx, data) => {
+import { API_LIMIT } from "../../utils/Constant";
+export const searchTransactionApi = (ctx, data, page = 0) => {
     return function (dispatch, getState) {
         postLoginInstance.post("wallet/transaction/search-transaction", data)
             .then((res) => {
-                // console.log(res.data.data.results)
+                console.log(page)
                 if (!res.data.error) {
-
                     ctx.setState({
-                        table : res.data.data.results
+                        table : res.data.data.results,
+                        totalPages: Math.ceil(res.data.data.total_count / API_LIMIT),
+                        currentPage: page,
                     })
                 }
                 else {

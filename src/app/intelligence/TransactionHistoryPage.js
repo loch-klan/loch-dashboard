@@ -10,7 +10,7 @@ import Ethereum from '../../assets/images/icons/ether-coin.svg'
 import CoinChip from '../wallet/CoinChip';
 import { connect } from "react-redux";
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
-import { SEARCH_BY_WALLET_ADDRESS_IN ,Method} from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, API_LIMIT, START_INDEX} from '../../utils/Constant'
 import { searchTransactionApi} from './Api';
 import { getCoinRate } from '../Portfolio/Api.js'
 import moment from "moment"
@@ -18,6 +18,8 @@ import moment from "moment"
 class TransactionHistoryPage extends Component {
     constructor(props) {
         super(props);
+        const params = new URLSearchParams(this.props.location.search);
+        const page = parseInt(params.get('p') || START_INDEX, 10);
         this.state = {
             fillters: [
                 {
@@ -36,25 +38,38 @@ class TransactionHistoryPage extends Component {
             sort: [],
             start: 0,
             limit: 10,
+            totalPages: 0,
+            currentPage: page,
         }
     }
     componentDidMount() {
         this.callApi()
         this.props.getCoinRate()
     }
-    callApi = () => {
+    componentDidUpdate(prevProps, prevState) {
+      const prevParams = new URLSearchParams(prevProps.location.search);
+      const prevPage = parseInt(prevParams.get('p') || START_INDEX, 10);
+console.log('prevPage',prevPage);
+      const params = new URLSearchParams(this.props.location.search);
+      const page = parseInt(params.get('p') || START_INDEX, 10);
+      console.log('page',page);
+      if (prevPage !== page) {
+          this.callApi(page);
+      }
+  }
+    callApi = (page = 0) => {
         let arr = JSON.parse(localStorage.getItem("addWallet"))
         let address = arr.map((wallet) => {
             return wallet.address
         })
         let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }]
         let data = new URLSearchParams()
-        data.append("start", this.state.start)
+        data.append("start", (page * API_LIMIT))
         data.append("conditions", JSON.stringify(condition))
-        data.append("limit", this.state.limit)
+        data.append("limit", API_LIMIT)
         data.append("sorts", JSON.stringify(this.state.sort))
         // console.log(data)
-        this.props.searchTransactionApi(this, data)
+        this.props.searchTransactionApi(this, data, page)
         // console.log(d)
     }
     render() {
@@ -70,7 +85,7 @@ class TransactionHistoryPage extends Component {
 
         })
 
-        
+
         let tableData = this.state.table.map((row) => {
             return {
                 time: row.timestamp,
@@ -97,7 +112,7 @@ class TransactionHistoryPage extends Component {
                     id: row.asset.id
                 },
                 usdValueThen: 0,
-                usdValueToday:   0,
+                usdValueToday: 0,
                 usdTransactionFee: row.transaction_fee,
                 method: row.transaction_type
             }
@@ -251,7 +266,7 @@ class TransactionHistoryPage extends Component {
                             }
                         })
                         return value?.toFixed(2)
-                       
+
                     }
                 }
             },
@@ -266,7 +281,7 @@ class TransactionHistoryPage extends Component {
                         return (
                             <div
                                 className={
-                                    `inter-display-medium f-s-13 lh-16 black-191 history-table-method 
+                                    `inter-display-medium f-s-13 lh-16 black-191 history-table-method
                                     ${rowData.method === Method.BURN ? "burn"
                                         :
                                         rowData.method === Method.TRANSFER ? "transfer"
@@ -293,7 +308,7 @@ class TransactionHistoryPage extends Component {
         return (
             <div className="history-table-section">
                 <div className='history-table page'>
-            
+
                     <PageHeader
                         title={"Transaction history"}
                         subTitle={"Valuable insights based on your assets"}
@@ -324,11 +339,15 @@ class TransactionHistoryPage extends Component {
                     <TransactionTable
                         tableData={tableData}
                         columnList={columnList}
+                        totalPages={this.state.totalPages}
+                        history={this.props.history}
+                        location={this.props.location}
+                        page={this.state.currentPage}
                     />
-                    <CommonPagination
+                    {/* <CommonPagination
                         numOfPages={3}
                     // setValue={setPage}
-                    />
+                    /> */}
 
 
                 </div>
