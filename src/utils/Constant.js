@@ -80,7 +80,13 @@ export const Method = {
     30: "Mint",
     40: "Commit",
   },
-  opt:["Burn","Transfer","Mint","Commit"],
+  // opt:["Burn","Transfer","Mint","Commit"],
+  opt: [
+    { value: 10, label: "Burn" },
+    { value: 20, label: "Transfer" },
+    { value: 30, label: "Mint" },
+    { value: 40, label: "Commit" }
+  ],
   getText : function(value){
     return this.presentable[value]
   }

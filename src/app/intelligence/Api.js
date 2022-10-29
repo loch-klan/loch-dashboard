@@ -22,3 +22,16 @@ export const searchTransactionApi = (ctx, data, page = 0) => {
             })
     }
 }
+
+export const getFilters = () => {
+    return function (dispatch, getState) {
+        let data = new URLSearchParams()
+        postLoginInstance.post("wallet/transaction/get-transaction-filter",data)
+        .then((res) =>  {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log("getFilter ", err)
+        })
+    }
+}

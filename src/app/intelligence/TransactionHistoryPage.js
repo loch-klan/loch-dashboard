@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, Image, Row, Col } from 'react-bootstrap';
+import { Button,Image, Row, Col } from 'react-bootstrap';
 import PageHeader from '../common/PageHeader';
 import DropDown from './../common/DropDown';
 import searchIcon from '../../assets/images/icons/search-icon.svg'
@@ -10,30 +10,38 @@ import Ethereum from '../../assets/images/icons/ether-coin.svg'
 import CoinChip from '../wallet/CoinChip';
 import { connect } from "react-redux";
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
-import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, API_LIMIT, START_INDEX} from '../../utils/Constant'
-import { searchTransactionApi} from './Api';
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX } from '../../utils/Constant'
+import { searchTransactionApi ,getFilters} from './Api';
 import { getCoinRate } from '../Portfolio/Api.js'
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import moment from "moment"
+import { SelectControl, FormElement, CustomTextControl, FormValidator, Form } from '../../utils/form';
 
-class TransactionHistoryPage extends Component {
+class TransactionHistoryPage extends BaseReactComponent {
     constructor(props) {
         super(props);
         const params = new URLSearchParams(this.props.location.search);
         const page = parseInt(params.get('p') || START_INDEX, 10);
         this.state = {
-            fillters: [
-                {
-                    title: "This year",
-                    data: []
-                },
-                {
-                    title: "All assets",
-                    data: [],
-                },
-                {
-                    title: "All methods",
-                    data: Method.opt
-                }],
+            // fillters: [
+            //     {
+            //         title: "This year",
+            //         data: []
+            //     },
+            //     {
+            //         title: "All assets",
+            //         data: [],
+            //     },
+            //     {
+            //         title: "All methods",
+            //         data: Method.opt
+            //     }],
+            year:'',
+            method:'',
+            asset:'',
+            assetsDropdown: Method.opt,
+            methodsDropdown: Method.opt,
+            yearDropdown: Method.opt,
             table: [],
             sort: [],
             start: 0,
@@ -44,6 +52,7 @@ class TransactionHistoryPage extends Component {
     }
     componentDidMount() {
         this.callApi()
+        this.props.getFilters()
         this.props.getCoinRate()
     }
     componentDidUpdate(prevProps, prevState) {
@@ -72,18 +81,22 @@ console.log('prevPage',prevPage);
         this.props.searchTransactionApi(this, data, page)
         // console.log(d)
     }
-    render() {
-        const fillter_tabs = this.state.fillters.map((e) => {
-            return (
-                <Col md={3}>
-                    <DropDown
-                        id="dropdown-transaction-fillter-tab"
-                        title={e.title}
-                        list={e.data}
-                    />
-                </Col>)
 
-        })
+    onValidSubmit = ()=>{
+        console.log("Sbmit")
+    }
+    render() {
+        // const fillter_tabs = this.state.fillters.map((e) => {
+        //     return (
+        //         <Col md={3}>
+        //             {/* <DropDown
+        //                 id="dropdown-transaction-fillter-tab"
+        //                 title={e.title}
+        //                 list={e.data}
+        //             /> */}
+        //         </Col>)
+
+        // })
 
 
         let tableData = this.state.table.map((row) => {
@@ -203,9 +216,9 @@ console.log('prevPage',prevPage);
                 cell: (rowData, dataKey) => {
                     if (dataKey === "amount") {
                         let chain = Object.entries(this.props.portfolioState.coinRateList)
-                        let value ;
+                        let value;
                         chain.find((chain) => {
-                            if(chain[0] === rowData.amount.id){
+                            if (chain[0] === rowData.amount.id) {
                                 value = (rowData.amount.amount * chain[1].quote.USD.price)
                                 return
                             }
@@ -237,9 +250,9 @@ console.log('prevPage',prevPage);
 
                     if (dataKey === "usdValueToday") {
                         let chain = Object.entries(this.props.portfolioState.coinRateList)
-                        let value ;
-                        chain.find((chain)=>{
-                            if(chain[0] === rowData.amount.id){
+                        let value;
+                        chain.find((chain) => {
+                            if (chain[0] === rowData.amount.id) {
                                 value = chain[1].quote.USD.price
                                 return
                             }
@@ -258,9 +271,9 @@ console.log('prevPage',prevPage);
                     // console.log(rowData)
                     if (dataKey === "usdTransactionFee") {
                         let chain = Object.entries(this.props.portfolioState.coinRateList)
-                        let value ;
-                        chain.find((chain)=>{
-                            if(chain[0] === rowData.amount.id){
+                        let value;
+                        chain.find((chain) => {
+                            if (chain[0] === rowData.amount.id) {
                                 value = (rowData.usdTransactionFee * chain[1].quote.USD.price)
                                 return
                             }
@@ -318,19 +331,74 @@ console.log('prevPage',prevPage);
                     />
 
                     <div className='fillter_tabs_section'>
-                        <Row>
-                            {fillter_tabs}
-                            <Col md={3}>
-                                <Form className="searchBar">
-                                    <Image src={searchIcon} />
-                                    <Form.Control
-                                        type="search"
-                                        placeholder="Search"
-                                        aria-label="Search"
+                            <Form onValidSubmit={this.onValidSubmit} >
+                            <Row>
+                                <Col md={3}>
+                                    <FormElement
+                                        valueLink={this.linkState(this,"year")}
+                                        
+                                        control={{
+                                            type: SelectControl,
+                                            settings: {
+                                                options: this.state.yearDropdown,
+                                                multiple: false,
+                                                searchable: true,
+                                                onChangeCallback: (onBlur) => {
+                                                    console.log(onBlur)
+                                                    console.log('Hello world!');
+                                                    onBlur(this.state.year);
+                                                },
+                                                placeholder:"All Year"
+                                            }
+                                        }}
                                     />
-                                </Form>
-                            </Col>
+                                </Col>
+                                <Col md={3}>
+                                    <FormElement
+                                        valueLink={this.linkState(this,"asset")}
+                                        control={{
+                                            type: SelectControl,
+                                            settings: {
+                                                options: this.state.assetsDropdown,
+                                                multiple: false,
+                                                searchable: true,
+                                                onChangeCallback: (onBlur) => {
+                                                    onBlur(this.state.year);
+                                                },
+                                                placeholder:"All assets"
+                                            }
+                                        }}
+                                    />
+                                </Col>
+                                <Col md={3}>
+                                    <FormElement
+                                        valueLink={this.linkState(this,'method')}
+                                        
+                                        control={{
+                                            type: SelectControl,
+                                            settings: {
+                                                options: this.state.yearDropdown,
+                                                multiple: false,
+                                                searchable: true,
+                                                onChangeCallback: (onBlur) => {
+                                                    onBlur(this.state.year);
+                                                },
+                                                placeholder: "All methods",
+                                            }
+                                            
+                                        }}
+                                    />
+                                </Col>
+
+                                {/* {fillter_tabs} */}
+                                <Col md={3}>
+                                <div className="searchBar">
+                                    <Image src={searchIcon} />
+                                    <input placeholder='Search' type="text" />
+                                </div>
+                                </Col>
                         </Row>
+                            </Form>
                     </div>
                     {/* <CustomTable
         tableData={props.table_data}
@@ -361,7 +429,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
     searchTransactionApi,
-    getCoinRate
+    getCoinRate,
+    getFilters
 }
 
 TransactionHistoryPage.propTypes = {
