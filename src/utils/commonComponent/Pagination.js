@@ -33,8 +33,8 @@ const onNextClick = (props) => {
     if (props.page < props.pageCount) {
       // console.log("Hello")
       const params = new URLSearchParams(props.location.search);
-      params.set("p", props.page + 1);
-      // console.log(params)
+      params.set("p", props.page);
+      console.log(params,props)
       props.history.push(`${props.history.location.pathname}?${params}`)
       // props.loadData(props.page + 1);
     }
