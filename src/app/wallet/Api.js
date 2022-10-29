@@ -2,7 +2,8 @@ import { postLoginInstance } from "../../utils";
 import { toast } from "react-toastify";
 import { getAllWalletList } from "./WalletAction";
 
-export const getAllWalletListApi = (data) => {
+
+export const getAllWalletListApi = (data,ctx) => {
   return function (dispatch, getState) {
     postLoginInstance.post("wallet/user-wallet/search-wallet", data)
       .then((res) => {
@@ -23,6 +24,9 @@ export const getAllWalletListApi = (data) => {
             })
           })
           dispatch(getAllWalletList(walletdata))
+          ctx.setState({
+            isLoading:false,
+          })
         } else {
           toast.error(res.data.message || "Something Went Wrong")
         }

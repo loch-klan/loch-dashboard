@@ -21,6 +21,7 @@ import { getCoinRate } from "../Portfolio/Api.js";
 import noDataImage from "../../image/no-data.png";
 import lochClean from "../../assets/images/LochClean.gif";
 import { Image } from "react-bootstrap";
+import Loading from "../common/Loading";
 
 class Wallet extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class Wallet extends Component {
       userWalletList: [],
       activeBadge: [{ name: "All", id: "" }],
       addModal: false,
+      isLoading: true,
     };
     this.sortby = ["Amount", "Date added", "Name"];
   }
@@ -52,7 +54,8 @@ class Wallet extends Component {
     data.append("limit", 50);
     // data.append("limit", API_LIMIT)
     data.append("sorts", JSON.stringify(this.state.sorts));
-    this.props.getAllWalletListApi(data);
+    this.props.getAllWalletListApi(data,this);
+    console.log(data);
   };
   handleSort = (e) => {
     if (e === "Amount") {
@@ -153,8 +156,6 @@ class Wallet extends Component {
     this.makeApiCall();
   };
 
-
-
   render() {
     const settings = {
       dots: false,
@@ -215,7 +216,7 @@ class Wallet extends Component {
                     <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
                       {e}
                     </span>{" "}
-                    <Image src={sort} style={{ width: "1rem" }}  />
+                    <Image src={sort} style={{ width: "1rem" }} />
                   </span>
                 );
               })}
@@ -223,8 +224,16 @@ class Wallet extends Component {
           </div>
 
           <div className="cards">
-            {walletList.length > 0 ? (
-              
+            {this.state.isLoading == true ? (
+              <div className="loading-container">
+                <div className="animation-background">
+                  
+                </div>
+                <Loading/>
+              </div>
+            ) : (walletList.length > 0
+              ?
+              (
               walletList.map((wallet, index) => {
                 return (
                   <WalletCard
@@ -237,77 +246,17 @@ class Wallet extends Component {
                     makeApiCall={this.makeApiCall}
                     handleUpdateWallet={this.handleUpdateWallet}
                     history={this.props.history}
+                    // isLoading={this.state.isLoading}
                   />
                 );
               })
-            ) :  (
-              <div
-                className="walletcard"
-                //   style={{ textAlign: "center" }}
-              >
-                
-                <div style={{
-                  display: "flex",
-                  flexDirection:"column",
-                  justifyContent:"center",
-                  alignItems:"center"
-                   }}>
-                    <Image src={lochClean} className="no-data m-b-200 " />
-                <div
-                  style={{
-                  display: "flex",
-                  maxHeight: "20px",
-                  minHeight:"fit-content",
-                  overflow: "hidden",
-                  fontFamily: 'Inter',
-                fontStyle: "normal",
-                fontWeight: "500",
-                fontSize: "16px",
-                lineHeight: "120%",
-                fontFamily: "Inter-Medium, Arial, Helvetica, sans-serif",
-                color:"#ABACAE",
-            background:"blur(3px)"}}
-                >
-                  <span>Indexing blockchain is  </span>
-                  <div style={{paddingLeft:"5px",fontSize:"1.6rem"}}> 
-                    <Slider {...settings}>
-                      <div>
-                        <h3>cumberstone</h3>
-                      </div>
-                      <div>
-                        <h3>time consuming</h3>
-                      </div>
-                      <div>
-                        <h3>intricate</h3>
-                      </div>
-                    </Slider>
-                  </div>
-                </div>
-                <span 
-                style={{
-                fontStyle: "normal",
-                fontWeight: "500",
-                fontSize: "16px",
-                lineHeight: "120%",
-                fontFamily: "Inter-Medium, Arial, Helvetica, sans-serif",
-                color:"#ABACAE"}}>
-                    Hang On. We got you
-                </span>
-              </div> 
-                {/* <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3> */}
+              )
+              :
+              <div style={{textAlign: "center"}}>
+                    {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
+                    <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
               </div>
-            
             )}
-            { walletList.length==0 && 
-              <div style={{ textAlign: "center" }}>
-              {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-              <h3 className="inter-display-medium f-s-25 lh-30 m-b-8">
-                No data found
-              </h3>
-            </div>
-            }
-              
-          
           </div>
         </div>
       </div>

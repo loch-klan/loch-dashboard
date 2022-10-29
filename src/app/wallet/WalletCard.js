@@ -9,6 +9,8 @@ import unrecognisedIcon from '../../image/unrecognised.png';
 import { amountFormat, numToCurrency } from './../../utils/ReusableFunctions';
 import CopiedModal from '../common/_utils/CopiedModal';
 import FixAddModal from '../common/FixAddModal';
+import Loading from '../common/Loading';
+
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
     const [showModal, toggleCopied] = React.useState(false);
@@ -57,10 +59,15 @@ export default function WalletCard(props) {
     const handleFixModal = ()=>{
         setShowFixModal(prev => !prev)
     }
-    return (
-
-        
+    return (<>
         <div className="walletcard">
+        
+        {/* // props.isLoading
+        // ?
+        // <Loading/>
+        // : */}
+        <>
+        
           {/* {
             <CopiedModal show={showModal} onHide={()=>toggleCopied(false)} />
           } */}
@@ -128,8 +135,13 @@ export default function WalletCard(props) {
                history={props.history}
             //    makeApiCall={props.makeApiCall}
             handleUpdateWallet = {props.handleUpdateWallet}
-           />:""
+           />
+           :""
             }
+        </>
+        
         </div>
+        </>
+        
     )
 }

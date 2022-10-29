@@ -1459,3 +1459,43 @@ form {
     }
   }
 }
+
+// loading animation on API call
+.loading-animation{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ 
+  
+
+
+}
+.slick-text{
+  display: flex;
+  max-height: 20px;
+  // min-height: fit-content;
+  overflow: hidden;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 120%;
+  font-family: Inter-Medium, Arial, Helvetica, sans-serif;
+  color: #828487;
+  background: blur(3px);
+  // width: 138px;
+  .slick-slider{
+    padding-left: 2px;
+    font-size: 1.6rem;
+    .h3{
+      width:100%
+    }
+    .slick-list{
+      height: 21px;
+    width: 137px;
+    font-size: 10px;
+  }
+  }
+}
+
