@@ -18,8 +18,10 @@ import moment from "moment"
 class TransactionHistoryPage extends Component {
     constructor(props) {
         super(props);
-        const params = new URLSearchParams(this.props.location.search);
-        const page = parseInt(params.get('p') || START_INDEX, 10);
+        const search = props.location.search;
+        const params = new URLSearchParams(search);
+        const page = params.get("p");
+        console.log('page',page);
         this.state = {
             fillters: [
                 {
@@ -39,25 +41,31 @@ class TransactionHistoryPage extends Component {
             start: 0,
             limit: 10,
             totalPages: 0,
-            currentPage: page,
+            // currentPage: page,
+            currentPage: page ? parseInt(page, 10) : START_INDEX,
         }
     }
     componentDidMount() {
+      // this.props.history.replace({
+      //   search: `?p=${this.state.currentPage}`
+      // })
         this.callApi()
         this.props.getCoinRate()
     }
-    componentDidUpdate(prevProps, prevState) {
-      const prevParams = new URLSearchParams(prevProps.location.search);
-      const prevPage = parseInt(prevParams.get('p') || START_INDEX, 10);
-console.log('prevPage',prevPage);
-      const params = new URLSearchParams(this.props.location.search);
-      const page = parseInt(params.get('p') || START_INDEX, 10);
-      console.log('page',page);
-      if (prevPage !== page) {
-          this.callApi(page);
-      }
-  }
+//     componentDidUpdate(prevProps, prevState) {
+//       const prevParams = new URLSearchParams(prevProps.location.search);
+//       const prevPage = parseInt(prevParams.get('p') || START_INDEX, 10);
+// console.log('prevPage',prevPage);
+//       const params = new URLSearchParams(this.props.location.search);
+//       const page = parseInt(params.get('p') || START_INDEX, 10);
+//       console.log('page',page);
+//       if (prevPage !== page) {
+//         console.log('Heyy');
+//           this.callApi(page);
+//       }
+//   }
     callApi = (page = 0) => {
+
         let arr = JSON.parse(localStorage.getItem("addWallet"))
         let address = arr.map((wallet) => {
             return wallet.address
@@ -66,7 +74,7 @@ console.log('prevPage',prevPage);
         let data = new URLSearchParams()
         data.append("start", (page * API_LIMIT))
         data.append("conditions", JSON.stringify(condition))
-        data.append("limit", API_LIMIT)
+        data.append("limit", 100)
         data.append("sorts", JSON.stringify(this.state.sort))
         // console.log(data)
         this.props.searchTransactionApi(this, data, page)
@@ -339,10 +347,11 @@ console.log('prevPage',prevPage);
                     <TransactionTable
                         tableData={tableData}
                         columnList={columnList}
-                        totalPages={this.state.totalPages}
-                        history={this.props.history}
-                        location={this.props.location}
-                        page={this.state.currentPage}
+                        message={"No Transactions Found"}
+                        // totalPages={this.state.totalPages}
+                        // history={this.props.history}
+                        // location={this.props.location}
+                        // page={this.state.currentPage}
                     />
                     {/* <CommonPagination
                         numOfPages={3}

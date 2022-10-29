@@ -16,7 +16,7 @@ class CustomTable extends BaseReactComponent {
 
   }
 
-  
+
   render() {
     const { istopPagination = false, tableData, className = "", columnList = [], notFoundImage = notFoundDefault, moduleName, message = "", isButton, buttonText, linkUrl, linkText, currentPage = 1, totalPages, history, location, pageSize = false, pageSizeOptions = [], handlePageSize = "" ,headerHeight , pagePrev,pageNext} = this.props;
     return (
@@ -101,7 +101,7 @@ class CustomTable extends BaseReactComponent {
                 </AutoSizer>
             :
                   <div className="not-found-wrapper">
-                    <Image src={notFoundImage} />
+                    {/* <Image src={notFoundImage} /> */}
                     <p className="red-hat-display-medium f-s-16 black-404"> {moduleName ? "No " + moduleName + " Found" : message}</p>
                     {
                       isButton &&
