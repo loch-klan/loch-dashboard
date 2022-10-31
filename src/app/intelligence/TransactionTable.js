@@ -6,6 +6,8 @@ import ArrowRight from '../../assets/images/icons/ArrowRight.svg'
 import ActivePrevBtn from '../../assets/images/icons/ActivePrevBtn.svg'
 import ActiveNextBtn from '../../assets/images/icons/ActiveNextBtn.svg'
 import InactivePrevBtn from '../../assets/images/icons/InactivePrevBtn.svg'
+import transactionTableImage from "../../assets/images/transactionTableImage.png"
+import Loading from '../common/Loading';
 function TransactionTable(props) {
     return (
         <div className="transaction-table-section">
@@ -19,19 +21,31 @@ function TransactionTable(props) {
                 :
                 ""
             }
+            {
+                props.isLoading === true 
+                ?<>
+                <div className='transaction-table-wrapper'> 
+                    <div className='animation-wrapper'><Loading/></div>
+                    
+                </div>
+                
+                </>
+                :
+                <CustomTable
+                    className="transaction-table"
+                    tableData={props.tableData}
+                    columnList={props.columnList}
+                    headerHeight={props.headerHeight}
+                    totalPage={props.totalPage}
+                    history={props.history}
+                    location={props.location}
+                    currentPage={props.page}
+                    pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
+                    pageNext={ActiveNextBtn}
+                    isLoading={props.isLoading}
+                />
+            }
 
-            <CustomTable
-                className="transaction-table"
-                tableData={props.tableData}
-                columnList={props.columnList}
-                headerHeight={props.headerHeight}
-                totalPage={props.totalPage}
-                history={props.history}
-                location={props.location}
-                currentPage={props.page}
-                pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
-                pageNext={ActiveNextBtn}
-            />
 
         </div>
     )

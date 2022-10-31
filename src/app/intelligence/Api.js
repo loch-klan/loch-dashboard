@@ -2,13 +2,18 @@ import { postLoginInstance } from "../../utils";
 import { toast } from "react-toastify";
 import { getAllTransactionHistory } from "./IntelligenceAction";
 
-export const searchTransactionApi = (data, page = 0) => {
+export const searchTransactionApi = (data , ctx, page = 0) => {
     return function (dispatch, getState) {
         postLoginInstance.post("wallet/transaction/search-transaction", data)
             .then((res) => {
                 console.log(page)
                 if (!res.data.error) {
                     dispatch(getAllTransactionHistory(res.data.data, page))
+                    setTimeout(()=>{
+                        {ctx.setState({
+                        isLoading:false,
+                      })}}
+                      ,1000)
                 }
                 else {
                     toast.error(res.data.message || "Something Went Wrong")

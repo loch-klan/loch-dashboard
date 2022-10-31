@@ -75,8 +75,7 @@ class Portfolio extends BaseReactComponent {
         data.append("conditions", JSON.stringify(condition))
         data.append("limit", this.state.limit)
         data.append("sorts", JSON.stringify(this.state.sort))
-        this.props.searchTransactionApi(data)
-
+        this.props.searchTransactionApi(data,this)
     }
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
@@ -520,6 +519,7 @@ class Portfolio extends BaseReactComponent {
                                                 tableData={tableData}
                                                 columnList={columnList}
                                                 headerHeight={60}
+                                                isLoading={this.state.isLoading}
                                             />
                                         </div>
                                     </Col>

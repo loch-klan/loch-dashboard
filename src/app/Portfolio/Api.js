@@ -88,7 +88,7 @@ export const getDetailsByLinkApi = (link,ctx) => {
                   obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
                   addWallet.push(obj);
                   ctx.setState({
-                    isLoading:false,
+                    // isLoading:false,
                   })
               }
               } else{

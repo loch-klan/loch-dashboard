@@ -66,7 +66,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
 
     onValidSubmit = ()=>{
-        console.log("Sbmit")
+        console.log("Submit")
     }
     render() {
         const {table, totalPage, totalCount, currentPage} = this.props.intelligenceState;
