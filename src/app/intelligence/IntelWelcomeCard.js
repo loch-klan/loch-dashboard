@@ -1,33 +1,37 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
-import bgimg from '../../image/CardBackgroundImg.png'
+// import bgimg from '../../image/CardBackgroundImg.png'
+import bgimg from '../../assets/images/IntelCardBackgroundImg.png'
 import TransactionIcon from '../../image/TransactionHistoryIcon.svg'
 import ShuffleIcon from '../../image/ShuffleIcon.svg'
 import InsightsIcon from '../../image/InsightsIcon.svg'
 import ArrowRight from '../../image/ArrowRight.svg'
-export default function IntelWelcomeCard() {
+export default function IntelWelcomeCard(props) {
 
     const cardData = [
         {
             icon: TransactionIcon,
             title: "Transaction History",
-            background:"lightblue"
+            background:"lightblue",
+            path:'/intelligence/transaction-history'
         },
         {
             icon: ShuffleIcon,
             title: "Traded by counterparty",
-            background:"lightyellow"
+            background:"lightyellow",
+            path:'/intelligence/transaction-history'
         },
         {
             icon: InsightsIcon,
             title: "Insights",
-            background:"lightpurple"
+            background:"lightpurple",
+            path:'/intelligence/transaction-history'
         }
     ]
 
     const cards = cardData.map((card) => {
         return (
-            <div className='info'>
+            <div className='info' onClick={()=>props.history.push(card.path)}>
                 <div className = {`icon ${card.background}`}>
                     <Image src={card.icon} />
                 </div>
@@ -36,7 +40,7 @@ export default function IntelWelcomeCard() {
                         {card.title}
                     </div>
                     <div className='viewmore'>
-                        <h4 className="inter-display-semi-bold f-s-13 lh-16">View more</h4>
+                        <h4 className="inter-display-semi-bold f-s-13 lh-16 black-191">View more</h4>
                         <Image src={ArrowRight} />
                     </div>
                 </div>

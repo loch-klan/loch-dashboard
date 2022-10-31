@@ -32,7 +32,9 @@
             background-color: $secondary;
             box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
             border-radius: 1.2rem;
-
+            &.line{
+              margin-top: 0;
+            }
             .welcome-card {
                 display: flex;
                 align-items: flex-start;
@@ -129,7 +131,7 @@
                             padding: 0.4rem;
                             overflow-y: scroll;
                             height: 7rem;
-                            
+
                         }
                         .dropdown-toggle {
                             @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
@@ -197,6 +199,14 @@
             line-height: 2rem;
             color: $grey-B0B;
         }
+        .highcharts-tooltip {
+        
+            .span-bottom{
+               
+                white-space: normal !important;
+                word-wrap: break-word;
+            }
+        }
     }
 
     .portfolio-over-container {
@@ -205,7 +215,7 @@
         justify-content: center;
         flex-direction: column;
         padding-top: 2rem;
-        padding-bottom: 10rem;
+        padding-bottom: 5rem;
 
         .overview-heading {
             width: 100%;
@@ -258,10 +268,14 @@
 
             .transaction-table-section {
                 .graph-header {
+                    h4{
+                        cursor: pointer;
+                    }
                     p {
                         margin-bottom: 0.3rem;
                     }
                 }
+
             }
         }
 

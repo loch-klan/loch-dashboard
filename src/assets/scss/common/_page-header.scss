@@ -24,12 +24,13 @@
                     .breadcrumb-item{
                         padding-left: 1.4rem;
                         text-transform: capitalize;
+                        cursor : pointer;
                         a{
                             color:$grey-ADA;
                         }
-                        .active{
-                            color:$grey-636;
-                        }
+                    }
+                    .active{
+                        color:$grey-636;
                     }
                     .breadcrumb-item:nth-child(1){
                         padding: 0rem;

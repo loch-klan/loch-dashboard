@@ -1,6 +1,6 @@
 export const API_LIMIT = 10
 export const MAX_LIMIT = 1000
-export const START_PAGE = 0
+export const START_INDEX = 0
 export const GOOGLE_API_KEY = ""
 export const API_URL = "https://sapi-float.ebikego.com/api/"
 export const MEDIA_URL = "https://d1r1yzhyzim0p1.cloudfront.net/"
@@ -66,6 +66,34 @@ export const Days = {
 
 export const DayOptions = Object.keys(Days.presentable).map((day) => ({
   label: Days.presentable[day],
+  value: day
+}))
+
+export const Method = {
+  BURN: 10,
+  TRANSFER: 20,
+  MINT: 30,
+  COMMIT: 40,
+  presentable: {
+    10: "Burn",
+    20: "Transfer",
+    30: "Mint",
+    40: "Commit",
+  },
+  // opt:["Burn","Transfer","Mint","Commit"],
+  opt: [
+    { value: 10, label: "Burn" },
+    { value: 20, label: "Transfer" },
+    { value: 30, label: "Mint" },
+    { value: 40, label: "Commit" }
+  ],
+  getText : function(value){
+    return this.presentable[value]
+  }
+}
+
+export const MethodOptions = Object.keys(Method.presentable).map((day) => ({
+  label:Method.presentable[day],
   value: day
 }))
 

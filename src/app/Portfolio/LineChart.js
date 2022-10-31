@@ -6,6 +6,8 @@ import HighchartsReact from 'highcharts-react-official';
 import { GraphHeader } from '../common/GraphHeader'
 import CoinBadges from './../common/CoinBadges';
 import DropDown from "../common/DropDown";
+import TrendingUp from '../../assets/images/icons/TrendingUp.svg'
+import TrendingDown from '../../assets/images/icons/TrendingDown.svg'
 class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -96,15 +98,32 @@ class LineChart extends BaseReactComponent {
             tooltip: {
                 useHTML: true,
                 borderRadius: 8,
-                borderColor: "#fffff",
+                borderColor: "#E5E7EB",
+                backgroundColor:"white",
                 borderShadow: 0,
+                padding:12,
                 formatter: function () {
-                    return `<div style="display: flex;flex-direction:column;">
-                    <p style="padding-bottom:1.25rem"><span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100" style="">Potential External Factors</span></p>
-                    <p style="padding-bottom:1.25rem"><span class="inter-display-medium f-s-12 lh-16 black-191 w-100" style="background-color: #C6E4FF;padding:4px 8px 4px 8px; border-radius: 4px;">Increased Interests Rates</span><p>
-                    <p style="padding-bottom:1.25rem"><span class="inter-display-medium f-s-12 lh-16 black-191 lh-16 w-100" style="background-color: #F5E889;padding:4px 8px 4px 8px; border-radius: 4px;">Terra Collapse</span></p>
-                    <p style="padding-bottom:1.25rem"><span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100">INTERNAL Factors</span></p>
-                    <p style="padding-bottom:1.25rem"><span class="inter-display-medium f-s-12 lh-16 black-191 w-100" style="background-color: #F5E889;padding:4px 8px 4px 8px; border-radius: 4px;">0.7 BTC was deposited into a Coinbase Wallet </span></p>
+                    return `
+                    <div style="display: flex;flex-direction:column;" >
+                    <div class="m-b-8">
+                    <span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100" style="text-transform:uppercase;letter-spacing: 1.25px;">Potential External Factors</span>
+                    </div>
+                    <div class="m-b-8" style="background-color: #C6E4FF;padding:4px 8px 4px 8px; border-radius: 4px;">
+                    <span class="inter-display-medium f-s-12 lh-16 black-191 w-100" >
+                    <img src=${TrendingUp} class="m-r-8" />
+                    Increased Interests Rates</span>
+                    </div>
+                    <div class="m-b-12" style="background-color: rgba(245, 232, 137, 0.5);padding:4px 8px 4px 8px; border-radius: 4px;">
+                    <span class="inter-display-medium f-s-12 lh-12 black-191  w-100" >
+                    <img src=${TrendingDown} class="m-r-8" />
+                    Terra Collapse</span>
+                    </div>
+                    <div class="m-b-8">
+                    <span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100" style="text-transform:uppercase;letter-spacing: 1.25px;">INTERNAL Factors</span>
+                    </div>
+                    <div>
+                    <div class="inter-display-medium f-s-12 lh-16 black-191 w-100 span-bottom" style="background-color: rgba(245,232,137,0.5);padding:4px 8px 4px 8px; border-radius: 4px;">0.7 BTC was deposited into a Coinbase Wallet </div>
+                    </div>
                     </div>`;
                 }
             },
@@ -169,19 +188,20 @@ class LineChart extends BaseReactComponent {
                 }]
         }
         return (
-            <div className="welcome-card-section">
+            <div className="welcome-card-section line">
                 <div className='line-chart-section'>
 
                     <GraphHeader
                         title="Asset Value"
                         subtitle="Updated 3mins ago"
+                        isArrow={true}
                     />
 
                     <CoinBadges
                         activeBadge={this.state.activeBadge}
                         chainList={this.props.OnboardingState.coinsList}
                         handleFunction={this.handleFunction}
-                        
+
                     />
                     {/* <div className='chart-x-selection'>
                         <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 y-axis-selection-currency' >
@@ -207,8 +227,8 @@ class LineChart extends BaseReactComponent {
                             <option>Hour</option>
                         </select> */}
 
-                        <DropDown 
-                            class="line-chart-dropdown"  
+                        <DropDown
+                            class="line-chart-dropdown"
                             list={["Year","Month","Day","Week","Hour"]}
                             onSelect={this.handleSelect}
                             title={this.state.title}

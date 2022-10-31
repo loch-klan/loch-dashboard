@@ -1,21 +1,24 @@
 import React from 'react'
 import { Button, Breadcrumb, Image } from 'react-bootstrap'
 import InActiveHomeSmallIcon from '../../assets/images/icons/InactiveHomeSmallIcon.svg'
+import {Link} from 'react-router-dom'
 export default function PageHeader(props) {
 
   const nav_list = window.location.pathname.split("/");
 
   const breads = nav_list.map((e, index) => {
+    // console.log(e , props.currentPage)
     return e &&
       <>
-        <Breadcrumb.Item href="#" className="inter-display-medium f-s-13 lh-16" key={index}>{e}</Breadcrumb.Item>
-        {/* <Breadcrumb.Item className="inter-display-medium f-s-13 lh-16 active" key={index}>Transaction History</Breadcrumb.Item> */}
-        <Breadcrumb.Item className='inter-display-medium f-s-13 lh-16' active>{props.currentPage}</Breadcrumb.Item>
+        <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/${e}`}}className="inter-display-medium f-s-13 lh-16" active={e === props.currentPage} key={index} >
+          {e}
+        </Breadcrumb.Item>
+        
       </>
   })
   const breadCrumb =
     <Breadcrumb >
-      <Breadcrumb.Item href="#"><Image src={InActiveHomeSmallIcon} /></Breadcrumb.Item>
+      <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/portfolio`}}><Image src={InActiveHomeSmallIcon} /></Breadcrumb.Item>
       {breads}
     </Breadcrumb >
 

@@ -1,80 +1,173 @@
 .history-table-section {
+    display: flex;
 
-    .fillter_tabs_section {
-        // display: flex;
-        // align-items: center;
-        padding: 1.2rem;
-        background-color: $secondary;
-        border-radius: 1.2rem;
-        margin-bottom: 2rem;
-        // justify-content: space-between;
-        .row{
-            margin: 0rem;
-            .col-md-3{
-                padding: 0rem;
+    .history-table {
+        margin-top: 8rem;
+
+
+        .fillter_tabs_section {
+            // display: flex;
+            // align-items: center;
+            padding: 1.2rem;
+            background-color: $secondary;
+            border-radius: 1.2rem;
+            margin-bottom: 2rem;
+
+            // justify-content: space-between;
+            .row {
+                margin: 0rem;
+
+                .col-md-3 {
+                    padding: 0rem;
+
+                    .form-group {
+                        margin: 0rem 1.7rem 0rem 0rem;
+
+                        .css-2b097c-container {
+                            .custom-select__control{
+                            background-color: $grey-F2F;
+                            color: $black-191;
+                            border-radius: 0.8rem;
+                            border: none;
+                            min-height: 4rem;
+                            padding-left:1rem;
+                            // width:24rem;
+                            .custom-select__value-container{
+                                padding: 0rem;
+                                .custom-select__placeholder{
+                                    @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+                                    width:100%;
+                                    text-align: center;
+                                }
+                                .custom-select__single-value{
+                                    text-align: center;
+                                    width:100%;
+                                    @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+                                }
+                                
+                            }
+                            .custom-select__indicators{
+                                .css-1okebmr-indicatorSeparator{
+                                    width: 0rem;
+                                    margin: 0rem;
+                                }
+                            .custom-select__indicator{
+                                position: relative;
+                                .css-tj5bde-Svg{
+                                    position: absolute;
+                                    top: -0.1rem;
+                                    right: 3rem;
+                                }
+                            }
+                            }
+                            }
+                        }
+                    }
+                }
             }
-        }
-        .dropdown {
-            margin-right: 1.7rem;
 
-            .btn-primary:not(:disabled):not(.disabled):active {
-                background-color: $grey-F2F;
-                border: none;
+
+            .dropdown {
+                margin-right: 1.7rem;
+
+                .dropdown-menu {
+                    width: auto;
+                    padding: 0.4rem;
+
+                    .dropdown-item {
+                        padding: 0.8rem;
+                        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+                    }
+                }
+
+                .btn-primary:not(:disabled):not(.disabled):active {
+                    background-color: $grey-F2F;
+                    border: none;
+                }
+
+                .dropdown-toggle {
+
+                    background-color: $grey-F2F;
+                    color: $black-191;
+                    padding: 1.2rem 6.2rem;
+                    border-radius: 0.8rem;
+                    width: 100%;
+                }
+
+                .dropdown-toggle::after {
+                    margin-left: 0.4rem;
+                }
             }
 
-            .dropdown-toggle {
-                background-color: $grey-F2F;
-                color: $black-191;
-                padding: 1.2rem 6.2rem;
+
+
+            .searchBar {
+                display: flex;
+                background: $secondary;
+                border: 0.1rem solid #D4D4D4;
+                align-items: center;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 border-radius: 0.8rem;
-                width: 100%;
-            }
+                padding: 0.7rem;
 
-            .dropdown-toggle::after {
-                margin-left: 0.4rem;
-            }
-        }
+                ::placeholder {
+                    color: $grey-B0B;
+                }
 
+                input {
+                    border: none;
+                    outline: none;
+                    @include font($grey-B0B, "Inter-Medium", 1.6rem, 500, 1.9rem);
+                    width:100%;
+                }
 
-
-        .searchBar {
-            display: flex;
-            background: $secondary;
-            border: 0.1rem solid #D4D4D4;
-            align-items: center;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-            border-radius: 0.8rem;
-            padding: 0.25rem;
-
-            ::placeholder {
-                color: $grey-B0B;
-            }
-
-            input {
-                border: none;
-                font-family: Inter-medium;
-                font-size: 1.6rem;
-                line-height: 1.9rem;
-                color: $grey-B0B;
-            }
-
-            input:focus {
-                box-shadow: none;
+                input:focus {
+                    box-shadow: none;
+                }
             }
         }
-    }
 
-    .table-wrapper {
-        background: $secondary;
-        box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
-        border-radius: 1.2rem;
+        .transaction-table-section {
+            margin-bottom: 10rem;
 
-        .custom-table {
-            .ReactVirtualized__Table__headerRow {
-                padding-left: 0rem;
-            }
-            .ReactVirtualized__Table__Grid {
-                padding-left: 0rem;
+            .table-wrapper {
+                background: $secondary;
+                box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+                border-radius: 1.2rem;
+
+                .pagination-wrapper {
+                    display: flex;
+                    align-items: center;
+
+                    h5 {
+                        margin: 0 1.2rem;
+                    }
+                }
+
+                .custom-table {
+                    .ReactVirtualized__Table__headerRow {
+                        padding-left: 0rem;
+                    }
+
+                    .ReactVirtualized__Table__Grid {
+                        padding-left: 0rem;
+
+                        .ReactVirtualized__Grid__innerScrollContainer {
+                            .ReactVirtualized__Table__row {
+                                .ReactVirtualized__Table__rowColumn {
+                                    // .history-table-coin-icon {
+                                    //     img {
+                                    //         // width: 1.6rem;
+                                    //         // height: 1.6rem;
+                                    //         width: 2.6rem;
+                                    //         height: 2.6rem;
+                                    //     }
+                                    // }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

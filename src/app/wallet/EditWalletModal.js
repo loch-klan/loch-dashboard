@@ -3,7 +3,7 @@ import { Modal, Image, Button } from 'react-bootstrap'
 import closeIcon from '../../assets/images/icons/close-icon.svg'
 import { connect } from 'react-redux';
 import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
-import unrecognisedIcon from '../../image/unrecognised.png';
+import unrecognizedIcon from '../../image/unrecognized.png';
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
 class EditWalletModal extends BaseReactComponent {
     constructor(props) {
@@ -79,7 +79,7 @@ class EditWalletModal extends BaseReactComponent {
                 backdropClassName="editmodal"
             >
                 <Modal.Header style={{backgroundColor: walletBdColor ? walletBdColor : "#0d0d0d"}}>
-                    <Image src={walletIcon ? walletIcon : unrecognisedIcon} className="walletIcon" />
+                    <Image src={walletIcon ? walletIcon : unrecognizedIcon} className="walletIcon" />
                     <div className="closebtn" onClick={onHide}>
                         <Image src={closeIcon} />
                     </div>

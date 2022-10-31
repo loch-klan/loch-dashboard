@@ -227,7 +227,7 @@ class FixAddModal extends BaseReactComponent {
             }
         }
         // console.log('localArr',localArr);
-        // remove repeat address if same address added for unrecognised wallet
+        // remove repeat address if same address added for unrecognized wallet
         let newArr = []
         let walletList = []
         for (let i = 0; i < localArr.length; i++) {
@@ -353,7 +353,7 @@ class FixAddModal extends BaseReactComponent {
                                 :
                                 elem.coins.length === this.props.OnboardingState.coinsList.length
                                     ?
-                                    // UNRECOGNISED WALLET
+                                    // UNRECOGNIZED WALLET
                                     <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
                                     :
                                     // LOADING STATE

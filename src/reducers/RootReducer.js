@@ -6,6 +6,7 @@ import { HomeReducer } from '../app/home';
 import OnboardingReducer from "../app/onboarding/OnboardingReducer";
 import PortfolioReducer from "../app/Portfolio/PortfolioReducer";
 import WalletReducer from '../app/wallet/WalletReducer';
+import IntelligenceReducer from '../app/intelligence/IntelligenceReducer';
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -15,4 +16,5 @@ export default combineReducers({
   OnboardingState: OnboardingReducer,
   PortfolioState: PortfolioReducer,
   WalletState: WalletReducer,
+  IntelligenceState: IntelligenceReducer,
 });

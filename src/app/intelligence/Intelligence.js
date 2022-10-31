@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Sidebar from '../common/Sidebar';
 import IntelWelcomeCard from './IntelWelcomeCard';
 import PageHeader from '../common/PageHeader';
-import { TransactionHistoryPage } from './TransactionHistoryPage';
+import TransactionHistoryPage  from './TransactionHistoryPage';
 import eyeIcon from '../../assets/images/icons/eyeIcon.svg'
 import BarGraphSection from '../common/BarGraphSection';
 import { getAllCoins } from '../onboarding/Api.js'
@@ -108,7 +108,9 @@ class Intelligence extends Component {
                         title="Intelligence"
                         subTitle="Automated and personalized financial intelligence"
                     />
-                    <IntelWelcomeCard />
+                    <IntelWelcomeCard
+                        history={this.props.history}
+                    />
                     <div className="portfolio-bar-graph">
                     <PageHeader
                         title="Portfolio Performance"
@@ -135,7 +137,7 @@ class Intelligence extends Component {
 
 const mapStateToProps = state => ({
     intelligenceState: state.IntelligenceState,
-    OnboardingState:state.OnboardingState
+    OnboardingState: state.OnboardingState
 });
 const mapDispatchToProps = {
     // getPosts: fetchPosts
