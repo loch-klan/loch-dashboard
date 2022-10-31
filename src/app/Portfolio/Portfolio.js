@@ -19,7 +19,7 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN ,Method} from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, START_INDEX } from '../../utils/Constant'
 import moment from "moment"
 class Portfolio extends BaseReactComponent {
     constructor(props) {
@@ -32,9 +32,7 @@ class Portfolio extends BaseReactComponent {
             coinAvailable: true,
             fixModal: false,
             addModal: false,
-            table: [],
             sort: [],
-            start: 0,
             limit: 6,
         }
     }
@@ -72,13 +70,11 @@ class Portfolio extends BaseReactComponent {
         })
         let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }]
         let data = new URLSearchParams()
-        data.append("start", this.state.start)
+        data.append("start", START_INDEX)
         data.append("conditions", JSON.stringify(condition))
         data.append("limit", this.state.limit)
         data.append("sorts", JSON.stringify(this.state.sort))
-        // console.log(data)
-        this.props.searchTransactionApi(this, data)
-        // console.log(d)
+        this.props.searchTransactionApi(data)
 
     }
     componentDidUpdate(prevProps) {
@@ -115,7 +111,8 @@ class Portfolio extends BaseReactComponent {
 
 
     render() {
-        let tableData = this.state.table.map((row) => {
+      const {table} = this.props.intelligenceState;
+        let tableData = table && table.map((row) => {
             return {
                 time: row.timestamp,
                 from: {
@@ -230,7 +227,7 @@ class Portfolio extends BaseReactComponent {
                         chain.find((chain)=>{
                             if(chain[0] === rowData.usdValueToday.id){
                                value = chain[1].quote.USD.price
-                               return 
+                               return
                             }
                         })
                         return value?.toFixed(2);
@@ -247,7 +244,7 @@ class Portfolio extends BaseReactComponent {
                         return (
                             <div
                                 className={
-                                    `inter-display-medium f-s-13 lh-16 black-191 history-table-method 
+                                    `inter-display-medium f-s-13 lh-16 black-191 history-table-method
                                     ${rowData.method === Method.BURN ? "burn"
                                         :
                                         rowData.method === Method.TRANSFER ? "transfer"
@@ -586,7 +583,8 @@ class Portfolio extends BaseReactComponent {
 
 const mapStateToProps = state => ({
     portfolioState: state.PortfolioState,
-    OnboardingState: state.OnboardingState
+    OnboardingState: state.OnboardingState,
+    intelligenceState: state.IntelligenceState
 });
 const mapDispatchToProps = {
     getCoinRate,

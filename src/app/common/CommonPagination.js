@@ -9,11 +9,11 @@ export const CommonPagination = (props) => {
     let items = [];
     const [page, setPage] = React.useState(1)
     // const [active, setactive] = React.useState(1)
-    let totalPages = props.numOfPages
+    let totalPage = props.numOfPages
     const setCurrentPage = (p) => {
         props.setValue(p)
     }
-    for (let number = 1; number <= totalPages; number++) {
+    for (let number = 1; number <= totalPage; number++) {
         items.push(
             <Pagination.Item key={number} active={number === page} className="inter-display-medium f-s-16 lh-19">
                 {number}
@@ -21,7 +21,7 @@ export const CommonPagination = (props) => {
         );
     }
     const nextPage = () => {
-        if (page !== totalPages) {
+        if (page !== totalPage) {
             console.log(page)
             setPage(prev => prev + 1);
         }
@@ -34,7 +34,7 @@ export const CommonPagination = (props) => {
         }
     }
 
-   
+
     return (
         <div className='pagination-section'>
             <Image src={

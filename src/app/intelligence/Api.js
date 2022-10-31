@@ -1,17 +1,14 @@
 import { postLoginInstance } from "../../utils";
 import { toast } from "react-toastify";
-import { API_LIMIT } from "../../utils/Constant";
-export const searchTransactionApi = (ctx, data, page = 0) => {
+import { getAllTransactionHistory } from "./IntelligenceAction";
+
+export const searchTransactionApi = (data, page = 0) => {
     return function (dispatch, getState) {
         postLoginInstance.post("wallet/transaction/search-transaction", data)
             .then((res) => {
                 console.log(page)
                 if (!res.data.error) {
-                    ctx.setState({
-                        table : res.data.data.results,
-                        totalPages: Math.ceil(res.data.data.total_count / API_LIMIT),
-                        currentPage: page,
-                    })
+                    dispatch(getAllTransactionHistory(res.data.data, page))
                 }
                 else {
                     toast.error(res.data.message || "Something Went Wrong")

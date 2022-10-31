@@ -18,17 +18,17 @@ class CustomTable extends BaseReactComponent {
 
 
   render() {
-    const { istopPagination = false, tableData, className = "", columnList = [], notFoundImage = notFoundDefault, moduleName, message = "", isButton, buttonText, linkUrl, linkText, currentPage = 1, totalPages, history, location, pageSize = false, pageSizeOptions = [], handlePageSize = "" ,headerHeight , pagePrev,pageNext} = this.props;
+    const { istopPagination = false, tableData, className = "", columnList = [], notFoundImage = notFoundDefault, moduleName, message = "", isButton, buttonText, linkUrl, linkText, currentPage = 1, totalPage, history, location, pageSize = false, pageSizeOptions = [], handlePageSize = "" ,headerHeight , pagePrev,pageNext} = this.props;
     return (
       <div className="table-wrapper">
         <div className="header-navigation">
           {
-            istopPagination && tableData && tableData.length >= 1 && totalPages > 1 &&
+            istopPagination && tableData && tableData.length >= 1 && totalPage > 1 &&
             <Pagination
               history={history}
               location={location}
               page={currentPage}
-              pageCount={totalPages}
+              pageCount={totalPage}
             />
           }
           {
@@ -121,12 +121,12 @@ class CustomTable extends BaseReactComponent {
                   </div>
         }
                   {
-                    tableData && tableData.length >= 1 && totalPages > 1 &&
+                    tableData && tableData.length >= 1 && totalPage > 1 &&
                     <Pagination
                       history={history}
                       location={location}
                       page={currentPage + 1}
-                      pageCount={totalPages}
+                      pageCount={totalPage}
                       pagePrev={pagePrev}
                       pageNext={pageNext}
                     />

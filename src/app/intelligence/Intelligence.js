@@ -108,7 +108,7 @@ class Intelligence extends Component {
                         title="Intelligence"
                         subTitle="Automated and personalized financial intelligence"
                     />
-                    <IntelWelcomeCard 
+                    <IntelWelcomeCard
                         history={this.props.history}
                     />
                     <div className="portfolio-bar-graph">
@@ -137,7 +137,7 @@ class Intelligence extends Component {
 
 const mapStateToProps = state => ({
     intelligenceState: state.IntelligenceState,
-    OnboardingState:state.OnboardingState
+    OnboardingState: state.OnboardingState
 });
 const mapDispatchToProps = {
     // getPosts: fetchPosts

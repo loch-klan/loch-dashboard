@@ -25,7 +25,7 @@ function TransactionTable(props) {
                 tableData={props.tableData}
                 columnList={props.columnList}
                 headerHeight={props.headerHeight}
-                totalPages={props.totalPages}
+                totalPage={props.totalPage}
                 history={props.history}
                 location={props.location}
                 currentPage={props.page}

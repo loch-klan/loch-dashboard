@@ -20,47 +20,38 @@ class TransactionHistoryPage extends BaseReactComponent {
         const search = props.location.search;
         const params = new URLSearchParams(search);
         const page = params.get("p");
-        console.log('page',page);
         this.state = {
             year:'',
             method:'',
             asset:'',
-            assetsDropdown: Method.opt,
             methodsDropdown: Method.opt,
-            yearDropdown: Method.opt,
             table: [],
             sort: [],
-            start: 0,
-            limit: 10,
-            totalPages: 0,
-            // currentPage: page,
             currentPage: page ? parseInt(page, 10) : START_INDEX,
             assetFilter: [],
             yearFilter: [],
         }
     }
     componentDidMount() {
-      // this.props.history.replace({
-      //   search: `?p=${this.state.currentPage}`
-      // })
-        this.callApi()
+      this.props.history.replace({
+        search: `?p=${this.state.currentPage}`
+      })
+        this.callApi(this.state.currentPage || START_INDEX)
         getFilters(this)
         this.props.getCoinRate()
     }
-//     componentDidUpdate(prevProps, prevState) {
-//       const prevParams = new URLSearchParams(prevProps.location.search);
-//       const prevPage = parseInt(prevParams.get('p') || START_INDEX, 10);
-// console.log('prevPage',prevPage);
-//       const params = new URLSearchParams(this.props.location.search);
-//       const page = parseInt(params.get('p') || START_INDEX, 10);
-//       console.log('page',page);
-//       if (prevPage !== page) {
-//         console.log('Heyy');
-//           this.callApi(page);
-//       }
-//   }
-    callApi = (page = 0) => {
+    componentDidUpdate(prevProps, prevState) {
+      const prevParams = new URLSearchParams(prevProps.location.search);
+      const prevPage = parseInt(prevParams.get('p') || START_INDEX, 10);
 
+      const params = new URLSearchParams(this.props.location.search);
+      const page = parseInt(params.get('p') || START_INDEX, 10);
+
+      if (prevPage !== page) {
+          this.callApi(page);
+      }
+    }
+    callApi = (page = START_INDEX) => {
         let arr = JSON.parse(localStorage.getItem("addWallet"))
         let address = arr.map((wallet) => {
             return wallet.address
@@ -69,31 +60,17 @@ class TransactionHistoryPage extends BaseReactComponent {
         let data = new URLSearchParams()
         data.append("start", (page * API_LIMIT))
         data.append("conditions", JSON.stringify(condition))
-        data.append("limit", 100)
+        data.append("limit", API_LIMIT)
         data.append("sorts", JSON.stringify(this.state.sort))
-        // console.log(data)
-        this.props.searchTransactionApi(this, data, page)
-        // console.log(d)
+        this.props.searchTransactionApi(data, page)
     }
 
     onValidSubmit = ()=>{
         console.log("Sbmit")
     }
     render() {
-        // const fillter_tabs = this.state.fillters.map((e) => {
-        //     return (
-        //         <Col md={3}>
-        //             {/* <DropDown
-        //                 id="dropdown-transaction-fillter-tab"
-        //                 title={e.title}
-        //                 list={e.data}
-        //             /> */}
-        //         </Col>)
-
-        // })
-
-
-        let tableData = this.state.table.map((row) => {
+        const {table, totalPage, totalCount, currentPage} = this.props.intelligenceState;
+        let tableData = table && table.map((row) => {
             return {
                 time: row.timestamp,
                 from: {
@@ -310,8 +287,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
             }
         ]
-
-
         return (
             <div className="history-table-section">
                 <div className='history-table page'>
@@ -369,7 +344,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                         control={{
                                             type: SelectControl,
                                             settings: {
-                                                options: this.state.yearDropdown,
+                                                options: this.state.methodsDropdown,
                                                 multiple: false,
                                                 searchable: true,
                                                 onChangeCallback: (onBlur) => {
@@ -381,7 +356,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                                         }}
                                     />
                                 </Col>
-
                                 {/* {fillter_tabs} */}
                                 <Col md={3}>
                                 <div className="searchBar">
@@ -392,18 +366,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                         </Row>
                             </Form>
                     </div>
-                    {/* <CustomTable
-        tableData={props.table_data}
-        columnList={props.columnList}
-      /> */}
                     <TransactionTable
                         tableData={tableData}
                         columnList={columnList}
                         message={"No Transactions Found"}
-                        // totalPages={this.state.totalPages}
-                        // history={this.props.history}
-                        // location={this.props.location}
-                        // page={this.state.currentPage}
+                        totalPage={totalPage}
+                        history={this.props.history}
+                        location={this.props.location}
+                        page={currentPage}
                     />
                     {/* <CommonPagination
                         numOfPages={3}
@@ -419,6 +389,7 @@ class TransactionHistoryPage extends BaseReactComponent {
 
 const mapStateToProps = state => ({
     portfolioState: state.PortfolioState,
+    intelligenceState: state.IntelligenceState
 });
 const mapDispatchToProps = {
     searchTransactionApi,
