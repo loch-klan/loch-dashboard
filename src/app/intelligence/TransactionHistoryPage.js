@@ -357,6 +357,33 @@ class TransactionHistoryPage extends BaseReactComponent {
                                     />
                                 </Col>
                                 {/* {fillter_tabs} */}
+                                {/*
+                                delayTimer;
+  onChangeMethod = (value) => {
+    clearTimeout(this.delayTimer);
+    this.delayTimer = setTimeout(() => {
+      API CALL
+    }, 1000);
+  };
+                                <FormElement
+                  valueLink={this.linkState(
+                    this,
+                    "search",
+                    this.onChangeMethod
+                  )}
+                  control={{
+                    type: CustomTextControl,
+                    settings: {
+                      placeholder: this.props.placeholder,
+                    },
+                  }}
+                  classes={{
+                    inputField: "search-input",
+                    prefix: "search-prefix",
+                    suffix: "search-suffix",
+                  }}
+                />
+                                */}
                                 <Col md={3}>
                                 <div className="searchBar">
                                     <Image src={searchIcon} />
