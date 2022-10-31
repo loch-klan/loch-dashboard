@@ -4,7 +4,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CustomLoader from "../common/CustomLoader";
 import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
-import unrecognised from '../../image/unrecognised.png';
+import unrecognized from '../../image/unrecognized.png';
 import { DEFAULT_COLOR } from '../../utils/Constant';
 import { Image} from 'react-bootstrap';
 import noDataImage from '../../image/no-data.png';
@@ -325,7 +325,7 @@ class PieChart extends BaseReactComponent {
                             <div className='coin-hover-display' >
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
-                                        <Image className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognised : null} />
+                                        <Image className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognized : null} />
                                     </div>
                                     <div className='coin-hover-display-text1'>
                                         <div className='coin-hover-display-text1-upper'>

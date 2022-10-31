@@ -1,6 +1,6 @@
 import { Badge, Image } from "react-bootstrap";
 import CustomOverlay from "./CustomOverlay";
-import unrecognised from '../../image/unrecognised.png';
+import unrecognized from '../../image/unrecognized.png';
 import { loadingAnimation } from "../ReusableFunctions";
 
 function CustomChip({ coins, isLoaded, id }) {
@@ -39,7 +39,7 @@ function CustomChip({ coins, isLoaded, id }) {
                         :
                         <div className="chip-wrapper" id={id}>
                             <div className="chip-container">
-                            <Image src={unrecognised} className="unrecognised" />
+                            <Image src={unrecognized} className="unrecognized" />
                                 <Badge className="inter-display-medium f-s-13 lh-16 grey-313">Unrecognized</Badge>
                             </div>
                         </div>
