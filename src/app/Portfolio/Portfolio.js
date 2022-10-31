@@ -29,6 +29,7 @@ class Portfolio extends BaseReactComponent {
             coinAvailable: true,
             fixModal: false,
             addModal: false,
+            isLoading:true
         }
     }
 
@@ -455,7 +456,7 @@ class Portfolio extends BaseReactComponent {
         ]
         return (
             <div>
-                {this.state.loader ? <Loading /> :
+                {this.state.loader  ? <Loading/> :
                     <div className="portfolio-page-section" >
                         {/* <Sidebar ownerName="" /> */}
                         <div className='portfolio-container'>
@@ -465,6 +466,8 @@ class Portfolio extends BaseReactComponent {
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader} history={this.props.history}
                                     handleAddModal={this.handleAddModal}
+                                    isLoading={this.state.isLoading}
+                                    walletTotal={this.props.portfolioState.walletTotal}
                                     handleManage={() => this.props.history.push('/wallets')}
                                 />
                             </div>
@@ -472,7 +475,9 @@ class Portfolio extends BaseReactComponent {
                                 <PieChart
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader}
+                                    loader={this.state.loader} 
+                                    isLoading={this.state.isLoading}
+                                    walletTotal={this.props.portfolioState.walletTotal}
                                 />
                                 {this.state.userWalletList.findIndex(w => w.coinFound !== true) > -1 && this.state.userWalletList[0].address !== ""
 

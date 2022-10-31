@@ -8,7 +8,7 @@ import unrecognised from '../../image/unrecognised.png';
 import { DEFAULT_COLOR } from '../../utils/Constant';
 import { Image} from 'react-bootstrap';
 import noDataImage from '../../image/no-data.png';
-
+import Loading from '../common/Loading';
 
 class PieChart extends BaseReactComponent {
 
@@ -18,11 +18,13 @@ class PieChart extends BaseReactComponent {
             pieSectionDataEnabled: {},
             assetTotal: props.assetTotal,
             loader: props.loader,
+            walletTotal:props.walletTotal ,
             chartData: [],
             assetData: [],
             chartOptions: [],
             valueChanged: false,
-            flag: false
+            flag: false,
+            isLoading:props.isLoading
         }
 
     }
@@ -308,7 +310,11 @@ class PieChart extends BaseReactComponent {
 
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
-                Object.keys(this.state.assetData).length > 0 ?
+                this.state.loader===true
+                ?
+                <Loading/>
+                :
+                Object.keys(this.state.assetData).length > 0 ? 
                     <>
                         <div className='chart-section'>
                             <HighchartsReact
@@ -380,17 +386,21 @@ class PieChart extends BaseReactComponent {
                             </div> : null}
                     </>
                     :
-                    this.state.loader === false && this.state.assetTotal === 0
+                    this.state.isLoading === true && this.state.walletTotal === 0
                     ?
                     <>
                     {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                    <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                    {/* <Loading/> */}
+                    <Loading/>
                     </>
 
                     :
-                    <div className='chart-section-loader'>
-                        <CustomLoader loaderType="pie" />
-                    </div>
+                    <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                    
+                    // <div className='chart-section-loader'>
+                    //     {/* <CustomLoader loaderType="pie" /> */}
+                       
+                    // </div>
                 }
 
 

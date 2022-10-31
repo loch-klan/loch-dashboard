@@ -87,6 +87,9 @@ export const getDetailsByLinkApi = (link,ctx) => {
                   obj['id'] = `wallet${i+1}`;
                   obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
                   addWallet.push(obj);
+                  ctx.setState({
+                    isLoading:false,
+                  })
               }
               } else{
                 toast.error(res.data.message || "Something Went Wrong")
