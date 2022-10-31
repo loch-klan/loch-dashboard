@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import { Button,Image, Row, Col } from 'react-bootstrap';
+import { Image, Row, Col } from 'react-bootstrap';
 import PageHeader from '../common/PageHeader';
-import DropDown from './../common/DropDown';
 import searchIcon from '../../assets/images/icons/search-icon.svg'
-import { CommonPagination } from '../common/CommonPagination';
 import TransactionTable from './TransactionTable';
 import Metamask from '../../assets/images/MetamaskIcon.svg'
-import Ethereum from '../../assets/images/icons/ether-coin.svg'
 import CoinChip from '../wallet/CoinChip';
 import { connect } from "react-redux";
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
@@ -15,7 +12,7 @@ import { searchTransactionApi ,getFilters} from './Api';
 import { getCoinRate } from '../Portfolio/Api.js'
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import moment from "moment"
-import { SelectControl, FormElement, CustomTextControl, FormValidator, Form } from '../../utils/form';
+import { SelectControl, FormElement, Form } from '../../utils/form';
 
 class TransactionHistoryPage extends BaseReactComponent {
     constructor(props) {
@@ -25,19 +22,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         const page = params.get("p");
         console.log('page',page);
         this.state = {
-            // fillters: [
-            //     {
-            //         title: "This year",
-            //         data: []
-            //     },
-            //     {
-            //         title: "All assets",
-            //         data: [],
-            //     },
-            //     {
-            //         title: "All methods",
-            //         data: Method.opt
-            //     }],
             year:'',
             method:'',
             asset:'',
@@ -51,6 +35,8 @@ class TransactionHistoryPage extends BaseReactComponent {
             totalPages: 0,
             // currentPage: page,
             currentPage: page ? parseInt(page, 10) : START_INDEX,
+            assetFilter: [],
+            yearFilter: [],
         }
     }
     componentDidMount() {
@@ -58,7 +44,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       //   search: `?p=${this.state.currentPage}`
       // })
         this.callApi()
-        this.props.getFilters()
+        getFilters(this)
         this.props.getCoinRate()
     }
 //     componentDidUpdate(prevProps, prevState) {
@@ -344,16 +330,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 <Col md={3}>
                                     <FormElement
                                         valueLink={this.linkState(this,"year")}
-                                        
+
                                         control={{
                                             type: SelectControl,
                                             settings: {
-                                                options: this.state.yearDropdown,
+                                                options: this.state.yearFilter,
                                                 multiple: false,
                                                 searchable: true,
                                                 onChangeCallback: (onBlur) => {
-                                                    console.log(onBlur)
-                                                    console.log('Hello world!');
                                                     onBlur(this.state.year);
                                                 },
                                                 placeholder:"All Year"
@@ -367,11 +351,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                                         control={{
                                             type: SelectControl,
                                             settings: {
-                                                options: this.state.assetsDropdown,
+                                                options: this.state.assetFilter,
                                                 multiple: false,
                                                 searchable: true,
                                                 onChangeCallback: (onBlur) => {
-                                                    onBlur(this.state.year);
+                                                    onBlur(this.state.asset);
                                                 },
                                                 placeholder:"All assets"
                                             }
@@ -381,7 +365,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 <Col md={3}>
                                     <FormElement
                                         valueLink={this.linkState(this,'method')}
-                                        
+
                                         control={{
                                             type: SelectControl,
                                             settings: {
@@ -393,7 +377,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                                 },
                                                 placeholder: "All methods",
                                             }
-                                            
+
                                         }}
                                     />
                                 </Col>
