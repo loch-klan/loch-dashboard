@@ -17,6 +17,10 @@ export const SEARCH_BY_TEXT = 'SEARCH_BY_TEXT'
 export const SORT_BY_PORTFOLIO_AMOUNT = 'SORT_BY_PORTFOLIO_AMOUNT'
 export const SORT_BY_CREATED_ON = 'SORT_BY_CREATED_ON'
 export const SORT_BY_NAME = 'SORT_BY_NAME'
+export const SEARCH_BY_ASSETS_IN = 'SEARCH_BY_ASSETS_IN'
+export const SEARCH_BY_TYPE = 'SEARCH_BY_TYPE'
+export const SEARCH_BY_TIMESTAMP = 'SEARCH_BY_TIMESTAMP'
+
 
 export const Gender = {
   MALE: 10,
@@ -82,6 +86,7 @@ export const Method = {
   },
   // opt:["Burn","Transfer","Mint","Commit"],
   opt: [
+    {value : "allMethod" , label : "All Method"},
     { value: 10, label: "Burn" },
     { value: 20, label: "Transfer" },
     { value: 30, label: "Mint" },
