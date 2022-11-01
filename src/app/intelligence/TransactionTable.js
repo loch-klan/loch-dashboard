@@ -31,6 +31,7 @@ function TransactionTable(props) {
                 currentPage={props.page}
                 pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
                 pageNext={ActiveNextBtn}
+                message={"No transactions found"}
             />
 
         </div>

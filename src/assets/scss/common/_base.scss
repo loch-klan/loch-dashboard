@@ -877,6 +877,10 @@ form {
       margin: 1rem 0;
     }
   }
+  .not-found-wrapper{
+    text-align: center;
+    padding: 10rem;
+  }
 }
 
 
@@ -1320,7 +1324,7 @@ form {
   }
 }
 
-//  coin chip is common chip component used in wallet and in tables 
+//  coin chip is common chip component used in wallet and in tables
 .coin-chip {
   display: flex;
   border-radius: 0.6rem;
@@ -1450,7 +1454,7 @@ form {
           .gain {
             background: rgba(208, 252, 234, 0.5);
           }
-  
+
           .loss {
             background: rgba(250, 217, 217, 0.5);
           }
