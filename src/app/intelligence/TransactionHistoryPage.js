@@ -96,7 +96,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           if(key===SEARCH_BY_ASSETS_IN){
             arr[index].value = [value.toString()]
           } else{
-            arr[index].value = value.toString()
+            arr[index].value = value
           }
         } else if (value === 'allAssets' || value === 'allMethod' || value === 'allYear') {
             arr.splice(index, 1)
@@ -110,7 +110,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             } else{
               obj = {
                 key: key,
-                value: value.toString()
+                value: value
               }
             }
             arr.push(obj)
