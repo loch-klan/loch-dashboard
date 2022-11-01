@@ -7,12 +7,12 @@ import Metamask from '../../assets/images/MetamaskIcon.svg'
 import CoinChip from '../wallet/CoinChip';
 import { connect } from "react-redux";
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX } from '../../utils/Constant'
-import { searchTransactionApi ,getFilters} from './Api';
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP, SEARCH_BY_TYPE } from '../../utils/Constant'
+import { searchTransactionApi, getFilters } from './Api';
 import { getCoinRate } from '../Portfolio/Api.js'
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import moment from "moment"
-import { SelectControl, FormElement, Form } from '../../utils/form';
+import { SelectControl, FormElement, Form, CustomTextControl } from '../../utils/form';
 
 class TransactionHistoryPage extends BaseReactComponent {
     constructor(props) {
@@ -20,56 +20,122 @@ class TransactionHistoryPage extends BaseReactComponent {
         const search = props.location.search;
         const params = new URLSearchParams(search);
         const page = params.get("p");
+        const walletList = JSON.parse(localStorage.getItem("addWallet"))
         this.state = {
-            year:'',
-            method:'',
-            asset:'',
+            year: '',
+            search: '',
+            method: '',
+            asset: '',
             methodsDropdown: Method.opt,
             table: [],
             sort: [],
+            walletList,
             currentPage: page ? parseInt(page, 10) : START_INDEX,
             assetFilter: [],
             yearFilter: [],
+            delayTimer: 0,
+            condition: [],
+            isLoading:true,
         }
+        this.delayTimer = 0
     }
     componentDidMount() {
-      this.props.history.replace({
-        search: `?p=${this.state.currentPage}`
-      })
+        this.props.history.replace({
+            search: `?p=${this.state.currentPage}`
+        })
+        const address = this.state.walletList.map((wallet) => {
+            return wallet.address
+        })
+        const  cond = [{
+            key: SEARCH_BY_WALLET_ADDRESS_IN,
+            value: address
+        }]
+        this.setState({
+            condition : cond
+        })
         this.callApi(this.state.currentPage || START_INDEX)
         getFilters(this)
         this.props.getCoinRate()
     }
-    componentDidUpdate(prevProps, prevState) {
-      const prevParams = new URLSearchParams(prevProps.location.search);
-      const prevPage = parseInt(prevParams.get('p') || START_INDEX, 10);
 
-      const params = new URLSearchParams(this.props.location.search);
-      const page = parseInt(params.get('p') || START_INDEX, 10);
-
-      if (prevPage !== page) {
-          this.callApi(page);
-      }
-    }
     callApi = (page = START_INDEX) => {
-        let arr = JSON.parse(localStorage.getItem("addWallet"))
-        let address = arr.map((wallet) => {
-            return wallet.address
-        })
-        let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }]
+
         let data = new URLSearchParams()
         data.append("start", (page * API_LIMIT))
-        data.append("conditions", JSON.stringify(condition))
+        data.append("conditions", JSON.stringify(this.state.condition))
         data.append("limit", API_LIMIT)
         data.append("sorts", JSON.stringify(this.state.sort))
-        this.props.searchTransactionApi(data, page)
+        this.props.searchTransactionApi(data,this, page )
     }
 
-    onValidSubmit = ()=>{
-        console.log("Submit")
+    componentDidUpdate(prevProps, prevState) {
+        const prevParams = new URLSearchParams(prevProps.location.search);
+        const prevPage = parseInt(prevParams.get('p') || START_INDEX, 10);
+
+        const params = new URLSearchParams(this.props.location.search);
+        const page = parseInt(params.get('p') || START_INDEX, 10);
+
+        if (prevPage !== page || prevState.condition !== this.state.condition) {
+            this.callApi(page);
+        }
+
     }
+
+
+    onValidSubmit = () => {
+        console.log("Sbmit")
+    }
+
+    addCondition = (key, value) => {
+        let index = this.state.condition.findIndex((e) => e.key === key)
+        // console.log("YES ,PRESENT", index)
+        let arr = [...this.state.condition];
+        let search_index = this.state.condition.findIndex((e) => e.key === SEARCH_BY_TEXT)
+
+        // console.log(search_index, arr[search_index])
+        if (index !== -1 && value !== 'allAssets' && value !== 'allMethod' && value !== 'allYear') {
+          if(key===SEARCH_BY_ASSETS_IN){
+            arr[index].value = [value.toString()]
+          } else{
+            arr[index].value = value
+          }
+        } else if (value === 'allAssets' || value === 'allMethod' || value === 'allYear') {
+            arr.splice(index, 1)
+        } else {
+            let obj = {};
+            if(key===SEARCH_BY_ASSETS_IN){
+              obj = {
+                key: key,
+                value: [value.toString()]
+              }
+            } else{
+              obj = {
+                key: key,
+                value: value
+              }
+            }
+            arr.push(obj)
+        }
+        if (search_index !== -1) {
+            if (value  === '' && key === SEARCH_BY_TEXT) {
+                // console.log("remove", arr[search_index].value[0])
+                arr.splice(search_index, 1)
+            }
+        }
+        this.setState({
+            condition: arr
+        })
+    }
+    onChangeMethod = () => {
+        clearTimeout(this.delayTimer);
+        this.delayTimer = setTimeout(() => {
+            this.addCondition(SEARCH_BY_TEXT, this.state.search)
+            // this.callApi(this.state.currentPage || START_INDEX, condition)
+        }, 1000);
+    };
+
     render() {
-        const {table, totalPage, totalCount, currentPage} = this.props.intelligenceState;
+        const { table, totalPage, totalCount, currentPage } = this.props.intelligenceState;
         let tableData = table && table.map((row) => {
             return {
                 time: row.timestamp,
@@ -300,11 +366,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
 
                     <div className='fillter_tabs_section'>
-                            <Form onValidSubmit={this.onValidSubmit} >
+                        <Form onValidSubmit={this.onValidSubmit} >
                             <Row>
                                 <Col md={3}>
                                     <FormElement
-                                        valueLink={this.linkState(this,"year")}
+                                        valueLink={this.linkState(this, "year")}
 
                                         control={{
                                             type: SelectControl,
@@ -314,15 +380,16 @@ class TransactionHistoryPage extends BaseReactComponent {
                                                 searchable: true,
                                                 onChangeCallback: (onBlur) => {
                                                     onBlur(this.state.year);
+                                                    this.addCondition(SEARCH_BY_TIMESTAMP, this.state.year)
                                                 },
-                                                placeholder:"All Year"
+                                                placeholder: "All Year"
                                             }
                                         }}
                                     />
                                 </Col>
                                 <Col md={3}>
                                     <FormElement
-                                        valueLink={this.linkState(this,"asset")}
+                                        valueLink={this.linkState(this, "asset")}
                                         control={{
                                             type: SelectControl,
                                             settings: {
@@ -331,15 +398,16 @@ class TransactionHistoryPage extends BaseReactComponent {
                                                 searchable: true,
                                                 onChangeCallback: (onBlur) => {
                                                     onBlur(this.state.asset);
+                                                    this.addCondition(SEARCH_BY_ASSETS_IN, this.state.asset)
                                                 },
-                                                placeholder:"All assets"
+                                                placeholder: "All assets"
                                             }
                                         }}
                                     />
                                 </Col>
                                 <Col md={3}>
                                     <FormElement
-                                        valueLink={this.linkState(this,'method')}
+                                        valueLink={this.linkState(this, 'method')}
 
                                         control={{
                                             type: SelectControl,
@@ -349,6 +417,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                                                 searchable: true,
                                                 onChangeCallback: (onBlur) => {
                                                     onBlur(this.state.year);
+                                                    this.addCondition(SEARCH_BY_TYPE, this.state.method)
+
                                                 },
                                                 placeholder: "All methods",
                                             }
@@ -357,51 +427,44 @@ class TransactionHistoryPage extends BaseReactComponent {
                                     />
                                 </Col>
                                 {/* {fillter_tabs} */}
-                                {/*
-                                delayTimer;
-  onChangeMethod = (value) => {
-    clearTimeout(this.delayTimer);
-    this.delayTimer = setTimeout(() => {
-      API CALL
-    }, 1000);
-  };
-                                <FormElement
-                  valueLink={this.linkState(
-                    this,
-                    "search",
-                    this.onChangeMethod
-                  )}
-                  control={{
-                    type: CustomTextControl,
-                    settings: {
-                      placeholder: this.props.placeholder,
-                    },
-                  }}
-                  classes={{
-                    inputField: "search-input",
-                    prefix: "search-prefix",
-                    suffix: "search-suffix",
-                  }}
-                />
-                                */}
                                 <Col md={3}>
-                                <div className="searchBar">
-                                    <Image src={searchIcon} />
-                                    <input placeholder='Search' type="text" />
-                                </div>
+                                    <div className="searchBar">
+                                        <Image src={searchIcon} />
+                                        <FormElement
+                                            valueLink={this.linkState(
+                                                this,
+                                                "search",
+                                                this.onChangeMethod
+                                            )}
+                                            control={{
+                                                type: CustomTextControl,
+                                                settings: {
+                                                    placeholder: "Search",
+                                                },
+                                            }}
+                                            classes={{
+                                                inputField: "search-input",
+                                                prefix: "search-prefix",
+                                                suffix: "search-suffix",
+                                            }}
+                                        />
+                                    </div>
                                 </Col>
-                        </Row>
-                            </Form>
+                            </Row>
+                        </Form>
                     </div>
-                    <TransactionTable
-                        tableData={tableData}
-                        columnList={columnList}
-                        message={"No Transactions Found"}
-                        totalPage={totalPage}
-                        history={this.props.history}
-                        location={this.props.location}
-                        page={currentPage}
-                    />
+                    <div className='transaction-history-table'>
+                        <TransactionTable
+                            tableData={tableData}
+                            columnList={columnList}
+                            message={"No Transactions Found"}
+                            totalPage={totalPage}
+                            history={this.props.history}
+                            location={this.props.location}
+                            page={currentPage}
+                            isLoading={this.state.isLoading}
+                        />
+                    </div>
                     {/* <CommonPagination
                         numOfPages={3}
                     // setValue={setPage}

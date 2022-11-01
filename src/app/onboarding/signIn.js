@@ -97,7 +97,15 @@ class SignIn extends BaseReactComponent {
                           }
                           </div>
                           </div>
-                            <CustomButton className={`primary-btn send-verification ${(this.state.email || this.state.text) ? "" : "inactive-state"}`} type={"submit"} buttonText={!this.state.isVerificationRequired || this.props.activemodal ==="signIn"  ? "Send verification" :"Enter code"} />
+                            <CustomButton 
+                            className={`primary-btn send-verification ${(this.state.email || this.state.text) 
+                            ? 
+                            "" 
+                            : 
+                            "inactive-state"}`} 
+                            type={"submit"} 
+                            buttonText={!this.state.isVerificationRequired || this.props.activemodal ==="signIn"  ? "Send verification" :"Enter code"}
+                            />
             </Form>
 
         )

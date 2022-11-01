@@ -25,7 +25,9 @@ function TransactionTable(props) {
                 props.isLoading === true 
                 ?<>
                 <div className='transaction-table-wrapper'> 
-                    <div className='animation-wrapper'><Loading/></div>
+                    <div className='animation-wrapper'>
+                        <Loading/>
+                    </div>
                     
                 </div>
                 
@@ -42,11 +44,12 @@ function TransactionTable(props) {
                     currentPage={props.page}
                     pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
                     pageNext={ActiveNextBtn}
-                    isLoading={props.isLoading}
+                    message={"No transactions found"}
+                    isLoading={props.isLoading} 
                 />
             }
 
-
+           
         </div>
     )
 }

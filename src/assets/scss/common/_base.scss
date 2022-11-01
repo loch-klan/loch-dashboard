@@ -877,6 +877,10 @@ form {
       margin: 1rem 0;
     }
   }
+  .not-found-wrapper{
+    text-align: center;
+    padding: 10rem;
+  }
 }
 
 
@@ -929,9 +933,9 @@ form {
   &:active:focus {
     outline: none;
     box-shadow: none;
-    color: $black-191;
+    color: white;
     border: 1px solid $black-191;
-    background-color: transparent;
+    background-color: $black-191;
   }
 
   &:not(:disabled),
@@ -1320,7 +1324,7 @@ form {
   }
 }
 
-//  coin chip is common chip component used in wallet and in tables 
+//  coin chip is common chip component used in wallet and in tables
 .coin-chip {
   display: flex;
   border-radius: 0.6rem;
@@ -1450,7 +1454,7 @@ form {
           .gain {
             background: rgba(208, 252, 234, 0.5);
           }
-  
+
           .loss {
             background: rgba(250, 217, 217, 0.5);
           }
@@ -1477,7 +1481,7 @@ form {
   font-size: 16px;
   line-height: 120%;
   font-family: Inter-Medium, Arial, Helvetica, sans-serif;
-  color: #828487;
+  color: #55575a;
   background: blur(3px);
   align-items: center;
   // width: 138px;
@@ -1498,7 +1502,7 @@ form {
 
 .transaction-table-wrapper{
   
-  .animation-wrapper{
+  .animation-wrapper , .table-wrapper{
     border-radius: 1.2rem;
     width: 475px;
     height: 420px;
@@ -1514,4 +1518,23 @@ form {
     height: 100%;
     
   }
+}
+.transaction-history-table{
+  .animation-wrapper , .table-wrapper{
+    border-radius: 1.2rem;
+    width: 980px;
+    height: 680px;
+    background-image: url("../../images/transactionHistorytableLoading.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 980px 680px;
+  
+  }
+  .loading-animation{
+    backdrop-filter: blur(12px);
+    border-radius: 1.2rem;
+    height: 100%;
+    
+  }
+  
 }

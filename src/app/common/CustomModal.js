@@ -8,7 +8,7 @@ const CustomModal = ({ show, onHide, title, children, modalClass = null }) => {
       {
         title &&
         <Modal.Header>
-          <Modal.Title className='red-hat-display-bold f-s-20'>{title}</Modal.Title>
+          <Modal.Title className='inter-display-bold f-s-20'>{title}</Modal.Title>
           <Image src={closeIcon} className='close-icon' onClick={onHide} />
         </Modal.Header>
       }

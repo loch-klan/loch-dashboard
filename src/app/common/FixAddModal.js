@@ -434,6 +434,7 @@ class FixAddModal extends BaseReactComponent {
                                       ?
                                       loadingAnimation()
                                       :
+                                      
                                       this.state.btnText
                                     }
                                 </Button>

@@ -35,7 +35,7 @@ const Pagination = props => {
   return (
     <div className="pagination-wrapper">
       <Image src={props.pagePrev ? props.pagePrev : pagePrev} onClick={() => onLeftClick(props)} className="left-arrow" />
-      <h5 className='red-hat-display-medium f-s-14'>{props.page} of {props.pageCount}</h5>
+      <h5 className='inter-display-medium f-s-14'>{props.page} of {props.pageCount}</h5>
       <Image src={props.pageNext ? props.pageNext : pageNext} onClick={() => onNextClick(props)} className="right-arrow" />
     </div >
   );
