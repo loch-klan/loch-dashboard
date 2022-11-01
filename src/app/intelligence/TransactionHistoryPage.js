@@ -77,7 +77,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         if (prevPage !== page || prevState.condition !== this.state.condition) {
             this.callApi(page);
         }
-        
+
     }
 
 
@@ -91,17 +91,27 @@ class TransactionHistoryPage extends BaseReactComponent {
         let arr = [...this.state.condition];
         let search_index = this.state.condition.findIndex((e) => e.key === SEARCH_BY_TEXT)
 
-        // console.log(search_index, arr[search_index])        
+        // console.log(search_index, arr[search_index])
         if (index !== -1 && value !== 'allAssets' && value !== 'allMethod' && value !== 'allYear') {
+          if(key===SEARCH_BY_ASSETS_IN){
             arr[index].value = [value.toString()]
-        }
-        else if (value === 'allAssets' || value === 'allMethod' || value === 'allYear') {
+          } else{
+            arr[index].value = value.toString()
+          }
+        } else if (value === 'allAssets' || value === 'allMethod' || value === 'allYear') {
             arr.splice(index, 1)
-        }
-        else {
-            let obj = {
+        } else {
+            let obj = {};
+            if(key===SEARCH_BY_ASSETS_IN){
+              obj = {
                 key: key,
                 value: [value.toString()]
+              }
+            } else{
+              obj = {
+                key: key,
+                value: value.toString()
+              }
             }
             arr.push(obj)
         }
