@@ -114,19 +114,22 @@
                 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                 border-radius: 0.8rem;
                 // padding: 0.7rem;
-
+                .search-icon{
+                  margin-left: 1.2rem;
+                }
                 ::placeholder {
-                    color: $grey-B0B;
+                    // color: $grey-B0B;
+                    @include font($grey-B0B, "Inter-Medium", 1.6rem, 500, 1.9rem);
                 }
 
                 .form-group {
                     .form-control{
-                        min-height: 3.9rem;
+                        min-height: 3.8rem;
                     }
                     .search-input {
                         border: none;
                         outline: none;
-                        @include font($grey-B0B, "Inter-Medium", 1.6rem, 500, 1.9rem);
+                        @include font($black-191, "Inter-Medium", 1.6rem, 500, 1.9rem);
                         width: 100%;
                     }
 

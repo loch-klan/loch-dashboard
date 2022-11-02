@@ -428,7 +428,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 {/* {fillter_tabs} */}
                                 <Col md={3}>
                                     <div className="searchBar">
-                                        <Image src={searchIcon} />
+                                        <Image src={searchIcon} className="search-icon" />
                                         <FormElement
                                             valueLink={this.linkState(
                                                 this,
