@@ -21,6 +21,13 @@ class TransactionHistoryPage extends BaseReactComponent {
         const params = new URLSearchParams(search);
         const page = params.get("p");
         const walletList = JSON.parse(localStorage.getItem("addWallet"))
+        const address = walletList.map((wallet) => {
+          return wallet.address
+      })
+      const  cond = [{
+          key: SEARCH_BY_WALLET_ADDRESS_IN,
+          value: address
+      }]
         this.state = {
             year: '',
             search: '',
@@ -34,7 +41,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             assetFilter: [],
             yearFilter: [],
             delayTimer: 0,
-            condition: []
+            condition: cond ? cond : []
         }
         this.delayTimer = 0
     }
@@ -42,16 +49,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         this.props.history.replace({
             search: `?p=${this.state.currentPage}`
         })
-        const address = this.state.walletList.map((wallet) => {
-            return wallet.address
-        })
-        const  cond = [{
-            key: SEARCH_BY_WALLET_ADDRESS_IN,
-            value: address
-        }]
-        this.setState({
-            condition : cond
-        })
+
         this.callApi(this.state.currentPage || START_INDEX)
         getFilters(this)
         this.props.getCoinRate()
