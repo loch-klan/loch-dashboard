@@ -119,7 +119,7 @@ function Sidebar(props) {
                             </li>
                             <li>
                                 <Image src={ApiIcon} />
-                                <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Api</Button>
+                                <Button className="inter-display-medium f-s-15 lh-19 navbar-button">API</Button>
                             </li>
                             {
                               JSON.parse(localStorage.getItem('lochUser')) &&
