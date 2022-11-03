@@ -44,7 +44,8 @@
                     display:false,
                     borderWidth:1,
                 }
-            }
+            },
+            
         }
     }
 
@@ -79,6 +80,7 @@ const data = {
                 topRight:6
             },
             borderSkipped:false,
+            barThickness:48
 
         }
     ]

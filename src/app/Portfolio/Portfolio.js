@@ -166,7 +166,7 @@ class Portfolio extends BaseReactComponent {
                         return (
                             <CustomOverlay
                                 position="top"
-                                isIcon={true}
+                                isIcon={false}
                                 isInfo={true}
                                 isText={true}
                                 text={rowData.from.address}
@@ -187,7 +187,7 @@ class Portfolio extends BaseReactComponent {
                         return (
                             <CustomOverlay
                                 position="top"
-                                isIcon={true}
+                                isIcon={false}
                                 isInfo={true}
                                 isText={true}
                                 text={rowData.to.address}
@@ -344,7 +344,7 @@ class Portfolio extends BaseReactComponent {
                         topRight: 6
                     },
                     borderSkipped: false,
-
+                    barThickness:38
                 }
             ]
         }
@@ -506,6 +506,7 @@ class Portfolio extends BaseReactComponent {
                             <div className='portfolio-section page m-b-32'>
                                 <LineChart
                                     coinLists={this.props.OnboardingState.coinsLists}
+                                    isScrollVisible={false}
                                 />
                             </div>
                             <div className='m-b-32 page graph-table-section'>

@@ -42,7 +42,6 @@ class Intelligence extends Component {
                 y: {
                     min: 0,
                     max: 400000,
-
                     ticks: {
                         stepSize: 100000,
                         padding: 8,
@@ -50,7 +49,7 @@ class Intelligence extends Component {
                         lineHeight: 20,
                         family: "Helvetica Neue",
                         weight: 400,
-                        color: "#B0B1B3"
+                        color: "#B0B1B3",
                     },
                     grid: {
                         drawBorder: false,
@@ -60,19 +59,19 @@ class Intelligence extends Component {
                     }
                 },
                 x: {
-
                     ticks: {
                         font: "Inter-SemiBold",
                         size: 10,
                         lineHeight: 12,
                         weight: 600,
-                        color: "#86909C"
+                        color: "#86909C",
                     },
                     grid: {
                         display: false,
                         borderWidth: 1,
                     }
-                }
+                },
+                
             }
         }
 
@@ -97,7 +96,8 @@ class Intelligence extends Component {
                         topRight: 6
                     },
                     borderSkipped: false,
-                    barPercentage: 0.4
+                    barThickness:48,
+                   
                 }
             ]
         }

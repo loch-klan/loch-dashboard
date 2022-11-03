@@ -230,7 +230,7 @@ class LineChart extends BaseReactComponent {
                         activeBadge={this.state.activeBadge}
                         chainList={this.props.OnboardingState.coinsList}
                         handleFunction={this.handleFunction}
-
+                        isScrollVisible={this.props.isScrollVisible}
                     />
                     {/* <div className='chart-x-selection'>
                         <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 y-axis-selection-currency' >

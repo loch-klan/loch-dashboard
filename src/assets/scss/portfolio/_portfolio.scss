@@ -112,6 +112,7 @@
             .line-chart-section {
                 position: relative;
 
+                
                 .chart-x-selection {
                     position: relative;
 
@@ -222,7 +223,7 @@
                     border-radius: 0.4rem;
                 }
                 .tooltip-section-yellow{
-                    background-color: rgba(245, 232, 137, 0.5);
+                    background-color: $yellow-F5E;
                     width: max-content;
                 }
                 .top-section{
@@ -232,7 +233,7 @@
                 }
                 .bottom-section{
                     .tooltip-section-bottom{
-                        background-color: rgba(245, 232, 137, 0.5);
+                        background-color: $yellow-FBF;
                         padding:0.8rem;
                         white-space: normal !important;
                         word-wrap: break-word;
@@ -241,46 +242,46 @@
                     }
                 }
             }
-            .linechart-tooltip {
-                display: flex;
-                flex-direction: column;
-                padding: 1.2rem;
-                // border-radius: 0.8rem;
-                // border: 0.1rem solid $grey-E5E;
-                box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+            // .linechart-tooltip {
+            //     display: flex;
+            //     flex-direction: column;
+            //     padding: 1.2rem;
+            //     // border-radius: 0.8rem;
+            //     // border: 0.1rem solid $grey-E5E;
+            //     box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
 
-                // background-color: $secondary;
-                .header-title {
-                    text-transform: uppercase;
-                    letter-spacing: 0.125rem;
-                }
+            //     // background-color: $secondary;
+            //     .header-title {
+            //         text-transform: uppercase;
+            //         letter-spacing: 0.125rem;
+            //     }
 
-                .top-title {
-                    display: flex;
-                    align-items: center;
-                    padding: 0.4rem 0.8rem;
-                    border-radius: 0.4rem;
-                }
+            //     .top-title {
+            //         display: flex;
+            //         align-items: center;
+            //         padding: 0.4rem 0.8rem;
+            //         border-radius: 0.4rem;
+            //     }
 
-                .top-title-1 {
-                    background-color: $blue-C6E;
-                }
+            //     .top-title-1 {
+            //         background-color: $blue-C6E;
+            //     }
 
-                .top-title-2 {
-                    background-color: rgba(245, 232, 137, 0.5);
-                    width: max-content;
-                }
+            //     .top-title-2 {
+            //         background-color: rgba(245, 232, 137, 0.5);
+            //         width: max-content;
+            //     }
 
-                .bottom-title {
-                    background-color: rgba(245, 232, 137, 0.5);
-                    padding:0.8rem;
-                    border-radius:0.4rem;
-                    .span-bottom {
-                        white-space: normal !important;
-                        word-wrap: break-word;
-                    }
-                }
-            }
+            //     .bottom-title {
+            //         background-color: rgba(245, 232, 137, 0.5);
+            //         padding:0.8rem;
+            //         border-radius:0.4rem;
+            //         .span-bottom {
+            //             white-space: normal !important;
+            //             word-wrap: break-word;
+            //         }
+            //     }
+            // }
         }
     }
 

@@ -191,7 +191,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         return (
                             <CustomOverlay
                                 position="top"
-                                isIcon={true}
+                                isIcon={false}
                                 isInfo={true}
                                 isText={true}
                                 text={rowData.from.address}
@@ -213,7 +213,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         return (
                             <CustomOverlay
                                 position="top"
-                                isIcon={true}
+                                isIcon={false}
                                 isInfo={true}
                                 isText={true}
                                 text={rowData.to.address}
