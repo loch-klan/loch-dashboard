@@ -215,7 +215,7 @@
                     text-transform: uppercase;
                     letter-spacing: 0.125rem;            
                 }
-                .tooltip-section{
+                .line-chart-tooltip-section{
                     display:flex;
                     align-items:center;
                     padding: 0.4rem 0.8rem;
@@ -233,6 +233,11 @@
                 .bottom-section{
                     .tooltip-section-bottom{
                         background-color: rgba(245, 232, 137, 0.5);
+                        padding:0.8rem;
+                        white-space: normal !important;
+                        word-wrap: break-word;
+                        border-radius:0.4rem;
+                        max-width:83%;
                     }
                 }
             }

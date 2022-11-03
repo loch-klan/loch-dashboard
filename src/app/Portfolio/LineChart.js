@@ -109,11 +109,11 @@ class LineChart extends BaseReactComponent {
                         <div class="line-chart-tooltip">
                             <div class="m-b-12 top-section">
                                 <div class="inter-display-semi-bold f-s-10 lh-12 grey-B0B m-b-8 header-title">Potential External Factors</div>
-                                <div class="m-b-8 tooltip-section tooltip-section-blue">
+                                <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
                                     <img src=${TrendingUp} class="m-r-8"/>
                                     <div class="inter-display-medium f-s-12 lh-16 black-191 ">Increased Interests Rates</div>
                                 </div>
-                                <div class="tooltip-section tooltip-section-yellow">
+                                <div class="line-chart-tooltip-section tooltip-section-yellow">
                                     <img src=${TrendingDown} class="m-r-8"/>
                                     <div class="inter-display-medium f-s-12 lh-16 black-191 ">Terra Collapse</div>
                                 </div>
