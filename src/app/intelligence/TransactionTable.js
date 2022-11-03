@@ -24,7 +24,7 @@ function TransactionTable(props) {
             {
                 props.isLoading === true 
                 ?<>
-                <div className='transaction-table-wrapper'> 
+                <div className='transaction-table-loading-wrapper'> 
                     <div className='animation-wrapper'>
                         <Loading/>
                     </div>

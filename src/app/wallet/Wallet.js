@@ -223,13 +223,14 @@ class Wallet extends Component {
             </div>
           </div>
 
-          <div className="cards">
-            {this.state.isLoading == true ? (
+        <div className="cards">
+            {this.state.isLoading === true 
+            ? 
+            (
               <div className="loading-container">
-                <div className="animation-background">
-                  
+                <div className="animation-wrapper">
+                  <Loading/>
                 </div>
-                <Loading/>
               </div>
             ) : (walletList.length > 0
               ?

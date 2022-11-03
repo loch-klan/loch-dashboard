@@ -42,7 +42,6 @@
                 box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
                 border-radius: 1.6rem;
                 margin-bottom: 2rem;
-                position: relative;
 
                 .wallet-details {
                     display: flex;
@@ -109,7 +108,7 @@
                 .coins-chip {
                     display: flex;
                     padding-top: 2rem;
-                    border-top: 1px solid rgba(85, 85, 189, 0.5);
+                    border-top: 1px solid rgba(229, 229, 230, 0.5);
                     justify-content: space-between;
                     align-items: center;
                     .chips-section {
@@ -132,30 +131,26 @@
                       color: $grey-636;
                     }
                 }
-                .loading-animation{
-                    width: 100%;
-                    // height: 100%;
-                    top: 0;
-                    left: 0;
-                    border-radius: 1.6rem;
-                    position:absolute;
-                    
-                }
             }
             .loading-container{
-                padding: 2.4rem;
-                background-color: $secondary;
-                box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
-                border-radius: 1.6rem;
+                // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
                 margin-bottom: 2rem;
-                background-color: rgba(204, 197, 197, 0.584);
-                
-                .animation-background{
-                    filter: blur(4px);
-            
-
+                padding: 0;
+                .animation-wrapper{
+                    width: 100%;
+                    background-image: url("../../images/walletCardLoadingBackground.png");
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    .loading-animation{
+                        backdrop-filter: blur(10px);
+                        border-radius: 1.2rem;
+                        width: 100%;
+                        padding-bottom: 1rem;
+                    }
                 }
             }
+           
         }
 
         //  walletcard section end
