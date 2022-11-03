@@ -24,13 +24,15 @@ export default function WalletCard(props) {
         return (
             <CustomOverlay
                 position="top"
-                isIcon={true}
+                // isIcon={true}
+                isIcon={false}
                 isInfo={true}
                 key={index}
                 isText={true}
                 isName={coin.chain.name}
                 colorCode={coin.chain.color}
                 text={ coin.chain.percentage.toFixed(2) + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + " USD"}
+                className="wallet-tooltip"
             >
                 <div>
                     <CoinChip

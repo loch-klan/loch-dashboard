@@ -55,6 +55,10 @@ class ProfileForm extends BaseReactComponent{
                                             placeholder: "John",
                                         }
                                     }}
+                                    classes={{
+                                        inputField : this.state.firstName !== "" ? "done" : ""
+                                    }
+                                    }
                                 />
                             </Col>
                             <Col md={4}>
@@ -67,6 +71,10 @@ class ProfileForm extends BaseReactComponent{
                                             placeholder: "Doe",
                                         }
                                     }}
+                                    classes={{
+                                        inputField : this.state.lastName !== "" ? "done" : ""
+                                    }
+                                    }
                                 />
                             </Col>
                         </Row>
@@ -83,6 +91,10 @@ class ProfileForm extends BaseReactComponent{
                                             placeholder: "john@loch.one",
                                         }
                                     }}
+                                    classes={{
+                                        inputField : this.state.email !== "" ? "done" : ""
+                                    }
+                                    }
                                 />
                             </Col>
                         </Row>
@@ -99,6 +111,10 @@ class ProfileForm extends BaseReactComponent{
                                             placeholder: "(217) 331 - 1312",
                                         }
                                     }}
+                                    classes={{
+                                        inputField : this.state.mobileNumber !== "" ? "done" : ""
+                                    }
+                                    }
                                 />
                             </Col>
                         </Row>

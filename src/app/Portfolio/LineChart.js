@@ -12,8 +12,8 @@ class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
         this.state = {
-            activeBadge : [{ name: "All", id: "" }],
-            title:"Month"
+            activeBadge: [{ name: "All", id: "" }],
+            title: "Month"
         }
 
     }
@@ -46,11 +46,11 @@ class LineChart extends BaseReactComponent {
             })
         }
     }
-    handleSelect = (opt)=>{
+    handleSelect = (opt) => {
         // console.log("Selected Option ", opt.split(' '))
         const t = opt.split(' ')[1]
         this.setState({
-            title:t
+            title: t
         })
     }
     render() {
@@ -87,44 +87,73 @@ class LineChart extends BaseReactComponent {
             legend: {
                 align: 'right',
                 verticalAlign: 'top',
-                itemStyle : {
-                    fontFamily:"Inter-SemiBold",
-                    fontSize:"10px",
-                    color:"#636467",
-                    fontWeight:"600" ,
-                    lineHeight:"12px"
+                itemStyle: {
+                    fontFamily: "Inter-SemiBold",
+                    fontSize: "10px",
+                    color: "#636467",
+                    fontWeight: "600",
+                    lineHeight: "12px"
                 }
             },
             tooltip: {
                 useHTML: true,
-                borderRadius: 8,
-                borderColor: "#E5E7EB",
-                backgroundColor:"white",
-                borderShadow: 0,
-                padding:12,
+                borderRadius : 8,
+                borderColor : "#E5E7EB",
+                backgroundColor : "#FFFFFF",
+                // borderShadow: 0,
+                borderWidth: 1 ,
+                padding: 12,
+                shadow:false,
                 formatter: function () {
                     return `
-                    <div style="display: flex;flex-direction:column;" >
-                    <div class="m-b-8">
-                    <span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100" style="text-transform:uppercase;letter-spacing: 1.25px;">Potential External Factors</span>
-                    </div>
-                    <div class="m-b-8" style="background-color: #C6E4FF;padding:4px 8px 4px 8px; border-radius: 4px;">
-                    <span class="inter-display-medium f-s-12 lh-16 black-191 w-100" >
-                    <img src=${TrendingUp} class="m-r-8" />
-                    Increased Interests Rates</span>
-                    </div>
-                    <div class="m-b-12" style="background-color: rgba(245, 232, 137, 0.5);padding:4px 8px 4px 8px; border-radius: 4px;">
-                    <span class="inter-display-medium f-s-12 lh-12 black-191  w-100" >
-                    <img src=${TrendingDown} class="m-r-8" />
-                    Terra Collapse</span>
-                    </div>
-                    <div class="m-b-8">
-                    <span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100" style="text-transform:uppercase;letter-spacing: 1.25px;">INTERNAL Factors</span>
-                    </div>
-                    <div>
-                    <div class="inter-display-medium f-s-12 lh-16 black-191 w-100 span-bottom" style="background-color: rgba(245,232,137,0.5);padding:4px 8px 4px 8px; border-radius: 4px;">0.7 BTC was deposited into a Coinbase Wallet </div>
-                    </div>
-                    </div>`;
+                        <div class="line-chart-tooltip">
+                            <div class="m-b-12 top-section">
+                                <div class="inter-display-semi-bold f-s-10 lh-12 grey-B0B m-b-8 header-title">Potential External Factors</div>
+                                <div class="m-b-8 tooltip-section tooltip-section-blue">
+                                    <img src=${TrendingUp} class="m-r-8"/>
+                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">Increased Interests Rates</div>
+                                </div>
+                                <div class="tooltip-section tooltip-section-yellow">
+                                    <img src=${TrendingDown} class="m-r-8"/>
+                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">Terra Collapse</div>
+                                </div>
+                            </div>
+                            <div class="bottom-section">
+                                <div class="inter-display-semi-bold f-s-10 lh-12 grey-B0B m-b-8 header-title">Internal Factors</div>
+                                <div class="inter-display-semi-bold f-s-10 lh-12 grey-313  tooltip-section-bottom" >0.7 BTC was deposited into a Coinbase Wallet</div>
+                            </div>
+                        
+                        </div>
+                    
+                    `
+                    // return `
+                    // <div  class="linechart-tooltip">
+
+                    // <div class="m-b-8">
+                    // <span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100 header-title">Potential External Factors</span>
+                    // </div>
+
+                    // <div class="m-b-8 top-title-1 top-title">
+                    // <img src=${TrendingUp} class="m-r-8" />
+                    // <span class="inter-display-medium f-s-12 lh-16 black-191 w-100" >
+                    // Increased Interests Rates</span>
+                    // </div>
+
+                    // <div class="m-b-12 top-title-2 top-title">
+                    // <img src=${TrendingDown} class="m-r-8" />
+                    // <span class="inter-display-medium f-s-12 lh-16 black-191  w-100" >
+                    // Terra Collapse</span>
+                    // </div>
+
+                    // <div class="m-b-8 ">
+                    // <span class="inter-display-semi-bold f-s-10 lh-12 grey-B0B w-100 header-title">INTERNAL Factors</span>
+                    // </div>
+
+                    // <div class="bottom-title">
+                    // <span class="inter-display-semi-bold f-s-10 lh-12 grey-313 span-bottom " >0.7 BTC was deposited into a Coinbase Wallet </span>
+                    // </div>
+
+                    // </div>`;
                 }
             },
 
@@ -219,20 +248,20 @@ class LineChart extends BaseReactComponent {
                         options={options}
                     />
                     <div className='chart-x-selection'>
-                        {/* <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 x-axis-selection-date' >
+                        {/* <select className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 x-axis-selection-date'
+                         >
                             <option>Year</option>
                             <option selected="selected">Month</option>
                             <option>Day</option>
                             <option>Week</option>
                             <option>Hour</option>
                         </select> */}
-
-                        <DropDown
-                            class="line-chart-dropdown"
-                            list={["Year","Month","Day","Week","Hour"]}
-                            onSelect={this.handleSelect}
-                            title={this.state.title}
-                        />
+                            <DropDown
+                                class="line-chart-dropdown"
+                                list={["Year", "Month", "Day", "Week", "Hour"]}
+                                onSelect={this.handleSelect}
+                                title={this.state.title}
+                            />
                     </div>
                 </div>
             </div>

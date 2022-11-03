@@ -164,6 +164,22 @@
                             color: $grey-B0B;
                             }
                         }
+                        .custom-select__menu{
+                            .custom-select__menu-list{
+                                height:16rem;
+                            }
+                            .custom-select__menu-list::-webkit-scrollbar{
+                                width: 0.4rem;
+                            }
+                            .custom-select__menu-list::-webkit-scrollbar-thumb{
+                                border-radius: 0.8rem;
+                                background: rgb(90, 90, 90);
+                              }
+                              .custom-select__menu-list::-webkit-scrollbar-track {
+                                background: rgba(0, 0, 0, 0.2);
+                                border-radius: 0.8rem;
+                              }
+                        }
                     }
                 // }
                 .edit-btns {

@@ -1,5 +1,5 @@
 
-   const labels = ["AAVE" , "Binance" , "Kraken" ,"Gemini","Coinbase","Compound","Convex","Curve","FTX","Lido","MakerDao","Pancake Swap"]
+   const labels = ["AAVE" , "Binance" , "Kraken" ,"Gemini","Coinbase","Compound","Convex","MakerDao"]
 
     const options = {
         responsive:true,
@@ -36,7 +36,9 @@
                     size:10,
                     lineHeight:12,
                     weight:600,
-                    color:"#86909C"
+                    color:"#86909C",
+                    maxRotation:0,
+                    minRotation:0,
                 },
                 grid:{
                     display:false,
@@ -50,7 +52,7 @@ const data = {
     labels,
     datasets: [
         {
-            data: [26, 323, 76, 6, 8,500, 50, 4, 40, 77, 18, 15, 2],
+            data: [26, 323, 60,450, 50, 40, 77, 189,103],
             backgroundColor: [
                 "rgba(100, 190, 205, 0.3)",
                 "rgba(34, 151, 219, 0.3)",
@@ -59,10 +61,6 @@ const data = {
                 " rgba(84, 84, 191, 0.3)",
                 "rgba(178, 210, 145, 0.3)",
                 "rgba(141, 141, 141, 0.3)",
-                "#ffffff",
-                "rgba(178, 210, 145, 0.3)",
-                "rgba(178, 210, 145, 0.3)",
-                "rgba(178, 210, 145, 0.3)",
                 "rgba(178, 210, 145, 0.3)",
             ],
             borderColor: [
@@ -73,10 +71,6 @@ const data = {
                 "#5454BF",
                 "#B2D291",
                 "#8D8D8D",
-                "#ffffff",
-                "#B2D291",
-                "#B2D291",
-                "#B2D291",
                 "#B2D291",
             ],
             borderWidth: 2,

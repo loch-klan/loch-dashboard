@@ -33,7 +33,7 @@
             box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
             border-radius: 1.2rem;
             &.line{
-              margin-top: 0;
+                margin-top: 0;
             }
             .welcome-card {
                 display: flex;
@@ -114,6 +114,7 @@
 
                 .chart-x-selection {
                     position: relative;
+
                     // .x-axis-selection-date {
                     //     position: absolute;
                     //     right: 0rem;
@@ -137,8 +138,12 @@
                             @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
                               background: $secondary;
                               padding-left: 4rem;
-                          }
+                        }
 
+                    }
+
+                    .dropdown .btn-primary:not(:disabled):not(.disabled):active {
+                        border: none;
                     }
 
                     .y-axis-selection-currency {
@@ -199,12 +204,77 @@
             line-height: 2rem;
             color: $grey-B0B;
         }
+
         .highcharts-tooltip {
-        
-            .span-bottom{
-               
-                white-space: normal !important;
-                word-wrap: break-word;
+
+            // box-shadow : 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+            .line-chart-tooltip{
+                display:flex;
+                flex-direction: column;
+                .header-title{
+                    text-transform: uppercase;
+                    letter-spacing: 0.125rem;            
+                }
+                .tooltip-section{
+                    display:flex;
+                    align-items:center;
+                    padding: 0.4rem 0.8rem;
+                    border-radius: 0.4rem;
+                }
+                .tooltip-section-yellow{
+                    background-color: rgba(245, 232, 137, 0.5);
+                    width: max-content;
+                }
+                .top-section{
+                    .tooltip-section-blue{
+                        background-color: $blue-C6E;
+                    }
+                }
+                .bottom-section{
+                    .tooltip-section-bottom{
+                        background-color: rgba(245, 232, 137, 0.5);
+                    }
+                }
+            }
+            .linechart-tooltip {
+                display: flex;
+                flex-direction: column;
+                padding: 1.2rem;
+                // border-radius: 0.8rem;
+                // border: 0.1rem solid $grey-E5E;
+                box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+
+                // background-color: $secondary;
+                .header-title {
+                    text-transform: uppercase;
+                    letter-spacing: 0.125rem;
+                }
+
+                .top-title {
+                    display: flex;
+                    align-items: center;
+                    padding: 0.4rem 0.8rem;
+                    border-radius: 0.4rem;
+                }
+
+                .top-title-1 {
+                    background-color: $blue-C6E;
+                }
+
+                .top-title-2 {
+                    background-color: rgba(245, 232, 137, 0.5);
+                    width: max-content;
+                }
+
+                .bottom-title {
+                    background-color: rgba(245, 232, 137, 0.5);
+                    padding:0.8rem;
+                    border-radius:0.4rem;
+                    .span-bottom {
+                        white-space: normal !important;
+                        word-wrap: break-word;
+                    }
+                }
             }
         }
     }
@@ -248,6 +318,7 @@
     }
 
     .graph-table-section {
+
         // display: flex;
         .row{
             margin:0rem;
@@ -291,6 +362,7 @@
                 .graph-header {
                     padding-left: 1.6rem;
                 }
+
                 .chartArea{
                     height: 37rem;
                 }

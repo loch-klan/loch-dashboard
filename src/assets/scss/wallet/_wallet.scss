@@ -54,11 +54,9 @@
                         // margin-right: 4.9rem;
 
                         .wallet-img {
-                            // border-radius: 0.8rem;
-                            // background-color: #FFE7BD;
-                            // box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
-
-
+                            
+                            box-shadow: 0rem 0.4rem 0.8rem $grey-F2F , 0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.05);
+                            border-radius: 0.8rem;
                             img {
                                 width: 4.3rem;
                             }
@@ -126,7 +124,6 @@
                                 width:2.6rem;
                                 height:2.6rem;
                             }
-                            
                         }
                     }
                     .secondary-btn{
