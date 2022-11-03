@@ -310,7 +310,7 @@ class PieChart extends BaseReactComponent {
 
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
-                this.state.loader===true
+                this.state.loader === true
                 ?
                 <Loading/>
                 :
@@ -402,9 +402,9 @@ class PieChart extends BaseReactComponent {
                        
                     // </div>
                 }
+                </div>
 
 
-            </div >
         )
 
     }
