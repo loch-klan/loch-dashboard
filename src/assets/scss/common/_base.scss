@@ -1464,6 +1464,7 @@ form {
   }
 }
 
+
 // loading animation on API call
 .loading-animation{
   display: flex;
@@ -1471,70 +1472,27 @@ form {
   justify-content: center;
   align-items: center;
 }
+
+// slick slider positioning in loading animation
 .slick-text{
   display: flex;
-  max-height: 20px;
-  // min-height: fit-content;
+  max-height: 2rem;
   overflow: hidden;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
   line-height: 120%;
-  font-family: Inter-Medium, Arial, Helvetica, sans-serif;
+  // font-family: Inter-Medium, Arial, Helvetica, sans-serif;
+  @include font($grey-555, "Inter-Medium", 1.6rem, 500, normal);
   color: #55575a;
   background: blur(3px);
   align-items: center;
-  // width: 138px;
   .slick-slider{
     padding-left: 2px;
-    font-size: 1.6rem;
     .h3{
-      width:fit-content
+      width:fit-content;
     }
     .slick-list{
-      height: 21px;
-      width: 137px;
-      font-size: 10px;
+      height: 2.1rem;
+      width: 13.7rem;
+      font-size: 1rem;
     }
   }
-}
-
-
-.transaction-table-wrapper{
-  
-  .animation-wrapper , .table-wrapper{
-    border-radius: 1.2rem;
-    width: 475px;
-    height: 420px;
-    background-image: url("../../images/transactionTableImage.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 450px 400px;
-  
-  }
-  .loading-animation{
-    backdrop-filter: blur(10px);
-    border-radius: 1.2rem;
-    height: 100%;
-    
-  }
-}
-.transaction-history-table{
-  .animation-wrapper , .table-wrapper{
-    border-radius: 1.2rem;
-    width: 980px;
-    height: 680px;
-    background-image: url("../../images/transactionHistorytableLoading.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 980px 680px;
-  
-  }
-  .loading-animation{
-    backdrop-filter: blur(12px);
-    border-radius: 1.2rem;
-    height: 100%;
-    
-  }
-  
 }

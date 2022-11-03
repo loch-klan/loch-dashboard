@@ -463,7 +463,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             location={this.props.location}
                             page={currentPage}
                             isLoading={this.state.isLoading}
-                        />
+                        /> 
                     </div>
                     {/* <CommonPagination
                         numOfPages={3}
