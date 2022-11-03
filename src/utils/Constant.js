@@ -20,6 +20,7 @@ export const SORT_BY_NAME = 'SORT_BY_NAME'
 export const SEARCH_BY_ASSETS_IN = 'SEARCH_BY_ASSETS_IN'
 export const SEARCH_BY_TYPE = 'SEARCH_BY_TYPE'
 export const SEARCH_BY_TIMESTAMP = 'SEARCH_BY_TIMESTAMP'
+export const SORT_BY_TIMESTAMP = 'SORT_BY_TIMESTAMP'
 
 
 export const Gender = {

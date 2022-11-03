@@ -7,7 +7,7 @@ import Metamask from '../../assets/images/MetamaskIcon.svg'
 import CoinChip from '../wallet/CoinChip';
 import { connect } from "react-redux";
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP, SEARCH_BY_TYPE } from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP, SEARCH_BY_TYPE, SORT_BY_TIMESTAMP } from '../../utils/Constant'
 import { searchTransactionApi, getFilters } from './Api';
 import { getCoinRate } from '../Portfolio/Api.js'
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
@@ -21,6 +21,13 @@ class TransactionHistoryPage extends BaseReactComponent {
         const params = new URLSearchParams(search);
         const page = params.get("p");
         const walletList = JSON.parse(localStorage.getItem("addWallet"))
+        const address = walletList.map((wallet) => {
+          return wallet.address
+      })
+      const  cond = [{
+          key: SEARCH_BY_WALLET_ADDRESS_IN,
+          value: address
+      }]
         this.state = {
             year: '',
             search: '',
@@ -28,13 +35,13 @@ class TransactionHistoryPage extends BaseReactComponent {
             asset: '',
             methodsDropdown: Method.opt,
             table: [],
-            sort: [],
+            sort: [{key: SORT_BY_TIMESTAMP, value: false}],
             walletList,
             currentPage: page ? parseInt(page, 10) : START_INDEX,
             assetFilter: [],
             yearFilter: [],
             delayTimer: 0,
-            condition: [],
+            condition: cond ? cond : [],
             isLoading:true,
         }
         this.delayTimer = 0
@@ -43,16 +50,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         this.props.history.replace({
             search: `?p=${this.state.currentPage}`
         })
-        const address = this.state.walletList.map((wallet) => {
-            return wallet.address
-        })
-        const  cond = [{
-            key: SEARCH_BY_WALLET_ADDRESS_IN,
-            value: address
-        }]
-        this.setState({
-            condition : cond
-        })
+
         this.callApi(this.state.currentPage || START_INDEX)
         getFilters(this)
         this.props.getCoinRate()
@@ -361,7 +359,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         title={"Transaction history"}
                         subTitle={"Valuable insights based on your assets"}
                         showpath={true}
-                        currentPage={"transaction-history"}
+                        currentPage={"transaction history"}
                         history={this.props.history}
                     />
 
@@ -429,7 +427,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 {/* {fillter_tabs} */}
                                 <Col md={3}>
                                     <div className="searchBar">
-                                        <Image src={searchIcon} />
+                                        <Image src={searchIcon} className="search-icon" />
                                         <FormElement
                                             valueLink={this.linkState(
                                                 this,
