@@ -96,16 +96,6 @@ class ExitOverlay extends BaseReactComponent {
                                     valueLink={this.linkState(this, "email")}
                                     // label="Email Info"
                                     required
-                                    validations={[
-                                        {
-                                            validate: FormValidator.isRequired,
-                                            message: "Field cannot be empty"
-                                        },
-                                        {
-                                            validate: FormValidator.isEmail,
-                                            message: "Please enter a valid email"
-                                        }
-                                    ]}
                                     control={
                                         {
                                             type: CustomTextControl,
@@ -116,7 +106,7 @@ class ExitOverlay extends BaseReactComponent {
                                     }
                                 />
                                 <div className='save-btn-section'>
-                                    <Button className={`inter-semi-bold f-s-16 lh-19 white save-btn ${this.state.email ? "active" : ""}`}
+                                    <Button className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${this.state.email ? "active" : ""}`}
                                         type="submit">Save</Button>
                                 </div>
                             </Form>
