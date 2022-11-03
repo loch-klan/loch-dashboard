@@ -195,15 +195,15 @@
   
     .animation-wrapper{
       border-radius: 1.2rem;
-      height: 55vh;
+      height: 42.0rem;
       background-image: url("../../images/transactionTableImage.png");
       background-position: center;
       background-repeat: no-repeat;
       background-size: 100% 100%;
-      
+
     }
     .loading-animation{
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(1rem);
       border-radius: 1.2rem;
       height: 100%;
     }
@@ -212,8 +212,7 @@
     .animation-wrapper {
       background-image: url("../../images/transactionHistorytableLoading.png");
       background-size: 100% 100%;
-      min-width: 100%;
-      height: 90vh;
+      height: 68rem;
     }
     
   }
