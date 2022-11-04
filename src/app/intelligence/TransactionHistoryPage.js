@@ -57,7 +57,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
 
     callApi = (page = START_INDEX) => {
-
         let data = new URLSearchParams()
         data.append("start", (page * API_LIMIT))
         data.append("conditions", JSON.stringify(this.state.condition))
@@ -120,8 +119,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                 arr.splice(search_index, 1)
             }
         }
+        // On Filter start from page 0
+        this.props.history.replace({
+          search: `?p=${START_INDEX}`
+      })
         this.setState({
-            condition: arr
+            condition: arr,
         })
     }
     onChangeMethod = () => {
@@ -461,7 +464,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             location={this.props.location}
                             page={currentPage}
                             isLoading={this.state.isLoading}
-                        /> 
+                        />
                     </div>
                     {/* <CommonPagination
                         numOfPages={3}
