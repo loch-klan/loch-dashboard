@@ -78,58 +78,84 @@ class BarGraphSection extends Component {
             })
         }
     }
+    // NewWidth = () => {
+    //     console
+    // } 
 
     render() {
+       
         return (
-            <div className={`bar-graph-section ${this.props.marginBottom ? this.props.marginBottom : ""}`}>
-                {
-                    this.state.headerTitle || this.state.headerSubTitle ?
-                        <GraphHeader
-                            title={this.state.headerTitle}
-                            subtitle={this.state.headerSubTitle}
-                            isArrow={this.state.isArrow}
-                        />
-                        :
-                        ""
-                }
-                {this.state.showBadges ?
-                    <CoinBadges
-                        handleFunction={this.handleFunction}
-                        activeBadge={this.state.activeBadge}
-                        chainList={this.props.coinsList}
-                        isScrollVisible={this.state.isScrollVisible}
-                    />
-                    :
-                    ""
-                }
-                {this.state.showPercentage ?
-                    <div className='show-percentage-div '>
-                        <div className={`inter-display-medium f-s-16 lh-19 grey-313 content ${this.state.       showPercentage.status === "Increase" ? "inc" : "dec"}`}>
-                            <Image src={this.state.showPercentage.icon} className="m-r-4" />
-                            {this.state.showPercentage.percent}$ {this.state.showPercentage.status}
-                        </div>
-                    </div>
-                    :
-                    ""
-                }
-                <div className='chartArea'>
-                    <Bar
-                        options={this.state.options}
-                        data={this.state.data}
-                    />
+          <div
+            className={`bar-graph-section ${
+              this.props.marginBottom ? this.props.marginBottom : ""
+            }`}
+          >
+            {this.state.headerTitle || this.state.headerSubTitle ? (
+              <GraphHeader
+                title={this.state.headerTitle}
+                subtitle={this.state.headerSubTitle}
+                isArrow={this.state.isArrow}
+              />
+            ) : (
+              ""
+            )}
+            {this.state.showBadges ? (
+              <CoinBadges
+                handleFunction={this.handleFunction}
+                activeBadge={this.state.activeBadge}
+                chainList={this.props.coinsList}
+                isScrollVisible={this.state.isScrollVisible}
+              />
+            ) : (
+              ""
+            )}
+            {this.state.showPercentage ? (
+              <div className="show-percentage-div ">
+                <div
+                  className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
+                    this.state.showPercentage.status === "Increase"
+                      ? "inc"
+                      : "dec"
+                  }`}
+                >
+                  <Image
+                    src={this.state.showPercentage.icon}
+                    className="m-r-4"
+                  />
+                  {this.state.showPercentage.percent}${" "}
+                  {this.state.showPercentage.status}
                 </div>
-                {this.state.showFooter ?
-                    <BarGraphFooter
-                        handleFooterClick={this.handleFooter}
-                        active={this.state.activeFooter}
-                        footerLabels={this.state.footerLabels}
-                    />
-                    :
-                    ""
-                }
-
+              </div>
+            ) : (
+              ""
+            )}
+            <div className="chartAreaWrapper">
+              <div
+                className="chartArea"
+                style={{
+                  width: `${
+                    this.state.data.labels.length > 8
+                      ? this.state.data.labels.length * 12.5
+                      : 100
+                  }%`,
+                  minWidth: `${this.state.data.labels.length * 10}rem`,
+                }}
+              >
+                <Bar options={this.state.options} data={this.state.data} />
+              </div>
             </div>
-        )
+
+            {this.state.showFooter ? (
+              <BarGraphFooter
+                handleFooterClick={this.handleFooter}
+                active={this.state.activeFooter}
+                footerLabels={this.state.footerLabels}
+              />
+            ) : (
+              ""
+            )}
+          </div>
+        );
     }
 }
 const mapStateToProps = state => ({
