@@ -468,10 +468,9 @@ body {
   &.Toastify__toast--error {
     .Toastify__toast-body {
       .Toastify__toast-icon {
-        background-image: none;
-
+        background-image: url(../../images/icons/alert-icon.svg);
         svg {
-          display: block;
+          display: none;
         }
       }
     }
