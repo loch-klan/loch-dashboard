@@ -64,7 +64,7 @@ export const signIn = (ctx,data)=>{
               {res.data.message}
               </div>
               <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-              Please enter a valid user
+              Please enter a valid email
               </div>
             </div>
             );
