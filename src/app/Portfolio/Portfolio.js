@@ -102,11 +102,16 @@ class Portfolio extends BaseReactComponent {
                         });
                     }
                 })
-                this.getTableData()
+                // this.getTableData()
             } 
             else {
                 // console.log('Heyyy');
+                // this.getTableData()
                 this.props.settingDefaultValues();
+            }
+            if(prevProps.userWalletList !== this.state.userWalletList)
+            {
+                this.getTableData()
             }
         }
     }

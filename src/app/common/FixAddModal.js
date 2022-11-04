@@ -1,5 +1,5 @@
 import React from 'react'
-import {BaseReactComponent} from '../../utils/form';
+import { BaseReactComponent } from '../../utils/form';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
@@ -213,8 +213,8 @@ class FixAddModal extends BaseReactComponent {
             let curr = wallets[i];
             if (!curr.coinFound) {
                 this.state.fixWalletAddress.map((wallet) => {
-                  // console.log('wallettt',wallet);
-                  localArr.push(wallet);
+                    // console.log('wallettt',wallet);
+                    localArr.push(wallet);
                     // if (wallet.address === curr.address) {
                     //     localArr.push(wallet)
                     // }
@@ -239,8 +239,7 @@ class FixAddModal extends BaseReactComponent {
         }
         walletList.map((w, index) => w.id = `wallet${index + 1}`)
         // console.log('walletList',walletList);
-        if(walletList.length === 0)
-        {
+        if (walletList.length === 0) {
             walletList.push({
                 id: 'wallet1',
                 address: "",
@@ -268,48 +267,52 @@ class FixAddModal extends BaseReactComponent {
             // if (!e.address) {
             //     isDisableFlag = true;
             // }
-            if(e.address && e.coins.length !== this.props.OnboardingState.coinsList.length){
-              isDisableFlag = true;
+            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
+                isDisableFlag = true;
             }
         })
         return isDisableFlag;
     }
 
-    isFixDisabled = () =>{
-      let isDisableFlag = false;
-      this.state.fixWalletAddress.map((e) => {
-        if(e.address && e.coins.length !== this.props.OnboardingState.coinsList.length){
-          isDisableFlag = true;
-        }
-      })
-      return isDisableFlag;
+    isFixDisabled = () => {
+        let isDisableFlag = false;
+        this.state.fixWalletAddress.map((e) => {
+            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
+                isDisableFlag = true;
+            }
+        })
+        return isDisableFlag;
     }
 
-    getPadding = ()=>{
-
+    getPadding = (val) => {
+        console.log(val)
         let elem = document.querySelectorAll('.add-wallet-input-section')
-        if(elem.length > 0){
-            console.log(elem)
-            elem.forEach((e)=>{
-                let paddingRight = 0
-                let children = e.children
-                // let chip = children
-                paddingRight += e.lastChild.offsetWidth + 10
-                const style = `padding-right:${paddingRight}px`
-                // console.log("children",children[children.length-1])
-                if(children.length === 2)
-                {
-                    console.log(children[0])
-                    children[0].setAttribute('style',style)
-                }
-                else if(children.length === 3)
-                {
-                    console.log(children[1])
-                    children[1].setAttribute('style',style)
-                }
+        // if (elem.length > 0) {
+        //     console.log(elem)
+        //     elem.forEach((e) => {
+        //         let paddingRight = 0
+        //         let children = e.children
+        //         // let chip = children
+        //         paddingRight += e.lastChild.offsetWidth + 10
+        //         const style = `padding-right:${paddingRight}px`
+        //         // console.log("children",children[children.length-1])
+        //         if (children.length === 2 && children[0].localName === 'input') {
+        //             console.log(children[0])
+        //             children[0].setAttribute('style', style)
+        //         }
+        //         else if (children.length === 3 && children[1].localName === 'input') {
+        //             console.log(children[1])
+        //             children[1].setAttribute('style', style)
+        //         }
 
-                console.log("Padding Applyied")
-            })
+        //         console.log("Padding Applyied")
+        //     })
+        // }
+        if(document.getElementById(val)){
+        console.log(document.getElementById(val).lastChild.offsetWidth)
+        const paddRight = document.getElementById(val).lastChild.offsetWidth + 10
+        const style = {paddingRight : paddRight}
+        return style
         }
 
         // return paddingRight
@@ -322,7 +325,7 @@ class FixAddModal extends BaseReactComponent {
             walletDropDownList.push({ name: wallet.name, id: wallet.id })
         })
         const inputs = this.state.modalType == "fixwallet" ?
-          this.state.fixWalletAddress.map((elem, index) => {
+            this.state.fixWalletAddress.map((elem, index) => {
                 return (
                     <div className="m-b-12 fix-wallet-input" key={index}>
                         <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteFixWalletAddress(elem)} />
@@ -336,6 +339,7 @@ class FixAddModal extends BaseReactComponent {
                             onChange={(e) => this.handleFixWalletChange(e)}
                             
                         />
+
                         {
                             elem.address
                                 ?
@@ -346,12 +350,12 @@ class FixAddModal extends BaseReactComponent {
                                     // elem.coins.length === 0
                                     //     ?
                                     //     <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
-                                        // :
-                                        elem.coins.length === this.props.OnboardingState.coinsList.length
-                                            ?
-                                            <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
-                                            :
-                                            <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
+                                    // :
+                                    elem.coins.length === this.props.OnboardingState.coinsList.length
+                                        ?
+                                        <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
+                                        :
+                                        <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
                                 :
                                 ""
                         }
@@ -359,9 +363,8 @@ class FixAddModal extends BaseReactComponent {
             }) : ""
 
 
-        const wallets =
-            this.state.addWalletList.map((elem, index) => {
-                return (<div className='m-b-12 add-wallet-input-section' key={index} >
+        const wallets = this.state.addWalletList.map((elem, index) => {
+                return (<div className='m-b-12 add-wallet-input-section' key={index} id={`add-wallet-${index}`}>
                     {index >= 1 ? <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteAddress(index)} /> : ""}
 
                     <input
@@ -373,6 +376,7 @@ class FixAddModal extends BaseReactComponent {
                         className={`inter-display-regular f-s-16 lh-20 ${elem.address ? 'is-valid' : null}`}
                         onChange={(e) => this.handleOnchange(e)}
                         id={elem.id}
+                        style={this.getPadding(`add-wallet-${index}`)}
                     />
                     {
                         elem.address
@@ -461,12 +465,12 @@ class FixAddModal extends BaseReactComponent {
                                 >
                                     {/* {this.state.btnText} */}
                                     {
-                                      (this.isDisabled() || this.isFixDisabled())
-                                      ?
-                                      loadingAnimation()
-                                      :
-                                      
-                                      this.state.btnText
+                                        (this.isDisabled() || this.isFixDisabled())
+                                            ?
+                                            loadingAnimation()
+                                            :
+
+                                            this.state.btnText
                                     }
                                 </Button>
                             </div>
