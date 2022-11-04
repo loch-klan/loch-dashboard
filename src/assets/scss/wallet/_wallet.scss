@@ -16,6 +16,13 @@
                     align-items: center;
                     padding: 1.2rem 1.6rem;
                     cursor: pointer;
+
+                    .rotateUp{
+                        transform:rotate(180deg)
+                    }
+                    .rotateDown{
+                        transform: rotate(0deg);
+                    }
                 }
                 // .dropdown {
                 //     margin-right: 3.6rem;

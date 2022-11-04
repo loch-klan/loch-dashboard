@@ -102,7 +102,9 @@ class Portfolio extends BaseReactComponent {
                         });
                     }
                 })
-            } else {
+                this.getTableData()
+            } 
+            else {
                 // console.log('Heyyy');
                 this.props.settingDefaultValues();
             }
