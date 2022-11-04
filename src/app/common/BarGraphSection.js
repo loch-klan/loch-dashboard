@@ -39,7 +39,8 @@ class BarGraphSection extends Component {
             showBadges: props.showBadges,
             isArrow: props.isArrow,
             showPercentage: props.showPercentage,
-            footerLabels: props.footerLabels
+            footerLabels: props.footerLabels,
+            isScrollVisible : props.isScrollVisible
         }
     }
 
@@ -96,6 +97,7 @@ class BarGraphSection extends Component {
                         handleFunction={this.handleFunction}
                         activeBadge={this.state.activeBadge}
                         chainList={this.props.coinsList}
+                        isScrollVisible={this.state.isScrollVisible}
                     />
                     :
                     ""

@@ -17,6 +17,7 @@ import {
 } from "../../utils/Constant.js";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import sortByIcon from '../../assets/images/icons/TriangleDown.svg' 
 import { getCoinRate } from "../Portfolio/Api.js";
 import noDataImage from "../../image/no-data.png";
 import lochClean from "../../assets/images/LochClean.gif";
@@ -38,8 +39,9 @@ class Wallet extends Component {
       activeBadge: [{ name: "All", id: "" }],
       addModal: false,
       isLoading: true,
+      sortBy : [{title:"Amount",down:true}, {title:"Date added",down:true},{title:"Name", down:true}],
     };
-    this.sortby = ["Amount", "Date added", "Name"];
+    // this.sortby = [{title:"Amount",down:true}, {title:"Date added",down:true},{title:"Name", down:true}];
   }
 
   componentDidMount() {
@@ -58,7 +60,17 @@ class Wallet extends Component {
     console.log(data);
   };
   handleSort = (e) => {
-    if (e === "Amount") {
+    let sort = [...this.state.sortBy]
+    sort.map((el)=>{
+      if(el.title === e.title){
+        el.down = !el.down
+      }
+      else{
+        el.down = true
+      }
+    })
+
+    if (e.title === "Amount") {
       let obj = [
         {
           key: SORT_BY_PORTFOLIO_AMOUNT,
@@ -68,8 +80,9 @@ class Wallet extends Component {
       this.setState({
         sorts: obj,
         sortByAmount: !this.state.sortByAmount,
+        sortBy : sort
       });
-    } else if (e === "Date added") {
+    } else if (e.title === "Date added") {
       let obj = [
         {
           key: SORT_BY_CREATED_ON,
@@ -79,8 +92,9 @@ class Wallet extends Component {
       this.setState({
         sorts: obj,
         sortByDate: !this.state.sortByDate,
+        sortBy : sort
       });
-    } else if (e === "Name") {
+    } else if (e.title === "Name") {
       let obj = [
         {
           key: SORT_BY_NAME,
@@ -90,6 +104,7 @@ class Wallet extends Component {
       this.setState({
         sorts: obj,
         sortByName: !this.state.sortByName,
+        sortBy : sort
       });
     }
 
@@ -206,7 +221,7 @@ class Wallet extends Component {
               Sort by
             </span>
             <div className="dropdown-section">
-              {this.sortby.map((e, index) => {
+              {this.state.sortBy.map((e, index) => {
                 return (
                   <span
                     className="sort-by-title"
@@ -214,9 +229,10 @@ class Wallet extends Component {
                     onClick={() => this.handleSort(e)}
                   >
                     <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
-                      {e}
+                      {e.title}
                     </span>{" "}
-                    <Image src={sort} style={{ width: "1rem" }} />
+                    {/* <Image src={sort} style={{ width: "1rem" }} /> */}
+                    <Image src={sortByIcon} style={{ width: "1.6rem" }} className={e.down ? "rotateDown" : "rotateUp"} />
                   </span>
                 );
               })}
@@ -224,8 +240,8 @@ class Wallet extends Component {
           </div>
 
         <div className="cards">
-            {this.state.isLoading === true 
-            ? 
+            {this.state.isLoading === true
+            ?
             (
               <div className="loading-container">
                 <div className="animation-wrapper">

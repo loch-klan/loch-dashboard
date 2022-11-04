@@ -96,6 +96,16 @@ class ExitOverlay extends BaseReactComponent {
                                     valueLink={this.linkState(this, "email")}
                                     // label="Email Info"
                                     required
+                                    validations={[
+                                      {
+                                        validate: FormValidator.isRequired,
+                                        message: ""
+                                      },
+                                      {
+                                        validate: FormValidator.isEmail,
+                                        message: "Please enter valid email id"
+                                      }
+                                    ]}
                                     control={
                                         {
                                             type: CustomTextControl,

@@ -468,10 +468,9 @@ body {
   &.Toastify__toast--error {
     .Toastify__toast-body {
       .Toastify__toast-icon {
-        background-image: none;
-
+        background-image: url(../../images/icons/alert-icon.svg);
         svg {
-          display: block;
+          display: none;
         }
       }
     }
@@ -1526,3 +1525,9 @@ form {
     }
   }
 }
+
+// .coin-badges{
+//   .white-scroll::-webkit-scrollbar-thumb, .white-scroll::-webkit-scrollbar-track{
+//       // background-color: $secondary;
+//   }
+// }
