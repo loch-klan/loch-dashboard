@@ -20,7 +20,7 @@ export const getCoinRate = () => {
     };
 };
 
-export const getUserWallet = (wallet) => {
+export const getUserWallet = (wallet,ctx) => {
     return function (dispatch, getState) {
         let data = new URLSearchParams();
         data.append("chain", wallet.coinCode);
@@ -36,6 +36,8 @@ export const getUserWallet = (wallet) => {
                         userWalletList: userWalletList
                     }
                 });
+                ctx.setState(
+                    {isLoading:false})
             })
             .catch((err) => {
                 console.log("Catch", err);
@@ -87,10 +89,11 @@ export const getDetailsByLinkApi = (link,ctx) => {
                   obj['id'] = `wallet${i+1}`;
                   obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
                   addWallet.push(obj);
-                  ctx.setState({
-                    // isLoading:false,
-                  })
+                  
               }
+              ctx.setState({
+                isLoading:false,
+              })
               } else{
                 toast.error(res.data.message || "Something Went Wrong")
               }

@@ -158,7 +158,6 @@
                         margin: 0 1.2rem;
                     }
                 }
-
                 .custom-table {
                     .ReactVirtualized__Table__headerRow {
                         padding-left: 0rem;
@@ -216,3 +215,15 @@
     }
     
   }
+
+.transaction-table-section{
+    .table-wrapper{
+
+    .not-found-wrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 42rem;
+    }
+}    
+}
