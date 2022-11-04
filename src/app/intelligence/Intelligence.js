@@ -71,7 +71,7 @@ class Intelligence extends Component {
                         borderWidth: 1,
                     }
                 },
-                
+
             }
         }
 
@@ -97,7 +97,7 @@ class Intelligence extends Component {
                     },
                     borderSkipped: false,
                     barThickness:48,
-                   
+
                 }
             ]
         }
@@ -117,6 +117,7 @@ class Intelligence extends Component {
                         showImg={eyeIcon}
                     />
                     <BarGraphSection
+                        isScrollVisible={false}
                         data={data}
                         options={options}
                         coinsList={this.props.OnboardingState.coinsList}

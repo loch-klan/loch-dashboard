@@ -58,7 +58,17 @@ export const signIn = (ctx,data)=>{
     .then(res =>{
         if(res.data.error)
         {
-            toast.error(res.data.message || "Something went Wrong")
+          toast.error(
+            <div className="custom-toast-msg">
+              <div>
+              {res.data.message}
+              </div>
+              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+              Please enter a valid user
+              </div>
+            </div>
+            );
+            // toast.error(res.data.message || "Something went Wrong")
         }
         else if(res.data.error === false){
             ctx.setState({
@@ -110,7 +120,17 @@ export const verifyUser = (ctx,info)=>{
             })
         }
         else{
-            toast.error(res.data.message || "Something Went Wrong")
+          toast.error(
+            <div className="custom-toast-msg">
+              <div>
+              {res.data.message}
+              </div>
+              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+              Please enter a valid otp
+              </div>
+            </div>
+            );
+            // toast.error(res.data.message || "Something Went Wrong")
         }
     })
     .catch(err =>{
