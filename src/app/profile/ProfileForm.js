@@ -68,7 +68,7 @@ class ProfileForm extends BaseReactComponent{
                                     control={{
                                         type: CustomTextControl,
                                         settings: {
-                                            placeholder: "Doe",
+                                            placeholder: "Loch",
                                         }
                                     }}
                                     classes={{
