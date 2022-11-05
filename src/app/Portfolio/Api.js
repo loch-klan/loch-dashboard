@@ -36,8 +36,9 @@ export const getUserWallet = (wallet,ctx) => {
                         userWalletList: userWalletList
                     }
                 });
+                if(ctx){
                 ctx.setState(
-                    {isLoading:false})
+                    {isLoading:false})}
             })
             .catch((err) => {
                 console.log("Catch", err);

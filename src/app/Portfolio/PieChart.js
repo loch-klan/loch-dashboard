@@ -386,21 +386,19 @@ class PieChart extends BaseReactComponent {
                             </div> : null}
                     </>
                     :
-                    this.state.isLoading === true && this.state.walletTotal === 0
-                    ?
-                    <>
-                    {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                    {/* <Loading/> */}
-                    <Loading/>
-                    </>
+                        this.props.isLoading === true 
+                        ?
+                            <>
+                            {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
+                                <Loading/>
+                            </>
 
-                    :
-                    <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
-                    
-                    // <div className='chart-section-loader'>
-                    //     {/* <CustomLoader loaderType="pie" /> */}
-                       
-                    // </div>
+                        :
+                            this.props.walletTotal === 0 
+                            ?
+                                <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                            :
+                                null
                 }
                 </div>
 
