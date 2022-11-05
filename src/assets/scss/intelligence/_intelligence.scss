@@ -17,6 +17,7 @@
 
             .row-card {
                 position: relative;
+                overflow: hidden;
 
                 .bg-img {
                     position: absolute;
@@ -24,6 +25,7 @@
                     // top: 0.7rem;
                     top: 1.3rem;
                     height:92%;
+                    z-index: 1;
                 }
 
                 .welcome-card {
@@ -33,6 +35,10 @@
                     // padding: 6rem 4.8rem 5.2rem 4.8rem;
                     padding: 4.8rem;
 
+                    h3, p{
+                        position: relative;
+                        z-index: 2;
+                    }
                     .welcome-card-title {
                         color: $black-191;
                     }
@@ -45,6 +51,7 @@
                         display: flex;
                         justify-content: space-between;
                         align-items: flex-start;
+                        flex-wrap: wrap;
                         .info {
                             display: flex;
                             align-items: center;
@@ -79,7 +86,15 @@
                                 }
                             }
                         }
-                    }
+
+                        @media only screen  and (max-width : 1240px)
+                        { 
+                            .info {
+                                 margin-bottom: 1.5rem;
+                                 
+                                 }
+                                }  
+                            }
 
                 }
             }
@@ -107,3 +122,12 @@
         }
     }
 }
+
+// @media screen  and (max-device-width : 1240px)
+// { 
+//     .intelligence-page-section .intelligence-section .intell-welcome-card .row-card .welcome-card .info-container .info {
+//         margin-bottom: 1.5rem;
+//     }
+                    
+                    
+// }  
