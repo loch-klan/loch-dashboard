@@ -14,7 +14,7 @@ import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin } from "../onboarding//Api";
 import { updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
-import { loadingAnimation } from '../../utils/ReusableFunctions';
+import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
 class FixAddModal extends BaseReactComponent {
 
     constructor(props) {
@@ -284,42 +284,10 @@ class FixAddModal extends BaseReactComponent {
         return isDisableFlag;
     }
 
-    getPadding = (val) => {
-        console.log(val)
-        let elem = document.querySelectorAll('.add-wallet-input-section')
-        // if (elem.length > 0) {
-        //     console.log(elem)
-        //     elem.forEach((e) => {
-        //         let paddingRight = 0
-        //         let children = e.children
-        //         // let chip = children
-        //         paddingRight += e.lastChild.offsetWidth + 10
-        //         const style = `padding-right:${paddingRight}px`
-        //         // console.log("children",children[children.length-1])
-        //         if (children.length === 2 && children[0].localName === 'input') {
-        //             console.log(children[0])
-        //             children[0].setAttribute('style', style)
-        //         }
-        //         else if (children.length === 3 && children[1].localName === 'input') {
-        //             console.log(children[1])
-        //             children[1].setAttribute('style', style)
-        //         }
 
-        //         console.log("Padding Applyied")
-        //     })
-        // }
-        if(document.getElementById(val)){
-        console.log(document.getElementById(val).lastChild.offsetWidth)
-        const paddRight = document.getElementById(val).lastChild.offsetWidth + 10
-        const style = {paddingRight : paddRight}
-        return style
-        }
 
-        // return paddingRight
-    }
 
     render() {
-        // this.getPadding()
         let walletDropDownList = []
         this.state.walletNameList.map((wallet) => {
             walletDropDownList.push({ name: wallet.name, id: wallet.id })
@@ -327,7 +295,7 @@ class FixAddModal extends BaseReactComponent {
         const inputs = this.state.modalType == "fixwallet" ?
             this.state.fixWalletAddress.map((elem, index) => {
                 return (
-                    <div className="m-b-12 fix-wallet-input" key={index}>
+                    <div className="m-b-12 fix-wallet-input" key={index} id={`fix-input-${index}`}>
                         <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteFixWalletAddress(elem)} />
                         <input
                             value={elem.address || ""}
@@ -337,7 +305,7 @@ class FixAddModal extends BaseReactComponent {
                             name={`wallet${index + 1}`}
                             autoFocus
                             onChange={(e) => this.handleFixWalletChange(e)}
-                            
+                            style={getPadding(`fix-input-${index}`,elem,this.props.OnboardingState)}
                         />
 
                         {
@@ -376,7 +344,7 @@ class FixAddModal extends BaseReactComponent {
                         className={`inter-display-regular f-s-16 lh-20 ${elem.address ? 'is-valid' : null}`}
                         onChange={(e) => this.handleOnchange(e)}
                         id={elem.id}
-                        style={this.getPadding(`add-wallet-${index}`)}
+                        style={getPadding(`add-wallet-${index}`,elem,this.props.OnboardingState)}
                     />
                     {
                         elem.address

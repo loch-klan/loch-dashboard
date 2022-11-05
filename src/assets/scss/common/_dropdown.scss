@@ -13,8 +13,9 @@
     .dropdown-toggle::after {
         margin-left: 1.2rem;
     }
-    .dropdown-item:active{
-        background-color: $grey-E9E;
+    .dropdown-item:active , .dropdown-item:hover,.active{
+        // background-color: $grey-E9E;
+        background-color: $drop-button-hover;
     }    
     .btn-primary.dropdown-toggle:focus {
         box-shadow: none;

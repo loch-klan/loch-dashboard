@@ -306,7 +306,7 @@ class PieChart extends BaseReactComponent {
             }]
         }
         return (
-            <div className='portfolio-over-container' >
+            <div className={`portfolio-over-container ${Object.keys(this.state.pieSectionDataEnabled).length > 0 ? "m-b-32" : "m-b-80"}`} >
 
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {

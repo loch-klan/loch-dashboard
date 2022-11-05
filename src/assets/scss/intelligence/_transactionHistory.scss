@@ -24,12 +24,13 @@
                      
                         .css-2b097c-container {
                             .custom-select__control {
-                                background-color: $grey-F2F;
+                                // background-color: $grey-F2F;
+                                background-color: $drop-button-hover;
                                 color: $black-191;
                                 border-radius: 0.8rem;
                                 border: none;
                                 min-height: 4rem;
-                                padding-left: 1rem;
+                                // padding-left: 1rem;
 
                                 // width:24rem;
                                 .custom-select__value-container {

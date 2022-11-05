@@ -362,7 +362,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         title={"Transaction history"}
                         subTitle={"Valuable insights based on your assets"}
                         showpath={true}
-                        currentPage={"transaction history"}
+                        currentPage={"transaction-history"}
                         history={this.props.history}
                     />
 

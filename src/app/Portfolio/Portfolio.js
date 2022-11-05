@@ -478,8 +478,8 @@ class Portfolio extends BaseReactComponent {
                 {this.state.loader  ? <Loading/> :
                     <div className="portfolio-page-section" >
                         {/* <Sidebar ownerName="" /> */}
-                        <div className='portfolio-container'>
-                            <div className='portfolio-section page'>
+                        <div className='portfolio-container page'>
+                            <div className='portfolio-section'>
                                 <WelcomeCard
                                     decrement={true}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
@@ -490,7 +490,7 @@ class Portfolio extends BaseReactComponent {
                                     handleManage={() => this.props.history.push('/wallets')}
                                 />
                             </div>
-                            <div className='portfolio-section page'>
+                            <div className='portfolio-section '>
                                 <PieChart
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
@@ -510,13 +510,13 @@ class Portfolio extends BaseReactComponent {
                                     </div>
                                     : ""}
                             </div>
-                            <div className='portfolio-section page m-b-32'>
+                            <div className='portfolio-section  m-b-32'>
                                 <LineChart
                                     coinLists={this.props.OnboardingState.coinsLists}
                                     isScrollVisible={false}
                                 />
                             </div>
-                            <div className='m-b-32 page graph-table-section'>
+                            <div className='m-b-32  graph-table-section'>
                                 <Row>
                                     <Col md={6}>
                                         <div className='m-r-16 section-table'>
@@ -546,7 +546,7 @@ class Portfolio extends BaseReactComponent {
                                     </Col>
                                 </Row>
                             </div>
-                            <div className='m-b-40 portfolio-cost-table-section page'>
+                            <div className='m-b-40 portfolio-cost-table-section '>
                                 <div className='portfolio-cost-table'>
                                     <TransactionTable
                                         title="Average Cost Basis"

@@ -15,13 +15,18 @@
             padding: 2rem 0rem;
             align-items: center;
             position: absolute;
-            bottom: 1rem;
-            right: 13.2rem;
+            // bottom: 1rem;
+            bottom: -6rem;
+            // right: 13.2rem;
+            right: 0rem;
 
             .secondary-btn {
                 line-height: 1.9rem;
                 border: 0.15rem solid $black-191;
                 padding: 1.8rem 2.8rem;
+            }
+            .secondary-btn.btn-primary:not(:disabled):not(:disabled):active ,.secondary-btn:active{
+                border:0.15rem solid $black-191; 
             }
         }
 
@@ -131,14 +136,14 @@
                         .dropdown-menu{
                             width: auto;
                             padding: 0.4rem;
-                            overflow-y: scroll;
-                            height: 7rem;
+                            // overflow-y: scroll;
+                            height: 17rem;
 
                         }
                         .dropdown-toggle {
                             @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
                               background: $secondary;
-                              padding-left: 4rem;
+                              padding-left: 4.5rem;
                         }
 
                     }
@@ -291,7 +296,7 @@
         justify-content: center;
         flex-direction: column;
         padding-top: 2rem;
-        padding-bottom: 5rem;
+        // padding-bottom: 5rem;
 
         .overview-heading {
             width: 100%;
@@ -407,8 +412,9 @@
 .coin-hover-display {
     // width: 100%;
     width: max-content;
-    margin-top: 6.8rem;
-    margin-bottom: -3.2rem;
+    // margin-top: 6.8rem;
+    margin-top: 5.3rem;
+    // margin-bottom: -3.2rem;
     //position: relative;
     display: flex;
     padding: 1.6rem;
