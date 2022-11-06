@@ -4,7 +4,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CustomLoader from "../common/CustomLoader";
 import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
-import unrecognized from '../../image/unrecognized.png';
+import unrecognized from '../../image/unrecognized.svg';
 import { DEFAULT_COLOR } from '../../utils/Constant';
 import { Image} from 'react-bootstrap';
 import noDataImage from '../../image/no-data.png';
@@ -314,7 +314,7 @@ class PieChart extends BaseReactComponent {
                 ?
                 <Loading/>
                 :
-                Object.keys(this.state.assetData).length > 0 ? 
+                Object.keys(this.state.assetData).length > 0 ?
                     <>
                         <div className='chart-section'>
                             <HighchartsReact
@@ -386,7 +386,7 @@ class PieChart extends BaseReactComponent {
                             </div> : null}
                     </>
                     :
-                        this.props.isLoading === true 
+                        this.props.isLoading === true
                         ?
                             <>
                             {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
@@ -394,7 +394,7 @@ class PieChart extends BaseReactComponent {
                             </>
 
                         :
-                            this.props.walletTotal === 0 
+                            this.props.walletTotal === 0
                             ?
                                 <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
                             :
