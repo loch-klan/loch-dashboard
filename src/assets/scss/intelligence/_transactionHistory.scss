@@ -2,7 +2,7 @@
     display: flex;
 
     .history-table {
-        margin-top: 8rem;
+        margin-top: 6rem;
 
         .fillter_tabs_section {
             // display: flex;
@@ -21,7 +21,7 @@
 
                     .form-group {
                         margin: 0rem 1.7rem 0rem 0rem;
-                     
+
                         .css-2b097c-container {
                             .custom-select__control {
                                 // background-color: $grey-F2F;
@@ -192,7 +192,7 @@
 
 // loading data animation css for transaction table and transaction-history-table
 .transaction-table-loading-wrapper{
-  
+
     .animation-wrapper{
       border-radius: 1.2rem;
       height: 42.0rem;
@@ -214,7 +214,7 @@
       background-size: 100% 100%;
       height: 68rem;
     }
-    
+
   }
 
 .transaction-table-section{
@@ -226,5 +226,5 @@
         align-items: center;
         height: 42rem;
     }
-}    
+}
 }

@@ -103,7 +103,7 @@ class Portfolio extends BaseReactComponent {
                     }
                 })
                 // this.getTableData()
-            } 
+            }
             else {
                 // console.log('Heyyy');
                 // this.getTableData()
@@ -494,7 +494,7 @@ class Portfolio extends BaseReactComponent {
                                 <PieChart
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader} 
+                                    loader={this.state.loader}
                                     isLoading={this.state.isLoading}
                                     walletTotal={this.props.portfolioState.walletTotal}
                                 />
@@ -516,7 +516,7 @@ class Portfolio extends BaseReactComponent {
                                     isScrollVisible={false}
                                 />
                             </div>
-                            <div className='m-b-32  graph-table-section'>
+                            <div className='m-b-22 graph-table-section'>
                                 <Row>
                                     <Col md={6}>
                                         <div className='m-r-16 section-table'>

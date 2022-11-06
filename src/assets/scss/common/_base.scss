@@ -154,6 +154,9 @@ body {
 .m-t-80 {
   margin-top: 8rem;
 }
+.m-t-60{
+  margin-top: 6rem;
+}
 
 // MARGIN RIGHT
 
@@ -575,7 +578,7 @@ form {
           &.custom-select__option--is-focused,
           &.custom-select__option--is-selected {
             background-color: $drop-button-hover;
-         
+
           }
         }
         .css-yt9ioa-option:active{
