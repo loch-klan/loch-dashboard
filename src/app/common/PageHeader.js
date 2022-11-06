@@ -11,9 +11,9 @@ export default function PageHeader(props) {
     return e &&
       <>
         <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/${e}`}}className="inter-display-medium f-s-13 lh-16" active={e === props.currentPage} key={index} >
-          {e}
+          {e.replace(/-/g, " ")}
         </Breadcrumb.Item>
-        
+
       </>
   })
   const breadCrumb =

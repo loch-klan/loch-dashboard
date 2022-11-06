@@ -112,14 +112,14 @@ export const amountFormat = (number, locals, currency_type) => {
 export const getPadding = (val, e ,OnboardingState) => {
   let paddRight = 120
   if (document.getElementById(val)) {
-    console.log(document.getElementById(val).lastChild.offsetWidth)
+    // console.log(document.getElementById(val).lastChild.offsetWidth)
     if (document.getElementById(val).lastChild) {
       if (document.getElementById(val).lastChild.offsetWidth < 60)
         paddRight = 120
       else
         paddRight = document.getElementById(val).lastChild.offsetWidth + 10
     }
-    // condition when unregognize coin detected 
+    // condition when unregognize coin detected
     if (e.coins.length === OnboardingState.coinsList.length && e.coinFound === false)
       paddRight = 150
     let style = { paddingRight: paddRight }
