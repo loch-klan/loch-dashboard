@@ -161,6 +161,9 @@ function Sidebar(props) {
                         // link="http://loch.one/a2y1jh2jsja"
                         onHide={handleLeave}
                         history={history}
+                        handleRedirection={()=>{setTimeout(function(){
+                          props.history.push('/home');
+                       }, 3000)}}
                     /> : ""
             }
         </div>

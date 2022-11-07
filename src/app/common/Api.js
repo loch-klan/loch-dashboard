@@ -24,11 +24,12 @@ export const loginApi = (ctx, data) => {
     });
 }
 
-export const fixWallet = (ctx,info) =>{
+export const fixWalletApi = (ctx,info) =>{
       postLoginInstance.post("organisation/user/create-user",info)
       .then((res)=>{
         if(!res.data.error){
-          ctx.props.history.push('/home');
+          ctx.handleRedirection();
+          // ctx.props.history.push('/home');
         }
         else{
           toast.error(res.data.message || "Something went wrong");
