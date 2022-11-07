@@ -510,7 +510,7 @@ class Portfolio extends BaseReactComponent {
                                     </div>
                                     : ""}
                             </div>
-                            <div className='portfolio-section  m-b-32'>
+                            <div className='portfolio-section m-b-32'>
                                 <LineChart
                                     coinLists={this.props.OnboardingState.coinsLists}
                                     isScrollVisible={false}

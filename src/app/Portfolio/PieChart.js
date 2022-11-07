@@ -107,8 +107,8 @@ class PieChart extends BaseReactComponent {
                 styledMode: false,
                 type: 'pie',
                 backgroundColor: null,
-                height: 365,
-                width: 765,
+                height: 335,
+                width: 735,
                 events: {
                     render: function () {
                         var series = this.series[0],
