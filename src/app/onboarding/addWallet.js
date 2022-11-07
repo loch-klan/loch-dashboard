@@ -185,7 +185,7 @@ class AddWallet extends BaseReactComponent {
                     <div className='ob-modal-body-wrapper'>
                         <div className="ob-modal-body-1">
                             {this.state.walletInput.map((c, index) => {
-                                return <div className='ob-wallet-input-wrapper' key={index}>
+                                return <div className='ob-wallet-input-wrapper' key={index} id={`add-wallet-${index}`}>
                                     {
                                         index >= 1
                                             ?
@@ -222,6 +222,10 @@ class AddWallet extends BaseReactComponent {
                                                 }
                                             }
                                         }
+                                        else{
+                                            return ""
+                                        }
+
                                     })}
                                 </div>
                             })}

@@ -18,6 +18,9 @@ import ShareLink from '../../assets/images/icons/ShareLink.svg'
 import {fixWalletApi} from './Api.js'
 import { BASE_URL_S3 } from '../../utils/Constant';
 import { toast } from 'react-toastify';
+import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
+import ApiModalFrame from '../../assets/images/api_Modal_Frame.jpg';
+
 class ExitOverlay extends BaseReactComponent {
 
     constructor(props) {
@@ -92,14 +95,35 @@ class ExitOverlay extends BaseReactComponent {
                   )
               }
                 <Modal.Header>
+                    {
+                    this.props.modalType === "apiModal"
+                    ?
+                    <div className="api-modal-header">
+                        <Image src={ApiModalIcon}/>
+                    </div>
+                    :
                     <Image src={ExitOverlayIcon}
                         className="exitOverlayIcon" />
-
+                    }
                     <div className="closebtn" onClick={this.state.onHide}>
                         <Image src={CloseIcon} />
                     </div>
                 </Modal.Header>
                 <Modal.Body>
+                    {this.props.modalType === "apiModal" 
+                    ? 
+                    <div className='api-modal-body'>
+                        <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">{this.props.headerTitle}</h6>
+                        <p className='inter-display-regular f-s-13 lh-16 grey-B0B'>Personalized digital asset intelligence via API</p>
+                        <div className="api-modal-frame">
+                        <Image src={ApiModalFrame} />
+                        <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon</p>
+                        </div>
+                    </div>
+                    
+                    
+                    :
+                    
                     <div className='exit-overlay-body'>
                         <h6 className='inter-display-medium f-s-20 lh-24 '>Don’t lose your data</h6>
                         <p className='inter-display-medium f-s-16 lh-19 grey-7C7'>
@@ -175,7 +199,7 @@ class ExitOverlay extends BaseReactComponent {
                             ><Image src={InfoIcon} className="info-icon" /></CustomOverlay>
                         </div>
                     </div>
-
+                    }
                 </Modal.Body>
             </Modal >
         )
