@@ -9,9 +9,11 @@ export const searchTransactionApi = (data , ctx, page = 0) => {
                 console.log(page)
                 if (!res.data.error) {
                     dispatch(getAllTransactionHistory(res.data.data, page))
-                    ctx.setState({
-                        isLoading:false,
-                    })
+                    if(ctx){
+                        ctx.setState({
+                            isLoading:false,
+                        })
+                    }
                 }
                 else {
                     toast.error(res.data.message || "Something Went Wrong")

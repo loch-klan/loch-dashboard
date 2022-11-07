@@ -23,12 +23,14 @@ import {useHistory} from 'react-router-dom'
 import ExitOverlay from './ExitOverlay'
 import { BASE_URL_S3 } from '../../utils/Constant'
 import { toast } from 'react-toastify'
-function Sidebar(props) {
+function Sidebar(props) {       
 // console.log('props',props);
 
     const activeTab = window.location.pathname
     const history = useHistory();
     const [leave, setLeave] = React.useState(false);
+    const [apiModal,setApiModal]  =React.useState(false);
+    const [exportModal,setExportModal] = React.useState(false)
 
     const handleLeave = () => {
       const isDummy = localStorage.getItem("lochDummyUser");
@@ -39,11 +41,18 @@ function Sidebar(props) {
       }
     }
 
+    const handleApiModal = ()=>{
+        setApiModal(!apiModal)
+    }
+    const handleExportModal = ()=>{
+        setExportModal(!exportModal)
+    }
     const handleShare=()=>{
       const link= `${BASE_URL_S3}portfolio/${localStorage.getItem("lochDummyUser")}`
       navigator.clipboard.writeText(link);
       toast.success("Share link has been copied");
     }
+
     return (
         <div className='sidebar-section'>
             <Container>
@@ -113,11 +122,11 @@ function Sidebar(props) {
                     </div>
                     <div className='sidebar-footer'>
                         <ul>
-                            <li>
+                            <li onClick={handleExportModal}>
                                 <Image src={ExportIcon} />
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Export</Button>
                             </li>
-                            <li>
+                            <li onClick={handleApiModal}>
                                 <Image src={ApiIcon} />
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">API</Button>
                             </li>
@@ -161,10 +170,33 @@ function Sidebar(props) {
                         // link="http://loch.one/a2y1jh2jsja"
                         onHide={handleLeave}
                         history={history}
+                        modalType={"exitOverlay"}
                         handleRedirection={()=>{setTimeout(function(){
                           props.history.push('/home');
                        }, 3000)}}
                     /> : ""
+            }
+            {
+                apiModal ? 
+                <ExitOverlay 
+                    show = {apiModal}
+                    onHide = {handleApiModal}
+                    history={history}
+                    headerTitle={"Api"}
+                    modalType={'apiModal'}
+                />
+                :""
+            }
+            {
+                exportModal ? 
+                <ExitOverlay 
+                    show = {exportModal}
+                    onHide = {handleExportModal}
+                    history={history}
+                    headerTitle={"Export"}
+                    modalType={'apiModal'}
+                />
+                :""
             }
         </div>
     )

@@ -110,12 +110,12 @@ export const amountFormat = (number, locals, currency_type) => {
   return new Intl.NumberFormat(locals, { currency: currency_type }).format(number)
 }
 export const getPadding = (val, e ,OnboardingState) => {
-  let paddRight = 150
+  let paddRight = 120
   if (document.getElementById(val)) {
     // console.log(document.getElementById(val).lastChild.offsetWidth)
-    if (document.getElementById(val).lastChild) {
+    if (document.getElementById(val).lastChild.offsetWidth) {
       if (document.getElementById(val).lastChild.offsetWidth < 60)
-        paddRight = 150
+        paddRight = 120
       else
         paddRight = document.getElementById(val).lastChild.offsetWidth + 10
     }
