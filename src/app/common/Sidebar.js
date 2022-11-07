@@ -26,6 +26,7 @@ import {useHistory} from 'react-router-dom'
 import ExitOverlay from './ExitOverlay'
 import { BASE_URL_S3 } from '../../utils/Constant'
 import { toast } from 'react-toastify'
+import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
 function Sidebar(props) {       
 // console.log('props',props);
 
@@ -198,6 +199,7 @@ function Sidebar(props) {
                     history={history}
                     headerTitle={"Api"}
                     modalType={'apiModal'}
+                    iconImage={ApiModalIcon}
                 />
                 :""
             }
@@ -209,6 +211,7 @@ function Sidebar(props) {
                     history={history}
                     headerTitle={"Export"}
                     modalType={'apiModal'}
+                    iconImage={ExportIconWhite}
                 />
                 :""
             }

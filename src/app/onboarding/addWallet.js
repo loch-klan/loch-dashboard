@@ -52,6 +52,12 @@ class AddWallet extends BaseReactComponent {
         //         this.props.OnboardingState.walletList.splice(findWalletEntry, 1);
         //     }
         // }
+        // if(this.state.walletInput[0].address){
+        //     this.props.handleShowSignText(true)
+        // }
+        // else if (this.state.walletInput[0].address === ""){
+        //     this.props.handleShowSignText(false)
+        // }
         this.setState({
             addButtonVisible: this.state.walletInput[0].address,
             walletInput: walletCopy
@@ -171,17 +177,14 @@ class AddWallet extends BaseReactComponent {
         data.append("wallet_addresses", JSON.stringify(walletAddress))
         createAnonymousUserApi(data, this, finalArr);
     }
-
+    handleSignText = ()=>{
+        this.props.switchSignIn()
+    }
     render() {
-      // console.log('document.getElementById',document.getElementById('coin-div'));
-      let coinDiv = document.getElementById('coin-div');
-      let divWidth = 0;
-      if(coinDiv)
-        divWidth = coinDiv.offsetWidth + 10
-      // console.log("divWidth",divWidth)
+      
         return (
             <>
-                <Form onValidSubmit={this.onValidSubmit}>
+                <Form onValidSubmit={this.state.addButtonVisible ? this.onValidSubmit : this.handleSignText}>
                     <div className='ob-modal-body-wrapper'>
                         <div className="ob-modal-body-1">
                             {this.state.walletInput.map((c, index) => {
@@ -213,12 +216,12 @@ class AddWallet extends BaseReactComponent {
                                         if (this.state.walletInput[index].address && e.id === `wallet${index + 1}`) {
                                             // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                                             if (e.coinFound && e.coins.length> 0) {
-                                                return <CustomChip id={"coin-div"} coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
+                                                return <CustomChip  coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
                                             } else {
                                                 if (e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                                    return <CustomChip id={"coin-div"} coins={null} key={i} isLoaded={true}></CustomChip>
+                                                    return <CustomChip  coins={null} key={i} isLoaded={true}></CustomChip>
                                                 } else {
-                                                    return <CustomChip id={"coin-div"} coins={null} key={i} isLoaded={false}></CustomChip>
+                                                    return <CustomChip  coins={null} key={i} isLoaded={false}></CustomChip>
                                                 }
                                             }
                                         }
@@ -240,8 +243,10 @@ class AddWallet extends BaseReactComponent {
                         : null
                     }
                     <div className='ob-modal-body-btn'>
-                        <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
-                        <CustomButton className="primary-btn go-btn" type={"submit"} isLoading={this.isDisabled()} isDisabled={this.isDisabled()} buttonText="Go" />
+                        <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />                    
+                        <CustomButton className="primary-btn go-btn" type="submit" isLoading={this.state.addButtonVisible ? this.isDisabled() : false} 
+                        isDisabled={this.state.addButtonVisible ?  this.isDisabled() : false} 
+                        buttonText={this.state.addButtonVisible ? "Go" : "Sign in"} />
                     </div>
                 </Form>
             </>
