@@ -26,12 +26,12 @@
                 padding: 1.8rem 2.8rem;
             }
             .secondary-btn.btn-primary:not(:disabled):not(:disabled):active ,.secondary-btn:active{
-                border:0.15rem solid $black-191; 
+                border:0.15rem solid $black-191;
             }
         }
 
         .welcome-card-section {
-            margin: 8rem 0 2rem;
+            margin: 6rem 0 2rem;
             padding: 4.8rem;
             // width: 89.6rem;
             background-color: $secondary;
@@ -117,7 +117,7 @@
             .line-chart-section {
                 position: relative;
 
-                
+
                 .chart-x-selection {
                     position: relative;
 
@@ -219,7 +219,7 @@
                 flex-direction: column;
                 .header-title{
                     text-transform: uppercase;
-                    letter-spacing: 0.125rem;            
+                    letter-spacing: 0.125rem;
                 }
                 .line-chart-tooltip-section{
                     display:flex;
@@ -301,12 +301,12 @@
         .overview-heading {
             width: 100%;
         }
-        
+
         .loading-animation{
             width: 76.5rem;
             height: 36.5rem;
         }
-        
+
 
         .chart-section {
             display: flex;
