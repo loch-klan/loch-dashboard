@@ -129,6 +129,9 @@
                         outline: none !important;
                         box-shadow: none !important;
                     }
+                    &:hover .navbar-button{
+                        color:$primary
+                    }
                 }
             }
             // p {

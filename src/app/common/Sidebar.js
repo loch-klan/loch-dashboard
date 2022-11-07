@@ -15,8 +15,11 @@ import DollarIcon from '../../assets/images/icons/InactiveCostIcon.svg'
 import ActiveDollarIcon from '../../assets/images/icons/ActiveCostIcon.svg'
 
 import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
+import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.svg'
 import ApiIcon from '../../assets/images/icons/ApiIcon.svg'
+import ApiBlackIcon from '../../assets/images/icons/ApiBlackIcon.svg'
 import LeaveIcon from '../../assets/images/icons/LeaveIcon.svg'
+import LeaveBlackIcon from '../../assets/images/icons/LeaveBlackIcon.svg'
 import DarkmodeIcon from '../../assets/images/icons/DarkmodeIcon.svg'
 import bgImg from '../../image/Notice.png'
 import {useHistory} from 'react-router-dom'
@@ -122,12 +125,20 @@ function Sidebar(props) {
                     </div>
                     <div className='sidebar-footer'>
                         <ul>
-                            <li onClick={handleExportModal}>
-                                <Image src={ExportIcon} />
+                            <li
+                                onMouseOver={e => (e.currentTarget.children[0].src=ExportIconWhite)}
+                                onMouseLeave={e => (e.currentTarget.children[0].src=ExportIcon)}
+                                onClick={handleExportModal}
+                            >
+                                <Image src={ExportIcon}/>
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Export</Button>
                             </li>
-                            <li onClick={handleApiModal}>
-                                <Image src={ApiIcon} />
+                            <li 
+                                onMouseOver={e => (e.currentTarget.children[0].src=ApiBlackIcon)}
+                                onMouseLeave={e => (e.currentTarget.children[0].src=ApiIcon)}
+                                onClick={handleApiModal}
+                            >
+                                <Image src={ApiIcon}/>
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">API</Button>
                             </li>
                             {
@@ -143,7 +154,10 @@ function Sidebar(props) {
                               </li>
                             }
 
-                            <li onClick={handleLeave}>
+                            <li onClick={handleLeave}
+                                onMouseOver={e => (e.currentTarget.children[0].src=LeaveBlackIcon)}
+                                onMouseLeave={e => (e.currentTarget.children[0].src=LeaveIcon)}
+                            >
                                 <Image src={LeaveIcon} />
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Leave</Button>
                             </li>
