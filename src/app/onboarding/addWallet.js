@@ -7,6 +7,7 @@ import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
 import { getAllCoins, detectCoin, createAnonymousUserApi} from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
+import { getPadding } from '../../utils/ReusableFunctions';
 
 
 class AddWallet extends BaseReactComponent {
@@ -204,7 +205,8 @@ class AddWallet extends BaseReactComponent {
                                         className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
                                         placeholder='Paste any wallet address here'
                                         title={c.address || ""}
-                                        style={{paddingRight: divWidth}}
+                                        // style={{paddingRight: divWidth}}
+                                        style={getPadding(`add-wallet-${index}`,c,this.props.OnboardingState)}
                                         // onKeyUp={(e) => this.setState({ loading: true })}
                                         onChange={(e) => this.handleOnChange(e)} />
                                     {this.state.walletInput.map((e, i) => {
