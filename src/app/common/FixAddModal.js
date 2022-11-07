@@ -19,8 +19,9 @@ class FixAddModal extends BaseReactComponent {
 
     constructor(props) {
         super(props);
-        const addWalletList = JSON.parse(localStorage.getItem("addWallet")) || [{
-            id: `wallet${this.state.addWalletList.length + 1}`,
+        let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
+        addWalletList = addWalletList && addWalletList.length > 0 ? addWalletList : [{
+            id: `wallet${addWalletList.length + 1}`,
             address: "",
             coins: [],
         }]
