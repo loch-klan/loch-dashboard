@@ -539,6 +539,7 @@ class Portfolio extends BaseReactComponent {
                                                 isArrow={true}
                                                 data={data}
                                                 options={options}
+                                                isScroll={false}
                                             // width="100%"
                                             // height="100%"
                                             />
