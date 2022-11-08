@@ -17,7 +17,7 @@
 
             .row-card {
                 position: relative;
-                overflow: hidden;
+                // overflow: hidden;
 
                 .bg-img {
                     position: absolute;
@@ -88,12 +88,12 @@
                         }
 
                         @media only screen  and (max-width : 1240px)
-                        { 
+                        {
                             .info {
                                  margin-bottom: 1.5rem;
-                                 
+
                                  }
-                                }  
+                                }
                             }
 
                 }
@@ -124,10 +124,10 @@
 }
 
 // @media screen  and (max-device-width : 1240px)
-// { 
+// {
 //     .intelligence-page-section .intelligence-section .intell-welcome-card .row-card .welcome-card .info-container .info {
 //         margin-bottom: 1.5rem;
 //     }
-                    
-                    
-// }  
+
+
+// }
