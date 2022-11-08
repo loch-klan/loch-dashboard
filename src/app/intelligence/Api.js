@@ -46,10 +46,12 @@ export const getFilters = (ctx) => {
                 }
                 yearFilter.push(obj)
             })
-            ctx.setState({
-                assetFilter : assetFilter,
-                yearFilter : yearFilter
-            })
+            if (ctx){
+                ctx.setState({
+                    assetFilter: assetFilter,
+                    yearFilter: yearFilter
+                })
+            }
         })
         .catch((err) => {
             console.log("getFilter ", err)
