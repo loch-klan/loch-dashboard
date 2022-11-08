@@ -132,10 +132,12 @@ class BarGraphSection extends Component {
               ""
             )}
             <div style={{ display: "flex" }}>
-              <div className='Y-axis'>
+             { this.state.options2 != undefined ? <div className='Y-axis'>
                
                 <Bar options={this.state.options2} data={this.state.data} />
               </div>
+                : ""
+              }
 
               <div className="chartAreaWrapper">
                 <div
