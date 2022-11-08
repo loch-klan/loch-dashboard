@@ -19,13 +19,13 @@ export default function IntelWelcomeCard(props) {
             icon: ShuffleIcon,
             title: "Traded by counterparty",
             background:"lightyellow",
-            path:'/intelligence/transaction-history'
+            path:'/intelligence'
         },
         {
             icon: InsightsIcon,
             title: "Insights",
             background:"lightpurple",
-            path:'/intelligence/transaction-history'
+            path:'/intelligence'
         }
     ]
 
@@ -55,9 +55,9 @@ export default function IntelWelcomeCard(props) {
                 <div className="row-card">
                     <Image src={bgimg} className="bg-img" />
                     <div className='welcome-card'>
-                        <h3 className='inter-display-semi-bold f-s-25 lh-30 welcome-card-title '>Valuable intelligence,</h3>
-                        <h3 className='inter-display-semi-bold  f-s-25 lh-30 m-b-12 welcome-card-title '>personalized to you</h3>
-                        <p className='inter-display-medium f-s-13 lh-16 m-b-40 card-subtitle '>
+                        <h3 className='inter-display-semi-bold f-s-20 lh-24 welcome-card-title '>Valuable intelligence,</h3>
+                        <h3 className='inter-display-semi-bold  f-s-20 lh-24 m-b-12 welcome-card-title '>personalized to you</h3>
+                        <p className='inter-display-medium f-s-13 lh-16 m-b-32 card-subtitle '>
                             Invest smarter with curated insights from your data
                         </p>
                         <div className="info-container">

@@ -153,7 +153,7 @@ function Sidebar(props) {
                             </li>
                             {
                               JSON.parse(localStorage.getItem('lochUser')) &&
-                              <li 
+                              <li
                                 onMouseOver={e => (e.currentTarget.children[0].src=ShareProfileDarkIcon)}
                                 onMouseLeave={e => (e.currentTarget.children[0].src=DarkmodeIcon)}
                               >
@@ -209,7 +209,7 @@ function Sidebar(props) {
                     show = {apiModal}
                     onHide = {handleApiModal}
                     history={history}
-                    headerTitle={"Api"}
+                    headerTitle={"API"}
                     modalType={'apiModal'}
                     iconImage={ApiModalIcon}
                 />

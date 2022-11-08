@@ -42,6 +42,7 @@ class BarGraphSection extends Component {
           showPercentage: props.showPercentage,
           footerLabels: props.footerLabels,
           isScrollVisible: props.isScrollVisible,
+          isScroll: props.isScroll
         };
     }
 
@@ -84,8 +85,18 @@ class BarGraphSection extends Component {
     // } 
 
     render() {
-      console.log("options", this.state.options2);
-      console.log("option2", this.state.options);
+      const ScrollStyle = {
+        width: `${this.state.data.labels.length * 12.5}%`,
+        minWidth: `${this.state.data.labels.length * 10}rem`
+      }
+      
+      const NormalStyle = {
+        width: "100%",
+        minWidth: "100%",
+      };
+       console.log("options", this.state.options2);
+       console.log("option2", this.state.options);
+      
         return (
           <div
             className={`bar-graph-section ${
@@ -132,24 +143,26 @@ class BarGraphSection extends Component {
               ""
             )}
             <div style={{ display: "flex" }}>
-             { this.state.options2 != undefined ? <div className='Y-axis'>
-               
-                <Bar options={this.state.options2} data={this.state.data} />
-              </div>
-                : ""
-              }
+              {this.state.options2 != undefined ? (
+                <div className="Y-axis">
+                  <Bar options={this.state.options2} data={this.state.data} />
+                </div>
+              ) : (
+                ""
+              )}
 
-              <div className="chartAreaWrapper">
+              <div
+                className={
+                  this.state.isScroll ? "ScrollArea" : "ChartAreaWrapper"
+                }
+              >
                 <div
                   className="chartArea"
-                  style={{
-                    width: `${
-                      this.state.data.labels.length > 8
-                        ? this.state.data.labels.length * 12.5
-                        : 100
-                    }%`,
-                    minWidth: `${this.state.data.labels.length * 10}rem`,
-                  }}
+                  style={
+                    this.state.data.labels.length > 8 && this.state.isScroll
+                      ? ScrollStyle
+                      : NormalStyle
+                  }
                 >
                   <Bar options={this.state.options} data={this.state.data} />
                 </div>
@@ -169,6 +182,11 @@ class BarGraphSection extends Component {
         );
     }
 }
+
+BarGraphSection.defaultProps = { 
+  isScroll: true,
+}; 
+
 const mapStateToProps = state => ({
 
 });

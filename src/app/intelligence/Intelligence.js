@@ -39,6 +39,8 @@ class Intelligence extends Component {
                 },
             },
             scales: {
+            //     categoryPercentage: 0.8,
+            // barPercentage: 1,
                 y: {
                     min: 0,
                     max: 400000,
@@ -59,6 +61,7 @@ class Intelligence extends Component {
                     }
                 },
                 x: {
+                 
                     ticks: {
                         font: "Inter-SemiBold",
                         size: 10,
@@ -79,6 +82,7 @@ class Intelligence extends Component {
             labels,
             datasets: [
                 {
+                     
                     data: [260000, 323000, 76000],
                     backgroundColor: [
                         "rgba(100, 190, 205, 0.3)",

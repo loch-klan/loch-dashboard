@@ -6,8 +6,14 @@ import pageNext from '../../assets/images/page-next.svg';
 
 const Pagination = props => {
 
-  const [input, setInput] = React.useState(props.page);
+  React.useEffect(() => {
+    var pageNo = document.getElementById("pageNo")
+    pageNo.value = props.page
+  }, [props.page])
   
+
+  const [input, setInput] = React.useState(props.page);
+
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       onSubumit(props)
