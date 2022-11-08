@@ -117,7 +117,28 @@
             .line-chart-section {
                 position: relative;
 
+                .chart-y-selection{
+                    position: relative;
+                    .line-chart-dropdown-y-axis{
+                        position: absolute;
+                        left: 0rem;
+                        z-index:1;
+                        // .dropdown{
+                            .dropdown-menu{
+                                width: auto;
+                                padding: 0.4rem;
 
+                            }
+                            .dropdown-toggle {
+                                @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
+                                  background: $secondary;
+                            }
+                        // }   
+                    }
+                    .dropdown .btn-primary:not(:disabled):not(.disabled):active {
+                        border: none;
+                    }
+                }
                 .chart-x-selection {
                     position: relative;
 

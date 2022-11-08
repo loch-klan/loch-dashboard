@@ -13,7 +13,8 @@ class LineChart extends BaseReactComponent {
         super(props);
         this.state = {
             activeBadge: [{ name: "All", id: "" }],
-            title: "Month"
+            title: "Month",
+            titleY:"$ USD"
         }
 
     }
@@ -51,6 +52,14 @@ class LineChart extends BaseReactComponent {
         const t = opt.split(' ')[1]
         this.setState({
             title: t
+        })
+    }
+    handleSelectYAxis = (opt) =>{
+        // console.log(opt)
+        const t = opt.split(' ')[1] + " "+ opt.split(' ')[2]
+        console.log(t)
+        this.setState({
+            titleY: t
         })
     }
     render() {
@@ -243,6 +252,15 @@ class LineChart extends BaseReactComponent {
 
                         </select>
                     </div> */}
+                    <div className="chart-y-selection">
+                    <DropDown
+                        class="line-chart-dropdown-y-axis"
+                        list={["$ USD", "₫ VND", "₹ INR", "Rs PKR", "₴ UAH","Ksh KES"]}
+                        onSelect={this.handleSelectYAxis}
+                        title={this.state.titleY}
+                        activetab={this.state.titleY}
+                    />
+                    </div>
                     <HighchartsReact
                         highcharts={Highcharts}
                         options={options}
