@@ -3,7 +3,7 @@ import { Modal, Image, Button } from 'react-bootstrap'
 import closeIcon from '../../assets/images/icons/close-icon.svg'
 import { connect } from 'react-redux';
 import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
-import unrecognizedIcon from '../../image/unrecognized.png';
+import unrecognizedIcon from '../../image/unrecognized.svg';
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
 class EditWalletModal extends BaseReactComponent {
     constructor(props) {
@@ -110,7 +110,7 @@ class EditWalletModal extends BaseReactComponent {
                           }
                         }}
                       />
-                      <p className='inter-display-regular f-s-13 lh-16 m-b-16 subtitle'>{ `added ${this.getDays(this.state.createdOn)} days ago`}</p>
+                      <p className='inter-display-regular f-s-13 lh-16 m-b-16 subtitle'>{ `added ${this.getDays(this.state.createdOn).toFixed(2)} days ago`}</p>
                       <div className='m-b-32 coinchips'>{chips}</div>
                       <div className='edit-form'>
                           <FormElement

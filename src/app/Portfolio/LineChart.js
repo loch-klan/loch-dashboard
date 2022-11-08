@@ -261,6 +261,7 @@ class LineChart extends BaseReactComponent {
                                 list={["Year", "Month", "Day", "Week", "Hour"]}
                                 onSelect={this.handleSelect}
                                 title={this.state.title}
+                                activetab={this.state.title}
                             />
                     </div>
                 </div>

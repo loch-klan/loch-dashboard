@@ -19,7 +19,8 @@ class OnBoarding extends Component {
             signInReq: false,
             isVerificationRequired: false,
             isVerified: false,
-            currentActiveModal: "signIn"
+            currentActiveModal: "signIn",
+            // showSignText  :false
         }
     }
 
@@ -55,8 +56,16 @@ class OnBoarding extends Component {
                 signInReq: !this.state.signInReq,
             })
         }
+        // if(this.state.showSignText){
+        //     this.handleShowSignText(false)
+        // }
     }
-
+    // handleShowSignText = (val)=>{
+    //     console.log("HELLO",val)
+    //     this.setState({
+    //         showSignText:val
+    //     })
+    // }
     render() {
 
         return (
@@ -82,10 +91,26 @@ class OnBoarding extends Component {
                                 handleStateChange={this.handleStateChange}
                             />
                             :
-                            <AddWallet {...this.props} />
+                            <AddWallet
+                                 {...this.props}
+                                 switchSignIn={this.switchSignIn}
+                                // showSignText={this.state.showSign}
+                                // handleShowSignText={this.handleShowSignText}
+                            />
                     }
                     <div className="ob-modal-body-info">
-                        {this.state.signInReq ? null : <h4 className='inter-display-medium f-s-13 lh-16 grey-ADA'>Already have an account? <span className='inter-display-bold black-191 cp' onClick={this.switchSignIn}>Sign in</span></h4>}
+                        {/* {
+                        this.state.signInReq ?
+                         null 
+                         :
+                         this.state.showSignText ?
+                          <h4 className='inter-display-medium f-s-13 lh-16 grey-ADA'>
+                            Already have an account?
+                             <span className='inter-display-bold black-191 cp' onClick={this.switchSignIn}>Sign in</span>
+                            </h4>
+                            :
+                            ""
+                          } */}
                         <p className='inter-display-medium f-s-13 lh-16 grey-ADA'>At Loch, we care intensely about your privacy and anonymity.
                             <CustomOverlay
                                 text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."

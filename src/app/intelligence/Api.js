@@ -9,9 +9,11 @@ export const searchTransactionApi = (data , ctx, page = 0) => {
                 console.log(page)
                 if (!res.data.error) {
                     dispatch(getAllTransactionHistory(res.data.data, page))
-                    ctx.setState({
-                        isLoading:false,
-                    })
+                    if(ctx){
+                        ctx.setState({
+                            isLoading:false,
+                        })
+                    }
                 }
                 else {
                     toast.error(res.data.message || "Something Went Wrong")
@@ -44,10 +46,12 @@ export const getFilters = (ctx) => {
                 }
                 yearFilter.push(obj)
             })
-            ctx.setState({
-                assetFilter : assetFilter,
-                yearFilter : yearFilter
-            })
+            if (ctx){
+                ctx.setState({
+                    assetFilter: assetFilter,
+                    yearFilter: yearFilter
+                })
+            }
         })
         .catch((err) => {
             console.log("getFilter ", err)

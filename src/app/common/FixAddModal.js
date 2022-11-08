@@ -1,5 +1,5 @@
 import React from 'react'
-import {BaseReactComponent} from '../../utils/form';
+import { BaseReactComponent } from '../../utils/form';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
@@ -14,13 +14,14 @@ import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin } from "../onboarding//Api";
 import { updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
-import { loadingAnimation } from '../../utils/ReusableFunctions';
+import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
 class FixAddModal extends BaseReactComponent {
 
     constructor(props) {
         super(props);
-        const addWalletList = JSON.parse(localStorage.getItem("addWallet")) || [{
-            id: `wallet${this.state.addWalletList.length + 1}`,
+        let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
+        addWalletList = addWalletList && addWalletList.length > 0 ? addWalletList : [{
+            id: `wallet${addWalletList.length + 1}`,
             address: "",
             coins: [],
         }]
@@ -213,8 +214,8 @@ class FixAddModal extends BaseReactComponent {
             let curr = wallets[i];
             if (!curr.coinFound) {
                 this.state.fixWalletAddress.map((wallet) => {
-                  // console.log('wallettt',wallet);
-                  localArr.push(wallet);
+                    // console.log('wallettt',wallet);
+                    localArr.push(wallet);
                     // if (wallet.address === curr.address) {
                     //     localArr.push(wallet)
                     // }
@@ -239,8 +240,7 @@ class FixAddModal extends BaseReactComponent {
         }
         walletList.map((w, index) => w.id = `wallet${index + 1}`)
         // console.log('walletList',walletList);
-        if(walletList.length === 0)
-        {
+        if (walletList.length === 0) {
             walletList.push({
                 id: 'wallet1',
                 address: "",
@@ -268,22 +268,24 @@ class FixAddModal extends BaseReactComponent {
             // if (!e.address) {
             //     isDisableFlag = true;
             // }
-            if(e.address && e.coins.length !== this.props.OnboardingState.coinsList.length){
-              isDisableFlag = true;
+            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
+                isDisableFlag = true;
             }
         })
         return isDisableFlag;
     }
 
-    isFixDisabled = () =>{
-      let isDisableFlag = false;
-      this.state.fixWalletAddress.map((e) => {
-        if(e.address && e.coins.length !== this.props.OnboardingState.coinsList.length){
-          isDisableFlag = true;
-        }
-      })
-      return isDisableFlag;
+    isFixDisabled = () => {
+        let isDisableFlag = false;
+        this.state.fixWalletAddress.map((e) => {
+            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
+                isDisableFlag = true;
+            }
+        })
+        return isDisableFlag;
     }
+
+
 
 
     render() {
@@ -292,9 +294,9 @@ class FixAddModal extends BaseReactComponent {
             walletDropDownList.push({ name: wallet.name, id: wallet.id })
         })
         const inputs = this.state.modalType == "fixwallet" ?
-          this.state.fixWalletAddress.map((elem, index) => {
+            this.state.fixWalletAddress.map((elem, index) => {
                 return (
-                    <div className="m-b-12 fix-wallet-input" key={index}>
+                    <div className="m-b-12 fix-wallet-input" key={index} id={`fix-input-${index}`}>
                         <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteFixWalletAddress(elem)} />
                         <input
                             value={elem.address || ""}
@@ -304,7 +306,9 @@ class FixAddModal extends BaseReactComponent {
                             name={`wallet${index + 1}`}
                             autoFocus
                             onChange={(e) => this.handleFixWalletChange(e)}
+                            style={getPadding(`fix-input-${index}`,elem,this.props.OnboardingState)}
                         />
+
                         {
                             elem.address
                                 ?
@@ -315,12 +319,12 @@ class FixAddModal extends BaseReactComponent {
                                     // elem.coins.length === 0
                                     //     ?
                                     //     <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
-                                        // :
-                                        elem.coins.length === this.props.OnboardingState.coinsList.length
-                                            ?
-                                            <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
-                                            :
-                                            <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
+                                    // :
+                                    elem.coins.length === this.props.OnboardingState.coinsList.length
+                                        ?
+                                        <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
+                                        :
+                                        <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
                                 :
                                 ""
                         }
@@ -328,9 +332,8 @@ class FixAddModal extends BaseReactComponent {
             }) : ""
 
 
-        const wallets =
-            this.state.addWalletList.map((elem, index) => {
-                return (<div className='m-b-12 add-wallet-input-section' key={index} >
+        const wallets = this.state.addWalletList.map((elem, index) => {
+                return (<div className='m-b-12 add-wallet-input-section' key={index} id={`add-wallet-${index}`}>
                     {index >= 1 ? <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteAddress(index)} /> : ""}
 
                     <input
@@ -342,6 +345,7 @@ class FixAddModal extends BaseReactComponent {
                         className={`inter-display-regular f-s-16 lh-20 ${elem.address ? 'is-valid' : null}`}
                         onChange={(e) => this.handleOnchange(e)}
                         id={elem.id}
+                        style={getPadding(`add-wallet-${index}`,elem,this.props.OnboardingState)}
                     />
                     {
                         elem.address
@@ -430,12 +434,12 @@ class FixAddModal extends BaseReactComponent {
                                 >
                                     {/* {this.state.btnText} */}
                                     {
-                                      (this.isDisabled() || this.isFixDisabled())
-                                      ?
-                                      loadingAnimation()
-                                      :
-                                      
-                                      this.state.btnText
+                                        (this.isDisabled() || this.isFixDisabled())
+                                            ?
+                                            loadingAnimation()
+                                            :
+
+                                            this.state.btnText
                                     }
                                 </Button>
                             </div>

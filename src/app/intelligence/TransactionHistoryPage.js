@@ -7,7 +7,7 @@ import Metamask from '../../assets/images/MetamaskIcon.svg'
 import CoinChip from '../wallet/CoinChip';
 import { connect } from "react-redux";
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP, SEARCH_BY_TYPE, SORT_BY_TIMESTAMP } from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP, SEARCH_BY_TYPE_IN, SORT_BY_TIMESTAMP } from '../../utils/Constant'
 import { searchTransactionApi, getFilters } from './Api';
 import { getCoinRate } from '../Portfolio/Api.js'
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
@@ -57,7 +57,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
 
     callApi = (page = START_INDEX) => {
-
+        this.setState({isLoading:true})
         let data = new URLSearchParams()
         data.append("start", (page * API_LIMIT))
         data.append("conditions", JSON.stringify(this.state.condition))
@@ -91,13 +91,20 @@ class TransactionHistoryPage extends BaseReactComponent {
         let search_index = this.state.condition.findIndex((e) => e.key === SEARCH_BY_TEXT)
 
         // console.log(search_index, arr[search_index])
+        // 
         if (index !== -1 && value !== 'allAssets' && value !== 'allMethod' && value !== 'allYear') {
           if(key===SEARCH_BY_ASSETS_IN){
-            arr[index].value = [value.toString()]
-          } else{
-            arr[index].value = value
+            // arr[index].value = [value.toString()]
+            console.log(arr[index])
+            arr[index].value = [...arr[index].value,value.toString()]
           }
-        } else if (value === 'allAssets' || value === 'allMethod' || value === 'allYear') {
+          else if(key === SEARCH_BY_TYPE_IN){
+            arr[index].value = [...arr[index].value,value.toString()]
+          }
+           else if(key === SEARCH_BY_TIMESTAMP){
+            arr[index].value = value.toString()
+          }
+        } else if (value === 'allAssets' || value === 'allMethod' || value === 'allYear') { 
             arr.splice(index, 1)
         } else {
             let obj = {};
@@ -106,10 +113,17 @@ class TransactionHistoryPage extends BaseReactComponent {
                 key: key,
                 value: [value.toString()]
               }
-            } else{
+            }
+            else if(key === SEARCH_BY_TYPE_IN){
+                obj = {
+                    key: key,
+                    value: [value.toString()]
+                  }
+            } 
+            else if(key === SEARCH_BY_TIMESTAMP){
               obj = {
                 key: key,
-                value: value
+                value: value.toString()
               }
             }
             arr.push(obj)
@@ -120,8 +134,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                 arr.splice(search_index, 1)
             }
         }
+        // On Filter start from page 0
+        this.props.history.replace({
+          search: `?p=${START_INDEX}`
+      })
         this.setState({
-            condition: arr
+            condition: arr,
         })
     }
     onChangeMethod = () => {
@@ -156,12 +174,21 @@ class TransactionHistoryPage extends BaseReactComponent {
                     symbol: row.chain.symbol
                 },
                 amount: {
-                    amount: row.asset.value,
+                    value: row.asset.value,
                     id: row.asset.id
                 },
-                usdValueThen: 0,
-                usdValueToday: 0,
-                usdTransactionFee: row.transaction_fee,
+                usdValueThen: {
+                    value : row.asset.value,
+                    id:row.asset.id
+                },
+                usdValueToday: {
+                    value : row.asset.value,
+                    id:row.asset.id
+                },
+                usdTransactionFee: {
+                    value:row.transaction_fee,
+                    id:row.asset.id,
+                },
                 method: row.transaction_type
             }
         })
@@ -250,16 +277,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "amount") {
-                        let chain = Object.entries(this.props.portfolioState.coinRateList)
-                        let value;
-                        chain.find((chain) => {
-                            if (chain[0] === rowData.amount.id) {
-                                value = (rowData.amount.amount * chain[1].quote.USD.price)
-                                return
-                            }
-                        })
+                        
                         // console.log(value)
-                        return value?.toFixed(2)
+                        return rowData.amount.value?.toFixed(2)
                     }
                 }
             },
@@ -271,7 +291,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "usdValueThen") {
-                        return rowData.usdValueThen?.toFixed(2)
+                        let chain = Object.entries(this.props.portfolioState.coinRateList)
+                        let value;
+                        chain.find((chain) => {
+                            if (chain[0] === rowData.usdValueThen.id) {
+                                value = (rowData.usdValueThen.value * chain[1].quote.USD.price)
+                                return
+                            }
+                        })
+                        return value?.toFixed(2) 
                     }
                 }
             },
@@ -287,8 +315,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let chain = Object.entries(this.props.portfolioState.coinRateList)
                         let value;
                         chain.find((chain) => {
-                            if (chain[0] === rowData.amount.id) {
-                                value = chain[1].quote.USD.price
+                            if (chain[0] === rowData.usdValueToday.id) {
+                                value = rowData.usdValueToday.value* chain[1].quote.USD.price
                                 return
                             }
                         })
@@ -308,8 +336,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let chain = Object.entries(this.props.portfolioState.coinRateList)
                         let value;
                         chain.find((chain) => {
-                            if (chain[0] === rowData.amount.id) {
-                                value = (rowData.usdTransactionFee * chain[1].quote.USD.price)
+                            if (chain[0] === rowData.usdTransactionFee.id) {
+                                value = (rowData.usdTransactionFee.value * chain[1].quote.USD.price)
                                 return
                             }
                         })
@@ -359,7 +387,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         title={"Transaction history"}
                         subTitle={"Valuable insights based on your assets"}
                         showpath={true}
-                        currentPage={"transaction history"}
+                        currentPage={"transaction-history"}
                         history={this.props.history}
                     />
 
@@ -375,7 +403,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                             settings: {
                                                 options: this.state.yearFilter,
                                                 multiple: false,
-                                                searchable: true,
+                                                searchable: false,
                                                 onChangeCallback: (onBlur) => {
                                                     onBlur(this.state.year);
                                                     this.addCondition(SEARCH_BY_TIMESTAMP, this.state.year)
@@ -393,7 +421,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                             settings: {
                                                 options: this.state.assetFilter,
                                                 multiple: false,
-                                                searchable: true,
+                                                searchable: false,
                                                 onChangeCallback: (onBlur) => {
                                                     onBlur(this.state.asset);
                                                     this.addCondition(SEARCH_BY_ASSETS_IN, this.state.asset)
@@ -412,10 +440,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                                             settings: {
                                                 options: this.state.methodsDropdown,
                                                 multiple: false,
-                                                searchable: true,
+                                                searchable: false,
                                                 onChangeCallback: (onBlur) => {
                                                     onBlur(this.state.year);
-                                                    this.addCondition(SEARCH_BY_TYPE, this.state.method)
+                                                    this.addCondition(SEARCH_BY_TYPE_IN, this.state.method)
 
                                                 },
                                                 placeholder: "All methods",
@@ -461,7 +489,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             location={this.props.location}
                             page={currentPage}
                             isLoading={this.state.isLoading}
-                        /> 
+                        />
                     </div>
                     {/* <CommonPagination
                         numOfPages={3}

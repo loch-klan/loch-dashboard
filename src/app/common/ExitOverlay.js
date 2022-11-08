@@ -15,8 +15,12 @@ import CopyLink from '../../assets/images/icons/CopyLink.svg';
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import ShareLink from '../../assets/images/icons/ShareLink.svg'
-import {fixWallet} from './Api.js'
+import {fixWalletApi} from './Api.js'
 import { BASE_URL_S3 } from '../../utils/Constant';
+import { toast } from 'react-toastify';
+import ApiModalFrame from '../../assets/images/apiModalFrame.png';
+import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
+
 class ExitOverlay extends BaseReactComponent {
 
     constructor(props) {
@@ -30,7 +34,8 @@ class ExitOverlay extends BaseReactComponent {
           email: "",
           dropdowntitle : "View and edit",
           activeli:"View and edit",
-          onHide : props.onHide
+          onHide : props.onHide,
+          showRedirection: false,
         }
     }
 
@@ -47,8 +52,13 @@ class ExitOverlay extends BaseReactComponent {
             const url = new URLSearchParams()
             url.append('user_name', this.state.email);
             url.append('wallet_addresses', JSON.stringify(email_arr));
-            this.props.fixWallet(this, url)
+            fixWalletApi(this, url)
         }
+    }
+    handleRedirection = () => {
+      console.log('this',this.props);
+      this.setState({show: false, showRedirection: true})
+      this.props.handleRedirection();
     }
     handleSelect = (e) => {
         console.log(e)
@@ -73,15 +83,47 @@ class ExitOverlay extends BaseReactComponent {
                 aria-labelledby="contained-modal-title-vcenter"
                 backdropClassName="exitoverlaymodal"
             >
+              {
+                this.state.showRedirection &&
+                toast.success(
+                  <div className="custom-toast-msg">
+                    <div>Successful</div>
+                    <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                    Please check your mailbox for the verification link
+                    </div>
+                  </div>
+                  )
+              }
                 <Modal.Header>
+                    {
+                    this.props.modalType === "apiModal"
+                    ?
+                    <div className="api-modal-header">
+                        <Image src={this.props.iconImage}/>
+                    </div>
+                    :
                     <Image src={ExitOverlayIcon}
                         className="exitOverlayIcon" />
-
+                    }
                     <div className="closebtn" onClick={this.state.onHide}>
                         <Image src={CloseIcon} />
                     </div>
                 </Modal.Header>
                 <Modal.Body>
+                    {this.props.modalType === "apiModal" 
+                    ? 
+                    <div className='api-modal-body'>
+                        <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">{this.props.headerTitle}</h6>
+                        <p className='inter-display-regular f-s-13 lh-16 grey-B0B'>Personalized digital asset intelligence via API</p>
+                        <div className="api-modal-frame">
+                        <Image src={ApiModalFrame} />
+                        <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon</p>
+                        </div>
+                    </div>
+                    
+                    
+                    :
+                    
                     <div className='exit-overlay-body'>
                         <h6 className='inter-display-medium f-s-20 lh-24 '>Don’t lose your data</h6>
                         <p className='inter-display-medium f-s-16 lh-19 grey-7C7'>
@@ -157,7 +199,7 @@ class ExitOverlay extends BaseReactComponent {
                             ><Image src={InfoIcon} className="info-icon" /></CustomOverlay>
                         </div>
                     </div>
-
+                    }
                 </Modal.Body>
             </Modal >
         )
@@ -167,7 +209,7 @@ class ExitOverlay extends BaseReactComponent {
 const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
-    fixWallet
+  fixWalletApi
 }
 ExitOverlay.propTypes = {
 };

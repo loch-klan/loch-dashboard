@@ -4,7 +4,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CustomLoader from "../common/CustomLoader";
 import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
-import unrecognized from '../../image/unrecognized.png';
+import unrecognized from '../../image/unrecognized.svg';
 import { DEFAULT_COLOR } from '../../utils/Constant';
 import { Image} from 'react-bootstrap';
 import noDataImage from '../../image/no-data.png';
@@ -107,8 +107,8 @@ class PieChart extends BaseReactComponent {
                 styledMode: false,
                 type: 'pie',
                 backgroundColor: null,
-                height: 365,
-                width: 765,
+                height: 335,
+                width: 735,
                 events: {
                     render: function () {
                         var series = this.series[0],
@@ -306,7 +306,7 @@ class PieChart extends BaseReactComponent {
             }]
         }
         return (
-            <div className='portfolio-over-container' >
+            <div className={`portfolio-over-container ${Object.keys(this.state.pieSectionDataEnabled).length > 0 ? "m-b-32" : "m-b-60"}`} >
 
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
@@ -314,7 +314,7 @@ class PieChart extends BaseReactComponent {
                 ?
                 <Loading/>
                 :
-                Object.keys(this.state.assetData).length > 0 ? 
+                Object.keys(this.state.assetData).length > 0 ?
                     <>
                         <div className='chart-section'>
                             <HighchartsReact
@@ -386,21 +386,19 @@ class PieChart extends BaseReactComponent {
                             </div> : null}
                     </>
                     :
-                    this.state.isLoading === true && this.state.walletTotal === 0
-                    ?
-                    <>
-                    {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                    {/* <Loading/> */}
-                    <Loading/>
-                    </>
+                        this.props.isLoading === true
+                        ?
+                            <>
+                            {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
+                                <Loading/>
+                            </>
 
-                    :
-                    <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
-                    
-                    // <div className='chart-section-loader'>
-                    //     {/* <CustomLoader loaderType="pie" /> */}
-                       
-                    // </div>
+                        :
+                            this.props.walletTotal === 0
+                            ?
+                                <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                            :
+                                null
                 }
                 </div>
 

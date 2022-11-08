@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, Container, Button } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import logo from '../../image/logo.png'
+// import logo from '../../image/Loch.svg'
 
 import ActiveHomeIcon from '../../image/HomeIcon.svg'
 import InActiveHomeIcon from '../../assets/images/icons/InactiveHomeIcon.svg'
@@ -15,20 +16,26 @@ import DollarIcon from '../../assets/images/icons/InactiveCostIcon.svg'
 import ActiveDollarIcon from '../../assets/images/icons/ActiveCostIcon.svg'
 
 import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
+import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.svg'
 import ApiIcon from '../../assets/images/icons/ApiIcon.svg'
+import ApiBlackIcon from '../../assets/images/icons/ApiBlackIcon.svg'
 import LeaveIcon from '../../assets/images/icons/LeaveIcon.svg'
+import LeaveBlackIcon from '../../assets/images/icons/LeaveBlackIcon.svg'
 import DarkmodeIcon from '../../assets/images/icons/DarkmodeIcon.svg'
 import bgImg from '../../image/Notice.png'
 import {useHistory} from 'react-router-dom'
 import ExitOverlay from './ExitOverlay'
 import { BASE_URL_S3 } from '../../utils/Constant'
 import { toast } from 'react-toastify'
+import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
 function Sidebar(props) {
 // console.log('props',props);
 
     const activeTab = window.location.pathname
     const history = useHistory();
     const [leave, setLeave] = React.useState(false);
+    const [apiModal,setApiModal]  =React.useState(false);
+    const [exportModal,setExportModal] = React.useState(false)
 
     const handleLeave = () => {
       const isDummy = localStorage.getItem("lochDummyUser");
@@ -39,11 +46,18 @@ function Sidebar(props) {
       }
     }
 
+    const handleApiModal = ()=>{
+        setApiModal(!apiModal)
+    }
+    const handleExportModal = ()=>{
+        setExportModal(!exportModal)
+    }
     const handleShare=()=>{
       const link= `${BASE_URL_S3}portfolio/${localStorage.getItem("lochDummyUser")}`
       navigator.clipboard.writeText(link);
       toast.success("Share link has been copied");
     }
+
     return (
         <div className='sidebar-section'>
             <Container>
@@ -113,12 +127,20 @@ function Sidebar(props) {
                     </div>
                     <div className='sidebar-footer'>
                         <ul>
-                            <li>
-                                <Image src={ExportIcon} />
+                            <li
+                                onMouseOver={e => (e.currentTarget.children[0].src=ExportIconWhite)}
+                                onMouseLeave={e => (e.currentTarget.children[0].src=ExportIcon)}
+                                onClick={handleExportModal}
+                            >
+                                <Image src={ExportIcon}/>
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Export</Button>
                             </li>
-                            <li>
-                                <Image src={ApiIcon} />
+                            <li
+                                onMouseOver={e => (e.currentTarget.children[0].src=ApiBlackIcon)}
+                                onMouseLeave={e => (e.currentTarget.children[0].src=ApiIcon)}
+                                onClick={handleApiModal}
+                            >
+                                <Image src={ApiIcon}/>
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">API</Button>
                             </li>
                             {
@@ -134,7 +156,10 @@ function Sidebar(props) {
                               </li>
                             }
 
-                            <li onClick={handleLeave}>
+                            <li onClick={handleLeave}
+                                onMouseOver={e => (e.currentTarget.children[0].src=LeaveBlackIcon)}
+                                onMouseLeave={e => (e.currentTarget.children[0].src=LeaveIcon)}
+                            >
                                 <Image src={LeaveIcon} />
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Leave</Button>
                             </li>
@@ -161,7 +186,35 @@ function Sidebar(props) {
                         // link="http://loch.one/a2y1jh2jsja"
                         onHide={handleLeave}
                         history={history}
+                        modalType={"exitOverlay"}
+                        handleRedirection={()=>{setTimeout(function(){
+                          props.history.push('/home');
+                       }, 3000)}}
                     /> : ""
+            }
+            {
+                apiModal ?
+                <ExitOverlay
+                    show = {apiModal}
+                    onHide = {handleApiModal}
+                    history={history}
+                    headerTitle={"Api"}
+                    modalType={'apiModal'}
+                    iconImage={ApiModalIcon}
+                />
+                :""
+            }
+            {
+                exportModal ?
+                <ExitOverlay
+                    show = {exportModal}
+                    onHide = {handleExportModal}
+                    history={history}
+                    headerTitle={"Export"}
+                    modalType={'apiModal'}
+                    iconImage={ExportIconWhite}
+                />
+                :""
             }
         </div>
     )

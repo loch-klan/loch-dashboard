@@ -2,7 +2,7 @@
     display: flex;
 
     .history-table {
-        margin-top: 8rem;
+        margin-top: 5rem;
 
         .fillter_tabs_section {
             // display: flex;
@@ -21,15 +21,16 @@
 
                     .form-group {
                         margin: 0rem 1.7rem 0rem 0rem;
-                     
+
                         .css-2b097c-container {
                             .custom-select__control {
-                                background-color: $grey-F2F;
+                                // background-color: $grey-F2F;
+                                background-color: $drop-button-hover;
                                 color: $black-191;
                                 border-radius: 0.8rem;
                                 border: none;
                                 min-height: 4rem;
-                                padding-left: 1rem;
+                                // padding-left: 1rem;
 
                                 // width:24rem;
                                 .custom-select__value-container {
@@ -158,7 +159,6 @@
                         margin: 0 1.2rem;
                     }
                 }
-
                 .custom-table {
                     .ReactVirtualized__Table__headerRow {
                         padding-left: 0rem;
@@ -192,7 +192,7 @@
 
 // loading data animation css for transaction table and transaction-history-table
 .transaction-table-loading-wrapper{
-  
+
     .animation-wrapper{
       border-radius: 1.2rem;
       height: 42.0rem;
@@ -214,5 +214,17 @@
       background-size: 100% 100%;
       height: 68rem;
     }
-    
+
   }
+
+.transaction-table-section{
+    .table-wrapper{
+
+    .not-found-wrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 42rem;
+    }
+}
+}

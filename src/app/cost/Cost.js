@@ -150,7 +150,7 @@ class Cost extends Component {
     return (
       <div className="cost-page-section">
         {/* <Sidebar ownerName="" /> */}
-        <div className='m-t-80 cost-section page'>
+        <div className='m-t-5 cost-section page'>
 
           <PageHeader
             title="Costs"
