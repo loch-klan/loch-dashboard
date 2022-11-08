@@ -82,21 +82,21 @@ class BarGraphSection extends Component {
     }
     // NewWidth = () => {
     //     console
-    // } 
+    // }
 
     render() {
       const ScrollStyle = {
         width: `${this.state.data.labels.length * 12.5}%`,
         minWidth: `${this.state.data.labels.length * 10}rem`
       }
-      
+
       const NormalStyle = {
         width: "100%",
         minWidth: "100%",
       };
-       console.log("options", this.state.options2);
-       console.log("option2", this.state.options);
-      
+      //  console.log("options", this.state.options2);
+      //  console.log("option2", this.state.options);
+
         return (
           <div
             className={`bar-graph-section ${
@@ -183,9 +183,9 @@ class BarGraphSection extends Component {
     }
 }
 
-BarGraphSection.defaultProps = { 
+BarGraphSection.defaultProps = {
   isScroll: true,
-}; 
+};
 
 const mapStateToProps = state => ({
 
