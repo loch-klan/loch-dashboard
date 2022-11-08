@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, Container, Button } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import logo from '../../image/logo.png'
+// import logo from '../../image/Loch.svg'
 
 import ActiveHomeIcon from '../../image/HomeIcon.svg'
 import InActiveHomeIcon from '../../assets/images/icons/InactiveHomeIcon.svg'
@@ -26,7 +27,7 @@ import {useHistory} from 'react-router-dom'
 import ExitOverlay from './ExitOverlay'
 import { BASE_URL_S3 } from '../../utils/Constant'
 import { toast } from 'react-toastify'
-function Sidebar(props) {       
+function Sidebar(props) {
 // console.log('props',props);
 
     const activeTab = window.location.pathname
@@ -133,7 +134,7 @@ function Sidebar(props) {
                                 <Image src={ExportIcon}/>
                                 <Button className="inter-display-medium f-s-15 lh-19 navbar-button">Export</Button>
                             </li>
-                            <li 
+                            <li
                                 onMouseOver={e => (e.currentTarget.children[0].src=ApiBlackIcon)}
                                 onMouseLeave={e => (e.currentTarget.children[0].src=ApiIcon)}
                                 onClick={handleApiModal}
@@ -191,8 +192,8 @@ function Sidebar(props) {
                     /> : ""
             }
             {
-                apiModal ? 
-                <ExitOverlay 
+                apiModal ?
+                <ExitOverlay
                     show = {apiModal}
                     onHide = {handleApiModal}
                     history={history}
@@ -202,8 +203,8 @@ function Sidebar(props) {
                 :""
             }
             {
-                exportModal ? 
-                <ExitOverlay 
+                exportModal ?
+                <ExitOverlay
                     show = {exportModal}
                     onHide = {handleExportModal}
                     history={history}
