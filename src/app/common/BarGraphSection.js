@@ -29,19 +29,20 @@ class BarGraphSection extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            headerTitle: props.headerTitle,
-            headerSubTitle: props.headerSubTitle,
-            options: props.options,
-            data: props.data,
-            activeFooter: 0,
-            activeBadge: [{ name: "All", id: "" }],
-            showFooter: props.showFooter,
-            showBadges: props.showBadges,
-            isArrow: props.isArrow,
-            showPercentage: props.showPercentage,
-            footerLabels: props.footerLabels,
-            isScrollVisible : props.isScrollVisible
-        }
+          headerTitle: props.headerTitle,
+          headerSubTitle: props.headerSubTitle,
+          options: props.options,
+          options2: props.options2,
+          data: props.data,
+          activeFooter: 0,
+          activeBadge: [{ name: "All", id: "" }],
+          showFooter: props.showFooter,
+          showBadges: props.showBadges,
+          isArrow: props.isArrow,
+          showPercentage: props.showPercentage,
+          footerLabels: props.footerLabels,
+          isScrollVisible: props.isScrollVisible,
+        };
     }
 
     handleFooter = (event) => {
@@ -83,7 +84,8 @@ class BarGraphSection extends Component {
     // } 
 
     render() {
-       
+      console.log("options", this.state.options2);
+      console.log("option2", this.state.options);
         return (
           <div
             className={`bar-graph-section ${
@@ -129,19 +131,26 @@ class BarGraphSection extends Component {
             ) : (
               ""
             )}
-            <div className="chartAreaWrapper">
-              <div
-                className="chartArea"
-                style={{
-                  width: `${
-                    this.state.data.labels.length > 8
-                      ? this.state.data.labels.length * 12.5
-                      : 100
-                  }%`,
-                  minWidth: `${this.state.data.labels.length * 10}rem`,
-                }}
-              >
-                <Bar options={this.state.options} data={this.state.data} />
+            <div style={{ display: "flex" }}>
+              <div className='Y-axis'>
+               
+                <Bar options={this.state.options2} data={this.state.data} />
+              </div>
+
+              <div className="chartAreaWrapper">
+                <div
+                  className="chartArea"
+                  style={{
+                    width: `${
+                      this.state.data.labels.length > 8
+                        ? this.state.data.labels.length * 12.5
+                        : 100
+                    }%`,
+                    minWidth: `${this.state.data.labels.length * 10}rem`,
+                  }}
+                >
+                  <Bar options={this.state.options} data={this.state.data} />
+                </div>
               </div>
             </div>
 
