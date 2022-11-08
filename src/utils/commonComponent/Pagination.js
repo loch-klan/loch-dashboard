@@ -12,7 +12,7 @@ const Pagination = props => {
     if (event.key === 'Enter') {
       onSubumit(props)
     }
-    
+
   };
   const onSubumit = (props) => {
     var pageNo = document.getElementById("pageNo")
@@ -21,15 +21,20 @@ const Pagination = props => {
       const params = new URLSearchParams(props.location.search);
         params.set("p",0);
         props.history.push(`${props.history.location.pathname}?${params}`);
-        pageNo.value = 0
+        pageNo.value = 1
     }
     else if(input < props.pageCount) {
         const params = new URLSearchParams(props.location.search);
         params.set("p", input-1);
         props.history.push(`${props.history.location.pathname}?${params}`)
+      } else{
+        const params = new URLSearchParams(props.location.search);
+        params.set("p", props.pageCount-1);
+        props.history.push(`${props.history.location.pathname}?${params}`);
+        pageNo.value = props.pageCount
       }
   }
-  
+
   const onLeftClick = (props) => {
     var pageNo = document.getElementById("pageNo")
 
@@ -44,12 +49,12 @@ const Pagination = props => {
         pageNo.value = (props.page-1)
       }
     }
-  
+
   }
-  
+
   const onNextClick = (props) => {
     var pageNo = document.getElementById("pageNo")
-  
+
     if (props.noUrl) {
       props.loadData(props.page + 1);
     } else {
@@ -61,16 +66,16 @@ const Pagination = props => {
         pageNo.value=(props.page+1);
       }
     }
-  
+
   }
-  
+
   return (
     <div className="pagination-wrapper">
       <Image src={props.pagePrev ? props.pagePrev : pagePrev} onClick={() => onLeftClick(props)} className="left-arrow" />
       <h5 className='inter-display-medium f-s-14'>
-        <input type="number" 
-        name="pagenumber" 
-        id="pageNo" 
+        <input type="number"
+        name="pagenumber"
+        id="pageNo"
         defaultValue={props.page}
         onChange={(event)=>{setInput(event.target.value)}}
         onKeyDown={handleKeyDown}

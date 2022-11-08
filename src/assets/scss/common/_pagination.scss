@@ -40,11 +40,14 @@
     margin-right: 0.5rem;
     width: 10rem;
     text-align: center;
+    &:focus-visible{
+      outline: none;
+    }
   }
-  input[type=number]::-webkit-inner-spin-button, 
-  input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 
