@@ -31,7 +31,7 @@ function TransactionTable(props) {
                     location={props.location}
                     currentPage={props.page}
                     pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
-                    pageNext={ActiveNextBtn}
+                    pageNext={props.page === (props.totalPage-1) ? ActiveNextBtn : ActiveNextBtn}
                     message={"No transactions found"}
                     isLoading={props.isLoading} 
                 />

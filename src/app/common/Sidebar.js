@@ -22,6 +22,7 @@ import ApiBlackIcon from '../../assets/images/icons/ApiBlackIcon.svg'
 import LeaveIcon from '../../assets/images/icons/LeaveIcon.svg'
 import LeaveBlackIcon from '../../assets/images/icons/LeaveBlackIcon.svg'
 import DarkmodeIcon from '../../assets/images/icons/DarkmodeIcon.svg'
+import ShareProfileDarkIcon from '../../assets/images/icons/ShareProfileDarkIcon.svg'
 import bgImg from '../../image/Notice.png'
 import {useHistory} from 'react-router-dom'
 import ExitOverlay from './ExitOverlay'
@@ -152,7 +153,10 @@ function Sidebar(props) {
                             </li>
                             {
                               JSON.parse(localStorage.getItem('lochUser')) &&
-                              <li>
+                              <li 
+                                onMouseOver={e => (e.currentTarget.children[0].src=ShareProfileDarkIcon)}
+                                onMouseLeave={e => (e.currentTarget.children[0].src=DarkmodeIcon)}
+                              >
                                 <Image src={DarkmodeIcon} />
                                 <Button
                                   className="inter-display-medium f-s-15 lh-19 navbar-button"
