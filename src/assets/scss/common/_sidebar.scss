@@ -20,9 +20,14 @@
         .logo {
             // margin-bottom: 3rem;
             // margin-left: 1.4rem;
-            margin: 3.6rem 1.4rem;
+            margin: 2.6rem 1.4rem 3.6rem;
             img{
-              width: 8.7rem;
+              width: 4.5rem;
+              margin-right: 1rem;
+            }
+            .loch-text{
+              @include font($black-191, "Inter-Medium", 3rem, 500, 24px);
+              vertical-align: middle;
             }
         }
         ul {

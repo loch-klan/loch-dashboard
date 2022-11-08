@@ -1,8 +1,8 @@
 import React from 'react'
 import { Image, Container, Button } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
-import logo from '../../image/logo.png'
-// import logo from '../../image/Loch.svg'
+// import logo from '../../image/logo.png'
+import logo from '../../image/Loch.svg'
 
 import ActiveHomeIcon from '../../image/HomeIcon.svg'
 import InActiveHomeIcon from '../../assets/images/icons/InactiveHomeIcon.svg'
@@ -65,6 +65,7 @@ function Sidebar(props) {
                   <div style={{width: "100%"}}>
                     <div className='logo'>
                         <Image src={logo} />
+                        <span className='loch-text'>Loch</span>
                     </div>
                     <div className={props.ownerName ? 'sidebar-body' : 'sidebar-body nowallet'}>
                         <nav>
