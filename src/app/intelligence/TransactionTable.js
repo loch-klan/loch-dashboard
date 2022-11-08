@@ -21,18 +21,6 @@ function TransactionTable(props) {
                 :
                 ""
             }
-            {
-                props.isLoading === true 
-                ?<>
-                <div className='transaction-table-loading-wrapper'> 
-                    <div className='animation-wrapper'>
-                        <Loading/>
-                    </div>
-                    
-                </div>
-                
-                </>
-                :
                 <CustomTable
                     className="transaction-table"
                     tableData={props.tableData}
@@ -47,7 +35,6 @@ function TransactionTable(props) {
                     message={"No transactions found"}
                     isLoading={props.isLoading} 
                 />
-            }
 
            
         </div>

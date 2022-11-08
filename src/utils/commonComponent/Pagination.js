@@ -6,18 +6,26 @@ import pageNext from '../../assets/images/page-next.svg';
 
 const Pagination = props => {
 
-  const [message, setMessage] = React.useState(props.page);
+  const [input, setInput] = React.useState(props.page);
   
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter' && message!==0) {
+    if (event.key === 'Enter') {
       onSubumit(props)
     }
     
   };
   const onSubumit = (props) => {
-    if (message < props.pageCount) {
+    var pageNo = document.getElementById("pageNo")
+    if(input <= 0 )
+    {
+      const params = new URLSearchParams(props.location.search);
+        params.set("p",0);
+        props.history.push(`${props.history.location.pathname}?${params}`);
+        pageNo.value = 0
+    }
+    else if(input < props.pageCount) {
         const params = new URLSearchParams(props.location.search);
-        params.set("p", message-1);
+        params.set("p", input-1);
         props.history.push(`${props.history.location.pathname}?${params}`)
       }
   }
@@ -64,7 +72,7 @@ const Pagination = props => {
         name="pagenumber" 
         id="pageNo" 
         defaultValue={props.page}
-        onChange={(event)=>{setMessage(event.target.value)}}
+        onChange={(event)=>{setInput(event.target.value)}}
         onKeyDown={handleKeyDown}
         />
         of {props.pageCount}
