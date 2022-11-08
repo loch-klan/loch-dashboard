@@ -7,7 +7,7 @@
     .modal-content {
         border-radius: 1.2rem;
         width: 78rem;
-        
+
         .modal-header {
             padding: 2.8rem;
             // display: block;
@@ -210,9 +210,11 @@
                     margin-bottom: 8.7rem;
 
                     p {
-                        position: absolute;
-                        bottom: 0rem;
-                        left: 8rem;
+                        // position: absolute;
+                        // bottom: 0rem;
+                        // left: 8rem;
+                        position: relative;
+                        top: -2rem;
                     }
                 }
             }
