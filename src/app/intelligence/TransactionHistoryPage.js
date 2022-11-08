@@ -13,6 +13,7 @@ import { getCoinRate } from '../Portfolio/Api.js'
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import moment from "moment"
 import { SelectControl, FormElement, Form, CustomTextControl } from '../../utils/form';
+import unrecognizedIcon from '../../image/unrecognized.svg'
 
 class TransactionHistoryPage extends BaseReactComponent {
     constructor(props) {
@@ -159,14 +160,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                     address: row.from_wallet.address,
                     // wallet_metaData: row.from_wallet.wallet_metaData
                     wallet_metaData: {
-                        symbol: Metamask
+                        symbol: row.from_wallet.wallet_metaData? row.from_wallet.wallet_metaData.symbol : unrecognizedIcon
                     }
                 },
                 to: {
                     address: row.to_wallet.address,
                     // wallet_metaData: row.to_wallet.wallet_metaData,
                     wallet_metaData: {
-                        symbol: Metamask
+                        symbol:  row.to_wallet.wallet_metaData ? row.to_wallet.wallet_metaData.symbol : unrecognizedIcon
                     },
                 },
                 asset: {

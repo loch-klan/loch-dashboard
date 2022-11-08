@@ -76,7 +76,8 @@ class ExitOverlay extends BaseReactComponent {
             <Modal
                 show={this.state.show}
                 className="exit-overlay-form"
-                backdrop="static"
+                // backdrop="static"
+                onHide={this.state.onHide}
                 size="lg"
                 dialogClassName={"exit-overlay-modal"}
                 centered

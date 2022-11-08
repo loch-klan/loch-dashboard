@@ -21,6 +21,7 @@ import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
 import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, START_INDEX } from '../../utils/Constant'
 import moment from "moment"
+import unrecognizedIcon from '../../image/unrecognized.svg'
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -126,14 +127,14 @@ class Portfolio extends BaseReactComponent {
                     address: row.from_wallet.address,
                     // wallet_metaData: row.from_wallet.wallet_metaData
                     wallet_metaData: {
-                        symbol: Metamask
+                        symbol: row.from_wallet.wallet_metaData ? row.from_wallet.wallet_metaData.symbol : unrecognizedIcon
                     }
                 },
                 to: {
                     address: row.to_wallet.address,
                     // wallet_metaData: row.to_wallet.wallet_metaData,
                     wallet_metaData: {
-                        symbol: Metamask
+                        symbol: row.to_wallet.wallet_metaData ? row.to_wallet.wallet_metaData.symbol : unrecognizedIcon
                     },
                 },
                 asset: {
