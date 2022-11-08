@@ -1,59 +1,140 @@
 
-   const labels = ["AAVE" , "Binance" , "Kraken" ,"Gemini","Coinbase","Compound","Convex","MakerDao"]
+   const labels = [
+     "AAVE",
+     "Binance",
+     "Kraken",
+     "Gemini",
+     "Coinbase",
+     "Compound",
+     "Convex",
+     "MakerDao",
+     "AAVE",
+     "Binance",
+     "Kraken",
+     "Gemini",
+     "Coinbase",
+     "Compound",
+     "Convex",
+     "MakerDao",
+   ];
 
     const options = {
-        responsive:true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display:false
-            },
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 15,
         },
-        scales:{
-            y:{
-                min:0,
-                max:500,
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+          y: {
+              min: 0,
+              max:500,
+          ticks: {
+            display: false,
+            stepSize: 125,
+            padding: 8,
+            size: 12,
+            lineHeight: 20,
+            family: "Helvetica Neue",
+            weight: 400,
+            color: "#B0B1B3",
+          },
+          grid: {
+            drawBorder: false,
+            display: true,
+            borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
+            drawTicks: false,
+          },
+        },
+        x: {
+          ticks: {
+            font: "Inter-SemiBold",
+            size: 10,
+            lineHeight: 12,
+            weight: 600,
+            color: "#86909C",
+            maxRotation: 0,
+            minRotation: 0,
+            autoSkip: false,
+          },
+          grid: {
+            display: false,
+            borderWidth: 1,
+          },
+        },
+      },
+    };
 
-                ticks:{
-                    stepSize:125,
-                    padding:8,
-                    size:12,
-                    lineHeight:20,
-                    family:"Helvetica Neue",
-                    weight:400,
-                    color: "#B0B1B3"
-                },
-                grid:{
-                    drawBorder:false,
-                    display:true,
-                    borderDash: ctx=>ctx.index == 0 ? [0] : [4],
-                    drawTicks:false
-                }
+      const options2 = {
+        responsive: true,
+        maintainAspectRatio: false,
+          layout: {
+              padding: {
+                bottom:38,
+            }
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        scales: {
+          x: {
+            max: 1,
+            ticks: {
+            //   font: "Inter-SemiBold",
+            //   size: 10,
+            //   lineHeight: 12,
+            //   weight: 600,
+            //   color: "#86909C",
+            //   maxRotation: 0,
+            //   minRotation: 0,
+            //   autoSkip: false,
+              display: false,
             },
-            x:{
-                ticks:{
-                    font:"Inter-SemiBold",
-                    size:10,
-                    lineHeight:12,
-                    weight:600,
-                    color:"#86909C",
-                    maxRotation:0,
-                    minRotation:0,
-                },
-                grid:{
-                    display:false,
-                    borderWidth:1,
-                }
+            grid: {
+              display: false,
+            //   borderWidth: 1,
             },
-            
-        }
-    }
+          },
+          y: {
+              min: 0,
+              max:500,
+            afterFit: (ctx) => {
+              ctx.width =30;
+            },
+            ticks: {
+              stepSize: 125,
+              padding: 8,
+              size: 12,
+              lineHeight: 20,
+              family: "Helvetica Neue",
+              weight: 400,
+              color: "#B0B1B3",
+            },
+            grid: {
+              drawBorder: false,
+              display: true,
+              borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
+              drawTicks: false,
+            },
+          },
+        },
+      };
+
+    
 
 const data = {
     labels,
     datasets: [
         {
-            data: [26, 323, 60,450, 50, 40, 77, 189,103],
+            data: [375, 323, 60,450, 50, 40, 77, 189,103,26, 300, 60,450, 50, 40, 77, 189,103],
             backgroundColor: [
                 "rgba(100, 190, 205, 0.3)",
                 "rgba(34, 151, 219, 0.3)",
@@ -242,5 +323,5 @@ const ethoptions = { responsive:true,
 
 export const ethereum = [ethdata,ethoptions]
 export const years5 = [datayear5 , optionsyear5]
-export const info = [ data,options]
+export const info = [ data,options, options2]
 

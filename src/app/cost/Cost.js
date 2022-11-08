@@ -15,11 +15,12 @@ class Cost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      durationgraphdata :{
+      durationgraphdata: {
         data: info[0],
         options: info[1],
+        options2: info[2],
       },
-    }
+    };
   }
 
   componentDidMount() {
@@ -150,8 +151,7 @@ class Cost extends Component {
     return (
       <div className="cost-page-section">
         {/* <Sidebar ownerName="" /> */}
-        <div className='m-t-5 cost-section page'>
-
+        <div className="m-t-5 cost-section page">
           <PageHeader
             title="Costs"
             subTitle="Bring light to your hidden costs"
@@ -162,10 +162,11 @@ class Cost extends Component {
             headerSubTitle="Understand your gas costs"
             data={this.state.durationgraphdata.data}
             options={this.state.durationgraphdata.options}
-            coinsList = {this.props.OnboardingState.coinsList}
-            marginBottom = 'm-b-32'
-            showFooter = {true}
-            showBadges = {true}
+            options2={this.state.durationgraphdata.options2}
+            coinsList={this.props.OnboardingState.coinsList}
+            marginBottom="m-b-32"
+            showFooter={true}
+            showBadges={true}
             isScrollVisible={false}
             // height={420}
             // width={824}
@@ -176,29 +177,28 @@ class Cost extends Component {
             headerSubTitle="Understand how much your counterparty charges you"
             data={this.state.durationgraphdata.data}
             options={this.state.durationgraphdata.options}
-            coinsList = {this.props.OnboardingState.coinsList}
-            marginBottom = 'm-b-32'
-            showFooter = {true}
-            showBadges = {true}
+            options2={this.state.durationgraphdata.options2}
+            coinsList={this.props.OnboardingState.coinsList}
+            marginBottom="m-b-32"
+            showFooter={true}
+            showBadges={true}
             isScrollVisible={false}
             // height={"400px"}
             // width={"824px"}
-
           />
 
-          <div className='m-b-40 cost-table-section'>
-          <TransactionTable
-            title ="Average Cost Basis"
-            subTitle="Understand your average entry price"
-            tableData={tableData}
-            columnList={columnData}
-            headerHeight={64}
-          />
+          <div className="m-b-40 cost-table-section">
+            <TransactionTable
+              title="Average Cost Basis"
+              subTitle="Understand your average entry price"
+              tableData={tableData}
+              columnList={columnData}
+              headerHeight={64}
+            />
           </div>
         </div>
       </div>
-
-    )
+    );
   }
 }
   const mapStateToProps = state => ({

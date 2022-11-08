@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 // import './App.css';
 import routes from "./routes";
@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from 'react-toastify';
 
 function App() {
+  
+
   return (
     <div>
       <BrowserRouter>
