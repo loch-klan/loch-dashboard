@@ -7,21 +7,26 @@ import pageNext from '../../assets/images/page-next.svg';
 const Pagination = props => {
 
   const [message, setMessage] = React.useState(props.page);
-  
+
   const handleKeyDown = (event) => {
+    console.log('message',message);
     if (event.key === 'Enter' && message!==0) {
       onSubumit(props)
     }
-    
+
   };
   const onSubumit = (props) => {
-    if (message < props.pageCount) {
+    if (message <= props.pageCount) {
         const params = new URLSearchParams(props.location.search);
         params.set("p", message-1);
         props.history.push(`${props.history.location.pathname}?${params}`)
+      } else{
+        const params = new URLSearchParams(props.location.search);
+        params.set("p", props.pageCount-1);
+        props.history.push(`${props.history.location.pathname}?${params}`)
       }
   }
-  
+
   const onLeftClick = (props) => {
     var pageNo = document.getElementById("pageNo")
 
@@ -36,12 +41,12 @@ const Pagination = props => {
         pageNo.value = (props.page-1)
       }
     }
-  
+
   }
-  
+
   const onNextClick = (props) => {
     var pageNo = document.getElementById("pageNo")
-  
+
     if (props.noUrl) {
       props.loadData(props.page + 1);
     } else {
@@ -53,16 +58,16 @@ const Pagination = props => {
         pageNo.value=(props.page+1);
       }
     }
-  
+
   }
-  
+
   return (
     <div className="pagination-wrapper">
       <Image src={props.pagePrev ? props.pagePrev : pagePrev} onClick={() => onLeftClick(props)} className="left-arrow" />
       <h5 className='inter-display-medium f-s-14'>
-        <input type="number" 
-        name="pagenumber" 
-        id="pageNo" 
+        <input type="number"
+        name="pagenumber"
+        id="pageNo"
         defaultValue={props.page}
         onChange={(event)=>{setMessage(event.target.value)}}
         onKeyDown={handleKeyDown}
