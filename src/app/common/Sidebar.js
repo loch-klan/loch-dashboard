@@ -28,6 +28,7 @@ import ExitOverlay from './ExitOverlay'
 import { BASE_URL_S3 } from '../../utils/Constant'
 import { toast } from 'react-toastify'
 import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
+import ConfirmLeaveModal from './ConformLeaveModal';
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -36,18 +37,23 @@ function Sidebar(props) {
     const [leave, setLeave] = React.useState(false);
     const [apiModal,setApiModal]  =React.useState(false);
     const [exportModal,setExportModal] = React.useState(false)
+    const [confirmLeave,setConfirmLeave] = React.useState(false)
 
     const handleLeave = () => {
       const isDummy = localStorage.getItem("lochDummyUser");
       if(isDummy){
         setLeave(!leave)
       } else{
-        props.history.push('/home');
+        setConfirmLeave(!confirmLeave)
+        // props.history.push('/home');
       }
     }
 
     const handleApiModal = ()=>{
         setApiModal(!apiModal)
+    }
+    const handleConfirmLeaveModal = () =>{
+        setConfirmLeave(!confirmLeave)
     }
     const handleExportModal = ()=>{
         setExportModal(!exportModal)
@@ -216,6 +222,16 @@ function Sidebar(props) {
                     iconImage={ExportIconWhite}
                 />
                 :""
+            }
+            {
+                confirmLeave ?
+                <ConfirmLeaveModal
+                    show={confirmLeave}
+                    history={history}
+                    handleClose={handleConfirmLeaveModal}
+                />
+                :
+                ""
             }
         </div>
     )
