@@ -1427,10 +1427,12 @@ form {
           color: $grey-313;
           text-align: center;
           margin: 0rem;
-
+          
           .history-table-icon {
             width: 2.4rem;
             height: 2.4rem;
+            border-radius:0.8rem;
+            box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
           }
 
           .history-table-coin-icon {
