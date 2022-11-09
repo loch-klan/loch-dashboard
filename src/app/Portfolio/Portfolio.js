@@ -138,8 +138,8 @@ class Portfolio extends BaseReactComponent {
                     },
                 },
                 asset: {
-                    code: row.chain.code,
-                    symbol: row.chain.symbol
+                    code: row.asset.code,
+                    symbol: row.asset.symbol
                 },
 
                 usdValueToday: {
