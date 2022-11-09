@@ -242,12 +242,25 @@ class AddWallet extends BaseReactComponent {
                         </div>
                         : null
                     }
+
                     <div className='ob-modal-body-btn'>
                         <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />                    
                         <CustomButton className="primary-btn go-btn" type="submit" isLoading={this.state.addButtonVisible ? this.isDisabled() : false} 
                         isDisabled={this.state.addButtonVisible ?  this.isDisabled() : false} 
                         buttonText={this.state.addButtonVisible ? "Go" : "Sign in"} />
                     </div>
+
+                    {
+                        this.state.addButtonVisible ? 
+                        <div className="m-b-30 m-t-30 addWallet-signIn-div">
+                        <span className='inter-display-medium f-s-13 m-r-8 lh-16 grey-ADA'>
+                        Already have an account? 
+                        </span>
+                        <span className='inter-display-bold f-s-13 lh-16 black-191 cp' onClick={this.handleSignText}>Sign In</span>
+                        </div>
+                        :
+                        ""
+                    }
                 </Form>
             </>
         );
