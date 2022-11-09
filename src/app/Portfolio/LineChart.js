@@ -260,6 +260,7 @@ class LineChart extends BaseReactComponent {
                         title={this.state.titleY}
                         activetab={this.state.titleY}
                     /> */}
+                    <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">$ USD</span>
                     </div>
                     <HighchartsReact
                         highcharts={Highcharts}
