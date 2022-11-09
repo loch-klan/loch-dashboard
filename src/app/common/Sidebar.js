@@ -39,6 +39,7 @@ function Sidebar(props) {
     const [apiModal,setApiModal]  =React.useState(false);
     const [exportModal,setExportModal] = React.useState(false)
     const [confirmLeave,setConfirmLeave] = React.useState(false)
+    const [currentIndex, setCurrentIndex] = React.useState(0);
 
     const handleLeave = () => {
       const isDummy = localStorage.getItem("lochDummyUser");
@@ -64,6 +65,52 @@ function Sidebar(props) {
       navigator.clipboard.writeText(link);
       toast.success("Share link has been copied");
     }
+
+
+    const quotes = [
+        "Sic Parvis Magna | Thus, great things from small things come.",
+        "The discipline of desire is the background of character.", 
+        "Every man has a property in his own person. This nobody has a right to, but himself.",
+        "No man's knowledge here can go beyond his experience.",
+        "Education begins the gentleman, but reading, good company and reflection must finish him.",
+        "The only fence against the world is a thorough knowledge of it.",
+        "I have always thought the actions of men the best interpreters of their thoughts",
+        "All men are liable to error; and most men are, in many points, by passion or interest, under temptation to it.",
+        "It is one thing to show a man that he is in an error, and another to put him in possession of truth.",
+        "A sound mind in a sound body, is a short but full description of a happy state in this world. He that has these two, has little more to wish for; and he that wants either of them, will be little the better for anything else.",
+        "He that judges without informing himself to the utmost that he is capable, cannot acquit himself of judging amiss.",
+        "New opinions are always suspected, and usually opposed, without any other reason but because they are not already common.",
+        "The thoughts that come often unsought, and, as it were, drop into the mind, are commonly the most valuable of any we have.",
+        "Wherever Law ends, Tyranny begins."
+    ];
+    const authors = ["Sir Francis Drake", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke", 
+        "John Locke"
+    ];
+    React.useEffect(() => {
+        if (currentIndex === quotes.length - 1) {
+          console.log("loop complete");
+          setCurrentIndex(0);
+          return;
+        }
+        const interval = setInterval(() => {
+          const updatedIndex = currentIndex + 1;
+          setCurrentIndex(updatedIndex);
+        }, 15000);
+    
+        return()=>clearInterval(interval);
+      },[currentIndex]);
 
     return (
         <div className='sidebar-section'>
@@ -176,12 +223,17 @@ function Sidebar(props) {
                             </li>
                         </ul>
 
-                        <div className='m-b-12 footer-divOne'>
-                            <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
+                        <div className='m-b-12 footer-divOne' style={{ fontStyle: "italic" }} >
+                            {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from </p>
-                            <p className='inter-display-medium f-s-15 grey-CAC lh-19'>small things come."</p>
+                            <p className='inter-display-medium f-s-15 grey-CAC lh-19'>small things come."</p> */}
+                            <p className='inter-display-medium f-s-15 grey-CAC lh-19'>
+                            {quotes[currentIndex]}
+                            </p>
                         </div>
-                        <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo m-b-40">Sir Francis Drake</div>
+                        <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo m-b-40">
+                            {authors[currentIndex]}
+                        </div>
 
                         {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
                         <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from small things come.</p>
