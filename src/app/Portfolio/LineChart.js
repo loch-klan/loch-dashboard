@@ -131,9 +131,9 @@ class LineChart extends BaseReactComponent {
                                 <div class="inter-display-semi-bold f-s-10 lh-12 grey-B0B m-b-8 header-title">Internal Factors</div>
                                 <div class="inter-display-semi-bold f-s-10 lh-12 grey-313  tooltip-section-bottom" >0.7 BTC was deposited into a Coinbase Wallet</div>
                             </div>
-                        
+
                         </div>
-                    
+
                     `
                     // return `
                     // <div  class="linechart-tooltip">
@@ -253,13 +253,13 @@ class LineChart extends BaseReactComponent {
                         </select>
                     </div> */}
                     <div className="chart-y-selection">
-                    <DropDown
+                    {/* <DropDown
                         class="line-chart-dropdown-y-axis"
                         list={["$ USD", "₫ VND", "₹ INR", "Rs PKR", "₴ UAH","Ksh KES"]}
                         onSelect={this.handleSelectYAxis}
                         title={this.state.titleY}
                         activetab={this.state.titleY}
-                    />
+                    /> */}
                     </div>
                     <HighchartsReact
                         highcharts={Highcharts}

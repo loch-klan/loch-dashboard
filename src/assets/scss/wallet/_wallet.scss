@@ -61,6 +61,7 @@
 
                         .wallet-img {
                             box-shadow: 0rem 0.4rem 0.8rem $grey-F2F , 0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.05);
+                            border-radius: 0.8rem;
                             img {
                               border-radius: 0.8rem;
                                 width: 4.3rem;
@@ -128,6 +129,8 @@
                             img{
                                 width:2.6rem;
                                 height:2.6rem;
+                                border-top-left-radius: 0.5rem;
+                                border-bottom-left-radius: 0.5rem;
                             }
                         }
                     }

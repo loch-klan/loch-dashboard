@@ -102,7 +102,7 @@ export default function WalletCard(props) {
                 </>
                 :
                 <>
-                <h6 className='inter-display-medium f-s-16 lh-19 grey-B0B'>This wallet address is not dected, please fix it now.</h6>
+                <h6 className='inter-display-medium f-s-16 lh-19 grey-B0B'>This wallet address is not detected. Please fix it now.</h6>
                 <Button className='secondary-btn' onClick={handleFixModal}>Fix now</Button>
                 </>
               }
