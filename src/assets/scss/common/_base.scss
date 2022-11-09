@@ -1335,6 +1335,8 @@ form {
     // margin-right: 0.5rem;
     width: 2.6rem;
     height: 2.6rem;
+    border-top-left-radius: 0.55rem;
+    border-bottom-left-radius: 0.55rem;
     // margin-top: -0.1rem;
   }
 }
@@ -1427,7 +1429,7 @@ form {
           color: $grey-313;
           text-align: center;
           margin: 0rem;
-          
+
           .history-table-icon {
             width: 2.4rem;
             height: 2.4rem;
