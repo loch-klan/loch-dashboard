@@ -111,20 +111,20 @@ class ExitOverlay extends BaseReactComponent {
                     </div>
                 </Modal.Header>
                 <Modal.Body>
-                    {this.props.modalType === "apiModal" 
-                    ? 
+                    {this.props.modalType === "apiModal"
+                    ?
                     <div className='api-modal-body'>
                         <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">{this.props.headerTitle}</h6>
-                        <p className='inter-display-regular f-s-13 lh-16 grey-B0B'>Personalized digital asset intelligence via API</p>
+                        <p className='inter-display-regular f-s-13 lh-16 grey-B0B'>{this.props.headerTitle === "API" ? "Personalized digital asset intelligence via API" : "Export your exisiting data from Loch"}</p>
                         <div className="api-modal-frame">
                         <Image src={ApiModalFrame} />
                         <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon</p>
                         </div>
                     </div>
-                    
-                    
+
+
                     :
-                    
+
                     <div className='exit-overlay-body'>
                         <h6 className='inter-display-medium f-s-20 lh-24 '>Don’t lose your data</h6>
                         <p className='inter-display-medium f-s-16 lh-19 grey-7C7'>

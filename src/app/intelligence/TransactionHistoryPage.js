@@ -92,7 +92,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         let search_index = this.state.condition.findIndex((e) => e.key === SEARCH_BY_TEXT)
 
         // console.log(search_index, arr[search_index])
-        // 
+        //
         if (index !== -1 && value !== 'allAssets' && value !== 'allMethod' && value !== 'allYear') {
           if(key===SEARCH_BY_ASSETS_IN){
             // arr[index].value = [value.toString()]
@@ -105,7 +105,7 @@ class TransactionHistoryPage extends BaseReactComponent {
            else if(key === SEARCH_BY_TIMESTAMP){
             arr[index].value = value.toString()
           }
-        } else if (value === 'allAssets' || value === 'allMethod' || value === 'allYear') { 
+        } else if (value === 'allAssets' || value === 'allMethod' || value === 'allYear') {
             arr.splice(index, 1)
         } else {
             let obj = {};
@@ -120,7 +120,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     key: key,
                     value: [value.toString()]
                   }
-            } 
+            }
             else if(key === SEARCH_BY_TIMESTAMP){
               obj = {
                 key: key,
@@ -171,8 +171,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                     },
                 },
                 asset: {
-                    code: row.chain.code,
-                    symbol: row.chain.symbol
+                    code: row.asset.code,
+                    symbol: row.asset.symbol
                 },
                 amount: {
                     value: row.asset.value,
@@ -278,7 +278,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "amount") {
-                        
+
                         // console.log(value)
                         return rowData.amount.value?.toFixed(2)
                     }
@@ -300,7 +300,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 return
                             }
                         })
-                        return value?.toFixed(2) 
+                        return value?.toFixed(2)
                     }
                 }
             },
