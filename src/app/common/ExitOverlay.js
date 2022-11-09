@@ -18,7 +18,7 @@ import ShareLink from '../../assets/images/icons/ShareLink.svg'
 import {fixWalletApi} from './Api.js'
 import { BASE_URL_S3 } from '../../utils/Constant';
 import { toast } from 'react-toastify';
-import ApiModalFrame from '../../assets/images/apiModalFrame.png';
+import ApiModalFrame from '../../assets/images/apiModalFrame.svg';
 import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
 
 class ExitOverlay extends BaseReactComponent {
