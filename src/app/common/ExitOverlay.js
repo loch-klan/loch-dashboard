@@ -2,11 +2,12 @@ import React from 'react'
 import BaseReactComponent from './../../utils/form/BaseReactComponent';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
-import ExitOverlayIcon from '../../assets/images/icons/ExitOverlayWalletIcon.png'
+import ExitOverlayIcon from '../../assets/images/icons/ExitOverlayWalletIcon.svg'
 import Form from '../../utils/form/Form'
 import FormElement from '../../utils/form/FormElement'
 import FormValidator from './../../utils/form/FormValidator';
-import CloseIcon from '../../assets/images/icons/close-icon.svg'
+// import CloseIcon from '../../assets/images/icons/close-icon.svg'
+import CloseIcon from '../../assets/images/icons/dummyX.svg'
 import CustomTextControl from './../../utils/form/CustomTextControl';
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 // import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
@@ -103,8 +104,10 @@ class ExitOverlay extends BaseReactComponent {
                         <Image src={this.props.iconImage}/>
                     </div>
                     :
+                    <div className="exitOverlayIcon">
                     <Image src={ExitOverlayIcon}
-                        className="exitOverlayIcon" />
+                         />
+                    </div>
                     }
                     <div className="closebtn" onClick={this.state.onHide}>
                         <Image src={CloseIcon} />

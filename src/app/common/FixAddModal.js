@@ -2,7 +2,7 @@ import React from 'react'
 import { BaseReactComponent } from '../../utils/form';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
-import DeleteIcon from "../../assets/images/icons/delete-icon.png";
+import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import Banner from "../../image/Frame.png"
@@ -297,7 +297,9 @@ class FixAddModal extends BaseReactComponent {
             this.state.fixWalletAddress.map((elem, index) => {
                 return (
                     <div className="m-b-12 fix-wallet-input" key={index} id={`fix-input-${index}`}>
-                        <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteFixWalletAddress(elem)} />
+                        <div className="delete-icon" onClick={() => this.deleteFixWalletAddress(elem)}>
+                        <Image src={DeleteIcon}  />
+                        </div>
                         <input
                             value={elem.address || ""}
                             className="inter-display-regular f-s-16  lh-19 black-191"
@@ -334,7 +336,11 @@ class FixAddModal extends BaseReactComponent {
 
         const wallets = this.state.addWalletList.map((elem, index) => {
                 return (<div className='m-b-12 add-wallet-input-section' key={index} id={`add-wallet-${index}`}>
-                    {index >= 1 ? <Image src={DeleteIcon} className="delete-icon" onClick={() => this.deleteAddress(index)} /> : ""}
+                    {index >= 1 ? 
+                    <div  className="delete-icon" onClick={() => this.deleteAddress(index)}>
+                    <Image src={DeleteIcon} /> 
+                    </div>
+                    : ""}
 
                     <input
                         autoFocus

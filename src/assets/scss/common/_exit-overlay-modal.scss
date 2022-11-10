@@ -32,10 +32,14 @@
             }
 
             .exitOverlayIcon {
-                width: 6rem;
-                height: 6rem;
-                box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
-                margin-top: 1rem;
+                border-radius: 2rem;
+                padding: 1.818rem 1.717rem;
+                img{
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+            box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+            margin-top: 0.8rem;
             }
 
             .closebtn {

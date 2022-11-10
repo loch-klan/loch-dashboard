@@ -20,7 +20,20 @@
             .ob-modal-title-icon {
                 width: 6rem;
             }
-
+            .ob-sign-modal{
+                display: flex;
+                justify-content: center;
+            .signin-icon{
+                background-color: #FFFFFF;
+                padding:2rem;
+                border-radius: 2rem;
+                box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+                img{
+                    width:2.4rem;
+                    height: 2.4rem;
+                }
+            }
+        }
             h1 {
                 padding: 2.8rem 0 1.2rem;
             }
@@ -30,6 +43,7 @@
                 left: 2.8rem;
                 top: 2.8rem;
             }
+
         }
 
         .modal-body {
@@ -244,7 +258,7 @@
                 margin: 1rem 0 2.5rem 0;
 
             }
-
+            
             .ob-modal-body-info {
                 text-align: center;
                 .info-icon {

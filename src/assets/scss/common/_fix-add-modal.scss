@@ -84,12 +84,16 @@
                             // }
                         }
                         .delete-icon {
-                            width: 3.8rem;
-                            height: 3.8rem;
                             box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
                             position: absolute;
                             left:-5.34rem;
                             cursor: pointer;
+                            padding:0.9rem;
+                            border-radius: 0.8rem;
+                            img{
+                                width: 2rem;
+                                height: 2rem;
+                            }
                         }
                         // input {
                         //     border: none;
@@ -237,13 +241,18 @@
                     .chip-wrapper{
                         top:0.7rem
                     }
+                    
                     .delete-icon {
-                        width: 3.8rem;
-                        height: 3.8rem;
                         box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
                         position: absolute;
                         left:-5.34rem;
                         cursor: pointer;
+                        padding:0.9rem;
+                        border-radius: 0.8rem;
+                        img{
+                            width: 2rem;
+                            height: 2rem;
+                        }
                     }
 
                     input {
