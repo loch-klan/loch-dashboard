@@ -80,7 +80,7 @@ class EditWalletModal extends BaseReactComponent {
                 backdropClassName="editmodal"
             >
                 <Modal.Header style={{backgroundColor: walletBdColor ? walletBdColor : "#0d0d0d"}}>
-                    <Image src={walletIcon ? walletIcon : unrecognizedIcon} className="walletIcon" style={{border: `1px solid ${lightenDarkenColor("#CACBCC",-0.15)} `}} />
+                    <Image src={walletIcon ? walletIcon : unrecognizedIcon} className="walletIcon" />
                     <div className="closebtn" onClick={onHide}>
                         <Image src={closeIcon} />
                     </div>
