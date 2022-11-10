@@ -77,7 +77,7 @@ export default function WalletCard(props) {
             <div className='m-b-32 wallet-details'>
                 <div className='wallet-account-details'>
                     <div className='m-r-16 wallet-img'>
-                        <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognizedIcon} style={{border: `1px solid ${lightenDarkenColor("#CACBCC",-0.15)} `}} />
+                        <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognizedIcon} />
                     </div>
                     <div className='m-r-16 wallet-name-details'>
                         <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognized wallet"}</h6>
