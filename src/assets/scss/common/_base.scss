@@ -1435,7 +1435,10 @@ form {
           color: $grey-313;
           text-align: center;
           margin: 0rem;
-
+          .ellipsis-div{
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
           .history-table-icon {
             width: 2.4rem;
             height: 2.4rem;
