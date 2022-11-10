@@ -6,7 +6,7 @@ export default function CoinChip(props) {
 
   return (
     <div className='coin-chip'>
-        <Image src={props.coin_img_src} style={{border: `1px solid ${lightenDarkenColor(props.colorCode,-0.1)} `}}/>
+        <Image src={props.coin_img_src} style={{border: `1px solid ${lightenDarkenColor(props.colorCode,-0.15)} `}}/>
          <div className='inter-display-medium f-s-13 lh-16 coin-percent'>
           {
             props.coin_percent ? props.coin_percent

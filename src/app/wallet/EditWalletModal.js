@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
 import unrecognizedIcon from '../../image/unrecognized.svg';
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
+import { lightenDarkenColor } from '../../utils/ReusableFunctions';
 class EditWalletModal extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -50,7 +51,7 @@ class EditWalletModal extends BaseReactComponent {
         const chips = this.state.coinchips.map((e, index) => {
             return (
                 <div className='chipcontainer' key={index}>
-                    <Image src={e.chain.symbol} />
+                    <Image src={e.chain.symbol} style={{border: `1px solid ${lightenDarkenColor(e.chain.color,-0.15)} `}} />
                     <div className='inter-display-medium f-s-13 lh-16' >{e.chain.name}</div>
                 </div>
             )
@@ -79,7 +80,7 @@ class EditWalletModal extends BaseReactComponent {
                 backdropClassName="editmodal"
             >
                 <Modal.Header style={{backgroundColor: walletBdColor ? walletBdColor : "#0d0d0d"}}>
-                    <Image src={walletIcon ? walletIcon : unrecognizedIcon} className="walletIcon" />
+                    <Image src={walletIcon ? walletIcon : unrecognizedIcon} className="walletIcon" style={{border: `1px solid ${lightenDarkenColor("#CACBCC",-0.15)} `}} />
                     <div className="closebtn" onClick={onHide}>
                         <Image src={closeIcon} />
                     </div>

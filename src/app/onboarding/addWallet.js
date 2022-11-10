@@ -80,6 +80,7 @@ class AddWallet extends BaseReactComponent {
                     coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
                     coinName: this.props.OnboardingState.coinsList[i].name,
                     address: value,
+                    coinColor: this.props.OnboardingState.coinsList[i].color,
                 }, this)
             }
         }
@@ -90,7 +91,8 @@ class AddWallet extends BaseReactComponent {
         chain_detected: data.chain_detected,
         coinCode: data.coinCode,
         coinName: data.coinName,
-        coinSymbol: data.coinSymbol
+        coinSymbol: data.coinSymbol,
+        coinColor: data.coinColor,
     }
     let i = this.state.walletInput.findIndex(obj => obj.id === data.id)
     let newAddress = [...this.state.walletInput]
@@ -181,7 +183,7 @@ class AddWallet extends BaseReactComponent {
         this.props.switchSignIn()
     }
     render() {
-      
+
         return (
             <>
                 <Form onValidSubmit={this.state.addButtonVisible ? this.onValidSubmit : this.handleSignText}>
@@ -244,17 +246,17 @@ class AddWallet extends BaseReactComponent {
                     }
 
                     <div className='ob-modal-body-btn'>
-                        <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />                    
-                        <CustomButton className="primary-btn go-btn" type="submit" isLoading={this.state.addButtonVisible ? this.isDisabled() : false} 
-                        isDisabled={this.state.addButtonVisible ?  this.isDisabled() : false} 
+                        <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
+                        <CustomButton className="primary-btn go-btn" type="submit" isLoading={this.state.addButtonVisible ? this.isDisabled() : false}
+                        isDisabled={this.state.addButtonVisible ?  this.isDisabled() : false}
                         buttonText={this.state.addButtonVisible ? "Go" : "Sign in"} />
                     </div>
 
                     {
-                        this.state.addButtonVisible ? 
+                        this.state.addButtonVisible ?
                         <div className="m-b-30 m-t-30 addWallet-signIn-div">
                         <span className='inter-display-medium f-s-13 m-r-8 lh-16 grey-ADA'>
-                        Already have an account? 
+                        Already have an account?
                         </span>
                         <span className='inter-display-bold f-s-13 lh-16 black-191 cp' onClick={this.handleSignText}>Sign In</span>
                         </div>
