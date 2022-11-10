@@ -239,7 +239,16 @@ class Portfolio extends BaseReactComponent {
                                return
                             }
                         })
-                        return value?.toFixed(2);
+                        // return value?.toFixed(2);
+                        return (<CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={value}
+                        >
+                            <span className="inter-display-medium f-s-13 lh-16 grey-313">{value}</span>
+                        </CustomOverlay>)
                     }
                 }
             },
