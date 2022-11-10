@@ -36,6 +36,7 @@ export default function WalletCard(props) {
             >
                 <div>
                     <CoinChip
+                        colorCode={coin.chain.color}
                         key={index}
                         coin_img_src={coin.chain.symbol}
                         coin_percent={coin.chain.percentage.toFixed(2) + "%"}

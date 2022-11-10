@@ -19,7 +19,7 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, START_INDEX } from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, START_INDEX, SORT_BY_TIMESTAMP } from '../../utils/Constant'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
 class Portfolio extends BaseReactComponent {
@@ -34,7 +34,7 @@ class Portfolio extends BaseReactComponent {
             fixModal: false,
             addModal: false,
             isLoading:true,
-            sort: [],
+            sort: [{key: SORT_BY_TIMESTAMP, value: false}],
             limit: 6,
         }
     }
