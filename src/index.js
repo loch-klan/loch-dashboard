@@ -14,6 +14,11 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-virtualized/styles.css';
 import './assets/scss/style.scss';
+import { initAmplitude, test } from "./utils/AnalyticsFunctions";
+
+//Amplitude Analytics initialization
+initAmplitude();
+// test({ session_id: "session id", chains: ["value1", "value2", "value3"] });
 
 /* ReactDOM.render(
   <React.StrictMode>
