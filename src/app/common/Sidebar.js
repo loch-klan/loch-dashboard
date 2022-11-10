@@ -69,33 +69,34 @@ function Sidebar(props) {
 
     const quotes = [
         "Sic Parvis Magna | Thus, great things from small things come.",
-        "The discipline of desire is the background of character.", 
-        "Every man has a property in his own person. This nobody has a right to, but himself.",
+        "The discipline of desire is the background of character.",
+        // "Every man has a property in his own person. This nobody has a right to, but himself.",
         "No man's knowledge here can go beyond his experience.",
-        "Education begins the gentleman, but reading, good company and reflection must finish him.",
+        // "Education begins the gentleman, but reading, good company and reflection must finish him.",
         "The only fence against the world is a thorough knowledge of it.",
         "I have always thought the actions of men the best interpreters of their thoughts",
-        "All men are liable to error; and most men are, in many points, by passion or interest, under temptation to it.",
-        "It is one thing to show a man that he is in an error, and another to put him in possession of truth.",
-        "A sound mind in a sound body, is a short but full description of a happy state in this world. He that has these two, has little more to wish for; and he that wants either of them, will be little the better for anything else.",
-        "He that judges without informing himself to the utmost that he is capable, cannot acquit himself of judging amiss.",
-        "New opinions are always suspected, and usually opposed, without any other reason but because they are not already common.",
-        "The thoughts that come often unsought, and, as it were, drop into the mind, are commonly the most valuable of any we have.",
+        // "All men are liable to error; and most men are, in many points, by passion or interest, under temptation to it.",
+        // "It is one thing to show a man that he is in an error, and another to put him in possession of truth.",
+        // "A sound mind in a sound body, is a short but full description of a happy state in this world. He that has these two, has little more to wish for; and he that wants either of them, will be little the better for anything else.",
+        // "He that judges without informing himself to the utmost that he is capable, cannot acquit himself of judging amiss.",
+        // "New opinions are always suspected, and usually opposed, without any other reason but because they are not already common.",
+        // "The thoughts that come often unsought, and, as it were, drop into the mind, are commonly the most valuable of any we have.",
         "Wherever Law ends, Tyranny begins."
     ];
-    const authors = ["Sir Francis Drake", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
-        "John Locke", 
+    const authors = [
+        "Sir Francis Drake",
+        "John Locke",
+        // "John Locke",
+        "John Locke",
+        // "John Locke",
+        "John Locke",
+        "John Locke",
+        // "John Locke",
+        // "John Locke",
+        // "John Locke",
+        // "John Locke",
+        // "John Locke",
+        // "John Locke",
         "John Locke"
     ];
     React.useEffect(() => {
@@ -108,7 +109,7 @@ function Sidebar(props) {
           const updatedIndex = currentIndex + 1;
           setCurrentIndex(updatedIndex);
         }, 15000);
-    
+
         return()=>clearInterval(interval);
       },[currentIndex]);
 
