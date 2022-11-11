@@ -9,6 +9,7 @@ import FormElement from "../../utils/form/FormElement";
 // import { Col, Container, Row } from 'react-bootstrap';
 import {signIn,verifyUser }from './Api.js'
 import FormValidator from '../../utils/form/FormValidator';
+import { EmailAddressAdded } from "../../utils/AnalyticsFunctions.js";
 class SignIn extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -34,11 +35,13 @@ class SignIn extends BaseReactComponent {
     onValidSubmit = (done, event) => {
         const data = new URLSearchParams()
         if(this.state.email && !this.state.isVerificationRequired || this.props.activemodal === "signIn"){
-            data.append("email",this.state.email)
+          data.append("email", this.state.email)
+          EmailAddressAdded({email_address: this.state.email, session_id: "None"});
             signIn(this,data)
         } else if (this.state.text && this.state.isVerificationRequired){
             data.append("email",this.state.email)
-            data.append("otp_token",this.state.text)
+          data.append("otp_token", this.state.text)
+          
             verifyUser(this,data)
         }
       };

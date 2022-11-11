@@ -8,7 +8,7 @@ import CustomButton from "../../utils/form/CustomButton";
 import { getAllCoins, detectCoin, createAnonymousUserApi} from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import { getPadding } from '../../utils/ReusableFunctions';
-
+import { DeleteWalletAddress } from "../../utils/AnalyticsFunctions.js";
 
 class AddWallet extends BaseReactComponent {
     constructor(props) {
@@ -128,6 +128,10 @@ class AddWallet extends BaseReactComponent {
             //         this.props.OnboardingState.walletList.map((w, i) => w.id = `wallet${i + 1}`)
             //     }
             // }
+            DeleteWalletAddress({
+              session_id: "none",
+              address: wallet.address,
+            });
             this.setState({
                 walletInput: this.state.walletInput
             });
@@ -145,6 +149,7 @@ class AddWallet extends BaseReactComponent {
                 isDisableFlag = true;
             }
         })
+
         // this.state.walletInput.map((e) => {
         //     if (!e.address) {
         //         isDisableFlag = true;
@@ -153,6 +158,7 @@ class AddWallet extends BaseReactComponent {
         // this.state.walletInput.map((e) => {
         //   (e.address && e.coins.length === this.props.OnboardingState.coinsList.length) ? isDisableFlag = false : isDisableFlag=true
         // })
+       
         return isDisableFlag;
     }
 
