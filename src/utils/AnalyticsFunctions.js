@@ -1223,7 +1223,6 @@ export const CurrencyChanged = ({ session_id, currency }) => {
   console.log("Profile:fiat currency changed");
 };
 
-
 //90. Profile:saved
 export const ProfileSaved = ({ session_id, email_address }) => {
   const event_name = "Profile:saved";
@@ -1233,4 +1232,38 @@ export const ProfileSaved = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Profile:saved");
+};
+
+//91. Landing Page Conversion:WalletAddressTextbox
+export const WalletAddressTextbox = ({ session_id, address, chains_detected }) => {
+  const event_name = "Landing Page Conversion:WalletAddressTextbox";
+  const eventProperties = {
+    "session id": session_id,
+    "address": address,
+    "list of all chains detected":chains_detected
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Landing Page Conversion:WalletAddressTextbox");
+};
+
+
+//92. Landing Page Conversion:deleted wallet address
+export const DeleteWalletAddress = ({ session_id, address}) => {
+  const event_name = "Landing Page Conversion:deleted wallet address";
+  const eventProperties = {
+    "session id": session_id,
+    "address": address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Landing Page Conversion:deleted wallet address");
+};
+
+//93. Landing Page Conversion:add textbox
+export const AddTextbox = ({ session_id}) => {
+  const event_name = "Landing Page Conversion:add textbox";
+  const eventProperties = {
+    "session id": session_id
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Landing Page Conversion:add textbox");
 };

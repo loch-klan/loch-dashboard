@@ -70,7 +70,8 @@ export const signIn = (ctx,data)=>{
             );
             // toast.error(res.data.message || "Something went Wrong")
         }
-        else if(res.data.error === false){
+        else if (res.data.error === false) {
+            
             ctx.setState({
                 isVerificationRequired:true,
                 text:""
