@@ -309,7 +309,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 isText={true}
                                 text={value}
                             >
-                                <span className="inter-display-medium f-s-13 lh-16 grey-313">{value}</span>
+                                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value}</div>
                             </CustomOverlay>)
                     }
                 }
@@ -341,7 +341,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             text={value}
                         >
 
-                            <span className="inter-display-medium f-s-13 lh-16 grey-313">{value}</span>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -372,7 +372,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isText={true}
                             text={value}
                         >
-                          <span className="inter-display-medium f-s-13 lh-16 grey-313">{value}</span>
+                          <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value}</div>
 
                         </CustomOverlay>)
 
