@@ -544,7 +544,7 @@ class Portfolio extends BaseReactComponent {
                                         </div>
                                     </Col>
                                     <Col md={6}>
-                                        <div className='section-chart'>
+                                        <div className='section-chart blur-effect'>
                                             <BarGraphSection
                                                 headerTitle="Volume Traded by Counterparty"
                                                 headerSubTitle="In the last month"
@@ -559,8 +559,8 @@ class Portfolio extends BaseReactComponent {
                                     </Col>
                                 </Row>
                             </div>
-                            <div className='m-b-40 portfolio-cost-table-section '>
-                                <div className='portfolio-cost-table'>
+                            <div className='m-b-40 portfolio-cost-table-section'>
+                                <div className='portfolio-cost-table blur-effect'>
                                     <TransactionTable
                                         title="Average Cost Basis"
                                         subTitle="Understand your average entry price"

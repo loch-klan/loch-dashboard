@@ -486,6 +486,10 @@ body {
   }
 }
 
+.blur-effect{
+  filter: blur(6px);
+  user-select: none;
+}
 
 
 // UPLOADED IMAGE STYLE
@@ -1435,6 +1439,7 @@ form {
           color: $grey-313;
           text-align: center;
           margin: 0rem;
+          padding: 0 1rem;
           .ellipsis-div{
             overflow: hidden;
             text-overflow: ellipsis;

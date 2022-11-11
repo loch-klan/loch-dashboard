@@ -16,7 +16,9 @@
             padding: 3.6rem;
             text-align: center;
             display: block;
-            border-top-right-radius: 1.4rem;
+            border-top-right-radius: 1.3rem;
+            border-top-left-radius: 1.3rem;
+            background-position: center;
             .ob-modal-title-icon {
                 width: 6rem;
             }
@@ -258,7 +260,7 @@
                 margin: 1rem 0 2.5rem 0;
 
             }
-            
+
             .ob-modal-body-info {
                 text-align: center;
                 .info-icon {
