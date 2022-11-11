@@ -58,7 +58,7 @@
                         display: flex;
                         align-items: center;
                         // margin-right: 4.9rem;
-
+                        width:85%;
                         .wallet-img {
                             box-shadow: 0rem 0.4rem 0.8rem $grey-F2F , 0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.05);
                             border-radius: 0.8rem;
@@ -68,9 +68,9 @@
                             }
                         }
 
-                        .wallet-name-details {
-                            display: flex;
-                            align-items: center;
+                        // .wallet-name-details {
+                            // display: flex;
+                            // align-items: center;
                             h6 {
                                 color: $black-000;
                             }
@@ -80,12 +80,17 @@
                                 border: 0.1rem solid rgba(229, 229, 230, 0.5);
                                 border-radius: 0.8rem;
                                 color: $grey-7C7;
+                                text-overflow: ellipsis;
+                                overflow: hidden;
                             }
-                        }
+                        // }
 
                         .account-details {
                             display: flex;
                             align-items: center;
+                            margin-left: 1.6rem;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
                             span {
                                 color: $grey-B0B;
                                 width: 92%;

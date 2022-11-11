@@ -10,7 +10,6 @@ import { amountFormat, lightenDarkenColor, numToCurrency } from './../../utils/R
 import CopiedModal from '../common/_utils/CopiedModal';
 import FixAddModal from '../common/FixAddModal';
 import Loading from '../common/Loading';
-
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
     const [showModal, toggleCopied] = React.useState(false);
@@ -79,14 +78,26 @@ export default function WalletCard(props) {
                     <div className='m-r-16 wallet-img'>
                         <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognizedIcon} />
                     </div>
-                    <div className='m-r-16 wallet-name-details'>
+                    {/* <div className='m-r-16 wallet-name-details'> */}
                         <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognized wallet"}</h6>
-                        {props.wallet_metadata && props.wallet_metadata.tag && <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} </div>}
-                    </div>
+                        {props.wallet_metadata && props.wallet_metadata.tag && 
+                            <CustomOverlay
+                            position="top"
+                            // isIcon={true}
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={props.wallet_metadata.tag}
+                            >
+                            <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} 
+                            </div>
+                            </CustomOverlay>
+                        }
                     <div className='account-details'>
                         <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
                         <Image src={CopyClipboardIcon} onClick={copyContent} className="m-l-10 cp" />
                     </div>
+                    {/* </div> */}
                 </div>
                 <div className='amount-details'>
                     <h6 className='inter-display-medium f-s-20 lh-24' >{numToCurrency(props.wallet_amount)}</h6>
