@@ -288,6 +288,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 labelName: "USD Value Then",
                 dataKey: "usdValueThen",
                 // coumnWidth: 100,
+                className: "usd-value",
                 coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
@@ -317,6 +318,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 labelName: "USD Value today",
                 dataKey: "usdValueToday",
                 // coumnWidth: 100,
+                className: "usd-value",
                 coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
@@ -338,7 +340,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isText={true}
                             text={value}
                         >
-                            
+
                             <span className="inter-display-medium f-s-13 lh-16 grey-313">{value}</span>
                         </CustomOverlay>)
                     }
@@ -348,6 +350,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 labelName: "USD Transaction Fee",
                 dataKey: "usdTransactionFee",
                 // coumnWidth: 100,
+                className: "usd-value",
                 coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
@@ -370,7 +373,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             text={value}
                         >
                           <span className="inter-display-medium f-s-13 lh-16 grey-313">{value}</span>
-                            
+
                         </CustomOverlay>)
 
                     }
