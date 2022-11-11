@@ -19,7 +19,8 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, START_INDEX, SORT_BY_TIMESTAMP } from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP } from '../../utils/Constant'
+import sortByIcon from '../../assets/images/icons/TriangleDown.svg' 
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
 class Portfolio extends BaseReactComponent {
@@ -33,9 +34,35 @@ class Portfolio extends BaseReactComponent {
             coinAvailable: true,
             fixModal: false,
             addModal: false,
-            isLoading:true,
-            sort: [{key: SORT_BY_TIMESTAMP, value: false}],
+            isLoading: true,
+            sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
             limit: 6,
+            tableSortOpt: [
+                {
+                    title: "time",
+                    down: true,
+                },
+                {
+                    title: "from",
+                    down: true,
+                },
+                {
+                    title: "to",
+                    down: true
+                },
+                {
+                    title: "asset",
+                    down: true
+                },
+                {
+                    title: "usdValue",
+                    down: true
+                },
+                {
+                    title: "method",
+                    down: true
+                }
+            ]
         }
     }
 
@@ -76,7 +103,7 @@ class Portfolio extends BaseReactComponent {
         data.append("conditions", JSON.stringify(condition))
         data.append("limit", this.state.limit)
         data.append("sorts", JSON.stringify(this.state.sort))
-        this.props.searchTransactionApi(data,this)
+        this.props.searchTransactionApi(data, this)
     }
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
@@ -110,16 +137,32 @@ class Portfolio extends BaseReactComponent {
                 // this.getTableData()
                 this.props.settingDefaultValues();
             }
-            if(prevProps.userWalletList !== this.state.userWalletList)
-            {
+            if (prevProps.userWalletList !== this.state.userWalletList) {
                 this.getTableData()
             }
         }
     }
 
+    handleTableSort = (val) => {
+        console.log(val)
+        let sort = [...this.state.tableSortOpt]
+        sort.map((el) => {
+            if (el.title === val) {
+                el.down = !el.down
+            }
+            else {
+                el.down = true
+            }
+        })
+
+        // console.log(obj)
+        this.setState({
+            tableSortOpt: sort
+        })
+    }
 
     render() {
-      const {table} = this.props.intelligenceState;
+        const { table } = this.props.intelligenceState;
         let tableData = table && table.map((row) => {
             return {
                 time: row.timestamp,
@@ -143,8 +186,8 @@ class Portfolio extends BaseReactComponent {
                 },
 
                 usdValueToday: {
-                    value : row.asset.value,
-                    id:row.asset.id
+                    value: row.asset.value,
+                    id: row.asset.id
                 },
                 method: row.transaction_type
             }
@@ -153,7 +196,11 @@ class Portfolio extends BaseReactComponent {
 
         const columnList = [
             {
-                labelName: "Time",
+                labelName:
+                    <div className='cp history-table-header-col' id="time" onClick={() => this.handleTableSort("time")}>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Time</span>
+                        <Image src={sortByIcon} className={this.state.tableSortOpt[0].down ? "rotateDown" : "rotateUp"} />
+                    </div>,
                 dataKey: "time",
                 // coumnWidth: 73,
                 coumnWidth: 0.15,
@@ -165,7 +212,11 @@ class Portfolio extends BaseReactComponent {
                 }
             },
             {
-                labelName: "From",
+                labelName:
+                    <div className='cp history-table-header-col' id="from" onClick={() => this.handleTableSort("from")}>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>From</span>
+                        <Image src={sortByIcon} className={this.state.tableSortOpt[1].down ? "rotateDown" : "rotateUp"} />
+                    </div>,
                 dataKey: "from",
                 // coumnWidth: 61,
                 coumnWidth: 0.13,
@@ -187,7 +238,11 @@ class Portfolio extends BaseReactComponent {
                 }
             },
             {
-                labelName: "To",
+                labelName:
+                    <div className='cp history-table-header-col' id="to" onClick={() => this.handleTableSort("to")}>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>To</span>
+                        <Image src={sortByIcon} className={this.state.tableSortOpt[2].down ? "rotateDown" : "rotateUp"} />
+                    </div>,
                 dataKey: "to",
                 coumnWidth: 0.13,
                 isCell: true,
@@ -208,7 +263,11 @@ class Portfolio extends BaseReactComponent {
                 }
             },
             {
-                labelName: "Asset",
+                labelName: 
+                <div className='cp history-table-header-col' id="asset" onClick={()=>this.handleTableSort("asset")}>
+                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Asset</span> 
+                    <Image src={sortByIcon} className={this.state.tableSortOpt[3].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "asset",
                 coumnWidth: 0.25,
                 isCell: true,
@@ -224,7 +283,11 @@ class Portfolio extends BaseReactComponent {
                 }
             },
             {
-                labelName: "USD Value",
+                labelName:
+                <div className='cp history-table-header-col' id="usdValue" onClick={()=>this.handleTableSort("usdValue")}>
+                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Value</span>
+                    <Image src={sortByIcon} className={this.state.tableSortOpt[4].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "usdValue",
                 coumnWidth: 0.15,
                 isCell: true,
@@ -232,11 +295,11 @@ class Portfolio extends BaseReactComponent {
 
                     if (dataKey === "usdValue") {
                         let chain = Object.entries(this.props.portfolioState.coinRateList)
-                        let value ;
-                        chain.find((chain)=>{
-                            if(chain[0] === rowData.usdValueToday.id){
-                               value = rowData.usdValueToday.value * chain[1].quote.USD.price
-                               return
+                        let value;
+                        chain.find((chain) => {
+                            if (chain[0] === rowData.usdValueToday.id) {
+                                value = rowData.usdValueToday.value * chain[1].quote.USD.price
+                                return
                             }
                         })
                         // return value?.toFixed(2);
@@ -254,7 +317,11 @@ class Portfolio extends BaseReactComponent {
                 }
             },
             {
-                labelName: "Method",
+                labelName: 
+                <div className='cp history-table-header-col' id="method" onClick={()=>this.handleTableSort("method")}>
+                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Method</span> 
+                    <Image src={sortByIcon} className={this.state.tableSortOpt[5].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "method",
                 coumnWidth: 0.25,
                 isCell: true,
@@ -363,7 +430,7 @@ class Portfolio extends BaseReactComponent {
                         topRight: 6
                     },
                     borderSkipped: false,
-                    barThickness:38
+                    barThickness: 38
                 }
             ]
         }
@@ -487,7 +554,7 @@ class Portfolio extends BaseReactComponent {
         ]
         return (
             <div>
-                {this.state.loader  ? <Loading/> :
+                {this.state.loader ? <Loading /> :
                     <div className="portfolio-page-section" >
                         {/* <Sidebar ownerName="" /> */}
                         <div className='portfolio-container page'>
@@ -534,7 +601,7 @@ class Portfolio extends BaseReactComponent {
                                         <div className='m-r-16 section-table'>
                                             <TransactionTable
                                                 title="Transaction History"
-                                                handleClick={()=>this.props.history.push("/intelligence/transaction-history")}
+                                                handleClick={() => this.props.history.push("/intelligence/transaction-history")}
                                                 subTitle="In the last month"
                                                 tableData={tableData}
                                                 columnList={columnList}

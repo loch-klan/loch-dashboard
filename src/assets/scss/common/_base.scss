@@ -135,7 +135,7 @@ body {
 }
 
 // MARGIN TOP
-.m-t-04{
+.m-t-04 {
   margin-top: 0.4rem;
 }
 
@@ -154,7 +154,8 @@ body {
 .m-t-80 {
   margin-top: 8rem;
 }
-.m-t-60{
+
+.m-t-60 {
   margin-top: 6rem;
 }
 
@@ -196,13 +197,17 @@ body {
   margin-right: 4.2rem;
 }
 
-.m-r-4{
+.m-r-4 {
   margin-right: 0.4rem;
 }
 
 // MARGIN BOTTOM
 .m-b-4 {
   margin-bottom: 0.4rem;
+}
+
+.m-b-0 {
+  margin-bottom: 0rem;
 }
 
 .m-b-5 {
@@ -248,15 +253,19 @@ body {
 .m-b-28 {
   margin-bottom: 2.8rem;
 }
-.m-b-30{
+
+.m-b-30 {
   margin-bottom: 3rem;
 }
+
 .m-b-32 {
   margin-bottom: 3.2rem;
 }
-.m-b-80{
+
+.m-b-80 {
   margin-bottom: 8rem;
 }
+
 .m-b-36 {
   margin-bottom: 3.6rem;
 }
@@ -276,9 +285,11 @@ body {
 .m-b-52 {
   margin-bottom: 5.2rem;
 }
-.m-b-60{
+
+.m-b-60 {
   margin-bottom: 6rem;
 }
+
 .m-b-63 {
   margin-bottom: 6.3rem;
 }
@@ -352,9 +363,11 @@ body {
 .black-404 {
   color: $black-404;
 }
-.black-000{
-  color:$black-000;
+
+.black-000 {
+  color: $black-000;
 }
+
 .black-262 {
   color: $black-262;
 }
@@ -478,6 +491,7 @@ body {
     .Toastify__toast-body {
       .Toastify__toast-icon {
         background-image: url(../../images/icons/alert-icon.svg);
+
         svg {
           display: none;
         }
@@ -486,7 +500,7 @@ body {
   }
 }
 
-.blur-effect{
+.blur-effect {
   filter: blur(6px);
   user-select: none;
 }
@@ -564,32 +578,39 @@ form {
         box-shadow: none;
       }
     }
-    .css-4ljt47-MenuList{
+
+    .css-4ljt47-MenuList {
       padding: 0rem;
     }
-    .css-26l3qy-menu{
-      margin:0.3rem 0rem 0rem 0rem;
+
+    .css-26l3qy-menu {
+      margin: 0.3rem 0rem 0rem 0rem;
       box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
-      border:0.1rem solid $grey-CAC;
-  }
+      border: 0.1rem solid $grey-CAC;
+    }
+
     .custom-select__menu {
       // padding: 0.4rem;
-      border-radius:0.4rem;
-      padding:0.4rem;
+      border-radius: 0.4rem;
+      padding: 0.4rem;
+
       .custom-select__menu-list {
+
         // padding: 1rem;
         // padding: 0.4rem;
         .custom-select__option {
           @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6);
           padding: 0.8rem;
-          border-radius : 0.2rem;
+          border-radius: 0.2rem;
+
           &.custom-select__option--is-focused,
           &.custom-select__option--is-selected {
             background-color: $drop-button-hover;
 
           }
         }
-        .css-yt9ioa-option:active{
+
+        .css-yt9ioa-option:active {
           background-color: $drop-button-hover;
         }
       }
@@ -643,7 +664,8 @@ form {
 
       .custom-select__value-container {
         // padding: 0.2rem 2rem;
-        padding-left:0.9rem;
+        padding-left: 0.9rem;
+
         .custom-select__single-value {
           @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6);
           color: $grey-313;
@@ -778,9 +800,11 @@ form {
     align-items: center;
   }
 }
-.modal-dialog{
+
+.modal-dialog {
   justify-content: center;
 }
+
 // DROPDOWN
 
 .options-icon {
@@ -815,8 +839,8 @@ form {
     width: 24rem;
     // box-shadow: 0 -4px 21px 0 rgba(0, 0, 0, 0.12);
     border-radius: 0.4rem;
-        border: 0.1rem solid $grey-CAC;
-        box-shadow: 0rem 0.4rem 1rem rgba(0, 0 ,0 ,0.04), 0rem 0.1rem 0.1rem rgba(0 ,0, 0 ,0.04);
+    border: 0.1rem solid $grey-CAC;
+    box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
     // border: 0;
 
     .dropdown-item {
@@ -911,7 +935,8 @@ form {
       margin: 1rem 0;
     }
   }
-  .not-found-wrapper{
+
+  .not-found-wrapper {
     text-align: center;
     padding: 10rem;
   }
@@ -1182,17 +1207,18 @@ form {
 // START FROM HERE
 .tool-tip-container {
 
-
-
   .tooltip-inner {
     background-color: $secondary;
     max-width: 39.2rem;
     border: 0.1rem solid $grey-E5E;
-    border-radius: 8px;
+    border-radius: 0.8rem;
     opacity: 1;
+    max-height: 15rem;
+    overflow-y: auto;
+    // padding: 0rem;
 
     ul {
-      padding: inherit;
+      // padding: inherit;
       width: auto;
       margin-left: -0.1rem;
       display: flex;
@@ -1247,6 +1273,20 @@ form {
         margin-right: 0.8rem;
       }
     }
+
+    &::-webkit-scrollbar {
+      width: 0.4rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0.8rem;
+      background-color: #E5E5E6;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+      border-radius: 0.8rem;
+    }
   }
 
   &.hover-chip {
@@ -1264,9 +1304,10 @@ form {
       // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
     }
   }
-  &.wallet-tooltip{
-    .tooltip-inner{
-      padding:0.8rem 1.2rem;
+
+  &.wallet-tooltip {
+    .tooltip-inner {
+      padding: 0.8rem 1.2rem;
       // box-shadow: none;
       // box-shadow: 0rem 0.2rem 0.5rem rgba(0, 0, 0, 0.15), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.15);
       border-radius: 0.8rem;
@@ -1333,6 +1374,7 @@ form {
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
+
   .badge {
     padding: 0.35rem 0.8rem 0.4rem;
   }
@@ -1382,6 +1424,7 @@ form {
   cursor: default;
   width: max-content;
   height: 2.6rem;
+
   img {
     width: 2.6rem;
     height: 2.6rem;
@@ -1398,7 +1441,8 @@ form {
 .transaction-table-section {
   .graph-header {
     padding: 3.6rem 0rem 0rem 3.2rem;
-    p{
+
+    p {
       margin-bottom: 0.3rem;
     }
   }
@@ -1422,12 +1466,25 @@ form {
         line-height: 1.6rem;
         color: $grey-4F4;
         margin: 0rem;
+
+        .history-table-header-col {
+          display: flex;
+          
+          .rotateUp {
+            transform: rotate(180deg)
+          }
+
+          .rotateDown {
+            transform: rotate(0deg);
+          }
+        }
       }
     }
   }
 
   .ReactVirtualized__Table__Grid {
     border-radius: 1.2rem;
+
     // padding-left: 2.5rem;
     .ReactVirtualized__Grid__innerScrollContainer {
       .ReactVirtualized__Table__row {
@@ -1440,14 +1497,16 @@ form {
           text-align: center;
           margin: 0rem;
           padding: 0 1rem;
-          .ellipsis-div{
+
+          .ellipsis-div {
             overflow: hidden;
             text-overflow: ellipsis;
           }
+
           .history-table-icon {
             width: 2.4rem;
             height: 2.4rem;
-            border-radius:0.8rem;
+            border-radius: 0.8rem;
             box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
           }
 
@@ -1487,14 +1546,17 @@ form {
           .mint {
             background-color: $green-DEF;
           }
-          .coin-chip{
+
+          .coin-chip {
             margin: 0 auto;
             border: 0;
             background-color: transparent;
-            img{
+
+            img {
               border: 0 !important;
             }
           }
+
           .cost-common {
             background: rgba(229, 229, 230, 0.5);
             border-radius: 0.4rem;
@@ -1508,11 +1570,13 @@ form {
             padding: 0.8rem;
             display: flex;
             width: max-content;
-            margin: 0 auto ;
+            margin: 0 auto;
+
             img {
               margin-right: 0.8rem;
             }
           }
+
           .gain {
             background: rgba(208, 252, 234, 0.5);
           }
@@ -1528,7 +1592,7 @@ form {
 
 
 // loading animation on API call
-.loading-animation{
+.loading-animation {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1536,7 +1600,7 @@ form {
 }
 
 // slick slider positioning in loading animation
-.slick-text{
+.slick-text {
   display: flex;
   max-height: 2rem;
   overflow: hidden;
@@ -1546,16 +1610,20 @@ form {
   color: #55575a;
   background: blur(3px);
   align-items: center;
-  .slick-slider{
+
+  .slick-slider {
     padding-left: 2px;
-    .h3{
-      width:fit-content;
+
+    .h3 {
+      width: fit-content;
     }
-    .slick-list{
+
+    .slick-list {
       height: 2.1rem;
       width: 13.7rem;
       font-size: 1rem;
-      h3{
+
+      h3 {
         font-size: 1.6rem;
       }
     }
@@ -1567,4 +1635,3 @@ form {
 //       // background-color: $secondary;
 //   }
 // }
-

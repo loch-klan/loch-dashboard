@@ -14,6 +14,7 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import moment from "moment"
 import { SelectControl, FormElement, Form, CustomTextControl } from '../../utils/form';
 import unrecognizedIcon from '../../image/unrecognized.svg'
+import sortByIcon from '../../assets/images/icons/TriangleDown.svg' 
 
 class TransactionHistoryPage extends BaseReactComponent {
     constructor(props) {
@@ -44,6 +45,44 @@ class TransactionHistoryPage extends BaseReactComponent {
             delayTimer: 0,
             condition: cond ? cond : [],
             isLoading:true,
+            tableSortOpt: [
+                {
+                    title:"time",
+                    down:true,
+                },
+                {
+                    title:"from",
+                    down:true,
+                },
+                {
+                    title:"to",
+                    down:true
+                },
+                {
+                    title:"asset",
+                    down:true
+                },
+                {
+                    title:"amount",
+                    down:true
+                },
+                {
+                    title:"usdThen",
+                    down:true
+                },
+                {
+                    title:"usdToday",
+                    down:true
+                },
+                {
+                    title:"usdTransaction",
+                    down:true
+                },
+                {
+                    title:"method",
+                    down:true
+                }
+            ]
         }
         this.delayTimer = 0
     }
@@ -150,7 +189,60 @@ class TransactionHistoryPage extends BaseReactComponent {
             // this.callApi(this.state.currentPage || START_INDEX, condition)
         }, 1000);
     };
+    handleTableSort = (val) =>{
+        console.log(val)
+        let sort = [...this.state.tableSortOpt]
+        sort.map((el)=>{
+        if(el.title === val){
+            el.down = !el.down
+        }
+        else{
+            el.down = true
+        }
+        })
+        // let obj = {...this.state.tableSortOpt }
+        // if(val === "time"){
+        //     obj.time = !this.state.tableSortOpt.time
 
+        // }
+        // else if(val === "from")
+        // {
+        //     obj.from = !this.state.tableSortOpt.from
+        // }
+        // else if(val === "to")
+        // {
+        //     obj.to = !this.state.tableSortOpt.to
+        // }
+        // else if(val === "asset")
+        // {
+        //     obj.asset = !this.state.tableSortOpt.asset
+        // }
+        // else if(val === "amount")
+        // {
+        //     obj.amount = !this.state.tableSortOpt.amount
+        // }
+        // else if(val === "usdThen")
+        // {
+        //     obj.usdThen = !this.state.tableSortOpt.usdThen
+        // }
+        // else if(val === "usdToday")
+        // {
+        //     obj.usdToday = !this.state.tableSortOpt.usdToday
+        // }
+        // else if(val === "usdTransaction")
+        // {
+        //     obj.usdTransaction = !this.state.tableSortOpt.usdTransaction
+        // }
+        // else if(val === "method")
+        // {
+        //     obj.method = !this.state.tableSortOpt.method
+        // }
+        
+        // console.log(obj)
+        this.setState({
+            tableSortOpt:sort   
+        })
+    }
     render() {
         const { table, totalPage, totalCount, currentPage } = this.props.intelligenceState;
         let tableData = table && table.map((row) => {
@@ -196,7 +288,11 @@ class TransactionHistoryPage extends BaseReactComponent {
 
         const columnList = [
             {
-                labelName: "Time",
+                labelName:
+                 <div className='cp history-table-header-col' id="time" onClick={()=>this.handleTableSort("time")}>
+                    <span>Time</span> 
+                    <Image src={sortByIcon} className={this.state.tableSortOpt[0].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "time",
                 // coumnWidth: 90,
                 coumnWidth: 0.12,
@@ -209,7 +305,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
             },
             {
-                labelName: "From",
+                labelName: 
+                <div className='cp history-table-header-col' id="from" onClick={()=>this.handleTableSort("from")}>
+                    <span>From</span>
+                     <Image src={sortByIcon} className={this.state.tableSortOpt[1].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "from",
                 // coumnWidth: 90,
                 coumnWidth: 0.15,
@@ -231,7 +331,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
             },
             {
-                labelName: "To",
+                labelName: 
+                <div className='cp history-table-header-col' id="to" onClick={()=>this.handleTableSort("to")}>
+                    <span>To</span> 
+                    <Image src={sortByIcon} className={this.state.tableSortOpt[2].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "to",
                 // coumnWidth: 90,
                 coumnWidth: 0.15,
@@ -253,7 +357,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
             },
             {
-                labelName: "Asset",
+                labelName: 
+                <div className='cp history-table-header-col' id="asset" onClick={()=>this.handleTableSort("asset")}>
+                    <span>Asset</span> 
+                    <Image src={sortByIcon} className={this.state.tableSortOpt[3].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "asset",
                 // coumnWidth: 130,
                 coumnWidth: 0.2,
@@ -271,7 +379,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
             },
             {
-                labelName: "Amount",
+                labelName: 
+                <div className='cp history-table-header-col' id="amount" onClick={()=>this.handleTableSort("amount")}>
+                    <span>Amount</span>
+                    <Image src={sortByIcon} className={this.state.tableSortOpt[4].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "amount",
                 // coumnWidth: 100,
                 coumnWidth: 0.15,
@@ -280,12 +392,25 @@ class TransactionHistoryPage extends BaseReactComponent {
                     if (dataKey === "amount") {
 
                         // console.log(value)
-                        return rowData.amount.value?.toFixed(2)
+                        // return rowData.amount.value?.toFixed(2)
+                        return (<CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={rowData.amount.value}
+                        >
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{rowData.amount.value}</div>
+                        </CustomOverlay>)
                     }
                 }
             },
             {
-                labelName: "USD Value Then",
+                labelName:
+                 <div className='cp history-table-header-col' id="usdValueThen" onClick={()=>this.handleTableSort("usdThen")}>
+                    <span>USD Value Then</span> 
+                    <Image src={sortByIcon}className={this.state.tableSortOpt[5].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "usdValueThen",
                 // coumnWidth: 100,
                 className: "usd-value",
@@ -315,7 +440,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
             },
             {
-                labelName: "USD Value today",
+                labelName: 
+                <div className='cp history-table-header-col' id="usdValueToday" onClick={()=>this.handleTableSort("usdToday")}>
+                    <span>USD Value Today</span>
+                     <Image src={sortByIcon} className={this.state.tableSortOpt[6].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "usdValueToday",
                 // coumnWidth: 100,
                 className: "usd-value",
@@ -347,7 +476,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
             },
             {
-                labelName: "USD Transaction Fee",
+                labelName:
+                <div className='cp history-table-header-col' id="usdTransactionFee" onClick={()=>this.handleTableSort("usdTransaction")}>
+                    <span>USD Transaction Fee</span>
+                     <Image src={sortByIcon} className={this.state.tableSortOpt[7].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "usdTransactionFee",
                 // coumnWidth: 100,
                 className: "usd-value",
@@ -380,7 +513,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
             },
             {
-                labelName: "Method",
+                labelName: 
+                <div className='cp history-table-header-col' id="method" onClick={()=>this.handleTableSort("method")}>
+                    <span>Method</span> 
+                    <Image src={sortByIcon} className={this.state.tableSortOpt[8].down ? "rotateDown" :"rotateUp"}/>
+                </div>,
                 dataKey: "method",
                 // coumnWidth: 100,
                 coumnWidth: 0.2,
