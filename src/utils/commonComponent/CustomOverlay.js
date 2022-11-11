@@ -1,5 +1,6 @@
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { Image, Tooltip } from "react-bootstrap";
+import { lightenDarkenColor } from '../ReusableFunctions';
 
 
 
@@ -20,7 +21,7 @@ function CustomOverlay({ text, position, isIcon, children, IconImage, isInfo = n
                       text.map((e, i) =>
                         i !== 0 ?
                             <li key={i}>
-                                <Image src={e.coinSymbol} /><span className='inter-display-medium f-s-13 grey-313 lh-16'>{e.coinName}</span>
+                                <Image src={e.coinSymbol} style={{border: `1px solid ${lightenDarkenColor(e.coinColor,-0.15)} `}} /><span className='inter-display-medium f-s-13 grey-313 lh-16'>{e.coinName}</span>
                             </li>
                             : null
                     )}

@@ -49,6 +49,7 @@ export const detectCoin = (wallet,ctx=null) => {
                             coinName: wallet.coinName,
                             address: wallet.address,
                             chain_detected: res.data.data.chain_detected,
+                            coinColor: wallet.coinColor
                         }
                     });
                     if(ctx){

@@ -1,10 +1,12 @@
 import React from 'react'
 import { Modal, Image, Button } from 'react-bootstrap'
-import closeIcon from '../../assets/images/icons/close-icon.svg'
+// import closeIcon from '../../assets/images/icons/close-icon.svg'
+import closeIcon from '../../assets/images/icons/dummyX.svg'
 import { connect } from 'react-redux';
 import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
 import unrecognizedIcon from '../../image/unrecognized.svg';
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
+import { lightenDarkenColor } from '../../utils/ReusableFunctions';
 class EditWalletModal extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -50,7 +52,7 @@ class EditWalletModal extends BaseReactComponent {
         const chips = this.state.coinchips.map((e, index) => {
             return (
                 <div className='chipcontainer' key={index}>
-                    <Image src={e.chain.symbol} />
+                    <Image src={e.chain.symbol} style={{border: `1px solid ${lightenDarkenColor(e.chain.color,-0.15)} `}} />
                     <div className='inter-display-medium f-s-13 lh-16' >{e.chain.name}</div>
                 </div>
             )

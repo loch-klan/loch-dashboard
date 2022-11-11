@@ -19,7 +19,7 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, START_INDEX } from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, START_INDEX, SORT_BY_TIMESTAMP } from '../../utils/Constant'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
 class Portfolio extends BaseReactComponent {
@@ -34,7 +34,7 @@ class Portfolio extends BaseReactComponent {
             fixModal: false,
             addModal: false,
             isLoading:true,
-            sort: [],
+            sort: [{key: SORT_BY_TIMESTAMP, value: false}],
             limit: 6,
         }
     }
@@ -239,7 +239,17 @@ class Portfolio extends BaseReactComponent {
                                return
                             }
                         })
-                        return value?.toFixed(2);
+                        // return value?.toFixed(2);
+                        // return value
+                        return (<CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={value}
+                        >
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value}</div>
+                        </CustomOverlay>)
                     }
                 }
             },
@@ -534,7 +544,7 @@ class Portfolio extends BaseReactComponent {
                                         </div>
                                     </Col>
                                     <Col md={6}>
-                                        <div className='section-chart'>
+                                        <div className='section-chart blur-effect'>
                                             <BarGraphSection
                                                 headerTitle="Volume Traded by Counterparty"
                                                 headerSubTitle="In the last month"
@@ -549,8 +559,8 @@ class Portfolio extends BaseReactComponent {
                                     </Col>
                                 </Row>
                             </div>
-                            <div className='m-b-40 portfolio-cost-table-section '>
-                                <div className='portfolio-cost-table'>
+                            <div className='m-b-40 portfolio-cost-table-section'>
+                                <div className='portfolio-cost-table blur-effect'>
                                     <TransactionTable
                                         title="Average Cost Basis"
                                         subTitle="Understand your average entry price"

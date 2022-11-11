@@ -486,6 +486,10 @@ body {
   }
 }
 
+.blur-effect{
+  filter: blur(6px);
+  user-select: none;
+}
 
 
 // UPLOADED IMAGE STYLE
@@ -1181,7 +1185,7 @@ form {
 
 
   .tooltip-inner {
-    background-color: $secondary ;
+    background-color: $secondary;
     max-width: 39.2rem;
     border: 0.1rem solid $grey-E5E;
     border-radius: 8px;
@@ -1224,6 +1228,9 @@ form {
           position: relative;
           left: -1px;
           width: 2.4rem;
+          height: 2.4rem;
+          border-top-left-radius: 0.4rem;
+          border-bottom-left-radius: 0.4rem;
           margin-right: 0rem;
           margin-top: 0rem;
         }
@@ -1244,8 +1251,8 @@ form {
 
   &.hover-chip {
     .tooltip-inner {
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
-      border: 0;
+      // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
+      // border: 0;
       border-radius: 4px;
     }
   }
@@ -1253,15 +1260,15 @@ form {
   &.question-hover {
     .tooltip-inner {
       padding: 1.2rem 1.6rem;
-      border: 0;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
+      // border: 0;
+      // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
     }
   }
   &.wallet-tooltip{
     .tooltip-inner{
       padding:0.8rem 1.2rem;
       // box-shadow: none;
-      box-shadow: 0rem 0.2rem 0.5rem rgba(0, 0, 0, 0.15), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.15);
+      // box-shadow: 0rem 0.2rem 0.5rem rgba(0, 0, 0, 0.15), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.15);
       border-radius: 0.8rem;
       // border: 0.1rem solid $grey-E5E;
     }
@@ -1272,7 +1279,7 @@ form {
   }
 
   .arrow::before {
-    border-top-color: $secondary;
+    border-top-color: $grey-E5E;
     position: relative;
     top: -2px;
   }
@@ -1319,14 +1326,13 @@ form {
   cursor: default;
   // position: absolute;
   // top: 0.7rem;
-  // height: 2.5rem;
+  height: 2.6rem;
   background: rgba(229, 229, 230, 0.5);
   border: 0.1rem solid $grey-CAC;
   border-radius: 0.6rem;
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
-
   .badge {
     padding: 0.35rem 0.8rem 0.4rem;
   }
@@ -1338,6 +1344,8 @@ form {
     border-top-left-radius: 0.55rem;
     border-bottom-left-radius: 0.55rem;
     // margin-top: -0.1rem;
+    left: -1px;
+    position: relative;
   }
 }
 
@@ -1373,7 +1381,7 @@ form {
   background-color: rgba(229, 229, 230, 0.5);
   cursor: default;
   width: max-content;
-
+  height: 2.6rem;
   img {
     width: 2.6rem;
     height: 2.6rem;
@@ -1431,7 +1439,11 @@ form {
           color: $grey-313;
           text-align: center;
           margin: 0rem;
-
+          padding: 0 1rem;
+          .ellipsis-div{
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
           .history-table-icon {
             width: 2.4rem;
             height: 2.4rem;
@@ -1477,6 +1489,11 @@ form {
           }
           .coin-chip{
             margin: 0 auto;
+            border: 0;
+            background-color: transparent;
+            img{
+              border: 0 !important;
+            }
           }
           .cost-common {
             background: rgba(229, 229, 230, 0.5);
