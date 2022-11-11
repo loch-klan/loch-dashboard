@@ -3,6 +3,7 @@ import { postLoginInstance, preLoginInstance } from "../../utils";
 import { COINS_LIST, WALLET_LIST,UPDATE_LIST } from "./ActionTypes";
 import addWallet from "./addWallet";
 import { dispatch } from 'react-redux';
+import { WalletAddressTextbox } from "../../utils/AnalyticsFunctions.js";
 export const getAllCoins = () => {
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
@@ -31,6 +32,14 @@ export const detectCoin = (wallet,ctx=null) => {
             .then((res) => {
                 // && res.data.data.chain_detected
                 if (!res.error && res.data) {
+                    if (res.data.data.chain_detected) {
+                         WalletAddressTextbox({
+                           session_id: "none",
+                           address: wallet.address,
+                           chains_detected: wallet.coinName,
+                         });
+                    }
+                   
                     dispatch({
                         type: WALLET_LIST,
                         payload: {
@@ -71,7 +80,8 @@ export const signIn = (ctx,data)=>{
             );
             // toast.error(res.data.message || "Something went Wrong")
         }
-        else if(res.data.error === false){
+        else if (res.data.error === false) {
+            
             ctx.setState({
                 isVerificationRequired:true,
                 text:""
