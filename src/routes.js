@@ -9,6 +9,7 @@ import Intelligence from "./app/intelligence/Intelligence"
 import Wallet from "./app/wallet/Wallet"
 import Cost  from "./app/cost/Cost"
 import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage"
+import VerifyEmail from "./app/common/VerifyEmail"
 const routes = [
   {
     path: "/",
@@ -57,6 +58,12 @@ const routes = [
     name: "Costs",
     type: PrivateRoute,
     component: Cost
+  },
+  {
+    path: "/verify-email",
+    name: "Verify Email",
+    type: Route,
+    component: VerifyEmail
   },
   {
     path: "/sandbox",
