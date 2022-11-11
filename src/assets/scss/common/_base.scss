@@ -1213,8 +1213,8 @@ form {
     border: 0.1rem solid $grey-E5E;
     border-radius: 0.8rem;
     opacity: 1;
-    max-height: 15rem;
-    overflow-y: auto;
+    // max-height: 15rem;
+    // overflow-y: auto;
     // padding: 0rem;
 
     ul {
@@ -1469,7 +1469,7 @@ form {
 
         .history-table-header-col {
           display: flex;
-          
+
           .rotateUp {
             transform: rotate(180deg)
           }
