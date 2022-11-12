@@ -241,7 +241,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         }]
                 }
                 else if (val === "usdToday") {
-                    obj =[ 
+                    obj =[
                         {
                             key: SORT_BY_USD_VALUE_THEN,
                             value: !el.up,
@@ -273,7 +273,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         if(check){
             // when any sort option is true then sort the table with that option key
             // console.log("Check true")
-            arr = obj 
+            arr = obj
         }
         else {
             // when all sort are false then sort by time in descending order
@@ -289,7 +289,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             sort: arr,
             tableSortOpt: sort
         });
-       
+
     }
     render() {
         const { table, totalPage, totalCount, currentPage } = this.props.intelligenceState;
@@ -330,7 +330,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                     value: row.transaction_fee,
                     id: row.asset.id,
                 },
-                method: row.transaction_type
+                // method: row.transaction_type
+                method: row.method
             }
         })
 
@@ -343,12 +344,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </div>,
                 dataKey: "time",
                 // coumnWidth: 90,
-                coumnWidth: 0.12,
+                coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
 
-                        return moment(rowData.time).format('DD/MM')
+                        return moment(rowData.time).format('DD/MM/YYYY')
                     }
                 }
             },
@@ -573,24 +574,26 @@ class TransactionHistoryPage extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "method") {
                         return (
-                            <div
-                                className={
-                                    `inter-display-medium f-s-13 lh-16 black-191 history-table-method
-                                    ${rowData.method === Method.BURN ? "burn"
-                                        :
-                                        rowData.method === Method.TRANSFER ? "transfer"
-                                            :
-                                            rowData.method === Method.MINT ? "mint"
-                                                :
-                                                rowData.method === Method.COMMIT ? "commit"
-                                                    :
-                                                    ""
-                                    }`
-                                }
-                            >
-                                {
+                            // <div
+                            //     className={
+                            //         `inter-display-medium f-s-13 lh-16 black-191 history-table-method
+                            //         ${rowData.method === Method.BURN ? "burn"
+                            //             :
+                            //             rowData.method === Method.TRANSFER ? "transfer"
+                            //                 :
+                            //                 rowData.method === Method.MINT ? "mint"
+                            //                     :
+                            //                     rowData.method === Method.COMMIT ? "commit"
+                            //                         :
+                            //                         ""
+                            //         }`
+                            //     }
+                            // >
+                            <div className='inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer' >
+                              {rowData.method}
+                                {/* {
                                     Method.getText(rowData.method)
-                                }
+                                } */}
                             </div>
                         )
                     }

@@ -206,11 +206,19 @@
                       color: $pink-DA2;
                       padding: 1.6rem 2.8rem;
                       box-shadow: none;
+                      &:hover{
+                        background-color: $pink-DA2;
+                        color: $secondary;
+                      }
                   }
 
                   .primary-btn {
                       padding: 1.6rem 2.8rem;
                       line-height: 1.9rem;
+                      &:hover{
+                        color: $black-191;
+                        background-color: $secondary;
+                      }
                   }
               }
             // }

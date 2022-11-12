@@ -20,9 +20,10 @@ import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
 import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD} from '../../utils/Constant'
-import sortByIcon from '../../assets/images/icons/TriangleDown.svg' 
+import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
+import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.png'
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -142,7 +143,7 @@ class Portfolio extends BaseReactComponent {
             }
         }
         else if(prevState.sort !== this.state.sort)
-        {   
+        {
             // console.log("Calling")
             this.getTableData()
         }
@@ -183,7 +184,7 @@ class Portfolio extends BaseReactComponent {
                         }]
                 }
                 else if (val === "usdValue") {
-                    obj =[ 
+                    obj =[
                         {
                             key: SORT_BY_USD_VALUE_THEN,
                             value: !el.up,
@@ -209,7 +210,7 @@ class Portfolio extends BaseReactComponent {
         if(check){
             // when any sort option is true then sort the table with that option key
             // console.log("Check true")
-            arr = obj 
+            arr = obj
         }
         else {
             // when all sort are false then sort by time in descending order
@@ -330,9 +331,9 @@ class Portfolio extends BaseReactComponent {
                 }
             },
             {
-                labelName: 
+                labelName:
                 <div className='cp history-table-header-col' id="asset" onClick={()=>this.handleTableSort("asset")}>
-                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Asset</span> 
+                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Asset</span>
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[3].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
                 dataKey: "asset",
@@ -384,9 +385,9 @@ class Portfolio extends BaseReactComponent {
                 }
             },
             {
-                labelName: 
+                labelName:
                 <div className='cp history-table-header-col' id="method" onClick={()=>this.handleTableSort("method")}>
-                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Method</span> 
+                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Method</span>
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[5].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
                 dataKey: "method",
@@ -678,8 +679,12 @@ class Portfolio extends BaseReactComponent {
                                         </div>
                                     </Col>
                                     <Col md={6}>
-                                        <div className='section-chart blur-effect'>
-                                            <BarGraphSection
+                                        <div className='section-chart'>
+                                          <div className='coming-soon-div'>
+                                          <Image src={ExportIconWhite} className="coming-soon-img" />
+                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
+                                          </div>
+                                            <span className='blur-effect'> <BarGraphSection
                                                 headerTitle="Volume Traded by Counterparty"
                                                 headerSubTitle="In the last month"
                                                 isArrow={true}
@@ -689,11 +694,16 @@ class Portfolio extends BaseReactComponent {
                                             // width="100%"
                                             // height="100%"
                                             />
+                                            </span>
                                         </div>
                                     </Col>
                                 </Row>
                             </div>
                             <div className='m-b-40 portfolio-cost-table-section'>
+                            <div className='coming-soon-div'>
+                                          <Image src={ExportIconWhite} className="coming-soon-img" />
+                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
+                                          </div>
                                 <div className='portfolio-cost-table blur-effect'>
                                     <TransactionTable
                                         title="Average Cost Basis"
