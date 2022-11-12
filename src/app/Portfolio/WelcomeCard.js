@@ -6,6 +6,7 @@ import CustomLoader from "../common/CustomLoader";
 import { numToCurrency } from '../../utils/ReusableFunctions';
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import { amountFormat } from '../../utils/ReusableFunctions';
+
 export default function WelcomeCard(props) {
     // console.log(props)
     return (

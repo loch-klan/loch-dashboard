@@ -22,6 +22,13 @@ import { searchTransactionApi } from '../intelligence/Api.js'
 import { SEARCH_BY_WALLET_ADDRESS_IN ,Method, START_INDEX, SORT_BY_TIMESTAMP } from '../../utils/Constant'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
+import {
+  ManageWallets,
+  TransactionHistoryEView,
+} from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser } from "../../utils/ManageToken";
+
+
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -119,6 +126,7 @@ class Portfolio extends BaseReactComponent {
 
 
     render() {
+        // console.log("email",getCurrentUser().email, "ID", getCurrentUser().id);
       const {table} = this.props.intelligenceState;
         let tableData = table && table.map((row) => {
             return {
@@ -499,7 +507,10 @@ class Portfolio extends BaseReactComponent {
                                     handleAddModal={this.handleAddModal}
                                     isLoading={this.state.isLoading}
                                     walletTotal={this.props.portfolioState.walletTotal}
-                                    handleManage={() => this.props.history.push('/wallets')}
+                                    handleManage={() => {
+                                        this.props.history.push('/wallets');
+                                        ManageWallets({session_id: getCurrentUser().id, email_address: getCurrentUser().email})
+                                    }}
                                 />
                             </div>
                             <div className='portfolio-section '>
@@ -534,7 +545,10 @@ class Portfolio extends BaseReactComponent {
                                         <div className='m-r-16 section-table'>
                                             <TransactionTable
                                                 title="Transaction History"
-                                                handleClick={()=>this.props.history.push("/intelligence/transaction-history")}
+                                                handleClick={() => {
+                                                    this.props.history.push("/intelligence/transaction-history");
+                                                    TransactionHistoryEView({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
+                                                }}
                                                 subTitle="In the last month"
                                                 tableData={tableData}
                                                 columnList={columnList}

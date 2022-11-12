@@ -10,6 +10,8 @@ export const sendAmplitudeData = (eventType, eventProperties) => {
   amplitude.getInstance().logEvent(eventType, eventProperties);
 };
 
+
+
 //use this to call function
 //  <button onClick={() => { test({ name: "abdul", email: "test@gmail.com", organisation: "Organisation name" }); }}> Button Name </button>
 
@@ -56,9 +58,9 @@ export const LPC_Go = ({
 
 //3. Landing Page Conversion:privacy message
 export const PrivacyMessage = ({ session_id }) => {
-  const event_name = "Landing Page Conversion:privacy message";
+  const event_name = "Landing Page Conversion:privacy_message";
   const eventProperties = {
-    "session id": session_id,
+  
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Landing Page Conversion:privacy message");
