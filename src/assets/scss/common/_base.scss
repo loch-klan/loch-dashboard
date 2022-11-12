@@ -586,16 +586,19 @@ form {
     .css-26l3qy-menu {
       margin: 0.3rem 0rem 0rem 0rem;
       box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
-      border: 0.1rem solid $grey-CAC;
+      // border: 0.1rem solid $grey-CAC;
     }
 
     .custom-select__menu {
       // padding: 0.4rem;
-      border-radius: 0.4rem;
-      padding: 0.4rem;
+      // border-radius: 0.4rem;
+      // padding: 0.4rem;
 
       .custom-select__menu-list {
-
+        border-radius: 0.4rem;
+      padding: 0.4rem;
+      border: 0.1rem solid $grey-CAC;
+      height: 20rem;
         // padding: 1rem;
         // padding: 0.4rem;
         .custom-select__option {
@@ -612,6 +615,23 @@ form {
 
         .css-yt9ioa-option:active {
           background-color: $drop-button-hover;
+        }
+
+        &::-webkit-scrollbar{
+          width: 0.4rem;
+        }
+        
+        &::-webkit-scrollbar-thumb{
+          // border-radius: 2rem;
+          border-radius: 0.8rem;
+          background-color: $scrollBar-thumb;
+          // background: rgb(90, 90, 90);
+        }
+        &::-webkit-scrollbar-track {
+          // background: rgba(0, 0, 0, 0.2);
+          background-color: transparent;
+        
+          border-radius: 0.8rem;
         }
       }
     }
