@@ -240,13 +240,13 @@ class TransactionHistoryPage extends BaseReactComponent {
                             value: !el.up,
                         }]
                 }
-                else if (val === "usdToday") {
-                    obj =[
-                        {
-                            key: SORT_BY_USD_VALUE_THEN,
-                            value: !el.up,
-                        }]
-                }
+                // else if (val === "usdToday") {
+                //     obj =[
+                //         {
+                //             key: SORT_BY_USD_VALUE_THEN,
+                //             value: !el.up,
+                //         }]
+                // }
                 else if (val === "usdTransaction") {
                     obj = [{
                             key: SORT_BY_TRANSACTION_FEE,
@@ -489,11 +489,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
             },
             {
-                labelName:
-                    <div className='cp history-table-header-col' id="usdValueToday" onClick={() => this.handleTableSort("usdToday")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Value Today</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[6].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
+                labelName: "USD Value Today",
+                    // <div className='cp history-table-header-col' id="usdValueToday" onClick={() => this.handleTableSort("usdToday")}>
+                    //     <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Value Today</span>
+                    //     <Image src={sortByIcon} className={!this.state.tableSortOpt[6].up ? "rotateDown" : "rotateUp"} />
+                    // </div>,
                 dataKey: "usdValueToday",
                 // coumnWidth: 100,
                 className: "usd-value",
