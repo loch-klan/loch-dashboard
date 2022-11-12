@@ -267,26 +267,26 @@ class TransactionHistoryPage extends BaseReactComponent {
             }
         })
 
-        let check = sort.some(e => e.up === true)
-        let arr = []
+        // let check = sort.some(e => e.up === true)
+        // let arr = []
 
-        if(check){
-            // when any sort option is true then sort the table with that option key
-            // console.log("Check true")
-            arr = obj
-        }
-        else {
-            // when all sort are false then sort by time in descending order
-            // arr.slice(1,1)
-            // console.log("Check False ")
-            arr = [{
-                key: SORT_BY_TIMESTAMP,
-                value: false,
-            }]
-        }
+        // if(check){
+        //     // when any sort option is true then sort the table with that option key
+        //     // console.log("Check true")
+        //     arr = obj
+        // }
+        // else {
+        //     // when all sort are false then sort by time in descending order
+        //     // arr.slice(1,1)
+        //     // console.log("Check False ")
+        //     arr = [{
+        //         key: SORT_BY_TIMESTAMP,
+        //         value: false,
+        //     }]
+        // }
 
         this.setState({
-            sort: arr,
+            sort: obj,
             tableSortOpt: sort
         });
 
