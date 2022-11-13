@@ -459,6 +459,17 @@ export const IntelligenceMenu = ({ session_id, email_address }) => {
   console.log("Menu:intelligence menu");
 };
 
+//Menu:Home menu
+export const HomeMenu = ({ session_id, email_address }) => {
+  const event_name = "Menu:Home menu";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Menu:Home menu");
+};
+
 //31. Menu:wallets menu
 export const WalletsMenu = ({ session_id, email_address }) => {
   const event_name = "Menu:wallets menu";
