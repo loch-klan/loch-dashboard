@@ -88,7 +88,8 @@ class FixAddModal extends BaseReactComponent {
             chain_detected: data.chain_detected,
             coinCode: data.coinCode,
             coinName: data.coinName,
-            coinSymbol: data.coinSymbol
+            coinSymbol: data.coinSymbol,
+            coinColor: data.coinColor,
         }
         let i = this.state.addWalletList.findIndex(obj => obj.id === data.id)
         let newAddress = this.state.modalType === "addwallet" ? [...this.state.addWalletList] : [...this.state.fixWalletAddress]
@@ -336,9 +337,9 @@ class FixAddModal extends BaseReactComponent {
 
         const wallets = this.state.addWalletList.map((elem, index) => {
                 return (<div className='m-b-12 add-wallet-input-section' key={index} id={`add-wallet-${index}`}>
-                    {index >= 1 ? 
+                    {index >= 1 ?
                     <div  className="delete-icon" onClick={() => this.deleteAddress(index)}>
-                    <Image src={DeleteIcon} /> 
+                    <Image src={DeleteIcon} />
                     </div>
                     : ""}
 

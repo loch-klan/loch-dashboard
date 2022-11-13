@@ -344,7 +344,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     </div>,
                 dataKey: "time",
                 // coumnWidth: 90,
-                coumnWidth: 0.15,
+                coumnWidth: 0.16,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
@@ -483,7 +483,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isText={true}
                             text={value}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -519,7 +519,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             text={value}
                         >
 
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -554,7 +554,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isText={true}
                             text={value}
                         >
-                          <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value}</div>
+                          <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
 
                         </CustomOverlay>)
 

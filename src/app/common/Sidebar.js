@@ -61,7 +61,8 @@ function Sidebar(props) {
         setExportModal(!exportModal)
     }
     const handleShare=()=>{
-      const link= `${BASE_URL_S3}portfolio/${localStorage.getItem("lochDummyUser")}`
+        const user= JSON.parse(localStorage.getItem('lochUser'));
+      const link= `${BASE_URL_S3}portfolio/${user.link}`
       navigator.clipboard.writeText(link);
       toast.success("Share link has been copied");
     }

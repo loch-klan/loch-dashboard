@@ -39,7 +39,7 @@ export const detectCoin = (wallet,ctx=null) => {
                            chains_detected: wallet.coinName,
                          });
                     }
-                   
+
                     dispatch({
                         type: WALLET_LIST,
                         payload: {
@@ -81,7 +81,7 @@ export const signIn = (ctx,data)=>{
             // toast.error(res.data.message || "Something went Wrong")
         }
         else if (res.data.error === false) {
-            
+
             ctx.setState({
                 isVerificationRequired:true,
                 text:""
@@ -118,7 +118,8 @@ export const verifyUser = (ctx,info)=>{
                 return ({coinCode: chain.code,
                     coinSymbol: chain.symbol,
                     coinName: chain.name,
-                    chain_detected: coinDetected})
+                    chain_detected: coinDetected,
+                  coinColor: chain.color})
               })
               obj['id'] = `wallet${i+1}`;
               obj['coinFound'] = apiResponse.wallets[apiResponse.user.wallets[i]].chains.length > 0 ? true : false;
