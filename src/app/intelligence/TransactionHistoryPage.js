@@ -339,7 +339,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             {
                 labelName:
                     <div className='cp history-table-header-col' id="time" onClick={() => this.handleTableSort("time")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Time</span>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Date</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "time",

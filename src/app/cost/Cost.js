@@ -11,6 +11,7 @@ import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { Image } from 'react-bootstrap';
 import CoinChip from '../wallet/CoinChip';
 import TransactionTable from '../intelligence/TransactionTable'
+import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.png'
 class Cost extends Component {
   constructor(props) {
     super(props);
@@ -156,7 +157,12 @@ class Cost extends Component {
             title="Costs"
             subTitle="Bring light to your hidden costs"
           />
-
+ <div style={{position: "relative"}}>
+                    <div className='coming-soon-div'>
+                                          <Image src={ExportIconWhite} className="coming-soon-img" />
+                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
+                                          </div>
+                                          <span className='blur-effect'>
           <BarGraphSection
             headerTitle="Blockchain Fees over Time"
             headerSubTitle="Understand your gas costs"
@@ -171,7 +177,14 @@ class Cost extends Component {
             // height={420}
             // width={824}
           />
-
+          </span>
+                    </div>
+ <div style={{position: "relative"}}>
+                    <div className='coming-soon-div'>
+                                          <Image src={ExportIconWhite} className="coming-soon-img" />
+                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
+                                          </div>
+                                          <span className='blur-effect'>
           <BarGraphSection
             headerTitle="Counterparty Fees Over Time"
             headerSubTitle="Understand how much your counterparty charges you"
@@ -186,8 +199,15 @@ class Cost extends Component {
             // height={"400px"}
             // width={"824px"}
           />
-
+</span>
+                    </div>
           <div className="m-b-40 cost-table-section">
+          <div style={{position: "relative"}}>
+                    <div className='coming-soon-div'>
+                                          <Image src={ExportIconWhite} className="coming-soon-img" />
+                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
+                                          </div>
+                                          <span className='blur-effect'>
             <TransactionTable
               title="Average Cost Basis"
               subTitle="Understand your average entry price"
@@ -195,6 +215,8 @@ class Cost extends Component {
               columnList={columnData}
               headerHeight={64}
             />
+            </span>
+                    </div>
           </div>
         </div>
       </div>

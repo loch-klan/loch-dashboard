@@ -10,6 +10,8 @@ import BarGraphSection from '../common/BarGraphSection';
 import { getAllCoins } from '../onboarding/Api.js'
 import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
 import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
+import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.png'
+import { Image } from 'react-bootstrap';
 class Intelligence extends Component {
 
     constructor(props) {
@@ -61,7 +63,7 @@ class Intelligence extends Component {
                     }
                 },
                 x: {
-                 
+
                     ticks: {
                         font: "Inter-SemiBold",
                         size: 10,
@@ -82,7 +84,7 @@ class Intelligence extends Component {
             labels,
             datasets: [
                 {
-                     
+
                     data: [260000, 323000, 76000],
                     backgroundColor: [
                         "rgba(100, 190, 205, 0.3)",
@@ -120,6 +122,12 @@ class Intelligence extends Component {
                         title="Portfolio Performance"
                         showImg={eyeIcon}
                     />
+                    <div style={{position: "relative"}}>
+                    <div className='coming-soon-div'>
+                                          <Image src={ExportIconWhite} className="coming-soon-img" />
+                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
+                                          </div>
+                                          <span className='blur-effect'>
                     <BarGraphSection
                         isScrollVisible={false}
                         data={data}
@@ -131,6 +139,8 @@ class Intelligence extends Component {
                         showPercentage = {this.state.showPercentage}
                         footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Month","1 Week"]}
                     />
+                    </span>
+                    </div>
                     </div>
                     {/* <TransactionHistoryPage/> */}
                 </div>

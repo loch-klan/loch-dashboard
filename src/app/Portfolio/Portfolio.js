@@ -266,16 +266,16 @@ class Portfolio extends BaseReactComponent {
             {
                 labelName:
                     <div className='cp history-table-header-col' id="time" onClick={() => this.handleTableSort("time")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Time</span>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Date</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "time",
                 // coumnWidth: 73,
-                coumnWidth: 0.15,
+                coumnWidth: 0.27,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
-                        return moment(rowData.time).format('DD/MM')
+                        return moment(rowData.time).format('DD/MM/YYYY')
                     }
                 }
             },
@@ -287,7 +287,7 @@ class Portfolio extends BaseReactComponent {
                     </div>,
                 dataKey: "from",
                 // coumnWidth: 61,
-                coumnWidth: 0.13,
+                coumnWidth: 0.12,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "from") {
@@ -312,7 +312,7 @@ class Portfolio extends BaseReactComponent {
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "to",
-                coumnWidth: 0.13,
+                coumnWidth: 0.12,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "to") {
@@ -337,7 +337,7 @@ class Portfolio extends BaseReactComponent {
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[3].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
                 dataKey: "asset",
-                coumnWidth: 0.25,
+                coumnWidth: 0.22,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "asset") {
@@ -391,7 +391,7 @@ class Portfolio extends BaseReactComponent {
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[5].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
                 dataKey: "method",
-                coumnWidth: 0.25,
+                coumnWidth: 0.22,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "method") {
