@@ -23,7 +23,7 @@ import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , S
 import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
-import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.png'
+import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 import {
   ManageWallets,
   TransactionHistoryEView,
@@ -304,9 +304,9 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col"
             id="time"
             onClick={() => this.handleTableSort("time")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Time
+        >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Date
             </span>
             <Image
               src={sortByIcon}
@@ -318,11 +318,11 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "time",
         // coumnWidth: 73,
-        coumnWidth: 0.15,
+        coumnWidth: 0.27,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "time") {
-            return moment(rowData.time).format("DD/MM");
+            return moment(rowData.time).format("DD/MM/YYYY");
           }
         },
       },
@@ -332,8 +332,8 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col"
             id="from"
             onClick={() => this.handleTableSort("from")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+        >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               From
             </span>
             <Image
@@ -346,7 +346,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "from",
         // coumnWidth: 61,
-        coumnWidth: 0.13,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
@@ -373,8 +373,8 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col"
             id="to"
             onClick={() => this.handleTableSort("to")}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+        >
+              <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               To
             </span>
             <Image
@@ -386,7 +386,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        coumnWidth: 0.13,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "to") {
@@ -426,7 +426,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "asset",
-        coumnWidth: 0.25,
+        coumnWidth: 0.22,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "asset") {
@@ -507,7 +507,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "method",
-        coumnWidth: 0.25,
+        coumnWidth: 0.22,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {

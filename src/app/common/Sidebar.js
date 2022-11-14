@@ -37,7 +37,10 @@ import {
     CostsMenu,
     ProfileMenu,
     ExportMenu,
-    HomeMenu,MenuApi,MenuDarkMode,MenuLeave,
+  HomeMenu,
+  MenuApi,
+  MenuDarkMode,
+  MenuLeave,
 } from "../../utils/AnalyticsFunctions.js";
 function Sidebar(props) {
 // console.log('props',props);
@@ -131,8 +134,8 @@ function Sidebar(props) {
 
         return()=>clearInterval(interval);
       },[currentIndex]);
-
     return (
+
       <div className="sidebar-section">
         <Container>
           <div className="sidebar">
@@ -174,8 +177,8 @@ function Sidebar(props) {
                     <li>
                       <NavLink
                         exact={true}
-                        className="nav-link"
-                        to="/intelligence"
+                        className={`nav-link ${activeTab === "/intelligence/transaction-history" ? "active"
+                        : ""}`} to="/intelligence"
                         activeclassname="active"
                         onClick={() =>
                           IntelligenceMenu({
@@ -185,8 +188,7 @@ function Sidebar(props) {
                         }
                       >
                         <Image
-                          src={
-                            activeTab === "/intelligence"
+                          src={["/intelligence/transaction-history","/intelligence"].includes(activeTab)
                               ? ActiveIntelligenceIcon
                               : IntelligenceIcon
                           }
