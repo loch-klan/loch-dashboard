@@ -184,7 +184,7 @@
                             .custom-select__menu-list::-webkit-scrollbar-thumb{
                                 border-radius: 0.8rem;
                                 // background: rgb(90, 90, 90);
-                                background-color: #E5E5E6;;
+                                background-color: $scrollBar-thumb;
                               }
                               .custom-select__menu-list::-webkit-scrollbar-track {
                                 // background: rgba(0, 0, 0, 0.2);
@@ -206,11 +206,19 @@
                       color: $pink-DA2;
                       padding: 1.6rem 2.8rem;
                       box-shadow: none;
+                      &:hover{
+                        background-color: $pink-DA2;
+                        color: $secondary;
+                      }
                   }
 
                   .primary-btn {
                       padding: 1.6rem 2.8rem;
                       line-height: 1.9rem;
+                      &:hover{
+                        color: $black-191;
+                        background-color: $secondary;
+                      }
                   }
               }
             // }

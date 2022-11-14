@@ -20,30 +20,30 @@ export default function IntelWelcomeCard(props) {
         title: "Transaction History",
         background: "lightblue",
         path: "/intelligence/transaction-history",
-        analyticEvent: TransactionHistory({
+        analyticEvent: ()=>{TransactionHistory({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-        }),
+        })},
       },
       {
         icon: ShuffleIcon,
         title: "Traded by counterparty",
         background: "lightyellow",
         path: "/intelligence",
-        analyticEvent: TradeByCounterParty({
+        analyticEvent: ()=>{TradeByCounterParty({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-        }),
+        })},
       },
       {
         icon: InsightsIcon,
         title: "Insights",
         background: "lightpurple",
         path: "/intelligence",
-        analyticEvent: Insights({
+        analyticEvent: ()=>{Insights({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-        }),
+        })},
       },
     ];
 

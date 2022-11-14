@@ -44,7 +44,7 @@ export const detectCoin = (wallet,ctx=null) => {
                            chains_detected: wallet.coinName,
                          });
                     }
-                   
+
                     dispatch({
                         type: WALLET_LIST,
                         payload: {
@@ -89,7 +89,7 @@ export const signIn = (ctx, data) => {
         }
         else if (res.data.error === false) {
             //email Valid
-            EmailAddressVerified({ email_address: ctx.state.email });
+EmailAddressVerified({ email_address: ctx.state.email });
             ctx.setState({
                 isVerificationRequired:true,
                 text:""
@@ -128,7 +128,8 @@ export const verifyUser = (ctx, info) => {
                 return ({coinCode: chain.code,
                     coinSymbol: chain.symbol,
                     coinName: chain.name,
-                    chain_detected: coinDetected})
+                    chain_detected: coinDetected,
+                  coinColor: chain.color})
               })
               obj['id'] = `wallet${i+1}`;
               obj['coinFound'] = apiResponse.wallets[apiResponse.user.wallets[i]].chains.length > 0 ? true : false;

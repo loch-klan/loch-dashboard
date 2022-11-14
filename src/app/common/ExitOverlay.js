@@ -49,6 +49,7 @@ class ExitOverlay extends BaseReactComponent {
 
   copyLink = () => {
     navigator.clipboard.writeText(this.state.link);
+     toast.success("Share link has been copied");
     LeaveLinkCopied({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,

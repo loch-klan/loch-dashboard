@@ -15,6 +15,8 @@ import { getAllCoins, detectCoin } from "../onboarding//Api";
 import { updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
+import { AddWalletAddress } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 class FixAddModal extends BaseReactComponent {
 
     constructor(props) {
@@ -42,7 +44,8 @@ class FixAddModal extends BaseReactComponent {
             chainTitleList: [],
             changeList: props.changeWalletList,
             pathName: props.pathName,
-            walletNameList: []
+            walletNameList: [],
+            deletedAddress:[],
         }
         this.timeout = 0
     }
@@ -88,7 +91,8 @@ class FixAddModal extends BaseReactComponent {
             chain_detected: data.chain_detected,
             coinCode: data.coinCode,
             coinName: data.coinName,
-            coinSymbol: data.coinSymbol
+            coinSymbol: data.coinSymbol,
+            coinColor: data.coinColor,
         }
         let i = this.state.addWalletList.findIndex(obj => obj.id === data.id)
         let newAddress = this.state.modalType === "addwallet" ? [...this.state.addWalletList] : [...this.state.fixWalletAddress]
@@ -132,13 +136,21 @@ class FixAddModal extends BaseReactComponent {
     }
 
     deleteAddress = (index) => {
-
+        const address = this.state.addWalletList.at(index).address;
+        if (address !== "") {
+             this.state.deletedAddress.push(address);
+             this.setState({
+               deletedAddress: this.state.deletedAddress,
+             });
+        }
         this.state.addWalletList.splice(index, 1)
         this.state.addWalletList.map((w, i) => { w.id = `wallet${i + 1}` })
 
         this.setState({
             addWalletList: this.state.addWalletList
         })
+        // console.log("Delete", this.state.addWalletList);
+        // console.log("Prev 1", this.state.deletedAddress);
 
     }
     deleteFixWalletAddress = (e) => {
@@ -157,6 +169,7 @@ class FixAddModal extends BaseReactComponent {
 
     handleAddWallet = () => {
         if (this.state.addWalletList) {
+           
             let arr = []
             let walletList = []
             for (let i = 0; i < this.state.addWalletList.length; i++) {
@@ -178,6 +191,39 @@ class FixAddModal extends BaseReactComponent {
             if (this.props.handleUpdateWallet) {
                 this.props.handleUpdateWallet()
             }
+            // console.log("fix",this.state.addWalletList);
+            const address = this.state.addWalletList.map(e => e.address);
+            // console.log("address", address);
+            const addressDeleted = this.state.deletedAddress;
+            // console.log("Deteted address", addressDeleted);
+            const unrecog_address = this.state.addWalletList.filter((e) => !e.coinFound).map(e=> e.address);
+            // console.log("Unreq address", unrecog_address);
+            const recog_address = this.state.addWalletList
+              .filter((e) => e.coinFound)
+              .map((e) => e.address);
+            // console.log("req address", recog_address);
+
+            const blockchainDetected = [];
+            this.state.addWalletList.filter((e) => e.coinFound).map((obj) => {
+                let coinName = obj.coins
+                  .filter((e) => e.chain_detected)
+                  .map((name) => name.coinName);
+                let address = obj.address;
+                blockchainDetected.push({ address: address, names: coinName });
+            });
+
+            // console.log("blockchain detected", blockchainDetected);
+            AddWalletAddress({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              addresses_added: address,
+              ENS_added: address,
+              addresses_deleted: addressDeleted,
+              ENS_deleted: addressDeleted,
+              unrecognized_addresses: unrecog_address,
+              recognized_addresses: recog_address,
+              blockchains_detected: blockchainDetected,
+            });
         }
 
     }
@@ -336,9 +382,9 @@ class FixAddModal extends BaseReactComponent {
 
         const wallets = this.state.addWalletList.map((elem, index) => {
                 return (<div className='m-b-12 add-wallet-input-section' key={index} id={`add-wallet-${index}`}>
-                    {index >= 1 ? 
+                    {index >= 1 ?
                     <div  className="delete-icon" onClick={() => this.deleteAddress(index)}>
-                    <Image src={DeleteIcon} /> 
+                    <Image src={DeleteIcon} />
                     </div>
                     : ""}
 

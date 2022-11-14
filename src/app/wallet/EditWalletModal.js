@@ -7,6 +7,8 @@ import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} fr
 import unrecognizedIcon from '../../image/unrecognized.svg';
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
 import { lightenDarkenColor } from '../../utils/ReusableFunctions';
+import { DeleteWallet, EditSpecificWallet } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 class EditWalletModal extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -31,13 +33,49 @@ class EditWalletModal extends BaseReactComponent {
         data.append("wallet_address",this.state.walletAddress)
         data.append("wallet_id",this.state.walletName)
         data.append("tag",this.state.walletTag)
-        updateWalletApi(this,data);
+      updateWalletApi(this, data);
+
+      const walletType = this.state.walletNameList.find(
+        (e) => e.id === this.state.walletName );
+      console.log("wallet name", walletType.name);
+      console.log("wallet address", this.state.walletAddress);
+      console.log("wallet tag", this.state.walletTag);
+      const blockchains = this.state.coinchips.map((e)=> e.chain.code);
+      console.log("Blockchain", blockchains);
+      EditSpecificWallet({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        wallet_type_selected: walletType.name,
+        name_tag: this.state.walletTag,
+        address: this.state.walletAddress,
+        ENS: this.state.walletAddress,
+        blockchains_detected: blockchains,
+      });
+   
     };
 
-    handleDelete = ()=>{
+  handleDelete = () => {
+     const walletType = this.state.walletNameList.find(
+       (e) => e.id === this.state.walletName
+     );
+    //  console.log("wallet name", walletType.name);
+    //  console.log("wallet address", this.state.walletAddress);
+    //  console.log("wallet tag", this.state.walletTag);
+     const blockchains = this.state.coinchips.map((e) => e.chain.code);
+    //  console.log("Blockchain", blockchains);
+      DeleteWallet({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        wallet_type_selected: walletType.name,
+        name_tag: this.state.walletTag,
+        address: this.state.walletAddress,
+        ENS: this.state.walletAddress,
+        blockchains_detected: blockchains,
+      });
         let data = new URLSearchParams()
         data.append("wallet_address",this.state.walletAddress)
         deleteWallet(this,data)
+      
     }
 
     getDays = (d)=>{

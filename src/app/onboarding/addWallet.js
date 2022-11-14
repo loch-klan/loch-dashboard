@@ -12,6 +12,7 @@ import {
   DeleteWalletAddress,
   PreviewDemo,
   AddTextbox,
+  LPC_Go,
 } from "../../utils/AnalyticsFunctions.js";
 
 class AddWallet extends BaseReactComponent {
@@ -137,10 +138,12 @@ class AddWallet extends BaseReactComponent {
               
               address: wallet.address,
             });
+            
             this.setState({
                 walletInput: this.state.walletInput
             });
         }
+      console.log("Delete", wallet.address);
     }
 
 
@@ -168,28 +171,52 @@ class AddWallet extends BaseReactComponent {
     }
 
     onValidSubmit = () => {
-        let walletAddress = [];
-        let addWallet = this.state.walletInput;
-        let finalArr = []
-        for (let i = 0; i < addWallet.length; i++) {
-            let curr = addWallet[i]
-            if (!walletAddress.includes(curr.address) && curr.address) {
-                finalArr.push(curr)
-                walletAddress.push(curr.address)
-            }
+      let walletAddress = [];
+      let addWallet = this.state.walletInput;
+      let finalArr = [];
+      for (let i = 0; i < addWallet.length; i++) {
+        let curr = addWallet[i];
+        if (!walletAddress.includes(curr.address) && curr.address) {
+          finalArr.push(curr);
+          walletAddress.push(curr.address);
         }
+      }
 
-        finalArr = finalArr.map((item, index) => {
-            return ({
-                ...item,
-                id: `wallet${index + 1}`
-            })
-        })
+      finalArr = finalArr.map((item, index) => {
+        return {
+          ...item,
+          id: `wallet${index + 1}`,
+        };
+      });
 
-        const data = new URLSearchParams();
-        data.append("wallet_addresses", JSON.stringify(walletAddress))
-        createAnonymousUserApi(data, this, finalArr);
-    }
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(walletAddress));
+      createAnonymousUserApi(data, this, finalArr);
+      console.log(finalArr);
+
+      const address = finalArr.map((e) => e.address);
+      console.log("address", address);
+
+      const unrecog_address = finalArr.filter((e) => !e.coinFound)
+        .map((e) => e.address);
+      console.log("Unreq address", unrecog_address);
+
+      const blockchainDetected = [];
+      finalArr
+        .filter((e) => e.coinFound)
+        .map((obj) => {
+          let coinName = obj.coins
+            .filter((e) => e.chain_detected)
+            .map((name) => name.coinName);
+          let address = obj.address;
+          blockchainDetected.push({ address: address, names: coinName });
+        });
+
+      console.log("blockchain detected", blockchainDetected);
+
+      LPC_Go({addresses: address, ENS: address,chains_detected_against_them: blockchainDetected, unrecognized_addresses: unrecog_address, unrecognized_ENS: unrecog_address});
+
+    };
     handleSignText = ()=>{
         this.props.switchSignIn()
     }
@@ -301,7 +328,10 @@ class AddWallet extends BaseReactComponent {
                 <CustomButton
                   className="secondary-btn m-r-15 preview"
                   buttonText="Preview demo instead"
-                  onClick={()=>PreviewDemo({})}
+                  onClick={() => {
+                    PreviewDemo({});
+                    console.log("Preview");
+                  }}
                 />
                 <CustomButton
                   className="primary-btn go-btn"

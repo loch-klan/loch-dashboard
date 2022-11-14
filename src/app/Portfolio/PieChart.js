@@ -9,6 +9,8 @@ import { DEFAULT_COLOR } from '../../utils/Constant';
 import { Image} from 'react-bootstrap';
 import noDataImage from '../../image/no-data.png';
 import Loading from '../common/Loading';
+import { PiechartChainName } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 
 class PieChart extends BaseReactComponent {
 
@@ -224,7 +226,8 @@ class PieChart extends BaseReactComponent {
                                   {document.getElementById("fixbtn").style.display = "none"}
                                 }
 
-                                // console.log(this.state.currentData)
+                                // console.log("current data", currentData);
+                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: [{asset_name: currentData.options.name, usd: "$"+currentData.options.usd}]});
                             },
                             unselect: function () {
                                 // console.log("UNSELECT")

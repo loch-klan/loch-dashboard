@@ -11,6 +11,8 @@ import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { Image } from 'react-bootstrap';
 import CoinChip from '../wallet/CoinChip';
 import TransactionTable from '../intelligence/TransactionTable'
+import { TimeSpentCosts } from '../../utils/AnalyticsFunctions'
+import { getCurrentUser } from '../../utils/ManageToken'
 class Cost extends Component {
   constructor(props) {
     super(props);
@@ -20,13 +22,27 @@ class Cost extends Component {
         options: info[1],
         options2: info[2],
       },
+      startTime:"",
     };
   }
 
   componentDidMount() {
-      this.props.getAllCoins()
-  }
+    this.state.startTime = new Date() * 1;
+    console.log("page Enter", this.state.startTime / 1000);
 
+    this.props.getAllCoins();
+  }
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    console.log("page Leave", endTime / 1000);
+    console.log("Time Spent", TimeSpent);
+    TimeSpentCosts({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      time_spent: TimeSpent,
+    });
+  }
 
   render() {
     const tableData = [
@@ -37,12 +53,12 @@ class Cost extends Component {
         Amount: 3.97,
         CostBasis: 1.75,
         CurrentValue: "$5,514.00",
-        GainLoss:{
-            status: "gain",
-            symbol: GainIcon,
+        GainLoss: {
+          status: "gain",
+          symbol: GainIcon,
           // "42.45%",
           value: "42.45%",
-        }
+        },
       },
       {
         Asset: Ethereum,
@@ -51,14 +67,14 @@ class Cost extends Component {
         Amount: 3.97,
         CostBasis: 2.56,
         CurrentValue: "$22,280.50",
-        GainLoss:{
-            status: "loss",
-            symbol: LossIcon,
+        GainLoss: {
+          status: "loss",
+          symbol: LossIcon,
           // "-18.45%"
-          value: "-18.45%"
-        }
-      }
-    ]
+          value: "-18.45%",
+        },
+      },
+    ];
 
     const columnData = [
       {
@@ -69,15 +85,11 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
-          return (
-            <CoinChip
-              coin_img_src={rowData.Asset}
-              coin_code="ETH"
-            />
-          )
+            return <CoinChip coin_img_src={rowData.Asset} coin_code="ETH" />;
           }
-        }
-      }, {
+        },
+      },
+      {
         labelName: "Average Cost Price",
         dataKey: "AverageCostPrice",
         // coumnWidth: 153,
@@ -85,10 +97,15 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
-          return <div className='inter-display-medium f-s-13 lh-16 grey-313 cost-common'>{rowData.AverageCostPrice}</div>
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
+                {rowData.AverageCostPrice}
+              </div>
+            );
           }
-        }
-      }, {
+        },
+      },
+      {
         labelName: "Current Price",
         dataKey: "CurrentPrice",
         // coumnWidth: 128,
@@ -96,10 +113,15 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
-          return <div className='inter-display-medium f-s-13 lh-16 grey-313 cost-common'>{rowData.CurrentPrice}</div>
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
+                {rowData.CurrentPrice}
+              </div>
+            );
           }
-        }
-      }, {
+        },
+      },
+      {
         labelName: "Amount",
         dataKey: "Amount",
         // coumnWidth: 108,
@@ -107,10 +129,11 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
-            return rowData.Amount
+            return rowData.Amount;
           }
-        }
-      }, {
+        },
+      },
+      {
         labelName: "Cost Basis",
         dataKey: "CostBasis",
         // coumnWidth: 100,
@@ -118,10 +141,11 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
-            return rowData.CostBasis
+            return rowData.CostBasis;
           }
-        }
-      }, {
+        },
+      },
+      {
         labelName: "CurrentValue",
         dataKey: "CurrentValue",
         // coumnWidth: 140,
@@ -129,10 +153,11 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
-            return rowData.CurrentValue
+            return rowData.CurrentValue;
           }
-        }
-      }, {
+        },
+      },
+      {
         labelName: "% Gain / Loss",
         dataKey: "GainLoss",
         // coumnWidth: 128,
@@ -141,13 +166,21 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
             return (
-            <div className={`gainLoss ${rowData.GainLoss.status === "loss" ? "loss" : "gain"}`}>
-              <Image src={rowData.GainLoss.symbol} />
-              <div className="inter-display-medium f-s-13 lh-16 grey-313">{rowData.GainLoss.value}</div>
-            </div>)
+              <div
+                className={`gainLoss ${
+                  rowData.GainLoss.status === "loss" ? "loss" : "gain"
+                }`}
+              >
+                <Image src={rowData.GainLoss.symbol} />
+                <div className="inter-display-medium f-s-13 lh-16 grey-313">
+                  {rowData.GainLoss.value}
+                </div>
+              </div>
+            );
           }
-        }
-      }]
+        },
+      },
+    ];
     return (
       <div className="cost-page-section">
         {/* <Sidebar ownerName="" /> */}

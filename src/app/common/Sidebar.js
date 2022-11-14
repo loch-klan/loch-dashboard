@@ -79,7 +79,8 @@ function Sidebar(props) {
         ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
     const handleShare=()=>{
-      const link= `${BASE_URL_S3}portfolio/${localStorage.getItem("lochDummyUser")}`
+        const user= JSON.parse(localStorage.getItem('lochUser'));
+      const link= `${BASE_URL_S3}portfolio/${user.link}`
       navigator.clipboard.writeText(link);
       toast.success("Share link has been copied");
     }

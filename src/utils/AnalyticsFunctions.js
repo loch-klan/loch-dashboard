@@ -151,20 +151,21 @@ export const AddWalletAddress = ({
   recognized_addresses,
   blockchains_detected,
 }) => {
-  const event_name = "Home:add wallet address";
+  const event_name = "Home:add wallet_address";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "addresses added": addresses_added,
     "ENS added": ENS_added,
-    "addresses deleted": addresses_deleted,
-    "ENS deleted": ENS_deleted,
-    "unrecognized addresses": unrecognized_addresses,
+    "addresses deleted": addresses_deleted.length == 0 ? ["None"] : addresses_deleted,
+    "ENS deleted": ENS_deleted.length == 0 ? ["None"]: ENS_deleted,
+    "unrecognized addresses":
+      unrecognized_addresses.length == 0 ? ["None"] : unrecognized_addresses,
     "recognized addresses": recognized_addresses,
     "blockchains detected": blockchains_detected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:add wallet address");
+  console.log("Home:add wallet_address");
 };
 
 //11. Home:piechart overview
@@ -189,7 +190,7 @@ export const PiechartChainName = ({
   email_address,
   asset_clicked,
 }) => {
-  const event_name = "Home:piechart specific chain name";
+  const event_name = "Home:piechart specific chain_name";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -438,11 +439,12 @@ export const FiatCurrencyChanged = ({
 };
 
 //29. Home:time spent on home page
-export const TimeSpentHome = ({ session_id, email_address }) => {
+export const TimeSpentHome = ({ session_id, email_address, time_spent }) => {
   const event_name = "Home:time spent on home page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "time spent home": time_spent
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Home:time spent on home page");
@@ -953,15 +955,16 @@ export const AnonymityWalletConnection = ({ session_id, email_address}) => {
 
 
 //66. Wallets:time spent on wallet page
-export const TimeSpentWallet = ({ session_id, email_address}) => {
+export const TimeSpentWallet = ({ session_id, email_address, time_spent }) => {
   const event_name = "Wallets:time spent on wallet page";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address
+    "email address": email_address,
+    "time spent wallet": time_spent
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Wallets:time spent on wallet page");
-}
+};
 
 //67. Wallets:analyze asset values for specific wallet
 export const AnalyzeAssetValue = ({ session_id, email_address, address_selected, name_tag, ENS, blockchains, assets}) => {
@@ -980,14 +983,15 @@ export const AnalyzeAssetValue = ({ session_id, email_address, address_selected,
 }
 
 //68. Costs:time spent on costs page
-export const TimeSpentCosts = ({ session_id, email_address}) => {
-  const event_name = "Costs:time spent on costs page";
+export const TimeSpentCosts = ({ session_id, email_address, time_spent}) => {
+  const event_name = "Costs:time spent on cost page";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address
+    "email address": email_address,
+    "time spent cost": time_spent
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:time spent on costs page");
+  console.log("Costs:time spent on cost page");
 }
 
 //69. Costs:blockchain fees asset filter

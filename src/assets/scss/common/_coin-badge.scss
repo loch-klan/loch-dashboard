@@ -71,7 +71,7 @@
 .coinchips::-webkit-scrollbar-thumb,.dropdown-menu::-webkit-scrollbar-thumb,.badge-list::-webkit-scrollbar-thumb{
   // border-radius: 2rem;
   border-radius: 0.8rem;
-  background-color: #E5E5E6;
+  background-color: $scrollBar-thumb;
   // background: rgb(90, 90, 90);
 }
 .coinchips::-webkit-scrollbar-track,.badge-list::-webkit-scrollbar-track {
