@@ -14,10 +14,31 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-virtualized/styles.css';
 import './assets/scss/style.scss';
+
+//Amplitude
 import { initAmplitude, test } from "./utils/AnalyticsFunctions";
+
+//sentry 
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+
+//Sentry Init
+Sentry.init({
+  dsn: "https://e6783c2c434b4624a9067bf8dcee2878@o4504133712936960.ingest.sentry.io/4504156691431424",
+  integrations: [new BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
+// Testing Sentry
+//  throw new Error("Santry Successfully added");
 
 //Amplitude Analytics initialization
 initAmplitude();
+
 // test({ session_id: "session id", chains: ["value1", "value2", "value3"] });
 
 /* ReactDOM.render(
