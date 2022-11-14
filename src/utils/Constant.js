@@ -28,6 +28,11 @@ export const SORT_BY_AMOUNT = 'SORT_BY_AMOUNT'
 export const SORT_BY_USD_VALUE_THEN = 'SORT_BY_USD_VALUE_THEN'
 export const SORT_BY_TRANSACTION_FEE = 'SORT_BY_TRANSACTION_FEE'
 export const SORT_BY_METHOD = 'SORT_BY_METHOD'
+// LINE GRAPH
+export const GROUP_BY_MONTH = 'GROUP_BY_MONTH'
+export const GROUP_BY_YEAR = 'GROUP_BY_YEAR'
+export const GROUP_BY_DATE = 'GROUP_BY_DATE'
+export const GROUP_BY_WEEK = 'GROUP_BY_WEEK'
 
 export const Gender = {
   MALE: 10,
@@ -115,3 +120,40 @@ export const YesNoOptions = [
 ]
 
 
+
+export const Months = {
+  JANUARY: 1,
+  FEBUARY: 2,
+  MARCH: 3,
+  APRIL: 4,
+  MAY: 5,
+  JUNE: 6,
+  JULY: 7,
+  AUGUST: 8,
+  SEPTEMBER: 9,
+  OCTOBER: 10,
+  NOVEMBER: 11,
+  DECEMBER: 12,
+  _presentable: {
+    1: "January",
+    2: "Febuary",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11: "November",
+    12: "December"
+  },
+  getText : function(value){
+    return this._presentable[value]
+  }
+}
+
+export const MonthOptions = Object.keys(Months._presentable).map((month) => ({
+  label: Months._presentable[month],
+  value: month
+}))

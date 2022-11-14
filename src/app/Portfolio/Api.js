@@ -90,7 +90,7 @@ export const getDetailsByLinkApi = (link,ctx) => {
                   obj['id'] = `wallet${i+1}`;
                   obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
                   addWallet.push(obj);
-                  
+
               }
               ctx.setState({
                 isLoading:false,
@@ -103,3 +103,21 @@ export const getDetailsByLinkApi = (link,ctx) => {
               console.log("Catch", err);
           });
 };
+
+export const getAssetGraphDataApi=(data,ctx)=>{
+    postLoginInstance
+            .post("wallet/user-wallet/get-asset-value-graph", data)
+            .then((res) => {
+                console.log('res',res);
+                if(!res.data.error){
+                  ctx.setState({
+                    assetValueData: res.data.data.asset_value_data
+                  })
+                } else{
+                  toast.error(res.data.message || "Something Went Wrong")
+                }
+            })
+            .catch((err) => {
+                console.log("Catch", err);
+            });
+}

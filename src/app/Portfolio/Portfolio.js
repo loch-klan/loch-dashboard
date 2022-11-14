@@ -19,11 +19,13 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD} from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH} from '../../utils/Constant'
 import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
 import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
+import {getAssetGraphDataApi} from './Api';
+
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -91,6 +93,17 @@ class Portfolio extends BaseReactComponent {
         this.props.getCoinRate()
         this.props.getAllCoins()
         this.getTableData()
+        this.getGraphData()
+    }
+
+    getGraphData = () =>{
+      let addressList = [];
+      this.state.userWalletList.map((wallet)=> addressList.push(wallet.address))
+      console.log('addressList',addressList);
+      let data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(addressList))
+      data.append("group_criteria", GROUP_BY_MONTH);
+      getAssetGraphDataApi(data, this)
     }
     getTableData = () => {
 
@@ -659,8 +672,9 @@ class Portfolio extends BaseReactComponent {
                             </div>
                             <div className='portfolio-section m-b-32'>
                                 <LineChart
-                                    coinLists={this.props.OnboardingState.coinsLists}
-                                    isScrollVisible={false}
+                                  assetValueData={this.state.assetValueData && this.state.assetValueData}
+                                  coinLists={this.props.OnboardingState.coinsLists}
+                                  isScrollVisible={false}
                                 />
                             </div>
                             <div className='m-b-22 graph-table-section'>
@@ -761,7 +775,8 @@ const mapDispatchToProps = {
     getUserWallet,
     settingDefaultValues,
     getAllCoins,
-    searchTransactionApi
+    searchTransactionApi,
+    getAssetGraphDataApi
 }
 Portfolio.propTypes = {
 };
