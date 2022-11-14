@@ -10,7 +10,7 @@ import BarGraphSection from '../common/BarGraphSection';
 import { getAllCoins } from '../onboarding/Api.js'
 import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
 import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
-import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.png'
+import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 import { Image } from 'react-bootstrap';
 class Intelligence extends Component {
 

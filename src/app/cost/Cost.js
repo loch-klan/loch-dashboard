@@ -11,7 +11,7 @@ import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { Image } from 'react-bootstrap';
 import CoinChip from '../wallet/CoinChip';
 import TransactionTable from '../intelligence/TransactionTable'
-import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.png'
+import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 class Cost extends Component {
   constructor(props) {
     super(props);

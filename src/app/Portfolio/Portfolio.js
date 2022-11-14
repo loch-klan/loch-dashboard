@@ -23,7 +23,7 @@ import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , S
 import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
-import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.png'
+import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 class Portfolio extends BaseReactComponent {
     constructor(props) {
         super(props);

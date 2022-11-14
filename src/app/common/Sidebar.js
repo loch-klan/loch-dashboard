@@ -113,8 +113,8 @@ function Sidebar(props) {
 
         return()=>clearInterval(interval);
       },[currentIndex]);
-
     return (
+
         <div className='sidebar-section'>
             <Container>
                 <div className="sidebar">
@@ -136,9 +136,9 @@ function Sidebar(props) {
                                 <li>
                                     <NavLink
                                         exact={true}
-                                        className="nav-link" to="/intelligence"
+                                        className={`nav-link ${activeTab === "/intelligence/transaction-history" ? "active" : ""}`} to="/intelligence"
                                         activeclassname="active"
-                                    ><Image src={activeTab === "/intelligence" ? ActiveIntelligenceIcon : IntelligenceIcon} />Intelligence</NavLink>
+                                    ><Image src={["/intelligence/transaction-history","/intelligence"].includes(activeTab) ? ActiveIntelligenceIcon : IntelligenceIcon} />Intelligence</NavLink>
                                 </li>
                                 <li>
                                     <NavLink
