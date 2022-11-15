@@ -162,7 +162,6 @@ class Cost extends Component {
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div>
-                                          <span className='blur-effect'>
           <BarGraphSection
             headerTitle="Blockchain Fees over Time"
             headerSubTitle="Understand your gas costs"
@@ -176,15 +175,14 @@ class Cost extends Component {
             isScrollVisible={false}
             // height={420}
             // width={824}
+            comingSoon={true}
           />
-          </span>
                     </div>
  <div style={{position: "relative"}}>
                     <div className='coming-soon-div'>
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div>
-                                          <span className='blur-effect'>
           <BarGraphSection
             headerTitle="Counterparty Fees Over Time"
             headerSubTitle="Understand how much your counterparty charges you"
@@ -198,8 +196,8 @@ class Cost extends Component {
             isScrollVisible={false}
             // height={"400px"}
             // width={"824px"}
+            comingSoon={true}
           />
-</span>
                     </div>
           <div className="m-b-40 cost-table-section">
           <div style={{position: "relative"}}>
@@ -207,15 +205,14 @@ class Cost extends Component {
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div>
-                                          <span className='blur-effect'>
             <TransactionTable
               title="Average Cost Basis"
               subTitle="Understand your average entry price"
               tableData={tableData}
               columnList={columnData}
               headerHeight={64}
+              comingSoon={true}
             />
-            </span>
                     </div>
           </div>
         </div>

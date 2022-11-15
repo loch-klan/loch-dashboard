@@ -22,7 +22,7 @@ function TransactionTable(props) {
                 ""
             }
                 <CustomTable
-                    className="transaction-table"
+                    className={`transaction-table ${props.comingSoon && "blur-effect"}`}
                     tableData={props.tableData}
                     columnList={props.columnList}
                     headerHeight={props.headerHeight}
@@ -33,10 +33,10 @@ function TransactionTable(props) {
                     pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
                     pageNext={props.page === (props.totalPage-1) ? ActiveNextBtn : ActiveNextBtn}
                     message={"No transactions found"}
-                    isLoading={props.isLoading} 
+                    isLoading={props.isLoading}
                 />
 
-           
+
         </div>
     )
 }

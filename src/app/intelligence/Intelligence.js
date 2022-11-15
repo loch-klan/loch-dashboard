@@ -127,7 +127,6 @@ class Intelligence extends Component {
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div>
-                                          <span className='blur-effect'>
                     <BarGraphSection
                         isScrollVisible={false}
                         data={data}
@@ -138,8 +137,8 @@ class Intelligence extends Component {
                         showBadges={true}
                         showPercentage = {this.state.showPercentage}
                         footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Month","1 Week"]}
+                        comingSoon={true}
                     />
-                    </span>
                     </div>
                     </div>
                     {/* <TransactionHistoryPage/> */}

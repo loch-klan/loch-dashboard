@@ -8,13 +8,14 @@ import CoinBadges from './../common/CoinBadges';
 import DropDown from "../common/DropDown";
 import TrendingUp from '../../assets/images/icons/TrendingUp.svg'
 import TrendingDown from '../../assets/images/icons/TrendingDown.svg'
-import { Months } from "../../utils/Constant";
+import { GroupByOptions, Months } from "../../utils/Constant";
 class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
         this.state = {
           assetValueData: props.assetValueData,
           activeBadge: [{ name: "All", id: "" }],
+          activeBadgeList: [],
           title: "Month",
           titleY:"$ USD"
         }
@@ -27,16 +28,19 @@ class LineChart extends BaseReactComponent {
             newArr.splice(index, 1)
             if (newArr.length === 0) {
                 this.setState({
-                    activeBadge: [{ name: "All", id: "" }]
+                    activeBadge: [{ name: "All", id: "" }],
+                    activeBadgeList: []
                 })
             } else {
                 this.setState({
-                    activeBadge: newArr
+                    activeBadge: newArr,
+                    activeBadgeList: newArr.map((item)=>item.id)
                 })
             }
         } else if (badge.name === "All") {
             this.setState({
-                activeBadge: [{ name: "All", id: "" }]
+                activeBadge: [{ name: "All", id: "" }],
+                activeBadgeList: []
             })
         } else {
             let index = newArr.findIndex(x => x.name === "All")
@@ -45,44 +49,110 @@ class LineChart extends BaseReactComponent {
             }
             newArr.push(badge)
             this.setState({
-                activeBadge: newArr
+                activeBadge: newArr,
+                activeBadgeList: newArr.map((item)=>item.id)
             })
         }
     }
     handleSelect = (opt) => {
-        // console.log("Selected Option ", opt.split(' '))
         const t = opt.split(' ')[1]
         this.setState({
             title: t
         })
-    }
-    handleSelectYAxis = (opt) =>{
-        // console.log(opt)
-        const t = opt.split(' ')[1] + " "+ opt.split(' ')[2]
-        console.log(t)
-        this.setState({
-            titleY: t
-        })
+        this.props.handleGroupBy(t);
     }
     render() {
       const {assetValueData} = this.props;
-      console.log('assetValueData',assetValueData);
-      let categories = [];
-      let series = [];
-      let totalAssetPrice = 0, totalAssetCount = 0;
+      // console.log('assetValueData',assetValueData);
+      let series = {};
+      let timestampList = [];
+      let assetMaster = {};
       assetValueData && assetValueData.map((assetData)=>{
-        categories.push(assetData._id.month);
-        // assetData.assets.map((data)=>{
-        //   series.push({
-        //     assetDetails: data.asset,
-        //     totalAssetPrice : totalAssetPrice + data.asset_price,
-        //     totalAssetCount : totalAssetCount + data.count
-        //   })
-        // })
+        if(this.state.activeBadgeList.includes(assetData.chain._id) || this.state.activeBadgeList.length === 0){
+          if(!timestampList.includes(assetData.timestamp)){
+            timestampList.push(assetData.timestamp)
+            // series[assetData.timestamp] = {};
+          }
+
+          assetData.assets.map((data)=>{
+            if(data.asset.id in assetMaster){
+              if(assetData.timestamp in assetMaster[data.asset.id]){
+                assetMaster[data.asset.id][assetData.timestamp] = (new Number(data.count) * data.asset_price) + assetMaster[data.asset.id][assetData.timestamp]
+              } else{
+                assetMaster[data.asset.id][assetData.timestamp] = new Number(data.count) * data.asset_price
+              }
+            } else{
+              assetMaster[data.asset.id] = {
+                assetDetails: data.asset,
+                assetPrice : data.asset_price ? data.asset_price : 0,
+                count : new Number(data.count) * data.asset_price
+              }
+              assetMaster[data.asset.id][assetData.timestamp] = new Number(data.count) * data.asset_price
+            }
+          })
+        }
+
       })
-      // console.log('series',series);
-      // categories.sort((a, b) => a - b);
-      categories = categories.map((category)=> { return Months.getText(category)})
+      let seriesData = [];
+      timestampList.sort((a, b) =>{
+        return a - b;
+      });
+      for (const [key, value] of Object.entries(assetMaster)) {
+        seriesData.push({
+          name: value.assetDetails.name,
+          id: key,
+          color: value.assetDetails.color,
+          data: []
+        })
+        let graphData = [];
+        timestampList.map((timestamp)=>{
+          if(timestamp in value){
+            graphData.push(value[timestamp]);
+          } else{
+            graphData.push(0);
+          }
+        })
+        seriesData.push({
+            linkedTo: key,
+            type: 'line',
+            color: value.assetDetails.color,
+            marker: {
+              enabled: false
+            },
+            data: graphData
+        })
+      }
+
+      // timestampList.map((timestamp,index)=>{
+      //   assetValueData && assetValueData.map((assetData)=>{
+      //     if(assetData.timestamp === timestamp){
+      //       seriesData[index] = {
+
+      //       };
+      //     }
+      //   })
+      // })
+      let categories = [];
+      timestampList.map((time)=> {
+        let dummy = new Date(time)
+        let abc;
+        if(this.state.title === 'Week' || this.state.title === 'Day'){
+          abc = dummy.getDate()
+          categories.push(abc)
+        }
+        if(this.state.title === 'Month'){
+          abc = dummy.getMonth()+1;
+          categories.push(Months.getText(abc))
+        }
+        if(this.state.title === 'Year'){
+          abc = dummy.getFullYear();
+          categories.push(abc);
+        }
+      })
+      // console.log('categories',categories);
+      // console.log('timestamp',timestampList);
+      // console.log('seriesData',seriesData);
+
         var UNDEFINED;
         const options = {
             title: {
@@ -95,8 +165,9 @@ class LineChart extends BaseReactComponent {
                 enabled: false
             },
             xAxis: {
-                // categories: categories,
-                categories:  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                categories: categories,
+                // categories:  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                // categories: timestampList,
                 labels: {
                     style: {
 
@@ -125,6 +196,15 @@ class LineChart extends BaseReactComponent {
                     lineHeight: "12px"
                 }
             },
+            plotOptions: {
+              series: {
+                  events: {
+                      legendItemClick: function() {
+                        return false;
+                      }
+                  }
+              }
+          },
             tooltip: {
                 useHTML: true,
                 borderRadius : 8,
@@ -158,35 +238,50 @@ class LineChart extends BaseReactComponent {
                     `
                 }
             },
-            series: [
-                {
-                    name: 'Bitcoin',
-                    id: 'Bitcoin',
-                    color: 'rgba(255, 99, 132, 1)',
-                    data: []
-                }, {
-                    linkedTo: 'Bitcoin',
-                    type: 'line',
-                    color: 'rgba(255, 99, 132, 1)',
-                    marker: {
-                        enabled: false
-                    },
-                    data: [40000, 35000, 28000, 22000, 24000, 45000, 39000, 42000]
-                }
-                , {
-                    name: 'Ethereum',
-                    id: 'Ethereum',
-                    color: 'rgba(54, 162, 235, 1)',
-                    data: []
-                }, {
-                    linkedTo: 'Ethereum',
-                    type: 'line',
-                    color: 'rgba(54, 162, 235, 1)',
-                    marker: {
-                        enabled: false
-                    },
-                    data: [10000, 9000, 11000, 6000, 7000, 12000, 13000, 11500]
-                }]
+            series: seriesData,
+            // series: [
+            //     {
+            //         name: 'Bitcoin',
+            //         id: 'Bitcoin',
+            //         color: 'rgba(255, 99, 132, 1)',
+            //         data: []
+            //     }, {
+            //         linkedTo: 'Bitcoin',
+            //         type: 'line',
+            //         color: 'rgba(255, 99, 132, 1)',
+            //         marker: {
+            //             enabled: false
+            //         },
+            //         data: [40000, 35000, 28000, 22000, 24000, 45000, 39000, 42000]
+            //     }
+            //     , {
+            //         name: 'Ethereum',
+            //         id: 'Ethereum',
+            //         color: 'rgba(54, 162, 235, 1)',
+            //         data: []
+            //     }, {
+            //         linkedTo: 'Ethereum',
+            //         type: 'line',
+            //         color: 'rgba(54, 162, 235, 1)',
+            //         marker: {
+            //             enabled: false
+            //         },
+            //         data: [10000, 9000, 11000, 6000, 7000, 12000, 13000, 11500]
+            //     },
+            //     {
+            //       name: 'Polygon',
+            //       id: 'Polygon',
+            //       color: 'rgba(154, 162, 35, 1)',
+            //       data: []
+            //   }, {
+            //       linkedTo: 'Polygon',
+            //       type: 'line',
+            //       color: 'rgba(154, 162, 35, 1)',
+            //       marker: {
+            //           enabled: false
+            //       },
+            //       data: [20000, 4000, 41000, 9000, 3000, 2000, 13000, 1500]
+            //   }]
         }
         return (
             <div className="welcome-card-section line">
@@ -214,7 +309,8 @@ class LineChart extends BaseReactComponent {
                     <div className='chart-x-selection'>
                             <DropDown
                                 class="line-chart-dropdown"
-                                list={["Year", "Month", "Day", "Week", "Hour"]}
+                                list={["Year", "Month", "Day", "Week"]}
+                                // list={GroupByOptions}
                                 onSelect={this.handleSelect}
                                 title={this.state.title}
                                 activetab={this.state.title}

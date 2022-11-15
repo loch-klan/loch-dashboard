@@ -34,6 +34,28 @@ export const GROUP_BY_YEAR = 'GROUP_BY_YEAR'
 export const GROUP_BY_DATE = 'GROUP_BY_DATE'
 export const GROUP_BY_WEEK = 'GROUP_BY_WEEK'
 
+export const GroupByOptions = {
+  GROUP_BY_MONTH: 'GROUP_BY_MONTH',
+  GROUP_BY_YEAR: 'GROUP_BY_YEAR',
+  GROUP_BY_DATE: 'GROUP_BY_DATE',
+  GROUP_BY_WEEK: 'GROUP_BY_WEEK',
+  _presentable:{
+    GROUP_BY_MONTH: 'Month',
+    GROUP_BY_YEAR: 'Year',
+    GROUP_BY_DATE: 'Date',
+    GROUP_BY_WEEK: 'Week',
+  },
+  getGroupBy : function(value){
+    if(value === 'Week') return GROUP_BY_WEEK
+    if(value === 'Day') return GROUP_BY_DATE
+    if(value === 'Month') return GROUP_BY_MONTH
+    if(value === 'Year') return GROUP_BY_YEAR
+  },
+  getText : function(value){
+    return this._presentable[value]
+  }
+}
+
 export const Gender = {
   MALE: 10,
   FEMALE: 20,

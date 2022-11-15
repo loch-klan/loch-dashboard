@@ -112,6 +112,7 @@ class BarGraphSection extends Component {
             ) : (
               ""
             )}
+              <span className={`${this.props.comingSoon && 'blur-effect'}`}>
             {this.state.showBadges ? (
               <CoinBadges
                 handleFunction={this.handleFunction}
@@ -178,6 +179,7 @@ class BarGraphSection extends Component {
             ) : (
               ""
             )}
+            </span>
           </div>
         );
     }

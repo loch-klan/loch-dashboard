@@ -19,7 +19,7 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH} from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE} from '../../utils/Constant'
 import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
@@ -96,14 +96,18 @@ class Portfolio extends BaseReactComponent {
         this.getGraphData()
     }
 
-    getGraphData = () =>{
+    getGraphData = (groupByValue = GROUP_BY_MONTH) =>{
       let addressList = [];
       this.state.userWalletList.map((wallet)=> addressList.push(wallet.address))
       console.log('addressList',addressList);
       let data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList))
-      data.append("group_criteria", GROUP_BY_MONTH);
+      data.append("group_criteria", groupByValue);
       getAssetGraphDataApi(data, this)
+    }
+    handleGroupBy = (value)=>{
+      let groupByValue = GroupByOptions.getGroupBy(value);
+      this.getGraphData(groupByValue)
     }
     getTableData = () => {
 
@@ -675,6 +679,7 @@ class Portfolio extends BaseReactComponent {
                                   assetValueData={this.state.assetValueData && this.state.assetValueData}
                                   coinLists={this.props.OnboardingState.coinsLists}
                                   isScrollVisible={false}
+                                  handleGroupBy={(value)=>this.handleGroupBy(value)}
                                 />
                             </div>
                             <div className='m-b-22 graph-table-section'>
@@ -698,17 +703,17 @@ class Portfolio extends BaseReactComponent {
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div>
-                                            <span className='blur-effect'> <BarGraphSection
+                                            <BarGraphSection
                                                 headerTitle="Volume Traded by Counterparty"
                                                 headerSubTitle="In the last month"
                                                 isArrow={true}
                                                 data={data}
                                                 options={options}
                                                 isScroll={false}
+                                                comingSoon={true}
                                             // width="100%"
                                             // height="100%"
                                             />
-                                            </span>
                                         </div>
                                     </Col>
                                 </Row>
@@ -718,13 +723,14 @@ class Portfolio extends BaseReactComponent {
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div>
-                                <div className='portfolio-cost-table blur-effect'>
+                                <div className='portfolio-cost-table'>
                                     <TransactionTable
                                         title="Average Cost Basis"
                                         subTitle="Understand your average entry price"
                                         tableData={costTableData}
                                         columnList={costColumnData}
                                         headerHeight={64}
+                                        comingSoon={true}
                                     />
                                 </div>
                             </div>
