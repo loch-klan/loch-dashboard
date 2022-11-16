@@ -464,6 +464,7 @@ position: relative;
     .coin-hover-display-text {
         display: flex;
         align-items: center;
+        padding: 1rem 1rem;
     }
 
     .coin-hover-display-text-icon {
@@ -522,6 +523,15 @@ position: relative;
 
     .coin-hover-display-text2 {
         //margin-left: 32.7rem;
+        .coin-hover-display-text2-upper-coin{
+          width: 12rem;
+          white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: bottom;
+
+        }
     }
 
     .coin-hover-display-text3 {
@@ -540,7 +550,7 @@ position: relative;
         // display: flex;
         // flex-direction: column;
         // align-items: flex-start;
-        padding: 1rem 2rem;
+        padding: 1rem 1rem;
         //width: 17.4rem;
         // height: 7rem;
         border-left: 0.1rem solid #E5E5E6;

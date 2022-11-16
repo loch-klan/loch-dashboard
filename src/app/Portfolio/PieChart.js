@@ -1,16 +1,18 @@
 import React from 'react';
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import { connect } from "react-redux";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CustomLoader from "../common/CustomLoader";
 import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
 import unrecognized from '../../image/unrecognized.svg';
-import { DEFAULT_COLOR } from '../../utils/Constant';
+import { DEFAULT_COLOR, DEFAULT_PRICE } from '../../utils/Constant';
 import { Image} from 'react-bootstrap';
 import noDataImage from '../../image/no-data.png';
 import Loading from '../common/Loading';
 import { PiechartChainName } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
+import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 
 class PieChart extends BaseReactComponent {
 
@@ -18,6 +20,7 @@ class PieChart extends BaseReactComponent {
         super(props);
         this.state = {
             pieSectionDataEnabled: {},
+            selectedSection: {},
             assetTotal: props.assetTotal,
             loader: props.loader,
             walletTotal:props.walletTotal ,
@@ -38,6 +41,7 @@ class PieChart extends BaseReactComponent {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
                     let z = ((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100.0);
                     assetData.push({
+                      assetId: this.props.userWalletData[i].assetId,
                         name: this.props.userWalletData[i].assetName,
                         y: z,
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
@@ -74,6 +78,7 @@ class PieChart extends BaseReactComponent {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
                     let z = ((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100.0);
                     assetData.push({
+                      assetId: this.props.userWalletData[i].assetId,
                         name: this.props.userWalletData[i].assetName,
                         y: z,
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
@@ -218,14 +223,18 @@ class PieChart extends BaseReactComponent {
                     point: {
                         events: {
                             select: function () {
-                                // console.log("SELECT")
+
                                 var currentData = this;
+                                // console.log("SELECT",this)
+                                // console.log('self',self);
                                 this.update({ color: this.options.borderColor });
-                                self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
+                                self.setState({
+                                  selectedSection: self.props.userWalletData.filter((data)=>{if(data.assetId === currentData.assetId) return data}),
+                                  pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData
+                                });
                                 if(document.getElementById("fixbtn")){
                                   {document.getElementById("fixbtn").style.display = "none"}
                                 }
-
                                 // console.log("current data", currentData);
                                 PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: [{asset_name: currentData.options.name, usd: "$"+currentData.options.usd}]});
                             },
@@ -234,7 +243,7 @@ class PieChart extends BaseReactComponent {
                                 var currentData = this;
                                 this.update({ color: this.options.originalColor });
                                 if(currentData.assetCode === self.state.pieSectionDataEnabled.assetCode){
-                                  self.setState({pieSectionDataEnabled :{}})
+                                  self.setState({pieSectionDataEnabled :{}, selectedSection: {}})
                                   if(document.getElementById("fixbtn")){
                                     {document.getElementById("fixbtn").style.display = "flex"}
                                   }
@@ -349,19 +358,35 @@ class PieChart extends BaseReactComponent {
                                         </div>
                                     </div>
                                 </div>
-                                {/* <div className='coin-hover-display-text2'>
+                                {
+                                  this.state.selectedSection[0] && this.state.selectedSection[0].chain.slice(0,2).map((data)=>{
+                                    return(
+                                      <>
+                                      <div className='coin-hover-display-text2'>
                                     <div className='coin-hover-display-text2-upper'>
-                                        <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>Metamask</span>
-                                        <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>50%</span>
+                                    <CustomOverlay
+                            position="top"
+                            className={"coin-hover-tooltip"}
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={data.address}
+                            >
+                                        <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>{data.address}</span>
+                                        </CustomOverlay>
+                                        <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>{((100 * data.assetCount) / this.state.pieSectionDataEnabled.count).toFixed(2) + "%"}</span>
                                     </div>
                                     <div className='coin-hover-display-text2-lower'>
-                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>3.1</span>
-                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>BTC</span>
-                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>21310</span>
+                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>{numToCurrency(data.assetCount)}</span>
+
+                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{data.chainCode}</span>
+
+                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(data.assetCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote.USD.price) || DEFAULT_PRICE}</span>
+
                                         <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
                                     </div>
                                 </div>
-                                <div className='coin-hover-display-text3'>
+                                {/* <div className='coin-hover-display-text3'>
                                     <div className='coin-hover-display-text3-upper'>
                                         <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text3-upper-coin'>Coinbase</span>
                                         <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text3-upper-percent'>30%</span>
@@ -385,7 +410,10 @@ class PieChart extends BaseReactComponent {
                                         <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text4-upper-coincurrency'>USD</span>
                                     </div>
                                 </div> */}
-
+                                      </>
+                                    )
+                                  })
+                                }
                             </div> : null}
                     </>
                     :
@@ -411,4 +439,7 @@ class PieChart extends BaseReactComponent {
     }
 }
 
-export default PieChart;
+const mapStateToProps = state => ({
+  portfolioState: state.PortfolioState,
+});
+export default connect(mapStateToProps)(PieChart);

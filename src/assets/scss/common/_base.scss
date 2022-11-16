@@ -1334,6 +1334,11 @@ form {
       // border: 0.1rem solid $grey-E5E;
     }
   }
+  &.coin-hover-tooltip{
+    .tooltip-inner{
+      max-width: max-content;
+    }
+  }
 
   &.bs-tooltip-top {
     padding-bottom: 0.8rem;
