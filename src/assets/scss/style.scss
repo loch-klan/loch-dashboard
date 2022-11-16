@@ -6,6 +6,7 @@
 @import "common/information-modal";
 @import "common/custom-modal";
 @import "common/sidebar";
+@import "common/confirmLeaveModal";
 @import "common/exit-overlay-modal";
 @import "onboarding/onboarding";
 @import "common/login";
@@ -13,9 +14,12 @@
 @import "common/fix-add-modal";
 @import "intelligence/intelligence";
 @import "intelligence/transactionHistory";
+@import "common/commonTable";
+@import "common/commonPagination";
 @import "common/page-header";
 @import "common/coin-badge";
 @import "common/dropdown";
+@import "common/chartArea";
 @import "wallet/wallet";
 @import "wallet/edit-wallet";
 @import "cost/cost";

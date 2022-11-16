@@ -25,7 +25,7 @@ export default function CoinBadges(props) {
     }
     return (
         <div className='coin-badges'>
-            <div className='badge-list'>
+            <div className={`badge-list ${ props.isScrollVisible === false ? 'white-scroll' : ""}`}>
                 {badgeList.map((badge, index) => {
                     const className = props.activeBadge.some(e => e.name === badge.name) ? "inter-display-medium f-s-13 lh-16 m-r-16 badge-name badge-active" :
                         "inter-display-medium f-s-13 lh-16 m-r-16 black-191 badge-name"

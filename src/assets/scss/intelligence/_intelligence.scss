@@ -3,7 +3,7 @@
 
     .intelligence-section {
 
-        margin-top: 8rem;
+        margin-top: 5rem;
 
         .intell-welcome-card {
 
@@ -17,19 +17,29 @@
 
             .row-card {
                 position: relative;
+                // overflow: hidden;
 
                 .bg-img {
                     position: absolute;
                     right: 0px;
-                    top: 0.7rem;
+                    // top: 0.7rem;
+                    // top: 1.3rem;
+                    top:0.5rem;
+                    // height:92%;
+                    z-index: 1;
                 }
 
                 .welcome-card {
                     background: $secondary;
                     box-shadow: 0rem 0.6rem 1.2rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 0.8rem 2.4rem -0.4rem rgba(24, 39, 75, 0.08);
                     border-radius: 1.2rem;
-                    padding: 6rem 4.8rem 5.2rem 4.8rem;
+                    // padding: 6rem 4.8rem 5.2rem 4.8rem;
+                    padding: 4.8rem;
 
+                    h3, p{
+                        position: relative;
+                        z-index: 2;
+                    }
                     .welcome-card-title {
                         color: $black-191;
                     }
@@ -42,14 +52,15 @@
                         display: flex;
                         justify-content: space-between;
                         align-items: flex-start;
+                        flex-wrap: wrap;
                         .info {
                             display: flex;
                             align-items: center;
                             z-index: 1;
                             .icon {
-                                width: 4.8rem;
-                                height: 4.8rem;
-                                border-radius: 8px;
+                                // width: 4.8rem;
+                                // height: 4.8rem;
+                                border-radius: 0.8rem;
                                 padding:1.2rem;
                                 margin-right: 1.6rem;
                             }
@@ -76,10 +87,48 @@
                                 }
                             }
                         }
-                    }
 
+                        @media only screen  and (max-width : 1240px)
+                        {
+                            .info {
+                                 margin-bottom: 1.5rem;
+
+                                 }
+                                }
+                            }
+
+                }
+            }
+        }
+        .portfolio-bar-graph{
+            .page-header{
+                margin-bottom: 2.8rem;
+                h4{
+                    font-size:2rem;
+                    line-height:2.4 ;
+                }
+            }
+            .bar-graph-section{
+                width: 100% ;
+                padding : 3.4rem 3.2rem;
+                .chartArea{
+                    height: 37rem;
+                }
+                .bar-graph-footer{
+                    .row{
+                        margin-left:2.5rem;
+                    }
                 }
             }
         }
     }
 }
+
+// @media screen  and (max-device-width : 1240px)
+// {
+//     .intelligence-page-section .intelligence-section .intell-welcome-card .row-card .welcome-card .info-container .info {
+//         margin-bottom: 1.5rem;
+//     }
+
+
+// }

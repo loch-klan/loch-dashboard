@@ -5,9 +5,11 @@ import CoinChip from './CoinChip';
 import EditIcon from '../../assets/images/EditIcon.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import EditWalletModal from './EditWalletModal';
-import unrecognisedIcon from '../../image/unrecognised.png';
-import { amountFormat, numToCurrency } from './../../utils/ReusableFunctions';
+import unrecognizedIcon from '../../image/unrecognized.svg';
+import { amountFormat, lightenDarkenColor, numToCurrency } from './../../utils/ReusableFunctions';
 import CopiedModal from '../common/_utils/CopiedModal';
+import FixAddModal from '../common/FixAddModal';
+import Loading from '../common/Loading';
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
     const [showModal, toggleCopied] = React.useState(false);
@@ -21,16 +23,19 @@ export default function WalletCard(props) {
         return (
             <CustomOverlay
                 position="top"
-                isIcon={true}
+                // isIcon={true}
+                isIcon={false}
                 isInfo={true}
                 key={index}
                 isText={true}
                 isName={coin.chain.name}
                 colorCode={coin.chain.color}
                 text={ coin.chain.percentage.toFixed(2) + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + " USD"}
+                className="wallet-tooltip"
             >
                 <div>
                     <CoinChip
+                        colorCode={coin.chain.color}
                         key={index}
                         coin_img_src={coin.chain.symbol}
                         coin_percent={coin.chain.percentage.toFixed(2) + "%"}
@@ -52,24 +57,47 @@ export default function WalletCard(props) {
       });
         // toggleCopied(true)
     }
-    return (
+    const [showFixModal , setShowFixModal] = React.useState(0)
+    const handleFixModal = ()=>{
+        setShowFixModal(prev => !prev)
+    }
+    return (<>
         <div className="walletcard">
+
+        {/* // props.isLoading
+        // ?
+        // <Loading/>
+        // : */}
+        <>
+
           {/* {
             <CopiedModal show={showModal} onHide={()=>toggleCopied(false)} />
           } */}
             <div className='m-b-32 wallet-details'>
                 <div className='wallet-account-details'>
                     <div className='m-r-16 wallet-img'>
-                        <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognisedIcon} />
+                        <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognizedIcon} />
                     </div>
-                    <div className='m-r-16 wallet-name-details'>
-                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognised wallet"}</h6>
-                        {props.wallet_metadata && props.wallet_metadata.tag && <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} </div>}
-                    </div>
+                    {/* <div className='m-r-16 wallet-name-details'> */}
+                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognized wallet"}</h6>
+                        {props.wallet_metadata && props.wallet_metadata.tag && 
+                            <CustomOverlay
+                            position="top"
+                            // isIcon={true}
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={props.wallet_metadata.tag}
+                            >
+                            <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} 
+                            </div>
+                            </CustomOverlay>
+                        }
                     <div className='account-details'>
                         <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
                         <Image src={CopyClipboardIcon} onClick={copyContent} className="m-l-10 cp" />
                     </div>
+                    {/* </div> */}
                 </div>
                 <div className='amount-details'>
                     <h6 className='inter-display-medium f-s-20 lh-24' >{numToCurrency(props.wallet_amount)}</h6>
@@ -86,8 +114,8 @@ export default function WalletCard(props) {
                 </>
                 :
                 <>
-                <h6 className='inter-display-medium f-s-16 lh-19 grey-B0B'>This wallet address is not dected, please fix it now.</h6>
-                <Button className='secondary-btn'>Fix now</Button>
+                <h6 className='inter-display-medium f-s-16 lh-19 grey-B0B'>This wallet address is not detected. Please fix it now.</h6>
+                <Button className='secondary-btn' onClick={handleFixModal}>Fix now</Button>
                 </>
               }
             </div>
@@ -101,11 +129,33 @@ export default function WalletCard(props) {
                         walletAddress={props.wallet_account_number}
                         walletMetaData={props.wallet_metadata}
                         coinchips={props.wallet_coins}
-                        makeApiCall={props.makeApiCall}
+                        makeApiCall={()=>props.makeApiCall()}
                     />
                     :
                     ""
             }
+            {showFixModal ?
+               <FixAddModal
+               show={showFixModal}
+               onHide={handleFixModal}
+               //  modalIcon={AddWalletModalIcon}
+               title="Fix your wallet connection"
+               subtitle="Add your wallet address to get started"
+               fixWalletAddress={[props.wallet_account_number]}
+               btnText="Done"
+               btnStatus={true}
+               modalType="fixwallet"
+               pathName="/wallets"
+               history={props.history}
+            //    makeApiCall={props.makeApiCall}
+            handleUpdateWallet = {props.handleUpdateWallet}
+           />
+           :""
+            }
+        </>
+
         </div>
+        </>
+
     )
 }

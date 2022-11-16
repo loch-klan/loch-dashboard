@@ -4,11 +4,13 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CustomLoader from "../common/CustomLoader";
 import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
-import unrecognised from '../../image/unrecognised.png';
+import unrecognized from '../../image/unrecognized.svg';
 import { DEFAULT_COLOR } from '../../utils/Constant';
 import { Image} from 'react-bootstrap';
 import noDataImage from '../../image/no-data.png';
-
+import Loading from '../common/Loading';
+import { PiechartChainName } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 
 class PieChart extends BaseReactComponent {
 
@@ -18,11 +20,13 @@ class PieChart extends BaseReactComponent {
             pieSectionDataEnabled: {},
             assetTotal: props.assetTotal,
             loader: props.loader,
+            walletTotal:props.walletTotal ,
             chartData: [],
             assetData: [],
             chartOptions: [],
             valueChanged: false,
-            flag: false
+            flag: false,
+            isLoading:props.isLoading
         }
 
     }
@@ -105,8 +109,8 @@ class PieChart extends BaseReactComponent {
                 styledMode: false,
                 type: 'pie',
                 backgroundColor: null,
-                height: 365,
-                width: 765,
+                height: 335,
+                width: 735,
                 events: {
                     render: function () {
                         var series = this.series[0],
@@ -222,7 +226,8 @@ class PieChart extends BaseReactComponent {
                                   {document.getElementById("fixbtn").style.display = "none"}
                                 }
 
-                                // console.log(this.state.currentData)
+                                // console.log("current data", currentData);
+                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: [{asset_name: currentData.options.name, usd: "$"+currentData.options.usd}]});
                             },
                             unselect: function () {
                                 // console.log("UNSELECT")
@@ -304,10 +309,14 @@ class PieChart extends BaseReactComponent {
             }]
         }
         return (
-            <div className='portfolio-over-container' >
+            <div className={`portfolio-over-container ${Object.keys(this.state.pieSectionDataEnabled).length > 0 ? "m-b-32" : "m-b-60"}`} >
 
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
+                this.state.loader === true
+                ?
+                <Loading/>
+                :
                 Object.keys(this.state.assetData).length > 0 ?
                     <>
                         <div className='chart-section'>
@@ -325,7 +334,7 @@ class PieChart extends BaseReactComponent {
                             <div className='coin-hover-display' >
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
-                                        <Image className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognised : null} />
+                                        <Image className='coin-hover-display-icon' src={this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetSymbol || unrecognized : null} />
                                     </div>
                                     <div className='coin-hover-display-text1'>
                                         <div className='coin-hover-display-text1-upper'>
@@ -340,7 +349,7 @@ class PieChart extends BaseReactComponent {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='coin-hover-display-text2'>
+                                {/* <div className='coin-hover-display-text2'>
                                     <div className='coin-hover-display-text2-upper'>
                                         <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>Metamask</span>
                                         <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>50%</span>
@@ -375,26 +384,28 @@ class PieChart extends BaseReactComponent {
                                         <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text4-upper-coinrevenue'>3120</span>
                                         <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text4-upper-coincurrency'>USD</span>
                                     </div>
-                                </div>
+                                </div> */}
 
                             </div> : null}
                     </>
                     :
-                    this.state.loader === false && this.state.assetTotal === 0
-                    ?
-                    <>
-                    <Image src={noDataImage} className="no-data" />
-                    <h3 className='inter-display-medium f-s-14 lh-19'>No data found</h3>
-                    </>
+                        this.props.isLoading === true
+                        ?
+                            <>
+                            {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
+                                <Loading/>
+                            </>
 
-                    :
-                    <div className='chart-section-loader'>
-                        <CustomLoader loaderType="pie" />
-                    </div>
+                        :
+                            this.props.walletTotal === 0
+                            ?
+                                <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                            :
+                                null
                 }
+                </div>
 
 
-            </div >
         )
 
     }

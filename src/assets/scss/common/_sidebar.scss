@@ -1,7 +1,7 @@
 .sidebar-section {
   // position: absolute;
   position: fixed;
-    // height: 100vh;
+    height: 100vh;
     background-color: $secondary;
     width: 27.2rem;
     .container {
@@ -13,14 +13,21 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        height: 100vh;
+        justify-content: space-between;
         // padding: 4.4rem 0rem 0rem 0.9rem;
         // padding: 0;
         .logo {
             // margin-bottom: 3rem;
             // margin-left: 1.4rem;
-            margin: 3.6rem 1.4rem;
+            margin: 2.6rem 1.4rem 3.6rem;
             img{
-              width: 8.7rem;
+              width: 4.5rem;
+              margin-right: 1rem;
+            }
+            .loch-text{
+              @include font($black-191, "Inter-Medium", 3rem, 500, 24px);
+              vertical-align: middle;
             }
         }
         ul {
@@ -126,6 +133,9 @@
                         color: $grey-B0B;
                         outline: none !important;
                         box-shadow: none !important;
+                    }
+                    &:hover .navbar-button{
+                        color:$primary
                     }
                 }
             }

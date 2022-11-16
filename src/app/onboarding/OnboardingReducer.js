@@ -29,17 +29,18 @@ const OnboardingReducer = (state = INITIAL_STATE, action) => {
                 }
                 // }
             } else {
-                updateWalletList.push({
-                    id: action.payload.id,
-                    coins: [{
-                        coinCode: action.payload.coinCode,
-                        coinSymbol: action.payload.coinSymbol,
-                        coinName: action.payload.coinName,
-                        chain_detected: action.payload.chain_detected
-                    }],
-                    address: action.payload.address,
-                    coinFound: action.payload.chain_detected ? true : false
-                })
+              // FOR FIRST TIME LOAD
+                // updateWalletList.push({
+                //     id: action.payload.id,
+                //     coins: [{
+                //         coinCode: action.payload.coinCode,
+                //         coinSymbol: action.payload.coinSymbol,
+                //         coinName: action.payload.coinName,
+                //         chain_detected: action.payload.chain_detected
+                //     }],
+                //     address: action.payload.address,
+                //     coinFound: action.payload.chain_detected ? true : false
+                // })
             }
             // }
             return { ...state, walletList: updateWalletList };

@@ -6,6 +6,7 @@ import CustomLoader from "../common/CustomLoader";
 import { numToCurrency } from '../../utils/ReusableFunctions';
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import { amountFormat } from '../../utils/ReusableFunctions';
+
 export default function WelcomeCard(props) {
     // console.log(props)
     return (
@@ -22,7 +23,7 @@ export default function WelcomeCard(props) {
                 </div>
                 <div className='welcome-section-right'>
 
-                    {props.assetTotal !== null ?
+                    {props.walletTotal >= 0 ?
                         <CustomOverlay
                         position="top"
                         isIcon={false}

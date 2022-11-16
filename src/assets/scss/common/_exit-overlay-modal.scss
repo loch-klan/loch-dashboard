@@ -1,4 +1,3 @@
-
 .exitoverlaymodal.show {
     opacity: 0.5 !important;
 }
@@ -7,27 +6,48 @@
 .exit-overlay-modal {
     .modal-content {
         border-radius: 1.2rem;
-        width:78rem;
+        width: 78rem;
+
         .modal-header {
             padding: 2.8rem;
-            display: block;
-            text-align: center;
+            // display: block;
+            // text-align: center;
+            display: flex;
+            justify-content: center;
             position: relative;
             // margin-bottom: 4.2rem;
             border: none;
 
-            .exitOverlayIcon{
-                width:6rem;
-                height:6rem;
-                box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
-                margin-top:0.9rem
+            .api-modal-header {
+                img {
+                    width: 2.4rem;
+                    height: 2.4rem;
+                }
+
+                padding: 1.8rem;
+                box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
+                0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+                margin-top:1rem;
+                border-radius: 2rem;
             }
+
+            .exitOverlayIcon {
+                border-radius: 2rem;
+                padding: 1.818rem 1.717rem;
+                img{
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+            box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+            margin-top: 0.8rem;
+            }
+
             .closebtn {
                 position: absolute;
                 top: 2.8rem;
                 right: 2.8rem;
                 padding: 1.3rem;
-                background-color: $grey-F2F;
+                background-color: $drop-button-hover;
                 border-radius: 5rem;
                 cursor: pointer;
             }
@@ -41,12 +61,14 @@
         }
 
         .modal-body {
-            padding:0rem;
+            padding: 0rem;
+
             .exit-overlay-body {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 padding: 0rem 15.5rem;
+
                 h6 {
                     color: $primary;
                     margin-bottom: 0.6rem;
@@ -73,7 +95,8 @@
                                 // padding: 2.7rem 10.1rem 2.7rem 2.8rem;
                                 padding-right: 2rem !important;
                             }
-                            .is-invalid{
+
+                            .is-invalid {
                                 padding-right: 2rem !important;
                             }
                         }
@@ -85,10 +108,12 @@
                                 border-radius: 0.8rem;
                                 border: none;
                             }
-                            .active{
+
+                            .active {
                                 background-color: $primary;
                             }
-                            .save-btn:focus{
+
+                            .save-btn:focus {
                                 box-shadow: none;
                             }
                         }
@@ -104,7 +129,8 @@
                         background-color: $grey-F2F;
                         border-radius: 0.8rem;
                     }
-                    .linkInfo:hover{
+
+                    .linkInfo:hover {
                         background-color: $yellow-F5E;
                     }
 
@@ -118,7 +144,7 @@
                         .dropdown {
                             .btn-primary:not(:disabled):not(.disabled):active {
                                 border: none;
-                               
+
                             }
 
 
@@ -132,17 +158,20 @@
                                 padding: 0.8rem;
                                 font-size: 1.3rem;
                             }
-                            .active{
+
+                            .active {
                                 background-color: $grey-F2F;
                             }
+
                             // .dropdown-item {
                             //     .active {
                             //         background-color: $grey-F2F;
                             //     }
                             // }
-                            .dropdown-item:hover{
-                                background-color:$grey-F2F;
+                            .dropdown-item:hover {
+                                background-color: $grey-F2F;
                             }
+
                             .dropdown-item:active {
                                 background-color: $secondary;
                             }
@@ -170,6 +199,27 @@
 
                 .footer {
                     display: flex;
+                }
+            }
+
+            .api-modal-body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0rem 15.5rem;
+
+                .api-modal-frame {
+                    position: relative;
+                    text-align: center;
+                    margin-bottom: 8.7rem;
+
+                    p {
+                        // position: absolute;
+                        // bottom: 0rem;
+                        // left: 8rem;
+                        position: relative;
+                        top: -2rem;
+                    }
                 }
             }
         }

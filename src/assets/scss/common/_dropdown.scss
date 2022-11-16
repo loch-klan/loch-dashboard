@@ -1,14 +1,10 @@
 .dropdown {
     border-radius:0.8rem;
     .dropdown-toggle {
-        font-family: Inter-Medium;
-        font-size: 1.3rem;
-        font-weight: 500;
-        line-height: 1.6rem;
         cursor: pointer;
         box-shadow: none;
         border: none;
-        
+        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
     }
     // .dropdown-toggle:active{
     //     background-color:$secondary;
@@ -17,8 +13,9 @@
     .dropdown-toggle::after {
         margin-left: 1.2rem;
     }
-    .dropdown-item:active{
-        background-color: #e9ecef;
+    .dropdown-item:active , .dropdown-item:hover,.active{
+        // background-color: $grey-E9E;
+        background-color: $drop-button-hover;
     }    
     .btn-primary.dropdown-toggle:focus {
         box-shadow: none;

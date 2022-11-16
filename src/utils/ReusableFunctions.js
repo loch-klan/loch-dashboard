@@ -61,21 +61,21 @@ export const compareDate = (dateTimeA, dateTimeB) => {
 export const numToCurrency = (num) => {
   num = num.toString().replace(/[^0-9.]/g, '');
   if (num < 1000) {
-      return parseFloat(num).toFixed(2);
+    return parseFloat(num).toFixed(2);
   }
   let si = [
-    {v: 1E3, s: "K"},
-    {v: 1E6, s: "M"},
-    {v: 1E9, s: "B"},
-    {v: 1E12, s: "T"},
-    {v: 1E15, s: "P"},
-    {v: 1E18, s: "E"}
-    ];
+    { v: 1E3, s: "K" },
+    { v: 1E6, s: "M" },
+    { v: 1E9, s: "B" },
+    { v: 1E12, s: "T" },
+    { v: 1E15, s: "P" },
+    { v: 1E18, s: "E" }
+  ];
   let index;
   for (index = si.length - 1; index > 0; index--) {
-      if (num >= si[index].v) {
-          break;
-      }
+    if (num >= si[index].v) {
+      break;
+    }
   }
   return (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[index].s;
 }
@@ -89,23 +89,53 @@ export const lightenDarkenColor = (hex, lum) => {
   // return newColor.toString(16);
 
   // validate hex string
-	hex = String(hex).replace(/[^0-9a-f]/gi, '');
-	if (hex.length < 6) {
-		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-	}
-	lum = lum || 0;
+  hex = String(hex).replace(/[^0-9a-f]/gi, '');
+  if (hex.length < 6) {
+    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+  }
+  lum = lum || 0;
 
-	// convert to decimal and change luminosity
-	var rgb = "#", c, i;
-	for (i = 0; i < 3; i++) {
-		c = parseInt(hex.substr(i*2,2), 16);
-		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
-		rgb += ("00"+c).substr(c.length);
-	}
+  // convert to decimal and change luminosity
+  var rgb = "#", c, i;
+  for (i = 0; i < 3; i++) {
+    c = parseInt(hex.substr(i * 2, 2), 16);
+    c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+    rgb += ("00" + c).substr(c.length);
+  }
 
-	return rgb;
+  return rgb;
 }
 
-export const amountFormat = (number,locals,currency_type) => {
-  return new Intl.NumberFormat(locals, {currency:currency_type}).format(number)
+export const amountFormat = (number, locals, currency_type) => {
+  return new Intl.NumberFormat(locals, { currency: currency_type }).format(number)
+}
+export const getPadding = (val, e ,OnboardingState) => {
+  let paddRight = 120
+  if (document.getElementById(val)) {
+    // console.log(document.getElementById(val).lastChild.offsetWidth)
+    if (document.getElementById(val).lastChild.offsetWidth) {
+      if (document.getElementById(val).lastChild.offsetWidth < 60)
+        paddRight = 120
+      else
+        paddRight = document.getElementById(val).lastChild.offsetWidth + 10
+    }
+    // condition when unregognize coin detected
+    if (e.coins.length === OnboardingState.coinsList.length && e.coinFound === false)
+      paddRight = 150
+    let style = { paddingRight: paddRight }
+    return style
+  }
+
+  return { paddingRight: paddRight }
+}
+export const loadingAnimation = () => {
+  return (
+    <div className="spinner-chip-container">
+      <div className="spinner">
+        <div className="bounce1"></div>
+        <div className="bounce2"></div>
+        <div className="bounce3"></div>
+      </div>
+    </div>
+  )
 }
