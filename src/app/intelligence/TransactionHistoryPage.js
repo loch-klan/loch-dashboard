@@ -324,7 +324,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                 },
                 usdValueToday: {
                     value: row.asset.value,
-                    id: row.asset.id
+                    id: row.asset.id,
+                    assetPrice: row.asset_price
                 },
                 usdTransactionFee: {
                     value: row.transaction_fee,
@@ -506,7 +507,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                                value = rowData.usdValueToday.value * chain[1].quote.USD.price
+                                value = rowData.usdValueToday.value * rowData.usdValueToday.assetPrice
                                 return
                             }
                         })
