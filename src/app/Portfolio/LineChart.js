@@ -122,16 +122,6 @@ class LineChart extends BaseReactComponent {
             data: graphData
         })
       }
-
-      // timestampList.map((timestamp,index)=>{
-      //   assetValueData && assetValueData.map((assetData)=>{
-      //     if(assetData.timestamp === timestamp){
-      //       seriesData[index] = {
-
-      //       };
-      //     }
-      //   })
-      // })
       let categories = [];
       timestampList.map((time)=> {
         let dummy = new Date(time)
@@ -149,9 +139,9 @@ class LineChart extends BaseReactComponent {
           categories.push(abc);
         }
       })
-      // console.log('categories',categories);
-      // console.log('timestamp',timestampList);
-      // console.log('seriesData',seriesData);
+      console.log('categories',categories);
+      console.log('timestamp',timestampList);
+      console.log('seriesData',seriesData);
 
         var UNDEFINED;
         const options = {
@@ -165,15 +155,17 @@ class LineChart extends BaseReactComponent {
                 enabled: false
             },
             xAxis: {
+              min: categories.length,
+            max:5,
+            navigator: { enabled: true },
+            scrollbar: { enabled: true },
                 categories: categories,
-                // categories:  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                // categories: timestampList,
-                labels: {
-                    style: {
-
-                    }
-                }
+                // labels: {
+                //     style: {
+                //     }
+                // }
             },
+
             yAxis: {
                 title: {
                     text: null
@@ -215,73 +207,21 @@ class LineChart extends BaseReactComponent {
                 padding: 12,
                 shadow:false,
                 formatter: function () {
+                  // console.log('this',this);
                     return `
                         <div class="line-chart-tooltip">
                             <div class="m-b-12 top-section">
-                                <div class="inter-display-semi-bold f-s-10 lh-12 grey-B0B m-b-8 header-title">Potential External Factors</div>
                                 <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
                                     <img src=${TrendingUp} class="m-r-8"/>
-                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">Increased Interests Rates</div>
-                                </div>
-                                <div class="line-chart-tooltip-section tooltip-section-yellow">
-                                    <img src=${TrendingDown} class="m-r-8"/>
-                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">Terra Collapse</div>
+                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + this.y}</div>
                                 </div>
                             </div>
-                            <div class="bottom-section">
-                                <div class="inter-display-semi-bold f-s-10 lh-12 grey-B0B m-b-8 header-title">Internal Factors</div>
-                                <div class="inter-display-semi-bold f-s-10 lh-12 grey-313  tooltip-section-bottom" >0.7 BTC was deposited into a Coinbase Wallet</div>
-                            </div>
-
                         </div>
 
                     `
                 }
             },
             series: seriesData,
-            // series: [
-            //     {
-            //         name: 'Bitcoin',
-            //         id: 'Bitcoin',
-            //         color: 'rgba(255, 99, 132, 1)',
-            //         data: []
-            //     }, {
-            //         linkedTo: 'Bitcoin',
-            //         type: 'line',
-            //         color: 'rgba(255, 99, 132, 1)',
-            //         marker: {
-            //             enabled: false
-            //         },
-            //         data: [40000, 35000, 28000, 22000, 24000, 45000, 39000, 42000]
-            //     }
-            //     , {
-            //         name: 'Ethereum',
-            //         id: 'Ethereum',
-            //         color: 'rgba(54, 162, 235, 1)',
-            //         data: []
-            //     }, {
-            //         linkedTo: 'Ethereum',
-            //         type: 'line',
-            //         color: 'rgba(54, 162, 235, 1)',
-            //         marker: {
-            //             enabled: false
-            //         },
-            //         data: [10000, 9000, 11000, 6000, 7000, 12000, 13000, 11500]
-            //     },
-            //     {
-            //       name: 'Polygon',
-            //       id: 'Polygon',
-            //       color: 'rgba(154, 162, 35, 1)',
-            //       data: []
-            //   }, {
-            //       linkedTo: 'Polygon',
-            //       type: 'line',
-            //       color: 'rgba(154, 162, 35, 1)',
-            //       marker: {
-            //           enabled: false
-            //       },
-            //       data: [20000, 4000, 41000, 9000, 3000, 2000, 13000, 1500]
-            //   }]
         }
         return (
             <div className="welcome-card-section line">

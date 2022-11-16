@@ -102,7 +102,7 @@ function Sidebar(props) {
     ];
     React.useEffect(() => {
         if (currentIndex === quotes.length - 1) {
-          console.log("loop complete");
+          // console.log("loop complete");
           setCurrentIndex(0);
           return;
         }
