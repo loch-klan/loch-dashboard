@@ -320,12 +320,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                 },
                 usdValueThen: {
                     value: row.asset.value,
-                    id: row.asset.id
+                    id: row.asset.id,
+                    assetPrice: row.asset_price
                 },
                 usdValueToday: {
                     value: row.asset.value,
-                    id: row.asset.id,
-                    assetPrice: row.asset_price
+                    id: row.asset.id
                 },
                 usdTransactionFee: {
                     value: row.transaction_fee,
@@ -472,7 +472,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueThen.id) {
-                                value = (rowData.usdValueThen.value * chain[1].quote.USD.price)
+                                value = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
                                 return
                             }
                         })
@@ -507,7 +507,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                                value = rowData.usdValueToday.value * rowData.usdValueToday.assetPrice
+                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price)
                                 return
                             }
                         })

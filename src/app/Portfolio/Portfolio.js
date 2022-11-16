@@ -306,7 +306,6 @@ class Portfolio extends BaseReactComponent {
                 usdValueToday: {
                     value: row.asset.value,
                     id: row.asset.id,
-                    assetPrice: row.asset_price
                 },
                 method: row.method
             }
@@ -417,7 +416,7 @@ class Portfolio extends BaseReactComponent {
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                                value = rowData.usdValueToday.value * rowData.usdValueToday.assetPrice
+                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price)
                                 return
                             }
                         })
