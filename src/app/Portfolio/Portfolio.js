@@ -110,7 +110,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getCoinRate()
         this.props.getAllCoins()
         this.getTableData()
-        this.getGraphData()
+        // this.getGraphData()
     }
 
     componentWillUnmount() {
@@ -132,7 +132,7 @@ class Portfolio extends BaseReactComponent {
     }
     handleGroupBy = (value)=>{
       let groupByValue = GroupByOptions.getGroupBy(value);
-      this.getGraphData(groupByValue)
+      // this.getGraphData(groupByValue)
     }
     getTableData = () => {
 
@@ -308,7 +308,7 @@ class Portfolio extends BaseReactComponent {
                     id: row.asset.id,
                     assetPrice: row.asset_price
                 },
-                method: row.transaction_type
+                method: row.method
             }
         })
 
@@ -428,9 +428,9 @@ class Portfolio extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={value}
+                            text={value?.toFixed(2)}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -447,24 +447,26 @@ class Portfolio extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "method") {
                         return (
-                            <div
-                                className={
-                                    `inter-display-medium f-s-13 lh-16 black-191 history-table-method
-                                    ${rowData.method === Method.BURN ? "burn"
-                                        :
-                                        rowData.method === Method.TRANSFER ? "transfer"
-                                            :
-                                            rowData.method === Method.MINT ? "mint"
-                                                :
-                                                rowData.method === Method.COMMIT ? "commit"
-                                                    :
-                                                    ""
-                                    }`
-                                }
-                            >
-                                {
+                            // <div
+                            //     className={
+                            //         `inter-display-medium f-s-13 lh-16 black-191 history-table-method
+                            //         ${rowData.method === Method.BURN ? "burn"
+                            //             :
+                            //             rowData.method === Method.TRANSFER ? "transfer"
+                            //                 :
+                            //                 rowData.method === Method.MINT ? "mint"
+                            //                     :
+                            //                     rowData.method === Method.COMMIT ? "commit"
+                            //                         :
+                            //                         ""
+                            //         }`
+                            //     }
+                            // >
+                              <div className='inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer'>
+                              {rowData.method}
+                                {/* {
                                     Method.getText(rowData.method)
-                                }
+                                } */}
                             </div>
                         )
                     }
@@ -713,12 +715,12 @@ class Portfolio extends BaseReactComponent {
                                     : ""}
                             </div>
                             <div className='portfolio-section m-b-32'>
-                                <LineChart
+                                {/* <LineChart
                                   assetValueData={this.state.assetValueData && this.state.assetValueData}
                                   coinLists={this.props.OnboardingState.coinsLists}
                                   isScrollVisible={false}
                                   handleGroupBy={(value)=>this.handleGroupBy(value)}
-                                />
+                                /> */}
                             </div>
                             <div className='m-b-22 graph-table-section'>
                                 <Row>
