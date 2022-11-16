@@ -8,7 +8,12 @@ import CustomButton from "../../utils/form/CustomButton";
 import { getAllCoins, detectCoin, createAnonymousUserApi} from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import { getPadding } from '../../utils/ReusableFunctions';
-import { DeleteWalletAddress } from "../../utils/AnalyticsFunctions.js";
+import {
+  DeleteWalletAddress,
+  PreviewDemo,
+  AddTextbox,
+  LPC_Go,
+} from "../../utils/AnalyticsFunctions.js";
 
 class AddWallet extends BaseReactComponent {
     constructor(props) {
@@ -113,6 +118,7 @@ class AddWallet extends BaseReactComponent {
         this.setState({
             walletInput: this.state.walletInput
         });
+      AddTextbox({});
     }
 
     deleteInputField = (index,wallet) => {
@@ -129,13 +135,15 @@ class AddWallet extends BaseReactComponent {
             //     }
             // }
             DeleteWalletAddress({
-              session_id: "none",
+              
               address: wallet.address,
             });
+            
             this.setState({
                 walletInput: this.state.walletInput
             });
         }
+      console.log("Delete", wallet.address);
     }
 
 
@@ -163,114 +171,198 @@ class AddWallet extends BaseReactComponent {
     }
 
     onValidSubmit = () => {
-        let walletAddress = [];
-        let addWallet = this.state.walletInput;
-        let finalArr = []
-        for (let i = 0; i < addWallet.length; i++) {
-            let curr = addWallet[i]
-            if (!walletAddress.includes(curr.address) && curr.address) {
-                finalArr.push(curr)
-                walletAddress.push(curr.address)
-            }
+      let walletAddress = [];
+      let addWallet = this.state.walletInput;
+      let finalArr = [];
+      for (let i = 0; i < addWallet.length; i++) {
+        let curr = addWallet[i];
+        if (!walletAddress.includes(curr.address) && curr.address) {
+          finalArr.push(curr);
+          walletAddress.push(curr.address);
         }
+      }
 
-        finalArr = finalArr.map((item, index) => {
-            return ({
-                ...item,
-                id: `wallet${index + 1}`
-            })
-        })
+      finalArr = finalArr.map((item, index) => {
+        return {
+          ...item,
+          id: `wallet${index + 1}`,
+        };
+      });
 
-        const data = new URLSearchParams();
-        data.append("wallet_addresses", JSON.stringify(walletAddress))
-        createAnonymousUserApi(data, this, finalArr);
-    }
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(walletAddress));
+      createAnonymousUserApi(data, this, finalArr);
+      console.log(finalArr);
+
+      const address = finalArr.map((e) => e.address);
+      console.log("address", address);
+
+      const unrecog_address = finalArr.filter((e) => !e.coinFound)
+        .map((e) => e.address);
+      console.log("Unreq address", unrecog_address);
+
+      const blockchainDetected = [];
+      finalArr
+        .filter((e) => e.coinFound)
+        .map((obj) => {
+          let coinName = obj.coins
+            .filter((e) => e.chain_detected)
+            .map((name) => name.coinName);
+          let address = obj.address;
+          blockchainDetected.push({ address: address, names: coinName });
+        });
+
+      console.log("blockchain detected", blockchainDetected);
+
+      LPC_Go({addresses: address, ENS: address,chains_detected_against_them: blockchainDetected, unrecognized_addresses: unrecog_address, unrecognized_ENS: unrecog_address});
+
+    };
     handleSignText = ()=>{
         this.props.switchSignIn()
     }
     render() {
 
         return (
-            <>
-                <Form onValidSubmit={this.state.addButtonVisible ? this.onValidSubmit : this.handleSignText}>
-                    <div className='ob-modal-body-wrapper'>
-                        <div className="ob-modal-body-1">
-                            {this.state.walletInput.map((c, index) => {
-                                return <div className='ob-wallet-input-wrapper' key={index} id={`add-wallet-${index}`}>
-                                    {
-                                        index >= 1
-                                            ?
-                                            <Image
-                                                key={index}
-                                                className={`ob-modal-body-del`}
-                                                // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
-                                                src={DeleteIcon}
-                                                onClick={() => this.deleteInputField(index,c) }
-                                            />
-                                            : null
-                                    }
-                                    <input
-                                        autoFocus
-                                        name={`wallet${index + 1}`}
-                                        value={c.address || ""}
-                                        className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${this.state.walletInput[index].address ? 'is-valid' : null}`}
-                                        placeholder='Paste any wallet address here'
-                                        title={c.address || ""}
-                                        // style={{paddingRight: divWidth}}
-                                        style={getPadding(`add-wallet-${index}`,c,this.props.OnboardingState)}
-                                        // onKeyUp={(e) => this.setState({ loading: true })}
-                                        onChange={(e) => this.handleOnChange(e)} />
-                                    {this.state.walletInput.map((e, i) => {
-                                        if (this.state.walletInput[index].address && e.id === `wallet${index + 1}`) {
-                                            // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                            if (e.coinFound && e.coins.length> 0) {
-                                                return <CustomChip  coins={e.coins.filter((c) => c.chain_detected)} key={i} isLoaded={true}></CustomChip>
-                                            } else {
-                                                if (e.coins.length === this.props.OnboardingState.coinsList.length) {
-                                                    return <CustomChip  coins={null} key={i} isLoaded={true}></CustomChip>
-                                                } else {
-                                                    return <CustomChip  coins={null} key={i} isLoaded={false}></CustomChip>
-                                                }
-                                            }
-                                        }
-                                        else{
-                                            return ""
-                                        }
+          <>
+            <Form
+              onValidSubmit={
+                this.state.addButtonVisible
+                  ? this.onValidSubmit
+                  : this.handleSignText
+              }
+            >
+              <div className="ob-modal-body-wrapper">
+                <div className="ob-modal-body-1">
+                  {this.state.walletInput.map((c, index) => {
+                    return (
+                      <div
+                        className="ob-wallet-input-wrapper"
+                        key={index}
+                        id={`add-wallet-${index}`}
+                      >
+                        {index >= 1 ? (
+                          <Image
+                            key={index}
+                            className={`ob-modal-body-del`}
+                            // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
+                            src={DeleteIcon}
+                            onClick={() => this.deleteInputField(index, c)}
+                          />
+                        ) : null}
+                        <input
+                          autoFocus
+                          name={`wallet${index + 1}`}
+                          value={c.address || ""}
+                          className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${
+                            this.state.walletInput[index].address
+                              ? "is-valid"
+                              : null
+                          }`}
+                          placeholder="Paste any wallet address here"
+                          title={c.address || ""}
+                          // style={{paddingRight: divWidth}}
+                          style={getPadding(
+                            `add-wallet-${index}`,
+                            c,
+                            this.props.OnboardingState
+                          )}
+                          // onKeyUp={(e) => this.setState({ loading: true })}
+                          onChange={(e) => this.handleOnChange(e)}
+                        />
+                        {this.state.walletInput.map((e, i) => {
+                          if (
+                            this.state.walletInput[index].address &&
+                            e.id === `wallet${index + 1}`
+                          ) {
+                            // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                            if (e.coinFound && e.coins.length > 0) {
+                              return (
+                                <CustomChip
+                                  coins={e.coins.filter(
+                                    (c) => c.chain_detected
+                                  )}
+                                  key={i}
+                                  isLoaded={true}
+                                ></CustomChip>
+                              );
+                            } else {
+                              if (
+                                e.coins.length ===
+                                this.props.OnboardingState.coinsList.length
+                              ) {
+                                return (
+                                  <CustomChip
+                                    coins={null}
+                                    key={i}
+                                    isLoaded={true}
+                                  ></CustomChip>
+                                );
+                              } else {
+                                return (
+                                  <CustomChip
+                                    coins={null}
+                                    key={i}
+                                    isLoaded={false}
+                                  ></CustomChip>
+                                );
+                              }
+                            }
+                          } else {
+                            return "";
+                          }
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              {this.state.addButtonVisible ? (
+                <div className="ob-modal-body-2">
+                  <Button className="grey-btn" onClick={this.addInputField}>
+                    <Image src={PlusIcon} /> Add another
+                  </Button>
+                </div>
+              ) : null}
 
-                                    })}
-                                </div>
-                            })}
-                        </div>
-                    </div>
-                    {this.state.addButtonVisible ?
-                        <div className='ob-modal-body-2'>
-                            <Button className="grey-btn" onClick={this.addInputField}>
-                                <Image src={PlusIcon} /> Add another
-                            </Button>
-                        </div>
-                        : null
-                    }
+              <div className="ob-modal-body-btn">
+                <CustomButton
+                  className="secondary-btn m-r-15 preview"
+                  buttonText="Preview demo instead"
+                  onClick={() => {
+                    PreviewDemo({});
+                    console.log("Preview");
+                  }}
+                />
+                <CustomButton
+                  className="primary-btn go-btn"
+                  type="submit"
+                  isLoading={
+                    this.state.addButtonVisible ? this.isDisabled() : false
+                  }
+                  isDisabled={
+                    this.state.addButtonVisible ? this.isDisabled() : false
+                  }
+                  buttonText={this.state.addButtonVisible ? "Go" : "Sign in"}
+                />
+              </div>
 
-                    <div className='ob-modal-body-btn'>
-                        <CustomButton className="secondary-btn m-r-15 preview" buttonText="Preview demo instead" />
-                        <CustomButton className="primary-btn go-btn" type="submit" isLoading={this.state.addButtonVisible ? this.isDisabled() : false}
-                        isDisabled={this.state.addButtonVisible ?  this.isDisabled() : false}
-                        buttonText={this.state.addButtonVisible ? "Go" : "Sign in"} />
-                    </div>
-
-                    {
-                        this.state.addButtonVisible ?
-                        <div className="m-b-30 m-t-30 addWallet-signIn-div">
-                        <span className='inter-display-medium f-s-13 m-r-8 lh-16 grey-ADA'>
-                        Already have an account?
-                        </span>
-                        <span className='inter-display-bold f-s-13 lh-16 black-191 cp' onClick={this.handleSignText}>Sign In</span>
-                        </div>
-                        :
-                        ""
-                    }
-                </Form>
-            </>
+              {this.state.addButtonVisible ? (
+                <div className="m-b-30 m-t-30 addWallet-signIn-div">
+                  <span className="inter-display-medium f-s-13 m-r-8 lh-16 grey-ADA">
+                    Already have an account?
+                  </span>
+                  <span
+                    className="inter-display-bold f-s-13 lh-16 black-191 cp"
+                    onClick={this.handleSignText}
+                  >
+                    Sign In
+                  </span>
+                </div>
+              ) : (
+                ""
+              )}
+            </Form>
+          </>
         );
     }
 }

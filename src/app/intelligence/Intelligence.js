@@ -12,25 +12,42 @@ import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
 import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
 import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 import { Image } from 'react-bootstrap';
-class Intelligence extends Component {
+import { TimeSpentIntelligence } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            showPercentage : {
-                icon : arrowUpRight,
-                percent:"25",
-                status:"Increase"
-            }
-        }
-    }
+class Intelligence extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showPercentage: {
+        icon: arrowUpRight,
+        percent: "25",
+        status: "Increase",
+      },
+      startTime: "",
+    };
+  }
 
     componentDidMount() {
-        this.props.getAllCoins()
-    }
+       this.state.startTime = new Date() * 1;
+        console.log("page Enter", this.state.startTime);
 
-    render() {
-        const labels = ["Inflows", "Outflows", "Current Value"]
+    this.props.getAllCoins();
+  }
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    console.log("page Leave", endTime);
+    console.log("Time Spent", TimeSpent);
+    TimeSpentIntelligence({
+      time_spent: TimeSpent + " seconds",
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  }
+
+  render() {
+    const labels = ["Inflows", "Outflows", "Current Value"];
 
         const options = {
             responsive: true,

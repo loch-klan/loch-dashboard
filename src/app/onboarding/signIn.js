@@ -42,7 +42,7 @@ class SignIn extends BaseReactComponent {
             data.append("email",this.state.email)
           data.append("otp_token", this.state.text)
           
-            verifyUser(this,data)
+            verifyUser(this, data);
         }
       };
 

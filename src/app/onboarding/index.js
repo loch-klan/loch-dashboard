@@ -11,6 +11,9 @@ import SignIn from "./signIn";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import {
+  PrivacyMessage, TimeSpentOnboarding
+} from "../../utils/AnalyticsFunctions.js";
 // export { default as OnboardingReducer } from "./OnboardingReducer";
 class OnBoarding extends Component {
     constructor(props) {
@@ -20,13 +23,24 @@ class OnBoarding extends Component {
             signInReq: false,
             isVerificationRequired: false,
             isVerified: false,
-            currentActiveModal: "signIn",
+          currentActiveModal: "signIn",
+            startTime: "",
             // showSignText  :false
         }
     }
 
-    componentDidMount() { }
+  componentDidMount() { 
+    this.state.startTime = new Date() * 1;
+      console.log("page Enter", (this.state.startTime/1000));
+    }
 
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    console.log("page Leave", endTime/1000);
+    console.log("Time Spent", TimeSpent);
+    TimeSpentOnboarding({time_spent: TimeSpent+" seconds"});
+  }
     onClose = () => {
         this.setState({ showModal: false })
     }
@@ -67,40 +81,47 @@ class OnBoarding extends Component {
     //         showSignText:val
     //     })
     // }
+
+    privacymessage = ()=> {
+        PrivacyMessage({  });
+        // console.log("on hover privacy msg");
+    }
     render() {
 
         return (
-            <>
-                <OnboardingModal
-                    show={this.state.showModal}
-                    showImage={true}
-                    onHide={this.onClose}
-                    title={this.state.signInReq ? "Sign in" : "Welcome to Loch"}
-                    subTitle={this.state.signInReq ? "Get right back into your account" : "Add any wallet address(es) to get started"}
-                    icon={this.state.signInReq ? SignInIcon : WalletIcon}
-                    isSignInActive={this.state.signInReq}
-                    handleBack={this.switchSignIn}
-                >
-                    {
-                        this.state.signInReq
-                            ?
-                            <SignIn
-                                isVerificationRequired={this.state.isVerificationRequired}
-                                history={this.props.history}
-                                activemodal={this.state.currentActiveModal}
-                                signInReq={this.state.signInReq}
-                                handleStateChange={this.handleStateChange}
-                            />
-                            :
-                            <AddWallet
-                                 {...this.props}
-                                 switchSignIn={this.switchSignIn}
-                                // showSignText={this.state.showSign}
-                                // handleShowSignText={this.handleShowSignText}
-                            />
-                    }
-                    <div className="ob-modal-body-info">
-                        {/* {
+          <>
+            <OnboardingModal
+              show={this.state.showModal}
+              showImage={true}
+              onHide={this.onClose}
+              title={this.state.signInReq ? "Sign in" : "Welcome to Loch"}
+              subTitle={
+                this.state.signInReq
+                  ? "Get right back into your account"
+                  : "Add any wallet address(es) to get started"
+              }
+              icon={this.state.signInReq ? SignInIcon : WalletIcon}
+              isSignInActive={this.state.signInReq}
+              handleBack={this.switchSignIn}
+            >
+              {this.state.signInReq ? (
+                <SignIn
+                  isVerificationRequired={this.state.isVerificationRequired}
+                  history={this.props.history}
+                  activemodal={this.state.currentActiveModal}
+                  signInReq={this.state.signInReq}
+                  handleStateChange={this.handleStateChange}
+                />
+              ) : (
+                <AddWallet
+                  {...this.props}
+                  switchSignIn={this.switchSignIn}
+                  // showSignText={this.state.showSign}
+                  // handleShowSignText={this.handleShowSignText}
+                />
+              )}
+              <div className="ob-modal-body-info">
+                {/* {
                         this.state.signInReq ?
                          null 
                          :
@@ -112,19 +133,22 @@ class OnBoarding extends Component {
                             :
                             ""
                           } */}
-                        <p className='inter-display-medium f-s-13 lh-16 grey-ADA'>At Loch, we care intensely about your privacy and anonymity.
-                            <CustomOverlay
-                                text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
-                                position="top"
-                                isIcon={true}
-                                IconImage={LockIcon}
-                                isInfo={true}
-                            ><Image src={InfoIcon} className="info-icon" /></CustomOverlay> </p>
-                    </div>
-                </OnboardingModal>
-            </>
-
-        )
+                <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
+                  At Loch, we care intensely about your privacy and anonymity.
+                  <CustomOverlay
+                    text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                    position="top"
+                    isIcon={true}
+                    IconImage={LockIcon}
+                    isInfo={true}
+                  >
+                                <Image src={InfoIcon} className="info-icon" onMouseEnter={ this.privacymessage} />
+                  </CustomOverlay>
+                </p>
+              </div>
+            </OnboardingModal>
+          </>
+        );
     }
 }
 

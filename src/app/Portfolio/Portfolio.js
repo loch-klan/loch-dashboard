@@ -24,62 +24,77 @@ import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
 import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
+import {
+  ManageWallets,
+  TransactionHistoryEView,
+  VolumeTradeByCP,
+  AverageCostBasisEView,
+  TimeSpentHome,
+} from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser } from "../../utils/ManageToken";
+
+
 import {getAssetGraphDataApi} from './Api';
 
 class Portfolio extends BaseReactComponent {
-    constructor(props) {
-        super(props);
-        props.location.state && localStorage.setItem("addWallet", JSON.stringify(props.location.state.addWallet))
-        this.state = {
-            userWalletList: JSON.parse(localStorage.getItem("addWallet")),
-            assetTotalValue: 0,
-            loader: false,
-            coinAvailable: true,
-            fixModal: false,
-            addModal: false,
-            isLoading: true,
-            sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
-            limit: 6,
-            tableSortOpt: [
-                {
-                    title: "time",
-                    up:false,
-                },
-                {
-                    title: "from",
-                    up:false,
-                },
-                {
-                    title: "to",
-                    up:false
-                },
-                {
-                    title: "asset",
-                    up:false
-                },
-                {
-                    title: "usdValue",
-                    up:false
-                },
-                {
-                    title: "method",
-                    up:false
-                }
-            ]
-        }
-    }
+  constructor(props) {
+    super(props);
+    props.location.state &&
+      localStorage.setItem(
+        "addWallet",
+        JSON.stringify(props.location.state.addWallet)
+      );
+    this.state = {
+      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      assetTotalValue: 0,
+      loader: false,
+      coinAvailable: true,
+      fixModal: false,
+      addModal: false,
+      isLoading: true,
+      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      limit: 6,
+      tableSortOpt: [
+        {
+          title: "time",
+          up: false,
+        },
+        {
+          title: "from",
+          up: false,
+        },
+        {
+          title: "to",
+          up: false,
+        },
+        {
+          title: "asset",
+          up: false,
+        },
+        {
+          title: "usdValue",
+          up: false,
+        },
+        {
+          title: "method",
+          up: false,
+        },
+      ],
+      startTime: "",
+    };
+  }
 
-    handleChangeList = (value) => {
-        this.setState({
-            userWalletList: value
-        })
-        this.props.getCoinRate()
-    }
-    handleFixModal = () => {
-        this.setState({
-            fixModal: !this.state.fixModal
-        })
-    }
+  handleChangeList = (value) => {
+    this.setState({
+      userWalletList: value,
+    });
+    this.props.getCoinRate();
+  };
+  handleFixModal = () => {
+    this.setState({
+      fixModal: !this.state.fixModal,
+    });
+  };
 
     handleAddModal = () => {
         this.setState({
@@ -87,6 +102,8 @@ class Portfolio extends BaseReactComponent {
         })
     }
     componentDidMount() {
+      this.state.startTime = new Date() * 1;
+    console.log("page Enter", this.state.startTime / 1000);
         if (this.props.match.params.id) {
             getDetailsByLinkApi(this.props.match.params.id, this)
         }
@@ -94,6 +111,14 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllCoins()
         this.getTableData()
         this.getGraphData()
+    }
+
+    componentWillUnmount() {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      console.log("page Leave", endTime / 1000);
+      console.log("Time Spent", TimeSpent);
+      TimeSpentHome({ time_spent: TimeSpent + " seconds", session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
 
     getGraphData = (groupByValue = GROUP_BY_MONTH) =>{
@@ -166,109 +191,117 @@ class Portfolio extends BaseReactComponent {
         }
     }
 
-    handleTableSort = (val) => {
-        // console.log(val)
-        let sort = [...this.state.tableSortOpt]
-        let obj = []
-        sort.map((el) => {
-            if (el.title === val) {
-                if (val === "time") {
-                    obj =[
-                        {
-                            key: SORT_BY_TIMESTAMP,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "from") {
-                    obj =[
-                        {
-                            key: SORT_BY_FROM_WALLET,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "to") {
-                    obj =[
-                        {
-                            key: SORT_BY_TO_WALLET,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "asset") {
-                    obj =[
-                        {
-                            key: SORT_BY_ASSET,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "usdValue") {
-                    obj =[
-                        {
-                            key: SORT_BY_USD_VALUE_THEN,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "method") {
-                    obj =[{
-                            key: SORT_BY_METHOD,
-                            value: !el.up,
-                        }
-                    ]
-                }
-                el.up = !el.up
-            }
-            else {
-                el.up = false
-            }
-        })
-
-        let check = sort.some(e => e.up === true)
-        let arr = []
-
-        if(check){
-            // when any sort option is true then sort the table with that option key
-            // console.log("Check true")
-            arr = obj
+  handleTableSort = (val) => {
+    // console.log(val)
+    let sort = [...this.state.tableSortOpt];
+    let obj = [];
+    sort.map((el) => {
+      if (el.title === val) {
+        if (val === "time") {
+          obj = [
+            {
+              key: SORT_BY_TIMESTAMP,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "from") {
+          obj = [
+            {
+              key: SORT_BY_FROM_WALLET,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "to") {
+          obj = [
+            {
+              key: SORT_BY_TO_WALLET,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "asset") {
+          obj = [
+            {
+              key: SORT_BY_ASSET,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "usdValue") {
+          obj = [
+            {
+              key: SORT_BY_USD_VALUE_THEN,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "method") {
+          obj = [
+            {
+              key: SORT_BY_METHOD,
+              value: !el.up,
+            },
+          ];
         }
-        else {
-            // when all sort are false then sort by time in descending order
-            // arr.slice(1,1)
-            // console.log("Check False ")
-            arr = [{
-                key: SORT_BY_TIMESTAMP,
-                value: false,
-            }]
-        }
+        el.up = !el.up;
+      } else {
+        el.up = false;
+      }
+    });
 
-        // console.log(obj)
-        this.setState({
-            sort : arr,
-            tableSortOpt: sort
-        })
+    let check = sort.some((e) => e.up === true);
+    let arr = [];
+
+    if (check) {
+      // when any sort option is true then sort the table with that option key
+      // console.log("Check true")
+      arr = obj;
+    } else {
+      // when all sort are false then sort by time in descending order
+      // arr.slice(1,1)
+      // console.log("Check False ")
+      arr = [
+        {
+          key: SORT_BY_TIMESTAMP,
+          value: false,
+        },
+      ];
     }
 
-    render() {
-        const { table } = this.props.intelligenceState;
-        let tableData = table && table.map((row) => {
-            return {
-                time: row.timestamp,
-                from: {
-                    address: row.from_wallet.address,
-                    // wallet_metaData: row.from_wallet.wallet_metaData
-                    wallet_metaData: {
-                        symbol: row.from_wallet.wallet_metaData ? row.from_wallet.wallet_metaData.symbol : unrecognizedIcon
-                    }
-                },
-                to: {
-                    address: row.to_wallet.address,
-                    // wallet_metaData: row.to_wallet.wallet_metaData,
-                    wallet_metaData: {
-                        symbol: row.to_wallet.wallet_metaData ? row.to_wallet.wallet_metaData.symbol : unrecognizedIcon
-                    },
-                },
-                asset: {
-                    code: row.asset.code,
-                    symbol: row.asset.symbol
-                },
+    // console.log(obj)
+    this.setState({
+      sort: arr,
+      tableSortOpt: sort,
+    });
+  };
+
+  render() {
+    const { table } = this.props.intelligenceState;
+
+    let tableData =
+      table &&
+      table.map((row) => {
+        return {
+          time: row.timestamp,
+          from: {
+            address: row.from_wallet.address,
+            // wallet_metaData: row.from_wallet.wallet_metaData
+            wallet_metaData: {
+              symbol: row.from_wallet.wallet_metaData
+                ? row.from_wallet.wallet_metaData.symbol
+                : unrecognizedIcon,
+            },
+          },
+          to: {
+            address: row.to_wallet.address,
+            // wallet_metaData: row.to_wallet.wallet_metaData,
+            wallet_metaData: {
+              symbol: row.to_wallet.wallet_metaData
+                ? row.to_wallet.wallet_metaData.symbol
+                : unrecognizedIcon,
+            },
+          },
+          asset: {
+            code: row.asset.code,
+            symbol: row.asset.symbol,
+          },
 
                 usdValueToday: {
                     value: row.asset.value,
@@ -439,57 +472,55 @@ class Portfolio extends BaseReactComponent {
             }
         ]
 
-        const labels = ["AAVE", "Binance", "Kraken", "Gemini", "Coinbase"]
+    const labels = ["AAVE", "Binance", "Kraken", "Gemini", "Coinbase"];
 
-        const options = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-            },
-            scales: {
-                y: {
-                    min: 0,
-                    max: 40000,
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+        y: {
+          min: 0,
+          max: 40000,
 
-                    ticks: {
-                        stepSize: 8000,
-                        padding: 8,
-                        size: 12,
-                        lineHeight: 20,
-                        // family: "Helvetica Neue",
-                        family: "Inter-Regular",
-                        weight: 400,
-                        color: "#B0B1B3"
-                    },
-                    grid: {
-                        drawBorder: false,
-                        display: true,
-                        borderDash: ctx => ctx.index == 0 ? [0] : [4],
-                        drawTicks: false
-                    }
-                },
-                x: {
-                    ticks: {
-                        font: "Inter-SemiBold",
-                        size: 10,
-                        lineHeight: 12,
-                        weight: 600,
-                        color: "#86909C",
-                        maxRotation: 0,
-                        minRotation: 0,
-
-
-                    },
-                    grid: {
-                        display: false,
-                        borderWidth: 1,
-                    }
-                }
-            }
-        }
+          ticks: {
+            stepSize: 8000,
+            padding: 8,
+            size: 12,
+            lineHeight: 20,
+            // family: "Helvetica Neue",
+            family: "Inter-Regular",
+            weight: 400,
+            color: "#B0B1B3",
+          },
+          grid: {
+            drawBorder: false,
+            display: true,
+            borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
+            drawTicks: false,
+          },
+        },
+        x: {
+          ticks: {
+            font: "Inter-SemiBold",
+            size: 10,
+            lineHeight: 12,
+            weight: 600,
+            color: "#86909C",
+            maxRotation: 0,
+            minRotation: 0,
+          },
+          grid: {
+            display: false,
+            borderWidth: 1,
+          },
+        },
+      },
+    };
 
         const data = {
             labels,
@@ -652,7 +683,13 @@ class Portfolio extends BaseReactComponent {
                                     handleAddModal={this.handleAddModal}
                                     isLoading={this.state.isLoading}
                                     walletTotal={this.props.portfolioState.walletTotal}
-                                    handleManage={() => this.props.history.push('/wallets')}
+                                    handleManage={() => {
+                                      this.props.history.push("/wallets");
+                                      ManageWallets({
+                                        session_id: getCurrentUser().id,
+                                        email_address: getCurrentUser().email,
+                                      });
+                                    }}
                                 />
                             </div>
                             <div className='portfolio-section '>
@@ -689,7 +726,15 @@ class Portfolio extends BaseReactComponent {
                                         <div className='m-r-16 section-table'>
                                             <TransactionTable
                                                 title="Transaction History"
-                                                handleClick={() => this.props.history.push("/intelligence/transaction-history")}
+                                                handleClick={() => {
+                                                  this.props.history.push(
+                                                    "/intelligence/transaction-history"
+                                                  );
+                                                  TransactionHistoryEView({
+                                                    session_id: getCurrentUser().id,
+                                                    email_address: getCurrentUser().email,
+                                                  });
+                                                }}
                                                 subTitle="In the last month"
                                                 tableData={tableData}
                                                 columnList={columnList}
@@ -714,6 +759,12 @@ class Portfolio extends BaseReactComponent {
                                                 comingSoon={true}
                                             // width="100%"
                                             // height="100%"
+                                            handleClick={() => {
+                                              VolumeTradeByCP({
+                                                session_id: getCurrentUser().id,
+                                                email_address: getCurrentUser().email,
+                                              });
+                                            }}
                                             />
                                         </div>
                                     </Col>
@@ -732,6 +783,12 @@ class Portfolio extends BaseReactComponent {
                                         columnList={costColumnData}
                                         headerHeight={64}
                                         comingSoon={true}
+                                        handleClick={() => {
+                                          AverageCostBasisEView({
+                                            session_id: getCurrentUser().id,
+                                            email_address: getCurrentUser().email,
+                                          });
+                                        }}
                                     />
                                 </div>
                             </div>

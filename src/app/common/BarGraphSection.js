@@ -14,6 +14,8 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2'
+import { BlockchainFeesFilter, CounterpartyFeesFilter } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 // import { BarGraphSection } from './BarGraphSection';
 
 ChartJS.register(
@@ -50,6 +52,7 @@ class BarGraphSection extends Component {
         this.setState({
             activeFooter: event.target.id
         })
+      console.log("handle footer", event.target.id)
     }
     handleFunction = (badge) => {
         let newArr = [...this.state.activeBadge]
@@ -79,6 +82,19 @@ class BarGraphSection extends Component {
                 activeBadge: newArr
             })
         }
+      if (this.props.headerTitle === "Blockchain Fees over Time")
+        BlockchainFeesFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_selected: badge.name,
+        });
+      
+      if (this.props.headerTitle === "Counterparty Fees Over Time")
+        CounterpartyFeesFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_selected: badge.name,
+        });
     }
     // NewWidth = () => {
     //     console
@@ -175,6 +191,7 @@ class BarGraphSection extends Component {
                 handleFooterClick={this.handleFooter}
                 active={this.state.activeFooter}
                 footerLabels={this.state.footerLabels}
+                
               />
             ) : (
               ""

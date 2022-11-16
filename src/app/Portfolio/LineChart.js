@@ -9,6 +9,8 @@ import DropDown from "../common/DropDown";
 import TrendingUp from '../../assets/images/icons/TrendingUp.svg'
 import TrendingDown from '../../assets/images/icons/TrendingDown.svg'
 import { GroupByOptions, Months } from "../../utils/Constant";
+import { AssetValueFilter } from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser } from "../../utils/ManageToken";
 class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -22,6 +24,7 @@ class LineChart extends BaseReactComponent {
 
     }
     handleFunction = (badge) => {
+
         let newArr = [...this.state.activeBadge]
         if (this.state.activeBadge.some(e => e.name === badge.name)) {
             let index = newArr.findIndex(x => x.name === badge.name)
@@ -53,6 +56,8 @@ class LineChart extends BaseReactComponent {
                 activeBadgeList: newArr.map((item)=>item.id)
             })
         }
+        AssetValueFilter({session_id: getCurrentUser().id, email_address: getCurrentUser().email, filter_clicked: badge.name});
+
     }
     handleSelect = (opt) => {
         const t = opt.split(' ')[1]

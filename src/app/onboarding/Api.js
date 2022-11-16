@@ -3,7 +3,12 @@ import { postLoginInstance, preLoginInstance } from "../../utils";
 import { COINS_LIST, WALLET_LIST,UPDATE_LIST } from "./ActionTypes";
 import addWallet from "./addWallet";
 import { dispatch } from 'react-redux';
-import { WalletAddressTextbox } from "../../utils/AnalyticsFunctions.js";
+import {
+  WalletAddressTextbox,
+  EmailAddressVerified,
+  UserSignedinCorrectly,
+  UserWrongCode,
+} from "../../utils/AnalyticsFunctions.js";
 export const getAllCoins = () => {
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
@@ -34,7 +39,7 @@ export const detectCoin = (wallet,ctx=null) => {
                 if (!res.error && res.data) {
                     if (res.data.data.chain_detected) {
                          WalletAddressTextbox({
-                           session_id: "none",
+                        //    session_id: "none",
                            address: wallet.address,
                            chains_detected: wallet.coinName,
                          });
@@ -63,7 +68,8 @@ export const detectCoin = (wallet,ctx=null) => {
     };
 };
 
-export const signIn = (ctx,data)=>{
+export const signIn = (ctx, data) => {
+
     preLoginInstance.post('organisation/user/send-otp',data)
     .then(res =>{
         if(res.data.error)
@@ -79,9 +85,11 @@ export const signIn = (ctx,data)=>{
             </div>
             );
             // toast.error(res.data.message || "Something went Wrong")
+           
         }
         else if (res.data.error === false) {
-
+            //email Valid
+EmailAddressVerified({ email_address: ctx.state.email });
             ctx.setState({
                 isVerificationRequired:true,
                 text:""
@@ -94,13 +102,15 @@ export const signIn = (ctx,data)=>{
     })
 }
 
-export const verifyUser = (ctx,info)=>{
+export const verifyUser = (ctx, info) => {
+  
     preLoginInstance.post('organisation/user/verify-otp',info)
     .then(res=>{
         // console.log(res.data.data.user)
         if(!res.data.error){
             localStorage.setItem("lochUser",JSON.stringify(res.data.data.user));
             localStorage.setItem('lochToken', res.data.data.token);
+           
             const allChains = ctx.props.OnboardingState.coinsList
             let addWallet = [];
             const apiResponse = res.data.data;
@@ -130,8 +140,16 @@ export const verifyUser = (ctx,info)=>{
               pathname: "/portfolio",
               state: {addWallet}
             })
+            UserSignedinCorrectly({
+              email_address: res.data.data.user.email,
+              session_id: res.data.data.user.id,
+            });
+          
+     
         }
-        else{
+        else {
+            
+           UserWrongCode({ email_address: ctx.state.email });
           toast.error(
             <div className="custom-toast-msg">
               <div>

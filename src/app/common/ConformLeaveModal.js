@@ -3,7 +3,6 @@ import BaseReactComponent from './../../utils/form/BaseReactComponent';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
 
-
 class ConfirmLeaveModal extends BaseReactComponent {
 
     constructor(props) {

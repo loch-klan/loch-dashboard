@@ -6,32 +6,53 @@ import TransactionIcon from '../../image/TransactionHistoryIcon.svg'
 import ShuffleIcon from '../../image/ShuffleIcon.svg'
 import InsightsIcon from '../../image/InsightsIcon.svg'
 import ArrowRight from '../../image/ArrowRight.svg'
+import {
+  TransactionHistory,
+  TradeByCounterParty,
+  Insights,
+} from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser } from "../../utils/ManageToken";
 export default function IntelWelcomeCard(props) {
 
     const cardData = [
-        {
-            icon: TransactionIcon,
-            title: "Transaction History",
-            background:"lightblue",
-            path:'/intelligence/transaction-history'
-        },
-        {
-            icon: ShuffleIcon,
-            title: "Traded by counterparty",
-            background:"lightyellow",
-            path:'/intelligence'
-        },
-        {
-            icon: InsightsIcon,
-            title: "Insights",
-            background:"lightpurple",
-            path:'/intelligence'
-        }
-    ]
+      {
+        icon: TransactionIcon,
+        title: "Transaction History",
+        background: "lightblue",
+        path: "/intelligence/transaction-history",
+        analyticEvent: ()=>{TransactionHistory({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        })},
+      },
+      {
+        icon: ShuffleIcon,
+        title: "Traded by counterparty",
+        background: "lightyellow",
+        path: "/intelligence",
+        analyticEvent: ()=>{TradeByCounterParty({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        })},
+      },
+      {
+        icon: InsightsIcon,
+        title: "Insights",
+        background: "lightpurple",
+        path: "/intelligence",
+        analyticEvent: ()=>{Insights({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        })},
+      },
+    ];
 
     const cards = cardData.map((card) => {
         return (
-            <div className='info' onClick={()=>props.history.push(card.path)}>
+            <div className='info' onClick={() => {
+                props.history.push(card.path);
+                card.analyticEvent()
+            }}>
                 <div className = {`icon ${card.background}`}>
                     <Image src={card.icon} />
                 </div>

@@ -23,6 +23,8 @@ import noDataImage from "../../image/no-data.png";
 import lochClean from "../../assets/images/LochClean.gif";
 import { Image } from "react-bootstrap";
 import Loading from "../common/Loading";
+import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class Wallet extends Component {
   constructor(props) {
@@ -39,14 +41,34 @@ class Wallet extends Component {
       activeBadge: [{ name: "All", id: "" }],
       addModal: false,
       isLoading: true,
-      sortBy : [{title:"Amount",down:true}, {title:"Date added",down:true},{title:"Name", down:true}],
+      sortBy: [
+        { title: "Amount", down: true },
+        { title: "Date added", down: true },
+        { title: "Name", down: true },
+      ],
+      startTime: "",
     };
     // this.sortby = [{title:"Amount",down:true}, {title:"Date added",down:true},{title:"Name", down:true}];
   }
 
   componentDidMount() {
+    this.state.startTime = new Date() * 1;
+    console.log("page Enter", this.state.startTime / 1000);
+
     this.props.getAllCoins();
     this.makeApiCall();
+  }
+
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    console.log("page Leave", endTime / 1000);
+    console.log("Time Spent", TimeSpent);
+    TimeSpentWallet({
+      time_spent: TimeSpent + " seconds",
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   }
 
   makeApiCall = (cond) => {
@@ -56,19 +78,18 @@ class Wallet extends Component {
     data.append("limit", 50);
     // data.append("limit", API_LIMIT)
     data.append("sorts", JSON.stringify(this.state.sorts));
-    this.props.getAllWalletListApi(data,this);
+    this.props.getAllWalletListApi(data, this);
     console.log(data);
   };
   handleSort = (e) => {
-    let sort = [...this.state.sortBy]
-    sort.map((el)=>{
-      if(el.title === e.title){
-        el.down = !el.down
+    let sort = [...this.state.sortBy];
+    sort.map((el) => {
+      if (el.title === e.title) {
+        el.down = !el.down;
+      } else {
+        el.down = true;
       }
-      else{
-        el.down = true
-      }
-    })
+    });
 
     if (e.title === "Amount") {
       let obj = [
@@ -80,7 +101,11 @@ class Wallet extends Component {
       this.setState({
         sorts: obj,
         sortByAmount: !this.state.sortByAmount,
-        sortBy : sort
+        sortBy: sort,
+      });
+      SortByAmount({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
       });
     } else if (e.title === "Date added") {
       let obj = [
@@ -92,7 +117,11 @@ class Wallet extends Component {
       this.setState({
         sorts: obj,
         sortByDate: !this.state.sortByDate,
-        sortBy : sort
+        sortBy: sort,
+      });
+      SortByDate({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
       });
     } else if (e.title === "Name") {
       let obj = [
@@ -104,7 +133,11 @@ class Wallet extends Component {
       this.setState({
         sorts: obj,
         sortByName: !this.state.sortByName,
-        sortBy : sort
+        sortBy: sort,
+      });
+      SortByName({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
       });
     }
 
@@ -138,6 +171,11 @@ class Wallet extends Component {
         activeBadge: newArr,
       });
     }
+    FilterBasedAssest({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      assets_selected: badge.name,
+    });
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -232,25 +270,25 @@ class Wallet extends Component {
                       {e.title}
                     </span>{" "}
                     {/* <Image src={sort} style={{ width: "1rem" }} /> */}
-                    <Image src={sortByIcon} style={{ width: "1.6rem" }} className={e.down ? "rotateDown" : "rotateUp"} />
+                    <Image
+                      src={sortByIcon}
+                      style={{ width: "1.6rem" }}
+                      className={e.down ? "rotateDown" : "rotateUp"}
+                    />
                   </span>
                 );
               })}
             </div>
           </div>
 
-        <div className="cards">
-            {this.state.isLoading === true
-            ?
-            (
+          <div className="cards">
+            {this.state.isLoading === true ? (
               <div className="loading-container">
                 <div className="animation-wrapper">
-                  <Loading/>
+                  <Loading />
                 </div>
               </div>
-            ) : (walletList.length > 0
-              ?
-              (
+            ) : walletList.length > 0 ? (
               walletList.map((wallet, index) => {
                 return (
                   <WalletCard
@@ -267,11 +305,12 @@ class Wallet extends Component {
                   />
                 );
               })
-              )
-              :
-              <div style={{textAlign: "center"}}>
-                    {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                    <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+            ) : (
+              <div style={{ textAlign: "center" }}>
+                {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
+                <h3 className="inter-display-medium f-s-25 lh-30 m-b-8">
+                  No data found
+                </h3>
               </div>
             )}
           </div>
