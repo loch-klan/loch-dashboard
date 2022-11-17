@@ -119,17 +119,19 @@ class CustomDropdown extends Component {
       count = selected.length;
     }
 
-    console.log(selected, "selected", count, "count");
+   g // console.log(selected, "selected", count, "count");
     return { selected: selected, length: count };
   };
 
   ClearAll = () => {
-    this.onSelect(this.state.options[0]);
+      this.onSelect(this.state.options[0]);
+      this.props.handleClick(this.props.action, this.getSelected().selected);
+    //    console.log(this.props.action, this.getSelected().selected, "apply");
   };
 
   Apply = () => {
     // console.log(this.getSelected().selected, "apply");
-    console.log(this.props.action, this.getSelected().selected, "apply");
+    // console.log(this.props.action, this.getSelected().selected, "apply");
     this.props.handleClick(this.props.action,this.getSelected().selected)
   };
 
