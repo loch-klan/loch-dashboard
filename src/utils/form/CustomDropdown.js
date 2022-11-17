@@ -35,7 +35,7 @@ class CustomDropdown extends Component {
 
     // console.log(this.state.options, "state option");
     this.dropDownRef = React.createRef();
-    this.handleClickOutside = this.handleClickOutside.bind(this);
+    // this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
   componentDidMount() {
@@ -109,34 +109,37 @@ class CustomDropdown extends Component {
   getSelected = () => {
     let isAll =
       this.state.options.length !== 0 ? this.state.options[0].isSelected : true;
-    let selected = [];
+    let selected;
     selected = this.state.options
       .filter((e) => e.isSelected === true)
       .map((e) => e.value);
 
     let count;
-    if (isAll) {
-      // selected = this.state.options.filter((e) => e.value !== this.state.name);
+      if (isAll) {
+        selected = selected.toString();
       count = 0;
     } else {
       count = selected.length;
     }
 
-      console.log(selected, "selected", count, "count");
-      console.log(this.state.options);
+    //   console.log(selected, "selected", count, "count");
+    //   console.log(this.state.options);
     return { selected: selected, length: count };
   };
 
   ClearAll = () => {
       this.onSelect(this.state.options[0]);
       this.props.handleClick(this.props.action, this.getSelected().selected);
-       console.log(this.props.action, this.getSelected().selected, "apply");
+    //    console.log(this.props.action, this.getSelected().selected, "apply");
+        this.setState({ showMenu: false });
   };
 
   Apply = () => {
     // console.log(this.getSelected().selected, "apply");
-    console.log(this.props.action, this.getSelected().selected, "apply");
-    this.props.handleClick(this.props.action,this.getSelected().selected)
+    // console.log(this.props.action, this.getSelected().selected, "apply");
+      
+      this.props.handleClick(this.props.action, this.getSelected().selected);
+        this.setState({ showMenu: false });
   };
 
   render() {
