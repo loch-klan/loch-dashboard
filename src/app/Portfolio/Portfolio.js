@@ -110,7 +110,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getCoinRate()
         this.props.getAllCoins()
         this.getTableData()
-        // this.getGraphData()
+        this.getGraphData()
     }
 
     componentWillUnmount() {
@@ -132,7 +132,7 @@ class Portfolio extends BaseReactComponent {
     }
     handleGroupBy = (value)=>{
       let groupByValue = GroupByOptions.getGroupBy(value);
-      // this.getGraphData(groupByValue)
+      this.getGraphData(groupByValue)
     }
     getTableData = () => {
 
@@ -714,12 +714,12 @@ class Portfolio extends BaseReactComponent {
                                     : ""}
                             </div>
                             <div className='portfolio-section m-b-32'>
-                                {/* <LineChart
+                                <LineChart
                                   assetValueData={this.state.assetValueData && this.state.assetValueData}
                                   coinLists={this.props.OnboardingState.coinsLists}
                                   isScrollVisible={false}
                                   handleGroupBy={(value)=>this.handleGroupBy(value)}
-                                /> */}
+                                />
                             </div>
                             <div className='m-b-22 graph-table-section'>
                                 <Row>

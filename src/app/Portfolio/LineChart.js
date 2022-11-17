@@ -160,10 +160,6 @@ class LineChart extends BaseReactComponent {
                 enabled: false
             },
             xAxis: {
-              min: categories.length,
-            max:5,
-            navigator: { enabled: true },
-            scrollbar: { enabled: true },
                 categories: categories,
                 // labels: {
                 //     style: {
