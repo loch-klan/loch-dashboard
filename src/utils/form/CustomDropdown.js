@@ -9,7 +9,7 @@ class CustomDropdown extends Component {
     //   { label: "2020", value: "2020" },
     //   { label: "2021", value: "2021" },
     // ];
-      
+
          this.props.options.map((e, i) =>
            this.state.options.push({
              label: e.label,
@@ -31,8 +31,8 @@ class CustomDropdown extends Component {
     //     isSelected: i === 0 ? true : false,
     //   })
     // );
-      
-    
+
+
     console.log(this.state.options, "state option");
     this.dropDownRef = React.createRef();
     this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -51,7 +51,7 @@ class CustomDropdown extends Component {
            isSelected: i === 0 ? true : false,
          })
        );
-      
+
     }
   }
 
@@ -119,7 +119,7 @@ class CustomDropdown extends Component {
       count = selected.length;
     }
 
-   g // console.log(selected, "selected", count, "count");
+   // console.log(selected, "selected", count, "count");
     return { selected: selected, length: count };
   };
 

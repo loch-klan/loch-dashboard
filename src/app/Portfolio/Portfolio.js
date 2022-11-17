@@ -19,7 +19,7 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP_IN , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE} from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE} from '../../utils/Constant'
 import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
@@ -52,7 +52,7 @@ class Portfolio extends BaseReactComponent {
       fixModal: false,
       addModal: false,
       isLoading: true,
-      sort: [{ key: SORT_BY_TIMESTAMP_IN, value: false }],
+      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       limit: 6,
       tableSortOpt: [
         {
@@ -200,7 +200,7 @@ class Portfolio extends BaseReactComponent {
         if (val === "time") {
           obj = [
             {
-              key: SORT_BY_TIMESTAMP_IN,
+              key: SORT_BY_TIMESTAMP,
               value: !el.up,
             },
           ];
@@ -259,7 +259,7 @@ class Portfolio extends BaseReactComponent {
       // console.log("Check False ")
       arr = [
         {
-          key: SORT_BY_TIMESTAMP_IN,
+          key: SORT_BY_TIMESTAMP,
           value: false,
         },
       ];

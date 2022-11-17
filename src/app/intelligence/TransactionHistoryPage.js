@@ -3,42 +3,17 @@ import { Image, Row, Col } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
 import TransactionTable from "./TransactionTable";
-import Metamask from "../../assets/images/MetamaskIcon.svg";
 import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
-  Method,
-  API_LIMIT,
-  START_INDEX,
-  SEARCH_BY_ASSETS_IN,
-  SEARCH_BY_TEXT,
-  SEARCH_BY_TIMESTAMP_IN,
-  SEARCH_BY_TYPE_IN,
-  SORT_BY_TIMESTAMP_IN,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
-  SORT_BY_ASSET,
-  SORT_BY_AMOUNT,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_TRANSACTION_FEE,
-  SORT_BY_METHOD,
-} from "../../utils/Constant";
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_TYPE_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "./Api";
 import { getCoinRate } from "../Portfolio/Api.js";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import moment from "moment";
-import {
-  SelectControl,
-  FormElement,
-  Form,
-  CustomTextControl,
-} from "../../utils/form";
+import { SelectControl, FormElement, Form, CustomTextControl, BaseReactComponent } from "../../utils/form";
 import unrecognizedIcon from "../../image/unrecognized.svg";
 import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
-
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -62,11 +37,12 @@ class TransactionHistoryPage extends BaseReactComponent {
       asset: "",
       methodsDropdown: Method.opt,
       table: [],
-      sort: [{ key: SORT_BY_TIMESTAMP_IN, value: false }],
+      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       assetFilter: [],
       yearFilter: [],
+      methodFilter: [],
       delayTimer: 0,
       condition: cond ? cond : [],
       isLoading: true,
@@ -115,7 +91,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
-
     this.callApi(this.state.currentPage || START_INDEX);
     getFilters(this);
     this.props.getCoinRate();
@@ -153,14 +128,10 @@ class TransactionHistoryPage extends BaseReactComponent {
 
   addCondition = (key, value) => {
     let index = this.state.condition.findIndex((e) => e.key === key);
-    // console.log("YES ,PRESENT", index)
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
     );
-
-    // console.log(search_index, arr[search_index])
-    //
     if (
       index !== -1 &&
       value !== "allAssets" &&
@@ -205,7 +176,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
     if (search_index !== -1) {
       if (value === "" && key === SEARCH_BY_TEXT) {
-        // console.log("remove", arr[search_index].value[0])
         arr.splice(search_index, 1);
       }
     }
@@ -233,7 +203,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         if (val === "time") {
           obj = [
             {
-              key: SORT_BY_TIMESTAMP_IN,
+              key: SORT_BY_TIMESTAMP,
               value: !el.up,
             },
           ];
@@ -314,7 +284,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     //     // arr.slice(1,1)
     //     // console.log("Check False ")
     //     arr = [{
-    //         key: SORT_BY_TIMESTAMP_IN,
+    //         key: SORT_BY_TIMESTAMP,
     //         value: false,
     //     }]
     // }
@@ -757,7 +727,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
       return (
-      
+
       <div className="history-table-section">
         <div className="history-table page">
           <PageHeader
@@ -772,73 +742,27 @@ class TransactionHistoryPage extends BaseReactComponent {
             <Form onValidSubmit={this.onValidSubmit}>
               <Row>
                 <Col md={3}>
-                                  <CustomDropdown
-                                      filtername="All Year"
+                  <CustomDropdown
+                    filtername="All Year"
                     options={this.state.yearFilter}
                     action={SEARCH_BY_TIMESTAMP_IN}
-                    handleClick={() =>{this.addCondition()}}
-                  />
-                  <FormElement
-                    valueLink={this.linkState(this, "year")}
-                    control={{
-                      type: SelectControl,
-                      settings: {
-                        options: this.state.yearFilter,
-                        multiple: false,
-                        searchable: false,
-                        onChangeCallback: (onBlur) => {
-                          onBlur(this.state.year);
-                          console.log("Dropdown Selected", this.state.year);
-                          this.addCondition(
-                            SEARCH_BY_TIMESTAMP_IN,
-                            this.state.year
-                          );
-                        },
-                        placeholder: "All Year",
-                      },
-                    }}
+                    handleClick={(key,value) => this.addCondition(key,value)}
                   />
                 </Col>
                 <Col md={3}>
-                  <FormElement
-                    valueLink={this.linkState(this, "asset")}
-                    control={{
-                      type: SelectControl,
-                      settings: {
-                        options: this.state.assetFilter,
-                        multiple: false,
-                        searchable: false,
-                        onChangeCallback: (onBlur) => {
-                          onBlur(this.state.asset);
-                          this.addCondition(
-                            SEARCH_BY_ASSETS_IN,
-                            this.state.asset
-                          );
-                        },
-                        placeholder: "All assets",
-                      },
-                    }}
+                <CustomDropdown
+                    filtername="All assets"
+                    options={this.state.assetFilter}
+                    action={SEARCH_BY_ASSETS_IN}
+                    handleClick={(key,value) => this.addCondition(key,value)}
                   />
                 </Col>
                 <Col md={3}>
-                  <FormElement
-                    valueLink={this.linkState(this, "method")}
-                    control={{
-                      type: SelectControl,
-                      settings: {
-                        options: this.state.methodsDropdown,
-                        multiple: false,
-                        searchable: false,
-                        onChangeCallback: (onBlur) => {
-                          onBlur(this.state.year);
-                          this.addCondition(
-                            SEARCH_BY_TYPE_IN,
-                            this.state.method
-                          );
-                        },
-                        placeholder: "All methods",
-                      },
-                    }}
+                <CustomDropdown
+                    filtername="All method"
+                    options={this.state.methodFilter}
+                    action={SEARCH_BY_TYPE_IN}
+                    handleClick={(key,value) => this.addCondition(key,value)}
                   />
                 </Col>
                 {/* {fillter_tabs} */}
