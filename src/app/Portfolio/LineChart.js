@@ -103,12 +103,12 @@ class LineChart extends BaseReactComponent {
         return a - b;
       });
       for (const [key, value] of Object.entries(assetMaster)) {
-        seriesData.push({
-          name: value.assetDetails.name,
-          id: key,
-          color: value.assetDetails.color,
-          data: []
-        })
+        // seriesData.push({
+        //   name: value.assetDetails.name,
+        //   id: key,
+        //   color: value.assetDetails.color,
+        //   data: []
+        // })
         let graphData = [];
         timestampList.map((timestamp)=>{
           if(timestamp in value){
@@ -118,13 +118,16 @@ class LineChart extends BaseReactComponent {
           }
         })
         seriesData.push({
-            linkedTo: key,
+            // linkedTo: key,
+              name: value.assetDetails.name,
+          id: key,
             type: 'line',
             color: value.assetDetails.color,
             marker: {
               enabled: false
             },
-            data: graphData
+            data: graphData,
+            lastValue: graphData[graphData.length-1]
         })
       }
       let categories = [];
@@ -147,7 +150,9 @@ class LineChart extends BaseReactComponent {
       console.log('categories',categories);
       console.log('timestamp',timestampList);
       console.log('seriesData',seriesData);
-
+      seriesData = seriesData && seriesData.sort((a,b)=>{return b.lastValue - a.lastValue})
+      console.log('after',seriesData);
+      seriesData = seriesData.slice(0,7);
         var UNDEFINED;
         const options = {
             title: {
@@ -222,7 +227,7 @@ class LineChart extends BaseReactComponent {
                     `
                 }
             },
-            series: seriesData,
+            series: seriesData
         }
         return (
             <div className="welcome-card-section line">
