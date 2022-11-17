@@ -1,30 +1,160 @@
 .dropdown {
-    border-radius:0.8rem;
-    .dropdown-toggle {
-        cursor: pointer;
-        box-shadow: none;
-        border: none;
-        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
-    }
-    // .dropdown-toggle:active{
-    //     background-color:$secondary;
-    //     border:0.1rem solid $grey-B0B;
-    // }
-    .dropdown-toggle::after {
-        margin-left: 1.2rem;
-    }
-    .dropdown-item:active , .dropdown-item:hover,.active{
-        // background-color: $grey-E9E;
-        background-color: $drop-button-hover;
-    }    
-    .btn-primary.dropdown-toggle:focus {
-        box-shadow: none;
-    }
-    .btn-primary:not(:disabled):not(.disabled):active{
-        color:$black-191;
-        background-color:$secondary;
-        border:0.1rem solid $grey-B0B;
-        box-shadow: none;
-    }
+  border-radius: 0.8rem;
+  .dropdown-toggle {
+    cursor: pointer;
+    box-shadow: none;
+    border: none;
+    @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+  }
+  // .dropdown-toggle:active{
+  //     background-color:$secondary;
+  //     border:0.1rem solid $grey-B0B;
+  // }
+  .dropdown-toggle::after {
+    margin-left: 1.2rem;
+  }
+  .dropdown-item:active,
+  .dropdown-item:hover,
+  .active {
+    // background-color: $grey-E9E;
+    background-color: $drop-button-hover;
+  }
+  .btn-primary.dropdown-toggle:focus {
+    box-shadow: none;
+  }
+  .btn-primary:not(:disabled):not(.disabled):active {
+    color: $black-191;
+    background-color: $secondary;
+    border: 0.1rem solid $grey-B0B;
+    box-shadow: none;
+  }
 }
 
+// Custom Dropdown
+
+.custom-dropdown {
+  position: relative;
+  // display: inline-block;
+  margin: 0rem 1.7rem 2rem 0rem;
+  background-color: rgba(229, 229, 230, 0.5);
+  border-radius: 0.8rem;
+  border: none;
+  min-height: 4rem;
+  user-select: none;
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    padding: 3px 3px 0px;
+    top: 4.3rem;
+    width: 100%;
+    min-width: 130px;
+    z-index: 1;
+    background-color: #ffffff;
+    border: 1px solid #e1e1e1;
+    // box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+    border-radius: 4px;
+
+    .dropdown-list {
+      max-height: 18.5rem;
+      overflow-y: scroll;
+
+      /* Links inside the dropdown */
+      span {
+        @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+        padding: 10px 8px;
+        margin-bottom: 3px;
+        border-radius: 2px;
+        text-decoration: none;
+        display: block;
+        position: relative;
+
+        svg {
+          position: absolute;
+          right: 5px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 20px;
+          height: 20px;
+          pointer-events: none;
+        }
+
+        svg path {
+          fill: hsl(0, 0%, 80%);
+        }
+      }
+      /* Change color of dropdown links on hover */
+      span:hover {
+        background-color: rgba(229, 229, 230, 0.5);
+      }
+
+      .active {
+        background-color: rgba(229, 229, 230, 0.5);
+      }
+
+      &::-webkit-scrollbar {
+        width: 0.3rem;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 0.8rem;
+        background-color: $scrollBar-thumb;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: transparent;
+        border-radius: 0.8rem;
+      }
+    }
+
+
+    .dropdown-footer{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 6px 0px;
+        border-top: 1px solid $secondary-6;
+
+        .dropdown-btn{
+            background-color: $secondary-6;
+            border-radius: 3px;
+            border: none;
+            text-align: center;
+            width: 48%;
+            min-height: 3rem;
+            user-select: none;
+            cursor: pointer;
+             @include font($black-191, "Inter-Medium", 1.1rem, 500, 3rem);
+        }
+    }
+  }
+
+  .placeholder {
+    @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+    position: absolute;
+    top: 50%;
+    width: 100%;
+
+    text-align: center;
+    transform: translateY(-50%);
+
+    svg {
+      position: absolute;
+      right: 3rem;
+      top: -0.1rem;
+    }
+
+    svg path {
+      fill: hsl(0, 0%, 80%);
+    }
+  }
+
+  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+  .show {
+    display: block;
+  }
+  .hide {
+    display: none;
+  }
+}
