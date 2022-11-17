@@ -1,7 +1,7 @@
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import Highcharts from 'highcharts';
+import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import { GraphHeader } from '../common/GraphHeader'
 import CoinBadges from './../common/CoinBadges';
@@ -124,7 +124,8 @@ class LineChart extends BaseReactComponent {
             type: 'line',
             color: value.assetDetails.color,
             marker: {
-              enabled: false
+              // enabled: false
+              symbol:"circle"
             },
             data: graphData,
             lastValue: graphData[graphData.length-1]
@@ -150,6 +151,17 @@ class LineChart extends BaseReactComponent {
       console.log('categories',categories);
       console.log('timestamp',timestampList);
       console.log('seriesData',seriesData);
+
+      let yaxis_max=0;
+      let max=0;
+      let plotdata;
+      for (let i = 0; i < seriesData.length; i++) {
+        plotdata = seriesData[i].data;
+        max = Math.max(...plotdata);
+        if(yaxis_max < max){
+          yaxis_max=max;
+        }
+      }
       seriesData = seriesData && seriesData.sort((a,b)=>{return b.lastValue - a.lastValue})
       console.log('after',seriesData);
       seriesData = seriesData.slice(0,7);
@@ -166,6 +178,20 @@ class LineChart extends BaseReactComponent {
             },
             xAxis: {
                 categories: categories,
+                scrollbar: {
+                  enabled: true,
+                  height:6,
+                  barBackgroundColor: "#E5E5E6",
+                  barBorderRadius: 4,
+                  barBorderWidth: 0,
+                  trackBackgroundColor: 'transparent',
+                  trackBorderWidth: 0,
+                  trackBorderRadius: 10,
+                  trackBorderColor: '#CCC',
+                  rifleColor:'#E5E5E6',
+              },
+              min: 0,
+              max: 4,
                 // labels: {
                 //     style: {
                 //     }
@@ -176,6 +202,8 @@ class LineChart extends BaseReactComponent {
                 title: {
                     text: null
                 },
+              min: 0,
+              max: yaxis_max,
                 gridLineDashStyle: 'longdash',
                 labels: {
                     formatter: function () {
@@ -192,7 +220,10 @@ class LineChart extends BaseReactComponent {
                     color: "#636467",
                     fontWeight: "600",
                     lineHeight: "12px"
-                }
+                },
+                symbolHeight: 15,
+                symbolWidth: 8,
+                symbolRadius: 6,
             },
             plotOptions: {
               series: {
