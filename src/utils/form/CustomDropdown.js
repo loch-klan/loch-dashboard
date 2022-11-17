@@ -33,7 +33,7 @@ class CustomDropdown extends Component {
     // );
 
 
-    console.log(this.state.options, "state option");
+    // console.log(this.state.options, "state option");
     this.dropDownRef = React.createRef();
     this.handleClickOutside = this.handleClickOutside.bind(this);
   }
@@ -60,7 +60,7 @@ class CustomDropdown extends Component {
   }
 
   dropdownClicked = (e) => {
-    console.log(e.target, this.dropDownRef.current);
+    // console.log(e.target, this.dropDownRef.current);
     let showMenu = this.state.showMenu;
     this.setState({ showMenu: !showMenu });
     e.stopPropagation();
@@ -100,7 +100,7 @@ class CustomDropdown extends Component {
       options: updatedOptions,
     });
 
-    console.log("option", option, "updated Option", this.state.options);
+    // console.log("option", option, "updated Option", this.state.options);
   };
 
   getSelected = () => {

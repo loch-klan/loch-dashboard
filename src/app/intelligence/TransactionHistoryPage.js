@@ -140,7 +140,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     ) {
       if (key === SEARCH_BY_ASSETS_IN) {
         // arr[index].value = [value.toString()]
-        console.log(arr[index]);
+        // console.log(arr[index]);
         arr[index].value = [...arr[index].value, value.toString()];
       } else if (key === SEARCH_BY_TYPE_IN) {
         arr[index].value = [...arr[index].value, value.toString()];
@@ -270,24 +270,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         el.up = false;
       }
     });
-
-    // let check = sort.some(e => e.up === true)
-    // let arr = []
-
-    // if(check){
-    //     // when any sort option is true then sort the table with that option key
-    //     // console.log("Check true")
-    //     arr = obj
-    // }
-    // else {
-    //     // when all sort are false then sort by time in descending order
-    //     // arr.slice(1,1)
-    //     // console.log("Check False ")
-    //     arr = [{
-    //         key: SORT_BY_TIMESTAMP,
-    //         value: false,
-    //     }]
-    // }
 
     this.setState({
       sort: obj,
