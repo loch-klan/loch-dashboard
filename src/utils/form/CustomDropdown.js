@@ -79,17 +79,20 @@ class CustomDropdown extends Component {
     }
   };
 
-  onSelect = (option) => {
+    onSelect = (option) => {
+    
     let updatedOptions = this.state.options.map((e) => {
-      if (e.label === this.state.name && e.value === option.value) {
-        e.isSelected = true;
+      if (e.value === this.state.options[0].value && e.value === option.value) {
+          e.isSelected = true;
+          
       } else {
         if (option.value === e.value) {
           e.isSelected = !option.isSelected;
         }
         if (
-          e.label === this.state.name ||
-          (option.label === this.state.name && e.value !== option.value)
+          e.value === this.state.options[0].value ||
+          (option.value === this.state.options[0].value &&
+            e.value !== option.value)
         ) {
           e.isSelected = false;
         }
@@ -119,19 +122,20 @@ class CustomDropdown extends Component {
       count = selected.length;
     }
 
-   // console.log(selected, "selected", count, "count");
+      console.log(selected, "selected", count, "count");
+      console.log(this.state.options);
     return { selected: selected, length: count };
   };
 
   ClearAll = () => {
       this.onSelect(this.state.options[0]);
       this.props.handleClick(this.props.action, this.getSelected().selected);
-    //    console.log(this.props.action, this.getSelected().selected, "apply");
+       console.log(this.props.action, this.getSelected().selected, "apply");
   };
 
   Apply = () => {
     // console.log(this.getSelected().selected, "apply");
-    // console.log(this.props.action, this.getSelected().selected, "apply");
+    console.log(this.props.action, this.getSelected().selected, "apply");
     this.props.handleClick(this.props.action,this.getSelected().selected)
   };
 
