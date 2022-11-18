@@ -52,6 +52,8 @@ class Portfolio extends BaseReactComponent {
       fixModal: false,
       addModal: false,
       isLoading: true,
+      tableLoading: true,
+      graphLoading: true,
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       limit: 6,
       tableSortOpt: [
@@ -122,9 +124,10 @@ class Portfolio extends BaseReactComponent {
     }
 
     getGraphData = (groupByValue = GROUP_BY_MONTH) =>{
+this.setState({graphLoading: true})
       let addressList = [];
       this.state.userWalletList.map((wallet)=> addressList.push(wallet.address))
-      console.log('addressList',addressList);
+      // console.log('addressList',addressList);
       let data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList))
       data.append("group_criteria", groupByValue);
@@ -135,7 +138,7 @@ class Portfolio extends BaseReactComponent {
       this.getGraphData(groupByValue)
     }
     getTableData = () => {
-
+      this.setState({tableLoading: true})
         let arr = JSON.parse(localStorage.getItem("addWallet"))
         let address = arr.map((wallet) => {
             return wallet.address
@@ -164,7 +167,7 @@ class Portfolio extends BaseReactComponent {
                                 address: wallet.address,
                                 coinCode: coin.coinCode
                             }
-                            this.props.getUserWallet(userCoinWallet)
+                            this.props.getUserWallet(userCoinWallet, this)
                         })
                     }
                     if (i === (this.state.userWalletList.length - 1)) {
@@ -182,6 +185,7 @@ class Portfolio extends BaseReactComponent {
             }
             if (prevProps.userWalletList !== this.state.userWalletList) {
                 this.getTableData()
+                this.getGraphData()
             }
         }
         else if(prevState.sort !== this.state.sort)
@@ -680,7 +684,8 @@ class Portfolio extends BaseReactComponent {
                                 <WelcomeCard
                                     decrement={true}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader} history={this.props.history}
+                                    loader={this.state.loader}
+                                    history={this.props.history}
                                     handleAddModal={this.handleAddModal}
                                     isLoading={this.state.isLoading}
                                     walletTotal={this.props.portfolioState.walletTotal}
@@ -697,7 +702,7 @@ class Portfolio extends BaseReactComponent {
                                 <PieChart
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader}
+                                    // loader={this.state.loader}
                                     isLoading={this.state.isLoading}
                                     walletTotal={this.props.portfolioState.walletTotal}
                                 />
@@ -719,6 +724,7 @@ class Portfolio extends BaseReactComponent {
                                   coinLists={this.props.OnboardingState.coinsLists}
                                   isScrollVisible={false}
                                   handleGroupBy={(value)=>this.handleGroupBy(value)}
+                                  graphLoading={this.state.graphLoading}
                                 />
                             </div>
                             <div className='m-b-22 graph-table-section'>
@@ -740,7 +746,7 @@ class Portfolio extends BaseReactComponent {
                                                 tableData={tableData}
                                                 columnList={columnList}
                                                 headerHeight={60}
-                                                isLoading={this.state.isLoading}
+                                                isLoading={this.state.tableLoading}
                                             />
                                         </div>
                                     </Col>

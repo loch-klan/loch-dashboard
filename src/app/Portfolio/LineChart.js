@@ -11,6 +11,8 @@ import TrendingDown from '../../assets/images/icons/TrendingDown.svg'
 import { GroupByOptions, Months } from "../../utils/Constant";
 import { AssetValueFilter } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
+import moment from "moment";
+import Loading from "../common/Loading";
 class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -136,7 +138,7 @@ class LineChart extends BaseReactComponent {
         let dummy = new Date(time)
         let abc;
         if(this.state.title === 'Week' || this.state.title === 'Day'){
-          abc = dummy.getDate()
+          abc = moment(dummy).format("DD/MM/YYYY")
           categories.push(abc)
         }
         if(this.state.title === 'Month'){
@@ -163,7 +165,8 @@ class LineChart extends BaseReactComponent {
         }
       }
       seriesData = seriesData && seriesData.sort((a,b)=>{return b.lastValue - a.lastValue})
-      console.log('after',seriesData);
+      // console.log('after',seriesData);
+      // console.log('categories.length',categories.length);
       seriesData = seriesData.slice(0,7);
         var UNDEFINED;
         const options = {
@@ -191,11 +194,7 @@ class LineChart extends BaseReactComponent {
                   rifleColor:'#E5E5E6',
               },
               min: 0,
-              max: 4,
-                // labels: {
-                //     style: {
-                //     }
-                // }
+              max: this.state.title === "Year" ? categories.length > 4 ? 4 : categories.length - 1 : 4,
             },
 
             yAxis: {
@@ -262,14 +261,17 @@ class LineChart extends BaseReactComponent {
         }
         return (
             <div className="welcome-card-section line">
-                <div className='line-chart-section'>
-
+              {
+                this.props.graphLoading
+                ?
+                <Loading />
+                :
+<div className='line-chart-section'>
                     <GraphHeader
                         title="Asset Value"
                         subtitle="Updated 3mins ago"
                         isArrow={true}
                     />
-
                     <CoinBadges
                         activeBadge={this.state.activeBadge}
                         chainList={this.props.OnboardingState.coinsList}
@@ -294,6 +296,8 @@ class LineChart extends BaseReactComponent {
                             />
                     </div>
                 </div>
+              }
+
             </div>
         );
     }

@@ -11,7 +11,7 @@ export const searchTransactionApi = (data , ctx, page = 0) => {
                     dispatch(getAllTransactionHistory(res.data.data, page))
                     if(ctx){
                         ctx.setState({
-                            isLoading:false,
+                            tableLoading: false,
                         })
                     }
                 }

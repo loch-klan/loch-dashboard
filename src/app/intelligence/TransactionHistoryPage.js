@@ -45,7 +45,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       methodFilter: [],
       delayTimer: 0,
       condition: cond ? cond : [],
-      isLoading: true,
+      tableLoading: true,
       tableSortOpt: [
         {
           title: "time",
@@ -97,7 +97,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   }
 
   callApi = (page = START_INDEX) => {
-    this.setState({ isLoading: true });
+    this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
     data.append("conditions", JSON.stringify(this.state.condition));
@@ -681,7 +681,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               history={this.props.history}
               location={this.props.location}
               page={currentPage}
-              isLoading={this.state.isLoading}
+              tableLoading={this.state.tableLoading}
             />
           </div>
           {/* <CommonPagination

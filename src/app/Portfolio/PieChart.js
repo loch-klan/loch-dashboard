@@ -315,11 +315,12 @@ class PieChart extends BaseReactComponent {
 
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
-                this.state.loader === true
+                this.props.isLoading === true
                 ?
                 <Loading/>
                 :
-                Object.keys(this.state.assetData).length > 0 ?
+                Object.keys(this.state.assetData).length > 0
+                ?
                     <>
                         <div className='chart-section'>
                             <HighchartsReact
@@ -333,7 +334,7 @@ class PieChart extends BaseReactComponent {
                         </div>
 
                         {
-                        this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
+                          this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
                             <div className='coin-hover-display' >
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
@@ -412,25 +413,23 @@ class PieChart extends BaseReactComponent {
                                         </>
                                       )
                                     }
-
                                   })
                                 }
-                            </div> : null}
+                            </div>
+                            :
+                            null
+                          }
                     </>
                     :
                         this.props.isLoading === true
                         ?
-                            <>
-                            {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                                <Loading/>
-                            </>
-
+                        <Loading/>
                         :
-                            this.props.walletTotal === 0
-                            ?
-                                <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
-                            :
-                                null
+                        this.props.walletTotal === 0 || this.state.assetData.length === 0
+                        ?
+                        <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                        :
+                        null
                 }
                 </div>
 
