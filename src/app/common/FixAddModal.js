@@ -82,6 +82,7 @@ class FixAddModal extends BaseReactComponent {
                     coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
                     coinName: this.props.OnboardingState.coinsList[i].name,
                     address: value,
+                    coinColor: this.props.OnboardingState.coinsList[i].color,
                 }, this)
             }
         }
@@ -169,7 +170,7 @@ class FixAddModal extends BaseReactComponent {
 
     handleAddWallet = () => {
         if (this.state.addWalletList) {
-           
+
             let arr = []
             let walletList = []
             for (let i = 0; i < this.state.addWalletList.length; i++) {

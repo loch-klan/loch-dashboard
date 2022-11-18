@@ -224,15 +224,15 @@ class LineChart extends BaseReactComponent {
                 symbolWidth: 8,
                 symbolRadius: 6,
             },
-            plotOptions: {
-              series: {
-                  events: {
-                      legendItemClick: function() {
-                        return false;
-                      }
-                  }
-              }
-          },
+          //   plotOptions: {
+          //     series: {
+          //         events: {
+          //             legendItemClick: function() {
+          //               return false;
+          //             }
+          //         }
+          //     }
+          // },
             tooltip: {
                 useHTML: true,
                 borderRadius : 8,
@@ -249,7 +249,7 @@ class LineChart extends BaseReactComponent {
                             <div class="m-b-12 top-section">
                                 <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
                                     <img src=${TrendingUp} class="m-r-8"/>
-                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + this.y}</div>
+                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + this.y?.toFixed(2)}</div>
                                 </div>
                             </div>
                         </div>
