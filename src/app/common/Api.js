@@ -57,6 +57,21 @@ export const updateUserWalletApi = (data,ctx) =>{
   })
 }
 
+export const verifyEmailApi = (ctx, data) =>{
+  preLoginInstance
+  .post("organisation/user/verify-email", data)
+  .then((res)=>{
+    if(!res.data.error){
+      ctx.setState({error: false});
+    } else{
+      ctx.setState({error: true});
+    }
+  })
+  .catch((err)=>{
+    console.log("fixwallet",err)
+  })
+}
+
 
 // export const resetPasswordApi = (ctx, data) => {
 //   preLoginInstance

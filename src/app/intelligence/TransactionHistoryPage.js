@@ -6,7 +6,7 @@ import TransactionTable from "./TransactionTable";
 import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_TYPE_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD } from "../../utils/Constant";
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "./Api";
 import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
@@ -147,7 +147,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       //   // removing duplicate
       //   let uniqueArr = [...new Set(dummyArr)];
       //   arr[index].value = uniqueArr;
-      // } else if (key === SEARCH_BY_TYPE_IN) {
+      // } else if (key === SEARCH_BY_METHOD_IN) {
       //   arr[index].value = [...arr[index].value, value.toString()];
       // } else if (key === SEARCH_BY_TIMESTAMP_IN) {
       //   // arr[index].value = value.toString();
@@ -174,7 +174,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       //     key: key,
       //     value: value,
       //   };
-      // } else if (key === SEARCH_BY_TYPE_IN) {
+      // } else if (key === SEARCH_BY_METHOD_IN) {
       //   obj = {
       //     key: key,
       //     value: value,
@@ -317,14 +317,16 @@ class TransactionHistoryPage extends BaseReactComponent {
                     address: row.from_wallet.address,
                     // wallet_metaData: row.from_wallet.wallet_metaData
                     wallet_metaData: {
-                        symbol: row.from_wallet.wallet_metaData ? row.from_wallet.wallet_metaData.symbol : unrecognizedIcon
+                        symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
+                        text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
                     }
                 },
                 to: {
                     address: row.to_wallet.address,
                     // wallet_metaData: row.to_wallet.wallet_metaData,
                     wallet_metaData: {
-                        symbol: row.to_wallet.wallet_metaData ? row.to_wallet.wallet_metaData.symbol : unrecognizedIcon
+                        symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
+                        text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
                     },
                 },
                 asset: {
@@ -391,7 +393,18 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 isText={true}
                                 text={rowData.from.address}
                             >
-                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
+                              {
+                                rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
+                                ?
+                                rowData.from.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.from.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
+
                             </CustomOverlay>
                         )
                     }
@@ -417,7 +430,17 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 isText={true}
                                 text={rowData.to.address}
                             >
-                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
+                              {
+                                rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
+                                ?
+                                rowData.to.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.to.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
                             </CustomOverlay>
                         )
                     }
@@ -439,7 +462,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         return (
                             <CoinChip
                                 coin_img_src={rowData.asset.symbol}
-                                coin_code={rowData.asset.code}
+                                // coin_code={rowData.asset.code}
                             />
                         )
                     }
@@ -653,7 +676,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 <CustomDropdown
                     filtername="All method"
                     options={this.state.methodFilter}
-                    action={SEARCH_BY_TYPE_IN}
+                    action={SEARCH_BY_METHOD_IN}
                     handleClick={(key,value) => this.addCondition(key,value)}
                   />
                 </Col>
