@@ -46,7 +46,7 @@ export default function WalletCard(props) {
         )
     })
     const copyContent = () => {
-        const text = props.display_address
+        const text = props.display_address ? props.display_address : props.wallet_account_number
         navigator.clipboard
       .writeText(text)
       .then(() => {
@@ -63,22 +63,12 @@ export default function WalletCard(props) {
     }
     return (<>
         <div className="walletcard">
-
-        {/* // props.isLoading
-        // ?
-        // <Loading/>
-        // : */}
         <>
-
-          {/* {
-            <CopiedModal show={showModal} onHide={()=>toggleCopied(false)} />
-          } */}
             <div className='m-b-32 wallet-details'>
                 <div className='wallet-account-details'>
                     <div className='m-r-16 wallet-img'>
                         <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognizedIcon} />
                     </div>
-                    {/* <div className='m-r-16 wallet-name-details'> */}
                         <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognized wallet"}</h6>
                         {props.tag &&
                             <CustomOverlay
@@ -94,7 +84,7 @@ export default function WalletCard(props) {
                             </CustomOverlay>
                         }
                     <div className='account-details'>
-                        <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.display_address}</span>
+                        <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.display_address ? props.display_address : props.wallet_account_number}</span>
                         <Image src={CopyClipboardIcon} onClick={copyContent} className="m-l-10 cp" />
                     </div>
                     {/* </div> */}
