@@ -287,20 +287,28 @@ this.setState({graphLoading: true})
           from: {
             address: row.from_wallet.address,
             // wallet_metaData: row.from_wallet.wallet_metaData
+            // wallet_metaData: {
+            //   symbol: row.from_wallet.wallet_metaData
+            //     ? row.from_wallet.wallet_metaData.symbol
+            //     : unrecognizedIcon,
+            // },
             wallet_metaData: {
-              symbol: row.from_wallet.wallet_metaData
-                ? row.from_wallet.wallet_metaData.symbol
-                : unrecognizedIcon,
-            },
+              symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
+              text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
+          }
           },
           to: {
             address: row.to_wallet.address,
             // wallet_metaData: row.to_wallet.wallet_metaData,
+            // wallet_metaData: {
+            //   symbol: row.to_wallet.wallet_metaData
+            //     ? row.to_wallet.wallet_metaData.symbol
+            //     : unrecognizedIcon,
+            // },
             wallet_metaData: {
-              symbol: row.to_wallet.wallet_metaData
-                ? row.to_wallet.wallet_metaData.symbol
-                : unrecognizedIcon,
-            },
+              symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
+              text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
+          },
           },
           asset: {
             code: row.asset.code,
@@ -353,7 +361,18 @@ this.setState({graphLoading: true})
                                 isText={true}
                                 text={rowData.from.address}
                             >
-                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
+                               {
+                                rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
+                                ?
+                                rowData.from.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.from.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
+                                {/* <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" /> */}
                             </CustomOverlay>
                         )
                     }
@@ -378,7 +397,18 @@ this.setState({graphLoading: true})
                                 isText={true}
                                 text={rowData.to.address}
                             >
-                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
+                                {/* <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" /> */}
+                                {
+                                rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
+                                ?
+                                rowData.to.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.to.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
                             </CustomOverlay>
                         )
                     }
@@ -396,10 +426,19 @@ this.setState({graphLoading: true})
                 cell: (rowData, dataKey) => {
                     if (dataKey === "asset") {
                         return (
-                            <CoinChip
+                             <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={rowData.asset.code}
+                            >
+                            {/* <CoinChip
                                 coin_img_src={rowData.asset.symbol}
-                                coin_code={rowData.asset.code}
-                            />
+                                // coin_code={rowData.asset.code}
+                            /> */}
+                            <Image src={rowData.asset.symbol} className="asset-symbol" />
+                            </CustomOverlay>
                         )
                     }
                 }

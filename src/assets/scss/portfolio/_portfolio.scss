@@ -283,7 +283,8 @@
                         white-space: normal !important;
                         word-wrap: break-word;
                         border-radius:0.4rem;
-                        max-width:83%;
+                        // max-width:83%;
+                        max-width: max-content;
                     }
                 }
             }

@@ -25,7 +25,7 @@ export const loginApi = (ctx, data) => {
 }
 
 export const fixWalletApi = (ctx,info) =>{
-      postLoginInstance.post("organisation/user/create-user",info)
+      postLoginInstance.post("organisation/user/update-user",info)
       .then((res)=>{
         if(!res.data.error){
           ctx.handleRedirection();
