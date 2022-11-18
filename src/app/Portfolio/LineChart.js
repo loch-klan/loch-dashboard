@@ -13,6 +13,7 @@ import { AssetValueFilter } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
+import { numToCurrency } from "../../utils/ReusableFunctions";
 class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -197,6 +198,7 @@ class LineChart extends BaseReactComponent {
               },
               min: 0,
               max: categories.length > 4 ? 4 : categories.length - 1 ,
+              // max: this.state.title === "Year" ? categories.length > 4 ? 4 : categories.length - 1 : 4,
             },
 
             yAxis: {
@@ -251,7 +253,7 @@ class LineChart extends BaseReactComponent {
                             <div class="m-b-12 top-section">
                                 <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
                                     <img src=${TrendingUp} class="m-r-8"/>
-                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + "$"+this.y?.toFixed(2)}</div>
+                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + "$"+numToCurrency(this.y)}</div>
                                 </div>
                             </div>
                         </div>
