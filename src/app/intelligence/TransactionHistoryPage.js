@@ -391,7 +391,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.from.address}
+                                // text={rowData.from.address}
+                                text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
                             >
                               {
                                 rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
@@ -428,7 +429,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.to.address}
+                                text={rowData.to.wallet_metaData.text ? (rowData.to.wallet_metaData.text + ": " + rowData.to.address) : rowData.to.address}
                             >
                               {
                                 rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
