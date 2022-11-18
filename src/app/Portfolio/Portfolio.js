@@ -359,7 +359,8 @@ this.setState({graphLoading: true})
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.from.address}
+                                // text={rowData.from.address}
+                                text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
                             >
                                {
                                 rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
@@ -395,7 +396,8 @@ this.setState({graphLoading: true})
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.to.address}
+                                // text={rowData.to.address}
+                                text={rowData.to.wallet_metaData.text ? (rowData.to.wallet_metaData.text + ": " + rowData.to.address) : rowData.to.address}
                             >
                                 {/* <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" /> */}
                                 {
