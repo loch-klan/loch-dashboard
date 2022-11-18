@@ -81,7 +81,17 @@ export const updateWalletApi = (ctx, data) => {
     .then((res) => {
       // console.log(res)
       if (!res.data.error) {
-        // console.log(res.data.message)
+        let walletAddress = ctx.state.walletAddress;
+        let addWallet = JSON.parse(localStorage.getItem("addWallet"));
+        addWallet = addWallet.map((wallet)=>{
+          if(wallet.address === walletAddress){
+            return({
+              ...wallet,
+              wallet_metadata: res.data.data.user_wallets.map((item)=>{ if(item.address===walletAddress) return item.wallet })
+            })
+          }
+        })
+        localStorage.setItem('addWallet',JSON.stringify(addWallet));
         ctx.props.onHide()
         ctx.props.makeApiCall()
         toast.success(

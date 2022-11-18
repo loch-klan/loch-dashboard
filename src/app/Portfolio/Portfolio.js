@@ -825,6 +825,7 @@ this.setState({graphLoading: true})
                                           </div>
                                 <div className='portfolio-cost-table'>
                                     <TransactionTable
+                                    className="minified-table"
                                         title="Average Cost Basis"
                                         subTitle="Understand your average entry price"
                                         tableData={costTableData}

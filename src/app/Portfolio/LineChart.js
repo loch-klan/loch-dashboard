@@ -152,9 +152,9 @@ class LineChart extends BaseReactComponent {
           categories.push(abc);
         }
       })
-      console.log('categories',categories);
-      console.log('timestamp',timestampList);
-      console.log('seriesData',seriesData);
+      // console.log('categories',categories);
+      // console.log('timestamp',timestampList);
+      // console.log('seriesData',seriesData);
 
       let yaxis_max=0;
       let max=0;

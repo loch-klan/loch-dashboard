@@ -404,7 +404,11 @@
                         margin-bottom: 0.3rem;
                     }
                 }
-
+                .history-table-method {
+                  width: 7rem !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+                }
             }
         }
 
