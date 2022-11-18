@@ -80,11 +80,11 @@ class CustomDropdown extends Component {
   };
 
     onSelect = (option) => {
-    
+
     let updatedOptions = this.state.options.map((e) => {
       if (e.value === this.state.options[0].value && e.value === option.value) {
           e.isSelected = true;
-          
+
       } else {
         if (option.value === e.value) {
           e.isSelected = !option.isSelected;
@@ -137,7 +137,7 @@ class CustomDropdown extends Component {
   Apply = () => {
     // console.log(this.getSelected().selected, "apply");
     // console.log(this.props.action, this.getSelected().selected, "apply");
-      
+
       this.props.handleClick(this.props.action, this.getSelected().selected);
         this.setState({ showMenu: false });
   };
@@ -199,10 +199,10 @@ class CustomDropdown extends Component {
           </div>
 
           <div className="dropdown-footer">
-            <span className="dropdown-btn" onClick={this.ClearAll}>
+            <span className="primary-btn dropdown-btn" onClick={this.ClearAll}>
               Clear All
             </span>
-            <span className="dropdown-btn" onClick={this.Apply}>
+            <span className="secondary-btn dropdown-btn" onClick={this.Apply}>
               Apply
             </span>
           </div>

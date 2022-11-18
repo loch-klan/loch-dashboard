@@ -128,7 +128,9 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
 
   addCondition = (key, value) => {
+    console.log('key, value',key, value);
     let index = this.state.condition.findIndex((e) => e.key === key);
+    console.log('index',index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -139,16 +141,22 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allMethod" &&
       value !== "allYear"
     ) {
-      if (key === SEARCH_BY_ASSETS_IN) {
-        // arr[index].value = [value.toString()]
-        // console.log(arr[index]);
-        arr[index].value = [...arr[index].value, value.toString()];
-      } else if (key === SEARCH_BY_TYPE_IN) {
-        arr[index].value = [...arr[index].value, value.toString()];
-      } else if (key === SEARCH_BY_TIMESTAMP_IN) {
-        // arr[index].value = value.toString();
-           arr[index].value = [...arr[index].value, value.toString()];
-      }
+      // if (key === SEARCH_BY_ASSETS_IN) {
+      //   // merge two arrays
+      //   let dummyArr = [...arr[index].value, ...value];
+      //   // removing duplicate
+      //   let uniqueArr = [...new Set(dummyArr)];
+      //   arr[index].value = uniqueArr;
+      // } else if (key === SEARCH_BY_TYPE_IN) {
+      //   arr[index].value = [...arr[index].value, value.toString()];
+      // } else if (key === SEARCH_BY_TIMESTAMP_IN) {
+      //   // arr[index].value = value.toString();
+      //      arr[index].value = [...arr[index].value, value.toString()];
+      // }
+      // let dummyArr = [...arr[index].value, ...value];
+        // removing duplicate
+        // let uniqueArr = [...new Set(dummyArr)];
+        arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
@@ -157,22 +165,26 @@ class TransactionHistoryPage extends BaseReactComponent {
       arr.splice(index, 1);
     } else {
       let obj = {};
-      if (key === SEARCH_BY_ASSETS_IN) {
-        obj = {
-          key: key,
-          value: [value.toString()],
-        };
-      } else if (key === SEARCH_BY_TYPE_IN) {
-        obj = {
-          key: key,
-          value: [value.toString()],
-        };
-      } else if (key === SEARCH_BY_TIMESTAMP_IN) {
-        obj = {
-          key: key,
-          value: [value.toString()],
-        };
-      }
+      obj = {
+        key: key,
+        value: value,
+      };
+      // if (key === SEARCH_BY_ASSETS_IN) {
+      //   obj = {
+      //     key: key,
+      //     value: value,
+      //   };
+      // } else if (key === SEARCH_BY_TYPE_IN) {
+      //   obj = {
+      //     key: key,
+      //     value: value,
+      //   };
+      // } else if (key === SEARCH_BY_TIMESTAMP_IN) {
+      //   obj = {
+      //     key: key,
+      //     value: value,
+      //   };
+      // }
       arr.push(obj);
     }
     if (search_index !== -1) {
