@@ -22,7 +22,7 @@ function TransactionTable(props) {
                 ""
             }
                 <CustomTable
-                    className={`transaction-table ${props.comingSoon && "blur-effect"}`}
+                    className={`transaction-table ${props?.className} ${props.comingSoon && "blur-effect"}`}
                     tableData={props.tableData}
                     columnList={props.columnList}
                     headerHeight={props.headerHeight}

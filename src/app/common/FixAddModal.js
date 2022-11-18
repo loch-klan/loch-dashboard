@@ -26,6 +26,7 @@ class FixAddModal extends BaseReactComponent {
             id: `wallet${addWalletList.length + 1}`,
             address: "",
             coins: [],
+            wallet_metadata: {}
         }]
         this.state = {
             onHide: props.onHide,
@@ -130,6 +131,7 @@ class FixAddModal extends BaseReactComponent {
             id: `wallet${this.state.addWalletList.length + 1}`,
             address: "",
             coins: [],
+            wallet_metadata: {}
         })
         this.setState({
             addWalletList: this.state.addWalletList
@@ -292,6 +294,7 @@ class FixAddModal extends BaseReactComponent {
                 id: 'wallet1',
                 address: "",
                 coins: [],
+                wallet_metadata: {}
             })
         }
         localStorage.setItem("addWallet", JSON.stringify(walletList))
