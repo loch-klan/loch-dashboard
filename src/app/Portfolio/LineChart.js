@@ -203,8 +203,8 @@ class LineChart extends BaseReactComponent {
                 title: {
                     text: null
                 },
-              min: 0,
-              max: yaxis_max,
+              // min: 0,
+              // max: yaxis_max,
                 gridLineDashStyle: 'longdash',
                 labels: {
                     formatter: function () {
