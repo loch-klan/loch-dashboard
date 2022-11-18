@@ -296,6 +296,7 @@ class Wallet extends Component {
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}
                     wallet_account_number={wallet.address}
+                    display_address={wallet.display_address}
                     wallet_amount={wallet.total_value}
                     wallet_coins={wallet.chains}
                     makeApiCall={this.makeApiCall}

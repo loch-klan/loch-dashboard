@@ -142,8 +142,10 @@ class LineChart extends BaseReactComponent {
           categories.push(abc)
         }
         if(this.state.title === 'Month'){
-          abc = dummy.getMonth()+1;
-          categories.push(Months.getText(abc))
+          // abc = dummy.getMonth()+1;
+          // categories.push(Months.getText(abc))
+          abc = moment(dummy).format("MMMM YY")
+          categories.push(abc)
         }
         if(this.state.title === 'Year'){
           abc = dummy.getFullYear();

@@ -46,7 +46,7 @@ export default function WalletCard(props) {
         )
     })
     const copyContent = () => {
-        const text = props.wallet_account_number
+        const text = props.display_address
         navigator.clipboard
       .writeText(text)
       .then(() => {
@@ -94,7 +94,7 @@ export default function WalletCard(props) {
                             </CustomOverlay>
                         }
                     <div className='account-details'>
-                        <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
+                        <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.display_address}</span>
                         <Image src={CopyClipboardIcon} onClick={copyContent} className="m-l-10 cp" />
                     </div>
                     {/* </div> */}
@@ -127,6 +127,7 @@ export default function WalletCard(props) {
                         onHide={handleClose}
                         createdOn={props.createdOn}
                         walletAddress={props.wallet_account_number}
+                        displayAddress={props.display_address}
                         walletMetaData={props.wallet_metadata}
                         coinchips={props.wallet_coins}
                         makeApiCall={()=>props.makeApiCall()}

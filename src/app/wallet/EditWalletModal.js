@@ -15,6 +15,7 @@ class EditWalletModal extends BaseReactComponent {
         this.state = {
             createdOn:props.createdOn,
             walletAddress: props.walletAddress,
+            displayAddress: props.displayAddress,
             walletName: props.walletMetaData ? props.walletMetaData.id : "",
             walletTag: props.walletMetaData ? props.walletMetaData.tag : "",
             walletMetaData: props.walletMetaData,
@@ -51,7 +52,7 @@ class EditWalletModal extends BaseReactComponent {
         ENS: this.state.walletAddress,
         blockchains_detected: blockchains,
       });
-   
+
     };
 
   handleDelete = () => {
@@ -75,7 +76,7 @@ class EditWalletModal extends BaseReactComponent {
         let data = new URLSearchParams()
         data.append("wallet_address",this.state.walletAddress)
         deleteWallet(this,data)
-      
+
     }
 
     getDays = (d)=>{
@@ -154,7 +155,7 @@ class EditWalletModal extends BaseReactComponent {
                       <div className='m-b-32 coinchips'>{chips}</div>
                       <div className='edit-form'>
                           <FormElement
-                                    valueLink={this.linkState(this, "walletAddress")}
+                                    valueLink={this.linkState(this, "displayAddress")}
                                     label="Wallet Address"
                                     disabled
                                     control={{
