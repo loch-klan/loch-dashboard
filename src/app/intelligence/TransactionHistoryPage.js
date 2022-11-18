@@ -334,7 +334,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     symbol: row.asset.symbol
                 },
                 amount: {
-                    value: row.asset.value,
+                    value: parseFloat(row.asset.value),
                     id: row.asset.id
                 },
                 usdValueThen: {

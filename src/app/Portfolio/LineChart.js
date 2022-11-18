@@ -20,7 +20,7 @@ class LineChart extends BaseReactComponent {
           assetValueData: props.assetValueData,
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
-          title: "Month",
+          title: "Year",
           titleY:"$ USD"
         }
 
@@ -196,7 +196,7 @@ class LineChart extends BaseReactComponent {
                   rifleColor:'#E5E5E6',
               },
               min: 0,
-              max: this.state.title === "Year" ? categories.length > 4 ? 4 : categories.length - 1 : 4,
+              max: categories.length > 4 ? 4 : categories.length - 1 ,
             },
 
             yAxis: {
@@ -251,7 +251,7 @@ class LineChart extends BaseReactComponent {
                             <div class="m-b-12 top-section">
                                 <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
                                     <img src=${TrendingUp} class="m-r-8"/>
-                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + this.y?.toFixed(2)}</div>
+                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + "$"+this.y?.toFixed(2)}</div>
                                 </div>
                             </div>
                         </div>
