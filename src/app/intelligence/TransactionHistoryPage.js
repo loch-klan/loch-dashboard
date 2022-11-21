@@ -1,271 +1,288 @@
-import React, { Component } from 'react'
-import { Image, Row, Col } from 'react-bootstrap';
-import PageHeader from '../common/PageHeader';
-import searchIcon from '../../assets/images/icons/search-icon.svg'
-import TransactionTable from './TransactionTable';
-import Metamask from '../../assets/images/MetamaskIcon.svg'
-import CoinChip from '../wallet/CoinChip';
+import React, { Component } from "react";
+import { Image, Row, Col } from "react-bootstrap";
+import PageHeader from "../common/PageHeader";
+import searchIcon from "../../assets/images/icons/search-icon.svg";
+import TransactionTable from "./TransactionTable";
+import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
-import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
-import {
-    SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP, SEARCH_BY_TYPE_IN, SORT_BY_TIMESTAMP,
-    SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD
-} from '../../utils/Constant'
-import { searchTransactionApi, getFilters } from './Api';
-import { getCoinRate } from '../Portfolio/Api.js'
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import moment from "moment"
-import { SelectControl, FormElement, Form, CustomTextControl } from '../../utils/form';
-import unrecognizedIcon from '../../image/unrecognized.svg'
-import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
-
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD } from "../../utils/Constant";
+import { searchTransactionApi, getFilters } from "./Api";
+import { getCoinRate } from "../Portfolio/Api.js";
+import moment from "moment";
+import { SelectControl, FormElement, Form, CustomTextControl, BaseReactComponent } from "../../utils/form";
+import unrecognizedIcon from "../../image/unrecognized.svg";
+import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
+import CustomDropdown from "../../utils/form/CustomDropdown";
 class TransactionHistoryPage extends BaseReactComponent {
-    constructor(props) {
-        super(props);
-        const search = props.location.search;
-        const params = new URLSearchParams(search);
-        const page = params.get("p");
-        const walletList = JSON.parse(localStorage.getItem("addWallet"))
-        const address = walletList.map((wallet) => {
-            return wallet.address
-        })
-        const cond = [{
-            key: SEARCH_BY_WALLET_ADDRESS_IN,
-            value: address
-        }]
-        this.state = {
-            year: '',
-            search: '',
-            method: '',
-            asset: '',
-            methodsDropdown: Method.opt,
-            table: [],
-            sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
-            walletList,
-            currentPage: page ? parseInt(page, 10) : START_INDEX,
-            assetFilter: [],
-            yearFilter: [],
-            delayTimer: 0,
-            condition: cond ? cond : [],
-            isLoading: true,
-            tableSortOpt: [
-                {
-                    title: "time",
-                    up: false,
-                },
-                {
-                    title: "from",
-                    up: false,
-                },
-                {
-                    title: "to",
-                    up: false
-                },
-                {
-                    title: "asset",
-                    up: false
-                },
-                {
-                    title: "amount",
-                    up: false
-                },
-                {
-                    title: "usdThen",
-                    up: false
-                },
-                {
-                    title: "usdToday",
-                    up: false
-                },
-                {
-                    title: "usdTransaction",
-                    up: false
-                },
-                {
-                    title: "method",
-                    up: false
-                }
-            ]
-        }
-        this.delayTimer = 0
+  constructor(props) {
+    super(props);
+    const search = props.location.search;
+    const params = new URLSearchParams(search);
+    const page = params.get("p");
+    const walletList = JSON.parse(localStorage.getItem("addWallet"));
+    const address = walletList.map((wallet) => {
+      return wallet.address;
+    });
+    const cond = [
+      {
+        key: SEARCH_BY_WALLET_ADDRESS_IN,
+        value: address,
+      },
+    ];
+    this.state = {
+      year: "",
+      search: "",
+      method: "",
+      asset: "",
+      methodsDropdown: Method.opt,
+      table: [],
+      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      walletList,
+      currentPage: page ? parseInt(page, 10) : START_INDEX,
+      assetFilter: [],
+      yearFilter: [],
+      methodFilter: [],
+      delayTimer: 0,
+      condition: cond ? cond : [],
+      tableLoading: true,
+      tableSortOpt: [
+        {
+          title: "time",
+          up: false,
+        },
+        {
+          title: "from",
+          up: false,
+        },
+        {
+          title: "to",
+          up: false,
+        },
+        {
+          title: "asset",
+          up: false,
+        },
+        {
+          title: "amount",
+          up: false,
+        },
+        {
+          title: "usdThen",
+          up: false,
+        },
+        {
+          title: "usdToday",
+          up: false,
+        },
+        {
+          title: "usdTransaction",
+          up: false,
+        },
+        {
+          title: "method",
+          up: false,
+        },
+      ],
+    };
+    this.delayTimer = 0;
+  }
+  componentDidMount() {
+    this.props.history.replace({
+      search: `?p=${this.state.currentPage}`,
+    });
+    this.callApi(this.state.currentPage || START_INDEX);
+    getFilters(this);
+    this.props.getCoinRate();
+  }
+
+  callApi = (page = START_INDEX) => {
+    this.setState({ tableLoading: true });
+    let data = new URLSearchParams();
+    data.append("start", page * API_LIMIT);
+    data.append("conditions", JSON.stringify(this.state.condition));
+    data.append("limit", API_LIMIT);
+    data.append("sorts", JSON.stringify(this.state.sort));
+    this.props.searchTransactionApi(data, this, page);
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    const prevParams = new URLSearchParams(prevProps.location.search);
+    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
+
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
+
+    if (
+      prevPage !== page ||
+      prevState.condition !== this.state.condition ||
+      prevState.sort !== this.state.sort
+    ) {
+      this.callApi(page);
     }
-    componentDidMount() {
-        this.props.history.replace({
-            search: `?p=${this.state.currentPage}`
-        })
-
-        this.callApi(this.state.currentPage || START_INDEX)
-        getFilters(this)
-        this.props.getCoinRate()
-    }
-
-    callApi = (page = START_INDEX) => {
-        this.setState({ isLoading: true })
-        let data = new URLSearchParams()
-        data.append("start", (page * API_LIMIT))
-        data.append("conditions", JSON.stringify(this.state.condition))
-        data.append("limit", API_LIMIT)
-        data.append("sorts", JSON.stringify(this.state.sort))
-        this.props.searchTransactionApi(data, this, page)
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        const prevParams = new URLSearchParams(prevProps.location.search);
-        const prevPage = parseInt(prevParams.get('p') || START_INDEX, 10);
-
-        const params = new URLSearchParams(this.props.location.search);
-        const page = parseInt(params.get('p') || START_INDEX, 10);
-
-        if (prevPage !== page || prevState.condition !== this.state.condition || prevState.sort !== this.state.sort) {
-            this.callApi(page);
-        }
-
-    }
+  }
 
 
     onValidSubmit = () => {
         console.log("Sbmit")
     }
 
-    addCondition = (key, value) => {
-        let index = this.state.condition.findIndex((e) => e.key === key)
-        // console.log("YES ,PRESENT", index)
-        let arr = [...this.state.condition];
-        let search_index = this.state.condition.findIndex((e) => e.key === SEARCH_BY_TEXT)
-
-        // console.log(search_index, arr[search_index])
-        //
-        if (index !== -1 && value !== 'allAssets' && value !== 'allMethod' && value !== 'allYear') {
-            if (key === SEARCH_BY_ASSETS_IN) {
-                // arr[index].value = [value.toString()]
-                console.log(arr[index])
-                arr[index].value = [...arr[index].value, value.toString()]
-            }
-            else if (key === SEARCH_BY_TYPE_IN) {
-                arr[index].value = [...arr[index].value, value.toString()]
-            }
-            else if (key === SEARCH_BY_TIMESTAMP) {
-                arr[index].value = value.toString()
-            }
-        } else if (value === 'allAssets' || value === 'allMethod' || value === 'allYear') {
-            arr.splice(index, 1)
-        } else {
-            let obj = {};
-            if (key === SEARCH_BY_ASSETS_IN) {
-                obj = {
-                    key: key,
-                    value: [value.toString()]
-                }
-            }
-            else if (key === SEARCH_BY_TYPE_IN) {
-                obj = {
-                    key: key,
-                    value: [value.toString()]
-                }
-            }
-            else if (key === SEARCH_BY_TIMESTAMP) {
-                obj = {
-                    key: key,
-                    value: value.toString()
-                }
-            }
-            arr.push(obj)
-        }
-        if (search_index !== -1) {
-            if (value === '' && key === SEARCH_BY_TEXT) {
-                // console.log("remove", arr[search_index].value[0])
-                arr.splice(search_index, 1)
-            }
-        }
-        // On Filter start from page 0
-        this.props.history.replace({
-            search: `?p=${START_INDEX}`
-        })
-        this.setState({
-            condition: arr,
-        })
+  addCondition = (key, value) => {
+    console.log('key, value',key, value);
+    let index = this.state.condition.findIndex((e) => e.key === key);
+    console.log('index',index);
+    let arr = [...this.state.condition];
+    let search_index = this.state.condition.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear"
+    ) {
+      // if (key === SEARCH_BY_ASSETS_IN) {
+      //   // merge two arrays
+      //   let dummyArr = [...arr[index].value, ...value];
+      //   // removing duplicate
+      //   let uniqueArr = [...new Set(dummyArr)];
+      //   arr[index].value = uniqueArr;
+      // } else if (key === SEARCH_BY_METHOD_IN) {
+      //   arr[index].value = [...arr[index].value, value.toString()];
+      // } else if (key === SEARCH_BY_TIMESTAMP_IN) {
+      //   // arr[index].value = value.toString();
+      //      arr[index].value = [...arr[index].value, value.toString()];
+      // }
+      // let dummyArr = [...arr[index].value, ...value];
+        // removing duplicate
+        // let uniqueArr = [...new Set(dummyArr)];
+        arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear"
+    ) {
+      arr.splice(index, 1);
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      // if (key === SEARCH_BY_ASSETS_IN) {
+      //   obj = {
+      //     key: key,
+      //     value: value,
+      //   };
+      // } else if (key === SEARCH_BY_METHOD_IN) {
+      //   obj = {
+      //     key: key,
+      //     value: value,
+      //   };
+      // } else if (key === SEARCH_BY_TIMESTAMP_IN) {
+      //   obj = {
+      //     key: key,
+      //     value: value,
+      //   };
+      // }
+      arr.push(obj);
     }
-    onChangeMethod = () => {
-        clearTimeout(this.delayTimer);
-        this.delayTimer = setTimeout(() => {
-            this.addCondition(SEARCH_BY_TEXT, this.state.search)
-            // this.callApi(this.state.currentPage || START_INDEX, condition)
-        }, 1000);
-    };
-    handleTableSort = (val) => {
-        // console.log(val)
-        let sort = [...this.state.tableSortOpt]
-        let obj = []
-        sort.map((el) => {
-            if (el.title === val) {
-                if (val === "time") {
-                    obj =[
-                        {
-                            key: SORT_BY_TIMESTAMP,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "from") {
-                    obj =[
-                        {
-                            key: SORT_BY_FROM_WALLET,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "to") {
-                    obj =[
-                        {
-                            key: SORT_BY_TO_WALLET,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "asset") {
-                    obj =[
-                        {
-                            key: SORT_BY_ASSET,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "amount") {
-                    obj = [
-                        {
-                            key: SORT_BY_AMOUNT,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "usdThen") {
-                    obj = [
-                        {
-                            key: SORT_BY_USD_VALUE_THEN,
-                            value: !el.up,
-                        }]
-                }
-                // else if (val === "usdToday") {
-                //     obj =[
-                //         {
-                //             key: SORT_BY_USD_VALUE_THEN,
-                //             value: !el.up,
-                //         }]
-                // }
-                else if (val === "usdTransaction") {
-                    obj = [{
-                            key: SORT_BY_TRANSACTION_FEE,
-                            value: !el.up,
-                        }]
-                }
-                else if (val === "method") {
-                    obj =[{
-                            key: SORT_BY_METHOD,
-                            value: !el.up,
-                        }
-                    ]
-                }
-                el.up = !el.up
-            }
-            else {
-                el.up = false
-            }
-        })
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    // On Filter start from page 0
+    this.props.history.replace({
+      search: `?p=${START_INDEX}`,
+    });
+    this.setState({
+      condition: arr,
+    });
+  };
+  onChangeMethod = () => {
+    clearTimeout(this.delayTimer);
+    this.delayTimer = setTimeout(() => {
+      this.addCondition(SEARCH_BY_TEXT, this.state.search);
+      // this.callApi(this.state.currentPage || START_INDEX, condition)
+    }, 1000);
+  };
+  handleTableSort = (val) => {
+    // console.log(val)
+    let sort = [...this.state.tableSortOpt];
+    let obj = [];
+    sort.map((el) => {
+      if (el.title === val) {
+        if (val === "time") {
+          obj = [
+            {
+              key: SORT_BY_TIMESTAMP,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "from") {
+          obj = [
+            {
+              key: SORT_BY_FROM_WALLET,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "to") {
+          obj = [
+            {
+              key: SORT_BY_TO_WALLET,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "asset") {
+          obj = [
+            {
+              key: SORT_BY_ASSET,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "amount") {
+          obj = [
+            {
+              key: SORT_BY_AMOUNT,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "usdThen") {
+          obj = [
+            {
+              key: SORT_BY_USD_VALUE_THEN,
+              value: !el.up,
+            },
+          ];
+        }
+        // else if (val === "usdToday") {
+        //     obj =[
+        //         {
+        //             key: SORT_BY_USD_VALUE_THEN,
+        //             value: !el.up,
+        //         }]
+        // }
+        else if (val === "usdTransaction") {
+          obj = [
+            {
+              key: SORT_BY_TRANSACTION_FEE,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "method") {
+          obj = [
+            {
+              key: SORT_BY_METHOD,
+              value: !el.up,
+            },
+          ];
+        }
+        el.up = !el.up;
+      } else {
+        el.up = false;
+      }
+    });
 
         // let check = sort.some(e => e.up === true)
         // let arr = []
@@ -300,14 +317,16 @@ class TransactionHistoryPage extends BaseReactComponent {
                     address: row.from_wallet.address,
                     // wallet_metaData: row.from_wallet.wallet_metaData
                     wallet_metaData: {
-                        symbol: row.from_wallet.wallet_metaData ? row.from_wallet.wallet_metaData.symbol : unrecognizedIcon
+                        symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
+                        text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
                     }
                 },
                 to: {
                     address: row.to_wallet.address,
                     // wallet_metaData: row.to_wallet.wallet_metaData,
                     wallet_metaData: {
-                        symbol: row.to_wallet.wallet_metaData ? row.to_wallet.wallet_metaData.symbol : unrecognizedIcon
+                        symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
+                        text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
                     },
                 },
                 asset: {
@@ -315,17 +334,17 @@ class TransactionHistoryPage extends BaseReactComponent {
                     symbol: row.asset.symbol
                 },
                 amount: {
-                    value: row.asset.value,
+                    value: parseFloat(row.asset.value),
                     id: row.asset.id
                 },
                 usdValueThen: {
                     value: row.asset.value,
-                    id: row.asset.id
+                    id: row.asset.id,
+                    assetPrice: row.asset_price
                 },
                 usdValueToday: {
                     value: row.asset.value,
-                    id: row.asset.id,
-                    assetPrice: row.asset_price
+                    id: row.asset.id
                 },
                 usdTransactionFee: {
                     value: row.transaction_fee,
@@ -372,9 +391,21 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.from.address}
+                                // text={rowData.from.address}
+                                text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
                             >
-                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
+                              {
+                                rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
+                                ?
+                                rowData.from.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.from.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
+
                             </CustomOverlay>
                         )
                     }
@@ -398,9 +429,19 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.to.address}
+                                text={rowData.to.wallet_metaData.text ? (rowData.to.wallet_metaData.text + ": " + rowData.to.address) : rowData.to.address}
                             >
-                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
+                              {
+                                rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
+                                ?
+                                rowData.to.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.to.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
                             </CustomOverlay>
                         )
                     }
@@ -420,10 +461,19 @@ class TransactionHistoryPage extends BaseReactComponent {
                     if (dataKey === "asset") {
 
                         return (
-                            <CoinChip
+                          <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={rowData.asset.code}
+                            >
+                            {/* <CoinChip
                                 coin_img_src={rowData.asset.symbol}
-                                coin_code={rowData.asset.code}
-                            />
+                                // coin_code={rowData.asset.code}
+                            /> */}
+                            <Image src={rowData.asset.symbol} className="asset-symbol" />
+                            </CustomOverlay>
                         )
                     }
                 }
@@ -472,7 +522,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueThen.id) {
-                                value = (rowData.usdValueThen.value * chain[1].quote.USD.price)
+                                value = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
                                 return
                             }
                         })
@@ -482,7 +532,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={value}
+                            text={value?.toFixed(2)}
                         >
                             <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
                         </CustomOverlay>)
@@ -507,7 +557,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                                value = rowData.usdValueToday.value * rowData.usdValueToday.assetPrice
+                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price)
                                 return
                             }
                         })
@@ -517,7 +567,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={value}
+                            text={value?.toFixed(2)}
                         >
 
                             <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
@@ -553,7 +603,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={value}
+                            text={value?.toFixed(2)}
                         >
                           <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
 
@@ -613,130 +663,94 @@ class TransactionHistoryPage extends BaseReactComponent {
                         history={this.props.history}
                     />
 
-                    <div className='fillter_tabs_section'>
-                        <Form onValidSubmit={this.onValidSubmit} >
-                            <Row>
-                                <Col md={3}>
-                                    <FormElement
-                                        valueLink={this.linkState(this, "year")}
-
-                                        control={{
-                                            type: SelectControl,
-                                            settings: {
-                                                options: this.state.yearFilter,
-                                                multiple: false,
-                                                searchable: false,
-                                                onChangeCallback: (onBlur) => {
-                                                    onBlur(this.state.year);
-                                                    this.addCondition(SEARCH_BY_TIMESTAMP, this.state.year)
-                                                },
-                                                placeholder: "All Year"
-                                            }
-                                        }}
-                                    />
-                                </Col>
-                                <Col md={3}>
-                                    <FormElement
-                                        valueLink={this.linkState(this, "asset")}
-                                        control={{
-                                            type: SelectControl,
-                                            settings: {
-                                                options: this.state.assetFilter,
-                                                multiple: false,
-                                                searchable: false,
-                                                onChangeCallback: (onBlur) => {
-                                                    onBlur(this.state.asset);
-                                                    this.addCondition(SEARCH_BY_ASSETS_IN, this.state.asset)
-                                                },
-                                                placeholder: "All assets"
-                                            }
-                                        }}
-                                    />
-                                </Col>
-                                <Col md={3}>
-                                    <FormElement
-                                        valueLink={this.linkState(this, 'method')}
-
-                                        control={{
-                                            type: SelectControl,
-                                            settings: {
-                                                options: this.state.methodsDropdown,
-                                                multiple: false,
-                                                searchable: false,
-                                                onChangeCallback: (onBlur) => {
-                                                    onBlur(this.state.year);
-                                                    this.addCondition(SEARCH_BY_TYPE_IN, this.state.method)
-
-                                                },
-                                                placeholder: "All methods",
-                                            }
-
-                                        }}
-                                    />
-                                </Col>
-                                {/* {fillter_tabs} */}
-                                <Col md={3}>
-                                    <div className="searchBar">
-                                        <Image src={searchIcon} className="search-icon" />
-                                        <FormElement
-                                            valueLink={this.linkState(
-                                                this,
-                                                "search",
-                                                this.onChangeMethod
-                                            )}
-                                            control={{
-                                                type: CustomTextControl,
-                                                settings: {
-                                                    placeholder: "Search",
-                                                },
-                                            }}
-                                            classes={{
-                                                inputField: "search-input",
-                                                prefix: "search-prefix",
-                                                suffix: "search-suffix",
-                                            }}
-                                        />
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </div>
-                    <div className='transaction-history-table'>
-                        <TransactionTable
-                            tableData={tableData}
-                            columnList={columnList}
-                            message={"No Transactions Found"}
-                            totalPage={totalPage}
-                            history={this.props.history}
-                            location={this.props.location}
-                            page={currentPage}
-                            isLoading={this.state.isLoading}
-                        />
-                    </div>
-                    {/* <CommonPagination
+          <div className="fillter_tabs_section">
+            <Form onValidSubmit={this.onValidSubmit}>
+              <Row>
+                <Col md={3}>
+                  <CustomDropdown
+                    filtername="All Year"
+                    options={this.state.yearFilter}
+                    action={SEARCH_BY_TIMESTAMP_IN}
+                    handleClick={(key,value) => this.addCondition(key,value)}
+                  />
+                </Col>
+                <Col md={3}>
+                <CustomDropdown
+                    filtername="All assets"
+                    options={this.state.assetFilter}
+                    action={SEARCH_BY_ASSETS_IN}
+                    handleClick={(key,value) => this.addCondition(key,value)}
+                  />
+                </Col>
+                <Col md={3}>
+                <CustomDropdown
+                    filtername="All method"
+                    options={this.state.methodFilter}
+                    action={SEARCH_BY_METHOD_IN}
+                    handleClick={(key,value) => this.addCondition(key,value)}
+                  />
+                </Col>
+                {/* {fillter_tabs} */}
+                <Col md={3}>
+                  <div className="searchBar">
+                    <Image src={searchIcon} className="search-icon" />
+                    <FormElement
+                      valueLink={this.linkState(
+                        this,
+                        "search",
+                        this.onChangeMethod
+                      )}
+                      control={{
+                        type: CustomTextControl,
+                        settings: {
+                          placeholder: "Search",
+                        },
+                      }}
+                      classes={{
+                        inputField: "search-input",
+                        prefix: "search-prefix",
+                        suffix: "search-suffix",
+                      }}
+                    />
+                  </div>
+                </Col>
+              </Row>
+            </Form>
+          </div>
+          <div className="transaction-history-table">
+            <TransactionTable
+              tableData={tableData}
+              columnList={columnList}
+              message={"No Transactions Found"}
+              totalPage={totalPage}
+              history={this.props.history}
+              location={this.props.location}
+              page={currentPage}
+              tableLoading={this.state.tableLoading}
+            />
+          </div>
+          {/* <CommonPagination
                         numOfPages={3}
                     // setValue={setPage}
                     /> */}
-
-
-                </div>
-            </div>
-        )
-    }
+        </div>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = state => ({
-    portfolioState: state.PortfolioState,
-    intelligenceState: state.IntelligenceState
+const mapStateToProps = (state) => ({
+  portfolioState: state.PortfolioState,
+  intelligenceState: state.IntelligenceState,
 });
 const mapDispatchToProps = {
-    searchTransactionApi,
-    getCoinRate,
-    getFilters
-}
-
-TransactionHistoryPage.propTypes = {
-
+  searchTransactionApi,
+  getCoinRate,
+  getFilters,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(TransactionHistoryPage);
 
+TransactionHistoryPage.propTypes = {};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TransactionHistoryPage);

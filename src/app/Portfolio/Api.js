@@ -37,28 +37,12 @@ export const getUserWallet = (wallet,ctx) => {
                     }
                 });
                 if(ctx){
-                ctx.setState(
-                    {isLoading:false})}
+                  ctx.setState({isLoading:false})
+                }
             })
             .catch((err) => {
                 console.log("Catch", err);
             });
-
-        // && res.data.data.chain_detected
-        // if (!res.error && res.data) {
-        //     dispatch({
-        //         type: USER_WALLET_LIST,
-        //         payload: {
-        //             id: wallet.id,
-        //             coinCode: wallet.coinCode,
-        //             coinSymbol: wallet.coinSymbol,
-        //             coinName: wallet.coinName,
-        //             address: wallet.address,
-        //             chain_detected: res.data.data.chain_detected,
-        //             isLast: wallet.isLast
-        //         }
-        //     });
-        // }
     };
 };
 
@@ -92,9 +76,7 @@ export const getDetailsByLinkApi = (link,ctx) => {
                   addWallet.push(obj);
 
               }
-              ctx.setState({
-                isLoading:false,
-              })
+              ctx.setState({isLoading:false})
               } else{
                 toast.error(res.data.message || "Something Went Wrong")
               }
@@ -111,7 +93,8 @@ export const getAssetGraphDataApi=(data,ctx)=>{
                 console.log('res',res);
                 if(!res.data.error){
                   ctx.setState({
-                    assetValueData: res.data.data.asset_value_data
+                    assetValueData: res.data.data.asset_value_data,
+                    graphLoading: false,
                   })
                 } else{
                   toast.error(res.data.message || "Something Went Wrong")

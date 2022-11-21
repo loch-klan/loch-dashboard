@@ -1,7 +1,7 @@
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import Highcharts from 'highcharts';
+import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import { GraphHeader } from '../common/GraphHeader'
 import CoinBadges from './../common/CoinBadges';
@@ -11,6 +11,9 @@ import TrendingDown from '../../assets/images/icons/TrendingDown.svg'
 import { GroupByOptions, Months } from "../../utils/Constant";
 import { AssetValueFilter } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
+import moment from "moment";
+import Loading from "../common/Loading";
+import { numToCurrency } from "../../utils/ReusableFunctions";
 class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -18,7 +21,7 @@ class LineChart extends BaseReactComponent {
           assetValueData: props.assetValueData,
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
-          title: "Month",
+          title: "Year",
           titleY:"$ USD"
         }
 
@@ -103,12 +106,12 @@ class LineChart extends BaseReactComponent {
         return a - b;
       });
       for (const [key, value] of Object.entries(assetMaster)) {
-        seriesData.push({
-          name: value.assetDetails.name,
-          id: key,
-          color: value.assetDetails.color,
-          data: []
-        })
+        // seriesData.push({
+        //   name: value.assetDetails.name,
+        //   id: key,
+        //   color: value.assetDetails.color,
+        //   data: []
+        // })
         let graphData = [];
         timestampList.map((timestamp)=>{
           if(timestamp in value){
@@ -118,13 +121,17 @@ class LineChart extends BaseReactComponent {
           }
         })
         seriesData.push({
-            linkedTo: key,
+            // linkedTo: key,
+              name: value.assetDetails.name,
+          id: key,
             type: 'line',
             color: value.assetDetails.color,
             marker: {
-              enabled: false
+              // enabled: false
+              symbol:"circle"
             },
-            data: graphData
+            data: graphData,
+            lastValue: graphData[graphData.length-1]
         })
       }
       let categories = [];
@@ -132,22 +139,38 @@ class LineChart extends BaseReactComponent {
         let dummy = new Date(time)
         let abc;
         if(this.state.title === 'Week' || this.state.title === 'Day'){
-          abc = dummy.getDate()
+          abc = moment(dummy).format("DD/MM/YYYY")
           categories.push(abc)
         }
         if(this.state.title === 'Month'){
-          abc = dummy.getMonth()+1;
-          categories.push(Months.getText(abc))
+          // abc = dummy.getMonth()+1;
+          // categories.push(Months.getText(abc))
+          abc = moment(dummy).format("MMMM YY")
+          categories.push(abc)
         }
         if(this.state.title === 'Year'){
           abc = dummy.getFullYear();
           categories.push(abc);
         }
       })
-      console.log('categories',categories);
-      console.log('timestamp',timestampList);
-      console.log('seriesData',seriesData);
+      // console.log('categories',categories);
+      // console.log('timestamp',timestampList);
+      // console.log('seriesData',seriesData);
 
+      let yaxis_max=0;
+      let max=0;
+      let plotdata;
+      for (let i = 0; i < seriesData.length; i++) {
+        plotdata = seriesData[i].data;
+        max = Math.max(...plotdata);
+        if(yaxis_max < max){
+          yaxis_max=max;
+        }
+      }
+      seriesData = seriesData && seriesData.sort((a,b)=>{return b.lastValue - a.lastValue})
+      // console.log('after',seriesData);
+      // console.log('categories.length',categories.length);
+      seriesData = seriesData.slice(0,7);
         var UNDEFINED;
         const options = {
             title: {
@@ -160,21 +183,30 @@ class LineChart extends BaseReactComponent {
                 enabled: false
             },
             xAxis: {
-              min: categories.length,
-            max:5,
-            navigator: { enabled: true },
-            scrollbar: { enabled: true },
                 categories: categories,
-                // labels: {
-                //     style: {
-                //     }
-                // }
+                scrollbar: {
+                  enabled: true,
+                  height:6,
+                  barBackgroundColor: "#E5E5E6",
+                  barBorderRadius: 4,
+                  barBorderWidth: 0,
+                  trackBackgroundColor: 'transparent',
+                  trackBorderWidth: 0,
+                  trackBorderRadius: 10,
+                  trackBorderColor: '#CCC',
+                  rifleColor:'#E5E5E6',
+              },
+              min: 0,
+              max: categories.length > 4 ? 4 : categories.length - 1 ,
+              // max: this.state.title === "Year" ? categories.length > 4 ? 4 : categories.length - 1 : 4,
             },
 
             yAxis: {
                 title: {
                     text: null
                 },
+              // min: 0,
+              // max: yaxis_max,
                 gridLineDashStyle: 'longdash',
                 labels: {
                     formatter: function () {
@@ -191,17 +223,20 @@ class LineChart extends BaseReactComponent {
                     color: "#636467",
                     fontWeight: "600",
                     lineHeight: "12px"
-                }
+                },
+                symbolHeight: 15,
+                symbolWidth: 8,
+                symbolRadius: 6,
             },
-            plotOptions: {
-              series: {
-                  events: {
-                      legendItemClick: function() {
-                        return false;
-                      }
-                  }
-              }
-          },
+          //   plotOptions: {
+          //     series: {
+          //         events: {
+          //             legendItemClick: function() {
+          //               return false;
+          //             }
+          //         }
+          //     }
+          // },
             tooltip: {
                 useHTML: true,
                 borderRadius : 8,
@@ -218,7 +253,7 @@ class LineChart extends BaseReactComponent {
                             <div class="m-b-12 top-section">
                                 <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
                                     <img src=${TrendingUp} class="m-r-8"/>
-                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + this.y}</div>
+                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + "$"+numToCurrency(this.y)}</div>
                                 </div>
                             </div>
                         </div>
@@ -226,18 +261,21 @@ class LineChart extends BaseReactComponent {
                     `
                 }
             },
-            series: seriesData,
+            series: seriesData
         }
         return (
             <div className="welcome-card-section line">
-                <div className='line-chart-section'>
-
+              {
+                this.props.graphLoading
+                ?
+                <Loading />
+                :
+<div className='line-chart-section'>
                     <GraphHeader
                         title="Asset Value"
                         subtitle="Updated 3mins ago"
                         isArrow={true}
                     />
-
                     <CoinBadges
                         activeBadge={this.state.activeBadge}
                         chainList={this.props.OnboardingState.coinsList}
@@ -262,6 +300,8 @@ class LineChart extends BaseReactComponent {
                             />
                     </div>
                 </div>
+              }
+
             </div>
         );
     }

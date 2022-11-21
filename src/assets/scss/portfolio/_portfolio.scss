@@ -165,7 +165,7 @@
                     // }
                     .dropdown{
                         position: absolute;
-                        top: -3rem;
+                        top: -1rem;
                         right: 0rem;
                         .dropdown-menu{
                             width: auto;
@@ -221,6 +221,12 @@
                 //         }
                 //     }
                 // }
+                .highcharts-scrollbar-button{
+                    display: none;
+                }
+                .highcharts-scrollbar-arrow{
+                    display: none;
+                }
             }
         }
 
@@ -277,7 +283,8 @@
                         white-space: normal !important;
                         word-wrap: break-word;
                         border-radius:0.4rem;
-                        max-width:83%;
+                        // max-width:83%;
+                        max-width: max-content;
                     }
                 }
             }
@@ -397,7 +404,11 @@
                         margin-bottom: 0.3rem;
                     }
                 }
-
+                .history-table-method {
+                  width: 7rem !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+                }
             }
         }
 
@@ -464,6 +475,7 @@ position: relative;
     .coin-hover-display-text {
         display: flex;
         align-items: center;
+        padding: 1rem 1rem;
     }
 
     .coin-hover-display-text-icon {
@@ -522,6 +534,15 @@ position: relative;
 
     .coin-hover-display-text2 {
         //margin-left: 32.7rem;
+        .coin-hover-display-text2-upper-coin{
+          max-width: 11.5rem;
+          white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: bottom;
+
+        }
     }
 
     .coin-hover-display-text3 {
@@ -540,7 +561,7 @@ position: relative;
         // display: flex;
         // flex-direction: column;
         // align-items: flex-start;
-        padding: 1rem 2rem;
+        padding: 1rem 1rem;
         //width: 17.4rem;
         // height: 7rem;
         border-left: 0.1rem solid #E5E5E6;

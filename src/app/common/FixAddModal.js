@@ -26,6 +26,7 @@ class FixAddModal extends BaseReactComponent {
             id: `wallet${addWalletList.length + 1}`,
             address: "",
             coins: [],
+            wallet_metadata: {}
         }]
         this.state = {
             onHide: props.onHide,
@@ -82,6 +83,7 @@ class FixAddModal extends BaseReactComponent {
                     coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
                     coinName: this.props.OnboardingState.coinsList[i].name,
                     address: value,
+                    coinColor: this.props.OnboardingState.coinsList[i].color,
                 }, this)
             }
         }
@@ -129,6 +131,7 @@ class FixAddModal extends BaseReactComponent {
             id: `wallet${this.state.addWalletList.length + 1}`,
             address: "",
             coins: [],
+            wallet_metadata: {}
         })
         this.setState({
             addWalletList: this.state.addWalletList
@@ -169,7 +172,7 @@ class FixAddModal extends BaseReactComponent {
 
     handleAddWallet = () => {
         if (this.state.addWalletList) {
-           
+
             let arr = []
             let walletList = []
             for (let i = 0; i < this.state.addWalletList.length; i++) {
@@ -291,6 +294,7 @@ class FixAddModal extends BaseReactComponent {
                 id: 'wallet1',
                 address: "",
                 coins: [],
+                wallet_metadata: {}
             })
         }
         localStorage.setItem("addWallet", JSON.stringify(walletList))

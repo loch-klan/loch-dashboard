@@ -46,7 +46,7 @@ export default function WalletCard(props) {
         )
     })
     const copyContent = () => {
-        const text = props.wallet_account_number
+        const text = props.display_address ? props.display_address : props.wallet_account_number
         navigator.clipboard
       .writeText(text)
       .then(() => {
@@ -63,38 +63,28 @@ export default function WalletCard(props) {
     }
     return (<>
         <div className="walletcard">
-
-        {/* // props.isLoading
-        // ?
-        // <Loading/>
-        // : */}
         <>
-
-          {/* {
-            <CopiedModal show={showModal} onHide={()=>toggleCopied(false)} />
-          } */}
             <div className='m-b-32 wallet-details'>
                 <div className='wallet-account-details'>
                     <div className='m-r-16 wallet-img'>
                         <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognizedIcon} />
                     </div>
-                    {/* <div className='m-r-16 wallet-name-details'> */}
                         <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognized wallet"}</h6>
-                        {props.wallet_metadata && props.wallet_metadata.tag && 
+                        {props.tag &&
                             <CustomOverlay
                             position="top"
                             // isIcon={true}
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={props.wallet_metadata.tag}
+                            text={props.tag}
                             >
-                            <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.wallet_metadata.tag} 
+                            <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.tag}
                             </div>
                             </CustomOverlay>
                         }
                     <div className='account-details'>
-                        <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
+                        <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.display_address ? props.display_address : props.wallet_account_number}</span>
                         <Image src={CopyClipboardIcon} onClick={copyContent} className="m-l-10 cp" />
                     </div>
                     {/* </div> */}
@@ -127,6 +117,7 @@ export default function WalletCard(props) {
                         onHide={handleClose}
                         createdOn={props.createdOn}
                         walletAddress={props.wallet_account_number}
+                        displayAddress={props.display_address}
                         walletMetaData={props.wallet_metadata}
                         coinchips={props.wallet_coins}
                         makeApiCall={()=>props.makeApiCall()}

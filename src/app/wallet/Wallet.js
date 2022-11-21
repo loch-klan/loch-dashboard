@@ -17,7 +17,7 @@ import {
 } from "../../utils/Constant.js";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import sortByIcon from '../../assets/images/icons/TriangleDown.svg' 
+import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import { getCoinRate } from "../Portfolio/Api.js";
 import noDataImage from "../../image/no-data.png";
 import lochClean from "../../assets/images/LochClean.gif";
@@ -296,11 +296,13 @@ class Wallet extends Component {
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}
                     wallet_account_number={wallet.address}
+                    display_address={wallet.display_address}
                     wallet_amount={wallet.total_value}
                     wallet_coins={wallet.chains}
                     makeApiCall={this.makeApiCall}
                     handleUpdateWallet={this.handleUpdateWallet}
                     history={this.props.history}
+                    tag={wallet.tag}
                     // isLoading={this.state.isLoading}
                   />
                 );

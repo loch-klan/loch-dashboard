@@ -11,7 +11,7 @@ export const searchTransactionApi = (data , ctx, page = 0) => {
                     dispatch(getAllTransactionHistory(res.data.data, page))
                     if(ctx){
                         ctx.setState({
-                            isLoading:false,
+                            tableLoading: false,
                         })
                     }
                 }
@@ -39,17 +39,25 @@ export const getFilters = (ctx) => {
             })
             let yearFilter = [{value:'allYear',label:'All Year'}]
             res.data.data.filters.year_filter.map((item)=>{
-                // console.log(item)
                 let obj  = {
                     value: item,
                     label: item,
                 }
                 yearFilter.push(obj)
             })
+            let methodFilter = [{value:'allMethod',label:'All Method'}]
+            res.data.data.filters.method_filters.map((item)=>{
+                let obj  = {
+                    value: item,
+                    label: item,
+                }
+                methodFilter.push(obj)
+            })
             if (ctx){
                 ctx.setState({
-                    assetFilter: assetFilter,
-                    yearFilter: yearFilter
+                    assetFilter,
+                    yearFilter,
+                    methodFilter
                 })
             }
         })

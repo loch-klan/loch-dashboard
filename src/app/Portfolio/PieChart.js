@@ -1,16 +1,18 @@
 import React from 'react';
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import { connect } from "react-redux";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CustomLoader from "../common/CustomLoader";
 import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
 import unrecognized from '../../image/unrecognized.svg';
-import { DEFAULT_COLOR } from '../../utils/Constant';
+import { DEFAULT_COLOR, DEFAULT_PRICE } from '../../utils/Constant';
 import { Image} from 'react-bootstrap';
 import noDataImage from '../../image/no-data.png';
 import Loading from '../common/Loading';
 import { PiechartChainName } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
+import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 
 class PieChart extends BaseReactComponent {
 
@@ -18,6 +20,7 @@ class PieChart extends BaseReactComponent {
         super(props);
         this.state = {
             pieSectionDataEnabled: {},
+            selectedSection: {},
             assetTotal: props.assetTotal,
             loader: props.loader,
             walletTotal:props.walletTotal ,
@@ -38,6 +41,7 @@ class PieChart extends BaseReactComponent {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
                     let z = ((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100.0);
                     assetData.push({
+                      assetId: this.props.userWalletData[i].assetId,
                         name: this.props.userWalletData[i].assetName,
                         y: z,
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
@@ -74,6 +78,7 @@ class PieChart extends BaseReactComponent {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
                     let z = ((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100.0);
                     assetData.push({
+                      assetId: this.props.userWalletData[i].assetId,
                         name: this.props.userWalletData[i].assetName,
                         y: z,
                         usd: numToCurrency(this.props.userWalletData[i].assetValue),
@@ -218,15 +223,15 @@ class PieChart extends BaseReactComponent {
                     point: {
                         events: {
                             select: function () {
-                                // console.log("SELECT")
                                 var currentData = this;
                                 this.update({ color: this.options.borderColor });
-                                self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
+                                self.setState({
+                                  selectedSection: self.props.userWalletData.filter((data)=>{if(data.assetId === currentData.assetId) return data}),
+                                  pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData
+                                });
                                 if(document.getElementById("fixbtn")){
                                   {document.getElementById("fixbtn").style.display = "none"}
                                 }
-
-                                // console.log("current data", currentData);
                                 PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: [{asset_name: currentData.options.name, usd: "$"+currentData.options.usd}]});
                             },
                             unselect: function () {
@@ -234,7 +239,7 @@ class PieChart extends BaseReactComponent {
                                 var currentData = this;
                                 this.update({ color: this.options.originalColor });
                                 if(currentData.assetCode === self.state.pieSectionDataEnabled.assetCode){
-                                  self.setState({pieSectionDataEnabled :{}})
+                                  self.setState({pieSectionDataEnabled :{}, selectedSection: {}})
                                   if(document.getElementById("fixbtn")){
                                     {document.getElementById("fixbtn").style.display = "flex"}
                                   }
@@ -296,28 +301,26 @@ class PieChart extends BaseReactComponent {
                         }
                     }
                 },
-                // point: {
-                //     events: {
-                //         click: function () {
-                //             var currentData = this;
-                //             self.setState({ pieSectionDataEnabled: Object.keys(self.state.pieSectionDataEnabled).length > 0 ? currentData.colorIndex === self.state.pieSectionDataEnabled.colorIndex ? {} : currentData : currentData });
-                //         }
-                //     }
-
-                // },
                 data: self.state.assetData && self.state.assetData.length > 0 ? self.state.assetData : []
             }]
         }
+        let chainList = this.state.selectedSection[0] && this.state.selectedSection[0].chain;
+        chainList = chainList && chainList.sort((a,b)=> { return parseFloat(b.assetCount) - parseFloat(a.assetCount)})
+        let totalCount = 0;
+        chainList && chainList.slice(2).map((data)=>{
+          totalCount+=data.assetCount
+        })
         return (
             <div className={`portfolio-over-container ${Object.keys(this.state.pieSectionDataEnabled).length > 0 ? "m-b-32" : "m-b-60"}`} >
 
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
-                this.state.loader === true
+                this.props.isLoading === true
                 ?
                 <Loading/>
                 :
-                Object.keys(this.state.assetData).length > 0 ?
+                Object.keys(this.state.assetData).length > 0
+                ?
                     <>
                         <div className='chart-section'>
                             <HighchartsReact
@@ -330,7 +333,8 @@ class PieChart extends BaseReactComponent {
                             />
                         </div>
 
-                        {Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
+                        {
+                          this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ?
                             <div className='coin-hover-display' >
                                 <div className='coin-hover-display-text'>
                                     <div className='coin-hover-display-text-icon'>
@@ -338,70 +342,94 @@ class PieChart extends BaseReactComponent {
                                     </div>
                                     <div className='coin-hover-display-text1'>
                                         <div className='coin-hover-display-text1-upper'>
-                                            <span className='inter-display-medium f-s-20 l-h-24 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
-                                            <span className='inter-display-medium f-s-20 l-h-24 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>
+                                            <span className='inter-display-medium f-s-18 l-h-21 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
+                                            <span className='inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>
                                         </div>
                                         <div className='coin-hover-display-text1-lower'>
-                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? numToCurrency(this.state.pieSectionDataEnabled.count) : null}</span>
+                                            <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? numToCurrency(this.state.pieSectionDataEnabled.count) : null}</span>
                                             <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.assetCode : null}</span>
-                                            <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.usd : null}</span>
+                                            <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.usd : null}</span>
                                             <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>USD</span>
                                         </div>
                                     </div>
                                 </div>
-                                {/* <div className='coin-hover-display-text2'>
-                                    <div className='coin-hover-display-text2-upper'>
-                                        <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>Metamask</span>
-                                        <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>50%</span>
-                                    </div>
-                                    <div className='coin-hover-display-text2-lower'>
-                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>3.1</span>
-                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>BTC</span>
-                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>21310</span>
-                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
-                                    </div>
-                                </div>
-                                <div className='coin-hover-display-text3'>
-                                    <div className='coin-hover-display-text3-upper'>
-                                        <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text3-upper-coin'>Coinbase</span>
-                                        <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text3-upper-percent'>30%</span>
-                                    </div>
-                                    <div className='coin-hover-display-text3-lower'>
-                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text3-upper-coincount'>1.3</span>
-                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text3-upper-coincode'>BTC</span>
-                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text3-upper-coinrevenue'>12,211</span>
-                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text3-upper-coincurrency'>USD</span>
-                                    </div>
-                                </div>
-                                <div className='coin-hover-display-text4'>
-                                    <div className='coin-hover-display-text4-upper'>
-                                        <span className='inter-display-regular f-s-16 l-h-19 grey-969 coin-hover-display-text4-upper-coin'>Binance</span>
-                                        <span className='inter-display-medium f-s-16 l-h-19 grey-ADA coin-hover-display-text4-upper-percent'>20%</span>
-                                    </div>
-                                    <div className='coin-hover-display-text4-lower'>
-                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text4-upper-coincount'>0.01</span>
-                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text4-upper-coincode'>BTC</span>
-                                        <span className='inter-display-medium f-s-16 l-h-19 black-191 coin-hover-display-text4-upper-coinrevenue'>3120</span>
-                                        <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text4-upper-coincurrency'>USD</span>
-                                    </div>
-                                </div> */}
+                                {
+                                  chainList && chainList.slice(0,3).map((data, index)=>{
+                                    if(index<2){
+                                      return(
+                                        <>
+                                        <div className='coin-hover-display-text2'>
+                                      <div className='coin-hover-display-text2-upper'>
+                                      <CustomOverlay
+                                        position="top"
+                                        className={"coin-hover-tooltip"}
+                                        isIcon={false}
+                                        isInfo={true}
+                                        isText={true}
+                                        text={data.address}
+                                        >
+                                          <span className='inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>{data.address}</span>
+                                        </CustomOverlay>
+                                          <span className='inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>{((100 * data.assetCount) / this.state.pieSectionDataEnabled.count).toFixed(2) + "%"}</span>
+                                      </div>
+                                      <div className='coin-hover-display-text2-lower'>
+                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>{numToCurrency(data.assetCount)}</span>
 
-                            </div> : null}
+                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{data.chainCode}</span>
+
+                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(data.assetCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote.USD.price) || DEFAULT_PRICE}</span>
+
+                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
+                                      </div>
+                                  </div>
+                                        </>
+                                      )
+                                    } else{
+                                      return(
+                                        <>
+                                        <div className='coin-hover-display-text2'>
+                                      <div className='coin-hover-display-text2-upper'>
+                                      <CustomOverlay
+                                        position="top"
+                                        className={"coin-hover-tooltip"}
+                                        isIcon={false}
+                                        isInfo={true}
+                                        isText={true}
+                                        text={data.address}
+                                        >
+                                          <span className='inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>Other</span>
+                                        </CustomOverlay>
+                                          <span className='inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>{((100 * totalCount) / this.state.pieSectionDataEnabled.count).toFixed(2) + "%"}</span>
+                                      </div>
+                                      <div className='coin-hover-display-text2-lower'>
+                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>{numToCurrency(totalCount)}</span>
+
+                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{data.chainCode}</span>
+
+                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(totalCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote.USD.price) || DEFAULT_PRICE}</span>
+                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
+                                      </div>
+                                  </div>
+                                        </>
+                                      )
+                                    }
+                                  })
+                                }
+                            </div>
+                            :
+                            null
+                          }
                     </>
                     :
                         this.props.isLoading === true
                         ?
-                            <>
-                            {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                                <Loading/>
-                            </>
-
+                        <Loading/>
                         :
-                            this.props.walletTotal === 0
-                            ?
-                                <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
-                            :
-                                null
+                        this.props.walletTotal === 0 || this.state.assetData.length === 0
+                        ?
+                        <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                        :
+                        null
                 }
                 </div>
 
@@ -411,4 +439,7 @@ class PieChart extends BaseReactComponent {
     }
 }
 
-export default PieChart;
+const mapStateToProps = state => ({
+  portfolioState: state.PortfolioState,
+});
+export default connect(mapStateToProps)(PieChart);

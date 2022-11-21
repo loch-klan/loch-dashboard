@@ -25,7 +25,7 @@ export const loginApi = (ctx, data) => {
 }
 
 export const fixWalletApi = (ctx,info) =>{
-      postLoginInstance.post("organisation/user/create-user",info)
+      postLoginInstance.post("organisation/user/update-user",info)
       .then((res)=>{
         if(!res.data.error){
           ctx.handleRedirection();
@@ -50,6 +50,21 @@ export const updateUserWalletApi = (data,ctx) =>{
       });
     } else{
       toast.error(res.data.message || "Something went wrong");
+    }
+  })
+  .catch((err)=>{
+    console.log("fixwallet",err)
+  })
+}
+
+export const verifyEmailApi = (ctx, data) =>{
+  preLoginInstance
+  .post("organisation/user/verify-email", data)
+  .then((res)=>{
+    if(!res.data.error){
+      ctx.setState({error: false});
+    } else{
+      ctx.setState({error: true});
     }
   })
   .catch((err)=>{
