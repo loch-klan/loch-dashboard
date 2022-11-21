@@ -798,8 +798,8 @@ this.setState({graphLoading: true})
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div>
                                             <BarGraphSection
-                                                headerTitle="Volume Traded by Counterparty"
-                                                headerSubTitle="In the last month"
+                                                headerTitle="Blockchain Fees over Time"
+                                                headerSubTitle="Understand your gas costs"
                                                 isArrow={true}
                                                 data={data}
                                                 options={options}

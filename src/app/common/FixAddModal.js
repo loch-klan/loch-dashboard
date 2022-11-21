@@ -320,6 +320,11 @@ class FixAddModal extends BaseReactComponent {
             // }
             if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
                 isDisableFlag = true;
+                e.coins.map((a)=>{
+                    if(a.chain_detected===true){
+                        isDisableFlag = false;
+                    }
+                })
             }
         })
         return isDisableFlag;
@@ -412,6 +417,7 @@ class FixAddModal extends BaseReactComponent {
                                 <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} key={index} isLoaded={true}></CustomChip>
                                 :
                                 elem.coins.length === this.props.OnboardingState.coinsList.length
+                                // elem.coins.length === 1
                                     ?
                                     // UNRECOGNIZED WALLET
                                     <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>

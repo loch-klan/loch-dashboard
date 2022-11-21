@@ -29,7 +29,8 @@ class PieChart extends BaseReactComponent {
             chartOptions: [],
             valueChanged: false,
             flag: false,
-            isLoading:props.isLoading
+            isLoading:props.isLoading,
+            piechartisLoading:true
         }
 
     }
@@ -73,6 +74,7 @@ class PieChart extends BaseReactComponent {
             this.setState({ assetTotal: this.props.assetTotal })
         }
         if (this.props.userWalletData !== prevProps.userWalletData) {
+            this.setState({ piechartisLoading: true })
             let assetData = [];
             if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
@@ -98,6 +100,7 @@ class PieChart extends BaseReactComponent {
             }
             this.setState({
                 chartData: this.props.userWalletData,
+                piechartisLoading : this.props.isLoading === false ? false : true,
                 assetData: assetData && assetData.length > 0 ? assetData.sort((a, b) => b.assetValue - a.assetValue) : [],
                 chartOptions: {}
             })
@@ -315,10 +318,10 @@ class PieChart extends BaseReactComponent {
 
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
-                this.props.isLoading === true
-                ?
-                <Loading/>
-                :
+                // this.props.isLoading === true
+                // ?
+                // <Loading/>
+                // :
                 Object.keys(this.state.assetData).length > 0
                 ?
                     <>
@@ -421,7 +424,7 @@ class PieChart extends BaseReactComponent {
                           }
                     </>
                     :
-                        this.props.isLoading === true
+                     this.state.piechartisLoading === true
                         ?
                         <Loading/>
                         :
