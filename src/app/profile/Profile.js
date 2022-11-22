@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import Sidebar from '../common/Sidebar';
+import ProfileForm from './ProfileForm';
+import PageHeader from './../common/PageHeader';
+
 class Profile extends Component {
     constructor(props) {
         super(props);
@@ -12,9 +15,17 @@ class Profile extends Component {
 
     render() {
         return (
-            <div>
-                <Sidebar ownerName="Vitalik Buterin’s"/>
+            <div className="profile-page-section">
+                <div className='profile-section page'>
+                <PageHeader 
+                    title="Profile"
+                    subTitle="Manage your profile here"
+                />
+                <div className='profile-form-section'>
+                    <ProfileForm/>
                 </div>
+                </div>
+            </div>
         )
     }
 }

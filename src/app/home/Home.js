@@ -15,7 +15,13 @@ class Home extends Component {
     }
   }
 
-  componentDidMount() { }
+  componentDidMount() {
+    if(JSON.parse(localStorage.getItem("addWallet")) || JSON.parse(localStorage.getItem("lochUser")) || JSON.parse(localStorage.getItem("lochDummyUser")) ){
+      localStorage.removeItem("addWallet")
+      localStorage.removeItem("lochUser")
+      localStorage.removeItem("lochDummyUser")
+    }
+  }
 
   render() {
     return (
@@ -23,7 +29,7 @@ class Home extends Component {
         {this.signedIn ? null :
           <div>
             <Image src={Banner} className="overlay-banner" />
-            <OnBoarding />
+            <OnBoarding {...this.props}/>
           </div>}
 
       </>

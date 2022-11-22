@@ -23,9 +23,18 @@ const OnboardingModal = ({ show, onHide, title, icon, subTitle, isSignInActive, 
                         {isSignInActive ? <div className='signin-header' onClick={handleBack}>
                             <Image className='back-icon cp' src={backIcon} />
                         </div> : null}
-                        <Image className='ob-modal-title-icon' src={icon} />
-                        <h1 className='inter-display-medium f-s-31 lh-37 white'>{title}</h1>
-                        <p className='inter-display-medium f-s-13 lh-16 white op-.8'>{subTitle}</p>
+                        {
+                            isSignInActive ? 
+                            <div className='ob-sign-modal'>
+                            <div className="signin-icon">
+                                <Image src={icon} />
+                            </div>
+                            </div>
+                            :
+                            <Image className='ob-modal-title-icon' src={icon} />
+                        }
+                        <h1 className='inter-display-medium f-s-25 lh-31 white'>{title}</h1>
+                        <p className='inter-display-medium f-s-13 lh-16 white op-8'>{subTitle}</p>
                     </Modal.Title>
                 </Modal.Header>
             }

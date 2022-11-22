@@ -1,140 +1,120 @@
 import { toast } from "react-toastify";
-import { postLoginInstance, preLoginInstance } from "../../utils";
-import { LocationType } from "../../utils/Constant";
-export const getAllLocationApi = (ctx, locationType) => {
-  return function (dispatch, getState) {
-    let data = new URLSearchParams();
-    data.append("location_type", locationType);
-
-    if (locationType === LocationType.STATE && ctx.state.countryId)
-      data.append("parent_id", ctx.state.countryId);
-
-    if (locationType === LocationType.CITY && ctx.state.stateId)
-      data.append("parent_id", ctx.state.stateId);
-
-    preLoginInstance
-      .post("/common/master/get-location-by-type", data)
-      .then((res) => {
-        let locationList = res.data.data.location.map((item) => ({
-          ...item,
-          value: item.id,
-          label: item.name,
-        }));
+import { preLoginInstance } from "../../utils";
+import postLoginInstance from './../../utils/PostLoginAxios';
+export const loginApi = (ctx, data) => {
+  preLoginInstance.post('common/test/temp-login', data)
+    .then(res => {
+      // console.log('res',res);
+      if (!res.data.error) {
+        // console.log('res', res.data.data.token);
+        // console.log('ctx',ctx.props.history);
+        localStorage.setItem('lochToken', res.data.data.token);
+        ctx.props.history.push('/home');
+      } else {
+        toast.error(res.data.message || "Something went wrong");
         ctx.setState({
-          ...(locationType === LocationType.COUNTRY && {
-            countryList: locationList,
-          }),
-          ...(locationType === LocationType.STATE && {
-            stateList: locationList,
-          }),
-          ...(locationType === LocationType.CITY && { cityList: locationList }),
-          ...(locationType === LocationType.AREA && { areaList: locationList }),
+          errorMessage: res.data.message || "Invalid Credentials"
         });
-      })
-      .catch((err) => {
-        console.log("Catch", err);
+      }
+    })
+    .catch(err => {
+      ctx.setState({
+        errorMessage: "Something went wrong"
       });
-  };
-};
+    });
+}
 
-export const updateLocationApi = (data, ctx) => {
-  return function (dispatch, getState) {
-    preLoginInstance
-      .post("/common/master/add-update-location", data)
-      .then((res) => {
-        // let countryList = ctx.state.countryList
-        // countryList =
-        ctx.setState({
-          ...(ctx.state.countryList && {
-            countryList: ctx.state.countryList.map((item) =>
-              item.id !== res.data.data.location.id
-                ? item
-                : res.data.data.location
-            ),
-          }),
-          ...(ctx.state.cityList && {
-            cityList: ctx.state.cityList.map((item) =>
-              item.id !== res.data.data.location.id
-                ? item
-                : res.data.data.location
-            ),
-          }),
-          ...(ctx.state.areaList && {
-            areaList: ctx.state.areaList.map((item) =>
-              item.id !== res.data.data.location.id
-                ? item
-                : res.data.data.location
-            ),
-          }),
-        });
+export const fixWalletApi = (ctx,info) =>{
+      postLoginInstance.post("organisation/user/update-user",info)
+      .then((res)=>{
+        if(!res.data.error){
+          ctx.handleRedirection();
+          // ctx.props.history.push('/home');
+        }
+        else{
+          toast.error(res.data.message || "Something went wrong");
+        }
       })
-      .catch((err) => {
-        console.log("Catch", err);
+      .catch((err)=>{
+        console.log("fixwallet",err)
+      })
+}
+
+export const updateUserWalletApi = (data,ctx) =>{
+  postLoginInstance.post("organisation/user/update-user-wallet",data)
+  .then((res)=>{
+    if(!res.data.error){
+      ctx.props.history.push({
+        pathname: ctx.props.pathName,
+        state: {addWallet: JSON.parse(localStorage.getItem("addWallet"))}
       });
-  };
-};
+    } else{
+      toast.error(res.data.message || "Something went wrong");
+    }
+  })
+  .catch((err)=>{
+    console.log("fixwallet",err)
+  })
+}
 
-export const addUpdateLocationApi = (data, cb) => {
-  // return function (dispatch, getState) {
+export const verifyEmailApi = (ctx, data) =>{
   preLoginInstance
-    .post("/common/master/add-update-location", data)
-    .then((res) => {
-      // console.log("res", res);
-      if (!res.data.error) {
-        cb();
-        toast.success(res.data.message || "Something went wrong");
-      } else {
-        toast.error(res.data.message || "Something went wrong");
-      }
-    })
-    .catch((err) => {
-      console.log("Catch", err);
-    });
-  // };
-};
+  .post("organisation/user/verify-email", data)
+  .then((res)=>{
+    if(!res.data.error){
+      ctx.setState({error: false});
+    } else{
+      ctx.setState({error: true});
+    }
+  })
+  .catch((err)=>{
+    console.log("fixwallet",err)
+  })
+}
 
-export const resetPasswordApi = (ctx, data) => {
-  preLoginInstance
-    .post("organisation/user/set-reset-password", data)
-    .then((res) => {
-      toast.success(res.data.message || "Password set successfully");
-      ctx.props.history.push("/login");
-    })
-    .catch((err) => {
-      console.log("Catch", err);
-    });
-};
 
-export const changePasswordApi = (ctx, data) => {
-  postLoginInstance
-    .post("organisation/user/change-password", data)
-    .then((res) => {
-      if (!res.data.error) {
-        // console.log('ctx.props', ctx.props.handleClose);
-        toast.success("Password changed successfully");
-        // ctx.props.history.push('/login');
-        ctx.props.handleClose();
-      } else {
-        toast.error(res.data.message || "Something went wrong");
-      }
-    })
-    .catch((err) => {
-      console.log("Catch", err);
-    });
-};
+// export const resetPasswordApi = (ctx, data) => {
+//   preLoginInstance
+//     .post("organisation/user/set-reset-password", data)
+//     .then((res) => {
+//       toast.success(res.data.message || "Password set successfully");
+//       ctx.props.history.push("/login");
+//     })
+//     .catch((err) => {
+//       console.log("Catch", err);
+//     });
+// };
 
-export const forgotPasswordApi = (data, handleClose) => {
-  preLoginInstance
-    .post("organisation/user/forgot-password", data)
-    .then((res) => {
-      if (!res.data.error) {
-        toast.success(res.data.message || "Please check your email");
-        handleClose();
-      } else {
-        toast.error(res.data.message || "Something went wrong");
-      }
-    })
-    .catch((err) => {
-      console.log("Catch", err);
-    });
-};
+// export const changePasswordApi = (ctx, data) => {
+//   postLoginInstance
+//     .post("organisation/user/change-password", data)
+//     .then((res) => {
+//       if (!res.data.error) {
+//         // console.log('ctx.props', ctx.props.handleClose);
+//         toast.success("Password changed successfully");
+//         // ctx.props.history.push('/login');
+//         ctx.props.handleClose();
+//       } else {
+//         toast.error(res.data.message || "Something went wrong");
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("Catch", err);
+//     });
+// };
+
+// export const forgotPasswordApi = (data, handleClose) => {
+//   preLoginInstance
+//     .post("organisation/user/forgot-password", data)
+//     .then((res) => {
+//       if (!res.data.error) {
+//         toast.success(res.data.message || "Please check your email");
+//         handleClose();
+//       } else {
+//         toast.error(res.data.message || "Something went wrong");
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("Catch", err);
+//     });
+// };

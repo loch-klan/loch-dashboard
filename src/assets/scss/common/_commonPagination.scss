@@ -1,0 +1,34 @@
+.pagination-section {
+    display: flex;
+    padding-top: 2.6rem;
+    align-items: center;
+    justify-content: flex-end;
+
+    img{
+        cursor:pointer;
+    }
+    .pagination {
+        border: none;
+        align-items: center;
+        .page-item {
+            cursor: pointer;
+            .page-link {
+                border: none;
+                background-color: $grey-F2F;
+                color: $grey-969;
+            }
+
+        }
+        .page-item:focus{
+            box-shadow: none;
+        }
+        .active {
+            .page-link{
+            color: $black-191;
+            background: $white-E5E;
+            border-radius: 1.4rem;
+            padding: 1.4rem;
+            }
+        }
+    }
+}

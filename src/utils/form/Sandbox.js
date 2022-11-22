@@ -470,7 +470,7 @@ class Sandbox extends BaseReactComponent {
                 // For Pagination
                 history={this.props.history}
                 location={this.props.location}
-                totalPages={2}
+                totalPage={2}
                 currentPage={this.state.page}
                 pageSize={true}
                 pageSizeOptions={[

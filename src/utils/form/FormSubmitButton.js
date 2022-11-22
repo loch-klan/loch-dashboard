@@ -19,12 +19,12 @@ const FormSubmitButton = props => {
 
 FormSubmitButton.propTypes = {
     classes: PropTypes.object,
-    progressMessage: PropTypes.string.isRequired,
-    fullWidth: PropTypes.bool
+    // progressMessage: PropTypes.string.isRequired,
+    // fullWidth: PropTypes.bool
 };
 
 FormSubmitButton.defaultProps = {
-    fullWidth: false
+    // fullWidth: false
 };
 
 export default FormSubmitButton;
