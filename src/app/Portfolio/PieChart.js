@@ -346,7 +346,9 @@ class PieChart extends BaseReactComponent {
                                     <div className='coin-hover-display-text1'>
                                         <div className='coin-hover-display-text1-upper'>
                                             <span className='inter-display-medium f-s-18 l-h-21 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
-                                            <span className='inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>
+                                            <span className='inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent' 
+                                            style={{color: (this.state.pieSectionDataEnabled.borderColor === "#ffffff") ? "" : this.state.pieSectionDataEnabled.borderColor}}
+                                            >{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>
                                         </div>
                                         <div className='coin-hover-display-text1-lower'>
                                             <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? numToCurrency(this.state.pieSectionDataEnabled.count) : null}</span>
