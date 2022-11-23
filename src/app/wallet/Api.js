@@ -85,10 +85,14 @@ export const updateWalletApi = (ctx, data) => {
         let addWallet = JSON.parse(localStorage.getItem("addWallet"));
         addWallet = addWallet.map((wallet)=>{
           if(wallet.address === walletAddress){
+            let metaData = null;
+            res.data.data.user_wallets.map((item)=>{ if(item.address===walletAddress) metaData = item.wallet })
             return({
               ...wallet,
-              wallet_metadata: res.data.data.user_wallets.map((item)=>{ if(item.address===walletAddress) return item.wallet })
+              wallet_metadata: metaData
             })
+          } else{
+            return ({...wallet})
           }
         })
         localStorage.setItem('addWallet',JSON.stringify(addWallet));

@@ -134,6 +134,7 @@ export default function WalletCard(props) {
                         walletAddress={props.wallet_account_number}
                         displayAddress={props.display_address}
                         walletMetaData={props.wallet_metadata}
+                        tag={props.tag}
                         coinchips={props.wallet_coins}
                         makeApiCall={()=>props.makeApiCall()}
                     />

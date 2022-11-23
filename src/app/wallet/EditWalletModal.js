@@ -14,10 +14,10 @@ class EditWalletModal extends BaseReactComponent {
         super(props);
         this.state = {
             createdOn:props.createdOn,
-            walletAddress: props.walletAddress,
+            walletAddress: props.displayAddress ? props.displayAddress : props.walletAddress,
             displayAddress: props.displayAddress,
             walletName: props.walletMetaData ? props.walletMetaData.id : "",
-            walletTag: props.walletMetaData ? props.walletMetaData.tag : "",
+            walletTag: props.tag ? props.tag : "",
             walletMetaData: props.walletMetaData,
             walletNameList: [],
             dropDownActive:{},
@@ -155,7 +155,7 @@ class EditWalletModal extends BaseReactComponent {
                       <div className='m-b-32 coinchips'>{chips}</div>
                       <div className='edit-form'>
                           <FormElement
-                                    valueLink={this.linkState(this, "displayAddress")}
+                                    valueLink={this.linkState(this, "walletAddress")}
                                     label="Wallet Address"
                                     disabled
                                     control={{
