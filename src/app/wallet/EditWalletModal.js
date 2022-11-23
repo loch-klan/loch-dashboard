@@ -15,7 +15,7 @@ class EditWalletModal extends BaseReactComponent {
         this.state = {
             createdOn:props.createdOn,
             walletAddress: props.walletAddress,
-            displayAddress: props.displayAddress,
+            displayAddress: props.displayAddress ? props.displayAddress : props.walletAddress,
             walletName: props.walletMetaData ? props.walletMetaData.id : "",
             walletTag: props.tag ? props.tag : "",
             walletMetaData: props.walletMetaData,
@@ -155,7 +155,7 @@ class EditWalletModal extends BaseReactComponent {
                       <div className='m-b-32 coinchips'>{chips}</div>
                       <div className='edit-form'>
                           <FormElement
-                                    valueLink={this.linkState(this, "walletAddress")}
+                                    valueLink={this.linkState(this, "displayAddress")}
                                     label="Wallet Address"
                                     disabled
                                     control={{
