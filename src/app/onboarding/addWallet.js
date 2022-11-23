@@ -135,10 +135,10 @@ class AddWallet extends BaseReactComponent {
             //     }
             // }
             DeleteWalletAddress({
-              
+
               address: wallet.address,
             });
-            
+
             this.setState({
                 walletInput: this.state.walletInput
             });
@@ -155,6 +155,11 @@ class AddWallet extends BaseReactComponent {
         this.state.walletInput.map((e) => {
             if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
                 isDisableFlag = true;
+                e.coins.map((a)=>{
+                  if(a.chain_detected===true){
+                      isDisableFlag = false;
+                  }
+              })
             }
         })
 
@@ -166,7 +171,7 @@ class AddWallet extends BaseReactComponent {
         // this.state.walletInput.map((e) => {
         //   (e.address && e.coins.length === this.props.OnboardingState.coinsList.length) ? isDisableFlag = false : isDisableFlag=true
         // })
-       
+
         return isDisableFlag;
     }
 

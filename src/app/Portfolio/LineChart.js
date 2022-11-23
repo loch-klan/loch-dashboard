@@ -183,6 +183,7 @@ class LineChart extends BaseReactComponent {
                 enabled: false
             },
             xAxis: {
+                // categories: this.state.title === "Month" ? categories.reverse() : categories,
                 categories: categories,
                 scrollbar: {
                   enabled: true,
@@ -292,7 +293,7 @@ class LineChart extends BaseReactComponent {
                     <div className='chart-x-selection'>
                             <DropDown
                                 class="line-chart-dropdown"
-                                list={["Year", "Month", "Day", "Week"]}
+                                list={["Year", "Month", "Week", "Day"]}
                                 // list={GroupByOptions}
                                 onSelect={this.handleSelect}
                                 title={this.state.title}

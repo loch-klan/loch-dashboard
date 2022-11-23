@@ -12,7 +12,7 @@ import CloseBtn from "../../assets/images/icons/CloseBtn.svg"
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin } from "../onboarding//Api";
-import { updateUserWalletApi } from './Api';
+import { getDetectedChainsApi, updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
 import { AddWalletAddress } from '../../utils/AnalyticsFunctions';
@@ -114,7 +114,7 @@ class FixAddModal extends BaseReactComponent {
     componentDidMount() {
         this.props.getAllCoins()
         getAllWalletApi(this)
-
+        getDetectedChainsApi(this)
         const fixWallet = []
         JSON.parse(localStorage.getItem("addWallet")).map((e) => {
             if (e.coinFound !== true) {
