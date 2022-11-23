@@ -425,6 +425,11 @@
                 // height: 500px;
                 .graph-header {
                     padding-left: 1.6rem;
+                    .header{
+                        .inter-display-semi-bold{
+                            cursor: pointer;
+                        }
+                    }
                 }
 
                 .chartArea{

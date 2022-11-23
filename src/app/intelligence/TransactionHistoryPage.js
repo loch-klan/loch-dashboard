@@ -14,6 +14,7 @@ import { SelectControl, FormElement, Form, CustomTextControl, BaseReactComponent
 import unrecognizedIcon from "../../image/unrecognized.svg";
 import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
+import { noExponents } from "../../utils/ReusableFunctions";
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -498,9 +499,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={rowData.amount.value}
+                            text={noExponents(rowData.amount.value)}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{rowData.amount.value}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{noExponents(rowData.amount.value)}</div>
                         </CustomOverlay>)
                     }
                 }

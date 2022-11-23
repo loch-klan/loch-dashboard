@@ -10,6 +10,7 @@ import { amountFormat, lightenDarkenColor, numToCurrency } from './../../utils/R
 import CopiedModal from '../common/_utils/CopiedModal';
 import FixAddModal from '../common/FixAddModal';
 import Loading from '../common/Loading';
+import { toast } from 'react-toastify';
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
     const [showModal, toggleCopied] = React.useState(false);
@@ -45,11 +46,12 @@ export default function WalletCard(props) {
 
         )
     })
-    const copyContent = () => {
-        const text = props.display_address ? props.display_address : props.wallet_account_number
+    const copyContent = (text) => {
+        // const text = props.display_address ? props.display_address : props.wallet_account_number
         navigator.clipboard
       .writeText(text)
       .then(() => {
+        toast.success("Copied");
         console.log("successfully copied");
       })
       .catch(() => {
@@ -69,7 +71,7 @@ export default function WalletCard(props) {
                     <div className='m-r-16 wallet-img'>
                         <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognizedIcon} />
                     </div>
-                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognized wallet"}</h6>
+                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_metadata && props.wallet_metadata.name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognized wallet"}</h6>
                         {props.tag &&
                             <CustomOverlay
                             position="top"
@@ -79,13 +81,26 @@ export default function WalletCard(props) {
                             isText={true}
                             text={props.tag}
                             >
-                            <div className='inter-display-medium f-s-16 lh-19 wallet-name m-l-10'>{props.tag}
+                            <div className='inter-display-medium f-s-16 lh-19 wallet-name m-r-16'>{props.tag}
                             </div>
                             </CustomOverlay>
                         }
                     <div className='account-details'>
-                        <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.display_address ? props.display_address : props.wallet_account_number}</span>
-                        <Image src={CopyClipboardIcon} onClick={copyContent} className="m-l-10 cp" />
+                        {
+                          props.display_address &&
+                          <>
+                          <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.display_address}</span>
+                          <Image src={CopyClipboardIcon} onClick={()=>copyContent(props.display_address)} className="m-l-10 m-r-12 cp" />
+                        </>
+                        }
+                        {
+                          props.wallet_account_number &&
+                          <>
+                          <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
+                          <Image src={CopyClipboardIcon} onClick={()=>copyContent(props.wallet_account_number)} className="m-l-10 m-r-12 cp" />
+                          </>
+                        }
+
                     </div>
                     {/* </div> */}
                 </div>
@@ -119,6 +134,7 @@ export default function WalletCard(props) {
                         walletAddress={props.wallet_account_number}
                         displayAddress={props.display_address}
                         walletMetaData={props.wallet_metadata}
+                        tag={props.tag}
                         coinchips={props.wallet_coins}
                         makeApiCall={()=>props.makeApiCall()}
                     />

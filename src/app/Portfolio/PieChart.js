@@ -29,7 +29,8 @@ class PieChart extends BaseReactComponent {
             chartOptions: [],
             valueChanged: false,
             flag: false,
-            isLoading:props.isLoading
+            isLoading:props.isLoading,
+            piechartisLoading:true
         }
 
     }
@@ -73,6 +74,7 @@ class PieChart extends BaseReactComponent {
             this.setState({ assetTotal: this.props.assetTotal })
         }
         if (this.props.userWalletData !== prevProps.userWalletData) {
+            this.setState({ piechartisLoading: true })
             let assetData = [];
             if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
@@ -98,6 +100,7 @@ class PieChart extends BaseReactComponent {
             }
             this.setState({
                 chartData: this.props.userWalletData,
+                piechartisLoading : this.props.isLoading === false ? false : true,
                 assetData: assetData && assetData.length > 0 ? assetData.sort((a, b) => b.assetValue - a.assetValue) : [],
                 chartOptions: {}
             })
@@ -315,10 +318,10 @@ class PieChart extends BaseReactComponent {
 
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
-                this.props.isLoading === true
-                ?
-                <Loading/>
-                :
+                // this.props.isLoading === true
+                // ?
+                // <Loading/>
+                // :
                 Object.keys(this.state.assetData).length > 0
                 ?
                     <>
@@ -343,7 +346,9 @@ class PieChart extends BaseReactComponent {
                                     <div className='coin-hover-display-text1'>
                                         <div className='coin-hover-display-text1-upper'>
                                             <span className='inter-display-medium f-s-18 l-h-21 black-000 coin-hover-display-text1-upper-coin'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? this.state.pieSectionDataEnabled.name : null}</span>
-                                            <span className='inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>
+                                            <span className='inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent'
+                                            style={{color: (this.state.pieSectionDataEnabled.borderColor == "#ffffff") ? "#19191A" : this.state.pieSectionDataEnabled.borderColor}}
+                                            >{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>
                                         </div>
                                         <div className='coin-hover-display-text1-lower'>
                                             <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? numToCurrency(this.state.pieSectionDataEnabled.count) : null}</span>
@@ -421,7 +426,7 @@ class PieChart extends BaseReactComponent {
                           }
                     </>
                     :
-                        this.props.isLoading === true
+                     this.state.piechartisLoading === true
                         ?
                         <Loading/>
                         :

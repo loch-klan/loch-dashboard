@@ -10,6 +10,8 @@ import Wallet from "./app/wallet/Wallet"
 import Cost  from "./app/cost/Cost"
 import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage"
 import VerifyEmail from "./app/common/VerifyEmail"
+import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounterparty"
+import InsightsPage from "./app/intelligence/InsightsPage"
 const routes = [
   {
     path: "/",
@@ -46,6 +48,18 @@ const routes = [
     name: "Transaction History",
     type: PrivateRoute,
     component: TransactionHistoryPage
+  },
+  {
+    path: "/intelligence/volume-traded-by-counterparty",
+    name: "Volume Traded By Counterparty",
+    type: PrivateRoute,
+    component: VolumeTradedByCounterparty
+  },
+  {
+    path: "/intelligence/insights",
+    name: "Insights",
+    type: PrivateRoute,
+    component: InsightsPage
   },
   {
     path: "/wallets",
