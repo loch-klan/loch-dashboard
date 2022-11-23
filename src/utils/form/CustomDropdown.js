@@ -122,7 +122,7 @@ class CustomDropdown extends Component {
       count = selected.length;
     }
 
-    //   console.log(selected, "selected", count, "count");
+      // console.log(selected, "selected", count, "count");
     //   console.log(this.state.options);
     return { selected: selected, length: count };
   };
@@ -136,7 +136,7 @@ class CustomDropdown extends Component {
 
   Apply = () => {
     // console.log(this.getSelected().selected, "apply");
-    // console.log(this.props.action, this.getSelected().selected, "apply");
+    console.log("value passed", this.getSelected().selected);
       
       this.props.handleClick(this.props.action, this.getSelected().selected);
         this.setState({ showMenu: false });

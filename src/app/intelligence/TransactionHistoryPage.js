@@ -128,6 +128,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
 
   addCondition = (key, value) => {
+    console.log(value, "value passed");
     let index = this.state.condition.findIndex((e) => e.key === key);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
