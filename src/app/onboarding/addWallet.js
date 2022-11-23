@@ -64,7 +64,7 @@ class AddWallet extends BaseReactComponent {
         //     this.props.handleShowSignText(false)
         // }
         this.setState({
-            addButtonVisible: this.state.walletInput[0].address,
+            addButtonVisible: this.state.walletInput.some((wallet)=>wallet.address ? true : false),
             walletInput: walletCopy
         });
         if (this.timeout) {
