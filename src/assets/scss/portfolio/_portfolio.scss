@@ -165,7 +165,7 @@
                     // }
                     .dropdown{
                         position: absolute;
-                        top: -3rem;
+                        top: -1rem;
                         right: 0rem;
                         .dropdown-menu{
                             width: auto;
@@ -221,6 +221,12 @@
                 //         }
                 //     }
                 // }
+                .highcharts-scrollbar-button{
+                    display: none;
+                }
+                .highcharts-scrollbar-arrow{
+                    display: none;
+                }
             }
         }
 
@@ -277,7 +283,8 @@
                         white-space: normal !important;
                         word-wrap: break-word;
                         border-radius:0.4rem;
-                        max-width:83%;
+                        // max-width:83%;
+                        max-width: max-content;
                     }
                 }
             }
@@ -397,7 +404,11 @@
                         margin-bottom: 0.3rem;
                     }
                 }
-
+                .history-table-method {
+                  width: 7rem !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+                }
             }
         }
 
@@ -414,6 +425,11 @@
                 // height: 500px;
                 .graph-header {
                     padding-left: 1.6rem;
+                    .header{
+                        .inter-display-semi-bold{
+                            cursor: pointer;
+                        }
+                    }
                 }
 
                 .chartArea{

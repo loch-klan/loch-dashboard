@@ -501,7 +501,7 @@ body {
 }
 
 .blur-effect {
-  filter: blur(6px);
+  filter: blur(3px);
   user-select: none;
 }
 
@@ -872,6 +872,11 @@ form {
 
       &:hover {}
     }
+    &::-webkit-scrollbar {
+      border-top-right-radius: 0.9rem;
+      border-bottom-right-radius: 0.9rem;
+    }
+
   }
 }
 
@@ -1229,7 +1234,7 @@ form {
 
   .tooltip-inner {
     background-color: $secondary;
-    max-width: 39.2rem;
+    max-width: max-content;
     border: 0.1rem solid $grey-E5E;
     border-radius: 0.8rem;
     opacity: 1;
@@ -1579,9 +1584,14 @@ form {
 
             img {
               border: 0 !important;
+              border-radius: 0.8rem;
             }
           }
-
+          .asset-symbol{
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: 0.8rem;
+          }
           .cost-common {
             background: rgba(229, 229, 230, 0.5);
             border-radius: 0.4rem;

@@ -1,0 +1,19 @@
+.volume-traded-section {
+  display: flex;
+  .volume-traded-page {
+    margin-top: 5rem;
+    .bar-graph-section{
+        width: 100%;
+    }
+    .graph-container{
+        .Y-axis{
+            height: 39rem;
+        }
+        .ScrollArea{
+            .chartArea{
+            height: 37rem;
+            }
+        }
+    }
+  }
+}

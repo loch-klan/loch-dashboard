@@ -23,7 +23,7 @@ import ApiModalFrame from '../../assets/images/apiModalFrame.svg';
 import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
- 
+
   LeaveEmailAdded,
   LeaveLinkCopied,
   LeaveLinkShared,
@@ -63,8 +63,8 @@ class ExitOverlay extends BaseReactComponent {
         email_arr.push(info.address);
       });
       const url = new URLSearchParams();
-      url.append("user_name", this.state.email);
-      url.append("wallet_addresses", JSON.stringify(email_arr));
+      url.append("email", this.state.email);
+      // url.append("wallet_addresses", JSON.stringify(email_arr));
       fixWalletApi(this, url);
       LeaveEmailAdded({
         session_id: getCurrentUser().id,

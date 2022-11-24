@@ -103,14 +103,21 @@
 
                         .save-btn-section {
                             .save-btn {
-                                padding: 1.8rem 5.38rem;
+                                padding: 1.7rem 5.38rem;
                                 background-color: $grey-B0B;
                                 border-radius: 0.8rem;
-                                border: none;
+                                border: 1px solid $grey-B0B;
+
                             }
 
                             .active {
                                 background-color: $primary;
+                                border: 1px solid $black-191;
+                                &:hover{
+                                  background-color: $secondary;
+                                  border: 1px solid $black-191;
+                                  color: $black-191;
+                                }
                             }
 
                             .save-btn:focus {

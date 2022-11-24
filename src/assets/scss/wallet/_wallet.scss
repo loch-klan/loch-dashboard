@@ -82,20 +82,24 @@
                                 color: $grey-7C7;
                                 text-overflow: ellipsis;
                                 overflow: hidden;
+                                width: max-content;
+                                max-width: 20rem;
                             }
                         // }
 
                         .account-details {
                             display: flex;
                             align-items: center;
-                            margin-left: 1.6rem;
+                            // margin-left: 1.6rem;
                             text-overflow: ellipsis;
                             overflow: hidden;
                             span {
                                 color: $grey-B0B;
-                                width: 92%;
+                                // width: 92%;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
+                                width: max-content;
+                                max-width: 20rem;
                             }
                         }
                     }

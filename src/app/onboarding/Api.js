@@ -85,7 +85,7 @@ export const signIn = (ctx, data) => {
             </div>
             );
             // toast.error(res.data.message || "Something went Wrong")
-           
+
         }
         else if (res.data.error === false) {
             //email Valid
@@ -103,14 +103,14 @@ EmailAddressVerified({ email_address: ctx.state.email });
 }
 
 export const verifyUser = (ctx, info) => {
-  
+
     preLoginInstance.post('organisation/user/verify-otp',info)
     .then(res=>{
         // console.log(res.data.data.user)
         if(!res.data.error){
             localStorage.setItem("lochUser",JSON.stringify(res.data.data.user));
             localStorage.setItem('lochToken', res.data.data.token);
-           
+
             const allChains = ctx.props.OnboardingState.coinsList
             let addWallet = [];
             const apiResponse = res.data.data;
@@ -130,7 +130,8 @@ export const verifyUser = (ctx, info) => {
                     coinName: chain.name,
                     chain_detected: coinDetected,
                   coinColor: chain.color})
-              })
+              });
+              obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
               obj['id'] = `wallet${i+1}`;
               obj['coinFound'] = apiResponse.wallets[apiResponse.user.wallets[i]].chains.length > 0 ? true : false;
               addWallet.push(obj);
@@ -144,11 +145,11 @@ export const verifyUser = (ctx, info) => {
               email_address: res.data.data.user.email,
               session_id: res.data.data.user.id,
             });
-          
-     
+
+
         }
         else {
-            
+
            UserWrongCode({ email_address: ctx.state.email });
           toast.error(
             <div className="custom-toast-msg">

@@ -177,8 +177,12 @@ function Sidebar(props) {
                     <li>
                       <NavLink
                         exact={true}
-                        className={`nav-link ${activeTab === "/intelligence/transaction-history" ? "active"
-                        : ""}`} to="/intelligence"
+                        className={`nav-link 
+                        ${activeTab === "/intelligence/transaction-history" ? "active" : ""}
+                        ${activeTab === "/intelligence/volume-traded-by-counterparty" ? "active" : ""}
+                        ${activeTab === "/intelligence/insights" ? "active" : ""}
+                        `
+                      } to="/intelligence"
                         activeclassname="active"
                         onClick={() =>
                           IntelligenceMenu({
@@ -188,7 +192,7 @@ function Sidebar(props) {
                         }
                       >
                         <Image
-                          src={["/intelligence/transaction-history","/intelligence"].includes(activeTab)
+                          src={["/intelligence/transaction-history","/intelligence","/intelligence/volume-traded-by-counterparty","/intelligence/insights"].includes(activeTab)
                               ? ActiveIntelligenceIcon
                               : IntelligenceIcon
                           }
@@ -310,7 +314,7 @@ function Sidebar(props) {
                     API
                   </Button>
                 </li>
-                {JSON.parse(localStorage.getItem("lochUser")) && (
+                {/* {JSON.parse(localStorage.getItem("lochUser")) && (
                   <li
                     onMouseOver={(e) =>
                       (e.currentTarget.children[0].src = ShareProfileDarkIcon)
@@ -327,7 +331,7 @@ function Sidebar(props) {
                       Share Profile
                     </Button>
                   </li>
-                )}
+                )} */}
 
                 <li
                   onClick={handleLeave}

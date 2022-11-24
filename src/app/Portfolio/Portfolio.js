@@ -52,6 +52,8 @@ class Portfolio extends BaseReactComponent {
       fixModal: false,
       addModal: false,
       isLoading: true,
+      tableLoading: true,
+      graphLoading: true,
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       limit: 6,
       tableSortOpt: [
@@ -110,7 +112,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getCoinRate()
         this.props.getAllCoins()
         this.getTableData()
-        // this.getGraphData()
+        this.getGraphData()
     }
 
     componentWillUnmount() {
@@ -121,10 +123,11 @@ class Portfolio extends BaseReactComponent {
       TimeSpentHome({ time_spent: TimeSpent + " seconds", session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
 
-    getGraphData = (groupByValue = GROUP_BY_MONTH) =>{
+    getGraphData = (groupByValue = GROUP_BY_YEAR) =>{
+this.setState({graphLoading: true})
       let addressList = [];
       this.state.userWalletList.map((wallet)=> addressList.push(wallet.address))
-      console.log('addressList',addressList);
+      // console.log('addressList',addressList);
       let data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList))
       data.append("group_criteria", groupByValue);
@@ -132,10 +135,10 @@ class Portfolio extends BaseReactComponent {
     }
     handleGroupBy = (value)=>{
       let groupByValue = GroupByOptions.getGroupBy(value);
-      // this.getGraphData(groupByValue)
+      this.getGraphData(groupByValue)
     }
     getTableData = () => {
-
+      this.setState({tableLoading: true})
         let arr = JSON.parse(localStorage.getItem("addWallet"))
         let address = arr.map((wallet) => {
             return wallet.address
@@ -164,7 +167,7 @@ class Portfolio extends BaseReactComponent {
                                 address: wallet.address,
                                 coinCode: coin.coinCode
                             }
-                            this.props.getUserWallet(userCoinWallet)
+                            this.props.getUserWallet(userCoinWallet, this)
                         })
                     }
                     if (i === (this.state.userWalletList.length - 1)) {
@@ -182,6 +185,7 @@ class Portfolio extends BaseReactComponent {
             }
             if (prevProps.userWalletList !== this.state.userWalletList) {
                 this.getTableData()
+                this.getGraphData()
             }
         }
         else if(prevState.sort !== this.state.sort)
@@ -283,20 +287,28 @@ class Portfolio extends BaseReactComponent {
           from: {
             address: row.from_wallet.address,
             // wallet_metaData: row.from_wallet.wallet_metaData
+            // wallet_metaData: {
+            //   symbol: row.from_wallet.wallet_metaData
+            //     ? row.from_wallet.wallet_metaData.symbol
+            //     : unrecognizedIcon,
+            // },
             wallet_metaData: {
-              symbol: row.from_wallet.wallet_metaData
-                ? row.from_wallet.wallet_metaData.symbol
-                : unrecognizedIcon,
-            },
+              symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
+              text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
+          }
           },
           to: {
             address: row.to_wallet.address,
             // wallet_metaData: row.to_wallet.wallet_metaData,
+            // wallet_metaData: {
+            //   symbol: row.to_wallet.wallet_metaData
+            //     ? row.to_wallet.wallet_metaData.symbol
+            //     : unrecognizedIcon,
+            // },
             wallet_metaData: {
-              symbol: row.to_wallet.wallet_metaData
-                ? row.to_wallet.wallet_metaData.symbol
-                : unrecognizedIcon,
-            },
+              symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
+              text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
+          },
           },
           asset: {
             code: row.asset.code,
@@ -347,9 +359,21 @@ class Portfolio extends BaseReactComponent {
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.from.address}
+                                // text={rowData.from.address}
+                                text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
                             >
-                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
+                               {
+                                rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
+                                ?
+                                rowData.from.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.from.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
+                                {/* <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" /> */}
                             </CustomOverlay>
                         )
                     }
@@ -372,9 +396,21 @@ class Portfolio extends BaseReactComponent {
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.to.address}
+                                // text={rowData.to.address}
+                                text={rowData.to.wallet_metaData.text ? (rowData.to.wallet_metaData.text + ": " + rowData.to.address) : rowData.to.address}
                             >
-                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
+                                {/* <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" /> */}
+                                {
+                                rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
+                                ?
+                                rowData.to.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.to.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
                             </CustomOverlay>
                         )
                     }
@@ -392,10 +428,19 @@ class Portfolio extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "asset") {
                         return (
-                            <CoinChip
+                             <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={rowData.asset.code}
+                            >
+                            {/* <CoinChip
                                 coin_img_src={rowData.asset.symbol}
-                                coin_code={rowData.asset.code}
-                            />
+                                // coin_code={rowData.asset.code}
+                            /> */}
+                            <Image src={rowData.asset.symbol} className="asset-symbol" />
+                            </CustomOverlay>
                         )
                     }
                 }
@@ -680,7 +725,8 @@ class Portfolio extends BaseReactComponent {
                                 <WelcomeCard
                                     decrement={true}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader} history={this.props.history}
+                                    loader={this.state.loader}
+                                    history={this.props.history}
                                     handleAddModal={this.handleAddModal}
                                     isLoading={this.state.isLoading}
                                     walletTotal={this.props.portfolioState.walletTotal}
@@ -697,7 +743,7 @@ class Portfolio extends BaseReactComponent {
                                 <PieChart
                                     userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader}
+                                    // loader={this.state.loader}
                                     isLoading={this.state.isLoading}
                                     walletTotal={this.props.portfolioState.walletTotal}
                                 />
@@ -714,12 +760,13 @@ class Portfolio extends BaseReactComponent {
                                     : ""}
                             </div>
                             <div className='portfolio-section m-b-32'>
-                                {/* <LineChart
+                                <LineChart
                                   assetValueData={this.state.assetValueData && this.state.assetValueData}
                                   coinLists={this.props.OnboardingState.coinsLists}
                                   isScrollVisible={false}
                                   handleGroupBy={(value)=>this.handleGroupBy(value)}
-                                /> */}
+                                  graphLoading={this.state.graphLoading}
+                                />
                             </div>
                             <div className='m-b-22 graph-table-section'>
                                 <Row>
@@ -740,7 +787,7 @@ class Portfolio extends BaseReactComponent {
                                                 tableData={tableData}
                                                 columnList={columnList}
                                                 headerHeight={60}
-                                                isLoading={this.state.isLoading}
+                                                isLoading={this.state.tableLoading}
                                             />
                                         </div>
                                     </Col>
@@ -751,8 +798,8 @@ class Portfolio extends BaseReactComponent {
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div>
                                             <BarGraphSection
-                                                headerTitle="Volume Traded by Counterparty"
-                                                headerSubTitle="In the last month"
+                                                headerTitle="Blockchain Fees over Time"
+                                                headerSubTitle="Understand your gas costs"
                                                 isArrow={true}
                                                 data={data}
                                                 options={options}
@@ -778,6 +825,7 @@ class Portfolio extends BaseReactComponent {
                                           </div>
                                 <div className='portfolio-cost-table'>
                                     <TransactionTable
+                                    className="minified-table"
                                         title="Average Cost Basis"
                                         subTitle="Understand your average entry price"
                                         tableData={costTableData}

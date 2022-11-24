@@ -6,7 +6,7 @@ import TransactionTable from "./TransactionTable";
 import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_TYPE_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD } from "../../utils/Constant";
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "./Api";
 import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
@@ -14,6 +14,7 @@ import { SelectControl, FormElement, Form, CustomTextControl, BaseReactComponent
 import unrecognizedIcon from "../../image/unrecognized.svg";
 import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
+import { noExponents } from "../../utils/ReusableFunctions";
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -45,7 +46,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       methodFilter: [],
       delayTimer: 0,
       condition: cond ? cond : [],
-      isLoading: true,
+      tableLoading: true,
       tableSortOpt: [
         {
           title: "time",
@@ -97,7 +98,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   }
 
   callApi = (page = START_INDEX) => {
-    this.setState({ isLoading: true });
+    this.setState({ tableLoading: true });
     let data = new URLSearchParams();
     data.append("start", page * API_LIMIT);
     data.append("conditions", JSON.stringify(this.state.condition));
@@ -128,8 +129,9 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
 
   addCondition = (key, value) => {
-    console.log(value, "value passed");
+    console.log('key, value',key, value);
     let index = this.state.condition.findIndex((e) => e.key === key);
+    console.log('index',index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -140,16 +142,22 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allMethod" &&
       value !== "allYear"
     ) {
-      if (key === SEARCH_BY_ASSETS_IN) {
-        // arr[index].value = [value.toString()]
-        // console.log(arr[index]);
-        arr[index].value = [...arr[index].value, value.toString()];
-      } else if (key === SEARCH_BY_TYPE_IN) {
-        arr[index].value = [...arr[index].value, value.toString()];
-      } else if (key === SEARCH_BY_TIMESTAMP_IN) {
-        // arr[index].value = value.toString();
-           arr[index].value = [...arr[index].value, value.toString()];
-      }
+      // if (key === SEARCH_BY_ASSETS_IN) {
+      //   // merge two arrays
+      //   let dummyArr = [...arr[index].value, ...value];
+      //   // removing duplicate
+      //   let uniqueArr = [...new Set(dummyArr)];
+      //   arr[index].value = uniqueArr;
+      // } else if (key === SEARCH_BY_METHOD_IN) {
+      //   arr[index].value = [...arr[index].value, value.toString()];
+      // } else if (key === SEARCH_BY_TIMESTAMP_IN) {
+      //   // arr[index].value = value.toString();
+      //      arr[index].value = [...arr[index].value, value.toString()];
+      // }
+      // let dummyArr = [...arr[index].value, ...value];
+        // removing duplicate
+        // let uniqueArr = [...new Set(dummyArr)];
+        arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
@@ -158,22 +166,26 @@ class TransactionHistoryPage extends BaseReactComponent {
       arr.splice(index, 1);
     } else {
       let obj = {};
-      if (key === SEARCH_BY_ASSETS_IN) {
-        obj = {
-          key: key,
-          value: [value.toString()],
-        };
-      } else if (key === SEARCH_BY_TYPE_IN) {
-        obj = {
-          key: key,
-          value: [value.toString()],
-        };
-      } else if (key === SEARCH_BY_TIMESTAMP_IN) {
-        obj = {
-          key: key,
-          value: [value.toString()],
-        };
-      }
+      obj = {
+        key: key,
+        value: value,
+      };
+      // if (key === SEARCH_BY_ASSETS_IN) {
+      //   obj = {
+      //     key: key,
+      //     value: value,
+      //   };
+      // } else if (key === SEARCH_BY_METHOD_IN) {
+      //   obj = {
+      //     key: key,
+      //     value: value,
+      //   };
+      // } else if (key === SEARCH_BY_TIMESTAMP_IN) {
+      //   obj = {
+      //     key: key,
+      //     value: value,
+      //   };
+      // }
       arr.push(obj);
     }
     if (search_index !== -1) {
@@ -306,14 +318,16 @@ class TransactionHistoryPage extends BaseReactComponent {
                     address: row.from_wallet.address,
                     // wallet_metaData: row.from_wallet.wallet_metaData
                     wallet_metaData: {
-                        symbol: row.from_wallet.wallet_metaData ? row.from_wallet.wallet_metaData.symbol : unrecognizedIcon
+                        symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
+                        text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
                     }
                 },
                 to: {
                     address: row.to_wallet.address,
                     // wallet_metaData: row.to_wallet.wallet_metaData,
                     wallet_metaData: {
-                        symbol: row.to_wallet.wallet_metaData ? row.to_wallet.wallet_metaData.symbol : unrecognizedIcon
+                        symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
+                        text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
                     },
                 },
                 asset: {
@@ -321,7 +335,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     symbol: row.asset.symbol
                 },
                 amount: {
-                    value: row.asset.value,
+                    value: parseFloat(row.asset.value),
                     id: row.asset.id
                 },
                 usdValueThen: {
@@ -378,9 +392,21 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.from.address}
+                                // text={rowData.from.address}
+                                text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
                             >
-                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
+                              {
+                                rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
+                                ?
+                                rowData.from.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.from.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
+
                             </CustomOverlay>
                         )
                     }
@@ -404,9 +430,19 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
-                                text={rowData.to.address}
+                                text={rowData.to.wallet_metaData.text ? (rowData.to.wallet_metaData.text + ": " + rowData.to.address) : rowData.to.address}
                             >
-                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
+                              {
+                                rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
+                                ?
+                                rowData.to.wallet_metaData.symbol
+                                ?
+                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                :
+                                <span>{rowData.to.wallet_metaData.text}</span>
+                                :
+                                 <Image src={unrecognizedIcon} className="history-table-icon" />
+                              }
                             </CustomOverlay>
                         )
                     }
@@ -426,10 +462,19 @@ class TransactionHistoryPage extends BaseReactComponent {
                     if (dataKey === "asset") {
 
                         return (
-                            <CoinChip
+                          <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={rowData.asset.code}
+                            >
+                            {/* <CoinChip
                                 coin_img_src={rowData.asset.symbol}
-                                coin_code={rowData.asset.code}
-                            />
+                                // coin_code={rowData.asset.code}
+                            /> */}
+                            <Image src={rowData.asset.symbol} className="asset-symbol" />
+                            </CustomOverlay>
                         )
                     }
                 }
@@ -454,9 +499,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={rowData.amount.value}
+                            text={noExponents(rowData.amount.value)}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{rowData.amount.value}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{noExponents(rowData.amount.value)}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -642,7 +687,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 <CustomDropdown
                     filtername="All method"
                     options={this.state.methodFilter}
-                    action={SEARCH_BY_TYPE_IN}
+                    action={SEARCH_BY_METHOD_IN}
                     handleClick={(key,value) => this.addCondition(key,value)}
                   />
                 </Col>
@@ -682,7 +727,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               history={this.props.history}
               location={this.props.location}
               page={currentPage}
-              isLoading={this.state.isLoading}
+              tableLoading={this.state.tableLoading}
             />
           </div>
           {/* <CommonPagination

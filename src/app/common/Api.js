@@ -25,7 +25,7 @@ export const loginApi = (ctx, data) => {
 }
 
 export const fixWalletApi = (ctx,info) =>{
-      postLoginInstance.post("organisation/user/create-user",info)
+      postLoginInstance.post("organisation/user/update-user",info)
       .then((res)=>{
         if(!res.data.error){
           ctx.handleRedirection();
@@ -57,6 +57,77 @@ export const updateUserWalletApi = (data,ctx) =>{
   })
 }
 
+export const verifyEmailApi = (ctx, data) =>{
+  preLoginInstance
+  .post("organisation/user/verify-email", data)
+  .then((res)=>{
+    if(!res.data.error){
+      ctx.setState({error: false});
+    } else{
+      ctx.setState({error: true});
+    }
+  })
+  .catch((err)=>{
+    console.log("fixwallet",err)
+  })
+}
+
+export const getDetectedChainsApi = (ctx) =>{
+  postLoginInstance.post("wallet/user-wallet/get-detected-chains")
+  .then((res)=>{
+    if(!res.data.error){
+      // console.log('res',res);
+      // CHAIN LIST
+      let chainList = [];
+      ctx.props.OnboardingState.coinsList.map((item)=>{
+          return(chainList.push({
+            coinCode: item.code,
+            coinSymbol: item.symbol,
+            coinName: item.name,
+            chain_detected: false,
+            coinColor: item.color
+          }))
+        })
+      // console.log('chainList',chainList);
+      let addWallet = JSON.parse(localStorage.getItem("addWallet"));
+      // console.log('addWallet',addWallet);
+      let xyz = Object.keys(res.data.data.chains).map((chain)=>({
+        address: chain,
+        display_address: res.data.data.chains[chain].display_address,
+        chains: res.data.data.chains[chain].chains
+      }))
+      // console.log('xyz',xyz);
+      addWallet.map((wallet)=>{
+        let userWallet = null;
+        xyz.map((item)=>{
+          if(item.address === wallet.address || item.display_address === wallet.address){
+            userWallet = item
+          }
+        })
+        let chainsDetected = chainList.map((chain)=>{
+          let dummyChain = {...chain}
+          let isDetected = false;
+          userWallet.chains.map((userChain)=>{
+            if(userChain.code === dummyChain.coinCode){
+              isDetected = true
+            }
+          })
+          dummyChain.chain_detected = isDetected;
+          return dummyChain
+        });
+      wallet.coins = chainsDetected
+      })
+      // console.log('addWallet',addWallet);
+      ctx.setState({addWalletList: addWallet})
+      addWallet && localStorage.setItem('addWallet',JSON.stringify(addWallet))
+    } else{
+      toast.error(res.data.message || "Something went wrong");
+    }
+  })
+   .catch((err)=>{
+    console.log("fixwallet",err)
+  })
+}
 
 // export const resetPasswordApi = (ctx, data) => {
 //   preLoginInstance

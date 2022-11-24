@@ -6,6 +6,7 @@ import IntelWelcomeCard from './IntelWelcomeCard';
 import PageHeader from '../common/PageHeader';
 import TransactionHistoryPage  from './TransactionHistoryPage';
 import eyeIcon from '../../assets/images/icons/eyeIcon.svg'
+import insight from '../../assets/images/icons/insight.svg'
 import BarGraphSection from '../common/BarGraphSection';
 import { getAllCoins } from '../onboarding/Api.js'
 import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
@@ -14,6 +15,12 @@ import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 import { Image } from 'react-bootstrap';
 import { TimeSpentIntelligence } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
+import ThisWeek from "../..//assets/images/This-week.svg"
+// import Insights1 from "../..//assets/images/Insights1.svg"
+import Insights2 from "../..//assets/images/Insights2.svg"
+// import Insights3 from "../..//assets/images/Insights3.svg"
+import Insights4 from "../..//assets/images/Insights4.svg"
+import Insights5 from "../..//assets/images/Insights5.svg"
 
 class Intelligence extends Component {
   constructor(props) {
@@ -157,6 +164,26 @@ class Intelligence extends Component {
                         comingSoon={true}
                     />
                     </div>
+
+        <div className="insights-image">
+        <PageHeader
+                        title="Insights"
+                        showImg={insight}
+                        viewMore={true}
+                        viewMoreRedirect={"/intelligence/insights"}
+                    />
+                    <span className="blur-effect">
+          <div className="insights-feed">
+            <Image
+            src={Insights5} />
+            <Image
+            src={Insights2} />
+            <Image
+            src={Insights4} />
+          </div>
+          </span>
+        </div>
+
                     </div>
                     {/* <TransactionHistoryPage/> */}
                 </div>

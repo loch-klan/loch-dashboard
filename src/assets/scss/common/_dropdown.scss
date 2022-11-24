@@ -115,17 +115,24 @@
         flex-wrap: wrap;
         padding: 6px 0px;
         border-top: 1px solid $secondary-6;
-
+        .primary-btn{
+          &:hover{
+            background-color: $secondary;
+            color: $black-191;
+            border: 1px solid $black-191;
+          }
+        }
         .dropdown-btn{
-            background-color: $secondary-6;
-            border-radius: 3px;
-            border: none;
+            // background-color: $secondary-6;
+            // border-radius: 3px;
+            // border: none;
             text-align: center;
             width: 48%;
-            min-height: 3rem;
+            padding: 1rem;
             user-select: none;
             cursor: pointer;
-             @include font($black-191, "Inter-Medium", 1.1rem, 500, 3rem);
+            // @include font($black-191, "Inter-Medium", 1.1rem, 500, 3rem);
+            font-size: 1.1rem
         }
     }
   }
