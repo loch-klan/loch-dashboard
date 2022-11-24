@@ -1,19 +1,24 @@
-import React,{ Component }  from 'react'
-import  BarGraphSection  from '../common/BarGraphSection'
-import PageHeader from '../common/PageHeader'
-import Sidebar from '../common/Sidebar'
-import { info , years5 ,ethereum } from './dummyData.js'
+import React, { Component } from "react";
+import BarGraphSection from "../common/BarGraphSection";
+import PageHeader from "../common/PageHeader";
+import Sidebar from "../common/Sidebar";
+import { info, years5, ethereum } from "./dummyData.js";
 import { connect } from "react-redux";
-import { getAllCoins } from '../onboarding/Api.js'
-import Ethereum from '../../assets/images/icons/ether-coin.svg'
-import GainIcon from '../../assets/images/icons/GainIcon.svg'
-import LossIcon from '../../assets/images/icons/LossIcon.svg'
-import { Image } from 'react-bootstrap';
-import CoinChip from '../wallet/CoinChip';
-import TransactionTable from '../intelligence/TransactionTable'
-import { TimeSpentCosts } from '../../utils/AnalyticsFunctions'
-import { getCurrentUser } from '../../utils/ManageToken'
-import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
+import { getAllCoins } from "../onboarding/Api.js";
+import Ethereum from "../../assets/images/icons/ether-coin.svg";
+import GainIcon from "../../assets/images/icons/GainIcon.svg";
+import LossIcon from "../../assets/images/icons/LossIcon.svg";
+import { Image } from "react-bootstrap";
+import CoinChip from "../wallet/CoinChip";
+import TransactionTable from "../intelligence/TransactionTable";
+import { TimeSpentCosts } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
+import getGraphData from "./getGraphData";
+import { getAllFee } from "./Api";
+import Loading from "../common/Loading";
+import moment from "moment/moment";
+
 class Cost extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +28,9 @@ class Cost extends Component {
         options: info[1],
         options2: info[2],
       },
-      startTime:"",
+      startTime: "",
+      GraphData: [],
+      graphValue: null,
     };
   }
 
@@ -32,7 +39,47 @@ class Cost extends Component {
     console.log("page Enter", this.state.startTime / 1000);
 
     this.props.getAllCoins();
+    this.getBlockchainFee(0);
   }
+
+  getBlockchainFee(option) {
+    this.setState({ graphValue: null });
+    const today = moment().valueOf();
+   
+    console.log("headle click");
+    if (option == 0) {
+      getAllFee(this, false, false);
+      console.log(option, "All");
+    }
+    else if (option == 1) {
+      const fiveyear = moment().subtract(5, "years").valueOf();
+    
+      getAllFee(this, fiveyear, today);
+      console.log(fiveyear,today, "5 years");
+    }
+    else if (option == 2) {
+      const year = moment().subtract(1, "years").valueOf();
+      getAllFee(this, year, today);
+      console.log(year,today, "1 year");
+    }
+    else if (option == 3) {
+      const sixmonth = moment().subtract(6, "months").valueOf();
+     
+      getAllFee(this, sixmonth, today);
+      console.log(sixmonth,today, "6 months");
+    }
+    else if (option == 4) {
+      const month = moment().subtract(1, "month").valueOf();
+      getAllFee(this, month, today);
+      console.log(month,today, "1 month");
+    }
+    else if (option == 5) {
+      const week = moment().subtract(1, "week").valueOf();
+      getAllFee(this, week, today);
+      console.log(week, today, "week");
+    }
+  }
+
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -46,6 +93,8 @@ class Cost extends Component {
   }
 
   render() {
+    //  getGraphData();
+
     const tableData = [
       {
         Asset: Ethereum,
@@ -190,75 +239,87 @@ class Cost extends Component {
             title="Costs"
             subTitle="Bring light to your hidden costs"
           />
- <div style={{position: "relative"}}>
-                    <div className='coming-soon-div'>
+          <div style={{ position: "relative" }}>
+            {/* <div className='coming-soon-div'>
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
-                                          </div>
-          <BarGraphSection
-            headerTitle="Blockchain Fees over Time"
-            headerSubTitle="Understand your gas costs"
-            data={this.state.durationgraphdata.data}
-            options={this.state.durationgraphdata.options}
-            options2={this.state.durationgraphdata.options2}
-            coinsList={this.props.OnboardingState.coinsList}
-            marginBottom="m-b-32"
-            showFooter={true}
-            showBadges={true}
-            isScrollVisible={false}
-            // height={420}
-            // width={824}
-            comingSoon={true}
-          />
-                    </div>
- <div style={{position: "relative"}}>
-                    <div className='coming-soon-div'>
-                                          <Image src={ExportIconWhite} className="coming-soon-img" />
-                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
-                                          </div>
-          <BarGraphSection
-            headerTitle="Counterparty Fees Over Time"
-            headerSubTitle="Understand how much your counterparty charges you"
-            data={this.state.durationgraphdata.data}
-            options={this.state.durationgraphdata.options}
-            options2={this.state.durationgraphdata.options2}
-            coinsList={this.props.OnboardingState.coinsList}
-            marginBottom="m-b-32"
-            showFooter={true}
-            showBadges={true}
-            isScrollVisible={false}
-            // height={"400px"}
-            // width={"824px"}
-            comingSoon={true}
-          />
-                    </div>
+                                          </div> */}
+            {this.state.graphValue ? (
+              <BarGraphSection
+                headerTitle="Blockchain Fees over Time"
+                headerSubTitle="Understand your gas costs"
+                data={this.state.graphValue[0]}
+                options={this.state.graphValue[1]}
+                options2={this.state.graphValue[2]}
+                coinsList={this.props.OnboardingState.coinsList}
+                timeFunction={(e) => this.getBlockchainFee(e)}
+                marginBottom="m-b-32"
+                showFooter={true}
+                showBadges={true}
+                isScrollVisible={false}
+                isScroll={true}
+                // height={420}
+                // width={824}
+                comingSoon={false}
+              />
+            ) : (
+              <Loading />
+            )}
+          </div>
+          <div style={{ position: "relative" }}>
+            <div className="coming-soon-div">
+              <Image src={ExportIconWhite} className="coming-soon-img" />
+              <p className="inter-display-regular f-s-13 lh-16 black-191">
+                This feature is coming soon.
+              </p>
+            </div>
+            
+              <BarGraphSection
+                headerTitle="Counterparty Fees Over Time"
+                headerSubTitle="Understand how much your counterparty charges you"
+                data={this.state.durationgraphdata.data}
+                options={this.state.durationgraphdata.options}
+                options2={this.state.durationgraphdata.options2}
+                coinsList={this.props.OnboardingState.coinsList}
+                marginBottom="m-b-32"
+                showFooter={true}
+                showBadges={true}
+                isScrollVisible={false}
+                isScroll={true}
+                // height={"400px"}
+                // width={"824px"}
+                comingSoon={true}
+              />
+            
+          </div>
           <div className="m-b-40 cost-table-section">
-          <div style={{position: "relative"}}>
-                    <div className='coming-soon-div'>
-                                          <Image src={ExportIconWhite} className="coming-soon-img" />
-                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
-                                          </div>
-            <TransactionTable
-              title="Average Cost Basis"
-              subTitle="Understand your average entry price"
-              tableData={tableData}
-              columnList={columnData}
-              headerHeight={64}
-              comingSoon={true}
-            />
-                    </div>
+            <div style={{ position: "relative" }}>
+              <div className="coming-soon-div">
+                <Image src={ExportIconWhite} className="coming-soon-img" />
+                <p className="inter-display-regular f-s-13 lh-16 black-191">
+                  This feature is coming soon.
+                </p>
+              </div>
+              <TransactionTable
+                title="Average Cost Basis"
+                subTitle="Understand your average entry price"
+                tableData={tableData}
+                columnList={columnData}
+                headerHeight={64}
+                comingSoon={true}
+              />
+            </div>
           </div>
         </div>
       </div>
     );
   }
 }
-  const mapStateToProps = state => ({
-    OnboardingState: state.OnboardingState
-  });
-  const mapDispatchToProps = {
-    getAllCoins
-  }
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
+});
+const mapDispatchToProps = {
+  getAllCoins,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cost);
-

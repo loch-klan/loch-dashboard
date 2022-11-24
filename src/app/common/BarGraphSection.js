@@ -52,7 +52,8 @@ class BarGraphSection extends Component {
         this.setState({
             activeFooter: event.target.id
         })
-      console.log("handle footer", event.target.id)
+      console.log("handle footer", event.target.id);
+       this.props.timeFunction(event.target.id);
     }
     handleFunction = (badge) => {
         let newArr = [...this.state.activeBadge]
@@ -100,7 +101,11 @@ class BarGraphSection extends Component {
     //     console
     // }
 
-    render() {
+  render() {
+    // console.log(this.state.data.datasets[0].data, "Lable inside bar graph");
+    // console.log(this.state.data, "data");
+    const digit = ("" + Math.round(Math.max(...this.state.data.datasets[0].data))).length;
+    // console.log(digit, "digit" ,Math.round(Math.max(...this.state.data.datasets[0].data)), "number");
       const ScrollStyle = {
         width: `${this.state.data.labels.length * 12.5}%`,
         minWidth: `${this.state.data.labels.length * 10}rem`
@@ -128,74 +133,76 @@ class BarGraphSection extends Component {
             ) : (
               ""
             )}
-              <span className={`${this.props.comingSoon && 'blur-effect'}`}>
-            {this.state.showBadges ? (
-              <CoinBadges
-                handleFunction={this.handleFunction}
-                activeBadge={this.state.activeBadge}
-                chainList={this.props.coinsList}
-                isScrollVisible={this.state.isScrollVisible}
-              />
-            ) : (
-              ""
-            )}
-            {this.state.showPercentage ? (
-              <div className="show-percentage-div ">
-                <div
-                  className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
-                    this.state.showPercentage.status === "Increase"
-                      ? "inc"
-                      : "dec"
-                  }`}
-                >
-                  <Image
-                    src={this.state.showPercentage.icon}
-                    className="m-r-4"
-                  />
-                  {this.state.showPercentage.percent}${" "}
-                  {this.state.showPercentage.status}
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
-            <div style={{ display: "flex" }}>
-              {this.state.options2 != undefined ? (
-                <div className="Y-axis">
-                  <Bar options={this.state.options2} data={this.state.data} />
+            <span className={`${this.props.comingSoon && "blur-effect"}`}>
+              {this.state.showBadges ? (
+                <CoinBadges
+                  handleFunction={this.handleFunction}
+                  activeBadge={this.state.activeBadge}
+                  chainList={this.props.coinsList}
+                  isScrollVisible={this.state.isScrollVisible}
+                />
+              ) : (
+                ""
+              )}
+              {this.state.showPercentage ? (
+                <div className="show-percentage-div ">
+                  <div
+                    className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
+                      this.state.showPercentage.status === "Increase"
+                        ? "inc"
+                        : "dec"
+                    }`}
+                  >
+                    <Image
+                      src={this.state.showPercentage.icon}
+                      className="m-r-4"
+                    />
+                    {this.state.showPercentage.percent}${" "}
+                    {this.state.showPercentage.status}
+                  </div>
                 </div>
               ) : (
                 ""
               )}
+              <div style={{ display: "flex" }}>
+                {this.state.options2 != undefined &&
+                this.state.isScroll &&
+                this.state.data.labels.length > 8 ? (
+                  <div style={{ width: `${digit}rem` }}>
+                    <Bar options={this.state.options2} data={this.state.data} />
+                  </div>
+                ) : (
+                  ""
+                )}
 
-              <div
-                className={
-                  this.state.isScroll ? "ScrollArea" : "ChartAreaWrapper"
-                }
-              >
                 <div
-                  className="chartArea"
-                  style={
-                    this.state.data.labels.length > 8 && this.state.isScroll
-                      ? ScrollStyle
-                      : NormalStyle
+                  className={
+                    this.state.isScroll ? "ScrollArea" : "ChartAreaWrapper"
                   }
+                  style={{ width: `calc(100 % - ${digit}rem)` }}
                 >
-                  <Bar options={this.state.options} data={this.state.data} />
+                  <div
+                    className="chartArea"
+                    style={
+                      this.state.data.labels.length > 8 && this.state.isScroll
+                        ? ScrollStyle
+                        : NormalStyle
+                    }
+                  >
+                    <Bar options={this.state.options} data={this.state.data} />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {this.state.showFooter ? (
-              <BarGraphFooter
-                handleFooterClick={this.handleFooter}
-                active={this.state.activeFooter}
-                footerLabels={this.state.footerLabels}
-                
-              />
-            ) : (
-              ""
-            )}
+              {this.state.showFooter ? (
+                <BarGraphFooter
+                  handleFooterClick={this.handleFooter}
+                  active={this.state.activeFooter}
+                  footerLabels={this.state.footerLabels}
+                />
+              ) : (
+                ""
+              )}
             </span>
           </div>
         );
@@ -203,7 +210,7 @@ class BarGraphSection extends Component {
 }
 
 BarGraphSection.defaultProps = {
-  isScroll: true,
+  isScroll: false,
 };
 
 const mapStateToProps = state => ({

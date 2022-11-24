@@ -75,7 +75,7 @@ const options2 = {
   maintainAspectRatio: false,
   layout: {
     padding: {
-      bottom: 38,
+      bottom: 34.5,
     },
   },
   plugins: {
