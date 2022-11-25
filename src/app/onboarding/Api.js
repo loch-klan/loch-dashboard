@@ -118,7 +118,7 @@ export const verifyUser = (ctx, info) => {
               let obj = {}; // <----- new Object
               obj['address'] = apiResponse.user.wallets[i].address;
               obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
-              const chainsDetected = apiResponse.wallets[apiResponse.user.wallets[i]].chains;
+              const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
               obj['coins'] = allChains.map((chain)=>{
                 let coinDetected = false;
                 chainsDetected.map((item)=>{
@@ -134,7 +134,7 @@ export const verifyUser = (ctx, info) => {
               });
               obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
               obj['id'] = `wallet${i+1}`;
-              obj['coinFound'] = apiResponse.wallets[apiResponse.user.wallets[i]].chains.length > 0 ? true : false;
+              obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
               addWallet.push(obj);
           }
             // console.log('addWallet',addWallet);
@@ -186,7 +186,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
         let obj = {}; // <----- new Object
         obj['address'] = apiResponse.user.user_wallets[i].address;
               obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
-              const chainsDetected = apiResponse.wallets[apiResponse.user.wallets[i]].chains;
+              const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
               obj['coins'] = allChains.map((chain)=>{
                 let coinDetected = false;
                 chainsDetected.map((item)=>{
@@ -202,7 +202,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
               });
               obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
               obj['id'] = `wallet${i+1}`;
-              obj['coinFound'] = apiResponse.wallets[apiResponse.user.wallets[i]].chains.length > 0 ? true : false;
+              obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
               newAddWallet.push(obj);
       }
       // console.log('newAddWallet',newAddWallet);
