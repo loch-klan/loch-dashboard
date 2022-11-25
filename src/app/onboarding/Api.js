@@ -116,7 +116,8 @@ export const verifyUser = (ctx, info) => {
             const apiResponse = res.data.data;
             for (let i = 0; i < apiResponse.user.wallets.length; i++){
               let obj = {}; // <----- new Object
-              obj['address'] = apiResponse.user.wallets[i];
+              obj['address'] = apiResponse.user.wallets[i].address;
+              obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
               const chainsDetected = apiResponse.wallets[apiResponse.user.wallets[i]].chains;
               obj['coins'] = allChains.map((chain)=>{
                 let coinDetected = false;
@@ -176,9 +177,38 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
       localStorage.setItem("lochDummyUser", res.data.data.user.link)
       localStorage.setItem("lochToken", res.data.data.token)
       // console.log('addWallet',addWallet);
+      const allChains = ctx.props.OnboardingState.coinsList
+      let newAddWallet = [];
+      const apiResponse = res.data.data;
+      // console.log('apiResponse',apiResponse);
+      // console.log('allChains',allChains);
+      for (let i = 0; i < apiResponse.user.wallets.length; i++){
+        let obj = {}; // <----- new Object
+        obj['address'] = apiResponse.user.user_wallets[i].address;
+              obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
+              const chainsDetected = apiResponse.wallets[apiResponse.user.wallets[i]].chains;
+              obj['coins'] = allChains.map((chain)=>{
+                let coinDetected = false;
+                chainsDetected.map((item)=>{
+                  if(item.id === chain.id){
+                    coinDetected = true;
+                  }
+                })
+                return ({coinCode: chain.code,
+                    coinSymbol: chain.symbol,
+                    coinName: chain.name,
+                    chain_detected: coinDetected,
+                  coinColor: chain.color})
+              });
+              obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
+              obj['id'] = `wallet${i+1}`;
+              obj['coinFound'] = apiResponse.wallets[apiResponse.user.wallets[i]].chains.length > 0 ? true : false;
+              newAddWallet.push(obj);
+      }
+      // console.log('newAddWallet',newAddWallet);
       ctx.props.history.push({
         pathname: '/portfolio',
-        state: {addWallet}
+        state: {addWallet: newAddWallet}
       })
   }else{
       toast.error(res.data.message || "Something Went Wrong")
