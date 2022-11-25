@@ -513,6 +513,7 @@ class FixAddModal extends BaseReactComponent {
                                         isIcon={true}
                                         IconImage={LockIcon}
                                         isInfo={true}
+                                        className={"fix-width"}
                                     ><Image src={InfoIcon} className="info-icon" /></CustomOverlay>
                                 </p>
 

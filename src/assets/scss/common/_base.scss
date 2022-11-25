@@ -1329,6 +1329,11 @@ form {
       // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
     }
   }
+  &.fix-width{
+    .tooltip-inner{
+      width: 39rem;
+    }
+  }
 
   &.wallet-tooltip {
     .tooltip-inner {
