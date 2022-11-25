@@ -36,22 +36,23 @@ class BarGraphSection extends Component {
           options: props.options,
           options2: props.options2,
           data: props.data,
-          activeFooter: 0,
+          // activeFooter: 0,
           activeBadge: [{ name: "All", id: "" }],
+          activeBadgeList: [],
           showFooter: props.showFooter,
           showBadges: props.showBadges,
           isArrow: props.isArrow,
           showPercentage: props.showPercentage,
           footerLabels: props.footerLabels,
           isScrollVisible: props.isScrollVisible,
-          isScroll: props.isScroll
+          isScroll: props.isScroll,
         };
     }
 
     handleFooter = (event) => {
-        this.setState({
-            activeFooter: event.target.id
-        })
+        // this.setState({
+        //     activeFooter: event.target.id
+        // })
       console.log("handle footer", event.target.id);
        this.props.timeFunction(event.target.id);
     }
@@ -61,18 +62,36 @@ class BarGraphSection extends Component {
             let index = newArr.findIndex(x => x.name === badge.name)
             newArr.splice(index, 1)
             if (newArr.length === 0) {
-                this.setState({
-                    activeBadge: [{ name: "All", id: "" }]
-                })
+                this.setState(
+                  {
+                    activeBadge: [{ name: "All", id: "" }],
+                    activeBadgeList: [],
+                  },
+                  () => {
+                    this.props.handleBadge(this.state.activeBadge);
+                  }
+                );
             } else {
-                this.setState({
-                    activeBadge: newArr
-                })
+                this.setState(
+                  {
+                    activeBadge: newArr,
+                    activeBadgeList: newArr.map((item) => item.id),
+                  },
+                  () => {
+                    this.props.handleBadge(this.state.activeBadgeList);
+                  }
+                );
             }
         } else if (badge.name === "All") {
-            this.setState({
-                activeBadge: [{ name: "All", id: "" }]
-            })
+            this.setState(
+              {
+                activeBadge: [{ name: "All", id: "" }],
+                activeBadgeList: [],
+              },
+              () => {
+                this.props.handleBadge(this.state.activeBadgeList);
+              }
+            );
         } else {
             let index = newArr.findIndex(x => x.name === "All")
             if (index !== -1) {
@@ -80,9 +99,11 @@ class BarGraphSection extends Component {
             }
             newArr.push(badge)
             this.setState({
-                activeBadge: newArr
-            })
+              activeBadge: newArr,
+               activeBadgeList: newArr.map((item)=>item.id),
+            },()=> {this.props.handleBadge(this.state.activeBadgeList);})
         }
+      
       if (this.props.headerTitle === "Blockchain Fees over Time")
         BlockchainFeesFilter({
           session_id: getCurrentUser().id,
@@ -197,7 +218,7 @@ class BarGraphSection extends Component {
               {this.state.showFooter ? (
                 <BarGraphFooter
                   handleFooterClick={this.handleFooter}
-                  active={this.state.activeFooter}
+                  active={this.props.activeFooter}
                   footerLabels={this.state.footerLabels}
                 />
               ) : (

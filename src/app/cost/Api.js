@@ -8,7 +8,7 @@ export const getAllFee = (ctx, startDate, endDate) => {
          data.append("end_datetime", endDate);
     }
     postLoginInstance.post("wallet/transaction/get-gas-fee-overtime", data).then((res) => {
-        // console.log(res.data.data.gas_fee_overtime, "get All fees");
+        console.log(res, "get All fees");
          console.log(res, "get All fees");
 
            

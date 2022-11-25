@@ -31,6 +31,7 @@ class Cost extends Component {
       startTime: "",
       GraphData: [],
       graphValue: null,
+      activeFooter: 0,
     };
   }
 
@@ -43,37 +44,32 @@ class Cost extends Component {
   }
 
   getBlockchainFee(option) {
-    this.setState({ graphValue: null });
+    this.setState({ graphValue: null, activeFooter: option });
     const today = moment().valueOf();
-   
+
     console.log("headle click");
     if (option == 0) {
       getAllFee(this, false, false);
       console.log(option, "All");
-    }
-    else if (option == 1) {
+    } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
-    
+
       getAllFee(this, fiveyear, today);
-      console.log(fiveyear,today, "5 years");
-    }
-    else if (option == 2) {
+      console.log(fiveyear, today, "5 years");
+    } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
       getAllFee(this, year, today);
-      console.log(year,today, "1 year");
-    }
-    else if (option == 3) {
+      console.log(year, today, "1 year");
+    } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
-     
+
       getAllFee(this, sixmonth, today);
-      console.log(sixmonth,today, "6 months");
-    }
-    else if (option == 4) {
+      console.log(sixmonth, today, "6 months");
+    } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
       getAllFee(this, month, today);
-      console.log(month,today, "1 month");
-    }
-    else if (option == 5) {
+      console.log(month, today, "1 month");
+    } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
       getAllFee(this, week, today);
       console.log(week, today, "week");
@@ -90,6 +86,12 @@ class Cost extends Component {
       email_address: getCurrentUser().email,
       time_spent: TimeSpent,
     });
+  }
+
+  handleBadge = (activeBadge) => {
+    console.log(activeBadge, "activeBadge");
+    console.log(this.state.GraphData, "Graph data");
+    
   }
 
   render() {
@@ -258,6 +260,8 @@ class Cost extends Component {
                 showBadges={true}
                 isScrollVisible={false}
                 isScroll={true}
+                activeFooter={this.state.activeFooter}
+                handleBadge={(activeBadge) => this.handleBadge(activeBadge)}
                 // height={420}
                 // width={824}
                 comingSoon={false}
@@ -273,24 +277,23 @@ class Cost extends Component {
                 This feature is coming soon.
               </p>
             </div>
-            
-              <BarGraphSection
-                headerTitle="Counterparty Fees Over Time"
-                headerSubTitle="Understand how much your counterparty charges you"
-                data={this.state.durationgraphdata.data}
-                options={this.state.durationgraphdata.options}
-                options2={this.state.durationgraphdata.options2}
-                coinsList={this.props.OnboardingState.coinsList}
-                marginBottom="m-b-32"
-                showFooter={true}
-                showBadges={true}
-                isScrollVisible={false}
-                isScroll={true}
-                // height={"400px"}
-                // width={"824px"}
-                comingSoon={true}
-              />
-            
+
+            <BarGraphSection
+              headerTitle="Counterparty Fees Over Time"
+              headerSubTitle="Understand how much your counterparty charges you"
+              data={this.state.durationgraphdata.data}
+              options={this.state.durationgraphdata.options}
+              options2={this.state.durationgraphdata.options2}
+              coinsList={this.props.OnboardingState.coinsList}
+              marginBottom="m-b-32"
+              showFooter={true}
+              showBadges={true}
+              isScrollVisible={false}
+              isScroll={true}
+              // height={"400px"}
+              // width={"824px"}
+              comingSoon={true}
+            />
           </div>
           <div className="m-b-40 cost-table-section">
             <div style={{ position: "relative" }}>
