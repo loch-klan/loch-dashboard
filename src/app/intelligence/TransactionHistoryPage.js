@@ -320,8 +320,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                     address: row.from_wallet.address,
                     metaData: walletList && walletList.map((wallet)=>{
                       if(
-                        wallet.address.toLowerCase() === row.from_wallet.address.toLowerCase() ||
-                        wallet.displayAddress.toLowerCase() === row.from_wallet.address.toLowerCase()){
+                        wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
+                        wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
                           return wallet.wallet_metadata
                         } else {
                           return null
@@ -337,8 +337,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                     address: row.to_wallet.address,
                     // wallet_metaData: row.to_wallet.wallet_metaData,
                     metaData: walletList && walletList.map((wallet)=>{
-                      if(wallet.address.toLowerCase() == row.to_wallet.address.toLowerCase() ||
-                      wallet.displayAddress.toLowerCase() == row.to_wallet.address.toLowerCase()){
+                      if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
+                      wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
                           return wallet.wallet_metadata
                         } else {
                           return null

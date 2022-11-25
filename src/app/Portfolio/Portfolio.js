@@ -288,8 +288,8 @@ this.setState({graphLoading: true})
             address: row.from_wallet.address,
             metaData: userWalletList && userWalletList.map((wallet)=>{
               if(
-                wallet.address.toLowerCase() === row.from_wallet.address.toLowerCase() ||
-                wallet.displayAddress.toLowerCase() === row.from_wallet.address.toLowerCase()){
+                wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
+                wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
                   return wallet.wallet_metadata
                 } else {
                   return null
@@ -303,8 +303,8 @@ this.setState({graphLoading: true})
           to: {
             address: row.to_wallet.address,
             metaData: userWalletList && userWalletList.map((wallet)=>{
-              if(wallet.address.toLowerCase() == row.to_wallet.address.toLowerCase() ||
-              wallet.displayAddress.toLowerCase() == row.to_wallet.address.toLowerCase()){
+              if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
                   return wallet.wallet_metadata
                 } else {
                   return null
