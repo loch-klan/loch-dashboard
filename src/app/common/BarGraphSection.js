@@ -16,6 +16,7 @@ import {
 import { Bar } from 'react-chartjs-2'
 import { BlockchainFeesFilter, CounterpartyFeesFilter } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
+import Loading from './Loading';
 // import { BarGraphSection } from './BarGraphSection';
 
 ChartJS.register(
@@ -33,9 +34,9 @@ class BarGraphSection extends Component {
         this.state = {
           headerTitle: props.headerTitle,
           headerSubTitle: props.headerSubTitle,
-          options: props.options,
-          options2: props.options2,
-          data: props.data,
+          options: props.options ? props.options : [],
+          options2: props.options2 ? props.options2 : [],
+          data: props.data ? props.data : [],
           // activeFooter: 0,
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
@@ -68,7 +69,7 @@ class BarGraphSection extends Component {
                     activeBadgeList: [],
                   },
                   () => {
-                    this.props.handleBadge(this.state.activeBadge);
+                    this.props.handleBadge(this.state.activeBadgeList);
                   }
                 );
             } else {
@@ -103,14 +104,14 @@ class BarGraphSection extends Component {
                activeBadgeList: newArr.map((item)=>item.id),
             },()=> {this.props.handleBadge(this.state.activeBadgeList);})
         }
-      
+
       if (this.props.headerTitle === "Blockchain Fees over Time")
         BlockchainFeesFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           asset_selected: badge.name,
         });
-      
+
       if (this.props.headerTitle === "Counterparty Fees Over Time")
         CounterpartyFeesFilter({
           session_id: getCurrentUser().id,
@@ -123,74 +124,73 @@ class BarGraphSection extends Component {
     // }
 
   render() {
-    // console.log(this.state.data.datasets[0].data, "Lable inside bar graph");
-    // console.log(this.state.data, "data");
-    const digit = ("" + Math.round(Math.max(...this.state.data.datasets[0].data))).length;
-    // console.log(digit, "digit" ,Math.round(Math.max(...this.state.data.datasets[0].data)), "number");
-      const ScrollStyle = {
-        width: `${this.state.data.labels.length * 12.5}%`,
-        minWidth: `${this.state.data.labels.length * 10}rem`
-      }
-
-      const NormalStyle = {
-        width: "100%",
-        minWidth: "100%",
-      };
-      //  console.log("options", this.state.options2);
-      //  console.log("option2", this.state.options);
-
+    const {data, options, options2, headerTitle, headerSubTitle, isArrow, showPercentage, showBadges, activeBadge, isScrollVisible, isScroll, showFooter, footerLabels} = this.state;
+    const {marginBottom, comingSoon, coinsList, activeFooter} = this.props;
+    const digit = data && ("" + Math.round(Math.max(...data.datasets[0].data))).length;
+    const ScrollStyle = {
+      width: `${data && data.labels.length * 12.5}%`,
+      minWidth: `${data && data.labels.length * 10}rem`
+    }
+    const NormalStyle = {
+      width: "100%",
+      minWidth: "100%",
+    };
         return (
           <div
             className={`bar-graph-section ${
-              this.props.marginBottom ? this.props.marginBottom : ""
+              marginBottom ? marginBottom : ""
             }`}
           >
-            {this.state.headerTitle || this.state.headerSubTitle ? (
+            {
+            headerTitle || headerSubTitle ? (
               <GraphHeader
-                title={this.state.headerTitle}
-                subtitle={this.state.headerSubTitle}
-                isArrow={this.state.isArrow}
+                title={headerTitle}
+                subtitle={headerSubTitle}
+                isArrow={isArrow}
               />
             ) : (
               ""
             )}
-            <span className={`${this.props.comingSoon && "blur-effect"}`}>
-              {this.state.showBadges ? (
+            {
+              (data && options && options2)
+              ?
+            <span className={`${comingSoon ? "blur-effect" : ""}`}>
+              {showBadges ? (
                 <CoinBadges
                   handleFunction={this.handleFunction}
-                  activeBadge={this.state.activeBadge}
-                  chainList={this.props.coinsList}
-                  isScrollVisible={this.state.isScrollVisible}
+                  activeBadge={activeBadge}
+                  chainList={coinsList}
+                  isScrollVisible={isScrollVisible}
                 />
               ) : (
                 ""
               )}
-              {this.state.showPercentage ? (
+              {showPercentage ? (
                 <div className="show-percentage-div ">
                   <div
                     className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
-                      this.state.showPercentage.status === "Increase"
+                      showPercentage.status === "Increase"
                         ? "inc"
                         : "dec"
                     }`}
                   >
                     <Image
-                      src={this.state.showPercentage.icon}
+                      src={showPercentage.icon}
                       className="m-r-4"
                     />
-                    {this.state.showPercentage.percent}${" "}
-                    {this.state.showPercentage.status}
+                    {showPercentage.percent}${" "}
+                    {showPercentage.status}
                   </div>
                 </div>
               ) : (
                 ""
               )}
               <div style={{ display: "flex" }}>
-                {this.state.options2 != undefined &&
-                this.state.isScroll &&
-                this.state.data.labels.length > 8 ? (
+                {options2 != undefined &&
+                isScroll &&
+                data.labels.length > 8 ? (
                   <div style={{ width: `${digit}rem` }}>
-                    <Bar options={this.state.options2} data={this.state.data} />
+                    <Bar options={options2} data={data} />
                   </div>
                 ) : (
                   ""
@@ -198,33 +198,36 @@ class BarGraphSection extends Component {
 
                 <div
                   className={
-                    this.state.isScroll ? "ScrollArea" : "ChartAreaWrapper"
+                    isScroll ? "ScrollArea" : "ChartAreaWrapper"
                   }
                   style={{ width: `calc(100 % - ${digit}rem)` }}
                 >
                   <div
                     className="chartArea"
                     style={
-                      this.state.data.labels.length > 8 && this.state.isScroll
+                      data.labels.length > 8 && isScroll
                         ? ScrollStyle
                         : NormalStyle
                     }
                   >
-                    <Bar options={this.state.options} data={this.state.data} />
+                    <Bar options={options} data={data} />
                   </div>
                 </div>
               </div>
 
-              {this.state.showFooter ? (
+              {showFooter ? (
                 <BarGraphFooter
                   handleFooterClick={this.handleFooter}
-                  active={this.props.activeFooter}
-                  footerLabels={this.state.footerLabels}
+                  active={activeFooter}
+                  footerLabels={footerLabels}
                 />
               ) : (
                 ""
               )}
             </span>
+            :
+            <Loading />
+            }
           </div>
         );
     }

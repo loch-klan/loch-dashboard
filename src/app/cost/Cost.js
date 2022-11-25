@@ -88,10 +88,21 @@ class Cost extends Component {
     });
   }
 
-  handleBadge = (activeBadge) => {
-    console.log(activeBadge, "activeBadge");
-    console.log(this.state.GraphData, "Graph data");
-    
+  handleBadge = (activeBadgeList) => {
+    // console.log(activeBadgeList, "activeBadgeList");
+    // console.log(this.state.GraphData, "Graph data");
+    const {GraphData} = this.state;
+      let graphDataMaster = [];
+      GraphData && GraphData.map((tempGraphData)=>{
+        if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
+          // console.log('Heyaaaa', tempGraphData);
+          graphDataMaster.push(tempGraphData);
+        }
+      })
+      // console.log('getGraphData(graphDataMaster)',getGraphData(graphDataMaster));
+      this.setState({
+        graphValue:getGraphData(graphDataMaster)
+      })
   }
 
   render() {
@@ -242,11 +253,7 @@ class Cost extends Component {
             subTitle="Bring light to your hidden costs"
           />
           <div style={{ position: "relative" }}>
-            {/* <div className='coming-soon-div'>
-                                          <Image src={ExportIconWhite} className="coming-soon-img" />
-                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
-                                          </div> */}
-            {this.state.graphValue ? (
+            {this.state.graphValue &&
               <BarGraphSection
                 headerTitle="Blockchain Fees over Time"
                 headerSubTitle="Understand your gas costs"
@@ -261,14 +268,15 @@ class Cost extends Component {
                 isScrollVisible={false}
                 isScroll={true}
                 activeFooter={this.state.activeFooter}
-                handleBadge={(activeBadge) => this.handleBadge(activeBadge)}
+                handleBadge={(activeBadgeList) => this.handleBadge(activeBadgeList)}
                 // height={420}
                 // width={824}
                 comingSoon={false}
               />
-            ) : (
+            }
+            {/* ) : (
               <Loading />
-            )}
+            )} */}
           </div>
           <div style={{ position: "relative" }}>
             <div className="coming-soon-div">
