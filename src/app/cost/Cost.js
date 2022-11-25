@@ -31,7 +31,7 @@ class Cost extends Component {
       startTime: "",
       GraphData: [],
       graphValue: null,
-      activeFooter: 0,
+      // activeFooter: 0,
     };
   }
 
@@ -44,7 +44,7 @@ class Cost extends Component {
   }
 
   getBlockchainFee(option) {
-    this.setState({ graphValue: null, activeFooter: option });
+   
     const today = moment().valueOf();
 
     console.log("headle click");
@@ -89,8 +89,9 @@ class Cost extends Component {
   }
 
   handleBadge = (activeBadgeList) => {
-    // console.log(activeBadgeList, "activeBadgeList");
-    // console.log(this.state.GraphData, "Graph data");
+ 
+     console.log(this.state.GraphData, "Graph data");
+
     const {GraphData} = this.state;
       let graphDataMaster = [];
       GraphData && GraphData.map((tempGraphData)=>{
@@ -99,14 +100,15 @@ class Cost extends Component {
           graphDataMaster.push(tempGraphData);
         }
       })
-      // console.log('getGraphData(graphDataMaster)',getGraphData(graphDataMaster));
-      this.setState({
-        graphValue:getGraphData(graphDataMaster)
-      })
+
+    this.setState({
+      graphValue: getGraphData(graphDataMaster),
+    });
+   
   }
 
   render() {
-    //  getGraphData();
+
 
     const tableData = [
       {
@@ -267,7 +269,6 @@ class Cost extends Component {
                 showBadges={true}
                 isScrollVisible={false}
                 isScroll={true}
-                activeFooter={this.state.activeFooter}
                 handleBadge={(activeBadgeList) => this.handleBadge(activeBadgeList)}
                 // height={420}
                 // width={824}
