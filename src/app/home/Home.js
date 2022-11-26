@@ -17,7 +17,6 @@ class Home extends Component {
 
   componentDidMount() {
     if(JSON.parse(localStorage.getItem("addWallet")) || JSON.parse(localStorage.getItem("lochUser")) || localStorage.getItem("lochDummyUser")){
-      console.log('heyyyy');
       localStorage.removeItem("addWallet")
       localStorage.removeItem("lochUser")
       localStorage.removeItem("lochDummyUser")
