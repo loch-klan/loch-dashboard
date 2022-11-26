@@ -314,8 +314,8 @@ class PieChart extends BaseReactComponent {
           totalCount+=data.assetCount
         })
         return (
-            <div className={`portfolio-over-container ${Object.keys(this.state.pieSectionDataEnabled).length > 0 ? "m-b-32" : "m-b-60"}`} >
-
+            <div className={`portfolio-over-container ${Object.keys(this.state.pieSectionDataEnabled).length > 0 ? "m-b-32" : "m-b-10"}`} >
+            {/* // <div className={`portfolio-over-container m-b-32`} > */}
                 <h1 className='inter-display-medium f-s-25 lh-30 overview-heading'>Overview</h1>
                 {
                 // this.props.isLoading === true
