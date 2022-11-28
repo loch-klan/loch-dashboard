@@ -137,7 +137,7 @@ export const exportDataApi = (data,ctx) =>{
     const link = document.createElement('a');
     link.href = url;
     // link.setAttribute('download', 'file.txt');
-    link.setAttribute('download', `transaction-history-export-${moment(ctx.state.fromDate).format("ll")}-${moment(ctx.state.toDate).format("ll")}.txt`);
+    link.setAttribute('download', `transaction-history-export-${moment(ctx.state.fromDate).format("DD-MM-YYYY")}-to-${moment(ctx.state.toDate).format("DD-MM-YYYY")}.csv`);
     document.body.appendChild(link);
     link.click();
   })
