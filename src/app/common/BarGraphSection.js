@@ -176,7 +176,7 @@ class BarGraphSection extends Component {
         ) : (
           ""
         )}
-        {data && options && options2 ? (
+        {data && options ? (
           <span className={`${comingSoon ? "blur-effect" : ""}`}>
             {showBadges ? (
               <CoinBadges
