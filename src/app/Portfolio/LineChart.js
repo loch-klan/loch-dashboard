@@ -253,8 +253,7 @@ class LineChart extends BaseReactComponent {
                         <div class="line-chart-tooltip">
                             <div class="m-b-12 top-section">
                                 <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
-                                    <img src=${TrendingUp} class="m-r-8"/>
-                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + "$"+numToCurrency(this.y)}</div>
+                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.series.userOptions.name + " " + "$"+numToCurrency(this.y) + " " + this.x }</div>
                                 </div>
                             </div>
                         </div>
