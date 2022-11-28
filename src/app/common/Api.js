@@ -1,3 +1,4 @@
+import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import postLoginInstance from './../../utils/PostLoginAxios';
@@ -126,6 +127,22 @@ export const getDetectedChainsApi = (ctx) =>{
   })
    .catch((err)=>{
     console.log("fixwallet",err)
+  })
+}
+
+export const exportDataApi = (data,ctx) =>{
+  postLoginInstance.post("wallet/transaction/export-transactions",data)
+  .then((res)=>{
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    // link.setAttribute('download', 'file.txt');
+    link.setAttribute('download', `transaction-history-export-${moment(ctx.state.fromDate).format("DD-MM-YYYY")}-to-${moment(ctx.state.toDate).format("DD-MM-YYYY")}.csv`);
+    document.body.appendChild(link);
+    link.click();
+  })
+  .catch((err)=>{
+    console.log("Catch", err);
   })
 }
 
