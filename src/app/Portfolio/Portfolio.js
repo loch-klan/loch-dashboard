@@ -278,7 +278,7 @@ this.setState({graphLoading: true})
 
   render() {
     const { table } = this.props.intelligenceState;
-
+    const {userWalletList} = this.state;
     let tableData =
       table &&
       table.map((row) => {
@@ -286,12 +286,15 @@ this.setState({graphLoading: true})
           time: row.timestamp,
           from: {
             address: row.from_wallet.address,
-            // wallet_metaData: row.from_wallet.wallet_metaData
-            // wallet_metaData: {
-            //   symbol: row.from_wallet.wallet_metaData
-            //     ? row.from_wallet.wallet_metaData.symbol
-            //     : unrecognizedIcon,
-            // },
+            metaData: userWalletList && userWalletList.map((wallet)=>{
+              if(
+                wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
+                wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
+                  return wallet.wallet_metadata
+                } else {
+                  return null
+                }
+              }),
             wallet_metaData: {
               symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
               text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
@@ -299,12 +302,14 @@ this.setState({graphLoading: true})
           },
           to: {
             address: row.to_wallet.address,
-            // wallet_metaData: row.to_wallet.wallet_metaData,
-            // wallet_metaData: {
-            //   symbol: row.to_wallet.wallet_metaData
-            //     ? row.to_wallet.wallet_metaData.symbol
-            //     : unrecognizedIcon,
-            // },
+            metaData: userWalletList && userWalletList.map((wallet)=>{
+              if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
+                  return wallet.wallet_metadata
+                } else {
+                  return null
+                }
+              }),
             wallet_metaData: {
               symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
               text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
@@ -363,11 +368,15 @@ this.setState({graphLoading: true})
                                 text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
                             >
                                {
+                                rowData.from.metaData[0]
+                                ?
+                                <Image src={rowData.from.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon" />
+                                :
                                 rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
                                 ?
                                 rowData.from.wallet_metaData.symbol
                                 ?
-                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
                                 :
                                 <span>{rowData.from.wallet_metaData.text}</span>
                                 :
@@ -401,11 +410,15 @@ this.setState({graphLoading: true})
                             >
                                 {/* <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" /> */}
                                 {
+                                  rowData.to.metaData[0]
+                                  ?
+                                  <Image src={rowData.to.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon heyyyy" />
+                                  :
                                 rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
                                 ?
                                 rowData.to.wallet_metaData.symbol
                                 ?
-                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
                                 :
                                 <span>{rowData.to.wallet_metaData.text}</span>
                                 :

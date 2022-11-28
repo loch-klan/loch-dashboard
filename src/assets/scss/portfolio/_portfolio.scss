@@ -29,10 +29,11 @@
             align-items: center;
             position: absolute;
             // bottom: 1rem;
-            bottom: -6rem;
+            // bottom: -6rem;
             // right: 13.2rem;
             right: 0rem;
-
+            top: 45%;
+            width: 28rem;
             .secondary-btn {
                 line-height: 1.9rem;
                 border: 0.15rem solid $black-191;
