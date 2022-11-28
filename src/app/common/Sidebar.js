@@ -177,7 +177,7 @@ function Sidebar(props) {
                     <li>
                       <NavLink
                         exact={true}
-                        className={`nav-link 
+                        className={`nav-link
                         ${activeTab === "/intelligence/transaction-history" ? "active" : ""}
                         ${activeTab === "/intelligence/volume-traded-by-counterparty" ? "active" : ""}
                         ${activeTab === "/intelligence/insights" ? "active" : ""}
@@ -404,8 +404,8 @@ function Sidebar(props) {
             show={exportModal}
             onHide={handleExportModal}
             history={history}
-            headerTitle={"Export"}
-            modalType={"apiModal"}
+            headerTitle={"Download all your data"}
+            modalType={"exportModal"}
             iconImage={ExportIconWhite}
           />
         ) : (

@@ -16,7 +16,7 @@ import CopyLink from '../../assets/images/icons/CopyLink.svg';
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import ShareLink from '../../assets/images/icons/ShareLink.svg'
-import {fixWalletApi} from './Api.js'
+import {exportDataApi, fixWalletApi} from './Api.js'
 import { BASE_URL_S3 } from '../../utils/Constant';
 import { toast } from 'react-toastify';
 import ApiModalFrame from '../../assets/images/apiModalFrame.svg';
@@ -29,11 +29,15 @@ import {
   LeaveLinkShared,
   LeavePrivacyMessage,
 } from "../../utils/AnalyticsFunctions.js";
+import { DatePickerControl } from '../../utils/form';
+import moment from 'moment';
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
     const dummyUser = localStorage.getItem("lochDummyUser");
+    let startDate = new Date();
+    startDate.setFullYear(startDate.getFullYear() - 1);
     this.state = {
       dummyUser,
       show: props.show,
@@ -44,6 +48,30 @@ class ExitOverlay extends BaseReactComponent {
       activeli: "View and edit",
       onHide: props.onHide,
       showRedirection: false,
+      fromDate: startDate,
+      toDate: new Date(),
+      exportItem:[
+        {
+          name: "Transaction History",
+          value: 10,
+        },
+        {
+          name: "Blockchain Gas Costs",
+          value: 20,
+        },
+        {
+          name: "Counterparty Costs",
+          value: 30,
+        },
+        {
+          name: "Average Cost Basis",
+          value: 40,
+        },
+        {
+          name: "Portfolio Performance",
+          value: 50,
+        },
+      ],
     };
   }
 
@@ -100,6 +128,22 @@ class ExitOverlay extends BaseReactComponent {
     // console.log("on hover privacy msg");
   };
 
+  handleFromDate = () => {
+    this.setState({ toDate: "" });
+  };
+
+  handleExportNow = ()=>{
+    // console.log('Export');
+    const data = new URLSearchParams();
+    data.append("start_datetime", moment(this.state.fromDate).format("X"));
+    data.append("end_datetime", moment(this.state.toDate).format("X"));
+    exportDataApi(data,this);
+  }
+
+  submit = () =>{
+    console.log('Hey');
+  }
+
   render() {
     return (
       <Modal
@@ -123,38 +167,105 @@ class ExitOverlay extends BaseReactComponent {
             </div>
           )}
         <Modal.Header>
-          {this.props.modalType === "apiModal" ? (
+          {
+          (this.props.modalType === "apiModal" || this.props.modalType === "exportModal")
+          ?
             <div className="api-modal-header">
               <Image src={this.props.iconImage} />
             </div>
-          ) : (
+          :
             <div className="exitOverlayIcon">
               <Image src={ExitOverlayIcon} />
             </div>
-          )}
+          }
           <div className="closebtn" onClick={this.state.onHide}>
             <Image src={CloseIcon} />
           </div>
         </Modal.Header>
         <Modal.Body>
-          {this.props.modalType === "apiModal" ? (
-            <div className="api-modal-body">
+          {
+          (this.props.modalType === "apiModal" || this.props.modalType === "exportModal") ?
+            <div className={this.props.modalType === "exportModal" ? "export-modal-body" : "api-modal-body"}>
               <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">
                 {this.props.headerTitle}
               </h6>
               <p className="inter-display-regular f-s-13 lh-16 grey-B0B">
-                {this.props.headerTitle === "API"
+                {
+                  this.props.modalType === "apiModal"
                   ? "Personalized digital asset intelligence via API"
-                  : "Export your exisiting data from Loch"}
+                  : "Export your exisiting data from Loch"
+                }
               </p>
-              <div className="api-modal-frame">
-                <Image src={ApiModalFrame} />
-                <p className="inter-display-regular f-s-13 lh-16 black-191">
-                  This feature is coming soon
-                </p>
+              {
+                this.props.modalType === "apiModal"
+                ?
+                <div className="api-modal-frame">
+                  <Image src={ApiModalFrame} />
+                  <p className="inter-display-regular f-s-13 lh-16 black-191">
+                    This feature is coming soon
+                  </p>
+                </div>
+                :
+                <div className='export-body'>
+                  <div className='export-timeline'>
+                    <Form onValidSubmit={this.submit}>
+                      <div className='timeline-wrapper'>
+                      <span className='inter-display-medium f-s-16 lh-19 black-191'>Export data from </span>
+                    <FormElement
+                    valueLink={this.linkState(this,"fromDate",this.handleFromDate)}
+                    required
+                    validations={[
+                      {
+                        validate: FormValidator.isRequired,
+                        message: "From date cannot be empty",
+                      }
+                    ]}
+                    control={{
+                      type: DatePickerControl,
+                      settings: {
+                        placeholder: "From Date",
+                        showDateIcon: false,
+                      },
+                    }}
+                  />
+                  <span className='inter-display-medium f-s-16 lh-19 black-191'>to</span>
+                  <FormElement
+                    valueLink={this.linkState(this,"toDate")}
+                    required
+                    validations={[
+                      {
+                        validate: FormValidator.isRequired,
+                        message: "To date cannot be empty",
+                      }
+                    ]}
+                    control={{
+                      type: DatePickerControl,
+                      settings: {
+                        placeholder: "To Date",
+                        minDate: this.state.fromDate || new Date(),
+                        showDateIcon: false,
+                      },
+                    }}
+                  />
+                  </div>
+                </Form>
               </div>
+                  <div className='export-item-wrapper'>
+                    {/* {
+                      this.state.exportItem.map((item)=>{
+                        return(
+                          <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item`}>{item.name}</span>
+                        )
+                      })
+                    } */}
+                    <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span>
+                  </div>
+                  <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button>
+                </div>
+              }
+
             </div>
-          ) : (
+            : (
             <div className="exit-overlay-body">
               <h6 className="inter-display-medium f-s-20 lh-24 ">
                 Don’t lose your data
@@ -253,7 +364,8 @@ class ExitOverlay extends BaseReactComponent {
                 </CustomOverlay>
               </div>
             </div>
-          )}
+          )
+          }
         </Modal.Body>
       </Modal>
     );
