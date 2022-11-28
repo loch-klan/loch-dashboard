@@ -2,7 +2,7 @@ import amplitude from "amplitude-js";
 
 //Api Config
 export const initAmplitude = () => {
-  amplitude.getInstance().init("4e519c7f9b80c10b4ab865e90879fd2c");
+  amplitude.getInstance().init("18eb08ef007daf84f1dbdaec2a5f91e0");
 };
 
 // send Aplitude Data

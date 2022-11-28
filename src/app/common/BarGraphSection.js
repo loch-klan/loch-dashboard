@@ -212,8 +212,18 @@ class BarGraphSection extends Component {
               )}
 
               <div
-                className={isScroll ? "ScrollArea" : "ChartAreaWrapper"}
-                style={{ width: `calc(100 % - ${digit}rem)` }}
+                className={
+                  options2 != undefined && isScroll && data.labels.length
+                    ? "ScrollArea"
+                    : "ChartAreaWrapper"
+                }
+                style={{
+                  width: `${
+                    options2 != undefined && isScroll && data.labels.length > 8
+                      ? "calc(100 % - "+digit+"rem)"
+                      : "100%"
+                  }`,
+                }}
               >
                 <div
                   className="chartArea"
