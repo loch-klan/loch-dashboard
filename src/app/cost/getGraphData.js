@@ -1,3 +1,4 @@
+import { numToCurrency } from "../../utils/ReusableFunctions";
 
 const getGraphData = (arr) => {
     // console.log(arr, "array");
@@ -18,11 +19,19 @@ const getGraphData = (arr) => {
         legend: {
           display: false,
         },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              // console.log(ctx.raw);
+              return "$" + numToCurrency(ctx.raw);
+            },
+          },
+        },
       },
       scales: {
         y: {
-        //   min: min,
-        //   max: 22574,
+          //   min: min,
+          //   max: 22574,
           ticks: {
             display: labels.length > 8 ? false : true,
             // display: false,

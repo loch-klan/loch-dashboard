@@ -868,7 +868,7 @@ this.setState({graphLoading: true})
                                 session_id: getCurrentUser().id,
                                 email_address: getCurrentUser().email,
                               });
-                              console.log("evnt home bar");
+                             
                             }}
                           />}
                         </div>
