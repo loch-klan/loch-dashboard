@@ -197,8 +197,10 @@ class LineChart extends BaseReactComponent {
                   trackBorderColor: '#CCC',
                   rifleColor:'#E5E5E6',
               },
-              min: 0,
-              max: categories.length > 4 ? 4 : categories.length - 1 ,
+              min: categories.length > 4 ? categories.length - 5 : 0 ,
+              max: categories.length - 1 ,
+              // min: 0,
+              // max: categories.length > 4 ? 4 : categories.length - 1 ,
               // max: this.state.title === "Year" ? categories.length > 4 ? 4 : categories.length - 1 : 4,
             },
 

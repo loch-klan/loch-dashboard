@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import BarGraphSection from "../common/BarGraphSection";
 import PageHeader from "../common/PageHeader";
 
-import { info} from '../cost/dummyData'
+import { info} from '../cost/dummyData';
+import { Image } from 'react-bootstrap';
+import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 
 class VolumeTradedByCounterparty extends Component {
         constructor(props) {
@@ -31,6 +33,11 @@ class VolumeTradedByCounterparty extends Component {
           history={this.props.history}
         />
         <div className="graph-container">
+          <div style={{position: "relative",height:"100%"}}>
+                    <div className='coming-soon-div'>
+                        <Image src={ExportIconWhite} className="coming-soon-img" />
+                        <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
+                    </div>
             <BarGraphSection
                 // headerTitle="Blockchain Fees over Time"
                 // headerSubTitle="Understand your gas costs"
@@ -44,9 +51,10 @@ class VolumeTradedByCounterparty extends Component {
                 isScrollVisible={false}
                 // height={420}
                 // width={824}
-                // comingSoon={true}
+                comingSoon={true}
             />
           </div>
+        </div>
       </div>
     </div>
   );
