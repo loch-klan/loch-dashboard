@@ -114,7 +114,7 @@ export const verifyUser = (ctx, info) => {
             const allChains = ctx.props.OnboardingState.coinsList
             let addWallet = [];
             const apiResponse = res.data.data;
-            for (let i = 0; i < apiResponse.user.wallets.length; i++){
+            for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
               let obj = {}; // <----- new Object
               // obj['address'] = apiResponse.user.wallets[i].address;
               obj['address'] = apiResponse.user.user_wallets[i].address;
@@ -184,7 +184,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
       const apiResponse = res.data.data;
       // console.log('apiResponse',apiResponse);
       // console.log('allChains',allChains);
-      for (let i = 0; i < apiResponse.user.wallets.length; i++){
+      for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
         let obj = {}; // <----- new Object
         obj['address'] = apiResponse.user.user_wallets[i].address;
               obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
