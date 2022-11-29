@@ -3,9 +3,11 @@ import { connect } from "react-redux";
 
 import BarGraphSection from "../common/BarGraphSection";
 import PageHeader from "../common/PageHeader";
+
+import { info} from '../cost/dummyData';
+import { Image } from 'react-bootstrap';
 import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
-import { info} from '../cost/dummyData'
-import { Image } from "react-bootstrap";
+import graphImage from '../../assets/images/volume-traded-graph.png'
 
 class VolumeTradedByCounterparty extends Component {
         constructor(props) {
@@ -34,9 +36,9 @@ class VolumeTradedByCounterparty extends Component {
         <div className="graph-container">
         <div style={{position: "relative"}}>
                     <div className='coming-soon-div'>
-                                          <Image src={ExportIconWhite} className="coming-soon-img" />
-                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
-                                          </div>
+                        <Image src={ExportIconWhite} className="coming-soon-img" />
+                        <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
+                    </div>
             <BarGraphSection
                 // headerTitle="Blockchain Fees over Time"
                 // headerSubTitle="Understand your gas costs"
