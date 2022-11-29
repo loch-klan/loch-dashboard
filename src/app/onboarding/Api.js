@@ -116,8 +116,10 @@ export const verifyUser = (ctx, info) => {
             const apiResponse = res.data.data;
             for (let i = 0; i < apiResponse.user.wallets.length; i++){
               let obj = {}; // <----- new Object
-              obj['address'] = apiResponse.user.wallets[i].address;
-              obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
+              // obj['address'] = apiResponse.user.wallets[i].address;
+              obj['address'] = apiResponse.user.user_wallets[i].address;
+              // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
+              obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
               const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
               obj['coins'] = allChains.map((chain)=>{
                 let coinDetected = false;

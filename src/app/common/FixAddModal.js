@@ -26,6 +26,7 @@ class FixAddModal extends BaseReactComponent {
             id: `wallet${addWalletList.length + 1}`,
             address: "",
             coins: [],
+            displayAddress: "",
             wallet_metadata: {}
         }]
         this.state = {
@@ -131,6 +132,7 @@ class FixAddModal extends BaseReactComponent {
             id: `wallet${this.state.addWalletList.length + 1}`,
             address: "",
             coins: [],
+            displayAddress: "",
             wallet_metadata: {}
         })
         this.setState({
@@ -294,6 +296,7 @@ class FixAddModal extends BaseReactComponent {
                 id: 'wallet1',
                 address: "",
                 coins: [],
+                displayAddress: "",
                 wallet_metadata: {}
             })
         }

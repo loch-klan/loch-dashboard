@@ -85,15 +85,26 @@ export const updateWalletApi = (ctx, data) => {
         let displayAddress = ctx.state.displayAddress;
         let addWallet = JSON.parse(localStorage.getItem("addWallet"));
         addWallet = addWallet.map((wallet)=>{
-          // console.log('wallet.address',wallet.address);
+          // console.log('wallet.address',wallet);
           // console.log('walletAddress',walletAddress);
           if(wallet.address === walletAddress || wallet.address === displayAddress){
             let metaData = null;
-            res.data.data.user_wallets.map((item)=>{ if(item.address===walletAddress) metaData = item.wallet })
+            let newAddress = null;
+            let displayAddress = null;
+            res.data.data.user_wallets.map((item)=>{ if(item.address===walletAddress) {
+              return(
+                metaData = item.wallet,
+                newAddress = item.address,
+                displayAddress = item.display_address
+              )
+
+            } })
             // console.log('metaData',metaData);
             return({
               ...wallet,
-              wallet_metadata: metaData
+              address: newAddress,
+              displayAddress: displayAddress,
+              wallet_metadata: metaData,
             })
           } else{
             return ({...wallet})

@@ -2,11 +2,13 @@ export const API_LIMIT = 10
 export const MAX_LIMIT = 1000
 export const START_INDEX = 0
 export const GOOGLE_API_KEY = ""
-export const API_URL = "https://sapi-float.ebikego.com/api/"
-export const MEDIA_URL = "https://d1r1yzhyzim0p1.cloudfront.net/"
+// export const API_URL = "https://sapi-float.ebikego.com/api/"
+export const API_BASE_URL = process.env.REACT_APP_API_BASEURL;
+// export const MEDIA_URL = "https://d1r1yzhyzim0p1.cloudfront.net/"
 export const DEFAULT_PRICE = 0
 export const DEFAULT_COLOR = "#2c2c2c"
-export const BASE_URL_S3 = "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
+// export const BASE_URL_S3 = "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
+export const BASE_URL_S3 = process.env.REACT_APP_BASE_URL_S3;
 
 export const SEARCH_IN_ID = 'SEARCH_IN_ID'
 export const SEARCH_BY_ACTIVE = 'SEARCH_BY_ACTIVE'
