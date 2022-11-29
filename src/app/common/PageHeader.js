@@ -40,7 +40,7 @@ export default function PageHeader(props) {
         </div>
       </div>
       {props.btnText && <Button className='primary-btn' onClick={props.handleBtn}>{props.btnText}</Button>}
-      {props.viewMore && <Button className='primary-btn' >View More</Button>}
+      {props.viewMore && <a href={props.viewMoreRedirect} className='view-more' >View More</a>}
     </div>
   )
 }

@@ -44,20 +44,19 @@ class CustomTable extends BaseReactComponent {
       headerHeight,
       pagePrev,
       pageNext,
+      isLoading,
     } = this.props;
     return (
       <div className="table-wrapper">
-        {this.props.isLoading === true 
-        ? 
-        (
-          <>
+        {
+        isLoading === true
+        ?
             <div className="transaction-table-loading-wrapper">
               <div className="animation-wrapper">
                 <Loading />
               </div>
             </div>
-          </>
-        ) : (
+           : (
           <>
             <div className="header-navigation">
               {istopPagination &&
@@ -170,7 +169,7 @@ class CustomTable extends BaseReactComponent {
                 pageNext={pageNext}
               />
             )}
-          
+
       </div>
     );
   }

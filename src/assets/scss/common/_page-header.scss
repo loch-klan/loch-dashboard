@@ -70,6 +70,10 @@
                     background-color: $secondary;
                 }
             }
+            .view-more{
+              cursor: pointer;
+              @include font(#4A4B4D, "Inter-SemiBold", 1.6rem, 600, 19px);
+            }
         }
         .history-header{
             flex-direction:column;

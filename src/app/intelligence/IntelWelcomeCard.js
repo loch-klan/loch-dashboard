@@ -29,7 +29,7 @@ export default function IntelWelcomeCard(props) {
         icon: ShuffleIcon,
         title: "Traded by counterparty",
         background: "lightyellow",
-        path: "/intelligence",
+        path: "/intelligence/volume-traded-by-counterparty",
         analyticEvent: ()=>{TradeByCounterParty({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
@@ -39,7 +39,7 @@ export default function IntelWelcomeCard(props) {
         icon: InsightsIcon,
         title: "Insights",
         background: "lightpurple",
-        path: "/intelligence",
+        path: "/intelligence/insights",
         analyticEvent: ()=>{Insights({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,

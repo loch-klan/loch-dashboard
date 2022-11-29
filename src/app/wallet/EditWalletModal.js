@@ -15,9 +15,9 @@ class EditWalletModal extends BaseReactComponent {
         this.state = {
             createdOn:props.createdOn,
             walletAddress: props.walletAddress,
-            displayAddress: props.displayAddress,
+            displayAddress: props.displayAddress ? props.displayAddress : props.walletAddress,
             walletName: props.walletMetaData ? props.walletMetaData.id : "",
-            walletTag: props.walletMetaData ? props.walletMetaData.tag : "",
+            walletTag: props.tag ? props.tag : "",
             walletMetaData: props.walletMetaData,
             walletNameList: [],
             dropDownActive:{},

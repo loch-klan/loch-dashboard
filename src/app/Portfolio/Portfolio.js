@@ -5,7 +5,8 @@ import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
 import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
-import { Loading } from 'react-loading-dot';
+// import { Loading } from 'react-loading-dot';
+
 import { Button, Image, Row, Col } from 'react-bootstrap';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
@@ -35,6 +36,8 @@ import { getCurrentUser } from "../../utils/ManageToken";
 
 
 import {getAssetGraphDataApi} from './Api';
+import { getAllFee } from '../cost/Api';
+import Loading from '../common/Loading';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -83,6 +86,8 @@ class Portfolio extends BaseReactComponent {
         },
       ],
       startTime: "",
+      GraphData: [],
+      graphValue: null,
     };
   }
 
@@ -112,7 +117,8 @@ class Portfolio extends BaseReactComponent {
         this.props.getCoinRate()
         this.props.getAllCoins()
         this.getTableData()
-        this.getGraphData()
+      this.getGraphData()
+        getAllFee(this, false, false);
     }
 
     componentWillUnmount() {
@@ -278,7 +284,7 @@ this.setState({graphLoading: true})
 
   render() {
     const { table } = this.props.intelligenceState;
-
+    const {userWalletList} = this.state;
     let tableData =
       table &&
       table.map((row) => {
@@ -286,12 +292,15 @@ this.setState({graphLoading: true})
           time: row.timestamp,
           from: {
             address: row.from_wallet.address,
-            // wallet_metaData: row.from_wallet.wallet_metaData
-            // wallet_metaData: {
-            //   symbol: row.from_wallet.wallet_metaData
-            //     ? row.from_wallet.wallet_metaData.symbol
-            //     : unrecognizedIcon,
-            // },
+            metaData: userWalletList && userWalletList.map((wallet)=>{
+              if(
+                wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
+                wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
+                  return wallet.wallet_metadata
+                } else {
+                  return null
+                }
+              }),
             wallet_metaData: {
               symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
               text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
@@ -299,12 +308,14 @@ this.setState({graphLoading: true})
           },
           to: {
             address: row.to_wallet.address,
-            // wallet_metaData: row.to_wallet.wallet_metaData,
-            // wallet_metaData: {
-            //   symbol: row.to_wallet.wallet_metaData
-            //     ? row.to_wallet.wallet_metaData.symbol
-            //     : unrecognizedIcon,
-            // },
+            metaData: userWalletList && userWalletList.map((wallet)=>{
+              if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
+                  return wallet.wallet_metadata
+                } else {
+                  return null
+                }
+              }),
             wallet_metaData: {
               symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
               text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
@@ -363,11 +374,15 @@ this.setState({graphLoading: true})
                                 text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
                             >
                                {
+                                rowData.from.metaData[0]
+                                ?
+                                <Image src={rowData.from.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon" />
+                                :
                                 rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
                                 ?
                                 rowData.from.wallet_metaData.symbol
                                 ?
-                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
                                 :
                                 <span>{rowData.from.wallet_metaData.text}</span>
                                 :
@@ -401,11 +416,15 @@ this.setState({graphLoading: true})
                             >
                                 {/* <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" /> */}
                                 {
+                                  rowData.to.metaData[0]
+                                  ?
+                                  <Image src={rowData.to.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon heyyyy" />
+                                  :
                                 rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
                                 ?
                                 rowData.to.wallet_metaData.symbol
                                 ?
-                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
                                 :
                                 <span>{rowData.to.wallet_metaData.text}</span>
                                 :
@@ -716,165 +735,215 @@ this.setState({graphLoading: true})
             }
         ]
         return (
-            <div>
-                {this.state.loader ? <Loading /> :
-                    <div className="portfolio-page-section" >
-                        {/* <Sidebar ownerName="" /> */}
-                        <div className='portfolio-container page'>
-                            <div className='portfolio-section'>
-                                <WelcomeCard
-                                    decrement={true}
-                                    assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    loader={this.state.loader}
-                                    history={this.props.history}
-                                    handleAddModal={this.handleAddModal}
-                                    isLoading={this.state.isLoading}
-                                    walletTotal={this.props.portfolioState.walletTotal}
-                                    handleManage={() => {
-                                      this.props.history.push("/wallets");
-                                      ManageWallets({
-                                        session_id: getCurrentUser().id,
-                                        email_address: getCurrentUser().email,
-                                      });
-                                    }}
-                                />
-                            </div>
-                            <div className='portfolio-section '>
-                                <PieChart
-                                    userWalletData={this.props.portfolioState && this.props.portfolioState.chainWallet && Object.keys(this.props.portfolioState.chainWallet).length > 0 ? Object.values(this.props.portfolioState.chainWallet) : null}
-                                    assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
-                                    // loader={this.state.loader}
-                                    isLoading={this.state.isLoading}
-                                    walletTotal={this.props.portfolioState.walletTotal}
-                                />
-                                {this.state.userWalletList.findIndex(w => w.coinFound !== true) > -1 && this.state.userWalletList[0].address !== ""
-
-                                    ?
-                                    <div className='fix-div' id="fixbtn">
-                                        <div className='m-r-8 decribe-div'>
-                                            <div className='inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262'>Wallet undetected</div>
-                                            <div className='inter-display-medium f-s-13 lh-16 grey-737'>One or more wallets were not detected </div>
-                                        </div>
-                                        <Button className='secondary-btn' onClick={this.handleFixModal}>Fix</Button>
-                                    </div>
-                                    : ""}
-                            </div>
-                            <div className='portfolio-section m-b-32'>
-                                <LineChart
-                                  assetValueData={this.state.assetValueData && this.state.assetValueData}
-                                  coinLists={this.props.OnboardingState.coinsLists}
-                                  isScrollVisible={false}
-                                  handleGroupBy={(value)=>this.handleGroupBy(value)}
-                                  graphLoading={this.state.graphLoading}
-                                />
-                            </div>
-                            <div className='m-b-22 graph-table-section'>
-                                <Row>
-                                    <Col md={6}>
-                                        <div className='m-r-16 section-table'>
-                                            <TransactionTable
-                                                title="Transaction History"
-                                                handleClick={() => {
-                                                  this.props.history.push(
-                                                    "/intelligence/transaction-history"
-                                                  );
-                                                  TransactionHistoryEView({
-                                                    session_id: getCurrentUser().id,
-                                                    email_address: getCurrentUser().email,
-                                                  });
-                                                }}
-                                                subTitle="In the last month"
-                                                tableData={tableData}
-                                                columnList={columnList}
-                                                headerHeight={60}
-                                                isLoading={this.state.tableLoading}
-                                            />
-                                        </div>
-                                    </Col>
-                                    <Col md={6}>
-                                        <div className='section-chart'>
-                                          <div className='coming-soon-div'>
-                                          <Image src={ExportIconWhite} className="coming-soon-img" />
-                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
-                                          </div>
-                                            <BarGraphSection
-                                                headerTitle="Volume Traded by Counterparty"
-                                                headerSubTitle="In the last month"
-                                                isArrow={true}
-                                                data={data}
-                                                options={options}
-                                                isScroll={false}
-                                                comingSoon={true}
-                                            // width="100%"
-                                            // height="100%"
-                                            handleClick={() => {
-                                              VolumeTradeByCP({
-                                                session_id: getCurrentUser().id,
-                                                email_address: getCurrentUser().email,
-                                              });
-                                            }}
-                                            />
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </div>
-                            <div className='m-b-40 portfolio-cost-table-section'>
-                            <div className='coming-soon-div'>
-                                          <Image src={ExportIconWhite} className="coming-soon-img" />
-                                          <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
-                                          </div>
-                                <div className='portfolio-cost-table'>
-                                    <TransactionTable
-                                    className="minified-table"
-                                        title="Average Cost Basis"
-                                        subTitle="Understand your average entry price"
-                                        tableData={costTableData}
-                                        columnList={costColumnData}
-                                        headerHeight={64}
-                                        comingSoon={true}
-                                        handleClick={() => {
-                                          AverageCostBasisEView({
-                                            session_id: getCurrentUser().id,
-                                            email_address: getCurrentUser().email,
-                                          });
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-                {
-                    this.state.fixModal &&
-                    <FixAddModal
-                        show={this.state.fixModal}
-                        onHide={this.handleFixModal}
-                        //  modalIcon={AddWalletModalIcon}
-                        title="Fix your wallet connection"
-                        subtitle="Add your wallet address to get started"
-                        // fixWalletAddress={fixWalletAddress}
-                        btnText="Done"
-                        btnStatus={true}
-                        history={this.props.history}
-                        modalType="fixwallet"
-                        changeWalletList={this.handleChangeList}
+          <div>
+            {this.state.loader ? (
+              <Loading />
+            ) : (
+              <div className="portfolio-page-section">
+                {/* <Sidebar ownerName="" /> */}
+                <div className="portfolio-container page">
+                  <div className="portfolio-section">
+                    <WelcomeCard
+                      decrement={true}
+                      assetTotal={
+                        this.props.portfolioState &&
+                        this.props.portfolioState.walletTotal
+                          ? this.props.portfolioState.walletTotal
+                          : 0
+                      }
+                      loader={this.state.loader}
+                      history={this.props.history}
+                      handleAddModal={this.handleAddModal}
+                      isLoading={this.state.isLoading}
+                      walletTotal={this.props.portfolioState.walletTotal}
+                      handleManage={() => {
+                        this.props.history.push("/wallets");
+                        ManageWallets({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
                     />
-                }
-                {this.state.addModal &&
-                    <FixAddModal
-                        show={this.state.addModal}
-                        onHide={this.handleAddModal}
-                        modalIcon={AddWalletModalIcon}
-                        title="Add wallet address"
-                        subtitle="Add more wallet address here"
-                        modalType="addwallet"
-                        btnStatus={false}
-                        btnText="Go"
-                        history={this.props.history}
-                        changeWalletList={this.handleChangeList}
-                    />}
-            </div>
-        )
+                  </div>
+                  <div className="portfolio-section ">
+                    <PieChart
+                      userWalletData={
+                        this.props.portfolioState &&
+                        this.props.portfolioState.chainWallet &&
+                        Object.keys(this.props.portfolioState.chainWallet)
+                          .length > 0
+                          ? Object.values(this.props.portfolioState.chainWallet)
+                          : null
+                      }
+                      assetTotal={
+                        this.props.portfolioState &&
+                        this.props.portfolioState.walletTotal
+                          ? this.props.portfolioState.walletTotal
+                          : 0
+                      }
+                      // loader={this.state.loader}
+                      isLoading={this.state.isLoading}
+                      walletTotal={this.props.portfolioState.walletTotal}
+                    />
+                    {this.state.userWalletList.findIndex(
+                      (w) => w.coinFound !== true
+                    ) > -1 && this.state.userWalletList[0].address !== "" ? (
+                      <div className="fix-div" id="fixbtn">
+                        <div className="m-r-8 decribe-div">
+                          <div className="inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262">
+                            Wallet undetected
+                          </div>
+                          <div className="inter-display-medium f-s-13 lh-16 grey-737">
+                            One or more wallets were not detected{" "}
+                          </div>
+                        </div>
+                        <Button
+                          className="secondary-btn"
+                          onClick={this.handleFixModal}
+                        >
+                          Fix
+                        </Button>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="portfolio-section m-b-32">
+                    <LineChart
+                      assetValueData={
+                        this.state.assetValueData && this.state.assetValueData
+                      }
+                      coinLists={this.props.OnboardingState.coinsLists}
+                      isScrollVisible={false}
+                      handleGroupBy={(value) => this.handleGroupBy(value)}
+                      graphLoading={this.state.graphLoading}
+                    />
+                  </div>
+                  <div className="m-b-22 graph-table-section">
+                    <Row>
+                      <Col md={6}>
+                        <div className="m-r-16 section-table" style={{paddingBottom:"1.15rem"}}>
+                          <TransactionTable
+                            title="Transaction History"
+                            handleClick={() => {
+                              this.props.history.push(
+                                "/intelligence/transaction-history"
+                              );
+                              TransactionHistoryEView({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }}
+                            subTitle="In the last month"
+                            tableData={tableData}
+                            columnList={columnList}
+                            headerHeight={60}
+                            isLoading={this.state.tableLoading}
+                          />
+                        </div>
+                      </Col>
+                      <Col md={6}>
+                        <div className="section-chart">
+                          {/* <div className="coming-soon-div">
+                            <Image
+                              src={ExportIconWhite}
+                              className="coming-soon-img"
+                            />
+                            <p className="inter-display-regular f-s-13 lh-16 black-191">
+                              This feature is coming soon.
+                            </p>
+                          </div> */}
+                         { this.state.graphValue ?
+                          <BarGraphSection
+                            headerTitle="Blockchain Fees over Time"
+                            headerSubTitle="Understand your gas costs"
+                            isArrow={true}
+                            data={this.state.graphValue[0]}
+                            options={this.state.graphValue[1]}
+                            options2={this.state.graphValue[2]}
+                            isScroll={true}
+                            comingSoon={false}
+                            // width="100%"
+                            // height="100%"
+                            onClick={() => {
+                              VolumeTradeByCP({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }}
+                          />
+                          :
+                          <div className="loading-wrapper">
+                            <Loading />
+                            <br/><br/>
+                          </div>
+                        }
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+                  <div className="m-b-40 portfolio-cost-table-section">
+                    <div className="coming-soon-div">
+                      <Image
+                        src={ExportIconWhite}
+                        className="coming-soon-img"
+                      />
+                      <p className="inter-display-regular f-s-13 lh-16 black-191">
+                        This feature is coming soon.
+                      </p>
+                    </div>
+                    <div className="portfolio-cost-table">
+                      <TransactionTable
+                        className="minified-table"
+                        title="Average Cost Basis"
+                        subTitle="Understand your average entry price"
+                        tableData={costTableData}
+                        columnList={costColumnData}
+                        headerHeight={64}
+                        comingSoon={true}
+                        handleClick={() => {
+                          AverageCostBasisEView({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {this.state.fixModal && (
+              <FixAddModal
+                show={this.state.fixModal}
+                onHide={this.handleFixModal}
+                //  modalIcon={AddWalletModalIcon}
+                title="Fix your wallet connection"
+                subtitle="Add your wallet address to get started"
+                // fixWalletAddress={fixWalletAddress}
+                btnText="Done"
+                btnStatus={true}
+                history={this.props.history}
+                modalType="fixwallet"
+                changeWalletList={this.handleChangeList}
+              />
+            )}
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
+                history={this.props.history}
+                changeWalletList={this.handleChangeList}
+              />
+            )}
+          </div>
+        );
     }
 }
 

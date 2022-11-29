@@ -177,8 +177,12 @@ function Sidebar(props) {
                     <li>
                       <NavLink
                         exact={true}
-                        className={`nav-link ${activeTab === "/intelligence/transaction-history" ? "active"
-                        : ""}`} to="/intelligence"
+                        className={`nav-link
+                        ${activeTab === "/intelligence/transaction-history" ? "active" : ""}
+                        ${activeTab === "/intelligence/volume-traded-by-counterparty" ? "active" : ""}
+                        ${activeTab === "/intelligence/insights" ? "active" : ""}
+                        `
+                      } to="/intelligence"
                         activeclassname="active"
                         onClick={() =>
                           IntelligenceMenu({
@@ -188,7 +192,7 @@ function Sidebar(props) {
                         }
                       >
                         <Image
-                          src={["/intelligence/transaction-history","/intelligence"].includes(activeTab)
+                          src={["/intelligence/transaction-history","/intelligence","/intelligence/volume-traded-by-counterparty","/intelligence/insights"].includes(activeTab)
                               ? ActiveIntelligenceIcon
                               : IntelligenceIcon
                           }
@@ -400,8 +404,8 @@ function Sidebar(props) {
             show={exportModal}
             onHide={handleExportModal}
             history={history}
-            headerTitle={"Export"}
-            modalType={"apiModal"}
+            headerTitle={"Download all your data"}
+            modalType={"exportModal"}
             iconImage={ExportIconWhite}
           />
         ) : (

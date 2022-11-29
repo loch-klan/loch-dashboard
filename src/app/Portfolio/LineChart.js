@@ -183,6 +183,7 @@ class LineChart extends BaseReactComponent {
                 enabled: false
             },
             xAxis: {
+                // categories: this.state.title === "Month" ? categories.reverse() : categories,
                 categories: categories,
                 scrollbar: {
                   enabled: true,
@@ -196,8 +197,10 @@ class LineChart extends BaseReactComponent {
                   trackBorderColor: '#CCC',
                   rifleColor:'#E5E5E6',
               },
-              min: 0,
-              max: categories.length > 4 ? 4 : categories.length - 1 ,
+              min: categories.length > 4 ? categories.length - 5 : 0 ,
+              max: categories.length - 1 ,
+              // min: 0,
+              // max: categories.length > 4 ? 4 : categories.length - 1 ,
               // max: this.state.title === "Year" ? categories.length > 4 ? 4 : categories.length - 1 : 4,
             },
 
@@ -252,8 +255,7 @@ class LineChart extends BaseReactComponent {
                         <div class="line-chart-tooltip">
                             <div class="m-b-12 top-section">
                                 <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
-                                    <img src=${TrendingUp} class="m-r-8"/>
-                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x + " - " + "$"+numToCurrency(this.y)}</div>
+                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.series.userOptions.name + " " + "$"+numToCurrency(this.y) + " " + this.x }</div>
                                 </div>
                             </div>
                         </div>
@@ -292,7 +294,7 @@ class LineChart extends BaseReactComponent {
                     <div className='chart-x-selection'>
                             <DropDown
                                 class="line-chart-dropdown"
-                                list={["Year", "Month", "Day", "Week"]}
+                                list={["Year", "Month", "Week", "Day"]}
                                 // list={GroupByOptions}
                                 onSelect={this.handleSelect}
                                 title={this.state.title}

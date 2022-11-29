@@ -82,13 +82,21 @@ export const updateWalletApi = (ctx, data) => {
       // console.log(res)
       if (!res.data.error) {
         let walletAddress = ctx.state.walletAddress;
+        let displayAddress = ctx.state.displayAddress;
         let addWallet = JSON.parse(localStorage.getItem("addWallet"));
         addWallet = addWallet.map((wallet)=>{
-          if(wallet.address === walletAddress){
+          // console.log('wallet.address',wallet.address);
+          // console.log('walletAddress',walletAddress);
+          if(wallet.address === walletAddress || wallet.address === displayAddress){
+            let metaData = null;
+            res.data.data.user_wallets.map((item)=>{ if(item.address===walletAddress) metaData = item.wallet })
+            // console.log('metaData',metaData);
             return({
               ...wallet,
-              wallet_metadata: res.data.data.user_wallets.map((item)=>{ if(item.address===walletAddress) return item.wallet })
+              wallet_metadata: metaData
             })
+          } else{
+            return ({...wallet})
           }
         })
         localStorage.setItem('addWallet',JSON.stringify(addWallet));

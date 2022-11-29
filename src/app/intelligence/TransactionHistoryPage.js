@@ -14,6 +14,8 @@ import { SelectControl, FormElement, Form, CustomTextControl, BaseReactComponent
 import unrecognizedIcon from "../../image/unrecognized.svg";
 import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
+import { noExponents } from "../../utils/ReusableFunctions";
+
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -128,9 +130,9 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
 
   addCondition = (key, value) => {
-    console.log('key, value',key, value);
+    // console.log('key, value',key, value);
     let index = this.state.condition.findIndex((e) => e.key === key);
-    console.log('index',index);
+    // console.log('index',index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -310,11 +312,21 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
     render() {
         const { table, totalPage, totalCount, currentPage } = this.props.intelligenceState;
+        const {walletList} = this.state;
         let tableData = table && table.map((row) => {
             return {
                 time: row.timestamp,
                 from: {
                     address: row.from_wallet.address,
+                    metaData: walletList && walletList.map((wallet)=>{
+                      if(
+                        wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
+                        wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
+                          return wallet.wallet_metadata
+                        } else {
+                          return null
+                        }
+                      }),
                     // wallet_metaData: row.from_wallet.wallet_metaData
                     wallet_metaData: {
                         symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
@@ -324,6 +336,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                 to: {
                     address: row.to_wallet.address,
                     // wallet_metaData: row.to_wallet.wallet_metaData,
+                    metaData: walletList && walletList.map((wallet)=>{
+                      if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
+                      wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
+                          return wallet.wallet_metadata
+                        } else {
+                          return null
+                        }
+                      }),
                     wallet_metaData: {
                         symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
                         text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
@@ -354,7 +374,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 method: row.method
             }
         })
-
+// console.log('tableData',tableData);
         const columnList = [
             {
                 labelName:
@@ -395,11 +415,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
                             >
                               {
+                                rowData.from.metaData[0]
+                                ?
+                                <Image src={rowData.from.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon" />
+                                :
                                 rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
                                 ?
                                 rowData.from.wallet_metaData.symbol
                                 ?
-                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
                                 :
                                 <span>{rowData.from.wallet_metaData.text}</span>
                                 :
@@ -422,6 +446,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 coumnWidth: 0.15,
                 isCell: true,
                 cell: (rowData, dataKey) => {
+                  // console.log('rowData',rowData);
                     if (dataKey === "to") {
                         return (
                             <CustomOverlay
@@ -432,11 +457,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 text={rowData.to.wallet_metaData.text ? (rowData.to.wallet_metaData.text + ": " + rowData.to.address) : rowData.to.address}
                             >
                               {
+                                rowData.to.metaData[0]
+                                ?
+                                <Image src={rowData.to.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon" />
+                                :
                                 rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
                                 ?
                                 rowData.to.wallet_metaData.symbol
                                 ?
-                                <Image src={unrecognizedIcon} className="history-table-icon" />
+                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
                                 :
                                 <span>{rowData.to.wallet_metaData.text}</span>
                                 :
@@ -498,9 +527,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={rowData.amount.value}
+                            text={noExponents(rowData.amount.value)}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{rowData.amount.value}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{noExponents(rowData.amount.value)}</div>
                         </CustomOverlay>)
                     }
                 }

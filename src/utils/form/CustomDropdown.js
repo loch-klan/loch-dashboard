@@ -122,7 +122,7 @@ class CustomDropdown extends Component {
       count = selected.length;
     }
 
-    //   console.log(selected, "selected", count, "count");
+      // console.log(selected, "selected", count, "count");
     //   console.log(this.state.options);
     return { selected: selected, length: count };
   };

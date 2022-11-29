@@ -29,7 +29,7 @@ class OnBoarding extends Component {
         }
     }
 
-  componentDidMount() { 
+  componentDidMount() {
     this.state.startTime = new Date() * 1;
       console.log("page Enter", (this.state.startTime/1000));
     }
@@ -123,7 +123,7 @@ class OnBoarding extends Component {
               <div className="ob-modal-body-info">
                 {/* {
                         this.state.signInReq ?
-                         null 
+                         null
                          :
                          this.state.showSignText ?
                           <h4 className='inter-display-medium f-s-13 lh-16 grey-ADA'>
@@ -141,8 +141,9 @@ class OnBoarding extends Component {
                     isIcon={true}
                     IconImage={LockIcon}
                     isInfo={true}
+                    className={"fix-width"}
                   >
-                                <Image src={InfoIcon} className="info-icon" onMouseEnter={ this.privacymessage} />
+                    <Image src={InfoIcon} className="info-icon" onMouseEnter={ this.privacymessage} />
                   </CustomOverlay>
                 </p>
               </div>
