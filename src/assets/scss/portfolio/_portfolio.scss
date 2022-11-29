@@ -433,10 +433,20 @@
                         }
                     }
                 }
-
-                .chartArea{
-                    height: 37rem;
+                .custom-label{
+                  padding-top: 0;
+                  padding-bottom: 1.5rem;
                 }
+                .chartArea{
+                    height: 34.3rem;
+                }
+            }
+            .loading-wrapper{
+              height: 51rem;
+              margin: 0;
+              .loading-animation{
+                height: 100%;
+              }
             }
         }
     }

@@ -862,6 +862,7 @@ this.setState({graphLoading: true})
                             options={this.state.graphValue[1]}
                             options2={this.state.graphValue[2]}
                             isScroll={true}
+                            isScrollVisible={false}
                             comingSoon={false}
                             // width="100%"
                             // height="100%"
