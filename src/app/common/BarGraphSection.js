@@ -188,6 +188,9 @@ class BarGraphSection extends Component {
             ) : (
               ""
             )}
+            {
+              <p className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label'>$ USD </p>
+            }
             {showPercentage ? (
               <div className="show-percentage-div ">
                 <div

@@ -32,6 +32,12 @@ const getGraphData = (arr) => {
         y: {
           //   min: min,
           //   max: 22574,
+          // beginAtZero: true,
+          // title: {
+          //   display: true,
+          //   text: "$ USD",
+          //   position: 'bottom',
+          // },
           ticks: {
             display: labels.length > 8 ? false : true,
             // display: false,
