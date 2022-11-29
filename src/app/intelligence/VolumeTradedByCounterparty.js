@@ -53,7 +53,7 @@ class VolumeTradedByCounterparty extends Component {
                 isScroll={true}
                 // height={420}
                 // width={824}
-                comingSoon={true}
+                comingSoon={true} 
             />
             </div>
           </div>
