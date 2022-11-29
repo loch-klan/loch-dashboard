@@ -2,7 +2,8 @@ import amplitude from "amplitude-js";
 
 //Api Config
 export const initAmplitude = () => {
-  amplitude.getInstance().init("18eb08ef007daf84f1dbdaec2a5f91e0");
+  // amplitude.getInstance().init("18eb08ef007daf84f1dbdaec2a5f91e0");
+  amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
 };
 
 // send Aplitude Data
@@ -60,7 +61,7 @@ export const LPC_Go = ({
 export const PrivacyMessage = ({ session_id }) => {
   const event_name = "Landing Page Conversion:privacy_message";
   const eventProperties = {
-  
+
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Landing Page Conversion:privacy message");
@@ -1019,7 +1020,7 @@ export const FeesTimePeriodFilter = ({ session_id, email_address, time_period_se
 }
 
 
-//71. Costs:blockchain fees specific bar 
+//71. Costs:blockchain fees specific bar
 export const FeesSpecificBar = ({ session_id, email_address, blockchain_selected}) => {
   const event_name = "Costs:blockchain fees specific bar";
   const eventProperties = {
