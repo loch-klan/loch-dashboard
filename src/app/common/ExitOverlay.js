@@ -31,6 +31,7 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
+import lochClean from "../../assets/images/LochClean.gif";
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -50,28 +51,36 @@ class ExitOverlay extends BaseReactComponent {
       showRedirection: false,
       fromDate: startDate,
       toDate: new Date(),
+      selectedExportItem:"",
+      loadingExportFile:false,
       exportItem:[
         {
           name: "Transaction History",
           value: 10,
+          apiurl: "wallet/transaction/export-transactions",
+          fileName:"transaction-history-export"
         },
         {
           name: "Blockchain Gas Costs",
           value: 20,
+          apiurl: "wallet/transaction/export-gas-fee-overtime",
+          fileName:"blockchain-gas-costs-export"
         },
         {
           name: "Counterparty Costs",
           value: 30,
+          apiurl: "wallet/transaction/export-counter-party-volume-traded",
+          fileName:"counterparty-costs-export"
         },
-        {
-          name: "Average Cost Basis",
-          value: 40,
-        },
-        {
-          name: "Portfolio Performance",
-          value: 50,
-        },
-      ],
+        // {
+        //   name: "Average Cost Basis",
+        //   value: 40,
+        // },
+        // {
+        //   name: "Portfolio Performance",
+        //   value: 50,
+        // },
+      ]
     };
   }
 
@@ -134,10 +143,16 @@ class ExitOverlay extends BaseReactComponent {
 
   handleExportNow = ()=>{
     // console.log('Export');
+    this.setState({loadingExportFile : true})
     const data = new URLSearchParams();
     data.append("start_datetime", moment(this.state.fromDate).format("X"));
     data.append("end_datetime", moment(this.state.toDate).format("X"));
     exportDataApi(data,this);
+  }
+
+  handleSelectedExportItem = (item,e) => {
+    e.currentTarget.classList.add('active')
+    this.setState({selectedExportItem:item})
   }
 
   submit = () =>{
@@ -251,16 +266,26 @@ class ExitOverlay extends BaseReactComponent {
                 </Form>
               </div>
                   <div className='export-item-wrapper'>
-                    {/* {
+                    {
                       this.state.exportItem.map((item)=>{
                         return(
-                          <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item`}>{item.name}</span>
+                          <span className={this.state.selectedExportItem===item?"inter-display-medium f-s-16 lh-19 grey-636 export-item active":`inter-display-medium f-s-16 lh-19 grey-636 export-item`} onClick={(e)=>this.handleSelectedExportItem(item,e)}>{item.name}</span>
                         )
                       })
-                    } */}
-                    <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span>
+                    }
+                    {/* <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span> */}
                   </div>
-                  <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button>
+                  {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
+                  <div onClick={()=>this.handleExportNow()} >
+                    {this.state.loadingExportFile===true
+                      ?
+                        <Image src={lochClean} className='loading-export'/>
+                      :
+                      <Button className="primary-btn">
+                        Export Now
+                      </Button>
+                    }
+                  </div>
                 </div>
               }
 

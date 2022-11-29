@@ -44,7 +44,7 @@ class Cost extends Component {
   }
 
   getBlockchainFee(option) {
-   
+
     const today = moment().valueOf();
 
     console.log("headle click");
@@ -89,7 +89,7 @@ class Cost extends Component {
   }
 
   handleBadge = (activeBadgeList) => {
- 
+
      console.log(this.state.GraphData, "Graph data");
 
     const {GraphData} = this.state;
@@ -104,7 +104,7 @@ class Cost extends Component {
     this.setState({
       graphValue: getGraphData(graphDataMaster),
     });
-   
+
   }
 
   render() {
@@ -255,7 +255,7 @@ class Cost extends Component {
             subTitle="Bring light to your hidden costs"
           />
           <div style={{ position: "relative" }}>
-            {this.state.graphValue &&
+            {this.state.graphValue ?
               <BarGraphSection
                 headerTitle="Blockchain Fees over Time"
                 headerSubTitle="Understand your gas costs"
@@ -274,10 +274,13 @@ class Cost extends Component {
                 // width={824}
                 comingSoon={false}
               />
-            }
-            {/* ) : (
+             :
+             <div className="loading-wrapper">
               <Loading />
-            )} */}
+              <br/><br/>
+             </div>
+
+            }
           </div>
           <div style={{ position: "relative" }}>
             <div className="coming-soon-div">

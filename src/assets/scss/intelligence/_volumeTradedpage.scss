@@ -6,12 +6,19 @@
         width: 100%;
     }
     .graph-container{
+      height:67.6rem;
+      .bar-graph-section{
+        height:100%;
+        span{
+          height: 100%;
+        }
+      }
         .Y-axis{
-            height: 39rem;
+            height: 47rem;
         }
         .ScrollArea{
             .chartArea{
-            height: 37rem;
+            height: 100%;
             }
         }
     }

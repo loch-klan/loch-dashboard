@@ -131,17 +131,23 @@ export const getDetectedChainsApi = (ctx) =>{
 }
 
 export const exportDataApi = (data,ctx) =>{
-  postLoginInstance.post("wallet/transaction/export-transactions",data)
+  postLoginInstance.post(ctx.state.selectedExportItem.apiurl,data)
   .then((res)=>{
     const url = window.URL.createObjectURL(new Blob([res.data]));
     const link = document.createElement('a');
     link.href = url;
     // link.setAttribute('download', 'file.txt');
-    link.setAttribute('download', `transaction-history-export-${moment(ctx.state.fromDate).format("DD-MM-YYYY")}-to-${moment(ctx.state.toDate).format("DD-MM-YYYY")}.csv`);
+    link.setAttribute('download', `${ctx.state.selectedExportItem.fileName}-${moment(ctx.state.fromDate).format("ll")}-${moment(ctx.state.toDate).format("ll")}.txt`);
     document.body.appendChild(link);
     link.click();
+    ctx.setState({
+      loadingExportFile:false,
+    })
   })
   .catch((err)=>{
+    ctx.setState({
+      loadingExportFile:false,
+    })
     console.log("Catch", err);
   })
 }
