@@ -5,7 +5,8 @@ import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
 import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
-import { Loading } from 'react-loading-dot';
+// import { Loading } from 'react-loading-dot';
+
 import { Button, Image, Row, Col } from 'react-bootstrap';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
@@ -36,6 +37,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 
 import {getAssetGraphDataApi} from './Api';
 import { getAllFee } from '../cost/Api';
+import Loading from '../common/Loading';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -851,7 +853,7 @@ this.setState({graphLoading: true})
                               This feature is coming soon.
                             </p>
                           </div> */}
-                         { this.state.graphValue &&
+                         { this.state.graphValue ?
                           <BarGraphSection
                             headerTitle="Blockchain Fees over Time"
                             headerSubTitle="Understand your gas costs"
@@ -868,9 +870,14 @@ this.setState({graphLoading: true})
                                 session_id: getCurrentUser().id,
                                 email_address: getCurrentUser().email,
                               });
-                             
                             }}
-                          />}
+                          />
+                          :
+                          <div className="loading-wrapper">
+                            <Loading />
+                            <br/><br/>
+                          </div>
+                        }
                         </div>
                       </Col>
                     </Row>

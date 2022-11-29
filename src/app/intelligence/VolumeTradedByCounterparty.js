@@ -50,6 +50,7 @@ class VolumeTradedByCounterparty extends Component {
                 showFooter={true}
                 showBadges={true}
                 isScrollVisible={false}
+                isScroll={true}
                 // height={420}
                 // width={824}
                 comingSoon={true}
