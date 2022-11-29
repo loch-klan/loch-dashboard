@@ -154,7 +154,7 @@ class BarGraphSection extends Component {
       showFooter,
       footerLabels,
     } = this.state;
-    const { marginBottom, comingSoon, coinsList, activeFooter } = this.props;
+    const { marginBottom, comingSoon, coinsList, activeFooter, className="" } = this.props;
     const digit =
       data && ("" + Math.round(Math.max(...data.datasets[0].data))).length;
     const ScrollStyle = {
@@ -205,7 +205,7 @@ class BarGraphSection extends Component {
             ) : (
               ""
             )}
-            <div style={{ display: "flex" }}>
+            <div className={className} style={{ display: "flex" }}>
               {options2 != undefined && isScroll && data.labels.length > 8 ? (
                 <div style={{ width: `${digit}rem` }}>
                   <Bar options={options2} data={data} />

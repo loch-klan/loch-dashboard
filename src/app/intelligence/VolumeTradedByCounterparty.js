@@ -53,7 +53,8 @@ class VolumeTradedByCounterparty extends Component {
                 isScroll={true}
                 // height={420}
                 // width={824}
-                comingSoon={true} 
+                comingSoon={true}
+                className={"custom-volume-graph"}
             />
             </div>
           </div>
