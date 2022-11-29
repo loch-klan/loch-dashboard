@@ -32,6 +32,7 @@ import {
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
 import lochClean from "../../assets/images/LochClean.gif";
+import { loadingAnimation } from '../../utils/ReusableFunctions';
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -51,7 +52,12 @@ class ExitOverlay extends BaseReactComponent {
       showRedirection: false,
       fromDate: startDate,
       toDate: new Date(),
-      selectedExportItem:"",
+      selectedExportItem:{
+        name: "Transaction History",
+        value: 10,
+        apiurl: "wallet/transaction/export-transactions",
+        fileName:"transaction-history-export"
+      },
       loadingExportFile:false,
       exportItem:[
         {
@@ -269,23 +275,24 @@ class ExitOverlay extends BaseReactComponent {
                     {
                       this.state.exportItem.map((item)=>{
                         return(
-                          <span className={this.state.selectedExportItem===item?"inter-display-medium f-s-16 lh-19 grey-636 export-item active":`inter-display-medium f-s-16 lh-19 grey-636 export-item`} onClick={(e)=>this.handleSelectedExportItem(item,e)}>{item.name}</span>
+                          <span className={this.state.selectedExportItem.value===item.value?"inter-display-medium f-s-16 lh-19 grey-636 export-item active":`inter-display-medium f-s-16 lh-19 grey-636 export-item`} onClick={(e)=>this.handleSelectedExportItem(item,e)}>{item.name}</span>
                         )
                       })
                     }
                     {/* <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span> */}
                   </div>
                   {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
-                  <div onClick={()=>this.handleExportNow()} >
+                  {/* <div onClick={()=>this.handleExportNow()} > */}
                     {this.state.loadingExportFile===true
                       ?
-                        <Image src={lochClean} className='loading-export'/>
+                        // <Image src={lochClean} className='loading-export'/>
+                        <Button className="primary-btn">{loadingAnimation()}</Button>
                       :
-                      <Button className="primary-btn">
+                      <Button className="primary-btn" onClick={()=>this.handleExportNow()}>
                         Export Now
                       </Button>
                     }
-                  </div>
+                  {/* </div> */}
                 </div>
               }
 

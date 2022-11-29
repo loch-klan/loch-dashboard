@@ -7,6 +7,7 @@ import PageHeader from "../common/PageHeader";
 import { info} from '../cost/dummyData';
 import { Image } from 'react-bootstrap';
 import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
+import graphImage from '../../assets/images/volume-traded-graph.png'
 
 class VolumeTradedByCounterparty extends Component {
         constructor(props) {
@@ -38,7 +39,7 @@ class VolumeTradedByCounterparty extends Component {
                         <Image src={ExportIconWhite} className="coming-soon-img" />
                         <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                     </div>
-            <BarGraphSection
+            {/* <BarGraphSection
                 // headerTitle="Blockchain Fees over Time"
                 // headerSubTitle="Understand your gas costs"
                 data={this.state.durationgraphdata.data}
@@ -52,7 +53,8 @@ class VolumeTradedByCounterparty extends Component {
                 // height={420}
                 // width={824}
                 comingSoon={true}
-            />
+            /> */}
+            <Image src={graphImage} style={{borderRadius: "1rem", width: "100%", filter: "blur(3px)"}} />
             </div>
           </div>
         </div>

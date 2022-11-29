@@ -503,6 +503,7 @@ body {
 .blur-effect {
   filter: blur(3px);
   user-select: none;
+  pointer-events: none;
 }
 
 

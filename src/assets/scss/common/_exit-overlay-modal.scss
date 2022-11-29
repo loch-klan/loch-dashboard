@@ -270,7 +270,7 @@
                     margin: 2.3rem 0;
                     cursor: pointer;
                     &.active{
-                      padding: 1.1rem 1.5rem;  
+                      padding: 1.1rem 1.5rem;
                       border: 1px solid $black-191;
                       border-radius: 8px;
                       color: $black-191;
@@ -286,6 +286,12 @@
                 }
                 .primary-btn{
                   padding: 1.6rem 2.7rem;
+                  .spinner-chip-container{
+                    margin: 0;
+                    .spinner{
+                      margin: 0;
+                    }
+                  }
                   &:hover{
                     color: $black-191;
                     border: 1px solid $black-191;

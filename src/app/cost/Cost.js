@@ -18,6 +18,7 @@ import getGraphData from "./getGraphData";
 import { getAllFee } from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
+import graphImage from '../../assets/images/gas-fees-graph.png'
 
 class Cost extends Component {
   constructor(props) {
@@ -274,8 +275,10 @@ class Cost extends Component {
                 // width={824}
                 comingSoon={false}
               />
+              // <></>
              :
              <div className="loading-wrapper">
+              <Image src={graphImage} className="graph-image" />
               <Loading />
               <br/><br/>
              </div>
