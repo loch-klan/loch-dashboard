@@ -9,19 +9,20 @@ export const getAllFee = (ctx, startDate, endDate) => {
     }
     postLoginInstance.post("wallet/transaction/get-gas-fee-overtime", data).then((res) => {
         // console.log(res, "get All fees");
-         
 
-           
+
+
         ctx.setState({
+          barGraphLoading: false,
             GraphData: res.data.data.gas_fee_overtime,
             graphValue: getGraphData(res.data.data.gas_fee_overtime)
         });
 
-        
-      
+
+
     });
 
-   
-    
-    
+
+
+
 }

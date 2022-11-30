@@ -57,6 +57,7 @@ class Portfolio extends BaseReactComponent {
       isLoading: true,
       tableLoading: true,
       graphLoading: true,
+      barGraphLoading: true,
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       limit: 6,
       tableSortOpt: [
@@ -853,11 +854,14 @@ this.setState({graphLoading: true})
                               This feature is coming soon.
                             </p>
                           </div> */}
-                         { this.state.graphValue ?
+                         { this.state.graphValue && !this.state.barGraphLoading ?
                           <BarGraphSection
                             headerTitle="Blockchain Fees over Time"
                             headerSubTitle="Understand your gas costs"
                             isArrow={true}
+                            handleClick={()=>this.props.history.push(
+                              "/costs"
+                            )}
                             data={this.state.graphValue[0]}
                             options={this.state.graphValue[1]}
                             options2={this.state.graphValue[2]}

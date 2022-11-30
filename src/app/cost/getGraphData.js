@@ -20,11 +20,39 @@ const getGraphData = (arr) => {
           display: false,
         },
         tooltip: {
+          displayColors: false,
+          backgroundColor: '#ffffff',
+          // fontColor: '#000000',
+          intersect: false,
+          color: '#000000',
+          padding: 12,
+          borderWidth: 1,
+          borderColor: '#E5E7EB',
+          // boxPadding: 5,
+          bodyFont: {
+            family: 'Inter-Medium',
+            size: 13,
+          },
+          bodySpacing: 8,
           callbacks: {
+            title: function() {}, //REMOVE TITLE
             label: (ctx) => {
-              // console.log(ctx.raw);
-              return "$" + numToCurrency(ctx.raw);
+              // console.log('ctx',ctx);
+              let label0 = ctx.label + ": $" + numToCurrency(ctx.raw);
+              let label1 = "Total Amount: $" + numToCurrency(ctx.dataset.totalAmount[ctx.dataIndex]);
+              let label2 = "Total Fees Amount: $" + numToCurrency(ctx.dataset.totalFeesAmount[ctx.dataIndex])
+              return [label0, label1, label2];
+              // return "$" + numToCurrency(ctx.raw)
             },
+            labelColor: function(context) {
+              return {
+                  padding: 10,
+                  // boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.08), 0px 1px 1px rgba(0, 0, 0, 0.08)",
+              };
+          },
+            labelTextColor: function(context) {
+              return '#19191A';
+          }
           },
         },
       },
@@ -145,6 +173,8 @@ const getGraphData = (arr) => {
           },
           borderSkipped: false,
           barThickness: 48,
+          totalFeesAmount: arr.map((e) => e.total_fees_amount),
+          totalAmount: arr.map((e) => e.total_amount),
         },
       ],
     };
