@@ -134,8 +134,13 @@
                         outline: none !important;
                         box-shadow: none !important;
                     }
-                    &:hover .navbar-button{
-                        color:$primary
+                    // &:hover .navbar-button{
+                    //     color:$primary
+                    // }
+                    span{
+                        &:hover .navbar-button{
+                            color:$primary
+                        }
                     }
                 }
             }
