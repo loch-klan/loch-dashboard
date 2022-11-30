@@ -37,6 +37,7 @@ class Cost extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     this.state.startTime = new Date() * 1;
     console.log("page Enter", this.state.startTime / 1000);
 
