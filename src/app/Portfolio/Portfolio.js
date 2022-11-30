@@ -22,9 +22,14 @@ class Portfolio extends BaseReactComponent {
             coinAvailable: true,
             fixModal: false,
             addModal: false,
+            toggleAddWallet: true,
         }
     }
-
+    handleToggleAddWallet = () => {
+        this.setState({
+            toggleAddWallet: true
+        })
+    }
     handleChangeList = (value) => {
         this.setState({
             userWalletList: value
@@ -39,7 +44,8 @@ class Portfolio extends BaseReactComponent {
 
     handleAddModal = () => {
         this.setState({
-            addModal: !this.state.addModal
+            addModal: !this.state.addModal,
+            toggleAddWallet: false,
         })
     }
     componentDidMount() {
@@ -90,6 +96,8 @@ class Portfolio extends BaseReactComponent {
                         <div className='portfolio-container'>
                             <div className='portfolio-section page'>
                                 <WelcomeCard
+                                handleToggleAddWallet={this.handleToggleAddWallet}
+                                toggleAddWallet={this.state.toggleAddWallet}
                                     decrement={true}
                                     assetTotal={this.props.portfolioState && this.props.portfolioState.walletTotal ? this.props.portfolioState.walletTotal : 0}
                                     loader={this.state.loader} history={this.props.history}
