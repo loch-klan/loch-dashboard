@@ -38,10 +38,12 @@ const getGraphData = (arr) => {
             title: function() {}, //REMOVE TITLE
             label: (ctx) => {
               // console.log('ctx',ctx);
-              let label0 = ctx.label + ": $" + numToCurrency(ctx.raw);
-              let label1 = "Total Amount: $" + numToCurrency(ctx.dataset.totalAmount[ctx.dataIndex]);
-              let label2 = "Total Fees Amount: $" + numToCurrency(ctx.dataset.totalFeesAmount[ctx.dataIndex])
-              return [label0, label1, label2];
+              let label00 = ctx.label;
+              let label0 = "USD Fees: $" + numToCurrency(ctx.raw);
+              let label1 = "Total Amount: " + numToCurrency(ctx.dataset.totalAmount[ctx.dataIndex]);
+              let label2 = "Total Volume: " + numToCurrency(ctx.dataset.totalFeesAmount[ctx.dataIndex])
+              let label3 = "USD Volume: " + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex])
+              return [label00, label0, label2, label3, label1 ];
               // return "$" + numToCurrency(ctx.raw)
             },
             labelColor: function(context) {
@@ -175,6 +177,7 @@ const getGraphData = (arr) => {
           barThickness: 48,
           totalFeesAmount: arr.map((e) => e.total_fees_amount),
           totalAmount: arr.map((e) => e.total_amount),
+          totalVolume: arr.map((e) => e.total_volume),
         },
       ],
     };
