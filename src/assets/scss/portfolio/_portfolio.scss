@@ -29,10 +29,11 @@
             align-items: center;
             position: absolute;
             // bottom: 1rem;
-            bottom: -6rem;
+            // bottom: -6rem;
             // right: 13.2rem;
             right: 0rem;
-
+            top: 45%;
+            width: 28rem;
             .secondary-btn {
                 line-height: 1.9rem;
                 border: 0.15rem solid $black-191;
@@ -278,7 +279,8 @@
                 }
                 .bottom-section{
                     .tooltip-section-bottom{
-                        background-color: $yellow-FBF;
+                        // background-color: $yellow-FBF;
+                        background-color: $yellow-F5E;
                         padding:0.8rem;
                         white-space: normal !important;
                         word-wrap: break-word;
@@ -425,11 +427,26 @@
                 // height: 500px;
                 .graph-header {
                     padding-left: 1.6rem;
+                    .header{
+                        .inter-display-semi-bold{
+                            cursor: pointer;
+                        }
+                    }
                 }
-
+                .custom-label{
+                  padding-top: 0;
+                  padding-bottom: 1.5rem;
+                }
                 .chartArea{
-                    height: 37rem;
+                    height: 34.3rem;
                 }
+            }
+            .loading-wrapper{
+              height: 51rem;
+              margin: 0;
+              .loading-animation{
+                height: 100%;
+              }
             }
         }
     }

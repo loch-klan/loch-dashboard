@@ -314,6 +314,12 @@ body {
 .p-r-0 {
   padding-right: 0rem;
 }
+.p-t-10{
+  padding-top: 1rem;
+}
+.p-b-20{
+  padding-bottom: 2rem;
+}
 
 // COLOR
 .grey-636 {
@@ -501,8 +507,9 @@ body {
 }
 
 .blur-effect {
-  filter: blur(6px);
+  filter: blur(3px);
   user-select: none;
+  pointer-events: none;
 }
 
 
@@ -1329,6 +1336,11 @@ form {
       // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
     }
   }
+  &.fix-width{
+    .tooltip-inner{
+      width: 39rem;
+    }
+  }
 
   &.wallet-tooltip {
     .tooltip-inner {
@@ -1626,6 +1638,13 @@ form {
 }
 
 
+.loading-wrapper{
+  background-color: $secondary;
+  padding: 5rem;
+  box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+  border-radius: 1.2rem;
+  margin-bottom: 3.2rem;
+}
 // loading animation on API call
 .loading-animation {
   display: flex;
@@ -1659,6 +1678,7 @@ form {
       font-size: 1rem;
 
       h3 {
+        line-height: 21px;
         font-size: 1.6rem;
       }
     }

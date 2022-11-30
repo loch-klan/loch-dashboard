@@ -12,7 +12,7 @@ import CloseBtn from "../../assets/images/icons/CloseBtn.svg"
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin } from "../onboarding//Api";
-import { updateUserWalletApi } from './Api';
+import { getDetectedChainsApi, updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
 import { AddWalletAddress } from '../../utils/AnalyticsFunctions';
@@ -26,6 +26,7 @@ class FixAddModal extends BaseReactComponent {
             id: `wallet${addWalletList.length + 1}`,
             address: "",
             coins: [],
+            displayAddress: "",
             wallet_metadata: {}
         }]
         this.state = {
@@ -114,7 +115,7 @@ class FixAddModal extends BaseReactComponent {
     componentDidMount() {
         this.props.getAllCoins()
         getAllWalletApi(this)
-
+        getDetectedChainsApi(this)
         const fixWallet = []
         JSON.parse(localStorage.getItem("addWallet")).map((e) => {
             if (e.coinFound !== true) {
@@ -131,6 +132,7 @@ class FixAddModal extends BaseReactComponent {
             id: `wallet${this.state.addWalletList.length + 1}`,
             address: "",
             coins: [],
+            displayAddress: "",
             wallet_metadata: {}
         })
         this.setState({
@@ -294,6 +296,7 @@ class FixAddModal extends BaseReactComponent {
                 id: 'wallet1',
                 address: "",
                 coins: [],
+                displayAddress: "",
                 wallet_metadata: {}
             })
         }
@@ -320,6 +323,11 @@ class FixAddModal extends BaseReactComponent {
             // }
             if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
                 isDisableFlag = true;
+                e.coins.map((a)=>{
+                    if(a.chain_detected===true){
+                        isDisableFlag = false;
+                    }
+                })
             }
         })
         return isDisableFlag;
@@ -412,6 +420,7 @@ class FixAddModal extends BaseReactComponent {
                                 <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} key={index} isLoaded={true}></CustomChip>
                                 :
                                 elem.coins.length === this.props.OnboardingState.coinsList.length
+                                // elem.coins.length === 1
                                     ?
                                     // UNRECOGNIZED WALLET
                                     <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
@@ -507,6 +516,7 @@ class FixAddModal extends BaseReactComponent {
                                         isIcon={true}
                                         IconImage={LockIcon}
                                         isInfo={true}
+                                        className={"fix-width"}
                                     ><Image src={InfoIcon} className="info-icon" /></CustomOverlay>
                                 </p>
 

@@ -213,6 +213,9 @@
                         margin-left: 0.5rem;
                       }
                     }
+                    .info-icon{
+                      width: 1.6rem;
+                    }
                 }
 
                 .add-wallet-btn{
@@ -241,7 +244,7 @@
                     .chip-wrapper{
                         top:0.7rem
                     }
-                    
+
                     .delete-icon {
                         box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
                         position: absolute;
@@ -298,7 +301,7 @@
                     border-radius: 0.8rem;
                 }
             }
-            
+
         }
     }
 }

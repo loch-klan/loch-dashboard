@@ -64,7 +64,7 @@ class AddWallet extends BaseReactComponent {
         //     this.props.handleShowSignText(false)
         // }
         this.setState({
-            addButtonVisible: this.state.walletInput[0].address,
+            addButtonVisible: this.state.walletInput.some((wallet)=>wallet.address ? true : false),
             walletInput: walletCopy
         });
         if (this.timeout) {
@@ -153,16 +153,13 @@ class AddWallet extends BaseReactComponent {
             isDisableFlag = true;
         }
         this.state.walletInput.map((e) => {
-            // if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
-            //     isDisableFlag = true;
-            // }
-            if (e.address && e.coins.length < 1) {
-              isDisableFlag = true;
-            } else{
-              if(e.coins.some((coin)=>coin.chain_detected)){
-                // console.log('Heyyyyy');
-                isDisableFlag = false;
-              }
+            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
+                isDisableFlag = true;
+                e.coins.map((a)=>{
+                  if(a.chain_detected===true){
+                      isDisableFlag = false;
+                  }
+              })
             }
         })
 

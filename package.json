@@ -17,7 +17,7 @@
     "highcharts": "^10.2.1",
     "highcharts-react-official": "^3.1.0",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
@@ -49,7 +49,7 @@
     "deploy:dev": "aws s3 sync --profile loch build/ s3://staging.loch.com",
     "build:prod": "GENERATE_SOURCEMAP=false ENV=production npm run build",
     "predeploy:prod": "npm run build:prod",
-    "deploy:prod": "aws s3 sync --profile loch build/ s3://staging.loch.com",
+    "deploy:prod": "aws s3 sync --profile loch build/ s3://app.loch.one",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "generate": "plop"

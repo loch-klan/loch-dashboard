@@ -1,3 +1,4 @@
+import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import postLoginInstance from './../../utils/PostLoginAxios';
@@ -72,6 +73,84 @@ export const verifyEmailApi = (ctx, data) =>{
   })
 }
 
+export const getDetectedChainsApi = (ctx) =>{
+  postLoginInstance.post("wallet/user-wallet/get-detected-chains")
+  .then((res)=>{
+    if(!res.data.error){
+      // console.log('res',res);
+      // CHAIN LIST
+      let chainList = [];
+      ctx.props.OnboardingState.coinsList.map((item)=>{
+          return(chainList.push({
+            coinCode: item.code,
+            coinSymbol: item.symbol,
+            coinName: item.name,
+            chain_detected: false,
+            coinColor: item.color
+          }))
+        })
+      // console.log('chainList',chainList);
+      let addWallet = JSON.parse(localStorage.getItem("addWallet"));
+      // console.log('addWallet',addWallet);
+      let xyz = Object.keys(res.data.data.chains).map((chain)=>({
+        address: chain,
+        display_address: res.data.data.chains[chain].display_address,
+        chains: res.data.data.chains[chain].chains
+      }))
+      // console.log('xyz',xyz);
+      addWallet.map((wallet)=>{
+        let userWallet = null;
+        xyz.map((item)=>{
+          if(item.address === wallet.address || item.display_address === wallet.address){
+            userWallet = item
+          }
+        })
+        let chainsDetected = chainList.map((chain)=>{
+          let dummyChain = {...chain}
+          let isDetected = false;
+          userWallet.chains.map((userChain)=>{
+            if(userChain.code === dummyChain.coinCode){
+              isDetected = true
+            }
+          })
+          dummyChain.chain_detected = isDetected;
+          return dummyChain
+        });
+      wallet.coins = chainsDetected
+      })
+      // console.log('addWallet',addWallet);
+      ctx.setState({addWalletList: addWallet})
+      addWallet && localStorage.setItem('addWallet',JSON.stringify(addWallet))
+    } else{
+      toast.error(res.data.message || "Something went wrong");
+    }
+  })
+   .catch((err)=>{
+    console.log("fixwallet",err)
+  })
+}
+
+export const exportDataApi = (data,ctx) =>{
+  postLoginInstance.post(ctx.state.selectedExportItem.apiurl,data)
+  .then((res)=>{
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    // link.setAttribute('download', 'file.txt');
+    link.setAttribute('download', `${ctx.state.selectedExportItem.fileName}-${moment(ctx.state.fromDate).format("ll")}-${moment(ctx.state.toDate).format("ll")}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    ctx.setState({
+      loadingExportFile:false,
+    })
+  })
+  .catch((err)=>{
+    ctx.setState({
+      loadingExportFile:false,
+    })
+    console.log("Catch", err);
+  })
+}
 
 // export const resetPasswordApi = (ctx, data) => {
 //   preLoginInstance
