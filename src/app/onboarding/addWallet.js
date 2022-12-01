@@ -263,7 +263,7 @@ class AddWallet extends BaseReactComponent {
                               ? "is-valid"
                               : null
                           }`}
-                          placeholder="Paste any wallet address here"
+                          placeholder="Paste any wallet address or ENS here"
                           title={c.address || ""}
                           // style={{paddingRight: divWidth}}
                           style={getPadding(
