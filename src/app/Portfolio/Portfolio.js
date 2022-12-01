@@ -766,7 +766,7 @@ this.setState({graphLoading: true})
                       }}
                     />
                   </div>
-                  <div className="portfolio-section ">
+                  <div className="portfolio-section" style={{minWidth: "85rem", overflow: "hidden"}}>
                     <PieChart
                       userWalletData={
                         this.props.portfolioState &&
