@@ -39,7 +39,7 @@ export const getGraphData = (arr) => {
             label: (ctx) => {
               // console.log('ctx',ctx);
               let label00 = ctx.label;
-              let label0 = "Fees: $" + numToCurrency(ctx.raw) + "/" + numToCurrency(ctx.dataset.totalFeesAmount[ctx.dataIndex]) + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
+              let label0 = "Fees: $" + numToCurrency(ctx.raw) + "/" + ctx.dataset.totalFeesAmount[ctx.dataIndex] + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
               let label1 = "Volume: $" + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
               return [label00, label0, label1];
             },
@@ -230,7 +230,7 @@ export const getCounterGraphData = (arr) => {
             // // let label3 = "USD Volume: " + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex])
             // return [label00, label0, label1 ];
             let label00 = ctx.label;
-              let label0 = "Fees: $" + numToCurrency(ctx.raw) + "/" + numToCurrency(ctx.dataset.totalFeesAmount[ctx.dataIndex]) + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
+              let label0 = "Fees: $" + numToCurrency(ctx.dataset.totalFeesAmount[ctx.dataIndex]);
               let label1 = "Volume: $" + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
               return [label00, label0, label1];
             // return "$" + numToCurrency(ctx.raw)
