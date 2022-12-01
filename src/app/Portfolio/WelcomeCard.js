@@ -23,7 +23,7 @@ export default function WelcomeCard(props) {
     },[])
     const refOne = useRef(null)
     const handleClickOutside = (e) =>{
-    if(!refOne.current.contains(e.target)){
+    if(!refOne.current?.contains(e.target)){
         // console.log("Clicked outside ...");
         props.handleToggleAddWallet();
         // setAddWallet(true);
@@ -71,7 +71,7 @@ export default function WelcomeCard(props) {
                         {/* <Button className='secondary-btn' onClick={props.handleManage} >Manage wallets</Button>
                         <Button className="primary-btn" onClick={props.handleAddModal}>Add wallet address</Button> */}
                         <Button className='inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet' 
-                        // onClick={props.handleManage} 
+                        onClick={props.handleManage} 
                         >
                             <Image class="manage-wallet" src={manageWallet===true?ManageWallet:""}/>
                             Manage wallets

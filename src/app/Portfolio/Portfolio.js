@@ -752,6 +752,8 @@ this.setState({graphLoading: true})
                 <div className="portfolio-container page">
                   <div className="portfolio-section">
                     <WelcomeCard
+                      toggleAddWallet={this.state.toggleAddWallet}
+                      handleToggleAddWallet={this.handleToggleAddWallet}
                       decrement={true}
                       assetTotal={
                         this.props.portfolioState &&

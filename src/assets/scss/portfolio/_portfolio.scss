@@ -51,17 +51,13 @@
             background-color: $secondary;
             box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
             border-radius: 1.2rem;
-<<<<<<< HEAD
             position: relative;
-
-=======
             &.line{
                 margin-top: 0;
             }
->>>>>>> 3fe209aea5b3a3f1d04ddb2c98fa8513fc1f2cf7
             .welcome-card {
                 
-                margin-bottom: 1.3rem;
+                margin-bottom: 2.3rem;
                 .welcome-card-upper-section{
                     display: flex;
                     align-items: flex-start;
@@ -81,7 +77,6 @@
                         color: $grey-969;
                     }
 
-<<<<<<< HEAD
                     // .welcome-btn {
                     //     button {
                     //         padding: 1.65rem 2.8rem;
@@ -102,31 +97,6 @@
                     //         }
                     //     }
                     // }
-=======
-                    .welcome-btn {
-                        button {
-                            padding: 1.65rem 2.8rem;
-                        }
-
-                        .primary-btn {
-                            &:hover:not([disabled]) {
-                                border-color: $secondary;
-                                box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
-                                color: $black-191;
-                                background-color: $secondary;
-                            }
-                        }
-
-                        .secondary-btn {
-                            margin-right: 2.4rem;
-
-                            &:hover {
-                                background-color: $black-191;
-                                color: $secondary;
-                            }
-                        }
-                    }
->>>>>>> 3fe209aea5b3a3f1d04ddb2c98fa8513fc1f2cf7
                 }
 
                 .welcome-section-right {
