@@ -186,7 +186,7 @@ export const getGraphData = (arr) => {
 export const getCounterGraphData = (arr) => {
   // console.log(arr, "array");
 
-  const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_volume)))).length;
+  const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees)))).length;
   // console.log(digit, "indise digit")
   // const labels = arr.map((e) => e.chain.name);
   const labels = arr.map((e) => e._id);
@@ -354,7 +354,7 @@ export const getCounterGraphData = (arr) => {
     labels,
     datasets: [
       {
-        data: arr.map((e) => e.total_volume),
+        data: arr.map((e) => e.total_fees),
         // backgroundColor: arr.map((e) => e.chain.color + "4D"),
         // borderColor: arr.map((e) => e.chain.color),
         backgroundColor: [
