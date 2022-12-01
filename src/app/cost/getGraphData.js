@@ -39,7 +39,7 @@ export const getGraphData = (arr) => {
             label: (ctx) => {
               // console.log('ctx',ctx);
               let label00 = ctx.label;
-              let label0 = "Fees: $" + numToCurrency(ctx.raw) + " - " + ctx.dataset.totalFeesAmount[ctx.dataIndex]?.toFixed(6) + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
+              let label0 = "Fees: $" + numToCurrency(ctx.raw) + " or " + ctx.dataset.totalFeesAmount[ctx.dataIndex]?.toFixed(6) + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
               let label1 = "Volume: $" + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
               return [label00, label1, label0];
             },
