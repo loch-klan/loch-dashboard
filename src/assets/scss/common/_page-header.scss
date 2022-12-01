@@ -24,12 +24,13 @@
                     .breadcrumb-item{
                         padding-left: 1.4rem;
                         text-transform: capitalize;
+                        cursor : pointer;
                         a{
                             color:$grey-ADA;
                         }
-                        .active{
-                            color:$grey-636;
-                        }
+                    }
+                    .active{
+                        color:$grey-636;
                     }
                     .breadcrumb-item:nth-child(1){
                         padding: 0rem;
@@ -37,6 +38,13 @@
                 }
             }
             .header {
+                display: flex;
+                align-items:center;
+                .show-img{
+                    padding:1.8rem;
+                    background-color: $grey-E5E;
+                    border-radius: 1.6rem;
+                }
                 h4 {
                     color: $primary;
                 }
@@ -53,6 +61,18 @@
                 padding: 1.65rem 2.76rem;
                 border: 0.1rem solid #171717;
                 line-height: 1.9rem;
+            }
+            .primary-btn {
+                &:hover:not([disabled]) {
+                    border-color: $secondary;
+                    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                    color: $black-191;
+                    background-color: $secondary;
+                }
+            }
+            .view-more{
+              cursor: pointer;
+              @include font(#4A4B4D, "Inter-SemiBold", 1.6rem, 600, 19px);
             }
         }
         .history-header{

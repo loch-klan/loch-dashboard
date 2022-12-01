@@ -20,7 +20,7 @@ export const getCoinRate = () => {
     };
 };
 
-export const getUserWallet = (wallet) => {
+export const getUserWallet = (wallet,ctx) => {
     return function (dispatch, getState) {
         let data = new URLSearchParams();
         data.append("chain", wallet.coinCode);
@@ -36,26 +36,13 @@ export const getUserWallet = (wallet) => {
                         userWalletList: userWalletList
                     }
                 });
+                if(ctx){
+                  ctx.setState({isLoading:false})
+                }
             })
             .catch((err) => {
                 console.log("Catch", err);
             });
-
-        // && res.data.data.chain_detected
-        // if (!res.error && res.data) {
-        //     dispatch({
-        //         type: USER_WALLET_LIST,
-        //         payload: {
-        //             id: wallet.id,
-        //             coinCode: wallet.coinCode,
-        //             coinSymbol: wallet.coinSymbol,
-        //             coinName: wallet.coinName,
-        //             address: wallet.address,
-        //             chain_detected: res.data.data.chain_detected,
-        //             isLast: wallet.isLast
-        //         }
-        //     });
-        // }
     };
 };
 
@@ -87,7 +74,9 @@ export const getDetailsByLinkApi = (link,ctx) => {
                   obj['id'] = `wallet${i+1}`;
                   obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
                   addWallet.push(obj);
+
               }
+              ctx.setState({isLoading:false})
               } else{
                 toast.error(res.data.message || "Something Went Wrong")
               }
@@ -96,3 +85,22 @@ export const getDetailsByLinkApi = (link,ctx) => {
               console.log("Catch", err);
           });
 };
+
+export const getAssetGraphDataApi=(data,ctx)=>{
+    postLoginInstance
+            .post("wallet/user-wallet/get-asset-value-graph", data)
+            .then((res) => {
+                console.log('res',res);
+                if(!res.data.error){
+                  ctx.setState({
+                    assetValueData: res.data.data.asset_value_data,
+                    graphLoading: false,
+                  })
+                } else{
+                  toast.error(res.data.message || "Something Went Wrong")
+                }
+            })
+            .catch((err) => {
+                console.log("Catch", err);
+            });
+}

@@ -23,7 +23,8 @@ const OnboardingReducer = (state = INITIAL_STATE, action) => {
                         coinCode: action.payload.coinCode,
                         coinSymbol: action.payload.coinSymbol,
                         coinName: action.payload.coinName,
-                        chain_detected: action.payload.chain_detected
+                        chain_detected: action.payload.chain_detected,
+                        coinColor: action.payload.coinColor
                     })
                     updateWalletList[index].coinFound = action.payload.chain_detected ? true : updateWalletList[index].coinFound
                 }

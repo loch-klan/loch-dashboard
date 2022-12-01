@@ -2,7 +2,7 @@
     display: flex;
 
     .wallet-section {
-        margin-top: 8rem;
+        margin-top: 5rem;
 
         // sortby section begin
         .sortby-section {
@@ -16,6 +16,13 @@
                     align-items: center;
                     padding: 1.2rem 1.6rem;
                     cursor: pointer;
+
+                    .rotateUp{
+                        transform:rotate(180deg)
+                    }
+                    .rotateDown{
+                        transform: rotate(0deg);
+                    }
                 }
                 // .dropdown {
                 //     margin-right: 3.6rem;
@@ -51,21 +58,19 @@
                         display: flex;
                         align-items: center;
                         // margin-right: 4.9rem;
-
+                        width:85%;
                         .wallet-img {
-                            // border-radius: 0.8rem;
-                            // background-color: #FFE7BD;
-                            // box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
-
-
+                            box-shadow: 0rem 0.4rem 0.8rem $grey-F2F , 0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.05);
+                            border-radius: 0.8rem;
                             img {
+                              border-radius: 0.8rem;
                                 width: 4.3rem;
                             }
                         }
 
-                        .wallet-name-details {
-                            display: flex;
-                            align-items: center;
+                        // .wallet-name-details {
+                            // display: flex;
+                            // align-items: center;
                             h6 {
                                 color: $black-000;
                             }
@@ -75,17 +80,26 @@
                                 border: 0.1rem solid rgba(229, 229, 230, 0.5);
                                 border-radius: 0.8rem;
                                 color: $grey-7C7;
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                                width: max-content;
+                                max-width: 20rem;
                             }
-                        }
+                        // }
 
                         .account-details {
                             display: flex;
                             align-items: center;
+                            // margin-left: 1.6rem;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
                             span {
                                 color: $grey-B0B;
-                                width: 92%;
+                                // width: 92%;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
+                                width: max-content;
+                                max-width: 20rem;
                             }
                         }
                     }
@@ -119,25 +133,16 @@
                         width: 100%;
                         overflow-x: auto;
                         margin-right: 2rem;
-                        .chip {
-                            display: flex;
-                            border-radius: 0.6rem;
-                            border:0.1rem solid $grey-CAC;
-                            background-color:rgba(229, 229, 230, 0.5);
-                            cursor: default;
+                        .coin-chip {
+                            margin-right: 1.2rem;
                             img{
                                 width:2.6rem;
                                 height:2.6rem;
-                            }
-                            .coin-percent {
-                                // border-top: 1px solid #CACBCC;
-                                color: $grey-313;
-                                // background: rgba(229, 229, 230, 0.5);
-                                padding: 0.4rem 0.6rem;
-                                // border-top-right-radius: 0.6rem;
-                                // border-bottom-right-radius: 0.6rem;
-                                // border-bottom: 1px solid #CACBCC;
-                                // border-right: 1px solid #CACBCC;
+                                border-top-left-radius: 0.55rem;
+                                border-bottom-left-radius: 0.55rem;
+                                position: relative;
+                                left: -1px;
+                                top: -1px;
                             }
                         }
                     }
@@ -145,9 +150,31 @@
                       padding: 1.65rem 2.7rem;
                       border-color: $grey-636;
                       color: $grey-636;
+                      &:hover{
+                        color: $secondary;
+                      }
                     }
                 }
             }
+            .loading-container{
+                // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                margin-bottom: 2rem;
+                padding: 0;
+                .animation-wrapper{
+                    width: 100%;
+                    background-image: url("../../images/walletCardLoadingBackground.png");
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    .loading-animation{
+                        backdrop-filter: blur(10px);
+                        border-radius: 1.2rem;
+                        width: 100%;
+                        padding-bottom: 1rem;
+                    }
+                }
+            }
+
         }
 
         //  walletcard section end

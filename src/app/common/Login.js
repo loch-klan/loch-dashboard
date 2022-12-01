@@ -29,7 +29,7 @@ class Login extends BaseReactComponent {
     return (
       <div className="login-wrapper">
         <div className="login-content">
-          <h1 className="red-hat-display-bold f-s-24">Login</h1>
+          <h1 className="inter-display-bold f-s-24">Login</h1>
           <Form onValidSubmit={this.onValidSubmit}>
             <FormElement
               valueLink={this.linkState(this, "password")}

@@ -2,11 +2,12 @@ import React from 'react'
 import BaseReactComponent from './../../utils/form/BaseReactComponent';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
-import ExitOverlayIcon from '../../assets/images/icons/ExitOverlayWalletIcon.png'
+import ExitOverlayIcon from '../../assets/images/icons/ExitOverlayWalletIcon.svg'
 import Form from '../../utils/form/Form'
 import FormElement from '../../utils/form/FormElement'
 import FormValidator from './../../utils/form/FormValidator';
-import CloseIcon from '../../assets/images/icons/close-icon.svg'
+// import CloseIcon from '../../assets/images/icons/close-icon.svg'
+import CloseIcon from '../../assets/images/icons/dummyX.svg'
 import CustomTextControl from './../../utils/form/CustomTextControl';
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 // import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
@@ -15,116 +16,341 @@ import CopyLink from '../../assets/images/icons/CopyLink.svg';
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import ShareLink from '../../assets/images/icons/ShareLink.svg'
-import {fixWallet} from './Api.js'
+import {exportDataApi, fixWalletApi} from './Api.js'
 import { BASE_URL_S3 } from '../../utils/Constant';
+import { toast } from 'react-toastify';
+import ApiModalFrame from '../../assets/images/apiModalFrame.svg';
+import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
+import { getCurrentUser } from "../../utils/ManageToken";
+import {
+
+  LeaveEmailAdded,
+  LeaveLinkCopied,
+  LeaveLinkShared,
+  LeavePrivacyMessage,
+} from "../../utils/AnalyticsFunctions.js";
+import { DatePickerControl } from '../../utils/form';
+import moment from 'moment';
+import lochClean from "../../assets/images/LochClean.gif";
+import { loadingAnimation } from '../../utils/ReusableFunctions';
+
 class ExitOverlay extends BaseReactComponent {
+  constructor(props) {
+    super(props);
+    const dummyUser = localStorage.getItem("lochDummyUser");
+    let startDate = new Date();
+    startDate.setFullYear(startDate.getFullYear() - 1);
+    this.state = {
+      dummyUser,
+      show: props.show,
+      link: `${BASE_URL_S3}portfolio/${dummyUser}`,
+      isactive: false,
+      email: "",
+      dropdowntitle: "View and edit",
+      activeli: "View and edit",
+      onHide: props.onHide,
+      showRedirection: false,
+      fromDate: startDate,
+      toDate: new Date(),
+      selectedExportItem:{
+        name: "Transaction History",
+        value: 10,
+        apiurl: "wallet/transaction/export-transactions",
+        fileName:"transaction-history-export"
+      },
+      loadingExportFile:false,
+      exportItem:[
+        {
+          name: "Transaction History",
+          value: 10,
+          apiurl: "wallet/transaction/export-transactions",
+          fileName:"transaction-history-export"
+        },
+        {
+          name: "Blockchain Gas Costs",
+          value: 20,
+          apiurl: "wallet/transaction/export-gas-fee-overtime",
+          fileName:"blockchain-gas-costs-export"
+        },
+        {
+          name: "Counterparty Costs",
+          value: 30,
+          apiurl: "wallet/transaction/export-counter-party-volume-traded",
+          fileName:"counterparty-costs-export"
+        },
+        // {
+        //   name: "Average Cost Basis",
+        //   value: 40,
+        // },
+        // {
+        //   name: "Portfolio Performance",
+        //   value: 50,
+        // },
+      ]
+    };
+  }
 
-    constructor(props) {
-        super(props);
-        const dummyUser= localStorage.getItem("lochDummyUser");
-        this.state = {
-          dummyUser,
-          show: props.show,
-          link: `${BASE_URL_S3}portfolio/${dummyUser}`,
-          isactive:false,
-          email: "",
-          dropdowntitle : "View and edit",
-          activeli:"View and edit",
-          onHide : props.onHide
-        }
+  copyLink = () => {
+    navigator.clipboard.writeText(this.state.link);
+     toast.success("Share link has been copied");
+    LeaveLinkCopied({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
+  handleSave = () => {
+    let email_arr = [];
+    let data = JSON.parse(localStorage.getItem("addWallet"));
+    if (data) {
+      data.map((info) => {
+        email_arr.push(info.address);
+      });
+      const url = new URLSearchParams();
+      url.append("email", this.state.email);
+      // url.append("wallet_addresses", JSON.stringify(email_arr));
+      fixWalletApi(this, url);
+      LeaveEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+      });
     }
+  };
+  handleRedirection = () => {
+    console.log("this", this.props);
+    this.setState({ show: false, showRedirection: true });
+    this.props.handleRedirection();
+  };
+  handleSelect = (e) => {
+    console.log(e);
+    this.setState({
+      dropdowntitle: e,
+      activeli: e,
+    });
+  };
 
-    copyLink = () => {
-        navigator.clipboard.writeText(this.state.link);
-    }
-    handleSave = () => {
-        let email_arr = []
-        let data = JSON.parse(localStorage.getItem("addWallet"))
-        if (data) {
-            data.map((info) => {
-                email_arr.push(info.address)
-            })
-            const url = new URLSearchParams()
-            url.append('user_name', this.state.email);
-            url.append('wallet_addresses', JSON.stringify(email_arr));
-            this.props.fixWallet(this, url)
-        }
-    }
-    handleSelect = (e) => {
-        console.log(e)
-        this.setState({
-            dropdowntitle: e,
-            activeli: e,
+  shareLink = () => {
+    LeaveLinkShared({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
 
-        })
-    }
+  leavePrivacy = () => {
+    LeavePrivacyMessage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // console.log("on hover privacy msg");
+  };
 
+  handleFromDate = () => {
+    this.setState({ toDate: "" });
+  };
 
-    render() {
+  handleExportNow = ()=>{
+    // console.log('Export');
+    this.setState({loadingExportFile : true})
+    const data = new URLSearchParams();
+    data.append("start_datetime", moment(this.state.fromDate).format("X"));
+    data.append("end_datetime", moment(this.state.toDate).format("X"));
+    exportDataApi(data,this);
+  }
 
-        return (
-            <Modal
-                show={this.state.show}
-                className="exit-overlay-form"
-                backdrop="static"
-                size="lg"
-                dialogClassName={"exit-overlay-modal"}
-                centered
-                aria-labelledby="contained-modal-title-vcenter"
-                backdropClassName="exitoverlaymodal"
-            >
-                <Modal.Header>
-                    <Image src={ExitOverlayIcon}
-                        className="exitOverlayIcon" />
+  handleSelectedExportItem = (item,e) => {
+    e.currentTarget.classList.add('active')
+    this.setState({selectedExportItem:item})
+  }
 
-                    <div className="closebtn" onClick={this.state.onHide}>
-                        <Image src={CloseIcon} />
-                    </div>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className='exit-overlay-body'>
-                        <h6 className='inter-display-medium f-s-20 lh-24 '>Don’t lose your data</h6>
-                        <p className='inter-display-medium f-s-16 lh-19 grey-7C7'>
-                            Access your data again through the unique reusable link,
-                        </p>
-                        <p className='inter-display-medium f-s-16 lh-19 grey-7C7 m-b-10'>
-                            or link your email
-                        </p>
-                        <div className="email-section">
-                            <Form onValidSubmit={this.handleSave}>
-                                <FormElement
-                                    valueLink={this.linkState(this, "email")}
-                                    // label="Email Info"
-                                    required
-                                    validations={[
-                                        {
-                                            validate: FormValidator.isRequired,
-                                            message: "Field cannot be empty"
-                                        },
-                                        {
-                                            validate: FormValidator.isEmail,
-                                            message: "Please enter a valid email"
-                                        }
-                                    ]}
-                                    control={
-                                        {
-                                            type: CustomTextControl,
-                                            settings: {
-                                                placeholder: "Email"
-                                            }
-                                        }
-                                    }
-                                />
-                                <div className='save-btn-section'>
-                                    <Button className={`inter-semi-bold f-s-16 lh-19 white save-btn ${this.state.email ? "active" : ""}`}
-                                        type="submit">Save</Button>
-                                </div>
-                            </Form>
-                        </div>
-                        <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-28">or</p>
-                        <div className='m-b-24 links'>
-                            <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">{this.state.link}</div>
-                            {/* <div className='edit-options'>
+  submit = () =>{
+    console.log('Hey');
+  }
+
+  render() {
+    return (
+      <Modal
+        show={this.state.show}
+        className="exit-overlay-form"
+        // backdrop="static"
+        onHide={this.state.onHide}
+        size="lg"
+        dialogClassName={"exit-overlay-modal"}
+        centered
+        aria-labelledby="contained-modal-title-vcenter"
+        backdropClassName="exitoverlaymodal"
+      >
+        {this.state.showRedirection &&
+          toast.success(
+            <div className="custom-toast-msg">
+              <div>Successful</div>
+              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                Please check your mailbox for the verification link
+              </div>
+            </div>
+          )}
+        <Modal.Header>
+          {
+          (this.props.modalType === "apiModal" || this.props.modalType === "exportModal")
+          ?
+            <div className="api-modal-header">
+              <Image src={this.props.iconImage} />
+            </div>
+          :
+            <div className="exitOverlayIcon">
+              <Image src={ExitOverlayIcon} />
+            </div>
+          }
+          <div className="closebtn" onClick={this.state.onHide}>
+            <Image src={CloseIcon} />
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          {
+          (this.props.modalType === "apiModal" || this.props.modalType === "exportModal") ?
+            <div className={this.props.modalType === "exportModal" ? "export-modal-body" : "api-modal-body"}>
+              <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">
+                {this.props.headerTitle}
+              </h6>
+              <p className="inter-display-regular f-s-13 lh-16 grey-B0B">
+                {
+                  this.props.modalType === "apiModal"
+                  ? "Personalized digital asset intelligence via API"
+                  : "Export your exisiting data from Loch"
+                }
+              </p>
+              {
+                this.props.modalType === "apiModal"
+                ?
+                <div className="api-modal-frame">
+                  <Image src={ApiModalFrame} />
+                  <p className="inter-display-regular f-s-13 lh-16 black-191">
+                    This feature is coming soon
+                  </p>
+                </div>
+                :
+                <div className='export-body'>
+                  <div className='export-timeline'>
+                    <Form onValidSubmit={this.submit}>
+                      <div className='timeline-wrapper'>
+                      <span className='inter-display-medium f-s-16 lh-19 black-191'>Export data from </span>
+                    <FormElement
+                    valueLink={this.linkState(this,"fromDate",this.handleFromDate)}
+                    required
+                    validations={[
+                      {
+                        validate: FormValidator.isRequired,
+                        message: "From date cannot be empty",
+                      }
+                    ]}
+                    control={{
+                      type: DatePickerControl,
+                      settings: {
+                        placeholder: "From Date",
+                        showDateIcon: false,
+                      },
+                    }}
+                  />
+                  <span className='inter-display-medium f-s-16 lh-19 black-191'>to</span>
+                  <FormElement
+                    valueLink={this.linkState(this,"toDate")}
+                    required
+                    validations={[
+                      {
+                        validate: FormValidator.isRequired,
+                        message: "To date cannot be empty",
+                      }
+                    ]}
+                    control={{
+                      type: DatePickerControl,
+                      settings: {
+                        placeholder: "To Date",
+                        minDate: this.state.fromDate || new Date(),
+                        showDateIcon: false,
+                      },
+                    }}
+                  />
+                  </div>
+                </Form>
+              </div>
+                  <div className='export-item-wrapper'>
+                    {
+                      this.state.exportItem.map((item)=>{
+                        return(
+                          <span className={this.state.selectedExportItem.value===item.value?"inter-display-medium f-s-16 lh-19 grey-636 export-item active":`inter-display-medium f-s-16 lh-19 grey-636 export-item`} onClick={(e)=>this.handleSelectedExportItem(item,e)}>{item.name}</span>
+                        )
+                      })
+                    }
+                    {/* <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span> */}
+                  </div>
+                  {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
+                  {/* <div onClick={()=>this.handleExportNow()} > */}
+                    {this.state.loadingExportFile===true
+                      ?
+                        // <Image src={lochClean} className='loading-export'/>
+                        <Button className="primary-btn">{loadingAnimation()}</Button>
+                      :
+                      <Button className="primary-btn" onClick={()=>this.handleExportNow()}>
+                        Export Now
+                      </Button>
+                    }
+                  {/* </div> */}
+                </div>
+              }
+
+            </div>
+            : (
+            <div className="exit-overlay-body">
+              <h6 className="inter-display-medium f-s-20 lh-24 ">
+                Don’t lose your data
+              </h6>
+              <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
+                Access your data again through the unique reusable link,
+              </p>
+              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-10">
+                or link your email
+              </p>
+              <div className="email-section">
+                <Form onValidSubmit={this.handleSave}>
+                  <FormElement
+                    valueLink={this.linkState(this, "email")}
+                    // label="Email Info"
+                    required
+                    validations={[
+                      {
+                        validate: FormValidator.isRequired,
+                        message: "",
+                      },
+                      {
+                        validate: FormValidator.isEmail,
+                        message: "Please enter valid email id",
+                      },
+                    ]}
+                    control={{
+                      type: CustomTextControl,
+                      settings: {
+                        placeholder: "Email",
+                      },
+                    }}
+                  />
+                  <div className="save-btn-section">
+                    <Button
+                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                        this.state.email ? "active" : ""
+                      }`}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </Form>
+              </div>
+              <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-28">
+                or
+              </p>
+              <div className="m-b-24 links">
+                <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
+                  {this.state.link}
+                </div>
+                {/* <div className='edit-options'>
                                 <Image src={EditBtnImage} className="m-r-8"/>
                                 <Dropdown
                                     id="edit-option-dropdown"
@@ -134,40 +360,54 @@ class ExitOverlay extends BaseReactComponent {
                                     activetab = {this.state.activeli}
                                 />
                             </div> */}
-                        </div>
-                        <div className='copy-link-section'>
-                            <div className='m-r-42 link' onClick={this.copyLink}>
-                                <Image src={CopyLink} className="m-r-8"/>
-                                <h3 className='inter-display-medium f-s-16 lh-19 black-191'>Copy link</h3>
-                            </div>
-                            <div className='link'>
-                                <Image src={ShareLink} className="m-r-8"/>
-                                <h3 className='inter-display-medium f-s-16 lh-19 black-191'>Share</h3>
-                            </div>
-                        </div>
+              </div>
+              <div className="copy-link-section">
+                <div className="m-r-42 link" onClick={this.copyLink}>
+                  <Image src={CopyLink} className="m-r-8" />
+                  <h3 className="inter-display-medium f-s-16 lh-19 black-191">
+                    Copy link
+                  </h3>
+                </div>
+                <div className="link" onClick={this.shareLink}>
+                  <Image src={ShareLink} className="m-r-8" />
+                  <h3 className="inter-display-medium f-s-16 lh-19 black-191">
+                    Share
+                  </h3>
+                </div>
+              </div>
 
-                        <div className='m-b-36 footer'>
-                            <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">At Loch, we care intensely about your privacy and anonymity.</p>
-                            <CustomOverlay
-                                text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
-                                position="top"
-                                isIcon={true}
-                                IconImage={LockIcon}
-                                isInfo={true}
-                            ><Image src={InfoIcon} className="info-icon" /></CustomOverlay>
-                        </div>
-                    </div>
-
-                </Modal.Body>
-            </Modal >
-        )
-    }
+              <div className="m-b-36 footer">
+                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                  At Loch, we care intensely about your privacy and anonymity.
+                </p>
+                <CustomOverlay
+                  text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                  position="top"
+                  isIcon={true}
+                  IconImage={LockIcon}
+                  isInfo={true}
+                  className={"fix-width"}
+                >
+                  <Image
+                    src={InfoIcon}
+                    className="info-icon"
+                    onMouseEnter={this.leavePrivacy}
+                  />
+                </CustomOverlay>
+              </div>
+            </div>
+          )
+          }
+        </Modal.Body>
+      </Modal>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
-    fixWallet
+  fixWalletApi
 }
 ExitOverlay.propTypes = {
 };

@@ -194,7 +194,7 @@ class FileUploader extends BaseReactComponent {
                 {/* <h2>Upload Banner</h2> */}
                 {/* <span>+</span> */}
                 <Image src={plusIcon} className="plus-icon" />
-                <p className="red-hat-display-medium f-s-14">Browse to choose file</p>
+                <p className="inter-display-medium f-s-14">Browse to choose file</p>
               </label>
               <input
                 type='file'

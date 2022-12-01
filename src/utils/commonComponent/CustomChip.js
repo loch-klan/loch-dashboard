@@ -1,7 +1,7 @@
 import { Badge, Image } from "react-bootstrap";
 import CustomOverlay from "./CustomOverlay";
-import unrecognised from '../../image/unrecognised.png';
-import { loadingAnimation } from "../ReusableFunctions";
+import unrecognized from '../../image/unrecognized.svg';
+import { lightenDarkenColor, loadingAnimation } from "../ReusableFunctions";
 
 function CustomChip({ coins, isLoaded, id }) {
     let sortedCoins = coins ? coins.sort((a, b) => a.coinName - b.coinName) : null;
@@ -15,7 +15,7 @@ function CustomChip({ coins, isLoaded, id }) {
                             ?
                             <div className="chip-wrapper" id={id}>
                                 <div className="chip-container-dual">
-                                <Image src={sortedCoins[0].coinSymbol} />
+                                <Image src={sortedCoins[0].coinSymbol} style={{border: `1px solid ${lightenDarkenColor(sortedCoins[0].coinColor,-0.15)} `}}/>
                                     <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
                                         {sortedCoins[0].coinName}</Badge>
                                 </div>
@@ -31,7 +31,7 @@ function CustomChip({ coins, isLoaded, id }) {
                             :
                             <div className="chip-wrapper" id={id}>
                                 <div className="chip-container">
-                                <Image src={sortedCoins[0].coinSymbol} />
+                                <Image src={sortedCoins[0].coinSymbol} style={{border: `1px solid ${lightenDarkenColor(sortedCoins[0].coinColor,-0.15)} `}} />
                                     <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
                                         {sortedCoins[0].coinName}</Badge>
                                 </div>
@@ -39,7 +39,7 @@ function CustomChip({ coins, isLoaded, id }) {
                         :
                         <div className="chip-wrapper" id={id}>
                             <div className="chip-container">
-                            <Image src={unrecognised} className="unrecognised" />
+                            <Image src={unrecognized} className="unrecognized" style={{border: `1px solid ${lightenDarkenColor("#CACBCC",-0.15)} `}} />
                                 <Badge className="inter-display-medium f-s-13 lh-16 grey-313">Unrecognized</Badge>
                             </div>
                         </div>

@@ -9,6 +9,7 @@ import FormElement from "../../utils/form/FormElement";
 // import { Col, Container, Row } from 'react-bootstrap';
 import {signIn,verifyUser }from './Api.js'
 import FormValidator from '../../utils/form/FormValidator';
+import { EmailAddressAdded } from "../../utils/AnalyticsFunctions.js";
 class SignIn extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -34,12 +35,14 @@ class SignIn extends BaseReactComponent {
     onValidSubmit = (done, event) => {
         const data = new URLSearchParams()
         if(this.state.email && !this.state.isVerificationRequired || this.props.activemodal === "signIn"){
-            data.append("email",this.state.email)
+          data.append("email", this.state.email)
+          EmailAddressAdded({email_address: this.state.email, session_id: "None"});
             signIn(this,data)
         } else if (this.state.text && this.state.isVerificationRequired){
             data.append("email",this.state.email)
-            data.append("otp_token",this.state.text)
-            verifyUser(this,data)
+          data.append("otp_token", this.state.text)
+          
+            verifyUser(this, data);
         }
       };
 
@@ -97,7 +100,15 @@ class SignIn extends BaseReactComponent {
                           }
                           </div>
                           </div>
-                            <CustomButton className={`primary-btn send-verification ${(this.state.email || this.state.text) ? "" : "inactive-state"}`} type={"submit"} buttonText={!this.state.isVerificationRequired || this.props.activemodal ==="signIn"  ? "Send verification" :"Enter code"} />
+                            <CustomButton 
+                            className={`primary-btn send-verification ${(this.state.email || this.state.text) 
+                            ? 
+                            "" 
+                            : 
+                            "inactive-state"}`} 
+                            type={"submit"} 
+                            buttonText={!this.state.isVerificationRequired || this.props.activemodal ==="signIn"  ? "Send verification" :"Enter code"}
+                            />
             </Form>
 
         )

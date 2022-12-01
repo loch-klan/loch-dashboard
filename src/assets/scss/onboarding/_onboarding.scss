@@ -16,11 +16,26 @@
             padding: 3.6rem;
             text-align: center;
             display: block;
-            border-top-right-radius: 1.4rem;
+            border-top-right-radius: 1.3rem;
+            border-top-left-radius: 1.3rem;
+            background-position: center;
             .ob-modal-title-icon {
                 width: 6rem;
             }
-
+            .ob-sign-modal{
+                display: flex;
+                justify-content: center;
+            .signin-icon{
+                background-color: #FFFFFF;
+                padding:2rem;
+                border-radius: 2rem;
+                box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+                img{
+                    width:2.4rem;
+                    height: 2.4rem;
+                }
+            }
+        }
             h1 {
                 padding: 2.8rem 0 1.2rem;
             }
@@ -30,6 +45,7 @@
                 left: 2.8rem;
                 top: 2.8rem;
             }
+
         }
 
         .modal-body {
@@ -200,7 +216,7 @@
             }
 
             .ob-modal-body-btn {
-                margin: 2.2rem 0 2rem;
+                margin: 2.2rem 0 2.4rem;
                 text-align: center;
 
                 .go-btn {
@@ -209,7 +225,6 @@
                     opacity: 1;
                     &:hover:not([disabled]){
                       border-color: #FFFFFF;
-                      // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
                       box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
                       color: #19191A;
                       background-color: #FFFFFF;
@@ -220,6 +235,12 @@
                     //   box-shadow: inherit;
                     //   border-color: inherit;
                     // }
+                    .spinner-chip-container{
+                      margin: 0;
+                      .spinner{
+                        margin: 0 auto;
+                      }
+                    }
                 }
 
                 .preview {
@@ -245,6 +266,7 @@
                 .info-icon {
                     margin-left: 0.5rem;
                     margin-bottom: 0.1rem;
+                    width: 1.6rem;
                 }
                 h4 {
                     margin: 3rem 0 3.4rem;
@@ -275,6 +297,13 @@
 
 .send-verification {
     margin: 2rem 0 3rem;
+    &:hover:not([disabled]){
+        border-color: #FFFFFF;
+        box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+        color: #19191A;
+        background-color: #FFFFFF;
+      }
+
 }
 
 // .email-input-field {

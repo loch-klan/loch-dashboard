@@ -1,18 +1,23 @@
 import React from 'react'
 import { Modal, Image, Button } from 'react-bootstrap'
-import closeIcon from '../../assets/images/icons/close-icon.svg'
+// import closeIcon from '../../assets/images/icons/close-icon.svg'
+import closeIcon from '../../assets/images/icons/dummyX.svg'
 import { connect } from 'react-redux';
 import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
-import unrecognisedIcon from '../../image/unrecognised.png';
+import unrecognizedIcon from '../../image/unrecognized.svg';
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
+import { lightenDarkenColor } from '../../utils/ReusableFunctions';
+import { DeleteWallet, EditSpecificWallet } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 class EditWalletModal extends BaseReactComponent {
     constructor(props) {
         super(props);
         this.state = {
             createdOn:props.createdOn,
             walletAddress: props.walletAddress,
+            displayAddress: props.displayAddress ? props.displayAddress : props.walletAddress,
             walletName: props.walletMetaData ? props.walletMetaData.id : "",
-            walletTag: props.walletMetaData ? props.walletMetaData.tag : "",
+            walletTag: props.tag ? props.tag : "",
             walletMetaData: props.walletMetaData,
             walletNameList: [],
             dropDownActive:{},
@@ -29,13 +34,49 @@ class EditWalletModal extends BaseReactComponent {
         data.append("wallet_address",this.state.walletAddress)
         data.append("wallet_id",this.state.walletName)
         data.append("tag",this.state.walletTag)
-        updateWalletApi(this,data);
+      updateWalletApi(this, data);
+
+      // const walletType = this.state.walletNameList.find(
+      //   (e) => e.id === this.state.walletName );
+      // console.log("wallet name", walletType.name);
+      // console.log("wallet address", this.state.walletAddress);
+      // console.log("wallet tag", this.state.walletTag);
+      // const blockchains = this.state.coinchips.map((e)=> e.chain.code);
+      // console.log("Blockchain", blockchains);
+      // EditSpecificWallet({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   wallet_type_selected: walletType.name,
+      //   name_tag: this.state.walletTag,
+      //   address: this.state.walletAddress,
+      //   ENS: this.state.walletAddress,
+      //   blockchains_detected: blockchains,
+      // });
+
     };
 
-    handleDelete = ()=>{
+  handleDelete = () => {
+    //  const walletType = this.state.walletNameList.find(
+    //    (e) => e.id === this.state.walletName
+    //  );
+    //  console.log("wallet name", walletType.name);
+    //  console.log("wallet address", this.state.walletAddress);
+    //  console.log("wallet tag", this.state.walletTag);
+    //  const blockchains = this.state.coinchips.map((e) => e.chain.code);
+    //  console.log("Blockchain", blockchains);
+      // DeleteWallet({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   wallet_type_selected: walletType.name,
+      //   name_tag: this.state.walletTag,
+      //   address: this.state.walletAddress,
+      //   ENS: this.state.walletAddress,
+      //   blockchains_detected: blockchains,
+      // });
         let data = new URLSearchParams()
         data.append("wallet_address",this.state.walletAddress)
         deleteWallet(this,data)
+
     }
 
     getDays = (d)=>{
@@ -50,7 +91,7 @@ class EditWalletModal extends BaseReactComponent {
         const chips = this.state.coinchips.map((e, index) => {
             return (
                 <div className='chipcontainer' key={index}>
-                    <Image src={e.chain.symbol} />
+                    <Image src={e.chain.symbol} style={{border: `1px solid ${lightenDarkenColor(e.chain.color,-0.15)} `}} />
                     <div className='inter-display-medium f-s-13 lh-16' >{e.chain.name}</div>
                 </div>
             )
@@ -79,7 +120,7 @@ class EditWalletModal extends BaseReactComponent {
                 backdropClassName="editmodal"
             >
                 <Modal.Header style={{backgroundColor: walletBdColor ? walletBdColor : "#0d0d0d"}}>
-                    <Image src={walletIcon ? walletIcon : unrecognisedIcon} className="walletIcon" />
+                    <Image src={walletIcon ? walletIcon : unrecognizedIcon} className="walletIcon" />
                     <div className="closebtn" onClick={onHide}>
                         <Image src={closeIcon} />
                     </div>
@@ -110,11 +151,11 @@ class EditWalletModal extends BaseReactComponent {
                           }
                         }}
                       />
-                      <p className='inter-display-regular f-s-13 lh-16 m-b-16 subtitle'>{ `added ${this.getDays(this.state.createdOn)} days ago`}</p>
+                      <p className='inter-display-regular f-s-13 lh-16 m-b-16 subtitle'>{ `added ${this.getDays(this.state.createdOn).toFixed(2)} days ago`}</p>
                       <div className='m-b-32 coinchips'>{chips}</div>
                       <div className='edit-form'>
                           <FormElement
-                                    valueLink={this.linkState(this, "walletAddress")}
+                                    valueLink={this.linkState(this, "displayAddress")}
                                     label="Wallet Address"
                                     disabled
                                     control={{

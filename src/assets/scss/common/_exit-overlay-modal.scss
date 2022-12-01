@@ -1,4 +1,3 @@
-
 .exitoverlaymodal.show {
     opacity: 0.5 !important;
 }
@@ -7,27 +6,48 @@
 .exit-overlay-modal {
     .modal-content {
         border-radius: 1.2rem;
-        width:78rem;
+        width: 78rem;
+
         .modal-header {
             padding: 2.8rem;
-            display: block;
-            text-align: center;
+            // display: block;
+            // text-align: center;
+            display: flex;
+            justify-content: center;
             position: relative;
             // margin-bottom: 4.2rem;
             border: none;
 
-            .exitOverlayIcon{
-                width:6rem;
-                height:6rem;
-                box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
-                margin-top:0.9rem
+            .api-modal-header {
+                img {
+                    width: 2.4rem;
+                    height: 2.4rem;
+                }
+
+                padding: 1.8rem;
+                box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
+                0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+                margin-top:1rem;
+                border-radius: 2rem;
             }
+
+            .exitOverlayIcon {
+                border-radius: 2rem;
+                padding: 1.818rem 1.717rem;
+                img{
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+            box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+            margin-top: 0.8rem;
+            }
+
             .closebtn {
                 position: absolute;
                 top: 2.8rem;
                 right: 2.8rem;
                 padding: 1.3rem;
-                background-color: $grey-F2F;
+                background-color: $drop-button-hover;
                 border-radius: 5rem;
                 cursor: pointer;
             }
@@ -41,12 +61,14 @@
         }
 
         .modal-body {
-            padding:0rem;
+            padding: 0rem;
+
             .exit-overlay-body {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 padding: 0rem 15.5rem;
+
                 h6 {
                     color: $primary;
                     margin-bottom: 0.6rem;
@@ -73,22 +95,32 @@
                                 // padding: 2.7rem 10.1rem 2.7rem 2.8rem;
                                 padding-right: 2rem !important;
                             }
-                            .is-invalid{
+
+                            .is-invalid {
                                 padding-right: 2rem !important;
                             }
                         }
 
                         .save-btn-section {
                             .save-btn {
-                                padding: 1.8rem 5.38rem;
+                                padding: 1.7rem 5.38rem;
                                 background-color: $grey-B0B;
                                 border-radius: 0.8rem;
-                                border: none;
+                                border: 1px solid $grey-B0B;
+
                             }
-                            .active{
+
+                            .active {
                                 background-color: $primary;
+                                border: 1px solid $black-191;
+                                &:hover{
+                                  background-color: $secondary;
+                                  border: 1px solid $black-191;
+                                  color: $black-191;
+                                }
                             }
-                            .save-btn:focus{
+
+                            .save-btn:focus {
                                 box-shadow: none;
                             }
                         }
@@ -104,7 +136,8 @@
                         background-color: $grey-F2F;
                         border-radius: 0.8rem;
                     }
-                    .linkInfo:hover{
+
+                    .linkInfo:hover {
                         background-color: $yellow-F5E;
                     }
 
@@ -118,7 +151,7 @@
                         .dropdown {
                             .btn-primary:not(:disabled):not(.disabled):active {
                                 border: none;
-                               
+
                             }
 
 
@@ -132,17 +165,20 @@
                                 padding: 0.8rem;
                                 font-size: 1.3rem;
                             }
-                            .active{
+
+                            .active {
                                 background-color: $grey-F2F;
                             }
+
                             // .dropdown-item {
                             //     .active {
                             //         background-color: $grey-F2F;
                             //     }
                             // }
-                            .dropdown-item:hover{
-                                background-color:$grey-F2F;
+                            .dropdown-item:hover {
+                                background-color: $grey-F2F;
                             }
+
                             .dropdown-item:active {
                                 background-color: $secondary;
                             }
@@ -171,6 +207,98 @@
                 .footer {
                     display: flex;
                 }
+            }
+
+            .api-modal-body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0rem 15.5rem;
+
+                .api-modal-frame {
+                    position: relative;
+                    text-align: center;
+                    margin-bottom: 8.7rem;
+
+                    p {
+                        // position: absolute;
+                        // bottom: 0rem;
+                        // left: 8rem;
+                        position: relative;
+                        top: -2rem;
+                    }
+                }
+            }
+
+            .export-modal-body{
+              text-align: center;
+              padding-bottom: 3.4rem;
+              .export-body{
+
+                .export-timeline{
+                  background-color: $grey-E5E;
+                  padding: 3.2rem 0 2.2rem;
+                  margin: 3.2rem 0;
+                  width: 100%;
+                  .timeline-wrapper{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    span{
+                      padding: 0 1.2rem;
+                    }
+                    .form-group{
+                      // display: inline-block;
+                      width: 12.1rem;
+                      margin-bottom: 0rem;
+                      .form-control{
+                        padding: 1.2rem 1.6rem;
+                        min-height: 4rem;
+                      }
+                    }
+                  }
+                }
+                .export-item-wrapper{
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-evenly;
+                  flex-wrap: wrap;
+                  padding: 0 9.2rem;
+                  margin-bottom: 2.6rem;
+                  .export-item{
+                    padding: 1.2rem 1.6rem;
+                    margin: 2.3rem 0;
+                    cursor: pointer;
+                    &.active{
+                      padding: 1.1rem 1.5rem;
+                      border: 1px solid $black-191;
+                      border-radius: 8px;
+                      color: $black-191;
+                      box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                    }
+                  }
+                }
+                .loading-export{
+                    height:5.3rem;
+                    img{
+                        height:100%;
+                    }
+                }
+                .primary-btn{
+                  padding: 1.6rem 2.7rem;
+                  .spinner-chip-container{
+                    margin: 0;
+                    .spinner{
+                      margin: 0;
+                    }
+                  }
+                  &:hover{
+                    color: $black-191;
+                    border: 1px solid $black-191;
+                    background-color: transparent;
+                  }
+                }
+              }
             }
         }
     }

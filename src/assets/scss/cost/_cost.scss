@@ -1,3 +1,54 @@
-.cost-page-section{
-    display: flex;   
+.cost-page-section {
+    display: flex;
+
+    .cost-section {
+
+        .bar-graph-section{
+            width:100%;
+            min-height: 45rem;
+            .chartArea{
+                height: 37rem;
+            }
+        }
+        .cost-table-section {
+            background-color: $secondary;
+            border-radius: 1.2rem;
+            box-shadow: 0rem 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.12), 0rem 0.630986rem 0.630986rem -0.315493rem rgba(24, 39, 75, 0.08);
+            padding-bottom: 1.6rem;
+
+            // .transaction-table-section{
+            //     .ReactVirtualized__Table__headerRow{
+            //         .ReactVirtualized__Table__headerColumn{
+            //             // text-align: left;
+            //             // padding-left: 2.5rem ;
+            //         }
+            //     }
+            // }
+            .table-wrapper{
+
+                .ReactVirtualized__Table__Grid{
+                    .ReactVirtualized__Grid__innerScrollContainer{
+                        .ReactVirtualized__Table__row{
+                            .coin-chip{
+                                margin: 0 auto;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .loading-wrapper{
+          position: relative;
+          .graph-image{
+            filter: blur(3px);
+            width: 100%;
+          }
+          .loading-animation{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+        }
+    }
 }
