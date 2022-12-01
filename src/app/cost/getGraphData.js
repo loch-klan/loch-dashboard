@@ -221,24 +221,14 @@ export const getCounterGraphData = (arr) => {
         callbacks: {
           title: function() {}, //REMOVE TITLE
           label: (ctx) => {
-            // console.log('ctx',ctx);
-            // let label00 = ctx.label;
-            // let label0 = "USD Fees: $" + numToCurrency(ctx.raw);
-            // let label1 = "Volume: $" + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
-            // // let label1 = "Total Amount: " + numToCurrency(ctx.dataset.totalAmount[ctx.dataIndex]);
-            // // let label2 = "Total Volume: " + numToCurrency(ctx.dataset.totalFeesAmount[ctx.dataIndex])
-            // // let label3 = "USD Volume: " + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex])
-            // return [label00, label0, label1 ];
             let label00 = ctx.label;
-              let label0 = "Fees: $" + numToCurrency(ctx.dataset.totalFeesAmount[ctx.dataIndex]);
+              let label0 = "Fees: $" + numToCurrency(ctx.raw);
               let label1 = "Volume: $" + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
               return [label00, label0, label1];
-            // return "$" + numToCurrency(ctx.raw)
           },
           labelColor: function(context) {
             return {
                 padding: 10,
-                // boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.08), 0px 1px 1px rgba(0, 0, 0, 0.08)",
             };
         },
           labelTextColor: function(context) {
@@ -355,8 +345,6 @@ export const getCounterGraphData = (arr) => {
     datasets: [
       {
         data: arr.map((e) => e.total_fees),
-        // backgroundColor: arr.map((e) => e.chain.color + "4D"),
-        // borderColor: arr.map((e) => e.chain.color),
         backgroundColor: [
           "rgba(100, 190, 205, 0.3)",
           "rgba(34, 151, 219, 0.3)",
