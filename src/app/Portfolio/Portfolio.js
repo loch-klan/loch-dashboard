@@ -36,7 +36,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 
 
 import {getAssetGraphDataApi} from './Api';
-import { getAllFee } from '../cost/Api';
+import { getAllFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
 
 class Portfolio extends BaseReactComponent {
@@ -119,7 +119,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllCoins()
         this.getTableData()
       this.getGraphData()
-        getAllFee(this, false, false);
+        getAllFeeApi(this, false, false);
     }
 
     componentWillUnmount() {

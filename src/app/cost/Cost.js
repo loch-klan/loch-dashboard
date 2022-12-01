@@ -14,8 +14,8 @@ import TransactionTable from "../intelligence/TransactionTable";
 import { TimeSpentCosts } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
-import getGraphData from "./getGraphData";
-import { getAllFee } from "./Api";
+import {getCounterGraphData, getGraphData} from "./getGraphData";
+import { getAllFeeApi, getAllCounterFeeApi } from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
@@ -32,7 +32,9 @@ class Cost extends Component {
       startTime: "",
       GraphData: [],
       graphValue: null,
-      // activeFooter: 0,
+      counterGraphLoading: true,
+      counterPartyData: [],
+      counterPartyValue: null,
     };
   }
 
@@ -43,6 +45,7 @@ class Cost extends Component {
 
     this.props.getAllCoins();
     this.getBlockchainFee(0);
+    this.getCounterPartyFee(0);
   }
 
   getBlockchainFee(option) {
@@ -51,29 +54,62 @@ class Cost extends Component {
 
     console.log("headle click");
     if (option == 0) {
-      getAllFee(this, false, false);
+      getAllFeeApi(this, false, false);
       console.log(option, "All");
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
-      getAllFee(this, fiveyear, today);
+      getAllFeeApi(this, fiveyear, today);
       console.log(fiveyear, today, "5 years");
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
-      getAllFee(this, year, today);
+      getAllFeeApi(this, year, today);
       console.log(year, today, "1 year");
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
-      getAllFee(this, sixmonth, today);
+      getAllFeeApi(this, sixmonth, today);
       console.log(sixmonth, today, "6 months");
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
-      getAllFee(this, month, today);
+      getAllFeeApi(this, month, today);
       console.log(month, today, "1 month");
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
-      getAllFee(this, week, today);
+      getAllFeeApi(this, week, today);
+      console.log(week, today, "week");
+    }
+  }
+
+  getCounterPartyFee(option) {
+
+    const today = moment().unix();
+
+    console.log("headle click");
+    if (option == 0) {
+      getAllCounterFeeApi(this, false, false);
+      console.log(option, "All");
+    } else if (option == 1) {
+      const fiveyear = moment().subtract(5, "years").unix();
+
+      getAllCounterFeeApi(this, fiveyear, today);
+      console.log(fiveyear, today, "5 years");
+    } else if (option == 2) {
+      const year = moment().subtract(1, "years").unix();
+      getAllCounterFeeApi(this, year, today);
+      console.log(year, today, "1 year");
+    } else if (option == 3) {
+      const sixmonth = moment().subtract(6, "months").unix();
+
+      getAllCounterFeeApi(this, sixmonth, today);
+      console.log(sixmonth, today, "6 months");
+    } else if (option == 4) {
+      const month = moment().subtract(1, "month").unix();
+      getAllCounterFeeApi(this, month, today);
+      console.log(month, today, "1 month");
+    } else if (option == 5) {
+      const week = moment().subtract(1, "week").unix();
+      getAllCounterFeeApi(this, week, today);
       console.log(week, today, "week");
     }
   }
@@ -90,23 +126,29 @@ class Cost extends Component {
     });
   }
 
-  handleBadge = (activeBadgeList) => {
-
-     console.log(this.state.GraphData, "Graph data");
-
-    const {GraphData} = this.state;
+  handleBadge = (activeBadgeList, type) => {
+    const {GraphData, counterPartyData} = this.state;
       let graphDataMaster = [];
-      GraphData && GraphData.map((tempGraphData)=>{
-        if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
-          // console.log('Heyaaaa', tempGraphData);
-          graphDataMaster.push(tempGraphData);
-        }
-      })
-
-    this.setState({
-      graphValue: getGraphData(graphDataMaster),
-    });
-
+      let counterPartyDataMaster = [];
+      if(type === 1){
+        GraphData && GraphData.map((tempGraphData)=>{
+          if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
+            graphDataMaster.push(tempGraphData);
+          }
+        })
+        this.setState({
+          graphValue: getGraphData(graphDataMaster),
+        });
+      } else{
+        counterPartyData && counterPartyData.map((tempGraphData)=>{
+          if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
+            counterPartyDataMaster.push(tempGraphData);
+          }
+        })
+        this.setState({
+          counterPartyValue: getCounterGraphData(counterPartyDataMaster),
+        });
+      }
   }
 
   render() {
@@ -248,9 +290,9 @@ class Cost extends Component {
         },
       },
     ];
+
     return (
       <div className="cost-page-section">
-        {/* <Sidebar ownerName="" /> */}
         <div className="m-t-5 cost-section page">
           <PageHeader
             title="Costs"
@@ -271,10 +313,10 @@ class Cost extends Component {
                 showBadges={true}
                 isScrollVisible={false}
                 isScroll={true}
-                handleBadge={(activeBadgeList) => this.handleBadge(activeBadgeList)}
+                handleBadge={(activeBadgeList) => this.handleBadge(activeBadgeList, 1)}
                 // height={420}
                 // width={824}
-                comingSoon={false}
+                // comingSoon={false}
               />
               // <></>
              :
@@ -287,29 +329,41 @@ class Cost extends Component {
             }
           </div>
           <div style={{ position: "relative" }}>
-            <div className="coming-soon-div">
+            {/* <div className="coming-soon-div">
               <Image src={ExportIconWhite} className="coming-soon-img" />
               <p className="inter-display-regular f-s-13 lh-16 black-191">
                 This feature is coming soon.
               </p>
-            </div>
-
-            <BarGraphSection
+            </div> */}
+            {
+              this.state.counterPartyValue
+              ?
+              <BarGraphSection
               headerTitle="Counterparty Fees Over Time"
               headerSubTitle="Understand how much your counterparty charges you"
-              data={this.state.durationgraphdata.data}
-              options={this.state.durationgraphdata.options}
-              options2={this.state.durationgraphdata.options2}
+              data={this.state.counterPartyValue[0]}
+              options={this.state.counterPartyValue[1]}
+              options2={this.state.counterPartyValue[2]}
               coinsList={this.props.OnboardingState.coinsList}
+              timeFunction={(e) => this.getCounterPartyFee(e)}
               marginBottom="m-b-32"
               showFooter={true}
               showBadges={true}
               isScrollVisible={false}
               isScroll={true}
+              handleBadge={(activeBadgeList) => this.handleBadge(activeBadgeList, 2)}
               // height={"400px"}
               // width={"824px"}
-              comingSoon={true}
+              // comingSoon={true}
             />
+            :
+            <div className="loading-wrapper">
+              <Image src={graphImage} className="graph-image" />
+              <Loading />
+              <br/><br/>
+             </div>
+            }
+
           </div>
           <div className="m-b-40 cost-table-section">
             <div style={{ position: "relative" }}>
