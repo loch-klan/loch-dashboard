@@ -183,6 +183,9 @@
                 &.sign-in,
                 &.verification-code {
                     .form-group {
+                        .email-error{
+                            border:1px solid #DA2F58 !important;
+                        }
                         .form-control {
                             width: 59.2rem;
 
@@ -197,6 +200,18 @@
                             //     outline: none;
                             //     border-color: #19191A;
                             // }
+                        }
+                    }
+                    span{
+                        position:absolute;
+                        text-align: center;
+                        top: 1.7rem;
+                        right: 3.2rem;
+                        display: flex;
+                        align-items: center;
+                        p{
+                            margin-left:0.5rem;
+                            color: #DA2F58;
                         }
                     }
                 }
