@@ -275,6 +275,10 @@ export const getCounterGraphData = (arr) => {
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
+          // Truncate x axis labels to solve overlapping issue
+          callback: function(value, index, ticks) {
+            return this.getLabelForValue(value).substr(0, 15);
+          }
         },
         grid: {
           display: false,
@@ -307,8 +311,8 @@ export const getCounterGraphData = (arr) => {
           color: "#86909C",
           maxRotation: 0,
           minRotation: 0,
-              autoSkip: false,
-          display: false
+          autoSkip: false,
+          display: false,
         },
         grid: {
           display: false,
