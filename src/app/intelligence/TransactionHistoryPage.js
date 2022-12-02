@@ -479,7 +479,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             {
                 labelName:
                     <div className='cp history-table-header-col' id="usdValueThen" onClick={() => this.handleTableSort("usdThen")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Transaction Value Today (Then)</span>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Amount (Then)</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "usdValueThen",
@@ -511,6 +511,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         >
                             <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueToday?.toFixed(2)}</div>
                         </CustomOverlay>
+                        <span style={{padding: "2px"}}></span>
                         (
                         <CustomOverlay
                             position="top"
@@ -529,7 +530,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             {
                 labelName:
                     <div className='cp history-table-header-col' id="usdTransactionFee" onClick={() => this.handleTableSort("usdTransaction")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Transaction Fee Today (Then)</span>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Fee (Then)</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "usdTransactionFee",
@@ -560,6 +561,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             >
                               <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueToday?.toFixed(2)}</div>
                             </CustomOverlay>
+                            <span style={{padding: "2px"}}></span>
                             (<CustomOverlay
                               position="top"
                               isIcon={false}
