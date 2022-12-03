@@ -36,7 +36,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 
 
 import {getAssetGraphDataApi} from './Api';
-import { getAllFee } from '../cost/Api';
+import { getAllFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
 
 class Portfolio extends BaseReactComponent {
@@ -57,6 +57,7 @@ class Portfolio extends BaseReactComponent {
       isLoading: true,
       tableLoading: true,
       graphLoading: true,
+      barGraphLoading: true,
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       limit: 6,
       tableSortOpt: [
@@ -118,7 +119,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllCoins()
         this.getTableData()
       this.getGraphData()
-        getAllFee(this, false, false);
+        getAllFeeApi(this, false, false);
     }
 
     componentWillUnmount() {
@@ -765,7 +766,7 @@ this.setState({graphLoading: true})
                       }}
                     />
                   </div>
-                  <div className="portfolio-section ">
+                  <div className="portfolio-section" style={{minWidth: "85rem", overflow: "hidden"}}>
                     <PieChart
                       userWalletData={
                         this.props.portfolioState &&
@@ -853,11 +854,14 @@ this.setState({graphLoading: true})
                               This feature is coming soon.
                             </p>
                           </div> */}
-                         { this.state.graphValue ?
+                         { this.state.graphValue && !this.state.barGraphLoading ?
                           <BarGraphSection
                             headerTitle="Blockchain Fees over Time"
                             headerSubTitle="Understand your gas costs"
                             isArrow={true}
+                            handleClick={()=>this.props.history.push(
+                              "/costs"
+                            )}
                             data={this.state.graphValue[0]}
                             options={this.state.graphValue[1]}
                             options2={this.state.graphValue[2]}

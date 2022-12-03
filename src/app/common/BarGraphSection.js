@@ -154,7 +154,7 @@ class BarGraphSection extends Component {
       showFooter,
       footerLabels,
     } = this.state;
-    const { marginBottom, comingSoon, coinsList, activeFooter, className="" } = this.props;
+    const { marginBottom, comingSoon, coinsList, activeFooter, className="", handleClick } = this.props;
     const digit =
       data && ("" + Math.round(Math.max(...data.datasets[0].data))).length;
     const ScrollStyle = {
@@ -172,6 +172,7 @@ class BarGraphSection extends Component {
             title={headerTitle}
             subtitle={headerSubTitle}
             isArrow={isArrow}
+            handleClick={handleClick}
           />
         ) : (
           ""

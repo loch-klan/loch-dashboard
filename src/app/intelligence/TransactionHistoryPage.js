@@ -10,7 +10,7 @@ import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_
 import { searchTransactionApi, getFilters } from "./Api";
 import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
-import { SelectControl, FormElement, Form, CustomTextControl, BaseReactComponent } from "../../utils/form";
+import { FormElement, Form, CustomTextControl, BaseReactComponent } from "../../utils/form";
 import unrecognizedIcon from "../../image/unrecognized.svg";
 import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
@@ -124,7 +124,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   }
 
-
     onValidSubmit = () => {
         console.log("Sbmit")
     }
@@ -143,22 +142,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allMethod" &&
       value !== "allYear"
     ) {
-      // if (key === SEARCH_BY_ASSETS_IN) {
-      //   // merge two arrays
-      //   let dummyArr = [...arr[index].value, ...value];
-      //   // removing duplicate
-      //   let uniqueArr = [...new Set(dummyArr)];
-      //   arr[index].value = uniqueArr;
-      // } else if (key === SEARCH_BY_METHOD_IN) {
-      //   arr[index].value = [...arr[index].value, value.toString()];
-      // } else if (key === SEARCH_BY_TIMESTAMP_IN) {
-      //   // arr[index].value = value.toString();
-      //      arr[index].value = [...arr[index].value, value.toString()];
-      // }
-      // let dummyArr = [...arr[index].value, ...value];
-        // removing duplicate
-        // let uniqueArr = [...new Set(dummyArr)];
-        arr[index].value = value;
+      arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
@@ -171,22 +155,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         key: key,
         value: value,
       };
-      // if (key === SEARCH_BY_ASSETS_IN) {
-      //   obj = {
-      //     key: key,
-      //     value: value,
-      //   };
-      // } else if (key === SEARCH_BY_METHOD_IN) {
-      //   obj = {
-      //     key: key,
-      //     value: value,
-      //   };
-      // } else if (key === SEARCH_BY_TIMESTAMP_IN) {
-      //   obj = {
-      //     key: key,
-      //     value: value,
-      //   };
-      // }
       arr.push(obj);
     }
     if (search_index !== -1) {
@@ -258,13 +226,6 @@ class TransactionHistoryPage extends BaseReactComponent {
             },
           ];
         }
-        // else if (val === "usdToday") {
-        //     obj =[
-        //         {
-        //             key: SORT_BY_USD_VALUE_THEN,
-        //             value: !el.up,
-        //         }]
-        // }
         else if (val === "usdTransaction") {
           obj = [
             {
@@ -286,29 +247,10 @@ class TransactionHistoryPage extends BaseReactComponent {
       }
     });
 
-        // let check = sort.some(e => e.up === true)
-        // let arr = []
-
-        // if(check){
-        //     // when any sort option is true then sort the table with that option key
-        //     // console.log("Check true")
-        //     arr = obj
-        // }
-        // else {
-        //     // when all sort are false then sort by time in descending order
-        //     // arr.slice(1,1)
-        //     // console.log("Check False ")
-        //     arr = [{
-        //         key: SORT_BY_TIMESTAMP,
-        //         value: false,
-        //     }]
-        // }
-
-        this.setState({
-            sort: obj,
-            tableSortOpt: sort
-        });
-
+    this.setState({
+      sort: obj,
+      tableSortOpt: sort
+    });
     }
     render() {
         const { table, totalPage, totalCount, currentPage } = this.props.intelligenceState;
@@ -537,107 +479,100 @@ class TransactionHistoryPage extends BaseReactComponent {
             {
                 labelName:
                     <div className='cp history-table-header-col' id="usdValueThen" onClick={() => this.handleTableSort("usdThen")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Value Then</span>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Amount (Then)</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "usdValueThen",
                 // coumnWidth: 100,
                 className: "usd-value",
-                coumnWidth: 0.15,
+                coumnWidth: 0.25,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "usdValueThen") {
                         let chain = Object.entries(this.props.portfolioState.coinRateList)
-                        let value;
+                        let valueThen;
+                        let valueToday;
                         chain.find((chain) => {
-                            if (chain[0] === rowData.usdValueThen.id) {
-                                value = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
-                                return
-                            }
+                          if (chain[0] === rowData.usdValueToday.id) {
+                            valueToday = (rowData.usdValueToday.value * chain[1].quote.USD.price)
+                          }
+                          if (chain[0] === rowData.usdValueThen.id) {
+                            valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
+                          }
                         })
-                        // return value?.toFixed(2)
-                        return (<CustomOverlay
+                        return (
+                        <div style={{display: "flex", justifyContent: "center"}}>
+                        <CustomOverlay
                             position="top"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={value?.toFixed(2)}
+                            text={valueToday?.toFixed(2)}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
-                        </CustomOverlay>)
-                    }
-                }
-            },
-            {
-                labelName: "USD Value Today",
-                    // <div className='cp history-table-header-col' id="usdValueToday" onClick={() => this.handleTableSort("usdToday")}>
-                    //     <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Value Today</span>
-                    //     <Image src={sortByIcon} className={!this.state.tableSortOpt[6].up ? "rotateDown" : "rotateUp"} />
-                    // </div>,
-                dataKey: "usdValueToday",
-                // coumnWidth: 100,
-                className: "usd-value",
-                coumnWidth: 0.15,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-
-                    if (dataKey === "usdValueToday") {
-                        let chain = Object.entries(this.props.portfolioState.coinRateList)
-                        let value;
-                        chain.find((chain) => {
-                            if (chain[0] === rowData.usdValueToday.id) {
-                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price)
-                                return
-                            }
-                        })
-                        // return value?.toFixed(2)
-                        return (<CustomOverlay
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueToday?.toFixed(2)}</div>
+                        </CustomOverlay>
+                        <span style={{padding: "2px"}}></span>
+                        (
+                        <CustomOverlay
                             position="top"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={value?.toFixed(2)}
+                            text={valueThen?.toFixed(2)}
                         >
-
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueThen?.toFixed(2)}</div>
                         </CustomOverlay>)
+                        </div>
+                        )
                     }
                 }
             },
             {
                 labelName:
                     <div className='cp history-table-header-col' id="usdTransactionFee" onClick={() => this.handleTableSort("usdTransaction")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Transaction Fee</span>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Fee (Then)</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "usdTransactionFee",
                 // coumnWidth: 100,
                 className: "usd-value",
-                coumnWidth: 0.15,
+                coumnWidth: 0.25,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     // console.log(rowData)
                     if (dataKey === "usdTransactionFee") {
                         let chain = Object.entries(this.props.portfolioState.coinRateList)
-                        let value;
+                        let valueToday;
+                        let valueThen;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdTransactionFee.id) {
-                                value = (rowData.usdTransactionFee.value * chain[1].quote.USD.price)
-                                return
+                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price)
+                                valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice
                             }
                         })
-                        // return value?.toFixed(2)
-                        return (<CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={value?.toFixed(2)}
-                        >
-                          <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
-
-                        </CustomOverlay>)
-
+                        return (
+                          <div style={{display: "flex", justifyContent: "center"}}>
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              text={valueToday?.toFixed(2)}
+                            >
+                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueToday?.toFixed(2)}</div>
+                            </CustomOverlay>
+                            <span style={{padding: "2px"}}></span>
+                            (<CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              text={valueThen?.toFixed(2)}
+                            >
+                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueThen?.toFixed(2)}</div>
+                            </CustomOverlay>)
+                          </div>
+                        )
                     }
                 }
             },
@@ -654,26 +589,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "method") {
                         return (
-                            // <div
-                            //     className={
-                            //         `inter-display-medium f-s-13 lh-16 black-191 history-table-method
-                            //         ${rowData.method === Method.BURN ? "burn"
-                            //             :
-                            //             rowData.method === Method.TRANSFER ? "transfer"
-                            //                 :
-                            //                 rowData.method === Method.MINT ? "mint"
-                            //                     :
-                            //                     rowData.method === Method.COMMIT ? "commit"
-                            //                         :
-                            //                         ""
-                            //         }`
-                            //     }
-                            // >
                             <div className='inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer' >
                               {rowData.method}
-                                {/* {
-                                    Method.getText(rowData.method)
-                                } */}
                             </div>
                         )
                     }
