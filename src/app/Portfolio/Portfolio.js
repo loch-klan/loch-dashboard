@@ -36,7 +36,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 
 
 import {getAssetGraphDataApi} from './Api';
-import { getAllFee } from '../cost/Api';
+import { getAllFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
 
 class Portfolio extends BaseReactComponent {
@@ -126,7 +126,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllCoins()
         this.getTableData()
       this.getGraphData()
-        getAllFee(this, false, false);
+        getAllFeeApi(this, false, false);
     }
 
     componentWillUnmount() {
@@ -775,7 +775,7 @@ this.setState({graphLoading: true})
                       }}
                     />
                   </div>
-                  <div className="portfolio-section ">
+                  <div className="portfolio-section" style={{minWidth: "85rem", overflow: "hidden"}}>
                     <PieChart
                       userWalletData={
                         this.props.portfolioState &&

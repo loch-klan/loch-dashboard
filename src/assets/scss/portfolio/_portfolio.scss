@@ -9,6 +9,9 @@
   top: 50%;
   z-index: 1;
   transform: translate(-50%, -50%);
+  .coming-soon-img{
+    width: 100%;    //solve overflow issue
+  }
   p{
     position: relative;
     top: -2rem;
@@ -45,6 +48,8 @@
         }
 
         .welcome-card-section {
+          min-width: 82rem;   //solve overflow issue
+          overflow: hidden;   //solve overflow issue
             margin: 5rem 0 1rem;
             padding: 4rem 4.8rem;
             // width: 89.6rem;
@@ -374,6 +379,8 @@
     }
 
     .portfolio-over-container {
+      min-width: 82rem;   //solve overflow issue
+      overflow: hidden;   //solve overflow issue
         display: flex;
         align-items: center;
         justify-content: center;
