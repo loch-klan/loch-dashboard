@@ -241,6 +241,7 @@ class LineChart extends BaseReactComponent {
           //     }
           // },
             tooltip: {
+              shared: true,
                 useHTML: true,
                 borderRadius : 8,
                 borderColor : "#E5E7EB",
@@ -250,12 +251,29 @@ class LineChart extends BaseReactComponent {
                 padding: 12,
                 shadow:false,
                 formatter: function () {
-                  // console.log('this',this);
+                  console.log('this',this);
+                  // <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.series.userOptions.name + " " + "$"+numToCurrency(this.y) + " " + this.x }</div>
+                  let tooltipData = []
+                  this.points.map((item)=>{
+                    tooltipData.push({
+                      name: item.series.userOptions.name,
+                      x: item.x,
+                      y: item.y,
+                    })
+                  })
+                  console.log('tooltipData',tooltipData);
                     return `
                         <div class="line-chart-tooltip">
                             <div class="m-b-12 top-section">
                                 <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
-                                    <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.series.userOptions.name + " " + "$"+numToCurrency(this.y) + " " + this.x }</div>
+                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x}</div>
+                                ${tooltipData.map((item)=>{
+                                  return(
+                                    `<div class="inter-display-medium f-s-12 lh-16 black-191 ">${item.name + " - $" + numToCurrency(item.y)}</div>`
+                                  )
+                                })}
+                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">Internal Event :</div>
+                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">External Event :</div>
                                 </div>
                             </div>
                         </div>
