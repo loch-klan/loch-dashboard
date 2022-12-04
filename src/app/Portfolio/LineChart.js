@@ -264,21 +264,32 @@ class LineChart extends BaseReactComponent {
                   console.log('tooltipData',tooltipData);
                     return `
                         <div class="line-chart-tooltip">
-                            <div class="m-b-12 top-section">
+                            <div class="top-section">
                                 <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
-                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.x}</div>
+                                <div class="inter-display-medium f-s-12 lh-16 black-191 "><b>${this.x}</b></div>
                                 ${tooltipData.map((item)=>{
                                   return(
                                     `<div class="inter-display-medium f-s-12 lh-16 black-191 ">${item.name + " - $" + numToCurrency(item.y)}</div>`
-                                  )
-                                })}
-                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">Internal Event :</div>
-                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">External Event :</div>
-                                </div>
+                                    )
+                                }).join(" ")}
                             </div>
                         </div>
-
-                    `
+                      </div>
+                      <div class="line-chart-tooltip">
+                          <div class="top-section">
+                              <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
+                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">Internal Event :</div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="line-chart-tooltip">
+                          <div class="top-section">
+                              <div class="line-chart-tooltip-section tooltip-section-blue">
+                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">External Event :</div>
+                              </div>
+                          </div>
+                      </div>
+                      `
                 }
             },
             series: seriesData
