@@ -302,38 +302,38 @@ function Sidebar(props) {
                   //   (e.currentTarget.children[0].src = ExportIcon)
                   // }
                   // onClick={handleExportModal}
-                  
+
                   style={{justifyContent:"space-between"}}
                 >
-                  <span 
+                  <span
                     onMouseOver={(e) =>
                       (e.currentTarget.children[0].src = ExportIconWhite)
                     }
                     onMouseLeave={(e) =>
                       (e.currentTarget.children[0].src = ExportIcon)
                     }
-                    onClick={handleExportModal}
+                    // onClick={handleExportModal}
                   >
                     <Image src={ExportIcon} />
                     <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
                       Export
                     </Button>
                   </span>
-                  <span
+                  {/* <span
                       onMouseOver={(e) =>
                         (e.currentTarget.children[0].src = SharePortfolioIcon)
                       }
                       onMouseLeave={(e) =>
                         (e.currentTarget.children[0].src = SharePortfolioIconWhite )
                       }
-                      onClick={handleShareModal}
+                      // onClick={handleShareModal}
                       style={{marginRight:"1rem"}}
-                  > 
+                  >
                     <Image src={SharePortfolioIconWhite} />
                     <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
                       Share
                     </Button>
-                  </span>
+                  </span> */}
                 </li>
                 <li>
                   <span
