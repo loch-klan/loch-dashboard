@@ -1,6 +1,7 @@
 import { postLoginInstance } from "../../utils";
 import { toast } from "react-toastify";
 import { getAllTransactionHistory } from "./IntelligenceAction";
+import { getProfitAndLossData} from "./getProfitAndLossData";
 
 export const searchTransactionApi = (data , ctx, page = 0) => {
     return function (dispatch, getState) {
@@ -65,3 +66,25 @@ export const getFilters = (ctx) => {
             console.log("getFilter ", err)
         })
 }
+
+export const getProfitAndLossApi = (ctx, startDate, endDate) => {
+    let data = new URLSearchParams();
+     if (startDate) {
+          data.append("start_datetime", startDate);
+          data.append("end_datetime", endDate);
+        //   data.append("chains", ["ETH"]);
+     }
+     postLoginInstance.post("wallet/transaction/get-profit-loss", data)
+     .then((res) => {
+       if(!res.data.error){
+         ctx.setState({
+        //    barGraphLoading: false,
+             GraphData: res.data.data.profit_loss,
+             graphValue: getProfitAndLossData(res.data.data.profit_loss)
+         });
+       } else{
+         toast.error(res.data.message || "Something Went Wrong")
+       }
+ 
+     });
+ }

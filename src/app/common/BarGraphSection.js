@@ -36,7 +36,7 @@ class BarGraphSection extends Component {
       headerSubTitle: props.headerSubTitle,
       options: props.options ? props.options : [],
       options2: props.options2 ? props.options2 : [],
-      data: props.data ? props.data : [],
+      data: props.data ? props.data : null,
       activeFooter: 0,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
