@@ -1,3 +1,4 @@
+import { DEFAULT_PRICE } from "../../utils/Constant";
 import { numToCurrency } from "../../utils/ReusableFunctions";
 
 export const getGraphData = (arr) => {
@@ -277,7 +278,7 @@ export const getCounterGraphData = (arr) => {
           autoSkip: false,
           // Truncate x axis labels to solve overlapping issue
           callback: function(value, index, ticks) {
-            return this.getLabelForValue(value).substr(0, 15);
+            return this.getLabelForValue(value)?.substr(0, 15) || "Other";
           }
         },
         grid: {
