@@ -21,7 +21,7 @@ class LineChart extends BaseReactComponent {
           assetValueData: props.assetValueData,
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
-          title: "Year",
+          title: "Day",
           titleY:"$ USD"
         }
 
@@ -75,7 +75,15 @@ class LineChart extends BaseReactComponent {
       let series = {};
       let timestampList = [];
       let assetMaster = {};
+      let internalEvents = [];
       assetValueData && assetValueData.map((assetData)=>{
+        if(assetData.events && assetData.events.length>0){
+          internalEvents.push({
+            timestamp: assetData.timestamp,
+            event: assetData.events
+          })
+        }
+
         if(this.state.activeBadgeList.includes(assetData.chain._id) || this.state.activeBadgeList.length === 0){
           if(!timestampList.includes(assetData.timestamp)){
             timestampList.push(assetData.timestamp)
@@ -105,6 +113,7 @@ class LineChart extends BaseReactComponent {
       timestampList.sort((a, b) =>{
         return a - b;
       });
+      // console.log('internalEvents',internalEvents);
       for (const [key, value] of Object.entries(assetMaster)) {
         // seriesData.push({
         //   name: value.assetDetails.name,
@@ -120,6 +129,7 @@ class LineChart extends BaseReactComponent {
             graphData.push(0);
           }
         })
+        // console.log('seriesData',seriesData);
         seriesData.push({
             // linkedTo: key,
               name: value.assetDetails.name,
@@ -202,6 +212,51 @@ class LineChart extends BaseReactComponent {
               // min: 0,
               // max: categories.length > 4 ? 4 : categories.length - 1 ,
               // max: this.state.title === "Year" ? categories.length > 4 ? 4 : categories.length - 1 : 4,
+              // plotBands: [{
+              //   color: 'orange', // Color value
+              //   from: 3, // Start of the plot band
+              //   to: 4 // End of the plot band
+              // }],
+              plotLines: [
+                {
+                color: 'black', // Color value
+                dashStyle: 'Dash', // Style of the plot line. Default to solid
+                value: 1, // Value of where the line will appear
+                width: 2, // Width of the line
+                className: "custom-plotline",
+                label: {
+                  text: 'External Event 1',
+                  align: 'right',
+                  y: 100,
+                  x: 10,
+                  style: {
+                    fontFamily: "Inter-Medium",
+                    fontSize: "12px",
+                    color: "black"
+                  }
+                },
+                zIndex: 3,
+              },
+              {
+                color: 'black', // Color value
+                dashStyle: 'Dash', // Style of the plot line. Default to solid
+                value: 2.5, // Value of where the line will appear
+                width: 2, // Width of the line
+                className: "custom-plotline",
+                label: {
+                  text: 'External Event 2',
+                  align: 'right',
+                  y: 100,
+                  x: 10,
+                  style: {
+                    fontFamily: "Inter-Medium",
+                    fontSize: "12px",
+                    color: "black"
+                  }
+                },
+                zIndex: 3,
+              }
+            ]
             },
 
             yAxis: {
@@ -251,7 +306,7 @@ class LineChart extends BaseReactComponent {
                 padding: 12,
                 shadow:false,
                 formatter: function () {
-                  console.log('this',this);
+                  // console.log('this',this);
                   // <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.series.userOptions.name + " " + "$"+numToCurrency(this.y) + " " + this.x }</div>
                   let tooltipData = []
                   this.points.map((item)=>{
@@ -261,7 +316,7 @@ class LineChart extends BaseReactComponent {
                       y: item.y,
                     })
                   })
-                  console.log('tooltipData',tooltipData);
+                  // console.log('tooltipData',tooltipData);
                     return `
                         <div class="line-chart-tooltip">
                             <div class="top-section">
@@ -277,16 +332,34 @@ class LineChart extends BaseReactComponent {
                       </div>
                       <div class="line-chart-tooltip">
                           <div class="top-section">
-                              <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
-                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">Internal Event :</div>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="line-chart-tooltip">
-                          <div class="top-section">
-                              <div class="line-chart-tooltip-section tooltip-section-blue">
-                                <div class="inter-display-medium f-s-12 lh-16 black-191 ">External Event :</div>
-                              </div>
+                                ${internalEvents.map((item)=>{
+                                  let current = moment(item.timestamp).format("DD/MM/YYYY")
+                                  // console.log('current',current, this.x);
+                                  if(current === this.x){
+                                    return(
+                                      `
+                                      <div class="m-b-8 line-chart-tooltip-section tooltip-section-grey">
+                                        <div class="inter-display-medium f-s-12 lh-16 black-191 ">Internal Event :
+                                        ${item.event.map((eve)=>{
+                                            // console.log('eve',eve.asset.code, " - ", eve.from_address);
+                                            return (`
+                                          <div class="inter-display-medium f-s-12 lh-16 black-191 ">${eve.asset.value.toFixed(5) + " " + eve.asset.code + ` or ` + (numToCurrency(eve.asset.value * eve.asset_price)) + ` USD transferred ` + (eve.from ? `from ${eve.from || eve.from_address}` : `to ${eve.to || eve.to_address}`)}</div>
+                                          `)
+                                          }).join(" ")
+                                        }
+                                        </div>
+                                      </div>
+                                      `
+                                    )
+                                    // return item.event.map((eve)=>{
+                                    //   console.log('eve',eve.from, " - ", eve.from_address);
+                                    //   return (`
+                                    // <div class="inter-display-medium f-s-12 lh-16 black-191 ">${eve.from + " - " + eve.from_address}</div>
+                                    // `)
+                                    // }).join(" ")
+                                  }
+                                }).join(" ")}
+
                           </div>
                       </div>
                       `

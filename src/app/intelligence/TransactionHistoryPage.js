@@ -6,7 +6,7 @@ import TransactionTable from "./TransactionTable";
 import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD } from "../../utils/Constant";
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD, DEFAULT_PRICE } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "./Api";
 import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
@@ -494,7 +494,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueToday;
                         chain.find((chain) => {
                           if (chain[0] === rowData.usdValueToday.id) {
-                            valueToday = (rowData.usdValueToday.value * chain[1].quote.USD.price)
+                            valueToday = (rowData.usdValueToday.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
                           }
                           if (chain[0] === rowData.usdValueThen.id) {
                             valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
@@ -546,7 +546,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueThen;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdTransactionFee.id) {
-                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price)
+                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
                                 valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice
                             }
                         })

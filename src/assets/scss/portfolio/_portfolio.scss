@@ -283,8 +283,12 @@
                     width: max-content;
                 }
                 .top-section{
+                  width: max-content;
+                    .tooltip-section-grey{
+                        background-color: #FBF6D0;
+                    }
                     .tooltip-section-blue{
-                        background-color: $blue-C6E;
+                        background-color: #C6E4FF;
                     }
                 }
                 .bottom-section{
