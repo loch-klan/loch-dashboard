@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
+import LineChartSlider from "./LineCharSlider";
 import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
 // import { Loading } from 'react-loading-dot';
 
@@ -766,7 +767,10 @@ this.setState({graphLoading: true})
                       }}
                     />
                   </div>
-                  <div className="portfolio-section" style={{minWidth: "85rem", overflow: "hidden"}}>
+                  <div
+                    className="portfolio-section"
+                    style={{ minWidth: "85rem", overflow: "hidden" }}
+                  >
                     <PieChart
                       userWalletData={
                         this.props.portfolioState &&
@@ -820,10 +824,24 @@ this.setState({graphLoading: true})
                       graphLoading={this.state.graphLoading}
                     />
                   </div>
+                  <div className="portfolio-section m-b-32">
+                    <LineChartSlider
+                      assetValueData={
+                        this.state.assetValueData && this.state.assetValueData
+                      }
+                      coinLists={this.props.OnboardingState.coinsLists}
+                      isScrollVisible={false}
+                      handleGroupBy={(value) => this.handleGroupBy(value)}
+                      graphLoading={this.state.graphLoading}
+                    />
+                  </div>
                   <div className="m-b-22 graph-table-section">
                     <Row>
                       <Col md={6}>
-                        <div className="m-r-16 section-table" style={{paddingBottom:"1.15rem"}}>
+                        <div
+                          className="m-r-16 section-table"
+                          style={{ paddingBottom: "1.15rem" }}
+                        >
                           <TransactionTable
                             title="Transaction History"
                             handleClick={() => {
@@ -854,35 +872,37 @@ this.setState({graphLoading: true})
                               This feature is coming soon.
                             </p>
                           </div> */}
-                         { this.state.graphValue && !this.state.barGraphLoading ?
-                          <BarGraphSection
-                            headerTitle="Blockchain Fees over Time"
-                            headerSubTitle="Understand your gas costs"
-                            isArrow={true}
-                            handleClick={()=>this.props.history.push(
-                              "/costs"
-                            )}
-                            data={this.state.graphValue[0]}
-                            options={this.state.graphValue[1]}
-                            options2={this.state.graphValue[2]}
-                            isScroll={true}
-                            isScrollVisible={false}
-                            comingSoon={false}
-                            // width="100%"
-                            // height="100%"
-                            onClick={() => {
-                              VolumeTradeByCP({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }}
-                          />
-                          :
-                          <div className="loading-wrapper">
-                            <Loading />
-                            <br/><br/>
-                          </div>
-                        }
+                          {this.state.graphValue &&
+                          !this.state.barGraphLoading ? (
+                            <BarGraphSection
+                              headerTitle="Blockchain Fees over Time"
+                              headerSubTitle="Understand your gas costs"
+                              isArrow={true}
+                              handleClick={() =>
+                                this.props.history.push("/costs")
+                              }
+                              data={this.state.graphValue[0]}
+                              options={this.state.graphValue[1]}
+                              options2={this.state.graphValue[2]}
+                              isScroll={true}
+                              isScrollVisible={false}
+                              comingSoon={false}
+                              // width="100%"
+                              // height="100%"
+                              onClick={() => {
+                                VolumeTradeByCP({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }}
+                            />
+                          ) : (
+                            <div className="loading-wrapper">
+                              <Loading />
+                              <br />
+                              <br />
+                            </div>
+                          )}
                         </div>
                       </Col>
                     </Row>
