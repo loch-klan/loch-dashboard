@@ -123,53 +123,54 @@ class Intelligence extends Component {
   render() {
     const labels = ["Inflows", "Outflows", "Current Value"];
 
-        const options = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-            },
-            scales: {
-            //     categoryPercentage: 0.8,
-            // barPercentage: 1,
-                y: {
-                    min: 0,
-                    max: 400000,
-                    ticks: {
-                        stepSize: 100000,
-                        padding: 8,
-                        size: 12,
-                        lineHeight: 20,
-                        family: "Helvetica Neue",
-                        weight: 400,
-                        color: "#B0B1B3",
-                    },
-                    grid: {
-                        drawBorder: false,
-                        display: true,
-                        borderDash: ctx => ctx.index == 0 ? [0] : [4],
-                        drawTicks: false
-                    }
-                },
-                x: {
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+          legend: {
+              display: false
+          },
+      },
+      scales: {
+      //     categoryPercentage: 0.8,
+      // barPercentage: 1,
+          y: {
+              min: 0,
+              max: 400000,
+              ticks: {
+                  stepSize: 100000,
+                  padding: 8,
+                  size: 12,
+                  lineHeight: 20,
+                  family: "Helvetica Neue",
+                  weight: 400,
+                  color: "#B0B1B3",
+              },
+              grid: {
+                  drawBorder: false,
+                  display: true,
+                  borderDash: ctx => ctx.index == 0 ? [0] : [4],
+                  drawTicks: false
+              }
+          },
+          x: {
 
-                    ticks: {
-                        font: "Inter-SemiBold",
-                        size: 10,
-                        lineHeight: 12,
-                        weight: 600,
-                        color: "#86909C",
-                    },
-                    grid: {
-                        display: false,
-                        borderWidth: 1,
-                    }
-                },
+              ticks: {
+                  font: "Inter-SemiBold",
+                  size: 10,
+                  lineHeight: 12,
+                  weight: 600,
+                  color: "#86909C",
+              },
+              grid: {
+                  display: false,
+                  borderWidth: 1,
+              }
+          },
 
-            }
-        }
+      }
+  }
+
 
         const data = {
             labels,
@@ -218,21 +219,24 @@ class Intelligence extends Component {
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div> */}
-                             
+                        {this.state.graphValue?   
                             <BarGraphSection
                                 isScrollVisible={false}
-                                data={this.state.graphValue}
-                                options={options}
+                                data={this.state.graphValue[0]}
+                                options={this.state.graphValue[1]}
                                 coinsList={this.props.OnboardingState.coinsList}
                                 timeFunction={(e) => this.getProfitAndLossData(e)}
                                 marginBottom='m-b-32'
                                 showFooter={true}
                                 showBadges={true}
                                 showPercentage = {this.state.showPercentage}
-                                // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Month","1 Week"]}
-                                handleBadge={(activeBadgeList) => this.handleBadge(activeBadgeList, 1)}
+                                footerLabels = {["Max" , "5 Years","Year","6 Months","Month","Week","Day"]}
+                                // handleBadge={(activeBadgeList) => this.handleBadge(activeBadgeList, 1)}
                                 // comingSoon={true}
                             /> 
+                            :
+                            ""
+                        }
                     </div>
 
         <div className="insights-image">
