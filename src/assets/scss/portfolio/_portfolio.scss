@@ -464,6 +464,9 @@
         height: 51rem;
         margin-bottom: 0;
         width: 100%;
+        .portfolio-profit-and-loss{
+            height:76%
+        }
       }
       // .ChartAreaWrapper,
       .custom-label{
@@ -496,7 +499,17 @@ position: relative;
             //     }
             // }
         }
-
+        .section-chart{
+            .bar-graph-section{
+                width: 100%;
+                .portfolio-counterparty-fee{
+                    height:25rem;
+                    .chartArea{
+                        height: 100%;
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -854,7 +854,7 @@ this.setState({graphLoading: true})
                     {this.state.graphValue?
                             <BarGraphSection
                             headerTitle="Profit And Loss"
-                            // headerSubTitle="Understand how much your counterparty charges you"
+                            headerSubTitle="Understand your entire portfolio's performance"
                             isArrow={true}
                             handleClick={()=>this.props.history.push(
                               "/intelligence"
@@ -871,6 +871,7 @@ this.setState({graphLoading: true})
                                 // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
                                 // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
                                 // comingSoon={true}
+                                className={"portfolio-profit-and-loss"}
                             />
                             :
                             <div className="loading-wrapper">
@@ -906,6 +907,7 @@ this.setState({graphLoading: true})
                                 email_address: getCurrentUser().email,
                               });
                             }}
+                            className={"portfolio-counterparty-fee"}
                           />
                           :
                           <div className="loading-wrapper">
