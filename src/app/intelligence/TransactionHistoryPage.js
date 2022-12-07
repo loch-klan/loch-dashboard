@@ -518,9 +518,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={valueThen?.toFixed(2)}
+                            text={Number(valueThen?.toFixed(2)).toLocaleString('en-US')}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueThen?.toFixed(2)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueThen?.toFixed(2)).toLocaleString('en-US')}</div>
                         </CustomOverlay>)
                         </div>
                         )
@@ -567,9 +567,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                               isIcon={false}
                               isInfo={true}
                               isText={true}
-                              text={valueThen?.toFixed(2)}
+                              text={Number(valueThen?.toFixed(2)).toLocaleString('en-US')}
                             >
-                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueThen?.toFixed(2)}</div>
+                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueThen?.toFixed(2)).toLocaleString('en-US')}</div>
                             </CustomOverlay>)
                           </div>
                         )
