@@ -127,8 +127,8 @@ class LineChartSlider extends BaseReactComponent {
             type: 'line',
             color: value.assetDetails.color,
             marker: {
-              // enabled: false
-              symbol:"circle"
+              enabled: true,
+              // symbol: "circle"
             },
             data: graphData,
             lastValue: graphData[graphData.length-1]
@@ -153,7 +153,7 @@ class LineChartSlider extends BaseReactComponent {
           categories.push(abc);
         }
       })
-      // console.log('categories',categories);
+      console.log('categories',categories);
       // console.log('timestamp',timestampList);
       // console.log('seriesData',seriesData);
 
@@ -170,81 +170,64 @@ class LineChartSlider extends BaseReactComponent {
       seriesData = seriesData && seriesData.sort((a,b)=>{return b.lastValue - a.lastValue})
       // console.log('after',seriesData);
       // console.log('categories.length',categories.length);
-    //   seriesData = seriesData.slice(0,7);
-         seriesData = seriesData;
+      seriesData = seriesData.slice(0,7);
+        //  seriesData = seriesData;
         var UNDEFINED;
         const options = {
           title: {
             text: null,
           },
-          //   chart: {
-          //     type: "column",
-          //   },
+          chart: {
+            type: "column",
+          },
           credits: {
             enabled: false,
           },
           rangeSelector: {
             enabled: false,
+            selected: 3,
           },
           scrollbar: {
             enabled: true,
             height: 0,
-            barBackgroundColor: "#E5E5E6",
-            barBorderRadius: 4,
-            barBorderWidth: 0,
-            trackBackgroundColor: "transparent",
-            trackBorderWidth: 0,
-            trackBorderRadius: 10,
-            trackBorderColor: "#CCC",
-            rifleColor: "#E5E5E6",
           },
           xAxis: {
-            // categories: this.state.title === "Month" ? categories.reverse() : categories,
             categories: categories,
+            type: "category",// Other types are "logarithmic", "datetime" and "category",
+            labels: {
+              formatter: function () {
+                console.log("categories", categories);
+                console.log("value", this.value);
+                console.log("this", this);
+                return this.value;
+              },
+            },
             scrollbar: {
               enabled: false,
-              height: 6,
-              barBackgroundColor: "#E5E5E6",
-              barBorderRadius: 4,
-              barBorderWidth: 0,
-              trackBackgroundColor: "transparent",
-              trackBorderWidth: 0,
-              trackBorderRadius: 10,
-              trackBorderColor: "#CCC",
-              rifleColor: "#E5E5E6",
             },
             min: categories.length > 4 ? categories.length - 5 : 0,
             max: categories.length - 1,
-            // min: 0,
-            // max: categories.length > 4 ? 4 : categories.length - 1 ,
-            // max: this.state.title === "Year" ? categories.length > 4 ? 4 : categories.length - 1 : 4,
           },
 
           yAxis: {
             title: {
               text: null,
             },
+            opposite: false,
 
-            // min: 0,
-            // max: yaxis_max,
             gridLineDashStyle: "longdash",
             labels: {
-            //   formatter: function () {
-            //     console.log("this in y", this);
-            //     return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
-            //   },
+              formatter: function () {
+                return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
+              },
+              x: 0,
+              // y: -2,
               align: "left",
-            //   plotLines: [
-            //     {
-            //       value: 0,
-            //       width: 2,
-            //       color: "silver",
-            //     },
-            //   ],
             },
           },
           legend: {
-            align: "left",
+            enabled: true,
+            align: "right",
             verticalAlign: "top",
             itemStyle: {
               fontFamily: "Inter-SemiBold",
@@ -254,42 +237,128 @@ class LineChartSlider extends BaseReactComponent {
               lineHeight: "12px",
             },
             symbolHeight: 15,
-            symbolWidth: 8,
-            symbolRadius: 6,
+            symbolWidth: 15,
+            symbolRadius: 8,
           },
-          //   plotOptions: {
-          //     series: {
-          //     //   compare: "percent",
-          //       showInNavigator: true,
-          //     },
-          //   },
+
           tooltip: {
-            valueDecimals: 2,
-            split: true,
+            shared: true,
+            split: false,
             // useHTML: true,
-            // borderRadius : 8,
-            // borderColor : "#E5E7EB",
-            // backgroundColor : "#FFFFFF",
-            // // borderShadow: 0,
-            // borderWidth: 1 ,
-            // padding: 12,
-            // shadow:false,
+            distance: 0,
+            borderRadius: 15,
+            borderColor: "#E5E5E6",
+            backgroundColor: "#FFFFFF",
+            // borderShadow: 0,
+            borderWidth: 1,
+            paddingTop: 12,
+            paddingBottom: 12,
+            paddingLeft: 8,
+            paddingRight: 8,
+
+            shadow: false,
+            formatter: function () {
+              let tooltipData = [];
+              this.points.map((item) => {
+                // console.log(
+                //   "Name: ",
+                //   item.series.userOptions.name,
+                //   "Color: ",
+                //   item.series.userOptions.color,
+                //   "value y: ",
+                //   numToCurrency(item.y),
+                //   "value x: ",
+                //   item.x
+                // );
+                tooltipData.push({
+                  name: item.series.userOptions.name,
+                  x: item.x,
+                  y: item.y,
+                  color: item.series.userOptions.color,
+                });
+              });
+
+              return `<div class="line-chart-tooltip">
+                            <div class="top-section">
+                                <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
+                                <div class="inter-display-medium f-s-12 lh-16 black-191 "><b>${
+                                  // this.x
+                                  Highcharts.dateFormat("%A %B %e %Y", this.x)
+                                }</b></div>
+                                ${tooltipData
+                                  .map((item) => {
+                                    return `<div class="inter-display-medium f-s-12 lh-16 black-191 ">
+                                    <span style='width:5px, height: 5px, border-radius: 50%; background-color:${
+                                      item.color == "#ffffff"
+                                        ? "black"
+                                        : item.color
+                                    }'> 1</span> ${
+                                      item.name + " $" + numToCurrency(item.y)
+                                    }</div></br>`;
+                                  })
+                                  .join(" ")}
+                            </div>
+                        </div>
+                      </div>`;
+            },
             // formatter: function () {
-            //   console.log('this',this);
-            // return `
-            //     <div class="line-chart-tooltip">
-            //         <div class="m-b-12 top-section">
-            //             <div class="m-b-8 line-chart-tooltip-section tooltip-section-blue">
-            //                 <div class="inter-display-medium f-s-12 lh-16 black-191 ">${this.series.userOptions.name + " " + "$"+numToCurrency(this.y) + " " + this.x }</div>
-            //             </div>
-            //         </div>
-            //     </div>
+            //   console.log(
+            //     "Name: ",
+            //     this.point.series.name,
+            //     "Color: ",
+            //     this.color,
+            //     "value: ",
+            //     numToCurrency(this.y)
+            //   );
+            // return
             // `
+            //    <div class="line-chart-tooltip">
+            //       <div class="top-section">
+            //           <div class="line-chart-tooltip-section">
+            //               <div class="inter-display-medium f-s-12 lh-16 black-191 ">${
+            //                 this.point.series.name
+            //               }  <span style="color:${this.color == "#ffffff" ? "" : this.color}"> $${numToCurrency(this.y)}</span>
+            //               </div>
+            //           </div>
+            //       </div>
+            //   </div>
+            //   `
             // }
+            // );
+            // },
           },
           series: seriesData,
           navigator: {
-            maskFill: "rgba(0, 0, 0, 0.75)",
+            backgroundColor: "rgba(229, 229, 230, 0.5)",
+            height: 30,
+            outlineColor: "#E5E5E6",
+            outlineWidth: 1,
+            maskFill: "rgba(25, 25, 26, 0.4)",
+            stickToMax: false,
+            handles: {
+              backgroundColor: "#FFFFFF",
+              borderColor: "#B0B1B3",
+              lineWidth: 0.5,
+              width: 6,
+              height: 16,
+            },
+            series: {
+              color: "#E5E5E6",
+              lineWidth: 2,
+              type: "areaspline",
+              fillOpacity: 1,
+              lineColor: "#E5E5E6",
+              dataGrouping: {
+                groupPixelWidth: 0,
+              },
+              lineWidth: 0,
+              marker: {
+                enabled: false,
+              },
+              dataLabels: {
+                enabled: false,
+              },
+            },
           },
         };
         return (

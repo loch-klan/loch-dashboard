@@ -360,35 +360,59 @@ class PieChart extends BaseReactComponent {
                                 </div>
                                 {
                                   chainList && chainList.slice(0,3).map((data, index)=>{
+                                     let isQuote = this.props.portfolioState.coinRateList[
+                                         this.state.selectedSection[0].assetId
+                                       ].quote;
                                     if(index<2){
-                                      return(
+                                      return (
                                         <>
-                                        <div className='coin-hover-display-text2'>
-                                      <div className='coin-hover-display-text2-upper'>
-                                      <CustomOverlay
-                                        position="top"
-                                        className={"coin-hover-tooltip"}
-                                        isIcon={false}
-                                        isInfo={true}
-                                        isText={true}
-                                        text={data.address}
-                                        >
-                                          <span className='inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin'>{data.address}</span>
-                                        </CustomOverlay>
-                                          <span className='inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent'>{((100 * data.assetCount) / this.state.pieSectionDataEnabled.count).toFixed(2) + "%"}</span>
-                                      </div>
-                                      <div className='coin-hover-display-text2-lower'>
-                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>{numToCurrency(data.assetCount)}</span>
+                                          <div className="coin-hover-display-text2">
+                                            <div className="coin-hover-display-text2-upper">
+                                              <CustomOverlay
+                                                position="top"
+                                                className={"coin-hover-tooltip"}
+                                                isIcon={false}
+                                                isInfo={true}
+                                                isText={true}
+                                                text={data.address}
+                                              >
+                                                <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
+                                                  {data.address}
+                                                </span>
+                                              </CustomOverlay>
+                                              <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
+                                                {(
+                                                  (100 * data.assetCount) /
+                                                  this.state
+                                                    .pieSectionDataEnabled.count
+                                                ).toFixed(2) + "%"}
+                                              </span>
+                                            </div>
+                                            <div className="coin-hover-display-text2-lower">
+                                              <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
+                                                {numToCurrency(data.assetCount)}
+                                              </span>
 
-                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{data.chainCode}</span>
+                                              <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
+                                                {data.chainCode}
+                                              </span>
 
-                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(data.assetCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote.USD.price) || DEFAULT_PRICE}</span>
-
-                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
-                                      </div>
-                                  </div>
+                                              <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
+                                                {isQuote == null
+                                                  ? DEFAULT_PRICE
+                                                  : numToCurrency(
+                                                      data.assetCount *
+                                                        isQuote.USD.price
+                                                    )}
+                                              </span>
+                                             
+                                              <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
+                                                USD
+                                              </span>
+                                            </div>
+                                          </div>
                                         </>
-                                      )
+                                      );
                                     } else{
                                       return(
                                         <>
