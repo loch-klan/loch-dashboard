@@ -850,7 +850,40 @@ this.setState({graphLoading: true})
                         </div>
                       </Col>
                       <Col md={6}>
-                        <div className="section-chart">
+                      <div className="profit-chart">
+                    {this.state.graphValue?
+                            <BarGraphSection
+                            headerTitle="Profit And Loss"
+                            // headerSubTitle="Understand how much your counterparty charges you"
+                            isArrow={true}
+                            handleClick={()=>this.props.history.push(
+                              "/intelligence"
+                            )}
+                                isScrollVisible={false}
+                                data={this.state.graphValue[0]}
+                                options={this.state.graphValue[1]}
+                                coinsList={this.props.OnboardingState.coinsList}
+                                // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
+                                marginBottom='m-b-32'
+                                showFooter={false}
+                                showBadges={false}
+                                showPercentage = {this.state.graphValue[2]}
+                                // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
+                                // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
+                                // comingSoon={true}
+                            />
+                            :
+                            <div className="loading-wrapper">
+                              <Loading />
+                              <br/><br/>
+                            </div>
+                        }
+                    </div>
+                      </Col>
+                    </Row>
+                  </div>
+                  <div className="m-b-40 portfolio-cost-table-section">
+                  <div className="section-chart">
                          { this.state.counterPartyValue && !this.state.counterGraphLoading ?
                           <BarGraphSection
                             headerTitle="Counterparty Fees Over Time"
@@ -881,39 +914,6 @@ this.setState({graphLoading: true})
                           </div>
                         }
                         </div>
-                      </Col>
-                    </Row>
-                  </div>
-                  <div className="m-b-40 portfolio-cost-table-section">
-                    <div className="profit-chart">
-                    {this.state.graphValue?
-                            <BarGraphSection
-                            headerTitle="Profit And Loss"
-                            // headerSubTitle="Understand how much your counterparty charges you"
-                            isArrow={true}
-                            handleClick={()=>this.props.history.push(
-                              "/intelligence"
-                            )}
-                                isScrollVisible={false}
-                                data={this.state.graphValue[0]}
-                                options={this.state.graphValue[1]}
-                                coinsList={this.props.OnboardingState.coinsList}
-                                // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
-                                marginBottom='m-b-32'
-                                showFooter={false}
-                                showBadges={false}
-                                showPercentage = {this.state.graphValue[2]}
-                                // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
-                                // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
-                                // comingSoon={true}
-                            />
-                            :
-                            <div className="loading-wrapper">
-                              <Loading />
-                              <br/><br/>
-                            </div>
-                        }
-                    </div>
                   </div>
                 </div>
               </div>

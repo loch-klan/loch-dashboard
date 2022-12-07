@@ -460,12 +460,18 @@
 
     }
     .profit-chart{
+      .bar-graph-section{
+        height: 51rem;
+        margin-bottom: 0;
+        width: 100%;
+      }
       // .ChartAreaWrapper,
       .custom-label{
         padding-bottom: 0;
       }
       .chartArea{
-        min-height: 30rem;
+        // min-height: 30rem;
+        height: 100%;
       }
       .header{
         h4{
