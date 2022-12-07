@@ -171,7 +171,7 @@ class Intelligence extends Component {
                                 showFooter={true}
                                 showBadges={true}
                                 showPercentage = {this.state.graphValue[2]}
-                                footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
+                                footerLabels = {["Max" , "5 Years","1 Year","6 Months", "1 Month", "1 Week", "1 Day"]}
                                 handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
                                 // comingSoon={true}
                             />
