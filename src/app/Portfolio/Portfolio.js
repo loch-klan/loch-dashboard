@@ -38,6 +38,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {getAssetGraphDataApi} from './Api';
 import { getAllFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
+import { noExponents } from '../../utils/ReusableFunctions';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -492,9 +493,9 @@ this.setState({graphLoading: true})
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={value?.toFixed(2)}
+                            text={Number(value?.toFixed(2)).toLocaleString('en-US')}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(value?.toFixed(2)).toLocaleString('en-US')}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -664,7 +665,7 @@ this.setState({graphLoading: true})
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "Amount") {
-                        return rowData.Amount
+                        return Number(noExponents(rowData.Amount)).toLocaleString('en-US')
                     }
                 }
             }, {

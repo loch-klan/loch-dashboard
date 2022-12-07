@@ -469,9 +469,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={noExponents(rowData.amount.value)}
+                            text={Number(noExponents(rowData.amount.value)).toLocaleString('en-US')}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{noExponents(rowData.amount.value)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(noExponents(rowData.amount.value)).toLocaleString('en-US')}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -507,9 +507,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={valueToday?.toFixed(2)}
+                            text={Number(valueToday?.toFixed(2)).toLocaleString('en-US')}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueToday?.toFixed(2)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueToday?.toFixed(2)).toLocaleString('en-US')}</div>
                         </CustomOverlay>
                         <span style={{padding: "2px"}}></span>
                         (
@@ -557,9 +557,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                               isIcon={false}
                               isInfo={true}
                               isText={true}
-                              text={valueToday?.toFixed(2)}
+                              text={Number(valueToday?.toFixed(2)).toLocaleString('en-US')}
                             >
-                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueToday?.toFixed(2)}</div>
+                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueToday?.toFixed(2)).toLocaleString('en-US')}</div>
                             </CustomOverlay>
                             <span style={{padding: "2px"}}></span>
                             (<CustomOverlay
