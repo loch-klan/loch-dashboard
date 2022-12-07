@@ -199,7 +199,7 @@ class LineChartSlider extends BaseReactComponent {
                 console.log("categories", categories);
                 console.log("value", this.value);
                 console.log("this", this);
-                return this.value;
+                return categories[this.pos];
               },
             },
             scrollbar: {
@@ -223,6 +223,7 @@ class LineChartSlider extends BaseReactComponent {
               x: 0,
               // y: -2,
               align: "left",
+              crop: true,
             },
           },
           legend: {
