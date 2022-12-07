@@ -94,7 +94,8 @@ export const signIn = (ctx, data) => {
 EmailAddressVerified({ email_address: ctx.state.email });
             ctx.setState({
                 isVerificationRequired:true,
-                text:""
+                text:"",
+                emailError: false
             })
             ctx.props.handleStateChange("verifyCode")
         }
