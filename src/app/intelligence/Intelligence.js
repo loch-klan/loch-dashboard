@@ -21,20 +21,20 @@ import Insights4 from "../../assets/images/Insights4.svg"
 import Insights5 from "../../assets/images/Insights5.svg"
 import moment from "moment/moment";
 import { getProfitAndLossApi} from "./Api";
-import { getProfitAndLossData} from "./getProfitAndLossData";
+import Loading from '../common/Loading';
 
 
 class Intelligence extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showPercentage: {
-        icon: arrowUpRight,
-        percent: "25",
-        status: "Increase",
-        GraphData: [],
-        graphValue: "null",
-      },
+      // showPercentage: {
+      //   icon: arrowUpRight,
+      //   percent: "25",
+      //   status: "Increase",
+      //   GraphData: [],
+      //   graphValue: "null",
+      // },
       startTime: "",
     };
   }
@@ -44,7 +44,7 @@ class Intelligence extends Component {
         console.log("page Enter", this.state.startTime);
 
     this.props.getAllCoins();
-    this.getProfitAndLossData(0);
+    this.timeFilter(0);
   }
   componentWillUnmount() {
     let endTime = new Date() * 1;
@@ -57,148 +57,89 @@ class Intelligence extends Component {
       email_address: getCurrentUser().email,
     });
   }
-  
-  getProfitAndLossData(option) {
 
+  timeFilter = (option,activeBadgeList = false) => {
+    let selectedChains = [];
+    if(activeBadgeList){
+      this.props.OnboardingState.coinsList.map((item)=>{
+        if(activeBadgeList.includes(item.id)){
+          selectedChains.push(item.code)
+        }
+      })
+    }
     const today = moment().unix();
-
-    console.log("headle click");
     if (option == 0) {
-      getProfitAndLossApi(this, false, false);
-      console.log(option, "All");
+      getProfitAndLossApi(this, false, false, selectedChains);
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").unix();
-
-      getProfitAndLossApi(this, fiveyear, today);
-      console.log(fiveyear, today, "5 years");
+      getProfitAndLossApi(this, fiveyear, today, selectedChains);
     } else if (option == 2) {
       const year = moment().subtract(1, "years").unix();
-      getProfitAndLossApi(this, year, today);
-      console.log(year, today, "1 year");
+      getProfitAndLossApi(this, year, today, selectedChains);
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").unix();
-
-      getProfitAndLossApi(this, sixmonth, today);
-      console.log(sixmonth, today, "6 months");
+      getProfitAndLossApi(this, sixmonth, today, selectedChains);
     } else if (option == 4) {
       const month = moment().subtract(1, "month").unix();
-      getProfitAndLossApi(this, month, today);
-      console.log(month, today, "1 month");
+      getProfitAndLossApi(this, month, today, selectedChains);
     } else if (option == 5) {
       const week = moment().subtract(1, "week").unix();
-      getProfitAndLossApi(this, week, today);
-      console.log(week, today, "week");
+      getProfitAndLossApi(this, week, today, selectedChains);
     } else if (option == 6) {
-        const day = moment().subtract(1, "day").unix();
-        getProfitAndLossApi(this, day, today);
-        console.log(day, today, "day");
-      }
+      const day = moment().subtract(1, "day").unix();
+      getProfitAndLossApi(this, day, today, selectedChains);
+    }
   }
 
-  handleBadge = (activeBadgeList, type) => {
-    const {GraphData} = this.state;
-      let graphDataMaster = [];
-      if(type === 1){
-        GraphData && GraphData.map((tempGraphData)=>{
-          if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
-            graphDataMaster.push(tempGraphData);
-          }
-        })
-        this.setState({
-          graphValue: getProfitAndLossData(graphDataMaster),
-        });
-      } 
-    //   else{
-    //     counterPartyData && counterPartyData.map((tempGraphData)=>{
-    //       if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
-    //         counterPartyDataMaster.push(tempGraphData);
-    //       }
-    //     })
-    //     this.setState({
-    //       counterPartyValue: getCounterGraphData(counterPartyDataMaster),
-    //     });
-    //   }
+  handleBadge = (activeBadgeList, activeFooter) => {
+    let startDate = moment().unix();
+    let endDate;
+    console.log('activeFooter',activeFooter);
+    if (activeFooter == 0) {
+      startDate = "";
+      endDate = "";
+    } else if (activeFooter == 1) {
+      endDate = moment().subtract(5, "years").unix();
+    } else if (activeFooter == 2) {
+      endDate = moment().subtract(1, "years").unix();
+    } else if (activeFooter == 3) {
+      endDate = moment().subtract(6, "months").unix();
+    } else if (activeFooter == 4) {
+      endDate = moment().subtract(1, "month").unix();
+    } else if (activeFooter == 5) {
+      endDate = moment().subtract(1, "week").unix();
+    } else if (activeFooter == 6) {
+      endDate = moment().subtract(1, "day").unix();
+    }
+
+    let selectedChains = [];
+    this.props.OnboardingState.coinsList.map((item)=>{
+      if(activeBadgeList.includes(item.id)){
+        selectedChains.push(item.code)
+      }
+    })
+
+    if(activeFooter = 0){
+      getProfitAndLossApi(this, false, false, selectedChains);
+    } else {
+      getProfitAndLossApi(this, startDate, endDate, selectedChains);
+    }
   }
 
   render() {
-    const labels = ["Inflows", "Outflows", "Current Value"];
+    // let showPercentage = this.state.showPercentage;
+    // if(this.state.graphValue && this.state.graphValue[2]){
+    //   let value = (this.state.graphValue[2].inflows-this.state.graphValue[2].outflows);
+    //   showPercentage= {
+    //     icon: value > 0 ? arrowUpRight : arrowDownRight,
+    //     percent: ((value/this.state.graphValue[2].inflows)*100).toFixed(),
+    //     status: value > 0 ? "Increase" : "Decrease",
+    //     GraphData: [],
+    //     graphValue: "null",
+    //   }
+    // }
+    // console.log('showPercentage',showPercentage);
 
-    const options = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-          legend: {
-              display: false
-          },
-      },
-      scales: {
-      //     categoryPercentage: 0.8,
-      // barPercentage: 1,
-          y: {
-              min: 0,
-              max: 400000,
-              ticks: {
-                  stepSize: 100000,
-                  padding: 8,
-                  size: 12,
-                  lineHeight: 20,
-                  family: "Helvetica Neue",
-                  weight: 400,
-                  color: "#B0B1B3",
-              },
-              grid: {
-                  drawBorder: false,
-                  display: true,
-                  borderDash: ctx => ctx.index == 0 ? [0] : [4],
-                  drawTicks: false
-              }
-          },
-          x: {
-
-              ticks: {
-                  font: "Inter-SemiBold",
-                  size: 10,
-                  lineHeight: 12,
-                  weight: 600,
-                  color: "#86909C",
-              },
-              grid: {
-                  display: false,
-                  borderWidth: 1,
-              }
-          },
-
-      }
-  }
-
-
-        const data = {
-            labels,
-            datasets: [
-                {
-
-                    data: [260000, 323000, 76000],
-                    backgroundColor: [
-                        "rgba(100, 190, 205, 0.3)",
-                        "rgba(34, 151, 219, 0.3)",
-                        "rgba(114, 87, 211, 0.3)",
-                    ],
-                    borderColor: [
-                        "#64BECD",
-                        "#2297DB",
-                        "#7257D3",
-                    ],
-                    borderWidth: 2,
-                    borderRadius: {
-                        topLeft: 6,
-                        topRight: 6
-                    },
-                    borderSkipped: false,
-                    barThickness:48,
-
-                }
-            ]
-        }
         return (
             <div className="intelligence-page-section">
                 <div className='intelligence-section page'>
@@ -219,23 +160,26 @@ class Intelligence extends Component {
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div> */}
-                        {this.state.graphValue?   
+                        {this.state.graphValue?
                             <BarGraphSection
                                 isScrollVisible={false}
                                 data={this.state.graphValue[0]}
                                 options={this.state.graphValue[1]}
                                 coinsList={this.props.OnboardingState.coinsList}
-                                timeFunction={(e) => this.getProfitAndLossData(e)}
+                                timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
                                 marginBottom='m-b-32'
                                 showFooter={true}
                                 showBadges={true}
-                                showPercentage = {this.state.showPercentage}
-                                footerLabels = {["Max" , "5 Years","Year","6 Months","Month","Week","Day"]}
-                                // handleBadge={(activeBadgeList) => this.handleBadge(activeBadgeList, 1)}
+                                showPercentage = {this.state.graphValue[2]}
+                                footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
+                                handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
                                 // comingSoon={true}
-                            /> 
+                            />
                             :
-                            ""
+                            <div className="loading-wrapper">
+                              <Loading />
+                              <br/><br/>
+                            </div>
                         }
                     </div>
 

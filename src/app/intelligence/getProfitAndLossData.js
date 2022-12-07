@@ -1,3 +1,7 @@
+import { numToCurrency } from "../../utils/ReusableFunctions";
+import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
+import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
+
 export const getProfitAndLossData = (arr) => {
     console.log(arr.inflows,"helo")
 
@@ -10,7 +14,7 @@ export const getProfitAndLossData = (arr) => {
         },
         loss:{
             data:arr.outflows,
-            barColor:"#CF1011",
+            barColor:"#FFE0D9",
             borderColor:"#CF1011"
         }
     };
@@ -41,27 +45,6 @@ export const getProfitAndLossData = (arr) => {
             }
         ]
     }
-    // const data = {
-    //     labels,
-    //     datasets: [
-    //       {
-    //         data: arr.map((e) => e),
-    //         backgroundColor: arr.map((e) => e.chain.color + "4D"),
-    //         borderColor: arr.map((e) => e.chain.color),
-    //         defaultAssetCode: arr.map((e) => e.chain.default_asset_code),
-    //         borderWidth: 2,
-    //         borderRadius: {
-    //           topLeft: 6,
-    //           topRight: 6,
-    //         },
-    //         borderSkipped: false,
-    //         barThickness: 48,
-    //         totalFeesAmount: arr.map((e) => e.total_fees_amount),
-    //         totalAmount: arr.map((e) => e.total_amount),
-    //         totalVolume: arr.map((e) => e.total_volume),
-    //       },
-    //     ],
-    //   };
 
     const options = {
         responsive: true,
@@ -75,40 +58,37 @@ export const getProfitAndLossData = (arr) => {
           legend: {
             display: false,
           },
-          // tooltip: {
-          //   displayColors: false,
-          //   backgroundColor: '#ffffff',
-          //   // fontColor: '#000000',
-          //   intersect: false,
-          //   color: '#000000',
-          //   padding: 12,
-          //   borderWidth: 1,
-          //   borderColor: '#E5E7EB',
-          //   // boxPadding: 5,
-          //   bodyFont: {
-          //     family: 'Inter-Medium',
-          //     size: 13,
-          //   },
-          //   bodySpacing: 8,
-          //   callbacks: {
-          //     title: function() {}, //REMOVE TITLE
-          //     label: (ctx) => {
-          //       // console.log('ctx',ctx);
-          //       let label00 = ctx.label;
-          //       let label0 = "Fees: $" + numToCurrency(ctx.raw) + " or " + ctx.dataset.totalFeesAmount[ctx.dataIndex]?.toFixed(6) + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
-          //       let label1 = "Volume: $" + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
-          //       return [label00, label1, label0];
-          //     },
-          //     labelColor: function(context) {
-          //       return {
-          //           padding: 10,
-          //       };
-          //   },
-          //     labelTextColor: function(context) {
-          //       return '#19191A';
-          //   }
-          //   },
-          // },
+          tooltip: {
+            displayColors: false,
+            backgroundColor: '#ffffff',
+            // fontColor: '#000000',
+            intersect: false,
+            color: '#000000',
+            padding: 12,
+            borderWidth: 1,
+            borderColor: '#E5E7EB',
+            // boxPadding: 5,
+            bodyFont: {
+              family: 'Inter-Medium',
+              size: 13,
+            },
+            bodySpacing: 8,
+            callbacks: {
+              title: function() {}, //REMOVE TITLE
+              label: (ctx) => {
+                let label = ctx.label + ": $" + numToCurrency(ctx.raw);
+                return [label];
+              },
+              labelColor: function(context) {
+                return {
+                    padding: 10,
+                };
+            },
+              labelTextColor: function(context) {
+                return '#19191A';
+            }
+            },
+          },
         },
         scales: {
           y: {
@@ -127,7 +107,7 @@ export const getProfitAndLossData = (arr) => {
               padding: 8,
               size: 12,
               lineHeight: 20,
-              family: "Helvetica Neue",
+              family: "Inter-Regular",
               weight: 400,
               color: "#B0B1B3",
             },
@@ -156,5 +136,11 @@ export const getProfitAndLossData = (arr) => {
           },
         },
       };
-    return [data,options]
+      let value = (arr.inflows-arr.outflows);
+      let showPercentage= {
+        icon: value > 0 ? arrowUpRight : arrowDownRight,
+        percent: ((value/arr.inflows)*100).toFixed(),
+        status: value > 0 ? "Increase" : "Decrease",
+      }
+    return [data,options, showPercentage]
 }

@@ -67,24 +67,25 @@ export const getFilters = (ctx) => {
         })
 }
 
-export const getProfitAndLossApi = (ctx, startDate, endDate) => {
+export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = false) => {
     let data = new URLSearchParams();
      if (startDate) {
           data.append("start_datetime", startDate);
           data.append("end_datetime", endDate);
-        //   data.append("chains", ["ETH"]);
+     }
+     if(selectedChains && selectedChains.length > 0){
+        data.append("chains", JSON.stringify(selectedChains));
      }
      postLoginInstance.post("wallet/transaction/get-profit-loss", data)
      .then((res) => {
        if(!res.data.error){
          ctx.setState({
-        //    barGraphLoading: false,
              GraphData: res.data.data.profit_loss,
              graphValue: getProfitAndLossData(res.data.data.profit_loss)
          });
        } else{
          toast.error(res.data.message || "Something Went Wrong")
        }
- 
+
      });
  }
