@@ -330,14 +330,14 @@ class AddWallet extends BaseReactComponent {
               ) : null}
 
               <div className="ob-modal-body-btn">
-                <CustomButton
+                {/* <CustomButton
                   className="secondary-btn m-r-15 preview"
                   buttonText="Preview demo instead"
                   onClick={() => {
                     PreviewDemo({});
                     console.log("Preview");
                   }}
-                />
+                /> */}
                 <CustomButton
                   className="primary-btn go-btn"
                   type="submit"
@@ -347,7 +347,7 @@ class AddWallet extends BaseReactComponent {
                   isDisabled={
                     this.state.addButtonVisible ? this.isDisabled() : false
                   }
-                  buttonText={this.state.addButtonVisible ? "Go" : "Sign in"}
+                  buttonText={this.state.addButtonVisible ? "Go" : "Sign in instead"}
                 />
               </div>
 
