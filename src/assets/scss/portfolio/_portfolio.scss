@@ -502,8 +502,15 @@ position: relative;
         .section-chart{
             .bar-graph-section{
                 width: 100%;
+                .graph-header{
+                  .header{
+                    h4{
+                      cursor: pointer;
+                    }
+                  }
+                }
                 .portfolio-counterparty-fee{
-                    height:25rem;
+                    height:35rem;
                     .chartArea{
                         height: 100%;
                     }
