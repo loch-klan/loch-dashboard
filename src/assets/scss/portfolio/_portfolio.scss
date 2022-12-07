@@ -382,6 +382,7 @@
                 }
             }
         }
+
     }
 
     .graph-table-section {
@@ -456,8 +457,22 @@
               }
             }
         }
-    }
 
+    }
+    .profit-chart{
+      // .ChartAreaWrapper,
+      .custom-label{
+        padding-bottom: 0;
+      }
+      .chartArea{
+        min-height: 30rem;
+      }
+      .header{
+        h4{
+          cursor: pointer;
+        }
+      }
+    }
     .portfolio-cost-table-section {
 position: relative;
         .portfolio-cost-table {

@@ -42,7 +42,7 @@ class Intelligence extends Component {
     componentDidMount() {
        this.state.startTime = new Date() * 1;
         console.log("page Enter", this.state.startTime);
-
+        window.scrollTo(0, 0);
     this.props.getAllCoins();
     this.timeFilter(0);
   }
