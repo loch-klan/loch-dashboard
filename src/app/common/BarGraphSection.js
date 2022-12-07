@@ -36,7 +36,7 @@ class BarGraphSection extends Component {
       headerSubTitle: props.headerSubTitle,
       options: props.options ? props.options : [],
       options2: props.options2 ? props.options2 : [],
-      data: props.data ? props.data : [],
+      data: props.data ? props.data : null,
       activeFooter: 0,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
@@ -56,6 +56,7 @@ class BarGraphSection extends Component {
         options: this.props.options,
         options2: this.props.options2,
         data: this.props.data,
+        showPercentage: this.props.showPercentage
       });
     }
   }
@@ -65,7 +66,7 @@ class BarGraphSection extends Component {
         activeFooter: event.target.id
     })
     console.log("handle footer", event.target.id);
-    this.props.timeFunction(event.target.id);
+    this.props.timeFunction(event.target.id, this.state.activeBadgeList);
   };
   handleFunction = (badge) => {
     let newArr = [...this.state.activeBadge];
@@ -79,7 +80,7 @@ class BarGraphSection extends Component {
             activeBadgeList: [],
           },
           () => {
-            this.props.handleBadge(this.state.activeBadgeList);
+            this.props.handleBadge(this.state.activeBadgeList, this.state.activeFooter);
           }
         );
       } else {
@@ -89,7 +90,7 @@ class BarGraphSection extends Component {
             activeBadgeList: newArr.map((item) => item.id),
           },
           () => {
-            this.props.handleBadge(this.state.activeBadgeList);
+            this.props.handleBadge(this.state.activeBadgeList, this.state.activeFooter);
           }
         );
       }
@@ -100,7 +101,7 @@ class BarGraphSection extends Component {
           activeBadgeList: [],
         },
         () => {
-          this.props.handleBadge(this.state.activeBadgeList);
+          this.props.handleBadge(this.state.activeBadgeList, this.state.activeFooter);
         }
       );
     } else {
@@ -115,7 +116,7 @@ class BarGraphSection extends Component {
           activeBadgeList: newArr.map((item) => item.id),
         },
         () => {
-          this.props.handleBadge(this.state.activeBadgeList);
+          this.props.handleBadge(this.state.activeBadgeList, this.state.activeFooter);
         }
       );
     }
@@ -200,7 +201,7 @@ class BarGraphSection extends Component {
                   }`}
                 >
                   <Image src={showPercentage.icon} className="m-r-4" />
-                  {showPercentage.percent}$ {showPercentage.status}
+                  {showPercentage.percent}% {showPercentage.status}
                 </div>
               </div>
             ) : (
