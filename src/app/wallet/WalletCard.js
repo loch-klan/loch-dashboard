@@ -31,7 +31,7 @@ export default function WalletCard(props) {
                 isText={true}
                 isName={coin.chain.name}
                 colorCode={coin.chain.color}
-                text={ coin.chain.percentage.toFixed(2) + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + " USD"}
+                text={ coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0 + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + " USD"}
                 className="wallet-tooltip"
             >
                 <div>
@@ -39,7 +39,7 @@ export default function WalletCard(props) {
                         colorCode={coin.chain.color}
                         key={index}
                         coin_img_src={coin.chain.symbol}
-                        coin_percent={coin.chain.percentage.toFixed(2) + "%"}
+                        coin_percent={coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0 + "%"}
                     />
                 </div>
             </CustomOverlay>
