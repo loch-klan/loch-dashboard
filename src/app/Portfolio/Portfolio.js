@@ -20,7 +20,7 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { getProfitAndLossApi, searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE} from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE, DEFAULT_PRICE} from '../../utils/Constant'
 import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
@@ -38,6 +38,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {getAssetGraphDataApi} from './Api';
 import { getAllCounterFeeApi, getAllFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
+import { noExponents } from '../../utils/ReusableFunctions';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -486,7 +487,7 @@ this.setState({graphLoading: true})
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price)
+                              value = (rowData.usdValueToday.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
                                 return
                             }
                         })
@@ -497,9 +498,9 @@ this.setState({graphLoading: true})
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={value?.toFixed(2)}
+                            text={Number(value?.toFixed(2)).toLocaleString('en-US')}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(value?.toFixed(2)).toLocaleString('en-US')}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -669,7 +670,7 @@ this.setState({graphLoading: true})
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "Amount") {
-                        return rowData.Amount
+                        return Number(noExponents(rowData.Amount)).toLocaleString('en-US')
                     }
                 }
             }, {
