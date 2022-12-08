@@ -1,5 +1,6 @@
 import React from 'react';
-import { Calendar } from 'react-date-range';
+// import { Calendar } from 'react-date-range';
+import { Calendar } from 'react-calendar';
 import { CustomModal } from '../../app/common';
 import { format } from 'date-fns';
 import { Image } from "react-bootstrap";
@@ -38,13 +39,28 @@ const DatePickerControl = props => {
         modalClass="date-picker-control-modal"
         show={showModal}
         onHide={() => setShowModal(false)}
-        title={"Select Date"}
+        // title={"Select Date"}
       >
-        <Calendar
-          date={valueLink.value || null}
+        {/* <Calendar
+          // date={valueLink.value || null}
+          className={"calendar-select inter-display-medium f-s-13 lh-16"}
           onChange={handleSelect}
           minDate={minDate}
           maxDate={maxDate}
+          showMonthAndYearPickers={false}
+          weekStartsOn={1}
+          showYearArrow={true}
+          // showYearDropdown ={true}
+          // showMonthDropdown ={false}
+
+        /> */}
+        <Calendar
+          date={valueLink.value || null}
+          className={"calendar-select inter-display-medium f-s-13 lh-16"}
+          onChange={handleSelect}
+          minDate={minDate}
+          maxDate={maxDate}
+          defaultValue={valueLink.value}
         />
       </CustomModal>
     </>

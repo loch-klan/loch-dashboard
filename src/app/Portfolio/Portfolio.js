@@ -20,7 +20,7 @@ import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE} from '../../utils/Constant'
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE, DEFAULT_PRICE} from '../../utils/Constant'
 import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
@@ -89,6 +89,7 @@ class Portfolio extends BaseReactComponent {
       startTime: "",
       GraphData: [],
       graphValue: null,
+      externalEvents: [],
     };
   }
 
@@ -130,7 +131,7 @@ class Portfolio extends BaseReactComponent {
       TimeSpentHome({ time_spent: TimeSpent + " seconds", session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
 
-    getGraphData = (groupByValue = GROUP_BY_YEAR) =>{
+    getGraphData = (groupByValue = GROUP_BY_DATE) =>{
 this.setState({graphLoading: true})
       let addressList = [];
       this.state.userWalletList.map((wallet)=> addressList.push(wallet.address))
@@ -481,7 +482,7 @@ this.setState({graphLoading: true})
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price)
+                              value = (rowData.usdValueToday.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
                                 return
                             }
                         })
@@ -818,6 +819,7 @@ this.setState({graphLoading: true})
                       isScrollVisible={false}
                       handleGroupBy={(value) => this.handleGroupBy(value)}
                       graphLoading={this.state.graphLoading}
+                      externalEvents={this.state.externalEvents}
                     />
                   </div>
                   <div className="m-b-22 graph-table-section">

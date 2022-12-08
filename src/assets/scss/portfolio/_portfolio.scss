@@ -269,17 +269,26 @@
                 }
                 .line-chart-tooltip-section{
                     display:flex;
-                    align-items:center;
+                    // align-items:center;
+                    flex-direction: column;
+                    justify-content: left;
                     padding: 0.4rem 0.8rem;
                     border-radius: 0.4rem;
+                    .inter-display-medium{
+                      display: block;
+                    }
                 }
                 .tooltip-section-yellow{
                     background-color: $yellow-F5E;
                     width: max-content;
                 }
                 .top-section{
+                  width: max-content;
+                    .tooltip-section-grey{
+                        background-color: #FBF6D0;
+                    }
                     .tooltip-section-blue{
-                        background-color: $blue-C6E;
+                        background-color: #C6E4FF;
                     }
                 }
                 .bottom-section{

@@ -380,7 +380,7 @@ class PieChart extends BaseReactComponent {
                                       <div className='coin-hover-display-text2-lower'>
                                           <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>{numToCurrency(data.assetCount)}</span>
 
-                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{data.chainCode}</span>
+                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{this.state.pieSectionDataEnabled.assetCode}</span>
 
                                           <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(data.assetCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote.USD.price) || DEFAULT_PRICE}</span>
 
@@ -409,7 +409,7 @@ class PieChart extends BaseReactComponent {
                                       <div className='coin-hover-display-text2-lower'>
                                           <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>{numToCurrency(totalCount)}</span>
 
-                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{data.chainCode}</span>
+                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{this.state.pieSectionDataEnabled.assetCode}</span>
 
                                           <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(totalCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote.USD.price) || DEFAULT_PRICE}</span>
                                           <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
