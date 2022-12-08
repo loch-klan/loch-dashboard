@@ -1,3 +1,4 @@
+import { DEFAULT_PRICE } from "../../utils/Constant";
 import { numToCurrency } from "../../utils/ReusableFunctions";
 
 export const getGraphData = (arr) => {

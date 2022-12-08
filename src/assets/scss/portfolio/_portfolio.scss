@@ -391,6 +391,7 @@
                 }
             }
         }
+
     }
 
     .graph-table-section {
@@ -465,8 +466,31 @@
               }
             }
         }
-    }
 
+    }
+    .profit-chart{
+      .bar-graph-section{
+        height: 51rem;
+        margin-bottom: 0;
+        width: 100%;
+        .portfolio-profit-and-loss{
+            height:76%
+        }
+      }
+      // .ChartAreaWrapper,
+      .custom-label{
+        padding-bottom: 0;
+      }
+      .chartArea{
+        // min-height: 30rem;
+        height: 100%;
+      }
+      .header{
+        h4{
+          cursor: pointer;
+        }
+      }
+    }
     .portfolio-cost-table-section {
 position: relative;
         .portfolio-cost-table {
@@ -484,7 +508,24 @@ position: relative;
             //     }
             // }
         }
-
+        .section-chart{
+            .bar-graph-section{
+                width: 100%;
+                .graph-header{
+                  .header{
+                    h4{
+                      cursor: pointer;
+                    }
+                  }
+                }
+                .portfolio-counterparty-fee{
+                    height:35rem;
+                    .chartArea{
+                        height: 100%;
+                    }
+                }
+            }
+        }
     }
 }
 
