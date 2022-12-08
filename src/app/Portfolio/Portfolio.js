@@ -829,6 +829,9 @@ this.setState({graphLoading: true})
                       assetValueData={
                         this.state.assetValueData && this.state.assetValueData
                       }
+                      externalEvents={
+                        this.state.externalEvents && this.state.externalEvents
+                      }
                       coinLists={this.props.OnboardingState.coinsLists}
                       isScrollVisible={false}
                       handleGroupBy={(value) => this.handleGroupBy(value)}

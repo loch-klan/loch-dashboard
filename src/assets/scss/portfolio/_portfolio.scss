@@ -59,6 +59,64 @@
             &.line{
                 margin-top: 0;
             }
+// LINE CHART SLIDER START
+            &.lineChartSlider{
+                margin-top: 0;
+                padding: 4rem 0rem;
+            }
+
+            .ChartDivider{
+                height: 1px; 
+                background-color: rgba(229, 229, 230, 0.5);
+                width: 100%;
+                margin-top: 5.4rem;
+            }
+
+            .SliderChartBottom{
+                padding: 0rem 4.8rem;
+                margin-top: 3.3rem;
+
+                h4{
+                    display:flex;
+                    align-items: center;
+
+                    img {
+                        margin-right: 1rem;
+                        }
+                }
+
+                .InternalEventWrapper{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-top: 2rem;
+                    flex-wrap: wrap;
+
+                    .GreyChip{
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 1.2rem;
+                        background: rgba(229, 229, 230, 0.5);
+                        border-radius: 8px;
+                        margin-bottom: 1.2rem;
+                        width: 49%;
+                        flex-wrap: nowrap;
+
+                        h5{
+                            display:flex;
+                            align-items: center;
+
+                            img{
+                            margin-right: 1rem;
+                        }
+                        }
+                       
+                        
+                    }
+                }
+            }
+// LINE CHART SLIDER END
             .welcome-card {
                 display: flex;
                 align-items: flex-start;
