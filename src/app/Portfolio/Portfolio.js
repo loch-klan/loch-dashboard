@@ -59,6 +59,7 @@ class Portfolio extends BaseReactComponent {
       tableLoading: true,
       graphLoading: true,
       barGraphLoading: true,
+      toggleAddWallet: true,
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       limit: 6,
       tableSortOpt: [
@@ -97,6 +98,11 @@ class Portfolio extends BaseReactComponent {
     };
   }
 
+  handleToggleAddWallet = () => {
+    this.setState({
+        toggleAddWallet: true
+    })
+}
   handleChangeList = (value) => {
     this.setState({
       userWalletList: value,
@@ -111,7 +117,8 @@ class Portfolio extends BaseReactComponent {
 
     handleAddModal = () => {
         this.setState({
-            addModal: !this.state.addModal
+            addModal: !this.state.addModal,
+            toggleAddWallet: false,
         })
     }
     componentDidMount() {
@@ -752,6 +759,8 @@ this.setState({graphLoading: true})
                 <div className="portfolio-container page">
                   <div className="portfolio-section">
                     <WelcomeCard
+                      toggleAddWallet={this.state.toggleAddWallet}
+                      handleToggleAddWallet={this.handleToggleAddWallet}
                       decrement={true}
                       assetTotal={
                         this.props.portfolioState &&
