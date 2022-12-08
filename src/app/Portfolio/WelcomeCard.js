@@ -8,6 +8,7 @@ import { numToCurrency } from '../../utils/ReusableFunctions';
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import { amountFormat } from '../../utils/ReusableFunctions';
 import ManageWallet from "../../assets/images/icons/ManageWallet.svg"
+import ManageWalletWhite from "../../assets/images/icons/ManageWalletWhite.svg"
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg"
 import AddWalletAddressWhite from "../../assets/images/icons/AddWalletAddressWhite.svg"
 export default function WelcomeCard(props) {
@@ -16,6 +17,10 @@ export default function WelcomeCard(props) {
     // console.log(props)
     function handleAddWalletClick(){
         props.handleAddModal();
+    }
+    function handleManageClick(){
+        setManageWallet(!manageWallet);
+        props.handleManage();
     }
 
     React.useEffect(() =>{
@@ -71,9 +76,9 @@ export default function WelcomeCard(props) {
                         {/* <Button className='secondary-btn' onClick={props.handleManage} >Manage wallets</Button>
                         <Button className="primary-btn" onClick={props.handleAddModal}>Add wallet address</Button> */}
                         <Button className='inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet' 
-                        onClick={props.handleManage} 
+                        onClick={handleManageClick} 
                         >
-                            <Image class="manage-wallet" src={manageWallet===true?ManageWallet:""}/>
+                            <Image class="manage-wallet" src={manageWallet === true ? ManageWallet : ManageWalletWhite}/>
                             Manage wallets
                         </Button>
                         <Button class="add-wallet" className='inter-display-semi-bold f-s-13 lh-16 black-191 add-wallet'
