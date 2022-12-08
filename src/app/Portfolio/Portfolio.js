@@ -813,7 +813,7 @@ this.setState({graphLoading: true})
                       ""
                     )}
                   </div>
-                  <div className="portfolio-section m-b-32">
+                  {/* <div className="portfolio-section m-b-32">
                     <LineChart
                       assetValueData={
                         this.state.assetValueData && this.state.assetValueData
@@ -823,7 +823,7 @@ this.setState({graphLoading: true})
                       handleGroupBy={(value) => this.handleGroupBy(value)}
                       graphLoading={this.state.graphLoading}
                     />
-                  </div>
+                  </div> */}
                   <div className="portfolio-section m-b-32">
                     <LineChartSlider
                       assetValueData={

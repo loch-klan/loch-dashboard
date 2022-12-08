@@ -26,7 +26,6 @@ class LineChartSlider extends BaseReactComponent {
       activeBadgeList: [],
       title: "Year",
       titleY: "$ USD",
-      internalEvents: null,
       selectedEvents: null,
     };
   }
@@ -76,24 +75,26 @@ class LineChartSlider extends BaseReactComponent {
     this.props.handleGroupBy(t);
   };
 
-  internalEvent = (value) => {
-    // console.log("Internal Event", value);
-    //  ${internalEvents.map((item)=>{
-    //                               let current = moment(item.timestamp).format("DD/MM/YYYY")
-    //                               // console.log('current',current, this.x);
-    //    if (current === this.x) { }
-    let selectedEvents = this.state.internalEvents && this.state.internalEvents.map(
+  internalEvent = (value, internalEvents) => {
+    console.log("Internal Event", value);
+
+    let selectedEvents = []
+      internalEvents && internalEvents.map(
       (item) => {
         let current = moment(item.timestamp).format("DD/MM/YYYY");
-        console.log("current", current, value);
-        let value = null;
+        // console.log("current", current, value);
+       
         if (current === value) {
-          value = item;
+          selectedEvents.push(item)
         }
-        return value;
+     
       }
     );
     console.log("selected Event", selectedEvents);
+
+  // this.setState({
+  //     selectedEvents,
+  //   });
   };
   resetEvent = () => {
     // console.log("Event Reset");
@@ -103,15 +104,14 @@ class LineChartSlider extends BaseReactComponent {
   };
   render() {
     const { assetValueData, externalEvents } = this.props;
-    console.log("externalEvents", externalEvents);
+
+    const getEvent = this.internalEvent; 
+    // console.log("externalEvents", externalEvents);
     let series = {};
     let timestampList = [];
     let assetMaster = {};
     let internalEvents = [];
-    const test = (value) => {
-      // this.internalEvent(value);
-      // console.log("test", value);
-    };
+    
 
     assetValueData &&
       assetValueData.map((assetData) => {
@@ -154,12 +154,10 @@ class LineChartSlider extends BaseReactComponent {
           });
         }
       });
-    //  console.log("local internal event set", internalEvents);
-    //  console.log("State internal event set", this.state.internalEvents);
-    //  this.setState({
-    //    internalEvents,
-    //  });
 
+  
+    
+    console.log("Internal Event Generated", internalEvents);
     let seriesData = [];
     timestampList.sort((a, b) => {
       return a - b;
@@ -205,14 +203,7 @@ class LineChartSlider extends BaseReactComponent {
             value += eval(
               (Number(moment(event.timestamp).format("DD")) / 30).toFixed(3)
             );
-            console.log(
-              "Number",
-              Number(moment(event.timestamp).format("DD"))/30,
-              "value",
-              value,
-              "index",
-              categories.indexOf(abc)
-            );
+            
           }
 
           if (this.state.title == "Year") {
@@ -220,16 +211,16 @@ class LineChartSlider extends BaseReactComponent {
           }
 
           if (e_time == abc) {
-            console.log(
-              "MATCHED",
-              e_time,
-              "and",
-              abc,
-              "date",
-              Number(moment(event.timestamp).format("DD")),
-              "value",
-              value
-            );
+            // console.log(
+            //   "MATCHED",
+            //   e_time,
+            //   "and",
+            //   abc,
+            //   "date",
+            //   Number(moment(event.timestamp).format("DD")),
+            //   "value",
+            //   value
+            // );
             plotLines.push({
               color: "#E5E5E680",
               dashStyle: "solid",
@@ -241,7 +232,7 @@ class LineChartSlider extends BaseReactComponent {
                   return `<div style="border-left: 2px solid #CACBCC; padding-left: 5px; width:125px;">${event.title}</div>`;
                 },
                 align: "left",
-                y: value * 10,
+                y: 100,
                 x: 0,
                 rotation: 0,
                 style: {
@@ -251,7 +242,7 @@ class LineChartSlider extends BaseReactComponent {
                   color: "#CACBCC",
                 },
               },
-              zIndex: 0,
+              zIndex: 1,
             });
           }
         });
@@ -285,7 +276,7 @@ class LineChartSlider extends BaseReactComponent {
     // console.log('categories',categories);
     // console.log('timestamp',timestampList);
     // console.log('seriesData',seriesData);
-    console.log('PlotLine',plotLines);
+    // console.log('PlotLine',plotLines);
 
     let yaxis_max = 0;
     let max = 0;
@@ -319,7 +310,7 @@ class LineChartSlider extends BaseReactComponent {
       },
       rangeSelector: {
         enabled: false,
-        selected: 2,
+        selected: 1,
       },
       scrollbar: {
         enabled: true,
@@ -342,6 +333,7 @@ class LineChartSlider extends BaseReactComponent {
         min: categories.length > 4 ? categories.length - 5 : 0,
         max: categories.length - 1,
         plotLines: plotLines,
+        
       },
 
       yAxis: {
@@ -378,6 +370,11 @@ class LineChartSlider extends BaseReactComponent {
 
       tooltip: {
         shared: true,
+        // crosshairs: {
+        //   color: "#B0B1B3",
+        //   dashStyle: "solid",
+        //   borderWidth: 1,
+        // },
         split: false,
         useHTML: true,
         distance: 0,
@@ -394,7 +391,10 @@ class LineChartSlider extends BaseReactComponent {
           // this.internalEvent(
           //   categories[this.x] == undefined ? this.x : categories[this.x]
           // );
-          // test(categories[this.x] == undefined ? this.x : categories[this.x]);
+          getEvent(
+            categories[this.x] == undefined ? this.x : categories[this.x],
+            internalEvents
+          );
           let tooltipData = [];
           this.points.map((item) => {
             // console.log(
@@ -415,7 +415,7 @@ class LineChartSlider extends BaseReactComponent {
             });
           });
 
-          return `<div class="top-section py-4">
+          return `<div class="top-section py-4" style="z-index: 9999">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100">
                                 <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${
                                   categories[this.x] == undefined
@@ -537,6 +537,7 @@ class LineChartSlider extends BaseReactComponent {
                 highcharts={Highcharts}
                 options={options}
                 constructorType={"stockChart"}
+                allowChartUpdate={true}
               />
               <div className="chart-x-selection">
                 <DropDown
@@ -549,77 +550,30 @@ class LineChartSlider extends BaseReactComponent {
                 />
               </div>
             </div>
-            <div className="ChartDivider"></div>
-            <div className="SliderChartBottom">
-              <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                <Image src={CalenderIcon} />
-                Internal Events
-              </h4>
+            {this.state.selectedEvents && (
+              <>
+                <div className="ChartDivider"></div>
+                <div className="SliderChartBottom">
+                  <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                    <Image src={CalenderIcon} />
+                    Internal Events
+                  </h4>
 
-              <div className="InternalEventWrapper">
-                <div className="GreyChip">
-                  <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                    <Image src={DoubleArrow} />
-                    Tranfer
-                  </h5>
+                  <div className="InternalEventWrapper">
+                    <div className="GreyChip">
+                      <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                        <Image src={DoubleArrow} />
+                        Tranfer
+                      </h5>
 
-                  <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                    0.01069 ETH or 13.86 USD from “abcd…980”
-                  </p>
+                      <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                        0.01069 ETH or 13.86 USD from “abcd…980”
+                      </p>
+                    </div>
+                  </div>
                 </div>
-
-                <div className="GreyChip">
-                  <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                    <Image src={DoubleArrow} />
-                    Tranfer
-                  </h5>
-
-                  <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                    0.01069 ETH or 13.86 USD from “abcd…980”
-                  </p>
-                </div>
-                <div className="GreyChip">
-                  <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                    <Image src={DoubleArrow} />
-                    Tranfer
-                  </h5>
-
-                  <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                    0.01069 ETH or 13.86 USD from “abcd…980”
-                  </p>
-                </div>
-                <div className="GreyChip">
-                  <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                    <Image src={DoubleArrow} />
-                    Tranfer
-                  </h5>
-
-                  <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                    0.01069 ETH or 13.86 USD from “abcd…980”
-                  </p>
-                </div>
-                <div className="GreyChip">
-                  <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                    <Image src={DoubleArrow} />
-                    Tranfer
-                  </h5>
-
-                  <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                    0.01069 ETH or 13.86 USD from “abcd…980”
-                  </p>
-                </div>
-                <div className="GreyChip">
-                  <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                    <Image src={DoubleArrow} />
-                    Tranfer
-                  </h5>
-
-                  <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                    0.01069 ETH or 13.86 USD from “abcd…980”
-                  </p>
-                </div>
-              </div>
-            </div>
+              </>
+            )}
           </>
         )}
       </div>
