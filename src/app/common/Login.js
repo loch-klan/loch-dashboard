@@ -37,7 +37,7 @@ class Login extends BaseReactComponent {
             <Image className="beta-icon" src={beta}/>
             {/* <h1 className="inter-display-bold f-s-24">Login</h1> */}
             <Image className="logo-icon" src={logo}/>
-            <p className="login-title f-s-25 lh-30 black-191">Welcome to <b>Loch</b></p>
+            <p className="login-title inter-display-regular f-s-25 lh-30 black-191">Welcome to <b>Loch</b></p>
             <Form onValidSubmit={this.onValidSubmit}>
               
               <FormElement
@@ -63,7 +63,7 @@ class Login extends BaseReactComponent {
               </div>
             </Form>
           </div>
-          <div className="request-early-access f-s-16 lh-19">Request early access</div>
+          <div className="request-early-access inter-display-regular f-s-16 lh-19">Request early access</div>
         </div>
       </div>
     )
