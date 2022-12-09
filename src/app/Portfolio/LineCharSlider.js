@@ -27,8 +27,32 @@ class LineChartSlider extends BaseReactComponent {
       title: "Year",
       titleY: "$ USD",
       selectedEvents: null,
+      internalEvents: null,
     };
   }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.assetValueData != this.props.assetValueData) {
+      let internalEvents = [];
+      this.props.assetValueData &&
+        this.props.assetValueData.map((assetData) => {
+          //  console.log("asset data",assetData);
+          if (assetData.events && assetData.events.length > 0) {
+            internalEvents.push({
+              timestamp: assetData.timestamp,
+              event: assetData.events,
+            });
+          }
+        });
+      console.log("internal events update", internalEvents);
+      this.setState({
+        internalEvents,
+      });
+    
+    }
+    
+  }
+
   handleFunction = (badge) => {
     let newArr = [...this.state.activeBadge];
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
@@ -75,53 +99,52 @@ class LineChartSlider extends BaseReactComponent {
     this.props.handleGroupBy(t);
   };
 
-  internalEvent = (value, internalEvents) => {
-    console.log("Internal Event", value);
 
-    let selectedEvents = []
-      internalEvents && internalEvents.map(
-      (item) => {
-        let current = moment(item.timestamp).format("DD/MM/YYYY");
-        // console.log("current", current, value);
-       
-        if (current === value) {
-          selectedEvents.push(item)
-        }
-     
-      }
-    );
+  InternalEvent = (ctx) => {
+    console.log("ctx", ctx);
+    console.log("internal events in method", this.state.internalEvents)
+   
+    let selectedEvents = [];
+      this.state.internalEvents &&
+        this.state.internalEvents.map((item) => {
+          let current = moment(item.timestamp).format("DD/MM/YYYY");
+          // console.log("current", current, value);
+
+          if (current === ctx.target.category) {
+            selectedEvents.push(item);
+          }
+        });
     console.log("selected Event", selectedEvents);
 
-  // this.setState({
-  //     selectedEvents,
-  //   });
+    this.setState({
+        selectedEvents,
+      });
   };
   resetEvent = () => {
-    // console.log("Event Reset");
-    // this.setState({
-    //   selectedEvents: null,
-    // });
+    console.log("Event Reset");
+    this.setState({
+      selectedEvents: null,
+    });
   };
   render() {
     const { assetValueData, externalEvents } = this.props;
 
-    const getEvent = this.internalEvent; 
+    const getEvent = this.internalEvent;
     // console.log("externalEvents", externalEvents);
     let series = {};
     let timestampList = [];
     let assetMaster = {};
-    let internalEvents = [];
-    
+    // let internalEvents = [];
 
     assetValueData &&
       assetValueData.map((assetData) => {
         //  console.log("asset data",assetData);
-        if (assetData.events && assetData.events.length > 0) {
-          internalEvents.push({
-            timestamp: assetData.timestamp,
-            event: assetData.events,
-          });
-        }
+        // if (assetData.events && assetData.events.length > 0) {
+        //   internalEvents.push({
+        //     timestamp: assetData.timestamp,
+        //     event: assetData.events,
+        //   });
+        // }
 
         if (
           this.state.activeBadgeList.includes(assetData.chain._id) ||
@@ -155,9 +178,7 @@ class LineChartSlider extends BaseReactComponent {
         }
       });
 
-  
-    
-    console.log("Internal Event Generated", internalEvents);
+
     let seriesData = [];
     timestampList.sort((a, b) => {
       return a - b;
@@ -187,13 +208,29 @@ class LineChartSlider extends BaseReactComponent {
           enabled: true,
           symbol: "circle",
         },
+        showInLegend: true,
         data: graphData,
         lastValue: graphData[graphData.length - 1],
       });
     }
+
+    let yaxis_max = 0;
+    let max = 0;
+    let plotdata;
+    for (let i = 0; i < seriesData.length; i++) {
+      plotdata = seriesData[i].data;
+      max = Math.max(...plotdata);
+      if (yaxis_max < max) {
+        yaxis_max = max;
+      }
+    }
+
     let categories = [];
     let plotLines = [];
+    let UniqueEvents = [];
     const generatePlotLines = (abc) => {
+      let y_value = 0;
+      // console.log("yvalue", y_value);
       externalEvents &&
         externalEvents.map((event, index) => {
           let e_time = moment(event.timestamp).format("DD/MM/YYYY");
@@ -203,24 +240,23 @@ class LineChartSlider extends BaseReactComponent {
             value += eval(
               (Number(moment(event.timestamp).format("DD")) / 30).toFixed(3)
             );
-            
           }
 
           if (this.state.title == "Year") {
             e_time = moment(event.timestamp).format("YYYY");
           }
 
-          if (e_time == abc) {
-            // console.log(
-            //   "MATCHED",
-            //   e_time,
-            //   "and",
-            //   abc,
-            //   "date",
-            //   Number(moment(event.timestamp).format("DD")),
-            //   "value",
-            //   value
-            // );
+          if (e_time == abc && !UniqueEvents.includes(abc)) {
+            UniqueEvents.push(abc);
+            y_value = Math.floor(Math.random() * (23 - 0 + 1) + 0) * 10;
+
+            //add <br> tag every 3 word
+            let title = event.title
+              .split(" ")
+              .map((v, i) => `${i && i % 3 == 0 ? "<br>" : " "}${v}`)
+              .join("")
+              .trim();
+
             plotLines.push({
               color: "#E5E5E680",
               dashStyle: "solid",
@@ -229,10 +265,10 @@ class LineChartSlider extends BaseReactComponent {
               label: {
                 useHTML: true,
                 formatter: function () {
-                  return `<div style="border-left: 2px solid #CACBCC; padding-left: 5px; width:125px;">${event.title}</div>`;
+                  return `<div style="border-left: 2px solid #CACBCC; padding-left: 5px;">${title}</div>`;
                 },
                 align: "left",
-                y: 100,
+                y: y_value,
                 x: 0,
                 rotation: 0,
                 style: {
@@ -278,16 +314,6 @@ class LineChartSlider extends BaseReactComponent {
     // console.log('seriesData',seriesData);
     // console.log('PlotLine',plotLines);
 
-    let yaxis_max = 0;
-    let max = 0;
-    let plotdata;
-    for (let i = 0; i < seriesData.length; i++) {
-      plotdata = seriesData[i].data;
-      max = Math.max(...plotdata);
-      if (yaxis_max < max) {
-        yaxis_max = max;
-      }
-    }
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
@@ -327,13 +353,17 @@ class LineChartSlider extends BaseReactComponent {
             return categories[this.pos];
           },
         },
+        crosshairs: {
+          color: "#B0B1B3",
+          dashStyle: "solid",
+          borderWidth: 1,
+        },
         scrollbar: {
           enabled: false,
         },
         min: categories.length > 4 ? categories.length - 5 : 0,
         max: categories.length - 1,
         plotLines: plotLines,
-        
       },
 
       yAxis: {
@@ -364,17 +394,13 @@ class LineChartSlider extends BaseReactComponent {
           lineHeight: "12px",
         },
         symbolHeight: 15,
-        symbolWidth: 15,
-        symbolRadius: 8,
+        symbolWidth: 8,
+        symbolRadius: 6,
       },
 
       tooltip: {
         shared: true,
-        // crosshairs: {
-        //   color: "#B0B1B3",
-        //   dashStyle: "solid",
-        //   borderWidth: 1,
-        // },
+
         split: false,
         useHTML: true,
         distance: 0,
@@ -382,19 +408,20 @@ class LineChartSlider extends BaseReactComponent {
         borderColor: "#E5E5E6",
         backgroundColor: "#FFFFFF",
         borderShadow: 0,
-        borderWidth: 1,
+        borderWidth: 1.5,
         padding: 0,
         shadow: false,
+        zIndex: 0,
 
         formatter: function () {
           // console.log("this", this);
           // this.internalEvent(
           //   categories[this.x] == undefined ? this.x : categories[this.x]
           // );
-          getEvent(
-            categories[this.x] == undefined ? this.x : categories[this.x],
-            internalEvents
-          );
+          // getEvent(
+          //   categories[this.x] == undefined ? this.x : categories[this.x],
+          //   internalEvents
+          // );
           let tooltipData = [];
           this.points.map((item) => {
             // console.log(
@@ -415,8 +442,8 @@ class LineChartSlider extends BaseReactComponent {
             });
           });
 
-          return `<div class="top-section py-4" style="z-index: 9999">
-                                <div class="line-chart-tooltip-section tooltip-section-blue w-100">
+          return `<div class="top-section py-4">
+                                <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff; border-left: 1px solid #E5E5E6"; border-right: 1px solid #E5E5E6"; border-radius:40px;">
                                 <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${
                                   categories[this.x] == undefined
                                     ? this.x
@@ -468,6 +495,15 @@ class LineChartSlider extends BaseReactComponent {
         // },
       },
       series: seriesData,
+      plotOptions: {
+        series: {
+          point: {
+            events: {
+              mouseOver: this.InternalEvent.bind(this),
+            },
+          },
+        },
+      },
       navigator: {
         backgroundColor: "rgba(229, 229, 230, 0.5)",
         height: 30,
@@ -559,17 +595,43 @@ class LineChartSlider extends BaseReactComponent {
                     Internal Events
                   </h4>
 
-                  <div className="InternalEventWrapper">
-                    <div className="GreyChip">
-                      <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                        <Image src={DoubleArrow} />
-                        Tranfer
-                      </h5>
+                    <div className="InternalEventWrapper">
+                      {this.state.selectedEvents && this.state.selectedEvents.map((event) => {
+                        console.log("first event", event);
+                        event.event.map((eve) => {
+                          console.log("second event", eve);
+                           <div className="GreyChip">
+                             <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                               <Image src={DoubleArrow} />
+                               Tranfer
+                             </h5>
 
-                      <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                        0.01069 ETH or 13.86 USD from “abcd…980”
-                      </p>
-                    </div>
+                             <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                               {/* 0.01069 ETH or 13.86 USD from “abcd…980” */}
+                               {eve.asset.value.toFixed(5)} {eve.asset.code} or
+                               {numToCurrency(
+                                 eve.asset.value * eve.asset_price
+                               )}
+                               {eve.from
+                                 ? "from " + eve.from || eve.from_address
+                                 : "to " + eve.to || eve.to_address}
+                               
+                               {/* {eve.asset.value.toFixed(5)}+ " " +
+                               {eve.asset.code} + " or " +
+                               {numToCurrency(
+                                 eve.asset.value * eve.asset_price
+                               )}{" "}
+                               + " USD " +
+                               {eve.from
+                                 ? "from " + eve.from || eve.from_address
+                                 : "to " + eve.to || eve.to_address}
+                               ` */}
+                             </p>
+                           </div>;
+                        })
+                       
+                      } )
+                      }
                   </div>
                 </div>
               </>
