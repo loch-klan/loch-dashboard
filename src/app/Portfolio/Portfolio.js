@@ -495,7 +495,7 @@ this.setState({graphLoading: true})
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                              value = (rowData.usdValueToday.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
+                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price || DEFAULT_PRICE)
                                 return
                             }
                         })
