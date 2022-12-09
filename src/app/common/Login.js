@@ -63,7 +63,7 @@ class Login extends BaseReactComponent {
               </div>
             </Form>
           </div>
-          <div className="request-early-access inter-display-regular f-s-16 lh-19">Request early access</div>
+          {/* <div className="request-early-access inter-display-regular f-s-16 lh-19">Request early access</div> */}
         </div>
       </div>
     )
