@@ -33,6 +33,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                     if (updatedChainWallet[action.payload.userWalletList.assets[i].asset.id] === undefined) {
                         // updatedChainWallet.push({
                         updatedChainWallet[action.payload.userWalletList.assets[i].asset.id] = {
+                          assetType: action.payload.userWalletList.assets[i].asset.asset_type,
                             assetCode: action.payload.userWalletList.assets[i].asset.code,
                             assetId: action.payload.userWalletList.assets[i].asset.id,
                             assetName: action.payload.userWalletList.assets[i].asset.name,

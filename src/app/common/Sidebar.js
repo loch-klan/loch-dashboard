@@ -16,6 +16,8 @@ import DollarIcon from '../../assets/images/icons/InactiveCostIcon.svg'
 import ActiveDollarIcon from '../../assets/images/icons/ActiveCostIcon.svg'
 
 import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
+import SharePortfolioIcon from '../../assets/images/icons/SharePortfolioIcon.svg'
+import SharePortfolioIconWhite from '../../assets/images/icons/SharePortfolioIconWhite.svg'
 import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.svg'
 import ApiIcon from '../../assets/images/icons/ApiIcon.svg'
 import ApiBlackIcon from '../../assets/images/icons/ApiBlackIcon.svg'
@@ -42,6 +44,7 @@ import {
   MenuDarkMode,
   MenuLeave,
 } from "../../utils/AnalyticsFunctions.js";
+import SharePortfolio from './SharePortfolio'
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -50,8 +53,10 @@ function Sidebar(props) {
     const [leave, setLeave] = React.useState(false);
     const [apiModal,setApiModal]  =React.useState(false);
     const [exportModal,setExportModal] = React.useState(false)
+    const [shareModal,setShareModal] = React.useState(false);
     const [confirmLeave,setConfirmLeave] = React.useState(false)
     const [currentIndex, setCurrentIndex] = React.useState(0);
+    let lochUser = JSON.parse(localStorage.getItem('lochUser'));
 
     const handleLeave = () => {
         const isDummy = localStorage.getItem("lochDummyUser");
@@ -81,6 +86,10 @@ function Sidebar(props) {
         setExportModal(!exportModal);
         ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
+    const handleShareModal = ()=>{
+        setShareModal(!shareModal);
+        // ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
+    }
     const handleShare=()=>{
         const user= JSON.parse(localStorage.getItem('lochUser'));
       const link= `${BASE_URL_S3}portfolio/${user.link}`
@@ -92,33 +101,17 @@ function Sidebar(props) {
     const quotes = [
         "Sic Parvis Magna | Thus, great things from small things come.",
         "The discipline of desire is the background of character.",
-        // "Every man has a property in his own person. This nobody has a right to, but himself.",
         "No man's knowledge here can go beyond his experience.",
-        // "Education begins the gentleman, but reading, good company and reflection must finish him.",
         "The only fence against the world is a thorough knowledge of it.",
         "I have always thought the actions of men the best interpreters of their thoughts",
-        // "All men are liable to error; and most men are, in many points, by passion or interest, under temptation to it.",
-        // "It is one thing to show a man that he is in an error, and another to put him in possession of truth.",
-        // "A sound mind in a sound body, is a short but full description of a happy state in this world. He that has these two, has little more to wish for; and he that wants either of them, will be little the better for anything else.",
-        // "He that judges without informing himself to the utmost that he is capable, cannot acquit himself of judging amiss.",
-        // "New opinions are always suspected, and usually opposed, without any other reason but because they are not already common.",
-        // "The thoughts that come often unsought, and, as it were, drop into the mind, are commonly the most valuable of any we have.",
         "Wherever Law ends, Tyranny begins."
     ];
     const authors = [
         "Sir Francis Drake",
         "John Locke",
-        // "John Locke",
-        "John Locke",
-        // "John Locke",
         "John Locke",
         "John Locke",
-        // "John Locke",
-        // "John Locke",
-        // "John Locke",
-        // "John Locke",
-        // "John Locke",
-        // "John Locke",
+        "John Locke",
         "John Locke"
     ];
     React.useEffect(() => {
@@ -135,7 +128,6 @@ function Sidebar(props) {
         return()=>clearInterval(interval);
       },[currentIndex]);
     return (
-
       <div className="sidebar-section">
         <Container>
           <div className="sidebar">
@@ -286,33 +278,55 @@ function Sidebar(props) {
             </div>
             <div className="sidebar-footer">
               <ul>
-                <li
-                  onMouseOver={(e) =>
-                    (e.currentTarget.children[0].src = ExportIconWhite)
+                <li style={{justifyContent:"space-between"}}>
+                  <span
+                    onMouseOver={(e) =>
+                      (e.currentTarget.children[0].src = ExportIconWhite)
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.children[0].src = ExportIcon)
+                    }
+                    onClick={handleExportModal}
+                  >
+                    <Image src={ExportIcon} />
+                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
+                      Export
+                    </Button>
+                  </span>
+                  {
+                    lochUser &&
+                    <span
+                      onMouseOver={(e) =>
+                        (e.currentTarget.children[0].src = SharePortfolioIcon)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.children[0].src = SharePortfolioIconWhite )
+                      }
+                      onClick={handleShareModal}
+                      style={{marginRight:"1rem"}}
+                  >
+                    <Image src={SharePortfolioIconWhite} />
+                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
+                      Share
+                    </Button>
+                  </span>
                   }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.children[0].src = ExportIcon)
-                  }
-                  onClick={handleExportModal}
-                >
-                  <Image src={ExportIcon} />
-                  <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
-                    Export
-                  </Button>
                 </li>
-                <li
-                  onMouseOver={(e) =>
-                    (e.currentTarget.children[0].src = ApiBlackIcon)
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.children[0].src = ApiIcon)
-                  }
-                  onClick={handleApiModal}
-                >
-                  <Image src={ApiIcon} />
-                  <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
-                    API
-                  </Button>
+                <li>
+                  <span
+                    onMouseOver={(e) =>
+                      (e.currentTarget.children[0].src = ApiBlackIcon)
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.children[0].src = ApiIcon)
+                    }
+                    onClick={handleApiModal}
+                  >
+                    <Image src={ApiIcon} />
+                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
+                      API
+                    </Button>
+                  </span>
                 </li>
                 {/* {JSON.parse(localStorage.getItem("lochUser")) && (
                   <li
@@ -333,19 +347,21 @@ function Sidebar(props) {
                   </li>
                 )} */}
 
-                <li
-                  onClick={handleLeave}
-                  onMouseOver={(e) =>
-                    (e.currentTarget.children[0].src = LeaveBlackIcon)
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.children[0].src = LeaveIcon)
-                  }
-                >
-                  <Image src={LeaveIcon} />
-                  <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
-                    Leave
-                  </Button>
+                <li>
+                  <span
+                    onClick={handleLeave}
+                    onMouseOver={(e) =>
+                      (e.currentTarget.children[0].src = LeaveBlackIcon)
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.children[0].src = LeaveIcon)
+                    }
+                  >
+                    <Image src={LeaveIcon} />
+                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
+                      Leave
+                    </Button>
+                  </span>
                 </li>
               </ul>
 
@@ -407,6 +423,18 @@ function Sidebar(props) {
             headerTitle={"Download all your data"}
             modalType={"exportModal"}
             iconImage={ExportIconWhite}
+          />
+        ) : (
+          ""
+        )}
+        {shareModal ? (
+          <SharePortfolio
+            show={shareModal}
+            onHide={handleShareModal}
+            history={history}
+            headerTitle={"Share this portfolio"}
+            modalType={"shareModal"}
+            iconImage={SharePortfolioIcon}
           />
         ) : (
           ""

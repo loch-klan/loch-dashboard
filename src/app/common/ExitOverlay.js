@@ -362,18 +362,18 @@ class ExitOverlay extends BaseReactComponent {
                             </div> */}
               </div>
               <div className="copy-link-section">
-                <div className="m-r-42 link" onClick={this.copyLink}>
+                <div className="link" onClick={this.copyLink}>
                   <Image src={CopyLink} className="m-r-8" />
                   <h3 className="inter-display-medium f-s-16 lh-19 black-191">
                     Copy link
                   </h3>
                 </div>
-                <div className="link" onClick={this.shareLink}>
+                {/* <div className="link" onClick={this.shareLink}>
                   <Image src={ShareLink} className="m-r-8" />
                   <h3 className="inter-display-medium f-s-16 lh-19 black-191">
                     Share
                   </h3>
-                </div>
+                </div> */}
               </div>
 
               <div className="m-b-36 footer">

@@ -10,6 +10,8 @@ import FormElement from "../../utils/form/FormElement";
 import {signIn,verifyUser }from './Api.js'
 import FormValidator from '../../utils/form/FormValidator';
 import { EmailAddressAdded } from "../../utils/AnalyticsFunctions.js";
+import { Image } from 'react-bootstrap';
+import EmailNotFoundCross from '../../assets/images/icons/EmailNotFoundCross.svg';
 class SignIn extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -21,7 +23,8 @@ class SignIn extends BaseReactComponent {
             text:"",
             isVallidSignIn:false,
             activemodal : props.activemodal,
-            signinReq:props.signinReq
+            signinReq:props.signinReq,
+            emailError: false
         }
     }
 
@@ -58,7 +61,7 @@ class SignIn extends BaseReactComponent {
                   {
                     !this.state.isVerificationRequired || this.props.activemodal === "signIn"
                       ?
-                      <FormElement
+                      (<><FormElement
                         className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
                         valueLink={this.linkState(this, "email")}
                         required
@@ -78,7 +81,20 @@ class SignIn extends BaseReactComponent {
                             placeholder: "Your email"
                           }
                         }}
+                        classes={{
+                          inputField: `${this.state.emailError && `email-error`}`,
+                        }}
                       />
+                      { this.state.emailError ?
+                        <span className="email-not-found">
+                          <Image src={EmailNotFoundCross}/>
+                          <p className="inter-display-medium f-s-16 lh-19">Email not found</p>
+                        </span>
+                        : 
+                        ""
+                      }
+                      </>
+                      )
                             :
                               <FormElement
                                 className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}

@@ -42,6 +42,7 @@ class PieChart extends BaseReactComponent {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
                     let z = ((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100.0);
                     assetData.push({
+                      assetType: this.props.userWalletData[i].assetType,
                       assetId: this.props.userWalletData[i].assetId,
                         name: this.props.userWalletData[i].assetName,
                         y: z,
@@ -80,6 +81,7 @@ class PieChart extends BaseReactComponent {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
                     let z = ((parseFloat(this.props.userWalletData[i].assetValue) / parseFloat(this.props.assetTotal)) * 100.0);
                     assetData.push({
+                      assetType: this.props.userWalletData[i].assetType,
                       assetId: this.props.userWalletData[i].assetId,
                         name: this.props.userWalletData[i].assetName,
                         y: z,
@@ -349,6 +351,7 @@ class PieChart extends BaseReactComponent {
                                             <span className='inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent'
                                             style={{color: (this.state.pieSectionDataEnabled.borderColor == "#ffffff") ? "#19191A" : this.state.pieSectionDataEnabled.borderColor}}
                                             >{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? (this.state.pieSectionDataEnabled.y).toFixed(2) : null}%</span>
+                                            <span className='inter-display-medium f-s-15 l-h-19 black-191 m-l-10'>{this.state.pieSectionDataEnabled.assetType === 20 && "Staked"}</span>
                                         </div>
                                         <div className='coin-hover-display-text1-lower'>
                                             <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{this.state.pieSectionDataEnabled && Object.keys(this.state.pieSectionDataEnabled).length > 0 ? numToCurrency(this.state.pieSectionDataEnabled.count) : null}</span>
@@ -380,7 +383,7 @@ class PieChart extends BaseReactComponent {
                                       <div className='coin-hover-display-text2-lower'>
                                           <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>{numToCurrency(data.assetCount)}</span>
 
-                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{data.chainCode}</span>
+                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{this.state.pieSectionDataEnabled.assetCode}</span>
 
                                           <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(data.assetCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote?.USD.price) || DEFAULT_PRICE}</span>
 
@@ -409,7 +412,7 @@ class PieChart extends BaseReactComponent {
                                       <div className='coin-hover-display-text2-lower'>
                                           <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount'>{numToCurrency(totalCount)}</span>
 
-                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{data.chainCode}</span>
+                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{this.state.pieSectionDataEnabled.assetCode}</span>
 
                                           <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(totalCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote?.USD.price) || DEFAULT_PRICE}</span>
                                           <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>

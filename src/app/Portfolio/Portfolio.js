@@ -59,6 +59,7 @@ class Portfolio extends BaseReactComponent {
       tableLoading: true,
       graphLoading: true,
       barGraphLoading: true,
+      toggleAddWallet: true,
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       limit: 6,
       tableSortOpt: [
@@ -90,12 +91,18 @@ class Portfolio extends BaseReactComponent {
       startTime: "",
       GraphData: [],
       graphValue: null,
+      externalEvents: [],
       counterGraphLoading: true,
       counterPartyData: [],
       counterPartyValue: null,
     };
   }
 
+  handleToggleAddWallet = () => {
+    this.setState({
+        toggleAddWallet: true
+    })
+}
   handleChangeList = (value) => {
     this.setState({
       userWalletList: value,
@@ -110,7 +117,8 @@ class Portfolio extends BaseReactComponent {
 
     handleAddModal = () => {
         this.setState({
-            addModal: !this.state.addModal
+            addModal: !this.state.addModal,
+            toggleAddWallet: false,
         })
     }
     componentDidMount() {
@@ -136,7 +144,7 @@ class Portfolio extends BaseReactComponent {
       TimeSpentHome({ time_spent: TimeSpent + " seconds", session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
 
-    getGraphData = (groupByValue = GROUP_BY_YEAR) =>{
+    getGraphData = (groupByValue = GROUP_BY_DATE) =>{
 this.setState({graphLoading: true})
       let addressList = [];
       this.state.userWalletList.map((wallet)=> addressList.push(wallet.address))
@@ -751,6 +759,8 @@ this.setState({graphLoading: true})
                 <div className="portfolio-container page">
                   <div className="portfolio-section">
                     <WelcomeCard
+                      toggleAddWallet={this.state.toggleAddWallet}
+                      handleToggleAddWallet={this.handleToggleAddWallet}
                       decrement={true}
                       assetTotal={
                         this.props.portfolioState &&
@@ -824,6 +834,7 @@ this.setState({graphLoading: true})
                       isScrollVisible={false}
                       handleGroupBy={(value) => this.handleGroupBy(value)}
                       graphLoading={this.state.graphLoading}
+                      externalEvents={this.state.externalEvents}
                     />
                   </div>
                   <div className="m-b-22 graph-table-section">

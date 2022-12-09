@@ -74,25 +74,28 @@ export const signIn = (ctx, data) => {
     .then(res =>{
         if(res.data.error)
         {
-          toast.error(
-            <div className="custom-toast-msg">
-              <div>
-              {res.data.message}
-              </div>
-              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-              Please enter a valid email
-              </div>
-            </div>
-            );
+          // toast.error(
+          //   <div className="custom-toast-msg">
+          //     <div>
+          //     {res.data.message}
+          //     </div>
+          //     <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+          //     Please enter a valid email
+          //     </div>
+          //   </div>
+          //   );
             // toast.error(res.data.message || "Something went Wrong")
-
+              ctx.setState(
+                {emailError:true}
+              )
         }
         else if (res.data.error === false) {
             //email Valid
 EmailAddressVerified({ email_address: ctx.state.email });
             ctx.setState({
                 isVerificationRequired:true,
-                text:""
+                text:"",
+                emailError: false
             })
             ctx.props.handleStateChange("verifyCode")
         }

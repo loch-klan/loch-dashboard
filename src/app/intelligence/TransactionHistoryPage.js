@@ -494,7 +494,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueToday;
                         chain.find((chain) => {
                           if (chain[0] === rowData.usdValueToday.id) {
-                            valueToday = (rowData.usdValueToday.value * chain[1].quote?.USD.price || DEFAULT_PRICE)
+                            valueToday = (rowData.usdValueToday.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
                           }
                           if (chain[0] === rowData.usdValueThen.id) {
                             valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
@@ -546,7 +546,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueThen;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdTransactionFee.id) {
-                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote?.USD.price || DEFAULT_PRICE)
+                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
                                 valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice
                             }
                         })
