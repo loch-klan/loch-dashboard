@@ -26,32 +26,35 @@ class LineChartSlider extends BaseReactComponent {
       activeBadgeList: [],
       title: "Year",
       titleY: "$ USD",
-      selectedEvents: null,
-      internalEvents: null,
+      // selectedEvents: null,
+      // internalEvents: null,
     };
   }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.assetValueData != this.props.assetValueData) {
-      let internalEvents = [];
-      this.props.assetValueData &&
-        this.props.assetValueData.map((assetData) => {
-          //  console.log("asset data",assetData);
-          if (assetData.events && assetData.events.length > 0) {
-            internalEvents.push({
-              timestamp: assetData.timestamp,
-              event: assetData.events,
-            });
-          }
-        });
-      console.log("internal events update", internalEvents);
-      this.setState({
-        internalEvents,
-      });
-    
-    }
+  componentDidUpdate() {
     
   }
+
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.assetValueData != this.props.assetValueData) {
+  //     let internalEvents = [];
+  //     this.props.assetValueData &&
+  //       this.props.assetValueData.map((assetData) => {
+  //         //  console.log("asset data",assetData);
+  //         if (assetData.events && assetData.events.length > 0) {
+  //           internalEvents.push({
+  //             timestamp: assetData.timestamp,
+  //             event: assetData.events,
+  //           });
+  //         }
+  //       });
+  //     console.log("internal events update", internalEvents);
+  //     this.setState({
+  //       internalEvents,
+  //     });
+    
+  //   }
+    
+  // }
 
   handleFunction = (badge) => {
     let newArr = [...this.state.activeBadge];
@@ -104,47 +107,50 @@ class LineChartSlider extends BaseReactComponent {
     console.log("ctx", ctx);
     console.log("internal events in method", this.state.internalEvents)
    
-    let selectedEvents = [];
-      this.state.internalEvents &&
-        this.state.internalEvents.map((item) => {
-          let current = moment(item.timestamp).format("DD/MM/YYYY");
-          // console.log("current", current, value);
+    // let selectedEvents = [];
+    //   this.state.internalEvents &&
+    //     this.state.internalEvents.map((item) => {
+    //       let current = moment(item.timestamp).format("DD/MM/YYYY");
+    //       // console.log("current", current, value);
 
-          if (current === ctx.target.category) {
-            selectedEvents.push(item);
-          }
-        });
-    console.log("selected Event", selectedEvents);
+    //       if (current === ctx.target.category) {
+    //         selectedEvents.push(item);
+    //       }
+    //     });
+    // console.log("selected Event", selectedEvents);
 
     this.setState({
-        selectedEvents,
+        selectedEvents : [],
       });
   };
   resetEvent = () => {
     console.log("Event Reset");
-    this.setState({
-      selectedEvents: null,
-    });
+    // this.setState({
+    //   selectedEvents: null,
+    // });
   };
   render() {
     const { assetValueData, externalEvents } = this.props;
 
-    const getEvent = this.internalEvent;
+    const getEvent = (value) => {
+      this.InternalEvent(value)
+      console.log("event triggered")
+    };
     // console.log("externalEvents", externalEvents);
     let series = {};
     let timestampList = [];
     let assetMaster = {};
-    // let internalEvents = [];
+    let internalEvents = [];
 
     assetValueData &&
       assetValueData.map((assetData) => {
         //  console.log("asset data",assetData);
-        // if (assetData.events && assetData.events.length > 0) {
-        //   internalEvents.push({
-        //     timestamp: assetData.timestamp,
-        //     event: assetData.events,
-        //   });
-        // }
+        if (assetData.events && assetData.events.length > 0) {
+          internalEvents.push({
+            timestamp: assetData.timestamp,
+            event: assetData.events,
+          });
+        }
 
         if (
           this.state.activeBadgeList.includes(assetData.chain._id) ||
@@ -283,6 +289,19 @@ class LineChartSlider extends BaseReactComponent {
           }
         });
     };
+     let selectedEvents = [];
+    const getIevent = (value) => {
+          selectedEvents = []
+        internalEvents &&
+          internalEvents.map((item) => {
+            let current = moment(item.timestamp).format("DD/MM/YYYY");
+            // console.log("current", current, value);
+            if (current === value) {
+              selectedEvents.push(item);
+            }
+          });
+      console.log("selected Event", selectedEvents);
+    }
     timestampList.map((time) => {
       let dummy = new Date(time);
       // console.log("time", time, "dummy", dummy);
@@ -418,22 +437,14 @@ class LineChartSlider extends BaseReactComponent {
           // this.internalEvent(
           //   categories[this.x] == undefined ? this.x : categories[this.x]
           // );
-          // getEvent(
-          //   categories[this.x] == undefined ? this.x : categories[this.x],
-          //   internalEvents
+          // getIevent(
+          //   categories[this.x] == undefined ? this.x : categories[this.x]
           // );
           let tooltipData = [];
           this.points.map((item) => {
             // console.log(
-            //   "Name: ",
-            //   item.series.userOptions.name,
-            //   "Color: ",
-            //   item.series.userOptions.color,
-            //   "value y: ",
-            //   numToCurrency(item.y),
-            //   "value x: ",
-            //   item.x
-            // );
+            //   "Item: ",
+            //   item);
             tooltipData.push({
               name: item.series.userOptions.name,
               x: item.x,
@@ -499,7 +510,10 @@ class LineChartSlider extends BaseReactComponent {
         series: {
           point: {
             events: {
-              mouseOver: this.InternalEvent.bind(this),
+              mouseOver: function ()  {
+                console.log(this);
+                // getEvent(this);
+              },
             },
           },
         },
@@ -574,6 +588,7 @@ class LineChartSlider extends BaseReactComponent {
                 options={options}
                 constructorType={"stockChart"}
                 allowChartUpdate={true}
+                updateArgs={[true]}
               />
               <div className="chart-x-selection">
                 <DropDown
@@ -586,7 +601,7 @@ class LineChartSlider extends BaseReactComponent {
                 />
               </div>
             </div>
-            {this.state.selectedEvents && (
+            {/* {this.state.selectedEvents && (
               <>
                 <div className="ChartDivider"></div>
                 <div className="SliderChartBottom">
@@ -600,42 +615,60 @@ class LineChartSlider extends BaseReactComponent {
                         console.log("first event", event);
                         event.event.map((eve) => {
                           console.log("second event", eve);
-                           <div className="GreyChip">
+                          ( <div className="GreyChip">
                              <h5 className="inter-display-bold f-s-13 lh-16 black-191">
                                <Image src={DoubleArrow} />
                                Tranfer
                              </h5>
 
                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                               {/* 0.01069 ETH or 13.86 USD from “abcd…980” */}
-                               {eve.asset.value.toFixed(5)} {eve.asset.code} or
+                               0.01069 ETH or 13.86 USD from “abcd…980”
+                               {/* {eve.asset.value.toFixed(5)} {eve.asset.code} or
                                {numToCurrency(
                                  eve.asset.value * eve.asset_price
                                )}
                                {eve.from
                                  ? "from " + eve.from || eve.from_address
-                                 : "to " + eve.to || eve.to_address}
-                               
-                               {/* {eve.asset.value.toFixed(5)}+ " " +
-                               {eve.asset.code} + " or " +
-                               {numToCurrency(
-                                 eve.asset.value * eve.asset_price
-                               )}{" "}
-                               + " USD " +
-                               {eve.from
-                                 ? "from " + eve.from || eve.from_address
-                                 : "to " + eve.to || eve.to_address}
-                               ` */}
-                             </p>
-                           </div>;
-                        })
-                       
-                      } )
-                      }
-                  </div>
+                                 : "to " + eve.to || eve.to_address} */}
+
+            {/* </p> */}
+            {/* </div>) */}
+            {/* }) */}
+
+            {/* } ) */}
+            {/* } */}
+            {/* </div> */}
+            {/* </div> */}
+            {/* </> */}
+            {/* )} */}
+            <>
+              <div className="ChartDivider"></div>
+              <div className="SliderChartBottom">
+                <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  <Image src={CalenderIcon} />
+                  Internal Events
+                </h4>
+
+                <div className="InternalEventWrapper">
+                  {selectedEvents.length > 0 &&
+                    selectedEvents.map((event) => {
+                      console.log(selectedEvents);
+                      return (
+                        <div className="GreyChip">
+                          <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                            <Image src={DoubleArrow} />
+                            Tranfer
+                          </h5>
+
+                          <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                            test
+                          </p>
+                        </div>
+                      );
+                    })}
                 </div>
-              </>
-            )}
+              </div>
+            </>
           </>
         )}
       </div>
