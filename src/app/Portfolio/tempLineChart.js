@@ -2,12 +2,12 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import Highcharts from "highcharts/highstock";
-import HighchartsReact from 'highcharts-react-official';
-import { GraphHeader } from '../common/GraphHeader'
-import CoinBadges from './../common/CoinBadges';
+import HighchartsReact from "highcharts-react-official";
+import { GraphHeader } from "../common/GraphHeader";
+import CoinBadges from "./../common/CoinBadges";
 import DropDown from "../common/DropDown";
-import TrendingUp from '../../assets/images/icons/TrendingUp.svg'
-import TrendingDown from '../../assets/images/icons/TrendingDown.svg'
+import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
+import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
 import { GroupByOptions, Months } from "../../utils/Constant";
 import { AssetValueFilter } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -30,9 +30,7 @@ class LineChartSlider extends BaseReactComponent {
       internalEvents: null,
     };
   }
-  componentDidUpdate() {
-    
-  }
+  componentDidUpdate() {}
 
   // componentDidUpdate(prevProps) {
   //   if (prevProps.assetValueData != this.props.assetValueData) {
@@ -51,9 +49,9 @@ class LineChartSlider extends BaseReactComponent {
   //     this.setState({
   //       internalEvents,
   //     });
-    
+
   //   }
-    
+
   // }
 
   handleFunction = (badge) => {
@@ -102,12 +100,11 @@ class LineChartSlider extends BaseReactComponent {
     this.props.handleGroupBy(t);
   };
 
-
   InternalEvent = (ctx) => {
     console.log("ctx", ctx);
 
     // console.log("internal events in method", this.state.internalEvents)
-   
+
     // let selectedEvents = [];
     //   this.state.internalEvents &&
     //     this.state.internalEvents.map((item) => {
@@ -120,9 +117,9 @@ class LineChartSlider extends BaseReactComponent {
     //     });
     // console.log("selected Event", selectedEvents);
 
-    // this.setState({
-    //     selectedEvents : [],
-    //   });
+    this.setState({
+      selectedEvents: [],
+    });
   };
   resetEvent = () => {
     console.log("Event Reset");
@@ -134,8 +131,8 @@ class LineChartSlider extends BaseReactComponent {
     const { assetValueData, externalEvents } = this.props;
     const parent = this;
     const getEvent = (value) => {
-      this.InternalEvent(value)
-      console.log("event triggered")
+      this.InternalEvent(value);
+      console.log("event triggered");
     };
     // console.log("externalEvents", externalEvents);
     let series = {};
@@ -184,7 +181,6 @@ class LineChartSlider extends BaseReactComponent {
           });
         }
       });
-
 
     let seriesData = [];
     timestampList.sort((a, b) => {
@@ -255,7 +251,7 @@ class LineChartSlider extends BaseReactComponent {
 
           if (e_time == abc && !UniqueEvents.includes(abc)) {
             UniqueEvents.push(abc);
-            y_value = Math.floor(Math.random() * (22 - 5 + 1) + 5) * 10;
+            y_value = Math.floor(Math.random() * (23 - 0 + 1) + 0) * 10;
 
             //add <br> tag every 3 word
             let title = event.title
@@ -290,19 +286,19 @@ class LineChartSlider extends BaseReactComponent {
           }
         });
     };
-     let selectedEvents = [];
+    let selectedEvents = [];
     const getIevent = (value) => {
-          selectedEvents = []
-        internalEvents &&
-          internalEvents.map((item) => {
-            let current = moment(item.timestamp).format("DD/MM/YYYY");
-            // console.log("current", current, value);
-            if (current === value) {
-              selectedEvents.push(item);
-            }
-          });
+      selectedEvents = [];
+      internalEvents &&
+        internalEvents.map((item) => {
+          let current = moment(item.timestamp).format("DD/MM/YYYY");
+          // console.log("current", current, value);
+          if (current === value) {
+            selectedEvents.push(item);
+          }
+        });
       console.log("selected Event", selectedEvents);
-    }
+    };
     timestampList.map((time) => {
       let dummy = new Date(time);
       // console.log("time", time, "dummy", dummy);
@@ -438,32 +434,29 @@ class LineChartSlider extends BaseReactComponent {
           // this.internalEvent(
           //   categories[this.x] == undefined ? this.x : categories[this.x]
           // );
-          getIevent(
-            categories[this.x] == undefined ? this.x : categories[this.x]
-          );
+          // getIevent(
+          //   categories[this.x] == undefined ? this.x : categories[this.x]
+          // );
           let tooltipData = [];
           this.points.map((item) => {
             // console.log(
             //   "Item: ",
             //   item);
-            tooltipData.push({
-              name: item.series.userOptions.name,
-              x: item.x,
-              y: item.y,
-              color: item.series.userOptions.color,
-            });
+            // tooltipData.push({
+            //   name: item.series.userOptions.name,
+            //   x: item.x,
+            //   y: item.y,
+            //   color: item.series.userOptions.color,
+            // });
           });
-          // const tooltip_title =
-          //   parent.state.title != "Year" || parent.state.title != "Month"
-          //     ? (moment(categories[this.x] == undefined
-          //     ? this.x
-          //     : categories[this.x]).format("MM DD YYYY"))
-          //     : categories[this.x] == undefined
-          //     ? this.x
-          //     : categories[this.x];
+
           return `<div class="top-section py-4">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff; border-left: 1px solid #E5E5E6"; border-right: 1px solid #E5E5E6"; border-radius:40px;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${this.x}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div> 
+                                <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${
+                                  categories[this.x] == undefined
+                                    ? this.x
+                                    : categories[this.x]
+                                }</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div> 
                                 ${tooltipData
                                   .map((item) => {
                                     return `<div class="inter-display-medium f-s-12 w-100 pt-3 px-4">
@@ -510,23 +503,22 @@ class LineChartSlider extends BaseReactComponent {
         // },
       },
       series: seriesData,
-      // plotOptions: {
-      //   series: {
-      //     point: {
-      //       events: {
-      //         mouseOver: function ()  {
-      //           console.log(this.category);
-      //           getIevent(this.category);
-      //           parent.setState({
-      //             selectedEvents: selectedEvents,
-      //           });
-      //           // getEvent(this.category);
-
-      //         },
-      //       },
-      //     },
-      //   },
-      // },
+      plotOptions: {
+        series: {
+          point: {
+            events: {
+              mouseOver: function () {
+                console.log(this.category);
+                getIevent(this.category);
+                parent.setState({
+                  selectedEvents: selectedEvents,
+                });
+                // getEvent(this.category);
+              },
+            },
+          },
+        },
+      },
       navigator: {
         backgroundColor: "rgba(229, 229, 230, 0.5)",
         height: 30,
@@ -659,49 +651,22 @@ class LineChartSlider extends BaseReactComponent {
                 </h4>
 
                 <div className="InternalEventWrapper">
-                  <div className="GreyChip">
-                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                      <Image src={DoubleArrow} />
-                      Tranfer
-                    </h5>
+                  {this.state.selectedEvents &&
+                    this.state.selectedEvents.map((event) => {
+                      console.log(selectedEvents);
+                      return (
+                        <div className="GreyChip">
+                          <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                            <Image src={DoubleArrow} />
+                            Tranfer
+                          </h5>
 
-                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                      0.01069 ETH or 13.86 USD from “abcd…980”
-                    </p>
-                  </div>
-
-                  <div className="GreyChip">
-                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                      <Image src={DoubleArrow} />
-                      Tranfer
-                    </h5>
-
-                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                      0.01069 ETH or 13.86 USD from “abcd…980”
-                    </p>
-                  </div>
-
-                  <div className="GreyChip">
-                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                      <Image src={DoubleArrow} />
-                      Tranfer
-                    </h5>
-
-                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                      0.01069 ETH or 13.86 USD from “abcd…980”
-                    </p>
-                  </div>
-
-                  <div className="GreyChip">
-                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                      <Image src={DoubleArrow} />
-                      Tranfer
-                    </h5>
-
-                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                      0.01069 ETH or 13.86 USD from “abcd…980”
-                    </p>
-                  </div>
+                          <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                            test
+                          </p>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             </>
@@ -711,8 +676,8 @@ class LineChartSlider extends BaseReactComponent {
     );
   }
 }
-const mapStateToProps = state => ({
-    OnboardingState: state.OnboardingState,
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
 });
 export default connect(mapStateToProps)(LineChartSlider);
 // export default LineChartSlider;
