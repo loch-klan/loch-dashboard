@@ -10,10 +10,14 @@ import ShareLink from '../../assets/images/icons/ShareLink.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import { BASE_URL_S3 } from '../../utils/Constant';
+import { toast } from 'react-toastify';
 
 
 
 function SharePortfolio(props) {
+  let lochUser = JSON.parse(localStorage.getItem('lochUser'));
+  let shareLink = BASE_URL_S3 + "portfolio/" + lochUser.link;
   return (
     <div>
         <Modal
@@ -41,16 +45,18 @@ function SharePortfolio(props) {
                 {props.headerTitle}
               </h6>
               <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
-                Share this portfolio with your friends or coworkers. 
+                Share this portfolio with your friends or coworkers.
                 <br/>
                 Don't worry only you have edit access. The link remains anonymous.
               </p>
 
               <div className='links'>
                 <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
-                  <span>http://loch.one/a2y1jh2jsja</span>
-                  <span className="link">
-                  
+                  <span className='link-text'>{shareLink}</span>
+                  <span className="link" onClick={()=>{
+                    navigator.clipboard.writeText(shareLink);
+                    toast.success("Share link has been copied")
+                    }}>
                       <Image src={CopyLink} className="m-r-8" />
                       <h3 className="inter-display-medium f-s-16 lh-19 black-191">
                         Copy link
@@ -86,7 +92,7 @@ function SharePortfolio(props) {
                   />
                 </CustomOverlay>
               </div>
-          </div>    
+          </div>
         </Modal.Body>
       </Modal>
     </div>
