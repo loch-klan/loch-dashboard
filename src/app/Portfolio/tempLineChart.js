@@ -117,9 +117,9 @@ class LineChartSlider extends BaseReactComponent {
     //     });
     // console.log("selected Event", selectedEvents);
 
-    this.setState({
-      selectedEvents: [],
-    });
+    // this.setState({
+    //     selectedEvents : [],
+    //   });
   };
   resetEvent = () => {
     console.log("Event Reset");
@@ -251,7 +251,7 @@ class LineChartSlider extends BaseReactComponent {
 
           if (e_time == abc && !UniqueEvents.includes(abc)) {
             UniqueEvents.push(abc);
-            y_value = Math.floor(Math.random() * (23 - 0 + 1) + 0) * 10;
+            y_value = Math.floor(Math.random() * (22 - 5 + 1) + 5) * 10;
 
             //add <br> tag every 3 word
             let title = event.title
@@ -434,29 +434,31 @@ class LineChartSlider extends BaseReactComponent {
           // this.internalEvent(
           //   categories[this.x] == undefined ? this.x : categories[this.x]
           // );
-          // getIevent(
-          //   categories[this.x] == undefined ? this.x : categories[this.x]
-          // );
+          getIevent(
+            categories[this.x] == undefined ? this.x : categories[this.x]
+          );
           let tooltipData = [];
           this.points.map((item) => {
             // console.log(
             //   "Item: ",
             //   item);
-            // tooltipData.push({
-            //   name: item.series.userOptions.name,
-            //   x: item.x,
-            //   y: item.y,
-            //   color: item.series.userOptions.color,
-            // });
+            tooltipData.push({
+              name: item.series.userOptions.name,
+              x: item.x,
+              y: item.y,
+              color: item.series.userOptions.color,
+            });
           });
-
+          console.log("title", parent.state.title);
+          const x_value =
+            categories[this.x] == undefined ? this.x : categories[this.x];
+          const tooltip_title =
+            parent.state.title === "Week" || parent.state.title === "Day"
+              ? moment(x_value).format("DD MMMM YY")
+              : x_value;
           return `<div class="top-section py-4">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff; border-left: 1px solid #E5E5E6"; border-right: 1px solid #E5E5E6"; border-radius:40px;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${
-                                  categories[this.x] == undefined
-                                    ? this.x
-                                    : categories[this.x]
-                                }</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div> 
+                                <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${tooltip_title}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div> 
                                 ${tooltipData
                                   .map((item) => {
                                     return `<div class="inter-display-medium f-s-12 w-100 pt-3 px-4">
@@ -476,49 +478,25 @@ class LineChartSlider extends BaseReactComponent {
                             </div>
                         </div>`;
         },
-        // formatter: function () {
-        //   console.log(
-        //     "Name: ",
-        //     this.point.series.name,
-        //     "Color: ",
-        //     this.color,
-        //     "value: ",
-        //     numToCurrency(this.y)
-        //   );
-        // return
-        // `
-        //    <div class="line-chart-tooltip">
-        //       <div class="top-section">
-        //           <div class="line-chart-tooltip-section">
-        //               <div class="inter-display-medium f-s-12 lh-16 black-191 ">${
-        //                 this.point.series.name
-        //               }  <span style="color:${this.color == "#ffffff" ? "" : this.color}"> $${numToCurrency(this.y)}</span>
-        //               </div>
-        //           </div>
-        //       </div>
-        //   </div>
-        //   `
-        // }
-        // );
-        // },
       },
       series: seriesData,
-      plotOptions: {
-        series: {
-          point: {
-            events: {
-              mouseOver: function () {
-                console.log(this.category);
-                getIevent(this.category);
-                parent.setState({
-                  selectedEvents: selectedEvents,
-                });
-                // getEvent(this.category);
-              },
-            },
-          },
-        },
-      },
+      // plotOptions: {
+      //   series: {
+      //     point: {
+      //       events: {
+      //         mouseOver: function ()  {
+      //           console.log(this.category);
+      //           getIevent(this.category);
+      //           parent.setState({
+      //             selectedEvents: selectedEvents,
+      //           });
+      //           // getEvent(this.category);
+
+      //         },
+      //       },
+      //     },
+      //   },
+      // },
       navigator: {
         backgroundColor: "rgba(229, 229, 230, 0.5)",
         height: 30,
@@ -651,22 +629,49 @@ class LineChartSlider extends BaseReactComponent {
                 </h4>
 
                 <div className="InternalEventWrapper">
-                  {this.state.selectedEvents &&
-                    this.state.selectedEvents.map((event) => {
-                      console.log(selectedEvents);
-                      return (
-                        <div className="GreyChip">
-                          <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                            <Image src={DoubleArrow} />
-                            Tranfer
-                          </h5>
+                  <div className="GreyChip">
+                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                      <Image src={DoubleArrow} />
+                      Tranfer
+                    </h5>
 
-                          <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                            test
-                          </p>
-                        </div>
-                      );
-                    })}
+                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                      0.01069 ETH or 13.86 USD from “abcd…980”
+                    </p>
+                  </div>
+
+                  <div className="GreyChip">
+                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                      <Image src={DoubleArrow} />
+                      Tranfer
+                    </h5>
+
+                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                      0.01069 ETH or 13.86 USD from “abcd…980”
+                    </p>
+                  </div>
+
+                  <div className="GreyChip">
+                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                      <Image src={DoubleArrow} />
+                      Tranfer
+                    </h5>
+
+                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                      0.01069 ETH or 13.86 USD from “abcd…980”
+                    </p>
+                  </div>
+
+                  <div className="GreyChip">
+                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                      <Image src={DoubleArrow} />
+                      Tranfer
+                    </h5>
+
+                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                      0.01069 ETH or 13.86 USD from “abcd…980”
+                    </p>
+                  </div>
                 </div>
               </div>
             </>

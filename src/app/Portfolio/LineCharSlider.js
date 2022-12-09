@@ -26,8 +26,8 @@ class LineChartSlider extends BaseReactComponent {
       activeBadgeList: [],
       title: "Year",
       titleY: "$ USD",
-      selectedEvents: null,
-      internalEvents: null,
+      selectedEvents: [],
+      selectedValue: null
     };
   }
   componentDidUpdate() {
@@ -124,18 +124,13 @@ class LineChartSlider extends BaseReactComponent {
     //     selectedEvents : [],
     //   });
   };
-  resetEvent = () => {
-    console.log("Event Reset");
-    // this.setState({
-    //   selectedEvents: null,
-    // });
-  };
+ 
   render() {
     const { assetValueData, externalEvents } = this.props;
     const parent = this;
     const getEvent = (value) => {
       this.InternalEvent(value)
-      console.log("event triggered")
+      // console.log("event triggered")
     };
     // console.log("externalEvents", externalEvents);
     let series = {};
@@ -342,6 +337,7 @@ class LineChartSlider extends BaseReactComponent {
     // console.log('after',seriesData);
     // console.log('categories.length',categories.length);
     seriesData = seriesData.slice(0, 7);
+    let selectedValue = null;
     //  seriesData = seriesData;
     var UNDEFINED;
     const options = {
@@ -350,6 +346,27 @@ class LineChartSlider extends BaseReactComponent {
       },
       chart: {
         type: "column",
+        events: {
+          click: function (event) {
+            // console.log("event click", parent.state.selectedValue);
+            if (parent.state.title == "Week" || parent.state.title == "Day") {
+              // console.log("event inside");
+              if (parent.state.selectedValue !== selectedValue) {
+                // console.log("inside event click");
+                parent.setState({
+                  selectedEvents: selectedEvents,
+                  selectedValue: selectedValue,
+                });
+              } else {
+                // console.log("reset");
+                parent.setState({
+                  selectedEvents: [],
+                  selectedValue: null,
+                });
+              }
+            }
+          },
+        },
       },
       credits: {
         enabled: false,
@@ -360,7 +377,16 @@ class LineChartSlider extends BaseReactComponent {
       },
       scrollbar: {
         enabled: true,
-        height: 0,
+        height: 6,
+        barBackgroundColor: "#19191A33",
+        barBorderRadius: 4,
+        barBorderWidth: 0,
+        trackBackgroundColor: "transparent",
+        trackBorderWidth: 0,
+        trackBorderRadius: 10,
+        trackBorderColor: "#19191A33",
+        rifleColor: "transparent",
+        margin: 150,
       },
       xAxis: {
         categories: categories,
@@ -372,14 +398,27 @@ class LineChartSlider extends BaseReactComponent {
             // console.log("this", this);
             return categories[this.pos];
           },
+          rotation: 0,
+          // staggerLines: 1,
         },
         crosshairs: {
           color: "#B0B1B3",
-          dashStyle: "solid",
+          dashStyle: "dashed",
           borderWidth: 1,
         },
         scrollbar: {
-          enabled: false,
+          enabled: true,
+          height: 6,
+          barBackgroundColor: "#19191A33",
+          barBorderRadius: 4,
+          barBorderWidth: 0,
+          trackBackgroundColor: "transparent",
+          trackBorderWidth: 0,
+          trackBorderRadius: 10,
+          trackBorderColor: "#19191A33",
+          rifleColor: "transparent",
+          margin: 20,
+          minWidth: 0,
         },
         min: categories.length > 4 ? categories.length - 5 : 0,
         max: categories.length - 1,
@@ -438,10 +477,13 @@ class LineChartSlider extends BaseReactComponent {
           // this.internalEvent(
           //   categories[this.x] == undefined ? this.x : categories[this.x]
           // );
-          getIevent(
-            categories[this.x] == undefined ? this.x : categories[this.x]
-          );
+
           let tooltipData = [];
+          const x_value =
+            categories[this.x] == undefined ? this.x : categories[this.x];
+          getIevent(x_value);
+          selectedValue = x_value;
+
           this.points.map((item) => {
             // console.log(
             //   "Item: ",
@@ -453,17 +495,15 @@ class LineChartSlider extends BaseReactComponent {
               color: item.series.userOptions.color,
             });
           });
-          // const tooltip_title =
-          //   parent.state.title != "Year" || parent.state.title != "Month"
-          //     ? (moment(categories[this.x] == undefined
-          //     ? this.x
-          //     : categories[this.x]).format("MM DD YYYY"))
-          //     : categories[this.x] == undefined
-          //     ? this.x
-          //     : categories[this.x];
+          console.log("title", parent.state.title);
+
+          const tooltip_title =
+            parent.state.title === "Week" || parent.state.title === "Day"
+              ? moment(x_value).format("DD MMMM YY")
+              : x_value;
           return `<div class="top-section py-4">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff; border-left: 1px solid #E5E5E6"; border-right: 1px solid #E5E5E6"; border-radius:40px;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${this.x}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div> 
+                                <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${tooltip_title}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div> 
                                 ${tooltipData
                                   .map((item) => {
                                     return `<div class="inter-display-medium f-s-12 w-100 pt-3 px-4">
@@ -483,55 +523,41 @@ class LineChartSlider extends BaseReactComponent {
                             </div>
                         </div>`;
         },
-        // formatter: function () {
-        //   console.log(
-        //     "Name: ",
-        //     this.point.series.name,
-        //     "Color: ",
-        //     this.color,
-        //     "value: ",
-        //     numToCurrency(this.y)
-        //   );
-        // return
-        // `
-        //    <div class="line-chart-tooltip">
-        //       <div class="top-section">
-        //           <div class="line-chart-tooltip-section">
-        //               <div class="inter-display-medium f-s-12 lh-16 black-191 ">${
-        //                 this.point.series.name
-        //               }  <span style="color:${this.color == "#ffffff" ? "" : this.color}"> $${numToCurrency(this.y)}</span>
-        //               </div>
-        //           </div>
-        //       </div>
-        //   </div>
-        //   `
-        // }
-        // );
-        // },
       },
       series: seriesData,
-      // plotOptions: {
-      //   series: {
-      //     point: {
-      //       events: {
-      //         mouseOver: function ()  {
-      //           console.log(this.category);
-      //           getIevent(this.category);
-      //           parent.setState({
-      //             selectedEvents: selectedEvents,
-      //           });
-      //           // getEvent(this.category);
-
-      //         },
-      //       },
-      //     },
-      //   },
-      // },
+      plotOptions: {
+        series: {
+          point: {
+            events: {
+              click: function () {
+                if (
+                  parent.state.title == "Week" ||
+                  parent.state.title == "Day"
+                ) {
+                  if (parent.state.selectedValue !== selectedValue) {
+                    //  console.log("inside event click");
+                    parent.setState({
+                      selectedEvents: selectedEvents,
+                      selectedValue: selectedValue,
+                    });
+                  } else {
+                    //  console.log("reset");
+                    parent.setState({
+                      selectedEvents: [],
+                      selectedValue: null,
+                    });
+                  }
+                }
+              },
+            },
+          },
+        },
+      },
       navigator: {
-        backgroundColor: "rgba(229, 229, 230, 0.5)",
+        margin: 0,
         height: 30,
         outlineColor: "#E5E5E6",
-        outlineWidth: 1,
+        outlineWidth: 0,
         maskFill: "rgba(25, 25, 26, 0.4)",
         stickToMax: false,
         handles: {
@@ -572,9 +598,9 @@ class LineChartSlider extends BaseReactComponent {
             <div
               className="line-chart-section"
               style={{ padding: "0rem 4.8rem" }}
-              onMouseLeave={() => {
-                this.resetEvent();
-              }}
+              // onMouseLeave={() => {
+              //   this.resetEvent();
+              // }}
             >
               <GraphHeader
                 title="Asset Value"
@@ -610,7 +636,7 @@ class LineChartSlider extends BaseReactComponent {
                 />
               </div>
             </div>
-            {/* {this.state.selectedEvents && (
+            {this.state.selectedEvents.length > 0 && (
               <>
                 <div className="ChartDivider"></div>
                 <div className="SliderChartBottom">
@@ -620,91 +646,55 @@ class LineChartSlider extends BaseReactComponent {
                   </h4>
 
                     <div className="InternalEventWrapper">
-                      {this.state.selectedEvents && this.state.selectedEvents.map((event) => {
+                      {this.state.selectedEvents.length > 0 && this.state.selectedEvents.map((event) => {
                         console.log("first event", event);
-                        event.event.map((eve) => {
-                          console.log("second event", eve);
-                          ( <div className="GreyChip">
-                             <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                               <Image src={DoubleArrow} />
-                               Tranfer
-                             </h5>
+                        return event.event.map((eve, i) => {
+                          let address = "";
+                          let str =  eve.from_address || eve.to_address;
+                          if (
+                            str.length > 16
+                          ) {
+                            address =
+                              '"' +
+                              str.substr(0, eve.from_address ? 5 : 7) +
+                              "..." +
+                              str.substr(str.length - 5, str.length) +
+                              '"';
+                            
+                          }
+                          let count = 6 - Math.trunc(eve.asset.value).toString().length;
+                          
+                          // console.log(
+                          //   "count",
+                          //   count,
+                          //   "number",
+                          //   Math.trunc(eve.asset.value)
+                          // );
+                        return (
+                          <div className="GreyChip" key={i}>
+                            <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                              <Image src={DoubleArrow} />
+                              Tranfer
+                            </h5>
 
-                             <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                               0.01069 ETH or 13.86 USD from “abcd…980”
-                               {/* {eve.asset.value.toFixed(5)} {eve.asset.code} or
-                               {numToCurrency(
-                                 eve.asset.value * eve.asset_price
-                               )}
-                               {eve.from
-                                 ? "from " + eve.from || eve.from_address
-                                 : "to " + eve.to || eve.to_address} */}
+                            <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                              {/* 0.01069 ETH or 13.86 USD from “abcd…980” */}
+                              {eve.asset.value.toFixed(count)} {eve.asset.code}
+                              {" or "}
+                              {numToCurrency(eve.asset.value * eve.asset_price)}
+                              {eve.from ? " from " + address : " to " + address}
+                            </p>
+                          </div>
+                        );
+            })
 
-            {/* </p> */}
-            {/* </div>) */}
-            {/* }) */}
-
-            {/* } ) */}
-            {/* } */}
-            {/* </div> */}
-            {/* </div> */}
-            {/* </> */}
-            {/* )} */}
-            <>
-              <div className="ChartDivider"></div>
-              <div className="SliderChartBottom">
-                <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                  <Image src={CalenderIcon} />
-                  Internal Events
-                </h4>
-
-                <div className="InternalEventWrapper">
-                  <div className="GreyChip">
-                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                      <Image src={DoubleArrow} />
-                      Tranfer
-                    </h5>
-
-                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                      0.01069 ETH or 13.86 USD from “abcd…980”
-                    </p>
-                  </div>
-
-                  <div className="GreyChip">
-                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                      <Image src={DoubleArrow} />
-                      Tranfer
-                    </h5>
-
-                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                      0.01069 ETH or 13.86 USD from “abcd…980”
-                    </p>
-                  </div>
-
-                  <div className="GreyChip">
-                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                      <Image src={DoubleArrow} />
-                      Tranfer
-                    </h5>
-
-                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                      0.01069 ETH or 13.86 USD from “abcd…980”
-                    </p>
-                  </div>
-
-                  <div className="GreyChip">
-                    <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                      <Image src={DoubleArrow} />
-                      Tranfer
-                    </h5>
-
-                    <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                      0.01069 ETH or 13.86 USD from “abcd…980”
-                    </p>
-                  </div>
-                </div>
-              </div>
+            } )
+            }
+            </div>
+            </div>
             </>
+            )}
+
           </>
         )}
       </div>
