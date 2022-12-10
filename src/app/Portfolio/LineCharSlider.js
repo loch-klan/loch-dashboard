@@ -263,24 +263,26 @@ class LineChartSlider extends BaseReactComponent {
               color: "#E5E5E680",
               dashStyle: "solid",
               value: value,
-              width: 2,
+              width: 0,
               label: {
                 useHTML: true,
                 formatter: function () {
-                  return `<div style="border-left: 2px solid #CACBCC; padding-left: 5px;">${title}</div>`;
+                  return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${title}</div></div>`;
                 },
                 align: "left",
-                y: y_value,
+                y: -(y_value - 13),
                 x: 0,
                 rotation: 0,
+                verticalAlign: "bottom",
                 style: {
                   fontFamily: "Inter-Medium",
                   fontSize: "13px",
                   fontWeight: 500,
                   color: "#CACBCC",
+                  // "z-index": 100,
                 },
               },
-              zIndex: 1,
+              zIndex: 0,
             });
           }
         });
@@ -378,13 +380,13 @@ class LineChartSlider extends BaseReactComponent {
       scrollbar: {
         enabled: true,
         height: 6,
-        barBackgroundColor: "#19191A33",
+        barBackgroundColor: "transparent",
         barBorderRadius: 4,
         barBorderWidth: 0,
         trackBackgroundColor: "transparent",
         trackBorderWidth: 0,
         trackBorderRadius: 10,
-        trackBorderColor: "#19191A33",
+        trackBorderColor: "transparent",
         rifleColor: "transparent",
         margin: 150,
       },
@@ -399,12 +401,15 @@ class LineChartSlider extends BaseReactComponent {
             return categories[this.pos];
           },
           rotation: 0,
+          style: {
+            // zIndex: 200,
+          },
           // staggerLines: 1,
         },
-        crosshairs: {
+        crosshair: {
+          width: 1,
           color: "#B0B1B3",
-          dashStyle: "dashed",
-          borderWidth: 1,
+          dashStyle: "Dash",
         },
         scrollbar: {
           enabled: true,
@@ -462,15 +467,16 @@ class LineChartSlider extends BaseReactComponent {
 
         split: false,
         useHTML: true,
-        distance: 0,
-        borderRadius: 20,
-        borderColor: "#E5E5E6",
+        distance: 20,
+        // borderRadius: 20,
+        borderColor: "tranparent",
         backgroundColor: "#FFFFFF",
         borderShadow: 0,
-        borderWidth: 1.5,
+        // borderWidth: 1,
         padding: 0,
         shadow: false,
-        zIndex: 0,
+        zIndex: 2000,
+        // "z-index": 2000,
 
         formatter: function () {
           // console.log("this", this);
@@ -501,13 +507,13 @@ class LineChartSlider extends BaseReactComponent {
             parent.state.title === "Week" || parent.state.title === "Day"
               ? moment(x_value).format("DD MMMM YY")
               : x_value;
-          return `<div class="top-section py-4">
-                                <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff; border-left: 1px solid #E5E5E6"; border-right: 1px solid #E5E5E6"; border-radius:40px;">
+          return `<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:15px; z-index:9999 !important;">
+                                <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
                                 <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${tooltip_title}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div> 
                                 ${tooltipData
                                   .map((item) => {
-                                    return `<div class="inter-display-medium f-s-12 w-100 pt-3 px-4">
-                                    <span style='width:8px; height: 8px; border-radius: 50%; background-color:${
+                                    return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
+                                    <span style='width:10px; height: 10px; border-radius: 50%; background-color:${
                                       item.color == "#ffffff"
                                         ? "#16182B"
                                         : item.color
@@ -551,15 +557,23 @@ class LineChartSlider extends BaseReactComponent {
               },
             },
           },
+          marker: {
+            enabled: false,
+            states: {
+              hover: {
+                enabled: false,
+              },
+            },
+          },
         },
       },
       navigator: {
-        margin: 0,
+        margin: 1,
         height: 30,
         outlineColor: "#E5E5E6",
         outlineWidth: 0,
         maskFill: "rgba(25, 25, 26, 0.4)",
-        stickToMax: false,
+        stickToMax: true,
         handles: {
           backgroundColor: "#FFFFFF",
           borderColor: "#B0B1B3",
