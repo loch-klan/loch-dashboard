@@ -90,18 +90,21 @@ class Portfolio extends BaseReactComponent {
       startTime: "",
       GraphData: [],
       graphValue: null,
+      isUpdate: 0,
     };
   }
 
   handleChangeList = (value) => {
     this.setState({
       userWalletList: value,
+      isUpdate: this.state.isUpdate == 0 ? 1 : 0
     });
     this.props.getCoinRate();
   };
   handleFixModal = () => {
     this.setState({
       fixModal: !this.state.fixModal,
+      isUpdate: this.state.isUpdate == 0 ? 1 : 0,
     });
   };
 
@@ -835,7 +838,8 @@ this.setState({graphLoading: true})
                       coinLists={this.props.OnboardingState.coinsLists}
                       isScrollVisible={false}
                       handleGroupBy={(value) => this.handleGroupBy(value)}
-                      graphLoading={this.state.graphLoading}
+                        graphLoading={this.state.graphLoading}
+                       isUpdate={this.state.isUpdate}
                     />
                   </div>
                   <div className="m-b-22 graph-table-section">

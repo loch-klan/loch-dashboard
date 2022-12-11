@@ -17,6 +17,7 @@ import { numToCurrency } from "../../utils/ReusableFunctions";
 import { Image } from "react-bootstrap";
 import CalenderIcon from "../../assets/images/calendar.svg";
 import DoubleArrow from "../../assets/images/double-arrow.svg";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -27,34 +28,18 @@ class LineChartSlider extends BaseReactComponent {
       title: "Year",
       titleY: "$ USD",
       selectedEvents: [],
-      selectedValue: null
+      selectedValue: null,
     };
   }
-  componentDidUpdate() {
-    
-  }
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.assetValueData != this.props.assetValueData) {
-  //     let internalEvents = [];
-  //     this.props.assetValueData &&
-  //       this.props.assetValueData.map((assetData) => {
-  //         //  console.log("asset data",assetData);
-  //         if (assetData.events && assetData.events.length > 0) {
-  //           internalEvents.push({
-  //             timestamp: assetData.timestamp,
-  //             event: assetData.events,
-  //           });
-  //         }
-  //       });
-  //     console.log("internal events update", internalEvents);
-  //     this.setState({
-  //       internalEvents,
-  //     });
-    
-  //   }
-    
-  // }
+  componentDidUpdate(prevProps) {
+    if (prevProps.isUpdate !== this.props.isUpdate) {
+      // console.log("Something update");
+      this.setState({
+        title:"Year",
+      })
+    } 
+  }
 
   handleFunction = (badge) => {
     let newArr = [...this.state.activeBadge];
@@ -102,34 +87,12 @@ class LineChartSlider extends BaseReactComponent {
     this.props.handleGroupBy(t);
   };
 
-
-  InternalEvent = (ctx) => {
-    console.log("ctx", ctx);
-
-    // console.log("internal events in method", this.state.internalEvents)
-   
-    // let selectedEvents = [];
-    //   this.state.internalEvents &&
-    //     this.state.internalEvents.map((item) => {
-    //       let current = moment(item.timestamp).format("DD/MM/YYYY");
-    //       // console.log("current", current, value);
-
-    //       if (current === ctx.target.category) {
-    //         selectedEvents.push(item);
-    //       }
-    //     });
-    // console.log("selected Event", selectedEvents);
-
-    // this.setState({
-    //     selectedEvents : [],
-    //   });
-  };
- 
   render() {
     const { assetValueData, externalEvents } = this.props;
     const parent = this;
+
     const getEvent = (value) => {
-      this.InternalEvent(value)
+      this.InternalEvent(value);
       // console.log("event triggered")
     };
     // console.log("externalEvents", externalEvents);
@@ -141,17 +104,18 @@ class LineChartSlider extends BaseReactComponent {
     assetValueData &&
       assetValueData.map((assetData) => {
         //  console.log("asset data",assetData);
-        if (assetData.events && assetData.events.length > 0) {
-          internalEvents.push({
-            timestamp: assetData.timestamp,
-            event: assetData.events,
-          });
-        }
 
         if (
           this.state.activeBadgeList.includes(assetData.chain._id) ||
           this.state.activeBadgeList.length === 0
         ) {
+          if (assetData.events && assetData.events.length > 0) {
+            internalEvents.push({
+              timestamp: assetData.timestamp,
+              event: assetData.events,
+            });
+          }
+
           if (!timestampList.includes(assetData.timestamp)) {
             timestampList.push(assetData.timestamp);
             // series[assetData.timestamp] = {};
@@ -180,11 +144,28 @@ class LineChartSlider extends BaseReactComponent {
         }
       });
 
-
     let seriesData = [];
     timestampList.sort((a, b) => {
       return a - b;
     });
+
+    
+
+    if (this.state.title === "Year" && timestampList.length != 0) {
+      const startYear = 2009;
+      const endYear = moment(timestampList[0]).format("YYYY");
+      const years = [];
+      // console.log("year update", endYear);
+      for (let year = startYear; year < endYear; year++) {
+        years.push(moment(year, "YYYY").valueOf());
+      }
+
+      timestampList = [...years, ...timestampList];
+      // console.log("year update", years);
+      // console.log("l", timestampList);
+    }
+
+    // console.log("lastyear", endYear, "year list", years);
     for (const [key, value] of Object.entries(assetMaster)) {
       // seriesData.push({
       //   name: value.assetDetails.name,
@@ -200,6 +181,7 @@ class LineChartSlider extends BaseReactComponent {
           graphData.push(0);
         }
       });
+
       seriesData.push({
         // linkedTo: key,
         name: value.assetDetails.name,
@@ -250,14 +232,7 @@ class LineChartSlider extends BaseReactComponent {
 
           if (e_time == abc && !UniqueEvents.includes(abc)) {
             UniqueEvents.push(abc);
-            y_value = Math.floor(Math.random() * (22 - 5 + 1) + 5) * 10;
-
-            //add <br> tag every 3 word
-            let title = event.title
-              .split(" ")
-              .map((v, i) => `${i && i % 3 == 0 ? "<br>" : " "}${v}`)
-              .join("")
-              .trim();
+            y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
 
             plotLines.push({
               color: "#E5E5E680",
@@ -266,9 +241,14 @@ class LineChartSlider extends BaseReactComponent {
               width: 0,
               label: {
                 useHTML: true,
+
                 formatter: function () {
-                  return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${title}</div></div>`;
+                  return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${event.title.replace(
+                    /([^ ]+) ([^ ]+)/g,
+                    "$1 $2<br>"
+                  )}</div></div>`;
                 },
+
                 align: "left",
                 y: -(y_value - 13),
                 x: 0,
@@ -282,24 +262,67 @@ class LineChartSlider extends BaseReactComponent {
                   // "z-index": 100,
                 },
               },
-              zIndex: 0,
+              zIndex: 4,
             });
           }
         });
     };
-     let selectedEvents = [];
+
+    let selectedEvents = [];
+
     const getIevent = (value) => {
-          selectedEvents = []
-        internalEvents &&
-          internalEvents.map((item) => {
-            let current = moment(item.timestamp).format("DD/MM/YYYY");
-            // console.log("current", current, value);
-            if (current === value) {
-              selectedEvents.push(item);
-            }
-          });
-      console.log("selected Event", selectedEvents);
-    }
+      selectedEvents = [];
+      internalEvents &&
+        internalEvents.map((item) => {
+          let current = moment(item.timestamp).format("DD/MM/YYYY");
+          // console.log("current", current, value);
+          if (current === value) {
+            console.log("item", item);
+            // selectedEvents.push(item);
+            item.event.map((a) => {
+          
+                let e_usd = a.asset.value * a.asset_price;
+                let e_text = "";
+                let e_assetValue = a.asset.value;
+                let e_assetCode = a.asset.code;
+                let e_tooltipData = a.from
+                  ? a.from + ": " + a.from_address
+                  : a.to + ": " + a.to_address;
+                let e_address = "";
+                if (a.from) {
+                  e_address = a.from ? a.from : a.from_address;
+                  e_text = "from";
+                } else {
+                  e_address = a.to ? a.to : a.to_address;
+                  e_text = "to";
+                }
+                if (e_address.length > 16) {
+                  e_address =
+                    '"' +
+                    e_address.substr(0, e_text === "from" ? 5 : 7) +
+                    "..." +
+                    e_address.substr(e_address.length - 3, e_address.length) +
+                    '"';
+                }
+                selectedEvents.push({
+                  usd: e_usd,
+                  assetValue: e_assetValue,
+                  assetCode: e_assetCode,
+                  tooltip: e_tooltipData,
+                  text: e_text,
+                  address: e_address,
+              });
+            });
+          }
+        });
+
+      // console.log("beforeselected Event", selectedEvents);
+      selectedEvents = selectedEvents && selectedEvents.sort((a, b) => {
+        return b.usd - a.usd;
+      });
+      selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
+     
+    };
     timestampList.map((time) => {
       let dummy = new Date(time);
       // console.log("time", time, "dummy", dummy);
@@ -311,34 +334,31 @@ class LineChartSlider extends BaseReactComponent {
         generatePlotLines(abc);
       }
       if (this.state.title === "Month") {
-        // abc = dummy.getMonth()+1;
-        // categories.push(Months.getText(abc))
+
 
         abc = moment(dummy).format("MMMM YY");
-        // console.log("month", abc);
+
         categories.push(abc);
         generatePlotLines(abc);
       }
       if (this.state.title === "Year") {
         abc = dummy.getFullYear();
-        // console.log("year", abc);
+
         categories.push(abc);
         generatePlotLines(abc);
       }
     });
-    // console.log('categories',categories);
-    // console.log('timestamp',timestampList);
-    // console.log('seriesData',seriesData);
-    // console.log('PlotLine',plotLines);
+    
 
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
         return b.lastValue - a.lastValue;
       });
-    // console.log('after',seriesData);
-    // console.log('categories.length',categories.length);
-    seriesData = seriesData.slice(0, 7);
+
+    seriesData = seriesData.slice(0, 4);
+    // console.log("series data", seriesData);
+    // console.log("categories", categories);
     let selectedValue = null;
     //  seriesData = seriesData;
     var UNDEFINED;
@@ -369,6 +389,7 @@ class LineChartSlider extends BaseReactComponent {
             }
           },
         },
+        zoomType: "x",
       },
       credits: {
         enabled: false,
@@ -401,9 +422,7 @@ class LineChartSlider extends BaseReactComponent {
             return categories[this.pos];
           },
           rotation: 0,
-          style: {
-            // zIndex: 200,
-          },
+
           // staggerLines: 1,
         },
         crosshair: {
@@ -426,7 +445,7 @@ class LineChartSlider extends BaseReactComponent {
           minWidth: 0,
         },
         min: categories.length > 4 ? categories.length - 5 : 0,
-        max: categories.length - 1,
+        max: categories.length - 0.5,
         plotLines: plotLines,
       },
 
@@ -439,6 +458,11 @@ class LineChartSlider extends BaseReactComponent {
         gridLineDashStyle: "longdash",
         labels: {
           formatter: function () {
+            // // console.log(
+            // //   "yaxis",
+            // //   this.value,
+            // //   Highcharts.numberFormat(this.value, -1, UNDEFINED, ",")
+            // );
             return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
           },
           x: 0,
@@ -449,6 +473,7 @@ class LineChartSlider extends BaseReactComponent {
       legend: {
         enabled: true,
         align: "right",
+        useHTML: true,
         verticalAlign: "top",
         itemStyle: {
           fontFamily: "Inter-SemiBold",
@@ -468,15 +493,15 @@ class LineChartSlider extends BaseReactComponent {
         split: false,
         useHTML: true,
         distance: 20,
-        // borderRadius: 20,
+        borderRadius: 10,
         borderColor: "tranparent",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: null,
+        outside: true,
         borderShadow: 0,
         // borderWidth: 1,
         padding: 0,
         shadow: false,
-        zIndex: 2000,
-        // "z-index": 2000,
+        hideDelay: 0,
 
         formatter: function () {
           // console.log("this", this);
@@ -485,8 +510,10 @@ class LineChartSlider extends BaseReactComponent {
           // );
 
           let tooltipData = [];
+
           const x_value =
             categories[this.x] == undefined ? this.x : categories[this.x];
+
           getIevent(x_value);
           selectedValue = x_value;
 
@@ -501,13 +528,15 @@ class LineChartSlider extends BaseReactComponent {
               color: item.series.userOptions.color,
             });
           });
-          console.log("title", parent.state.title);
+          tooltipData.sort((a, b) => parseFloat(b.y) - parseFloat(a.y));
+          // console.log("sorted", tooltipData);
 
           const tooltip_title =
             parent.state.title === "Week" || parent.state.title === "Day"
-              ? moment(x_value).format("DD MMMM YY")
+              ? moment(x_value, "DD/MM/YYYY").format("DD MMMM YY")
               : x_value;
-          return `<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:15px; z-index:9999 !important;">
+          //  console.log("checking date", x_value, this.x, tooltip_title);
+          return `<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
                                 <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${tooltip_title}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div> 
                                 ${tooltipData
@@ -573,7 +602,7 @@ class LineChartSlider extends BaseReactComponent {
         outlineColor: "#E5E5E6",
         outlineWidth: 0,
         maskFill: "rgba(25, 25, 26, 0.4)",
-        stickToMax: true,
+        stickToMax: false,
         handles: {
           backgroundColor: "#FFFFFF",
           borderColor: "#B0B1B3",
@@ -636,13 +665,13 @@ class LineChartSlider extends BaseReactComponent {
                 highcharts={Highcharts}
                 options={options}
                 constructorType={"stockChart"}
-                allowChartUpdate={true}
-                updateArgs={[true]}
+                // allowChartUpdate={true}
+                // updateArgs={[true]}
               />
               <div className="chart-x-selection">
                 <DropDown
                   class="line-chart-dropdown"
-                  list={["Year", "Month", "Week", "Day"]}
+                  list={["Year", "Month", "Day"]}
                   // list={GroupByOptions}
                   onSelect={this.handleSelect}
                   title={this.state.title}
@@ -659,56 +688,64 @@ class LineChartSlider extends BaseReactComponent {
                     Internal Events
                   </h4>
 
-                    <div className="InternalEventWrapper">
-                      {this.state.selectedEvents.length > 0 && this.state.selectedEvents.map((event) => {
+                  <div className="InternalEventWrapper">
+                    {this.state.selectedEvents.length > 0 &&
+                      this.state.selectedEvents.map((event,i) => {
                         console.log("first event", event);
-                        return event.event.map((eve, i) => {
-                          let address = "";
-                          let str =  eve.from_address || eve.to_address;
-                          if (
-                            str.length > 16
-                          ) {
-                            address =
-                              '"' +
-                              str.substr(0, eve.from_address ? 5 : 7) +
-                              "..." +
-                              str.substr(str.length - 5, str.length) +
-                              '"';
-                            
-                          }
-                          let count = 6 - Math.trunc(eve.asset.value).toString().length;
-                          
+                       
+                        
+                          let count =
+                            Math.trunc(event.assetValue).toString().length > 6
+                              ? 0
+                              : 6 -
+                                Math.trunc(event.assetValue).toString().length;
+
                           // console.log(
                           //   "count",
                           //   count,
                           //   "number",
                           //   Math.trunc(eve.asset.value)
                           // );
-                        return (
-                          <div className="GreyChip" key={i}>
-                            <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                              <Image src={DoubleArrow} />
-                              Tranfer
-                            </h5>
+                          return (
+                            <>
+                              <div className="GreyChip" key={i}>
+                                <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                                  <Image src={DoubleArrow} />
+                                  Transfer
+                                </h5>
 
-                            <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                              {/* 0.01069 ETH or 13.86 USD from “abcd…980” */}
-                              {eve.asset.value.toFixed(count)} {eve.asset.code}
-                              {" or "}
-                              {numToCurrency(eve.asset.value * eve.asset_price)}
-                              {eve.from ? " from " + address : " to " + address}
-                            </p>
-                          </div>
-                        );
-            })
-
-            } )
-            }
-            </div>
-            </div>
-            </>
+                                <p className="inter-display-medium f-s-13 lh-16 grey-B4D text-right">
+                                  <span>
+                                    {event.assetValue.toFixed(count)}{" "}
+                                    {event.assetCode}
+                                    {" or $"}
+                                    {numToCurrency(
+                                      event.usd
+                                    )}
+                                    {event.text === "from" ? " from " : " to "}{" "}
+                                  </span>
+                                  <CustomOverlay
+                                    position="top"
+                                    // className={"coin-hover-tooltip"}
+                                    isIcon={false}
+                                    isInfo={true}
+                                    isText={true}
+                                    text={event.tooltip}
+                                  >
+                                    <span style={{ cursor: "pointer" }}>
+                                      {event.address}
+                                    </span>
+                                  </CustomOverlay>
+                                </p>
+                              </div>
+                            </>
+                          );
+                       
+                      })}
+                  </div>
+                </div>
+              </>
             )}
-
           </>
         )}
       </div>

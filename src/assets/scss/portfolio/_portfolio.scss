@@ -87,7 +87,7 @@
 
                 .InternalEventWrapper{
                     display: flex;
-                    align-items: center;
+                   align-items: stretch;
                     justify-content: space-between;
                     margin-top: 2rem;
                     flex-wrap: wrap;
@@ -106,6 +106,7 @@
                         h5{
                             display:flex;
                             align-items: center;
+                            margin-right: 0.5rem;
 
                             img{
                             margin-right: 1rem;
