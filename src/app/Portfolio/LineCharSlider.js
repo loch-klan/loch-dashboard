@@ -333,11 +333,16 @@ class LineChartSlider extends BaseReactComponent {
                 let e_text = "";
                 let e_assetValue = a.asset.value;
                 let e_assetCode = a.asset.code;
-                let e_tooltipData = a.from
-                  ? a.from + ": " + a.from_address
-                  : a.to + ": " + a.to_address;
+                let e_tooltipData =
+                  a.from || a.from_address
+                    ? a.from + a.from
+                      ? ": "
+                      : "" + a.from_address
+                    : a.to + a.to
+                    ? ": "
+                    : "" + a.to_address;
                 let e_address = "";
-                if (a.from) {
+                if (a.from || a.from_address) {
                   e_address = a.from ? a.from : a.from_address;
                   e_text = "from";
                 } else {
@@ -352,6 +357,7 @@ class LineChartSlider extends BaseReactComponent {
                     e_address.substr(e_address.length - 3, e_address.length) +
                     '"';
                 }
+              console.log("a", a)
                 selectedEvents.push({
                   usd: e_usd,
                   assetValue: e_assetValue,
