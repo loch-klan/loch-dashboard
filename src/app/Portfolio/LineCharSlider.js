@@ -17,6 +17,7 @@ import { numToCurrency } from "../../utils/ReusableFunctions";
 import { Image } from "react-bootstrap";
 import CalenderIcon from "../../assets/images/calendar.svg";
 import DoubleArrow from "../../assets/images/double-arrow.svg";
+import handle from "../../assets/images/handle.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
@@ -96,6 +97,7 @@ class LineChartSlider extends BaseReactComponent {
       // console.log("event triggered")
     };
     // console.log("externalEvents", externalEvents);
+    //  console.log("asset Value", assetValueData);
     let series = {};
     let timestampList = [];
     let assetMaster = {};
@@ -186,10 +188,10 @@ class LineChartSlider extends BaseReactComponent {
         // linkedTo: key,
         name: value.assetDetails.name,
         id: key,
-        type: "line",
+        type: "area",
         color: value.assetDetails.color,
         marker: {
-          enabled: true,
+          // enabled: true,
           symbol: "circle",
         },
         showInLegend: true,
@@ -230,41 +232,87 @@ class LineChartSlider extends BaseReactComponent {
             e_time = moment(event.timestamp).format("YYYY");
           }
 
-          if (e_time == abc && !UniqueEvents.includes(abc)) {
-            UniqueEvents.push(abc);
-            y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
+          // if (e_time == abc && !UniqueEvents.includes(abc) && event.is_highlighted) {
 
-            plotLines.push({
-              color: "#E5E5E680",
-              dashStyle: "solid",
-              value: value,
-              width: 0,
-              label: {
-                useHTML: true,
+            if (
+              e_time == abc &&
+              event.is_highlighted &&
+              this.state.title === "Year"
+            ) {
+            
+              UniqueEvents.push(abc);
+              y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
 
-                formatter: function () {
-                  return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${event.title.replace(
-                    /([^ ]+) ([^ ]+)/g,
-                    "$1 $2<br>"
-                  )}</div></div>`;
+              plotLines.push({
+                color: "#E5E5E680",
+                dashStyle: "solid",
+                value: value,
+                width: 0,
+                label: {
+                  useHTML: true,
+
+                  formatter: function () {
+                    return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${event.title.replace(
+                      /([^ ]+) ([^ ]+)/g,
+                      "$1 $2<br>"
+                    )}</div></div>`;
+                  },
+
+                  align: "left",
+                  y: -(y_value - 13),
+                  x: 0,
+                  rotation: 0,
+                  verticalAlign: "bottom",
+                  style: {
+                    fontFamily: "Inter-Medium",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    color: "#CACBCC",
+                    // "z-index": 100,
+                  },
                 },
+                zIndex: 4,
+              });
+            } else {
+              if (e_time == abc && this.state.title !== "Year") {
+                UniqueEvents.push(abc);
+                y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
 
-                align: "left",
-                y: -(y_value - 13),
-                x: 0,
-                rotation: 0,
-                verticalAlign: "bottom",
-                style: {
-                  fontFamily: "Inter-Medium",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  color: "#CACBCC",
-                  // "z-index": 100,
-                },
-              },
-              zIndex: 4,
-            });
-          }
+                plotLines.push({
+                  color: "#E5E5E680",
+                  dashStyle: "solid",
+                  value: value,
+                  width: 0,
+                  label: {
+                    useHTML: true,
+
+                    formatter: function () {
+                      return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${event.title.replace(
+                        /([^ ]+) ([^ ]+)/g,
+                        "$1 $2<br>"
+                      )}</div></div>`;
+                    },
+
+                    align: "left",
+                    y: -(y_value - 13),
+                    x: 0,
+                    rotation: 0,
+                    verticalAlign: "bottom",
+                    style: {
+                      fontFamily: "Inter-Medium",
+                      fontSize: "13px",
+                      fontWeight: 500,
+                      color: "#CACBCC",
+                      // "z-index": 100,
+                    },
+                  },
+                  zIndex: 4,
+                });
+              }
+            }
+
+           
+          
         });
     };
 
@@ -349,7 +397,7 @@ class LineChartSlider extends BaseReactComponent {
       }
     });
     
-
+// console.log("plotline", plotLines);
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
@@ -473,7 +521,6 @@ class LineChartSlider extends BaseReactComponent {
       legend: {
         enabled: true,
         align: "right",
-        useHTML: true,
         verticalAlign: "top",
         itemStyle: {
           fontFamily: "Inter-SemiBold",
@@ -482,8 +529,8 @@ class LineChartSlider extends BaseReactComponent {
           fontWeight: "600",
           lineHeight: "12px",
         },
-        symbolHeight: 15,
-        symbolWidth: 8,
+        symbolHeight: 10,
+        symbolWidth: 10,
         symbolRadius: 6,
       },
 
@@ -562,6 +609,7 @@ class LineChartSlider extends BaseReactComponent {
       series: seriesData,
       plotOptions: {
         series: {
+          fillOpacity: 0,
           point: {
             events: {
               click: function () {
@@ -604,21 +652,31 @@ class LineChartSlider extends BaseReactComponent {
         maskFill: "rgba(25, 25, 26, 0.4)",
         stickToMax: false,
         handles: {
-          backgroundColor: "#FFFFFF",
-          borderColor: "#B0B1B3",
-          lineWidth: 0.5,
-          width: 6,
+          lineWidth: 0,
+          width: 7,
           height: 16,
+          symbols: [`url(${handle})`, `url(${handle})`],
         },
         xAxis: {
-          visible: false,
+          visible: true,
+          labels: {
+            enabled: false,
+          },
+          gridLineWidth: 0,
+          plotBands: [
+            {
+              from: -100,
+              to: 10000,
+              color: "rgba(229, 229, 230, 0.5)",
+            },
+          ],
         },
         series: {
-          color: "#E5E5E6",
+          color: "#B0B1B3",
           lineWidth: 2,
           type: "areaspline",
           fillOpacity: 1,
-          lineColor: "#E5E5E6",
+          lineColor: "#B0B1B3",
           dataGrouping: {
             groupPixelWidth: 0,
           },
