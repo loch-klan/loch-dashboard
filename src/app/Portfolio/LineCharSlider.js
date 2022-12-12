@@ -97,7 +97,7 @@ class LineChartSlider extends BaseReactComponent {
       // console.log("event triggered")
     };
     // console.log("externalEvents", externalEvents);
-     console.log("asset Value", assetValueData);
+    //  console.log("asset Value", assetValueData);
     let series = {};
     let timestampList = [];
     let assetMaster = {};
@@ -403,7 +403,7 @@ class LineChartSlider extends BaseReactComponent {
       }
     });
 
-console.log("cat", categories);
+// console.log("cat", categories);
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
@@ -756,7 +756,7 @@ console.log("cat", categories);
                   <div className="InternalEventWrapper">
                     {this.state.selectedEvents.length > 0 &&
                       this.state.selectedEvents.map((event, i) => {
-                        console.log("first event", event);
+                        // console.log("first event", event);
 
                         let count =
                           Math.trunc(event.assetValue).toString().length > 6
