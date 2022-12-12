@@ -403,7 +403,7 @@ class FixAddModal extends BaseReactComponent {
                     <input
                         autoFocus
                         name={`wallet${index + 1}`}
-                        value={elem.address || ""}
+                        value={elem.displayAddress || elem.address || ""}
                         placeholder="Paste any wallet address or ENS here"
                         // className='inter-display-regular f-s-16 lh-20'
                         className={`inter-display-regular f-s-16 lh-20 ${elem.address ? 'is-valid' : null}`}

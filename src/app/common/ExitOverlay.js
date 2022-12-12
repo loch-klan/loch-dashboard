@@ -20,7 +20,10 @@ import {exportDataApi, fixWalletApi} from './Api.js'
 import { BASE_URL_S3 } from '../../utils/Constant';
 import { toast } from 'react-toastify';
 import ApiModalFrame from '../../assets/images/apiModalFrame.svg';
-import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
+import nextIcon from '../../assets/images/icons/next.svg'
+import next2Icon from '../../assets/images/icons/next2.svg'
+import prevIcon from '../../assets/images/icons/prev.svg'
+import prev2Icon from '../../assets/images/icons/prev2.svg'
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
 
@@ -246,6 +249,10 @@ class ExitOverlay extends BaseReactComponent {
                       settings: {
                         placeholder: "From Date",
                         showDateIcon: false,
+                        nextLabel: <Image src={nextIcon} />,
+                        next2Label: <Image src={next2Icon} />,
+                        prevLabel: <Image src={prevIcon} />,
+                        prev2Label: <Image src={prev2Icon} />,
                       },
                     }}
                   />
@@ -265,6 +272,10 @@ class ExitOverlay extends BaseReactComponent {
                         placeholder: "To Date",
                         minDate: this.state.fromDate || new Date(),
                         showDateIcon: false,
+                        nextLabel: <Image src={nextIcon} />,
+                        next2Label: <Image src={next2Icon} />,
+                        prevLabel: <Image src={prevIcon} />,
+                        prev2Label: <Image src={prev2Icon} />,
                       },
                     }}
                   />

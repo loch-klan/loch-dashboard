@@ -22,6 +22,10 @@ const DatePickerControl = props => {
     minDate,
     maxDate,
     showDateIcon = true,
+    nextLabel,
+next2Label,
+prevLabel,
+prev2Label,
   } = props;
 
   return (
@@ -61,6 +65,10 @@ const DatePickerControl = props => {
           minDate={minDate}
           maxDate={maxDate}
           defaultValue={valueLink.value}
+          nextLabel={nextLabel}
+          next2Label={next2Label}
+          prevLabel={prevLabel}
+          prev2Label={prev2Label}
         />
       </CustomModal>
     </>
