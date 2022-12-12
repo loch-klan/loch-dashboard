@@ -20,24 +20,24 @@ export default function WelcomeCard(props) {
         props.handleAddModal();
     }
     function handleManageClick(){
-        setManageWallet(!manageWallet);
+        // setManageWallet(!manageWallet);
         props.handleManage();
     }
 
-    React.useEffect(() =>{
-        document.addEventListener("click", handleClickOutside, true)
-    },[])
-    const refOne = useRef(null)
-    const handleClickOutside = (e) =>{
-    if(!refOne.current?.contains(e.target)){
-        // console.log("Clicked outside ...");
-        props.handleToggleAddWallet();
-        // setAddWallet(true);
-    }
-    // else{
-    //     console.log("Clicked inside ...");
+    // React.useEffect(() =>{
+    //     document.addEventListener("click", handleClickOutside, true)
+    // },[])
+    // const refOne = useRef(null)
+    // const handleClickOutside = (e) =>{
+    // if(!refOne.current?.contains(e.target)){
+    //     // console.log("Clicked outside ...");
+    //     props.handleToggleAddWallet();
+    //     // setAddWallet(true);
     // }
-    }
+    // // else{
+    // //     console.log("Clicked inside ...");
+    // // }
+    // }
 
     return (
       <div className="welcome-card-section">
