@@ -190,9 +190,9 @@ export const InsightType = {
   YIELD_INCREASE: 30,
   _presentable: {
     1: "ALL INSIGHTS",
-    10: "COST REDUCTION",
-    20: "RISK REDUCTION",
-    30: "YIELD INCREASE",
+    10: "REDUCE COST",
+    20: "REDUCE RISK",
+    30: "INCREASE YIELD",
   },
   getText : function(value){
     return this._presentable[value]

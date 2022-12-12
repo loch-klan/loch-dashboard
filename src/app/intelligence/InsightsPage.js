@@ -45,7 +45,18 @@ class InsightsPage extends Component {
   componentDidMount() {
     getAllInsightsApi(this);
   }
+  handleSelect = (value) =>{
+    let insightList = this.state.insightList;
+    insightList = insightList.filter((item)=> value === 1 ? item : item.insight_type === value)
+    this.setState({
+      selectedFilter: value,
+      updatedInsightList: insightList,
+    })
+
+  }
+
   render(){
+
   return (
     <div className="insights-section">
       <div className="insights-page page">
@@ -59,9 +70,9 @@ class InsightsPage extends Component {
         <div style={{position: "relative"}}>
           <div className="insights-filter">
             {
-              this.state.insightFilter.map((filter)=>{
+              this.state.insightFilter.map((filter, key)=>{
                 return (
-                  <div className={`filter ${filter.value === this.state.selectedFilter ? "active" : ""}`} onClick={()=>this.setState({selectedFilter: filter.value})}>{filter.name}</div>
+                  <div id={key} className={`filter ${filter.value === this.state.selectedFilter ? "active" : ""}`} onClick={()=>this.handleSelect(filter.value)}>{filter.name}</div>
                 )
               })
             }
@@ -69,10 +80,10 @@ class InsightsPage extends Component {
           <div className="insights-wrapper">
             <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2>
             {
-              this.state.insightList && this.state.insightList.length > 0 &&
-              this.state.insightList.map((insight)=>{
+              this.state.updatedInsightList && this.state.updatedInsightList.length > 0 &&
+              this.state.updatedInsightList.map((insight, key)=>{
                 return(
-                  <div className="insights-card">
+                  <div className="insights-card" id={key}>
                     <Image src={insight.insight_type === InsightType.COST_REDUCTION ? reduceCost : insight.insight_type === InsightType.RISK_REDUCTION ? reduceRisk : increaseYield} className="insight-icon" />
                     <div className="insights-content">
                       <h5 className="inter-display-bold f-s-10 lh-12 title-chip">{InsightType.getText(insight.insight_type)}</h5>
