@@ -84,6 +84,7 @@ class LineChartSlider extends BaseReactComponent {
     const t = opt.split(" ")[1];
     this.setState({
       title: t,
+      selectedEvents: [],
     });
     this.props.handleGroupBy(t);
   };
@@ -320,6 +321,7 @@ class LineChartSlider extends BaseReactComponent {
           // console.log("current", current, value);
           if (current === value) {
             // console.log("item", item);
+            // console.log("item", item);
             // selectedEvents.push(item);
             item.event.map((a) => {
               let e_usd = a.asset.value * a.asset_price;
@@ -328,13 +330,13 @@ class LineChartSlider extends BaseReactComponent {
               let e_assetCode = a.asset.code;
               let e_tooltipData = "";
               if (a.from || a.from_address) {
-                if (a.from) {
+                if (a.from && a.from !== a.from_address) {
                   e_tooltipData = a.from + ": " + a.from_address;
                 } else {
                   e_tooltipData = a.from_address;
                 }
               } else {
-                if (a.to) {
+                if (a.to && a.to !== a.to_address) {
                   e_tooltipData = a.to + ": " + a.to_address;
                 } else {
                   e_tooltipData = a.to_address;
@@ -402,7 +404,7 @@ class LineChartSlider extends BaseReactComponent {
       }
     });
 
-    console.log("cat", categories);
+    // console.log("cat", categories);
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
