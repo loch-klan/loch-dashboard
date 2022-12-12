@@ -83,7 +83,7 @@ class SignIn extends BaseReactComponent {
                           }
                         }}
                         classes={{
-                          inputField: `${!this.state.emailError && `email-error`}`,
+                          inputField: `${this.state.emailError && `email-error`}`,
                         }}
                       />
                       { this.state.emailError ?
