@@ -20,24 +20,24 @@ export default function WelcomeCard(props) {
         props.handleAddModal();
     }
     function handleManageClick(){
-        setManageWallet(!manageWallet);
+        // setManageWallet(!manageWallet);
         props.handleManage();
     }
 
-    React.useEffect(() =>{
-        document.addEventListener("click", handleClickOutside, true)
-    },[])
-    const refOne = useRef(null)
-    const handleClickOutside = (e) =>{
-    if(!refOne.current?.contains(e.target)){
-        // console.log("Clicked outside ...");
-        props.handleToggleAddWallet();
-        // setAddWallet(true);
-    }
-    // else{
-    //     console.log("Clicked inside ...");
+    // React.useEffect(() =>{
+    //     document.addEventListener("click", handleClickOutside, true)
+    // },[])
+    // const refOne = useRef(null)
+    // const handleClickOutside = (e) =>{
+    // if(!refOne.current?.contains(e.target)){
+    //     // console.log("Clicked outside ...");
+    //     props.handleToggleAddWallet();
+    //     // setAddWallet(true);
     // }
-    }
+    // // else{
+    // //     console.log("Clicked inside ...");
+    // // }
+    // }
 
     return (
       <div className="welcome-card-section">
@@ -97,7 +97,7 @@ export default function WelcomeCard(props) {
             </Button>
             <Button
               // class="add-wallet"
-              className="inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet"
+              className="inter-display-semi-bold f-s-13 lh-16 black-191 add-wallet"
               onClick={handleAddWalletClick}
               onMouseEnter={() => setAddWallet(false)}
               onMouseLeave={() => setAddWallet(true)}
