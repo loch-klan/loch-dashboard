@@ -86,25 +86,25 @@ export default function WelcomeCard(props) {
             <Button
               className="inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet"
               onClick={handleManageClick}
-              onMouseEnter={() => setManageWallet(true)}
-              onMouseLeave={() => setManageWallet(false)}
+              onMouseEnter={() => setManageWallet(false)}
+              onMouseLeave={() => setManageWallet(true)}
             >
               <Image
                 class="manage-wallet"
-                src={manageWallet === true ? ManageWalletWhite : ManageWallet}
+                src={manageWallet === true ? ManageWallet : ManageWalletWhite}
               />
               Manage wallets
             </Button>
             <Button
-              class="add-wallet"
-              className="inter-display-semi-bold f-s-13 lh-16 black-191 add-wallet"
+              // class="add-wallet"
+              className="inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet"
               onClick={handleAddWalletClick}
               onMouseEnter={() => setAddWallet(false)}
               onMouseLeave={() => setAddWallet(true)}
             >
               <Image
                 src={
-                  AddWallet === true ? AddWalletAddressWhite : AddWalletAddress
+                  AddWallet === true ? AddWalletAddress : AddWalletAddressWhite
                 }
               />
               Add wallet address

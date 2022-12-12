@@ -55,11 +55,13 @@ class FixAddModal extends BaseReactComponent {
     handleOnchange = (e) => {
 
         let { name, value } = e.target
+        // console.log('value',value);
         let prevWallets = [...this.state.addWalletList]
         let currentIndex = prevWallets.findIndex(elem => elem.id === name)
         if (currentIndex > -1) {
             let prevValue = prevWallets[currentIndex].address
             prevWallets[currentIndex].address = value
+            prevWallets[currentIndex].displayAddress = value
             if (value === "" || prevValue !== value) {
                 prevWallets[currentIndex].coins = []
             }
