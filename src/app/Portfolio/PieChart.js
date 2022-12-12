@@ -318,7 +318,7 @@ class PieChart extends BaseReactComponent {
           totalCount+=data.assetCount
         })
         const {pieSectionDataEnabled} = this.state;
-        console.log('pieSectionDataEnabled',pieSectionDataEnabled);
+        // console.log('pieSectionDataEnabled',pieSectionDataEnabled);
         return (
             <div className={`portfolio-over-container ${Object.keys(pieSectionDataEnabled).length > 0 ? "m-b-32" : "m-b-10"}`} >
             {/* // <div className={`portfolio-over-container m-b-32`} > */}
@@ -356,7 +356,7 @@ class PieChart extends BaseReactComponent {
                                             <span className='inter-display-medium f-s-18 l-h-21 black-000 coin-hover-display-text1-upper-coin'>{pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? pieSectionDataEnabled.name : null}</span>
                                             <span className='inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent'
                                             style={{color: (pieSectionDataEnabled.borderColor == "#ffffff") ? "#19191A" : pieSectionDataEnabled.borderColor}}
-                                            >{pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? (pieSectionDataEnabled.y)?.toFixed(2) : null}%</span>
+                                            >{pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? (pieSectionDataEnabled.y)?.toFixed(2) : 0}%</span>
                                             <span className='inter-display-medium f-s-15 l-h-19 black-191 m-l-10'>{pieSectionDataEnabled.assetType === 20 && "Staked"}</span>
                                         </div>
                                         <div className='coin-hover-display-text1-lower'>
@@ -369,8 +369,11 @@ class PieChart extends BaseReactComponent {
                                 </div>
                                 {
                                   chainList && chainList.slice(0,3).map((data, index)=>{
+                                     let isQuote = this.props.portfolioState.coinRateList[
+                                         this.state.selectedSection[0].assetId
+                                       ].quote;
                                     if(index<2){
-                                      return(
+                                      return (
                                         <>
                                         <div className='coin-hover-display-text2'>
                                       <div className='coin-hover-display-text2-upper'>
@@ -391,13 +394,22 @@ class PieChart extends BaseReactComponent {
 
                                           <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{pieSectionDataEnabled.assetCode}</span>
 
-                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(data.assetCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote?.USD.price) || DEFAULT_PRICE}</span>
+                                              <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
+                                                {isQuote == null
+                                                  ? DEFAULT_PRICE
+                                                  : numToCurrency(
+                                                      data.assetCount *
+                                                        isQuote?.USD.price
+                                                    )}
+                                              </span>
 
-                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
-                                      </div>
-                                  </div>
+                                              <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
+                                                USD
+                                              </span>
+                                            </div>
+                                          </div>
                                         </>
-                                      )
+                                      );
                                     } else{
                                       return(
                                         <>

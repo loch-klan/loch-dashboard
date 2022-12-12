@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
+import LineChartSlider from "./LineCharSlider";
 import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
 // import { Loading } from 'react-loading-dot';
 
@@ -95,6 +96,7 @@ class Portfolio extends BaseReactComponent {
       counterGraphLoading: true,
       counterPartyData: [],
       counterPartyValue: null,
+      isUpdate: 0,
     };
   }
 
@@ -106,12 +108,14 @@ class Portfolio extends BaseReactComponent {
   handleChangeList = (value) => {
     this.setState({
       userWalletList: value,
+      isUpdate: this.state.isUpdate == 0 ? 1 : 0
     });
     this.props.getCoinRate();
   };
   handleFixModal = () => {
     this.setState({
       fixModal: !this.state.fixModal,
+      isUpdate: this.state.isUpdate == 0 ? 1 : 0,
     });
   };
 
@@ -782,7 +786,10 @@ this.setState({graphLoading: true})
                       }}
                     />
                   </div>
-                  <div className="portfolio-section" style={{minWidth: "85rem", overflow: "hidden"}}>
+                  <div
+                    className="portfolio-section"
+                    style={{ minWidth: "85rem", overflow: "hidden" }}
+                  >
                     <PieChart
                       userWalletData={
                         this.props.portfolioState &&
@@ -825,7 +832,7 @@ this.setState({graphLoading: true})
                       ""
                     )}
                   </div>
-                  <div className="portfolio-section m-b-32">
+                  {/* <div className="portfolio-section m-b-32">
                     <LineChart
                       assetValueData={
                         this.state.assetValueData && this.state.assetValueData
@@ -836,11 +843,29 @@ this.setState({graphLoading: true})
                       graphLoading={this.state.graphLoading}
                       externalEvents={this.state.externalEvents}
                     />
+                  </div> */}
+                  <div className="portfolio-section m-b-32">
+                    <LineChartSlider
+                      assetValueData={
+                        this.state.assetValueData && this.state.assetValueData
+                      }
+                      externalEvents={
+                        this.state.externalEvents && this.state.externalEvents
+                      }
+                      coinLists={this.props.OnboardingState.coinsLists}
+                      isScrollVisible={false}
+                      handleGroupBy={(value) => this.handleGroupBy(value)}
+                        graphLoading={this.state.graphLoading}
+                       isUpdate={this.state.isUpdate}
+                    />
                   </div>
                   <div className="m-b-22 graph-table-section">
                     <Row>
                       <Col md={6}>
-                        <div className="m-r-16 section-table" style={{paddingBottom:"1.15rem"}}>
+                        <div
+                          className="m-r-16 section-table"
+                          style={{ paddingBottom: "1.15rem" }}
+                        >
                           <TransactionTable
                             title="Transaction History"
                             handleClick={() => {
