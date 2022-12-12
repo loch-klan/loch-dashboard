@@ -89,3 +89,20 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
 
      });
  }
+
+ export const getAllInsightsApi = (ctx) =>{
+  let data = new URLSearchParams();
+  postLoginInstance.post("wallet/user-wallet/get-wallet-insights", data)
+  .then((res)=>{
+    if(!res.data.error){
+      ctx.setState({
+        insightList: res.data.data.insights
+      });
+    } else{
+      toast.error(res.data.message || "Something Went Wrong")
+    }
+  })
+  .catch((err)=>{
+    console.log("err ", err)
+  })
+ }
