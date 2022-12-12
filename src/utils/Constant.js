@@ -181,3 +181,20 @@ export const MonthOptions = Object.keys(Months._presentable).map((month) => ({
   label: Months._presentable[month],
   value: month
 }))
+
+
+export const InsightType = {
+  ALL_INSIGHTS: 1,
+  COST_REDUCTION: 10,
+  RISK_REDUCTION: 20,
+  YIELD_INCREASE: 30,
+  _presentable: {
+    1: "ALL INSIGHTS",
+    10: "REDUCE COST",
+    20: "REDUCE RISK",
+    30: "INCREASE YIELD",
+  },
+  getText : function(value){
+    return this._presentable[value]
+  },
+}
