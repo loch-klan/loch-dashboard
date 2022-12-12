@@ -10,6 +10,8 @@ import FormElement from "../../utils/form/FormElement";
 import {signIn,verifyUser }from './Api.js'
 import FormValidator from '../../utils/form/FormValidator';
 import { EmailAddressAdded } from "../../utils/AnalyticsFunctions.js";
+import { Image } from 'react-bootstrap';
+import EmailNotFoundCross from '../../assets/images/icons/EmailNotFoundCross.svg';
 class SignIn extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -21,7 +23,8 @@ class SignIn extends BaseReactComponent {
             text:"",
             isVallidSignIn:false,
             activemodal : props.activemodal,
-            signinReq:props.signinReq
+            signinReq:props.signinReq,
+            emailError: false
         }
     }
 
@@ -41,7 +44,7 @@ class SignIn extends BaseReactComponent {
         } else if (this.state.text && this.state.isVerificationRequired){
             data.append("email",this.state.email)
           data.append("otp_token", this.state.text)
-          
+
             verifyUser(this, data);
         }
       };
@@ -49,6 +52,7 @@ class SignIn extends BaseReactComponent {
     render() {
 
         return (
+          <div className='sign-in-modal'>
             <Form onValidSubmit={this.onValidSubmit} ref={el => this.form = el}>
               <div className='ob-modal-body-wrapper'>
                 <div
@@ -58,7 +62,7 @@ class SignIn extends BaseReactComponent {
                   {
                     !this.state.isVerificationRequired || this.props.activemodal === "signIn"
                       ?
-                      <FormElement
+                      (<><FormElement
                         className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
                         valueLink={this.linkState(this, "email")}
                         required
@@ -78,7 +82,24 @@ class SignIn extends BaseReactComponent {
                             placeholder: "Your email"
                           }
                         }}
+                        classes={{
+                          inputField: `${this.state.emailError && `email-error`}`,
+                        }}
                       />
+                      { this.state.emailError ?
+                        <span className="email-not-found">
+                          <Image
+                            src={EmailNotFoundCross}
+                            onClick={()=>this.setState({emailError: false})}
+                            style={{cursor: "pointer"}}
+                          />
+                          <p className="inter-display-medium f-s-16 lh-19">Email not found</p>
+                        </span>
+                        :
+                        ""
+                      }
+                      </>
+                      )
                             :
                               <FormElement
                                 className={`inter-display-regular f-s-16 lh-20 ob-modal-signin-text`}
@@ -100,17 +121,17 @@ class SignIn extends BaseReactComponent {
                           }
                           </div>
                           </div>
-                            <CustomButton 
-                            className={`primary-btn send-verification ${(this.state.email || this.state.text) 
-                            ? 
-                            "" 
-                            : 
-                            "inactive-state"}`} 
-                            type={"submit"} 
+                            <CustomButton
+                            className={`primary-btn send-verification ${(this.state.email || this.state.text)
+                            ?
+                            ""
+                            :
+                            "inactive-state"}`}
+                            type={"submit"}
                             buttonText={!this.state.isVerificationRequired || this.props.activemodal ==="signIn"  ? "Send verification" :"Enter code"}
                             />
             </Form>
-
+            </div>
         )
     }
 }

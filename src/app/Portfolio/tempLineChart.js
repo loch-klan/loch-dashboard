@@ -17,6 +17,7 @@ import { numToCurrency } from "../../utils/ReusableFunctions";
 import { Image } from "react-bootstrap";
 import CalenderIcon from "../../assets/images/calendar.svg";
 import DoubleArrow from "../../assets/images/double-arrow.svg";
+import handle from "../../assets/images/handle.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
@@ -96,6 +97,7 @@ class LineChartSlider extends BaseReactComponent {
       // console.log("event triggered")
     };
     // console.log("externalEvents", externalEvents);
+    //  console.log("asset Value", assetValueData);
     let series = {};
     let timestampList = [];
     let assetMaster = {};
@@ -149,9 +151,7 @@ class LineChartSlider extends BaseReactComponent {
       return a - b;
     });
 
-    // console.log(timestampList);
-
-    if (this.state.title === "Year") {
+    if (this.state.title === "Year" && timestampList.length != 0) {
       const startYear = 2009;
       const endYear = moment(timestampList[0]).format("YYYY");
       const years = [];
@@ -186,10 +186,10 @@ class LineChartSlider extends BaseReactComponent {
         // linkedTo: key,
         name: value.assetDetails.name,
         id: key,
-        type: "line",
+        type: "area",
         color: value.assetDetails.color,
         marker: {
-          enabled: true,
+          // enabled: true,
           symbol: "circle",
         },
         showInLegend: true,
@@ -230,7 +230,13 @@ class LineChartSlider extends BaseReactComponent {
             e_time = moment(event.timestamp).format("YYYY");
           }
 
-          if (e_time == abc && !UniqueEvents.includes(abc)) {
+          // if (e_time == abc && !UniqueEvents.includes(abc) && event.is_highlighted) {
+
+          if (
+            e_time == abc &&
+            event.is_highlighted &&
+            this.state.title === "Year"
+          ) {
             UniqueEvents.push(abc);
             y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
 
@@ -264,12 +270,48 @@ class LineChartSlider extends BaseReactComponent {
               },
               zIndex: 4,
             });
+          } else {
+            if (e_time == abc && this.state.title !== "Year") {
+              UniqueEvents.push(abc);
+              y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
+
+              plotLines.push({
+                color: "#E5E5E680",
+                dashStyle: "solid",
+                value: value,
+                width: 0,
+                label: {
+                  useHTML: true,
+
+                  formatter: function () {
+                    return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${event.title.replace(
+                      /([^ ]+) ([^ ]+)/g,
+                      "$1 $2<br>"
+                    )}</div></div>`;
+                  },
+
+                  align: "left",
+                  y: -(y_value - 13),
+                  x: 0,
+                  rotation: 0,
+                  verticalAlign: "bottom",
+                  style: {
+                    fontFamily: "Inter-Medium",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    color: "#CACBCC",
+                    // "z-index": 100,
+                  },
+                },
+                zIndex: 4,
+              });
+            }
           }
         });
     };
 
     let selectedEvents = [];
-    let Events = [];
+
     const getIevent = (value) => {
       selectedEvents = [];
       internalEvents &&
@@ -277,45 +319,57 @@ class LineChartSlider extends BaseReactComponent {
           let current = moment(item.timestamp).format("DD/MM/YYYY");
           // console.log("current", current, value);
           if (current === value) {
-            selectedEvents.push(item);
-            item.map((a) => {
-              return a.event.map((b) => {
-                let e_usd = b.asset.value * b.asset_price;
-                let e_text = "";
-                let e_assetValue = b.asset.value;
-                let e_assetCode = b.asset.code;
-                let e_tooltipData = b.from
-                  ? b.from + ": " + b.from_address
-                  : b.to + ": " + b.to_address;
-                let e_address = "";
-                if (b.from) {
-                  e_address = b.from ? b.from : b.from_address;
-                  e_text = "from";
-                } else {
-                  e_address = b.to ? b.to : b.to_address;
-                  e_text = "to";
-                }
-                if (e_address.length > 16) {
-                  e_address =
-                    '"' +
-                    e_address.substr(0, e_text === "from" ? 5 : 7) +
-                    "..." +
-                    e_address.substr(e_address.length - 3, e_address.length) +
-                    '"';
-                }
-                Events.push({
-                  usd: e_usd,
-                  assetValue: e_assetValue,
-                  assetCode: e_assetCode,
-                  tooltip: e_tooltipData,
-                  text: e_text,
-                  address: e_address,
-                });
+            console.log("item", item);
+            // selectedEvents.push(item);
+            item.event.map((a) => {
+              let e_usd = a.asset.value * a.asset_price;
+              let e_text = "";
+              let e_assetValue = a.asset.value;
+              let e_assetCode = a.asset.code;
+              let e_tooltipData =
+                a.from || a.from_address
+                  ? a.from + a.from
+                    ? ": "
+                    : "" + a.from_address
+                  : a.to + a.to
+                  ? ": "
+                  : "" + a.to_address;
+              let e_address = "";
+              if (a.from || a.from_address) {
+                e_address = a.from ? a.from : a.from_address;
+                e_text = "from";
+              } else {
+                e_address = a.to ? a.to : a.to_address;
+                e_text = "to";
+              }
+              if (e_address.length > 16) {
+                e_address =
+                  '"' +
+                  e_address.substr(0, e_text === "from" ? 5 : 7) +
+                  "..." +
+                  e_address.substr(e_address.length - 3, e_address.length) +
+                  '"';
+              }
+              console.log("a", a);
+              selectedEvents.push({
+                usd: e_usd,
+                assetValue: e_assetValue,
+                assetCode: e_assetCode,
+                tooltip: e_tooltipData,
+                text: e_text,
+                address: e_address,
               });
             });
           }
         });
-      console.log("selected Event", selectedEvents);
+
+      // console.log("beforeselected Event", selectedEvents);
+      selectedEvents =
+        selectedEvents &&
+        selectedEvents.sort((a, b) => {
+          return b.usd - a.usd;
+        });
+      selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
     };
     timestampList.map((time) => {
       let dummy = new Date(time);
@@ -341,6 +395,7 @@ class LineChartSlider extends BaseReactComponent {
       }
     });
 
+    // console.log("plotline", plotLines);
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
@@ -464,7 +519,6 @@ class LineChartSlider extends BaseReactComponent {
       legend: {
         enabled: true,
         align: "right",
-        useHTML: true,
         verticalAlign: "top",
         itemStyle: {
           fontFamily: "Inter-SemiBold",
@@ -473,8 +527,8 @@ class LineChartSlider extends BaseReactComponent {
           fontWeight: "600",
           lineHeight: "12px",
         },
-        symbolHeight: 15,
-        symbolWidth: 8,
+        symbolHeight: 10,
+        symbolWidth: 10,
         symbolRadius: 6,
       },
 
@@ -553,6 +607,7 @@ class LineChartSlider extends BaseReactComponent {
       series: seriesData,
       plotOptions: {
         series: {
+          fillOpacity: 0,
           point: {
             events: {
               click: function () {
@@ -595,21 +650,31 @@ class LineChartSlider extends BaseReactComponent {
         maskFill: "rgba(25, 25, 26, 0.4)",
         stickToMax: false,
         handles: {
-          backgroundColor: "#FFFFFF",
-          borderColor: "#B0B1B3",
-          lineWidth: 0.5,
-          width: 6,
+          lineWidth: 0,
+          width: 7,
           height: 16,
+          symbols: [`url(${handle})`, `url(${handle})`],
         },
         xAxis: {
-          visible: false,
+          visible: true,
+          labels: {
+            enabled: false,
+          },
+          gridLineWidth: 0,
+          plotBands: [
+            {
+              from: -100,
+              to: 10000,
+              color: "rgba(229, 229, 230, 0.5)",
+            },
+          ],
         },
         series: {
-          color: "#E5E5E6",
+          color: "#B0B1B3",
           lineWidth: 2,
           type: "areaspline",
           fillOpacity: 1,
-          lineColor: "#E5E5E6",
+          lineColor: "#B0B1B3",
           dataGrouping: {
             groupPixelWidth: 0,
           },
@@ -681,75 +746,55 @@ class LineChartSlider extends BaseReactComponent {
 
                   <div className="InternalEventWrapper">
                     {this.state.selectedEvents.length > 0 &&
-                      this.state.selectedEvents.map((event) => {
-                        // console.log("first event", event);
-                        return event.event.map((eve, i) => {
-                          let tooltipData = eve.from
-                            ? eve.from + ": " + eve.from_address
-                            : eve.to + ": " + eve.to_address;
-                          let str = "";
-                          if (eve.from) {
-                            str = eve.from ? eve.from : eve.from_address;
-                          } else {
-                            str = eve.to ? eve.to : eve.to_address;
-                          }
-                          let address = str;
-                          if (str.length > 16) {
-                            address =
-                              '"' +
-                              str.substr(0, eve.from_address ? 5 : 7) +
-                              "..." +
-                              str.substr(str.length - 3, str.length) +
-                              '"';
-                          }
-                          // console.log("str", str,"address" ,address);
-                          let count =
-                            Math.trunc(eve.asset.value).toString().length > 6
-                              ? 0
-                              : 6 -
-                                Math.trunc(eve.asset.value).toString().length;
+                      this.state.selectedEvents.map((event, i) => {
+                        console.log("first event", event);
 
-                          // console.log(
-                          //   "count",
-                          //   count,
-                          //   "number",
-                          //   Math.trunc(eve.asset.value)
-                          // );
-                          return (
-                            <>
-                              <div className="GreyChip" key={i}>
-                                <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                                  <Image src={DoubleArrow} />
-                                  Transfer
-                                </h5>
+                        let count =
+                          Math.trunc(event.assetValue).toString().length > 6
+                            ? 0
+                            : 6 -
+                              Math.trunc(event.assetValue).toString().length;
 
-                                <p className="inter-display-medium f-s-13 lh-16 grey-B4D text-right">
-                                  <span>
-                                    {eve.asset.value.toFixed(count)}{" "}
-                                    {eve.asset.code}
-                                    {" or $"}
-                                    {numToCurrency(
-                                      eve.asset.value * eve.asset_price
-                                    )}
-                                    {eve.from ? " from " : " to "}{" "}
+                        // console.log(
+                        //   "count",
+                        //   count,
+                        //   "number",
+                        //   Math.trunc(eve.asset.value)
+                        // );
+                        return (
+                          <>
+                            <div className="GreyChip" key={i}>
+                              <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                                <Image src={DoubleArrow} />
+                                Transfer
+                              </h5>
+
+                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D text-right">
+                                <span>
+                                  {event.assetValue.toFixed(count)}{" "}
+                                  {event.assetCode}
+                                  {" or $"}
+                                  {numToCurrency(event.usd)}
+                                  {event.text === "from"
+                                    ? " from "
+                                    : " to "}{" "}
+                                </span>
+                                <CustomOverlay
+                                  position="top"
+                                  // className={"coin-hover-tooltip"}
+                                  isIcon={false}
+                                  isInfo={true}
+                                  isText={true}
+                                  text={event.tooltip}
+                                >
+                                  <span style={{ cursor: "pointer" }}>
+                                    {event.address}
                                   </span>
-                                  <CustomOverlay
-                                    position="top"
-                                    // className={"coin-hover-tooltip"}
-                                    isIcon={false}
-                                    isInfo={true}
-                                    isText={true}
-                                    text={tooltipData}
-                                  >
-                                    <span style={{ cursor: "pointer" }}>
-                                      {address}
-                                    </span>
-                                  </CustomOverlay>
-                                </p>
-                              </div>
-                            </>
-                          );
-                        });
+                                </CustomOverlay>
+                              </p>
+                            </div>
+                          </>
+                        );
                       })}
                   </div>
                 </div>

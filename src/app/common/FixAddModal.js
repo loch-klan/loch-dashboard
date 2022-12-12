@@ -55,11 +55,13 @@ class FixAddModal extends BaseReactComponent {
     handleOnchange = (e) => {
 
         let { name, value } = e.target
+        // console.log('value',value);
         let prevWallets = [...this.state.addWalletList]
         let currentIndex = prevWallets.findIndex(elem => elem.id === name)
         if (currentIndex > -1) {
             let prevValue = prevWallets[currentIndex].address
             prevWallets[currentIndex].address = value
+            prevWallets[currentIndex].displayAddress = value
             if (value === "" || prevValue !== value) {
                 prevWallets[currentIndex].coins = []
             }
@@ -403,7 +405,7 @@ class FixAddModal extends BaseReactComponent {
                     <input
                         autoFocus
                         name={`wallet${index + 1}`}
-                        value={elem.address || ""}
+                        value={elem.displayAddress || elem.address || ""}
                         placeholder="Paste any wallet address or ENS here"
                         // className='inter-display-regular f-s-16 lh-20'
                         className={`inter-display-regular f-s-16 lh-20 ${elem.address ? 'is-valid' : null}`}
