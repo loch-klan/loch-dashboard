@@ -86,40 +86,41 @@ export const getDetailsByLinkApi = (link,ctx) => {
           });
 };
 
-export const getAssetGraphDataApi=(data,ctx)=>{
-    postLoginInstance
-            .post("wallet/user-wallet/get-asset-value-graph", data)
-            .then((res) => {
-                console.log('res',res);
-                if(!res.data.error){
-                  ctx.setState({
-                    assetValueData: res.data.data.asset_value_data,
-                    graphLoading: false,
-                  })
-                  getExternalEventsApi(ctx);
-                } else{
-                  toast.error(res.data.message || "Something Went Wrong")
-                }
-            })
-            .catch((err) => {
-                console.log("Catch", err);
-            });
-}
-
-export const getExternalEventsApi=(ctx)=>{
+export const getAssetGraphDataApi = (data, ctx) => {
+  // postLoginInstance
+  //   .post("wallet/user-wallet/get-all-asset-value-graph", data)
   postLoginInstance
-    .post("common/master/get-all-events")
-    .then((res) => {
-      console.log('res',res);
-      if(!res.data.error){
+    .post("wallet/user-wallet/get-asset-value-graph", data).then((res) => {
+      console.log("all data", res);
+      if (!res.data.error) {
         ctx.setState({
-          externalEvents: res.data.data.events,
-        })
-      } else{
-          toast.error(res.data.message || "Something Went Wrong")
-        }
-      })
+          assetValueData: res.data.data.asset_value_data,
+          graphLoading: false,
+        });
+        getExternalEventsApi(ctx);
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    })
     .catch((err) => {
       console.log("Catch", err);
     });
 }
+
+export const getExternalEventsApi = (ctx) => {
+  postLoginInstance
+    .post("common/master/get-all-events")
+    .then((res) => {
+      console.log("res", res);
+      if (!res.data.error) {
+        ctx.setState({
+          externalEvents: res.data.data.events,
+        });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    })
+    .catch((err) => {
+      console.log("Catch", err);
+    });
+};
