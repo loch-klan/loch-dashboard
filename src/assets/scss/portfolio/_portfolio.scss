@@ -56,6 +56,7 @@
             background-color: $secondary;
             box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
             border-radius: 1.2rem;
+            position: relative;
             &.line{
                 margin-top: 0;
             }
@@ -119,10 +120,13 @@
             }
 // LINE CHART SLIDER END
             .welcome-card {
-                display: flex;
-                align-items: flex-start;
-                justify-content: space-between;
-
+                
+                margin-bottom: 2.3rem;
+                .welcome-card-upper-section{
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                }
 
 
                 .welcome-section-left {
@@ -132,34 +136,31 @@
                     }
 
                     p {
-                        font-size: 1.6rem;
-                        line-height: 19px;
+                        font-size: 1.3rem;
+                        line-height: 15.6px;
                         color: $grey-969;
                     }
 
-                    .welcome-btn {
-                        button {
-                            padding: 1.65rem 2.8rem;
-                        }
-
-                        .primary-btn {
-                            &:hover:not([disabled]) {
-                                border-color: $secondary;
-                                box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
-                                color: $black-191;
-                                background-color: $secondary;
-                            }
-                        }
-
-                        .secondary-btn {
-                            margin-right: 2.4rem;
-
-                            &:hover {
-                                background-color: $black-191;
-                                color: $secondary;
-                            }
-                        }
-                    }
+                    // .welcome-btn {
+                    //     button {
+                    //         padding: 1.65rem 2.8rem;
+                    //     }
+                    //     .primary-btn{
+                    //       &:hover:not([disabled]){
+                    //         border-color: $secondary;
+                    //         box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                    //         color: $black-191;
+                    //         background-color: $secondary;
+                    //       }
+                    //     }
+                    //     .secondary-btn {
+                    //         margin-right: 2.4rem;
+                    //         &:hover{
+                    //           background-color: $black-191;
+                    //           color: $secondary;
+                    //         }
+                    //     }
+                    // }
                 }
 
                 .welcome-section-right {
@@ -188,6 +189,57 @@
 
                     .downfall {
                         background-color: $red-FFE ;
+                    }
+                }
+                .welcome-btn{
+                    position: absolute;
+                    bottom:0;
+                    left: 0;
+                    width: 100%;
+                    display: flex;
+                    
+                    .manage-wallet{
+                        border-radius:0;
+                        border-bottom-left-radius: 1.1rem;
+                        background-color: $secondary ;
+                        color: $black-191; 
+                        border-right:1px solid $white-E5E;
+
+                        &:hover{
+                             background-color:  $black-191;
+                        color: $secondary; }
+                    }
+                    .add-wallet{
+                        border-radius:0;
+                        border-bottom-right-radius: 1.1rem;
+                        background-color:  $black-191;
+                        color: $secondary;
+
+                        &:hover{
+                            background-color: $secondary ;
+                        color: $black-191;}
+                    }
+                    button{
+                        width: 50%;
+                        height: 5.6rem;
+                        background-color: $secondary ;
+                        border:0px solid $white-E5E;
+                        border-top:1px solid $white-E5E;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        // padding: 1px;
+                        img{
+                            margin-right: 0.8rem;
+                        }
+                        
+                       
+                        &:focus{
+                            background-color: $black-191;
+                            color:$secondary;
+                            border:none;
+                            box-shadow:none;
+                        }
                     }
                 }
             }
@@ -328,17 +380,26 @@
                 }
                 .line-chart-tooltip-section{
                     display:flex;
-                    align-items:center;
+                    // align-items:center;
+                    flex-direction: column;
+                    justify-content: left;
                     padding: 0.4rem 0.8rem;
                     border-radius: 0.4rem;
+                    .inter-display-medium{
+                      display: block;
+                    }
                 }
                 .tooltip-section-yellow{
                     background-color: $yellow-F5E;
                     width: max-content;
                 }
                 .top-section{
+                  width: max-content;
+                    .tooltip-section-grey{
+                        background-color: #FBF6D0;
+                    }
                     .tooltip-section-blue{
-                        background-color: $blue-C6E;
+                        background-color: #C6E4FF;
                     }
                 }
                 .bottom-section{
@@ -441,6 +502,7 @@
                 }
             }
         }
+
     }
 
     .graph-table-section {
@@ -515,8 +577,31 @@
               }
             }
         }
-    }
 
+    }
+    .profit-chart{
+      .bar-graph-section{
+        height: 51rem;
+        margin-bottom: 0;
+        width: 100%;
+        .portfolio-profit-and-loss{
+            height:76%
+        }
+      }
+      // .ChartAreaWrapper,
+      .custom-label{
+        padding-bottom: 0;
+      }
+      .chartArea{
+        // min-height: 30rem;
+        height: 100%;
+      }
+      .header{
+        h4{
+          cursor: pointer;
+        }
+      }
+    }
     .portfolio-cost-table-section {
 position: relative;
         .portfolio-cost-table {
@@ -534,7 +619,24 @@ position: relative;
             //     }
             // }
         }
-
+        .section-chart{
+            .bar-graph-section{
+                width: 100%;
+                .graph-header{
+                  .header{
+                    h4{
+                      cursor: pointer;
+                    }
+                  }
+                }
+                .portfolio-counterparty-fee{
+                    height:35rem;
+                    .chartArea{
+                        height: 100%;
+                    }
+                }
+            }
+        }
     }
 }
 

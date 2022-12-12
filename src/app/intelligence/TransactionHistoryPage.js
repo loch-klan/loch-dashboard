@@ -469,9 +469,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={noExponents(rowData.amount.value)}
+                            text={Number(noExponents(rowData.amount.value)).toLocaleString('en-US')}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{noExponents(rowData.amount.value)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(noExponents(rowData.amount.value)).toLocaleString('en-US')}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -494,7 +494,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueToday;
                         chain.find((chain) => {
                           if (chain[0] === rowData.usdValueToday.id) {
-                            valueToday = (rowData.usdValueToday.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
+                            valueToday = (rowData.usdValueToday.value * chain[1].quote.USD.price || DEFAULT_PRICE)
                           }
                           if (chain[0] === rowData.usdValueThen.id) {
                             valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
@@ -507,9 +507,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={valueToday?.toFixed(2)}
+                            text={Number(valueToday?.toFixed(2)).toLocaleString('en-US')}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueToday?.toFixed(2)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueToday?.toFixed(2)).toLocaleString('en-US')}</div>
                         </CustomOverlay>
                         <span style={{padding: "2px"}}></span>
                         (
@@ -518,9 +518,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={valueThen?.toFixed(2)}
+                            text={Number(valueThen?.toFixed(2)).toLocaleString('en-US')}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueThen?.toFixed(2)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueThen?.toFixed(2)).toLocaleString('en-US')}</div>
                         </CustomOverlay>)
                         </div>
                         )
@@ -546,7 +546,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueThen;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdTransactionFee.id) {
-                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
+                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price || DEFAULT_PRICE)
                                 valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice
                             }
                         })
@@ -557,9 +557,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                               isIcon={false}
                               isInfo={true}
                               isText={true}
-                              text={valueToday?.toFixed(2)}
+                              text={Number(valueToday?.toFixed(2)).toLocaleString('en-US')}
                             >
-                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueToday?.toFixed(2)}</div>
+                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueToday?.toFixed(2)).toLocaleString('en-US')}</div>
                             </CustomOverlay>
                             <span style={{padding: "2px"}}></span>
                             (<CustomOverlay
@@ -567,9 +567,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                               isIcon={false}
                               isInfo={true}
                               isText={true}
-                              text={valueThen?.toFixed(2)}
+                              text={Number(valueThen?.toFixed(2)).toLocaleString('en-US')}
                             >
-                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{valueThen?.toFixed(2)}</div>
+                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueThen?.toFixed(2)).toLocaleString('en-US')}</div>
                             </CustomOverlay>)
                           </div>
                         )

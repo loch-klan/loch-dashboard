@@ -20,7 +20,7 @@ import CoinChip from './../wallet/CoinChip';
 import BarGraphSection from './../common/BarGraphSection';
 import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
-import { searchTransactionApi } from '../intelligence/Api.js'
+import { getProfitAndLossApi, searchTransactionApi } from '../intelligence/Api.js'
 import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE, DEFAULT_PRICE} from '../../utils/Constant'
 import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
 import moment from "moment"
@@ -37,8 +37,9 @@ import { getCurrentUser } from "../../utils/ManageToken";
 
 
 import {getAssetGraphDataApi} from './Api';
-import { getAllFeeApi } from '../cost/Api';
+import { getAllCounterFeeApi, getAllFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
+import { noExponents } from '../../utils/ReusableFunctions';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -59,6 +60,7 @@ class Portfolio extends BaseReactComponent {
       tableLoading: true,
       graphLoading: true,
       barGraphLoading: true,
+      toggleAddWallet: true,
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       limit: 6,
       tableSortOpt: [
@@ -90,10 +92,19 @@ class Portfolio extends BaseReactComponent {
       startTime: "",
       GraphData: [],
       graphValue: null,
+      externalEvents: [],
+      counterGraphLoading: true,
+      counterPartyData: [],
+      counterPartyValue: null,
       isUpdate: 0,
     };
   }
 
+  handleToggleAddWallet = () => {
+    this.setState({
+        toggleAddWallet: true
+    })
+}
   handleChangeList = (value) => {
     this.setState({
       userWalletList: value,
@@ -110,7 +121,8 @@ class Portfolio extends BaseReactComponent {
 
     handleAddModal = () => {
         this.setState({
-            addModal: !this.state.addModal
+            addModal: !this.state.addModal,
+            toggleAddWallet: false,
         })
     }
     componentDidMount() {
@@ -123,7 +135,9 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllCoins()
         this.getTableData()
       this.getGraphData()
-        getAllFeeApi(this, false, false);
+        // getAllFeeApi(this, false, false);
+        getAllCounterFeeApi(this, false, false);
+        getProfitAndLossApi(this, false, false, false);
     }
 
     componentWillUnmount() {
@@ -134,7 +148,7 @@ class Portfolio extends BaseReactComponent {
       TimeSpentHome({ time_spent: TimeSpent + " seconds", session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
 
-    getGraphData = (groupByValue = GROUP_BY_YEAR) =>{
+    getGraphData = (groupByValue = GROUP_BY_DATE) =>{
 this.setState({graphLoading: true})
       let addressList = [];
       this.state.userWalletList.map((wallet)=> addressList.push(wallet.address))
@@ -485,7 +499,7 @@ this.setState({graphLoading: true})
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                              value = (rowData.usdValueToday.value * chain[1].quote ? chain[1].quote.USD.price : DEFAULT_PRICE)
+                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price || DEFAULT_PRICE)
                                 return
                             }
                         })
@@ -496,9 +510,9 @@ this.setState({graphLoading: true})
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={value?.toFixed(2)}
+                            text={Number(value?.toFixed(2)).toLocaleString('en-US')}
                         >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{value?.toFixed(2)}</div>
+                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(value?.toFixed(2)).toLocaleString('en-US')}</div>
                         </CustomOverlay>)
                     }
                 }
@@ -668,7 +682,7 @@ this.setState({graphLoading: true})
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "Amount") {
-                        return rowData.Amount
+                        return Number(noExponents(rowData.Amount)).toLocaleString('en-US')
                     }
                 }
             }, {
@@ -749,6 +763,8 @@ this.setState({graphLoading: true})
                 <div className="portfolio-container page">
                   <div className="portfolio-section">
                     <WelcomeCard
+                      toggleAddWallet={this.state.toggleAddWallet}
+                      handleToggleAddWallet={this.handleToggleAddWallet}
                       decrement={true}
                       assetTotal={
                         this.props.portfolioState &&
@@ -825,6 +841,7 @@ this.setState({graphLoading: true})
                       isScrollVisible={false}
                       handleGroupBy={(value) => this.handleGroupBy(value)}
                       graphLoading={this.state.graphLoading}
+                      externalEvents={this.state.externalEvents}
                     />
                   </div> */}
                   <div className="portfolio-section m-b-32">
@@ -869,78 +886,72 @@ this.setState({graphLoading: true})
                         </div>
                       </Col>
                       <Col md={6}>
-                        <div className="section-chart">
-                          {/* <div className="coming-soon-div">
-                            <Image
-                              src={ExportIconWhite}
-                              className="coming-soon-img"
-                            />
-                            <p className="inter-display-regular f-s-13 lh-16 black-191">
-                              This feature is coming soon.
-                            </p>
-                          </div> */}
-                          {this.state.graphValue &&
-                          !this.state.barGraphLoading ? (
+                      <div className="profit-chart">
+                    {this.state.graphValue?
                             <BarGraphSection
-                              headerTitle="Blockchain Fees over Time"
-                              headerSubTitle="Understand your gas costs"
-                              isArrow={true}
-                              handleClick={() =>
-                                this.props.history.push("/costs")
-                              }
-                              data={this.state.graphValue[0]}
-                              options={this.state.graphValue[1]}
-                              options2={this.state.graphValue[2]}
-                              isScroll={true}
-                              isScrollVisible={false}
-                              comingSoon={false}
-                              // width="100%"
-                              // height="100%"
-                              onClick={() => {
-                                VolumeTradeByCP({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                              }}
+                            headerTitle="Profit And Loss"
+                            headerSubTitle="Understand your entire portfolio's performance"
+                            isArrow={true}
+                            handleClick={()=>this.props.history.push(
+                              "/intelligence"
+                            )}
+                                isScrollVisible={false}
+                                data={this.state.graphValue[0]}
+                                options={this.state.graphValue[1]}
+                                coinsList={this.props.OnboardingState.coinsList}
+                                // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
+                                marginBottom='m-b-32'
+                                showFooter={false}
+                                showBadges={false}
+                                showPercentage = {this.state.graphValue[2]}
+                                // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
+                                // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
+                                // comingSoon={true}
+                                className={"portfolio-profit-and-loss"}
                             />
-                          ) : (
+                            :
                             <div className="loading-wrapper">
                               <Loading />
-                              <br />
-                              <br />
+                              <br/><br/>
                             </div>
-                          )}
-                        </div>
+                        }
+                    </div>
                       </Col>
                     </Row>
                   </div>
                   <div className="m-b-40 portfolio-cost-table-section">
-                    <div className="coming-soon-div">
-                      <Image
-                        src={ExportIconWhite}
-                        className="coming-soon-img"
-                      />
-                      <p className="inter-display-regular f-s-13 lh-16 black-191">
-                        This feature is coming soon.
-                      </p>
-                    </div>
-                    <div className="portfolio-cost-table">
-                      <TransactionTable
-                        className="minified-table"
-                        title="Average Cost Basis"
-                        subTitle="Understand your average entry price"
-                        tableData={costTableData}
-                        columnList={costColumnData}
-                        headerHeight={64}
-                        comingSoon={true}
-                        handleClick={() => {
-                          AverageCostBasisEView({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          });
-                        }}
-                      />
-                    </div>
+                  <div className="section-chart">
+                         { this.state.counterPartyValue && !this.state.counterGraphLoading ?
+                          <BarGraphSection
+                            headerTitle="Counterparty Fees Over Time"
+                            headerSubTitle="Understand how much your counterparty charges you"
+                            isArrow={true}
+                            handleClick={()=>this.props.history.push(
+                              "/costs#cp"
+                            )}
+                            data={this.state.counterPartyValue[0]}
+                            options={this.state.counterPartyValue[1]}
+                            options2={this.state.counterPartyValue[2]}
+                            isScroll={true}
+                            isScrollVisible={false}
+                            comingSoon={false}
+                            // width="100%"
+                            // height="100%"
+                            onClick={() => {
+                              VolumeTradeByCP({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }}
+                            className={"portfolio-counterparty-fee"}
+                          />
+                          :
+                          <div className="loading-wrapper">
+                            <Loading />
+                            <br/><br/>
+                          </div>
+                        }
+                        </div>
                   </div>
                 </div>
               </div>

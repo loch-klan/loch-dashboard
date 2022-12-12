@@ -39,7 +39,19 @@ class Cost extends Component {
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0);
+
+    if(this.props.location.hash !== ''){
+      setTimeout(() => {
+      const id = this.props.location.hash.replace('#', '');
+      console.log('id',id);
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView();
+      }
+    }, 0);
+    } else{
+      window.scrollTo(0, 0);
+    }
     this.state.startTime = new Date() * 1;
     console.log("page Enter", this.state.startTime / 1000);
 
@@ -298,7 +310,7 @@ class Cost extends Component {
             title="Costs"
             subTitle="Bring light to your hidden costs"
           />
-          <div style={{ position: "relative" }}>
+          <div style={{ position: "relative", minHeight: "80rem" }}>
             {this.state.graphValue ?
               <BarGraphSection
                 headerTitle="Blockchain Fees over Time"
@@ -328,7 +340,7 @@ class Cost extends Component {
 
             }
           </div>
-          <div style={{ position: "relative" }}>
+          <div id="cp" style={{ position: "relative", minHeight: "80rem" }}>
             {/* <div className="coming-soon-div">
               <Image src={ExportIconWhite} className="coming-soon-img" />
               <p className="inter-display-regular f-s-13 lh-16 black-191">
