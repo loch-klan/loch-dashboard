@@ -96,8 +96,8 @@ class LineChartSlider extends BaseReactComponent {
       this.InternalEvent(value);
       // console.log("event triggered")
     };
-    console.log("externalEvents", externalEvents);
-    //  console.log("asset Value", assetValueData);
+    // console.log("externalEvents", externalEvents);
+     console.log("asset Value", assetValueData);
     let series = {};
     let timestampList = [];
     let assetMaster = {};
@@ -403,7 +403,7 @@ class LineChartSlider extends BaseReactComponent {
       }
     });
 
-// console.log("plotline", plotLines);
+console.log("cat", categories);
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
