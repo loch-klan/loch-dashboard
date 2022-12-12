@@ -21,6 +21,25 @@ class InsightsPage extends Component {
     this.state = {
       insightList: "",
       selected: "",
+      insightFilter: [
+        {
+          name: "All Insights",
+          value: 1,
+        },
+        {
+          name: "Reduce Cost",
+          value: 10,
+        },
+        {
+          name: "Reduce Risk",
+          value: 20,
+        },
+        {
+          name: "Increase Yield",
+          value: 30,
+        },
+      ],
+      selectedFilter: 1,
     };
   }
   componentDidMount() {
@@ -39,9 +58,13 @@ class InsightsPage extends Component {
         />
         <div style={{position: "relative"}}>
           <div className="insights-filter">
-            <div className="filter-wrapper">
-
-            </div>
+            {
+              this.state.insightFilter.map((filter)=>{
+                return (
+                  <div className={`filter ${filter.value === this.state.selectedFilter ? "active" : ""}`} onClick={()=>this.setState({selectedFilter: filter.value})}>{filter.name}</div>
+                )
+              })
+            }
           </div>
           <div className="insights-wrapper">
             <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2>

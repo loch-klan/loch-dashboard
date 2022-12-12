@@ -184,10 +184,12 @@ export const MonthOptions = Object.keys(Months._presentable).map((month) => ({
 
 
 export const InsightType = {
+  ALL_INSIGHTS: 1,
   COST_REDUCTION: 10,
   RISK_REDUCTION: 20,
   YIELD_INCREASE: 30,
   _presentable: {
+    1: "ALL INSIGHTS",
     10: "COST REDUCTION",
     20: "RISK REDUCTION",
     30: "YIELD INCREASE",
