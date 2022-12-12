@@ -39,7 +39,7 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         title:"Year",
       })
-    } 
+    }
   }
 
   handleFunction = (badge) => {
@@ -151,7 +151,7 @@ class LineChartSlider extends BaseReactComponent {
       return a - b;
     });
 
-    
+
 
     if (this.state.title === "Year" && timestampList.length != 0) {
       const startYear = 2009;
@@ -239,7 +239,7 @@ class LineChartSlider extends BaseReactComponent {
               event.is_highlighted &&
               this.state.title === "Year"
             ) {
-            
+
               UniqueEvents.push(abc);
               y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
 
@@ -311,8 +311,8 @@ class LineChartSlider extends BaseReactComponent {
               }
             }
 
-           
-          
+
+
         });
     };
 
@@ -325,10 +325,10 @@ class LineChartSlider extends BaseReactComponent {
           let current = moment(item.timestamp).format("DD/MM/YYYY");
           // console.log("current", current, value);
           if (current === value) {
-            console.log("item", item);
+            // console.log("item", item);
             // selectedEvents.push(item);
             item.event.map((a) => {
-          
+
                 let e_usd = a.asset.value * a.asset_price;
                 let e_text = "";
                 let e_assetValue = a.asset.value;
@@ -357,7 +357,7 @@ class LineChartSlider extends BaseReactComponent {
                     e_address.substr(e_address.length - 3, e_address.length) +
                     '"';
                 }
-              console.log("a", a)
+              // console.log("a", a)
                 selectedEvents.push({
                   usd: e_usd,
                   assetValue: e_assetValue,
@@ -375,7 +375,7 @@ class LineChartSlider extends BaseReactComponent {
         return b.usd - a.usd;
       });
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
-     
+
     };
     timestampList.map((time) => {
       let dummy = new Date(time);
@@ -402,7 +402,7 @@ class LineChartSlider extends BaseReactComponent {
         generatePlotLines(abc);
       }
     });
-    
+
 // console.log("plotline", plotLines);
     seriesData =
       seriesData &&
@@ -591,7 +591,7 @@ class LineChartSlider extends BaseReactComponent {
           //  console.log("checking date", x_value, this.x, tooltip_title);
           return `<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${tooltip_title}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div> 
+                                <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${tooltip_title}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
                                 ${tooltipData
                                   .map((item) => {
                                     return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
@@ -756,8 +756,8 @@ class LineChartSlider extends BaseReactComponent {
                     {this.state.selectedEvents.length > 0 &&
                       this.state.selectedEvents.map((event,i) => {
                         console.log("first event", event);
-                       
-                        
+
+
                           let count =
                             Math.trunc(event.assetValue).toString().length > 6
                               ? 0
@@ -804,7 +804,7 @@ class LineChartSlider extends BaseReactComponent {
                               </div>
                             </>
                           );
-                       
+
                       })}
                   </div>
                 </div>
