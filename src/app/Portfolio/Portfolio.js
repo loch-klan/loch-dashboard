@@ -148,7 +148,7 @@ class Portfolio extends BaseReactComponent {
       TimeSpentHome({ time_spent: TimeSpent + " seconds", session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
 
-    getGraphData = (groupByValue = GROUP_BY_DATE) =>{
+    getGraphData = (groupByValue = GROUP_BY_YEAR) =>{
 this.setState({graphLoading: true})
       let addressList = [];
       this.state.userWalletList.map((wallet)=> addressList.push(wallet.address))

@@ -476,6 +476,7 @@ class LineChartSlider extends BaseReactComponent {
             return categories[this.pos];
           },
           rotation: 0,
+          // autoRotation: false,
 
           // staggerLines: 1,
         },
@@ -749,62 +750,60 @@ class LineChartSlider extends BaseReactComponent {
                 <div className="SliderChartBottom">
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
-                    Internal Events
+                    Largest Internal Events
                   </h4>
 
                   <div className="InternalEventWrapper">
                     {this.state.selectedEvents.length > 0 &&
-                      this.state.selectedEvents.map((event,i) => {
+                      this.state.selectedEvents.map((event, i) => {
                         console.log("first event", event);
 
+                        let count =
+                          Math.trunc(event.assetValue).toString().length > 6
+                            ? 0
+                            : 6 -
+                              Math.trunc(event.assetValue).toString().length;
 
-                          let count =
-                            Math.trunc(event.assetValue).toString().length > 6
-                              ? 0
-                              : 6 -
-                                Math.trunc(event.assetValue).toString().length;
+                        // console.log(
+                        //   "count",
+                        //   count,
+                        //   "number",
+                        //   Math.trunc(eve.asset.value)
+                        // );
+                        return (
+                          <>
+                            <div className="GreyChip" key={i}>
+                              <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                                <Image src={DoubleArrow} />
+                                Transfer
+                              </h5>
 
-                          // console.log(
-                          //   "count",
-                          //   count,
-                          //   "number",
-                          //   Math.trunc(eve.asset.value)
-                          // );
-                          return (
-                            <>
-                              <div className="GreyChip" key={i}>
-                                <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                                  <Image src={DoubleArrow} />
-                                  Transfer
-                                </h5>
-
-                                <p className="inter-display-medium f-s-13 lh-16 grey-B4D text-right">
-                                  <span>
-                                    {event.assetValue.toFixed(count)}{" "}
-                                    {event.assetCode}
-                                    {" or $"}
-                                    {numToCurrency(
-                                      event.usd
-                                    )}
-                                    {event.text === "from" ? " from " : " to "}{" "}
+                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D text-right">
+                                <span>
+                                  {event.assetValue.toFixed(count)}{" "}
+                                  {event.assetCode}
+                                  {" or $"}
+                                  {numToCurrency(event.usd)}
+                                  {event.text === "from"
+                                    ? " from "
+                                    : " to "}{" "}
+                                </span>
+                                <CustomOverlay
+                                  position="top"
+                                  // className={"coin-hover-tooltip"}
+                                  isIcon={false}
+                                  isInfo={true}
+                                  isText={true}
+                                  text={event.tooltip}
+                                >
+                                  <span style={{ cursor: "pointer" }}>
+                                    {event.address}
                                   </span>
-                                  <CustomOverlay
-                                    position="top"
-                                    // className={"coin-hover-tooltip"}
-                                    isIcon={false}
-                                    isInfo={true}
-                                    isText={true}
-                                    text={event.tooltip}
-                                  >
-                                    <span style={{ cursor: "pointer" }}>
-                                      {event.address}
-                                    </span>
-                                  </CustomOverlay>
-                                </p>
-                              </div>
-                            </>
-                          );
-
+                                </CustomOverlay>
+                              </p>
+                            </div>
+                          </>
+                        );
                       })}
                   </div>
                 </div>
