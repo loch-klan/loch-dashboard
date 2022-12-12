@@ -97,7 +97,7 @@ export default function WelcomeCard(props) {
             </Button>
             <Button
               // class="add-wallet"
-              className="inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet"
+              className="inter-display-semi-bold f-s-13 lh-16 black-191 add-wallet"
               onClick={handleAddWalletClick}
               onMouseEnter={() => setAddWallet(false)}
               onMouseLeave={() => setAddWallet(true)}
