@@ -96,7 +96,7 @@ class LineChartSlider extends BaseReactComponent {
       this.InternalEvent(value);
       // console.log("event triggered")
     };
-    // console.log("externalEvents", externalEvents);
+    console.log("externalEvents", externalEvents);
     //  console.log("asset Value", assetValueData);
     let series = {};
     let timestampList = [];
@@ -325,7 +325,7 @@ class LineChartSlider extends BaseReactComponent {
           let current = moment(item.timestamp).format("DD/MM/YYYY");
           // console.log("current", current, value);
           if (current === value) {
-            console.log("item", item);
+            // console.log("item", item);
             // selectedEvents.push(item);
             item.event.map((a) => {
           
@@ -357,7 +357,7 @@ class LineChartSlider extends BaseReactComponent {
                     e_address.substr(e_address.length - 3, e_address.length) +
                     '"';
                 }
-              console.log("a", a)
+              // console.log("a", a)
                 selectedEvents.push({
                   usd: e_usd,
                   assetValue: e_assetValue,
