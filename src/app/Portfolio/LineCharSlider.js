@@ -476,10 +476,8 @@ class LineChartSlider extends BaseReactComponent {
             // console.log("this", this);
             return categories[this.pos];
           },
-          // rotation: 0,
           autoRotation: false,
-
-          // staggerLines: 1,
+          step: 2,
           autoRotationLimit: 0,
         },
         crosshair: {
