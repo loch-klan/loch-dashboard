@@ -18,7 +18,7 @@ import {
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
-import { getCoinRate } from "../Portfolio/Api.js";
+// import { getCoinRate } from "../Portfolio/Api.js";
 import noDataImage from "../../image/no-data.png";
 import lochClean from "../../assets/images/LochClean.gif";
 import { Image } from "react-bootstrap";
@@ -330,7 +330,7 @@ const mapDispatchToProps = {
   getAllCoins,
   getAllWalletListApi,
   getAllWalletApi,
-  getCoinRate,
+  // getCoinRate,
 };
 Wallet.propTypes = {
   // getPosts: PropTypes.func

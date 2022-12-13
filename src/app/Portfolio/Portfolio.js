@@ -370,7 +370,7 @@ this.setState({graphLoading: true})
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
-                        return moment(rowData.time).format('DD/MM/YYYY')
+                        return moment(rowData.time).format('DD/MM/YY')
                     }
                 }
             },

@@ -331,7 +331,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
 
-                        return moment(rowData.time).format('DD/MM/YYYY')
+                        return moment(rowData.time).format('DD/MM/YY')
                     }
                 }
             },
