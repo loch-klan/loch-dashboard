@@ -61,7 +61,7 @@ class InsightsPage extends Component {
         />
         <div style={{position: "relative"}}>
           {
-            this.state.updatedInsightList && this.state.updatedInsightList.length > 0 &&
+            this.state.insightList && this.state.insightList.length > 0 &&
           <div className="insights-filter">
             {
               this.state.insightFilter.map((filter, key)=>{
