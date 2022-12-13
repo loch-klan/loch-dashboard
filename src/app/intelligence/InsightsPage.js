@@ -86,7 +86,7 @@ class InsightsPage extends Component {
                 )
               })
               :
-              <h5 className="inter-display-medium f-s-25 lh-30 m-b-8">No Insights Found</h5>
+              <h5 className="inter-display-medium f-s-25 lh-30 m-b-8 text-center">No Insights Found</h5>
             }
           </div>
         </div>
