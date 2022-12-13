@@ -7,22 +7,17 @@ import eyeIcon from '../../assets/images/icons/eyeIcon.svg'
 import insight from '../../assets/images/icons/insight.svg'
 import BarGraphSection from '../common/BarGraphSection';
 import { getAllCoins } from '../onboarding/Api.js'
-import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
-import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
-import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 import { Image } from 'react-bootstrap';
 import { TimeSpentIntelligence } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
-import ThisWeek from "../../assets/images/This-week.svg"
-// import Insights1 from "../../assets/images/Insights1.svg"
-import Insights2 from "../../assets/images/Insights2.svg"
-// import Insights3 from "../../assets/images/Insights3.svg"
-import Insights4 from "../../assets/images/Insights4.svg"
-import Insights5 from "../../assets/images/Insights5.svg"
 import moment from "moment/moment";
 import { getProfitAndLossApi} from "./Api";
 import Loading from '../common/Loading';
-
+import reduceCost from '../../assets/images/icons/reduce-cost.svg'
+import reduceRisk from '../../assets/images/icons/reduce-risk.svg'
+import increaseYield from '../../assets/images/icons/increase-yield.svg'
+import { getAllInsightsApi } from "./Api";
+import { InsightType } from "../../utils/Constant";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -36,6 +31,7 @@ class Intelligence extends Component {
       //   graphValue: "null",
       // },
       startTime: "",
+      updatedInsightList: "",
     };
   }
 
@@ -45,6 +41,7 @@ class Intelligence extends Component {
         window.scrollTo(0, 0);
     this.props.getAllCoins();
     this.timeFilter(0);
+    getAllInsightsApi(this);
   }
   componentWillUnmount() {
     let endTime = new Date() * 1;
@@ -183,34 +180,37 @@ class Intelligence extends Component {
                         }
                     </div>
 
-        <div className="insights-image">
-        <PageHeader
+                    <div className="insights-image">
+                      <PageHeader
                         title="Insights"
                         showImg={insight}
                         viewMore={true}
                         viewMoreRedirect={"/intelligence/insights"}
-                    />
+                      />
                     <div style={{position: "relative"}}>
-                    <div className='coming-soon-div'>
-                        <Image src={ExportIconWhite} className="coming-soon-img" />
-                        <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
+                    <div className="insights-wrapper">
+            {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
+            {
+              this.state.updatedInsightList && this.state.updatedInsightList.length > 0 ?
+              this.state.updatedInsightList.map((insight, key)=>{
+                return(
+                  <div className="insights-card" key={key}>
+                    <Image src={insight.insight_type === InsightType.COST_REDUCTION ? reduceCost : insight.insight_type === InsightType.RISK_REDUCTION ? reduceRisk : increaseYield} className="insight-icon" />
+                    <div className="insights-content">
+                      <h5 className="inter-display-bold f-s-10 lh-12 title-chip">{InsightType.getText(insight.insight_type)}</h5>
+                      <p className="inter-display-medium f-s-13 lh-16 grey-969" dangerouslySetInnerHTML={{__html: insight.sub_title}}></p>
+                      <h4 className="inter-display-medium f-s-16 lh-19 grey-313" dangerouslySetInnerHTML={{__html: insight.title}}></h4>
                     </div>
-                    <span className="blur-effect">
-
-
-          <div className="insights-feed">
-            <Image
-            src={Insights5} />
-            <Image
-            src={Insights2} />
-            <Image
-            src={Insights4} />
+                  </div>
+                )
+              })
+              :
+              <h5 className="inter-display-medium f-s-25 lh-30 m-b-8">No Insights Found</h5>
+            }
           </div>
-          </span>
-        </div>
-</div>
                     </div>
-                    {/* <TransactionHistoryPage/> */}
+                  </div>
+                  </div>
                 </div>
             </div>
 

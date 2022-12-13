@@ -249,10 +249,10 @@ class ExitOverlay extends BaseReactComponent {
                       settings: {
                         placeholder: "From Date",
                         showDateIcon: false,
-                        nextLabel: <Image src={nextIcon} />,
-                        next2Label: <Image src={next2Icon} style={{position: "relative", top: "-1px"}} />,
-                        prevLabel: <Image src={prevIcon} />,
-                        prev2Label: <Image src={prev2Icon} style={{position: "relative", top: "-1px"}} />,
+                        nextLabel: <Image className='date-navigator-icons-next' src={nextIcon} />,
+                        next2Label: <Image className='date-navigator-icons' src={next2Icon} />,
+                        prevLabel: <Image className='date-navigator-icons-next' src={prevIcon} />,
+                        prev2Label: <Image className='date-navigator-icons' src={prev2Icon} />,
                       },
                     }}
                   />
@@ -272,10 +272,10 @@ class ExitOverlay extends BaseReactComponent {
                         placeholder: "To Date",
                         minDate: this.state.fromDate || new Date(),
                         showDateIcon: false,
-                        nextLabel: <Image src={nextIcon} />,
-                        next2Label: <Image src={next2Icon} style={{position: "relative", top: "-1px"}} />,
-                        prevLabel: <Image src={prevIcon} />,
-                        prev2Label: <Image src={prev2Icon} style={{position: "relative", top: "-1px"}} />,
+                        nextLabel: <Image className='date-navigator-icons-next' src={nextIcon} />,
+                        next2Label: <Image className='date-navigator-icons' src={next2Icon} />,
+                        prevLabel: <Image className='date-navigator-icons-next' src={prevIcon} />,
+                        prev2Label: <Image className='date-navigator-icons' src={prev2Icon} />,
                       },
                     }}
                   />

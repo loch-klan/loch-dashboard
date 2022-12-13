@@ -1,14 +1,6 @@
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
-import ThisWeek from "../../assets/images/This-week.svg"
-import Insights1 from "../../assets/images/Insights1.svg"
-import Insights2 from "../../assets/images/Insights2.svg"
-import Insights3 from "../../assets/images/Insights3.svg"
-import Insights4 from "../../assets/images/Insights4.svg"
-import Insights5 from "../../assets/images/Insights5.svg"
-import InsightsFilter from "../../assets/images/Insights-filter.png"
-import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 import reduceCost from '../../assets/images/icons/reduce-cost.svg'
 import reduceRisk from '../../assets/images/icons/reduce-risk.svg'
 import increaseYield from '../../assets/images/icons/increase-yield.svg'
@@ -80,7 +72,7 @@ class InsightsPage extends Component {
           <div className="insights-wrapper">
             {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
             {
-              this.state.updatedInsightList && this.state.updatedInsightList.length > 0 &&
+              this.state.updatedInsightList && this.state.updatedInsightList.length > 0 ?
               this.state.updatedInsightList.map((insight, key)=>{
                 return(
                   <div className="insights-card" key={key}>
@@ -93,6 +85,8 @@ class InsightsPage extends Component {
                   </div>
                 )
               })
+              :
+              <h5 className="inter-display-medium f-s-25 lh-30 m-b-8">No Insights Found</h5>
             }
           </div>
         </div>
