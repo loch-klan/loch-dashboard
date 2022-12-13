@@ -60,6 +60,8 @@ class InsightsPage extends Component {
           // history={this.props.history}
         />
         <div style={{position: "relative"}}>
+          {
+            this.state.updatedInsightList && this.state.updatedInsightList.length > 0 &&
           <div className="insights-filter">
             {
               this.state.insightFilter.map((filter, key)=>{
@@ -69,6 +71,7 @@ class InsightsPage extends Component {
               })
             }
           </div>
+          }
           <div className="insights-wrapper">
             {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
             {
