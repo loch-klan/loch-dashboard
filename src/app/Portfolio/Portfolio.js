@@ -213,6 +213,7 @@ this.setState({graphLoading: true})
             if (prevProps.userWalletList !== this.state.userWalletList) {
                 this.getTableData()
                 this.getGraphData()
+                getYesterdaysBalanceApi(this);
             }
         }
         else if(prevState.sort !== this.state.sort)

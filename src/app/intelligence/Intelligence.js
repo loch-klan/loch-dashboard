@@ -192,7 +192,7 @@ class Intelligence extends Component {
             {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
             {
               this.state.updatedInsightList && this.state.updatedInsightList.length > 0 ?
-              this.state.updatedInsightList.map((insight, key)=>{
+              this.state.updatedInsightList.slice(0,2).map((insight, key)=>{
                 return(
                   <div className="insights-card" key={key}>
                     <Image src={insight.insight_type === InsightType.COST_REDUCTION ? reduceCost : insight.insight_type === InsightType.RISK_REDUCTION ? reduceRisk : increaseYield} className="insight-icon" />
