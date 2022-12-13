@@ -5,7 +5,7 @@ import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
 import LineChart from './LineChart';
 import LineChartSlider from "./LineCharSlider";
-import { getCoinRate, getDetailsByLinkApi, getUserWallet, settingDefaultValues } from "./Api";
+import { getCoinRate, getDetailsByLinkApi, getUserWallet, getYesterdaysBalanceApi, settingDefaultValues } from "./Api";
 // import { Loading } from 'react-loading-dot';
 
 import { Button, Image, Row, Col } from 'react-bootstrap';
@@ -97,6 +97,7 @@ class Portfolio extends BaseReactComponent {
       counterPartyData: [],
       counterPartyValue: null,
       isUpdate: 0,
+      yesterdayBalance: 0,
     };
   }
 
@@ -138,6 +139,7 @@ class Portfolio extends BaseReactComponent {
         // getAllFeeApi(this, false, false);
         getAllCounterFeeApi(this, false, false);
         getProfitAndLossApi(this, false, false, false);
+        getYesterdaysBalanceApi(this);
     }
 
     componentWillUnmount() {
@@ -763,6 +765,7 @@ this.setState({graphLoading: true})
                 <div className="portfolio-container page">
                   <div className="portfolio-section">
                     <WelcomeCard
+                      yesterdayBalance={this.state.yesterdayBalance}
                       toggleAddWallet={this.state.toggleAddWallet}
                       handleToggleAddWallet={this.handleToggleAddWallet}
                       decrement={true}

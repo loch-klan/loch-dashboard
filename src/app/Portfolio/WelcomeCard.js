@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react'
 import {useRef} from 'react'
 import { Button, Image } from "react-bootstrap"
-import arrowUpRight from '../../image/ArrowUpRight.svg'
-import arrowDowRight from '../../assets/images/icons/arrow-down-right.svg'
+import arrowUpRight from '../../assets/images/icons/green-arrow.svg'
+import arrowDownRight from '../../assets/images/icons/red-arrow.svg'
 import CustomLoader from "../common/CustomLoader";
 import { numToCurrency } from '../../utils/ReusableFunctions';
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
@@ -39,6 +39,8 @@ export default function WelcomeCard(props) {
     // // }
     // }
 
+    let difference = (props.assetTotal && props.yesterdayBalance) ? props.assetTotal - props.yesterdayBalance : 0;
+    let percent = props.assetTotal && ((difference/props.assetTotal)*100).toFixed(2);
     return (
       <div className="welcome-card-section">
         <div className="welcome-card">
@@ -55,6 +57,9 @@ export default function WelcomeCard(props) {
               </p>
             </div>
             <div className="welcome-section-right">
+            <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${difference < 0 ? "downfall" : ""}`}>
+                <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />{difference?.toFixed(2) + "(" + Math.round(percent) + "%)"}
+              </div>
               {props.assetTotal !== null ? (
                 <CustomOverlay
                   position="top"
@@ -74,10 +79,7 @@ export default function WelcomeCard(props) {
               ) : (
                 <CustomLoader loaderType="text" />
               )}
-              {/* <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${props.decrement ? "downfall" : ""}`}>
-                            <Image src={props.decrement ? arrowDowRight : arrowUpRight} />
-                            330.10 (1%)
-                        </div> */}
+
             </div>
           </div>
           <div className="welcome-btn">
@@ -90,7 +92,7 @@ export default function WelcomeCard(props) {
               onMouseLeave={() => setManageWallet(true)}
             >
               <Image
-                class="manage-wallet"
+                // className="manage-wallet"
                 src={manageWallet === true ? ManageWallet : ManageWalletWhite}
               />
               Manage wallets

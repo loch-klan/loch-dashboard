@@ -111,7 +111,7 @@ export const getExternalEventsApi = (ctx) => {
   postLoginInstance
     .post("common/master/get-all-events")
     .then((res) => {
-      console.log("res", res);
+      // console.log("res", res);
       if (!res.data.error) {
         ctx.setState({
           externalEvents: res.data.data.events,
@@ -124,3 +124,19 @@ export const getExternalEventsApi = (ctx) => {
       console.log("Catch", err);
     });
 };
+
+export const getYesterdaysBalanceApi = (ctx) =>{
+  postLoginInstance.post("wallet/user-wallet/get-yesterday-portfolio-balance")
+  .then((res)=>{
+    if (!res.data.error) {
+      ctx.setState({
+        yesterdayBalance: res.data.data.balance,
+      });
+    } else {
+      toast.error(res.data.message || "Something Went Wrong");
+    }
+  })
+  .catch((err) => {
+    console.log("Catch", err);
+  });
+}
