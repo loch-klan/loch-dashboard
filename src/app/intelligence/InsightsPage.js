@@ -78,17 +78,17 @@ class InsightsPage extends Component {
             }
           </div>
           <div className="insights-wrapper">
-            <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2>
+            {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
             {
               this.state.updatedInsightList && this.state.updatedInsightList.length > 0 &&
               this.state.updatedInsightList.map((insight, key)=>{
                 return(
-                  <div className="insights-card" id={key}>
+                  <div className="insights-card" key={key}>
                     <Image src={insight.insight_type === InsightType.COST_REDUCTION ? reduceCost : insight.insight_type === InsightType.RISK_REDUCTION ? reduceRisk : increaseYield} className="insight-icon" />
                     <div className="insights-content">
                       <h5 className="inter-display-bold f-s-10 lh-12 title-chip">{InsightType.getText(insight.insight_type)}</h5>
-                      <p className="inter-display-medium f-s-13 lh-16 grey-969">{insight.sub_title}</p>
-                      <h4 className="inter-display-medium f-s-16 lh-19 grey-313">{insight.title}</h4>
+                      <p className="inter-display-medium f-s-13 lh-16 grey-969" dangerouslySetInnerHTML={{__html: insight.sub_title}}></p>
+                      <h4 className="inter-display-medium f-s-16 lh-19 grey-313" dangerouslySetInnerHTML={{__html: insight.title}}></h4>
                     </div>
                   </div>
                 )

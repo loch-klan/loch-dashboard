@@ -52,6 +52,7 @@
         border-radius: 1.2rem;
         display: flex;
         align-items: flex-start;
+        margin-bottom: 2rem;
         .insight-icon{
           width: 4.4rem;
           height: 4.4rem;
@@ -65,7 +66,7 @@
             background-color: $grey-F2F;
           }
           p{
-            margin: 12px 0;
+            margin: 8px 0;
           }
         }
       }
