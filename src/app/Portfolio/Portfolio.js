@@ -32,6 +32,7 @@ import {
   VolumeTradeByCP,
   AverageCostBasisEView,
   TimeSpentHome,
+  TransactionHistoryAddress,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 
@@ -384,32 +385,107 @@ this.setState({graphLoading: true})
                 cell: (rowData, dataKey) => {
                     if (dataKey === "from") {
                         return (
-                            <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                // text={rowData.from.address}
-                                text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
-                            >
-                               {
-                                rowData.from.metaData[0]
-                                ?
-                                <Image src={rowData.from.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon" />
-                                :
-                                rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
-                                ?
-                                rowData.from.wallet_metaData.symbol
-                                ?
-                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
-                                :
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            // text={rowData.from.address}
+                            text={
+                              rowData.from.wallet_metaData.text
+                                ? rowData.from.wallet_metaData.text +
+                                  ": " +
+                                  rowData.from.address
+                                : rowData.from.address
+                            }
+                          >
+                            {rowData.from.metaData[0] ? (
+                              <Image
+                                src={
+                                  rowData.from.metaData[0]?.symbol ||
+                                  unrecognizedIcon
+                                }
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  console.log(
+                                    "address",
+                                    rowData.from.wallet_metaData.text
+                                      ? rowData.from.wallet_metaData.text +
+                                          ": " +
+                                          rowData.from.address
+                                      : rowData.from.address
+                                  );
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.from
+                                      .wallet_metaData.text
+                                      ? rowData.from.wallet_metaData.text +
+                                        ": " +
+                                        rowData.from.address
+                                      : rowData.from.address,
+                                  });
+                                }}
+                              />
+                            ) : rowData.from.wallet_metaData.symbol ||
+                              rowData.from.wallet_metaData.text ? (
+                              rowData.from.wallet_metaData.symbol ? (
+                                <Image
+                                  src={rowData.from.wallet_metaData.symbol}
+                                  className="history-table-icon"
+                                  onMouseEnter={() => {
+                                    console.log(
+                                      "address",
+                                      rowData.from.wallet_metaData.text
+                                        ? rowData.from.wallet_metaData.text +
+                                            ": " +
+                                            rowData.from.address
+                                        : rowData.from.address
+                                    );
+                                    TransactionHistoryAddress({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      address_hovered: rowData.from
+                                        .wallet_metaData.text
+                                        ? rowData.from.wallet_metaData.text +
+                                          ": " +
+                                          rowData.from.address
+                                        : rowData.from.address,
+                                    });
+                                  }}
+                                />
+                              ) : (
                                 <span>{rowData.from.wallet_metaData.text}</span>
-                                :
-                                 <Image src={unrecognizedIcon} className="history-table-icon" />
-                              }
-                                {/* <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" /> */}
-                            </CustomOverlay>
-                        )
+                              )
+                            ) : (
+                              <Image
+                                src={unrecognizedIcon}
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  console.log(
+                                    "address",
+                                    rowData.from.wallet_metaData.text
+                                      ? rowData.from.wallet_metaData.text +
+                                          ": " +
+                                          rowData.from.address
+                                      : rowData.from.address
+                                  );
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.from
+                                      .wallet_metaData.text
+                                      ? rowData.from.wallet_metaData.text +
+                                        ": " +
+                                        rowData.from.address
+                                      : rowData.from.address,
+                                  });
+                                }}
+                              />
+                            )}
+                            {/* <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" /> */}
+                          </CustomOverlay>
+                        );
                     }
                 }
             },
@@ -425,32 +501,86 @@ this.setState({graphLoading: true})
                 cell: (rowData, dataKey) => {
                     if (dataKey === "to") {
                         return (
-                            <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                // text={rowData.to.address}
-                                text={rowData.to.wallet_metaData.text ? (rowData.to.wallet_metaData.text + ": " + rowData.to.address) : rowData.to.address}
-                            >
-                                {/* <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" /> */}
-                                {
-                                  rowData.to.metaData[0]
-                                  ?
-                                  <Image src={rowData.to.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon heyyyy" />
-                                  :
-                                rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
-                                ?
-                                rowData.to.wallet_metaData.symbol
-                                ?
-                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
-                                :
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            // text={rowData.to.address}
+                            text={
+                              rowData.to.wallet_metaData.text
+                                ? rowData.to.wallet_metaData.text +
+                                  ": " +
+                                  rowData.to.address
+                                : rowData.to.address
+                            }
+                          >
+                            {/* <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" /> */}
+                            {rowData.to.metaData[0] ? (
+                              <Image
+                                src={
+                                  rowData.to.metaData[0]?.symbol ||
+                                  unrecognizedIcon
+                                }
+                                className="history-table-icon heyyyy"
+                                onMouseEnter={() => {
+                                  
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.to.wallet_metaData
+                                      .text
+                                      ? rowData.to.wallet_metaData.text +
+                                        ": " +
+                                        rowData.to.address
+                                      : rowData.to.address,
+                                  });
+                                }}
+                              />
+                            ) : rowData.to.wallet_metaData.symbol ||
+                              rowData.to.wallet_metaData.text ? (
+                              rowData.to.wallet_metaData.symbol ? (
+                                <Image
+                                  src={rowData.to.wallet_metaData.symbol}
+                                  className="history-table-icon"
+                                  onMouseEnter={() => {
+                                   
+                                    TransactionHistoryAddress({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      address_hovered: rowData.to
+                                        .wallet_metaData.text
+                                        ? rowData.to.wallet_metaData.text +
+                                          ": " +
+                                          rowData.to.address
+                                        : rowData.to.address,
+                                    });
+                                  }}
+                                />
+                              ) : (
                                 <span>{rowData.to.wallet_metaData.text}</span>
-                                :
-                                 <Image src={unrecognizedIcon} className="history-table-icon" />
-                              }
-                            </CustomOverlay>
-                        )
+                              )
+                            ) : (
+                              <Image
+                                src={unrecognizedIcon}
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                 
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.to.wallet_metaData
+                                      .text
+                                      ? rowData.to.wallet_metaData.text +
+                                        ": " +
+                                        rowData.to.address
+                                      : rowData.to.address,
+                                  });
+                                }}
+                              />
+                            )}
+                          </CustomOverlay>
+                        );
                     }
                 }
             },
@@ -926,9 +1056,14 @@ this.setState({graphLoading: true})
                             headerTitle="Counterparty Fees Over Time"
                             headerSubTitle="Understand how much your counterparty charges you"
                             isArrow={true}
-                            handleClick={()=>this.props.history.push(
+                            handleClick={() => {
+                              VolumeTradeByCP({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                              this.props.history.push(
                               "/costs#cp"
-                            )}
+                            )}}
                             data={this.state.counterPartyValue[0]}
                             options={this.state.counterPartyValue[1]}
                             options2={this.state.counterPartyValue[2]}
@@ -937,12 +1072,7 @@ this.setState({graphLoading: true})
                             comingSoon={false}
                             // width="100%"
                             // height="100%"
-                            onClick={() => {
-                              VolumeTradeByCP({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }}
+                           
                             className={"portfolio-counterparty-fee"}
                           />
                           :

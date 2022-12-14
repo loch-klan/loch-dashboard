@@ -4,15 +4,15 @@ import Mixpanel from "mixpanel-browser";
 
 //Api Config
 export const initAmplitude = () => {
-  // amplitude.getInstance().init("18eb08ef007daf84f1dbdaec2a5f91e0");
-  amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
+
+  // amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
   Mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY);
 
 };
 
 // send Aplitude Data
 export const sendAmplitudeData = (eventType, eventProperties) => {
-  amplitude.getInstance().logEvent(eventType, eventProperties);
+  // amplitude.getInstance().logEvent(eventType, eventProperties);
   Mixpanel.track(eventType, eventProperties);
 };
 

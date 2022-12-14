@@ -11,7 +11,11 @@ import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { Image } from "react-bootstrap";
 import CoinChip from "../wallet/CoinChip";
 import TransactionTable from "../intelligence/TransactionTable";
-import { TimeSpentCosts } from "../../utils/AnalyticsFunctions";
+import {
+  TimeSpentCosts,
+  FeesTimePeriodFilter,
+  CounterpartyFeesTimeFilter,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import {getCounterGraphData, getGraphData} from "./getGraphData";
@@ -19,6 +23,7 @@ import { getAllFeeApi, getAllCounterFeeApi } from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
+
 
 class Cost extends Component {
   constructor(props) {
@@ -63,67 +68,94 @@ class Cost extends Component {
   getBlockchainFee(option) {
 
     const today = moment().valueOf();
-
+    let handleSelected = "";
     console.log("headle click");
     if (option == 0) {
       getAllFeeApi(this, false, false);
-      console.log(option, "All");
+      // console.log(option, "All");
+       handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
       getAllFeeApi(this, fiveyear, today);
-      console.log(fiveyear, today, "5 years");
+      // console.log(fiveyear, today, "5 years");
+       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
       getAllFeeApi(this, year, today);
-      console.log(year, today, "1 year");
+      // console.log(year, today, "1 year");
+       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
       getAllFeeApi(this, sixmonth, today);
-      console.log(sixmonth, today, "6 months");
+      // console.log(sixmonth, today, "6 months");
+       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
       getAllFeeApi(this, month, today);
-      console.log(month, today, "1 month");
+      // console.log(month, today, "1 month");
+       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
       getAllFeeApi(this, week, today);
-      console.log(week, today, "week");
+      // console.log(week, today, "week");
+       handleSelected = "Week";
     }
+    // console.log("handle select", handleSelected);
+    FeesTimePeriodFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      time_period_selected: handleSelected
+    });
   }
 
   getCounterPartyFee(option) {
 
     const today = moment().unix();
-
-    console.log("headle click");
+    let handleSelected = "";
+    // console.log("headle click");
     if (option == 0) {
       getAllCounterFeeApi(this, false, false);
-      console.log(option, "All");
+      // console.log(option, "All");
+    handleSelected = "All";
+
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").unix();
 
       getAllCounterFeeApi(this, fiveyear, today);
-      console.log(fiveyear, today, "5 years");
+      // console.log(fiveyear, today, "5 years");
+      handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").unix();
       getAllCounterFeeApi(this, year, today);
-      console.log(year, today, "1 year");
+      // console.log(year, today, "1 year");
+      handleSelected = "1 Years";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").unix();
 
       getAllCounterFeeApi(this, sixmonth, today);
-      console.log(sixmonth, today, "6 months");
+      // console.log(sixmonth, today, "6 months");
+      handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").unix();
       getAllCounterFeeApi(this, month, today);
-      console.log(month, today, "1 month");
+      // console.log(month, today, "1 month");
+      handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").unix();
       getAllCounterFeeApi(this, week, today);
-      console.log(week, today, "week");
+      // console.log(week, today, "week");
+      handleSelected = "Week";
     }
+
+    // console.log("handle select", handleSelected)
+    // CounterpartyFeesTimeFilter;
+    CounterpartyFeesTimeFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      time_period_selected: handleSelected,
+    });
   }
 
   componentWillUnmount() {
@@ -319,7 +351,10 @@ class Cost extends Component {
                 options={this.state.graphValue[1]}
                 options2={this.state.graphValue[2]}
                 coinsList={this.props.OnboardingState.coinsList}
-                timeFunction={(e) => this.getBlockchainFee(e)}
+                timeFunction={(e) => {
+                  
+                  this.getBlockchainFee(e)
+                }}
                 marginBottom="m-b-32"
                 showFooter={true}
                 showBadges={true}
