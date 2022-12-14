@@ -52,6 +52,7 @@ class LineChartSlider extends BaseReactComponent {
         this.setState({
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
+          selectedEvents: [],
         });
       } else {
         this.setState({
@@ -63,6 +64,7 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         activeBadge: [{ name: "All", id: "" }],
         activeBadgeList: [],
+        selectedEvents: [],
       });
     } else {
       let index = newArr.findIndex((x) => x.name === "All");
@@ -73,6 +75,7 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         activeBadge: newArr,
         activeBadgeList: newArr.map((item) => item.id),
+        selectedEvents: [],
       });
     }
     AssetValueFilter({
@@ -357,9 +360,9 @@ class LineChartSlider extends BaseReactComponent {
               if (e_address.length > 16) {
                 e_address =
                   '"' +
-                  e_address.substr(0, e_text === "from" ? 5 : 7) +
+                  e_address.substr(0, e_text === "from" ? 10 : 12) +
                   "..." +
-                  e_address.substr(e_address.length - 3, e_address.length) +
+                  e_address.substr(e_address.length - 5, e_address.length) +
                   '"';
               }
               // console.log("internal", a);
@@ -625,6 +628,15 @@ class LineChartSlider extends BaseReactComponent {
       plotOptions: {
         series: {
           fillOpacity: 0,
+          // events: {
+          //    legendItemClick: function () {
+          //       // console.log(this);
+          //       //  console.log("this");
+          //       // parent.setState({
+          //       //   selectedEvents: [],
+          //       // });
+          //     }
+          // },
           point: {
             events: {
               click: function () {
@@ -647,8 +659,12 @@ class LineChartSlider extends BaseReactComponent {
                   }
                 }
               },
+             
+           
             },
+            
           },
+          
           marker: {
             enabled: false,
             states: {
