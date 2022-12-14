@@ -266,9 +266,9 @@ class ExitOverlay extends BaseReactComponent {
                         placeholder: "From Date",
                         showDateIcon: false,
                         nextLabel: <Image src={nextIcon} />,
-                        next2Label: <Image src={next2Icon} />,
+                        next2Label: <Image src={next2Icon} style={{position: "relative", top: "-1px"}} />,
                         prevLabel: <Image src={prevIcon} />,
-                        prev2Label: <Image src={prev2Icon} />,
+                        prev2Label: <Image src={prev2Icon} style={{position: "relative", top: "-1px"}} />,
                       },
                     }}
                   />
@@ -289,9 +289,9 @@ class ExitOverlay extends BaseReactComponent {
                         minDate: this.state.fromDate || new Date(),
                         showDateIcon: false,
                         nextLabel: <Image src={nextIcon} />,
-                        next2Label: <Image src={next2Icon} />,
+                        next2Label: <Image src={next2Icon} style={{position: "relative", top: "-1px"}} />,
                         prevLabel: <Image src={prevIcon} />,
-                        prev2Label: <Image src={prev2Icon} />,
+                        prev2Label: <Image src={prev2Icon} style={{position: "relative", top: "-1px"}} />,
                       },
                     }}
                   />
