@@ -15,6 +15,7 @@ import unrecognizedIcon from "../../image/unrecognized.svg";
 import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import { noExponents } from "../../utils/ReusableFunctions";
+import Loading from "../common/Loading";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -664,16 +665,22 @@ class TransactionHistoryPage extends BaseReactComponent {
             </Form>
           </div>
           <div className="transaction-history-table">
-            <TransactionTable
-              tableData={tableData}
-              columnList={columnList}
-              message={"No Transactions Found"}
-              totalPage={totalPage}
-              history={this.props.history}
-              location={this.props.location}
-              page={currentPage}
-              tableLoading={this.state.tableLoading}
-            />
+            {
+              this.state.tableLoading
+              ?
+              <Loading />
+              :
+              <TransactionTable
+                tableData={tableData}
+                columnList={columnList}
+                message={"No Transactions Found"}
+                totalPage={totalPage}
+                history={this.props.history}
+                location={this.props.location}
+                page={currentPage}
+                tableLoading={this.state.tableLoading}
+              />
+            }
           </div>
           {/* <CommonPagination
                         numOfPages={3}

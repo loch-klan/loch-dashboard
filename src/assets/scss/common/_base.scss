@@ -1518,7 +1518,7 @@ form {
     .ReactVirtualized__Table__headerColumn {
       margin: 0rem;
       text-align: center;
-
+      padding: 0 1rem;
       .ReactVirtualized__Table__headerTruncatedText {
         white-space: normal;
         overflow: visible;
@@ -1528,7 +1528,6 @@ form {
 
         .history-table-header-col {
           display: flex;
-
           .rotateUp {
             transform: rotate(180deg)
           }
