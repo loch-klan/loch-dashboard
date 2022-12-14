@@ -38,6 +38,7 @@ class LineChartSlider extends BaseReactComponent {
       console.log("Something update");
       this.setState({
         title: "Year",
+        selectedEvents: [],
       });
     }
   }
@@ -51,6 +52,7 @@ class LineChartSlider extends BaseReactComponent {
         this.setState({
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
+          selectedEvents: [],
         });
       } else {
         this.setState({
@@ -62,6 +64,7 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         activeBadge: [{ name: "All", id: "" }],
         activeBadgeList: [],
+        selectedEvents: [],
       });
     } else {
       let index = newArr.findIndex((x) => x.name === "All");
@@ -72,6 +75,7 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         activeBadge: newArr,
         activeBadgeList: newArr.map((item) => item.id),
+        selectedEvents: [],
       });
     }
     AssetValueFilter({
@@ -329,6 +333,7 @@ class LineChartSlider extends BaseReactComponent {
               let e_assetValue = a.asset.value;
               let e_assetCode = a.asset.code;
               let e_tooltipData = "";
+              let e_full_address = "";
               if (a.from || a.from_address) {
                 if (a.from && a.from !== a.from_address) {
                   e_tooltipData = a.from + ": " + a.from_address;
@@ -351,15 +356,16 @@ class LineChartSlider extends BaseReactComponent {
                 e_address = a.to ? a.to : a.to_address;
                 e_text = "to";
               }
+              e_full_address = e_address;
               if (e_address.length > 16) {
                 e_address =
                   '"' +
-                  e_address.substr(0, e_text === "from" ? 5 : 7) +
+                  e_address.substr(0, e_text === "from" ? 7 : 9) +
                   "..." +
-                  e_address.substr(e_address.length - 3, e_address.length) +
+                  e_address.substr(e_address.length - 7, e_address.length) +
                   '"';
               }
-              // console.log("tooltip", e_tooltipData);
+              // console.log("internal", a);
               selectedEvents.push({
                 usd: e_usd,
                 assetValue: e_assetValue,
@@ -367,6 +373,7 @@ class LineChartSlider extends BaseReactComponent {
                 tooltip: e_tooltipData,
                 text: e_text,
                 address: e_address,
+                fulladdress: e_full_address,
               });
             });
           }
@@ -621,6 +628,15 @@ class LineChartSlider extends BaseReactComponent {
       plotOptions: {
         series: {
           fillOpacity: 0,
+          // events: {
+          //    legendItemClick: function () {
+          //       // console.log(this);
+          //       //  console.log("this");
+          //       // parent.setState({
+          //       //   selectedEvents: [],
+          //       // });
+          //     }
+          // },
           point: {
             events: {
               click: function () {
@@ -643,8 +659,12 @@ class LineChartSlider extends BaseReactComponent {
                   }
                 }
               },
+             
+           
             },
+            
           },
+          
           marker: {
             enabled: false,
             states: {
@@ -714,11 +734,11 @@ class LineChartSlider extends BaseReactComponent {
               //   this.resetEvent();
               // }}
             >
-              <GraphHeader
+             {!this.props.isPage && <GraphHeader
                 title="Asset Value"
                 subtitle="Updated 3mins ago"
                 isArrow={true}
-              />
+              />}
               <CoinBadges
                 activeBadge={this.state.activeBadge}
                 chainList={this.props.OnboardingState.coinsList}
@@ -767,30 +787,34 @@ class LineChartSlider extends BaseReactComponent {
                             ? 0
                             : 6 -
                               Math.trunc(event.assetValue).toString().length;
-
-                        // console.log(
-                        //   "count",
-                        //   count,
-                        //   "number",
-                        //   Math.trunc(eve.asset.value)
-                        // );
+                        
                         return (
                           <>
-                            <div className="GreyChip" key={i}>
+                            <div
+                              className="GreyChip"
+                              key={i}
+                              style={{
+                                width: `${
+                                  this.state.selectedEvents.length === 1
+                                    ? "100%"
+                                    : ""
+                                }`,
+                              }}
+                            >
                               <h5 className="inter-display-bold f-s-13 lh-16 black-191">
                                 <Image src={DoubleArrow} />
                                 Transfer
                               </h5>
 
-                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D text-right">
+                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                 <span>
                                   {event.assetValue.toFixed(count)}{" "}
                                   {event.assetCode}
                                   {" or $"}
                                   {numToCurrency(event.usd)}
                                   {event.text === "from"
-                                    ? " from "
-                                    : " to "}{" "}
+                                    ? " transferred from "
+                                    : " transferred to "}{" "}
                                 </span>
                                 <CustomOverlay
                                   position="top"
@@ -801,7 +825,9 @@ class LineChartSlider extends BaseReactComponent {
                                   text={event.tooltip}
                                 >
                                   <span style={{ cursor: "pointer" }}>
-                                    {event.address}
+                                    {this.state.selectedEvents.length === 1
+                                      ? event.fulladdress
+                                      : event.address}
                                   </span>
                                 </CustomOverlay>
                               </p>

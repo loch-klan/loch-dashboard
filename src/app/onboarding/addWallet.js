@@ -148,20 +148,40 @@ class AddWallet extends BaseReactComponent {
 
 
     isDisabled = () => {
-        let isDisableFlag = false;
-        if (this.state.walletInput.length <= 0) {
-            isDisableFlag = true;
-        }
+        let isDisableFlag = true;
+        // if (this.state.walletInput.length <= 0) {
+        //     isDisableFlag = true;
+        // }
         this.state.walletInput.map((e) => {
-            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
-                isDisableFlag = true;
-                e.coins.map((a)=>{
-                  if(a.chain_detected===true){
-                      isDisableFlag = false;
-                  }
+          if (e.address){
+            if(e.coins.length !== this.props.OnboardingState.coinsList.length) {
+              // isDisableFlag = true;
+              e.coins.map((a)=>{
+                if(a.chain_detected===true){
+                  isDisableFlag = false;
+                }
               })
+            } else{
+              isDisableFlag = false;
             }
+          }
         })
+
+        // for(let i= 0;i<this.state.walletInput; i++){
+        //   if (this.state.walletInput[i].address && this.state.walletInput[i].coins.length !== this.props.OnboardingState.coinsList.length) {
+        //       isDisableFlag = true;
+        //       console.log('heyaaa');
+        //       // this.state.walletInput[i].coins.map((a)=>{
+        //       for(let j= 0;j<this.state.walletInput[i].coins; j++){
+        //         if(this.state.walletInput[i].coins[j].chain_detected===true){
+        //           console.log('Hey detected');
+        //             isDisableFlag = false;
+        //             break;
+        //         }
+        //       }
+        //       // })
+        //   }
+        // }
 
         // this.state.walletInput.map((e) => {
         //     if (!e.address) {

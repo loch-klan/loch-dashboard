@@ -15,6 +15,9 @@ import unrecognizedIcon from "../../image/unrecognized.svg";
 import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import { noExponents } from "../../utils/ReusableFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { TransactionHistoryAddress } from "../../utils/AnalyticsFunctions";
+import Loading from "../common/Loading";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -331,7 +334,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
 
-                        return moment(rowData.time).format('DD/MM/YYYY')
+                        return moment(rowData.time).format('DD/MM/YY')
                     }
                 }
             },
@@ -348,32 +351,82 @@ class TransactionHistoryPage extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "from") {
                         return (
-                            <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                // text={rowData.from.address}
-                                text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
-                            >
-                              {
-                                rowData.from.metaData[0]
-                                ?
-                                <Image src={rowData.from.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon" />
-                                :
-                                rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
-                                ?
-                                rowData.from.wallet_metaData.symbol
-                                ?
-                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
-                                :
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            // text={rowData.from.address}
+                            text={
+                              rowData.from.wallet_metaData.text
+                                ? rowData.from.wallet_metaData.text +
+                                  ": " +
+                                  rowData.from.address
+                                : rowData.from.address
+                            }
+                          >
+                            {rowData.from.metaData[0] ? (
+                              <Image
+                                src={
+                                  rowData.from.metaData[0]?.symbol ||
+                                  unrecognizedIcon
+                                }
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.from
+                                      .wallet_metaData.text
+                                      ? rowData.from.wallet_metaData.text +
+                                        ": " +
+                                        rowData.from.address
+                                      : rowData.from.address,
+                                  });
+                                }}
+                              />
+                            ) : rowData.from.wallet_metaData.symbol ||
+                              rowData.from.wallet_metaData.text ? (
+                              rowData.from.wallet_metaData.symbol ? (
+                                <Image
+                                  src={rowData.from.wallet_metaData.symbol}
+                                  className="history-table-icon"
+                                  onMouseEnter={() => {
+                                    TransactionHistoryAddress({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      address_hovered: rowData.from
+                                        .wallet_metaData.text
+                                        ? rowData.from.wallet_metaData.text +
+                                          ": " +
+                                          rowData.from.address
+                                        : rowData.from.address,
+                                    });
+                                  }}
+                                />
+                              ) : (
                                 <span>{rowData.from.wallet_metaData.text}</span>
-                                :
-                                 <Image src={unrecognizedIcon} className="history-table-icon" />
-                              }
-
-                            </CustomOverlay>
-                        )
+                              )
+                            ) : (
+                              <Image
+                                src={unrecognizedIcon}
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.from
+                                      .wallet_metaData.text
+                                      ? rowData.from.wallet_metaData.text +
+                                        ": " +
+                                        rowData.from.address
+                                      : rowData.from.address,
+                                  });
+                                }}
+                              />
+                            )}
+                          </CustomOverlay>
+                        );
                     }
                 }
             },
@@ -391,30 +444,81 @@ class TransactionHistoryPage extends BaseReactComponent {
                   // console.log('rowData',rowData);
                     if (dataKey === "to") {
                         return (
-                            <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                text={rowData.to.wallet_metaData.text ? (rowData.to.wallet_metaData.text + ": " + rowData.to.address) : rowData.to.address}
-                            >
-                              {
-                                rowData.to.metaData[0]
-                                ?
-                                <Image src={rowData.to.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon" />
-                                :
-                                rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
-                                ?
-                                rowData.to.wallet_metaData.symbol
-                                ?
-                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
-                                :
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={
+                              rowData.to.wallet_metaData.text
+                                ? rowData.to.wallet_metaData.text +
+                                  ": " +
+                                  rowData.to.address
+                                : rowData.to.address
+                            }
+                          >
+                            {rowData.to.metaData[0] ? (
+                              <Image
+                                src={
+                                  rowData.to.metaData[0]?.symbol ||
+                                  unrecognizedIcon
+                                }
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.to.wallet_metaData
+                                      .text
+                                      ? rowData.to.wallet_metaData.text +
+                                        ": " +
+                                        rowData.to.address
+                                      : rowData.to.address,
+                                  });
+                                }}
+                              />
+                            ) : rowData.to.wallet_metaData.symbol ||
+                              rowData.to.wallet_metaData.text ? (
+                              rowData.to.wallet_metaData.symbol ? (
+                                <Image
+                                  src={rowData.to.wallet_metaData.symbol}
+                                  className="history-table-icon"
+                                  onMouseEnter={() => {
+                                    TransactionHistoryAddress({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      address_hovered: rowData.to
+                                        .wallet_metaData.text
+                                        ? rowData.to.wallet_metaData.text +
+                                          ": " +
+                                          rowData.to.address
+                                        : rowData.to.address,
+                                    });
+                                  }}
+                                />
+                              ) : (
                                 <span>{rowData.to.wallet_metaData.text}</span>
-                                :
-                                 <Image src={unrecognizedIcon} className="history-table-icon" />
-                              }
-                            </CustomOverlay>
-                        )
+                              )
+                            ) : (
+                              <Image
+                                src={unrecognizedIcon}
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.to.wallet_metaData
+                                      .text
+                                      ? rowData.to.wallet_metaData.text +
+                                        ": " +
+                                        rowData.to.address
+                                      : rowData.to.address,
+                                  });
+                                }}
+                              />
+                            )}
+                          </CustomOverlay>
+                        );
                     }
                 }
             },
@@ -664,16 +768,22 @@ class TransactionHistoryPage extends BaseReactComponent {
             </Form>
           </div>
           <div className="transaction-history-table">
-            <TransactionTable
-              tableData={tableData}
-              columnList={columnList}
-              message={"No Transactions Found"}
-              totalPage={totalPage}
-              history={this.props.history}
-              location={this.props.location}
-              page={currentPage}
-              tableLoading={this.state.tableLoading}
-            />
+            {
+              this.state.tableLoading
+              ?
+              <Loading />
+              :
+              <TransactionTable
+                tableData={tableData}
+                columnList={columnList}
+                message={"No Transactions Found"}
+                totalPage={totalPage}
+                history={this.props.history}
+                location={this.props.location}
+                page={currentPage}
+                tableLoading={this.state.tableLoading}
+              />
+            }
           </div>
           {/* <CommonPagination
                         numOfPages={3}
