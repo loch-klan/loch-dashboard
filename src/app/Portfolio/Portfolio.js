@@ -44,12 +44,14 @@ import { noExponents } from '../../utils/ReusableFunctions';
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
+    // console.log('propsssssss',props.match.params?.id);
     props.location.state &&
       localStorage.setItem(
         "addWallet",
         JSON.stringify(props.location.state.addWallet)
       );
     this.state = {
+      id: props.match.params?.id,
       userWalletList: JSON.parse(localStorage.getItem("addWallet")),
       assetTotalValue: 0,
       loader: false,
@@ -129,7 +131,9 @@ class Portfolio extends BaseReactComponent {
     componentDidMount() {
       this.state.startTime = new Date() * 1;
     console.log("page Enter", this.state.startTime / 1000);
+    // console.log('this.state',this.state);
         if (this.props.match.params.id) {
+          // console.log('heyaaa');
             getDetailsByLinkApi(this.props.match.params.id, this)
         }
         this.props.getCoinRate()

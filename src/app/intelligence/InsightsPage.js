@@ -6,12 +6,14 @@ import reduceRisk from '../../assets/images/icons/reduce-risk.svg'
 import increaseYield from '../../assets/images/icons/increase-yield.svg'
 import { getAllInsightsApi } from "./Api";
 import { InsightType } from "../../utils/Constant";
+import Loading from "../common/Loading";
 
 class InsightsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       insightList: "",
+      isLoading: true,
       selected: "",
       insightFilter: [
         {
@@ -75,6 +77,10 @@ class InsightsPage extends Component {
           <div className="insights-wrapper">
             {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
             {
+              this.state.isLoading
+              ?
+              <Loading />
+              :
               this.state.updatedInsightList && this.state.updatedInsightList.length > 0 ?
               this.state.updatedInsightList.map((insight, key)=>{
                 return(
@@ -89,7 +95,7 @@ class InsightsPage extends Component {
                 )
               })
               :
-              <h5 className="inter-display-medium f-s-25 lh-30 m-b-8 text-center">No Insights Found</h5>
+              <h5 className="inter-display-medium f-s-25 lh-30 m-b-8 text-center">{"This wallet is not active enough for us to generate any useful insights here :)."}</h5>
             }
           </div>
         </div>

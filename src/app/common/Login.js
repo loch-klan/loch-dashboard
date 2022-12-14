@@ -12,12 +12,14 @@ class Login extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      link: props.location?.state?.from?.pathname || "",
       password: "",
       forgotPassword: false,
     }
   }
 
   componentDidMount() {
+    // console.log('this.props',this.props);
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     deleteToken();
   }
@@ -33,13 +35,13 @@ class Login extends BaseReactComponent {
       <div className="login-wrapper">
         <div className="login-content">
           <div className="login-container">
-          
+
             <Image className="beta-icon" src={beta}/>
             {/* <h1 className="inter-display-bold f-s-24">Login</h1> */}
             <Image className="logo-icon" src={logo}/>
             <p className="login-title inter-display-regular f-s-25 lh-30 black-191">Welcome to <b>Loch</b></p>
             <Form onValidSubmit={this.onValidSubmit}>
-              
+
               <FormElement
                 valueLink={this.linkState(this, "password")}
                 // label="Password"
