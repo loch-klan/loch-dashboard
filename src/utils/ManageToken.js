@@ -17,9 +17,9 @@ const getCurrentUser = () => {
 
  
   // console.log("Loch User",lochUser.email, "Loch ID", lochUser.id, lochUser);
-//   console.log("Loch Dummy User", lochDummyUser);
+  // console.log("Loch Dummy User", lochDummyUser);
 // // // 
-  return lochUser != null ? {id:lochUser.id ,email:lochUser.email} : {id: lochDummyUser, email: "DummyUser@loch"}
+  return lochUser != null ? {id:lochUser.id ,email:lochUser.email} : {id: lochDummyUser, email: ""}
 }
 
 

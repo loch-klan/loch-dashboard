@@ -10,6 +10,7 @@ import {
   TransactionHistory,
   TradeByCounterParty,
   Insights,
+  AssetValueAnalytics,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 export default function IntelWelcomeCard(props) {
@@ -20,30 +21,46 @@ export default function IntelWelcomeCard(props) {
         title: "Transaction History",
         background: "lightblue",
         path: "/intelligence/transaction-history",
-        analyticEvent: ()=>{TransactionHistory({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-        })},
+        analyticEvent: () => {
+          TransactionHistory({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+        },
       },
+      // {
+      //   icon: ShuffleIcon,
+      //   title: "Traded by counterparty",
+      //   background: "lightyellow",
+      //   path: "/intelligence/volume-traded-by-counterparty",
+      //   analyticEvent: ()=>{TradeByCounterParty({
+      //     session_id: getCurrentUser().id,
+      //     email_address: getCurrentUser().email,
+      //   })},
+      // },
       {
         icon: ShuffleIcon,
-        title: "Traded by counterparty",
+        title: "Asset Value",
         background: "lightyellow",
-        path: "/intelligence/volume-traded-by-counterparty",
-        analyticEvent: ()=>{TradeByCounterParty({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-        })},
+        path: "/intelligence/asset-value",
+        analyticEvent: () => {
+          AssetValueAnalytics({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+        },
       },
       {
         icon: InsightsIcon,
         title: "Insights",
         background: "lightpurple",
         path: "/intelligence/insights",
-        analyticEvent: ()=>{Insights({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-        })},
+        analyticEvent: () => {
+          Insights({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+        },
       },
     ];
 

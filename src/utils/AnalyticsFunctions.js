@@ -1,14 +1,19 @@
 import amplitude from "amplitude-js";
+import Mixpanel from "mixpanel-browser";
+
 
 //Api Config
 export const initAmplitude = () => {
-  // amplitude.getInstance().init("18eb08ef007daf84f1dbdaec2a5f91e0");
-  amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
+
+  // amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
+  Mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY);
+
 };
 
 // send Aplitude Data
 export const sendAmplitudeData = (eventType, eventProperties) => {
-  amplitude.getInstance().logEvent(eventType, eventProperties);
+  // amplitude.getInstance().logEvent(eventType, eventProperties);
+  Mixpanel.track(eventType, eventProperties);
 };
 
 
@@ -649,6 +654,18 @@ export const TradeByCounterParty = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   console.log("Intelligence:traded by counterparty");
 };
+
+// 45. Intelligence:asset value graph
+export const AssetValueAnalytics = ({ session_id, email_address }) => {
+   const event_name = "Intelligence:asset value";
+   const eventProperties = {
+     "session id": session_id,
+     "email address": email_address,
+   };
+   sendAmplitudeData(event_name, eventProperties);
+   console.log("Intelligence:asset value");
+};
+
 
 //46. Intelligence:insights
 export const Insights = ({ session_id, email_address }) => {
