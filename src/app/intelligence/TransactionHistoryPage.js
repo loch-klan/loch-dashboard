@@ -17,6 +17,7 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import { noExponents } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { TransactionHistoryAddress } from "../../utils/AnalyticsFunctions";
+import Loading from "../common/Loading";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -767,16 +768,22 @@ class TransactionHistoryPage extends BaseReactComponent {
             </Form>
           </div>
           <div className="transaction-history-table">
-            <TransactionTable
-              tableData={tableData}
-              columnList={columnList}
-              message={"No Transactions Found"}
-              totalPage={totalPage}
-              history={this.props.history}
-              location={this.props.location}
-              page={currentPage}
-              tableLoading={this.state.tableLoading}
-            />
+            {
+              this.state.tableLoading
+              ?
+              <Loading />
+              :
+              <TransactionTable
+                tableData={tableData}
+                columnList={columnList}
+                message={"No Transactions Found"}
+                totalPage={totalPage}
+                history={this.props.history}
+                location={this.props.location}
+                page={currentPage}
+                tableLoading={this.state.tableLoading}
+              />
+            }
           </div>
           {/* <CommonPagination
                         numOfPages={3}
