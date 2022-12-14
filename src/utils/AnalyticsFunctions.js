@@ -655,6 +655,18 @@ export const TradeByCounterParty = ({ session_id, email_address }) => {
   console.log("Intelligence:traded by counterparty");
 };
 
+// 45. Intelligence:asset value graph
+export const AssetValueAnalytics = ({ session_id, email_address }) => {
+   const event_name = "Intelligence:asset value";
+   const eventProperties = {
+     "session id": session_id,
+     "email address": email_address,
+   };
+   sendAmplitudeData(event_name, eventProperties);
+   console.log("Intelligence:asset value");
+};
+
+
 //46. Intelligence:insights
 export const Insights = ({ session_id, email_address }) => {
   const event_name = "Intelligence:insights";

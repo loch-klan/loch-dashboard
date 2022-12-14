@@ -38,6 +38,7 @@ class LineChartSlider extends BaseReactComponent {
       console.log("Something update");
       this.setState({
         title: "Year",
+        selectedEvents: [],
       });
     }
   }
@@ -361,7 +362,7 @@ class LineChartSlider extends BaseReactComponent {
                   e_address.substr(e_address.length - 3, e_address.length) +
                   '"';
               }
-              // console.log("tooltip", e_tooltipData);
+              // console.log("internal", a);
               selectedEvents.push({
                 usd: e_usd,
                 assetValue: e_assetValue,
@@ -717,11 +718,11 @@ class LineChartSlider extends BaseReactComponent {
               //   this.resetEvent();
               // }}
             >
-              <GraphHeader
+             {!this.props.isPage && <GraphHeader
                 title="Asset Value"
                 subtitle="Updated 3mins ago"
                 isArrow={true}
-              />
+              />}
               <CoinBadges
                 activeBadge={this.state.activeBadge}
                 chainList={this.props.OnboardingState.coinsList}
@@ -770,38 +771,7 @@ class LineChartSlider extends BaseReactComponent {
                             ? 0
                             : 6 -
                               Math.trunc(event.assetValue).toString().length;
-                        // let displayaddress = event.fulladdress;
-                        // if (
-                        //   displayaddress.length > 40 &&
-                        //   this.state.selectedEvents.length === 1
-                        // ) {
-                        //   displayaddress =
-                        //     displayaddress.substr(
-                        //       0,
-                        //       event.text === "from"
-                        //         ? this.state.selectedEvents.length === 1
-                        //           ? 20
-                        //           : 5
-                        //         : this.state.selectedEvents.length === 1
-                        //         ? 17
-                        //         : 7
-                        //     ) +
-                        //     "..." +
-                        //     displayaddress.substr(
-                        //       displayaddress.length -
-                        //         (this.state.selectedEvents.length ===
-                        //         1
-                        //         ? 20
-                        //         : 3),
-                        //       displayaddress.length
-                        //     );
-                        // }
-                        // console.log(
-                        //   "count",
-                        //   count,
-                        //   "number",
-                        //   Math.trunc(eve.asset.value)
-                        // );
+                        
                         return (
                           <>
                             <div
@@ -820,15 +790,15 @@ class LineChartSlider extends BaseReactComponent {
                                 Transfer
                               </h5>
 
-                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D text-right">
+                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                 <span>
                                   {event.assetValue.toFixed(count)}{" "}
                                   {event.assetCode}
                                   {" or $"}
                                   {numToCurrency(event.usd)}
                                   {event.text === "from"
-                                    ? " from "
-                                    : " to "}{" "}
+                                    ? " transferred from "
+                                    : " transferred to "}{" "}
                                 </span>
                                 <CustomOverlay
                                   position="top"
