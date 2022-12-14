@@ -360,9 +360,9 @@ class LineChartSlider extends BaseReactComponent {
               if (e_address.length > 16) {
                 e_address =
                   '"' +
-                  e_address.substr(0, e_text === "from" ? 10 : 12) +
+                  e_address.substr(0, e_text === "from" ? 7 : 9) +
                   "..." +
-                  e_address.substr(e_address.length - 5, e_address.length) +
+                  e_address.substr(e_address.length - 7, e_address.length) +
                   '"';
               }
               // console.log("internal", a);
