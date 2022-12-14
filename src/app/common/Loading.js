@@ -19,7 +19,7 @@ function Loading() {
   return (
 
         <div className="loading-animation">
-          <Image src={lochClean} className="no-data m-b-200 " />
+          <Image src={lochClean} className="no-data" />
           <div className="slick-text">
             <span>Indexing blockchains is </span>
             <div className="slick-slider">

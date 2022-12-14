@@ -57,9 +57,7 @@ export default function WelcomeCard(props) {
               </p>
             </div>
             <div className="welcome-section-right">
-            <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${difference < 0 ? "downfall" : ""}`}>
-                <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />{difference?.toFixed(2) + "(" + Math.round(percent) + "%)"}
-              </div>
+
               {props.assetTotal !== null ? (
                 <CustomOverlay
                   position="top"
@@ -79,7 +77,9 @@ export default function WelcomeCard(props) {
               ) : (
                 <CustomLoader loaderType="text" />
               )}
-
+<div className={`growth-div inter-display-medium f-s-14 lh-19 grey-313 ${difference < 0 ? "downfall" : ""}`}>
+                <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />{numToCurrency(difference) + "(" + Math.round(percent) + "%)"}
+              </div>
             </div>
           </div>
           <div className="welcome-btn">

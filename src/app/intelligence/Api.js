@@ -97,7 +97,8 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
     if(!res.data.error){
       ctx.setState({
         insightList: res.data.data.insights,
-        updatedInsightList: res.data.data.insights
+        updatedInsightList: res.data.data.insights,
+        isLoading: false,
       });
     } else{
       toast.error(res.data.message || "Something Went Wrong")
