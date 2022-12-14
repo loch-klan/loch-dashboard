@@ -60,8 +60,67 @@
             &.line{
                 margin-top: 0;
             }
+// LINE CHART SLIDER START
+            &.lineChartSlider{
+                margin-top: 0;
+                padding: 4rem 0rem;
+            }
+
+            .ChartDivider{
+                height: 1px;
+                background-color: rgba(229, 229, 230, 0.5);
+                width: 100%;
+                margin-top: 3rem;
+            }
+
+            .SliderChartBottom{
+                padding: 0rem 4.8rem;
+                margin-top: 3.3rem;
+
+                h4{
+                    display:flex;
+                    align-items: center;
+
+                    img {
+                        margin-right: 1rem;
+                        }
+                }
+
+                .InternalEventWrapper{
+                    display: flex;
+                   align-items: stretch;
+                    justify-content: space-between;
+                    margin-top: 2rem;
+                    flex-wrap: wrap;
+
+                    .GreyChip{
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 1.2rem;
+                        background: rgba(229, 229, 230, 0.5);
+                        border-radius: 8px;
+                        margin-bottom: 1.2rem;
+                        width: 49%;
+                        flex-wrap: nowrap;
+
+                        h5{
+                            display:flex;
+                            align-items: center;
+                            margin-right: 0.5rem;
+
+                            img{
+                            margin-right: 1rem;
+                        }
+                        }
+
+
+                    }
+                }
+            }
+// LINE CHART SLIDER END
             .welcome-card {
-                
+
                 margin-bottom: 2.3rem;
                 .welcome-card-upper-section{
                     display: flex;
@@ -119,10 +178,9 @@
 
                     .growth-div {
                         padding: 0.85rem 1.2rem;
-                        background: $green-44F;
-                        border-radius: 0.812rem;
+                        background: $green-E3F;
+                        border-radius: 8px;
                         box-shadow: none;
-
                         img {
                             margin-right: 0.4rem;
                         }
@@ -138,27 +196,32 @@
                     left: 0;
                     width: 100%;
                     display: flex;
-                    
+
                     .manage-wallet{
                         border-radius:0;
                         border-bottom-left-radius: 1.1rem;
                         background-color: $secondary ;
-                        color: $black-191; 
+                        color: $black-191;
                         border-right:1px solid $white-E5E;
 
-                        &:hover{
-                             background-color:  $black-191;
-                        color: $secondary; }
+                      &:hover{
+                        background-color:  $black-191;
+                        color: $secondary;
+                      }
                     }
                     .add-wallet{
                         border-radius:0;
                         border-bottom-right-radius: 1.1rem;
-                        background-color:  $black-191;
-                        color: $secondary;
-
+                        // background-color:  $black-191;
+                        // color: $secondary;
+                        background-color: $secondary;
+                        color: $black-191;
                         &:hover{
-                            background-color: $secondary ;
-                        color: $black-191;}
+                          // background-color: $secondary ;
+                          // color: $black-191;
+                          background-color:  $black-191;
+                          color: $secondary;
+                        }
                     }
                     button{
                         width: 50%;
@@ -173,12 +236,12 @@
                         img{
                             margin-right: 0.8rem;
                         }
-                        
-                       
+
+
                         &:focus{
-                            background-color: $black-191;
-                            color:$secondary;
-                            border:none;
+                            // background-color: $black-191;
+                            // color:$secondary;
+                            // border:none;
                             box-shadow:none;
                         }
                     }
@@ -726,3 +789,4 @@ position: relative;
 .welcome-section-level1{
     display: contents;
 }
+

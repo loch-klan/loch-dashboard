@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react'
 import {useRef} from 'react'
 import { Button, Image } from "react-bootstrap"
-import arrowUpRight from '../../image/ArrowUpRight.svg'
-import arrowDowRight from '../../assets/images/icons/arrow-down-right.svg'
+import arrowUpRight from '../../assets/images/icons/green-arrow.svg'
+import arrowDownRight from '../../assets/images/icons/red-arrow.svg'
 import CustomLoader from "../common/CustomLoader";
 import { numToCurrency } from '../../utils/ReusableFunctions';
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
@@ -20,25 +20,27 @@ export default function WelcomeCard(props) {
         props.handleAddModal();
     }
     function handleManageClick(){
-        setManageWallet(!manageWallet);
+        // setManageWallet(!manageWallet);
         props.handleManage();
     }
 
-    React.useEffect(() =>{
-        document.addEventListener("click", handleClickOutside, true)
-    },[])
-    const refOne = useRef(null)
-    const handleClickOutside = (e) =>{
-    if(!refOne.current?.contains(e.target)){
-        // console.log("Clicked outside ...");
-        props.handleToggleAddWallet();
-        // setAddWallet(true);
-    }
-    // else{
-    //     console.log("Clicked inside ...");
+    // React.useEffect(() =>{
+    //     document.addEventListener("click", handleClickOutside, true)
+    // },[])
+    // const refOne = useRef(null)
+    // const handleClickOutside = (e) =>{
+    // if(!refOne.current?.contains(e.target)){
+    //     // console.log("Clicked outside ...");
+    //     props.handleToggleAddWallet();
+    //     // setAddWallet(true);
     // }
-    }
+    // // else{
+    // //     console.log("Clicked inside ...");
+    // // }
+    // }
 
+    let difference = (props.assetTotal && props.yesterdayBalance) ? props.assetTotal - props.yesterdayBalance : 0;
+    let percent = props.assetTotal && ((difference/props.assetTotal)*100).toFixed(2);
     return (
       <div className="welcome-card-section">
         <div className="welcome-card">
@@ -55,6 +57,9 @@ export default function WelcomeCard(props) {
               </p>
             </div>
             <div className="welcome-section-right">
+            <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${difference < 0 ? "downfall" : ""}`}>
+                <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />{difference?.toFixed(2) + "(" + Math.round(percent) + "%)"}
+              </div>
               {props.assetTotal !== null ? (
                 <CustomOverlay
                   position="top"
@@ -74,10 +79,7 @@ export default function WelcomeCard(props) {
               ) : (
                 <CustomLoader loaderType="text" />
               )}
-              {/* <div className={`growth-div inter-display-medium f-s-16 lh-19 grey-313 ${props.decrement ? "downfall" : ""}`}>
-                            <Image src={props.decrement ? arrowDowRight : arrowUpRight} />
-                            330.10 (1%)
-                        </div> */}
+
             </div>
           </div>
           <div className="welcome-btn">
@@ -86,17 +88,17 @@ export default function WelcomeCard(props) {
             <Button
               className="inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet"
               onClick={handleManageClick}
-              onMouseEnter={() => setManageWallet(true)}
-              onMouseLeave={() => setManageWallet(false)}
+              onMouseEnter={() => setManageWallet(false)}
+              onMouseLeave={() => setManageWallet(true)}
             >
               <Image
-                class="manage-wallet"
-                src={manageWallet === true ? ManageWalletWhite : ManageWallet}
+                // className="manage-wallet"
+                src={manageWallet === true ? ManageWallet : ManageWalletWhite}
               />
               Manage wallets
             </Button>
             <Button
-              class="add-wallet"
+              // class="add-wallet"
               className="inter-display-semi-bold f-s-13 lh-16 black-191 add-wallet"
               onClick={handleAddWalletClick}
               onMouseEnter={() => setAddWallet(false)}
@@ -104,7 +106,7 @@ export default function WelcomeCard(props) {
             >
               <Image
                 src={
-                  AddWallet === true ? AddWalletAddressWhite : AddWalletAddress
+                  AddWallet === true ? AddWalletAddress : AddWalletAddressWhite
                 }
               />
               Add wallet address
