@@ -148,19 +148,23 @@ class AddWallet extends BaseReactComponent {
 
 
     isDisabled = () => {
-        let isDisableFlag = false;
-        if (this.state.walletInput.length <= 0) {
-            isDisableFlag = true;
-        }
+        let isDisableFlag = true;
+        // if (this.state.walletInput.length <= 0) {
+        //     isDisableFlag = true;
+        // }
         this.state.walletInput.map((e) => {
-            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
-                isDisableFlag = true;
-                e.coins.map((a)=>{
-                  if(a.chain_detected===true){
-                    isDisableFlag = false;
-                  }
+          if (e.address){
+            if(e.coins.length !== this.props.OnboardingState.coinsList.length) {
+              // isDisableFlag = true;
+              e.coins.map((a)=>{
+                if(a.chain_detected===true){
+                  isDisableFlag = false;
+                }
               })
+            } else{
+              isDisableFlag = false;
             }
+          }
         })
 
         // for(let i= 0;i<this.state.walletInput; i++){
