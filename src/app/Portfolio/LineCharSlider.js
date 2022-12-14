@@ -329,6 +329,7 @@ class LineChartSlider extends BaseReactComponent {
               let e_assetValue = a.asset.value;
               let e_assetCode = a.asset.code;
               let e_tooltipData = "";
+              let e_full_address = "";
               if (a.from || a.from_address) {
                 if (a.from && a.from !== a.from_address) {
                   e_tooltipData = a.from + ": " + a.from_address;
@@ -351,6 +352,7 @@ class LineChartSlider extends BaseReactComponent {
                 e_address = a.to ? a.to : a.to_address;
                 e_text = "to";
               }
+              e_full_address = e_address;
               if (e_address.length > 16) {
                 e_address =
                   '"' +
@@ -367,6 +369,7 @@ class LineChartSlider extends BaseReactComponent {
                 tooltip: e_tooltipData,
                 text: e_text,
                 address: e_address,
+                fulladdress: e_full_address,
               });
             });
           }
@@ -478,7 +481,11 @@ class LineChartSlider extends BaseReactComponent {
           },
           autoRotation: false,
           // step: 2,
-          autoRotationLimit: 0,
+          // autoRotationLimit: 0,
+          // style: {
+          //   whiteSpace: "nowrap",
+          //   textOverflow: "none",
+          // },
         },
         crosshair: {
           width: 1,
@@ -763,7 +770,32 @@ class LineChartSlider extends BaseReactComponent {
                             ? 0
                             : 6 -
                               Math.trunc(event.assetValue).toString().length;
-
+                        // let displayaddress = event.fulladdress;
+                        // if (
+                        //   displayaddress.length > 40 &&
+                        //   this.state.selectedEvents.length === 1
+                        // ) {
+                        //   displayaddress =
+                        //     displayaddress.substr(
+                        //       0,
+                        //       event.text === "from"
+                        //         ? this.state.selectedEvents.length === 1
+                        //           ? 20
+                        //           : 5
+                        //         : this.state.selectedEvents.length === 1
+                        //         ? 17
+                        //         : 7
+                        //     ) +
+                        //     "..." +
+                        //     displayaddress.substr(
+                        //       displayaddress.length -
+                        //         (this.state.selectedEvents.length ===
+                        //         1
+                        //         ? 20
+                        //         : 3),
+                        //       displayaddress.length
+                        //     );
+                        // }
                         // console.log(
                         //   "count",
                         //   count,
@@ -772,7 +804,17 @@ class LineChartSlider extends BaseReactComponent {
                         // );
                         return (
                           <>
-                            <div className="GreyChip" key={i}>
+                            <div
+                              className="GreyChip"
+                              key={i}
+                              style={{
+                                width: `${
+                                  this.state.selectedEvents.length === 1
+                                    ? "100%"
+                                    : ""
+                                }`,
+                              }}
+                            >
                               <h5 className="inter-display-bold f-s-13 lh-16 black-191">
                                 <Image src={DoubleArrow} />
                                 Transfer
@@ -797,7 +839,9 @@ class LineChartSlider extends BaseReactComponent {
                                   text={event.tooltip}
                                 >
                                   <span style={{ cursor: "pointer" }}>
-                                    {event.address}
+                                    {this.state.selectedEvents.length === 1
+                                      ? event.fulladdress
+                                      : event.address}
                                   </span>
                                 </CustomOverlay>
                               </p>
