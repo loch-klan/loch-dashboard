@@ -45,7 +45,7 @@ import { noExponents } from '../../utils/ReusableFunctions';
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
-    // console.log('propsssssss',props.match.params?.id);
+    console.log('propsssssss',props);
     props.location.state &&
       localStorage.setItem(
         "addWallet",
@@ -53,7 +53,7 @@ class Portfolio extends BaseReactComponent {
       );
     this.state = {
       id: props.match.params?.id,
-      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      userWalletList: JSON.parse(localStorage.getItem("addWallet")) || [],
       assetTotalValue: 0,
       loader: false,
       coinAvailable: true,
@@ -133,12 +133,13 @@ class Portfolio extends BaseReactComponent {
       this.state.startTime = new Date() * 1;
     console.log("page Enter", this.state.startTime / 1000);
     // console.log('this.state',this.state);
-        if (this.props.match.params.id) {
+    this.props.getAllCoins()
+    if (this.props.match.params.id) {
           // console.log('heyaaa');
             getDetailsByLinkApi(this.props.match.params.id, this)
         }
         this.props.getCoinRate()
-        this.props.getAllCoins()
+
         this.getTableData()
       this.getGraphData()
         // getAllFeeApi(this, false, false);
@@ -171,7 +172,7 @@ this.setState({graphLoading: true})
     }
     getTableData = () => {
       this.setState({tableLoading: true})
-        let arr = JSON.parse(localStorage.getItem("addWallet"))
+        let arr = JSON.parse(localStorage.getItem("addWallet")) || [];
         let address = arr.map((wallet) => {
             return wallet.address
         })
@@ -371,7 +372,7 @@ this.setState({graphLoading: true})
                     </div>,
                 dataKey: "time",
                 // coumnWidth: 73,
-                coumnWidth: 0.27,
+                coumnWidth: 0.2,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
@@ -387,7 +388,7 @@ this.setState({graphLoading: true})
                     </div>,
                 dataKey: "from",
                 // coumnWidth: 61,
-                coumnWidth: 0.12,
+                coumnWidth: 0.14,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "from") {
@@ -503,7 +504,7 @@ this.setState({graphLoading: true})
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "to",
-                coumnWidth: 0.12,
+                coumnWidth: 0.14,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "to") {
@@ -531,7 +532,7 @@ this.setState({graphLoading: true})
                                 }
                                 className="history-table-icon heyyyy"
                                 onMouseEnter={() => {
-                                  
+
                                   TransactionHistoryAddress({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
@@ -551,7 +552,7 @@ this.setState({graphLoading: true})
                                   src={rowData.to.wallet_metaData.symbol}
                                   className="history-table-icon"
                                   onMouseEnter={() => {
-                                   
+
                                     TransactionHistoryAddress({
                                       session_id: getCurrentUser().id,
                                       email_address: getCurrentUser().email,
@@ -572,7 +573,7 @@ this.setState({graphLoading: true})
                                 src={unrecognizedIcon}
                                 className="history-table-icon"
                                 onMouseEnter={() => {
-                                 
+
                                   TransactionHistoryAddress({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
@@ -598,7 +599,7 @@ this.setState({graphLoading: true})
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[3].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
                 dataKey: "asset",
-                coumnWidth: 0.22,
+                coumnWidth: 0.2,
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "asset") {
@@ -1080,7 +1081,7 @@ this.setState({graphLoading: true})
                             comingSoon={false}
                             // width="100%"
                             // height="100%"
-                           
+
                             className={"portfolio-counterparty-fee"}
                           />
                           :
