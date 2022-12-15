@@ -3,7 +3,7 @@ import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
 import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
 
 export const getProfitAndLossData = (arr) => {
-    const labels = ["Inflows", "Outflows", arr.inflows < arr.outflows ? "Profit" : "Loss"];
+    const labels = ["Inflows", "Outflows", "Net"];
     const profitOrLossData = {
         profit:{
             data:arr.inflows,
