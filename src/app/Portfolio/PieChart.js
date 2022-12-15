@@ -453,7 +453,7 @@ class PieChart extends BaseReactComponent {
                         :
                         this.props.walletTotal === 0 || this.state.assetData.length === 0
                         ?
-                        <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                        <h3 className='inter-display-medium f-s-16 lh-19 grey-313 m-b-8'>No data found</h3>
                         :
                         null
                 }

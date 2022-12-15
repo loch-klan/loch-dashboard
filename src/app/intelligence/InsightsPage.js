@@ -95,7 +95,7 @@ class InsightsPage extends Component {
                 )
               })
               :
-              <h5 className="inter-display-medium f-s-25 lh-30 m-b-8 text-center">{"This wallet is not active enough for us to generate any useful insights here :)."}</h5>
+              <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">{"This wallet is not active enough for us to generate any useful insights here :)."}</h5>
             }
           </div>
         </div>

@@ -12,7 +12,7 @@ import { searchTransactionApi, getFilters } from "./Api";
 import moment from "moment";
 import { FormElement, Form, CustomTextControl, BaseReactComponent } from "../../utils/form";
 import unrecognizedIcon from "../../image/unrecognized.svg";
-import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import { noExponents } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
