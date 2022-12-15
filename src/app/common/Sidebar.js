@@ -149,7 +149,7 @@ function Sidebar(props) {
                         className="nav-link"
                         to="/portfolio"
                         onClick={() =>{
-                          console.log("user",getCurrentUser())
+                          // console.log("user",getCurrentUser())
                           HomeMenu({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,

@@ -120,12 +120,12 @@ class ExitOverlay extends BaseReactComponent {
     }
   };
   handleRedirection = () => {
-    console.log("this", this.props);
+    // console.log("this", this.props);
     this.setState({ show: false, showRedirection: true });
     this.props.handleRedirection();
   };
   handleSelect = (e) => {
-    console.log(e);
+    // console.log(e);
     this.setState({
       dropdowntitle: e,
       activeli: e,
@@ -172,7 +172,7 @@ class ExitOverlay extends BaseReactComponent {
     //   moment(this.state.toDate).format("DD MMMM YY")
     // );
     exportDataApi(data, this);
-    
+
   }
 
   handleSelectedExportItem = (item,e) => {

@@ -11,7 +11,7 @@ export const loginApi = (ctx, data) => {
         // console.log('ctx',ctx.props.history);
         localStorage.setItem('lochToken', res.data.data.token);
         if(ctx.state.link){
-          ctx.props.history.push(ctx.state.link);
+          ctx.props.getAllCoins(ctx.handleShareLinkUser)
         } else{
           ctx.props.history.push('/home');
         }

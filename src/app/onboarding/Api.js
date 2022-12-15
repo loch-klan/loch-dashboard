@@ -9,7 +9,7 @@ import {
   UserSignedinCorrectly,
   UserWrongCode,
 } from "../../utils/AnalyticsFunctions.js";
-export const getAllCoins = () => {
+export const getAllCoins = (handleShareLinkUser = null) => {
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
         postLoginInstance
@@ -20,6 +20,7 @@ export const getAllCoins = () => {
                     type: COINS_LIST,
                     payload: coinsList
                 });
+                handleShareLinkUser && handleShareLinkUser()
             })
             .catch((err) => {
                 console.log("Catch", err);
@@ -187,6 +188,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
       const apiResponse = res.data.data;
       // console.log('apiResponse',apiResponse);
       // console.log('allChains',allChains);
+      // if(ctx.state.id)
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
         let obj = {}; // <----- new Object
         obj['address'] = apiResponse.user.user_wallets[i].address;
@@ -212,8 +214,8 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
       }
       // console.log('newAddWallet',newAddWallet);
       ctx.props.history.push({
-        pathname: '/portfolio',
-        state: {addWallet: newAddWallet}
+        pathname: ctx.state.id ? ctx.state.link : '/portfolio',
+        state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
       })
   }else{
       toast.error(res.data.message || "Something Went Wrong")

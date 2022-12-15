@@ -217,14 +217,14 @@ class AddWallet extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(walletAddress));
       createAnonymousUserApi(data, this, finalArr);
-      console.log(finalArr);
+      // console.log(finalArr);
 
       const address = finalArr.map((e) => e.address);
-      console.log("address", address);
+      // console.log("address", address);
 
       const unrecog_address = finalArr.filter((e) => !e.coinFound)
         .map((e) => e.address);
-      console.log("Unreq address", unrecog_address);
+      // console.log("Unreq address", unrecog_address);
 
       const blockchainDetected = [];
       finalArr
@@ -237,7 +237,7 @@ class AddWallet extends BaseReactComponent {
           blockchainDetected.push({ address: address, names: coinName });
         });
 
-      console.log("blockchain detected", blockchainDetected);
+      // console.log("blockchain detected", blockchainDetected);
 
       LPC_Go({addresses: address, ENS: address,chains_detected_against_them: blockchainDetected, unrecognized_addresses: unrecog_address, unrecognized_ENS: unrecog_address});
 

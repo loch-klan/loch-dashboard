@@ -54,20 +54,22 @@ export const settingDefaultValues = (wallet) => {
     };
 };
 
-export const getDetailsByLinkApi = (link,ctx) => {
+export const getDetailsByLinkApi = (link,ctx=null) => {
   const data = new URLSearchParams();
   data.append("token",link);
-  preLoginInstance
-          .post("organisation/user/get-portfolio-by-link", data)
+  return async function (dispatch, getState) {
+  preLoginInstance.post("organisation/user/get-portfolio-by-link", data)
           .then((res) => {
               if(!res.data.error){
+                // console.log('getState',getState().OnboardingState.coinsList);
                 // console.log('res',res);
-                const allChains = ctx.props.OnboardingState.coinsList || [];
+                const allChains = getState().OnboardingState.coinsList;
+                // console.log('allChains',allChains);
                 let addWallet = [];
                 const apiResponse = res.data.data;
                 for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
                   let obj = {}; // <----- new Object
-                  obj['address'] = apiResponse.user.user_wallets[i];
+                  obj['address'] = apiResponse.user.user_wallets[i].address;
                   obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
                   const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
                   obj['coins'] = allChains.map((chain)=>{
@@ -90,7 +92,9 @@ export const getDetailsByLinkApi = (link,ctx) => {
 
               }
               // console.log('addWallet',addWallet);
+              localStorage.setItem("addWallet",JSON.stringify(addWallet))
               ctx.setState({isLoading:false})
+              ctx.handleResponse && ctx.handleResponse();
               } else{
                 toast.error(res.data.message || "Something Went Wrong")
               }
@@ -98,6 +102,7 @@ export const getDetailsByLinkApi = (link,ctx) => {
           .catch((err) => {
               console.log("Catch", err);
           });
+        }
 };
 
 export const getAssetGraphDataApi = (data, ctx) => {

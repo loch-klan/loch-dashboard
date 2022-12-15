@@ -45,7 +45,7 @@ import { noExponents } from '../../utils/ReusableFunctions';
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
-    console.log('propsssssss',props);
+    // console.log('propsssssss',props);
     props.location.state &&
       localStorage.setItem(
         "addWallet",
@@ -131,28 +131,24 @@ class Portfolio extends BaseReactComponent {
     }
     componentDidMount() {
       this.state.startTime = new Date() * 1;
-    console.log("page Enter", this.state.startTime / 1000);
-    // console.log('this.state',this.state);
-    this.props.getAllCoins()
-    if (this.props.match.params.id) {
-          // console.log('heyaaa');
-            getDetailsByLinkApi(this.props.match.params.id, this)
-        }
-        this.props.getCoinRate()
-
-        this.getTableData()
+      // console.log("page Enter", this.state.startTime / 1000);
+      this.props.getAllCoins()
+      if (this.props.match.params.id) {
+        this.props.getDetailsByLinkApi(this.props.match.params.id, this)
+      }
+      this.props.getCoinRate()
+      this.getTableData()
       this.getGraphData()
-        // getAllFeeApi(this, false, false);
-        getAllCounterFeeApi(this, false, false);
-        getProfitAndLossApi(this, false, false, false);
-        getYesterdaysBalanceApi(this);
+      getAllCounterFeeApi(this, false, false);
+      getProfitAndLossApi(this, false, false, false);
+      getYesterdaysBalanceApi(this);
     }
 
     componentWillUnmount() {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      console.log("page Leave", endTime / 1000);
-      console.log("Time Spent", TimeSpent);
+      // console.log("page Leave", endTime / 1000);
+      // console.log("Time Spent", TimeSpent);
       TimeSpentHome({ time_spent: TimeSpent + " seconds", session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
 
@@ -415,14 +411,14 @@ this.setState({graphLoading: true})
                                 }
                                 className="history-table-icon"
                                 onMouseEnter={() => {
-                                  console.log(
-                                    "address",
-                                    rowData.from.wallet_metaData.text
-                                      ? rowData.from.wallet_metaData.text +
-                                          ": " +
-                                          rowData.from.address
-                                      : rowData.from.address
-                                  );
+                                  // console.log(
+                                  //   "address",
+                                  //   rowData.from.wallet_metaData.text
+                                  //     ? rowData.from.wallet_metaData.text +
+                                  //         ": " +
+                                  //         rowData.from.address
+                                  //     : rowData.from.address
+                                  // );
                                   TransactionHistoryAddress({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
@@ -442,14 +438,14 @@ this.setState({graphLoading: true})
                                   src={rowData.from.wallet_metaData.symbol}
                                   className="history-table-icon"
                                   onMouseEnter={() => {
-                                    console.log(
-                                      "address",
-                                      rowData.from.wallet_metaData.text
-                                        ? rowData.from.wallet_metaData.text +
-                                            ": " +
-                                            rowData.from.address
-                                        : rowData.from.address
-                                    );
+                                    // console.log(
+                                    //   "address",
+                                    //   rowData.from.wallet_metaData.text
+                                    //     ? rowData.from.wallet_metaData.text +
+                                    //         ": " +
+                                    //         rowData.from.address
+                                    //     : rowData.from.address
+                                    // );
                                     TransactionHistoryAddress({
                                       session_id: getCurrentUser().id,
                                       email_address: getCurrentUser().email,
@@ -470,14 +466,14 @@ this.setState({graphLoading: true})
                                 src={unrecognizedIcon}
                                 className="history-table-icon"
                                 onMouseEnter={() => {
-                                  console.log(
-                                    "address",
-                                    rowData.from.wallet_metaData.text
-                                      ? rowData.from.wallet_metaData.text +
-                                          ": " +
-                                          rowData.from.address
-                                      : rowData.from.address
-                                  );
+                                  // console.log(
+                                  //   "address",
+                                  //   rowData.from.wallet_metaData.text
+                                  //     ? rowData.from.wallet_metaData.text +
+                                  //         ": " +
+                                  //         rowData.from.address
+                                  //     : rowData.from.address
+                                  // );
                                   TransactionHistoryAddress({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
@@ -1140,7 +1136,8 @@ const mapDispatchToProps = {
     settingDefaultValues,
     getAllCoins,
     searchTransactionApi,
-    getAssetGraphDataApi
+    getAssetGraphDataApi,
+    getDetailsByLinkApi
 }
 Portfolio.propTypes = {
 };

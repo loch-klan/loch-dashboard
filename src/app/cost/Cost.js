@@ -48,7 +48,7 @@ class Cost extends Component {
     if(this.props.location.hash !== ''){
       setTimeout(() => {
       const id = this.props.location.hash.replace('#', '');
-      console.log('id',id);
+      // console.log('id',id);
       const element = document.getElementById(id);
       if (element) {
         element.scrollIntoView();
@@ -58,7 +58,7 @@ class Cost extends Component {
       window.scrollTo(0, 0);
     }
     this.state.startTime = new Date() * 1;
-    console.log("page Enter", this.state.startTime / 1000);
+    // console.log("page Enter", this.state.startTime / 1000);
 
     this.props.getAllCoins();
     this.getBlockchainFee(0);
@@ -69,7 +69,7 @@ class Cost extends Component {
 
     const today = moment().valueOf();
     let handleSelected = "";
-    console.log("headle click");
+    // console.log("headle click");
     if (option == 0) {
       getAllFeeApi(this, false, false);
       // console.log(option, "All");
@@ -352,7 +352,7 @@ class Cost extends Component {
                 options2={this.state.graphValue[2]}
                 coinsList={this.props.OnboardingState.coinsList}
                 timeFunction={(e) => {
-                  
+
                   this.getBlockchainFee(e)
                 }}
                 marginBottom="m-b-32"
