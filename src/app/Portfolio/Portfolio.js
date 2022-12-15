@@ -22,7 +22,7 @@ import GainIcon from '../../assets/images/icons/GainIcon.svg'
 import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { getProfitAndLossApi, searchTransactionApi } from '../intelligence/Api.js'
 import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE, DEFAULT_PRICE} from '../../utils/Constant'
-import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
+import sortByIcon from '../../assets/images/icons/triangle-down.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
 import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
@@ -801,7 +801,7 @@ this.setState({graphLoading: true})
                       <div className="profit-chart">
                     {this.state.graphValue?
                             <BarGraphSection
-                            headerTitle="Profit And Loss"
+                            headerTitle="Net Flows"
                             headerSubTitle="Understand your entire portfolio's performance"
                             isArrow={true}
                             handleClick={()=>this.props.history.push(

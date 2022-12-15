@@ -1529,11 +1529,13 @@ form {
         .history-table-header-col {
           display: flex;
           .rotateUp {
-            transform: rotate(180deg)
+            transform: rotate(180deg);
+            margin-left: 1rem;
           }
 
           .rotateDown {
             transform: rotate(0deg);
+            margin-left: 1rem;
           }
         }
       }

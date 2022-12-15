@@ -315,9 +315,6 @@ class FixAddModal extends BaseReactComponent {
 
     isDisabled = () => {
         let isDisableFlag = true;
-        // if (this.state.addWalletList.length <= 0) {
-        //     isDisableFlag = true;
-        // }
         this.state.addWalletList.map((e) => {
           if(e.address){
             if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
@@ -329,17 +326,30 @@ class FixAddModal extends BaseReactComponent {
             } else{
               isDisableFlag = false;
             }
+          } else{
+            isDisableFlag = false;
           }
         })
         return isDisableFlag;
     }
 
     isFixDisabled = () => {
-        let isDisableFlag = false;
+        let isDisableFlag = true;
         this.state.fixWalletAddress.map((e) => {
-            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
-                isDisableFlag = true;
+          if(e.address){
+            if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
+              // isDisableFlag = true;
+              e.coins.map((a)=>{
+                if(a.chain_detected===true){
+                    isDisableFlag = false;
+                }
+              })
+            } else{
+              isDisableFlag = false;
             }
+          } else{
+            isDisableFlag = false;
+          }
         })
         return isDisableFlag;
     }
