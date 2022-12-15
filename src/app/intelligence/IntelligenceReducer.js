@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     currentPage: 1,
     totalCount: null,
     totalPage: null,
+    assetPriceList: [],
 };
 const IntelligenceReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -12,6 +13,7 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
             return {
               ...state,
               table : action.payload.results,
+              assetPriceList : action.payload.objects.asset_prices,
               totalCount: action.payload.total_count,
               totalPage: Math.ceil(action.payload.total_count / API_LIMIT),
               currentPage: action.currentPage
