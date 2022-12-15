@@ -144,7 +144,6 @@ class Sandbox extends BaseReactComponent {
                       message: "Field cannot be empty"
                     }
                   ]}
-
                   control={{
                     type: CustomTextControl,
                     settings: {

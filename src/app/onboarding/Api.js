@@ -8,6 +8,7 @@ import {
   EmailAddressVerified,
   UserSignedinCorrectly,
   UserWrongCode,
+  EmailNotFound,
 } from "../../utils/AnalyticsFunctions.js";
 export const getAllCoins = (handleShareLinkUser = null) => {
     return async function (dispatch, getState) {
@@ -86,9 +87,10 @@ export const signIn = (ctx, data) => {
           //   </div>
           //   );
             // toast.error(res.data.message || "Something went Wrong")
-              ctx.setState(
-                {emailError:true}
-              )
+          ctx.setState(
+            { emailError: true }
+          );
+          EmailNotFound({email_address: ctx.state.email})
         }
         else if (res.data.error === false) {
             //email Valid

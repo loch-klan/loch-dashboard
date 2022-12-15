@@ -9,7 +9,7 @@ import DropDown from "../common/DropDown";
 import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
 import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
 import { GroupByOptions, Months } from "../../utils/Constant";
-import { AssetValueFilter } from "../../utils/AnalyticsFunctions.js";
+import { AssetValueFilter, AssetValueHover, AssetValueInternalEvent, IntlAssetValueFilter, IntlAssetValueHover, IntlAssetValueInternalEvent } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
@@ -78,11 +78,17 @@ class LineChartSlider extends BaseReactComponent {
         selectedEvents: [],
       });
     }
-    AssetValueFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      filter_clicked: badge.name,
-    });
+    this.props.isPage
+      ? IntlAssetValueFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          filter_clicked: badge.name,
+        })
+      : AssetValueFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          filter_clicked: badge.name,
+        });
   };
   handleSelect = (opt) => {
     const t = opt.split(" ")[1];
@@ -316,7 +322,7 @@ class LineChartSlider extends BaseReactComponent {
     };
 
     let selectedEvents = [];
-
+     let noOfInternalEvent;
     const getIevent = (value) => {
       selectedEvents = [];
       internalEvents &&
@@ -384,8 +390,10 @@ class LineChartSlider extends BaseReactComponent {
         selectedEvents.sort((a, b) => {
           return b.usd - a.usd;
         });
+      noOfInternalEvent = selectedEvents.length;
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
-      // console.log("beforeselected Event", selectedEvents);
+      // console.log("No of internal event", noOfInternalEvent);
+
     };
     timestampList.map((time) => {
       let dummy = new Date(time);
@@ -436,6 +444,17 @@ class LineChartSlider extends BaseReactComponent {
             if (parent.state.title == "Week" || parent.state.title == "Day") {
               console.log("event inside");
               if (parent.state.selectedValue !== selectedValue) {
+                parent.props.isPage
+                  ? IntlAssetValueInternalEvent({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      no_of_events: noOfInternalEvent,
+                    })
+                  : AssetValueInternalEvent({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      no_of_events: noOfInternalEvent,
+                    });
                 // console.log("inside event click");
                 parent.setState({
                   selectedEvents: selectedEvents,
@@ -571,10 +590,8 @@ class LineChartSlider extends BaseReactComponent {
         hideDelay: 0,
 
         formatter: function () {
-          // console.log("this", this);
-          // this.internalEvent(
-          //   categories[this.x] == undefined ? this.x : categories[this.x]
-          // );
+          let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map((e)=>e.address);
+          
 
           let tooltipData = [];
 
@@ -583,7 +600,20 @@ class LineChartSlider extends BaseReactComponent {
 
           getIevent(x_value);
           selectedValue = x_value;
-
+          // console.log("value", x_value, "walter address", walletAddress);
+          parent.props.isPage
+            ? IntlAssetValueHover({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+                value: x_value,
+                address: walletAddress,
+              })
+            : AssetValueHover({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+                value: x_value,
+                address: walletAddress,
+              });
           this.points.map((item) => {
             // console.log(
             //   "Item: ",
@@ -647,6 +677,11 @@ class LineChartSlider extends BaseReactComponent {
                   parent.state.title == "Day"
                 ) {
                   if (parent.state.selectedValue !== selectedValue) {
+                    AssetValueInternalEvent({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      no_of_events: noOfInternalEvent,
+                    });
                     console.log("inside event click");
                     parent.setState({
                       selectedEvents: selectedEvents,

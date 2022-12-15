@@ -8,7 +8,7 @@ import insight from '../../assets/images/icons/insight.svg'
 import BarGraphSection from '../common/BarGraphSection';
 import { getAllCoins } from '../onboarding/Api.js'
 import { Image } from 'react-bootstrap';
-import { TimeSpentIntelligence } from '../../utils/AnalyticsFunctions';
+import { InsightsViewMore, TimeSpentIntelligence } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
 import moment from "moment/moment";
 import { getProfitAndLossApi} from "./Api";
@@ -139,86 +139,121 @@ class Intelligence extends Component {
     // console.log('showPercentage',showPercentage);
 
         return (
-            <div className="intelligence-page-section">
-                <div className='intelligence-section page'>
-                    <PageHeader
-                        title="Intelligence"
-                        subTitle="Automated and personalized financial intelligence"
-                    />
-                    <IntelWelcomeCard
-                        history={this.props.history}
-                    />
-                    <div className="insights-image m-b-40">
-                      <PageHeader
-                        title="Insights"
-                        showImg={insight}
-                        viewMore={true}
-                        viewMoreRedirect={"/intelligence/insights"}
-                      />
-                    <div style={{position: "relative"}}>
-                    <div className="insights-wrapper">
-            {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
-            {
-              this.state.isLoading
-              ?
-              <Loading />
-              :
-              this.state.updatedInsightList && this.state.updatedInsightList.length > 0 ?
-              this.state.updatedInsightList.slice(0,2).map((insight, key)=>{
-                return(
-                  <div className="insights-card" key={key}>
-                    <Image src={insight.insight_type === InsightType.COST_REDUCTION ? reduceCost : insight.insight_type === InsightType.RISK_REDUCTION ? reduceRisk : increaseYield} className="insight-icon" />
-                    <div className="insights-content">
-                      <h5 className="inter-display-bold f-s-10 lh-12 title-chip">{InsightType.getText(insight.insight_type)}</h5>
-                      <p className="inter-display-medium f-s-13 lh-16 grey-969" dangerouslySetInnerHTML={{__html: insight.sub_title}}></p>
-                      <h4 className="inter-display-medium f-s-16 lh-19 grey-313" dangerouslySetInnerHTML={{__html: insight.title}}></h4>
-                    </div>
+          <div className="intelligence-page-section">
+            <div className="intelligence-section page">
+              <PageHeader
+                title="Intelligence"
+                subTitle="Automated and personalized financial intelligence"
+              />
+              <IntelWelcomeCard history={this.props.history} />
+              <div className="insights-image m-b-40">
+                <PageHeader
+                  title="Insights"
+                  showImg={insight}
+                  viewMore={true}
+                  viewMoreRedirect={"/intelligence/insights"}
+                  handleClick={()=>{InsightsViewMore({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });}}
+                />
+                <div style={{ position: "relative" }}>
+                  <div className="insights-wrapper">
+                    {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
+                    {this.state.isLoading ? (
+                      <Loading />
+                    ) : this.state.updatedInsightList &&
+                      this.state.updatedInsightList.length > 0 ? (
+                      this.state.updatedInsightList
+                        .slice(0, 2)
+                        .map((insight, key) => {
+                          return (
+                            <div className="insights-card" key={key}>
+                              <Image
+                                src={
+                                  insight.insight_type ===
+                                  InsightType.COST_REDUCTION
+                                    ? reduceCost
+                                    : insight.insight_type ===
+                                      InsightType.RISK_REDUCTION
+                                    ? reduceRisk
+                                    : increaseYield
+                                }
+                                className="insight-icon"
+                              />
+                              <div className="insights-content">
+                                <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                                  {InsightType.getText(insight.insight_type)}
+                                </h5>
+                                <p
+                                  className="inter-display-medium f-s-13 lh-16 grey-969"
+                                  dangerouslySetInnerHTML={{
+                                    __html: insight.sub_title,
+                                  }}
+                                ></p>
+                                <h4
+                                  className="inter-display-medium f-s-16 lh-19 grey-313"
+                                  dangerouslySetInnerHTML={{
+                                    __html: insight.title,
+                                  }}
+                                ></h4>
+                              </div>
+                            </div>
+                          );
+                        })
+                    ) : (
+                      <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
+                        {
+                          "This wallet is not active enough for us to generate any useful insights here :)."
+                        }
+                      </h5>
+                    )}
                   </div>
-                )
-              })
-              :
-              <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">{"This wallet is not active enough for us to generate any useful insights here :)."}</h5>
-            }
-          </div>
-                    </div>
-                  </div>
-                    <div className="portfolio-bar-graph">
-                    <PageHeader
-                        title="Net Flows"
-                        showImg={eyeIcon}
-                    />
-                    <div style={{position: "relative"}}>
-                    {/* <div className='coming-soon-div'>
+                </div>
+              </div>
+              <div className="portfolio-bar-graph">
+                <PageHeader title="Net Flows" showImg={eyeIcon} />
+                <div style={{ position: "relative" }}>
+                  {/* <div className='coming-soon-div'>
                                           <Image src={ExportIconWhite} className="coming-soon-img" />
                                           <p className='inter-display-regular f-s-13 lh-16 black-191'>This feature is coming soon.</p>
                                           </div> */}
-                        {this.state.graphValue?
-                            <BarGraphSection
-                                isScrollVisible={false}
-                                data={this.state.graphValue[0]}
-                                options={this.state.graphValue[1]}
-                                coinsList={this.props.OnboardingState.coinsList}
-                                timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
-                                marginBottom='m-b-32'
-                                showFooter={true}
-                                showBadges={true}
-                                showPercentage = {this.state.graphValue[2]}
-                                footerLabels = {["Max" , "5 Years","1 Year","6 Months", "1 Month", "1 Week", "1 Day"]}
-                                handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
-                                // comingSoon={true}
-                            />
-                            :
-                            <div className="loading-wrapper">
-                              <Loading />
-                              <br/><br/>
-                            </div>
-                        }
+                  {this.state.graphValue ? (
+                    <BarGraphSection
+                      isScrollVisible={false}
+                      data={this.state.graphValue[0]}
+                      options={this.state.graphValue[1]}
+                      coinsList={this.props.OnboardingState.coinsList}
+                      timeFunction={(e, activeBadgeList) =>
+                        this.timeFilter(e, activeBadgeList)
+                      }
+                      marginBottom="m-b-32"
+                      showFooter={true}
+                      showBadges={true}
+                      showPercentage={this.state.graphValue[2]}
+                      footerLabels={[
+                        "Max",
+                        "5 Years",
+                        "1 Year",
+                        "6 Months",
+                        "1 Month",
+                        "1 Week",
+                        "1 Day",
+                      ]}
+                      handleBadge={(activeBadgeList, activeFooter) =>
+                        this.handleBadge(activeBadgeList, activeFooter)
+                      }
+                      // comingSoon={true}
+                    />
+                  ) : (
+                    <div className="loading-wrapper">
+                      <Loading />
+                      <br />
+                      <br />
                     </div>
-                  </div>
+                  )}
                 </div>
+              </div>
             </div>
-
-        )
+          </div>
+        );
     }
 }
 

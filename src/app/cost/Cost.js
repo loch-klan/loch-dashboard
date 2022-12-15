@@ -40,6 +40,7 @@ class Cost extends Component {
       counterGraphLoading: true,
       counterPartyData: [],
       counterPartyValue: null,
+      currentPage:"Cost"
     };
   }
 
