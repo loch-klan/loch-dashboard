@@ -307,7 +307,7 @@ this.setState({graphLoading: true})
   };
 
   render() {
-    const { table } = this.props.intelligenceState;
+    const { table, assetPriceList } = this.props.intelligenceState;
     const {userWalletList} = this.state;
     let tableData =
       table &&
@@ -519,7 +519,6 @@ this.setState({graphLoading: true})
                                 : rowData.to.address
                             }
                           >
-                            {/* <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" /> */}
                             {rowData.to.metaData[0] ? (
                               <Image
                                 src={
@@ -607,10 +606,6 @@ this.setState({graphLoading: true})
                                 isText={true}
                                 text={rowData.asset.code}
                             >
-                            {/* <CoinChip
-                                coin_img_src={rowData.asset.symbol}
-                                // coin_code={rowData.asset.code}
-                            /> */}
                             <Image src={rowData.asset.symbol} className="asset-symbol" />
                             </CustomOverlay>
                         )
@@ -629,7 +624,7 @@ this.setState({graphLoading: true})
                 cell: (rowData, dataKey) => {
 
                     if (dataKey === "usdValue") {
-                        let chain = Object.entries(this.props.portfolioState.coinRateList)
+                        let chain = Object.entries(assetPriceList)
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
@@ -637,8 +632,6 @@ this.setState({graphLoading: true})
                                 return
                             }
                         })
-                        // return value?.toFixed(2);
-                        // return value
                         return (<CustomOverlay
                             position="top"
                             isIcon={false}
@@ -663,227 +656,11 @@ this.setState({graphLoading: true})
                 cell: (rowData, dataKey) => {
                     if (dataKey === "method") {
                         return (
-                            // <div
-                            //     className={
-                            //         `inter-display-medium f-s-13 lh-16 black-191 history-table-method
-                            //         ${rowData.method === Method.BURN ? "burn"
-                            //             :
-                            //             rowData.method === Method.TRANSFER ? "transfer"
-                            //                 :
-                            //                 rowData.method === Method.MINT ? "mint"
-                            //                     :
-                            //                     rowData.method === Method.COMMIT ? "commit"
-                            //                         :
-                            //                         ""
-                            //         }`
-                            //     }
-                            // >
                               <div className='inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer'>
                               {rowData.method}
-                                {/* {
-                                    Method.getText(rowData.method)
-                                } */}
                             </div>
                         )
                     }
-                }
-            }
-        ]
-
-    const labels = ["AAVE", "Binance", "Kraken", "Gemini", "Coinbase"];
-
-    const options = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
-      scales: {
-        y: {
-          min: 0,
-          max: 40000,
-
-          ticks: {
-            stepSize: 8000,
-            padding: 8,
-            size: 12,
-            lineHeight: 20,
-            // family: "Helvetica Neue",
-            family: "Inter-Regular",
-            weight: 400,
-            color: "#B0B1B3",
-          },
-          grid: {
-            drawBorder: false,
-            display: true,
-            borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
-            drawTicks: false,
-          },
-        },
-        x: {
-          ticks: {
-            font: "Inter-SemiBold",
-            size: 10,
-            lineHeight: 12,
-            weight: 600,
-            color: "#86909C",
-            maxRotation: 0,
-            minRotation: 0,
-          },
-          grid: {
-            display: false,
-            borderWidth: 1,
-          },
-        },
-      },
-    };
-
-        const data = {
-            labels,
-            datasets: [
-                {
-                    data: [26000, 32300, 7600, 6000, 800],
-                    backgroundColor: [
-                        "rgba(100, 190, 205, 0.3)",
-                        "rgba(34, 151, 219, 0.3)",
-                        "rgba(114, 87, 211, 0.3)",
-                        "rgba(141, 141, 141, 0.3)",
-                        " rgba(84, 84, 191, 0.3)",
-                    ],
-                    borderColor: [
-                        "#64BECD",
-                        "#2297DB",
-                        "#7257D3",
-                        "#8D8D8D",
-                        "#5454BF",
-                    ],
-                    borderWidth: 2,
-                    borderRadius: {
-                        topLeft: 6,
-                        topRight: 6
-                    },
-                    borderSkipped: false,
-                    barThickness: 38
-                }
-            ]
-        }
-        const costColumnData = [
-            {
-                labelName: "Asset",
-                dataKey: "Asset",
-                coumnWidth: 0.2,
-                // coumnWidth: 118,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "Asset") {
-                        return (
-                            <CoinChip
-                                coin_img_src={rowData.Asset}
-                                coin_code="ETH"
-                            />
-                        )
-                    }
-                }
-            }, {
-                labelName: "Average Cost Price",
-                dataKey: "AverageCostPrice",
-                // coumnWidth: 153,
-                coumnWidth: 0.2,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "AverageCostPrice") {
-                        return <div className='inter-display-medium f-s-13 lh-16 grey-313 cost-common'>{rowData.AverageCostPrice}</div>
-                    }
-                }
-            }, {
-                labelName: "Current Price",
-                dataKey: "CurrentPrice",
-                // coumnWidth: 128,
-                coumnWidth: 0.2,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "CurrentPrice") {
-                        return <div className='inter-display-medium f-s-13 lh-16 grey-313 cost-common'>{rowData.CurrentPrice}</div>
-                    }
-                }
-            }, {
-                labelName: "Amount",
-                dataKey: "Amount",
-                // coumnWidth: 108,
-                coumnWidth: 0.2,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "Amount") {
-                        return Number(noExponents(rowData.Amount)).toLocaleString('en-US')
-                    }
-                }
-            }, {
-                labelName: "Cost Basis",
-                dataKey: "CostBasis",
-                // coumnWidth: 100,
-                coumnWidth: 0.2,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "CostBasis") {
-                        return rowData.CostBasis
-                    }
-                }
-            }, {
-                labelName: "CurrentValue",
-                dataKey: "CurrentValue",
-                // coumnWidth: 140,
-                coumnWidth: 0.2,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "CurrentValue") {
-                        return rowData.CurrentValue
-                    }
-                }
-            }, {
-                labelName: "% Gain / Loss",
-                dataKey: "GainLoss",
-                // coumnWidth: 128,
-                coumnWidth: 0.25,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "GainLoss") {
-                        return (
-                            <div className={`gainLoss ${rowData.GainLoss.status === "loss" ? "loss" : "gain"}`}>
-                                <Image src={rowData.GainLoss.symbol} />
-                                <div className="inter-display-medium f-s-13 lh-16 grey-313">{rowData.GainLoss.value}</div>
-                            </div>)
-                    }
-                }
-            }]
-        const costTableData = [
-            {
-                Asset: Ethereum,
-                AverageCostPrice: "$800.00",
-                CurrentPrice: "$1,390.00",
-                Amount: 3.97,
-                CostBasis: 1.75,
-                CurrentValue: "$5,514.00",
-                GainLoss: {
-                    status: "gain",
-                    symbol: GainIcon,
-                    // "42.45%",
-                    value: "42.45%",
-                }
-            },
-            {
-                Asset: Ethereum,
-                AverageCostPrice: "$25,000.00",
-                CurrentPrice: "$21,080.00",
-                Amount: 3.97,
-                CostBasis: 2.56,
-                CurrentValue: "$22,280.50",
-                GainLoss: {
-                    status: "loss",
-                    symbol: LossIcon,
-                    // "-18.45%"
-                    value: "-18.45%"
                 }
             }
         ]
