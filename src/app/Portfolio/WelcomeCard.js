@@ -58,7 +58,7 @@ export default function WelcomeCard(props) {
             </div>
             <div className="welcome-section-right">
 
-              {props.assetTotal !== null ? (
+              {props.assetTotal !== null && !props.isLoading ? (
                 <CustomOverlay
                   position="top"
                   isIcon={false}
