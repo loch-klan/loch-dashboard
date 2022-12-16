@@ -481,7 +481,9 @@ class LineChartSlider extends BaseReactComponent {
             // console.log("categories", categories);
             // console.log("value", categories[this.pos]);
             // console.log("this", this);
-            return categories[this.pos];
+            return parent.state.title === "Day" && categories[this.pos] !== undefined
+              ? moment(categories[this.pos], "DD/MM/YYYY").format("DD/MM/YY")
+              : categories[this.pos];
           },
           autoRotation: false,
           // step: 2,
@@ -774,7 +776,7 @@ class LineChartSlider extends BaseReactComponent {
                 <div className="SliderChartBottom">
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
-                    Largest Internal Events
+                    Largest Internal Events {this.state.selectedValue && (": "+this.state.selectedValue)}
                   </h4>
 
                   <div className="InternalEventWrapper">
