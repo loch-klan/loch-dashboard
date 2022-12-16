@@ -70,7 +70,7 @@ class InsightsPage extends Component {
          session_id: getCurrentUser().id,
          email_address: getCurrentUser().email,
        });
-      
+
     } else {
       // console.log("not valid value")
     }
@@ -91,7 +91,7 @@ class InsightsPage extends Component {
         />
         <div style={{position: "relative"}}>
           {
-            this.state.insightList && this.state.insightList.length > 0 &&
+            // this.state.insightList && this.state.insightList.length > 0 &&
           <div className="insights-filter">
             {
               this.state.insightFilter.map((filter, key)=>{
