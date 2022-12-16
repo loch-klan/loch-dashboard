@@ -30,7 +30,7 @@ class Login extends BaseReactComponent {
   onValidSubmit = () => {
     const data = new URLSearchParams();
     data.append('password', this.state.password);
-    localStorage.setItem("baseToken", password);
+    localStorage.setItem("baseToken", this.state.password);
     loginApi(this, data)
   }
 
