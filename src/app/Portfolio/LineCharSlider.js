@@ -9,7 +9,7 @@ import DropDown from "../common/DropDown";
 import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
 import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
 import { GroupByOptions, Months } from "../../utils/Constant";
-import { AssetValueFilter, AssetValueHover, AssetValueInternalEvent, IntlAssetValueFilter, IntlAssetValueHover, IntlAssetValueInternalEvent } from "../../utils/AnalyticsFunctions.js";
+import { AssetValueFilter, AssetValueHover, AssetValueInternalEvent, IntlAssetValueFilter, IntlAssetValueHover, IntlAssetValueInternalEvent, TitleAssetValueHover } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
@@ -771,11 +771,15 @@ class LineChartSlider extends BaseReactComponent {
               //   this.resetEvent();
               // }}
             >
-             {!this.props.isPage && <GraphHeader
-                title="Asset Value"
-                subtitle="Updated 3mins ago"
-                isArrow={true}
-              />}
+              {!this.props.isPage && (
+                <GraphHeader
+                  title="Asset Value"
+                  subtitle="Updated 3mins ago"
+                    isArrow={true}
+                    isAnalytics="Asset Value"
+                 
+                />
+              )}
               <CoinBadges
                 activeBadge={this.state.activeBadge}
                 chainList={this.props.OnboardingState.coinsList}
@@ -811,7 +815,9 @@ class LineChartSlider extends BaseReactComponent {
                 <div className="SliderChartBottom">
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
-                    Largest Internal Events {this.state.selectedValue && (": "+this.state.selectedValue)}
+                    Largest Internal Events{" "}
+                    {this.state.selectedValue &&
+                      ": " + this.state.selectedValue}
                   </h4>
 
                   <div className="InternalEventWrapper">
@@ -824,7 +830,7 @@ class LineChartSlider extends BaseReactComponent {
                             ? 0
                             : 6 -
                               Math.trunc(event.assetValue).toString().length;
-                        
+
                         return (
                           <>
                             <div

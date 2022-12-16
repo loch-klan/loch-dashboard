@@ -1561,3 +1561,38 @@ export const IntlAssetValueInternalEvent = ({ session_id, email_address, no_of_e
   sendAmplitudeData(event_name, eventProperties);
   console.log("Intelligence:asset value chart internal events");
 };
+
+
+//97.Home Page:asset value hover
+export const TitleAssetValueHover = ({ session_id, email_address }) => {
+  const event_name = "Home:asset value hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home Page:asset value hover");
+};
+
+// Menu: share
+export const MenuShare = ({ session_id, email_address }) => {
+  const event_name = "Menu:share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Menu:share");
+};
+
+// Menu:share: link copied
+export const ShareLinkCopy = ({ session_id, email_address, link }) => {
+  const event_name = "Menu:share: link copied";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "Copied Link": link
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Menu:share: link copied");
+};

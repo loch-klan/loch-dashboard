@@ -43,6 +43,7 @@ import {
   MenuApi,
   MenuDarkMode,
   MenuLeave,
+  MenuShare,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 function Sidebar(props) {
@@ -89,6 +90,10 @@ function Sidebar(props) {
     const handleShareModal = ()=>{
         setShareModal(!shareModal);
         // ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
+      MenuShare({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     }
     const handleShare=()=>{
         const user= JSON.parse(localStorage.getItem('lochUser'));

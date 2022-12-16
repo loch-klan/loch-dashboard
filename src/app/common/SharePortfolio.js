@@ -12,6 +12,8 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import { BASE_URL_S3 } from '../../utils/Constant';
 import { toast } from 'react-toastify';
+import { ShareLinkCopy } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 
 
 
@@ -55,7 +57,8 @@ function SharePortfolio(props) {
                   <span className='link-text'>{shareLink}</span>
                   <span className="link" onClick={()=>{
                     navigator.clipboard.writeText(shareLink);
-                    toast.success("Share link has been copied")
+                  toast.success("Share link has been copied");
+                  ShareLinkCopy({session_id: getCurrentUser().id, email_address:getCurrentUser().email, link:shareLink});
                     }}>
                       <Image src={CopyLink} className="m-r-8" />
                       <h3 className="inter-display-medium f-s-16 lh-19 black-191">
