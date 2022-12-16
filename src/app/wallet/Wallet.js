@@ -25,6 +25,7 @@ import { Image } from "react-bootstrap";
 import Loading from "../common/Loading";
 import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import FeedbackForm from "../common/FeedbackForm";
 
 class Wallet extends Component {
   constructor(props) {
@@ -316,6 +317,7 @@ class Wallet extends Component {
               </div>
             )}
           </div>
+          <FeedbackForm />
         </div>
       </div>
     );

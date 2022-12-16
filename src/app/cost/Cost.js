@@ -23,6 +23,7 @@ import { getAllFeeApi, getAllCounterFeeApi } from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
+import FeedbackForm from "../common/FeedbackForm";
 
 
 class Cost extends Component {
@@ -431,6 +432,7 @@ class Cost extends Component {
               />
             </div>
           </div>
+          <FeedbackForm />
         </div>
       </div>
     );
