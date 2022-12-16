@@ -41,6 +41,7 @@ import {getAssetGraphDataApi} from './Api';
 import { getAllCounterFeeApi, getAllFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
 import { noExponents } from '../../utils/ReusableFunctions';
+import FeedbackForm from '../common/FeedbackForm';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -670,7 +671,6 @@ this.setState({graphLoading: true})
               <Loading />
             ) : (
               <div className="portfolio-page-section">
-                {/* <Sidebar ownerName="" /> */}
                 <div className="portfolio-container page">
                   <div className="portfolio-section">
                     <WelcomeCard
@@ -865,6 +865,7 @@ this.setState({graphLoading: true})
                         }
                         </div>
                   </div>
+                  <FeedbackForm attribution={true} />
                 </div>
               </div>
             )}

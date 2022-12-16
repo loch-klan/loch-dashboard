@@ -18,6 +18,7 @@ import reduceRisk from '../../assets/images/icons/reduce-risk.svg'
 import increaseYield from '../../assets/images/icons/increase-yield.svg'
 import { getAllInsightsApi } from "./Api";
 import { InsightType } from "../../utils/Constant";
+import FeedbackForm from '../common/FeedbackForm';
 
 class Intelligence extends Component {
   constructor(props) {
@@ -215,6 +216,7 @@ class Intelligence extends Component {
                         }
                     </div>
                   </div>
+                  <FeedbackForm />
                 </div>
             </div>
 

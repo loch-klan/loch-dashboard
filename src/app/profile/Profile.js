@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Sidebar from '../common/Sidebar';
 import ProfileForm from './ProfileForm';
 import PageHeader from './../common/PageHeader';
+import FeedbackForm from '../common/FeedbackForm';
 
 class Profile extends Component {
     constructor(props) {
@@ -17,13 +18,14 @@ class Profile extends Component {
         return (
             <div className="profile-page-section">
                 <div className='profile-section page'>
-                <PageHeader 
+                <PageHeader
                     title="Profile"
                     subTitle="Manage your profile here"
                 />
                 <div className='profile-form-section'>
                     <ProfileForm/>
                 </div>
+                <FeedbackForm />
                 </div>
             </div>
         )
