@@ -48,7 +48,7 @@ class Portfolio extends BaseReactComponent {
       );
     this.state = {
       id: props.match.params?.id,
-      userWalletList: JSON.parse(localStorage.getItem("addWallet") || ""),
+      userWalletList: localStorage.getItem("addWallet") ? JSON.parse(localStorage.getItem("addWallet")) : [],
       assetTotalValue: 0,
       loader: false,
       coinAvailable: true,
