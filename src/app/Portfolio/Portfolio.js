@@ -157,7 +157,7 @@ class Portfolio extends BaseReactComponent {
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
       // console.log("page Leave", endTime / 1000);
       // console.log("Time Spent", TimeSpent);
-      TimeSpentHome({ time_spent: TimeSpent + " seconds", session_id: getCurrentUser().id, email_address: getCurrentUser().email });
+      TimeSpentHome({ time_spent: TimeSpent, session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
 
     getGraphData = (groupByValue = GROUP_BY_YEAR) =>{

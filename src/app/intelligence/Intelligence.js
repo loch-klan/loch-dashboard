@@ -50,7 +50,7 @@ class Intelligence extends Component {
     console.log("page Leave", endTime);
     console.log("Time Spent", TimeSpent);
     TimeSpentIntelligence({
-      time_spent: TimeSpent + " seconds",
+      time_spent: TimeSpent,
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
