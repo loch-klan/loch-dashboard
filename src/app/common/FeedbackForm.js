@@ -37,7 +37,7 @@ class FeedbackForm extends BaseReactComponent {
   render() {
     return (
       <div className={`feedback-form-wrapper ${this.props.attribution && "attribution"}`}>
-{this.props.attribution && <h6 className='inter-display-medium f-s-16 lh-19 grey-ADA data-provided'>Data provided by <a href="https://www.coingecko.com/" target="_blank" rel="noopener noreferrer">CoinGecko</a></h6>}
+{this.props.attribution && <h6 className='inter-display-medium f-s-13 lh-19 grey-CAC data-provided'>Data provided by <a href="https://www.coingecko.com/" target="_blank" rel="noopener noreferrer">CoinGecko</a></h6>}
         <div className='feedback-wrapper'>
           <input
             value={this.state.favorite}

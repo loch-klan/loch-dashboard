@@ -29,13 +29,13 @@ export const getAllCoins = (handleShareLinkUser = null) => {
     };
 };
 
-export const detectCoin = (wallet,ctx=null) => {
+export const detectCoin = (wallet,ctx=null, signal=null) => {
     return function (dispatch, getState) {
         let data = new URLSearchParams();
         data.append("chain", wallet.coinCode);
         data.append("wallet_address", wallet.address);
         postLoginInstance
-            .post("wallet/chain/detect-chain", data)
+            .post("wallet/chain/detect-chain", data, {signal})
             .then((res) => {
                 // && res.data.data.chain_detected
                 if (!res.error && res.data) {
@@ -179,18 +179,22 @@ export const verifyUser = (ctx, info) => {
 }
 
 export const createAnonymousUserApi = (data, ctx, addWallet) =>{
+  {
+    !ctx.state.id &&
+    ctx.props.history.push({
+      pathname: ctx.state.id ? ctx.state.link : '/portfolio',
+      // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
+      state: {noLoad: true}
+    })
+  }
   postLoginInstance.post('organisation/user/create-user',data)
   .then(res=>{
     if(!res.data.error){
       localStorage.setItem("lochDummyUser", res.data.data.user.link)
       localStorage.setItem("lochToken", res.data.data.token)
-      // console.log('addWallet',addWallet);
       const allChains = ctx.props.OnboardingState.coinsList
       let newAddWallet = [];
       const apiResponse = res.data.data;
-      // console.log('apiResponse',apiResponse);
-      // console.log('allChains',allChains);
-      // if(ctx.state.id)
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
         let obj = {}; // <----- new Object
         obj['address'] = apiResponse.user.user_wallets[i].address;
@@ -214,10 +218,9 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
               obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
               newAddWallet.push(obj);
       }
-      // console.log('newAddWallet',newAddWallet);
-      ctx.props.history.push({
+      ctx.props.history.replace({
         pathname: ctx.state.id ? ctx.state.link : '/portfolio',
-        state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
+        state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}
       })
   }else{
       toast.error(res.data.message || "Something Went Wrong")
