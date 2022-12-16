@@ -148,20 +148,40 @@ class AddWallet extends BaseReactComponent {
 
 
     isDisabled = () => {
-        let isDisableFlag = false;
-        if (this.state.walletInput.length <= 0) {
-            isDisableFlag = true;
-        }
+        let isDisableFlag = true;
+        // if (this.state.walletInput.length <= 0) {
+        //     isDisableFlag = true;
+        // }
         this.state.walletInput.map((e) => {
-            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
-                isDisableFlag = true;
-                e.coins.map((a)=>{
-                  if(a.chain_detected===true){
-                      isDisableFlag = false;
-                  }
+          if (e.address){
+            if(e.coins.length !== this.props.OnboardingState.coinsList.length) {
+              // isDisableFlag = true;
+              e.coins.map((a)=>{
+                if(a.chain_detected===true){
+                  isDisableFlag = false;
+                }
               })
+            } else{
+              isDisableFlag = false;
             }
+          }
         })
+
+        // for(let i= 0;i<this.state.walletInput; i++){
+        //   if (this.state.walletInput[i].address && this.state.walletInput[i].coins.length !== this.props.OnboardingState.coinsList.length) {
+        //       isDisableFlag = true;
+        //       console.log('heyaaa');
+        //       // this.state.walletInput[i].coins.map((a)=>{
+        //       for(let j= 0;j<this.state.walletInput[i].coins; j++){
+        //         if(this.state.walletInput[i].coins[j].chain_detected===true){
+        //           console.log('Hey detected');
+        //             isDisableFlag = false;
+        //             break;
+        //         }
+        //       }
+        //       // })
+        //   }
+        // }
 
         // this.state.walletInput.map((e) => {
         //     if (!e.address) {
@@ -197,14 +217,14 @@ class AddWallet extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(walletAddress));
       createAnonymousUserApi(data, this, finalArr);
-      console.log(finalArr);
+      // console.log(finalArr);
 
       const address = finalArr.map((e) => e.address);
-      console.log("address", address);
+      // console.log("address", address);
 
       const unrecog_address = finalArr.filter((e) => !e.coinFound)
         .map((e) => e.address);
-      console.log("Unreq address", unrecog_address);
+      // console.log("Unreq address", unrecog_address);
 
       const blockchainDetected = [];
       finalArr
@@ -217,7 +237,7 @@ class AddWallet extends BaseReactComponent {
           blockchainDetected.push({ address: address, names: coinName });
         });
 
-      console.log("blockchain detected", blockchainDetected);
+      // console.log("blockchain detected", blockchainDetected);
 
       LPC_Go({addresses: address, ENS: address,chains_detected_against_them: blockchainDetected, unrecognized_addresses: unrecog_address, unrecognized_ENS: unrecog_address});
 

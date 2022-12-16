@@ -10,7 +10,12 @@ export const loginApi = (ctx, data) => {
         // console.log('res', res.data.data.token);
         // console.log('ctx',ctx.props.history);
         localStorage.setItem('lochToken', res.data.data.token);
-        ctx.props.history.push('/home');
+        if(ctx.state.link){
+          ctx.props.getAllCoins(ctx.handleShareLinkUser)
+        } else{
+          ctx.props.history.push('/home');
+        }
+
       } else {
         toast.error(res.data.message || "Something went wrong");
         ctx.setState({

@@ -431,6 +431,10 @@ body {
   flex-direction: column;
 }
 
+.text-center{
+  text-align: center;
+}
+
 .upload-image-wrapper {
   text-align: left;
   border: 1px dashed $grey-E7E;
@@ -511,7 +515,7 @@ body {
 }
 
 .blur-effect {
-  filter: blur(3px);
+  filter: blur(18px);
   user-select: none;
   pointer-events: none;
 }
@@ -816,6 +820,15 @@ form {
 .form-control.date-picker-control {
   background-color: white;
   position: relative;
+}
+
+.date-navigator-icons{
+  position: relative;
+  top: -1px;
+}
+.date-navigator-icons-next{
+  position: relative;
+  top: -1px;
 }
 
 .date-icon {
@@ -1233,7 +1246,7 @@ form {
 }
 
 .no-data {
-  width: 20rem;
+  width: 15rem;
 }
 
 .tooltip.show {
@@ -1505,7 +1518,7 @@ form {
     .ReactVirtualized__Table__headerColumn {
       margin: 0rem;
       text-align: center;
-
+      padding: 0 1rem;
       .ReactVirtualized__Table__headerTruncatedText {
         white-space: normal;
         overflow: visible;
@@ -1515,13 +1528,14 @@ form {
 
         .history-table-header-col {
           display: flex;
-
           .rotateUp {
-            transform: rotate(180deg)
+            transform: rotate(180deg);
+            margin-left: 1rem;
           }
 
           .rotateDown {
             transform: rotate(0deg);
+            margin-left: 1rem;
           }
         }
       }

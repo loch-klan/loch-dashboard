@@ -27,6 +27,7 @@ import prev2Icon from '../../assets/images/icons/prev2.svg'
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
 
+  ExportDataDownlaod,
   LeaveEmailAdded,
   LeaveLinkCopied,
   LeaveLinkShared,
@@ -119,12 +120,12 @@ class ExitOverlay extends BaseReactComponent {
     }
   };
   handleRedirection = () => {
-    console.log("this", this.props);
+    // console.log("this", this.props);
     this.setState({ show: false, showRedirection: true });
     this.props.handleRedirection();
   };
   handleSelect = (e) => {
-    console.log(e);
+    // console.log(e);
     this.setState({
       dropdowntitle: e,
       activeli: e,
@@ -156,7 +157,22 @@ class ExitOverlay extends BaseReactComponent {
     const data = new URLSearchParams();
     data.append("start_datetime", moment(this.state.fromDate).format("X"));
     data.append("end_datetime", moment(this.state.toDate).format("X"));
-    exportDataApi(data,this);
+    ExportDataDownlaod({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      date_range_selected: [
+        moment(this.state.fromDate).format("DD MMMM YY") + " to " +
+        moment(this.state.toDate).format("DD MMMM YY"),
+      ],
+      data_exported: this.state.selectedExportItem.fileName,
+    });
+    // console.log(
+    //   "date range",
+    //   moment(this.state.fromDate).format("DD MMMM YY"),
+    //   moment(this.state.toDate).format("DD MMMM YY")
+    // );
+    exportDataApi(data, this);
+
   }
 
   handleSelectedExportItem = (item,e) => {
@@ -249,10 +265,10 @@ class ExitOverlay extends BaseReactComponent {
                       settings: {
                         placeholder: "From Date",
                         showDateIcon: false,
-                        nextLabel: <Image src={nextIcon} />,
-                        next2Label: <Image src={next2Icon} style={{position: "relative", top: "-1px"}} />,
-                        prevLabel: <Image src={prevIcon} />,
-                        prev2Label: <Image src={prev2Icon} style={{position: "relative", top: "-1px"}} />,
+                        nextLabel: <Image className='date-navigator-icons-next' src={nextIcon} />,
+                        next2Label: <Image className='date-navigator-icons' src={next2Icon} />,
+                        prevLabel: <Image className='date-navigator-icons-next' src={prevIcon} />,
+                        prev2Label: <Image className='date-navigator-icons' src={prev2Icon} />,
                       },
                     }}
                   />
@@ -272,10 +288,10 @@ class ExitOverlay extends BaseReactComponent {
                         placeholder: "To Date",
                         minDate: this.state.fromDate || new Date(),
                         showDateIcon: false,
-                        nextLabel: <Image src={nextIcon} />,
-                        next2Label: <Image src={next2Icon} style={{position: "relative", top: "-1px"}} />,
-                        prevLabel: <Image src={prevIcon} />,
-                        prev2Label: <Image src={prev2Icon} style={{position: "relative", top: "-1px"}} />,
+                        nextLabel: <Image className='date-navigator-icons-next' src={nextIcon} />,
+                        next2Label: <Image className='date-navigator-icons' src={next2Icon} />,
+                        prevLabel: <Image className='date-navigator-icons-next' src={prevIcon} />,
+                        prev2Label: <Image className='date-navigator-icons' src={prev2Icon} />,
                       },
                     }}
                   />

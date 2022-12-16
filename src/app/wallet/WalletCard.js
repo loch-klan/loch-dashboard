@@ -52,7 +52,7 @@ export default function WalletCard(props) {
       .writeText(text)
       .then(() => {
         toast.success("Copied");
-        console.log("successfully copied");
+        // console.log("successfully copied");
       })
       .catch(() => {
         console.log("something went wrong");

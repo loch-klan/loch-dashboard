@@ -7,7 +7,7 @@ export const searchTransactionApi = (data , ctx, page = 0) => {
     return function (dispatch, getState) {
         postLoginInstance.post("wallet/transaction/search-transaction", data)
             .then((res) => {
-                console.log(page)
+                // console.log(page)
                 if (!res.data.error) {
                     dispatch(getAllTransactionHistory(res.data.data, page))
                     if(ctx){
@@ -97,7 +97,8 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
     if(!res.data.error){
       ctx.setState({
         insightList: res.data.data.insights,
-        updatedInsightList: res.data.data.insights
+        updatedInsightList: res.data.data.insights,
+        isLoading: false,
       });
     } else{
       toast.error(res.data.message || "Something Went Wrong")

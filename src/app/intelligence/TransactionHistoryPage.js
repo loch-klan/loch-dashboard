@@ -8,13 +8,16 @@ import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD, DEFAULT_PRICE } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "./Api";
-import { getCoinRate } from "../Portfolio/Api.js";
+// import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
 import { FormElement, Form, CustomTextControl, BaseReactComponent } from "../../utils/form";
 import unrecognizedIcon from "../../image/unrecognized.svg";
-import sortByIcon from "../../assets/images/icons/TriangleDown.svg";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import { noExponents } from "../../utils/ReusableFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { TransactionHistoryAddress } from "../../utils/AnalyticsFunctions";
+import Loading from "../common/Loading";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -95,7 +98,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
     this.callApi(this.state.currentPage || START_INDEX);
     getFilters(this);
-    this.props.getCoinRate();
+    // this.props.getCoinRate();
   }
 
   callApi = (page = START_INDEX) => {
@@ -253,7 +256,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
     }
     render() {
-        const { table, totalPage, totalCount, currentPage } = this.props.intelligenceState;
+        const { table, totalPage, totalCount, currentPage, assetPriceList } = this.props.intelligenceState;
         const {walletList} = this.state;
         let tableData = table && table.map((row) => {
             return {
@@ -331,7 +334,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "time") {
 
-                        return moment(rowData.time).format('DD/MM/YYYY')
+                        return moment(rowData.time).format('DD/MM/YY')
                     }
                 }
             },
@@ -348,32 +351,82 @@ class TransactionHistoryPage extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     if (dataKey === "from") {
                         return (
-                            <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                // text={rowData.from.address}
-                                text={rowData.from.wallet_metaData.text ? (rowData.from.wallet_metaData.text + ": " + rowData.from.address) : rowData.from.address}
-                            >
-                              {
-                                rowData.from.metaData[0]
-                                ?
-                                <Image src={rowData.from.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon" />
-                                :
-                                rowData.from.wallet_metaData.symbol || rowData.from.wallet_metaData.text
-                                ?
-                                rowData.from.wallet_metaData.symbol
-                                ?
-                                <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" />
-                                :
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            // text={rowData.from.address}
+                            text={
+                              rowData.from.wallet_metaData.text
+                                ? rowData.from.wallet_metaData.text +
+                                  ": " +
+                                  rowData.from.address
+                                : rowData.from.address
+                            }
+                          >
+                            {rowData.from.metaData[0] ? (
+                              <Image
+                                src={
+                                  rowData.from.metaData[0]?.symbol ||
+                                  unrecognizedIcon
+                                }
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.from
+                                      .wallet_metaData.text
+                                      ? rowData.from.wallet_metaData.text +
+                                        ": " +
+                                        rowData.from.address
+                                      : rowData.from.address,
+                                  });
+                                }}
+                              />
+                            ) : rowData.from.wallet_metaData.symbol ||
+                              rowData.from.wallet_metaData.text ? (
+                              rowData.from.wallet_metaData.symbol ? (
+                                <Image
+                                  src={rowData.from.wallet_metaData.symbol}
+                                  className="history-table-icon"
+                                  onMouseEnter={() => {
+                                    TransactionHistoryAddress({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      address_hovered: rowData.from
+                                        .wallet_metaData.text
+                                        ? rowData.from.wallet_metaData.text +
+                                          ": " +
+                                          rowData.from.address
+                                        : rowData.from.address,
+                                    });
+                                  }}
+                                />
+                              ) : (
                                 <span>{rowData.from.wallet_metaData.text}</span>
-                                :
-                                 <Image src={unrecognizedIcon} className="history-table-icon" />
-                              }
-
-                            </CustomOverlay>
-                        )
+                              )
+                            ) : (
+                              <Image
+                                src={unrecognizedIcon}
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.from
+                                      .wallet_metaData.text
+                                      ? rowData.from.wallet_metaData.text +
+                                        ": " +
+                                        rowData.from.address
+                                      : rowData.from.address,
+                                  });
+                                }}
+                              />
+                            )}
+                          </CustomOverlay>
+                        );
                     }
                 }
             },
@@ -391,30 +444,81 @@ class TransactionHistoryPage extends BaseReactComponent {
                   // console.log('rowData',rowData);
                     if (dataKey === "to") {
                         return (
-                            <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                text={rowData.to.wallet_metaData.text ? (rowData.to.wallet_metaData.text + ": " + rowData.to.address) : rowData.to.address}
-                            >
-                              {
-                                rowData.to.metaData[0]
-                                ?
-                                <Image src={rowData.to.metaData[0]?.symbol || unrecognizedIcon} className="history-table-icon" />
-                                :
-                                rowData.to.wallet_metaData.symbol || rowData.to.wallet_metaData.text
-                                ?
-                                rowData.to.wallet_metaData.symbol
-                                ?
-                                <Image src={rowData.to.wallet_metaData.symbol} className="history-table-icon" />
-                                :
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={
+                              rowData.to.wallet_metaData.text
+                                ? rowData.to.wallet_metaData.text +
+                                  ": " +
+                                  rowData.to.address
+                                : rowData.to.address
+                            }
+                          >
+                            {rowData.to.metaData[0] ? (
+                              <Image
+                                src={
+                                  rowData.to.metaData[0]?.symbol ||
+                                  unrecognizedIcon
+                                }
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.to.wallet_metaData
+                                      .text
+                                      ? rowData.to.wallet_metaData.text +
+                                        ": " +
+                                        rowData.to.address
+                                      : rowData.to.address,
+                                  });
+                                }}
+                              />
+                            ) : rowData.to.wallet_metaData.symbol ||
+                              rowData.to.wallet_metaData.text ? (
+                              rowData.to.wallet_metaData.symbol ? (
+                                <Image
+                                  src={rowData.to.wallet_metaData.symbol}
+                                  className="history-table-icon"
+                                  onMouseEnter={() => {
+                                    TransactionHistoryAddress({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      address_hovered: rowData.to
+                                        .wallet_metaData.text
+                                        ? rowData.to.wallet_metaData.text +
+                                          ": " +
+                                          rowData.to.address
+                                        : rowData.to.address,
+                                    });
+                                  }}
+                                />
+                              ) : (
                                 <span>{rowData.to.wallet_metaData.text}</span>
-                                :
-                                 <Image src={unrecognizedIcon} className="history-table-icon" />
-                              }
-                            </CustomOverlay>
-                        )
+                              )
+                            ) : (
+                              <Image
+                                src={unrecognizedIcon}
+                                className="history-table-icon"
+                                onMouseEnter={() => {
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.to.wallet_metaData
+                                      .text
+                                      ? rowData.to.wallet_metaData.text +
+                                        ": " +
+                                        rowData.to.address
+                                      : rowData.to.address,
+                                  });
+                                }}
+                              />
+                            )}
+                          </CustomOverlay>
+                        );
                     }
                 }
             },
@@ -489,7 +593,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isCell: true,
                 cell: (rowData, dataKey) => {
                     if (dataKey === "usdValueThen") {
-                        let chain = Object.entries(this.props.portfolioState.coinRateList)
+                        let chain = Object.entries(assetPriceList)
                         let valueThen;
                         let valueToday;
                         chain.find((chain) => {
@@ -500,6 +604,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                             valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
                           }
                         })
+                        console.log('valueToday',valueToday);
+                        console.log('valueThen',valueThen);
                         return (
                         <div style={{display: "flex", justifyContent: "center"}}>
                         <CustomOverlay
@@ -541,11 +647,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                 cell: (rowData, dataKey) => {
                     // console.log(rowData)
                     if (dataKey === "usdTransactionFee") {
-                        let chain = Object.entries(this.props.portfolioState.coinRateList)
+                        let chain = Object.entries(assetPriceList)
                         let valueToday;
                         let valueThen;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdTransactionFee.id) {
+                              console.log('chain',chain);
                                 valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price || DEFAULT_PRICE)
                                 valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice
                             }
@@ -664,16 +771,22 @@ class TransactionHistoryPage extends BaseReactComponent {
             </Form>
           </div>
           <div className="transaction-history-table">
-            <TransactionTable
-              tableData={tableData}
-              columnList={columnList}
-              message={"No Transactions Found"}
-              totalPage={totalPage}
-              history={this.props.history}
-              location={this.props.location}
-              page={currentPage}
-              tableLoading={this.state.tableLoading}
-            />
+            {
+              this.state.tableLoading
+              ?
+              <Loading />
+              :
+              <TransactionTable
+                tableData={tableData}
+                columnList={columnList}
+                message={"No Transactions Found"}
+                totalPage={totalPage}
+                history={this.props.history}
+                location={this.props.location}
+                page={currentPage}
+                tableLoading={this.state.tableLoading}
+              />
+            }
           </div>
           {/* <CommonPagination
                         numOfPages={3}
@@ -686,12 +799,12 @@ class TransactionHistoryPage extends BaseReactComponent {
 }
 
 const mapStateToProps = (state) => ({
-  portfolioState: state.PortfolioState,
+  // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
-  getCoinRate,
+  // getCoinRate,
   getFilters,
 };
 
