@@ -13,7 +13,9 @@ export const initAmplitude = () => {
 // send Aplitude Data
 export const sendAmplitudeData = (eventType, eventProperties) => {
   // amplitude.getInstance().logEvent(eventType, eventProperties);
-  Mixpanel.track(eventType, eventProperties);
+  let baseToken = localStorage.getItem("baseToken");
+  let newEventProperties= {...eventProperties, "access_code": baseToken}
+  Mixpanel.track(eventType, newEventProperties);
 };
 
 
@@ -195,12 +197,14 @@ export const PiechartChainName = ({
   session_id,
   email_address,
   asset_clicked,
+  asset_amount
 }) => {
   const event_name = "Home:piechart specific chain_name";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "asset clicked": asset_clicked,
+    "asset amount": asset_amount,
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Home:piechart specific chain name");
