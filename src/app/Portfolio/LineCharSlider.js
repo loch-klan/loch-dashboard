@@ -856,7 +856,7 @@ class LineChartSlider extends BaseReactComponent {
                                   {" or $"}
                                   {numToCurrency(event.usd)}
                                   {event.text === "from"
-                                    ? " transferred from "
+                                    ? " received from "
                                     : " transferred to "}{" "}
                                 </span>
                                 <CustomOverlay
