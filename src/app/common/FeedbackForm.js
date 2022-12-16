@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from "react-redux";
 import { BaseReactComponent, CustomTextControl, Form, FormElement, FormSubmitButton, FormValidator } from '../../utils/form';
 import { Image } from 'react-bootstrap'
+import { FeedbackType } from '../../utils/Constant';
+import { sendFeedbackApi } from './Api';
 
 class FeedbackForm extends BaseReactComponent {
   constructor(props) {
@@ -18,13 +20,17 @@ class FeedbackForm extends BaseReactComponent {
 
   handleInput = (value, type) =>{
     this.setState({
-      ...(type === 1 && {favorite: value}),
-      ...(type === 2 && {worst: value}),
+      ...(type === FeedbackType.POSITIVE && {favorite: value}),
+      ...(type === FeedbackType.NEGATIVE && {worst: value}),
     })
   }
-  handleKeyDown = (e) =>{
+  handleKeyDown = (e, type) =>{
     if (e.key === 'Enter') {
       console.log('do validate');
+      let data = new URLSearchParams();
+      data.append("feedback_type", type)
+      data.append("feedback", type === FeedbackType.POSITIVE ? this.state.favorite : this.state.worst)
+      sendFeedbackApi(data, this, type);
     }
   }
 
@@ -39,8 +45,8 @@ class FeedbackForm extends BaseReactComponent {
             name="favorite"
             id="favorite"
             placeholder={"My favorite thing about this page is ..."}
-            onChange={(event)=>{this.handleInput(event.target.value, 1)}}
-            onKeyDown={(e)=>this.handleKeyDown(e)}
+            onChange={(event)=>{this.handleInput(event.target.value, FeedbackType.POSITIVE)}}
+            onKeyDown={(e)=>this.handleKeyDown(e, FeedbackType.POSITIVE)}
           />
           <input
             value={this.state.worst}
@@ -48,8 +54,8 @@ class FeedbackForm extends BaseReactComponent {
             name="worst"
             id="worst"
             placeholder={"The worst thing about this page is ..."}
-            onChange={(event)=>{this.handleInput(event.target.value, 2)}}
-            onKeyDown={(e)=>this.handleKeyDown(e)}
+            onChange={(event)=>{this.handleInput(event.target.value, FeedbackType.NEGATIVE)}}
+            onKeyDown={(e)=>this.handleKeyDown(e, FeedbackType.NEGATIVE)}
           />
         </div>
       </div>

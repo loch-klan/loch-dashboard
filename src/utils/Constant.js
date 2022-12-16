@@ -198,3 +198,8 @@ export const InsightType = {
     return this._presentable[value]
   },
 }
+
+export const FeedbackType = {
+  POSITIVE: 10,
+  NEGATIVE: 20,
+}

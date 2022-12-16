@@ -1,6 +1,7 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
+import { FeedbackType } from "../../utils/Constant";
 import postLoginInstance from './../../utils/PostLoginAxios';
 export const loginApi = (ctx, data) => {
   preLoginInstance.post('common/test/temp-login', data)
@@ -157,17 +158,23 @@ export const exportDataApi = (data,ctx) =>{
   })
 }
 
-// export const resetPasswordApi = (ctx, data) => {
-//   preLoginInstance
-//     .post("organisation/user/set-reset-password", data)
-//     .then((res) => {
-//       toast.success(res.data.message || "Password set successfully");
-//       ctx.props.history.push("/login");
-//     })
-//     .catch((err) => {
-//       console.log("Catch", err);
-//     });
-// };
+export const sendFeedbackApi = (data, ctx, type) => {
+  postLoginInstance
+    .post("common/master/send-feedback", data)
+    .then((res) => {
+      ctx.setState({
+        ...(type === FeedbackType.POSITIVE ? {favorite: "Thank you very much for your feedback"} : {worst: "Thank you very much for your feedback"}),
+      });
+      setTimeout(function(){
+        ctx.setState({
+          ...(type === FeedbackType.POSITIVE ? {favorite: ""} : {worst: ""}),
+        });
+      }, 4000)
+    })
+    .catch((err) => {
+      console.log("Catch", err);
+    });
+};
 
 // export const changePasswordApi = (ctx, data) => {
 //   postLoginInstance
