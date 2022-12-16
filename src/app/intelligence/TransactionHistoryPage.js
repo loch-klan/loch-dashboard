@@ -18,6 +18,7 @@ import { noExponents } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { TransactionHistoryAddress } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
+import FeedbackForm from "../common/FeedbackForm";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -788,10 +789,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               />
             }
           </div>
-          {/* <CommonPagination
-                        numOfPages={3}
-                    // setValue={setPage}
-                    /> */}
+          <FeedbackForm />
         </div>
       </div>
     );

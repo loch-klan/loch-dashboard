@@ -510,11 +510,18 @@ class FixAddModal extends BaseReactComponent {
                                 >
                                     {/* {this.state.btnText} */}
                                     {
-                                        (this.isDisabled() || this.isFixDisabled())
+                                      this.state.modalType === "addwallet"
+                                      ?
+                                        this.isDisabled()
                                             ?
                                             loadingAnimation()
                                             :
-
+                                            this.state.btnText
+                                      :
+                                      this.isFixDisabled()
+                                      ?
+                                            loadingAnimation()
+                                            :
                                             this.state.btnText
                                     }
                                 </Button>

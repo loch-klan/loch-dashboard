@@ -1469,6 +1469,9 @@ form {
       img {
         margin-left: 1rem;
       }
+      &.active-pointer{
+        cursor: pointer;
+      }
     }
   }
 }

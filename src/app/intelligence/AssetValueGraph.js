@@ -12,6 +12,7 @@ import LineChartSlider from "../Portfolio/LineCharSlider";
 import { GroupByOptions, GROUP_BY_YEAR } from "../../utils/Constant";
 import { getAssetGraphDataApi, getCoinRate } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
+import FeedbackForm from "../common/FeedbackForm";
 
 
 class AssetValueGraph extends Component {
@@ -32,7 +33,7 @@ class AssetValueGraph extends Component {
     //    this.props.getCoinRate();
        this.props.getAllCoins();
     this.getGraphData();
-    
+
   }
 
   getGraphData = (groupByValue = GROUP_BY_YEAR) => {
@@ -78,6 +79,7 @@ class AssetValueGraph extends Component {
                         isPage={true}
             />
           </div>
+          <FeedbackForm />
         </div>
       </div>
     );
@@ -85,7 +87,7 @@ class AssetValueGraph extends Component {
 }
 const mapStateToProps = (state) => ({
     OnboardingState: state.OnboardingState,
-    
+
 });
 
 const mapDispatchToProps = {

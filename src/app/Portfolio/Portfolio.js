@@ -519,7 +519,7 @@ this.setState({graphLoading: true})
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
                   });
-                  
+
                 }}>
                         <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>To</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"} />
@@ -811,6 +811,12 @@ this.setState({graphLoading: true})
                       handleGroupBy={(value) => this.handleGroupBy(value)}
                         graphLoading={this.state.graphLoading}
                        isUpdate={this.state.isUpdate}
+                       handleClick={() => {
+                        this.props.history.push(
+                          "/intelligence/asset-value"
+                        );
+                       }
+                      }
                     />
                   </div>
                   <div className="m-b-22 graph-table-section">

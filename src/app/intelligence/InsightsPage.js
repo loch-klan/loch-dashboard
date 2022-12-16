@@ -9,6 +9,7 @@ import { InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import { AllInsights, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import FeedbackForm from "../common/FeedbackForm";
 
 class InsightsPage extends Component {
   constructor(props) {
@@ -127,6 +128,7 @@ class InsightsPage extends Component {
             }
           </div>
         </div>
+        <FeedbackForm />
       </div>
     </div>
   );

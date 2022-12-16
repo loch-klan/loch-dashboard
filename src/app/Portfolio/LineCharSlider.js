@@ -591,7 +591,7 @@ class LineChartSlider extends BaseReactComponent {
 
         formatter: function () {
           let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map((e)=>e.address);
-          
+
 
           let tooltipData = [];
 
@@ -696,12 +696,12 @@ class LineChartSlider extends BaseReactComponent {
                   }
                 }
               },
-             
-           
+
+
             },
-            
+
           },
-          
+
           marker: {
             enabled: false,
             states: {
@@ -777,7 +777,8 @@ class LineChartSlider extends BaseReactComponent {
                   subtitle="Updated 3mins ago"
                     isArrow={true}
                     isAnalytics="Asset Value"
-                 
+                    handleClick={this.props.handleClick}
+
                 />
               )}
               <CoinBadges
