@@ -8,37 +8,48 @@ import ActiveNextBtn from '../../assets/images/icons/ActiveNextBtn.svg'
 import InactivePrevBtn from '../../assets/images/icons/InactivePrevBtn.svg'
 import transactionTableImage from "../../assets/images/transactionTableImage.png"
 import Loading from '../common/Loading';
+import { TransactionHistoryHover } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 function TransactionTable(props) {
     return (
-        <div className="transaction-table-section">
-
-            {props.title ? <GraphHeader
-                title={props.title}
-                subtitle={props.subTitle}
-                isArrow={true}
-                handleClick={props.handleClick}
-            />
-                :
-                ""
+      <div className="transaction-table-section">
+        {props.title ? (
+          <GraphHeader
+            title={props.title}
+            subtitle={props.subTitle}
+            isArrow={true}
+            handleClick={props.handleClick}
+            isAnalytics="Transaction Table"
+            onMouseEnter={() =>
+              TransactionHistoryHover({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              })
             }
-                <CustomTable
-                    className={`transaction-table ${props?.className} ${props.comingSoon && "blur-effect"}`}
-                    tableData={props.tableData}
-                    columnList={props.columnList}
-                    headerHeight={props.headerHeight}
-                    totalPage={props.totalPage}
-                    history={props.history}
-                    location={props.location}
-                    currentPage={props.page}
-                    pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
-                    pageNext={props.page === (props.totalPage-1) ? ActiveNextBtn : ActiveNextBtn}
-                    message={"No transactions found"}
-                    isLoading={props.isLoading}
-                />
-
-
-        </div>
-    )
+          />
+        ) : (
+          ""
+        )}
+        <CustomTable
+          className={`transaction-table ${props?.className} ${
+            props.comingSoon && "blur-effect"
+          }`}
+          tableData={props.tableData}
+          columnList={props.columnList}
+          headerHeight={props.headerHeight}
+          totalPage={props.totalPage}
+          history={props.history}
+          location={props.location}
+          currentPage={props.page}
+          pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
+          pageNext={
+            props.page === props.totalPage - 1 ? ActiveNextBtn : ActiveNextBtn
+          }
+          message={"No transactions found"}
+          isLoading={props.isLoading}
+        />
+      </div>
+    );
 }
 
 export default TransactionTable
