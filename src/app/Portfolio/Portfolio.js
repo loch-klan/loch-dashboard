@@ -33,6 +33,13 @@ import {
   AverageCostBasisEView,
   TimeSpentHome,
   TransactionHistoryAddress,
+  TransactionHistoryDate,
+  TransactionHistoryFrom,
+  TransactionHistoryTo,
+  TransactionHistoryAsset,
+  TransactionHistoryUSD,
+  TransactionHistoryMethod,
+  ProfitLossEV,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 
@@ -101,6 +108,7 @@ class Portfolio extends BaseReactComponent {
       counterPartyValue: null,
       isUpdate: 0,
       yesterdayBalance: 0,
+      currentPage: "Home",
     };
   }
 
@@ -149,7 +157,7 @@ class Portfolio extends BaseReactComponent {
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
       // console.log("page Leave", endTime / 1000);
       // console.log("Time Spent", TimeSpent);
-      TimeSpentHome({ time_spent: TimeSpent + " seconds", session_id: getCurrentUser().id, email_address: getCurrentUser().email });
+      TimeSpentHome({ time_spent: TimeSpent, session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
 
     getGraphData = (groupByValue = GROUP_BY_YEAR) =>{
@@ -362,7 +370,10 @@ this.setState({graphLoading: true})
         const columnList = [
             {
                 labelName:
-                    <div className='cp history-table-header-col' id="time" onClick={() => this.handleTableSort("time")}>
+                <div className='cp history-table-header-col' id="time" onClick={() => {
+                  this.handleTableSort("time");
+                  TransactionHistoryDate({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
+                }}>
                         <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Date</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"} />
                     </div>,
@@ -378,7 +389,13 @@ this.setState({graphLoading: true})
             },
             {
                 labelName:
-                    <div className='cp history-table-header-col' id="from" onClick={() => this.handleTableSort("from")}>
+                <div className='cp history-table-header-col' id="from" onClick={() => {
+                  this.handleTableSort("from");
+                   TransactionHistoryFrom({
+                     session_id: getCurrentUser().id,
+                     email_address: getCurrentUser().email,
+                   });
+                }}>
                         <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>From</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"} />
                     </div>,
@@ -495,7 +512,14 @@ this.setState({graphLoading: true})
             },
             {
                 labelName:
-                    <div className='cp history-table-header-col' id="to" onClick={() => this.handleTableSort("to")}>
+                <div className='cp history-table-header-col' id="to" onClick={() => {
+                  this.handleTableSort("to");
+                  TransactionHistoryTo({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                  
+                }}>
                         <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>To</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"} />
                     </div>,
@@ -589,7 +613,13 @@ this.setState({graphLoading: true})
             },
             {
                 labelName:
-                <div className='cp history-table-header-col' id="asset" onClick={()=>this.handleTableSort("asset")}>
+                <div className='cp history-table-header-col' id="asset" onClick={() => {
+                  this.handleTableSort("asset");
+                    TransactionHistoryAsset({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                }}>
                     <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Asset</span>
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[3].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
@@ -614,7 +644,13 @@ this.setState({graphLoading: true})
             },
             {
                 labelName:
-                <div className='cp history-table-header-col' id="usdValue" onClick={()=>this.handleTableSort("usdValue")}>
+                <div className='cp history-table-header-col' id="usdValue" onClick={() => {
+                  this.handleTableSort("usdValue");
+                  TransactionHistoryUSD({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}>
                     <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Value</span>
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[4].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
@@ -646,7 +682,13 @@ this.setState({graphLoading: true})
             },
             {
                 labelName:
-                <div className='cp history-table-header-col' id="method" onClick={()=>this.handleTableSort("method")}>
+                <div className='cp history-table-header-col' id="method" onClick={() => {
+                  this.handleTableSort("method");
+                   TransactionHistoryMethod({
+                     session_id: getCurrentUser().id,
+                     email_address: getCurrentUser().email,
+                   });
+                }}>
                     <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Method</span>
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[5].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
@@ -804,9 +846,12 @@ this.setState({graphLoading: true})
                             headerTitle="Net Flows"
                             headerSubTitle="Understand your entire portfolio's performance"
                             isArrow={true}
-                            handleClick={()=>this.props.history.push(
-                              "/intelligence"
-                            )}
+                                handleClick={() => {
+                                  this.props.history.push(
+                                    "/intelligence"
+                                  );
+                                  ProfitLossEV({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
+                                }}
                                 isScrollVisible={false}
                                 data={this.state.graphValue[0]}
                                 options={this.state.graphValue[1]}

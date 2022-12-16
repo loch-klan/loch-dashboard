@@ -7,6 +7,8 @@ import increaseYield from '../../assets/images/icons/increase-yield.svg'
 import { getAllInsightsApi } from "./Api";
 import { InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
+import { AllInsights, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class InsightsPage extends Component {
   constructor(props) {
@@ -39,13 +41,39 @@ class InsightsPage extends Component {
   componentDidMount() {
     getAllInsightsApi(this);
   }
-  handleSelect = (value) =>{
+  handleSelect = (value) => {
+    console.log("value",value)
     let insightList = this.state.insightList;
     insightList = insightList.filter((item)=> value === 1 ? item : item.insight_type === value)
     this.setState({
       selectedFilter: value,
       updatedInsightList: insightList,
-    })
+    });
+
+    if (value === 1) {
+      AllInsights({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
+      // console.log("All");
+    } else if (value === 10) {
+       InsightsReduceCost({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
+      //  console.log("Reduce Cost");
+    } else if (value === 20) {
+       InsightsReduceRisk({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
+      //  console.log("Reduce Risk");
+    } else if (value === 30) {
+       InsightsIncreaseYield({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
+      
+    } else {
+      // console.log("not valid value")
+    }
 
   }
 

@@ -37,9 +37,9 @@ class OnBoarding extends Component {
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    console.log("page Leave", endTime/1000);
-    console.log("Time Spent", TimeSpent);
-    TimeSpentOnboarding({time_spent: TimeSpent+" seconds"});
+    // console.log("page Leave", endTime/1000);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentOnboarding({time_spent: TimeSpent});
   }
     onClose = () => {
         this.setState({ showModal: false })

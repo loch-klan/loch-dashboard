@@ -1,6 +1,8 @@
 import { numToCurrency } from "../../utils/ReusableFunctions";
 import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
 import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
+import { ProfitLossHover } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 export const getProfitAndLossData = (arr) => {
     const labels = ["Inflows", "Outflows", "Net"];
@@ -74,6 +76,11 @@ export const getProfitAndLossData = (arr) => {
               title: function() {}, //REMOVE TITLE
               label: (ctx) => {
                 let label = ctx.label + ": $" + numToCurrency(ctx.raw);
+                ProfitLossHover({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  hover_value: label,
+                });
                 return [label];
               },
               labelColor: function(context) {

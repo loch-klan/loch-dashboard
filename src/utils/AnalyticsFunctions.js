@@ -644,7 +644,7 @@ export const TransactionHistory = ({ session_id, email_address }) => {
   console.log("Intelligence:transaction history");
 };
 
-//45. Intelligence:traded by counterparty
+//45. Intelligence:traded by counterparty - removed page
 export const TradeByCounterParty = ({ session_id, email_address }) => {
   const event_name = "Intelligence:traded by counterparty";
   const eventProperties = {
@@ -1301,4 +1301,263 @@ export const AddTextbox = ({ session_id}) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Landing Page Conversion:add textbox");
+};
+
+//94. Landing Page Conversion:Email not Found
+export const EmailNotFound = ({ session_id, email_address}) => {
+  const event_name = "Landing Page Conversion:email not found";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Landing Page Conversion:Email Not found");
+};
+
+//95. Landing Page Conversion:Invalid Email
+export const InvalidEmail = ({ email_address}) => {
+  const event_name = "Landing Page Conversion:invalid email";
+  const eventProperties = {
+
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Landing Page Conversion:Invalid Email");
+};
+
+//96. Home:asset value chart internal events
+export const AssetValueInternalEvent = ({ session_id, email_address, no_of_events }) => {
+  const event_name = "Home:asset value chart internal events";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "no of internal events": no_of_events
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home:asset value chart internal events ");
+};
+
+//97.Home:asset value chart hover 
+export const AssetValueHover = ({ session_id, email_address, value, address }) => {
+  const event_name = "Home:asset value chart hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "point hovered": value,
+    "Wallet address": address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home:asset value chart hover");
+};
+
+
+//97.Home Page: transaction history date
+export const TransactionHistoryDate = ({ session_id, email_address }) => {
+  const event_name = "Home:transaction history date";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home: transaction history date");
+};
+
+//97.Home Page: transaction history from
+export const TransactionHistoryFrom = ({ session_id, email_address }) => {
+  const event_name = "Home:transaction history from";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home: transaction history from");
+};
+
+
+//97.Home Page: transaction history to
+export const TransactionHistoryTo = ({ session_id, email_address }) => {
+  const event_name = "Home:transaction history to";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home Page: transaction history to");
+};
+
+
+//97.Home Page:transaction history asset
+export const TransactionHistoryAsset = ({ session_id, email_address }) => {
+  const event_name = "Home:transaction history asset";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home Page:transaction history asset");
+};
+
+//97.Home Page:transaction history USD value
+export const TransactionHistoryUSD = ({ session_id, email_address }) => {
+  const event_name = "Home:transaction history USD value";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home Page:transaction history USD value");
+};
+
+
+//97.Home Page:transaction history method
+export const TransactionHistoryMethod = ({ session_id, email_address }) => {
+  const event_name = "Home:transaction history method";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home Page:transaction history method");
+};
+
+
+//97.Home Page:transaction history hover
+export const TransactionHistoryHover = ({ session_id, email_address }) => {
+  const event_name = "Home:transaction history hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home Page:transaction history hover");
+};
+
+
+
+//97.Home Page:Profit and Loss expanded view
+export const ProfitLossEV = ({ session_id, email_address }) => {
+  const event_name = "Home:Profit and Loss expanded view";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home Page:Profit and Loss expanded view");
+};
+
+
+//97.Home Page:Profit and Loss hover
+export const ProfitLossHover = ({ session_id, email_address, hover_value }) => {
+  const event_name = "Home:Profit and Loss hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "bar hovered": hover_value
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home Page:Profit and Loss hover");
+};
+
+
+//97.Home Page:counterparty fees hover
+export const HomeCounterPartyHover = ({ session_id, email_address, counterparty_selected}) => {
+  const event_name = "Home:counterparty fees hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "counterparty selected": counterparty_selected
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home:counterparty fees hover");
+}
+
+
+//97.Intelligence:insights: all insights
+export const AllInsights = ({ session_id, email_address}) => {
+  const event_name = "Intelligence:insights: all insights";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Intelligence:insights: all insights");
+}
+
+
+//97.Intelligence:insights: reduce cost
+export const InsightsReduceCost = ({ session_id, email_address}) => {
+  const event_name = "Intelligence:insights: reduce cost";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Intelligence:insights: reduce cost");
+}
+
+
+//97.Intelligence:insights: increase yield
+export const InsightsIncreaseYield = ({ session_id, email_address}) => {
+  const event_name = "Intelligence:insights: increase yield";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Intelligence:insights: increase yield");
+}
+
+
+
+//97.Intelligence:insights: reduce risk
+export const InsightsReduceRisk = ({ session_id, email_address}) => {
+  const event_name = "Intelligence:insights: reduce risk";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Intelligence:insights: reduce risk");
+}
+
+//14. Intelligent:asset value chart crypto asset filter
+export const IntlAssetValueFilter = ({
+  session_id,
+  email_address,
+  filter_clicked,
+}) => {
+  const event_name = "Intelligence:asset value chart crypto asset filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "filter clicked": filter_clicked,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//Intelligence:asset value chart hover 
+export const IntlAssetValueHover = ({ session_id, email_address, value, address }) => {
+  const event_name = "Intelligence:asset value chart hover ";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "point hovered": value,
+    "Wallet address": address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Intelligence:asset value chart hover ");
+};
+
+//Intelligence:asset value chart internal events
+export const IntlAssetValueInternalEvent = ({ session_id, email_address, no_of_events }) => {
+  const event_name = "Intelligence:asset value chart internal events";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "no of internal events": no_of_events
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Intelligence:asset value chart internal events");
 };

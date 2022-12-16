@@ -34,7 +34,7 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
         ctx.setState({
           counterGraphLoading: false,
           counterPartyData: res.data.data.counter_party_volume_traded,
-          counterPartyValue: getCounterGraphData(res.data.data.counter_party_volume_traded)
+          counterPartyValue: getCounterGraphData(res.data.data.counter_party_volume_traded, ctx.state.currentPage)
         });
       } else{
         toast.error(res.data.message || "Something Went Wrong")

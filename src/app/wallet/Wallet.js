@@ -62,10 +62,10 @@ class Wallet extends Component {
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    console.log("page Leave", endTime / 1000);
-    console.log("Time Spent", TimeSpent);
+    // console.log("page Leave", endTime / 1000);
+    // console.log("Time Spent", TimeSpent);
     TimeSpentWallet({
-      time_spent: TimeSpent + " seconds",
+      time_spent: TimeSpent,
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
