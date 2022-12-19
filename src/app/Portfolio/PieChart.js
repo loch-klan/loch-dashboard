@@ -239,7 +239,7 @@ class PieChart extends BaseReactComponent {
                                 if(document.getElementById("fixbtn")){
                                   {document.getElementById("fixbtn").style.display = "none"}
                                 }
-                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: [{asset_name: currentData.options.name, usd: "$"+currentData.options.usd}]});
+                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: currentData.options.name, asset_amount: "$"+currentData.options.usd});
                             },
                             unselect: function () {
                                 // console.log("UNSELECT")

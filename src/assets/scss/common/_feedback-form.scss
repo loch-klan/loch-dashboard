@@ -17,6 +17,7 @@
   }
   .feedback-wrapper{
     input{
+      @include font($grey-ADA, "Inter-Medium", 1.3rem, 500, normal);
       // display: flex;
       background: $secondary;
       border: 0.1rem solid $grey-D4D;
@@ -24,12 +25,15 @@
       border-radius: 0.8rem;
       height: 2.5rem;
       margin-right: 0.5rem;
-      width: 22rem;
+      width: 28.5rem;
       padding: 0 1rem;
       // text-align: center;
       &:focus-visible{
         outline: none;
       }
+    }
+    input::placeholder{
+      color: $grey-ADA;
     }
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {

@@ -3,29 +3,20 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
 import WelcomeCard from './WelcomeCard';
 import PieChart from './PieChart';
-import LineChart from './LineChart';
 import LineChartSlider from "./LineCharSlider";
 import { getCoinRate, getDetailsByLinkApi, getUserWallet, getYesterdaysBalanceApi, settingDefaultValues } from "./Api";
-// import { Loading } from 'react-loading-dot';
-
 import { Button, Image, Row, Col } from 'react-bootstrap';
 import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
 import FixAddModal from '../common/FixAddModal';
 import { getAllCoins } from '../onboarding/Api.js'
-import Metamask from '../../assets/images/MetamaskIcon.svg'
-import Ethereum from '../../assets/images/icons/ether-coin.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import TransactionTable from '../intelligence/TransactionTable';
-import CoinChip from './../wallet/CoinChip';
 import BarGraphSection from './../common/BarGraphSection';
-import GainIcon from '../../assets/images/icons/GainIcon.svg'
-import LossIcon from '../../assets/images/icons/LossIcon.svg'
 import { getProfitAndLossApi, searchTransactionApi } from '../intelligence/Api.js'
 import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE, DEFAULT_PRICE} from '../../utils/Constant'
 import sortByIcon from '../../assets/images/icons/triangle-down.svg'
 import moment from "moment"
 import unrecognizedIcon from '../../image/unrecognized.svg'
-import ExportIconWhite from '../../assets/images/apiModalFrame.svg'
 import {
   ManageWallets,
   TransactionHistoryEView,
@@ -42,26 +33,22 @@ import {
   ProfitLossEV,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
-
-
 import {getAssetGraphDataApi} from './Api';
-import { getAllCounterFeeApi, getAllFeeApi } from '../cost/Api';
+import { getAllCounterFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
-import { noExponents } from '../../utils/ReusableFunctions';
 import FeedbackForm from '../common/FeedbackForm';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
-    // console.log('propsssssss',props);
-    props.location.state &&
+    props.location.state && props.location.state.addWallet &&
       localStorage.setItem(
         "addWallet",
         JSON.stringify(props.location.state.addWallet)
       );
     this.state = {
       id: props.match.params?.id,
-      userWalletList: JSON.parse(localStorage.getItem("addWallet")) || [],
+      userWalletList: localStorage.getItem("addWallet") ? JSON.parse(localStorage.getItem("addWallet")) : [],
       assetTotalValue: 0,
       loader: false,
       coinAvailable: true,
@@ -141,16 +128,25 @@ class Portfolio extends BaseReactComponent {
     componentDidMount() {
       this.state.startTime = new Date() * 1;
       // console.log("page Enter", this.state.startTime / 1000);
+        if(this.props.location.state?.noLoad){
+
+        } else {
+          this.apiCall();
+        }
+
+    }
+
+    apiCall = () =>{
       this.props.getAllCoins()
-      if (this.props.match.params.id) {
-        this.props.getDetailsByLinkApi(this.props.match.params.id, this)
-      }
-      this.props.getCoinRate()
-      this.getTableData()
-      this.getGraphData()
-      getAllCounterFeeApi(this, false, false);
-      getProfitAndLossApi(this, false, false, false);
-      getYesterdaysBalanceApi(this);
+          if (this.props.match.params.id) {
+            this.props.getDetailsByLinkApi(this.props.match.params.id, this)
+          }
+          this.props.getCoinRate()
+          this.getTableData()
+          this.getGraphData()
+          getAllCounterFeeApi(this, false, false);
+          getProfitAndLossApi(this, false, false, false);
+          getYesterdaysBalanceApi(this);
     }
 
     componentWillUnmount() {
@@ -177,7 +173,7 @@ this.setState({graphLoading: true})
     }
     getTableData = () => {
       this.setState({tableLoading: true})
-        let arr = JSON.parse(localStorage.getItem("addWallet")) || [];
+        let arr = JSON.parse(localStorage.getItem("addWallet") || "");
         let address = arr.map((wallet) => {
             return wallet.address
         })
@@ -227,10 +223,16 @@ this.setState({graphLoading: true})
                 getYesterdaysBalanceApi(this);
             }
         }
-        else if(prevState.sort !== this.state.sort)
-        {
-            // console.log("Calling")
+        else if(prevState.sort !== this.state.sort){
             this.getTableData()
+        } else if(prevProps.location.state?.noLoad !== this.props.location.state?.noLoad){
+          localStorage.setItem(
+            "addWallet",
+            JSON.stringify(this.props.location.state.addWallet)
+          );
+          this.setState({userWalletList: this.props.location.state.addWallet})
+          this.apiCall();
+
         }
     }
 

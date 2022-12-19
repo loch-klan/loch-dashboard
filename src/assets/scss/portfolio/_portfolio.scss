@@ -584,8 +584,10 @@
 
     }
     .profit-chart{
+      min-height: 51rem;
       .bar-graph-section{
         height: 51rem;
+        min-height: 51rem;
         margin-bottom: 0;
         width: 100%;
         .portfolio-profit-and-loss{
