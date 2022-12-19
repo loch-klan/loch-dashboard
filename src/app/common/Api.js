@@ -168,6 +168,7 @@ export const sendFeedbackApi = (data, ctx, type) => {
       setTimeout(function(){
         ctx.setState({
           ...(type === FeedbackType.POSITIVE ? {favorite: ""} : {worst: ""}),
+          disabled: false,
         });
       }, 4000)
     })
