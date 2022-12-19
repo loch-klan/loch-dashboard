@@ -25,7 +25,7 @@ class Profile extends Component {
                 <div className='profile-form-section'>
                     <ProfileForm/>
                 </div>
-                <FeedbackForm />
+                <FeedbackForm page={"Profile Page"} />
                 </div>
             </div>
         )

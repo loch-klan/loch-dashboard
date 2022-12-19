@@ -79,7 +79,7 @@ class AssetValueGraph extends Component {
                         isPage={true}
             />
           </div>
-          <FeedbackForm />
+          <FeedbackForm page={"Asset Value Graph Page"} />
         </div>
       </div>
     );

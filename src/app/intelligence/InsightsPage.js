@@ -128,7 +128,7 @@ class InsightsPage extends Component {
             }
           </div>
         </div>
-        <FeedbackForm />
+        <FeedbackForm page={"Insights Page"} />
       </div>
     </div>
   );

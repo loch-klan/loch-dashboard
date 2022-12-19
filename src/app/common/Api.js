@@ -14,7 +14,7 @@ export const loginApi = (ctx, data) => {
         if(ctx.state.link){
           ctx.props.getAllCoins(ctx.handleShareLinkUser)
         } else{
-          ctx.props.history.push('/home');
+          ctx.props.history.push('/welcome');
         }
 
       } else {
@@ -36,7 +36,7 @@ export const fixWalletApi = (ctx,info) =>{
       .then((res)=>{
         if(!res.data.error){
           ctx.handleRedirection();
-          // ctx.props.history.push('/home');
+          // ctx.props.history.push('/welcome');
         }
         else{
           toast.error(res.data.message || "Something went wrong");

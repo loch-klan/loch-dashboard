@@ -164,7 +164,7 @@ export const verifyUser = (ctx, info) => {
           }
             // console.log('addWallet',addWallet);
             ctx.props.history.push({
-              pathname: "/portfolio",
+              pathname: "/home",
               state: {addWallet}
             })
             UserSignedinCorrectly({
@@ -199,7 +199,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
   {
     !ctx.state.id &&
     ctx.props.history.push({
-      pathname: ctx.state.id ? ctx.state.link : '/portfolio',
+      pathname: ctx.state.id ? ctx.state.link : '/home',
       // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
       state: {noLoad: true}
     })
@@ -236,7 +236,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
               newAddWallet.push(obj);
       }
       ctx.props.history.replace({
-        pathname: ctx.state.id ? ctx.state.link : '/portfolio',
+        pathname: ctx.state.id ? ctx.state.link : '/home',
         state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}
       })
   }else{

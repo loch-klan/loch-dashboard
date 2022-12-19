@@ -251,7 +251,7 @@ class Intelligence extends Component {
                     </div>
                   )}
                 </div>
-                  <FeedbackForm />
+                  <FeedbackForm page={"Intelligence Page"} />
               </div>
             </div>
           </div>
