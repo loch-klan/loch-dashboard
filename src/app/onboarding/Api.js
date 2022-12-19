@@ -1,8 +1,6 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
-import { COINS_LIST, WALLET_LIST,UPDATE_LIST } from "./ActionTypes";
-import addWallet from "./addWallet";
-import { dispatch } from 'react-redux';
+import { COINS_LIST, WALLET_LIST, PARENT_COINS_LIST } from "./ActionTypes";
 import {
   WalletAddressTextbox,
   EmailAddressVerified,
@@ -29,13 +27,31 @@ export const getAllCoins = (handleShareLinkUser = null) => {
     };
 };
 
-export const detectCoin = (wallet,ctx=null, signal=null) => {
+export const getAllParentChains = () => {
+  return async function (dispatch, getState) {
+      let data = new URLSearchParams();
+      postLoginInstance
+          .post("wallet/chain/get-parent-chains", data)
+          .then((res) => {
+              let coinsList = res.data && res.data.data && res.data.data.chains.length > 0 ? res.data.data.chains : []
+              dispatch({
+                  type: PARENT_COINS_LIST,
+                  payload: coinsList
+              });
+          })
+          .catch((err) => {
+              console.log("Catch", err);
+          });
+  };
+};
+
+export const detectCoin = (wallet,ctx=null) => {
     return function (dispatch, getState) {
         let data = new URLSearchParams();
         data.append("chain", wallet.coinCode);
         data.append("wallet_address", wallet.address);
         postLoginInstance
-            .post("wallet/chain/detect-chain", data, {signal})
+            .post("wallet/chain/detect-chain", data)
             .then((res) => {
                 // && res.data.data.chain_detected
                 if (!res.error && res.data) {
@@ -56,7 +72,8 @@ export const detectCoin = (wallet,ctx=null, signal=null) => {
                             coinName: wallet.coinName,
                             address: wallet.address,
                             chain_detected: res.data.data.chain_detected,
-                            coinColor: wallet.coinColor
+                            coinColor: wallet.coinColor,
+                            subChains: wallet.subChains,
                         }
                     });
                     if(ctx){
