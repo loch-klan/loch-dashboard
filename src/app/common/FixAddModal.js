@@ -74,7 +74,7 @@ class FixAddModal extends BaseReactComponent {
         }
         this.timeout = setTimeout(() => {
             this.getCoinBasedOnWalletAddress(name, value);
-        }, 1000)
+        }, 500)
     }
 
     getCoinBasedOnWalletAddress = (name, value) => {
@@ -200,6 +200,12 @@ class FixAddModal extends BaseReactComponent {
             }
             let addWallet = walletList;
             addWallet.map((w, i) => { w.id = `wallet${i + 1}` })
+
+            if (this.timeout) {
+              clearTimeout(this.timeout)
+          }
+          this.timeout = setTimeout(() => {
+
             localStorage.setItem("addWallet", JSON.stringify(addWallet))
             this.state.changeList && this.state.changeList(walletList)
             this.state.onHide()
@@ -243,6 +249,10 @@ class FixAddModal extends BaseReactComponent {
               recognized_addresses: recog_address,
               blockchains_detected: blockchainDetected,
             });
+
+          }, 500)
+
+
         }
 
     }
@@ -268,10 +278,12 @@ class FixAddModal extends BaseReactComponent {
         }
         this.timeout = setTimeout(() => {
             this.getCoinBasedOnAddress(name, value);
-        }, 1000)
+        }, 500)
     }
 
     handleFixWallet = () => {
+      clearTimeout(this.delayTimer);
+    this.delayTimer = setTimeout(() => {
         let wallets = JSON.parse(localStorage.getItem("addWallet"))
         // console.log('wallet',wallets);
         let localArr = []
@@ -323,6 +335,7 @@ class FixAddModal extends BaseReactComponent {
         if (this.props.handleUpdateWallet) {
             this.props.handleUpdateWallet()
         }
+      }, 500);
     }
 
     isDisabled = () => {
