@@ -106,6 +106,7 @@ export const getDetectedChainsApi = (ctx) =>{
       // console.log('xyz',xyz);
       addWallet.map((wallet)=>{
         let userWallet = null;
+        let coinFound = false;
         xyz.map((item)=>{
           if(item.address === wallet.address || item.display_address === wallet.address){
             userWallet = item
@@ -116,17 +117,19 @@ export const getDetectedChainsApi = (ctx) =>{
           let isDetected = false;
           userWallet.chains.map((userChain)=>{
             if(userChain.code === dummyChain.coinCode){
-              isDetected = true
+              isDetected = true;
+              coinFound = true;
             }
           })
           dummyChain.chain_detected = isDetected;
           return dummyChain
         });
+        wallet.coinFound = coinFound
       wallet.coins = chainsDetected
       })
-      // console.log('addWallet',addWallet);
+      console.log('addWallet',addWallet);
       ctx.setState({addWalletList: addWallet})
-      addWallet && localStorage.setItem('addWallet',JSON.stringify(addWallet))
+      addWallet && addWallet.length > 0 && localStorage.setItem('addWallet',JSON.stringify(addWallet))
     } else{
       toast.error(res.data.message || "Something went wrong");
     }

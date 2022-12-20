@@ -222,6 +222,7 @@ this.setState({graphLoading: true})
                 this.props.settingDefaultValues();
             }
             if (prevProps.userWalletList !== this.state.userWalletList) {
+              // this.apiCall();
                 this.getTableData()
                 this.getGraphData()
                 getYesterdaysBalanceApi(this);

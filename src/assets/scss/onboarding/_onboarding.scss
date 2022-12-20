@@ -79,7 +79,13 @@
                     // border-radius: 2rem;
                     border-radius: 0.8rem;
                 }
-
+                .ob-wallet-input-wrapper{
+                  &:last-child{
+                    .ob-modal-body-text{
+                      margin-bottom: 0;
+                    }
+                  }
+                }
 
             }
 
@@ -117,7 +123,8 @@
                 .grey-btn {
                     width: 59.2rem;
                     line-height: 1.3rem;
-                    margin-bottom: 1rem;
+                    // margin-bottom: 1rem;
+                    margin-top: 1.2rem;
                 }
 
                 .ob-modal-body-add-btn {
@@ -215,7 +222,7 @@
             }
 
             .ob-modal-body-btn {
-                margin: 2.2rem 0 2.4rem;
+                margin: 3.2rem 0 2.4rem;
                 text-align: center;
 
                 .go-btn {

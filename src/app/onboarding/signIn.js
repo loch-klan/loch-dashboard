@@ -75,7 +75,7 @@ class SignIn extends BaseReactComponent {
                         validations={[
                           {
                             validate: FormValidator.isRequired,
-                            message: "Field cannot be empty",
+                            message: "Please enter a valid email id",
                           },
                           // {
                           //   validate: FormValidator.isEmail,
@@ -95,7 +95,7 @@ class SignIn extends BaseReactComponent {
                               }
                               return isvalid
                             },
-                            message: "Please enter valid email id",
+                            message: "Please enter a valid email id",
                           },
                         ]}
                         control={{
