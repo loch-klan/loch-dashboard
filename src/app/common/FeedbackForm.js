@@ -30,6 +30,7 @@ class FeedbackForm extends BaseReactComponent {
       console.log('do validate');
       this.setState({disabled:true})
       let data = new URLSearchParams();
+      data.append("page", this.props.page)
       data.append("feedback_type", type)
       data.append("feedback", type === FeedbackType.POSITIVE ? this.state.favorite : this.state.worst)
       sendFeedbackApi(data, this, type);

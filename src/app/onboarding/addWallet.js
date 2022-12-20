@@ -5,7 +5,7 @@ import { Button, Image } from "react-bootstrap";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
-import { getAllCoins, detectCoin, createAnonymousUserApi} from "./Api";
+import { getAllCoins, detectCoin, createAnonymousUserApi, getAllParentChains} from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import { getPadding } from '../../utils/ReusableFunctions';
 import {
@@ -30,6 +30,7 @@ class AddWallet extends BaseReactComponent {
 
     componentDidMount() {
         this.props.getAllCoins()
+        this.props.getAllParentChains()
     }
 
     handleOnChange = (e) => {
@@ -59,15 +60,17 @@ class AddWallet extends BaseReactComponent {
     }
 
     getCoinBasedOnWalletAddress = (name, value) => {
-        if (this.props.OnboardingState.coinsList && value) {
-            for (let i = 0; i < this.props.OnboardingState.coinsList.length; i++) {
+      let parentCoinList =  this.props.OnboardingState.parentCoinList;
+        if (parentCoinList && value) {
+            for (let i = 0; i < parentCoinList.length; i++) {
                 this.props.detectCoin({
                     id: name,
-                    coinCode: this.props.OnboardingState.coinsList[i].code,
-                    coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
-                    coinName: this.props.OnboardingState.coinsList[i].name,
+                    coinCode: parentCoinList[i].code,
+                    coinSymbol: parentCoinList[i].symbol,
+                    coinName: parentCoinList[i].name,
                     address: value,
-                    coinColor: this.props.OnboardingState.coinsList[i].color,
+                    coinColor: parentCoinList[i].color,
+                    subChains: parentCoinList[i].sub_chains
                 }, this)
             }
         }
@@ -81,11 +84,22 @@ class AddWallet extends BaseReactComponent {
         coinSymbol: data.coinSymbol,
         coinColor: data.coinColor,
     }
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains && data.subChains.map((item)=>newCoinList.push({
+      chain_detected: data.chain_detected,
+      coinCode: item.code,
+      coinName: item.name,
+      coinSymbol: item.symbol,
+      coinColor: item.color,
+    }))
     let i = this.state.walletInput.findIndex(obj => obj.id === data.id)
     let newAddress = [...this.state.walletInput]
     // data.address === newAddress[i].address && console.log("heyyy", newAddress[i].address, data.address)
-    data.address !== newAddress[i].address ? newAddress[i].coins = [] : newAddress[i].coins.push(coinList)
-    newAddress[i].coinFound = newAddress[i].coins.some((e) => e.chain_detected === true)
+    data.address !== newAddress[i].address ? newAddress[i].coins = [] : newAddress[i].coins.push(...newCoinList);
+
+    newAddress[i].coinFound = newAddress[i].coins.some((e) => e.chain_detected === true);
+
     this.setState({
       walletInput: newAddress
     })
@@ -342,7 +356,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     getAllCoins,
     detectCoin,
-    createAnonymousUserApi
+    createAnonymousUserApi,
+    getAllParentChains
 }
 AddWallet.propTypes = {
 };

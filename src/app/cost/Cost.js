@@ -432,7 +432,7 @@ class Cost extends Component {
               />
             </div>
           </div>
-          <FeedbackForm />
+          <FeedbackForm page={"Cost Page"} />
         </div>
       </div>
     );

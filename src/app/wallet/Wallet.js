@@ -207,6 +207,7 @@ class Wallet extends Component {
 
   handleUpdateWallet = () => {
     // console.log("YES API")
+    this.setState({isLoading: true})
     this.makeApiCall();
   };
 
@@ -317,7 +318,7 @@ class Wallet extends Component {
               </div>
             )}
           </div>
-          <FeedbackForm />
+          <FeedbackForm page={"Wallet Page"} />
         </div>
       </div>
     );

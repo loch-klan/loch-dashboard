@@ -18,7 +18,7 @@ export default function PageHeader(props) {
   })
   const breadCrumb =
     <Breadcrumb >
-      <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/portfolio`}}><Image src={InActiveHomeSmallIcon} /></Breadcrumb.Item>
+      <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/home`}}><Image src={InActiveHomeSmallIcon} /></Breadcrumb.Item>
       {breads}
     </Breadcrumb >
 

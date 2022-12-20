@@ -35,7 +35,7 @@ class VerifyEmail extends BaseReactComponent {
           <h1 className="inter-display-bold f-s-24">Welcome to Loch</h1>
           <p className='inter-display-regular f-s-18 lh-21'>{this.state.error ? "Your token is expired or invalid" : "Your email id has been verified"}</p>
           <br/><br/>
-          <Button className='primary-btn' onClick={()=>this.props.history.push('/home')}>Home</Button>
+          <Button className='primary-btn' onClick={()=>this.props.history.push('/welcome')}>Home</Button>
         </div>
       </div>
     )

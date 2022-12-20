@@ -197,11 +197,13 @@ this.setState({graphLoading: true})
                 this.state.userWalletList.map((wallet, i) => {
                     if (wallet.coinFound) {
                         wallet.coins.map((coin) => {
+                          if(coin.chain_detected){
                             let userCoinWallet = {
-                                address: wallet.address,
-                                coinCode: coin.coinCode
-                            }
-                            this.props.getUserWallet(userCoinWallet, this)
+                              address: wallet.address,
+                              coinCode: coin.coinCode
+                          }
+                          this.props.getUserWallet(userCoinWallet, this)
+                          }
                         })
                     }
                     if (i === (this.state.userWalletList.length - 1)) {
@@ -918,7 +920,7 @@ this.setState({graphLoading: true})
                         }
                         </div>
                   </div>
-                  <FeedbackForm attribution={true} />
+                  <FeedbackForm page={"Home Page"} attribution={true} />
                 </div>
               </div>
             )}

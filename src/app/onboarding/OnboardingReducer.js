@@ -1,12 +1,15 @@
-import { COINS_LIST, WALLET_LIST } from "./ActionTypes";
+import { COINS_LIST, WALLET_LIST, PARENT_COINS_LIST } from "./ActionTypes";
 const INITIAL_STATE = {
     coinsList: [],
-    walletList: []
+    walletList: [],
+    parentCoinList: [],
 };
 const OnboardingReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case COINS_LIST:
             return { ...state, coinsList: action.payload };
+        case PARENT_COINS_LIST:
+            return { ...state, parentCoinList: action.payload };
         case WALLET_LIST:
             let updateWalletList = state.walletList || [];
             let index = updateWalletList.findIndex(
@@ -24,7 +27,8 @@ const OnboardingReducer = (state = INITIAL_STATE, action) => {
                         coinSymbol: action.payload.coinSymbol,
                         coinName: action.payload.coinName,
                         chain_detected: action.payload.chain_detected,
-                        coinColor: action.payload.coinColor
+                        coinColor: action.payload.coinColor,
+                        subChains: action.payload.subChains,
                     })
                     updateWalletList[index].coinFound = action.payload.chain_detected ? true : updateWalletList[index].coinFound
                 }
