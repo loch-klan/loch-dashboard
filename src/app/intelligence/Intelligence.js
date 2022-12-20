@@ -8,7 +8,7 @@ import insight from '../../assets/images/icons/insight.svg'
 import BarGraphSection from '../common/BarGraphSection';
 import { getAllCoins } from '../onboarding/Api.js'
 import { Image } from 'react-bootstrap';
-import { InsightsViewMore, TimeSpentIntelligence } from '../../utils/AnalyticsFunctions';
+import { InsightsViewMore, IntelligencePage, TimeSpentIntelligence } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
 import moment from "moment/moment";
 import { getProfitAndLossApi} from "./Api";
@@ -39,7 +39,11 @@ class Intelligence extends Component {
 
     componentDidMount() {
        this.state.startTime = new Date() * 1;
-        console.log("page Enter", this.state.startTime);
+        // console.log("page Enter", this.state.startTime);
+       IntelligencePage({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
         window.scrollTo(0, 0);
     this.props.getAllCoins();
     this.timeFilter(0);

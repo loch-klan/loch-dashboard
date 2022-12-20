@@ -15,6 +15,7 @@ import {
   TimeSpentCosts,
   FeesTimePeriodFilter,
   CounterpartyFeesTimeFilter,
+  CostsPage,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
@@ -46,7 +47,10 @@ class Cost extends Component {
   }
 
   componentDidMount() {
-
+     CostsPage({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
     if(this.props.location.hash !== ''){
       setTimeout(() => {
       const id = this.props.location.hash.replace('#', '');

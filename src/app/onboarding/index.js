@@ -12,6 +12,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import {
+  OnboardingPage,
   PrivacyMessage, TimeSpentOnboarding
 } from "../../utils/AnalyticsFunctions.js";
 // export { default as OnboardingReducer } from "./OnboardingReducer";
@@ -31,7 +32,8 @@ class OnBoarding extends Component {
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-      console.log("page Enter", (this.state.startTime/1000));
+    console.log("page Enter", (this.state.startTime / 1000));
+    OnboardingPage({});
     }
 
   componentWillUnmount() {
