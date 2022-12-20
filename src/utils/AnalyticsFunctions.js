@@ -1600,3 +1600,102 @@ export const ShareLinkCopy = ({ session_id, email_address, link }) => {
   sendAmplitudeData(event_name, eventProperties);
   console.log("Menu:share: link copied");
 };
+
+
+// Page View: HomePage
+export const HomePage = ({ session_id, email_address}) => {
+  const event_name = "Page View: Home";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Pageview Home");
+};
+
+// Page View: IntelligencePage
+export const IntelligencePage = ({ session_id, email_address}) => {
+  const event_name = "Page View: Intelligence";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Pageview Intelligence");
+};
+
+// Page View: Cost page
+export const CostsPage = ({ session_id, email_address}) => {
+  const event_name = "Page View: Costs";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Pageview Cost");
+};
+
+// Page View: wallets page
+export const WalletsPage = ({ session_id, email_address}) => {
+  const event_name = "Page View: Wallets";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Pageview Wallets");
+};
+
+// Page View: Profile page
+export const ProfilePage = ({ session_id, email_address}) => {
+  const event_name = "Page View: Profile";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Pageview Profile");
+};
+
+// Page View: Transaction History
+export const TransactionHistoryPageView = ({ session_id, email_address}) => {
+  const event_name = "Page View: Transaction History";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Pageview Transaction History");
+};
+
+// Page View: Asset Value
+export const AssetValuePage = ({ session_id, email_address}) => {
+  const event_name = "Page View: Asset Value";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Pageview Asset Value");
+};
+
+// Page View: Insights
+export const InsightPage = ({ session_id, email_address}) => {
+  const event_name = "Page View: Insights";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Pageview Insights");
+};
+
+// Page View: Onboarding
+export const OnboardingPage = () => {
+  const event_name = "Page View: Onboarding";
+  const eventProperties = {
+  
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Pageview Onboarding");
+};

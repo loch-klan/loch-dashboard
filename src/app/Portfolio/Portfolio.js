@@ -31,6 +31,7 @@ import {
   TransactionHistoryUSD,
   TransactionHistoryMethod,
   ProfitLossEV,
+  HomePage,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {getAssetGraphDataApi} from './Api';
@@ -128,6 +129,7 @@ class Portfolio extends BaseReactComponent {
     componentDidMount() {
       this.state.startTime = new Date() * 1;
       // console.log("page Enter", this.state.startTime / 1000);
+      HomePage({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
         if(this.props.location.state?.noLoad){
 
         } else {

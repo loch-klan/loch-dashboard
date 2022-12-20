@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import ProfileForm from './ProfileForm';
 import PageHeader from './../common/PageHeader';
 import FeedbackForm from '../common/FeedbackForm';
+import { ProfilePage } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 
 class Profile extends Component {
     constructor(props) {
@@ -12,7 +14,12 @@ class Profile extends Component {
         this.state = {}
     }
 
-    componentDidMount() { }
+    componentDidMount() {
+         ProfilePage({
+           session_id: getCurrentUser().id,
+           email_address: getCurrentUser().email,
+         });
+     }
 
     render() {
         return (

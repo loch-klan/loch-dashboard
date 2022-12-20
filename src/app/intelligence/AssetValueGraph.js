@@ -13,6 +13,8 @@ import { GroupByOptions, GROUP_BY_YEAR } from "../../utils/Constant";
 import { getAssetGraphDataApi, getCoinRate } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
+import { AssetValuePage } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 
 class AssetValueGraph extends Component {
@@ -27,8 +29,12 @@ class AssetValueGraph extends Component {
   }
 
   componentDidMount() {
-    this.state.startTime = new Date() * 1;
-    console.log("page Enter", this.state.startTime / 1000);
+    // this.state.startTime = new Date() * 1;
+     AssetValuePage({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
+    // console.log("page Enter", this.state.startTime / 1000);
     // console.log('this.state',this.state);
     //    this.props.getCoinRate();
        this.props.getAllCoins();

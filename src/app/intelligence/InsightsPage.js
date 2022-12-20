@@ -7,7 +7,7 @@ import increaseYield from '../../assets/images/icons/increase-yield.svg'
 import { getAllInsightsApi } from "./Api";
 import { InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
-import { AllInsights, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk } from "../../utils/AnalyticsFunctions";
+import { AllInsights, InsightPage, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 
@@ -40,6 +40,10 @@ class InsightsPage extends Component {
     };
   }
   componentDidMount() {
+     InsightPage({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
     getAllInsightsApi(this);
   }
   handleSelect = (value) => {
