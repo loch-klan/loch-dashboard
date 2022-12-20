@@ -188,7 +188,10 @@ class FixAddModal extends BaseReactComponent {
 
     handleAddWallet = () => {
         if (this.state.addWalletList) {
-
+          if (this.timeout) {
+            clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
             let arr = []
             let walletList = []
             for (let i = 0; i < this.state.addWalletList.length; i++) {
@@ -200,12 +203,6 @@ class FixAddModal extends BaseReactComponent {
             }
             let addWallet = walletList;
             addWallet.map((w, i) => { w.id = `wallet${i + 1}` })
-
-            if (this.timeout) {
-              clearTimeout(this.timeout)
-          }
-          this.timeout = setTimeout(() => {
-
             localStorage.setItem("addWallet", JSON.stringify(addWallet))
             this.state.changeList && this.state.changeList(walletList)
             this.state.onHide()
@@ -250,7 +247,7 @@ class FixAddModal extends BaseReactComponent {
               blockchains_detected: blockchainDetected,
             });
 
-          }, 500)
+          }, 300)
 
 
         }
@@ -335,7 +332,7 @@ class FixAddModal extends BaseReactComponent {
         if (this.props.handleUpdateWallet) {
             this.props.handleUpdateWallet()
         }
-      }, 500);
+      }, 300);
     }
 
     isDisabled = () => {
