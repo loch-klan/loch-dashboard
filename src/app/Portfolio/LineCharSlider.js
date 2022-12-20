@@ -9,7 +9,7 @@ import DropDown from "../common/DropDown";
 import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
 import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
 import { GroupByOptions, Months } from "../../utils/Constant";
-import { AssetValueFilter } from "../../utils/AnalyticsFunctions.js";
+import { AssetValueFilter, AssetValueHover, AssetValueInternalEvent, IntlAssetValueFilter, IntlAssetValueHover, IntlAssetValueInternalEvent, TitleAssetValueHover } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
@@ -38,6 +38,7 @@ class LineChartSlider extends BaseReactComponent {
       console.log("Something update");
       this.setState({
         title: "Year",
+        selectedEvents: [],
       });
     }
   }
@@ -51,6 +52,7 @@ class LineChartSlider extends BaseReactComponent {
         this.setState({
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
+          selectedEvents: [],
         });
       } else {
         this.setState({
@@ -62,6 +64,7 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         activeBadge: [{ name: "All", id: "" }],
         activeBadgeList: [],
+        selectedEvents: [],
       });
     } else {
       let index = newArr.findIndex((x) => x.name === "All");
@@ -72,13 +75,20 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         activeBadge: newArr,
         activeBadgeList: newArr.map((item) => item.id),
+        selectedEvents: [],
       });
     }
-    AssetValueFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      filter_clicked: badge.name,
-    });
+    this.props.isPage
+      ? IntlAssetValueFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          filter_clicked: badge.name,
+        })
+      : AssetValueFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          filter_clicked: badge.name,
+        });
   };
   handleSelect = (opt) => {
     const t = opt.split(" ")[1];
@@ -312,7 +322,7 @@ class LineChartSlider extends BaseReactComponent {
     };
 
     let selectedEvents = [];
-
+     let noOfInternalEvent;
     const getIevent = (value) => {
       selectedEvents = [];
       internalEvents &&
@@ -357,12 +367,12 @@ class LineChartSlider extends BaseReactComponent {
               if (e_address.length > 16) {
                 e_address =
                   '"' +
-                  e_address.substr(0, e_text === "from" ? 5 : 7) +
+                  e_address.substr(0, e_text === "from" ? 7 : 9) +
                   "..." +
-                  e_address.substr(e_address.length - 3, e_address.length) +
+                  e_address.substr(e_address.length - 7, e_address.length) +
                   '"';
               }
-              // console.log("tooltip", e_tooltipData);
+              // console.log("internal", a);
               selectedEvents.push({
                 usd: e_usd,
                 assetValue: e_assetValue,
@@ -370,7 +380,7 @@ class LineChartSlider extends BaseReactComponent {
                 tooltip: e_tooltipData,
                 text: e_text,
                 address: e_address,
-                fulladdress:e_full_address
+                fulladdress: e_full_address,
               });
             });
           }
@@ -381,8 +391,10 @@ class LineChartSlider extends BaseReactComponent {
         selectedEvents.sort((a, b) => {
           return b.usd - a.usd;
         });
+      noOfInternalEvent = selectedEvents.length;
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
-      // console.log("beforeselected Event", selectedEvents);
+      // console.log("No of internal event", noOfInternalEvent);
+
     };
     timestampList.map((time) => {
       let dummy = new Date(time);
@@ -433,6 +445,17 @@ class LineChartSlider extends BaseReactComponent {
             if (parent.state.title == "Week" || parent.state.title == "Day") {
               console.log("event inside");
               if (parent.state.selectedValue !== selectedValue) {
+                parent.props.isPage
+                  ? IntlAssetValueInternalEvent({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      no_of_events: noOfInternalEvent,
+                    })
+                  : AssetValueInternalEvent({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      no_of_events: noOfInternalEvent,
+                    });
                 // console.log("inside event click");
                 parent.setState({
                   selectedEvents: selectedEvents,
@@ -478,7 +501,9 @@ class LineChartSlider extends BaseReactComponent {
             // console.log("categories", categories);
             // console.log("value", categories[this.pos]);
             // console.log("this", this);
-            return categories[this.pos];
+            return parent.state.title === "Day" && categories[this.pos] !== undefined
+              ? moment(categories[this.pos], "DD/MM/YYYY").format("DD/MM/YY")
+              : categories[this.pos];
           },
           autoRotation: false,
           // step: 2,
@@ -566,10 +591,8 @@ class LineChartSlider extends BaseReactComponent {
         hideDelay: 0,
 
         formatter: function () {
-          // console.log("this", this);
-          // this.internalEvent(
-          //   categories[this.x] == undefined ? this.x : categories[this.x]
-          // );
+          let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map((e)=>e.address);
+
 
           let tooltipData = [];
 
@@ -578,7 +601,20 @@ class LineChartSlider extends BaseReactComponent {
 
           getIevent(x_value);
           selectedValue = x_value;
-
+          // console.log("value", x_value, "walter address", walletAddress);
+          parent.props.isPage
+            ? IntlAssetValueHover({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+                value: x_value,
+                address: walletAddress,
+              })
+            : AssetValueHover({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+                value: x_value,
+                address: walletAddress,
+              });
           this.points.map((item) => {
             // console.log(
             //   "Item: ",
@@ -625,6 +661,15 @@ class LineChartSlider extends BaseReactComponent {
       plotOptions: {
         series: {
           fillOpacity: 0,
+          // events: {
+          //    legendItemClick: function () {
+          //       // console.log(this);
+          //       //  console.log("this");
+          //       // parent.setState({
+          //       //   selectedEvents: [],
+          //       // });
+          //     }
+          // },
           point: {
             events: {
               click: function () {
@@ -633,6 +678,11 @@ class LineChartSlider extends BaseReactComponent {
                   parent.state.title == "Day"
                 ) {
                   if (parent.state.selectedValue !== selectedValue) {
+                    AssetValueInternalEvent({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      no_of_events: noOfInternalEvent,
+                    });
                     console.log("inside event click");
                     parent.setState({
                       selectedEvents: selectedEvents,
@@ -647,8 +697,12 @@ class LineChartSlider extends BaseReactComponent {
                   }
                 }
               },
+
+
             },
+
           },
+
           marker: {
             enabled: false,
             states: {
@@ -718,11 +772,16 @@ class LineChartSlider extends BaseReactComponent {
               //   this.resetEvent();
               // }}
             >
-              <GraphHeader
-                title="Asset Value"
-                subtitle="Updated 3mins ago"
-                isArrow={true}
-              />
+              {!this.props.isPage && (
+                <GraphHeader
+                  title="Asset Value"
+                  subtitle="Updated 3mins ago"
+                    isArrow={true}
+                    isAnalytics="Asset Value"
+                    handleClick={this.props.handleClick}
+
+                />
+              )}
               <CoinBadges
                 activeBadge={this.state.activeBadge}
                 chainList={this.props.OnboardingState.coinsList}
@@ -759,6 +818,8 @@ class LineChartSlider extends BaseReactComponent {
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
                     Largest Internal Events
+                    {this.state.selectedValue &&
+                      ": " + this.state.selectedValue}
                   </h4>
 
                   <div className="InternalEventWrapper">
@@ -771,38 +832,6 @@ class LineChartSlider extends BaseReactComponent {
                             ? 0
                             : 6 -
                               Math.trunc(event.assetValue).toString().length;
-                        // let displayaddress = event.fulladdress;
-                        // if (
-                        //   displayaddress.length > 40 &&
-                        //   this.state.selectedEvents.length === 1
-                        // ) {
-                        //   displayaddress =
-                        //     displayaddress.substr(
-                        //       0,
-                        //       event.text === "from"
-                        //         ? this.state.selectedEvents.length === 1
-                        //           ? 20
-                        //           : 5
-                        //         : this.state.selectedEvents.length === 1
-                        //         ? 17
-                        //         : 7
-                        //     ) +
-                        //     "..." +
-                        //     displayaddress.substr(
-                        //       displayaddress.length -
-                        //         (this.state.selectedEvents.length ===
-                        //         1
-                        //         ? 20
-                        //         : 3),
-                        //       displayaddress.length
-                        //     );
-                        // }
-                        // console.log(
-                        //   "count",
-                        //   count,
-                        //   "number",
-                        //   Math.trunc(eve.asset.value)
-                        // );
                         return (
                           <>
                             <div
@@ -821,15 +850,15 @@ class LineChartSlider extends BaseReactComponent {
                                 Transfer
                               </h5>
 
-                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D text-right">
+                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                 <span>
                                   {event.assetValue.toFixed(count)}{" "}
                                   {event.assetCode}
                                   {" or $"}
                                   {numToCurrency(event.usd)}
                                   {event.text === "from"
-                                    ? " from "
-                                    : " to "}{" "}
+                                    ? " received from "
+                                    : " transferred to "}{" "}
                                 </span>
                                 <CustomOverlay
                                   position="top"

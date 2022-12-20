@@ -24,12 +24,12 @@ class ConfirmLeaveModal extends BaseReactComponent {
                 centered
                 backdropClassName="confirmLeaveModal"
             >
-              
+
                 <Modal.Body>
                     <div className="leave-modal-body">
                         <p className="inter-display-medium f-s-20 lh-24 m-b-30 black-000">Are you sure you want to leave ? </p>
                         <div className='leave-modal-btn-section'>
-                            <Button className="secondary-btn m-r-24" onClick={()=>this.props.history.push("/home")}>Yes</Button>
+                            <Button className="secondary-btn m-r-24" onClick={()=>this.props.history.push("/welcome")}>Yes</Button>
                             <Button className='primary-btn' onClick={this.state.handleClose}>No</Button>
                         </div>
                     </div>

@@ -239,7 +239,7 @@ class PieChart extends BaseReactComponent {
                                 if(document.getElementById("fixbtn")){
                                   {document.getElementById("fixbtn").style.display = "none"}
                                 }
-                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: [{asset_name: currentData.options.name, usd: "$"+currentData.options.usd}]});
+                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: currentData.options.name, asset_amount: "$"+currentData.options.usd});
                             },
                             unselect: function () {
                                 // console.log("UNSELECT")
@@ -453,7 +453,7 @@ class PieChart extends BaseReactComponent {
                         :
                         this.props.walletTotal === 0 || this.state.assetData.length === 0
                         ?
-                        <h3 className='inter-display-medium f-s-25 lh-30 m-b-8'>No data found</h3>
+                        <h3 className='inter-display-medium f-s-16 lh-19 grey-313 m-b-8'>No data found</h3>
                         :
                         null
                 }

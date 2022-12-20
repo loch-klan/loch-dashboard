@@ -43,6 +43,7 @@ import {
   MenuApi,
   MenuDarkMode,
   MenuLeave,
+  MenuShare,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 function Sidebar(props) {
@@ -68,7 +69,7 @@ function Sidebar(props) {
         setLeave(!leave)
       } else{
         setConfirmLeave(!confirmLeave)
-        // props.history.push('/home');
+        // props.history.push('/welcome');
       }
     }
 
@@ -89,6 +90,10 @@ function Sidebar(props) {
     const handleShareModal = ()=>{
         setShareModal(!shareModal);
         // ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
+      MenuShare({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     }
     const handleShare=()=>{
         const user= JSON.parse(localStorage.getItem('lochUser'));
@@ -147,18 +152,19 @@ function Sidebar(props) {
                       <NavLink
                         exact={true}
                         className="nav-link"
-                        to="/portfolio"
-                        onClick={() =>
+                        to="/home"
+                        onClick={() =>{
+                          // console.log("user",getCurrentUser())
                           HomeMenu({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
-                          })
+                          })}
                         }
                         activeclassname="active"
                       >
                         <Image
                           src={
-                            activeTab === "/portfolio"
+                            activeTab === "/home"
                               ? ActiveHomeIcon
                               : InActiveHomeIcon
                           }
@@ -396,7 +402,7 @@ function Sidebar(props) {
             modalType={"exitOverlay"}
             handleRedirection={() => {
               setTimeout(function () {
-                props.history.push("/home");
+                props.history.push("/welcome");
               }, 3000);
             }}
           />

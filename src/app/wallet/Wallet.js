@@ -17,14 +17,15 @@ import {
 } from "../../utils/Constant.js";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import sortByIcon from '../../assets/images/icons/TriangleDown.svg'
+import sortByIcon from '../../assets/images/icons/triangle-down.svg'
 // import { getCoinRate } from "../Portfolio/Api.js";
 import noDataImage from "../../image/no-data.png";
 import lochClean from "../../assets/images/LochClean.gif";
 import { Image } from "react-bootstrap";
 import Loading from "../common/Loading";
-import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet } from "../../utils/AnalyticsFunctions";
+import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet, WalletsPage } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import FeedbackForm from "../common/FeedbackForm";
 
 class Wallet extends Component {
   constructor(props) {
@@ -53,7 +54,11 @@ class Wallet extends Component {
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-    console.log("page Enter", this.state.startTime / 1000);
+    // console.log("page Enter", this.state.startTime / 1000);
+     WalletsPage({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
 
     this.props.getAllCoins();
     this.makeApiCall();
@@ -62,10 +67,10 @@ class Wallet extends Component {
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    console.log("page Leave", endTime / 1000);
-    console.log("Time Spent", TimeSpent);
+    // console.log("page Leave", endTime / 1000);
+    // console.log("Time Spent", TimeSpent);
     TimeSpentWallet({
-      time_spent: TimeSpent + " seconds",
+      time_spent: TimeSpent,
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -206,6 +211,7 @@ class Wallet extends Component {
 
   handleUpdateWallet = () => {
     // console.log("YES API")
+    this.setState({isLoading: true})
     this.makeApiCall();
   };
 
@@ -272,7 +278,7 @@ class Wallet extends Component {
                     {/* <Image src={sort} style={{ width: "1rem" }} /> */}
                     <Image
                       src={sortByIcon}
-                      style={{ width: "1.6rem" }}
+                      // style={{ width: "1.6rem" }}
                       className={e.down ? "rotateDown" : "rotateUp"}
                     />
                   </span>
@@ -310,12 +316,13 @@ class Wallet extends Component {
             ) : (
               <div style={{ textAlign: "center" }}>
                 {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                <h3 className="inter-display-medium f-s-25 lh-30 m-b-8">
+                <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
                   No data found
                 </h3>
               </div>
             )}
           </div>
+          <FeedbackForm page={"Wallet Page"} />
         </div>
       </div>
     );

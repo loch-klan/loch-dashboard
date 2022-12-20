@@ -22,13 +22,13 @@ export const CommonPagination = (props) => {
     }
     const nextPage = () => {
         if (page !== totalPage) {
-            console.log(page)
+            // console.log(page)
             setPage(prev => prev + 1);
         }
     }
 
     const prevPage = () => {
-        console.log(page)
+        // console.log(page)
         if (page !== 1) {
             setPage(prev => prev - 1)
         }

@@ -12,6 +12,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import {
+  OnboardingPage,
   PrivacyMessage, TimeSpentOnboarding
 } from "../../utils/AnalyticsFunctions.js";
 // export { default as OnboardingReducer } from "./OnboardingReducer";
@@ -31,15 +32,16 @@ class OnBoarding extends Component {
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-      console.log("page Enter", (this.state.startTime/1000));
+    console.log("page Enter", (this.state.startTime / 1000));
+    OnboardingPage({});
     }
 
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    console.log("page Leave", endTime/1000);
-    console.log("Time Spent", TimeSpent);
-    TimeSpentOnboarding({time_spent: TimeSpent+" seconds"});
+    // console.log("page Leave", endTime/1000);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentOnboarding({time_spent: TimeSpent});
   }
     onClose = () => {
         this.setState({ showModal: false })

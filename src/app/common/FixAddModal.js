@@ -11,7 +11,7 @@ import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CloseBtn from "../../assets/images/icons/CloseBtn.svg"
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
-import { getAllCoins, detectCoin } from "../onboarding//Api";
+import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding//Api";
 import { getDetectedChainsApi, updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
@@ -73,20 +73,22 @@ class FixAddModal extends BaseReactComponent {
             clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-            this.getCoinBasedOnAddress(name, value);
+            this.getCoinBasedOnWalletAddress(name, value);
         }, 1000)
     }
 
-    getCoinBasedOnAddress = (name, value) => {
-        if (this.props.OnboardingState.coinsList && value) {
-            for (let i = 0; i < this.props.OnboardingState.coinsList.length; i++) {
+    getCoinBasedOnWalletAddress = (name, value) => {
+      let parentCoinList =  this.props.OnboardingState.parentCoinList;
+        if (parentCoinList && value) {
+            for (let i = 0; i < parentCoinList.length; i++) {
                 this.props.detectCoin({
                     id: name,
-                    coinCode: this.props.OnboardingState.coinsList[i].code,
-                    coinSymbol: this.props.OnboardingState.coinsList[i].symbol,
-                    coinName: this.props.OnboardingState.coinsList[i].name,
+                    coinCode: parentCoinList[i].code,
+                    coinSymbol: parentCoinList[i].symbol,
+                    coinName: parentCoinList[i].name,
                     address: value,
-                    coinColor: this.props.OnboardingState.coinsList[i].color,
+                    coinColor: parentCoinList[i].color,
+                    subChains: parentCoinList[i].sub_chains
                 }, this)
             }
         }
@@ -99,9 +101,18 @@ class FixAddModal extends BaseReactComponent {
             coinSymbol: data.coinSymbol,
             coinColor: data.coinColor,
         }
+        let newCoinList = [];
+        newCoinList.push(coinList);
+        data.subChains && data.subChains.map((item)=>newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        }))
         let i = this.state.addWalletList.findIndex(obj => obj.id === data.id)
         let newAddress = this.state.modalType === "addwallet" ? [...this.state.addWalletList] : [...this.state.fixWalletAddress]
-        data.address === newAddress[i].address && newAddress[i].coins.push(coinList)
+        data.address === newAddress[i].address && newAddress[i].coins.push(...newCoinList)
         newAddress[i].coinFound = newAddress[i].coins && newAddress[i].coins.some((e) => e.chain_detected === true)
         if (this.state.modalType === "addwallet") {
             this.setState({
@@ -116,6 +127,7 @@ class FixAddModal extends BaseReactComponent {
     }
     componentDidMount() {
         this.props.getAllCoins()
+        this.props.getAllParentChains()
         getAllWalletApi(this)
         getDetectedChainsApi(this)
         const fixWallet = []
@@ -314,33 +326,42 @@ class FixAddModal extends BaseReactComponent {
     }
 
     isDisabled = () => {
-        let isDisableFlag = false;
-        // if (this.state.addWalletList.length <= 0) {
-        //     isDisableFlag = true;
-        // }
-
+        let isDisableFlag = true;
         this.state.addWalletList.map((e) => {
-            // if (!e.address) {
-            //     isDisableFlag = true;
-            // }
-            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
-                isDisableFlag = true;
-                e.coins.map((a)=>{
-                    if(a.chain_detected===true){
-                        isDisableFlag = false;
-                    }
-                })
+          if(e.address){
+            if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
+              e.coins.map((a)=>{
+                  if(a.chain_detected===true){
+                      isDisableFlag = false;
+                  }
+              })
+            } else{
+              isDisableFlag = false;
             }
+          } else{
+            isDisableFlag = false;
+          }
         })
         return isDisableFlag;
     }
 
     isFixDisabled = () => {
-        let isDisableFlag = false;
+        let isDisableFlag = true;
         this.state.fixWalletAddress.map((e) => {
-            if (e.address && e.coins.length !== this.props.OnboardingState.coinsList.length) {
-                isDisableFlag = true;
+          if(e.address){
+            if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
+              // isDisableFlag = true;
+              e.coins.map((a)=>{
+                if(a.chain_detected===true){
+                    isDisableFlag = false;
+                }
+              })
+            } else{
+              isDisableFlag = false;
             }
+          } else{
+            isDisableFlag = false;
+          }
         })
         return isDisableFlag;
     }
@@ -501,11 +522,18 @@ class FixAddModal extends BaseReactComponent {
                                 >
                                     {/* {this.state.btnText} */}
                                     {
-                                        (this.isDisabled() || this.isFixDisabled())
+                                      this.state.modalType === "addwallet"
+                                      ?
+                                        this.isDisabled()
                                             ?
                                             loadingAnimation()
                                             :
-
+                                            this.state.btnText
+                                      :
+                                      this.isFixDisabled()
+                                      ?
+                                            loadingAnimation()
+                                            :
                                             this.state.btnText
                                     }
                                 </Button>
@@ -539,7 +567,7 @@ const mapDispatchToProps = {
     detectCoin,
     updateWalletApi,
     getAllWalletApi,
-    // getCoinList
+    getAllParentChains,
 }
 FixAddModal.propTypes = {
 };

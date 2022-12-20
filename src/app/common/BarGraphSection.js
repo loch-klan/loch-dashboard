@@ -65,7 +65,7 @@ class BarGraphSection extends Component {
     this.setState({
         activeFooter: event.target.id
     })
-    console.log("handle footer", event.target.id);
+    // console.log("handle footer", event.target.id);
     this.props.timeFunction(event.target.id, this.state.activeBadgeList);
   };
   handleFunction = (badge) => {

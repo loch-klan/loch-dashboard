@@ -233,7 +233,7 @@
                 // flex-direction: column;
                 // width: 100%;
                 // padding: 0rem 8.4rem 0rem 8.4rem;
-                padding: 0rem 1.9rem 0rem 7rem;
+                padding: 0rem 2.1rem 0rem 7rem;
                 max-height: 22rem;
                 overflow-y: auto;
                 margin: 0 3.7rem 0 0rem;
@@ -248,7 +248,9 @@
                     .delete-icon {
                         box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
                         position: absolute;
-                        left:-5.34rem;
+                        // left:-5.34rem;
+                        left:-5.9rem;
+                        top: 2.5px;
                         cursor: pointer;
                         padding:0.9rem;
                         border-radius: 0.8rem;

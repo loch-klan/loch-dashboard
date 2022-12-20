@@ -1,15 +1,14 @@
 import { toast } from "react-toastify";
 import { postLoginInstance, preLoginInstance } from "../../utils";
-import { COINS_LIST, WALLET_LIST,UPDATE_LIST } from "./ActionTypes";
-import addWallet from "./addWallet";
-import { dispatch } from 'react-redux';
+import { COINS_LIST, WALLET_LIST, PARENT_COINS_LIST } from "./ActionTypes";
 import {
   WalletAddressTextbox,
   EmailAddressVerified,
   UserSignedinCorrectly,
   UserWrongCode,
+  EmailNotFound,
 } from "../../utils/AnalyticsFunctions.js";
-export const getAllCoins = () => {
+export const getAllCoins = (handleShareLinkUser = null) => {
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
         postLoginInstance
@@ -20,11 +19,30 @@ export const getAllCoins = () => {
                     type: COINS_LIST,
                     payload: coinsList
                 });
+                handleShareLinkUser && handleShareLinkUser()
             })
             .catch((err) => {
                 console.log("Catch", err);
             });
     };
+};
+
+export const getAllParentChains = () => {
+  return async function (dispatch, getState) {
+      let data = new URLSearchParams();
+      postLoginInstance
+          .post("wallet/chain/get-parent-chains", data)
+          .then((res) => {
+              let coinsList = res.data && res.data.data && res.data.data.chains.length > 0 ? res.data.data.chains : []
+              dispatch({
+                  type: PARENT_COINS_LIST,
+                  payload: coinsList
+              });
+          })
+          .catch((err) => {
+              console.log("Catch", err);
+          });
+  };
 };
 
 export const detectCoin = (wallet,ctx=null) => {
@@ -54,7 +72,8 @@ export const detectCoin = (wallet,ctx=null) => {
                             coinName: wallet.coinName,
                             address: wallet.address,
                             chain_detected: res.data.data.chain_detected,
-                            coinColor: wallet.coinColor
+                            coinColor: wallet.coinColor,
+                            subChains: wallet.subChains,
                         }
                     });
                     if(ctx){
@@ -85,9 +104,10 @@ export const signIn = (ctx, data) => {
           //   </div>
           //   );
             // toast.error(res.data.message || "Something went Wrong")
-              ctx.setState(
-                {emailError:true}
-              )
+          ctx.setState(
+            { emailError: true }
+          );
+          EmailNotFound({email_address: ctx.state.email})
         }
         else if (res.data.error === false) {
             //email Valid
@@ -144,7 +164,7 @@ export const verifyUser = (ctx, info) => {
           }
             // console.log('addWallet',addWallet);
             ctx.props.history.push({
-              pathname: "/portfolio",
+              pathname: "/home",
               state: {addWallet}
             })
             UserSignedinCorrectly({
@@ -176,17 +196,22 @@ export const verifyUser = (ctx, info) => {
 }
 
 export const createAnonymousUserApi = (data, ctx, addWallet) =>{
+  {
+    !ctx.state.id &&
+    ctx.props.history.push({
+      pathname: ctx.state.id ? ctx.state.link : '/home',
+      // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
+      state: {noLoad: true}
+    })
+  }
   postLoginInstance.post('organisation/user/create-user',data)
   .then(res=>{
     if(!res.data.error){
       localStorage.setItem("lochDummyUser", res.data.data.user.link)
       localStorage.setItem("lochToken", res.data.data.token)
-      // console.log('addWallet',addWallet);
       const allChains = ctx.props.OnboardingState.coinsList
       let newAddWallet = [];
       const apiResponse = res.data.data;
-      // console.log('apiResponse',apiResponse);
-      // console.log('allChains',allChains);
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
         let obj = {}; // <----- new Object
         obj['address'] = apiResponse.user.user_wallets[i].address;
@@ -210,10 +235,9 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
               obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
               newAddWallet.push(obj);
       }
-      // console.log('newAddWallet',newAddWallet);
-      ctx.props.history.push({
-        pathname: '/portfolio',
-        state: {addWallet: newAddWallet}
+      ctx.props.history.replace({
+        pathname: ctx.state.id ? ctx.state.link : '/home',
+        state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}
       })
   }else{
       toast.error(res.data.message || "Something Went Wrong")

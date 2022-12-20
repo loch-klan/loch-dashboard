@@ -1,4 +1,6 @@
+import { CounterpartyFeesSpecificBar, FeesSpecificBar, HomeCounterPartyHover } from "../../utils/AnalyticsFunctions";
 import { DEFAULT_PRICE } from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
 import { numToCurrency } from "../../utils/ReusableFunctions";
 
 export const getGraphData = (arr) => {
@@ -42,6 +44,11 @@ export const getGraphData = (arr) => {
               let label00 = ctx.label;
               let label0 = "Fees: $" + numToCurrency(ctx.raw) + " or " + ctx.dataset.totalFeesAmount[ctx.dataIndex]?.toFixed(6) + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
               let label1 = "Volume: $" + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
+              FeesSpecificBar({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+                blockchain_selected: [label00, label1, label0],
+              });
               return [label00, label1, label0];
             },
             labelColor: function(context) {
@@ -184,8 +191,8 @@ export const getGraphData = (arr) => {
 
 }
 
-export const getCounterGraphData = (arr) => {
-  // console.log(arr, "array");
+export const getCounterGraphData = (arr, currentPage) => {
+  // console.log(currentPage, "page");
 
   const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees)))).length;
   // console.log(digit, "indise digit")
@@ -224,7 +231,18 @@ export const getCounterGraphData = (arr) => {
           label: (ctx) => {
             let label00 = ctx.label;
               let label0 = "Fees: $" + numToCurrency(ctx.raw);
-              let label1 = "Volume: $" + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
+            let label1 = "Volume: $" + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
+            currentPage === "Home"
+              ? HomeCounterPartyHover({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  counterparty_selected: [label00, label1, label0],
+                })
+              : CounterpartyFeesSpecificBar({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  counterparty_selected: [label00, label1, label0],
+                });
               return [label00, label1, label0];
           },
           labelColor: function(context) {

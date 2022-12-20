@@ -7,6 +7,9 @@ import increaseYield from '../../assets/images/icons/increase-yield.svg'
 import { getAllInsightsApi } from "./Api";
 import { InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
+import { AllInsights, InsightPage, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import FeedbackForm from "../common/FeedbackForm";
 
 class InsightsPage extends Component {
   constructor(props) {
@@ -37,15 +40,45 @@ class InsightsPage extends Component {
     };
   }
   componentDidMount() {
+     InsightPage({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
     getAllInsightsApi(this);
   }
-  handleSelect = (value) =>{
+  handleSelect = (value) => {
+    console.log("value",value)
     let insightList = this.state.insightList;
     insightList = insightList.filter((item)=> value === 1 ? item : item.insight_type === value)
     this.setState({
       selectedFilter: value,
       updatedInsightList: insightList,
-    })
+    });
+
+    if (value === 1) {
+      AllInsights({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
+      // console.log("All");
+    } else if (value === 10) {
+       InsightsReduceCost({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
+      //  console.log("Reduce Cost");
+    } else if (value === 20) {
+       InsightsReduceRisk({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
+      //  console.log("Reduce Risk");
+    } else if (value === 30) {
+       InsightsIncreaseYield({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
+
+    } else {
+      // console.log("not valid value")
+    }
 
   }
 
@@ -63,7 +96,7 @@ class InsightsPage extends Component {
         />
         <div style={{position: "relative"}}>
           {
-            this.state.insightList && this.state.insightList.length > 0 &&
+            // this.state.insightList && this.state.insightList.length > 0 &&
           <div className="insights-filter">
             {
               this.state.insightFilter.map((filter, key)=>{
@@ -95,10 +128,11 @@ class InsightsPage extends Component {
                 )
               })
               :
-              <h5 className="inter-display-medium f-s-25 lh-30 m-b-8 text-center">{"This wallet is not active enough for us to generate any useful insights here :)."}</h5>
+              <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">{"This wallet is not active enough for us to generate any useful insights here :)."}</h5>
             }
           </div>
         </div>
+        <FeedbackForm page={"Insights Page"} />
       </div>
     </div>
   );

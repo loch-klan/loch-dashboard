@@ -11,7 +11,12 @@ import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { Image } from "react-bootstrap";
 import CoinChip from "../wallet/CoinChip";
 import TransactionTable from "../intelligence/TransactionTable";
-import { TimeSpentCosts } from "../../utils/AnalyticsFunctions";
+import {
+  TimeSpentCosts,
+  FeesTimePeriodFilter,
+  CounterpartyFeesTimeFilter,
+  CostsPage,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import {getCounterGraphData, getGraphData} from "./getGraphData";
@@ -19,6 +24,8 @@ import { getAllFeeApi, getAllCounterFeeApi } from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
+import FeedbackForm from "../common/FeedbackForm";
+
 
 class Cost extends Component {
   constructor(props) {
@@ -35,15 +42,19 @@ class Cost extends Component {
       counterGraphLoading: true,
       counterPartyData: [],
       counterPartyValue: null,
+      currentPage:"Cost"
     };
   }
 
   componentDidMount() {
-
+     CostsPage({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
     if(this.props.location.hash !== ''){
       setTimeout(() => {
       const id = this.props.location.hash.replace('#', '');
-      console.log('id',id);
+      // console.log('id',id);
       const element = document.getElementById(id);
       if (element) {
         element.scrollIntoView();
@@ -53,7 +64,7 @@ class Cost extends Component {
       window.scrollTo(0, 0);
     }
     this.state.startTime = new Date() * 1;
-    console.log("page Enter", this.state.startTime / 1000);
+    // console.log("page Enter", this.state.startTime / 1000);
 
     this.props.getAllCoins();
     this.getBlockchainFee(0);
@@ -63,74 +74,101 @@ class Cost extends Component {
   getBlockchainFee(option) {
 
     const today = moment().valueOf();
-
-    console.log("headle click");
+    let handleSelected = "";
+    // console.log("headle click");
     if (option == 0) {
       getAllFeeApi(this, false, false);
-      console.log(option, "All");
+      // console.log(option, "All");
+       handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
       getAllFeeApi(this, fiveyear, today);
-      console.log(fiveyear, today, "5 years");
+      // console.log(fiveyear, today, "5 years");
+       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
       getAllFeeApi(this, year, today);
-      console.log(year, today, "1 year");
+      // console.log(year, today, "1 year");
+       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
       getAllFeeApi(this, sixmonth, today);
-      console.log(sixmonth, today, "6 months");
+      // console.log(sixmonth, today, "6 months");
+       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
       getAllFeeApi(this, month, today);
-      console.log(month, today, "1 month");
+      // console.log(month, today, "1 month");
+       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
       getAllFeeApi(this, week, today);
-      console.log(week, today, "week");
+      // console.log(week, today, "week");
+       handleSelected = "Week";
     }
+    // console.log("handle select", handleSelected);
+    FeesTimePeriodFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      time_period_selected: handleSelected
+    });
   }
 
   getCounterPartyFee(option) {
 
     const today = moment().unix();
-
-    console.log("headle click");
+    let handleSelected = "";
+    // console.log("headle click");
     if (option == 0) {
       getAllCounterFeeApi(this, false, false);
-      console.log(option, "All");
+      // console.log(option, "All");
+    handleSelected = "All";
+
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").unix();
 
       getAllCounterFeeApi(this, fiveyear, today);
-      console.log(fiveyear, today, "5 years");
+      // console.log(fiveyear, today, "5 years");
+      handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").unix();
       getAllCounterFeeApi(this, year, today);
-      console.log(year, today, "1 year");
+      // console.log(year, today, "1 year");
+      handleSelected = "1 Years";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").unix();
 
       getAllCounterFeeApi(this, sixmonth, today);
-      console.log(sixmonth, today, "6 months");
+      // console.log(sixmonth, today, "6 months");
+      handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").unix();
       getAllCounterFeeApi(this, month, today);
-      console.log(month, today, "1 month");
+      // console.log(month, today, "1 month");
+      handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").unix();
       getAllCounterFeeApi(this, week, today);
-      console.log(week, today, "week");
+      // console.log(week, today, "week");
+      handleSelected = "Week";
     }
+
+    // console.log("handle select", handleSelected)
+    // CounterpartyFeesTimeFilter;
+    CounterpartyFeesTimeFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      time_period_selected: handleSelected,
+    });
   }
 
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    console.log("page Leave", endTime / 1000);
-    console.log("Time Spent", TimeSpent);
+    // console.log("page Leave", endTime / 1000);
+    // console.log("Time Spent", TimeSpent);
     TimeSpentCosts({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -319,7 +357,10 @@ class Cost extends Component {
                 options={this.state.graphValue[1]}
                 options2={this.state.graphValue[2]}
                 coinsList={this.props.OnboardingState.coinsList}
-                timeFunction={(e) => this.getBlockchainFee(e)}
+                timeFunction={(e) => {
+
+                  this.getBlockchainFee(e)
+                }}
                 marginBottom="m-b-32"
                 showFooter={true}
                 showBadges={true}
@@ -395,6 +436,7 @@ class Cost extends Component {
               />
             </div>
           </div>
+          <FeedbackForm page={"Cost Page"} />
         </div>
       </div>
     );

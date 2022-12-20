@@ -15,13 +15,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           // WHEN PARAM ID CHANGES.
           <div className='main-section'>
             {
-              props.location.pathname !== "/home"
+              props.location.pathname !== "/welcome"
               ?
               <Sidebar ownerName={""} {...props} />
               :
               null
             }
-            <div className={`main-section-right ${props.location.pathname !== "/home" ? "m-l-27" : ""}`}>
+            <div className={`main-section-right ${props.location.pathname !== "/welcome" ? "m-l-27" : ""}`}>
               <div className='main-content-wrapper'>
                 <Component key={props.location.pathname} {...props} />
               </div>

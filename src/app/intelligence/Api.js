@@ -7,7 +7,7 @@ export const searchTransactionApi = (data , ctx, page = 0) => {
     return function (dispatch, getState) {
         postLoginInstance.post("wallet/transaction/search-transaction", data)
             .then((res) => {
-                console.log(page)
+                // console.log(page)
                 if (!res.data.error) {
                     dispatch(getAllTransactionHistory(res.data.data, page))
                     if(ctx){

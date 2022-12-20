@@ -18,29 +18,55 @@ export default function PageHeader(props) {
   })
   const breadCrumb =
     <Breadcrumb >
-      <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/portfolio`}}><Image src={InActiveHomeSmallIcon} /></Breadcrumb.Item>
+      <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/home`}}><Image src={InActiveHomeSmallIcon} /></Breadcrumb.Item>
       {breads}
     </Breadcrumb >
 
   return (
-    <div className={`m-b-40 page-header ${props.showpath ? "history-header" : ""}`}>
+    <div
+      className={`m-b-40 page-header ${props.showpath ? "history-header" : ""}`}
+    >
       {props.showpath ? breadCrumb : ""}
 
-      <div className='header'>
-        {props.showImg ?
-          <div className='m-r-16 show-img'>
+      <div className="header">
+        {props.showImg ? (
+          <div className="m-r-16 show-img">
             <Image src={props.showImg} />
           </div>
-          :
+        ) : (
           ""
-        }
+        )}
         <div>
-        <h4 className={`inter-display-medium f-s-25 lh-30 ${props.showImg ? "" : "m-b-8"}`}>{props.title}</h4>
-        {props.subTitle ? <p className="inter-display-medium f-s-16 lh-19">{props.subTitle}</p> : ""}
+          <h4
+            className={`inter-display-medium f-s-25 lh-30 ${
+              props.showImg ? "" : "m-b-8"
+            }`}
+          >
+            {props.title}
+          </h4>
+          {props.subTitle ? (
+            <p className="inter-display-medium f-s-16 lh-19">
+              {props.subTitle}
+            </p>
+          ) : (
+            ""
+          )}
         </div>
       </div>
-      {props.btnText && <Button className='primary-btn' onClick={props.handleBtn}>{props.btnText}</Button>}
-      {props.viewMore && <a href={props.viewMoreRedirect} className='view-more' >View More</a>}
+      {props.btnText && (
+        <Button className="primary-btn" onClick={props.handleBtn}>
+          {props.btnText}
+        </Button>
+      )}
+      {props.viewMore && (
+        <a
+          href={props.viewMoreRedirect}
+          className="view-more"
+          onClick={props.handleClick}
+        >
+          View More
+        </a>
+      )}
     </div>
-  )
+  );
 }

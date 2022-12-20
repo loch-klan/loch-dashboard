@@ -12,78 +12,85 @@ import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage"
 import VerifyEmail from "./app/common/VerifyEmail"
 import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounterparty"
 import InsightsPage from "./app/intelligence/InsightsPage"
+import AssetValueGraph from "./app/intelligence/AssetValueGraph";
 const routes = [
   {
     path: "/",
     name: "Login",
     type: Route,
-    component: Login
+    component: Login,
   },
   {
-    path: "/home",
+    path: "/welcome",
     name: "Home",
     type: PrivateRoute,
-    component: Home
+    component: Home,
   },
   {
     path: "/profile",
     name: "Profile",
     type: PrivateRoute,
-    component: Profile
+    component: Profile,
   },
   {
-    path: ["/portfolio","/portfolio/:id"],
+    path: ["/home", "/home/:id"],
     name: "Portfolio",
     type: PrivateRoute,
-    component: Portfolio
+    component: Portfolio,
   },
   {
     path: "/intelligence",
     name: "Intelligence",
     type: PrivateRoute,
-    component: Intelligence
+    component: Intelligence,
   },
   {
     path: "/intelligence/transaction-history",
     name: "Transaction History",
     type: PrivateRoute,
-    component: TransactionHistoryPage
+    component: TransactionHistoryPage,
   },
   {
     path: "/intelligence/volume-traded-by-counterparty",
     name: "Volume Traded By Counterparty",
     type: PrivateRoute,
-    component: VolumeTradedByCounterparty
+    component: VolumeTradedByCounterparty,
+  },
+  {
+    path: "/intelligence/asset-value",
+    name: "Asset Value",
+    type: PrivateRoute,
+    component: AssetValueGraph,
   },
   {
     path: "/intelligence/insights",
     name: "Insights",
     type: PrivateRoute,
-    component: InsightsPage
+    component: InsightsPage,
   },
   {
     path: "/wallets",
     name: "Wallet",
     type: PrivateRoute,
-    component: Wallet
+    component: Wallet,
   },
   {
     path: "/costs",
     name: "Costs",
     type: PrivateRoute,
-    component: Cost
+    component: Cost,
   },
   {
     path: "/verify-email",
     name: "Verify Email",
     type: Route,
-    component: VerifyEmail
+    component: VerifyEmail,
   },
   {
     path: "/sandbox",
     name: "Sandox",
     type: Route,
-    component: Sandbox
-  }
-]
+    component: Sandbox,
+  },
+];
 export default routes

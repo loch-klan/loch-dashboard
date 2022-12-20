@@ -1,11 +1,11 @@
 import { numToCurrency } from "../../utils/ReusableFunctions";
 import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
 import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
+import { ProfitLossHover } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 export const getProfitAndLossData = (arr) => {
-    console.log(arr.inflows,"helo")
-
-    const labels = ["Inflows", "Outflows", arr.inflows > arr.outflows ? "Profit" : "Loss"];
+    const labels = ["Inflows", "Outflows", "Net"];
     const profitOrLossData = {
         profit:{
             data:arr.inflows,
@@ -18,21 +18,20 @@ export const getProfitAndLossData = (arr) => {
             borderColor:"#CF1011"
         }
     };
-    console.log(profitOrLossData.profit.data,"hii")
     const data = {
         labels,
         datasets: [
             {
-                data: [arr.inflows, arr.outflows ,Math.abs(arr.inflows-arr.outflows)],
+                data: [arr.inflows, arr.outflows ,Math.abs(arr.outflows-arr.inflows)],
                 backgroundColor: [
                     "rgba(100, 190, 205, 0.3)",
                     "rgba(34, 151, 219, 0.3)",
-                    (arr.inflows > arr.outflows ? profitOrLossData.profit.barColor : profitOrLossData.loss.barColor),
+                    (arr.inflows < arr.outflows ? profitOrLossData.profit.barColor : profitOrLossData.loss.barColor),
                 ],
                 borderColor: [
                     "#64BECD",
                     "#2297DB",
-                    (arr.inflows > arr.outflows ? profitOrLossData.profit.borderColor : profitOrLossData.loss.borderColor),
+                    (arr.inflows < arr.outflows ? profitOrLossData.profit.borderColor : profitOrLossData.loss.borderColor),
                 ],
                 borderWidth: 2,
                 borderRadius: {
@@ -77,6 +76,11 @@ export const getProfitAndLossData = (arr) => {
               title: function() {}, //REMOVE TITLE
               label: (ctx) => {
                 let label = ctx.label + ": $" + numToCurrency(ctx.raw);
+                ProfitLossHover({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  hover_value: label,
+                });
                 return [label];
               },
               labelColor: function(context) {
@@ -136,7 +140,7 @@ export const getProfitAndLossData = (arr) => {
           },
         },
       };
-      let value = (arr.inflows-arr.outflows);
+      let value = (arr.outflows-arr.inflows);
       let showPercentage= {
         icon: value > 0 ? arrowUpRight : arrowDownRight,
         percent: ((value/arr.inflows)*100).toFixed(),

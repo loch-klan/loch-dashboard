@@ -7,12 +7,15 @@ import { loginApi } from './Api';
 import logo from '../../image/Loch.svg'
 import beta from '../../image/BetaIcon.svg'
 import { Image } from 'react-bootstrap'
+import {getDetailsByLinkApi} from '../Portfolio/Api';
+import { createAnonymousUserApi, getAllCoins } from '../onboarding/Api';
 
 class Login extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
       link: props.location?.state?.from?.pathname || "",
+      id: props.location?.state?.params?.id || "",
       password: "",
       forgotPassword: false,
     }
@@ -27,7 +30,27 @@ class Login extends BaseReactComponent {
   onValidSubmit = () => {
     const data = new URLSearchParams();
     data.append('password', this.state.password);
+    localStorage.setItem("baseToken", this.state.password);
     loginApi(this, data)
+  }
+
+  handleShareLinkUser = () =>{
+    this.props.getDetailsByLinkApi(this.state.id, this);
+  }
+
+  handleResponse = () =>{
+    let addWallet = JSON.parse(localStorage.getItem("addWallet"));
+    console.log('Heyyyy',addWallet);
+    let walletAddress = [];
+    for (let i = 0; i < addWallet.length; i++) {
+      let curr = addWallet[i];
+      if (!walletAddress.includes(curr.address) && curr.address) {
+        walletAddress.push(curr.address);
+      }
+    }
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(walletAddress));
+    createAnonymousUserApi(data, this, addWallet);
   }
 
   render() {
@@ -73,10 +96,13 @@ class Login extends BaseReactComponent {
 }
 
 const mapStateToProps = state => ({
-  loginState: state.LoginState
+  loginState: state.LoginState,
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
+  getDetailsByLinkApi,
+  getAllCoins,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

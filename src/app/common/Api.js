@@ -1,6 +1,7 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
+import { FeedbackType } from "../../utils/Constant";
 import postLoginInstance from './../../utils/PostLoginAxios';
 export const loginApi = (ctx, data) => {
   preLoginInstance.post('common/test/temp-login', data)
@@ -11,9 +12,9 @@ export const loginApi = (ctx, data) => {
         // console.log('ctx',ctx.props.history);
         localStorage.setItem('lochToken', res.data.data.token);
         if(ctx.state.link){
-          ctx.props.history.push(ctx.state.link);
+          ctx.props.getAllCoins(ctx.handleShareLinkUser)
         } else{
-          ctx.props.history.push('/home');
+          ctx.props.history.push('/welcome');
         }
 
       } else {
@@ -35,7 +36,7 @@ export const fixWalletApi = (ctx,info) =>{
       .then((res)=>{
         if(!res.data.error){
           ctx.handleRedirection();
-          // ctx.props.history.push('/home');
+          // ctx.props.history.push('/welcome');
         }
         else{
           toast.error(res.data.message || "Something went wrong");
@@ -157,17 +158,24 @@ export const exportDataApi = (data,ctx) =>{
   })
 }
 
-// export const resetPasswordApi = (ctx, data) => {
-//   preLoginInstance
-//     .post("organisation/user/set-reset-password", data)
-//     .then((res) => {
-//       toast.success(res.data.message || "Password set successfully");
-//       ctx.props.history.push("/login");
-//     })
-//     .catch((err) => {
-//       console.log("Catch", err);
-//     });
-// };
+export const sendFeedbackApi = (data, ctx, type) => {
+  postLoginInstance
+    .post("common/master/send-feedback", data)
+    .then((res) => {
+      ctx.setState({
+        ...(type === FeedbackType.POSITIVE ? {favorite: "Thank you very much for your feedback"} : {worst: "Thank you very much for your feedback"}),
+      });
+      setTimeout(function(){
+        ctx.setState({
+          ...(type === FeedbackType.POSITIVE ? {favorite: ""} : {worst: ""}),
+          disabled: false,
+        });
+      }, 4000)
+    })
+    .catch((err) => {
+      console.log("Catch", err);
+    });
+};
 
 // export const changePasswordApi = (ctx, data) => {
 //   postLoginInstance

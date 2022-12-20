@@ -54,29 +54,47 @@ export const settingDefaultValues = (wallet) => {
     };
 };
 
-export const getDetailsByLinkApi = (link,ctx) => {
+export const getDetailsByLinkApi = (link,ctx=null) => {
   const data = new URLSearchParams();
   data.append("token",link);
-  preLoginInstance
-          .post("organisation/user/get-portfolio-by-link", data)
+  return async function (dispatch, getState) {
+  preLoginInstance.post("organisation/user/get-portfolio-by-link", data)
           .then((res) => {
               if(!res.data.error){
+                // console.log('getState',getState().OnboardingState.coinsList);
+                // console.log('res',res);
+                const allChains = getState().OnboardingState.coinsList;
+                // console.log('allChains',allChains);
                 let addWallet = [];
-                for (let i = 0; i < res.data.data.user.wallets.length; i++){
+                const apiResponse = res.data.data;
+                for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
                   let obj = {}; // <----- new Object
-                  obj['address'] = res.data.data.user.wallets[i];
-                  obj['coins'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains.map((item)=>{
-                    return ({coinCode: item.code,
-                    coinSymbol: item.symbol,
-                    coinName: item.name,
-                    chain_detected: item ? true : false})
+                  obj['address'] = apiResponse.user.user_wallets[i].address;
+                  obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
+                  const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
+                  obj['coins'] = allChains.map((chain)=>{
+                    let coinDetected = false;
+                    chainsDetected.map((item)=>{
+                      if(item.id === chain.id){
+                        coinDetected = true;
+                      }
+                    })
+                    return ({coinCode: chain.code,
+                        coinSymbol: chain.symbol,
+                        coinName: chain.name,
+                        chain_detected: coinDetected,
+                      coinColor: chain.color})
                   });
+                  obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
                   obj['id'] = `wallet${i+1}`;
-                  obj['coinFound'] = res.data.data.wallets[res.data.data.user.wallets[i]].chains ? true : false;
+                  obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
                   addWallet.push(obj);
 
               }
+              // console.log('addWallet',addWallet);
+              localStorage.setItem("addWallet",JSON.stringify(addWallet))
               ctx.setState({isLoading:false})
+              ctx.handleResponse && ctx.handleResponse();
               } else{
                 toast.error(res.data.message || "Something Went Wrong")
               }
@@ -84,6 +102,7 @@ export const getDetailsByLinkApi = (link,ctx) => {
           .catch((err) => {
               console.log("Catch", err);
           });
+        }
 };
 
 export const getAssetGraphDataApi = (data, ctx) => {
@@ -91,7 +110,7 @@ export const getAssetGraphDataApi = (data, ctx) => {
   //   .post("wallet/user-wallet/get-all-asset-value-graph", data)
   postLoginInstance
     .post("wallet/user-wallet/get-asset-value-graph", data).then((res) => {
-      console.log("all data", res);
+      // console.log("all data", res);
       if (!res.data.error) {
         ctx.setState({
           assetValueData: res.data.data.asset_value_data,
