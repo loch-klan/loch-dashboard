@@ -816,7 +816,7 @@ class LineChartSlider extends BaseReactComponent {
                 <div className="SliderChartBottom">
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
-                    Largest Internal Events{" "}
+                    Largest Internal Events
                     {this.state.selectedValue &&
                       ": " + this.state.selectedValue}
                   </h4>

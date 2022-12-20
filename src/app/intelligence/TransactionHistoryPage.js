@@ -16,7 +16,7 @@ import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import { noExponents } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { TransactionHistoryAddress } from "../../utils/AnalyticsFunctions";
+import { TransactionHistoryAddress, TransactionHistoryPageView } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
 
@@ -94,6 +94,10 @@ class TransactionHistoryPage extends BaseReactComponent {
     this.delayTimer = 0;
   }
   componentDidMount() {
+     TransactionHistoryPageView({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });

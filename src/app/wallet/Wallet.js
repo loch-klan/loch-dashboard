@@ -23,7 +23,7 @@ import noDataImage from "../../image/no-data.png";
 import lochClean from "../../assets/images/LochClean.gif";
 import { Image } from "react-bootstrap";
 import Loading from "../common/Loading";
-import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet } from "../../utils/AnalyticsFunctions";
+import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet, WalletsPage } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 
@@ -54,7 +54,11 @@ class Wallet extends Component {
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-    console.log("page Enter", this.state.startTime / 1000);
+    // console.log("page Enter", this.state.startTime / 1000);
+     WalletsPage({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
 
     this.props.getAllCoins();
     this.makeApiCall();
