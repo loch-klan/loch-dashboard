@@ -292,13 +292,15 @@
                 }
 
                 &::-webkit-scrollbar-thumb {
-                    background: rgb(90, 90, 90);
+                    // background: rgb(90, 90, 90);
+                    background-color: $scrollBar-thumb;
                     // border-radius: 2rem;
                     border-radius: 0.8rem;
                 }
 
                 &::-webkit-scrollbar-track {
-                    background: rgba(0, 0, 0, 0.2);
+                    // background: rgba(0, 0, 0, 0.2);
+                    background-color: $grey-E5E;
                     // border-radius: 2rem;
                     border-radius: 0.8rem;
                 }

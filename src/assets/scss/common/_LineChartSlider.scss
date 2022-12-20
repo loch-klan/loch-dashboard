@@ -167,6 +167,7 @@
                         // color: $secondary;
                         background-color: $secondary;
                         color: $black-191;
+
                         &:hover{
                           // background-color: $secondary ;
                           // color: $black-191;
@@ -187,7 +188,12 @@
                         img{
                             margin-right: 0.8rem;
                         }
-
+                        &:active:focus{
+                          box-shadow: none;
+                        }
+                        &:active{
+                          border-color: $grey-E5E;
+                        }
 
                         &:focus{
                             // background-color: $black-191;

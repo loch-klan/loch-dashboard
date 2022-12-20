@@ -4,12 +4,11 @@ import { connect } from "react-redux";
 import WalletCard from "./WalletCard";
 import PageHeader from "../common/PageHeader";
 import CoinBadges from "./../common/CoinBadges";
-import sort from "../../image/sort-1.png";
+// import sort from "../../image/sort-1.png";
 import { getAllWalletListApi, getAllWalletApi } from "./Api";
 import { getAllCoins } from "../onboarding/Api.js";
-import Slider from "react-slick";
+// import Slider from "react-slick";
 import {
-  API_LIMIT,
   SEARCH_BY_CHAIN_IN,
   SORT_BY_NAME,
   SORT_BY_PORTFOLIO_AMOUNT,
@@ -19,8 +18,8 @@ import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import sortByIcon from '../../assets/images/icons/triangle-down.svg'
 // import { getCoinRate } from "../Portfolio/Api.js";
-import noDataImage from "../../image/no-data.png";
-import lochClean from "../../assets/images/LochClean.gif";
+// import noDataImage from "../../image/no-data.png";
+// import lochClean from "../../assets/images/LochClean.gif";
 import { Image } from "react-bootstrap";
 import Loading from "../common/Loading";
 import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet } from "../../utils/AnalyticsFunctions";
@@ -212,19 +211,6 @@ class Wallet extends Component {
   };
 
   render() {
-    const settings = {
-      dots: false,
-      infinite: true,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      autoplay: true,
-      speed: 1500,
-      autoplaySpeed: 1500,
-      arrows: false,
-      vertical: true,
-      // adaptiveHeight: true,
-      // variableWidth: true
-    };
     const { walletList } = this.props.walletState;
     return (
       <div className="wallet-page-section">

@@ -38,7 +38,7 @@ export default function PageHeader(props) {
         )}
         <div>
           <h4
-            className={`inter-display-medium f-s-25 lh-30 ${
+            className={`inter-display-medium f-s-24 lh-30 ${
               props.showImg ? "" : "m-b-8"
             }`}
           >
