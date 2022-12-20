@@ -133,7 +133,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   }
 
     onValidSubmit = () => {
-        console.log("Sbmit")
+        // console.log("Sbmit")
     }
 
   addCondition = (key, value) => {
@@ -260,7 +260,8 @@ class TransactionHistoryPage extends BaseReactComponent {
       tableSortOpt: sort
     });
     }
-    render() {
+  render() {
+      console.log("value", this.state.methodFilter);
         const { table, totalPage, totalCount, currentPage, assetPriceList } = this.props.intelligenceState;
         const {walletList} = this.state;
         let tableData = table && table.map((row) => {
@@ -609,8 +610,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                             valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
                           }
                         })
-                        console.log('valueToday',valueToday);
-                        console.log('valueThen',valueThen);
+                        // console.log('valueToday',valueToday);
+                        // console.log('valueThen',valueThen);
                         return (
                         <div style={{display: "flex", justifyContent: "center"}}>
                         <CustomOverlay
@@ -657,7 +658,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueThen;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdTransactionFee.id) {
-                              console.log('chain',chain);
+                              // console.log('chain',chain);
                                 valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price || DEFAULT_PRICE)
                                 valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice
                             }

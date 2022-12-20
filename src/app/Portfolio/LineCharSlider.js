@@ -9,7 +9,15 @@ import DropDown from "../common/DropDown";
 import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
 import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
 import { GroupByOptions, Months } from "../../utils/Constant";
-import { AssetValueFilter, AssetValueHover, AssetValueInternalEvent, IntlAssetValueFilter, IntlAssetValueHover, IntlAssetValueInternalEvent, TitleAssetValueHover } from "../../utils/AnalyticsFunctions.js";
+import {
+  AssetValueFilter,
+  AssetValueHover,
+  AssetValueInternalEvent,
+  IntlAssetValueFilter,
+  IntlAssetValueHover,
+  IntlAssetValueInternalEvent,
+  TitleAssetValueHover,
+} from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
@@ -19,6 +27,7 @@ import CalenderIcon from "../../assets/images/calendar.svg";
 import DoubleArrow from "../../assets/images/double-arrow.svg";
 import handle from "../../assets/images/handle.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import CustomDropdown from "../../utils/form/CustomDropdown";
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -30,6 +39,7 @@ class LineChartSlider extends BaseReactComponent {
       titleY: "$ USD",
       selectedEvents: [],
       selectedValue: null,
+      legends: [],
     };
   }
 
@@ -44,6 +54,7 @@ class LineChartSlider extends BaseReactComponent {
   }
 
   handleFunction = (badge) => {
+    
     let newArr = [...this.state.activeBadge];
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
       let index = newArr.findIndex((x) => x.name === badge.name);
@@ -53,6 +64,7 @@ class LineChartSlider extends BaseReactComponent {
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
           selectedEvents: [],
+          legends: [],
         });
       } else {
         this.setState({
@@ -65,6 +77,7 @@ class LineChartSlider extends BaseReactComponent {
         activeBadge: [{ name: "All", id: "" }],
         activeBadgeList: [],
         selectedEvents: [],
+        legends: [],
       });
     } else {
       let index = newArr.findIndex((x) => x.name === "All");
@@ -76,6 +89,7 @@ class LineChartSlider extends BaseReactComponent {
         activeBadge: newArr,
         activeBadgeList: newArr.map((item) => item.id),
         selectedEvents: [],
+        legends: [],
       });
     }
     this.props.isPage
@@ -91,6 +105,7 @@ class LineChartSlider extends BaseReactComponent {
         });
   };
   handleSelect = (opt) => {
+    
     const t = opt.split(" ")[1];
     this.setState({
       title: t,
@@ -99,16 +114,14 @@ class LineChartSlider extends BaseReactComponent {
     this.props.handleGroupBy(t);
   };
 
+  DropdownData = (arr) => {
+    console.log("dropdown arr", arr);
+    this.setState({legends: arr})
+  };
+
   render() {
     const { assetValueData, externalEvents } = this.props;
     const parent = this;
-
-    const getEvent = (value) => {
-      this.InternalEvent(value);
-      // console.log("event triggered")
-    };
-    // console.log("externalEvents", externalEvents);
-    //  console.log("asset Value", assetValueData);
     let series = {};
     let timestampList = [];
     let assetMaster = {};
@@ -116,8 +129,6 @@ class LineChartSlider extends BaseReactComponent {
 
     assetValueData &&
       assetValueData.map((assetData) => {
-        //  console.log("asset data",assetData);
-
         if (
           this.state.activeBadgeList.includes(assetData.chain._id) ||
           this.state.activeBadgeList.length === 0
@@ -322,7 +333,7 @@ class LineChartSlider extends BaseReactComponent {
     };
 
     let selectedEvents = [];
-     let noOfInternalEvent;
+    let noOfInternalEvent;
     const getIevent = (value) => {
       selectedEvents = [];
       internalEvents &&
@@ -343,7 +354,6 @@ class LineChartSlider extends BaseReactComponent {
               if (a.from || a.from_address) {
                 if (a.from && a.from !== a.from_address) {
                   e_tooltipData = a.from + ": " + a.from_address;
-
                 } else {
                   e_tooltipData = a.from_address;
                 }
@@ -394,7 +404,6 @@ class LineChartSlider extends BaseReactComponent {
       noOfInternalEvent = selectedEvents.length;
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
       // console.log("No of internal event", noOfInternalEvent);
-
     };
     timestampList.map((time) => {
       let dummy = new Date(time);
@@ -421,14 +430,27 @@ class LineChartSlider extends BaseReactComponent {
     });
 
     // console.log("cat", categories);
+
+    let SelectedSeriesData = [];
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
         return b.lastValue - a.lastValue;
       });
+    // console.log("All data", seriesData);
 
-    seriesData = seriesData.slice(0, 4);
-    // console.log("series data", seriesData);
+    let AllLegends = [{ label: "All", value: "All" }];
+    seriesData &&
+      seriesData.map((e) => {
+        AllLegends.push({ label: e.name, value: e.name });
+      });
+    let topLegends = this.state.legends;
+    // console.log("All Legends", AllLegends);
+    SelectedSeriesData =
+      topLegends.length === 0
+        ? seriesData.slice(0, 4)
+        : seriesData.filter((e) => topLegends.includes(e.name));
+    console.log("new", SelectedSeriesData);
     // console.log("categories", categories);
     let selectedValue = null;
     //  seriesData = seriesData;
@@ -501,7 +523,8 @@ class LineChartSlider extends BaseReactComponent {
             // console.log("categories", categories);
             // console.log("value", categories[this.pos]);
             // console.log("this", this);
-            return parent.state.title === "Day" && categories[this.pos] !== undefined
+            return parent.state.title === "Day" &&
+              categories[this.pos] !== undefined
               ? moment(categories[this.pos], "DD/MM/YYYY").format("DD/MM/YY")
               : categories[this.pos];
           },
@@ -560,6 +583,8 @@ class LineChartSlider extends BaseReactComponent {
       },
       legend: {
         enabled: true,
+        x: -120,
+
         align: "right",
         verticalAlign: "top",
         itemStyle: {
@@ -591,8 +616,9 @@ class LineChartSlider extends BaseReactComponent {
         hideDelay: 0,
 
         formatter: function () {
-          let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map((e)=>e.address);
-
+          let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map(
+            (e) => e.address
+          );
 
           let tooltipData = [];
 
@@ -657,7 +683,7 @@ class LineChartSlider extends BaseReactComponent {
                         </div>`;
         },
       },
-      series: seriesData,
+      series: SelectedSeriesData,
       plotOptions: {
         series: {
           fillOpacity: 0,
@@ -697,10 +723,7 @@ class LineChartSlider extends BaseReactComponent {
                   }
                 }
               },
-
-
             },
-
           },
 
           marker: {
@@ -776,10 +799,9 @@ class LineChartSlider extends BaseReactComponent {
                 <GraphHeader
                   title="Asset Value"
                   subtitle="Updated 3mins ago"
-                    isArrow={true}
-                    isAnalytics="Asset Value"
-                    handleClick={this.props.handleClick}
-
+                  isArrow={true}
+                  isAnalytics="Asset Value"
+                  handleClick={this.props.handleClick}
                 />
               )}
               <CoinBadges
@@ -788,9 +810,20 @@ class LineChartSlider extends BaseReactComponent {
                 handleFunction={this.handleFunction}
                 isScrollVisible={this.props.isScrollVisible}
               />
-              <div className="chart-y-selection">
+              <div className="chart-y-selection" style={{width: "100%"}}>
                 <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                   $ USD
+                </span>
+                <span style={{width: "15%", position:"absolute", right:"0px", zIndex:"1"}}>
+                 
+                  <CustomDropdown
+                    filtername="Tokens"
+                    options={AllLegends}
+                      action={null}
+                      selectedTokens={this.state.legends}
+                      handleClick={(arr) => this.DropdownData(arr)}
+                      isLineChart={true}
+                  />
                 </span>
               </div>
               <HighchartsReact
