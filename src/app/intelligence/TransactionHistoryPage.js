@@ -134,7 +134,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   }
 
     onValidSubmit = () => {
-        console.log("Sbmit")
+        // console.log("Sbmit")
     }
 
   addCondition = (key, value) => {
@@ -261,7 +261,8 @@ class TransactionHistoryPage extends BaseReactComponent {
       tableSortOpt: sort
     });
     }
-    render() {
+  render() {
+      console.log("value", this.state.methodFilter);
         const { table, totalPage, totalCount, currentPage, assetPriceList } = this.props.intelligenceState;
         const {walletList, currency} = this.state;
         let tableData = table && table.map((row) => {
