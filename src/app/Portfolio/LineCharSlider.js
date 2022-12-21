@@ -45,7 +45,7 @@ class LineChartSlider extends BaseReactComponent {
 
   componentDidUpdate(prevProps) {
     if (prevProps.isUpdate !== this.props.isUpdate) {
-      console.log("Something update");
+      // console.log("Something update");
       this.setState({
         title: "Year",
         selectedEvents: [],
@@ -115,7 +115,7 @@ class LineChartSlider extends BaseReactComponent {
   };
 
   DropdownData = (arr) => {
-    console.log("dropdown arr", arr);
+    // console.log("dropdown arr", arr);
     this.setState({legends: arr})
   };
 
@@ -173,6 +173,7 @@ class LineChartSlider extends BaseReactComponent {
       return a - b;
     });
 
+    // console.log("before", timestampList);
     if (this.state.title === "Year" && timestampList.length != 0) {
       const startYear = 2009;
       const endYear = moment(timestampList[0]).format("YYYY");
@@ -184,6 +185,37 @@ class LineChartSlider extends BaseReactComponent {
 
       timestampList = [...years, ...timestampList];
       // console.log("year update", years);
+      // console.log("l", timestampList);
+    } else if (this.state.title === "Month" && timestampList.length != 0) {
+      const startMonth = 0; //January
+      const endMonth = 12 - timestampList.length;
+      // console.log("end", endMonth);
+      const currentYear = moment().year(); // Current year
+      const months = [];
+      for (let month = startMonth; month < endMonth; month++) {
+        months.push(
+          moment(
+            moment().year(currentYear).month(month).format("MMMM YY"),
+            "MMMM YY"
+          ).valueOf()
+        );
+      }
+
+      timestampList = [...months, ...timestampList];
+      // console.log("Month update", months);
+      // console.log("l", timestampList);
+    } else if (this.state.title === "Day" && timestampList.length != 0) {
+      let dates = [];
+      const endDay = 30 - timestampList.length;
+      const currentDay = moment.unix(timestampList[0]);
+      // console.log("tets",endDay);
+      for (let day = 0; day < endDay; day++) {
+        const date = currentDay.subtract(1, "days").valueOf();
+        dates.push(date);
+      }
+      // dates = dates.reverse;
+      timestampList = [...dates.reverse(), ...timestampList];
+      // console.log("dates update", dates);
       // console.log("l", timestampList);
     }
 
@@ -464,7 +496,7 @@ class LineChartSlider extends BaseReactComponent {
     // console.log("new", SelectedSeriesData);
     // console.log("categories", categories);
     let selectedValue = null;
-    console.log("sleected value", this.state.selectedValue)
+    // console.log("sleected value", this.state.selectedValue)
     //  seriesData = seriesData;
     var UNDEFINED;
     const options = {
@@ -706,13 +738,13 @@ class LineChartSlider extends BaseReactComponent {
                      email_address: getCurrentUser().email,
                      no_of_events: noOfInternalEvent,
                    });
-                   console.log("inside event click");
+                  //  console.log("inside event click");
                    parent.setState({
                      selectedEvents: selectedEvents,
                      selectedValue: selectedValue,
                    });
                  } else {
-                   console.log("reset");
+                  //  console.log("reset");
                    parent.setState({
                      selectedEvents: [],
                      selectedValue: null,
@@ -852,13 +884,20 @@ class LineChartSlider extends BaseReactComponent {
                 <div className="SliderChartBottom">
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
-                    Largest Internal Events
+                    Largest Transactions
                     {this.state.selectedValue &&
-                      ": " + ((this.state.title == "Year" || this.state.title == "Month")
-                      ? this.state.selectedValue
-                      : moment(this.state.selectedValue, "DD/MM/YYYY").format(
-                          "MMM DD, YYYY"
-                        ))}
+                      ": " +
+                        (this.state.title == "Year"
+                          ? this.state.selectedValue
+                          : this.state.title == "Month"
+                          ? moment(
+                              this.state.selectedValue,
+                              "MMMM YY"
+                            ).format("MMMM, YYYY")
+                          : moment(
+                              this.state.selectedValue,
+                              "DD/MM/YYYY"
+                            ).format("MMM DD, YYYY"))}
                   </h4>
 
                   <div className="InternalEventWrapper">
@@ -897,7 +936,7 @@ class LineChartSlider extends BaseReactComponent {
                                   {numToCurrency(event.usd)}
                                   {event.text === "from"
                                     ? " received from "
-                                    : " transferred to "}{" "}
+                                    : " transferred to "}
                                 </span>
                                 <CustomOverlay
                                   position="top"

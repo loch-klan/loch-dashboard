@@ -284,13 +284,21 @@ class CustomDropdown extends Component {
           className={`dropdown-content ${this.state.showMenu ? "show" : ""}`}
           style={{ minWidth: `${this.props.isLineChart ? "100%" : "130px"}` }}
         >
-          <div className="dropdown-list">
+          <div
+            className="dropdown-list"
+            style={{
+              overflowY: `${
+                this.state.options.length < 5 ? "hidden" : "scroll"
+              }`,
+            }}
+          >
             {this.state.options.length === 0 ||
             (this.state.options[0].label === "All" &&
               this.state.options.length === 1) ? (
               <span>No Data</span>
             ) : (
               this.state.options.map((e, i) => {
+              
                 return this.props.isLineChart && i === 0 ? (
                   ""
                 ) : (

@@ -56,7 +56,6 @@
   .dropdown-content {
     display: none;
     position: absolute;
-    padding: 3px 3px 0px;
     top: 4.3rem;
     width: 100%;
     min-width: 130px;
@@ -68,13 +67,14 @@
 
     .dropdown-list {
       max-height: 18.5rem;
+      padding: 4px 4px 0px;
       overflow-y: scroll;
 
       /* Links inside the dropdown */
       span {
         @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
         padding: 8px 8px;
-        margin-bottom: 3px;
+        margin-bottom: 1.5px;
         border-radius: 2px;
         text-decoration: none;
         display: block;
@@ -104,8 +104,8 @@
       }
 
       &::-webkit-scrollbar {
-        width: 0.3rem;
-        height: 0.3rem;
+        width: 0.4rem;
+        height: 0.4rem;
       }
 
       &::-webkit-scrollbar-thumb {
@@ -125,7 +125,7 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        padding: 6px 0px;
+        padding: 4px 4px;
         border-top: 1px solid $secondary-6;
         .primary-btn{
           &:hover{
