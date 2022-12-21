@@ -74,7 +74,7 @@ export default function IntelWelcomeCard(props) {
                     <Image src={card.icon} />
                 </div>
                 <div className='info-detail'>
-                    <div className='inter-display-medium   f-s-16 lh-19 m-b-4 info-title'>
+                    <div className='inter-display-medium f-s-16 lh-19 m-b-4 info-title'>
                         {card.title}
                     </div>
                     <div className='viewmore'>

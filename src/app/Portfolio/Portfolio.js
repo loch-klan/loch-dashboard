@@ -148,7 +148,7 @@ class Portfolio extends BaseReactComponent {
           this.getGraphData()
           getAllCounterFeeApi(this, false, false);
           getProfitAndLossApi(this, false, false, false);
-          getYesterdaysBalanceApi(this);
+          // getYesterdaysBalanceApi(this);
     }
 
     componentWillUnmount() {
@@ -209,19 +209,20 @@ this.setState({graphLoading: true})
                         })
                     }
                     if (i === (this.state.userWalletList.length - 1)) {
+                      getYesterdaysBalanceApi(this);
                         this.setState({
                             loader: false
                         });
                     }
                 })
                 // this.getTableData()
-            }
-            else {
+            } else {
                 // console.log('Heyyy');
                 // this.getTableData()
                 this.props.settingDefaultValues();
             }
             if (prevProps.userWalletList !== this.state.userWalletList) {
+              // this.apiCall();
                 this.getTableData()
                 this.getGraphData()
                 getYesterdaysBalanceApi(this);
@@ -236,7 +237,6 @@ this.setState({graphLoading: true})
           );
           this.setState({userWalletList: this.props.location.state.addWallet})
           this.apiCall();
-
         }
     }
 
@@ -909,9 +909,6 @@ this.setState({graphLoading: true})
                             isScroll={true}
                             isScrollVisible={false}
                             comingSoon={false}
-                            // width="100%"
-                            // height="100%"
-
                             className={"portfolio-counterparty-fee"}
                           />
                           :

@@ -12,6 +12,7 @@ class FeedbackForm extends BaseReactComponent {
       favorite: "",
       worst: "",
       disabled: false,
+      disabledFav: false,
     }
   }
 
@@ -28,7 +29,9 @@ class FeedbackForm extends BaseReactComponent {
   handleKeyDown = (e, type) =>{
     if (e.key === 'Enter') {
       console.log('do validate');
-      this.setState({disabled:true})
+      this.setState({
+        ...(type === FeedbackType.POSITIVE ? {disabledFav: true} : {disabled: true}),
+      })
       let data = new URLSearchParams();
       data.append("page", this.props.page)
       data.append("feedback_type", type)
@@ -48,9 +51,9 @@ class FeedbackForm extends BaseReactComponent {
             name="favorite"
             id="favorite"
             placeholder={"My favorite thing about this page is ..."}
-            autocomplete="off"
+            autoComplete="off"
             onChange={(event)=>{this.handleInput(event.target.value, FeedbackType.POSITIVE)}}
-            disabled={this.state.disabled? "disabled":""}
+            disabled={this.state.disabledFav? "disabled":""}
             onKeyDown={(e)=>this.handleKeyDown(e, FeedbackType.POSITIVE)}
           />
           <input
@@ -58,7 +61,7 @@ class FeedbackForm extends BaseReactComponent {
             type="text"
             name="worst"
             id="worst"
-            autocomplete="off"
+            autoComplete="off"
             placeholder={"The worst thing about this page is ..."}
             disabled={this.state.disabled? "disabled":""}
             onChange={(event)=>{this.handleInput(event.target.value, FeedbackType.NEGATIVE)}}
