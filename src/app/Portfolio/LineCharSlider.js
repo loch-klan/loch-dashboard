@@ -332,17 +332,28 @@ class LineChartSlider extends BaseReactComponent {
         });
     };
 
+
+
     let selectedEvents = [];
     let noOfInternalEvent;
     const getIevent = (value) => {
       selectedEvents = [];
       internalEvents &&
         internalEvents.map((item) => {
-          let current = moment(item.timestamp).format("DD/MM/YYYY");
-          // console.log("current", current, value);
-          if (current === value) {
-            // console.log("item", item);
-            // console.log("item", item);
+          // console.log("item", item)
+          let current = "";
+          if (this.state.title === "Year") {
+            current = moment(item.timestamp).format("YYYY");
+            //  console.log("current", current, value);
+          } else if (this.state.title === "Month") {
+            
+            current = moment(item.timestamp).format("MMMM YY");
+            //  console.log("current", current, value);
+          } else {
+            current = moment(item.timestamp).format("DD/MM/YYYY");
+          }
+         
+          if (current == value) {
             // selectedEvents.push(item);
             item.event.map((a) => {
               let e_usd = a.asset.value * a.asset_price;
@@ -403,7 +414,7 @@ class LineChartSlider extends BaseReactComponent {
         });
       noOfInternalEvent = selectedEvents.length;
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
-      // console.log("No of internal event", noOfInternalEvent);
+      
     };
     timestampList.map((time) => {
       let dummy = new Date(time);
@@ -450,9 +461,10 @@ class LineChartSlider extends BaseReactComponent {
       topLegends.length === 0
         ? seriesData.slice(0, 4)
         : seriesData.filter((e) => topLegends.includes(e.name));
-    console.log("new", SelectedSeriesData);
+    // console.log("new", SelectedSeriesData);
     // console.log("categories", categories);
     let selectedValue = null;
+    console.log("sleected value", this.state.selectedValue)
     //  seriesData = seriesData;
     var UNDEFINED;
     const options = {
@@ -464,32 +476,30 @@ class LineChartSlider extends BaseReactComponent {
         events: {
           click: function (event) {
             // console.log("event click", parent.state.selectedValue);
-            if (parent.state.title == "Week" || parent.state.title == "Day") {
-              console.log("event inside");
-              if (parent.state.selectedValue !== selectedValue) {
-                parent.props.isPage
-                  ? IntlAssetValueInternalEvent({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      no_of_events: noOfInternalEvent,
-                    })
-                  : AssetValueInternalEvent({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      no_of_events: noOfInternalEvent,
-                    });
-                // console.log("inside event click");
-                parent.setState({
-                  selectedEvents: selectedEvents,
-                  selectedValue: selectedValue,
-                });
-              } else {
-                console.log("reset");
-                parent.setState({
-                  selectedEvents: [],
-                  selectedValue: null,
-                });
-              }
+            // console.log("event inside");
+            if (parent.state.selectedValue !== selectedValue) {
+              parent.props.isPage
+                ? IntlAssetValueInternalEvent({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    no_of_events: noOfInternalEvent,
+                  })
+                : AssetValueInternalEvent({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    no_of_events: noOfInternalEvent,
+                  });
+              // console.log("inside event click");
+              parent.setState({
+                selectedEvents: selectedEvents,
+                selectedValue: selectedValue,
+              });
+            } else {
+              console.log("reset");
+              parent.setState({
+                selectedEvents: [],
+                selectedValue: null,
+              });
             }
           },
         },
@@ -687,41 +697,27 @@ class LineChartSlider extends BaseReactComponent {
       plotOptions: {
         series: {
           fillOpacity: 0,
-          // events: {
-          //    legendItemClick: function () {
-          //       // console.log(this);
-          //       //  console.log("this");
-          //       // parent.setState({
-          //       //   selectedEvents: [],
-          //       // });
-          //     }
-          // },
           point: {
             events: {
               click: function () {
-                if (
-                  parent.state.title == "Week" ||
-                  parent.state.title == "Day"
-                ) {
-                  if (parent.state.selectedValue !== selectedValue) {
-                    AssetValueInternalEvent({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      no_of_events: noOfInternalEvent,
-                    });
-                    console.log("inside event click");
-                    parent.setState({
-                      selectedEvents: selectedEvents,
-                      selectedValue: selectedValue,
-                    });
-                  } else {
-                    console.log("reset");
-                    parent.setState({
-                      selectedEvents: [],
-                      selectedValue: null,
-                    });
-                  }
-                }
+                 if (parent.state.selectedValue !== selectedValue) {
+                   AssetValueInternalEvent({
+                     session_id: getCurrentUser().id,
+                     email_address: getCurrentUser().email,
+                     no_of_events: noOfInternalEvent,
+                   });
+                   console.log("inside event click");
+                   parent.setState({
+                     selectedEvents: selectedEvents,
+                     selectedValue: selectedValue,
+                   });
+                 } else {
+                   console.log("reset");
+                   parent.setState({
+                     selectedEvents: [],
+                     selectedValue: null,
+                   });
+                 }
               },
             },
           },
@@ -858,10 +854,11 @@ class LineChartSlider extends BaseReactComponent {
                     <Image src={CalenderIcon} />
                     Largest Internal Events
                     {this.state.selectedValue &&
-                      ": " +
-                        moment(this.state.selectedValue, "DD/MM/YYYY").format(
+                      ": " + ((this.state.title == "Year" || this.state.title == "Month")
+                      ? this.state.selectedValue
+                      : moment(this.state.selectedValue, "DD/MM/YYYY").format(
                           "MMM DD, YYYY"
-                        )}
+                        ))}
                   </h4>
 
                   <div className="InternalEventWrapper">

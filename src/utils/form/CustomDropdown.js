@@ -4,7 +4,7 @@ class CustomDropdown extends Component {
   constructor(props) {
     super(props);
 
-    console.log(props.options, "props option");
+    // console.log(props.options, "props option");
     //  console.log(state.options, "state option");
 
     this.state = {
@@ -24,7 +24,7 @@ class CustomDropdown extends Component {
     //  );
     if (this.props.isLineChart) {
       if (this.props.selectedTokens.length !== 0) {
-        console.log("found array");
+        // console.log("found array");
         //is already selected then this run
         this.props.options.map((e) =>
           this.state.options.push({
@@ -36,7 +36,7 @@ class CustomDropdown extends Component {
           })
         );
       } else {
-        console.log("empty array");
+        // console.log("empty array");
         this.props.options.map((e, i) =>
           this.state.options.push({
             label: e.label,
@@ -46,7 +46,7 @@ class CustomDropdown extends Component {
         );
       }
     } else {
-      console.log("transaction");
+      // console.log("transaction");
       this.props.options.map((e, i) =>
         this.state.options.push({
           label: e.label,
@@ -65,19 +65,14 @@ class CustomDropdown extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(
-      "check",
-      prevProps.options.length === 0 ||
-        (this.props.isLineChart &&
-          prevProps.options.length !== this.props.options.length)
-    );
+    
     if (
       prevProps.options.length === 0 ||
       (this.props.isLineChart &&
         prevProps.options.length !== this.props.options.length)
     ) {
       if (this.props.isLineChart) {
-        console.log("in line chart");
+        // console.log("in line chart");
         this.setState(
           {
             options: [],
@@ -85,7 +80,7 @@ class CustomDropdown extends Component {
           () => {
             if (this.props.selectedTokens.length !== 0) {
               //is already selected then this run
-              console.log("in selected token");
+              // console.log("in selected token");
               this.props.options.map((e) =>
                 this.state.options.push({
                   label: e.label,
@@ -96,7 +91,7 @@ class CustomDropdown extends Component {
                 })
               );
             } else {
-              console.log("in line chart empty");
+              // console.log("in line chart empty");
               this.props.options.map((e, i) =>
                 this.state.options.push({
                   label: e.label,
@@ -110,7 +105,7 @@ class CustomDropdown extends Component {
           }
         );
       } else {
-        console.log("in transaction");
+        // console.log("in transaction");
         this.props.options.map((e, i) =>
           this.state.options.push({
             label: e.label,
@@ -188,7 +183,7 @@ class CustomDropdown extends Component {
       count = selected.length;
     }
 
-    console.log(selected, "selected", count, "count");
+    // console.log(selected, "selected", count, "count");
     //   console.log(this.state.options);
     return { selected: selected, length: count };
   };
@@ -226,7 +221,7 @@ class CustomDropdown extends Component {
           );
       this.setState({ showMenu: false });
     } else {
-      console.log("Please select");
+      // console.log("Please select");
     }
   };
 
