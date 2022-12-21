@@ -108,8 +108,18 @@ function Sidebar(props) {
     }
 
     React.useEffect(() => {
+      let currency = JSON.parse(localStorage.getItem('currency'))
+      // console.log('curr',currency);
+      !currency && localStorage.setItem('currency',JSON.stringify({
+        active: true,
+        code: "USD",
+        id: "6399a2d35a10114b677299fe",
+        name: "United States Dollar",
+        symbol: "$",
+        rate: 1,
+    }))
       let currencyRates = JSON.parse(localStorage.getItem('currencyRates'))
-      console.log('currency',currencyRates);
+      // console.log('currency',currencyRates);
       getAllCurrencyApi(setAllCurrencyList)
       !currencyRates && getAllCurrencyRatesApi()
     }, []); // <-- Have to pass in [] here!
@@ -127,8 +137,7 @@ function Sidebar(props) {
       }
       setCurrency(currency);
       localStorage.setItem('currency',JSON.stringify(currency));
-      window.location.reload();
-
+      // window.location.reload();
     }
     const quotes = [
         "Sic Parvis Magna | Thus, great things from small things come.",
@@ -169,7 +178,7 @@ function Sidebar(props) {
                 <span className="loch-text">Loch</span>
               </div>
               <div className='currency-wrapper'>
-                <DropdownButton id="currency-dropdown" title={selectedCurrency.symbol + " " + selectedCurrency.code}>
+                <DropdownButton id="currency-dropdown" title={selectedCurrency && selectedCurrency.symbol + " " + selectedCurrency && selectedCurrency.code}>
                   {
                     currencyList.map((currency)=>{
                       return(

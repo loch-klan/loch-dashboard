@@ -162,10 +162,10 @@ export const noExponents = (value) => {
 export const CurrencyType = (code = "both") => {
   let currency = JSON.parse(localStorage.getItem('currency'))
   if(code === "both"){
-    return currency.symbol + " " + currency.code
+    return currency?.symbol + " " + currency?.code
   } else if(code){
-    return currency.code
+    return currency?.code
   } else{
-    return currency.symbol
+    return currency?.symbol
   }
 }

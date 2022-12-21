@@ -605,10 +605,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueToday;
                         chain.find((chain) => {
                           if (chain[0] === rowData.usdValueToday.id) {
-                            valueToday = (rowData.usdValueToday.value * chain[1].quote.USD.price * currency.rate || DEFAULT_PRICE)
+                            valueToday = (rowData.usdValueToday.value * chain[1].quote.USD.price * currency?.rate || DEFAULT_PRICE)
                           }
                           if (chain[0] === rowData.usdValueThen.id) {
-                            valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice * currency.rate
+                            valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice * currency?.rate
                           }
                         })
                         // console.log('valueToday',valueToday);
@@ -660,8 +660,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdTransactionFee.id) {
                               // console.log('chain',chain);
-                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price * currency.rate || DEFAULT_PRICE)
-                                valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice * currency.rate
+                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price * currency?.rate || DEFAULT_PRICE)
+                                valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice * currency?.rate
                             }
                         })
                         return (

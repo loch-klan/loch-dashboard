@@ -400,7 +400,7 @@ class PieChart extends BaseReactComponent {
                                                   ? DEFAULT_PRICE
                                                   : numToCurrency(
                                                       data.assetCount *
-                                                        isQuote?.USD.price * currency.rate
+                                                        isQuote?.USD.price * currency?.rate
                                                     )}
                                               </span>
 
@@ -433,7 +433,7 @@ class PieChart extends BaseReactComponent {
 
                                           <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{pieSectionDataEnabled.assetCode}</span>
 
-                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(totalCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote?.USD.price * currency.rate) || DEFAULT_PRICE}</span>
+                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(totalCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote?.USD.price * currency?.rate) || DEFAULT_PRICE}</span>
                                           <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>{CurrencyType(true)}</span>
                                       </div>
                                   </div>

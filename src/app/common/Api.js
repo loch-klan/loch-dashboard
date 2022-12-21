@@ -11,14 +11,14 @@ export const loginApi = (ctx, data) => {
       if (!res.data.error) {
         // console.log('res', res.data.data.token);
         // console.log('ctx',ctx.props.history);
-        localStorage.setItem('currency',{
+        localStorage.setItem('currency',JSON.stringify({
           active: true,
           code: "USD",
           id: "6399a2d35a10114b677299fe",
           name: "United States Dollar",
           symbol: "$",
           rate: 1,
-      })
+      }))
         localStorage.setItem('lochToken', res.data.data.token);
         if(ctx.state.link){
           ctx.props.getAllCoins(ctx.handleShareLinkUser)
