@@ -137,7 +137,7 @@ function Sidebar(props) {
       }
       setCurrency(currency);
       localStorage.setItem('currency',JSON.stringify(currency));
-      // window.location.reload();
+      window.location.reload();
     }
     const quotes = [
         "Sic Parvis Magna | Thus, great things from small things come.",
