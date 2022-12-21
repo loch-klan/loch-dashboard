@@ -810,19 +810,25 @@ class LineChartSlider extends BaseReactComponent {
                 handleFunction={this.handleFunction}
                 isScrollVisible={this.props.isScrollVisible}
               />
-              <div className="chart-y-selection" style={{width: "100%"}}>
+              <div className="chart-y-selection" style={{ width: "100%" }}>
                 <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                   $ USD
                 </span>
-                <span style={{width: "15%", position:"absolute", right:"0px", zIndex:"1"}}>
-                 
+                <span
+                  style={{
+                    width: "15%",
+                    position: "absolute",
+                    right: "0px",
+                    zIndex: "1",
+                  }}
+                >
                   <CustomDropdown
                     filtername="Tokens"
                     options={AllLegends}
-                      action={null}
-                      selectedTokens={this.state.legends}
-                      handleClick={(arr) => this.DropdownData(arr)}
-                      isLineChart={true}
+                    action={null}
+                    selectedTokens={this.state.legends}
+                    handleClick={(arr) => this.DropdownData(arr)}
+                    isLineChart={true}
                   />
                 </span>
               </div>
@@ -852,7 +858,10 @@ class LineChartSlider extends BaseReactComponent {
                     <Image src={CalenderIcon} />
                     Largest Internal Events
                     {this.state.selectedValue &&
-                      ": " + this.state.selectedValue}
+                      ": " +
+                        moment(this.state.selectedValue, "DD/MM/YYYY").format(
+                          "MMM DD, YYYY"
+                        )}
                   </h4>
 
                   <div className="InternalEventWrapper">
