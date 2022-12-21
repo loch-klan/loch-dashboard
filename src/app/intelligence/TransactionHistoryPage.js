@@ -262,7 +262,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
     }
   render() {
-      console.log("value", this.state.methodFilter);
+      // console.log("value", this.state.methodFilter);
         const { table, totalPage, totalCount, currentPage, assetPriceList } = this.props.intelligenceState;
         const {walletList, currency} = this.state;
         let tableData = table && table.map((row) => {

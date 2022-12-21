@@ -47,7 +47,7 @@ class InsightsPage extends Component {
     getAllInsightsApi(this);
   }
   handleSelect = (value) => {
-    console.log("value",value)
+    // console.log("value",value)
     let insightList = this.state.insightList;
     insightList = insightList.filter((item)=> value === 1 ? item : item.insight_type === value)
     this.setState({

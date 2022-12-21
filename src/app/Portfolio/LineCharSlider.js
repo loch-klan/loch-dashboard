@@ -54,7 +54,7 @@ class LineChartSlider extends BaseReactComponent {
   }
 
   handleFunction = (badge) => {
-    
+
     let newArr = [...this.state.activeBadge];
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
       let index = newArr.findIndex((x) => x.name === badge.name);
@@ -105,7 +105,7 @@ class LineChartSlider extends BaseReactComponent {
         });
   };
   handleSelect = (opt) => {
-    
+
     const t = opt.split(" ")[1];
     this.setState({
       title: t,
@@ -115,7 +115,7 @@ class LineChartSlider extends BaseReactComponent {
   };
 
   DropdownData = (arr) => {
-    console.log("dropdown arr", arr);
+    // console.log("dropdown arr", arr);
     this.setState({legends: arr})
   };
 
@@ -450,7 +450,7 @@ class LineChartSlider extends BaseReactComponent {
       topLegends.length === 0
         ? seriesData.slice(0, 4)
         : seriesData.filter((e) => topLegends.includes(e.name));
-    console.log("new", SelectedSeriesData);
+    // console.log("new", SelectedSeriesData);
     // console.log("categories", categories);
     let selectedValue = null;
     //  seriesData = seriesData;
@@ -675,7 +675,7 @@ class LineChartSlider extends BaseReactComponent {
                                       item.color == "#ffffff"
                                         ? "#16182B"
                                         : item.color
-                                    }"> $${numToCurrency(item.y)}</span>
+                                    }"> ${CurrencyType(false)} ${numToCurrency(item.y)}</span>
                                     </div>`;
                                   })
                                   .join(" ")}
@@ -896,7 +896,7 @@ class LineChartSlider extends BaseReactComponent {
                                 <span>
                                   {event.assetValue.toFixed(count)}{" "}
                                   {event.assetCode}
-                                  {" or $"}
+                                  {` or ${CurrencyType(false)}`}
                                   {numToCurrency(event.usd)}
                                   {event.text === "from"
                                     ? " received from "

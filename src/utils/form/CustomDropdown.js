@@ -4,7 +4,7 @@ class CustomDropdown extends Component {
   constructor(props) {
     super(props);
 
-    console.log(props.options, "props option");
+    // console.log(props.options, "props option");
     //  console.log(state.options, "state option");
 
     this.state = {

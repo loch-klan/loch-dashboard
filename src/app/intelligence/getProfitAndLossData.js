@@ -1,4 +1,4 @@
-import { numToCurrency } from "../../utils/ReusableFunctions";
+import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
 import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
 import { ProfitLossHover } from "../../utils/AnalyticsFunctions";
@@ -75,7 +75,7 @@ export const getProfitAndLossData = (arr) => {
             callbacks: {
               title: function() {}, //REMOVE TITLE
               label: (ctx) => {
-                let label = ctx.label + ": $" + numToCurrency(ctx.raw);
+                let label = ctx.label + ": " + CurrencyType(false) + numToCurrency(ctx.raw);
                 ProfitLossHover({
                   session_id: getCurrentUser().id,
                   email_address: getCurrentUser().email,

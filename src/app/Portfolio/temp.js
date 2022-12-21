@@ -431,7 +431,7 @@ class LineChartSlider extends BaseReactComponent {
       seriesData.sort((a, b) => {
         return b.lastValue - a.lastValue;
       });
-    console.log("All data", seriesData);
+    // console.log("All data", seriesData);
 
     let AllLegends = [];
     seriesData &&
@@ -444,7 +444,7 @@ class LineChartSlider extends BaseReactComponent {
       topLegends.length === 0
         ? seriesData.slice(0, 4)
         : seriesData.filter((e) => topLegends.includes(e.name));
-    console.log("new", SelectedSeriesData);
+    // console.log("new", SelectedSeriesData);
     // console.log("categories", categories);
     let selectedValue = null;
     //  seriesData = seriesData;

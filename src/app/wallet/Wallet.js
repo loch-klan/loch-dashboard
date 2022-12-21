@@ -83,7 +83,7 @@ class Wallet extends Component {
     // data.append("limit", API_LIMIT)
     data.append("sorts", JSON.stringify(this.state.sorts));
     this.props.getAllWalletListApi(data, this);
-    console.log(data);
+    // console.log(data);
   };
   handleSort = (e) => {
     let sort = [...this.state.sortBy];

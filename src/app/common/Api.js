@@ -167,7 +167,7 @@ export const getDetectedChainsApi = (ctx) =>{
         wallet.coinFound = coinFound
       wallet.coins = chainsDetected
       })
-      console.log('addWallet',addWallet);
+      // console.log('addWallet',addWallet);
       ctx.setState({addWalletList: addWallet})
       addWallet && addWallet.length > 0 && localStorage.setItem('addWallet',JSON.stringify(addWallet))
     } else{
@@ -224,7 +224,7 @@ export const getAllCurrencyApi = (setAllCurrencyList) =>{
   postLoginInstance.post("common/master/get-all-currencies")
   .then((res)=>{
     if(!res.data.error){
-      console.log('set');
+      // console.log('set');
       setAllCurrencyList(res.data.data.currencies)
     } else{
       toast.error(res.data.message || "Something went wrong");
@@ -240,7 +240,7 @@ export const getAllCurrencyRatesApi = () =>{
     if(!res.data.error){
       let currency = JSON.parse(localStorage.getItem('currency'));
       for (const [key, value] of Object.entries(res.data.data.rates.rates)) {
-        console.log(`${key}: ${value}`);
+        // console.log(`${key}: ${value}`);
         if(key === currency.code){
           currency = {
             ...currency,

@@ -206,7 +206,7 @@ class PieChart extends BaseReactComponent {
                         allowOverlap: false,
                         formatter: function () {
                             return (
-                                `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$${(this.point.usd)} ${CurrencyType(true)}&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(2)}% &nbsp;&nbsp;</p>`
+                                `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3"> ${CurrencyType(false)} ${(this.point.usd)} ${CurrencyType(true)}&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(2)}% &nbsp;&nbsp;</p>`
                             )
                         },
                         // x: 10,
@@ -240,7 +240,7 @@ class PieChart extends BaseReactComponent {
                                 if(document.getElementById("fixbtn")){
                                   {document.getElementById("fixbtn").style.display = "none"}
                                 }
-                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: currentData.options.name, asset_amount: "$"+currentData.options.usd});
+                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: currentData.options.name, asset_amount: CurrencyType(false)+currentData.options.usd});
                             },
                             unselect: function () {
                                 // console.log("UNSELECT")
@@ -363,7 +363,7 @@ class PieChart extends BaseReactComponent {
                                         <div className='coin-hover-display-text1-lower'>
                                             <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? numToCurrency(pieSectionDataEnabled.count) : null}</span>
                                             <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>{pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? pieSectionDataEnabled.assetCode : null}</span>
-                                            <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? pieSectionDataEnabled.usd : null}</span>
+                                            <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>{CurrencyType(false)}{pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? pieSectionDataEnabled.usd : null}</span>
                                             <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>{CurrencyType(true)}</span>
                                         </div>
                                     </div>}
