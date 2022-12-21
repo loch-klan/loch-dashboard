@@ -76,7 +76,7 @@ export const getProfitAndLossData = (arr) => {
             callbacks: {
               title: function() {}, //REMOVE TITLE
               label: (ctx) => {
-                let label = ctx.label + ": " + CurrencyType(false) + numToCurrency(ctx.raw * currency.rate);
+                let label = ctx.label + ": " + CurrencyType(false) + numToCurrency(ctx.raw);
                 ProfitLossHover({
                   session_id: getCurrentUser().id,
                   email_address: getCurrentUser().email,
