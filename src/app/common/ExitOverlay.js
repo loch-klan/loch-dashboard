@@ -332,7 +332,7 @@ class ExitOverlay extends BaseReactComponent {
               <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
                 Access your data again through the unique reusable link,
               </p>
-              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-10">
+              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24">
                 or link your email
               </p>
               <div className="email-section">
@@ -370,7 +370,7 @@ class ExitOverlay extends BaseReactComponent {
                   </div>
                 </Form>
               </div>
-              <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-28">
+              <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
                 or
               </p>
               <div className="m-b-24 links">

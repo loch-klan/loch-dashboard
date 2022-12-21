@@ -56,7 +56,7 @@ class AddWallet extends BaseReactComponent {
         // timeout;
         this.timeout = setTimeout(() => {
             this.getCoinBasedOnWalletAddress(name, value);
-        }, 1000)
+        }, 500)
     }
 
     getCoinBasedOnWalletAddress = (name, value) => {

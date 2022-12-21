@@ -188,7 +188,8 @@
                               }
                               .custom-select__menu-list::-webkit-scrollbar-track {
                                 // background: rgba(0, 0, 0, 0.2);
-                                background: transparent;
+                                // background: transparent;
+                                background-color: $grey-E5E;
                                 border-radius: 0.8rem;
                               }
                         }

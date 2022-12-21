@@ -1,10 +1,10 @@
 import React from "react";
-import { Form, FormElement, FormValidator, CustomTextControl, FormSubmitButton } from '../../utils/form'
-import { Container, Row, Col, Image, Button } from 'react-bootstrap';
+import { Form, FormElement, CustomTextControl } from '../../utils/form'
+import { Row, Col, Image, Button } from 'react-bootstrap';
 import profileInfoIcon from "../../image/ProfileInfoIcon.svg"
-import CustomButton from "../../utils/form/CustomButton";
+// import CustomButton from "../../utils/form/CustomButton";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import {updateUser} from  './Api.js'
 import { connect } from 'react-redux';
 import { EmailAdded, FirstNameAdded, LastNameAdded, MobileNumberAdded, ProfileSaved } from "../../utils/AnalyticsFunctions";
@@ -80,8 +80,8 @@ class ProfileForm extends BaseReactComponent{
         //     "New number",
         //     this.state.mobileNumber
         //   );
-        } 
-       
+        }
+
         const data = new URLSearchParams()
         data.append("first_name",this.state.firstName)
         data.append("last_name",this.state.lastName)

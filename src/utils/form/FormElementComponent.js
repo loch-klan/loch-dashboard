@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form, FormGroup } from "react-bootstrap";
+import { Form, FormGroup, Image } from "react-bootstrap";
 import BaseReactComponent from "./BaseReactComponent";
+import cancelIcon from '../../assets/images/icons/EmailNotFoundCross.svg';
 
 class FormElementComponent extends BaseReactComponent {
   constructor(props) {
@@ -67,6 +68,7 @@ class FormElementComponent extends BaseReactComponent {
       toolTipText,
       isValid,
       isInvalid,
+      isCancel = false,
       control: { type, settings }
     } = this.props;
     // console.log('this.props', this.props);
@@ -114,12 +116,11 @@ class FormElementComponent extends BaseReactComponent {
           />
           {/* (isValid && failedValidation) || (failedValidation && toolTipText) */}
           {/* (isInvalid && failedValidation) || (failedValidation && toolTipText) */}
-          {
 
-          }
           {
             (failedValidation || helpText) &&
-            <Form.Text className={`${failedValidation ? "has-error" : ""}`}>
+            <Form.Text className={`${failedValidation ? "has-error" : ""} custom-form-error`}>
+              {isCancel && <Image src={cancelIcon} onClick={()=>{this.setState({failedValidation: null, isInvalid: null, isValid: null, isInvalidState: null})}} className="cancel-icon" />}
               {failedValidation ? failedValidation.message : helpText}
             </Form.Text>
           }

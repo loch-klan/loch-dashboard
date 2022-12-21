@@ -46,7 +46,7 @@ export default function WelcomeCard(props) {
         <div className="welcome-card">
           <div className="welcome-card-upper-section">
             <div className="welcome-section-left">
-              <h1 className="inter-display-medium f-s-25 lh-30 black-191 welcome-title">
+              <h1 className="inter-display-medium f-s-24 lh-30 black-191 welcome-title">
                 Welcome to Loch
               </h1>
               <p className="inter-display-medium">

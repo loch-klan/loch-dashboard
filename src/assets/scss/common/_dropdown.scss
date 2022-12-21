@@ -114,7 +114,8 @@
       }
 
       &::-webkit-scrollbar-track {
-        background-color: transparent;
+        // background-color: transparent;
+        background-color: $grey-E5E;
         border-radius: 0.8rem;
       }
     }
