@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Container, Button } from 'react-bootstrap'
+import { Image, Container, Button, DropdownButton, Dropdown } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 // import logo from '../../image/logo.png'
 import logo from '../../image/Loch.svg'
@@ -46,6 +46,9 @@ import {
   MenuShare,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
+import DropDown from './DropDown'
+import { getAllCurrencyApi, getAllCurrencyRatesApi, setCurrencyApi } from './Api'
+import { setCurrencyReducer } from './CommonAction'
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -57,6 +60,8 @@ function Sidebar(props) {
     const [shareModal,setShareModal] = React.useState(false);
     const [confirmLeave,setConfirmLeave] = React.useState(false)
     const [currentIndex, setCurrentIndex] = React.useState(0);
+    const [currencyList, setAllCurrencyList] = React.useState([]);
+    const [selectedCurrency, setCurrency] = React.useState(JSON.parse(localStorage.getItem('currency')));
     let lochUser = JSON.parse(localStorage.getItem('lochUser'));
 
     const handleLeave = () => {
@@ -102,7 +107,29 @@ function Sidebar(props) {
       toast.success("Share link has been copied");
     }
 
+    React.useEffect(() => {
+      let currencyRates = JSON.parse(localStorage.getItem('currencyRates'))
+      console.log('currency',currencyRates);
+      getAllCurrencyApi(setAllCurrencyList)
+      !currencyRates && getAllCurrencyRatesApi()
+    }, []); // <-- Have to pass in [] here!
 
+    const handleFunction=(currency)=>{
+      let currencyRates = JSON.parse(localStorage.getItem('currencyRates'))
+      for (const [key, value] of Object.entries(currencyRates.rates)) {
+        // console.log(`${key}: ${value}`);
+        if(key === currency.code){
+          currency = {
+            ...currency,
+            rate: value
+          }
+        }
+      }
+      setCurrency(currency);
+      localStorage.setItem('currency',JSON.stringify(currency));
+      window.location.reload();
+
+    }
     const quotes = [
         "Sic Parvis Magna | Thus, great things from small things come.",
         "The discipline of desire is the background of character.",
@@ -140,6 +167,17 @@ function Sidebar(props) {
               <div className="logo">
                 <Image src={logo} />
                 <span className="loch-text">Loch</span>
+              </div>
+              <div className='currency-wrapper'>
+                <DropdownButton id="currency-dropdown" title={selectedCurrency.symbol + " " + selectedCurrency.code}>
+                  {
+                    currencyList.map((currency)=>{
+                      return(
+                        <Dropdown.Item onClick={()=>handleFunction(currency)}>{currency.symbol + "   " + currency.code}</Dropdown.Item>
+                      )
+                    })
+                  }
+                </DropdownButton>
               </div>
               <div
                 className={

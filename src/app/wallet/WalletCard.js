@@ -6,7 +6,7 @@ import EditIcon from '../../assets/images/EditIcon.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import EditWalletModal from './EditWalletModal';
 import unrecognizedIcon from '../../image/unrecognized.svg';
-import { amountFormat, numToCurrency } from './../../utils/ReusableFunctions';
+import { amountFormat, CurrencyType, numToCurrency } from './../../utils/ReusableFunctions';
 // import CopiedModal from '../common/_utils/CopiedModal';
 import FixAddModal from '../common/FixAddModal';
 // import Loading from '../common/Loading';
@@ -31,7 +31,7 @@ export default function WalletCard(props) {
                 isText={true}
                 isName={coin.chain.name}
                 colorCode={coin.chain.color}
-                text={ coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0 + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + " USD"}
+                text={ coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0 + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + CurrencyType(true)}
                 className="wallet-tooltip"
             >
                 <div>
@@ -106,7 +106,7 @@ export default function WalletCard(props) {
                 </div>
                 <div className='amount-details'>
                     <h6 className='inter-display-medium f-s-20 lh-24' >{numToCurrency(props.wallet_amount)}</h6>
-                    <span className='inter-display-semi-bold f-s-10 lh-12'>USD</span>
+                    <span className='inter-display-semi-bold f-s-10 lh-12'>{CurrencyType(true)}</span>
                 </div>
             </div>
             <div className='coins-chip'>

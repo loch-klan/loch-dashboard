@@ -13,7 +13,7 @@ import { AssetValueFilter, AssetValueHover, AssetValueInternalEvent, IntlAssetVa
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
-import { numToCurrency } from "../../utils/ReusableFunctions";
+import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 import { Image } from "react-bootstrap";
 import CalenderIcon from "../../assets/images/calendar.svg";
 import DoubleArrow from "../../assets/images/double-arrow.svg";
@@ -27,7 +27,7 @@ class LineChartSlider extends BaseReactComponent {
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
       title: "Year",
-      titleY: "$ USD",
+      titleY: CurrencyType(),
       selectedEvents: [],
       selectedValue: null,
     };
@@ -789,7 +789,7 @@ class LineChartSlider extends BaseReactComponent {
               />
               <div className="chart-y-selection">
                 <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
-                  $ USD
+                  {CurrencyType()}
                 </span>
               </div>
               <HighchartsReact

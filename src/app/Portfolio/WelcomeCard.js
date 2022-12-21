@@ -4,7 +4,7 @@ import { Button, Image } from "react-bootstrap"
 import arrowUpRight from '../../assets/images/icons/green-arrow.svg'
 import arrowDownRight from '../../assets/images/icons/red-arrow.svg'
 import CustomLoader from "../common/CustomLoader";
-import { numToCurrency } from '../../utils/ReusableFunctions';
+import { CurrencyType, numToCurrency } from '../../utils/ReusableFunctions';
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import { amountFormat } from '../../utils/ReusableFunctions';
 import ManageWallet from "../../assets/images/icons/ManageWallet.svg"
@@ -65,13 +65,13 @@ export default function WelcomeCard(props) {
                   isInfo={true}
                   isText={true}
                   text={
-                    "$" + amountFormat(props.assetTotal, "en-US", "USD") + "USD"
+                    CurrencyType(false) + amountFormat(props.assetTotal, "en-US", "USD") + CurrencyType(true)
                   }
                 >
                   <h3 className="space-grotesk-medium wallet-amount">
-                    $
+                    {CurrencyType(false)}
                     {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                    {numToCurrency(props.assetTotal)} USD
+                    {numToCurrency(props.assetTotal)} {CurrencyType(true)}
                   </h3>
                 </CustomOverlay>
               ) : (

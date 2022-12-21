@@ -17,6 +17,7 @@ import { Bar } from 'react-chartjs-2'
 import { BlockchainFeesFilter, CounterpartyFeesFilter } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
 import Loading from './Loading';
+import { CurrencyType } from '../../utils/ReusableFunctions';
 // import { BarGraphSection } from './BarGraphSection';
 
 ChartJS.register(
@@ -191,7 +192,7 @@ class BarGraphSection extends Component {
               ""
             )}
             {
-              <p className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label'>$ USD </p>
+              <p className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label'>{CurrencyType()} </p>
             }
             {showPercentage ? (
               <div className="show-percentage-div ">

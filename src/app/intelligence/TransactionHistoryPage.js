@@ -14,7 +14,7 @@ import { FormElement, Form, CustomTextControl, BaseReactComponent } from "../../
 import unrecognizedIcon from "../../image/unrecognized.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
-import { noExponents } from "../../utils/ReusableFunctions";
+import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { TransactionHistoryAddress, TransactionHistoryPageView } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
@@ -37,6 +37,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
+      currency: JSON.parse(localStorage.getItem('currency')),
       year: "",
       search: "",
       method: "",
@@ -262,7 +263,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
     render() {
         const { table, totalPage, totalCount, currentPage, assetPriceList } = this.props.intelligenceState;
-        const {walletList} = this.state;
+        const {walletList, currency} = this.state;
         let tableData = table && table.map((row) => {
             return {
                 time: row.timestamp,
@@ -588,7 +589,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             {
                 labelName:
                     <div className='cp history-table-header-col' id="usdValueThen" onClick={() => this.handleTableSort("usdThen")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Amount (Then)</span>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>{`${CurrencyType(true)} Amount (Then)`}</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "usdValueThen",
@@ -603,14 +604,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueToday;
                         chain.find((chain) => {
                           if (chain[0] === rowData.usdValueToday.id) {
-                            valueToday = (rowData.usdValueToday.value * chain[1].quote.USD.price || DEFAULT_PRICE)
+                            valueToday = (rowData.usdValueToday.value * chain[1].quote.USD.price * currency.rate || DEFAULT_PRICE)
                           }
                           if (chain[0] === rowData.usdValueThen.id) {
-                            valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice
+                            valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice * currency.rate
                           }
                         })
-                        console.log('valueToday',valueToday);
-                        console.log('valueThen',valueThen);
+                        // console.log('valueToday',valueToday);
+                        // console.log('valueThen',valueThen);
                         return (
                         <div style={{display: "flex", justifyContent: "center"}}>
                         <CustomOverlay
@@ -641,7 +642,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             {
                 labelName:
                     <div className='cp history-table-header-col' id="usdTransactionFee" onClick={() => this.handleTableSort("usdTransaction")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Fee (Then)</span>
+                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>{`${CurrencyType(true)} Fee (Then)`}</span>
                         <Image src={sortByIcon} className={!this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"} />
                     </div>,
                 dataKey: "usdTransactionFee",
@@ -657,9 +658,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                         let valueThen;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdTransactionFee.id) {
-                              console.log('chain',chain);
-                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price || DEFAULT_PRICE)
-                                valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice
+                              // console.log('chain',chain);
+                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price * currency.rate || DEFAULT_PRICE)
+                                valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice * currency.rate
                             }
                         })
                         return (

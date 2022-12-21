@@ -1,5 +1,6 @@
 import Metamask from '../../assets/images/MetamaskIcon.svg'
 import Ethereum from '../../assets/images/icons/ether-coin.svg'
+import { CurrencyType } from '../../utils/ReusableFunctions'
 export default {
     table_title:"",
     table_subtitle:"",
@@ -52,17 +53,17 @@ export default {
       if (dataKey === "Amount") {
         return rowData.Amount
       }
-    }},{labelName:"USD Value Then",dataKey:"USDValueThen",coumnWidth:100,isCell: true,
+    }},{labelName:`${CurrencyType(true)} Value Then`,dataKey:"USDValueThen",coumnWidth:100,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "USDValueThen") {
         return rowData.USDValueThen
       }
-    }},{labelName:"USD Value Today",dataKey:"USDValueToday",coumnWidth:100,isCell: true,
+    }},{labelName:`${CurrencyType(true)} Value Today`,dataKey:"USDValueToday",coumnWidth:100,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "USDValueToday") {
         return rowData.USDValueToday
       }
-    }},{labelName:"USD Transaction Fee",dataKey:"USDTransactionFee",coumnWidth:100,isCell: true,
+    }},{labelName:`${CurrencyType(true)} Transaction Fee`,dataKey:"USDTransactionFee",coumnWidth:100,isCell: true,
     cell: (rowData, dataKey) => {
       if (dataKey === "USDTransactionFee") {
         return rowData.USDTransactionFee
