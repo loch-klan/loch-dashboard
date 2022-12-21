@@ -187,18 +187,17 @@ class LineChartSlider extends BaseReactComponent {
       // console.log("year update", years);
       // console.log("l", timestampList);
     } else if (this.state.title === "Month" && timestampList.length != 0) {
-      const startMonth = 0; //January
       const endMonth = 12 - timestampList.length;
-      // console.log("end", endMonth);
-      const currentYear = moment().year(); // Current year
-      const months = [];
-      for (let month = startMonth; month < endMonth; month++) {
-        months.push(
-          moment(
-            moment().year(currentYear).month(month).format("MMMM YY"),
-            "MMMM YY"
-          ).valueOf()
-        );
+      const currentMonth = moment(timestampList[0]);
+      // const endMonth = 12 - 5;
+      // const currentMonth = moment.unix(1647801000);
+      let months = [];
+      console.log(currentMonth);
+      for (let month = 0; month < endMonth; month++) {
+        const month_value = currentMonth
+          .subtract(1, "months")
+          .format("MMMM YYYY");
+        months.push(month_value);
       }
 
       timestampList = [...months, ...timestampList];
@@ -207,7 +206,7 @@ class LineChartSlider extends BaseReactComponent {
     } else if (this.state.title === "Day" && timestampList.length != 0) {
       let dates = [];
       const endDay = 30 - timestampList.length;
-      const currentDay = moment.unix(timestampList[0]);
+      const currentDay = moment(timestampList[0]);
       // console.log("tets",endDay);
       for (let day = 0; day < endDay; day++) {
         const date = currentDay.subtract(1, "days").valueOf();
@@ -215,7 +214,7 @@ class LineChartSlider extends BaseReactComponent {
       }
       // dates = dates.reverse;
       timestampList = [...dates.reverse(), ...timestampList];
-      // console.log("dates update", dates);
+      console.log("dates update", dates);
       // console.log("l", timestampList);
     }
 
