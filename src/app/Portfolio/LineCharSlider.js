@@ -32,6 +32,7 @@ class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      currency: JSON.parse(localStorage.getItem('currency')),
       assetValueData: props.assetValueData,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
@@ -149,20 +150,20 @@ class LineChartSlider extends BaseReactComponent {
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.count) * data.asset_price +
+                  new Number(data.count) * (data.asset_price * this.state.currency.rate) +
                   assetMaster[data.asset.id][assetData.timestamp];
               } else {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.count) * data.asset_price;
+                  new Number(data.count) * (data.asset_price * this.state.currency.rate);
               }
             } else {
               assetMaster[data.asset.id] = {
                 assetDetails: data.asset,
-                assetPrice: data.asset_price ? data.asset_price : 0,
-                count: new Number(data.count) * data.asset_price,
+                assetPrice: data.asset_price ? (data.asset_price * this.state.currency.rate) : 0,
+                count: new Number(data.count) * (data.asset_price * this.state.currency.rate),
               };
               assetMaster[data.asset.id][assetData.timestamp] =
-                new Number(data.count) * data.asset_price;
+                new Number(data.count) * (data.asset_price * this.state.currency.rate);
             }
           });
         }
@@ -345,7 +346,7 @@ class LineChartSlider extends BaseReactComponent {
             // console.log("item", item);
             // selectedEvents.push(item);
             item.event.map((a) => {
-              let e_usd = a.asset.value * a.asset_price;
+              let e_usd = a.asset.value * (a.asset_price * this.state.currency.rate);
               let e_text = "";
               let e_assetValue = a.asset.value;
               let e_assetCode = a.asset.code;

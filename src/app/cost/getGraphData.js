@@ -4,9 +4,10 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 
 export const getGraphData = (arr) => {
+  let currency= JSON.parse(localStorage.getItem('currency'));
     // console.log(arr, "array");
 
-    const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees)))).length;
+    const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))).length;
     // console.log(digit, "indise digit")
     const labels = arr.map((e) => e.chain.name);
 
@@ -43,7 +44,7 @@ export const getGraphData = (arr) => {
               // console.log('ctx',ctx);
               let label00 = ctx.label;
               let label0 = "Fees: " + CurrencyType(false) + numToCurrency(ctx.raw) + " or " + ctx.dataset.totalFeesAmount[ctx.dataIndex]?.toFixed(6) + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
-              let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
+              let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex] * currency.rate);
               FeesSpecificBar({
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
@@ -169,7 +170,7 @@ export const getGraphData = (arr) => {
       labels,
       datasets: [
         {
-          data: arr.map((e) => e.total_fees),
+          data: arr.map((e) => e.total_fees * currency?.rate),
           backgroundColor: arr.map((e) => e.chain.color + "4D"),
           borderColor: arr.map((e) => e.chain.color),
           defaultAssetCode: arr.map((e) => e.chain.default_asset_code),
@@ -180,8 +181,8 @@ export const getGraphData = (arr) => {
           },
           borderSkipped: false,
           barThickness: 48,
-          totalFeesAmount: arr.map((e) => e.total_fees_amount),
-          totalAmount: arr.map((e) => e.total_amount),
+          totalFeesAmount: arr.map((e) => e.total_fees_amount * currency?.rate),
+          totalAmount: arr.map((e) => e.total_amount * currency?.rate),
           totalVolume: arr.map((e) => e.total_volume),
         },
       ],
@@ -193,8 +194,8 @@ export const getGraphData = (arr) => {
 
 export const getCounterGraphData = (arr, currentPage) => {
   // console.log(currentPage, "page");
-
-  const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees)))).length;
+  let currency= JSON.parse(localStorage.getItem('currency'));
+  const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))).length;
   // console.log(digit, "indise digit")
   // const labels = arr.map((e) => e.chain.name);
   const labels = arr.map((e) => e._id);
@@ -231,7 +232,7 @@ export const getCounterGraphData = (arr, currentPage) => {
           label: (ctx) => {
             let label00 = ctx.label;
               let label0 = "Fees: " + CurrencyType(false) + numToCurrency(ctx.raw);
-            let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex]);
+            let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex] * currency.rate);
             currentPage === "Home"
               ? HomeCounterPartyHover({
                   session_id: getCurrentUser().id,
@@ -367,7 +368,7 @@ export const getCounterGraphData = (arr, currentPage) => {
     labels,
     datasets: [
       {
-        data: arr.map((e) => e.total_fees),
+        data: arr.map((e) => e.total_fees * currency?.rate),
         backgroundColor: [
           "rgba(100, 190, 205, 0.3)",
           "rgba(34, 151, 219, 0.3)",
@@ -395,8 +396,8 @@ export const getCounterGraphData = (arr, currentPage) => {
         },
         borderSkipped: false,
         barThickness: 48,
-        totalFeesAmount: arr.map((e) => e.total_fees_amount),
-        totalAmount: arr.map((e) => e.total_amount),
+        totalFeesAmount: arr.map((e) => e.total_fees_amount * currency?.rate),
+        totalAmount: arr.map((e) => e.total_amount * currency?.rate),
         totalVolume: arr.map((e) => e.total_volume),
         defaultAssetCode: arr.map((e) => e.chain.default_asset_code),
       },

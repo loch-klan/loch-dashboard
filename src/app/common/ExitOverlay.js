@@ -36,7 +36,7 @@ import {
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
 import lochClean from "../../assets/images/LochClean.gif";
-import { loadingAnimation } from '../../utils/ReusableFunctions';
+import { CurrencyType, loadingAnimation } from '../../utils/ReusableFunctions';
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -155,6 +155,7 @@ class ExitOverlay extends BaseReactComponent {
     // console.log('Export');
     this.setState({loadingExportFile : true})
     const data = new URLSearchParams();
+    data.append("currency_code", CurrencyType(true));
     data.append("start_datetime", moment(this.state.fromDate).format("X"));
     data.append("end_datetime", moment(this.state.toDate).format("X"));
     ExportDataDownlaod({
