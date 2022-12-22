@@ -46,7 +46,7 @@ class LineChartSlider extends BaseReactComponent {
 
   componentDidUpdate(prevProps) {
     if (prevProps.isUpdate !== this.props.isUpdate) {
-      console.log("Something update");
+      // console.log("Something update");
       this.setState({
         title: "Year",
         selectedEvents: [],
@@ -174,6 +174,7 @@ class LineChartSlider extends BaseReactComponent {
       return a - b;
     });
 
+    // console.log("before", timestampList);
     if (this.state.title === "Year" && timestampList.length != 0) {
       const startYear = 2009;
       const endYear = moment(timestampList[0]).format("YYYY");
@@ -185,6 +186,36 @@ class LineChartSlider extends BaseReactComponent {
 
       timestampList = [...years, ...timestampList];
       // console.log("year update", years);
+      // console.log("l", timestampList);
+    } else if (this.state.title === "Month" && timestampList.length != 0) {
+      const endMonth = 12 - timestampList.length;
+      const currentMonth = moment(timestampList[0]);
+      // const endMonth = 12 - 5;
+      // const currentMonth = moment.unix(1647801000);
+      let months = [];
+      console.log(currentMonth);
+      for (let month = 0; month < endMonth; month++) {
+        const month_value = currentMonth
+          .subtract(1, "months")
+          .format("MMMM YYYY");
+        months.push(month_value);
+      }
+
+      timestampList = [...months, ...timestampList];
+      // console.log("Month update", months);
+      // console.log("l", timestampList);
+    } else if (this.state.title === "Day" && timestampList.length != 0) {
+      let dates = [];
+      const endDay = 30 - timestampList.length;
+      const currentDay = moment(timestampList[0]);
+      // console.log("tets",endDay);
+      for (let day = 0; day < endDay; day++) {
+        const date = currentDay.subtract(1, "days").valueOf();
+        dates.push(date);
+      }
+      // dates = dates.reverse;
+      timestampList = [...dates.reverse(), ...timestampList];
+      console.log("dates update", dates);
       // console.log("l", timestampList);
     }
 
@@ -333,17 +364,28 @@ class LineChartSlider extends BaseReactComponent {
         });
     };
 
+
+
     let selectedEvents = [];
     let noOfInternalEvent;
     const getIevent = (value) => {
       selectedEvents = [];
       internalEvents &&
         internalEvents.map((item) => {
-          let current = moment(item.timestamp).format("DD/MM/YYYY");
-          // console.log("current", current, value);
-          if (current === value) {
-            // console.log("item", item);
-            // console.log("item", item);
+          // console.log("item", item)
+          let current = "";
+          if (this.state.title === "Year") {
+            current = moment(item.timestamp).format("YYYY");
+            //  console.log("current", current, value);
+          } else if (this.state.title === "Month") {
+            
+            current = moment(item.timestamp).format("MMMM YY");
+            //  console.log("current", current, value);
+          } else {
+            current = moment(item.timestamp).format("DD/MM/YYYY");
+          }
+         
+          if (current == value) {
             // selectedEvents.push(item);
             item.event.map((a) => {
               let e_usd = a.asset.value * (a.asset_price * this.state.currency?.rate);
@@ -404,7 +446,7 @@ class LineChartSlider extends BaseReactComponent {
         });
       noOfInternalEvent = selectedEvents.length;
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
-      // console.log("No of internal event", noOfInternalEvent);
+      
     };
     timestampList.map((time) => {
       let dummy = new Date(time);
@@ -454,6 +496,7 @@ class LineChartSlider extends BaseReactComponent {
     // console.log("new", SelectedSeriesData);
     // console.log("categories", categories);
     let selectedValue = null;
+    // console.log("sleected value", this.state.selectedValue)
     //  seriesData = seriesData;
     var UNDEFINED;
     const options = {
@@ -465,32 +508,30 @@ class LineChartSlider extends BaseReactComponent {
         events: {
           click: function (event) {
             // console.log("event click", parent.state.selectedValue);
-            if (parent.state.title == "Week" || parent.state.title == "Day") {
-              console.log("event inside");
-              if (parent.state.selectedValue !== selectedValue) {
-                parent.props.isPage
-                  ? IntlAssetValueInternalEvent({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      no_of_events: noOfInternalEvent,
-                    })
-                  : AssetValueInternalEvent({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      no_of_events: noOfInternalEvent,
-                    });
-                // console.log("inside event click");
-                parent.setState({
-                  selectedEvents: selectedEvents,
-                  selectedValue: selectedValue,
-                });
-              } else {
-                console.log("reset");
-                parent.setState({
-                  selectedEvents: [],
-                  selectedValue: null,
-                });
-              }
+            // console.log("event inside");
+            if (parent.state.selectedValue !== selectedValue) {
+              parent.props.isPage
+                ? IntlAssetValueInternalEvent({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    no_of_events: noOfInternalEvent,
+                  })
+                : AssetValueInternalEvent({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    no_of_events: noOfInternalEvent,
+                  });
+              // console.log("inside event click");
+              parent.setState({
+                selectedEvents: selectedEvents,
+                selectedValue: selectedValue,
+              });
+            } else {
+              console.log("reset");
+              parent.setState({
+                selectedEvents: [],
+                selectedValue: null,
+              });
             }
           },
         },
@@ -688,41 +729,27 @@ class LineChartSlider extends BaseReactComponent {
       plotOptions: {
         series: {
           fillOpacity: 0,
-          // events: {
-          //    legendItemClick: function () {
-          //       // console.log(this);
-          //       //  console.log("this");
-          //       // parent.setState({
-          //       //   selectedEvents: [],
-          //       // });
-          //     }
-          // },
           point: {
             events: {
               click: function () {
-                if (
-                  parent.state.title == "Week" ||
-                  parent.state.title == "Day"
-                ) {
-                  if (parent.state.selectedValue !== selectedValue) {
-                    AssetValueInternalEvent({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      no_of_events: noOfInternalEvent,
-                    });
-                    console.log("inside event click");
-                    parent.setState({
-                      selectedEvents: selectedEvents,
-                      selectedValue: selectedValue,
-                    });
-                  } else {
-                    console.log("reset");
-                    parent.setState({
-                      selectedEvents: [],
-                      selectedValue: null,
-                    });
-                  }
-                }
+                 if (parent.state.selectedValue !== selectedValue) {
+                   AssetValueInternalEvent({
+                     session_id: getCurrentUser().id,
+                     email_address: getCurrentUser().email,
+                     no_of_events: noOfInternalEvent,
+                   });
+                  //  console.log("inside event click");
+                   parent.setState({
+                     selectedEvents: selectedEvents,
+                     selectedValue: selectedValue,
+                   });
+                 } else {
+                  //  console.log("reset");
+                   parent.setState({
+                     selectedEvents: [],
+                     selectedValue: null,
+                   });
+                 }
               },
             },
           },
@@ -857,12 +884,20 @@ class LineChartSlider extends BaseReactComponent {
                 <div className="SliderChartBottom">
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
-                    Largest Internal Events
+                    Largest Transactions
                     {this.state.selectedValue &&
                       ": " +
-                        moment(this.state.selectedValue, "DD/MM/YYYY").format(
-                          "MMM DD, YYYY"
-                        )}
+                        (this.state.title == "Year"
+                          ? this.state.selectedValue
+                          : this.state.title == "Month"
+                          ? moment(
+                              this.state.selectedValue,
+                              "MMMM YY"
+                            ).format("MMMM, YYYY")
+                          : moment(
+                              this.state.selectedValue,
+                              "DD/MM/YYYY"
+                            ).format("MMM DD, YYYY"))}
                   </h4>
 
                   <div className="InternalEventWrapper">
@@ -901,7 +936,7 @@ class LineChartSlider extends BaseReactComponent {
                                   {numToCurrency(event.usd)}
                                   {event.text === "from"
                                     ? " received from "
-                                    : " transferred to "}{" "}
+                                    : " transferred to "}
                                 </span>
                                 <CustomOverlay
                                   position="top"
