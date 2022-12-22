@@ -314,6 +314,7 @@ class LineChartSlider extends BaseReactComponent {
               dashStyle: "solid",
               value: value,
               width: 0,
+              showLastLabel: true,
               label: {
                 useHTML: true,
 
