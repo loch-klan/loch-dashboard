@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import { FeedbackType } from "../../utils/Constant";
 import postLoginInstance from './../../utils/PostLoginAxios';
+
 export const loginApi = (ctx, data) => {
   preLoginInstance.post('common/test/temp-login', data)
     .then(res => {
@@ -10,6 +11,14 @@ export const loginApi = (ctx, data) => {
       if (!res.data.error) {
         // console.log('res', res.data.data.token);
         // console.log('ctx',ctx.props.history);
+        localStorage.setItem('currency',JSON.stringify({
+          active: true,
+          code: "USD",
+          id: "6399a2d35a10114b677299fe",
+          name: "United States Dollar",
+          symbol: "$",
+          rate: 1,
+      }))
         localStorage.setItem('lochToken', res.data.data.token);
         if(ctx.state.link){
           ctx.props.getAllCoins(ctx.handleShareLinkUser)
@@ -158,7 +167,7 @@ export const getDetectedChainsApi = (ctx) =>{
         wallet.coinFound = coinFound
       wallet.coins = chainsDetected
       })
-      console.log('addWallet',addWallet);
+      // console.log('addWallet',addWallet);
       ctx.setState({addWalletList: addWallet})
       addWallet && addWallet.length > 0 && localStorage.setItem('addWallet',JSON.stringify(addWallet))
     } else{
@@ -210,3 +219,42 @@ export const sendFeedbackApi = (data, ctx, type) => {
       console.log("Catch", err);
     });
 };
+
+export const getAllCurrencyApi = (setAllCurrencyList) =>{
+  postLoginInstance.post("common/master/get-all-currencies")
+  .then((res)=>{
+    if(!res.data.error){
+      // console.log('set');
+      setAllCurrencyList(res.data.data.currencies)
+    } else{
+      toast.error(res.data.message || "Something went wrong");
+    }
+  })
+  .catch((err)=>{
+    console.log('err',err);
+  })
+}
+export const getAllCurrencyRatesApi = () =>{
+  postLoginInstance.post("common/master/get-currency-rates")
+  .then((res)=>{
+    if(!res.data.error){
+      let currency = JSON.parse(localStorage.getItem('currency'));
+      for (const [key, value] of Object.entries(res.data.data.rates.rates)) {
+        // console.log(`${key}: ${value}`);
+        if(key === currency.code){
+          currency = {
+            ...currency,
+            rate: value
+          }
+        }
+      }
+      localStorage.setItem('currency',JSON.stringify(currency))
+      localStorage.setItem('currencyRates',JSON.stringify(res.data.data.rates))
+    } else{
+      toast.error(res.data.message || "Something went wrong");
+    }
+  })
+  .catch((err)=>{
+    console.log('err',err);
+  })
+}

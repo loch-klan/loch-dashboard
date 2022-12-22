@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CustomLoader from "../common/CustomLoader";
-import { lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
+import { CurrencyType, lightenDarkenColor, numToCurrency } from '../../utils/ReusableFunctions';
 import unrecognized from '../../image/unrecognized.svg';
 import { DEFAULT_COLOR, DEFAULT_PRICE } from '../../utils/Constant';
 import { Image} from 'react-bootstrap';
@@ -30,7 +30,8 @@ class PieChart extends BaseReactComponent {
             valueChanged: false,
             flag: false,
             isLoading:props.isLoading,
-            piechartisLoading:true
+            piechartisLoading:true,
+            currency: JSON.parse(localStorage.getItem('currency')),
         }
 
     }
@@ -129,7 +130,7 @@ class PieChart extends BaseReactComponent {
                             seriesCenter = series.center,
                             x = seriesCenter[0] + this.plotLeft,
                             y = seriesCenter[1] + this.plotTop,
-                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-32 lh-38 black-1D2">$${numToCurrency(self.state.assetTotal)}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">USD</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total Assets</span></div>`,
+                            text = `<div class="pie-chart-middle-text-container"><div class="pie-chart-middle-text"><h1 class="space-grotesk-medium f-s-32 lh-38 black-1D2">${CurrencyType(false)}${numToCurrency(self.state.assetTotal)}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">${CurrencyType(true)}</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total Assets</span></div>`,
                             fontMetrics = this.renderer.fontMetrics(16);
                         series.data.map((e, i) => {
                             e.dataLabel.css({
@@ -205,7 +206,7 @@ class PieChart extends BaseReactComponent {
                         allowOverlap: false,
                         formatter: function () {
                             return (
-                                `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3">$${(this.point.usd)} USD&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(2)}% &nbsp;&nbsp;</p>`
+                                `<span class="f-s-16" style="color:${this.point.borderColor};">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${this.point.assetCode}&nbsp;</p> <p class="inter-display-regular f-s-16" style="fill:#B0B1B3"> ${CurrencyType(false)} ${(this.point.usd)} ${CurrencyType(true)}&nbsp;</p><p class="inter-display-medium f-s-16" style="fill:#B0B1B3"> ${this.point.y.toFixed(2)}% &nbsp;&nbsp;</p>`
                             )
                         },
                         // x: 10,
@@ -239,7 +240,7 @@ class PieChart extends BaseReactComponent {
                                 if(document.getElementById("fixbtn")){
                                   {document.getElementById("fixbtn").style.display = "none"}
                                 }
-                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: currentData.options.name, asset_amount: "$"+currentData.options.usd});
+                                PiechartChainName({session_id: getCurrentUser().id, email_address: getCurrentUser().email, asset_clicked: currentData.options.name, asset_amount: CurrencyType(false)+currentData.options.usd});
                             },
                             unselect: function () {
                                 // console.log("UNSELECT")
@@ -317,7 +318,7 @@ class PieChart extends BaseReactComponent {
         chainList && chainList.slice(2).map((data)=>{
           totalCount+=data.assetCount
         })
-        const {pieSectionDataEnabled} = this.state;
+        const {pieSectionDataEnabled, currency} = this.state;
         // console.log('pieSectionDataEnabled',pieSectionDataEnabled);
         return (
             <div className={`portfolio-over-container ${Object.keys(pieSectionDataEnabled).length > 0 ? "m-b-32" : "m-b-10"}`} >
@@ -362,8 +363,8 @@ class PieChart extends BaseReactComponent {
                                         <div className='coin-hover-display-text1-lower'>
                                             <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount'>{pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? numToCurrency(pieSectionDataEnabled.count) : null}</span>
                                             <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode'>{pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? pieSectionDataEnabled.assetCode : null}</span>
-                                            <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>${pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? pieSectionDataEnabled.usd : null}</span>
-                                            <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>USD</span>
+                                            <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue'>{CurrencyType(false)}{pieSectionDataEnabled && Object.keys(pieSectionDataEnabled).length > 0 ? pieSectionDataEnabled.usd : null}</span>
+                                            <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency'>{CurrencyType(true)}</span>
                                         </div>
                                     </div>}
                                 </div>
@@ -399,12 +400,12 @@ class PieChart extends BaseReactComponent {
                                                   ? DEFAULT_PRICE
                                                   : numToCurrency(
                                                       data.assetCount *
-                                                        isQuote?.USD.price
+                                                        isQuote?.USD.price * currency?.rate
                                                     )}
                                               </span>
 
                                               <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
-                                                USD
+                                              {CurrencyType(true)}
                                               </span>
                                             </div>
                                           </div>
@@ -432,8 +433,8 @@ class PieChart extends BaseReactComponent {
 
                                           <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode'>{pieSectionDataEnabled.assetCode}</span>
 
-                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(totalCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote?.USD.price) || DEFAULT_PRICE}</span>
-                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>USD</span>
+                                          <span className='inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue'>{numToCurrency(totalCount * this.props.portfolioState.coinRateList[this.state.selectedSection[0].assetId].quote?.USD.price * currency?.rate) || DEFAULT_PRICE}</span>
+                                          <span className='inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency'>{CurrencyType(true)}</span>
                                       </div>
                                   </div>
                                         </>

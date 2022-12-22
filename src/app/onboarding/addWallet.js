@@ -128,7 +128,7 @@ class AddWallet extends BaseReactComponent {
                 walletInput: this.state.walletInput
             });
         }
-      console.log("Delete", wallet.address);
+      // console.log("Delete", wallet.address);
     }
 
     isDisabled = () => {

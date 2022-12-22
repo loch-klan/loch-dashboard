@@ -149,8 +149,9 @@ export const getYesterdaysBalanceApi = (ctx) =>{
   postLoginInstance.post("wallet/user-wallet/get-yesterday-portfolio-balance")
   .then((res)=>{
     if (!res.data.error) {
+      let currency= JSON.parse(localStorage.getItem('currency'));
       ctx.setState({
-        yesterdayBalance: res.data.data.balance,
+        yesterdayBalance: res.data.data.balance * currency?.rate ,
       });
     } else {
       toast.error(res.data.message || "Something Went Wrong");

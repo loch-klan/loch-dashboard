@@ -52,8 +52,8 @@ class Intelligence extends Component {
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    console.log("page Leave", endTime);
-    console.log("Time Spent", TimeSpent);
+    // console.log("page Leave", endTime);
+    // console.log("Time Spent", TimeSpent);
     TimeSpentIntelligence({
       time_spent: TimeSpent,
       session_id: getCurrentUser().id,
@@ -97,7 +97,7 @@ class Intelligence extends Component {
   handleBadge = (activeBadgeList, activeFooter) => {
     let startDate = moment().unix();
     let endDate;
-    console.log('activeFooter',activeFooter);
+    // console.log('activeFooter',activeFooter);
     if (activeFooter == 0) {
       startDate = "";
       endDate = "";
