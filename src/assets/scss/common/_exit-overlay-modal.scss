@@ -82,10 +82,11 @@
 
                         .form-group {
                             margin-right: 2rem;
-
+                            margin-bottom: 0;
                             .form-control {
                                 padding: 1.8rem 2rem 1.8rem 2rem;
                                 height: 5.5rem;
+                                width: 30rem;
                             }
 
                             .is-valid {
@@ -103,7 +104,7 @@
 
                         .save-btn-section {
                             .save-btn {
-                                padding: 1.7rem 5.38rem;
+                                padding: 1.7rem 5.1rem;
                                 background-color: $grey-B0B;
                                 border-radius: 0.8rem;
                                 border: 1px solid $grey-B0B;

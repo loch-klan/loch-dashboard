@@ -51,6 +51,37 @@ export const updateUserWalletApi = (data,ctx) =>{
   postLoginInstance.post("organisation/user/update-user-wallet",data)
   .then((res)=>{
     if(!res.data.error){
+
+      // const allChains = getState().OnboardingState.coinsList;
+      const allChains = ctx.props.OnboardingState.coinsList
+      let newAddWallet = [];
+      const apiResponse = res.data.data;
+      for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
+        let obj = {}; // <----- new Object
+        obj['address'] = apiResponse.user.user_wallets[i].address;
+              obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
+              const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
+              obj['coins'] = allChains.map((chain)=>{
+                let coinDetected = false;
+                chainsDetected.map((item)=>{
+                  if(item.id === chain.id){
+                    coinDetected = true;
+                  }
+                })
+                return ({coinCode: chain.code,
+                    coinSymbol: chain.symbol,
+                    coinName: chain.name,
+                    chain_detected: coinDetected,
+                  coinColor: chain.color})
+              });
+              obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
+              obj['id'] = `wallet${i+1}`;
+              obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+              newAddWallet.push(obj);
+      }
+      // console.log('newAddWallet',newAddWallet);
+      localStorage.setItem("addWallet", JSON.stringify(newAddWallet))
+
       ctx.props.history.push({
         pathname: ctx.props.pathName,
         state: {addWallet: JSON.parse(localStorage.getItem("addWallet"))}
@@ -106,6 +137,7 @@ export const getDetectedChainsApi = (ctx) =>{
       // console.log('xyz',xyz);
       addWallet.map((wallet)=>{
         let userWallet = null;
+        let coinFound = false;
         xyz.map((item)=>{
           if(item.address === wallet.address || item.display_address === wallet.address){
             userWallet = item
@@ -116,17 +148,19 @@ export const getDetectedChainsApi = (ctx) =>{
           let isDetected = false;
           userWallet.chains.map((userChain)=>{
             if(userChain.code === dummyChain.coinCode){
-              isDetected = true
+              isDetected = true;
+              coinFound = true;
             }
           })
           dummyChain.chain_detected = isDetected;
           return dummyChain
         });
+        wallet.coinFound = coinFound
       wallet.coins = chainsDetected
       })
-      // console.log('addWallet',addWallet);
+      console.log('addWallet',addWallet);
       ctx.setState({addWalletList: addWallet})
-      addWallet && localStorage.setItem('addWallet',JSON.stringify(addWallet))
+      addWallet && addWallet.length > 0 && localStorage.setItem('addWallet',JSON.stringify(addWallet))
     } else{
       toast.error(res.data.message || "Something went wrong");
     }
@@ -168,7 +202,7 @@ export const sendFeedbackApi = (data, ctx, type) => {
       setTimeout(function(){
         ctx.setState({
           ...(type === FeedbackType.POSITIVE ? {favorite: ""} : {worst: ""}),
-          disabled: false,
+          ...(type === FeedbackType.POSITIVE ? {disabledFav: false} : {disabled: false}),
         });
       }, 4000)
     })
@@ -176,37 +210,3 @@ export const sendFeedbackApi = (data, ctx, type) => {
       console.log("Catch", err);
     });
 };
-
-// export const changePasswordApi = (ctx, data) => {
-//   postLoginInstance
-//     .post("organisation/user/change-password", data)
-//     .then((res) => {
-//       if (!res.data.error) {
-//         // console.log('ctx.props', ctx.props.handleClose);
-//         toast.success("Password changed successfully");
-//         // ctx.props.history.push('/login');
-//         ctx.props.handleClose();
-//       } else {
-//         toast.error(res.data.message || "Something went wrong");
-//       }
-//     })
-//     .catch((err) => {
-//       console.log("Catch", err);
-//     });
-// };
-
-// export const forgotPasswordApi = (data, handleClose) => {
-//   preLoginInstance
-//     .post("organisation/user/forgot-password", data)
-//     .then((res) => {
-//       if (!res.data.error) {
-//         toast.success(res.data.message || "Please check your email");
-//         handleClose();
-//       } else {
-//         toast.error(res.data.message || "Something went wrong");
-//       }
-//     })
-//     .catch((err) => {
-//       console.log("Catch", err);
-//     });
-// };

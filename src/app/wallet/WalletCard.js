@@ -6,14 +6,14 @@ import EditIcon from '../../assets/images/EditIcon.svg'
 import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
 import EditWalletModal from './EditWalletModal';
 import unrecognizedIcon from '../../image/unrecognized.svg';
-import { amountFormat, lightenDarkenColor, numToCurrency } from './../../utils/ReusableFunctions';
-import CopiedModal from '../common/_utils/CopiedModal';
+import { amountFormat, numToCurrency } from './../../utils/ReusableFunctions';
+// import CopiedModal from '../common/_utils/CopiedModal';
 import FixAddModal from '../common/FixAddModal';
-import Loading from '../common/Loading';
+// import Loading from '../common/Loading';
 import { toast } from 'react-toastify';
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
-    const [showModal, toggleCopied] = React.useState(false);
+    // const [showModal, toggleCopied] = React.useState(false);
     function handleClose() {
         setShow(false);
     }

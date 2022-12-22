@@ -18,9 +18,9 @@ import 'react-virtualized/styles.css';
 import './assets/scss/style.scss';
 
 //Amplitude
-import { initAmplitude, test } from "./utils/AnalyticsFunctions";
+import { initAmplitude } from "./utils/AnalyticsFunctions";
 
-//sentry 
+//sentry
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 

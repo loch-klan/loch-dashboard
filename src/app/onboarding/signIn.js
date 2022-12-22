@@ -1,18 +1,12 @@
 import React from 'react';
 import { connect } from "react-redux";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import {BaseReactComponent, CustomButton, CustomTextControl, Form, FormElement, FormValidator} from "../../utils/form";
 import ReactDOM from 'react-dom';
-import CustomButton from "../../utils/form/CustomButton";
-import CustomTextControl from "../../utils/form/CustomTextControl";
-import Form from "../../utils/form/Form";
-import FormElement from "../../utils/form/FormElement";
-// import { Col, Container, Row } from 'react-bootstrap';
 import {signIn,verifyUser }from './Api.js'
-import FormValidator from '../../utils/form/FormValidator';
 import { EmailAddressAdded, InvalidEmail } from "../../utils/AnalyticsFunctions.js";
 import { Image } from 'react-bootstrap';
 import EmailNotFoundCross from '../../assets/images/icons/EmailNotFoundCross.svg';
-import { getCurrentUser } from '../../utils/ManageToken';
+// import { getCurrentUser } from '../../utils/ManageToken';
 class SignIn extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -38,7 +32,7 @@ class SignIn extends BaseReactComponent {
     };
 
   onValidSubmit = (done, event) => {
-       
+
         const data = new URLSearchParams()
         if(this.state.email && !this.state.isVerificationRequired || this.props.activemodal === "signIn"){
           data.append("email", this.state.email)
@@ -53,7 +47,7 @@ class SignIn extends BaseReactComponent {
       };
 
   render() {
-   
+
 
         return (
           <div className="sign-in-modal">
@@ -81,7 +75,7 @@ class SignIn extends BaseReactComponent {
                         validations={[
                           {
                             validate: FormValidator.isRequired,
-                            message: "Field cannot be empty",
+                            message: "Please enter a valid email id",
                           },
                           // {
                           //   validate: FormValidator.isEmail,
@@ -92,7 +86,7 @@ class SignIn extends BaseReactComponent {
                               let isvalid = FormValidator.isEmail(
                                 this.state.email
                               );
-                             
+
                               if (!isvalid && this.state.prevEmail !== this.state.email) {
                                 InvalidEmail({
                                   email_address: this.state.email
@@ -101,7 +95,7 @@ class SignIn extends BaseReactComponent {
                               }
                               return isvalid
                             },
-                            message: "Please enter valid email id",
+                            message: "Please enter a valid email id",
                           },
                         ]}
                         control={{
@@ -115,6 +109,7 @@ class SignIn extends BaseReactComponent {
                             this.state.emailError && `email-error`
                           }`,
                         }}
+                        isCancel={true}
                       />
                       {this.state.emailError ? (
                         <span className="email-not-found">

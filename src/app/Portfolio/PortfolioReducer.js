@@ -21,7 +21,8 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                     //     console.log(action.payload.userWalletList.assets[i])
                     // }
                     // console.log('action.payload.userWalletList',action.payload.userWalletList);
-                    let matchedCodeData = state.coinRateList[action.payload.userWalletList.assets[i].asset.id]
+                    // let matchedCodeData = state.coinRateList[action.payload.userWalletList.assets[i].asset.id]
+                    let matchedCodeData = action.payload.assetPrice[action.payload.userWalletList.assets[i].asset.id]
                     let value = matchedCodeData && matchedCodeData ? matchedCodeData.quote : DEFAULT_PRICE;
                     let currentPrice = action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE);
                     // Get coin asset index

@@ -1,8 +1,8 @@
 import React from "react";
 import { AutoSizer, Table, Column } from "react-virtualized";
 import { Link } from "react-router-dom";
-import { Button, Image } from "react-bootstrap";
-import notFoundDefault from "../../assets/images/empty-table.png";
+import { Button } from "react-bootstrap";
+// import notFoundDefault from "../../assets/images/empty-table.png";
 import Pagination from "./Pagination";
 import {
   Form,
@@ -27,7 +27,7 @@ class CustomTable extends BaseReactComponent {
       tableData,
       className = "",
       columnList = [],
-      notFoundImage = notFoundDefault,
+      // notFoundImage = notFoundDefault,
       moduleName,
       message = "",
       isButton,

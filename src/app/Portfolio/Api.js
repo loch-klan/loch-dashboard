@@ -33,7 +33,8 @@ export const getUserWallet = (wallet,ctx) => {
                     type: USER_WALLET_LIST,
                     payload: {
                         address: wallet.address,
-                        userWalletList: userWalletList
+                        userWalletList: userWalletList,
+                        assetPrice: res.data?.data.asset_prices,
                     }
                 });
                 if(ctx){
