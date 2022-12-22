@@ -117,7 +117,7 @@ class LineChartSlider extends BaseReactComponent {
 
   DropdownData = (arr) => {
     // console.log("dropdown arr", arr);
-    this.setState({legends: arr})
+    this.setState({ legends: arr, selectedEvents: [] });
   };
 
   render() {
