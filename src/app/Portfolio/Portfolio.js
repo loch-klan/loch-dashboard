@@ -228,6 +228,8 @@ this.setState({graphLoading: true})
               // this.apiCall();
                 this.getTableData()
                 this.getGraphData()
+                getAllCounterFeeApi(this, false, false);
+                getProfitAndLossApi(this, false, false, false);
                 getYesterdaysBalanceApi(this);
             }
         }
