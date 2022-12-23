@@ -11,6 +11,8 @@ import { amountFormat, CurrencyType, numToCurrency } from './../../utils/Reusabl
 import FixAddModal from '../common/FixAddModal';
 // import Loading from '../common/Loading';
 import { toast } from 'react-toastify';
+import { AnalyzeAssetValue, FixUndetectedWallet } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 export default function WalletCard(props) {
     const [show, setShow] = React.useState(false);
     // const [showModal, toggleCopied] = React.useState(false);
@@ -31,10 +33,25 @@ export default function WalletCard(props) {
                 isText={true}
                 isName={coin.chain.name}
                 colorCode={coin.chain.color}
-                text={ coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0 + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + CurrencyType(true)}
+                text={ (coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0 + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + CurrencyType(true))}
                 className="wallet-tooltip"
             >
-                <div>
+                <div onMouseEnter={() => {
+                   
+                    AnalyzeAssetValue({
+                      // coin.chain.name
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      wallet_address: props.wallet_account_number,
+                      chain_name: coin.chain.name,
+                      percent_value: (coin.chain.percentage
+                        ? coin.chain.percentage.toFixed(2)
+                        : 0 +
+                          "%  " +
+                          amountFormat(coin.value.toFixed(2), "en-US", "USD") +
+                          CurrencyType(true)),
+                    });
+                }}>
                     <CoinChip
                         colorCode={coin.chain.color}
                         key={index}
@@ -60,8 +77,15 @@ export default function WalletCard(props) {
         // toggleCopied(true)
     }
     const [showFixModal , setShowFixModal] = React.useState(0)
-    const handleFixModal = ()=>{
-        setShowFixModal(prev => !prev)
+    const handleFixModal = () => {
+        console.log("fix model")
+         setShowFixModal((prev) => !prev);
+        FixUndetectedWallet({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          undetected_address: props.wallet_account_number,
+        });
+       
     }
     return (<>
         <div className="walletcard">

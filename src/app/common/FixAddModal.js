@@ -15,7 +15,7 @@ import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding//Api"
 import { getDetectedChainsApi, updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
-import { AddWalletAddress } from '../../utils/AnalyticsFunctions';
+import { AddWalletAddress, AnonymityWalletConnection, DoneFixingConnection } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
 class FixAddModal extends BaseReactComponent {
 
@@ -94,6 +94,7 @@ class FixAddModal extends BaseReactComponent {
         }
     }
     handleSetCoin = (data) => {
+        
         let coinList = {
             chain_detected: data.chain_detected,
             coinCode: data.coinCode,
@@ -274,11 +275,20 @@ class FixAddModal extends BaseReactComponent {
             clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-            this.getCoinBasedOnAddress(name, value);
+            this.getCoinBasedOnWalletAddress(name, value);
         }, 500)
     }
 
     handleFixWallet = () => {
+       console.log(this.state.fixWalletAddress);
+         let coinName = this.state.fixWalletAddress[0].coins.filter((e) => e.chain_detected)
+             .map((name) => name.coinName);
+        DoneFixingConnection({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          wallet_address: this.state.fixWalletAddress[0].address,
+          blockchainDetected: coinName,
+        });
       clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
         let wallets = JSON.parse(localStorage.getItem("addWallet"))
@@ -325,6 +335,7 @@ class FixAddModal extends BaseReactComponent {
         }
         localStorage.setItem("addWallet", JSON.stringify(walletList))
         this.state.onHide()
+        // console.log("new array", newArr);
         this.state.changeList && this.state.changeList(walletList)
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(newArr))
@@ -557,7 +568,9 @@ class FixAddModal extends BaseReactComponent {
                                         IconImage={LockIcon}
                                         isInfo={true}
                                         className={"fix-width"}
-                                    ><Image src={InfoIcon} className="info-icon" /></CustomOverlay>
+                                    ><Image src={InfoIcon} className="info-icon" onMouseEnter={() => {
+                                            AnonymityWalletConnection({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
+                                    }}/></CustomOverlay>
                                 </p>
 
                             </div>

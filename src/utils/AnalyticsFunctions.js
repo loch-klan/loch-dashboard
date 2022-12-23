@@ -888,16 +888,12 @@ export const AddNameTag = ({
 
 
 //60. Wallets:fix undetected wallet
-export const FixUndetectedWallet = ({ session_id, email_address, wallet_type_selected, name_tag, address, ENS,blockchains_detected }) => {
+export const FixUndetectedWallet = ({ session_id, email_address,undetected_address }) => {
   const event_name = "Wallets:fix undetected wallet";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "wallet type selected": wallet_type_selected,
-    "name tag": name_tag,
-    "address": address,
-    "ENS": ENS,
-    "blockchains detected": blockchains_detected,
+    "undetected address": undetected_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Wallets:fix undetected wallet");
@@ -954,11 +950,18 @@ export const DeleteWallet = ({ session_id, email_address, wallet_type_selected, 
 
 
 //64. Wallets:Clicked done after fixing connection
-export const DoneFixingConnection = ({ session_id, email_address}) => {
+export const DoneFixingConnection = ({
+  session_id,
+  email_address,
+  wallet_address,
+  blockchainDetected,
+}) => {
   const event_name = "Wallets:Clicked done after fixing connection";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address
+    "email address": email_address,
+    "wallet address": wallet_address,
+    "blockchain detected": blockchainDetected,
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Wallets:Clicked done after fixing connection");
@@ -989,16 +992,14 @@ export const TimeSpentWallet = ({ session_id, email_address, time_spent }) => {
 };
 
 //67. Wallets:analyze asset values for specific wallet
-export const AnalyzeAssetValue = ({ session_id, email_address, address_selected, name_tag, ENS, blockchains, assets}) => {
+export const AnalyzeAssetValue = ({ session_id, email_address, wallet_address, chain_name, percent_value}) => {
   const event_name = "Wallets:analyze asset values for specific wallet";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "address selected": address_selected,
-    "name tag":name_tag,
-    "ENS":ENS,
-    "blockchains":blockchains,
-    "assets": assets
+    "wallet address": wallet_address,
+    "chain name": chain_name,
+    "percent value": percent_value
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Wallets:analyze asset values for specific wallet");

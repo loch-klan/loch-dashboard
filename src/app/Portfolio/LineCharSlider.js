@@ -580,9 +580,10 @@ class LineChartSlider extends BaseReactComponent {
       xAxis: {
         events: {
           setExtremes(e) {
-            // console.log("min", e.min, "max", e.max);
+            console.log("e", e)
+            console.log("min", e.min, "max", e.max);
             let diff = Math.round(e.max - e.min);
-            // console.log(diff, parent.state.steps);
+            console.log(diff, parent.state.steps);
             if (diff >= 5 && diff < 11 && parent.state.plotLineHide !== 1) {
               parent.setState({
                 plotLineHide: 1,
@@ -615,7 +616,7 @@ class LineChartSlider extends BaseReactComponent {
               }
             }
             // e.target.userOptions.labels.step = 2
-            // console.log(e.target.userOptions.labels)
+            console.log(e.target.userOptions.labels)
           },
         },
 
@@ -918,7 +919,8 @@ class LineChartSlider extends BaseReactComponent {
                     width: "120px",
                     position: "absolute",
                     right: "0px",
-                    zIndex: "1",
+                      zIndex: "1",
+                    cursor:"pointer"
                   }}
                 >
                   <CustomDropdown
