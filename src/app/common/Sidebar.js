@@ -182,7 +182,7 @@ function Sidebar(props) {
                   {
                     currencyList.map((currency)=>{
                       return(
-                        <Dropdown.Item onClick={()=>handleFunction(currency)}>{currency.symbol + "   " + currency.code}</Dropdown.Item>
+                        <Dropdown.Item onClick={()=>handleFunction(currency)}> <span>{currency.symbol}</span> <span>{currency.code}</span></Dropdown.Item>
                       )
                     })
                   }

@@ -44,9 +44,13 @@
             }
             .dropdown-menu {
               &.show{
-                width: 14rem;
-                height: 20rem;
+                width: 9.3rem;
+                height: 22rem;
                 overflow-y: auto;
+                .dropdown-item{
+                  display: flex;
+                  justify-content: space-between;
+                }
               }
             }
           }
