@@ -21,7 +21,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
 import { Image } from "react-bootstrap";
 import CalenderIcon from "../../assets/images/calendar.svg";
 import DoubleArrow from "../../assets/images/double-arrow.svg";
@@ -293,7 +293,7 @@ class LineChartSlider extends BaseReactComponent {
             event.is_highlighted &&
             this.state.title === "Year"
           ) {
-           
+
             // y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
             y_value = UniqueEvents === 0 ? 120 : 220;
             UniqueEvents = UniqueEvents === 1 ? 0 : 1;
@@ -301,13 +301,13 @@ class LineChartSlider extends BaseReactComponent {
             plotLines.push({
             //   events: {
             //     // click: () => {
-                
+
             //     // },
             //     mouseover: () => {
-                   
+
             //     },
             //     mouseout: () => {
-                   
+
             //     }
             // },
               color: "#E5E5E680",
@@ -380,7 +380,7 @@ class LineChartSlider extends BaseReactComponent {
         });
     };
 
-   
+
 
     let selectedEvents = [];
     let noOfInternalEvent;
@@ -394,13 +394,13 @@ class LineChartSlider extends BaseReactComponent {
             current = moment(item.timestamp).format("YYYY");
             //  console.log("current", current, value);
           } else if (this.state.title === "Month") {
-            
+
             current = moment(item.timestamp).format("MMMM YY");
             //  console.log("current", current, value);
           } else {
             current = moment(item.timestamp).format("DD/MM/YYYY");
           }
-         
+
           if (current == value) {
             // selectedEvents.push(item);
             item.event.map((a) => {
@@ -462,7 +462,7 @@ class LineChartSlider extends BaseReactComponent {
         });
       noOfInternalEvent = selectedEvents.length;
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
-      
+
     };
     timestampList.map((time) => {
       let dummy = new Date(time);
@@ -610,7 +610,7 @@ class LineChartSlider extends BaseReactComponent {
                 // console.log("greater than 20");
                 parent.setState({
                   steps: 3,
-                 
+
                 });
               }
             }
@@ -673,12 +673,9 @@ class LineChartSlider extends BaseReactComponent {
         gridLineDashStyle: "longdash",
         labels: {
           formatter: function () {
-            // // console.log(
-            // //   "yaxis",
-            // //   this.value,
-            // //   Highcharts.numberFormat(this.value, -1, UNDEFINED, ",")
-            // );
-            return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
+            // return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
+            let val = Number(noExponents(this.value).toLocaleString('en-US'))
+            return CurrencyType(false) + numToCurrency(val);
           },
           x: 0,
           y: 4,
