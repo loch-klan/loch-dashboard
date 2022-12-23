@@ -41,6 +41,8 @@ class LineChartSlider extends BaseReactComponent {
       selectedEvents: [],
       selectedValue: null,
       legends: [],
+      steps: 1,
+      plotLineHide: 0
     };
   }
 
@@ -265,7 +267,7 @@ class LineChartSlider extends BaseReactComponent {
 
     let categories = [];
     let plotLines = [];
-    let UniqueEvents = [];
+    let UniqueEvents = 0;
     const generatePlotLines = (abc) => {
       let y_value = 0;
       // console.log("yvalue", y_value);
@@ -291,14 +293,28 @@ class LineChartSlider extends BaseReactComponent {
             event.is_highlighted &&
             this.state.title === "Year"
           ) {
-            UniqueEvents.push(abc);
-            y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
-
+           
+            // y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
+            y_value = UniqueEvents === 0 ? 120 : 220;
+            UniqueEvents = UniqueEvents === 1 ? 0 : 1;
+            // console.log("unE", UniqueEvents)
             plotLines.push({
+            //   events: {
+            //     // click: () => {
+                
+            //     // },
+            //     mouseover: () => {
+                   
+            //     },
+            //     mouseout: () => {
+                   
+            //     }
+            // },
               color: "#E5E5E680",
               dashStyle: "solid",
               value: value,
               width: 0,
+              showLastLabel: true,
               label: {
                 useHTML: true,
 
@@ -326,8 +342,8 @@ class LineChartSlider extends BaseReactComponent {
             });
           } else {
             if (e_time == abc && this.state.title !== "Year") {
-              UniqueEvents.push(abc);
-              y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
+              y_value = UniqueEvents === 0 ? 120 : 220;
+              UniqueEvents = UniqueEvents === 1 ? 0 : 1;
 
               plotLines.push({
                 color: "#E5E5E680",
@@ -364,7 +380,7 @@ class LineChartSlider extends BaseReactComponent {
         });
     };
 
-
+   
 
     let selectedEvents = [];
     let noOfInternalEvent;
@@ -473,7 +489,11 @@ class LineChartSlider extends BaseReactComponent {
     });
 
     // console.log("cat", categories);
-
+ let updatedPlotLine =
+   this.state.plotLineHide !== 0
+     ? plotLines.slice(0, (plotLines.length - this.state.plotLineHide))
+     : plotLines;
+//  console.log(updatedPlotLine);
     let SelectedSeriesData = [];
     seriesData =
       seriesData &&
@@ -527,7 +547,7 @@ class LineChartSlider extends BaseReactComponent {
                 selectedValue: selectedValue,
               });
             } else {
-              console.log("reset");
+              // console.log("reset");
               parent.setState({
                 selectedEvents: [],
                 selectedValue: null,
@@ -558,6 +578,47 @@ class LineChartSlider extends BaseReactComponent {
         margin: 150,
       },
       xAxis: {
+        events: {
+          setExtremes(e) {
+            // console.log("min", e.min, "max", e.max);
+            let diff = Math.round(e.max - e.min);
+            // console.log(diff, parent.state.steps);
+            if (diff >= 5 && diff < 11 && parent.state.plotLineHide !== 1) {
+              parent.setState({
+                plotLineHide: 1,
+              });
+            } else {
+              if (diff < 5 && parent.state.plotLineHide !== 0) {
+                parent.setState({
+                  plotLineHide: 0,
+                });
+              }
+            }
+
+            if (diff <= 11 && parent.state.steps !== 1) {
+              parent.setState({
+                steps: 1,
+              });
+            } else if (diff > 11 && diff <= 20 && parent.state.steps !== 2) {
+              // console.log("middle");
+              parent.setState({
+                steps: 2,
+                plotLineHide: 2,
+              });
+            } else {
+              if (diff > 20 && parent.state.steps !== 3) {
+                // console.log("greater than 20");
+                parent.setState({
+                  steps: 3,
+                 
+                });
+              }
+            }
+            // e.target.userOptions.labels.step = 2
+            // console.log(e.target.userOptions.labels)
+          },
+        },
+
         categories: categories,
         type: "category", // Other types are "logarithmic", "datetime" and "category",
         labels: {
@@ -571,7 +632,7 @@ class LineChartSlider extends BaseReactComponent {
               : categories[this.pos];
           },
           autoRotation: false,
-          // step: 2,
+          step: parent.state.steps,
           // autoRotationLimit: 0,
           // style: {
           //   whiteSpace: "nowrap",
@@ -599,7 +660,8 @@ class LineChartSlider extends BaseReactComponent {
         },
         min: categories.length > 4 ? categories.length - 5 : 0,
         max: categories.length - 0.5,
-        plotLines: plotLines,
+        // plotLines: plotLines,
+        plotLines: updatedPlotLine,
       },
 
       yAxis: {
@@ -717,7 +779,9 @@ class LineChartSlider extends BaseReactComponent {
                                       item.color == "#ffffff"
                                         ? "#16182B"
                                         : item.color
-                                    }"> ${CurrencyType(false)} ${numToCurrency(item.y)}</span>
+                                    }"> ${CurrencyType(false)} ${numToCurrency(
+                                      item.y
+                                    )}</span>
                                     </div>`;
                                   })
                                   .join(" ")}
@@ -732,24 +796,24 @@ class LineChartSlider extends BaseReactComponent {
           point: {
             events: {
               click: function () {
-                 if (parent.state.selectedValue !== selectedValue) {
-                   AssetValueInternalEvent({
-                     session_id: getCurrentUser().id,
-                     email_address: getCurrentUser().email,
-                     no_of_events: noOfInternalEvent,
-                   });
+                if (parent.state.selectedValue !== selectedValue) {
+                  AssetValueInternalEvent({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    no_of_events: noOfInternalEvent,
+                  });
                   //  console.log("inside event click");
-                   parent.setState({
-                     selectedEvents: selectedEvents,
-                     selectedValue: selectedValue,
-                   });
-                 } else {
+                  parent.setState({
+                    selectedEvents: selectedEvents,
+                    selectedValue: selectedValue,
+                  });
+                } else {
                   //  console.log("reset");
-                   parent.setState({
-                     selectedEvents: [],
-                     selectedValue: null,
-                   });
-                 }
+                  parent.setState({
+                    selectedEvents: [],
+                    selectedValue: null,
+                  });
+                }
               },
             },
           },
@@ -778,6 +842,13 @@ class LineChartSlider extends BaseReactComponent {
           symbols: [`url(${handle})`, `url(${handle})`],
         },
         xAxis: {
+          // events: {
+          //   setExtremes: function (e) {
+          //     console.log("Mix and max", e.min, e.max);
+          //     console.log("e", e);
+          //   },
+
+          // },
           visible: true,
           labels: {
             enabled: false,
@@ -844,7 +915,7 @@ class LineChartSlider extends BaseReactComponent {
                 </span>
                 <span
                   style={{
-                    width: "15%",
+                    width: "120px",
                     position: "absolute",
                     right: "0px",
                     zIndex: "1",

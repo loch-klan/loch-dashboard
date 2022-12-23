@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
+import CustomOverlay from '../commonComponent/CustomOverlay';
 class CustomDropdown extends Component {
   constructor(props) {
     super(props);
@@ -301,10 +302,59 @@ class CustomDropdown extends Component {
               
                 return this.props.isLineChart && i === 0 ? (
                   ""
+                ) : this.props.isLineChart ? (
+                  <CustomOverlay
+                    position="top"
+                    // className={"coin-hover-tooltip"}
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={e.label}
+                  >
+                    <span
+                      className={e.isSelected ? "active" : ""}
+                      // title={e.label}
+                      key={e.value}
+                      onClick={() => {
+                        // this.onSelect(e);
+                        if (
+                          this.getSelected().length < 4 &&
+                          this.props.isLineChart
+                        ) {
+                          //for line Chart
+                          this.onSelect(e);
+                        } else if (this.props.isLineChart && e.isSelected) {
+                          //for line Chart
+                          this.onSelect(e);
+                        } else {
+                          if (!this.props.isLineChart) {
+                            //for transaction History
+                            this.onSelect(e);
+                          }
+                        }
+                      }}
+                    >
+                      {this.TruncateText(e.label)}
+                      <svg
+                        className={`${e.isSelected ? "show" : "hide"}`}
+                        width="24px"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <polyline
+                          fill="none"
+                          stroke="#cccccc"
+                          strokeWidth="2"
+                          points="6 13 10.2 16.6 18 7"
+                        />
+                      </svg>
+                    </span>
+                  </CustomOverlay>
                 ) : (
                   <span
                     className={e.isSelected ? "active" : ""}
-                    title={e.label}
+                    // title={e.label}
                     key={e.value}
                     onClick={() => {
                       // this.onSelect(e);
