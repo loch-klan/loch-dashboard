@@ -168,7 +168,7 @@ function Sidebar(props) {
 
         return()=>clearInterval(interval);
       },[currentIndex]);
-    return (
+      return (
       <div className="sidebar-section">
         <Container>
           <div className="sidebar">
@@ -178,7 +178,7 @@ function Sidebar(props) {
                 <span className="loch-text">Loch</span>
               </div>
               <div className='currency-wrapper'>
-                <DropdownButton id="currency-dropdown" title={selectedCurrency && selectedCurrency.symbol + " " + selectedCurrency && selectedCurrency.code}>
+                <DropdownButton id="currency-dropdown" title={selectedCurrency && (selectedCurrency.symbol + " " + selectedCurrency.code)}>
                   {
                     currencyList.map((currency)=>{
                       return(
