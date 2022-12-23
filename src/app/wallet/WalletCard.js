@@ -33,7 +33,7 @@ export default function WalletCard(props) {
                 isText={true}
                 isName={coin.chain.name}
                 colorCode={coin.chain.color}
-                text={ (coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0 + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + CurrencyType(true))}
+                text={ (coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0) + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + CurrencyType(true)}
                 className="wallet-tooltip"
             >
                 <div onMouseEnter={() => {
@@ -46,10 +46,10 @@ export default function WalletCard(props) {
                       chain_name: coin.chain.name,
                       percent_value: (coin.chain.percentage
                         ? coin.chain.percentage.toFixed(2)
-                        : 0 +
+                        : 0) +
                           "%  " +
                           amountFormat(coin.value.toFixed(2), "en-US", "USD") +
-                          CurrencyType(true)),
+                          CurrencyType(true),
                     });
                 }}>
                     <CoinChip
