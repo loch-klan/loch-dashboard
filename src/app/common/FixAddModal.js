@@ -29,6 +29,7 @@ class FixAddModal extends BaseReactComponent {
             displayAddress: "",
             wallet_metadata: {}
         }]
+        // console.log('addWalletList',addWalletList);
         this.state = {
             onHide: props.onHide,
             show: props.show,

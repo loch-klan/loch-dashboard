@@ -168,7 +168,13 @@ export const getDetectedChainsApi = (ctx) =>{
       wallet.coins = chainsDetected
       })
       // console.log('addWallet',addWallet);
-      ctx.setState({addWalletList: addWallet})
+      ctx.setState({addWalletList: addWallet.length > 0 ? addWallet : [{
+        id: `wallet${addWallet.length + 1}`,
+        address: "",
+        coins: [],
+        displayAddress: "",
+        wallet_metadata: {}
+    }]})
       addWallet && addWallet.length > 0 && localStorage.setItem('addWallet',JSON.stringify(addWallet))
     } else{
       toast.error(res.data.message || "Something went wrong");

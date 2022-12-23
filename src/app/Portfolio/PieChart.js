@@ -68,6 +68,10 @@ class PieChart extends BaseReactComponent {
                 chartOptions: {},
                 pieSectionDataEnabled: {},
             })
+        } else{
+          this.setState({
+            piechartisLoading : false,
+          })
         }
     }
 
@@ -110,6 +114,9 @@ class PieChart extends BaseReactComponent {
                 pieSectionDataEnabled: {},
             })
         }
+        // if(!this.props.userWalletData){
+        //   this.setState({piechartisLoading : this.props.isLoading === false ? false : true,})
+        // }
     }
     setHoverData = (e) => {
         this.setState({ pieSectionDataEnabled: e })
@@ -454,7 +461,11 @@ class PieChart extends BaseReactComponent {
                         :
                         this.props.walletTotal === 0 || this.state.assetData.length === 0
                         ?
-                        <h3 className='inter-display-medium f-s-16 lh-19 grey-313 m-b-8'>No data found</h3>
+                        <div className='no-data-piechart'>
+                          <h3 className='inter-display-medium f-s-16 lh-19 grey-313 m-b-8'>{CurrencyType(false)} 0.00</h3>
+                          <h3 className='inter-display-medium f-s-16 lh-19 grey-313 m-b-8'>{CurrencyType(true)}</h3>
+                          <h3 className='inter-display-medium f-s-16 lh-19 grey-313 m-b-8'>Total Assets</h3>
+                        </div>
                         :
                         null
                 }

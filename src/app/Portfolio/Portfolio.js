@@ -223,6 +223,7 @@ this.setState({graphLoading: true})
                 // console.log('Heyyy');
                 // this.getTableData()
                 this.props.settingDefaultValues();
+                this.setState({isLoading: false})
             }
             if (prevProps.userWalletList !== this.state.userWalletList) {
               // this.apiCall();
