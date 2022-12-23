@@ -280,15 +280,21 @@ class FixAddModal extends BaseReactComponent {
     }
 
     handleFixWallet = () => {
-       console.log(this.state.fixWalletAddress);
-         let coinName = this.state.fixWalletAddress[0].coins.filter((e) => e.chain_detected)
-             .map((name) => name.coinName);
-        DoneFixingConnection({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          wallet_address: this.state.fixWalletAddress[0].address,
-          blockchainDetected: coinName,
+        // console.log(this.state.fixWalletAddress);`
+        this.state.fixWalletAddress && this.state.fixWalletAddress.map((obj) => {
+            // console.log(obj)
+            let coinName = obj.coins
+              .filter((e) => e.chain_detected)
+                .map((name) => name.coinName);
+            DoneFixingConnection({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              wallet_address: obj.address,
+              blockchainDetected: coinName,
+            });
         });
+         
+        
       clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
         let wallets = JSON.parse(localStorage.getItem("addWallet"))

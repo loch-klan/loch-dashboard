@@ -78,13 +78,9 @@ export default function WalletCard(props) {
     }
     const [showFixModal , setShowFixModal] = React.useState(0)
     const handleFixModal = () => {
-        console.log("fix model")
+       
          setShowFixModal((prev) => !prev);
-        FixUndetectedWallet({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          undetected_address: props.wallet_account_number,
-        });
+       
        
     }
     return (<>
@@ -144,7 +140,15 @@ export default function WalletCard(props) {
                 :
                 <>
                 <h6 className='inter-display-medium f-s-16 lh-19 grey-B0B'>This wallet address is not detected. Please fix it now.</h6>
-                <Button className='secondary-btn' onClick={handleFixModal}>Fix now</Button>
+                                <Button className='secondary-btn' onClick={() => {
+                                    handleFixModal();
+                                     FixUndetectedWallet({
+                                       session_id: getCurrentUser().id,
+                                       email_address: getCurrentUser().email,
+                                       undetected_address:
+                                         props.wallet_account_number,
+                                     });
+                                }}>Fix now</Button>
                 </>
               }
             </div>
