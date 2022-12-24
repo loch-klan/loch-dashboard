@@ -68,10 +68,6 @@ class PieChart extends BaseReactComponent {
                 chartOptions: {},
                 pieSectionDataEnabled: {},
             })
-        } else{
-          this.setState({
-            piechartisLoading : false,
-          })
         }
     }
 
