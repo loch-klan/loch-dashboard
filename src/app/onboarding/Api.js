@@ -55,9 +55,9 @@ export const detectCoin = (wallet,ctx=null) => {
             .then((res) => {
                 // && res.data.data.chain_detected
                 if (!res.error && res.data) {
-                    if (res.data.data.chain_detected) {
+                    if (res.data.data.chain_detected && !ctx) {
                          WalletAddressTextbox({
-                        //    session_id: "none",
+                           session_id: "",
                            address: wallet.address,
                            chains_detected: wallet.coinName,
                          });
@@ -76,7 +76,8 @@ export const detectCoin = (wallet,ctx=null) => {
                             subChains: wallet.subChains,
                         }
                     });
-                    if(ctx){
+                  if (ctx) {
+                      console.log("walletr", res.data.data, wallet);
                         ctx.handleSetCoin({...wallet,chain_detected:res.data.data.chain_detected})
                     }
                 }

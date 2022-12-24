@@ -302,7 +302,7 @@ class CustomDropdown extends Component {
               
                 return this.props.isLineChart && i === 0 ? (
                   ""
-                ) : this.props.isLineChart ? (
+                ) : this.props.isLineChart && false ? (
                   <CustomOverlay
                     position="top"
                     // className={"coin-hover-tooltip"}

@@ -580,6 +580,7 @@ class LineChartSlider extends BaseReactComponent {
       xAxis: {
         events: {
           setExtremes(e) {
+            // console.log("e", e)
             // console.log("min", e.min, "max", e.max);
             let diff = Math.round(e.max - e.min);
             // console.log(diff, parent.state.steps);
@@ -915,7 +916,8 @@ class LineChartSlider extends BaseReactComponent {
                     width: "120px",
                     position: "absolute",
                     right: "0px",
-                    zIndex: "1",
+                      zIndex: "1",
+                    cursor:"pointer"
                   }}
                 >
                   <CustomDropdown
