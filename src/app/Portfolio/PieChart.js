@@ -68,6 +68,8 @@ class PieChart extends BaseReactComponent {
                 chartOptions: {},
                 pieSectionDataEnabled: {},
             })
+        } else{
+          this.setState({ piechartisLoading: false })
         }
     }
 
@@ -77,7 +79,8 @@ class PieChart extends BaseReactComponent {
             this.setState({ assetTotal: this.props.assetTotal })
         }
         if (this.props.userWalletData !== prevProps.userWalletData) {
-            this.setState({ piechartisLoading: true })
+          // console.log('hellooooo');
+          this.props.userWalletData && this.setState({ piechartisLoading: true })
             let assetData = [];
             if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {

@@ -226,6 +226,8 @@ this.setState({graphLoading: true})
                 this.setState({isLoading: false})
             }
             if (prevProps.userWalletList !== this.state.userWalletList) {
+              // console.log('byeee');
+              this.state.userWalletList.length > 0 && this.setState({isLoading: true})
               // this.apiCall();
                 this.getTableData()
                 this.getGraphData()

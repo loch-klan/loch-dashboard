@@ -77,7 +77,7 @@ export const detectCoin = (wallet,ctx=null) => {
                         }
                     });
                   if (ctx) {
-                      console.log("walletr", res.data.data, wallet);
+                      // console.log("walletr", res.data.data, wallet);
                         ctx.handleSetCoin({...wallet,chain_detected:res.data.data.chain_detected})
                     }
                 }
