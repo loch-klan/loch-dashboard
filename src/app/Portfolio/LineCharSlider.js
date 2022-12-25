@@ -52,6 +52,7 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         title: "Year",
         selectedEvents: [],
+        steps: 1,
       });
     }
   }
@@ -113,6 +114,7 @@ class LineChartSlider extends BaseReactComponent {
     this.setState({
       title: t,
       selectedEvents: [],
+      steps: 1,
     });
     this.props.handleGroupBy(t);
   };
@@ -178,6 +180,7 @@ class LineChartSlider extends BaseReactComponent {
 
     // console.log("before", timestampList);
     if (this.state.title === "Year" && timestampList.length != 0) {
+      // const startYear = 1992;
       const startYear = 2009;
       const endYear = moment(timestampList[0]).format("YYYY");
       const years = [];
@@ -195,7 +198,7 @@ class LineChartSlider extends BaseReactComponent {
       // const endMonth = 12 - 5;
       // const currentMonth = moment.unix(1647801000);
       let months = [];
-      console.log(currentMonth);
+      // console.log(currentMonth);
       for (let month = 0; month < endMonth; month++) {
         const month_value = currentMonth
           .subtract(1, "months")
@@ -217,7 +220,7 @@ class LineChartSlider extends BaseReactComponent {
       }
       // dates = dates.reverse;
       timestampList = [...dates.reverse(), ...timestampList];
-      console.log("dates update", dates);
+      // console.log("dates update", dates);
       // console.log("l", timestampList);
     }
 
@@ -268,6 +271,7 @@ class LineChartSlider extends BaseReactComponent {
     let categories = [];
     let plotLines = [];
     let UniqueEvents = 0;
+    let isLast = false;
     const generatePlotLines = (abc) => {
       let y_value = 0;
       // console.log("yvalue", y_value);
@@ -275,6 +279,7 @@ class LineChartSlider extends BaseReactComponent {
         externalEvents.map((event, index) => {
           let e_time = moment(event.timestamp).format("DD/MM/YYYY");
           let value = eval(categories.indexOf(abc));
+         
           if (this.state.title == "Month") {
             e_time = moment(event.timestamp).format("MMMM YY");
             value += eval(
@@ -293,23 +298,16 @@ class LineChartSlider extends BaseReactComponent {
             event.is_highlighted &&
             this.state.title === "Year"
           ) {
-           
+            isLast =
+              eval(categories.indexOf(abc)) === timestampList.length - 1
+                ? true
+                : false;
+
             // y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
             y_value = UniqueEvents === 0 ? 120 : 220;
             UniqueEvents = UniqueEvents === 1 ? 0 : 1;
             // console.log("unE", UniqueEvents)
             plotLines.push({
-            //   events: {
-            //     // click: () => {
-                
-            //     // },
-            //     mouseover: () => {
-                   
-            //     },
-            //     mouseout: () => {
-                   
-            //     }
-            // },
               color: "#E5E5E680",
               dashStyle: "solid",
               value: value,
@@ -319,7 +317,7 @@ class LineChartSlider extends BaseReactComponent {
                 useHTML: true,
 
                 formatter: function () {
-                  return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${event.title.replace(
+                  return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important; display:flex; width:90px; overflow-wrap: anywhere; white-space: normal;">${event.title.replace(
                     /([^ ]+) ([^ ]+)/g,
                     "$1 $2<br>"
                   )}</div></div>`;
@@ -342,6 +340,11 @@ class LineChartSlider extends BaseReactComponent {
             });
           } else {
             if (e_time == abc && this.state.title !== "Year") {
+               isLast =
+                 eval(categories.indexOf(abc)) === timestampList.length - 1
+                   ? true
+                   : false;
+             
               y_value = UniqueEvents === 0 ? 120 : 220;
               UniqueEvents = UniqueEvents === 1 ? 0 : 1;
 
@@ -354,7 +357,7 @@ class LineChartSlider extends BaseReactComponent {
                   useHTML: true,
 
                   formatter: function () {
-                    return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${event.title.replace(
+                    return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important; display:flex; width:90px; overflow-wrap: anywhere; white-space: normal;">${event.title.replace(
                       /([^ ]+) ([^ ]+)/g,
                       "$1 $2<br>"
                     )}</div></div>`;
@@ -488,11 +491,22 @@ class LineChartSlider extends BaseReactComponent {
       }
     });
 
-    // console.log("cat", categories);
- let updatedPlotLine =
-   this.state.plotLineHide !== 0
-     ? plotLines.slice(0, (plotLines.length - this.state.plotLineHide))
-     : plotLines;
+    // console.log("islast", isLast);
+    let updatedPlotLine = [];
+    let count = 0;
+    if (
+      this.state.plotLineHide === 1 && isLast
+    ) {
+      // console.log("1st");
+      count = plotLines.length - this.state.plotLineHide;
+      updatedPlotLine = plotLines.slice(0, count);
+    } else if (this.state.plotLineHide == 2 && plotLines.length > 10) {
+      // console.log("all 10");
+      updatedPlotLine = plotLines.slice(0, 10);
+    } else {
+      // console.log("default");
+      updatedPlotLine = plotLines;
+    }
 //  console.log(updatedPlotLine);
     let SelectedSeriesData = [];
     seriesData =
@@ -500,7 +514,7 @@ class LineChartSlider extends BaseReactComponent {
       seriesData.sort((a, b) => {
         return b.lastValue - a.lastValue;
       });
-    // console.log("All data", seriesData);
+   
 
     let AllLegends = [{ label: "All", value: "All" }];
     seriesData &&
@@ -583,13 +597,13 @@ class LineChartSlider extends BaseReactComponent {
             // console.log("e", e)
             // console.log("min", e.min, "max", e.max);
             let diff = Math.round(e.max - e.min);
-            // console.log(diff, parent.state.steps);
-            if (diff >= 5 && diff < 11 && parent.state.plotLineHide !== 1) {
+// console.log("dif", diff)
+            if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
               parent.setState({
                 plotLineHide: 1,
               });
             } else {
-              if (diff < 5 && parent.state.plotLineHide !== 0) {
+              if (diff < 9 && parent.state.plotLineHide !== 0) {
                 parent.setState({
                   plotLineHide: 0,
                 });
@@ -607,16 +621,19 @@ class LineChartSlider extends BaseReactComponent {
                 plotLineHide: 2,
               });
             } else {
-              if (diff > 20 && parent.state.steps !== 3) {
-                // console.log("greater than 20");
-                parent.setState({
-                  steps: 3,
-                 
-                });
-              }
+              // if (diff >= 13 && parent.state.plotLineHide !== 3) {
+              //   parent.setState({
+              //     // plotLineHide: 3,
+              //   });
+              // }
+                if (diff > 20 && parent.state.steps !== 3) {
+                  // console.log("greater than 20");
+                  parent.setState({
+                    steps: 3,
+                  });
+                }
             }
-            // e.target.userOptions.labels.step = 2
-            // console.log(e.target.userOptions.labels)
+           
           },
         },
 
