@@ -453,7 +453,8 @@ class PieChart extends BaseReactComponent {
                           }
                     </>
                     :
-                     this.state.piechartisLoading === true && this.state.assetData === null
+                    //  this.state.piechartisLoading === true && this.state.assetData === null
+                    this.props.isLoading
                         ?
                         <Loading/>
                         :
