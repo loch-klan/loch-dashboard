@@ -236,7 +236,7 @@
                 padding: 0rem 2.1rem 0rem 7rem;
                 max-height: 22rem;
                 overflow-y: auto;
-                margin: 0 3.7rem 0 0rem;
+                margin: 0 4.1rem 1.2rem 0rem;
                 .add-wallet-input-section {
                     // display: flex;
                     // align-items: center;
@@ -292,13 +292,15 @@
                 }
 
                 &::-webkit-scrollbar-thumb {
-                    background: rgb(90, 90, 90);
+                    // background: rgb(90, 90, 90);
+                    background-color: $scrollBar-thumb;
                     // border-radius: 2rem;
                     border-radius: 0.8rem;
                 }
 
                 &::-webkit-scrollbar-track {
-                    background: rgba(0, 0, 0, 0.2);
+                  background-color: rgba(229, 229, 230, 0.5);
+                    // background-color: $grey-E5E;
                     // border-radius: 2rem;
                     border-radius: 0.8rem;
                 }

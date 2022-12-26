@@ -32,7 +32,7 @@ class OnBoarding extends Component {
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-    console.log("page Enter", (this.state.startTime / 1000));
+    // console.log("page Enter", (this.state.startTime / 1000));
     OnboardingPage({});
     }
 

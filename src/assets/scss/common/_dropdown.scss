@@ -42,11 +42,21 @@
   min-height: 4rem;
   user-select: none;
 
+  &.lineChart{
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    border: 0.1rem solid #B0B1B3;
+    border-radius: 0.8rem;
+    color: #19191A;
+    user-select: none;
+  }
+
   .dropdown-content {
     display: none;
     position: absolute;
-    padding: 3px 3px 0px;
-    top: 4.3rem;
+    top: 4rem;
     width: 100%;
     min-width: 130px;
     z-index: 1;
@@ -57,13 +67,14 @@
 
     .dropdown-list {
       max-height: 18.5rem;
+      padding: 4px 4px 0px;
       overflow-y: scroll;
 
       /* Links inside the dropdown */
       span {
         @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
-        padding: 10px 8px;
-        margin-bottom: 3px;
+        padding: 8px 8px;
+        margin-bottom: 1.5px;
         border-radius: 2px;
         text-decoration: none;
         display: block;
@@ -93,7 +104,8 @@
       }
 
       &::-webkit-scrollbar {
-        width: 0.3rem;
+        width: 0.4rem;
+        height: 0.4rem;
       }
 
       &::-webkit-scrollbar-thumb {
@@ -102,7 +114,8 @@
       }
 
       &::-webkit-scrollbar-track {
-        background-color: transparent;
+        background-color: rgba(229, 229, 230, 0.5);
+        // background-color: $grey-E5E;
         border-radius: 0.8rem;
       }
     }
@@ -113,7 +126,7 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        padding: 6px 0px;
+        padding: 4px 4px;
         border-top: 1px solid $secondary-6;
         .primary-btn{
           &:hover{
@@ -121,15 +134,28 @@
             color: $black-191;
             border: 1px solid $black-191;
           }
+
+          svg {
+            width: 16px;
+          }
+
         }
+
+        .secondary-btn{
+          svg {
+            width: 16px;
+          }
+        }
+
         .dropdown-btn{
             // background-color: $secondary-6;
             // border-radius: 3px;
             // border: none;
             text-align: center;
             width: 48%;
-            padding: 1rem;
+            padding: 0.5rem;
             user-select: none;
+            border-radius: 5px;
             cursor: pointer;
             // @include font($black-191, "Inter-Medium", 1.1rem, 500, 3rem);
             font-size: 1.1rem
@@ -145,6 +171,32 @@
 
     text-align: center;
     transform: translateY(-50%);
+
+    &.lineChartPlaceholder{
+       @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+
+       span{
+        margin-left: 1.6rem
+       }
+
+
+       svg {
+      position: absolute;
+      right: 1rem;
+      top: -0.1rem;
+    }
+
+     svg path {
+      fill: hsl(0, 0%, 0%);
+    }
+
+    // svg > path:nth-child(1) {
+    //   fill: transparent;
+    // }
+    // svg > path:nth-child(2) {
+    //   fill: #000000;
+    // }
+    }
 
     svg {
       position: absolute;

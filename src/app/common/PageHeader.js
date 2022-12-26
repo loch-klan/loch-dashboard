@@ -6,11 +6,11 @@ export default function PageHeader(props) {
 
   const nav_list = window.location.pathname.split("/");
 
-  const breads = nav_list.map((e, index) => {
+  const breads = nav_list.map((e, key) => {
     // console.log(e , props.currentPage)
     return e &&
       <>
-        <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/${e}`}}className="inter-display-medium f-s-13 lh-16" active={e === props.currentPage} key={index} >
+        <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/${e}`}}className="inter-display-medium f-s-13 lh-16" active={e === props.currentPage} key={key} >
           {e.replace(/-/g, " ")}
         </Breadcrumb.Item>
 
@@ -38,7 +38,7 @@ export default function PageHeader(props) {
         )}
         <div>
           <h4
-            className={`inter-display-medium f-s-25 lh-30 ${
+            className={`inter-display-medium f-s-24 lh-30 ${
               props.showImg ? "" : "m-b-8"
             }`}
           >

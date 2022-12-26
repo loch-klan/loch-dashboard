@@ -15,7 +15,7 @@ import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding//Api"
 import { getDetectedChainsApi, updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
-import { AddWalletAddress } from '../../utils/AnalyticsFunctions';
+import { AddWalletAddress, AnonymityWalletConnection, DoneFixingConnection } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
 class FixAddModal extends BaseReactComponent {
 
@@ -29,6 +29,7 @@ class FixAddModal extends BaseReactComponent {
             displayAddress: "",
             wallet_metadata: {}
         }]
+        // console.log('addWalletList',addWalletList);
         this.state = {
             onHide: props.onHide,
             show: props.show,
@@ -74,7 +75,7 @@ class FixAddModal extends BaseReactComponent {
         }
         this.timeout = setTimeout(() => {
             this.getCoinBasedOnWalletAddress(name, value);
-        }, 1000)
+        }, 500)
     }
 
     getCoinBasedOnWalletAddress = (name, value) => {
@@ -94,6 +95,7 @@ class FixAddModal extends BaseReactComponent {
         }
     }
     handleSetCoin = (data) => {
+        
         let coinList = {
             chain_detected: data.chain_detected,
             coinCode: data.coinCode,
@@ -188,7 +190,10 @@ class FixAddModal extends BaseReactComponent {
 
     handleAddWallet = () => {
         if (this.state.addWalletList) {
-
+          if (this.timeout) {
+            clearTimeout(this.timeout)
+        }
+        this.timeout = setTimeout(() => {
             let arr = []
             let walletList = []
             for (let i = 0; i < this.state.addWalletList.length; i++) {
@@ -243,6 +248,10 @@ class FixAddModal extends BaseReactComponent {
               recognized_addresses: recog_address,
               blockchains_detected: blockchainDetected,
             });
+
+          }, 300)
+
+
         }
 
     }
@@ -267,11 +276,28 @@ class FixAddModal extends BaseReactComponent {
             clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-            this.getCoinBasedOnAddress(name, value);
-        }, 1000)
+            this.getCoinBasedOnWalletAddress(name, value);
+        }, 500)
     }
 
     handleFixWallet = () => {
+        // console.log(this.state.fixWalletAddress);`
+        this.state.fixWalletAddress && this.state.fixWalletAddress.map((obj) => {
+            // console.log(obj)
+            let coinName = obj.coins
+              .filter((e) => e.chain_detected)
+                .map((name) => name.coinName);
+            DoneFixingConnection({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              wallet_address: obj.address,
+              blockchainDetected: coinName,
+            });
+        });
+         
+        
+      clearTimeout(this.delayTimer);
+    this.delayTimer = setTimeout(() => {
         let wallets = JSON.parse(localStorage.getItem("addWallet"))
         // console.log('wallet',wallets);
         let localArr = []
@@ -316,6 +342,7 @@ class FixAddModal extends BaseReactComponent {
         }
         localStorage.setItem("addWallet", JSON.stringify(walletList))
         this.state.onHide()
+        // console.log("new array", newArr);
         this.state.changeList && this.state.changeList(walletList)
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(newArr))
@@ -323,6 +350,7 @@ class FixAddModal extends BaseReactComponent {
         if (this.props.handleUpdateWallet) {
             this.props.handleUpdateWallet()
         }
+      }, 300);
     }
 
     isDisabled = () => {
@@ -377,7 +405,7 @@ class FixAddModal extends BaseReactComponent {
         const inputs = this.state.modalType == "fixwallet" ?
             this.state.fixWalletAddress.map((elem, index) => {
                 return (
-                    <div className="m-b-12 fix-wallet-input" key={index} id={`fix-input-${index}`}>
+                    <div className="m-t-12 fix-wallet-input" key={index} id={`fix-input-${index}`}>
                         <div className="delete-icon" onClick={() => this.deleteFixWalletAddress(elem)}>
                         <Image src={DeleteIcon}  />
                         </div>
@@ -416,7 +444,7 @@ class FixAddModal extends BaseReactComponent {
 
 
         const wallets = this.state.addWalletList.map((elem, index) => {
-                return (<div className='m-b-12 add-wallet-input-section' key={index} id={`add-wallet-${index}`}>
+                return (<div className='m-t-12 add-wallet-input-section' key={index} id={`add-wallet-${index}`}>
                     {index >= 1 ?
                     <div  className="delete-icon" onClick={() => this.deleteAddress(index)}>
                     <Image src={DeleteIcon} />
@@ -547,7 +575,9 @@ class FixAddModal extends BaseReactComponent {
                                         IconImage={LockIcon}
                                         isInfo={true}
                                         className={"fix-width"}
-                                    ><Image src={InfoIcon} className="info-icon" /></CustomOverlay>
+                                    ><Image src={InfoIcon} className="info-icon" onMouseEnter={() => {
+                                            AnonymityWalletConnection({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
+                                    }}/></CustomOverlay>
                                 </p>
 
                             </div>

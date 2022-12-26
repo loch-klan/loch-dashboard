@@ -9,41 +9,56 @@ import DropDown from "../common/DropDown";
 import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
 import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
 import { GroupByOptions, Months } from "../../utils/Constant";
-import { AssetValueFilter, AssetValueHover, AssetValueInternalEvent, IntlAssetValueFilter, IntlAssetValueHover, IntlAssetValueInternalEvent, TitleAssetValueHover } from "../../utils/AnalyticsFunctions.js";
+import {
+  AssetValueFilter,
+  AssetValueHover,
+  AssetValueInternalEvent,
+  IntlAssetValueFilter,
+  IntlAssetValueHover,
+  IntlAssetValueInternalEvent,
+  TitleAssetValueHover,
+} from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
-import { numToCurrency } from "../../utils/ReusableFunctions";
+import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
 import { Image } from "react-bootstrap";
 import CalenderIcon from "../../assets/images/calendar.svg";
 import DoubleArrow from "../../assets/images/double-arrow.svg";
 import handle from "../../assets/images/handle.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import CustomDropdown from "../../utils/form/CustomDropdown";
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      currency: JSON.parse(localStorage.getItem('currency')),
       assetValueData: props.assetValueData,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
       title: "Year",
-      titleY: "$ USD",
+      titleY: CurrencyType(),
       selectedEvents: [],
       selectedValue: null,
+      legends: [],
+      steps: 1,
+      plotLineHide: 0
     };
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.isUpdate !== this.props.isUpdate) {
-      console.log("Something update");
+      // console.log("Something update");
       this.setState({
         title: "Year",
         selectedEvents: [],
+        steps: 1,
       });
     }
   }
 
   handleFunction = (badge) => {
+
     let newArr = [...this.state.activeBadge];
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
       let index = newArr.findIndex((x) => x.name === badge.name);
@@ -53,6 +68,7 @@ class LineChartSlider extends BaseReactComponent {
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
           selectedEvents: [],
+          legends: [],
         });
       } else {
         this.setState({
@@ -65,6 +81,7 @@ class LineChartSlider extends BaseReactComponent {
         activeBadge: [{ name: "All", id: "" }],
         activeBadgeList: [],
         selectedEvents: [],
+        legends: [],
       });
     } else {
       let index = newArr.findIndex((x) => x.name === "All");
@@ -76,6 +93,7 @@ class LineChartSlider extends BaseReactComponent {
         activeBadge: newArr,
         activeBadgeList: newArr.map((item) => item.id),
         selectedEvents: [],
+        legends: [],
       });
     }
     this.props.isPage
@@ -91,24 +109,24 @@ class LineChartSlider extends BaseReactComponent {
         });
   };
   handleSelect = (opt) => {
+
     const t = opt.split(" ")[1];
     this.setState({
       title: t,
       selectedEvents: [],
+      steps: 1,
     });
     this.props.handleGroupBy(t);
+  };
+
+  DropdownData = (arr) => {
+    // console.log("dropdown arr", arr);
+    this.setState({ legends: arr, selectedEvents: [] });
   };
 
   render() {
     const { assetValueData, externalEvents } = this.props;
     const parent = this;
-
-    const getEvent = (value) => {
-      this.InternalEvent(value);
-      // console.log("event triggered")
-    };
-    // console.log("externalEvents", externalEvents);
-    //  console.log("asset Value", assetValueData);
     let series = {};
     let timestampList = [];
     let assetMaster = {};
@@ -116,8 +134,6 @@ class LineChartSlider extends BaseReactComponent {
 
     assetValueData &&
       assetValueData.map((assetData) => {
-        //  console.log("asset data",assetData);
-
         if (
           this.state.activeBadgeList.includes(assetData.chain._id) ||
           this.state.activeBadgeList.length === 0
@@ -138,20 +154,20 @@ class LineChartSlider extends BaseReactComponent {
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.count) * data.asset_price +
+                  new Number(data.count) * (data.asset_price * this.state.currency?.rate) +
                   assetMaster[data.asset.id][assetData.timestamp];
               } else {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.count) * data.asset_price;
+                  new Number(data.count) * (data.asset_price * this.state.currency?.rate);
               }
             } else {
               assetMaster[data.asset.id] = {
                 assetDetails: data.asset,
-                assetPrice: data.asset_price ? data.asset_price : 0,
-                count: new Number(data.count) * data.asset_price,
+                assetPrice: data.asset_price ? (data.asset_price * this.state.currency?.rate) : 0,
+                count: new Number(data.count) * (data.asset_price * this.state.currency?.rate),
               };
               assetMaster[data.asset.id][assetData.timestamp] =
-                new Number(data.count) * data.asset_price;
+                new Number(data.count) * (data.asset_price * this.state.currency.rate);
             }
           });
         }
@@ -162,7 +178,9 @@ class LineChartSlider extends BaseReactComponent {
       return a - b;
     });
 
+    // console.log("before", timestampList);
     if (this.state.title === "Year" && timestampList.length != 0) {
+      // const startYear = 1992;
       const startYear = 2009;
       const endYear = moment(timestampList[0]).format("YYYY");
       const years = [];
@@ -173,6 +191,36 @@ class LineChartSlider extends BaseReactComponent {
 
       timestampList = [...years, ...timestampList];
       // console.log("year update", years);
+      // console.log("l", timestampList);
+    } else if (this.state.title === "Month" && timestampList.length != 0) {
+      const endMonth = 12 - timestampList.length;
+      const currentMonth = moment(timestampList[0]);
+      // const endMonth = 12 - 5;
+      // const currentMonth = moment.unix(1647801000);
+      let months = [];
+      // console.log(currentMonth);
+      for (let month = 0; month < endMonth; month++) {
+        const month_value = currentMonth
+          .subtract(1, "months")
+          .format("MMMM YYYY");
+        months.push(month_value);
+      }
+
+      timestampList = [...months, ...timestampList];
+      // console.log("Month update", months);
+      // console.log("l", timestampList);
+    } else if (this.state.title === "Day" && timestampList.length != 0) {
+      let dates = [];
+      const endDay = 30 - timestampList.length;
+      const currentDay = moment(timestampList[0]);
+      // console.log("tets",endDay);
+      for (let day = 0; day < endDay; day++) {
+        const date = currentDay.subtract(1, "days").valueOf();
+        dates.push(date);
+      }
+      // dates = dates.reverse;
+      timestampList = [...dates.reverse(), ...timestampList];
+      // console.log("dates update", dates);
       // console.log("l", timestampList);
     }
 
@@ -222,7 +270,8 @@ class LineChartSlider extends BaseReactComponent {
 
     let categories = [];
     let plotLines = [];
-    let UniqueEvents = [];
+    let UniqueEvents = 0;
+    let isLast = false;
     const generatePlotLines = (abc) => {
       let y_value = 0;
       // console.log("yvalue", y_value);
@@ -230,6 +279,7 @@ class LineChartSlider extends BaseReactComponent {
         externalEvents.map((event, index) => {
           let e_time = moment(event.timestamp).format("DD/MM/YYYY");
           let value = eval(categories.indexOf(abc));
+
           if (this.state.title == "Month") {
             e_time = moment(event.timestamp).format("MMMM YY");
             value += eval(
@@ -248,19 +298,26 @@ class LineChartSlider extends BaseReactComponent {
             event.is_highlighted &&
             this.state.title === "Year"
           ) {
-            UniqueEvents.push(abc);
-            y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
+            isLast =
+              eval(categories.indexOf(abc)) === timestampList.length - 1
+                ? true
+                : false;
 
+            // y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
+            y_value = UniqueEvents === 0 ? 120 : 220;
+            UniqueEvents = UniqueEvents === 1 ? 0 : 1;
+            // console.log("unE", UniqueEvents)
             plotLines.push({
               color: "#E5E5E680",
               dashStyle: "solid",
               value: value,
               width: 0,
+              showLastLabel: true,
               label: {
                 useHTML: true,
 
                 formatter: function () {
-                  return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${event.title.replace(
+                  return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important; display:flex; width:90px; overflow-wrap: anywhere; white-space: normal;">${event.title.replace(
                     /([^ ]+) ([^ ]+)/g,
                     "$1 $2<br>"
                   )}</div></div>`;
@@ -283,8 +340,13 @@ class LineChartSlider extends BaseReactComponent {
             });
           } else {
             if (e_time == abc && this.state.title !== "Year") {
-              UniqueEvents.push(abc);
-              y_value = Math.floor(Math.random() * (22 - 7 + 1) + 7) * 10;
+               isLast =
+                 eval(categories.indexOf(abc)) === timestampList.length - 1
+                   ? true
+                   : false;
+
+              y_value = UniqueEvents === 0 ? 120 : 220;
+              UniqueEvents = UniqueEvents === 1 ? 0 : 1;
 
               plotLines.push({
                 color: "#E5E5E680",
@@ -295,7 +357,7 @@ class LineChartSlider extends BaseReactComponent {
                   useHTML: true,
 
                   formatter: function () {
-                    return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important;">${event.title.replace(
+                    return `<div style="border-left: 1px solid rgba(229, 229, 230, 0.5); height: ${y_value}px;"><div style="border-left: 2px solid #CACBCC; padding-left: 5px; z-index:2 !important; display:flex; width:90px; overflow-wrap: anywhere; white-space: normal;">${event.title.replace(
                       /([^ ]+) ([^ ]+)/g,
                       "$1 $2<br>"
                     )}</div></div>`;
@@ -321,20 +383,31 @@ class LineChartSlider extends BaseReactComponent {
         });
     };
 
+
+
     let selectedEvents = [];
-     let noOfInternalEvent;
+    let noOfInternalEvent;
     const getIevent = (value) => {
       selectedEvents = [];
       internalEvents &&
         internalEvents.map((item) => {
-          let current = moment(item.timestamp).format("DD/MM/YYYY");
-          // console.log("current", current, value);
-          if (current === value) {
-            // console.log("item", item);
-            // console.log("item", item);
+          // console.log("item", item)
+          let current = "";
+          if (this.state.title === "Year") {
+            current = moment(item.timestamp).format("YYYY");
+            //  console.log("current", current, value);
+          } else if (this.state.title === "Month") {
+
+            current = moment(item.timestamp).format("MMMM YY");
+            //  console.log("current", current, value);
+          } else {
+            current = moment(item.timestamp).format("DD/MM/YYYY");
+          }
+
+          if (current == value) {
             // selectedEvents.push(item);
             item.event.map((a) => {
-              let e_usd = a.asset.value * a.asset_price;
+              let e_usd = a.asset.value * (a.asset_price * this.state.currency?.rate);
               let e_text = "";
               let e_assetValue = a.asset.value;
               let e_assetCode = a.asset.code;
@@ -392,7 +465,6 @@ class LineChartSlider extends BaseReactComponent {
         });
       noOfInternalEvent = selectedEvents.length;
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
-      // console.log("No of internal event", noOfInternalEvent);
 
     };
     timestampList.map((time) => {
@@ -419,17 +491,46 @@ class LineChartSlider extends BaseReactComponent {
       }
     });
 
-    // console.log("cat", categories);
+    // console.log("islast", isLast);
+    let updatedPlotLine = [];
+    let count = 0;
+    if (
+      this.state.plotLineHide === 1 && isLast
+    ) {
+      // console.log("1st");
+      count = plotLines.length - this.state.plotLineHide;
+      updatedPlotLine = plotLines.slice(0, count);
+    } else if (this.state.plotLineHide == 2 && plotLines.length > 10) {
+      // console.log("all 10");
+      updatedPlotLine = plotLines.slice(0, 10);
+    } else {
+      // console.log("default");
+      updatedPlotLine = plotLines;
+    }
+//  console.log(updatedPlotLine);
+    let SelectedSeriesData = [];
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
         return b.lastValue - a.lastValue;
       });
 
-    seriesData = seriesData.slice(0, 4);
-    // console.log("series data", seriesData);
+
+    let AllLegends = [{ label: "All", value: "All" }];
+    seriesData &&
+      seriesData.map((e) => {
+        AllLegends.push({ label: e.name, value: e.name });
+      });
+    let topLegends = this.state.legends;
+    // console.log("All Legends", AllLegends);
+    SelectedSeriesData =
+      topLegends.length === 0
+        ? seriesData.slice(0, 4)
+        : seriesData.filter((e) => topLegends.includes(e.name));
+    // console.log("new", SelectedSeriesData);
     // console.log("categories", categories);
     let selectedValue = null;
+    // console.log("sleected value", this.state.selectedValue)
     //  seriesData = seriesData;
     var UNDEFINED;
     const options = {
@@ -441,32 +542,30 @@ class LineChartSlider extends BaseReactComponent {
         events: {
           click: function (event) {
             // console.log("event click", parent.state.selectedValue);
-            if (parent.state.title == "Week" || parent.state.title == "Day") {
-              console.log("event inside");
-              if (parent.state.selectedValue !== selectedValue) {
-                parent.props.isPage
-                  ? IntlAssetValueInternalEvent({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      no_of_events: noOfInternalEvent,
-                    })
-                  : AssetValueInternalEvent({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      no_of_events: noOfInternalEvent,
-                    });
-                // console.log("inside event click");
-                parent.setState({
-                  selectedEvents: selectedEvents,
-                  selectedValue: selectedValue,
-                });
-              } else {
-                console.log("reset");
-                parent.setState({
-                  selectedEvents: [],
-                  selectedValue: null,
-                });
-              }
+            // console.log("event inside");
+            if (parent.state.selectedValue !== selectedValue) {
+              parent.props.isPage
+                ? IntlAssetValueInternalEvent({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    no_of_events: noOfInternalEvent,
+                  })
+                : AssetValueInternalEvent({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    no_of_events: noOfInternalEvent,
+                  });
+              // console.log("inside event click");
+              parent.setState({
+                selectedEvents: selectedEvents,
+                selectedValue: selectedValue,
+              });
+            } else {
+              // console.log("reset");
+              parent.setState({
+                selectedEvents: [],
+                selectedValue: null,
+              });
             }
           },
         },
@@ -493,6 +592,51 @@ class LineChartSlider extends BaseReactComponent {
         margin: 150,
       },
       xAxis: {
+        events: {
+          setExtremes(e) {
+            // console.log("e", e)
+            // console.log("min", e.min, "max", e.max);
+            let diff = Math.round(e.max - e.min);
+// console.log("dif", diff)
+            if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
+              parent.setState({
+                plotLineHide: 1,
+              });
+            } else {
+              if (diff < 9 && parent.state.plotLineHide !== 0) {
+                parent.setState({
+                  plotLineHide: 0,
+                });
+              }
+            }
+
+            if (diff <= 11 && parent.state.steps !== 1) {
+              parent.setState({
+                steps: 1,
+              });
+            } else if (diff > 11 && diff <= 20 && parent.state.steps !== 2) {
+              // console.log("middle");
+              parent.setState({
+                steps: 2,
+                plotLineHide: 2,
+              });
+            } else {
+              // if (diff >= 13 && parent.state.plotLineHide !== 3) {
+              //   parent.setState({
+              //     // plotLineHide: 3,
+              //   });
+              // }
+                if (diff > 20 && parent.state.steps !== 3) {
+                  // console.log("greater than 20");
+                  parent.setState({
+                    steps: 3,
+                  });
+                }
+            }
+
+          },
+        },
+
         categories: categories,
         type: "category", // Other types are "logarithmic", "datetime" and "category",
         labels: {
@@ -500,12 +644,13 @@ class LineChartSlider extends BaseReactComponent {
             // console.log("categories", categories);
             // console.log("value", categories[this.pos]);
             // console.log("this", this);
-            return parent.state.title === "Day" && categories[this.pos] !== undefined
+            return parent.state.title === "Day" &&
+              categories[this.pos] !== undefined
               ? moment(categories[this.pos], "DD/MM/YYYY").format("DD/MM/YY")
               : categories[this.pos];
           },
           autoRotation: false,
-          // step: 2,
+          step: parent.state.steps,
           // autoRotationLimit: 0,
           // style: {
           //   whiteSpace: "nowrap",
@@ -533,7 +678,8 @@ class LineChartSlider extends BaseReactComponent {
         },
         min: categories.length > 4 ? categories.length - 5 : 0,
         max: categories.length - 0.5,
-        plotLines: plotLines,
+        // plotLines: plotLines,
+        plotLines: updatedPlotLine,
       },
 
       yAxis: {
@@ -545,12 +691,9 @@ class LineChartSlider extends BaseReactComponent {
         gridLineDashStyle: "longdash",
         labels: {
           formatter: function () {
-            // // console.log(
-            // //   "yaxis",
-            // //   this.value,
-            // //   Highcharts.numberFormat(this.value, -1, UNDEFINED, ",")
-            // );
-            return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
+            // return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
+            let val = Number(noExponents(this.value).toLocaleString('en-US'))
+            return CurrencyType(false) + numToCurrency(val);
           },
           x: 0,
           y: 4,
@@ -559,6 +702,8 @@ class LineChartSlider extends BaseReactComponent {
       },
       legend: {
         enabled: true,
+        x: -120,
+
         align: "right",
         verticalAlign: "top",
         itemStyle: {
@@ -590,8 +735,9 @@ class LineChartSlider extends BaseReactComponent {
         hideDelay: 0,
 
         formatter: function () {
-          let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map((e)=>e.address);
-
+          let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map(
+            (e) => e.address
+          );
 
           let tooltipData = [];
 
@@ -648,7 +794,9 @@ class LineChartSlider extends BaseReactComponent {
                                       item.color == "#ffffff"
                                         ? "#16182B"
                                         : item.color
-                                    }"> $${numToCurrency(item.y)}</span>
+                                    }"> ${CurrencyType(false)} ${numToCurrency(
+                                      item.y
+                                    )}</span>
                                     </div>`;
                                   })
                                   .join(" ")}
@@ -656,50 +804,33 @@ class LineChartSlider extends BaseReactComponent {
                         </div>`;
         },
       },
-      series: seriesData,
+      series: SelectedSeriesData,
       plotOptions: {
         series: {
           fillOpacity: 0,
-          // events: {
-          //    legendItemClick: function () {
-          //       // console.log(this);
-          //       //  console.log("this");
-          //       // parent.setState({
-          //       //   selectedEvents: [],
-          //       // });
-          //     }
-          // },
           point: {
             events: {
               click: function () {
-                if (
-                  parent.state.title == "Week" ||
-                  parent.state.title == "Day"
-                ) {
-                  if (parent.state.selectedValue !== selectedValue) {
-                    AssetValueInternalEvent({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      no_of_events: noOfInternalEvent,
-                    });
-                    console.log("inside event click");
-                    parent.setState({
-                      selectedEvents: selectedEvents,
-                      selectedValue: selectedValue,
-                    });
-                  } else {
-                    console.log("reset");
-                    parent.setState({
-                      selectedEvents: [],
-                      selectedValue: null,
-                    });
-                  }
+                if (parent.state.selectedValue !== selectedValue) {
+                  AssetValueInternalEvent({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    no_of_events: noOfInternalEvent,
+                  });
+                  //  console.log("inside event click");
+                  parent.setState({
+                    selectedEvents: selectedEvents,
+                    selectedValue: selectedValue,
+                  });
+                } else {
+                  //  console.log("reset");
+                  parent.setState({
+                    selectedEvents: [],
+                    selectedValue: null,
+                  });
                 }
               },
-
-
             },
-
           },
 
           marker: {
@@ -726,6 +857,13 @@ class LineChartSlider extends BaseReactComponent {
           symbols: [`url(${handle})`, `url(${handle})`],
         },
         xAxis: {
+          // events: {
+          //   setExtremes: function (e) {
+          //     console.log("Mix and max", e.min, e.max);
+          //     console.log("e", e);
+          //   },
+
+          // },
           visible: true,
           labels: {
             enabled: false,
@@ -775,10 +913,9 @@ class LineChartSlider extends BaseReactComponent {
                 <GraphHeader
                   title="Asset Value"
                   subtitle="Updated 3mins ago"
-                    isArrow={true}
-                    isAnalytics="Asset Value"
-                    handleClick={this.props.handleClick}
-
+                  isArrow={true}
+                  isAnalytics="Asset Value"
+                  handleClick={this.props.handleClick}
                 />
               )}
               <CoinBadges
@@ -787,9 +924,27 @@ class LineChartSlider extends BaseReactComponent {
                 handleFunction={this.handleFunction}
                 isScrollVisible={this.props.isScrollVisible}
               />
-              <div className="chart-y-selection">
+              <div className="chart-y-selection" style={{ width: "100%" }}>
                 <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
-                  $ USD
+                  {CurrencyType()}
+                </span>
+                <span
+                  style={{
+                    width: "120px",
+                    position: "absolute",
+                    right: "0px",
+                      zIndex: "1",
+                    cursor:"pointer"
+                  }}
+                >
+                  <CustomDropdown
+                    filtername="Tokens"
+                    options={AllLegends}
+                    action={null}
+                    selectedTokens={this.state.legends}
+                    handleClick={(arr) => this.DropdownData(arr)}
+                    isLineChart={true}
+                  />
                 </span>
               </div>
               <HighchartsReact
@@ -816,9 +971,20 @@ class LineChartSlider extends BaseReactComponent {
                 <div className="SliderChartBottom">
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
-                    Largest Internal Events
+                    Largest Transactions
                     {this.state.selectedValue &&
-                      ": " + this.state.selectedValue}
+                      ": " +
+                        (this.state.title == "Year"
+                          ? this.state.selectedValue
+                          : this.state.title == "Month"
+                          ? moment(
+                              this.state.selectedValue,
+                              "MMMM YY"
+                            ).format("MMMM, YYYY")
+                          : moment(
+                              this.state.selectedValue,
+                              "DD/MM/YYYY"
+                            ).format("MMM DD, YYYY"))}
                   </h4>
 
                   <div className="InternalEventWrapper">
@@ -831,7 +997,6 @@ class LineChartSlider extends BaseReactComponent {
                             ? 0
                             : 6 -
                               Math.trunc(event.assetValue).toString().length;
-
                         return (
                           <>
                             <div
@@ -854,11 +1019,11 @@ class LineChartSlider extends BaseReactComponent {
                                 <span>
                                   {event.assetValue.toFixed(count)}{" "}
                                   {event.assetCode}
-                                  {" or $"}
+                                  {` or ${CurrencyType(false)}`}
                                   {numToCurrency(event.usd)}
                                   {event.text === "from"
                                     ? " received from "
-                                    : " transferred to "}{" "}
+                                    : " transferred to "}
                                 </span>
                                 <CustomOverlay
                                   position="top"

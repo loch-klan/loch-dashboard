@@ -4,7 +4,7 @@ export const updateUser = (data,ctx) =>{
     postLoginInstance.post("organisation/user/update-user",data)
     .then((res)=>{
       if(!res.data.error){
-        console.log(data)
+        // console.log(data)
         let obj =  JSON.parse(localStorage.getItem("lochUser"))
         obj = {
             ...obj,

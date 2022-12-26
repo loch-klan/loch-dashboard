@@ -38,6 +38,7 @@ import {getAssetGraphDataApi} from './Api';
 import { getAllCounterFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
 import FeedbackForm from '../common/FeedbackForm';
+import { CurrencyType } from '../../utils/ReusableFunctions';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -98,6 +99,8 @@ class Portfolio extends BaseReactComponent {
       isUpdate: 0,
       yesterdayBalance: 0,
       currentPage: "Home",
+      // selectedCurrency: JSON.parse(localStorage.getItem('currency')),
+      currency: JSON.parse(localStorage.getItem('currency')),
     };
   }
 
@@ -148,7 +151,7 @@ class Portfolio extends BaseReactComponent {
           this.getGraphData()
           getAllCounterFeeApi(this, false, false);
           getProfitAndLossApi(this, false, false, false);
-          getYesterdaysBalanceApi(this);
+          // getYesterdaysBalanceApi(this);
     }
 
     componentWillUnmount() {
@@ -209,21 +212,27 @@ this.setState({graphLoading: true})
                         })
                     }
                     if (i === (this.state.userWalletList.length - 1)) {
+                      getYesterdaysBalanceApi(this);
                         this.setState({
                             loader: false
                         });
                     }
                 })
                 // this.getTableData()
-            }
-            else {
+            } else {
                 // console.log('Heyyy');
                 // this.getTableData()
                 this.props.settingDefaultValues();
+                this.setState({isLoading: false})
             }
             if (prevProps.userWalletList !== this.state.userWalletList) {
+              // console.log('byeee');
+              this.state.userWalletList.length > 0 && this.setState({isLoading: true})
+              // this.apiCall();
                 this.getTableData()
                 this.getGraphData()
+                getAllCounterFeeApi(this, false, false);
+                getProfitAndLossApi(this, false, false, false);
                 getYesterdaysBalanceApi(this);
             }
         }
@@ -236,7 +245,6 @@ this.setState({graphLoading: true})
           );
           this.setState({userWalletList: this.props.location.state.addWallet})
           this.apiCall();
-
         }
     }
 
@@ -323,7 +331,7 @@ this.setState({graphLoading: true})
 
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
-    const {userWalletList} = this.state;
+    const {userWalletList, currency} = this.state;
     let tableData =
       table &&
       table.map((row) => {
@@ -658,7 +666,7 @@ this.setState({graphLoading: true})
                     email_address: getCurrentUser().email,
                   });
                 }}>
-                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Value</span>
+                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>{CurrencyType(true)} Value</span>
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[4].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
                 dataKey: "usdValue",
@@ -671,7 +679,7 @@ this.setState({graphLoading: true})
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price || DEFAULT_PRICE)
+                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price * currency?.rate || DEFAULT_PRICE)
                                 return
                             }
                         })
@@ -909,9 +917,6 @@ this.setState({graphLoading: true})
                             isScroll={true}
                             isScrollVisible={false}
                             comingSoon={false}
-                            // width="100%"
-                            // height="100%"
-
                             className={"portfolio-counterparty-fee"}
                           />
                           :
@@ -931,7 +936,7 @@ this.setState({graphLoading: true})
                 show={this.state.fixModal}
                 onHide={this.handleFixModal}
                 //  modalIcon={AddWalletModalIcon}
-                title="Fix your wallet connection"
+                title="Fix your wallet address"
                 subtitle="Add your wallet address to get started"
                 // fixWalletAddress={fixWalletAddress}
                 btnText="Done"

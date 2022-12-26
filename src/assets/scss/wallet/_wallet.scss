@@ -9,9 +9,13 @@
         .sortby-section {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+
             .dropdown-section {
                 display: flex;
-
+                .naming{
+                  padding: 1.2rem 0;
+                }
                 .sort-by-title{
                     display: flex;
                     align-items: center;

@@ -36,7 +36,7 @@ import {
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
 import lochClean from "../../assets/images/LochClean.gif";
-import { loadingAnimation } from '../../utils/ReusableFunctions';
+import { CurrencyType, loadingAnimation } from '../../utils/ReusableFunctions';
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -155,6 +155,7 @@ class ExitOverlay extends BaseReactComponent {
     // console.log('Export');
     this.setState({loadingExportFile : true})
     const data = new URLSearchParams();
+    data.append("currency_code", CurrencyType(true));
     data.append("start_datetime", moment(this.state.fromDate).format("X"));
     data.append("end_datetime", moment(this.state.toDate).format("X"));
     ExportDataDownlaod({
@@ -332,7 +333,7 @@ class ExitOverlay extends BaseReactComponent {
               <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
                 Access your data again through the unique reusable link,
               </p>
-              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-10">
+              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24">
                 or link your email
               </p>
               <div className="email-section">
@@ -370,7 +371,7 @@ class ExitOverlay extends BaseReactComponent {
                   </div>
                 </Form>
               </div>
-              <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-28">
+              <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
                 or
               </p>
               <div className="m-b-24 links">

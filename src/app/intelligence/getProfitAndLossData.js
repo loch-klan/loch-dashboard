@@ -1,19 +1,22 @@
-import { numToCurrency } from "../../utils/ReusableFunctions";
+import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
 import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
 import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
 import { ProfitLossHover } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 export const getProfitAndLossData = (arr) => {
+  let currency= JSON.parse(localStorage.getItem('currency'));
+  let inflows = Number(noExponents(arr.inflows));
+  let outflows = Number(noExponents(arr.outflows));
     const labels = ["Inflows", "Outflows", "Net"];
     const profitOrLossData = {
         profit:{
-            data:arr.inflows,
+            data:(inflows * currency.rate),
             barColor:"#A9F4C4",
             borderColor:"#18C278"
         },
         loss:{
-            data:arr.outflows,
+            data:(outflows * currency.rate),
             barColor:"#FFE0D9",
             borderColor:"#CF1011"
         }
@@ -22,16 +25,16 @@ export const getProfitAndLossData = (arr) => {
         labels,
         datasets: [
             {
-                data: [arr.inflows, arr.outflows ,Math.abs(arr.outflows-arr.inflows)],
+                data: [(inflows * currency.rate), (outflows * currency.rate) ,Math.abs((outflows * currency.rate)-(inflows * currency.rate))],
                 backgroundColor: [
                     "rgba(100, 190, 205, 0.3)",
                     "rgba(34, 151, 219, 0.3)",
-                    (arr.inflows < arr.outflows ? profitOrLossData.profit.barColor : profitOrLossData.loss.barColor),
+                    ((inflows * currency.rate) < (outflows * currency.rate) ? profitOrLossData.profit.barColor : profitOrLossData.loss.barColor),
                 ],
                 borderColor: [
                     "#64BECD",
                     "#2297DB",
-                    (arr.inflows < arr.outflows ? profitOrLossData.profit.borderColor : profitOrLossData.loss.borderColor),
+                    ((inflows * currency.rate) < (outflows * currency.rate) ? profitOrLossData.profit.borderColor : profitOrLossData.loss.borderColor),
                 ],
                 borderWidth: 2,
                 borderRadius: {
@@ -75,7 +78,7 @@ export const getProfitAndLossData = (arr) => {
             callbacks: {
               title: function() {}, //REMOVE TITLE
               label: (ctx) => {
-                let label = ctx.label + ": $" + numToCurrency(ctx.raw);
+                let label = ctx.label + ": " + CurrencyType(false) + numToCurrency(ctx.raw);
                 ProfitLossHover({
                   session_id: getCurrentUser().id,
                   email_address: getCurrentUser().email,
@@ -114,6 +117,10 @@ export const getProfitAndLossData = (arr) => {
               family: "Inter-Regular",
               weight: 400,
               color: "#B0B1B3",
+              callback: function(value, index, ticks) {
+                let val = Number(noExponents(value))
+                return CurrencyType(false) + numToCurrency(val);
+              }
             },
             grid: {
               drawBorder: false,
@@ -140,10 +147,10 @@ export const getProfitAndLossData = (arr) => {
           },
         },
       };
-      let value = (arr.outflows-arr.inflows);
+      let value = ((outflows * currency.rate)-(inflows * currency.rate));
       let showPercentage= {
         icon: value > 0 ? arrowUpRight : arrowDownRight,
-        percent: ((value/arr.inflows)*100).toFixed(),
+        percent: inflows ? ((value/(inflows * currency.rate))*100).toFixed() : 0,
         status: value > 0 ? "Increase" : "Decrease",
       }
     return [data,options, showPercentage]

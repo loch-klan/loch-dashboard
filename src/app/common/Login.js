@@ -40,7 +40,7 @@ class Login extends BaseReactComponent {
 
   handleResponse = () =>{
     let addWallet = JSON.parse(localStorage.getItem("addWallet"));
-    console.log('Heyyyy',addWallet);
+    // console.log('Heyyyy',addWallet);
     let walletAddress = [];
     for (let i = 0; i < addWallet.length; i++) {
       let curr = addWallet[i];

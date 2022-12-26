@@ -20,7 +20,7 @@
         .logo {
             // margin-bottom: 3rem;
             // margin-left: 1.4rem;
-            margin: 2.6rem 1.4rem 3.6rem;
+            margin: 2.6rem 1.4rem 2.6rem;
             img{
               width: 4rem;
               margin-right: 1rem;
@@ -29,6 +29,32 @@
               @include font($black-191, "Inter-Medium", 2.4rem, 500, 24px);
               vertical-align: middle;
             }
+        }
+        .currency-wrapper{
+          .dropdown{
+            text-align: left;
+            // margin-left: 1.2rem;
+            margin-bottom: 1.4rem;
+            #currency-dropdown{
+              background: transparent;
+              border: 1px solid $grey-E5E;
+              padding: 1.2rem 1.6rem;
+              border-radius: 8px;
+              @include font($grey-969, "Inter-SemiBold", 1rem, 600, 12px);
+            }
+            .dropdown-menu {
+              &.show{
+                width: 9.3rem;
+                height: 22rem;
+                overflow-y: auto;
+                background: $secondary;
+                .dropdown-item{
+                  display: flex;
+                  justify-content: space-between;
+                }
+              }
+            }
+          }
         }
         ul {
             list-style: none;

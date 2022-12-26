@@ -33,7 +33,8 @@ export const getUserWallet = (wallet,ctx) => {
                     type: USER_WALLET_LIST,
                     payload: {
                         address: wallet.address,
-                        userWalletList: userWalletList
+                        userWalletList: userWalletList,
+                        assetPrice: res.data?.data.asset_prices,
                     }
                 });
                 if(ctx){
@@ -148,8 +149,9 @@ export const getYesterdaysBalanceApi = (ctx) =>{
   postLoginInstance.post("wallet/user-wallet/get-yesterday-portfolio-balance")
   .then((res)=>{
     if (!res.data.error) {
+      let currency= JSON.parse(localStorage.getItem('currency'));
       ctx.setState({
-        yesterdayBalance: res.data.data.balance,
+        yesterdayBalance: res.data.data.balance * currency?.rate ,
       });
     } else {
       toast.error(res.data.message || "Something Went Wrong");

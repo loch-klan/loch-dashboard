@@ -9,7 +9,9 @@ export const getAllWalletListApi = (data,ctx) => {
       .then((res) => {
         if (!res.data.error) {
           let walletdata = res.data.data.user_wallets
+          let totalWalletAmt = 0;
           walletdata = walletdata.map((wallet) => {
+            totalWalletAmt = totalWalletAmt + wallet.total_value
             return ({
               ...wallet,
               chains: wallet.chains.map((chain) => {
@@ -26,6 +28,7 @@ export const getAllWalletListApi = (data,ctx) => {
           dispatch(getAllWalletList(walletdata))
           ctx.setState({
             isLoading:false,
+            totalWalletAmt,
           })
         } else {
           toast.error(res.data.message || "Something Went Wrong")
