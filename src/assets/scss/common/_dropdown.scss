@@ -114,8 +114,8 @@
       }
 
       &::-webkit-scrollbar-track {
-        // background-color: transparent;
-        background-color: $grey-E5E;
+        background-color: rgba(229, 229, 230, 0.5);
+        // background-color: $grey-E5E;
         border-radius: 0.8rem;
       }
     }
@@ -178,7 +178,7 @@
        span{
         margin-left: 1.6rem
        }
-      
+
 
        svg {
       position: absolute;
