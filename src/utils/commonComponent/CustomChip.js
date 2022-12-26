@@ -38,10 +38,10 @@ function CustomChip({ coins, isLoaded, id }) {
                             </div>
                         :
                         <div className="chip-wrapper" id={id}>
-                            <div className="chip-container">
+                            {/* <div className="chip-container">
                             <Image src={unrecognized} className="unrecognized" style={{border: `1px solid ${lightenDarkenColor("#CACBCC",-0.15)} `}} />
                                 <Badge className="inter-display-medium f-s-13 lh-16 grey-313">Unrecognized</Badge>
-                            </div>
+                            </div> */}
                         </div>
                     :
                     <div className="chip-wrapper" id={id}>

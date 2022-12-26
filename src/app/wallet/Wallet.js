@@ -25,6 +25,7 @@ import Loading from "../common/Loading";
 import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet, WalletsPage } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
+import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 
 class Wallet extends Component {
   constructor(props) {
@@ -48,6 +49,7 @@ class Wallet extends Component {
         { title: "Name", down: true },
       ],
       startTime: "",
+      totalWalletAmt: 0,
     };
     // this.sortby = [{title:"Amount",down:true}, {title:"Date added",down:true},{title:"Name", down:true}];
   }
@@ -217,7 +219,7 @@ class Wallet extends Component {
 
   render() {
     const { walletList } = this.props.walletState;
-    const {currency} = this.state;
+    const {currency, totalWalletAmt, isLoading} = this.state;
     return (
       <div className="wallet-page-section">
         {/* <Sidebar ownerName="" /> */}
@@ -249,10 +251,11 @@ class Wallet extends Component {
             handleFunction={this.handleFunction}
           />
           <div className="m-b-22 sortby-section">
-            <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313">
+
+            <div className="dropdown-section">
+            <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
               Sort by
             </span>
-            <div className="dropdown-section">
               {this.state.sortBy.map((e, index) => {
                 return (
                   <span
@@ -273,10 +276,14 @@ class Wallet extends Component {
                 );
               })}
             </div>
+            {
+              !isLoading &&
+              <span className="inter-display-medium f-s-20 lh-24 m-r-24">{numToCurrency(totalWalletAmt)} <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA">{CurrencyType(true)}</span> </span>
+            }
           </div>
 
           <div className="cards">
-            {this.state.isLoading === true ? (
+            {isLoading === true ? (
               <div className="loading-container">
                 <div className="animation-wrapper">
                   <Loading />
