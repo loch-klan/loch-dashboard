@@ -69,7 +69,7 @@ class PieChart extends BaseReactComponent {
                 pieSectionDataEnabled: {},
             })
         } else{
-          this.setState({ piechartisLoading: false })
+          this.setState({ piechartisLoading: this.props.isLoading })
         }
     }
 
@@ -79,8 +79,7 @@ class PieChart extends BaseReactComponent {
             this.setState({ assetTotal: this.props.assetTotal })
         }
         if (this.props.userWalletData !== prevProps.userWalletData) {
-          // console.log('hellooooo');
-          this.props.userWalletData && this.setState({ piechartisLoading: true })
+          // this.props.userWalletData && this.setState({ piechartisLoading: true })
             let assetData = [];
             if (this.props.userWalletData && this.props.userWalletData.length > 0 && this.props.assetTotal > 0) {
                 for (let i = 0; i < this.props.userWalletData.length; i++) {
@@ -113,8 +112,8 @@ class PieChart extends BaseReactComponent {
                 pieSectionDataEnabled: {},
             })
         }
-        // if(!this.props.userWalletData){
-        //   this.setState({piechartisLoading : this.props.isLoading === false ? false : true,})
+        // if(!this.props.userWalletData && this.props.walletTotal === 0 && !this.props.isLoading){
+        //   this.setState({piechartisLoading : this.props.isLoading === false ? false : true})
         // }
     }
     setHoverData = (e) => {
@@ -454,7 +453,8 @@ class PieChart extends BaseReactComponent {
                           }
                     </>
                     :
-                     this.state.piechartisLoading === true
+                    //  this.state.piechartisLoading === true && this.state.assetData === null
+                    this.props.isLoading
                         ?
                         <Loading/>
                         :

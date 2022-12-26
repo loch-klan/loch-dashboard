@@ -936,7 +936,7 @@ this.setState({graphLoading: true})
                 show={this.state.fixModal}
                 onHide={this.handleFixModal}
                 //  modalIcon={AddWalletModalIcon}
-                title="Fix your wallet connection"
+                title="Fix your wallet address"
                 subtitle="Add your wallet address to get started"
                 // fixWalletAddress={fixWalletAddress}
                 btnText="Done"

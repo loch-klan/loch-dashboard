@@ -37,7 +37,7 @@ export default function WalletCard(props) {
                 className="wallet-tooltip"
             >
                 <div onMouseEnter={() => {
-                   
+
                     AnalyzeAssetValue({
                       // coin.chain.name
                       session_id: getCurrentUser().id,
@@ -78,10 +78,10 @@ export default function WalletCard(props) {
     }
     const [showFixModal , setShowFixModal] = React.useState(0)
     const handleFixModal = () => {
-       
+
          setShowFixModal((prev) => !prev);
-       
-       
+
+
     }
     return (<>
         <div className="walletcard">
@@ -174,7 +174,7 @@ export default function WalletCard(props) {
                show={showFixModal}
                onHide={handleFixModal}
                //  modalIcon={AddWalletModalIcon}
-               title="Fix your wallet connection"
+               title="Fix your wallet address"
                subtitle="Add your wallet address to get started"
                fixWalletAddress={[props.wallet_account_number]}
                btnText="Done"
