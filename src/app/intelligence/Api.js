@@ -2,6 +2,7 @@ import { postLoginInstance } from "../../utils";
 import { toast } from "react-toastify";
 import { getAllTransactionHistory } from "./IntelligenceAction";
 import { getProfitAndLossData} from "./getProfitAndLossData";
+import { CurrencyType } from "../../utils/ReusableFunctions";
 
 export const searchTransactionApi = (data , ctx, page = 0) => {
     return function (dispatch, getState) {
@@ -92,6 +93,7 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
 
  export const getAllInsightsApi = (ctx) =>{
   let data = new URLSearchParams();
+  data.append("currency_code", CurrencyType(true))
   postLoginInstance.post("wallet/user-wallet/get-wallet-insights", data)
   .then((res)=>{
     if(!res.data.error){

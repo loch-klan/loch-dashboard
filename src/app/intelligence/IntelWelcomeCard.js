@@ -64,9 +64,9 @@ export default function IntelWelcomeCard(props) {
       },
     ];
 
-    const cards = cardData.map((card) => {
+    const cards = cardData.map((card, key) => {
         return (
-            <div className='info' onClick={() => {
+            <div className='info' key={key} onClick={() => {
                 props.history.push(card.path);
                 card.analyticEvent()
             }}>

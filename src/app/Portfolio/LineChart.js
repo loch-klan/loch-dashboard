@@ -13,7 +13,7 @@ import { AssetValueFilter } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
-import { numToCurrency } from "../../utils/ReusableFunctions";
+import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 class LineChart extends BaseReactComponent {
     constructor(props) {
         super(props);
@@ -22,7 +22,7 @@ class LineChart extends BaseReactComponent {
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
           title: "Day",
-          titleY:"$ USD"
+          titleY: CurrencyType
         }
 
     }
@@ -343,7 +343,7 @@ class LineChart extends BaseReactComponent {
                                         ${item.event.map((eve)=>{
                                             // console.log('eve',eve.asset.code, " - ", eve.from_address);
                                             return (`
-                                          <div class="inter-display-medium f-s-12 lh-16 black-191 ">${eve.asset.value.toFixed(5) + " " + eve.asset.code + ` or ` + (numToCurrency(eve.asset.value * eve.asset_price)) + ` USD transferred ` + (eve.from ? `from ${eve.from || eve.from_address}` : `to ${eve.to || eve.to_address}`)}</div>
+                                          <div class="inter-display-medium f-s-12 lh-16 black-191 ">${eve.asset.value.toFixed(5) + " " + eve.asset.code + ` or ` + (numToCurrency(eve.asset.value * eve.asset_price)) + ` ${CurrencyType(true)} transferred ` + (eve.from ? `from ${eve.from || eve.from_address}` : `to ${eve.to || eve.to_address}`)}</div>
                                           `)
                                           }).join(" ")
                                         }
@@ -387,7 +387,7 @@ class LineChart extends BaseReactComponent {
                         isScrollVisible={this.props.isScrollVisible}
                     />
                     <div className="chart-y-selection">
-                    <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">$ USD</span>
+                    <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">{CurrencyType}</span>
                     </div>
                     <HighchartsReact
                         highcharts={Highcharts}

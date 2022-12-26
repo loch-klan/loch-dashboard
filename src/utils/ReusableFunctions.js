@@ -158,3 +158,14 @@ export const noExponents = (value) => {
   while (mag--) z += '0';
   return str + z;
 }
+
+export const CurrencyType = (code = "both") => {
+  let currency = JSON.parse(localStorage.getItem('currency'))
+  if(code === "both"){
+    return currency?.symbol + " " + currency?.code
+  } else if(code){
+    return currency?.code
+  } else{
+    return currency?.symbol
+  }
+}

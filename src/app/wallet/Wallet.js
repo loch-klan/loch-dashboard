@@ -30,6 +30,7 @@ class Wallet extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currency: JSON.parse(localStorage.getItem('currency')),
       walletList: [],
       start: 0,
       sorts: [],
@@ -83,7 +84,7 @@ class Wallet extends Component {
     // data.append("limit", API_LIMIT)
     data.append("sorts", JSON.stringify(this.state.sorts));
     this.props.getAllWalletListApi(data, this);
-    console.log(data);
+    // console.log(data);
   };
   handleSort = (e) => {
     let sort = [...this.state.sortBy];
@@ -216,6 +217,7 @@ class Wallet extends Component {
 
   render() {
     const { walletList } = this.props.walletState;
+    const {currency} = this.state;
     return (
       <div className="wallet-page-section">
         {/* <Sidebar ownerName="" /> */}
@@ -289,7 +291,7 @@ class Wallet extends Component {
                     wallet_metadata={wallet.wallet_metadata}
                     wallet_account_number={wallet.address}
                     display_address={wallet.display_address}
-                    wallet_amount={wallet.total_value}
+                    wallet_amount={wallet.total_value * currency?.rate}
                     wallet_coins={wallet.chains}
                     makeApiCall={this.makeApiCall}
                     handleUpdateWallet={this.handleUpdateWallet}

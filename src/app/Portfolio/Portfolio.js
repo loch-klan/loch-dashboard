@@ -38,6 +38,7 @@ import {getAssetGraphDataApi} from './Api';
 import { getAllCounterFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
 import FeedbackForm from '../common/FeedbackForm';
+import { CurrencyType } from '../../utils/ReusableFunctions';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -98,6 +99,8 @@ class Portfolio extends BaseReactComponent {
       isUpdate: 0,
       yesterdayBalance: 0,
       currentPage: "Home",
+      // selectedCurrency: JSON.parse(localStorage.getItem('currency')),
+      currency: JSON.parse(localStorage.getItem('currency')),
     };
   }
 
@@ -323,7 +326,7 @@ this.setState({graphLoading: true})
 
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
-    const {userWalletList} = this.state;
+    const {userWalletList, currency} = this.state;
     let tableData =
       table &&
       table.map((row) => {
@@ -658,7 +661,7 @@ this.setState({graphLoading: true})
                     email_address: getCurrentUser().email,
                   });
                 }}>
-                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>USD Value</span>
+                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>{CurrencyType(true)} Value</span>
                     <Image src={sortByIcon} className={!this.state.tableSortOpt[4].up ? "rotateDown" :"rotateUp"}/>
                 </div>,
                 dataKey: "usdValue",
@@ -671,7 +674,7 @@ this.setState({graphLoading: true})
                         let value;
                         chain.find((chain) => {
                             if (chain[0] === rowData.usdValueToday.id) {
-                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price || DEFAULT_PRICE)
+                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price * currency?.rate || DEFAULT_PRICE)
                                 return
                             }
                         })
