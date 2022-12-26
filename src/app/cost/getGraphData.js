@@ -1,7 +1,7 @@
 import { CounterpartyFeesSpecificBar, FeesSpecificBar, HomeCounterPartyHover } from "../../utils/AnalyticsFunctions";
 import { DEFAULT_PRICE } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
 
 export const getGraphData = (arr) => {
   let currency= JSON.parse(localStorage.getItem('currency'));
@@ -83,6 +83,14 @@ export const getGraphData = (arr) => {
             family: "Helvetica Neue",
             weight: 400,
             color: "#B0B1B3",
+            callback: function(value, index, ticks) {
+              console.log('value',value);
+              console.log('index',index);
+              console.log('ticks',ticks);
+              let val = Number(noExponents(value).toLocaleString('en-US'))
+              console.log('valllll',val);
+              return CurrencyType(false) + numToCurrency(val);
+            }
           },
           grid: {
             drawBorder: false,
@@ -155,6 +163,10 @@ export const getGraphData = (arr) => {
             family: "Helvetica Neue",
             weight: 400,
             color: "#B0B1B3",
+            callback: function(value, index, ticks) {
+              let val = Number(noExponents(value).toLocaleString('en-US'))
+              return CurrencyType(false) + numToCurrency(val);
+            }
           },
           grid: {
             drawBorder: false,
@@ -277,6 +289,10 @@ export const getCounterGraphData = (arr, currentPage) => {
           family: "Inter-Medium",
           weight: 400,
           color: "#B0B1B3",
+          callback: function(value, index, ticks) {
+            let val = Number(noExponents(value).toLocaleString('en-US'))
+            return CurrencyType(false) + numToCurrency(val);
+          }
         },
         grid: {
           drawBorder: false,
@@ -353,6 +369,10 @@ export const getCounterGraphData = (arr, currentPage) => {
           family: "Inter-Medium",
           weight: 400,
           color: "#B0B1B3",
+          callback: function(value, index, ticks) {
+            let val = Number(noExponents(value).toLocaleString('en-US'))
+            return CurrencyType(false) + numToCurrency(val);
+          }
         },
         grid: {
           drawBorder: false,

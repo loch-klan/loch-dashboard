@@ -223,11 +223,16 @@ this.setState({graphLoading: true})
                 // console.log('Heyyy');
                 // this.getTableData()
                 this.props.settingDefaultValues();
+                this.setState({isLoading: false})
             }
             if (prevProps.userWalletList !== this.state.userWalletList) {
+              // console.log('byeee');
+              this.state.userWalletList.length > 0 && this.setState({isLoading: true})
               // this.apiCall();
                 this.getTableData()
                 this.getGraphData()
+                getAllCounterFeeApi(this, false, false);
+                getProfitAndLossApi(this, false, false, false);
                 getYesterdaysBalanceApi(this);
             }
         }
