@@ -95,7 +95,7 @@ class FixAddModal extends BaseReactComponent {
         }
     }
     handleSetCoin = (data) => {
-        
+
         let coinList = {
             chain_detected: data.chain_detected,
             coinCode: data.coinCode,
@@ -212,9 +212,9 @@ class FixAddModal extends BaseReactComponent {
             data.append("wallet_addresses", JSON.stringify(arr))
 
             updateUserWalletApi(data, this);
-            if (this.props.handleUpdateWallet) {
-                this.props.handleUpdateWallet()
-            }
+            // if (this.props.handleUpdateWallet) {
+            //     this.props.handleUpdateWallet()
+            // }
             // console.log("fix",this.state.addWalletList);
             const address = this.state.addWalletList.map(e => e.address);
             // console.log("address", address);
@@ -294,8 +294,8 @@ class FixAddModal extends BaseReactComponent {
               blockchainDetected: coinName,
             });
         });
-         
-        
+
+
       clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
         let wallets = JSON.parse(localStorage.getItem("addWallet"))
@@ -347,9 +347,9 @@ class FixAddModal extends BaseReactComponent {
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(newArr))
         updateUserWalletApi(data, this);
-        if (this.props.handleUpdateWallet) {
-            this.props.handleUpdateWallet()
-        }
+        // if (this.props.handleUpdateWallet) {
+        //     this.props.handleUpdateWallet()
+        // }
       }, 300);
     }
 
@@ -375,6 +375,7 @@ class FixAddModal extends BaseReactComponent {
 
     isFixDisabled = () => {
         let isDisableFlag = true;
+        this.state.fixWalletAddress.length>0 ?
         this.state.fixWalletAddress.map((e) => {
           if(e.address){
             if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
@@ -391,6 +392,9 @@ class FixAddModal extends BaseReactComponent {
             isDisableFlag = false;
           }
         })
+        :
+        isDisableFlag = false;
+
         return isDisableFlag;
     }
 
