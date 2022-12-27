@@ -150,7 +150,7 @@ export const getGraphData = (arr) => {
         //   min: min,
         //   max: 22574,
           afterFit: (ctx) => {
-            ctx.width = `${digit}0`;
+            ctx.width = `${digit+3}0`;
           },
           ticks: {
             // stepSize: 1500,
@@ -355,7 +355,7 @@ export const getCounterGraphData = (arr, currentPage) => {
       //   min: min,
       //   max: 22574,
         afterFit: (ctx) => {
-          ctx.width = `${digit+1}0`;
+          ctx.width = `${digit+3}0`;
         },
         ticks: {
           // stepSize: 1500,

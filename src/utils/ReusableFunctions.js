@@ -61,8 +61,8 @@ export const compareDate = (dateTimeA, dateTimeB) => {
 export const numToCurrency = (num) => {
   num = num.toString().replace(/[^0-9.]/g, '');
   if (num < 1000) {
-    // return parseFloat(num).toFixed(1);
-    return parseFloat(num);
+    return parseFloat(num).toFixed(2);
+    // return Math.round(num);
   }
   let si = [
     { v: 1E3, s: "K" },
