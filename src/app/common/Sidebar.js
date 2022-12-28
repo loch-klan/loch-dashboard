@@ -32,7 +32,7 @@ import { BASE_URL_S3 } from '../../utils/Constant'
 import { toast } from 'react-toastify'
 import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
 import ConnectModalIcon from '../../assets/images/icons/connectIcon.svg';
-import LinkIcon from '../../assets/images/icons/link.svg';
+
 import ConfirmLeaveModal from './ConformLeaveModal';
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
@@ -58,7 +58,6 @@ function Sidebar(props) {
     const activeTab = window.location.pathname
     const history = useHistory();
     const [leave, setLeave] = React.useState(false);
-    const [connectModal,setConnectModal] = React.useState(false);
     const [apiModal,setApiModal] = React.useState(false);
     const [exportModal,setExportModal] = React.useState(false)
     const [shareModal,setShareModal] = React.useState(false);
@@ -88,9 +87,6 @@ function Sidebar(props) {
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
         });
-    }
-    const handleConnectModal = ()=>{
-      setConnectModal(!connectModal);
     }
     const handleConfirmLeaveModal = () =>{
         setConfirmLeave(!confirmLeave)
@@ -390,23 +386,6 @@ function Sidebar(props) {
                 </li>
                 <li>
                   <span
-                    onMouseOver={(e) =>
-                      (e.currentTarget.children[0].src = ApiBlackIcon)
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.children[0].src = ApiIcon)
-                    }
-                    onClick={handleConnectModal}
-                  >
-                    <Image src={ApiIcon} />
-                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
-                      Connect
-                    </Button>
-                  </span>
-                </li>
-
-                <li>
-                  <span
                     onClick={handleLeave}
                     onMouseOver={(e) =>
                       (e.currentTarget.children[0].src = LeaveBlackIcon)
@@ -469,18 +448,6 @@ function Sidebar(props) {
             headerTitle={"API"}
             modalType={"apiModal"}
             iconImage={ApiModalIcon}
-          />
-        ) : (
-          ""
-        )}
-        {connectModal ? (
-          <ConnectModal
-            show={connectModal}
-            onHide={handleConnectModal}
-            history={history}
-            headerTitle={"Connect exchanges"}
-            modalType={"connectModal"}
-            iconImage={LinkIcon}
           />
         ) : (
           ""

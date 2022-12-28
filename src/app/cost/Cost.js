@@ -25,7 +25,8 @@ import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
 import FeedbackForm from "../common/FeedbackForm";
-
+import LinkIcon from '../../assets/images/icons/link.svg';
+import ConnectModal from "../common/ConnectModal";
 
 class Cost extends Component {
   constructor(props) {
@@ -42,7 +43,8 @@ class Cost extends Component {
       counterGraphLoading: true,
       counterPartyData: [],
       counterPartyValue: null,
-      currentPage:"Cost"
+      currentPage:"Cost",
+      connectModal: false,
     };
   }
 
@@ -200,6 +202,9 @@ class Cost extends Component {
         });
       }
   }
+  handleConnectModal = ()=>{
+    this.setState({connectModal: !this.state.connectModal})
+  }
 
   render() {
 
@@ -343,6 +348,18 @@ class Cost extends Component {
 
     return (
       <div className="cost-page-section">
+         {this.state.connectModal ? (
+          <ConnectModal
+            show={this.state.connectModal}
+            onHide={this.handleConnectModal}
+            history={this.props.history}
+            headerTitle={"Connect exchanges"}
+            modalType={"connectModal"}
+            iconImage={LinkIcon}
+          />
+        ) : (
+          ""
+        )}
         <div className="m-t-5 cost-section page">
           <PageHeader
             title="Costs"
@@ -433,6 +450,8 @@ class Cost extends Component {
                 columnList={columnData}
                 headerHeight={64}
                 comingSoon={true}
+                isConnect={true}
+                handleExchange={this.handleConnectModal}
               />
             </div>
           </div>

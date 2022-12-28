@@ -1510,10 +1510,27 @@ form {
 
 .transaction-table-section {
   .graph-header {
-    padding: 3.6rem 0rem 0rem 3.2rem;
+    padding: 3.6rem 3.2rem 0rem 3.2rem;
 
     p {
       margin-bottom: 0.3rem;
+    }
+    .header{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .grey-btn{
+      border: 0;
+      padding: 8px;
+      img{
+        width: 1.2rem;
+      }
+      @include font($black-191, "Inter-SemiBold", 1.6rem, 600, 13px);
+      &:active{
+        border: 0 !important;
+        color: $black-191 !important;
+      }
     }
   }
 

@@ -26,6 +26,8 @@ function TransactionTable(props) {
                 email_address: getCurrentUser().email,
               })
             }
+            isConnect={props.isConnect}
+            handleExchange={props.handleExchange}
           />
         ) : (
           ""

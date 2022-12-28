@@ -306,6 +306,9 @@
         }
     }
     &.connect-exchange{
+      .modal-content{
+        width: 74.4rem;
+      }
       .modal-header{
         .connect-icon{
           margin-top: 0.8rem;
@@ -323,6 +326,9 @@
         padding-bottom: 1.2rem;
         .connect-head{
           padding: 0 21rem;
+          h6{
+            color: $black-191;
+          }
           h6,.sub-heading{
             text-align: center;
           }
@@ -429,8 +435,11 @@
               left: auto;
             }
             .connect-btn{
-              margin-top: 4rem;
-              float: right;
+              // margin-top: 4rem;
+              // float: right;
+              position: absolute;
+    bottom: 0;
+    right: 0;
               &:hover{
                 background-color: $secondary;
                 border: 1px solid $black-191;
