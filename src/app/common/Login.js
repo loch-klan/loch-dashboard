@@ -18,7 +18,7 @@ class Login extends BaseReactComponent {
       id: props.location?.state?.params?.id || "",
       password: "",
       forgotPassword: false,
-    }
+    };
   }
 
   componentDidMount() {
@@ -27,18 +27,26 @@ class Login extends BaseReactComponent {
     deleteToken();
   }
 
+  componentWillUnmount() {
+   
+    // window.hj("identify", );
+    let baseToken = localStorage.getItem("baseToken");
+    console.log("access code", baseToken);
+    window.hj("user.set", "access code", baseToken);
+  }
+
   onValidSubmit = () => {
     const data = new URLSearchParams();
-    data.append('password', this.state.password);
+    data.append("password", this.state.password);
     localStorage.setItem("baseToken", this.state.password);
-    loginApi(this, data)
-  }
+    loginApi(this, data);
+  };
 
-  handleShareLinkUser = () =>{
+  handleShareLinkUser = () => {
     this.props.getDetailsByLinkApi(this.state.id, this);
-  }
+  };
 
-  handleResponse = () =>{
+  handleResponse = () => {
     let addWallet = JSON.parse(localStorage.getItem("addWallet"));
     // console.log('Heyyyy',addWallet);
     let walletAddress = [];
@@ -51,20 +59,20 @@ class Login extends BaseReactComponent {
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(walletAddress));
     createAnonymousUserApi(data, this, addWallet);
-  }
+  };
 
   render() {
     return (
       <div className="login-wrapper">
         <div className="login-content">
           <div className="login-container">
-
-            <Image className="beta-icon" src={beta}/>
+            <Image className="beta-icon" src={beta} />
             {/* <h1 className="inter-display-bold f-s-24">Login</h1> */}
-            <Image className="logo-icon" src={logo}/>
-            <p className="login-title inter-display-regular f-s-25 lh-30 black-191">Welcome to <b>Loch</b></p>
+            <Image className="logo-icon" src={logo} />
+            <p className="login-title inter-display-regular f-s-25 lh-30 black-191">
+              Welcome to <b>Loch</b>
+            </p>
             <Form onValidSubmit={this.onValidSubmit}>
-
               <FormElement
                 valueLink={this.linkState(this, "password")}
                 // label="Password"
@@ -72,26 +80,28 @@ class Login extends BaseReactComponent {
                 validations={[
                   {
                     validate: FormValidator.isRequired,
-                    message: "Field cannot be empty"
-                  }
+                    message: "Field cannot be empty",
+                  },
                 ]}
                 control={{
                   type: CustomTextControl,
                   settings: {
                     placeholder: "Access code",
-                    type: "password"
-                  }
+                    type: "password",
+                  },
                 }}
               />
               <div className="submit-wrapper">
-                <FormSubmitButton customClass="primary-btn">Log in</FormSubmitButton>
+                <FormSubmitButton customClass="primary-btn">
+                  Log in
+                </FormSubmitButton>
               </div>
             </Form>
           </div>
           {/* <div className="request-early-access inter-display-regular f-s-16 lh-19">Request early access</div> */}
         </div>
       </div>
-    )
+    );
   }
 }
 

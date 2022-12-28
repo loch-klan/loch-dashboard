@@ -14,7 +14,7 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
         ctx.setState({
           barGraphLoading: false,
             GraphData: res.data.data.gas_fee_overtime,
-            graphValue: getGraphData(res.data.data.gas_fee_overtime)
+            graphValue: getGraphData(res.data.data.gas_fee_overtime, ctx)
         });
       } else{
         toast.error(res.data.message || "Something Went Wrong")
@@ -34,7 +34,7 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
         ctx.setState({
           counterGraphLoading: false,
           counterPartyData: res.data.data.counter_party_volume_traded,
-          counterPartyValue: getCounterGraphData(res.data.data.counter_party_volume_traded, ctx.state.currentPage)
+          counterPartyValue: getCounterGraphData(res.data.data.counter_party_volume_traded, ctx)
         });
       } else{
         toast.error(res.data.message || "Something Went Wrong")

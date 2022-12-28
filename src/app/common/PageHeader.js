@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Breadcrumb, Image } from 'react-bootstrap'
 import InActiveHomeSmallIcon from '../../assets/images/icons/InactiveHomeSmallIcon.svg'
 import {Link} from 'react-router-dom'
+import { CurrencyType, numToCurrency } from '../../utils/ReusableFunctions';
 export default function PageHeader(props) {
 
   const nav_list = window.location.pathname.split("/");
@@ -53,11 +54,18 @@ export default function PageHeader(props) {
           )}
         </div>
       </div>
+      <div>
+        {
+          props.showData && !props.isLoading &&
+          <span className="space-grotesk-medium f-s-32 lh-38 m-r-24 va-m">{CurrencyType(false)} {numToCurrency(props.showData)} {CurrencyType(true)}</span>
+        }
       {props.btnText && (
         <Button className="primary-btn" onClick={props.handleBtn}>
           {props.btnText}
         </Button>
       )}
+      </div>
+
       {props.viewMore && (
         <a
           href={props.viewMoreRedirect}

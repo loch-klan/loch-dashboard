@@ -50,7 +50,9 @@ class Portfolio extends BaseReactComponent {
       );
     this.state = {
       id: props.match.params?.id,
-      userWalletList: localStorage.getItem("addWallet") ? JSON.parse(localStorage.getItem("addWallet")) : [],
+      userWalletList: localStorage.getItem("addWallet")
+        ? JSON.parse(localStorage.getItem("addWallet"))
+        : [],
       assetTotalValue: 0,
       loader: false,
       coinAvailable: true,
@@ -100,7 +102,8 @@ class Portfolio extends BaseReactComponent {
       yesterdayBalance: 0,
       currentPage: "Home",
       // selectedCurrency: JSON.parse(localStorage.getItem('currency')),
-      currency: JSON.parse(localStorage.getItem('currency')),
+      currency: JSON.parse(localStorage.getItem("currency")),
+      counterGraphDigit: 3,
     };
   }
 
@@ -823,14 +826,11 @@ this.setState({graphLoading: true})
                       coinLists={this.props.OnboardingState.coinsLists}
                       isScrollVisible={false}
                       handleGroupBy={(value) => this.handleGroupBy(value)}
-                        graphLoading={this.state.graphLoading}
-                       isUpdate={this.state.isUpdate}
-                       handleClick={() => {
-                        this.props.history.push(
-                          "/intelligence/asset-value"
-                        );
-                       }
-                      }
+                      graphLoading={this.state.graphLoading}
+                      isUpdate={this.state.isUpdate}
+                      handleClick={() => {
+                        this.props.history.push("/intelligence/asset-value");
+                      }}
                     />
                   </div>
                   <div className="m-b-22 graph-table-section">
@@ -860,72 +860,76 @@ this.setState({graphLoading: true})
                         </div>
                       </Col>
                       <Col md={6}>
-                      <div className="profit-chart">
-                    {this.state.graphValue?
+                        <div className="profit-chart">
+                          {this.state.graphValue ? (
                             <BarGraphSection
-                            headerTitle="Net Flows"
-                            headerSubTitle="Understand your entire portfolio's performance"
-                            isArrow={true}
-                                handleClick={() => {
-                                  this.props.history.push(
-                                    "/intelligence"
-                                  );
-                                  ProfitLossEV({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
-                                }}
-                                isScrollVisible={false}
-                                data={this.state.graphValue[0]}
-                                options={this.state.graphValue[1]}
-                                coinsList={this.props.OnboardingState.coinsList}
-                                // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
-                                marginBottom='m-b-32'
-                                showFooter={false}
-                                showBadges={false}
-                                showPercentage = {this.state.graphValue[2]}
-                                // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
-                                // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
-                                // comingSoon={true}
-                                className={"portfolio-profit-and-loss"}
+                              headerTitle="Net Flows"
+                              headerSubTitle="Understand your entire portfolio's performance"
+                              isArrow={true}
+                              handleClick={() => {
+                                this.props.history.push("/intelligence");
+                                ProfitLossEV({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }}
+                              isScrollVisible={false}
+                              data={this.state.graphValue[0]}
+                              options={this.state.graphValue[1]}
+                              coinsList={this.props.OnboardingState.coinsList}
+                              // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
+                              marginBottom="m-b-32"
+                              showFooter={false}
+                              showBadges={false}
+                              showPercentage={this.state.graphValue[2]}
+                              // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
+                              // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
+                              // comingSoon={true}
+                              className={"portfolio-profit-and-loss"}
                             />
-                            :
+                          ) : (
                             <div className="loading-wrapper">
                               <Loading />
-                              <br/><br/>
+                              <br />
+                              <br />
                             </div>
-                        }
-                    </div>
+                          )}
+                        </div>
                       </Col>
                     </Row>
                   </div>
                   <div className="m-b-40 portfolio-cost-table-section">
-                  <div className="section-chart">
-                         { this.state.counterPartyValue && !this.state.counterGraphLoading ?
-                          <BarGraphSection
-                            headerTitle="Counterparty Fees Over Time"
-                            headerSubTitle="Understand how much your counterparty charges you"
-                            isArrow={true}
-                            handleClick={() => {
-                              VolumeTradeByCP({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                              this.props.history.push(
-                              "/costs#cp"
-                            )}}
-                            data={this.state.counterPartyValue[0]}
-                            options={this.state.counterPartyValue[1]}
-                            options2={this.state.counterPartyValue[2]}
-                            isScroll={true}
-                            isScrollVisible={false}
-                            comingSoon={false}
-                            className={"portfolio-counterparty-fee"}
-                          />
-                          :
-                          <div className="loading-wrapper">
-                            <Loading />
-                            <br/><br/>
-                          </div>
-                        }
+                    <div className="section-chart">
+                      {this.state.counterPartyValue &&
+                      !this.state.counterGraphLoading ? (
+                        <BarGraphSection
+                          headerTitle="Counterparty Fees Over Time"
+                          headerSubTitle="Understand how much your counterparty charges you"
+                          isArrow={true}
+                          handleClick={() => {
+                            VolumeTradeByCP({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                            this.props.history.push("/costs#cp");
+                          }}
+                          data={this.state.counterPartyValue[0]}
+                          options={this.state.counterPartyValue[1]}
+                          options2={this.state.counterPartyValue[2]}
+                          digit={this.state.counterGraphDigit}
+                          isScroll={true}
+                          isScrollVisible={false}
+                          comingSoon={false}
+                          className={"portfolio-counterparty-fee"}
+                        />
+                      ) : (
+                        <div className="loading-wrapper">
+                          <Loading />
+                          <br />
+                          <br />
                         </div>
+                      )}
+                    </div>
                   </div>
                   <FeedbackForm page={"Home Page"} attribution={true} />
                 </div>
