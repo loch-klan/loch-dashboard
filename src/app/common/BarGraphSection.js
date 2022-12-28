@@ -210,7 +210,7 @@ class BarGraphSection extends Component {
             )}
             <div className={className} style={{ display: "flex" }}>
               {options2 != undefined && isScroll && data.labels.length > 8 ? (
-                <div style={{ width: `${digit}rem` }}>
+                <div style={{ width: `${digit + 0.5}rem` }}>
                   <Bar options={options2} data={data} />
                 </div>
               ) : (
@@ -226,7 +226,7 @@ class BarGraphSection extends Component {
                 style={{
                   width: `${
                     options2 != undefined && isScroll && data.labels.length > 8
-                      ? "calc(100 % - "+digit+"rem)"
+                      ? "calc(100 % - "+(digit+0.5)+"rem)"
                       : "100%"
                   }`,
                 }}

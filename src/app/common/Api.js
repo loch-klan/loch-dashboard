@@ -90,7 +90,9 @@ export const updateUserWalletApi = (data,ctx) =>{
       }
       // console.log('newAddWallet',newAddWallet);
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet))
-
+      if (ctx.props.handleUpdateWallet) {
+        ctx.props.handleUpdateWallet()
+      }
       ctx.props.history.push({
         pathname: ctx.props.pathName,
         state: {addWallet: JSON.parse(localStorage.getItem("addWallet"))}

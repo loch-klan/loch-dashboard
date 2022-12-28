@@ -244,6 +244,8 @@ class Wallet extends Component {
             subTitle="Manage all your wallets right here"
             btnText="Add wallet"
             handleBtn={this.handleAddModal}
+            showData={totalWalletAmt}
+            isLoading={isLoading}
           />
           <CoinBadges
             activeBadge={this.state.activeBadge}
@@ -276,10 +278,10 @@ class Wallet extends Component {
                 );
               })}
             </div>
-            {
+            {/* {
               !isLoading &&
               <span className="inter-display-medium f-s-20 lh-24 m-r-24">{numToCurrency(totalWalletAmt)} <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA">{CurrencyType(true)}</span> </span>
-            }
+            } */}
           </div>
 
           <div className="cards">

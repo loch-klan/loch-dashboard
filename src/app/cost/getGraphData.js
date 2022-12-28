@@ -5,10 +5,7 @@ import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFu
 
 export const getGraphData = (arr) => {
   let currency= JSON.parse(localStorage.getItem('currency'));
-    // console.log(arr, "array");
-
     const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))).length;
-    // console.log(digit, "indise digit")
     const labels = arr.map((e) => e.chain.name);
 
     const options = {
@@ -84,11 +81,11 @@ export const getGraphData = (arr) => {
             weight: 400,
             color: "#B0B1B3",
             callback: function(value, index, ticks) {
-              console.log('value',value);
-              console.log('index',index);
-              console.log('ticks',ticks);
+              // console.log('value',value);
+              // console.log('index',index);
+              // console.log('ticks',ticks);
               let val = Number(noExponents(value).toLocaleString('en-US'))
-              console.log('valllll',val);
+              // console.log('valllll',val);
               return CurrencyType(false) + numToCurrency(val);
             }
           },
@@ -153,7 +150,7 @@ export const getGraphData = (arr) => {
         //   min: min,
         //   max: 22574,
           afterFit: (ctx) => {
-            ctx.width = `${digit}0`;
+            ctx.width = `${digit+3}0`;
           },
           ticks: {
             // stepSize: 1500,
@@ -208,7 +205,6 @@ export const getCounterGraphData = (arr, currentPage) => {
   // console.log(currentPage, "page");
   let currency= JSON.parse(localStorage.getItem('currency'));
   const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))).length;
-  // console.log(digit, "indise digit")
   // const labels = arr.map((e) => e.chain.name);
   const labels = arr.map((e) => e._id);
 
@@ -359,7 +355,7 @@ export const getCounterGraphData = (arr, currentPage) => {
       //   min: min,
       //   max: 22574,
         afterFit: (ctx) => {
-          ctx.width = `${digit}0`;
+          ctx.width = `${digit+3}0`;
         },
         ticks: {
           // stepSize: 1500,
