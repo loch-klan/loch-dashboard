@@ -20,7 +20,7 @@ export const loginApi = (ctx, data) => {
           rate: 1,
       }))
         localStorage.setItem('lochToken', res.data.data.token);
-        if(ctx.state.link){
+        if(ctx.state.link && ctx.state.id){
           ctx.props.getAllCoins(ctx.handleShareLinkUser)
         } else{
           ctx.props.history.push('/welcome');

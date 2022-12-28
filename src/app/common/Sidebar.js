@@ -109,7 +109,7 @@ function Sidebar(props) {
     }
     const handleShare=()=>{
         const user= JSON.parse(localStorage.getItem('lochUser'));
-      const link= `${BASE_URL_S3}portfolio/${user.link}`
+      const link= `${BASE_URL_S3}home/${user.link}`
       navigator.clipboard.writeText(link);
       toast.success("Share link has been copied");
     }
@@ -175,7 +175,6 @@ function Sidebar(props) {
 
         return()=>clearInterval(interval);
       },[currentIndex]);
-      console.log('selectedCurrency',selectedCurrency);
     return (
       <div className="sidebar-section">
         <Container>
