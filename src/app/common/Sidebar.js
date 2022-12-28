@@ -58,7 +58,7 @@ function Sidebar(props) {
     const activeTab = window.location.pathname
     const history = useHistory();
     const [leave, setLeave] = React.useState(false);
-    const [connectModal,setConnectModal] = React.useState(true);
+    const [connectModal,setConnectModal] = React.useState(false);
     const [apiModal,setApiModal] = React.useState(false);
     const [exportModal,setExportModal] = React.useState(false)
     const [shareModal,setShareModal] = React.useState(false);
