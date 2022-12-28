@@ -5,7 +5,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
 
 export const getGraphData = (arr, parentCtx) => {
- 
+
   let currency = JSON.parse(localStorage.getItem('currency'));
   // const digit = numToCurrency(
   //   Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
@@ -101,8 +101,8 @@ export const getGraphData = (arr, parentCtx) => {
                 GraphDigit: digit,
               });
             }
-               
-              
+
+
             return CurrencyType(false) + numToCurrency(val);
           }
         },
@@ -235,7 +235,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
   //    Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   //  ).length;
   let digit = 3;
- 
+
 
   const labels = arr.map((e) => e._id);
 
@@ -327,8 +327,8 @@ export const getCounterGraphData = (arr, parentCtx) => {
                    counterGraphDigit: digit
                  })
                }
-             
-              
+
+
             return CurrencyType(false) + numToCurrency(val);
           }
         },
@@ -445,7 +445,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
     labels,
     datasets: [
       {
-        data: arr.map((e) => e.total_fees * currency?.rate),
+        data: arr.map((e) => e.total_volume * currency?.rate),
         backgroundColor: [
           "rgba(100, 190, 205, 0.3)",
           "rgba(34, 151, 219, 0.3)",
