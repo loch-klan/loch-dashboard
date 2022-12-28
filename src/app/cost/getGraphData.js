@@ -8,7 +8,7 @@ export const getGraphData = (arr) => {
     // console.log(arr, "array");
 
     const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))).length;
-    // console.log(digit, "indise digit")
+   
     const labels = arr.map((e) => e.chain.name);
 
     const options = {
@@ -208,7 +208,13 @@ export const getCounterGraphData = (arr, currentPage) => {
   // console.log(currentPage, "page");
   let currency= JSON.parse(localStorage.getItem('currency'));
   const digit = (""+Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))).length;
-  // console.log(digit, "indise digit")
+   console.log(
+     digit,
+     "indise digit",
+     "max",
+     Math.max(...arr.map((e) => (e.total_fees * currency?.rate)))
+   );
+  console.log("y-axis", arr.map((e) => (e.total_fees * currency?.rate)))
   // const labels = arr.map((e) => e.chain.name);
   const labels = arr.map((e) => e._id);
 
@@ -371,6 +377,7 @@ export const getCounterGraphData = (arr, currentPage) => {
           color: "#B0B1B3",
           callback: function(value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString('en-US'))
+            console.log("tick", CurrencyType(false) + numToCurrency(val), value);
             return CurrencyType(false) + numToCurrency(val);
           }
         },
@@ -388,7 +395,7 @@ export const getCounterGraphData = (arr, currentPage) => {
     labels,
     datasets: [
       {
-        data: arr.map((e) => e.total_fees * currency?.rate),
+        data: arr.map((e) => (e.total_fees * currency?.rate)),
         backgroundColor: [
           "rgba(100, 190, 205, 0.3)",
           "rgba(34, 151, 219, 0.3)",

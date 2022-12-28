@@ -159,6 +159,8 @@ class BarGraphSection extends Component {
     const { marginBottom, comingSoon, coinsList, activeFooter, className="", handleClick } = this.props;
     const digit =
       data && ("" + Math.round(Math.max(...data.datasets[0].data))).length;
+    // console.log("bar digit", digit, Math.max(...data.datasets[0].data));
+    console.log("data", data.datasets[0].data)
     const ScrollStyle = {
       width: `${data && data.labels.length * 12.5}%`,
       minWidth: `${data && data.labels.length * 10}rem`,
