@@ -31,6 +31,8 @@ import ExitOverlay from './ExitOverlay'
 import { BASE_URL_S3 } from '../../utils/Constant'
 import { toast } from 'react-toastify'
 import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
+import ConnectModalIcon from '../../assets/images/icons/connectIcon.svg';
+import LinkIcon from '../../assets/images/icons/link.svg';
 import ConfirmLeaveModal from './ConformLeaveModal';
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
@@ -49,13 +51,15 @@ import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
 import { getAllCurrencyApi, getAllCurrencyRatesApi, setCurrencyApi } from './Api'
 import { setCurrencyReducer } from './CommonAction'
+import ConnectModal from './ConnectModal'
 function Sidebar(props) {
 // console.log('props',props);
 
     const activeTab = window.location.pathname
     const history = useHistory();
     const [leave, setLeave] = React.useState(false);
-    const [apiModal,setApiModal]  =React.useState(false);
+    const [connectModal,setConnectModal] = React.useState(true);
+    const [apiModal,setApiModal] = React.useState(false);
     const [exportModal,setExportModal] = React.useState(false)
     const [shareModal,setShareModal] = React.useState(false);
     const [confirmLeave,setConfirmLeave] = React.useState(false)
@@ -84,6 +88,9 @@ function Sidebar(props) {
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
         });
+    }
+    const handleConnectModal = ()=>{
+      setConnectModal(!connectModal);
     }
     const handleConfirmLeaveModal = () =>{
         setConfirmLeave(!confirmLeave)
@@ -168,7 +175,7 @@ function Sidebar(props) {
 
         return()=>clearInterval(interval);
       },[currentIndex]);
-      return (
+    return (
       <div className="sidebar-section">
         <Container>
           <div className="sidebar">
@@ -178,11 +185,11 @@ function Sidebar(props) {
                 <span className="loch-text">Loch</span>
               </div>
               <div className='currency-wrapper'>
-                <DropdownButton id="currency-dropdown" title={selectedCurrency && (selectedCurrency.symbol + " " + selectedCurrency.code)}>
+                <DropdownButton id="currency-dropdown" title={selectedCurrency && selectedCurrency.symbol + " " + selectedCurrency && selectedCurrency.code}>
                   {
-                    currencyList.map((currency, key)=>{
+                    currencyList.map((currency)=>{
                       return(
-                        <Dropdown.Item key={key} onClick={()=>handleFunction(currency)}> <span>{currency.symbol}</span> <span>{currency.code}</span></Dropdown.Item>
+                        <Dropdown.Item onClick={()=>handleFunction(currency)}> <span>{currency.symbol}</span> <span>{currency.code}</span></Dropdown.Item>
                       )
                     })
                   }
@@ -381,24 +388,22 @@ function Sidebar(props) {
                     </Button>
                   </span>
                 </li>
-                {/* {JSON.parse(localStorage.getItem("lochUser")) && (
-                  <li
+                <li>
+                  <span
                     onMouseOver={(e) =>
-                      (e.currentTarget.children[0].src = ShareProfileDarkIcon)
+                      (e.currentTarget.children[0].src = ApiBlackIcon)
                     }
                     onMouseLeave={(e) =>
-                      (e.currentTarget.children[0].src = DarkmodeIcon)
+                      (e.currentTarget.children[0].src = ApiIcon)
                     }
+                    onClick={handleConnectModal}
                   >
-                    <Image src={DarkmodeIcon} />
-                    <Button
-                      className="inter-display-medium f-s-15 lh-19 navbar-button"
-                      onClick={handleShare}
-                    >
-                      Share Profile
+                    <Image src={ApiIcon} />
+                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
+                      Connect
                     </Button>
-                  </li>
-                )} */}
+                  </span>
+                </li>
 
                 <li>
                   <span
@@ -464,6 +469,18 @@ function Sidebar(props) {
             headerTitle={"API"}
             modalType={"apiModal"}
             iconImage={ApiModalIcon}
+          />
+        ) : (
+          ""
+        )}
+        {connectModal ? (
+          <ConnectModal
+            show={connectModal}
+            onHide={handleConnectModal}
+            history={history}
+            headerTitle={"Connect exchanges"}
+            modalType={"connectModal"}
+            iconImage={LinkIcon}
           />
         ) : (
           ""
