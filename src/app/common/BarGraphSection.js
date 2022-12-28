@@ -48,6 +48,7 @@ class BarGraphSection extends Component {
       footerLabels: props.footerLabels,
       isScrollVisible: props.isScrollVisible,
       isScroll: props.isScroll,
+      digit: props.digit ? props.digit : 3
     };
   }
 
@@ -59,6 +60,12 @@ class BarGraphSection extends Component {
         data: this.props.data,
         showPercentage: this.props.showPercentage
       });
+    }
+
+    if (prevProps.digit != this.props.digit) {
+       this.setState({
+         digit: this.props.digit
+       });
     }
   }
 
@@ -136,9 +143,7 @@ class BarGraphSection extends Component {
         asset_selected: badge.name,
       });
   };
-  // NewWidth = () => {
-  //     console
-  // }
+
 
   render() {
     const {
@@ -155,10 +160,14 @@ class BarGraphSection extends Component {
       isScroll,
       showFooter,
       footerLabels,
+      digit
     } = this.state;
-    const { marginBottom, comingSoon, coinsList, activeFooter, className="", handleClick } = this.props;
-    const digit =
-      data && ("" + Math.round(Math.max(...data.datasets[0].data))).length;
+    const { marginBottom, comingSoon, coinsList, activeFooter, className = "", handleClick } = this.props;
+     console.log("bar gr state digit", digit);
+    // const digit =
+    //   data && ("" + Math.round(Math.max(...data.datasets[0].data))).length;
+    // console.log("bar digit", digit, Math.max(...data.datasets[0].data));
+
     const ScrollStyle = {
       width: `${data && data.labels.length * 12.5}%`,
       minWidth: `${data && data.labels.length * 10}rem`,
@@ -210,7 +219,7 @@ class BarGraphSection extends Component {
             )}
             <div className={className} style={{ display: "flex" }}>
               {options2 != undefined && isScroll && data.labels.length > 8 ? (
-                <div style={{ width: `${digit + 0.5}rem` }}>
+                <div style={{ width: `${digit}rem` }}>
                   <Bar options={options2} data={data} />
                 </div>
               ) : (
@@ -226,7 +235,7 @@ class BarGraphSection extends Component {
                 style={{
                   width: `${
                     options2 != undefined && isScroll && data.labels.length > 8
-                      ? "calc(100 % - "+(digit+0.5)+"rem)"
+                      ? "calc(100 % - "+(digit)+"rem)"
                       : "100%"
                   }`,
                 }}

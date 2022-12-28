@@ -17,6 +17,7 @@ class VolumeTradedByCounterparty extends Component {
               data: info[0],
               options: info[1],
               options2: info[2],
+              digit: info[3]
             },
             startTime:"",
           };
