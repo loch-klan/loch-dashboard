@@ -7,7 +7,7 @@ import BinanceIcon from "../../assets/images/icons/Binance.svg";
 import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import backIcon from "../../image/back-icon.svg";
+import backIcon from "../../assets/images/icons/back-icon.svg";
 import Slider from 'react-slick';
 
 class ConnectModal extends BaseReactComponent {
