@@ -1526,7 +1526,7 @@ form {
       img{
         width: 1.2rem;
       }
-      @include font($black-191, "Inter-SemiBold", 1.6rem, 600, 16px);
+      @include font($black-191, "Inter-SemiBold", 1.3rem, 600, 16px);
       &:active{
         border: 0 !important;
         color: $black-191 !important;
