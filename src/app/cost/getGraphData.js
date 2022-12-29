@@ -267,7 +267,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
         callbacks: {
           title: function() {}, //REMOVE TITLE
           label: (ctx) => {
-            console.log('ctx',ctx);
+            // console.log('ctx',ctx);
             let label00 = ctx.label;
               let label0 = "Fees: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalFees[ctx.dataIndex]);
             let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.raw * currency.rate);
@@ -396,7 +396,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
       //   min: min,
       //   max: 22574,
         afterFit: (ctx) => {
-          console.log("digit width" ,digit )
+          // console.log("digit width" ,digit )
           ctx.width = `${digit}`+0;
         },
         ticks: {
@@ -409,15 +409,15 @@ export const getCounterGraphData = (arr, parentCtx) => {
           color: "#B0B1B3",
           callback: function(value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString('en-US'))
-              console.log(
-                "tick gas",
-                CurrencyType(false) + numToCurrency(val),
-                value,
-                CurrencyType(false).length,
-                numToCurrency(val).length,
-                "sum",
-                CurrencyType(false).length + numToCurrency(val).length
-              );
+              // console.log(
+              //   "tick gas",
+              //   CurrencyType(false) + numToCurrency(val),
+              //   value,
+              //   CurrencyType(false).length,
+              //   numToCurrency(val).length,
+              //   "sum",
+              //   CurrencyType(false).length + numToCurrency(val).length
+              // );
              if (
                digit <
                CurrencyType(false).length + numToCurrency(val).length
