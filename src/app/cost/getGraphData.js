@@ -217,8 +217,8 @@ export const getGraphData = (arr, parentCtx) => {
         },
         borderSkipped: false,
         barThickness: 48,
-        totalFeesAmount: arr.map((e) => e.total_fees_amount),
-        totalAmount: arr.map((e) => e.total_amount * currency?.rate),
+        totalFeesAmount: arr.map((e) => e.total_fees_amount * currency?.rate),
+        // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
         totalVolume: arr.map((e) => e.total_volume),
       },
     ],
@@ -229,13 +229,11 @@ export const getGraphData = (arr, parentCtx) => {
 }
 
 export const getCounterGraphData = (arr, parentCtx) => {
-  console.log("page",parentCtx);
   let currency= JSON.parse(localStorage.getItem('currency'));
   //  const digit = numToCurrency(
   //    Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   //  ).length;
   let digit = 3;
-
 
   const labels = arr.map((e) => e._id);
 
@@ -269,9 +267,10 @@ export const getCounterGraphData = (arr, parentCtx) => {
         callbacks: {
           title: function() {}, //REMOVE TITLE
           label: (ctx) => {
+            console.log('ctx',ctx);
             let label00 = ctx.label;
-              let label0 = "Fees: " + CurrencyType(false) + numToCurrency(ctx.raw);
-            let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex] * currency.rate);
+              let label0 = "Fees: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalFees[ctx.dataIndex]);
+            let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.raw * currency.rate);
             parentCtx.state.currentPage === "Home"
               ? HomeCounterPartyHover({
                   session_id: getCurrentUser().id,
@@ -473,8 +472,8 @@ export const getCounterGraphData = (arr, parentCtx) => {
         },
         borderSkipped: false,
         barThickness: 48,
-        totalFeesAmount: arr.map((e) => e.total_fees_amount),
-        totalAmount: arr.map((e) => e.total_amount * currency?.rate),
+        totalFees: arr.map((e) => e.total_fees * currency?.rate),
+        // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
         totalVolume: arr.map((e) => e.total_volume),
         defaultAssetCode: arr.map((e) => e.chain.default_asset_code),
       },

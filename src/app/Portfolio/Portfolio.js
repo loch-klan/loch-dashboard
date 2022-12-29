@@ -903,7 +903,7 @@ this.setState({graphLoading: true})
                       {this.state.counterPartyValue &&
                       !this.state.counterGraphLoading ? (
                         <BarGraphSection
-                          headerTitle="Counterparty Fees Over Time"
+                          headerTitle="Counterparty Volume Over Time"
                           headerSubTitle="Understand how much your counterparty charges you"
                           isArrow={true}
                           handleClick={() => {
