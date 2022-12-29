@@ -18,6 +18,7 @@ import { BlockchainFeesFilter, CounterpartyFeesFilter } from '../../utils/Analyt
 import { getCurrentUser } from '../../utils/ManageToken';
 import Loading from './Loading';
 import { CurrencyType } from '../../utils/ReusableFunctions';
+import DropDown from './DropDown';
 // import { BarGraphSection } from './BarGraphSection';
 
 ChartJS.register(
@@ -48,7 +49,11 @@ class BarGraphSection extends Component {
       footerLabels: props.footerLabels,
       isScrollVisible: props.isScrollVisible,
       isScroll: props.isScroll,
-      digit: props.digit ? props.digit : 3
+      digit: props.digit ? props.digit : 3,
+      showFooterDropdown: props.showFooterDropdown,
+      footerDropdownLabels: props.footerDropdownLabels,
+      // activeDropdown: props.activeDropdown,
+      handleSelect: props.handleSelect,
     };
   }
 
@@ -78,6 +83,7 @@ class BarGraphSection extends Component {
   };
   handleFunction = (badge) => {
     let newArr = [...this.state.activeBadge];
+    let activeFooter = this.props.showFooterDropdown ? this.props.activeDropdown : this.state.activeFooter;
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
       let index = newArr.findIndex((x) => x.name === badge.name);
       newArr.splice(index, 1);
@@ -88,7 +94,7 @@ class BarGraphSection extends Component {
             activeBadgeList: [],
           },
           () => {
-            this.props.handleBadge(this.state.activeBadgeList, this.state.activeFooter);
+            this.props.handleBadge(this.state.activeBadgeList, activeFooter);
           }
         );
       } else {
@@ -98,7 +104,7 @@ class BarGraphSection extends Component {
             activeBadgeList: newArr.map((item) => item.id),
           },
           () => {
-            this.props.handleBadge(this.state.activeBadgeList, this.state.activeFooter);
+            this.props.handleBadge(this.state.activeBadgeList, activeFooter);
           }
         );
       }
@@ -109,7 +115,7 @@ class BarGraphSection extends Component {
           activeBadgeList: [],
         },
         () => {
-          this.props.handleBadge(this.state.activeBadgeList, this.state.activeFooter);
+          this.props.handleBadge(this.state.activeBadgeList, activeFooter);
         }
       );
     } else {
@@ -124,7 +130,7 @@ class BarGraphSection extends Component {
           activeBadgeList: newArr.map((item) => item.id),
         },
         () => {
-          this.props.handleBadge(this.state.activeBadgeList, this.state.activeFooter);
+          this.props.handleBadge(this.state.activeBadgeList, activeFooter);
         }
       );
     }
@@ -144,7 +150,6 @@ class BarGraphSection extends Component {
       });
   };
 
-
   render() {
     const {
       data,
@@ -160,7 +165,10 @@ class BarGraphSection extends Component {
       isScroll,
       showFooter,
       footerLabels,
-      digit
+      digit,
+      showFooterDropdown,
+      footerDropdownLabels,
+      handleSelect
     } = this.state;
     const { marginBottom, comingSoon, coinsList, activeFooter, className = "", handleClick } = this.props;
      console.log("bar gr state digit", digit);
@@ -259,6 +267,25 @@ class BarGraphSection extends Component {
                 active={this.state.activeFooter}
                 footerLabels={footerLabels}
               />
+            ) : (
+              ""
+            )}
+            {showFooterDropdown ? (
+              <div className="chart-x-selection">
+                <DropDown
+                  class="line-chart-dropdown"
+                  list={footerDropdownLabels}
+                  onSelect={(opt)=>{
+                    this.setState({
+                      activeBadge: [{ name: "All", id: "" }],
+                      activeBadgeList: [],
+                    });
+                    handleSelect(opt)
+                  }}
+                  title={this.props.activeDropdown}
+                  activetab={this.props.activeDropdown}
+                />
+              </div>
             ) : (
               ""
             )}
