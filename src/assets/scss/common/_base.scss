@@ -319,8 +319,19 @@ body {
 .p-t-10{
   padding-top: 1rem;
 }
+.p-b-10{
+  padding-bottom: 1rem;
+}
 .p-b-20{
   padding-bottom: 2rem;
+}
+
+.p-b-32{
+  padding-bottom: 3.2rem;
+}
+
+.p-b-46{
+  padding-bottom: 4.6rem;
 }
 
 // COLOR
@@ -418,6 +429,10 @@ body {
 
 .black-191 {
   color: $black-191;
+}
+
+.grey-233 {
+  color: $grey-233;
 }
 
 .grey-B4D {

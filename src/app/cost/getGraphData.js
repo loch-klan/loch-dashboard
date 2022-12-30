@@ -167,7 +167,7 @@ export const getGraphData = (arr, parentCtx) => {
         //   min: min,
         //   max: 22574,
         afterFit: (ctx) => {
-          console.log("digit width", digit);
+          // console.log("digit width", digit);
           ctx.width = `${digit}0`;
         },
         ticks: {
@@ -229,7 +229,7 @@ export const getGraphData = (arr, parentCtx) => {
 }
 
 export const getCounterGraphData = (arr, parentCtx) => {
-  console.log("page",parentCtx);
+  // console.log("page",parentCtx);
   let currency= JSON.parse(localStorage.getItem('currency'));
   //  const digit = numToCurrency(
   //    Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
@@ -397,7 +397,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
       //   min: min,
       //   max: 22574,
         afterFit: (ctx) => {
-          console.log("digit width" ,digit )
+          // console.log("digit width" ,digit )
           ctx.width = `${digit}`+0;
         },
         ticks: {
@@ -410,15 +410,15 @@ export const getCounterGraphData = (arr, parentCtx) => {
           color: "#B0B1B3",
           callback: function(value, index, ticks) {
             let val = Number(noExponents(value).toLocaleString('en-US'))
-              console.log(
-                "tick gas",
-                CurrencyType(false) + numToCurrency(val),
-                value,
-                CurrencyType(false).length,
-                numToCurrency(val).length,
-                "sum",
-                CurrencyType(false).length + numToCurrency(val).length
-              );
+              // console.log(
+              //   "tick gas",
+              //   CurrencyType(false) + numToCurrency(val),
+              //   value,
+              //   CurrencyType(false).length,
+              //   numToCurrency(val).length,
+              //   "sum",
+              //   CurrencyType(false).length + numToCurrency(val).length
+              // );
              if (
                digit <
                CurrencyType(false).length + numToCurrency(val).length

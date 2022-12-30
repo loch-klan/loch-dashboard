@@ -652,20 +652,15 @@ position: relative;
 }
 
 .coin-hover-display {
-    // width: 100%;
     width: max-content;
-    // margin-top: 6.8rem;
-    margin-top: 1rem;
-    // margin-bottom: -3.2rem;
-    //position: relative;
+    margin-top: 2rem;
     display: flex;
-    padding: 1.6rem;
+    padding: 1.25rem;
     justify-content: space-between;
-    //padding: 6.8rem 4.8rem 6rem 4.8rem;
-    // width: 89.6rem;
+    align-items: center;
     background-color: $secondary;
-    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
-    border-radius: 1.2rem;
+    box-shadow: 0px 6.17911px 18.5373px rgba(109, 109, 109, 0.15);
+    border-radius: 0.8rem;
 
     .coin-hover-display-text {
         display: flex;
@@ -796,3 +791,165 @@ position: relative;
     display: contents;
 }
 
+
+.piechart-column{
+     align-items: center;
+                  justify-content: start;
+                  display: flex;
+                  flex-direction: column;
+                  padding-top: 2rem;
+           
+}
+
+.point-circle{
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 1.2rem;
+}
+
+.portfolio-over-container 
+{
+   .manage-wallet-card{
+        background-color: #FFFFFF;
+                      box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+                      border-radius: 12px;
+                      padding: 1.6rem 2rem;
+                      margin-top: 1.6rem;
+                      margin-bottom: 2.8rem;
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+
+        .wallet-btn{
+             display: flex;
+                        align-items: center;
+
+                        .wallet-icon-bg{
+                        
+                          background-color: rgba(229, 229, 230, 0.5);
+                          border-radius:12px;
+                          height: 3.2rem;
+                          width: 3.2rem;
+                          display: flex;
+                          justify-content: center;
+                          align-items: center;
+                          margin-right: 8px;
+
+                          img{ height: 1.3rem;
+                             width: 1.3rem}
+                        
+                        }
+                      
+        }
+                   
+    }
+   .chain-card{
+     background-color: #FFFFFF;
+                      box-shadow:0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+                      border-radius: 12px;
+                      padding: 1.6rem 2rem;
+                      margin-top: 1.6rem;
+                      margin-bottom: 2.8rem;
+                      user-select: none;
+                      cursor: pointer;
+                      position: relative;
+                    
+
+                      .chain-list{
+                        // margin-top: 1rem;
+                        position: absolute;
+                        top: 5.5rem;
+                        background-color: #ffffff;
+                        left: 0;
+                        box-shadow:0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+                      border-radius: 12px;
+                      padding: 1.6rem 2rem;
+                      width: 100%;
+                      z-index: 2;
+
+                      .chain-content{
+                        max-height: 25.5rem;
+                        overflow-y: scroll;
+                        width: 100%;
+
+                         &::-webkit-scrollbar {
+                            width: 0.4rem;
+                            height: 0.4rem;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            border-radius: 0.8rem;
+                            background-color: $scrollBar-thumb;
+                        }
+
+                        &::-webkit-scrollbar-track {
+                            background-color: rgba(229, 229, 230, 0.5);
+                            // background-color: $grey-E5E;
+                            border-radius: 0.8rem;
+                        }
+                      }
+
+                       
+
+                        .chain-list-item{
+                          display: flex;
+                          align-items: center;
+                          justify-content: space-between;
+                          padding: 1rem 1.6rem 1rem 0rem;
+                          border-top: 1px solid rgba(229, 229, 230, 0.5);
+                        
+                          span img{
+                            position: relative;
+                              margin-right:1rem;
+                              z-index: 1;
+                          }
+
+                          .chain-list-amt{
+                            background-color:rgba(229, 229, 230, 0.5);
+                            border-radius: 4px;
+                            padding: 6px;
+                          }
+
+                        }
+                      }
+   
+            }
+    .balance-sheet-card{
+        background-color: #FFFFFF;
+        box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+                      border-radius: 12px;
+                      padding: 2rem 2rem 1.6rem;
+                      margin-top: 1.6rem;
+                      margin-bottom: 2.8rem;
+
+                .balance-card-header{
+                     display:flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-bottom: 1rem;
+
+                        img{
+                             height: 1.25rem;
+                            width: 1.25rem;
+                            margin-bottom: 5px;
+                        }
+                }
+                .balance-sheet-list{
+                     
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 1.5rem 0rem;
+                        border-top: 1px solid rgba(229, 229, 230, 0.5);
+                    
+                        .balance-amt{
+                            background-color: rgba(229, 229, 230, 0.5);
+                          border-radius: 4px;
+                          padding: 6px;
+                    }
+                }
+    }
+    
+}

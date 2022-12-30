@@ -39,6 +39,7 @@ import { getAllCounterFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
 import FeedbackForm from '../common/FeedbackForm';
 import { CurrencyType } from '../../utils/ReusableFunctions';
+import PieChart2 from './PieChart2';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -334,7 +335,8 @@ this.setState({graphLoading: true})
 
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
-    const {userWalletList, currency} = this.state;
+    const { userWalletList, currency } = this.state;
+    console.log("chain portfolio", this.props.portfolioState)
     let tableData =
       table &&
       table.map((row) => {
@@ -757,7 +759,7 @@ this.setState({graphLoading: true})
                       }}
                     />
                   </div>
-                  <div
+                  {/* <div
                     className="portfolio-section"
                     style={{ minWidth: "85rem", overflow: "hidden" }}
                   >
@@ -802,6 +804,46 @@ this.setState({graphLoading: true})
                     ) : (
                       ""
                     )}
+                  </div> */}
+                  <div
+                    className="portfolio-section"
+                    style={{ minWidth: "85rem", overflow: "hidden" }}
+                  >
+                    <PieChart2
+                      userWalletData={
+                        this.props.portfolioState &&
+                        this.props.portfolioState.chainWallet &&
+                        Object.keys(this.props.portfolioState.chainWallet)
+                          .length > 0
+                          ? Object.values(this.props.portfolioState.chainWallet)
+                          : null
+                      }
+                      chainPortfolio={
+                        this.props.portfolioState &&
+                        this.props.portfolioState.chainPortfolio &&
+                        Object.keys(this.props.portfolioState.chainPortfolio)
+                          .length > 0
+                          ? Object.values(this.props.portfolioState.chainPortfolio)
+                          : null
+                      }
+                      assetTotal={
+                        this.props.portfolioState &&
+                        this.props.portfolioState.walletTotal
+                          ? this.props.portfolioState.walletTotal
+                          : 0
+                      }
+                      // loader={this.state.loader}
+                      isLoading={this.state.isLoading}
+                      walletTotal={this.props.portfolioState.walletTotal}
+                      handleAddModal={this.handleAddModal}
+                      handleManage={() => {
+                        this.props.history.push("/wallets");
+                        ManageWallets({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                    />
                   </div>
                   {/* <div className="portfolio-section m-b-32">
                     <LineChart

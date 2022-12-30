@@ -14,8 +14,17 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         case USER_WALLET_LIST:
             let updateWalletTotal = state.walletTotal || 0;
             let updatedChainWallet = state.chainWallet || [];
-            // console.log('updatedChainWallet',updatedChainWallet);
+            let chainPortfolio = state.chainPortfolio || {};
+            // console.log('updatedChainWallet', updatedChainWallet);
+            
+            // console.log("state", state)
             if (action.payload && action.payload.userWalletList && action.payload.userWalletList.assets && action.payload.userWalletList.assets.length > 0) {
+                if (!(action.payload.userWalletList.chain.id in chainPortfolio)) {
+                    chainPortfolio[action.payload.userWalletList.chain.id] = action.payload.userWalletList.chain;
+
+                     chainPortfolio[action.payload.userWalletList.chain.id].total = 0.0;
+                    
+                }
                 for (let i = 0; i < action.payload.userWalletList.assets.length; i++) {
                     // Filter coin rate from coinRate state variable
                     // if(action.payload.userWalletList.assets[i].asset.code === 'PAXG'){
@@ -32,7 +41,16 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                     // );
 
                     // if (assetIndex <= -1) {
+                    let assetValue = value ? action.payload.userWalletList.assets[i].count * (value && value.USD && value.USD.price ? value.USD.price : DEFAULT_PRICE) * state.currency?.rate : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE
+                      chainPortfolio[
+                        action.payload.userWalletList.chain.id
+                      ].total =
+                        chainPortfolio[
+                          action.payload.userWalletList.chain.id
+                        ].total + assetValue;
+
                     if (updatedChainWallet[action.payload.userWalletList.assets[i].asset.id] === undefined) {
+                        
                         // updatedChainWallet.push({
                         updatedChainWallet[action.payload.userWalletList.assets[i].asset.id] = {
                           assetType: action.payload.userWalletList.assets[i].asset.asset_type,
@@ -79,7 +97,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 }
             }
             // userWalletList: updateWalletList,
-            return { ...state, walletTotal: updateWalletTotal, chainWallet: { ...updatedChainWallet } };
+            return { ...state, walletTotal: updateWalletTotal, chainWallet: { ...updatedChainWallet }, chainPortfolio: {...chainPortfolio} };
         case DEFAULT_VALUES:
             return { ...state, chainWallet: [], walletTotal: 0 }
         default:
