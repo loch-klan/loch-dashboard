@@ -174,10 +174,11 @@ function Sidebar(props) {
           <div className="sidebar">
             <div style={{ width: "100%" }}>
               <div className="logo">
+                <div>
                 <Image src={logo} />
                 <span className="loch-text">Loch</span>
-              </div>
-              <div className='currency-wrapper'>
+                </div>
+                <div className='currency-wrapper'>
                 <DropdownButton id="currency-dropdown" title={selectedCurrency && (selectedCurrency.symbol + " " + selectedCurrency.code)}>
                   {
                     currencyList.map((currency, key)=>{
@@ -188,6 +189,8 @@ function Sidebar(props) {
                   }
                 </DropdownButton>
               </div>
+              </div>
+
               <div
                 className={
                   props.ownerName ? "sidebar-body" : "sidebar-body nowallet"
