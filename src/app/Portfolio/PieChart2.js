@@ -572,8 +572,12 @@ class PieChart2 extends BaseReactComponent {
                       }}
                     >
                       <div
-                      
                         className="inter-display-medium f-s-16 lh-19 grey-233"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                    
+                        }}
                       >
                         <Image
                           src={
@@ -596,7 +600,7 @@ class PieChart2 extends BaseReactComponent {
                           }
                           style={{
                             position: "relative",
-                            marginLeft: "-30px",
+                            marginLeft: "-10px",
                             width: "2.6rem",
                             height: "2.6rem",
                             borderRadius: "6px",
@@ -610,11 +614,12 @@ class PieChart2 extends BaseReactComponent {
                           }
                           style={{
                             position: "relative",
-                            marginLeft: "-30px",
+                            marginLeft: "-10px",
                             zIndex: 1,
                             width: "2.6rem",
                             height: "2.6rem",
                             borderRadius: "6px",
+                            marginRight: "1.5rem",
                           }}
                         />
                         {this.state.chainList && this.state.chainList.length}{" "}
