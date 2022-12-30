@@ -46,7 +46,7 @@ class FeedbackModal extends BaseReactComponent {
         </Modal.Header>
         <Modal.Body>
           <h6 className="inter-display-medium f-s-25 lh-30 m-b-8 black-191">
-            {feedbackType === FeedbackType.POSITIVE ? "Let us know what you like" : "Let us know what went wrong"}
+            {feedbackType === FeedbackType.POSITIVE ? "Let us know what you liked" : "Let us know what went wrong"}
           </h6>
           <p className='inter-display-medium f-s-16 lh-19 grey-969'>Share your thoughts</p>
           <Form>
@@ -56,7 +56,7 @@ class FeedbackModal extends BaseReactComponent {
               control={{
                 type: CustomTextControl,
                 settings: {
-                  placeholder: "I feel the buttons should be bigger",
+                  placeholder: "",
                   as: "textarea",
                   rows: 6,
                 },

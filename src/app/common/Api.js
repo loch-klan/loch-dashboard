@@ -214,6 +214,7 @@ export const sendFeedbackApi = (data, ctx) => {
     .post("common/master/send-feedback", data)
     .then((res) => {
       ctx.props.onHide();
+      toast.success("Thank you very much for your feedback");
       // ctx.setState({
       //   ...(type === FeedbackType.POSITIVE ? {favorite: "Thank you very much for your feedback"} : {worst: "Thank you very much for your feedback"}),
       // });
