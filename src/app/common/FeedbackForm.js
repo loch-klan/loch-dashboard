@@ -4,6 +4,10 @@ import { BaseReactComponent, CustomTextControl, Form, FormElement, FormSubmitBut
 import { Image } from 'react-bootstrap'
 import { FeedbackType } from '../../utils/Constant';
 import { sendFeedbackApi } from './Api';
+import downGrey from '../../assets/images/icons/thumbs-down-grey.svg';
+import upGrey from '../../assets/images/icons/thumbs-up-grey.svg';
+import downBlack from '../../assets/images/icons/thumbs-down-black.svg';
+import upBlack from '../../assets/images/icons/thumbs-up-black.svg';
 
 class FeedbackForm extends BaseReactComponent {
   constructor(props) {
@@ -41,8 +45,8 @@ class FeedbackForm extends BaseReactComponent {
   }
 
   render() {
-    return (
-      <div className={`feedback-form-wrapper ${this.props.attribution && "attribution"}`}>
+    // return (
+      {/* <div className={`feedback-form-wrapper ${this.props.attribution && "attribution"}`}>
 {this.props.attribution && <h6 className='inter-display-medium f-s-13 lh-19 grey-CAC data-provided'>Data provided by <a href="https://www.coingecko.com/" target="_blank" rel="noopener noreferrer">CoinGecko</a></h6>}
         <div className='feedback-wrapper'>
           <input
@@ -67,6 +71,44 @@ class FeedbackForm extends BaseReactComponent {
             onChange={(event)=>{this.handleInput(event.target.value, FeedbackType.NEGATIVE)}}
             onKeyDown={(e)=>this.handleKeyDown(e, FeedbackType.NEGATIVE)}
           />
+        </div>
+      </div> */}
+    // )
+    return(
+      <div className='feedback-div'>
+        <div className='left'>
+          <h3 className='inter-display-medium f-s-13 lh-16 grey-7C7'>Let us know how we did, <br/> and help to improve our product :)</h3>
+        </div>
+        <div className='right'>
+        <span
+          className='left-side'
+          onMouseOver={(e) =>
+            // {console.log('e',e.currentTarget)}
+            (e.currentTarget.children[0].src = downBlack)
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.children[0].src = downGrey)
+          }
+          >
+            <Image
+              src={downGrey}
+              className="icons"
+            />
+          </span>
+          <span
+            className='right-side'
+            onMouseOver={(e) =>
+              (e.currentTarget.children[0].src = upBlack)
+            }
+            onMouseLeave={(e) =>
+            (e.currentTarget.children[0].src = upGrey)
+            }
+          >
+            <Image
+              src={upGrey}
+              className="icons"
+            />
+          </span>
         </div>
       </div>
     )
