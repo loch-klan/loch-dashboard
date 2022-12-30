@@ -248,9 +248,8 @@
                         .dropdown-menu{
                             width: auto;
                             padding: 0.4rem;
-                            // overflow-y: scroll;
-                            // height: 17rem;
-
+                            max-height: 20rem;
+                            overflow-y: auto;
                         }
                         .dropdown-toggle {
                             @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);

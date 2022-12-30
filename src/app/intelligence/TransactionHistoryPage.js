@@ -274,7 +274,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                       if(
                         wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
                         wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
-                          return wallet.wallet_metadata
+                          return {
+                            wallet_metaData: wallet.wallet_metadata,
+                            displayAddress: wallet.displayAddress
+                          }
                         } else {
                           return null
                         }
@@ -291,7 +294,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                     metaData: walletList && walletList.map((wallet)=>{
                       if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
                       wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
-                          return wallet.wallet_metadata
+                        return {
+                          wallet_metaData: wallet.wallet_metadata,
+                          displayAddress: wallet.displayAddress
+                        }
                         } else {
                           return null
                         }
@@ -372,10 +378,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 : rowData.from.address
                             }
                           >
-                            {rowData.from.metaData[0] ? (
+                            {rowData.from.metaData[0]?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.from.metaData[0]?.symbol ||
+                                  rowData.from.metaData[0]?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon"
@@ -414,7 +420,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                               ) : (
                                 <span>{rowData.from.wallet_metaData.text}</span>
                               )
-                            ) : (
+                            ) :
+                            rowData.from.metaData[0]?.displayAddress ?
+                            <span>{rowData.from.metaData[0]?.displayAddress}</span>
+                            : (
                               <Image
                                 src={unrecognizedIcon}
                                 className="history-table-icon"
@@ -464,10 +473,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 : rowData.to.address
                             }
                           >
-                            {rowData.to.metaData[0] ? (
+                            {rowData.to.metaData[0]?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.to.metaData[0]?.symbol ||
+                                  rowData.to.metaData[0]?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon"
@@ -506,7 +515,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                               ) : (
                                 <span>{rowData.to.wallet_metaData.text}</span>
                               )
-                            ) : (
+                            ) :
+                            rowData.to.metaData[0]?.displayAddress ?
+                            <span>{rowData.to.metaData[0]?.displayAddress}</span>
+                            : (
                               <Image
                                 src={unrecognizedIcon}
                                 className="history-table-icon"

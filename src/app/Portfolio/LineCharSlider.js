@@ -109,7 +109,7 @@ class LineChartSlider extends BaseReactComponent {
         });
   };
   handleSelect = (opt) => {
-
+console.log('opt',opt);
     const t = opt.split(" ")[1];
     this.setState({
       title: t,

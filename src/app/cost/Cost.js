@@ -396,7 +396,7 @@ class Cost extends Component {
             </div> */}
             {this.state.counterPartyValue ? (
               <BarGraphSection
-                headerTitle="Counterparty Fees Over Time"
+                headerTitle="Counterparty Volume Over Time"
                 headerSubTitle="Understand how much your counterparty charges you"
                 data={this.state.counterPartyValue[0]}
                 options={this.state.counterPartyValue[1]}
