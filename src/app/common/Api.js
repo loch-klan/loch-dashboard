@@ -209,19 +209,20 @@ export const exportDataApi = (data,ctx) =>{
   })
 }
 
-export const sendFeedbackApi = (data, ctx, type) => {
+export const sendFeedbackApi = (data, ctx) => {
   postLoginInstance
     .post("common/master/send-feedback", data)
     .then((res) => {
-      ctx.setState({
-        ...(type === FeedbackType.POSITIVE ? {favorite: "Thank you very much for your feedback"} : {worst: "Thank you very much for your feedback"}),
-      });
-      setTimeout(function(){
-        ctx.setState({
-          ...(type === FeedbackType.POSITIVE ? {favorite: ""} : {worst: ""}),
-          ...(type === FeedbackType.POSITIVE ? {disabledFav: false} : {disabled: false}),
-        });
-      }, 4000)
+      ctx.props.onHide();
+      // ctx.setState({
+      //   ...(type === FeedbackType.POSITIVE ? {favorite: "Thank you very much for your feedback"} : {worst: "Thank you very much for your feedback"}),
+      // });
+      // setTimeout(function(){
+      //   ctx.setState({
+      //     ...(type === FeedbackType.POSITIVE ? {favorite: ""} : {worst: ""}),
+      //     ...(type === FeedbackType.POSITIVE ? {disabledFav: false} : {disabled: false}),
+      //   });
+      // }, 4000)
     })
     .catch((err) => {
       console.log("Catch", err);

@@ -8,6 +8,7 @@ import downGrey from '../../assets/images/icons/thumbs-down-grey.svg';
 import upGrey from '../../assets/images/icons/thumbs-up-grey.svg';
 import downBlack from '../../assets/images/icons/thumbs-down-black.svg';
 import upBlack from '../../assets/images/icons/thumbs-up-black.svg';
+import FeedbackModal from './FeedbackModal';
 
 class FeedbackForm extends BaseReactComponent {
   constructor(props) {
@@ -17,6 +18,8 @@ class FeedbackForm extends BaseReactComponent {
       worst: "",
       disabled: false,
       disabledFav: false,
+      showFeedbackModal: false,
+      type: "",
     }
   }
 
@@ -42,6 +45,13 @@ class FeedbackForm extends BaseReactComponent {
       data.append("feedback", type === FeedbackType.POSITIVE ? this.state.favorite : this.state.worst)
       sendFeedbackApi(data, this, type);
     }
+  }
+
+  handleFeedback = (type="") =>{
+    this.setState({
+      type,
+      showFeedbackModal: !this.state.showFeedbackModal
+    })
   }
 
   render() {
@@ -76,6 +86,15 @@ class FeedbackForm extends BaseReactComponent {
     // )
     return(
       <div className='feedback-div'>
+        {
+          this.state.showFeedbackModal &&
+          <FeedbackModal
+            feedbackType={this.state.type}
+            show={this.state.showFeedbackModal}
+            onHide={this.handleFeedback}
+            page={this.props.page}
+          />
+        }
         <div className='left'>
           <h3 className='inter-display-medium f-s-13 lh-16 grey-7C7'>Let us know how we did, <br/> and help to improve our product :)</h3>
         </div>
@@ -83,7 +102,6 @@ class FeedbackForm extends BaseReactComponent {
         <span
           className='left-side'
           onMouseOver={(e) =>
-            // {console.log('e',e.currentTarget)}
             (e.currentTarget.children[0].src = downBlack)
           }
           onMouseLeave={(e) =>
@@ -93,6 +111,7 @@ class FeedbackForm extends BaseReactComponent {
             <Image
               src={downGrey}
               className="icons"
+              onClick={()=>this.handleFeedback(FeedbackType.NEGATIVE)}
             />
           </span>
           <span
@@ -107,6 +126,7 @@ class FeedbackForm extends BaseReactComponent {
             <Image
               src={upGrey}
               className="icons"
+              onClick={()=>this.handleFeedback(FeedbackType.POSITIVE)}
             />
           </span>
         </div>

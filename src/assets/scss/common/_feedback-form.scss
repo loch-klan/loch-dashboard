@@ -79,3 +79,49 @@
     }
   }
 }
+
+.feedback-modal{
+  .modal-content{
+    .modal-body{
+      padding: 0 4.2rem 4.2rem;
+      text-align: center;
+      form{
+        text-align: initial;
+        margin-top: 4rem;
+        label{
+          color: $grey-313;
+        }
+      }
+      .form-control{
+        padding: 1.2rem 1.6rem;
+        min-height: 4.3rem;
+        border:0.1rem solid $grey-D4D;
+      }
+      .form-control:hover{
+          border:0.1rem solid $black-191;
+      }
+      .is-valid{
+          box-shadow: none;
+      }
+      .done{
+          box-shadow: 0 0 0.4rem  $grey-D3D;
+          border:0.1rem solid $black-191;
+      }
+      .button-wrapper{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 3.2rem;
+        .btn{
+          padding: 1.8rem 2.8rem;
+        }
+        .primary-btn{
+          &:hover{
+            background-color: transparent;
+            color: $black-191;
+          }
+        }
+      }
+    }
+  }
+}
