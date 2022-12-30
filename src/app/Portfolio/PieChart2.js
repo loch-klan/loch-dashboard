@@ -470,9 +470,10 @@ class PieChart2 extends BaseReactComponent {
     // console.log('pieSectionDataEnabled',pieSectionDataEnabled);
     return (
       <div
-        className={`portfolio-over-container ${
-          Object.keys(pieSectionDataEnabled).length > 0 ? "p-b-20" : "p-b-20"
-        }`}
+        className={`portfolio-over-container ${Object.keys(pieSectionDataEnabled).length > 0 ? "p-b-20" : "p-b-20"
+          }`}
+        style={{paddingBottom: `${this.state.isChainToggle ? "14.6rem" : "2rem"
+          }`}}
       >
         {/* // <div className={`portfolio-over-container m-b-32`} > */}
         <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
@@ -670,7 +671,7 @@ class PieChart2 extends BaseReactComponent {
                     </div>
                   </div>
                   {/* Balance sheet */}
-                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  {/* <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     Balance sheet
                   </h2>
                   <div style={{}} className="balance-sheet-card">
@@ -762,7 +763,7 @@ class PieChart2 extends BaseReactComponent {
                         $54,769.00
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </Col>
             </Row>
