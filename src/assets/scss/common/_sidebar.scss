@@ -44,6 +44,9 @@
               padding: 1.2rem 0rem;
               border-radius: 8px;
               @include font($grey-969, "Inter-SemiBold", 1rem, 600, 12px);
+              &:active{
+                border: none;
+              }
             }
             .dropdown-menu {
               &.show{
