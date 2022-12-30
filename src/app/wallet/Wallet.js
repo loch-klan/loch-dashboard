@@ -4,10 +4,8 @@ import { connect } from "react-redux";
 import WalletCard from "./WalletCard";
 import PageHeader from "../common/PageHeader";
 import CoinBadges from "./../common/CoinBadges";
-// import sort from "../../image/sort-1.png";
 import { getAllWalletListApi, getAllWalletApi } from "./Api";
 import { getAllCoins } from "../onboarding/Api.js";
-// import Slider from "react-slick";
 import {
   SEARCH_BY_CHAIN_IN,
   SORT_BY_NAME,
@@ -16,10 +14,8 @@ import {
 } from "../../utils/Constant.js";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import netWorthIcon from "../../assets/images/icons/net-worth.svg";
 import sortByIcon from '../../assets/images/icons/triangle-down.svg'
-// import { getCoinRate } from "../Portfolio/Api.js";
-// import noDataImage from "../../image/no-data.png";
-// import lochClean from "../../assets/images/LochClean.gif";
 import { Image } from "react-bootstrap";
 import Loading from "../common/Loading";
 import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet, WalletsPage } from "../../utils/AnalyticsFunctions";
@@ -244,16 +240,15 @@ class Wallet extends Component {
             subTitle="Manage all your wallets right here"
             btnText="Add wallet"
             handleBtn={this.handleAddModal}
-            showData={totalWalletAmt}
-            isLoading={isLoading}
+            // showData={totalWalletAmt}
+            // isLoading={isLoading}
           />
           <CoinBadges
             activeBadge={this.state.activeBadge}
             chainList={this.props.OnboardingState.coinsList}
             handleFunction={this.handleFunction}
           />
-          <div className="m-b-22 sortby-section">
-
+          <div className="m-b-16 sortby-section">
             <div className="dropdown-section">
             <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
               Sort by
@@ -278,11 +273,19 @@ class Wallet extends Component {
                 );
               })}
             </div>
-            {/* {
-              !isLoading &&
-              <span className="inter-display-medium f-s-20 lh-24 m-r-24">{numToCurrency(totalWalletAmt)} <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA">{CurrencyType(true)}</span> </span>
-            } */}
           </div>
+          {
+            walletList.length > 0 &&
+            <div className="net-worth-wrapper">
+            <div className="left">
+              <Image src={netWorthIcon} className="net-worth-icon" />
+              <h3 className="inter-display-medium f-s-20 lh-24 ">Total net worth</h3>
+            </div>
+            <div className="right">
+            <h3 className="space-grotesk-medium f-s-24 lh-29">{CurrencyType(false)} {numToCurrency(totalWalletAmt)} <span className="inter-display-semibold f-s-10 lh-12 grey-ADA va-m">{CurrencyType(true)}</span></h3>
+            </div>
+          </div>
+          }
 
           <div className="cards">
             {isLoading === true ? (
