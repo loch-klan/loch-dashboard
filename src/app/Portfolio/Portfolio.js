@@ -388,17 +388,7 @@ class Portfolio extends BaseReactComponent {
           },
           to: {
             address: row.to_wallet.address,
-            metaData: userWalletList && userWalletList.map((wallet)=>{
-              if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
-                return {
-                  wallet_metaData: wallet.wallet_metadata,
-                  displayAddress: wallet.displayAddress
-                }
-                } else {
-                  return null
-                }
-              }),
+            metaData: walletToData,
             wallet_metaData: {
               symbol: row.to_wallet.wallet_metadata
                 ? row.to_wallet.wallet_metadata.symbol
@@ -475,10 +465,10 @@ class Portfolio extends BaseReactComponent {
                                 : rowData.from.address
                             }
                           >
-                            {rowData.from.metaData[0]?.wallet_metaData ? (
+                            {rowData.from.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.from.metaData[0]?.wallet_metaData?.symbol ||
+                                  rowData.from.metaData?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon"
@@ -534,8 +524,8 @@ class Portfolio extends BaseReactComponent {
                                 <span>{rowData.from.wallet_metaData.text}</span>
                               )
                             ) :
-                            rowData.from.metaData[0]?.displayAddress ?
-                            <span>{rowData.from.metaData[0]?.displayAddress}</span>
+                            rowData.from.metaData?.displayAddress ?
+                            <span>{rowData.from.metaData?.displayAddress}</span>
                             :  (
                               <Image
                                 src={unrecognizedIcon}
@@ -601,10 +591,10 @@ class Portfolio extends BaseReactComponent {
                                 : rowData.to.address
                             }
                           >
-                            {rowData.to.metaData[0]?.wallet_metaData ? (
+                            {rowData.to.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.to.metaData[0]?.wallet_metaData?.symbol ||
+                                  rowData.to.metaData?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon heyyyy"
@@ -646,8 +636,8 @@ class Portfolio extends BaseReactComponent {
                                 <span>{rowData.to.wallet_metaData.text}</span>
                               )
                             ) :
-                            rowData.to.metaData[0]?.displayAddress ?
-                            <span>{rowData.to.metaData[0]?.displayAddress}</span>
+                            rowData.to.metaData?.displayAddress ?
+                            <span>{rowData.to.metaData?.displayAddress}</span>
                             : (
                               <Image
                                 src={unrecognizedIcon}

@@ -52,7 +52,6 @@ class FeedbackModal extends BaseReactComponent {
           <Form>
             <FormElement
               valueLink={this.linkState(this,"feedback")}
-              label="Feedback"
               control={{
                 type: CustomTextControl,
                 settings: {
