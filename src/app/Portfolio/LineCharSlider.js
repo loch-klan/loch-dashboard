@@ -36,7 +36,7 @@ class LineChartSlider extends BaseReactComponent {
       assetValueData: props.assetValueData,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
-      title: "Year",
+      title: "Month",
       titleY: CurrencyType(),
       selectedEvents: [],
       selectedValue: null,
@@ -50,7 +50,7 @@ class LineChartSlider extends BaseReactComponent {
     if (prevProps.isUpdate !== this.props.isUpdate) {
       // console.log("Something update");
       this.setState({
-        title: "Year",
+        title: "Month",
         selectedEvents: [],
         steps: 1,
       });
