@@ -266,23 +266,31 @@ class TransactionHistoryPage extends BaseReactComponent {
         const { table, totalPage, totalCount, currentPage, assetPriceList } = this.props.intelligenceState;
         const {walletList, currency} = this.state;
         let tableData = table && table.map((row) => {
+          let walletFromData = null;
+          let walletToData = null;
+          walletList && walletList.map((wallet)=>{
+            if(
+              wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
+                walletFromData = {
+                  wallet_metaData: wallet.wallet_metadata,
+                  displayAddress: wallet.displayAddress
+                }
+              }
+              if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
+                walletToData = {
+                  wallet_metaData: wallet.wallet_metadata,
+                  displayAddress: wallet.displayAddress
+                }
+              }
+            })
+
             return {
                 time: row.timestamp,
                 from: {
                     address: row.from_wallet.address,
-                    metaData: walletList && walletList.map((wallet)=>{
-                      if(
-                        wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
-                        wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
-                          return {
-                            wallet_metaData: wallet.wallet_metadata,
-                            displayAddress: wallet.displayAddress
-                          }
-                        } else {
-                          return null
-                        }
-                      }),
-                    // wallet_metaData: row.from_wallet.wallet_metaData
+                    metaData: walletFromData,
                     wallet_metaData: {
                         symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
                         text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
@@ -291,17 +299,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 to: {
                     address: row.to_wallet.address,
                     // wallet_metaData: row.to_wallet.wallet_metaData,
-                    metaData: walletList && walletList.map((wallet)=>{
-                      if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
-                      wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
-                        return {
-                          wallet_metaData: wallet.wallet_metadata,
-                          displayAddress: wallet.displayAddress
-                        }
-                        } else {
-                          return null
-                        }
-                      }),
+                    metaData: walletToData,
                     wallet_metaData: {
                         symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
                         text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
@@ -332,7 +330,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 method: row.method
             }
         })
-// console.log('tableData',tableData);
+console.log('tableData',tableData);
         const columnList = [
             {
                 labelName:
@@ -378,10 +376,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 : rowData.from.address
                             }
                           >
-                            {rowData.from.metaData[0]?.wallet_metaData ? (
+                            {rowData.from.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.from.metaData[0]?.wallet_metaData?.symbol ||
+                                  rowData.from.metaData?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon"
@@ -421,8 +419,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 <span>{rowData.from.wallet_metaData.text}</span>
                               )
                             ) :
-                            rowData.from.metaData[0]?.displayAddress ?
-                            <span>{rowData.from.metaData[0]?.displayAddress}</span>
+                            rowData.from.metaData?.displayAddress ?
+                            <span>{rowData.from.metaData?.displayAddress}</span>
                             : (
                               <Image
                                 src={unrecognizedIcon}
@@ -473,10 +471,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 : rowData.to.address
                             }
                           >
-                            {rowData.to.metaData[0]?.wallet_metaData ? (
+                            {rowData.to.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.to.metaData[0]?.wallet_metaData?.symbol ||
+                                  rowData.to.metaData?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon"
@@ -516,8 +514,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                                 <span>{rowData.to.wallet_metaData.text}</span>
                               )
                             ) :
-                            rowData.to.metaData[0]?.displayAddress ?
-                            <span>{rowData.to.metaData[0]?.displayAddress}</span>
+                            rowData.to.metaData?.displayAddress ?
+                            <span>{rowData.to.metaData?.displayAddress}</span>
                             : (
                               <Image
                                 src={unrecognizedIcon}

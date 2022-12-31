@@ -171,7 +171,7 @@ class BarGraphSection extends Component {
       handleSelect
     } = this.state;
     const { marginBottom, comingSoon, coinsList, activeFooter, className = "", handleClick } = this.props;
-     console.log("bar gr state digit", digit);
+    //  console.log("bar gr state digit", digit);
     // const digit =
     //   data && ("" + Math.round(Math.max(...data.datasets[0].data))).length;
     // console.log("bar digit", digit, Math.max(...data.datasets[0].data));

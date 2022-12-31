@@ -71,6 +71,7 @@ class Intelligence extends Component {
     //     }
     //   })
     // }
+    this.setState({graphValue: ""})
     const today = moment().unix();
     if (option == "Max") {
       getProfitAndLossApi(this, false, false, selectedChains);
