@@ -42,7 +42,7 @@ class AssetValueGraph extends Component {
 
   }
 
-  getGraphData = (groupByValue = GROUP_BY_Month) => {
+  getGraphData = (groupByValue = GROUP_BY_YEAR) => {
     this.setState({ graphLoading: true });
     let addressList = [];
     this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
