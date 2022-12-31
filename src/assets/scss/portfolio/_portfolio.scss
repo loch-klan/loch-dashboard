@@ -653,7 +653,8 @@ position: relative;
 
 .coin-hover-display {
     width: max-content;
-    margin-top: 2rem;
+    // width: 100%;
+    margin-top: 4rem;
     display: flex;
     padding: 1.25rem;
     justify-content: space-between;
@@ -853,7 +854,7 @@ position: relative;
                       margin-top: 1.6rem;
                       margin-bottom: 2.8rem;
                       user-select: none;
-                      cursor: pointer;
+                    //   cursor: pointer;
                       position: relative;
                     
 
@@ -870,7 +871,7 @@ position: relative;
                       z-index: 2;
 
                       .chain-content{
-                        max-height: 25.5rem;
+                        max-height: 25rem;
                         overflow-y: scroll;
                         width: 100%;
                         
@@ -898,7 +899,8 @@ position: relative;
                           display: flex;
                           align-items: center;
                           justify-content: space-between;
-                          padding: 1rem 1.6rem 1rem 0rem;
+                          padding: 1rem 0rem;
+                          margin-right: 1.6rem;
                           border-top: 1px solid rgba(229, 229, 230, 0.5);
                         
                           span img{

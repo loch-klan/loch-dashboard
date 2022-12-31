@@ -43,7 +43,7 @@ export default function WelcomeCard(props) {
     let percent = props.assetTotal && ((difference/props.assetTotal)*100).toFixed(2);
     return (
       <div className="welcome-card-section">
-        <div className="welcome-card" style={{ marginBottom: "0rem"}}>
+        <div className="welcome-card">
           <div className="welcome-card-upper-section">
             <div className="welcome-section-left">
               <h1 className="inter-display-medium f-s-24 lh-30 black-191 welcome-title">
@@ -52,7 +52,7 @@ export default function WelcomeCard(props) {
               <p className="inter-display-medium">
                 Add your wallet address(es) to receive
               </p>
-              <p className="inter-display-medium">
+              <p className="inter-display-medium m-b-24">
                 personalized financial intelligence immediately.
               </p>
             </div>
@@ -82,8 +82,9 @@ export default function WelcomeCard(props) {
               </div>
             </div>
           </div>
-          {/* <div className="welcome-btn">
-
+          <div className="welcome-btn">
+            {/* <Button className='secondary-btn' onClick={props.handleManage} >Manage wallets</Button>
+                        <Button className="primary-btn" onClick={props.handleAddModal}>Add wallet address</Button> */}
             <Button
               className="inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet"
               onClick={handleManageClick}
@@ -110,7 +111,7 @@ export default function WelcomeCard(props) {
               />
               Add wallet address
             </Button>
-          </div> */}
+          </div>
         </div>
       </div>
     );

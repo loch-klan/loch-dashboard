@@ -19,7 +19,7 @@ export const getAllCoins = (handleShareLinkUser = null) => {
                     type: COINS_LIST,
                     payload: coinsList
                 });
-                handleShareLinkUser && handleShareLinkUser()
+              handleShareLinkUser && handleShareLinkUser()
             })
             .catch((err) => {
                 console.log("Catch", err);

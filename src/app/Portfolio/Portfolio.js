@@ -336,7 +336,7 @@ this.setState({graphLoading: true})
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-    console.log("chain portfolio", this.props.portfolioState)
+
     let tableData =
       table &&
       table.map((row) => {
@@ -819,7 +819,7 @@ this.setState({graphLoading: true})
                   </div> */}
                   <div
                     className="portfolio-section"
-                    style={{ minWidth: "85rem", overflow: "hidden" }}
+                    style={{ minWidth: "85rem" }}
                   >
                     <PieChart2
                       userWalletData={
@@ -835,7 +835,17 @@ this.setState({graphLoading: true})
                         this.props.portfolioState.chainPortfolio &&
                         Object.keys(this.props.portfolioState.chainPortfolio)
                           .length > 0
-                          ? Object.values(this.props.portfolioState.chainPortfolio)
+                          ? Object.values(
+                              this.props.portfolioState.chainPortfolio
+                            )
+                          : null
+                      }
+                      allCoinList={
+                        this.props.OnboardingState &&
+                        this.props.OnboardingState.coinsList &&
+                        Object.keys(this.props.OnboardingState.coinsList)
+                          .length > 0
+                          ? Object.values(this.props.OnboardingState.coinsList)
                           : null
                       }
                       assetTotal={
