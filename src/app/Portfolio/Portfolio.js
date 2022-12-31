@@ -338,22 +338,30 @@ this.setState({graphLoading: true})
     let tableData =
       table &&
       table.map((row) => {
+        let walletFromData = null;
+        let walletToData = null;
+        userWalletList && userWalletList.map((wallet)=>{
+          if(
+            wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
+            wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
+              walletFromData = {
+                wallet_metaData: wallet.wallet_metadata,
+                displayAddress: wallet.displayAddress
+              }
+            }
+            if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
+                walletToData = {
+                  wallet_metaData: wallet.wallet_metadata,
+                  displayAddress: wallet.displayAddress
+                }
+              }
+          })
         return {
           time: row.timestamp,
           from: {
             address: row.from_wallet.address,
-            metaData: userWalletList && userWalletList.map((wallet)=>{
-              if(
-                wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
-                wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
-                  return {
-                    wallet_metaData: wallet.wallet_metadata,
-                    displayAddress: wallet.displayAddress
-                  }
-                } else {
-                  return null
-                }
-              }),
+            metaData: walletFromData,
             wallet_metaData: {
               symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
               text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
@@ -361,17 +369,7 @@ this.setState({graphLoading: true})
           },
           to: {
             address: row.to_wallet.address,
-            metaData: userWalletList && userWalletList.map((wallet)=>{
-              if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
-                return {
-                  wallet_metaData: wallet.wallet_metadata,
-                  displayAddress: wallet.displayAddress
-                }
-                } else {
-                  return null
-                }
-              }),
+            metaData: walletToData,
             wallet_metaData: {
               symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
               text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
@@ -381,15 +379,13 @@ this.setState({graphLoading: true})
             code: row.asset.code,
             symbol: row.asset.symbol,
           },
-
-                usdValueToday: {
-                    value: row.asset.value,
-                    id: row.asset.id,
-                },
-                method: row.method
-            }
+          usdValueToday: {
+            value: row.asset.value,
+            id: row.asset.id,
+          },
+          method: row.method
+        }
         })
-
 
         const columnList = [
             {
@@ -444,10 +440,10 @@ this.setState({graphLoading: true})
                                 : rowData.from.address
                             }
                           >
-                            {rowData.from.metaData[0]?.wallet_metaData ? (
+                            {rowData.from.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.from.metaData[0]?.wallet_metaData?.symbol ||
+                                  rowData.from.metaData?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon"
@@ -503,8 +499,8 @@ this.setState({graphLoading: true})
                                 <span>{rowData.from.wallet_metaData.text}</span>
                               )
                             ) :
-                            rowData.from.metaData[0]?.displayAddress ?
-                            <span>{rowData.from.metaData[0]?.displayAddress}</span>
+                            rowData.from.metaData?.displayAddress ?
+                            <span>{rowData.from.metaData?.displayAddress}</span>
                             :  (
                               <Image
                                 src={unrecognizedIcon}
@@ -570,10 +566,10 @@ this.setState({graphLoading: true})
                                 : rowData.to.address
                             }
                           >
-                            {rowData.to.metaData[0]?.wallet_metaData ? (
+                            {rowData.to.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.to.metaData[0]?.wallet_metaData?.symbol ||
+                                  rowData.to.metaData?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon heyyyy"
@@ -615,8 +611,8 @@ this.setState({graphLoading: true})
                                 <span>{rowData.to.wallet_metaData.text}</span>
                               )
                             ) :
-                            rowData.to.metaData[0]?.displayAddress ?
-                            <span>{rowData.to.metaData[0]?.displayAddress}</span>
+                            rowData.to.metaData?.displayAddress ?
+                            <span>{rowData.to.metaData?.displayAddress}</span>
                             : (
                               <Image
                                 src={unrecognizedIcon}
