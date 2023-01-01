@@ -744,7 +744,7 @@ this.setState({graphLoading: true})
               <Loading />
             ) : (
               <div className="portfolio-page-section">
-                <div className="portfolio-container page">
+                  <div className="portfolio-container page" style={{ overflow : "visible"}}>
                   <div className="portfolio-section">
                     <WelcomeCard
                       yesterdayBalance={this.state.yesterdayBalance}

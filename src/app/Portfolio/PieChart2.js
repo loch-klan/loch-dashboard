@@ -237,7 +237,7 @@ class PieChart2 extends BaseReactComponent {
     }
 
   render() {
-    // console.log("chain list", this.state.chainList);
+    // console.log("chain walletr", this.props.userWalletData);
     let self = this;
     let chartOptions = {
       chart: {
@@ -481,20 +481,63 @@ class PieChart2 extends BaseReactComponent {
         },
       ],
     };
-    let chainList =
+    console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
+    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let chainList = [];
+    let uniqueAddress = [];
+    let uniqueList =
       this.state.selectedSection[0] && this.state.selectedSection[0].chain;
-    chainList =
-      chainList &&
-      chainList.sort((a, b) => {
-        return parseFloat(b.assetCount) - parseFloat(a.assetCount);
+    
+    uniqueList && uniqueList.map((chain) => {
+      let total = 0;
+      uniqueList.map((item) => {
+        
+        if (chain.address === item.address && !uniqueAddress.includes(chain.address)) {
+          total += item.assetCount;
+        }
       });
+      let displayAddress = "";
+      UserWallet && UserWallet.map((e) => {
+        if (e.address === chain.address) {
+          displayAddress = e.displayAddress;
+        }
+      });
+      !uniqueAddress.includes(chain.address) &&
+        chainList.push({
+          address: chain.address,
+          assetCount: chain.assetCount,
+          chainCode: chain.chainCode,
+          chainName: chain.chainName,
+          chainSymbol: chain.chainSymbol,
+          totalAssetCount: total,
+          displayAddress: displayAddress,
+        });
+       !uniqueAddress.includes(chain.address) && uniqueAddress.push(chain.address)
+
+    });
+   
+    // chainList =
+    //   chainList &&
+    //   chainList.sort((a, b) => {
+    //     return parseFloat(b.assetCount) - parseFloat(a.assetCount);
+    //   });
+     chainList =
+       chainList &&
+       chainList.sort((a, b) => {
+         return parseFloat(b.totalAssetCount) - parseFloat(a.totalAssetCount);
+       });
     let totalCount = 0;
+    // chainList &&
+    //   chainList.slice(2).map((data) => {
+    //     totalCount += data.assetCount;
+    //   });
     chainList &&
       chainList.slice(2).map((data) => {
-        totalCount += data.assetCount;
+        totalCount += data.totalAssetCount;
       });
     const { pieSectionDataEnabled, currency } = this.state;
-    // console.log('pieSectionDataEnabled',pieSectionDataEnabled);
+    // console.log("chainlist", chainList);
+    console.log("uniquelist", uniqueList);
     return (
       <div
         className={`portfolio-over-container ${
@@ -511,7 +554,7 @@ class PieChart2 extends BaseReactComponent {
         {Object.keys(this.state.assetData).length > 0 ? (
           <>
             <Row style={{ width: "100%" }}>
-              <Col md={7} className="piechart-column" style={{ padding: 0 }}>
+              <Col md={7} className="piechart-column" style={{ padding: 0, zIndex:2 }}>
                 <div className="chart-section">
                   <HighchartsReact
                     highcharts={Highcharts}
@@ -597,7 +640,8 @@ class PieChart2 extends BaseReactComponent {
                         )}
                     </div>
                     {chainList &&
-                      chainList.slice(0, 3).map((data, index) => {
+                        chainList.slice(0, 3).map((data, index) => {
+                        console.log(data)
                         let isQuote =
                           this.props.portfolioState.coinRateList[
                             this.state.selectedSection[0].assetId
@@ -613,22 +657,22 @@ class PieChart2 extends BaseReactComponent {
                                     isIcon={false}
                                     isInfo={true}
                                     isText={true}
-                                    text={data.address}
+                                    text={data.displayAddress}
                                   >
                                     <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
-                                      {data.address}
+                                      {data.displayAddress}
                                     </span>
                                   </CustomOverlay>
                                   <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
                                     {(
-                                      (100 * data.assetCount) /
+                                      (100 * data.totalAssetCount) /
                                       pieSectionDataEnabled.count
                                     ).toFixed(2) + "%"}
                                   </span>
                                 </div>
                                 <div className="coin-hover-display-text2-lower">
                                   <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
-                                    {numToCurrency(data.assetCount)}
+                                    {numToCurrency(data.totalAssetCount)}
                                   </span>
 
                                   <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
@@ -639,7 +683,7 @@ class PieChart2 extends BaseReactComponent {
                                     {isQuote == null
                                       ? DEFAULT_PRICE
                                       : numToCurrency(
-                                          data.assetCount *
+                                          data.totalAssetCount *
                                             isQuote?.USD.price *
                                             currency?.rate
                                         )}
@@ -663,7 +707,7 @@ class PieChart2 extends BaseReactComponent {
                                     isIcon={false}
                                     isInfo={true}
                                     isText={true}
-                                    text={data.address}
+                                    text={data.displayAddress}
                                   >
                                     <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
                                       Other
@@ -706,7 +750,7 @@ class PieChart2 extends BaseReactComponent {
                   </div>
                 ) : null}
               </Col>
-              <Col md={5} style={{ marginTop: "-2rem", padding: 0 }}>
+              <Col md={5} style={{ marginTop: "-2rem", padding: 0, zIndex: 1 }}>
                 <div>
                   {/* Chains */}
                   <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
@@ -718,7 +762,7 @@ class PieChart2 extends BaseReactComponent {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
-                        cursor: "pointer"
+                        cursor: "pointer",
                       }}
                       onClick={this.toggleChain}
                     >
@@ -742,10 +786,14 @@ class PieChart2 extends BaseReactComponent {
                             height: "2.6rem",
                             borderRadius: "6px",
                             objectFit: "cover",
-                            border: `1px solid ${lightenDarkenColor(
-                              this.state.chainList[0]?.color,
-                              -0.15
-                            )}`,
+                            border: `1px solid ${
+                              this.state.chainList
+                                ? lightenDarkenColor(
+                                    this.state.chainList[0]?.color,
+                                    -0.15
+                                  )
+                                : "transparent"
+                            }`,
                           }}
                         />
                         <Image
@@ -761,10 +809,14 @@ class PieChart2 extends BaseReactComponent {
                             borderRadius: "6px",
                             zIndex: 2,
                             objectFit: "cover",
-                            border: `1px solid ${lightenDarkenColor(
-                              this.state.chainList[1]?.color,
-                              -0.15
-                            )}`,
+                            border: `1px solid ${
+                              this.state.chainList
+                                ? lightenDarkenColor(
+                                    this.state.chainList[1]?.color,
+                                    -0.15
+                                  )
+                                : "transparent"
+                            }`,
                           }}
                         />
                         <Image
@@ -781,13 +833,20 @@ class PieChart2 extends BaseReactComponent {
                             borderRadius: "6px",
                             marginRight: "1.5rem",
                             objectFit: "cover",
-                            border: `1px solid ${lightenDarkenColor(
-                              this.state.chainList[2]?.color,
-                              -0.15
-                            )}`,
+                            border: `1px solid ${
+                              this.state.chainList
+                                ? lightenDarkenColor(
+                                    this.state.chainList[2]?.color,
+                                    -0.15
+                                  )
+                                : "transparent"
+                            }`,
                           }}
                         />
-                        {this.state.chainList && this.state.chainList.length}{" "}
+                        {this.state.chainList &&
+                        this.state.chainList?.length > 10
+                          ? "10+"
+                          : this.state.chainList?.length}{" "}
                         Chains
                       </div>
                       <Image
