@@ -597,7 +597,7 @@ console.log('opt',opt);
             // console.log("e", e)
             // console.log("min", e.min, "max", e.max);
             let diff = Math.round(e.max - e.min);
-// console.log("dif", diff)
+            // console.log("dif", diff)
             if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
               parent.setState({
                 plotLineHide: 1,
@@ -626,14 +626,13 @@ console.log('opt',opt);
               //     // plotLineHide: 3,
               //   });
               // }
-                if (diff > 20 && parent.state.steps !== 3) {
-                  // console.log("greater than 20");
-                  parent.setState({
-                    steps: 3,
-                  });
-                }
+              if (diff > 20 && parent.state.steps !== 3) {
+                // console.log("greater than 20");
+                parent.setState({
+                  steps: 3,
+                });
+              }
             }
-
           },
         },
 
@@ -686,13 +685,14 @@ console.log('opt',opt);
         title: {
           text: null,
         },
+        showLastLabel: true,
         opposite: false,
         offset: 70,
         gridLineDashStyle: "longdash",
         labels: {
           formatter: function () {
             // return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
-            let val = Number(noExponents(this.value).toLocaleString('en-US'))
+            let val = Number(noExponents(this.value).toLocaleString("en-US"));
             return CurrencyType(false) + numToCurrency(val);
           },
           x: 0,

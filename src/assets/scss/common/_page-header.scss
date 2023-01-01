@@ -27,6 +27,14 @@
                         cursor : pointer;
                         a{
                             color:$grey-ADA;
+
+                            &:hover{
+                                color: $primary;
+
+                                img{
+                                    filter: brightness(0.5);
+                                }
+                            }
                         }
                     }
                     .active{
@@ -73,6 +81,10 @@
             .view-more{
               cursor: pointer;
               @include font(#4A4B4D, "Inter-SemiBold", 1.6rem, 600, 19px);
+
+              &:hover{
+                color: $primary
+              }
             }
         }
         .history-header{

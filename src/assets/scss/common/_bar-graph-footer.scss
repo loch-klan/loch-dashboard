@@ -28,6 +28,10 @@
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
     }
 
+    .timeBadge:hover{
+         border: 0.15rem solid $primary;
+    }
+
     .timeBadgeWrapper{
         display:flex;
         flex-wrap:wrap;

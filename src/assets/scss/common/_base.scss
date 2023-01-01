@@ -1542,6 +1542,14 @@ form {
           .rotateUp {
             transform: rotate(180deg);
             margin-left: 1rem;
+            }
+             &:hover{
+               span{
+                        color:$primary;
+                    }
+                    img{
+                        filter: brightness(0.5);
+                    }
           }
 
           .rotateDown {

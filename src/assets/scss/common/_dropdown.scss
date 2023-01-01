@@ -42,6 +42,10 @@
   min-height: 4rem;
   user-select: none;
 
+  &:hover{
+     background-color: rgba(229, 229, 230, 0.35);
+  }
+
   &.lineChart{
     position: relative;
     margin: 0;
@@ -51,6 +55,12 @@
     border-radius: 0.8rem;
     color: #19191A;
     user-select: none;
+  }
+
+   &.lineChart:hover{
+
+     border: 0.1rem solid $black-191;
+
   }
 
   .dropdown-content {
