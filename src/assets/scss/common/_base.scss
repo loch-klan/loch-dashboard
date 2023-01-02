@@ -597,6 +597,10 @@ form {
       &.custom-select__control--is-selected {
         box-shadow: none;
       }
+
+      &:hover{
+         border: 1px solid $primary;
+      }
     }
 
     .css-4ljt47-MenuList {
@@ -1480,7 +1484,16 @@ form {
       }
       &.active-pointer{
         cursor: pointer;
+
+         &:hover{
+       color: $grey-636;
+
+        img{
+            filter: opacity(0.5);
+        }
       }
+      }
+    
     }
   }
 }

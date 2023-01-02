@@ -1013,7 +1013,9 @@ console.log('opt',opt);
                             >
                               <h5 className="inter-display-bold f-s-13 lh-16 black-191">
                                 <Image src={DoubleArrow} />
-                                Transfer
+                                {event.text === "from"
+                                  ? "Received"
+                                  : "Sent"}
                               </h5>
 
                               <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
