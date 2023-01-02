@@ -658,6 +658,7 @@ console.log('opt',opt);
           width: 1,
           color: "#B0B1B3",
           dashStyle: "Dash",
+          cursor:"pointer"
         },
         scrollbar: {
           enabled: true,
@@ -731,6 +732,7 @@ console.log('opt',opt);
         padding: 0,
         shadow: false,
         hideDelay: 0,
+        
 
         formatter: function () {
           let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map(
