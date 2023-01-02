@@ -27,6 +27,9 @@
             background-color: $yellow-F5E ;
             border: 0.1rem solid $black-191;
         }
+        .badge-name:hover{
+          border: 0.1rem solid $black-191;
+        }
     }
 
     .dropdown {
@@ -59,6 +62,10 @@
               box-shadow: -25px 0px 24px 20px $grey-F2F !important;
             }
         }
+
+         .dropdown-toggle:hover{
+           border: 0.1rem solid $black-191;
+         }
     }
 }
 .coinchips::-webkit-scrollbar,.badge-list::-webkit-scrollbar{

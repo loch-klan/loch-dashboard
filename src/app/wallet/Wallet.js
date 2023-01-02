@@ -282,7 +282,7 @@ class Wallet extends Component {
               <h3 className="inter-display-medium f-s-20 lh-24 ">Total net worth</h3>
             </div>
             <div className="right">
-            <h3 className="space-grotesk-medium f-s-24 lh-29">{CurrencyType(false)} {numToCurrency(totalWalletAmt)} <span className="inter-display-semibold f-s-10 lh-12 grey-ADA va-m">{CurrencyType(true)}</span></h3>
+            <h3 className="space-grotesk-medium f-s-24 lh-29">{CurrencyType(false)}{numToCurrency(totalWalletAmt)} <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA va-m">{CurrencyType(true)}</span></h3>
             </div>
           </div>
           }

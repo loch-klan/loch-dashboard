@@ -236,7 +236,7 @@ class CustomDropdown extends Component {
   render() {
     return (
       <div
-        className={`custom-dropdown ${
+        className={`custom-dropdown cp ${
           this.props.isLineChart ? "lineChart" : ""
         }`}
         ref={this.dropDownRef}

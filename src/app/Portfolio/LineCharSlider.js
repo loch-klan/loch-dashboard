@@ -36,7 +36,7 @@ class LineChartSlider extends BaseReactComponent {
       assetValueData: props.assetValueData,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
-      title: "Year",
+      title: "Month",
       titleY: CurrencyType(),
       selectedEvents: [],
       selectedValue: null,
@@ -50,7 +50,7 @@ class LineChartSlider extends BaseReactComponent {
     if (prevProps.isUpdate !== this.props.isUpdate) {
       // console.log("Something update");
       this.setState({
-        title: "Year",
+        title: "Month",
         selectedEvents: [],
         steps: 1,
       });
@@ -194,11 +194,10 @@ console.log('opt',opt);
       // console.log("l", timestampList);
     } else if (this.state.title === "Month" && timestampList.length != 0) {
       const endMonth = 12 - timestampList.length;
+
       const currentMonth = moment(timestampList[0]);
-      // const endMonth = 12 - 5;
-      // const currentMonth = moment.unix(1647801000);
       let months = [];
-      // console.log(currentMonth);
+
       for (let month = 0; month < endMonth; month++) {
         const month_value = currentMonth
           .subtract(1, "months")
@@ -206,9 +205,8 @@ console.log('opt',opt);
         months.push(month_value);
       }
 
-      timestampList = [...months, ...timestampList];
-      // console.log("Month update", months);
-      // console.log("l", timestampList);
+      timestampList = [...months.reverse(), ...timestampList];
+     
     } else if (this.state.title === "Day" && timestampList.length != 0) {
       let dates = [];
       const endDay = 30 - timestampList.length;
@@ -491,7 +489,7 @@ console.log('opt',opt);
       }
     });
 
-    // console.log("islast", isLast);
+    console.log("category", categories);
     let updatedPlotLine = [];
     let count = 0;
     if (
@@ -597,7 +595,7 @@ console.log('opt',opt);
             // console.log("e", e)
             // console.log("min", e.min, "max", e.max);
             let diff = Math.round(e.max - e.min);
-// console.log("dif", diff)
+            // console.log("dif", diff)
             if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
               parent.setState({
                 plotLineHide: 1,
@@ -626,14 +624,13 @@ console.log('opt',opt);
               //     // plotLineHide: 3,
               //   });
               // }
-                if (diff > 20 && parent.state.steps !== 3) {
-                  // console.log("greater than 20");
-                  parent.setState({
-                    steps: 3,
-                  });
-                }
+              if (diff > 20 && parent.state.steps !== 3) {
+                // console.log("greater than 20");
+                parent.setState({
+                  steps: 3,
+                });
+              }
             }
-
           },
         },
 
@@ -661,6 +658,7 @@ console.log('opt',opt);
           width: 1,
           color: "#B0B1B3",
           dashStyle: "Dash",
+          cursor:"pointer"
         },
         scrollbar: {
           enabled: true,
@@ -686,13 +684,14 @@ console.log('opt',opt);
         title: {
           text: null,
         },
+        showLastLabel: true,
         opposite: false,
         offset: 70,
         gridLineDashStyle: "longdash",
         labels: {
           formatter: function () {
             // return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
-            let val = Number(noExponents(this.value).toLocaleString('en-US'))
+            let val = Number(noExponents(this.value).toLocaleString("en-US"));
             return CurrencyType(false) + numToCurrency(val);
           },
           x: 0,
@@ -733,6 +732,7 @@ console.log('opt',opt);
         padding: 0,
         shadow: false,
         hideDelay: 0,
+        
 
         formatter: function () {
           let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map(
@@ -807,6 +807,7 @@ console.log('opt',opt);
       series: SelectedSeriesData,
       plotOptions: {
         series: {
+          cursor: "pointer",
           fillOpacity: 0,
           point: {
             events: {
@@ -1012,7 +1013,9 @@ console.log('opt',opt);
                             >
                               <h5 className="inter-display-bold f-s-13 lh-16 black-191">
                                 <Image src={DoubleArrow} />
-                                Transfer
+                                {event.text === "from"
+                                  ? "Received"
+                                  : "Sent"}
                               </h5>
 
                               <p className="inter-display-medium f-s-13 lh-16 grey-B4D">

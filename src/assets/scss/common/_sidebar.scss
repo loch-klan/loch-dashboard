@@ -41,10 +41,17 @@
             // margin-bottom: 1.4rem;
             #currency-dropdown{
               background: transparent;
-              // border: 1px solid $grey-E5E;
-              padding: 1.2rem 0rem;
+              border: 1px solid transparent;
+              padding: 1.2rem;
               border-radius: 8px;
               @include font($grey-969, "Inter-SemiBold", 1rem, 600, 12px);
+              &:focus{
+                border: 1px solid $grey-E5E;
+              }
+
+              &:hover{
+                border: 1px solid $grey-E5E;
+              }
             }
             .dropdown-menu {
               &.show{

@@ -255,6 +255,10 @@
                             @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
                               background: $secondary;
                               padding-left: 4.5rem;
+
+                              &:hover{
+                            color: $primary;
+                          }
                         }
 
                     }

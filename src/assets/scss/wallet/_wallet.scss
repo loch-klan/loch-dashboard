@@ -30,6 +30,14 @@
                         margin-left: 1rem;
                     }
                 }
+                .sort-by-title:hover{
+                    span{
+                        color:$primary;
+                    }
+                    img{
+                        filter: brightness(0.5);
+                    }
+                }
                 // .dropdown {
                 //     margin-right: 3.6rem;
 
@@ -124,7 +132,12 @@
                                 width: max-content;
                                 max-width: 20rem;
                             }
+
+                            img:hover{
+                                filter: brightness(0.5);
+                            }
                         }
+                        
                     }
 
                     .amount-details {
@@ -167,6 +180,10 @@
                                 left: -1px;
                                 top: -1px;
                             }
+                             img:hover{
+                                filter: none;
+                            }
+                            
                         }
                     }
                     .secondary-btn{
@@ -177,6 +194,9 @@
                         color: $secondary;
                       }
                     }
+                     img:hover{
+                                filter: brightness(0.5);
+                            }
                 }
             }
             .loading-container{

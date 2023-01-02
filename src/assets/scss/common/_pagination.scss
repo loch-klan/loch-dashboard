@@ -8,6 +8,10 @@
   .right-arrow,
   .left-arrow {
     cursor: pointer;
+
+    &:hover{
+      filter: opacity(0.5);
+    }
   }
   button {
     background-color: $primary;

@@ -44,7 +44,8 @@ import PieChart2 from './PieChart2';
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
-    props.location.state && props.location.state.addWallet &&
+    props.location.state &&
+      props.location.state.addWallet &&
       localStorage.setItem(
         "addWallet",
         JSON.stringify(props.location.state.addWallet)
@@ -110,13 +111,13 @@ class Portfolio extends BaseReactComponent {
 
   handleToggleAddWallet = () => {
     this.setState({
-        toggleAddWallet: true
-    })
-}
+      toggleAddWallet: true,
+    });
+  };
   handleChangeList = (value) => {
     this.setState({
       userWalletList: value,
-      isUpdate: this.state.isUpdate == 0 ? 1 : 0
+      isUpdate: this.state.isUpdate == 0 ? 1 : 0,
     });
     this.props.getCoinRate();
   };
@@ -127,130 +128,144 @@ class Portfolio extends BaseReactComponent {
     });
   };
 
-    handleAddModal = () => {
-        this.setState({
-            addModal: !this.state.addModal,
-            toggleAddWallet: false,
-        })
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+      toggleAddWallet: false,
+    });
+  };
+  componentDidMount() {
+    this.state.startTime = new Date() * 1;
+    // console.log("page Enter", this.state.startTime / 1000);
+    HomePage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    if (this.props.location.state?.noLoad) {
+    } else {
+      this.apiCall();
     }
-    componentDidMount() {
-      this.state.startTime = new Date() * 1;
-      // console.log("page Enter", this.state.startTime / 1000);
-      HomePage({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
-        if(this.props.location.state?.noLoad){
+  }
 
-        } else {
-          this.apiCall();
-        }
-
+  apiCall = () => {
+    this.props.getAllCoins();
+    if (this.props.match.params.id) {
+      this.props.getDetailsByLinkApi(this.props.match.params.id, this);
     }
+    this.props.getCoinRate();
+    this.getTableData();
+    this.getGraphData();
+    getAllCounterFeeApi(this, false, false);
+    getProfitAndLossApi(this, false, false, false);
+    // getYesterdaysBalanceApi(this);
+  };
 
-    apiCall = () =>{
-      this.props.getAllCoins()
-          if (this.props.match.params.id) {
-            this.props.getDetailsByLinkApi(this.props.match.params.id, this)
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime / 1000);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentHome({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  }
+
+  getGraphData = (groupByValue = GROUP_BY_MONTH) => {
+    this.setState({ graphLoading: true });
+    let addressList = [];
+    this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
+    // console.log('addressList',addressList);
+    let data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("group_criteria", groupByValue);
+    getAssetGraphDataApi(data, this);
+  };
+  handleGroupBy = (value) => {
+    let groupByValue = GroupByOptions.getGroupBy(value);
+    this.getGraphData(groupByValue);
+  };
+  getTableData = () => {
+    this.setState({ tableLoading: true });
+    let arr = JSON.parse(localStorage.getItem("addWallet") || "");
+    let address = arr.map((wallet) => {
+      return wallet.address;
+    });
+    let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }];
+    let data = new URLSearchParams();
+    data.append("start", START_INDEX);
+    data.append("conditions", JSON.stringify(condition));
+    data.append("limit", this.state.limit);
+    data.append("sorts", JSON.stringify(this.state.sort));
+    this.props.searchTransactionApi(data, this);
+  };
+  componentDidUpdate(prevProps, prevState) {
+    // Typical usage (don't forget to compare props):
+    // Check if the coin rate api values are changed
+    if (
+      this.props.portfolioState.coinRateList !==
+      prevProps.portfolioState.coinRateList
+    ) {
+      if (
+        this.state &&
+        this.state.userWalletList &&
+        this.state.userWalletList.length > 0
+      ) {
+        // console.log("ComponentdidUpdate")
+        // Resetting the user wallet list, total and chain wallet
+        this.props.settingDefaultValues();
+        // Loops on coins to fetch details of each coin which exist in wallet
+        this.state.userWalletList.map((wallet, i) => {
+          if (wallet.coinFound) {
+            wallet.coins.map((coin) => {
+              if (coin.chain_detected) {
+                let userCoinWallet = {
+                  address: wallet.address,
+                  coinCode: coin.coinCode,
+                };
+                this.props.getUserWallet(userCoinWallet, this);
+              }
+            });
           }
-          this.props.getCoinRate()
-          this.getTableData()
-          this.getGraphData()
-          getAllCounterFeeApi(this, false, false);
-          getProfitAndLossApi(this, false, false, false);
-          // getYesterdaysBalanceApi(this);
+          if (i === this.state.userWalletList.length - 1) {
+            getYesterdaysBalanceApi(this);
+            this.setState({
+              loader: false,
+            });
+          }
+        });
+        // this.getTableData()
+      } else {
+        // console.log('Heyyy');
+        // this.getTableData()
+        this.props.settingDefaultValues();
+        this.setState({ isLoading: false });
+      }
+      if (prevProps.userWalletList !== this.state.userWalletList) {
+        // console.log('byeee');
+        this.state.userWalletList.length > 0 &&
+          this.setState({ isLoading: true });
+        // this.apiCall();
+        this.getTableData();
+        this.getGraphData();
+        getAllCounterFeeApi(this, false, false);
+        getProfitAndLossApi(this, false, false, false);
+        getYesterdaysBalanceApi(this);
+      }
+    } else if (prevState.sort !== this.state.sort) {
+      this.getTableData();
+    } else if (
+      prevProps.location.state?.noLoad !== this.props.location.state?.noLoad
+    ) {
+      localStorage.setItem(
+        "addWallet",
+        JSON.stringify(this.props.location.state.addWallet)
+      );
+      this.setState({ userWalletList: this.props.location.state.addWallet });
+      this.apiCall();
     }
-
-    componentWillUnmount() {
-      let endTime = new Date() * 1;
-      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      // console.log("page Leave", endTime / 1000);
-      // console.log("Time Spent", TimeSpent);
-      TimeSpentHome({ time_spent: TimeSpent, session_id: getCurrentUser().id, email_address: getCurrentUser().email });
-    }
-
-    getGraphData = (groupByValue = GROUP_BY_YEAR) =>{
-this.setState({graphLoading: true})
-      let addressList = [];
-      this.state.userWalletList.map((wallet)=> addressList.push(wallet.address))
-      // console.log('addressList',addressList);
-      let data = new URLSearchParams();
-      data.append("wallet_addresses", JSON.stringify(addressList))
-      data.append("group_criteria", groupByValue);
-      getAssetGraphDataApi(data, this)
-    }
-    handleGroupBy = (value)=>{
-      let groupByValue = GroupByOptions.getGroupBy(value);
-      this.getGraphData(groupByValue)
-    }
-    getTableData = () => {
-      this.setState({tableLoading: true})
-        let arr = JSON.parse(localStorage.getItem("addWallet") || "");
-        let address = arr.map((wallet) => {
-            return wallet.address
-        })
-        let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }]
-        let data = new URLSearchParams()
-        data.append("start", START_INDEX)
-        data.append("conditions", JSON.stringify(condition))
-        data.append("limit", this.state.limit)
-        data.append("sorts", JSON.stringify(this.state.sort))
-        this.props.searchTransactionApi(data, this)
-    }
-    componentDidUpdate(prevProps , prevState) {
-        // Typical usage (don't forget to compare props):
-        // Check if the coin rate api values are changed
-        if (this.props.portfolioState.coinRateList !== prevProps.portfolioState.coinRateList) {
-            if (this.state && this.state.userWalletList && this.state.userWalletList.length > 0) {
-                // console.log("ComponentdidUpdate")
-                // Resetting the user wallet list, total and chain wallet
-                this.props.settingDefaultValues();
-                // Loops on coins to fetch details of each coin which exist in wallet
-                this.state.userWalletList.map((wallet, i) => {
-                    if (wallet.coinFound) {
-                        wallet.coins.map((coin) => {
-                          if(coin.chain_detected){
-                            let userCoinWallet = {
-                              address: wallet.address,
-                              coinCode: coin.coinCode
-                          }
-                          this.props.getUserWallet(userCoinWallet, this)
-                          }
-                        })
-                    }
-                    if (i === (this.state.userWalletList.length - 1)) {
-                      getYesterdaysBalanceApi(this);
-                        this.setState({
-                            loader: false
-                        });
-                    }
-                })
-                // this.getTableData()
-            } else {
-                // console.log('Heyyy');
-                // this.getTableData()
-                this.props.settingDefaultValues();
-                this.setState({isLoading: false})
-            }
-            if (prevProps.userWalletList !== this.state.userWalletList) {
-              // console.log('byeee');
-              this.state.userWalletList.length > 0 && this.setState({isLoading: true})
-              // this.apiCall();
-                this.getTableData()
-                this.getGraphData()
-                getAllCounterFeeApi(this, false, false);
-                getProfitAndLossApi(this, false, false, false);
-                getYesterdaysBalanceApi(this);
-            }
-        }
-        else if(prevState.sort !== this.state.sort){
-            this.getTableData()
-        } else if(prevProps.location.state?.noLoad !== this.props.location.state?.noLoad){
-          localStorage.setItem(
-            "addWallet",
-            JSON.stringify(this.props.location.state.addWallet)
-          );
-          this.setState({userWalletList: this.props.location.state.addWallet})
-          this.apiCall();
-        }
-    }
+  }
 
   handleTableSort = (val) => {
     // console.log(val)
@@ -336,48 +351,53 @@ this.setState({graphLoading: true})
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-
     let tableData =
       table &&
       table.map((row) => {
+        let walletFromData = null;
+        let walletToData = null;
+        userWalletList && userWalletList.map((wallet)=>{
+          if(
+            wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
+            wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
+              walletFromData = {
+                wallet_metaData: wallet.wallet_metadata,
+                displayAddress: wallet.displayAddress
+              }
+            }
+            if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
+                walletToData = {
+                  wallet_metaData: wallet.wallet_metadata,
+                  displayAddress: wallet.displayAddress
+                }
+              }
+          })
         return {
           time: row.timestamp,
           from: {
             address: row.from_wallet.address,
-            metaData: userWalletList && userWalletList.map((wallet)=>{
-              if(
-                wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
-                wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
-                  return {
-                    wallet_metaData: wallet.wallet_metadata,
-                    displayAddress: wallet.displayAddress
-                  }
-                } else {
-                  return null
-                }
-              }),
+            metaData: walletFromData,
             wallet_metaData: {
-              symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
-              text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
-          }
+              symbol: row.from_wallet.wallet_metadata
+                ? row.from_wallet.wallet_metadata.symbol
+                : null,
+              text: row.from_wallet.wallet_metadata
+                ? row.from_wallet.wallet_metadata.name
+                : null,
+            },
           },
           to: {
             address: row.to_wallet.address,
-            metaData: userWalletList && userWalletList.map((wallet)=>{
-              if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
-                return {
-                  wallet_metaData: wallet.wallet_metadata,
-                  displayAddress: wallet.displayAddress
-                }
-                } else {
-                  return null
-                }
-              }),
+            metaData: walletToData,
             wallet_metaData: {
-              symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
-              text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
-          },
+              symbol: row.to_wallet.wallet_metadata
+                ? row.to_wallet.wallet_metadata.symbol
+                : null,
+              text: row.to_wallet.wallet_metadata
+                ? row.to_wallet.wallet_metadata.name
+                : null,
+            },
           },
           asset: {
             code: row.asset.code,
@@ -446,10 +466,10 @@ this.setState({graphLoading: true})
                                 : rowData.from.address
                             }
                           >
-                            {rowData.from.metaData[0]?.wallet_metaData ? (
+                            {rowData.from.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.from.metaData[0]?.wallet_metaData?.symbol ||
+                                  rowData.from.metaData?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon"
@@ -505,8 +525,8 @@ this.setState({graphLoading: true})
                                 <span>{rowData.from.wallet_metaData.text}</span>
                               )
                             ) :
-                            rowData.from.metaData[0]?.displayAddress ?
-                            <span>{rowData.from.metaData[0]?.displayAddress}</span>
+                            rowData.from.metaData?.displayAddress ?
+                            <span>{rowData.from.metaData?.displayAddress}</span>
                             :  (
                               <Image
                                 src={unrecognizedIcon}
@@ -572,10 +592,10 @@ this.setState({graphLoading: true})
                                 : rowData.to.address
                             }
                           >
-                            {rowData.to.metaData[0]?.wallet_metaData ? (
+                            {rowData.to.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.to.metaData[0]?.wallet_metaData?.symbol ||
+                                  rowData.to.metaData?.wallet_metaData?.symbol ||
                                   unrecognizedIcon
                                 }
                                 className="history-table-icon heyyyy"
@@ -617,8 +637,8 @@ this.setState({graphLoading: true})
                                 <span>{rowData.to.wallet_metaData.text}</span>
                               )
                             ) :
-                            rowData.to.metaData[0]?.displayAddress ?
-                            <span>{rowData.to.metaData[0]?.displayAddress}</span>
+                            rowData.to.metaData?.displayAddress ?
+                            <span>{rowData.to.metaData?.displayAddress}</span>
                             : (
                               <Image
                                 src={unrecognizedIcon}
@@ -879,112 +899,77 @@ this.setState({graphLoading: true})
                       externalEvents={this.state.externalEvents}
                     />
                   </div> */}
-                  <div className="portfolio-section m-b-32">
-                    <LineChartSlider
-                      assetValueData={
-                        this.state.assetValueData && this.state.assetValueData
-                      }
-                      externalEvents={
-                        this.state.externalEvents && this.state.externalEvents
-                      }
-                      coinLists={this.props.OnboardingState.coinsLists}
-                      isScrollVisible={false}
-                      handleGroupBy={(value) => this.handleGroupBy(value)}
-                      graphLoading={this.state.graphLoading}
-                      isUpdate={this.state.isUpdate}
-                      handleClick={() => {
-                        this.props.history.push("/intelligence/asset-value");
-                      }}
-                    />
-                  </div>
-                  <div className="m-b-22 graph-table-section">
-                    <Row>
-                      <Col md={6}>
-                        <div
-                          className="m-r-16 section-table"
-                          style={{ paddingBottom: "1.15rem" }}
-                        >
-                          <TransactionTable
-                            title="Transaction History"
-                            handleClick={() => {
-                              this.props.history.push(
-                                "/intelligence/transaction-history"
-                              );
-                              TransactionHistoryEView({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }}
-                            subTitle="In the last month"
-                            tableData={tableData}
-                            columnList={columnList}
-                            headerHeight={60}
-                            isLoading={this.state.tableLoading}
-                          />
-                        </div>
-                      </Col>
-                      <Col md={6}>
-                        <div className="profit-chart">
-                          {this.state.graphValue ? (
-                            <BarGraphSection
-                              headerTitle="Net Flows"
-                              headerSubTitle="Understand your entire portfolio's performance"
-                              isArrow={true}
-                              handleClick={() => {
-                                this.props.history.push("/intelligence");
-                                ProfitLossEV({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                              }}
-                              isScrollVisible={false}
-                              data={this.state.graphValue[0]}
-                              options={this.state.graphValue[1]}
-                              coinsList={this.props.OnboardingState.coinsList}
-                              // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
-                              marginBottom="m-b-32"
-                              showFooter={false}
-                              showBadges={false}
-                              showPercentage={this.state.graphValue[2]}
-                              // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
-                              // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
-                              // comingSoon={true}
-                              className={"portfolio-profit-and-loss"}
-                            />
-                          ) : (
-                            <div className="loading-wrapper">
-                              <Loading />
-                              <br />
-                              <br />
-                            </div>
-                          )}
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                  <div className="m-b-40 portfolio-cost-table-section">
-                    <div className="section-chart">
-                      {this.state.counterPartyValue &&
-                      !this.state.counterGraphLoading ? (
+              <div className="portfolio-section m-b-32">
+                <LineChartSlider
+                  assetValueData={
+                    this.state.assetValueData && this.state.assetValueData
+                  }
+                  externalEvents={
+                    this.state.externalEvents && this.state.externalEvents
+                  }
+                  coinLists={this.props.OnboardingState.coinsLists}
+                  isScrollVisible={false}
+                  handleGroupBy={(value) => this.handleGroupBy(value)}
+                  graphLoading={this.state.graphLoading}
+                  isUpdate={this.state.isUpdate}
+                  handleClick={() => {
+                    this.props.history.push("/intelligence/asset-value");
+                  }}
+                />
+              </div>
+              <div className="m-b-22 graph-table-section">
+                <Row>
+                  <Col md={6}>
+                    <div
+                      className="m-r-16 section-table"
+                      style={{ paddingBottom: "1.15rem" }}
+                    >
+                      <TransactionTable
+                        title="Transaction History"
+                        handleClick={() => {
+                          this.props.history.push(
+                            "/intelligence/transaction-history"
+                          );
+                          TransactionHistoryEView({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        }}
+                        subTitle="In the last month"
+                        tableData={tableData}
+                        columnList={columnList}
+                        headerHeight={60}
+                        isLoading={this.state.tableLoading}
+                      />
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="profit-chart">
+                      {this.state.graphValue ? (
                         <BarGraphSection
-                          headerTitle="Counterparty Volume Over Time"
-                          headerSubTitle="Understand how much your counterparty charges you"
+                          headerTitle="Net Flows"
+                          headerSubTitle="Understand your entire portfolio's performance"
                           isArrow={true}
                           handleClick={() => {
-                            VolumeTradeByCP({
+                            this.props.history.push("/intelligence");
+                            ProfitLossEV({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                            this.props.history.push("/costs#cp");
                           }}
-                          data={this.state.counterPartyValue[0]}
-                          options={this.state.counterPartyValue[1]}
-                          options2={this.state.counterPartyValue[2]}
-                          digit={this.state.counterGraphDigit}
-                          isScroll={true}
                           isScrollVisible={false}
-                          comingSoon={false}
-                          className={"portfolio-counterparty-fee"}
+                          data={this.state.graphValue[0]}
+                          options={this.state.graphValue[1]}
+                          coinsList={this.props.OnboardingState.coinsList}
+                          // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
+                          marginBottom="m-b-32"
+                          showFooter={false}
+                          showBadges={false}
+                          showPercentage={this.state.graphValue[2]}
+                          // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
+                          // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
+                          // comingSoon={true}
+                          className={"portfolio-profit-and-loss"}
                         />
                       ) : (
                         <div className="loading-wrapper">
@@ -994,43 +979,78 @@ this.setState({graphLoading: true})
                         </div>
                       )}
                     </div>
-                  </div>
-                  <FeedbackForm page={"Home Page"} attribution={true} />
+                  </Col>
+                </Row>
+              </div>
+              <div className="m-b-40 portfolio-cost-table-section">
+                <div className="section-chart">
+                  {this.state.counterPartyValue &&
+                  !this.state.counterGraphLoading ? (
+                    <BarGraphSection
+                      headerTitle="Counterparty Volume Over Time"
+                      headerSubTitle="Understand how much your counterparty charges you"
+                      isArrow={true}
+                      handleClick={() => {
+                        VolumeTradeByCP({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                        this.props.history.push("/costs#cp");
+                      }}
+                      data={this.state.counterPartyValue[0]}
+                      options={this.state.counterPartyValue[1]}
+                      options2={this.state.counterPartyValue[2]}
+                      digit={this.state.counterGraphDigit}
+                      isScroll={true}
+                      isScrollVisible={false}
+                      comingSoon={false}
+                      className={"portfolio-counterparty-fee"}
+                    />
+                  ) : (
+                    <div className="loading-wrapper">
+                      <Loading />
+                      <br />
+                      <br />
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
-            {this.state.fixModal && (
-              <FixAddModal
-                show={this.state.fixModal}
-                onHide={this.handleFixModal}
-                //  modalIcon={AddWalletModalIcon}
-                title="Fix your wallet address"
-                subtitle="Add your wallet address to get started"
-                // fixWalletAddress={fixWalletAddress}
-                btnText="Done"
-                btnStatus={true}
-                history={this.props.history}
-                modalType="fixwallet"
-                changeWalletList={this.handleChangeList}
-              />
-            )}
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
-              />
-            )}
+              <FeedbackForm page={"Home Page"} attribution={true} />
+            </div>
           </div>
-        );
-    }
+        )}
+        {this.state.fixModal && (
+          <FixAddModal
+            show={this.state.fixModal}
+            onHide={this.handleFixModal}
+            //  modalIcon={AddWalletModalIcon}
+            title="Fix your wallet address"
+            subtitle="Add your wallet address to get started"
+            // fixWalletAddress={fixWalletAddress}
+            btnText="Done"
+            btnStatus={true}
+            history={this.props.history}
+            modalType="fixwallet"
+            changeWalletList={this.handleChangeList}
+          />
+        )}
+        {this.state.addModal && (
+          <FixAddModal
+            show={this.state.addModal}
+            onHide={this.handleAddModal}
+            modalIcon={AddWalletModalIcon}
+            title="Add wallet address"
+            subtitle="Add more wallet address here"
+            modalType="addwallet"
+            btnStatus={false}
+            btnText="Go"
+            history={this.props.history}
+            changeWalletList={this.handleChangeList}
+          />
+        )}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => ({

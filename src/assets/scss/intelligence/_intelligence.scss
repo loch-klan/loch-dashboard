@@ -81,8 +81,21 @@
                                 .viewmore {
                                     display: flex;
                                     cursor:pointer;
+                                    align-items: center;
                                     h4 {
                                         margin-right: 0.4rem;
+                                    }
+                                    img{
+                                        margin-top: 2px;
+                                    }
+                                }
+                                 .viewmore:hover{
+                                    h4{
+                                        color: $grey-636;
+                                    }
+
+                                    img{
+                                        filter: opacity(0.5);
                                     }
                                 }
                             }
@@ -125,6 +138,7 @@
                     position: absolute;
                     top: -0.5rem;
                     right: 0rem;
+
                     .dropdown-menu{
                         width: auto;
                         padding: 0.4rem;
@@ -135,6 +149,10 @@
                         @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
                           background: $secondary;
                           padding-left: 4.5rem;
+
+                          &:hover{
+                            color: $primary;
+                          }
                     }
                   }
                 .dropdown .btn-primary:not(:disabled):not(.disabled):active {

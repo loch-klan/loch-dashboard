@@ -9,7 +9,7 @@ import { Image } from "react-bootstrap";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import graphImage from "../../assets/images/volume-traded-graph.png";
 import LineChartSlider from "../Portfolio/LineCharSlider";
-import { GroupByOptions, GROUP_BY_YEAR } from "../../utils/Constant";
+import { GroupByOptions, GROUP_BY_MONTH, GROUP_BY_YEAR } from "../../utils/Constant";
 import { getAssetGraphDataApi, getCoinRate } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
@@ -42,7 +42,7 @@ class AssetValueGraph extends Component {
 
   }
 
-  getGraphData = (groupByValue = GROUP_BY_YEAR) => {
+  getGraphData = (groupByValue = GROUP_BY_MONTH) => {
     this.setState({ graphLoading: true });
     let addressList = [];
     this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
