@@ -194,11 +194,10 @@ console.log('opt',opt);
       // console.log("l", timestampList);
     } else if (this.state.title === "Month" && timestampList.length != 0) {
       const endMonth = 12 - timestampList.length;
+
       const currentMonth = moment(timestampList[0]);
-      // const endMonth = 12 - 5;
-      // const currentMonth = moment.unix(1647801000);
       let months = [];
-      // console.log(currentMonth);
+
       for (let month = 0; month < endMonth; month++) {
         const month_value = currentMonth
           .subtract(1, "months")
@@ -206,9 +205,8 @@ console.log('opt',opt);
         months.push(month_value);
       }
 
-      timestampList = [...months, ...timestampList];
-      // console.log("Month update", months);
-      // console.log("l", timestampList);
+      timestampList = [...months.reverse(), ...timestampList];
+     
     } else if (this.state.title === "Day" && timestampList.length != 0) {
       let dates = [];
       const endDay = 30 - timestampList.length;
@@ -491,7 +489,7 @@ console.log('opt',opt);
       }
     });
 
-    // console.log("islast", isLast);
+    console.log("category", categories);
     let updatedPlotLine = [];
     let count = 0;
     if (
@@ -807,6 +805,7 @@ console.log('opt',opt);
       series: SelectedSeriesData,
       plotOptions: {
         series: {
+          cursor: "pointer",
           fillOpacity: 0,
           point: {
             events: {
