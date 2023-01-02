@@ -481,7 +481,7 @@ class PieChart2 extends BaseReactComponent {
         },
       ],
     };
-    console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
+    // console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     let chainList = [];
     let uniqueAddress = [];
@@ -537,7 +537,7 @@ class PieChart2 extends BaseReactComponent {
       });
     const { pieSectionDataEnabled, currency } = this.state;
     // console.log("chainlist", chainList);
-    console.log("uniquelist", uniqueList);
+    // console.log("uniquelist", uniqueList);
     return (
       <div
         className={`portfolio-over-container ${
@@ -641,7 +641,7 @@ class PieChart2 extends BaseReactComponent {
                     </div>
                     {chainList &&
                         chainList.slice(0, 3).map((data, index) => {
-                        console.log(data)
+                        // console.log(data)
                         let isQuote =
                           this.props.portfolioState.coinRateList[
                             this.state.selectedSection[0].assetId
