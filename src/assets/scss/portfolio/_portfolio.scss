@@ -656,7 +656,7 @@ position: relative;
     // width: 100%;
     margin-top: 4rem;
     display: flex;
-    padding: 1.25rem;
+    padding: 1rem;
     justify-content: space-between;
     align-items: center;
     background-color: $secondary;
@@ -666,7 +666,7 @@ position: relative;
     .coin-hover-display-text {
         display: flex;
         align-items: center;
-        padding: 1rem 1rem;
+        padding: 1rem 1rem 1rem 0.5rem;
     }
 
     .coin-hover-display-text-icon {
@@ -782,7 +782,7 @@ position: relative;
         .coin-hover-display-text2-upper-coinrevenue,
         .coin-hover-display-text3-upper-coinrevenue,
         .coin-hover-display-text4-upper-coinrevenue {
-            padding-left: 2.2rem;
+            padding-left: 2rem;
         }
     }
 

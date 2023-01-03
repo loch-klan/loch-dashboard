@@ -375,6 +375,7 @@ class PieChart2 extends BaseReactComponent {
                         ? {}
                         : currentData
                       : currentData,
+                  // isChainToggle: false,
                 });
                 // if (document.getElementById("fixbtn")) {
                 //   {

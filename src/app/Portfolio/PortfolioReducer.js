@@ -11,6 +11,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case COIN_RATE_LIST:
             return { ...state, coinRateList: {...state.coinRateList,...action.payload} };
+            // return {...state};
         case USER_WALLET_LIST:
             let updateWalletTotal = state.walletTotal || 0;
             let updatedChainWallet = state.chainWallet || [];
@@ -97,7 +98,14 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 }
             }
             // userWalletList: updateWalletList,
-            return { ...state, walletTotal: updateWalletTotal, chainWallet: { ...updatedChainWallet }, chainPortfolio: {...chainPortfolio}, coinRateList: {...state.coinRateList, ...action.payload.assetPrice} };
+            // return { ...state, walletTotal: updateWalletTotal, chainWallet: { ...updatedChainWallet }, chainPortfolio: {...chainPortfolio}, coinRateList: {...state.coinRateList, ...action.payload.assetPrice} };
+             return {
+               ...state,
+               walletTotal: updateWalletTotal,
+               chainWallet: { ...updatedChainWallet },
+               chainPortfolio: { ...chainPortfolio }
+              
+             };
         case DEFAULT_VALUES:
             return { ...state, chainWallet: [], walletTotal: 0 }
         default:
