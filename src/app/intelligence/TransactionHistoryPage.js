@@ -330,7 +330,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 method: row.method
             }
         })
-console.log('tableData',tableData);
+// console.log('tableData',tableData);
         const columnList = [
             {
                 labelName:

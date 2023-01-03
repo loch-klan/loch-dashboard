@@ -22,7 +22,7 @@ export const getAllCoins = (handleShareLinkUser = null) => {
                 handleShareLinkUser && handleShareLinkUser()
             })
             .catch((err) => {
-                console.log("Catch", err);
+                // console.log("Catch", err);
             });
     };
 };
@@ -40,7 +40,7 @@ export const getAllParentChains = () => {
               });
           })
           .catch((err) => {
-              console.log("Catch", err);
+              // console.log("Catch", err);
           });
   };
 };
@@ -83,7 +83,7 @@ export const detectCoin = (wallet,ctx=null) => {
                 }
             })
             .catch((err) => {
-                console.log("Catch", err);
+                // console.log("Catch", err);
             });
     };
 };
@@ -122,7 +122,7 @@ EmailAddressVerified({ email_address: ctx.state.email });
         }
     })
     .catch(err =>{
-        console.log("error while signing",err)
+        // console.log("error while signing",err)
     })
 }
 

@@ -458,8 +458,8 @@ class Portfolio extends BaseReactComponent {
                             isText={true}
                             // text={rowData.from.address}
                             text={
-                              rowData.from.wallet_metaData.text
-                                ? rowData.from.wallet_metaData.text +
+                              rowData.from.metaData?.displayAddress
+                                ? rowData.from.metaData?.displayAddress +
                                   ": " +
                                   rowData.from.address
                                 : rowData.from.address
@@ -468,28 +468,17 @@ class Portfolio extends BaseReactComponent {
                             {rowData.from.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.from.metaData?.wallet_metaData?.symbol ||
-                                  unrecognizedIcon
+                                  rowData.from.metaData?.wallet_metaData
+                                    ?.symbol || unrecognizedIcon
                                 }
                                 className="history-table-icon"
                                 onMouseEnter={() => {
-                                  // console.log(
-                                  //   "address",
-                                  //   rowData.from.wallet_metaData.text
-                                  //     ? rowData.from.wallet_metaData.text +
-                                  //         ": " +
-                                  //         rowData.from.address
-                                  //     : rowData.from.address
-                                  // );
+                                  // console.log("address", rowData.from.metaData);
                                   TransactionHistoryAddress({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
-                                    address_hovered: rowData.from
-                                      .wallet_metaData.text
-                                      ? rowData.from.wallet_metaData.text +
-                                        ": " +
-                                        rowData.from.address
-                                      : rowData.from.address,
+                                    address_hovered: rowData.from.address,
+                                    display_name: rowData.from.metaData?.displayAddress
                                   });
                                 }}
                               />
@@ -500,54 +489,65 @@ class Portfolio extends BaseReactComponent {
                                   src={rowData.from.wallet_metaData.symbol}
                                   className="history-table-icon"
                                   onMouseEnter={() => {
-                                    // console.log(
-                                    //   "address",
-                                    //   rowData.from.wallet_metaData.text
-                                    //     ? rowData.from.wallet_metaData.text +
-                                    //         ": " +
-                                    //         rowData.from.address
-                                    //     : rowData.from.address
-                                    // );
+                                    //  console.log(
+                                    //    "address",
+                                    //    rowData.from.metaData
+                                    //  );
                                     TransactionHistoryAddress({
                                       session_id: getCurrentUser().id,
                                       email_address: getCurrentUser().email,
-                                      address_hovered: rowData.from
-                                        .wallet_metaData.text
-                                        ? rowData.from.wallet_metaData.text +
-                                          ": " +
-                                          rowData.from.address
-                                        : rowData.from.address,
+                                      address_hovered: rowData.from.address,
+                                      display_name:
+                                        rowData.from.metaData?.displayAddress,
                                     });
                                   }}
                                 />
                               ) : (
-                                <span>{rowData.from.wallet_metaData.text}</span>
+                                <span
+                                  onMouseEnter={() => {
+                                    //  console.log(
+                                    //    "address",
+                                    //    rowData.from.metaData
+                                    //  );
+                                    TransactionHistoryAddress({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      address_hovered: rowData.from.address,
+                                      display_name:
+                                        rowData.from.metaData?.displayAddress,
+                                    });
+                                  }}
+                                >
+                                  {rowData.from.wallet_metaData.text}
+                                </span>
                               )
-                            ) :
-                            rowData.from.metaData?.displayAddress ?
-                            <span>{rowData.from.metaData?.displayAddress}</span>
-                            :  (
+                            ) : rowData.from.metaData?.displayAddress ? (
+                              <span
+                                onMouseEnter={() => {
+                                   
+                                 TransactionHistoryAddress({
+                                   session_id: getCurrentUser().id,
+                                   email_address: getCurrentUser().email,
+                                   address_hovered: rowData.from.address,
+                                   display_name:
+                                     rowData.from.metaData?.displayAddress,
+                                 });
+                                }}
+                              >
+                                {rowData.from.metaData?.displayAddress}
+                              </span>
+                            ) : (
                               <Image
                                 src={unrecognizedIcon}
                                 className="history-table-icon"
                                 onMouseEnter={() => {
-                                  // console.log(
-                                  //   "address",
-                                  //   rowData.from.wallet_metaData.text
-                                  //     ? rowData.from.wallet_metaData.text +
-                                  //         ": " +
-                                  //         rowData.from.address
-                                  //     : rowData.from.address
-                                  // );
+                                   
                                   TransactionHistoryAddress({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
-                                    address_hovered: rowData.from
-                                      .wallet_metaData.text
-                                      ? rowData.from.wallet_metaData.text +
-                                        ": " +
-                                        rowData.from.address
-                                      : rowData.from.address,
+                                    address_hovered: rowData.from.address,
+                                    display_name:
+                                      rowData.from.metaData?.displayAddress,
                                   });
                                 }}
                               />
@@ -584,8 +584,8 @@ class Portfolio extends BaseReactComponent {
                             isText={true}
                             // text={rowData.to.address}
                             text={
-                              rowData.to.wallet_metaData.text
-                                ? rowData.to.wallet_metaData.text +
+                              rowData.to.metaData?.displayAddress
+                                ? rowData.to.metaData?.displayAddress +
                                   ": " +
                                   rowData.to.address
                                 : rowData.to.address
@@ -594,21 +594,17 @@ class Portfolio extends BaseReactComponent {
                             {rowData.to.metaData?.wallet_metaData ? (
                               <Image
                                 src={
-                                  rowData.to.metaData?.wallet_metaData?.symbol ||
-                                  unrecognizedIcon
+                                  rowData.to.metaData?.wallet_metaData
+                                    ?.symbol || unrecognizedIcon
                                 }
                                 className="history-table-icon heyyyy"
                                 onMouseEnter={() => {
-
                                   TransactionHistoryAddress({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
-                                    address_hovered: rowData.to.wallet_metaData
-                                      .text
-                                      ? rowData.to.wallet_metaData.text +
-                                        ": " +
-                                        rowData.to.address
-                                      : rowData.to.address,
+                                    address_hovered: rowData.to.address,
+                                    display_name:
+                                      rowData.to.metaData?.displayAddress,
                                   });
                                 }}
                               />
@@ -619,40 +615,55 @@ class Portfolio extends BaseReactComponent {
                                   src={rowData.to.wallet_metaData.symbol}
                                   className="history-table-icon"
                                   onMouseEnter={() => {
-
                                     TransactionHistoryAddress({
                                       session_id: getCurrentUser().id,
                                       email_address: getCurrentUser().email,
-                                      address_hovered: rowData.to
-                                        .wallet_metaData.text
-                                        ? rowData.to.wallet_metaData.text +
-                                          ": " +
-                                          rowData.to.address
-                                        : rowData.to.address,
+                                      address_hovered: rowData.to.address,
+                                      display_name:
+                                        rowData.to.metaData?.displayAddress,
                                     });
                                   }}
                                 />
                               ) : (
-                                <span>{rowData.to.wallet_metaData.text}</span>
+                                <span
+                                  onMouseEnter={() => {
+                                    TransactionHistoryAddress({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      address_hovered: rowData.to.address,
+                                      display_name:
+                                        rowData.to.metaData?.displayAddress,
+                                    });
+                                  }}
+                                >
+                                  {rowData.to.wallet_metaData.text}
+                                </span>
                               )
-                            ) :
-                            rowData.to.metaData?.displayAddress ?
-                            <span>{rowData.to.metaData?.displayAddress}</span>
-                            : (
+                            ) : rowData.to.metaData?.displayAddress ? (
+                              <span
+                                onMouseEnter={() => {
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.to.address,
+                                    display_name:
+                                      rowData.to.metaData?.displayAddress,
+                                  });
+                                }}
+                              >
+                                {rowData.to.metaData?.displayAddress}
+                              </span>
+                            ) : (
                               <Image
                                 src={unrecognizedIcon}
                                 className="history-table-icon"
                                 onMouseEnter={() => {
-
                                   TransactionHistoryAddress({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
-                                    address_hovered: rowData.to.wallet_metaData
-                                      .text
-                                      ? rowData.to.wallet_metaData.text +
-                                        ": " +
-                                        rowData.to.address
-                                      : rowData.to.address,
+                                    address_hovered: rowData.to.address,
+                                    display_name:
+                                      rowData.to.metaData?.displayAddress,
                                   });
                                 }}
                               />

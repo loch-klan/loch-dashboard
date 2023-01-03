@@ -22,7 +22,7 @@ export const searchTransactionApi = (data , ctx, page = 0) => {
                 }
             })
             .catch((err) => {
-                console.log("Search transaction ", err)
+                // console.log("Search transaction ", err)
             })
     }
 }
@@ -64,7 +64,7 @@ export const getFilters = (ctx) => {
             }
         })
         .catch((err) => {
-            console.log("getFilter ", err)
+            // console.log("getFilter ", err)
         })
 }
 
@@ -107,6 +107,6 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
     }
   })
   .catch((err)=>{
-    console.log("err ", err)
+    // console.log("err ", err)
   })
  }

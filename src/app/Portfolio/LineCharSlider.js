@@ -489,7 +489,7 @@ console.log('opt',opt);
       }
     });
 
-    console.log("category", categories);
+    // console.log("category", categories);
     let updatedPlotLine = [];
     let count = 0;
     if (
