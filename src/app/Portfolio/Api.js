@@ -32,7 +32,7 @@ export const getUserWallet = (wallet,ctx) => {
             .then((res) => {
               let userWalletList = res.data && res.data.data.user_wallet && res.data.data.user_wallet.assets && res.data.data.user_wallet.assets.length > 0 && res.data.data.user_wallet.active ? res.data.data.user_wallet : []
               
-              console.log("asset", res.data?.data.asset_prices)
+              // console.log("asset", res.data?.data.asset_prices)
                 dispatch({
                     type: USER_WALLET_LIST,
                     payload: {
