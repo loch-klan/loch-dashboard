@@ -19,6 +19,9 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import { TransactionHistoryAddress, TransactionHistoryPageView } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
+import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
+import { toast } from "react-toastify";
+
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -37,7 +40,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     this.state = {
-      currency: JSON.parse(localStorage.getItem('currency')),
+      currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -95,10 +98,10 @@ class TransactionHistoryPage extends BaseReactComponent {
     this.delayTimer = 0;
   }
   componentDidMount() {
-     TransactionHistoryPageView({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
+    TransactionHistoryPageView({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -133,9 +136,9 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   }
 
-    onValidSubmit = () => {
-        // console.log("Sbmit")
-    }
+  onValidSubmit = () => {
+    // console.log("Sbmit")
+  };
 
   addCondition = (key, value) => {
     // console.log('key, value',key, value);
@@ -234,8 +237,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-        }
-        else if (val === "usdTransaction") {
+        } else if (val === "usdTransaction") {
           obj = [
             {
               key: SORT_BY_TRANSACTION_FEE,
@@ -258,480 +260,664 @@ class TransactionHistoryPage extends BaseReactComponent {
 
     this.setState({
       sort: obj,
-      tableSortOpt: sort
+      tableSortOpt: sort,
     });
-    }
+  };
+
+  copyContent = (text) => {
+    // const text = props.display_address ? props.display_address : props.wallet_account_number
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Copied");
+        // console.log("successfully copied");
+      })
+      .catch(() => {
+        console.log("something went wrong");
+      });
+    // toggleCopied(true)
+  };
   render() {
-      // console.log("value", this.state.methodFilter);
-        const { table, totalPage, totalCount, currentPage, assetPriceList } = this.props.intelligenceState;
-        const {walletList, currency} = this.state;
-        let tableData = table && table.map((row) => {
-          let walletFromData = null;
-          let walletToData = null;
-          walletList && walletList.map((wallet)=>{
-            if(
-              wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
-                walletFromData = {
-                  wallet_metaData: wallet.wallet_metadata,
-                  displayAddress: wallet.displayAddress
-                }
-              }
-              if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
-                walletToData = {
-                  wallet_metaData: wallet.wallet_metadata,
-                  displayAddress: wallet.displayAddress
-                }
-              }
-            })
-
-            return {
-                time: row.timestamp,
-                from: {
-                    address: row.from_wallet.address,
-                    metaData: walletFromData,
-                    wallet_metaData: {
-                        symbol: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.symbol : null,
-                        text: row.from_wallet.wallet_metadata ? row.from_wallet.wallet_metadata.name : null
-                    }
-                },
-                to: {
-                    address: row.to_wallet.address,
-                    // wallet_metaData: row.to_wallet.wallet_metaData,
-                    metaData: walletToData,
-                    wallet_metaData: {
-                        symbol: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.symbol : null,
-                        text: row.to_wallet.wallet_metadata ? row.to_wallet.wallet_metadata.name : null
-                    },
-                },
-                asset: {
-                    code: row.asset.code,
-                    symbol: row.asset.symbol
-                },
-                amount: {
-                    value: parseFloat(row.asset.value),
-                    id: row.asset.id
-                },
-                usdValueThen: {
-                    value: row.asset.value,
-                    id: row.asset.id,
-                    assetPrice: row.asset_price
-                },
-                usdValueToday: {
-                    value: row.asset.value,
-                    id: row.asset.id
-                },
-                usdTransactionFee: {
-                    value: row.transaction_fee,
-                    id: row.asset.id,
-                },
-                // method: row.transaction_type
-                method: row.method
+    // console.log("value", this.state.methodFilter);
+    const { table, totalPage, totalCount, currentPage, assetPriceList } =
+      this.props.intelligenceState;
+    const { walletList, currency } = this.state;
+    let tableData =
+      table &&
+      table.map((row) => {
+        let walletFromData = null;
+        let walletToData = null;
+        walletList &&
+          walletList.map((wallet) => {
+            if (
+              wallet.address?.toLowerCase() ===
+                row.from_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() ===
+                row.from_wallet.address?.toLowerCase()
+            ) {
+              walletFromData = {
+                wallet_metaData: wallet.wallet_metadata,
+                displayAddress: wallet.displayAddress,
+              };
             }
-        })
-// console.log('tableData',tableData);
-        const columnList = [
-            {
-                labelName:
-                    <div className='cp history-table-header-col' id="time" onClick={() => this.handleTableSort("time")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Date</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "time",
-                // coumnWidth: 90,
-                coumnWidth: 0.16,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "time") {
+            if (
+              wallet.address?.toLowerCase() ==
+                row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() ==
+                row.to_wallet.address?.toLowerCase()
+            ) {
+              walletToData = {
+                wallet_metaData: wallet.wallet_metadata,
+                displayAddress: wallet.displayAddress,
+              };
+            }
+          });
 
-                        return moment(rowData.time).format('DD/MM/YY')
-                    }
-                }
+        return {
+          time: row.timestamp,
+          from: {
+            address: row.from_wallet.address,
+            metaData: walletFromData,
+            wallet_metaData: {
+              symbol: row.from_wallet.wallet_metadata
+                ? row.from_wallet.wallet_metadata.symbol
+                : null,
+              text: row.from_wallet.wallet_metadata
+                ? row.from_wallet.wallet_metadata.name
+                : null,
             },
-            {
-                labelName:
-                    <div className='cp history-table-header-col' id="from" onClick={() => this.handleTableSort("from")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>From</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "from",
-                // coumnWidth: 90,
-                coumnWidth: 0.15,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "from") {
-                        return (
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            // text={rowData.from.address}
-                            text={
-                              rowData.from.wallet_metaData.text
-                                ? rowData.from.wallet_metaData.text +
-                                  ": " +
-                                  rowData.from.address
-                                : rowData.from.address
-                            }
-                          >
-                            {rowData.from.metaData?.wallet_metaData ? (
-                              <Image
-                                src={
-                                  rowData.from.metaData?.wallet_metaData?.symbol ||
-                                  unrecognizedIcon
-                                }
-                                className="history-table-icon"
-                                onMouseEnter={() => {
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.from
-                                      .wallet_metaData.text
-                                      ? rowData.from.wallet_metaData.text +
-                                        ": " +
-                                        rowData.from.address
-                                      : rowData.from.address,
-                                  });
-                                }}
-                              />
-                            ) : rowData.from.wallet_metaData.symbol ||
-                              rowData.from.wallet_metaData.text ? (
-                              rowData.from.wallet_metaData.symbol ? (
-                                <Image
-                                  src={rowData.from.wallet_metaData.symbol}
-                                  className="history-table-icon"
-                                  onMouseEnter={() => {
-                                    TransactionHistoryAddress({
-                                      session_id: getCurrentUser().id,
-                                      email_address: getCurrentUser().email,
-                                      address_hovered: rowData.from
-                                        .wallet_metaData.text
-                                        ? rowData.from.wallet_metaData.text +
-                                          ": " +
-                                          rowData.from.address
-                                        : rowData.from.address,
-                                    });
-                                  }}
-                                />
-                              ) : (
-                                <span>{rowData.from.wallet_metaData.text}</span>
-                              )
-                            ) :
-                            rowData.from.metaData?.displayAddress ?
-                            <span>{rowData.from.metaData?.displayAddress}</span>
-                            : (
-                              <Image
-                                src={unrecognizedIcon}
-                                className="history-table-icon"
-                                onMouseEnter={() => {
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.from
-                                      .wallet_metaData.text
-                                      ? rowData.from.wallet_metaData.text +
-                                        ": " +
-                                        rowData.from.address
-                                      : rowData.from.address,
-                                  });
-                                }}
-                              />
-                            )}
-                          </CustomOverlay>
-                        );
-                    }
-                }
+          },
+          to: {
+            address: row.to_wallet.address,
+            // wallet_metaData: row.to_wallet.wallet_metaData,
+            metaData: walletToData,
+            wallet_metaData: {
+              symbol: row.to_wallet.wallet_metadata
+                ? row.to_wallet.wallet_metadata.symbol
+                : null,
+              text: row.to_wallet.wallet_metadata
+                ? row.to_wallet.wallet_metadata.name
+                : null,
             },
-            {
-                labelName:
-                    <div className='cp history-table-header-col' id="to" onClick={() => this.handleTableSort("to")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>To</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "to",
-                // coumnWidth: 90,
-                coumnWidth: 0.15,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                  // console.log('rowData',rowData);
-                    if (dataKey === "to") {
-                        return (
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={
-                              rowData.to.wallet_metaData.text
-                                ? rowData.to.wallet_metaData.text +
-                                  ": " +
-                                  rowData.to.address
-                                : rowData.to.address
-                            }
-                          >
-                            {rowData.to.metaData?.wallet_metaData ? (
-                              <Image
-                                src={
-                                  rowData.to.metaData?.wallet_metaData?.symbol ||
-                                  unrecognizedIcon
-                                }
-                                className="history-table-icon"
-                                onMouseEnter={() => {
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.to.wallet_metaData
-                                      .text
-                                      ? rowData.to.wallet_metaData.text +
-                                        ": " +
-                                        rowData.to.address
-                                      : rowData.to.address,
-                                  });
-                                }}
-                              />
-                            ) : rowData.to.wallet_metaData.symbol ||
-                              rowData.to.wallet_metaData.text ? (
-                              rowData.to.wallet_metaData.symbol ? (
-                                <Image
-                                  src={rowData.to.wallet_metaData.symbol}
-                                  className="history-table-icon"
-                                  onMouseEnter={() => {
-                                    TransactionHistoryAddress({
-                                      session_id: getCurrentUser().id,
-                                      email_address: getCurrentUser().email,
-                                      address_hovered: rowData.to
-                                        .wallet_metaData.text
-                                        ? rowData.to.wallet_metaData.text +
-                                          ": " +
-                                          rowData.to.address
-                                        : rowData.to.address,
-                                    });
-                                  }}
-                                />
-                              ) : (
-                                <span>{rowData.to.wallet_metaData.text}</span>
-                              )
-                            ) :
-                            rowData.to.metaData?.displayAddress ?
-                            <span>{rowData.to.metaData?.displayAddress}</span>
-                            : (
-                              <Image
-                                src={unrecognizedIcon}
-                                className="history-table-icon"
-                                onMouseEnter={() => {
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.to.wallet_metaData
-                                      .text
-                                      ? rowData.to.wallet_metaData.text +
-                                        ": " +
-                                        rowData.to.address
-                                      : rowData.to.address,
-                                  });
-                                }}
-                              />
-                            )}
-                          </CustomOverlay>
-                        );
-                    }
+          },
+          asset: {
+            code: row.asset.code,
+            symbol: row.asset.symbol,
+          },
+          amount: {
+            value: parseFloat(row.asset.value),
+            id: row.asset.id,
+          },
+          usdValueThen: {
+            value: row.asset.value,
+            id: row.asset.id,
+            assetPrice: row.asset_price,
+          },
+          usdValueToday: {
+            value: row.asset.value,
+            id: row.asset.id,
+          },
+          usdTransactionFee: {
+            value: row.transaction_fee,
+            id: row.asset.id,
+          },
+          // method: row.transaction_type
+          method: row.method,
+        };
+      });
+    // console.log('tableData',tableData);
+    const columnList = [
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="time"
+            onClick={() => this.handleTableSort("time")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Date
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "time",
+        // coumnWidth: 90,
+        coumnWidth: 0.16,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "time") {
+            return moment(rowData.time).format("DD/MM/YY");
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="from"
+            onClick={() => this.handleTableSort("from")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              From
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "from",
+        // coumnWidth: 90,
+        coumnWidth: 0.15,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "from") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                // text={rowData.from.address}
+                text={
+                  rowData.from.metaData?.displayAddress
+                    ? rowData.from.metaData?.displayAddress +
+                      ": " +
+                      rowData.from.address
+                    : rowData.from.address
                 }
-            },
-            {
-                labelName:
-                    <div className='cp history-table-header-col' id="asset" onClick={() => this.handleTableSort("asset")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Asset</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "asset",
-                // coumnWidth: 130,
-                coumnWidth: 0.2,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "asset") {
-
-                        return (
-                          <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                text={rowData.asset.code}
-                            >
-                            {/* <CoinChip
+              >
+                {rowData.from.metaData?.wallet_metaData ? (
+                  <>
+                    <Image
+                      src={
+                        rowData.from.metaData?.wallet_metaData?.symbol ||
+                        unrecognizedIcon
+                      }
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        // console.log("address", rowData.from.metaData);
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    />
+                    {/* <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 m-r-12 cp"
+                    /> */}
+                  </>
+                ) : rowData.from.wallet_metaData.symbol ||
+                  rowData.from.wallet_metaData.text ? (
+                  rowData.from.wallet_metaData.symbol ? (
+                    <Image
+                      src={rowData.from.wallet_metaData.symbol}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        // console.log("address", rowData.from.metaData);
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    />
+                  ) : (
+                    <span
+                      onMouseEnter={() => {
+                        // console.log("address", rowData.from.metaData);
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.from.wallet_metaData.text}
+                    </span>
+                  )
+                ) : rowData.from.metaData?.displayAddress ? (
+                  <span
+                    onMouseEnter={() => {
+                      // console.log("address", rowData.from.metaData);
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.metaData?.displayAddress,
+                      });
+                    }}
+                  >
+                    {rowData.from.metaData?.displayAddress}
+                  </span>
+                ) : (
+                  <Image
+                    src={unrecognizedIcon}
+                    className="history-table-icon"
+                    onMouseEnter={() => {
+                      // console.log("address", rowData.from.metaData);
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                )}
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="to"
+            onClick={() => this.handleTableSort("to")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              To
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "to",
+        // coumnWidth: 90,
+        coumnWidth: 0.15,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          // console.log('rowData',rowData);
+          if (dataKey === "to") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.to.metaData?.displayAddress
+                    ? rowData.to.metaData?.displayAddress +
+                      ": " +
+                      rowData.to.address
+                    : rowData.to.address
+                }
+              >
+                {rowData.to.metaData?.wallet_metaData ? (
+                  <Image
+                    src={
+                      rowData.to.metaData?.wallet_metaData?.symbol ||
+                      unrecognizedIcon
+                    }
+                    className="history-table-icon"
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                ) : rowData.to.wallet_metaData.symbol ||
+                  rowData.to.wallet_metaData.text ? (
+                  rowData.to.wallet_metaData.symbol ? (
+                    <Image
+                      src={rowData.to.wallet_metaData.symbol}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    />
+                  ) : (
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.to.wallet_metaData.text}
+                    </span>
+                  )
+                ) : rowData.to.metaData?.displayAddress ? (
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.metaData?.displayAddress,
+                      });
+                    }}
+                  >
+                    {rowData.to.metaData?.displayAddress}
+                  </span>
+                ) : (
+                  <Image
+                    src={unrecognizedIcon}
+                    className="history-table-icon"
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                )}
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="asset"
+            onClick={() => this.handleTableSort("asset")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Asset
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "asset",
+        // coumnWidth: 130,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "asset") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.asset.code}
+              >
+                {/* <CoinChip
                                 coin_img_src={rowData.asset.symbol}
                                 // coin_code={rowData.asset.code}
                             /> */}
-                            <Image src={rowData.asset.symbol} className="asset-symbol" />
-                            </CustomOverlay>
-                        )
-                    }
-                }
-            },
-            {
-                labelName:
-                    <div className='cp history-table-header-col' id="amount" onClick={() => this.handleTableSort("amount")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Amount</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "amount",
-                // coumnWidth: 100,
-                coumnWidth: 0.15,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "amount") {
-
-                        // console.log(value)
-                        // return rowData.amount.value?.toFixed(2)
-                        return (<CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={Number(noExponents(rowData.amount.value)).toLocaleString('en-US')}
-                        >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(noExponents(rowData.amount.value)).toLocaleString('en-US')}</div>
-                        </CustomOverlay>)
-                    }
-                }
-            },
-            {
-                labelName:
-                    <div className='cp history-table-header-col' id="usdValueThen" onClick={() => this.handleTableSort("usdThen")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>{`${CurrencyType(true)} Amount (Then)`}</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "usdValueThen",
-                // coumnWidth: 100,
-                className: "usd-value",
-                coumnWidth: 0.25,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "usdValueThen") {
-                        let chain = Object.entries(assetPriceList)
-                        let valueThen;
-                        let valueToday;
-                        chain.find((chain) => {
-                          if (chain[0] === rowData.usdValueToday.id) {
-                            valueToday = (rowData.usdValueToday.value * chain[1].quote.USD.price * currency?.rate || DEFAULT_PRICE)
-                          }
-                          if (chain[0] === rowData.usdValueThen.id) {
-                            valueThen = rowData.usdValueThen.value * rowData.usdValueThen.assetPrice * currency?.rate
-                          }
-                        })
-                        // console.log('valueToday',valueToday);
-                        // console.log('valueThen',valueThen);
-                        return (
-                        <div style={{display: "flex", justifyContent: "center"}}>
-                        <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={Number(valueToday?.toFixed(2)).toLocaleString('en-US')}
-                        >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueToday?.toFixed(2)).toLocaleString('en-US')}</div>
-                        </CustomOverlay>
-                        <span style={{padding: "2px"}}></span>
-                        (
-                        <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={Number(valueThen?.toFixed(2)).toLocaleString('en-US')}
-                        >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueThen?.toFixed(2)).toLocaleString('en-US')}</div>
-                        </CustomOverlay>)
-                        </div>
-                        )
-                    }
-                }
-            },
-            {
-                labelName:
-                    <div className='cp history-table-header-col' id="usdTransactionFee" onClick={() => this.handleTableSort("usdTransaction")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>{`${CurrencyType(true)} Fee (Then)`}</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "usdTransactionFee",
-                // coumnWidth: 100,
-                className: "usd-value",
-                coumnWidth: 0.25,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    // console.log(rowData)
-                    if (dataKey === "usdTransactionFee") {
-                        let chain = Object.entries(assetPriceList)
-                        let valueToday;
-                        let valueThen;
-                        chain.find((chain) => {
-                            if (chain[0] === rowData.usdTransactionFee.id) {
-                              // console.log('chain',chain);
-                                valueToday = (rowData.usdTransactionFee.value * chain[1].quote.USD.price * currency?.rate || DEFAULT_PRICE)
-                                valueThen = rowData.usdTransactionFee.value * rowData.usdValueThen.assetPrice * currency?.rate
-                            }
-                        })
-                        return (
-                          <div style={{display: "flex", justifyContent: "center"}}>
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              text={Number(valueToday?.toFixed(2)).toLocaleString('en-US')}
-                            >
-                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueToday?.toFixed(2)).toLocaleString('en-US')}</div>
-                            </CustomOverlay>
-                            <span style={{padding: "2px"}}></span>
-                            (<CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              text={Number(valueThen?.toFixed(2)).toLocaleString('en-US')}
-                            >
-                              <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(valueThen?.toFixed(2)).toLocaleString('en-US')}</div>
-                            </CustomOverlay>)
-                          </div>
-                        )
-                    }
-                }
-            },
-            {
-                labelName:
-                    <div className='cp history-table-header-col' id="method" onClick={() => this.handleTableSort("method")}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Method</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "method",
-                // coumnWidth: 100,
-                coumnWidth: 0.2,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "method") {
-                        return (
-                            <div className='inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer' >
-                              {rowData.method}
-                            </div>
-                        )
-                    }
-                }
-            }
-        ]
-        return (
-            <div className="history-table-section">
-                <div className='history-table page'>
-
-                    <PageHeader
-                        title={"Transaction history"}
-                        subTitle={"Valuable insights based on your assets"}
-                        showpath={true}
-                        currentPage={"transaction-history"}
-                        history={this.props.history}
-                    />
+                <Image src={rowData.asset.symbol} className="asset-symbol" />
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="amount"
+            onClick={() => this.handleTableSort("amount")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Amount
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "amount",
+        // coumnWidth: 100,
+        coumnWidth: 0.15,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "amount") {
+            // console.log(value)
+            // return rowData.amount.value?.toFixed(2)
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(noExponents(rowData.amount.value)).toLocaleString(
+                  "en-US"
+                )}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {Number(noExponents(rowData.amount.value)).toLocaleString(
+                    "en-US"
+                  )}
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="usdValueThen"
+            onClick={() => this.handleTableSort("usdThen")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+              true
+            )} Amount (Then)`}</span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "usdValueThen",
+        // coumnWidth: 100,
+        className: "usd-value",
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "usdValueThen") {
+            let chain = Object.entries(assetPriceList);
+            let valueThen;
+            let valueToday;
+            chain.find((chain) => {
+              if (chain[0] === rowData.usdValueToday.id) {
+                valueToday =
+                  rowData.usdValueToday.value *
+                    chain[1].quote.USD.price *
+                    currency?.rate || DEFAULT_PRICE;
+              }
+              if (chain[0] === rowData.usdValueThen.id) {
+                valueThen =
+                  rowData.usdValueThen.value *
+                  rowData.usdValueThen.assetPrice *
+                  currency?.rate;
+              }
+            });
+            // console.log('valueToday',valueToday);
+            // console.log('valueThen',valueThen);
+            return (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                >
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                  </div>
+                </CustomOverlay>
+                <span style={{ padding: "2px" }}></span>(
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                >
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                  </div>
+                </CustomOverlay>
+                )
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="usdTransactionFee"
+            onClick={() => this.handleTableSort("usdTransaction")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
+              true
+            )} Fee (Then)`}</span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[7].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "usdTransactionFee",
+        // coumnWidth: 100,
+        className: "usd-value",
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          // console.log(rowData)
+          if (dataKey === "usdTransactionFee") {
+            let chain = Object.entries(assetPriceList);
+            let valueToday;
+            let valueThen;
+            chain.find((chain) => {
+              if (chain[0] === rowData.usdTransactionFee.id) {
+                // console.log('chain',chain);
+                valueToday =
+                  rowData.usdTransactionFee.value *
+                    chain[1].quote.USD.price *
+                    currency?.rate || DEFAULT_PRICE;
+                valueThen =
+                  rowData.usdTransactionFee.value *
+                  rowData.usdValueThen.assetPrice *
+                  currency?.rate;
+              }
+            });
+            return (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                >
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                    {Number(valueToday?.toFixed(2)).toLocaleString("en-US")}
+                  </div>
+                </CustomOverlay>
+                <span style={{ padding: "2px" }}></span>(
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                >
+                  <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                    {Number(valueThen?.toFixed(2)).toLocaleString("en-US")}
+                  </div>
+                </CustomOverlay>
+                )
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="method"
+            onClick={() => this.handleTableSort("method")}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Method
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[8].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "method",
+        // coumnWidth: 100,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "method") {
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
+                {rowData.method}
+              </div>
+            );
+          }
+        },
+      },
+    ];
+    return (
+      <div className="history-table-section">
+        <div className="history-table page">
+          <PageHeader
+            title={"Transaction history"}
+            subTitle={"Valuable insights based on your assets"}
+            showpath={true}
+            currentPage={"transaction-history"}
+            history={this.props.history}
+          />
 
           <div className="fillter_tabs_section">
             <Form onValidSubmit={this.onValidSubmit}>
@@ -741,23 +927,23 @@ class TransactionHistoryPage extends BaseReactComponent {
                     filtername="All Year"
                     options={this.state.yearFilter}
                     action={SEARCH_BY_TIMESTAMP_IN}
-                    handleClick={(key,value) => this.addCondition(key,value)}
+                    handleClick={(key, value) => this.addCondition(key, value)}
                   />
                 </Col>
                 <Col md={3}>
-                <CustomDropdown
+                  <CustomDropdown
                     filtername="All assets"
                     options={this.state.assetFilter}
                     action={SEARCH_BY_ASSETS_IN}
-                    handleClick={(key,value) => this.addCondition(key,value)}
+                    handleClick={(key, value) => this.addCondition(key, value)}
                   />
                 </Col>
                 <Col md={3}>
-                <CustomDropdown
+                  <CustomDropdown
                     filtername="All method"
                     options={this.state.methodFilter}
                     action={SEARCH_BY_METHOD_IN}
-                    handleClick={(key,value) => this.addCondition(key,value)}
+                    handleClick={(key, value) => this.addCondition(key, value)}
                   />
                 </Col>
                 {/* {fillter_tabs} */}
@@ -788,11 +974,9 @@ class TransactionHistoryPage extends BaseReactComponent {
             </Form>
           </div>
           <div className="transaction-history-table">
-            {
-              this.state.tableLoading
-              ?
+            {this.state.tableLoading ? (
               <Loading />
-              :
+            ) : (
               <TransactionTable
                 tableData={tableData}
                 columnList={columnList}
@@ -803,7 +987,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 page={currentPage}
                 tableLoading={this.state.tableLoading}
               />
-            }
+            )}
           </div>
           <FeedbackForm page={"Transaction History Page"} />
         </div>
