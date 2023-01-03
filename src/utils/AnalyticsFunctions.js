@@ -333,12 +333,14 @@ export const TransactionHistoryAddress = ({
   session_id,
   email_address,
   address_hovered,
+  display_name
 }) => {
   const event_name = "Home:transaction history addresses";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "address hovered": address_hovered,
+    "display address": display_name,
   };
   sendAmplitudeData(event_name, eventProperties);
   console.log("Home:transaction history addresses");
