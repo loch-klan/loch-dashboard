@@ -56,7 +56,7 @@ class FixAddModal extends BaseReactComponent {
     handleOnchange = (e) => {
 
         let { name, value } = e.target
-        // console.log('value',value);
+        // console.log('e',value.trim());
         let prevWallets = [...this.state.addWalletList]
         let currentIndex = prevWallets.findIndex(elem => elem.id === name)
         if (currentIndex > -1) {
@@ -82,15 +82,18 @@ class FixAddModal extends BaseReactComponent {
       let parentCoinList =  this.props.OnboardingState.parentCoinList;
         if (parentCoinList && value) {
             for (let i = 0; i < parentCoinList.length; i++) {
-                this.props.detectCoin({
+                this.props.detectCoin(
+                  {
                     id: name,
                     coinCode: parentCoinList[i].code,
                     coinSymbol: parentCoinList[i].symbol,
                     coinName: parentCoinList[i].name,
                     address: value,
                     coinColor: parentCoinList[i].color,
-                    subChains: parentCoinList[i].sub_chains
-                }, this)
+                    subChains: parentCoinList[i].sub_chains,
+                  },
+                  this
+                );
             }
         }
     }
@@ -194,13 +197,28 @@ class FixAddModal extends BaseReactComponent {
             clearTimeout(this.timeout)
         }
         this.timeout = setTimeout(() => {
-            let arr = []
+            let arr = [];
+            let displayAddress = [];
             let walletList = []
             for (let i = 0; i < this.state.addWalletList.length; i++) {
                 let curr = this.state.addWalletList[i]
-                if (!arr.includes(curr.address) && curr.address) {
-                    walletList.push(curr)
-                    arr.push(curr.address)
+                console.log(
+                  "current address",
+                  curr.address.trim(),
+                  curr.address,
+                  "condition",
+                  !arr.includes(curr.address.trim()), curr, arr
+                );
+                if (!arr.includes(curr.address.trim()) && curr.address) {
+                    if (
+                      !displayAddress.includes(curr.displayAddress?.trim()) &&
+                      curr.displayAddress
+                    ) {
+                         walletList.push(curr);
+                         arr.push(curr.address.trim());
+                         displayAddress.push(curr.displayAddress?.trim());
+                    }
+                     
                 }
             }
             let addWallet = walletList;

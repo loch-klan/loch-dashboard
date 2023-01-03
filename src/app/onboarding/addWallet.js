@@ -159,9 +159,12 @@ class AddWallet extends BaseReactComponent {
       let finalArr = [];
       for (let i = 0; i < addWallet.length; i++) {
         let curr = addWallet[i];
-        if (!walletAddress.includes(curr.address) && curr.address) {
+        if (
+          !walletAddress.includes(curr.address.trim()) &&
+          curr.address.trim()
+        ) {
           finalArr.push(curr);
-          walletAddress.push(curr.address);
+          walletAddress.push(curr.address.trim());
         }
       }
 
