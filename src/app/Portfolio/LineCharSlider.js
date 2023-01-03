@@ -28,11 +28,14 @@ import DoubleArrow from "../../assets/images/double-arrow.svg";
 import handle from "../../assets/images/handle.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CustomDropdown from "../../utils/form/CustomDropdown";
+import { toast } from "react-toastify";
+import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
+
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem('currency')),
+      currency: JSON.parse(localStorage.getItem("currency")),
       assetValueData: props.assetValueData,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
@@ -42,7 +45,7 @@ class LineChartSlider extends BaseReactComponent {
       selectedValue: null,
       legends: [],
       steps: 1,
-      plotLineHide: 0
+      plotLineHide: 0,
     };
   }
 
@@ -58,7 +61,6 @@ class LineChartSlider extends BaseReactComponent {
   }
 
   handleFunction = (badge) => {
-
     let newArr = [...this.state.activeBadge];
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
       let index = newArr.findIndex((x) => x.name === badge.name);
@@ -109,7 +111,7 @@ class LineChartSlider extends BaseReactComponent {
         });
   };
   handleSelect = (opt) => {
-// console.log('opt',opt);
+    console.log("opt", opt);
     const t = opt.split(" ")[1];
     this.setState({
       title: t,
@@ -122,6 +124,20 @@ class LineChartSlider extends BaseReactComponent {
   DropdownData = (arr) => {
     // console.log("dropdown arr", arr);
     this.setState({ legends: arr, selectedEvents: [] });
+  };
+
+  copyContent = (text) => {
+    // const text = props.display_address ? props.display_address : props.wallet_account_number
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success("Copied");
+        // console.log("successfully copied");
+      })
+      .catch(() => {
+        console.log("something went wrong");
+      });
+    // toggleCopied(true)
   };
 
   render() {
@@ -154,20 +170,27 @@ class LineChartSlider extends BaseReactComponent {
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.count) * (data.asset_price * this.state.currency?.rate) +
+                  new Number(data.count) *
+                    (data.asset_price * this.state.currency?.rate) +
                   assetMaster[data.asset.id][assetData.timestamp];
               } else {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.count) * (data.asset_price * this.state.currency?.rate);
+                  new Number(data.count) *
+                  (data.asset_price * this.state.currency?.rate);
               }
             } else {
               assetMaster[data.asset.id] = {
                 assetDetails: data.asset,
-                assetPrice: data.asset_price ? (data.asset_price * this.state.currency?.rate) : 0,
-                count: new Number(data.count) * (data.asset_price * this.state.currency?.rate),
+                assetPrice: data.asset_price
+                  ? data.asset_price * this.state.currency?.rate
+                  : 0,
+                count:
+                  new Number(data.count) *
+                  (data.asset_price * this.state.currency?.rate),
               };
               assetMaster[data.asset.id][assetData.timestamp] =
-                new Number(data.count) * (data.asset_price * this.state.currency.rate);
+                new Number(data.count) *
+                (data.asset_price * this.state.currency.rate);
             }
           });
         }
@@ -206,7 +229,6 @@ class LineChartSlider extends BaseReactComponent {
       }
 
       timestampList = [...months.reverse(), ...timestampList];
-     
     } else if (this.state.title === "Day" && timestampList.length != 0) {
       let dates = [];
       const endDay = 30 - timestampList.length;
@@ -338,10 +360,10 @@ class LineChartSlider extends BaseReactComponent {
             });
           } else {
             if (e_time == abc && this.state.title !== "Year") {
-               isLast =
-                 eval(categories.indexOf(abc)) === timestampList.length - 1
-                   ? true
-                   : false;
+              isLast =
+                eval(categories.indexOf(abc)) === timestampList.length - 1
+                  ? true
+                  : false;
 
               y_value = UniqueEvents === 0 ? 120 : 220;
               UniqueEvents = UniqueEvents === 1 ? 0 : 1;
@@ -381,8 +403,6 @@ class LineChartSlider extends BaseReactComponent {
         });
     };
 
-
-
     let selectedEvents = [];
     let noOfInternalEvent;
     const getIevent = (value) => {
@@ -395,7 +415,6 @@ class LineChartSlider extends BaseReactComponent {
             current = moment(item.timestamp).format("YYYY");
             //  console.log("current", current, value);
           } else if (this.state.title === "Month") {
-
             current = moment(item.timestamp).format("MMMM YY");
             //  console.log("current", current, value);
           } else {
@@ -405,7 +424,8 @@ class LineChartSlider extends BaseReactComponent {
           if (current == value) {
             // selectedEvents.push(item);
             item.event.map((a) => {
-              let e_usd = a.asset.value * (a.asset_price * this.state.currency?.rate);
+              let e_usd =
+                a.asset.value * (a.asset_price * this.state.currency?.rate);
               let e_text = "";
               let e_assetValue = a.asset.value;
               let e_assetCode = a.asset.code;
@@ -463,7 +483,6 @@ class LineChartSlider extends BaseReactComponent {
         });
       noOfInternalEvent = selectedEvents.length;
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
-
     };
     timestampList.map((time) => {
       let dummy = new Date(time);
@@ -492,9 +511,7 @@ class LineChartSlider extends BaseReactComponent {
     // console.log("category", categories);
     let updatedPlotLine = [];
     let count = 0;
-    if (
-      this.state.plotLineHide === 1 && isLast
-    ) {
+    if (this.state.plotLineHide === 1 && isLast) {
       // console.log("1st");
       count = plotLines.length - this.state.plotLineHide;
       updatedPlotLine = plotLines.slice(0, count);
@@ -505,14 +522,13 @@ class LineChartSlider extends BaseReactComponent {
       // console.log("default");
       updatedPlotLine = plotLines;
     }
-//  console.log(updatedPlotLine);
+    //  console.log(updatedPlotLine);
     let SelectedSeriesData = [];
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
         return b.lastValue - a.lastValue;
       });
-
 
     let AllLegends = [{ label: "All", value: "All" }];
     seriesData &&
@@ -658,7 +674,7 @@ class LineChartSlider extends BaseReactComponent {
           width: 1,
           color: "#B0B1B3",
           dashStyle: "Dash",
-          cursor:"pointer"
+          cursor: "pointer",
         },
         scrollbar: {
           enabled: true,
@@ -732,7 +748,6 @@ class LineChartSlider extends BaseReactComponent {
         padding: 0,
         shadow: false,
         hideDelay: 0,
-        
 
         formatter: function () {
           let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map(
@@ -934,8 +949,8 @@ class LineChartSlider extends BaseReactComponent {
                     width: "120px",
                     position: "absolute",
                     right: "0px",
-                      zIndex: "1",
-                    cursor:"pointer"
+                    zIndex: "1",
+                    cursor: "pointer",
                   }}
                 >
                   <CustomDropdown
@@ -978,10 +993,9 @@ class LineChartSlider extends BaseReactComponent {
                         (this.state.title == "Year"
                           ? this.state.selectedValue
                           : this.state.title == "Month"
-                          ? moment(
-                              this.state.selectedValue,
-                              "MMMM YY"
-                            ).format("MMMM, YYYY")
+                          ? moment(this.state.selectedValue, "MMMM YY").format(
+                              "MMMM, YYYY"
+                            )
                           : moment(
                               this.state.selectedValue,
                               "DD/MM/YYYY"
@@ -1013,9 +1027,7 @@ class LineChartSlider extends BaseReactComponent {
                             >
                               <h5 className="inter-display-bold f-s-13 lh-16 black-191">
                                 <Image src={DoubleArrow} />
-                                {event.text === "from"
-                                  ? "Received"
-                                  : "Sent"}
+                                {event.text === "from" ? "Received" : "Sent"}
                               </h5>
 
                               <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
@@ -1040,6 +1052,13 @@ class LineChartSlider extends BaseReactComponent {
                                     {this.state.selectedEvents.length === 1
                                       ? event.fulladdress
                                       : event.address}
+                                    <Image
+                                      src={CopyClipboardIcon}
+                                      onClick={() =>
+                                        this.copyContent(event.fulladdress)
+                                      }
+                                      className="m-l-10 m-r-12 cp copy-icon"
+                                    />
                                   </span>
                                 </CustomOverlay>
                               </p>

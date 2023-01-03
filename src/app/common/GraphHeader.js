@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image } from 'react-bootstrap'
 import ArrowRight from '../../assets/images/icons/ArrowRight.svg'
-import { TitleAssetValueHover } from '../../utils/AnalyticsFunctions';
+import { TitleAssetValueHover, TransactionHistoryHover } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
 export const GraphHeader = (props) => {
   return (
@@ -20,7 +20,7 @@ export const GraphHeader = (props) => {
             }
 
             if (props.isAnalytics === "Transaction Table") {
-              TitleAssetValueHover({
+              TransactionHistoryHover({
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
               });

@@ -37,6 +37,7 @@
             right: 0rem;
             top: 45%;
             width: 28rem;
+            z-index:1;
             .secondary-btn {
                 line-height: 1.9rem;
                 border: 0.15rem solid $black-191;
@@ -856,6 +857,11 @@ position: relative;
                       user-select: none;
                     //   cursor: pointer;
                       position: relative;
+                       border: 1px solid transparent;
+
+                       &:hover{
+                border: 1px solid $grey-E5E;
+              }
                     
 
                       .chain-list{

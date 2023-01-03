@@ -8,7 +8,9 @@ export const getCoinRate = () => {
         postLoginInstance
             .post("wallet/chain/get-crypto-asset-rates", data)
             .then((res) => {
-                let coinRateList = res.data && res.data.data && Object.keys(res.data.data.rates).length > 0 ? res.data.data.rates : []
+              let coinRateList = res.data && res.data.data && Object.keys(res.data.data.rates).length > 0 ? res.data.data.rates : [];
+              // console.log("cooin redux", coinRateList);
+              // console.log("cooin redux", res.data.data);
                 dispatch({
                     type: COIN_RATE_LIST,
                     payload: coinRateList
@@ -28,7 +30,9 @@ export const getUserWallet = (wallet,ctx) => {
         postLoginInstance
             .post("wallet/user-wallet/get-balance", data)
             .then((res) => {
-                let userWalletList = res.data && res.data.data.user_wallet && res.data.data.user_wallet.assets && res.data.data.user_wallet.assets.length > 0 && res.data.data.user_wallet.active ? res.data.data.user_wallet : []
+              let userWalletList = res.data && res.data.data.user_wallet && res.data.data.user_wallet.assets && res.data.data.user_wallet.assets.length > 0 && res.data.data.user_wallet.active ? res.data.data.user_wallet : []
+              
+              console.log("asset", res.data?.data.asset_prices)
                 dispatch({
                     type: USER_WALLET_LIST,
                     payload: {
@@ -37,8 +41,16 @@ export const getUserWallet = (wallet,ctx) => {
                         assetPrice: res.data?.data.asset_prices,
                     }
                 });
+              // dispatch({
+              //   type: COIN_RATE_LIST,
+              //   payload: res.data?.data.asset_prices,
+              // });
+            
                 if(ctx){
-                  ctx.setState({isLoading:false})
+                  ctx.setState({
+                    isLoading: false,
+                    assetPrice: {...ctx.state.assetPrice, ...res.data?.data.asset_prices},
+                  });
                 }
             })
             .catch((err) => {

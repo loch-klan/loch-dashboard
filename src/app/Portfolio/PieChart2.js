@@ -5,6 +5,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import CustomLoader from "../common/CustomLoader";
 import {
+  amountFormat,
   CurrencyType,
   lightenDarkenColor,
   numToCurrency,
@@ -45,7 +46,8 @@ class PieChart2 extends BaseReactComponent {
       piechartisLoading: true,
       currency: JSON.parse(localStorage.getItem("currency")),
       isChainToggle: false,
-      chainList: null
+      chainList: null,
+      assetPrice:null,
     };
   }
 
@@ -113,6 +115,7 @@ class PieChart2 extends BaseReactComponent {
   }
 
   componentDidUpdate(prevProps) {
+    
     if (this.props.assetTotal !== prevProps.assetTotal) {
       this.setState({ assetTotal: this.props.assetTotal });
     }
@@ -178,32 +181,46 @@ class PieChart2 extends BaseReactComponent {
     if (this.props.chainPortfolio != prevProps.chainPortfolio) {
       // console.log("pie", this.props.allCoinList);
       let chainList = [];
-      this.props.allCoinList && this.props.allCoinList.map((item) => {
-        let isfound = false;
-        this.props.chainPortfolio &&
-          this.props.chainPortfolio.map((chain) => {
-            if (item.id === chain.id) {
-              isfound = true;
-              chainList.push({
-                name: chain.name,
-                symbol: chain.symbol,
-                total: chain.total,
-                id: chain.id,
-                color: chain.color,
-              });
-            }
+      // this.props.allCoinList && this.props.allCoinList.map((item) => {
+      //   let isfound = false;
+      //   this.props.chainPortfolio &&
+      //     this.props.chainPortfolio.map((chain) => {
+      //       if (item.id === chain.id) {
+      //         isfound = true;
+      //         chainList.push({
+      //           name: chain.name,
+      //           symbol: chain.symbol,
+      //           total: chain.total,
+      //           id: chain.id,
+      //           color: chain.color,
+      //         });
+      //       }
             
-          });
-        if (!isfound) {
-          chainList.push({
-            name: item.name,
-            symbol: item.symbol,
-            total: 0.00,
-            id: item.id,
-            color: item.color,
-          });
-        }
-      });
+      //     });
+      //   if (!isfound) {
+      //     chainList.push({
+      //       name: item.name,
+      //       symbol: item.symbol,
+      //       total: 0.00,
+      //       id: item.id,
+      //       color: item.color,
+      //     });
+      //   }
+      // });
+
+     
+           this.props.chainPortfolio &&
+             this.props.chainPortfolio.map((chain) => {
+              
+               chainList.push({
+                 name: chain.name,
+                 symbol: chain.symbol,
+                 total: chain.total,
+                 id: chain.id,
+                 color: chain.color,
+               })
+             }
+         );
       
        chainList =
          chainList &&
@@ -213,6 +230,16 @@ class PieChart2 extends BaseReactComponent {
       this.setState({
         chainList
       })
+    }
+    if (this.props.assetPrice != prevProps.assetPrice) {
+      // console.log("props asset price", this.props.assetPrice);
+      let assetPrice = this.props.assetPrice.reduce((obj, element) => {
+        obj[element.id] = element;
+        return obj;
+      }, {});
+      this.setState({
+        assetPrice,
+      });
     }
     // if(!this.props.userWalletData && this.props.walletTotal === 0 && !this.props.isLoading){
     //   this.setState({piechartisLoading : this.props.isLoading === false ? false : true})
@@ -237,7 +264,8 @@ class PieChart2 extends BaseReactComponent {
     }
 
   render() {
-    // console.log("chain walletr", this.props.userWalletData);
+    // console.log("asset price state", this.state.assetPrice);
+      //  console.log("asset price props", this.props.assetPrice);
     let self = this;
     let chartOptions = {
       chart: {
@@ -263,7 +291,8 @@ class PieChart2 extends BaseReactComponent {
             series.data.map((e, i) => {
               e.dataLabel
                 .css({
-                  opacity: 0,
+                  // opacity: 0,
+                  display: "none",
                 })
                 .add();
             });
@@ -348,6 +377,15 @@ class PieChart2 extends BaseReactComponent {
             color: "#636467",
             borderRadius: 8,
             verticalAlign: "top",
+            borderColor: "#F2F2F2",
+            borderWidth: 1,
+            // shadow: {
+            //   color: "#000000",
+            //   offsetY: 4,
+            //   offsetX: 0,
+            //   width:-4,
+            //   opacity: 0.15,
+            // },
             style: {
               textShadow: false,
               textOverflow: "clip",
@@ -375,13 +413,13 @@ class PieChart2 extends BaseReactComponent {
                         ? {}
                         : currentData
                       : currentData,
-                  // isChainToggle: false,
+                  isChainToggle: false,
                 });
-                // if (document.getElementById("fixbtn")) {
-                //   {
-                //     document.getElementById("fixbtn").style.display = "none";
-                //   }
-                // }
+                if (document.getElementById("fixbtn")) {
+                  {
+                    document.getElementById("fixbtn").style.display = "none";
+                  }
+                }
                 PiechartChainName({
                   session_id: getCurrentUser().id,
                   email_address: getCurrentUser().email,
@@ -401,11 +439,11 @@ class PieChart2 extends BaseReactComponent {
                     pieSectionDataEnabled: {},
                     selectedSection: {},
                   });
-                  //   if (document.getElementById("fixbtn")) {
-                  //     {
-                  //       document.getElementById("fixbtn").style.display = "flex";
-                  //     }
-                  //   }
+                  if (document.getElementById("fixbtn")) {
+                    {
+                      document.getElementById("fixbtn").style.display = "flex";
+                    }
+                  }
                 }
               },
               mouseOver: function () {
@@ -413,21 +451,24 @@ class PieChart2 extends BaseReactComponent {
                 // console.log("move hover", this)
                 this.graphic.attr({
                   fill: this.options.borderColor,
-                  opacity: 1,
+                  // opacity: 1,
+                  display: "block",
                   zIndex: 10,
                 });
                 this.series.data.map((data, i) => {
                   if (currentData.assetCode !== data.assetCode) {
                     data.dataLabel
                       .css({
-                        opacity: 0,
+                        // opacity: 0,
+                        display: "none",
                         zIndex: 10,
                       })
                       .add();
                   } else {
                     data.dataLabel
                       .css({
-                        opacity: 1,
+                        // opacity: 1,
+                        display: "block",
                         zIndex: 10,
                       })
                       .add();
@@ -446,14 +487,16 @@ class PieChart2 extends BaseReactComponent {
                   ) {
                     data.dataLabels[0]
                       .css({
-                        opacity: 0,
+                        // opacity: 0,
+                        display: "none",
                       })
                       .add();
                   }
                 } else {
                   data.dataLabels[0]
                     .css({
-                      opacity: 0,
+                      // opacity: 0,
+                      display: "none",
                     })
                     .add();
                 }
@@ -555,7 +598,11 @@ class PieChart2 extends BaseReactComponent {
         {Object.keys(this.state.assetData).length > 0 ? (
           <>
             <Row style={{ width: "100%" }}>
-              <Col md={7} className="piechart-column" style={{ padding: 0, zIndex:2 }}>
+              <Col
+                md={7}
+                className="piechart-column"
+                style={{ padding: 0, zIndex: 2 }}
+              >
                 <div className="chart-section">
                   <HighchartsReact
                     highcharts={Highcharts}
@@ -641,10 +688,16 @@ class PieChart2 extends BaseReactComponent {
                         )}
                     </div>
                     {chainList &&
-                        chainList.slice(0, 3).map((data, index) => {
-                        // console.log(data)
+                      chainList.slice(0, 3).map((data, index) => {
+                        console.log(
+                          "portfolio state",
+                          this.props.portfolioState,
+                          "selected",
+                          this.state.selectedSection[0].assetId
+                        );
                         let isQuote =
-                          this.props.portfolioState.coinRateList[
+                          this.state.assetPrice &&
+                          this.state.assetPrice[
                             this.state.selectedSection[0].assetId
                           ].quote;
                         if (index < 2) {
@@ -768,87 +821,47 @@ class PieChart2 extends BaseReactComponent {
                       onClick={this.toggleChain}
                     >
                       <div
-                        className="inter-display-medium f-s-16 lh-19 grey-233"
                         style={{
                           display: "flex",
                           alignItems: "center",
                         }}
                       >
-                        <Image
-                          src={
-                            this.state.chainList &&
-                            this.state.chainList[0]?.symbol
-                          }
-                          style={{
-                            position: "relative",
-                            zIndex: 3,
-                            marginLeft: "0px",
-                            width: "2.6rem",
-                            height: "2.6rem",
-                            borderRadius: "6px",
-                            objectFit: "cover",
-                            border: `1px solid ${
-                              this.state.chainList
-                                ? lightenDarkenColor(
-                                    this.state.chainList[0]?.color,
-                                    -0.15
-                                  )
-                                : "transparent"
-                            }`,
-                          }}
-                        />
-                        <Image
-                          src={
-                            this.state.chainList &&
-                            this.state.chainList[1]?.symbol
-                          }
-                          style={{
-                            position: "relative",
-                            marginLeft: "-10px",
-                            width: "2.6rem",
-                            height: "2.6rem",
-                            borderRadius: "6px",
-                            zIndex: 2,
-                            objectFit: "cover",
-                            border: `1px solid ${
-                              this.state.chainList
-                                ? lightenDarkenColor(
-                                    this.state.chainList[1]?.color,
-                                    -0.15
-                                  )
-                                : "transparent"
-                            }`,
-                          }}
-                        />
-                        <Image
-                          src={
-                            this.state.chainList &&
-                            this.state.chainList[2]?.symbol
-                          }
-                          style={{
-                            position: "relative",
-                            marginLeft: "-10px",
-                            zIndex: 1,
-                            width: "2.6rem",
-                            height: "2.6rem",
-                            borderRadius: "6px",
-                            marginRight: "1.5rem",
-                            objectFit: "cover",
-                            border: `1px solid ${
-                              this.state.chainList
-                                ? lightenDarkenColor(
-                                    this.state.chainList[2]?.color,
-                                    -0.15
-                                  )
-                                : "transparent"
-                            }`,
-                          }}
-                        />
                         {this.state.chainList &&
-                        this.state.chainList?.length > 10
-                          ? "10+"
-                          : this.state.chainList?.length}{" "}
-                        Chains
+                          this.state.chainList.slice(0, 3).map((item, i) => {
+                            return (
+                              <Image
+                                src={item.symbol}
+                                style={{
+                                  position: "relative",
+                                  marginLeft: `${i === 0 ? "0" : "-10"}px`,
+                                  width: "2.6rem",
+                                  height: "2.6rem",
+                                  borderRadius: "6px",
+                                  zIndex: `${
+                                    i === 0 ? "3" : i === 1 ? "2" : "1"
+                                  }`,
+                                  objectFit: "cover",
+                                  border: `1px solid ${lightenDarkenColor(
+                                    item.color,
+                                    -0.15
+                                  )}`,
+                                }}
+                              />
+                            );
+                          })}
+                        
+                        <span
+                          className="inter-display-medium f-s-16 lh-19 grey-233"
+                          style={{
+                          marginLeft: "1.2rem"
+                          }}
+                        >
+                          {this.state.chainList &&
+                          this.state.chainList?.length > 5
+                            ? "5+"
+                            : this.state.chainList?.length}{" "}
+                          Chains
+                        </span>
                       </div>
                       <Image
                         src={arrowUp}
@@ -900,7 +913,11 @@ class PieChart2 extends BaseReactComponent {
                                 </span>
                                 <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
                                   {CurrencyType(false)}
-                                  {chain.total.toFixed(2)}
+                                  {amountFormat(
+                                    chain.total.toFixed(2),
+                                    "en-US",
+                                    "USD"
+                                  )}
                                 </span>
                               </div>
                             );

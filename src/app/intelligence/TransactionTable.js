@@ -20,12 +20,6 @@ function TransactionTable(props) {
             isArrow={true}
             handleClick={props.handleClick}
             isAnalytics="Transaction Table"
-            onMouseEnter={() =>
-              TransactionHistoryHover({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              })
-            }
           />
         ) : (
           ""
