@@ -277,6 +277,13 @@ class TransactionHistoryPage extends BaseReactComponent {
       });
     // toggleCopied(true)
   };
+
+  TruncateText = (string) => {
+    if (string.length > 6) {
+      return string.substring(0, 4) + "..";
+    }
+    return string;
+  };
   render() {
     // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
@@ -435,7 +442,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
               >
                 {rowData.from.metaData?.wallet_metaData ? (
-                  <>
+                  <span>
                     <Image
                       src={
                         rowData.from.metaData?.wallet_metaData?.symbol ||
@@ -452,28 +459,35 @@ class TransactionHistoryPage extends BaseReactComponent {
                         });
                       }}
                     />
-                    {/* <Image
+                    <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
                       className="m-l-10 m-r-12 cp"
-                    /> */}
-                  </>
+                    />
+                  </span>
                 ) : rowData.from.wallet_metaData.symbol ||
                   rowData.from.wallet_metaData.text ? (
                   rowData.from.wallet_metaData.symbol ? (
-                    <Image
-                      src={rowData.from.wallet_metaData.symbol}
-                      className="history-table-icon"
-                      onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.metaData?.displayAddress,
-                        });
-                      }}
-                    />
+                    <span>
+                      <Image
+                        src={rowData.from.wallet_metaData.symbol}
+                        className="history-table-icon"
+                        onMouseEnter={() => {
+                          // console.log("address", rowData.from.metaData);
+                          TransactionHistoryAddress({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_hovered: rowData.from.address,
+                            display_name: rowData.from.metaData?.displayAddress,
+                          });
+                        }}
+                      />
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 m-r-12 cp"
+                      />
+                    </span>
                   ) : (
                     <span
                       onMouseEnter={() => {
@@ -486,7 +500,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         });
                       }}
                     >
-                      {rowData.from.wallet_metaData.text}
+                      {this.TruncateText(rowData.from.wallet_metaData.text)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 m-r-12 cp"
+                      />
                     </span>
                   )
                 ) : rowData.from.metaData?.displayAddress ? (
@@ -501,22 +520,34 @@ class TransactionHistoryPage extends BaseReactComponent {
                       });
                     }}
                   >
-                    {rowData.from.metaData?.displayAddress}
+                    {this.TruncateText(rowData.from.metaData?.displayAddress)}
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 m-r-12 cp"
+                    />
                   </span>
                 ) : (
-                  <Image
-                    src={unrecognizedIcon}
-                    className="history-table-icon"
-                    onMouseEnter={() => {
-                      // console.log("address", rowData.from.metaData);
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.from.address,
-                        display_name: rowData.from.metaData?.displayAddress,
-                      });
-                    }}
-                  />
+                  <span>
+                    <Image
+                      src={unrecognizedIcon}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        // console.log("address", rowData.from.metaData);
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 m-r-12 cp"
+                    />
+                  </span>
                 )}
               </CustomOverlay>
             );
@@ -563,26 +594,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
-                  <Image
-                    src={
-                      rowData.to.metaData?.wallet_metaData?.symbol ||
-                      unrecognizedIcon
-                    }
-                    className="history-table-icon"
-                    onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.metaData?.displayAddress,
-                      });
-                    }}
-                  />
-                ) : rowData.to.wallet_metaData.symbol ||
-                  rowData.to.wallet_metaData.text ? (
-                  rowData.to.wallet_metaData.symbol ? (
+                  <span>
                     <Image
-                      src={rowData.to.wallet_metaData.symbol}
+                      src={
+                        rowData.to.metaData?.wallet_metaData?.symbol ||
+                        unrecognizedIcon
+                      }
                       className="history-table-icon"
                       onMouseEnter={() => {
                         TransactionHistoryAddress({
@@ -593,6 +610,34 @@ class TransactionHistoryPage extends BaseReactComponent {
                         });
                       }}
                     />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 m-r-12 cp"
+                    />
+                  </span>
+                ) : rowData.to.wallet_metaData.symbol ||
+                  rowData.to.wallet_metaData.text ? (
+                  rowData.to.wallet_metaData.symbol ? (
+                    <span>
+                      <Image
+                        src={rowData.to.wallet_metaData.symbol}
+                        className="history-table-icon"
+                        onMouseEnter={() => {
+                          TransactionHistoryAddress({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            address_hovered: rowData.to.address,
+                            display_name: rowData.to.metaData?.displayAddress,
+                          });
+                        }}
+                      />
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 m-r-12 cp"
+                      />
+                    </span>
                   ) : (
                     <span
                       onMouseEnter={() => {
@@ -604,7 +649,12 @@ class TransactionHistoryPage extends BaseReactComponent {
                         });
                       }}
                     >
-                      {rowData.to.wallet_metaData.text}
+                      {this.TruncateText(rowData.to.wallet_metaData.text)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 m-r-12 cp"
+                      />
                     </span>
                   )
                 ) : rowData.to.metaData?.displayAddress ? (
@@ -618,21 +668,33 @@ class TransactionHistoryPage extends BaseReactComponent {
                       });
                     }}
                   >
-                    {rowData.to.metaData?.displayAddress}
+                    {this.TruncateText(rowData.to.metaData?.displayAddress)}
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 m-r-12 cp"
+                    />
                   </span>
                 ) : (
-                  <Image
-                    src={unrecognizedIcon}
-                    className="history-table-icon"
-                    onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.metaData?.displayAddress,
-                      });
-                    }}
-                  />
+                  <span>
+                    <Image
+                      src={unrecognizedIcon}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    />
+                    <Image
+                      src={CopyClipboardIcon}
+                      onClick={() => this.copyContent(rowData.from.address)}
+                      className="m-l-10 m-r-12 cp"
+                    />
+                  </span>
                 )}
               </CustomOverlay>
             );
