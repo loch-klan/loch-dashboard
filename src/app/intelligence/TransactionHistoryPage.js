@@ -471,6 +471,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
                       className="m-l-10 m-r-12 cp copy-icon"
+                      style={{ width: "1rem" }}
                     />
                   </span>
                 ) : rowData.from.wallet_metaData.symbol ||
@@ -496,6 +497,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
                         className="m-l-10 m-r-12 cp copy-icon"
+                        style={{ width: "1rem" }}
                       />
                     </span>
                   ) : (
@@ -517,6 +519,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
                         className="m-l-10 m-r-12 cp copy-icon"
+                        style={{ width: "1rem" }}
                       />
                     </span>
                   )
@@ -539,6 +542,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
                       className="m-l-10 m-r-12 cp copy-icon"
+                      style={{ width: "1rem" }}
                     />
                   </span>
                 ) : (
@@ -562,6 +566,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
                       className="m-l-10 m-r-12 cp copy-icon"
+                      style={{ width: "1rem" }}
                     />
                   </span>
                 )}
@@ -607,8 +612,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       ": " +
                       rowData.to.address
                     : rowData.to.metaData?.displayAddress &&
-                      rowData.to.metaData?.displayAddress !==
-                        rowData.to.address
+                      rowData.to.metaData?.displayAddress !== rowData.to.address
                     ? rowData.to.metaData?.displayAddress +
                       ": " +
                       rowData.to.address
@@ -628,9 +632,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
                           address_hovered: rowData.to.address,
-                          display_name:
-                            rowData.to.wallet_metaData?.text ? rowData.to.wallet_metaData?.text: rowData.to.metaData
-                              ?.displayAddress,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
                         });
                       }}
                     />
@@ -638,6 +642,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
                       className="m-l-10 m-r-12 cp copy-icon"
+                      style={{ width: "1rem" }}
                     />
                   </span>
                 ) : rowData.to.wallet_metaData.symbol ||
@@ -662,6 +667,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
                         className="m-l-10 m-r-12 cp copy-icon"
+                        style={{ width: "1rem" }}
                       />
                     </span>
                   ) : (
@@ -682,6 +688,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
                         className="m-l-10 m-r-12 cp copy-icon"
+                        style={{ width: "1rem" }}
                       />
                     </span>
                   )
@@ -703,6 +710,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
                       className="m-l-10 m-r-12 cp copy-icon"
+                      style={{ width: "1rem" }}
                     />
                   </span>
                 ) : (
@@ -725,6 +733,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
                       className="m-l-10 m-r-12 cp copy-icon"
+                      style={{ width: "1rem" }}
                     />
                   </span>
                 )}
