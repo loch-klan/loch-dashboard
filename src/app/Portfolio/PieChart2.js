@@ -807,9 +807,9 @@ class PieChart2 extends BaseReactComponent {
               <Col md={5} style={{ marginTop: "-2rem", padding: 0, zIndex: 1 }}>
                 <div>
                   {/* Chains */}
-                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  {/* <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     Chains
-                  </h2>
+                  </h2> */}
                   <div className="chain-card">
                     <div
                       style={{
