@@ -32,6 +32,11 @@
                 top: 2.8rem;
                 right: 2.8rem;
                 cursor: pointer;
+                transition: all 0.4s ease;
+
+                &:hover{
+                    transform: scale(1.1);
+                }
             }
         }
 

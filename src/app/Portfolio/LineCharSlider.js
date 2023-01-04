@@ -1035,10 +1035,12 @@ class LineChartSlider extends BaseReactComponent {
                                   {event.assetValue.toFixed(count)}{" "}
                                   {event.assetCode}
                                   {` or ${CurrencyType(false)}`}
-                                  {numToCurrency(event.usd)}
+                                  <span className="inter-display-semi-bold">
+                                    {numToCurrency(event.usd)}
+                                  </span>
                                   {event.text === "from"
                                     ? " received from "
-                                    : " transferred to "}
+                                    : " sent to "}
                                 </span>
                                 <CustomOverlay
                                   position="top"

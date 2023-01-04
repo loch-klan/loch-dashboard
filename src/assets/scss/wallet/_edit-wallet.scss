@@ -37,6 +37,13 @@
             top: 2.8rem;
             right: 2.8rem;
             cursor: pointer;
+            transition: all 0.4s ease;
+
+                &:hover{
+                    top: 2.5rem;
+                    right: 2.5rem;
+                    padding: 1.6rem;
+                }
         }
 
         .triangle-up {
