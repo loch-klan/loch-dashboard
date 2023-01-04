@@ -39,7 +39,6 @@ import { getAllCounterFeeApi } from '../cost/Api';
 import Loading from '../common/Loading';
 import FeedbackForm from '../common/FeedbackForm';
 import { CurrencyType } from '../../utils/ReusableFunctions';
-import PieChart2 from './PieChart2';
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -106,7 +105,6 @@ class Portfolio extends BaseReactComponent {
       // selectedCurrency: JSON.parse(localStorage.getItem('currency')),
       currency: JSON.parse(localStorage.getItem("currency")),
       counterGraphDigit: 3,
-      assetPrice: null
     };
   }
 
@@ -352,7 +350,6 @@ class Portfolio extends BaseReactComponent {
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-    // console.log("wallet list", this.state.userWalletList);
     let tableData =
       table &&
       table.map((row) => {
@@ -777,10 +774,7 @@ class Portfolio extends BaseReactComponent {
               <Loading />
             ) : (
               <div className="portfolio-page-section">
-                <div
-                  className="portfolio-container page"
-                  style={{ overflow: "visible" }}
-                >
+                <div className="portfolio-container page">
                   <div className="portfolio-section">
                     <WelcomeCard
                       yesterdayBalance={this.state.yesterdayBalance}
@@ -807,7 +801,7 @@ class Portfolio extends BaseReactComponent {
                       }}
                     />
                   </div>
-                  {/* <div
+                  <div
                     className="portfolio-section"
                     style={{ minWidth: "85rem", overflow: "hidden" }}
                   >
@@ -852,192 +846,90 @@ class Portfolio extends BaseReactComponent {
                     ) : (
                       ""
                     )}
-                  </div> */}
-                  <div
-                    className="portfolio-section"
-                    style={{ minWidth: "85rem" }}
-                  >
-                    <PieChart2
-                      userWalletData={
-                        this.props.portfolioState &&
-                        this.props.portfolioState.chainWallet &&
-                        Object.keys(this.props.portfolioState.chainWallet)
-                          .length > 0
-                          ? Object.values(this.props.portfolioState.chainWallet)
-                          : null
-                      }
-                      chainPortfolio={
-                        this.props.portfolioState &&
-                        this.props.portfolioState.chainPortfolio &&
-                        Object.keys(this.props.portfolioState.chainPortfolio)
-                          .length > 0
-                          ? Object.values(
-                              this.props.portfolioState.chainPortfolio
-                            )
-                          : null
-                      }
-                      allCoinList={
-                        this.props.OnboardingState &&
-                        this.props.OnboardingState.coinsList &&
-                        Object.keys(this.props.OnboardingState.coinsList)
-                          .length > 0
-                          ? Object.values(this.props.OnboardingState.coinsList)
-                          : null
-                      }
-                      assetTotal={
-                        this.props.portfolioState &&
-                        this.props.portfolioState.walletTotal
-                          ? this.props.portfolioState.walletTotal
-                          : 0
-                      }
-                      assetPrice={
-                        this.state.assetPrice &&
-                        Object.keys(this.state.assetPrice).length > 0
-                          ? Object.values(this.state.assetPrice)
-                          : null
-                      }
-                      // loader={this.state.loader}
-                      isLoading={this.state.isLoading}
-                      walletTotal={this.props.portfolioState.walletTotal}
-                      handleAddModal={this.handleAddModal}
-                      handleManage={() => {
-                        this.props.history.push("/wallets");
-                        ManageWallets({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
-                    />
-                    {this.state.userWalletList.findIndex(
-                      (w) => w.coinFound !== true
-                    ) > -1 && this.state.userWalletList[0].address !== "" ? (
-                      <div className="fix-div" id="fixbtn">
-                        <div className="m-r-8 decribe-div">
-                          <div className="inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262">
-                            Wallet undetected
-                          </div>
-                          <div className="inter-display-medium f-s-13 lh-16 grey-737">
-                            One or more wallets were not detected{" "}
-                          </div>
-                        </div>
-                        <Button
-                          className="secondary-btn"
-                          onClick={this.handleFixModal}
-                        >
-                          Fix
-                        </Button>
-                      </div>
-                    ) : (
-                      ""
-                    )}
                   </div>
-
-                  <div className="portfolio-section m-b-32">
-                    <LineChartSlider
+                  {/* <div className="portfolio-section m-b-32">
+                    <LineChart
                       assetValueData={
                         this.state.assetValueData && this.state.assetValueData
-                      }
-                      externalEvents={
-                        this.state.externalEvents && this.state.externalEvents
                       }
                       coinLists={this.props.OnboardingState.coinsLists}
                       isScrollVisible={false}
                       handleGroupBy={(value) => this.handleGroupBy(value)}
                       graphLoading={this.state.graphLoading}
-                      isUpdate={this.state.isUpdate}
-                      handleClick={() => {
-                        this.props.history.push("/intelligence/asset-value");
-                      }}
+                      externalEvents={this.state.externalEvents}
                     />
-                  </div>
-                  <div className="m-b-22 graph-table-section">
-                    <Row>
-                      <Col md={6}>
-                        <div
-                          className="m-r-16 section-table"
-                          style={{ paddingBottom: "1.15rem" }}
-                        >
-                          <TransactionTable
-                            title="Transaction History"
-                            handleClick={() => {
-                              this.props.history.push(
-                                "/intelligence/transaction-history"
-                              );
-                              TransactionHistoryEView({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }}
-                            subTitle="In the last month"
-                            tableData={tableData}
-                            columnList={columnList}
-                            headerHeight={60}
-                            isLoading={this.state.tableLoading}
-                          />
-                        </div>
-                      </Col>
-                      <Col md={6}>
-                        <div className="profit-chart">
-                          {this.state.graphValue ? (
-                            <BarGraphSection
-                              headerTitle="Net Flows"
-                              headerSubTitle="Understand your entire portfolio's performance"
-                              isArrow={true}
-                              handleClick={() => {
-                                this.props.history.push("/intelligence");
-                                ProfitLossEV({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                              }}
-                              isScrollVisible={false}
-                              data={this.state.graphValue[0]}
-                              options={this.state.graphValue[1]}
-                              coinsList={this.props.OnboardingState.coinsList}
-                              // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
-                              marginBottom="m-b-32"
-                              showFooter={false}
-                              showBadges={false}
-                              showPercentage={this.state.graphValue[2]}
-                              // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
-                              // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
-                              // comingSoon={true}
-                              className={"portfolio-profit-and-loss"}
-                            />
-                          ) : (
-                            <div className="loading-wrapper">
-                              <Loading />
-                              <br />
-                              <br />
-                            </div>
-                          )}
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                  <div className="m-b-40 portfolio-cost-table-section">
-                    <div className="section-chart">
-                      {this.state.counterPartyValue &&
-                      !this.state.counterGraphLoading ? (
+                  </div> */}
+              <div className="portfolio-section m-b-32">
+                <LineChartSlider
+                  assetValueData={
+                    this.state.assetValueData && this.state.assetValueData
+                  }
+                  externalEvents={
+                    this.state.externalEvents && this.state.externalEvents
+                  }
+                  coinLists={this.props.OnboardingState.coinsLists}
+                  isScrollVisible={false}
+                  handleGroupBy={(value) => this.handleGroupBy(value)}
+                  graphLoading={this.state.graphLoading}
+                  isUpdate={this.state.isUpdate}
+                  handleClick={() => {
+                    this.props.history.push("/intelligence/asset-value");
+                  }}
+                />
+              </div>
+              <div className="m-b-22 graph-table-section">
+                <Row>
+                  <Col md={6}>
+                    <div
+                      className="m-r-16 section-table"
+                      style={{ paddingBottom: "1.15rem" }}
+                    >
+                      <TransactionTable
+                        title="Transaction History"
+                        handleClick={() => {
+                          this.props.history.push(
+                            "/intelligence/transaction-history"
+                          );
+                          TransactionHistoryEView({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        }}
+                        subTitle="In the last month"
+                        tableData={tableData}
+                        columnList={columnList}
+                        headerHeight={60}
+                        isLoading={this.state.tableLoading}
+                      />
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="profit-chart">
+                      {this.state.graphValue ? (
                         <BarGraphSection
-                          headerTitle="Counterparty Volume Over Time"
-                          headerSubTitle="Understand how much your counterparty charges you"
+                          headerTitle="Net Flows"
+                          headerSubTitle="Understand your entire portfolio's performance"
                           isArrow={true}
                           handleClick={() => {
-                            VolumeTradeByCP({
+                            this.props.history.push("/intelligence");
+                            ProfitLossEV({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                            this.props.history.push("/costs#cp");
                           }}
-                          data={this.state.counterPartyValue[0]}
-                          options={this.state.counterPartyValue[1]}
-                          options2={this.state.counterPartyValue[2]}
-                          digit={this.state.counterGraphDigit}
-                          isScroll={true}
                           isScrollVisible={false}
-                          comingSoon={false}
-                          className={"portfolio-counterparty-fee"}
+                          data={this.state.graphValue[0]}
+                          options={this.state.graphValue[1]}
+                          coinsList={this.props.OnboardingState.coinsList}
+                          // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
+                          marginBottom="m-b-32"
+                          showFooter={false}
+                          showBadges={false}
+                          showPercentage={this.state.graphValue[2]}
+                          // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
+                          // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
+                          // comingSoon={true}
+                          className={"portfolio-profit-and-loss"}
                         />
                       ) : (
                         <div className="loading-wrapper">
@@ -1047,42 +939,77 @@ class Portfolio extends BaseReactComponent {
                         </div>
                       )}
                     </div>
-                  </div>
-                  <FeedbackForm page={"Home Page"} attribution={true} />
+                  </Col>
+                </Row>
+              </div>
+              <div className="m-b-40 portfolio-cost-table-section">
+                <div className="section-chart">
+                  {this.state.counterPartyValue &&
+                  !this.state.counterGraphLoading ? (
+                    <BarGraphSection
+                      headerTitle="Counterparty Volume Over Time"
+                      headerSubTitle="Understand how much your counterparty charges you"
+                      isArrow={true}
+                      handleClick={() => {
+                        VolumeTradeByCP({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                        this.props.history.push("/costs#cp");
+                      }}
+                      data={this.state.counterPartyValue[0]}
+                      options={this.state.counterPartyValue[1]}
+                      options2={this.state.counterPartyValue[2]}
+                      digit={this.state.counterGraphDigit}
+                      isScroll={true}
+                      isScrollVisible={false}
+                      comingSoon={false}
+                      className={"portfolio-counterparty-fee"}
+                    />
+                  ) : (
+                    <div className="loading-wrapper">
+                      <Loading />
+                      <br />
+                      <br />
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
-            {this.state.fixModal && (
-              <FixAddModal
-                show={this.state.fixModal}
-                onHide={this.handleFixModal}
-                //  modalIcon={AddWalletModalIcon}
-                title="Fix your wallet address"
-                subtitle="Add your wallet address to get started"
-                // fixWalletAddress={fixWalletAddress}
-                btnText="Done"
-                btnStatus={true}
-                history={this.props.history}
-                modalType="fixwallet"
-                changeWalletList={this.handleChangeList}
-              />
-            )}
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
-              />
-            )}
+              <FeedbackForm page={"Home Page"} attribution={true} />
+            </div>
           </div>
-        );
+        )}
+        {this.state.fixModal && (
+          <FixAddModal
+            show={this.state.fixModal}
+            onHide={this.handleFixModal}
+            //  modalIcon={AddWalletModalIcon}
+            title="Fix your wallet address"
+            subtitle="Add your wallet address to get started"
+            // fixWalletAddress={fixWalletAddress}
+            btnText="Done"
+            btnStatus={true}
+            history={this.props.history}
+            modalType="fixwallet"
+            changeWalletList={this.handleChangeList}
+          />
+        )}
+        {this.state.addModal && (
+          <FixAddModal
+            show={this.state.addModal}
+            onHide={this.handleAddModal}
+            modalIcon={AddWalletModalIcon}
+            title="Add wallet address"
+            subtitle="Add more wallet address here"
+            modalType="addwallet"
+            btnStatus={false}
+            btnText="Go"
+            history={this.props.history}
+            changeWalletList={this.handleChangeList}
+          />
+        )}
+      </div>
+    );
   }
 }
 

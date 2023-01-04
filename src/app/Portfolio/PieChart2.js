@@ -849,18 +849,19 @@ class PieChart2 extends BaseReactComponent {
                               />
                             );
                           })}
-                        
+
                         <span
                           className="inter-display-medium f-s-16 lh-19 grey-233"
                           style={{
-                          marginLeft: "1.2rem"
+                            marginLeft: "1.2rem",
                           }}
                         >
                           {this.state.chainList &&
                           this.state.chainList?.length > 5
-                            ? "5+"
-                            : this.state.chainList?.length}{" "}
-                          Chains
+                            ? "5+ Chains"
+                            : this.state.chainList?.length === 1
+                            ? this.state.chainList?.length + " Chain"
+                            : this.state.chainList?.length + " Chains"}
                         </span>
                       </div>
                       <Image
