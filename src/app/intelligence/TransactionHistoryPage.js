@@ -434,7 +434,13 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 // text={rowData.from.address}
                 text={
-                  rowData.from.metaData?.displayAddress
+                  rowData.from.wallet_metaData?.text
+                    ? rowData.from.wallet_metaData?.text +
+                      ": " +
+                      rowData.from.address
+                    : rowData.from.metaData?.displayAddress &&
+                      rowData.from.metaData?.displayAddress !==
+                        rowData.from.address
                     ? rowData.from.metaData?.displayAddress +
                       ": " +
                       rowData.from.address
@@ -455,7 +461,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
                           address_hovered: rowData.from.address,
-                          display_name: rowData.from.metaData?.displayAddress,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
                         });
                       }}
                     />
@@ -478,7 +486,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
                             address_hovered: rowData.from.address,
-                            display_name: rowData.from.metaData?.displayAddress,
+                            display_name: rowData.from.wallet_metaData?.text
+                              ? rowData.from.wallet_metaData?.text
+                              : rowData.from.metaData?.displayAddress,
                           });
                         }}
                       />
@@ -496,7 +506,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
                           address_hovered: rowData.from.address,
-                          display_name: rowData.from.metaData?.displayAddress,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
                         });
                       }}
                     >
@@ -516,7 +528,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
                         address_hovered: rowData.from.address,
-                        display_name: rowData.from.metaData?.displayAddress,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
                       });
                     }}
                   >
@@ -538,7 +552,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
                           address_hovered: rowData.from.address,
-                          display_name: rowData.from.metaData?.displayAddress,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
                         });
                       }}
                     />
@@ -586,7 +602,13 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  rowData.to.metaData?.displayAddress
+                  rowData.to.wallet_metaData?.text
+                    ? rowData.to.wallet_metaData?.text +
+                      ": " +
+                      rowData.to.address
+                    : rowData.to.metaData?.displayAddress &&
+                      rowData.to.metaData?.displayAddress !==
+                        rowData.to.address
                     ? rowData.to.metaData?.displayAddress +
                       ": " +
                       rowData.to.address
@@ -606,7 +628,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
                           address_hovered: rowData.to.address,
-                          display_name: rowData.to.metaData?.displayAddress,
+                          display_name:
+                            rowData.to.wallet_metaData?.text ? rowData.to.wallet_metaData?.text: rowData.to.metaData
+                              ?.displayAddress,
                         });
                       }}
                     />
@@ -628,7 +652,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
                             address_hovered: rowData.to.address,
-                            display_name: rowData.to.metaData?.displayAddress,
+                            display_name: rowData.to.wallet_metaData?.text
+                              ? rowData.to.wallet_metaData?.text
+                              : rowData.to.metaData?.displayAddress,
                           });
                         }}
                       />
@@ -645,7 +671,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
                           address_hovered: rowData.to.address,
-                          display_name: rowData.to.metaData?.displayAddress,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
                         });
                       }}
                     >
@@ -664,7 +692,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
                         address_hovered: rowData.to.address,
-                        display_name: rowData.to.metaData?.displayAddress,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
                       });
                     }}
                   >
@@ -685,7 +715,9 @@ class TransactionHistoryPage extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
                           address_hovered: rowData.to.address,
-                          display_name: rowData.to.metaData?.displayAddress,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
                         });
                       }}
                     />
