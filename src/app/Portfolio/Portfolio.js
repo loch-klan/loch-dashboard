@@ -376,7 +376,7 @@ class Portfolio extends BaseReactComponent {
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-    // console.log("wallet list", this.state.userWalletList);
+    console.log("chain portfolio", this.props.portfolioState);
     let tableData =
       table &&
       table.map((row) => {

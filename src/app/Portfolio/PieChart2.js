@@ -112,6 +112,41 @@ class PieChart2 extends BaseReactComponent {
       this.setState({ piechartisLoading: this.props.isLoading });
     }
     // console.log("pie", this.props.chainPortfolio)
+  
+       // console.log("pie", this.props.allCoinList);
+       let chainList = [];
+       
+
+       this.props.chainPortfolio &&
+         this.props.chainPortfolio.map((chain) => {
+           chainList.push({
+             name: chain.name,
+             symbol: chain.symbol,
+             total: chain.total,
+             id: chain.id,
+             color: chain.color,
+           });
+         });
+
+       chainList =
+         chainList &&
+         chainList.sort((a, b) => {
+           return b.total - a.total;
+         });
+       this.setState({
+         chainList,
+       });
+     
+    
+       // console.log("props asset price", this.props.assetPrice);
+       let assetPrice =this.props.assetPrice && this.props.assetPrice?.reduce((obj, element) => {
+         obj[element.id] = element;
+         return obj;
+       }, {});
+       this.setState({
+         assetPrice,
+       });
+     
   }
 
   componentDidUpdate(prevProps) {
@@ -179,7 +214,8 @@ class PieChart2 extends BaseReactComponent {
       });
     }
     if (this.props.chainPortfolio != prevProps.chainPortfolio) {
-      // console.log("pie", this.props.allCoinList);
+      // console.log("New", this.props.chainPortfolio);
+      // console.log("Old", prevProps.chainPortfolio);
       let chainList = [];
       // this.props.allCoinList && this.props.allCoinList.map((item) => {
       //   let isfound = false;
@@ -195,7 +231,7 @@ class PieChart2 extends BaseReactComponent {
       //           color: chain.color,
       //         });
       //       }
-            
+
       //     });
       //   if (!isfound) {
       //     chainList.push({
@@ -207,29 +243,65 @@ class PieChart2 extends BaseReactComponent {
       //     });
       //   }
       // });
+      let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+      let uniquechains = [];
+      // console.log("user wallet",UserWallet)
+      UserWallet &&
+        UserWallet.map((item) => {
+          item.coins && item.coins.map((coin,i) => {
+            let isfound = false;
+            this.props.chainPortfolio &&
+              this.props.chainPortfolio.map((chain) => {
+                if (
+                  coin.coinName === chain.name &&
+                  !uniquechains.includes(chain.name)
+                ) {
+                  isfound = true;
+                  uniquechains.push(coin.coinName);
+                  chainList.push({
+                    name: chain.name,
+                    symbol: chain.symbol,
+                    total: chain.total,
+                    id: chain.id,
+                    color: chain.color,
+                  });
+                }
+              });
+            if (
+              !isfound &&
+              coin.chain_detected &&
+              !uniquechains.includes(coin.coinName)
+            ) {
+              chainList.push({
+                name: coin.coinName,
+                symbol: coin.coinSymbol,
+                total: 0.0,
+                id: i,
+                color: coin.coinColor,
+              });
+            }
+          })
+        });
+        // console.log("coinlist", chainList)
+      // this.props.chainPortfolio &&
+      //   this.props.chainPortfolio.map((chain) => {
+      //     chainList.push({
+      //       name: chain.name,
+      //       symbol: chain.symbol,
+      //       total: chain.total,
+      //       id: chain.id,
+      //       color: chain.color,
+      //     });
+      //   });
 
-     
-           this.props.chainPortfolio &&
-             this.props.chainPortfolio.map((chain) => {
-              
-               chainList.push({
-                 name: chain.name,
-                 symbol: chain.symbol,
-                 total: chain.total,
-                 id: chain.id,
-                 color: chain.color,
-               })
-             }
-         );
-      
-       chainList =
-         chainList &&
-         chainList.sort((a, b) => {
-           return b.total - a.total;
-         });
+      chainList =
+        chainList &&
+        chainList.sort((a, b) => {
+          return b.total - a.total;
+        });
       this.setState({
-        chainList
-      })
+        chainList,
+      });
     }
     if (this.props.assetPrice != prevProps.assetPrice) {
       // console.log("props asset price", this.props.assetPrice);
