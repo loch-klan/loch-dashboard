@@ -762,7 +762,7 @@ class PieChart2 extends BaseReactComponent {
                     {chainList &&
                       chainList.slice(0, 3).map((data, index) => {
                         // console.log(
-                        //   "portfolio state",
+                        //   "portfolio state",g
                         //   this.props.portfolioState,
                         //   "selected",
                         //   this.state.selectedSection[0].assetId
