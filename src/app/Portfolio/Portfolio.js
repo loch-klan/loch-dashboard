@@ -458,7 +458,13 @@ class Portfolio extends BaseReactComponent {
                             isText={true}
                             // text={rowData.from.address}
                             text={
-                              rowData.from.metaData?.displayAddress
+                              rowData.from.wallet_metaData?.text
+                                ? rowData.from.wallet_metaData?.text +
+                                  ": " +
+                                  rowData.from.address
+                                : rowData.from.metaData?.displayAddress &&
+                                  rowData.from.metaData?.displayAddress !==
+                                    rowData.from.address
                                 ? rowData.from.metaData?.displayAddress +
                                   ": " +
                                   rowData.from.address
@@ -478,7 +484,9 @@ class Portfolio extends BaseReactComponent {
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                     address_hovered: rowData.from.address,
-                                    display_name: rowData.from.metaData?.displayAddress
+                                    display_name:
+                                      rowData.from.wallet_metaData?.text ? rowData.from.wallet_metaData?.text : rowData
+                                        .from.metaData?.displayAddress,
                                   });
                                 }}
                               />
@@ -497,8 +505,10 @@ class Portfolio extends BaseReactComponent {
                                       session_id: getCurrentUser().id,
                                       email_address: getCurrentUser().email,
                                       address_hovered: rowData.from.address,
-                                      display_name:
-                                        rowData.from.metaData?.displayAddress,
+                                      display_name: rowData.from.wallet_metaData
+                                        ?.text
+                                        ? rowData.from.wallet_metaData?.text
+                                        : rowData.from.metaData?.displayAddress,
                                     });
                                   }}
                                 />
@@ -513,8 +523,10 @@ class Portfolio extends BaseReactComponent {
                                       session_id: getCurrentUser().id,
                                       email_address: getCurrentUser().email,
                                       address_hovered: rowData.from.address,
-                                      display_name:
-                                        rowData.from.metaData?.displayAddress,
+                                      display_name: rowData.from.wallet_metaData
+                                        ?.text
+                                        ? rowData.from.wallet_metaData?.text
+                                        : rowData.from.metaData?.displayAddress,
                                     });
                                   }}
                                 >
@@ -524,14 +536,15 @@ class Portfolio extends BaseReactComponent {
                             ) : rowData.from.metaData?.displayAddress ? (
                               <span
                                 onMouseEnter={() => {
-                                   
-                                 TransactionHistoryAddress({
-                                   session_id: getCurrentUser().id,
-                                   email_address: getCurrentUser().email,
-                                   address_hovered: rowData.from.address,
-                                   display_name:
-                                     rowData.from.metaData?.displayAddress,
-                                 });
+                                  TransactionHistoryAddress({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    address_hovered: rowData.from.address,
+                                    display_name: rowData.from.wallet_metaData
+                                      ?.text
+                                      ? rowData.from.wallet_metaData?.text
+                                      : rowData.from.metaData?.displayAddress,
+                                  });
                                 }}
                               >
                                 {rowData.from.metaData?.displayAddress}
@@ -541,13 +554,14 @@ class Portfolio extends BaseReactComponent {
                                 src={unrecognizedIcon}
                                 className="history-table-icon"
                                 onMouseEnter={() => {
-                                   
                                   TransactionHistoryAddress({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                     address_hovered: rowData.from.address,
-                                    display_name:
-                                      rowData.from.metaData?.displayAddress,
+                                    display_name: rowData.from.wallet_metaData
+                                      ?.text
+                                      ? rowData.from.wallet_metaData?.text
+                                      : rowData.from.metaData?.displayAddress,
                                   });
                                 }}
                               />
@@ -584,7 +598,13 @@ class Portfolio extends BaseReactComponent {
                             isText={true}
                             // text={rowData.to.address}
                             text={
-                              rowData.to.metaData?.displayAddress
+                              rowData.to.wallet_metaData?.text
+                                ? rowData.to.wallet_metaData?.text +
+                                  ": " +
+                                  rowData.to.address
+                                : rowData.to.metaData?.displayAddress &&
+                                  rowData.to.metaData?.displayAddress !==
+                                    rowData.to.address
                                 ? rowData.to.metaData?.displayAddress +
                                   ": " +
                                   rowData.to.address
@@ -603,8 +623,10 @@ class Portfolio extends BaseReactComponent {
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                     address_hovered: rowData.to.address,
-                                    display_name:
-                                      rowData.to.metaData?.displayAddress,
+                                    display_name: rowData.to.wallet_metaData
+                                      ?.text
+                                      ? rowData.to.wallet_metaData?.text
+                                      : rowData.to.metaData?.displayAddress,
                                   });
                                 }}
                               />
@@ -619,8 +641,10 @@ class Portfolio extends BaseReactComponent {
                                       session_id: getCurrentUser().id,
                                       email_address: getCurrentUser().email,
                                       address_hovered: rowData.to.address,
-                                      display_name:
-                                        rowData.to.metaData?.displayAddress,
+                                      display_name: rowData.to.wallet_metaData
+                                        ?.text
+                                        ? rowData.to.wallet_metaData?.text
+                                        : rowData.to.metaData?.displayAddress,
                                     });
                                   }}
                                 />
@@ -631,8 +655,10 @@ class Portfolio extends BaseReactComponent {
                                       session_id: getCurrentUser().id,
                                       email_address: getCurrentUser().email,
                                       address_hovered: rowData.to.address,
-                                      display_name:
-                                        rowData.to.metaData?.displayAddress,
+                                      display_name: rowData.to.wallet_metaData
+                                        ?.text
+                                        ? rowData.to.wallet_metaData?.text
+                                        : rowData.to.metaData?.displayAddress,
                                     });
                                   }}
                                 >
@@ -646,8 +672,10 @@ class Portfolio extends BaseReactComponent {
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                     address_hovered: rowData.to.address,
-                                    display_name:
-                                      rowData.to.metaData?.displayAddress,
+                                    display_name: rowData.to.wallet_metaData
+                                      ?.text
+                                      ? rowData.to.wallet_metaData?.text
+                                      : rowData.to.metaData?.displayAddress,
                                   });
                                 }}
                               >
@@ -662,8 +690,10 @@ class Portfolio extends BaseReactComponent {
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                     address_hovered: rowData.to.address,
-                                    display_name:
-                                      rowData.to.metaData?.displayAddress,
+                                    display_name: rowData.to.wallet_metaData
+                                      ?.text
+                                      ? rowData.to.wallet_metaData?.text
+                                      : rowData.to.metaData?.displayAddress,
                                   });
                                 }}
                               />
