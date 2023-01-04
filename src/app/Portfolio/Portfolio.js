@@ -1,22 +1,46 @@
-import React from 'react';
+import React from "react";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
-import WelcomeCard from './WelcomeCard';
-import PieChart from './PieChart';
+import WelcomeCard from "./WelcomeCard";
+import PieChart from "./PieChart";
 import LineChartSlider from "./LineCharSlider";
-import { getCoinRate, getDetailsByLinkApi, getUserWallet, getYesterdaysBalanceApi, settingDefaultValues } from "./Api";
-import { Button, Image, Row, Col } from 'react-bootstrap';
-import AddWalletModalIcon from '../../assets/images/icons/wallet-icon.svg'
-import FixAddModal from '../common/FixAddModal';
-import { getAllCoins } from '../onboarding/Api.js'
-import CustomOverlay from '../../utils/commonComponent/CustomOverlay';
-import TransactionTable from '../intelligence/TransactionTable';
-import BarGraphSection from './../common/BarGraphSection';
-import { getProfitAndLossApi, searchTransactionApi } from '../intelligence/Api.js'
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, START_INDEX, SORT_BY_TIMESTAMP , SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET,SORT_BY_USD_VALUE_THEN, SORT_BY_METHOD, GROUP_BY_MONTH, GROUP_BY_YEAR, GroupByOptions, GROUP_BY_DATE, DEFAULT_PRICE} from '../../utils/Constant'
-import sortByIcon from '../../assets/images/icons/triangle-down.svg'
-import moment from "moment"
-import unrecognizedIcon from '../../image/unrecognized.svg'
+import {
+  getCoinRate,
+  getDetailsByLinkApi,
+  getUserWallet,
+  getYesterdaysBalanceApi,
+  settingDefaultValues,
+} from "./Api";
+import { Button, Image, Row, Col } from "react-bootstrap";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import FixAddModal from "../common/FixAddModal";
+import { getAllCoins } from "../onboarding/Api.js";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import TransactionTable from "../intelligence/TransactionTable";
+import BarGraphSection from "./../common/BarGraphSection";
+import {
+  getProfitAndLossApi,
+  searchTransactionApi,
+} from "../intelligence/Api.js";
+import {
+  SEARCH_BY_WALLET_ADDRESS_IN,
+  Method,
+  START_INDEX,
+  SORT_BY_TIMESTAMP,
+  SORT_BY_FROM_WALLET,
+  SORT_BY_TO_WALLET,
+  SORT_BY_ASSET,
+  SORT_BY_USD_VALUE_THEN,
+  SORT_BY_METHOD,
+  GROUP_BY_MONTH,
+  GROUP_BY_YEAR,
+  GroupByOptions,
+  GROUP_BY_DATE,
+  DEFAULT_PRICE,
+} from "../../utils/Constant";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+import moment from "moment";
+import unrecognizedIcon from "../../image/unrecognized.svg";
 import {
   ManageWallets,
   TransactionHistoryEView,
@@ -34,11 +58,12 @@ import {
   HomePage,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
-import {getAssetGraphDataApi} from './Api';
-import { getAllCounterFeeApi } from '../cost/Api';
-import Loading from '../common/Loading';
-import FeedbackForm from '../common/FeedbackForm';
-import { CurrencyType } from '../../utils/ReusableFunctions';
+import { getAssetGraphDataApi } from "./Api";
+import { getAllCounterFeeApi } from "../cost/Api";
+import Loading from "../common/Loading";
+import FeedbackForm from "../common/FeedbackForm";
+import { CurrencyType } from "../../utils/ReusableFunctions";
+import PieChart2 from "./PieChart2";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -105,6 +130,7 @@ class Portfolio extends BaseReactComponent {
       // selectedCurrency: JSON.parse(localStorage.getItem('currency')),
       currency: JSON.parse(localStorage.getItem("currency")),
       counterGraphDigit: 3,
+      assetPrice: null,
     };
   }
 
@@ -350,28 +376,37 @@ class Portfolio extends BaseReactComponent {
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
+    // console.log("wallet list", this.state.userWalletList);
     let tableData =
       table &&
       table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        userWalletList && userWalletList.map((wallet)=>{
-          if(
-            wallet.address?.toLowerCase() === row.from_wallet.address?.toLowerCase() ||
-            wallet.displayAddress?.toLowerCase() === row.from_wallet.address?.toLowerCase()){
+        userWalletList &&
+          userWalletList.map((wallet) => {
+            if (
+              wallet.address?.toLowerCase() ===
+                row.from_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() ===
+                row.from_wallet.address?.toLowerCase()
+            ) {
               walletFromData = {
                 wallet_metaData: wallet.wallet_metadata,
-                displayAddress: wallet.displayAddress
-              }
+                displayAddress: wallet.displayAddress,
+              };
             }
-            if(wallet.address?.toLowerCase() == row.to_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() == row.to_wallet.address?.toLowerCase()){
-                walletToData = {
-                  wallet_metaData: wallet.wallet_metadata,
-                  displayAddress: wallet.displayAddress
-                }
-              }
-          })
+            if (
+              wallet.address?.toLowerCase() ==
+                row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() ==
+                row.to_wallet.address?.toLowerCase()
+            ) {
+              walletToData = {
+                wallet_metaData: wallet.wallet_metadata,
+                displayAddress: wallet.displayAddress,
+              };
+            }
+          });
         return {
           time: row.timestamp,
           from: {
@@ -403,435 +438,476 @@ class Portfolio extends BaseReactComponent {
             symbol: row.asset.symbol,
           },
 
-                usdValueToday: {
-                    value: row.asset.value,
-                    id: row.asset.id,
-                },
-                method: row.method
-            }
-        })
+          usdValueToday: {
+            value: row.asset.value,
+            id: row.asset.id,
+          },
+          method: row.method,
+        };
+      });
 
-
-        const columnList = [
-            {
-                labelName:
-                <div className='cp history-table-header-col' id="time" onClick={() => {
-                  this.handleTableSort("time");
-                  TransactionHistoryDate({session_id: getCurrentUser().id, email_address: getCurrentUser().email});
-                }}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Date</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "time",
-                // coumnWidth: 73,
-                coumnWidth: 0.2,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "time") {
-                        return moment(rowData.time).format('DD/MM/YY')
-                    }
+    const columnList = [
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="time"
+            onClick={() => {
+              this.handleTableSort("time");
+              TransactionHistoryDate({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Date
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "time",
+        // coumnWidth: 73,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "time") {
+            return moment(rowData.time).format("DD/MM/YY");
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="from"
+            onClick={() => {
+              this.handleTableSort("from");
+              TransactionHistoryFrom({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              From
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "from",
+        // coumnWidth: 61,
+        coumnWidth: 0.14,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "from") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                // text={rowData.from.address}
+                text={
+                  rowData.from.metaData?.displayAddress
+                    ? rowData.from.metaData?.displayAddress +
+                      ": " +
+                      rowData.from.address
+                    : rowData.from.address
                 }
-            },
-            {
-                labelName:
-                <div className='cp history-table-header-col' id="from" onClick={() => {
-                  this.handleTableSort("from");
-                   TransactionHistoryFrom({
-                     session_id: getCurrentUser().id,
-                     email_address: getCurrentUser().email,
-                   });
-                }}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>From</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "from",
-                // coumnWidth: 61,
-                coumnWidth: 0.14,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "from") {
-                        return (
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            // text={rowData.from.address}
-                            text={
-                              rowData.from.wallet_metaData?.text
-                                ? rowData.from.wallet_metaData?.text +
-                                  ": " +
-                                  rowData.from.address
-                                : rowData.from.metaData?.displayAddress &&
-                                  rowData.from.metaData?.displayAddress !==
-                                    rowData.from.address
-                                ? rowData.from.metaData?.displayAddress +
-                                  ": " +
-                                  rowData.from.address
-                                : rowData.from.address
-                            }
-                          >
-                            {rowData.from.metaData?.wallet_metaData ? (
-                              <Image
-                                src={
-                                  rowData.from.metaData?.wallet_metaData
-                                    ?.symbol || unrecognizedIcon
-                                }
-                                className="history-table-icon"
-                                onMouseEnter={() => {
-                                  // console.log("address", rowData.from.metaData);
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.from.address,
-                                    display_name:
-                                      rowData.from.wallet_metaData?.text ? rowData.from.wallet_metaData?.text : rowData
-                                        .from.metaData?.displayAddress,
-                                  });
-                                }}
-                              />
-                            ) : rowData.from.wallet_metaData.symbol ||
-                              rowData.from.wallet_metaData.text ? (
-                              rowData.from.wallet_metaData.symbol ? (
-                                <Image
-                                  src={rowData.from.wallet_metaData.symbol}
-                                  className="history-table-icon"
-                                  onMouseEnter={() => {
-                                    //  console.log(
-                                    //    "address",
-                                    //    rowData.from.metaData
-                                    //  );
-                                    TransactionHistoryAddress({
-                                      session_id: getCurrentUser().id,
-                                      email_address: getCurrentUser().email,
-                                      address_hovered: rowData.from.address,
-                                      display_name: rowData.from.wallet_metaData
-                                        ?.text
-                                        ? rowData.from.wallet_metaData?.text
-                                        : rowData.from.metaData?.displayAddress,
-                                    });
-                                  }}
-                                />
-                              ) : (
-                                <span
-                                  onMouseEnter={() => {
-                                    //  console.log(
-                                    //    "address",
-                                    //    rowData.from.metaData
-                                    //  );
-                                    TransactionHistoryAddress({
-                                      session_id: getCurrentUser().id,
-                                      email_address: getCurrentUser().email,
-                                      address_hovered: rowData.from.address,
-                                      display_name: rowData.from.wallet_metaData
-                                        ?.text
-                                        ? rowData.from.wallet_metaData?.text
-                                        : rowData.from.metaData?.displayAddress,
-                                    });
-                                  }}
-                                >
-                                  {rowData.from.wallet_metaData.text}
-                                </span>
-                              )
-                            ) : rowData.from.metaData?.displayAddress ? (
-                              <span
-                                onMouseEnter={() => {
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.from.address,
-                                    display_name: rowData.from.wallet_metaData
-                                      ?.text
-                                      ? rowData.from.wallet_metaData?.text
-                                      : rowData.from.metaData?.displayAddress,
-                                  });
-                                }}
-                              >
-                                {rowData.from.metaData?.displayAddress}
-                              </span>
-                            ) : (
-                              <Image
-                                src={unrecognizedIcon}
-                                className="history-table-icon"
-                                onMouseEnter={() => {
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.from.address,
-                                    display_name: rowData.from.wallet_metaData
-                                      ?.text
-                                      ? rowData.from.wallet_metaData?.text
-                                      : rowData.from.metaData?.displayAddress,
-                                  });
-                                }}
-                              />
-                            )}
-                            {/* <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" /> */}
-                          </CustomOverlay>
-                        );
+              >
+                {rowData.from.metaData?.wallet_metaData ? (
+                  <Image
+                    src={
+                      rowData.from.metaData?.wallet_metaData?.symbol ||
+                      unrecognizedIcon
                     }
-                }
-            },
-            {
-                labelName:
-                <div className='cp history-table-header-col' id="to" onClick={() => {
-                  this.handleTableSort("to");
-                  TransactionHistoryTo({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-
-                }}>
-                        <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>To</span>
-                        <Image src={sortByIcon} className={!this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"} />
-                    </div>,
-                dataKey: "to",
-                coumnWidth: 0.14,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "to") {
-                        return (
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            // text={rowData.to.address}
-                            text={
-                              rowData.to.wallet_metaData?.text
-                                ? rowData.to.wallet_metaData?.text +
-                                  ": " +
-                                  rowData.to.address
-                                : rowData.to.metaData?.displayAddress &&
-                                  rowData.to.metaData?.displayAddress !==
-                                    rowData.to.address
-                                ? rowData.to.metaData?.displayAddress +
-                                  ": " +
-                                  rowData.to.address
-                                : rowData.to.address
-                            }
-                          >
-                            {rowData.to.metaData?.wallet_metaData ? (
-                              <Image
-                                src={
-                                  rowData.to.metaData?.wallet_metaData
-                                    ?.symbol || unrecognizedIcon
-                                }
-                                className="history-table-icon heyyyy"
-                                onMouseEnter={() => {
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.to.address,
-                                    display_name: rowData.to.wallet_metaData
-                                      ?.text
-                                      ? rowData.to.wallet_metaData?.text
-                                      : rowData.to.metaData?.displayAddress,
-                                  });
-                                }}
-                              />
-                            ) : rowData.to.wallet_metaData.symbol ||
-                              rowData.to.wallet_metaData.text ? (
-                              rowData.to.wallet_metaData.symbol ? (
-                                <Image
-                                  src={rowData.to.wallet_metaData.symbol}
-                                  className="history-table-icon"
-                                  onMouseEnter={() => {
-                                    TransactionHistoryAddress({
-                                      session_id: getCurrentUser().id,
-                                      email_address: getCurrentUser().email,
-                                      address_hovered: rowData.to.address,
-                                      display_name: rowData.to.wallet_metaData
-                                        ?.text
-                                        ? rowData.to.wallet_metaData?.text
-                                        : rowData.to.metaData?.displayAddress,
-                                    });
-                                  }}
-                                />
-                              ) : (
-                                <span
-                                  onMouseEnter={() => {
-                                    TransactionHistoryAddress({
-                                      session_id: getCurrentUser().id,
-                                      email_address: getCurrentUser().email,
-                                      address_hovered: rowData.to.address,
-                                      display_name: rowData.to.wallet_metaData
-                                        ?.text
-                                        ? rowData.to.wallet_metaData?.text
-                                        : rowData.to.metaData?.displayAddress,
-                                    });
-                                  }}
-                                >
-                                  {rowData.to.wallet_metaData.text}
-                                </span>
-                              )
-                            ) : rowData.to.metaData?.displayAddress ? (
-                              <span
-                                onMouseEnter={() => {
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.to.address,
-                                    display_name: rowData.to.wallet_metaData
-                                      ?.text
-                                      ? rowData.to.wallet_metaData?.text
-                                      : rowData.to.metaData?.displayAddress,
-                                  });
-                                }}
-                              >
-                                {rowData.to.metaData?.displayAddress}
-                              </span>
-                            ) : (
-                              <Image
-                                src={unrecognizedIcon}
-                                className="history-table-icon"
-                                onMouseEnter={() => {
-                                  TransactionHistoryAddress({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    address_hovered: rowData.to.address,
-                                    display_name: rowData.to.wallet_metaData
-                                      ?.text
-                                      ? rowData.to.wallet_metaData?.text
-                                      : rowData.to.metaData?.displayAddress,
-                                  });
-                                }}
-                              />
-                            )}
-                          </CustomOverlay>
-                        );
-                    }
-                }
-            },
-            {
-                labelName:
-                <div className='cp history-table-header-col' id="asset" onClick={() => {
-                  this.handleTableSort("asset");
-                    TransactionHistoryAsset({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                }}>
-                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Asset</span>
-                    <Image src={sortByIcon} className={!this.state.tableSortOpt[3].up ? "rotateDown" :"rotateUp"}/>
-                </div>,
-                dataKey: "asset",
-                coumnWidth: 0.2,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "asset") {
-                        return (
-                             <CustomOverlay
-                                position="top"
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                text={rowData.asset.code}
-                            >
-                            <Image src={rowData.asset.symbol} className="asset-symbol" />
-                            </CustomOverlay>
-                        )
-                    }
-                }
-            },
-            {
-                labelName:
-                <div className='cp history-table-header-col' id="usdValue" onClick={() => {
-                  this.handleTableSort("usdValue");
-                  TransactionHistoryUSD({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }}>
-                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>{CurrencyType(true)} Value</span>
-                    <Image src={sortByIcon} className={!this.state.tableSortOpt[4].up ? "rotateDown" :"rotateUp"}/>
-                </div>,
-                dataKey: "usdValue",
-                coumnWidth: 0.15,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-
-                    if (dataKey === "usdValue") {
-                        let chain = Object.entries(assetPriceList)
-                        let value;
-                        chain.find((chain) => {
-                            if (chain[0] === rowData.usdValueToday.id) {
-                              value = (rowData.usdValueToday.value * chain[1].quote.USD.price * currency?.rate || DEFAULT_PRICE)
-                                return
-                            }
-                        })
-                        return (<CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={Number(value?.toFixed(2)).toLocaleString('en-US')}
-                        >
-                            <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">{Number(value?.toFixed(2)).toLocaleString('en-US')}</div>
-                        </CustomOverlay>)
-                    }
-                }
-            },
-            {
-                labelName:
-                <div className='cp history-table-header-col' id="method" onClick={() => {
-                  this.handleTableSort("method");
-                   TransactionHistoryMethod({
-                     session_id: getCurrentUser().id,
-                     email_address: getCurrentUser().email,
-                   });
-                }}>
-                    <span className='inter-display-medium f-s-13 lh-16 grey-4F4'>Method</span>
-                    <Image src={sortByIcon} className={!this.state.tableSortOpt[5].up ? "rotateDown" :"rotateUp"}/>
-                </div>,
-                dataKey: "method",
-                coumnWidth: 0.22,
-                isCell: true,
-                cell: (rowData, dataKey) => {
-                    if (dataKey === "method") {
-                        return (
-                              <div className='inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer'>
-                              {rowData.method}
-                            </div>
-                        )
-                    }
-                }
-            }
-        ]
-        return (
-          <div>
-            {this.state.loader ? (
-              <Loading />
-            ) : (
-              <div className="portfolio-page-section">
-                <div className="portfolio-container page">
-                  <div className="portfolio-section">
-                    <WelcomeCard
-                      yesterdayBalance={this.state.yesterdayBalance}
-                      toggleAddWallet={this.state.toggleAddWallet}
-                      handleToggleAddWallet={this.handleToggleAddWallet}
-                      decrement={true}
-                      assetTotal={
-                        this.props.portfolioState &&
-                        this.props.portfolioState.walletTotal
-                          ? this.props.portfolioState.walletTotal
-                          : 0
-                      }
-                      loader={this.state.loader}
-                      history={this.props.history}
-                      handleAddModal={this.handleAddModal}
-                      isLoading={this.state.isLoading}
-                      walletTotal={this.props.portfolioState.walletTotal}
-                      handleManage={() => {
-                        this.props.history.push("/wallets");
-                        ManageWallets({
+                    className="history-table-icon"
+                    onMouseEnter={() => {
+                      // console.log("address", rowData.from.metaData);
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                ) : rowData.from.wallet_metaData.symbol ||
+                  rowData.from.wallet_metaData.text ? (
+                  rowData.from.wallet_metaData.symbol ? (
+                    <Image
+                      src={rowData.from.wallet_metaData.symbol}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        //  console.log(
+                        //    "address",
+                        //    rowData.from.metaData
+                        //  );
+                        TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.metaData?.displayAddress,
                         });
                       }}
                     />
-                  </div>
-                  <div
+                  ) : (
+                    <span
+                      onMouseEnter={() => {
+                        //  console.log(
+                        //    "address",
+                        //    rowData.from.metaData
+                        //  );
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.from.wallet_metaData.text}
+                    </span>
+                  )
+                ) : rowData.from.metaData?.displayAddress ? (
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.metaData?.displayAddress,
+                      });
+                    }}
+                  >
+                    {rowData.from.metaData?.displayAddress}
+                  </span>
+                ) : (
+                  <Image
+                    src={unrecognizedIcon}
+                    className="history-table-icon"
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                )}
+                {/* <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" /> */}
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="to"
+            onClick={() => {
+              this.handleTableSort("to");
+              TransactionHistoryTo({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              To
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "to",
+        coumnWidth: 0.14,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "to") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                // text={rowData.to.address}
+                text={
+                  rowData.to.metaData?.displayAddress
+                    ? rowData.to.metaData?.displayAddress +
+                      ": " +
+                      rowData.to.address
+                    : rowData.to.address
+                }
+              >
+                {rowData.to.metaData?.wallet_metaData ? (
+                  <Image
+                    src={
+                      rowData.to.metaData?.wallet_metaData?.symbol ||
+                      unrecognizedIcon
+                    }
+                    className="history-table-icon heyyyy"
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                ) : rowData.to.wallet_metaData.symbol ||
+                  rowData.to.wallet_metaData.text ? (
+                  rowData.to.wallet_metaData.symbol ? (
+                    <Image
+                      src={rowData.to.wallet_metaData.symbol}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    />
+                  ) : (
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.to.wallet_metaData.text}
+                    </span>
+                  )
+                ) : rowData.to.metaData?.displayAddress ? (
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.metaData?.displayAddress,
+                      });
+                    }}
+                  >
+                    {rowData.to.metaData?.displayAddress}
+                  </span>
+                ) : (
+                  <Image
+                    src={unrecognizedIcon}
+                    className="history-table-icon"
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                )}
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="asset"
+            onClick={() => {
+              this.handleTableSort("asset");
+              TransactionHistoryAsset({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Asset
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "asset",
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "asset") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.asset.code}
+              >
+                <Image src={rowData.asset.symbol} className="asset-symbol" />
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="usdValue"
+            onClick={() => {
+              this.handleTableSort("usdValue");
+              TransactionHistoryUSD({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              {CurrencyType(true)} Value
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "usdValue",
+        coumnWidth: 0.15,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "usdValue") {
+            let chain = Object.entries(assetPriceList);
+            let value;
+            chain.find((chain) => {
+              if (chain[0] === rowData.usdValueToday.id) {
+                value =
+                  rowData.usdValueToday.value *
+                    chain[1].quote.USD.price *
+                    currency?.rate || DEFAULT_PRICE;
+                return;
+              }
+            });
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(value?.toFixed(2)).toLocaleString("en-US")}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {Number(value?.toFixed(2)).toLocaleString("en-US")}
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="method"
+            onClick={() => {
+              this.handleTableSort("method");
+              TransactionHistoryMethod({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Method
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "method",
+        coumnWidth: 0.22,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "method") {
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
+                {rowData.method}
+              </div>
+            );
+          }
+        },
+      },
+    ];
+    return (
+      <div>
+        {this.state.loader ? (
+          <Loading />
+        ) : (
+          <div className="portfolio-page-section">
+            <div
+              className="portfolio-container page"
+              style={{ overflow: "visible" }}
+            >
+              <div className="portfolio-section">
+                <WelcomeCard
+                  yesterdayBalance={this.state.yesterdayBalance}
+                  toggleAddWallet={this.state.toggleAddWallet}
+                  handleToggleAddWallet={this.handleToggleAddWallet}
+                  decrement={true}
+                  assetTotal={
+                    this.props.portfolioState &&
+                    this.props.portfolioState.walletTotal
+                      ? this.props.portfolioState.walletTotal
+                      : 0
+                  }
+                  loader={this.state.loader}
+                  history={this.props.history}
+                  handleAddModal={this.handleAddModal}
+                  isLoading={this.state.isLoading}
+                  walletTotal={this.props.portfolioState.walletTotal}
+                  handleManage={() => {
+                    this.props.history.push("/wallets");
+                    ManageWallets({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                />
+              </div>
+              {/* <div
                     className="portfolio-section"
                     style={{ minWidth: "85rem", overflow: "hidden" }}
                   >
@@ -876,19 +952,80 @@ class Portfolio extends BaseReactComponent {
                     ) : (
                       ""
                     )}
-                  </div>
-                  {/* <div className="portfolio-section m-b-32">
-                    <LineChart
-                      assetValueData={
-                        this.state.assetValueData && this.state.assetValueData
-                      }
-                      coinLists={this.props.OnboardingState.coinsLists}
-                      isScrollVisible={false}
-                      handleGroupBy={(value) => this.handleGroupBy(value)}
-                      graphLoading={this.state.graphLoading}
-                      externalEvents={this.state.externalEvents}
-                    />
                   </div> */}
+              <div className="portfolio-section" style={{ minWidth: "85rem" }}>
+                <PieChart2
+                  userWalletData={
+                    this.props.portfolioState &&
+                    this.props.portfolioState.chainWallet &&
+                    Object.keys(this.props.portfolioState.chainWallet).length >
+                      0
+                      ? Object.values(this.props.portfolioState.chainWallet)
+                      : null
+                  }
+                  chainPortfolio={
+                    this.props.portfolioState &&
+                    this.props.portfolioState.chainPortfolio &&
+                    Object.keys(this.props.portfolioState.chainPortfolio)
+                      .length > 0
+                      ? Object.values(this.props.portfolioState.chainPortfolio)
+                      : null
+                  }
+                  allCoinList={
+                    this.props.OnboardingState &&
+                    this.props.OnboardingState.coinsList &&
+                    Object.keys(this.props.OnboardingState.coinsList).length > 0
+                      ? Object.values(this.props.OnboardingState.coinsList)
+                      : null
+                  }
+                  assetTotal={
+                    this.props.portfolioState &&
+                    this.props.portfolioState.walletTotal
+                      ? this.props.portfolioState.walletTotal
+                      : 0
+                  }
+                  assetPrice={
+                    this.state.assetPrice &&
+                    Object.keys(this.state.assetPrice).length > 0
+                      ? Object.values(this.state.assetPrice)
+                      : null
+                  }
+                  // loader={this.state.loader}
+                  isLoading={this.state.isLoading}
+                  walletTotal={this.props.portfolioState.walletTotal}
+                  handleAddModal={this.handleAddModal}
+                  handleManage={() => {
+                    this.props.history.push("/wallets");
+                    ManageWallets({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                />
+                {this.state.userWalletList.findIndex(
+                  (w) => w.coinFound !== true
+                ) > -1 && this.state.userWalletList[0].address !== "" ? (
+                  <div className="fix-div" id="fixbtn">
+                    <div className="m-r-8 decribe-div">
+                      <div className="inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262">
+                        Wallet undetected
+                      </div>
+                      <div className="inter-display-medium f-s-13 lh-16 grey-737">
+                        One or more wallets were not detected{" "}
+                      </div>
+                    </div>
+                    <Button
+                      className="secondary-btn"
+                      onClick={this.handleFixModal}
+                    >
+                      Fix
+                    </Button>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+
               <div className="portfolio-section m-b-32">
                 <LineChartSlider
                   assetValueData={
@@ -1043,22 +1180,20 @@ class Portfolio extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
-    portfolioState: state.PortfolioState,
-    OnboardingState: state.OnboardingState,
-    intelligenceState: state.IntelligenceState
+const mapStateToProps = (state) => ({
+  portfolioState: state.PortfolioState,
+  OnboardingState: state.OnboardingState,
+  intelligenceState: state.IntelligenceState,
 });
 const mapDispatchToProps = {
-    getCoinRate,
-    getUserWallet,
-    settingDefaultValues,
-    getAllCoins,
-    searchTransactionApi,
-    getAssetGraphDataApi,
-    getDetailsByLinkApi
-}
-Portfolio.propTypes = {
+  getCoinRate,
+  getUserWallet,
+  settingDefaultValues,
+  getAllCoins,
+  searchTransactionApi,
+  getAssetGraphDataApi,
+  getDetailsByLinkApi,
 };
+Portfolio.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
-
