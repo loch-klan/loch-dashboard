@@ -114,17 +114,17 @@ class LineChartSlider extends BaseReactComponent {
   };
   handleSelect = (opt) => {
     // console.log("opt", opt.target.id);
-     let t = opt.split(" ")[1];
-    // let t = "Month"
-    // if (opt.target.id == 0) {
-    //   t = "Year";
-    // } else if (opt.target.id == 1) {
-    //   t = "Month";
-    // } else if (opt.target.id == 2) {
-    //   t = "Day";
-    // } else {
-    //    t = "Month";
-    // }
+    //  let t = opt.split(" ")[1];
+    let t = "Month"
+    if (opt.target.id == 0) {
+      t = "Year";
+    } else if (opt.target.id == 1) {
+      t = "Month";
+    } else if (opt.target.id == 2) {
+      t = "Day";
+    } else {
+       t = "Month";
+    }
       this.setState({
         title: t,
         selectedEvents: [],
@@ -942,17 +942,12 @@ class LineChartSlider extends BaseReactComponent {
                   handleClick={this.props.handleClick}
                 />
               )}
-              {/* <BarGraphFooter
+              <BarGraphFooter
                 handleFooterClick={this.handleSelect}
                 active={this.state.title}
                 footerLabels={["Year", "Month", "Day"]}
-              /> */}
-              <CoinBadges
-                activeBadge={this.state.activeBadge}
-                chainList={this.props.OnboardingState.coinsList}
-                handleFunction={this.handleFunction}
-                isScrollVisible={this.props.isScrollVisible}
               />
+
               <div className="chart-y-selection" style={{ width: "100%" }}>
                 <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                   {CurrencyType()}
@@ -983,8 +978,14 @@ class LineChartSlider extends BaseReactComponent {
                 // allowChartUpdate={true}
                 // updateArgs={[true]}
               />
+              <CoinBadges
+                activeBadge={this.state.activeBadge}
+                chainList={this.props.OnboardingState.coinsList}
+                handleFunction={this.handleFunction}
+                isScrollVisible={this.props.isScrollVisible}
+              />
 
-              <div className="chart-x-selection">
+              {/* <div className="chart-x-selection">
                 <DropDown
                   class="line-chart-dropdown"
                   list={["Year", "Month", "Day"]}
@@ -993,7 +994,7 @@ class LineChartSlider extends BaseReactComponent {
                   title={this.state.title}
                   activetab={this.state.title}
                 />
-              </div>
+              </div> */}
             </div>
             {this.state.selectedEvents.length > 0 && (
               <>
