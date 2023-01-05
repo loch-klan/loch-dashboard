@@ -208,15 +208,17 @@ class BarGraphSection extends Component {
 
         {data && options ? (
           <span className={`${comingSoon ? "blur-effect" : ""}`}>
-            {showFooter ? (
-              <BarGraphFooter
-                handleFooterClick={this.handleFooter}
-                active={this.state.activeFooter}
-                footerLabels={footerLabels}
+            {showBadges ? (
+              <CoinBadges
+                handleFunction={this.handleFunction}
+                activeBadge={activeBadge}
+                chainList={coinsList}
+                isScrollVisible={isScrollVisible}
               />
             ) : (
               ""
             )}
+
             {
               <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
                 {CurrencyType()}{" "}
@@ -247,7 +249,7 @@ class BarGraphSection extends Component {
 
               <div
                 className={
-                  options2 != undefined && isScroll && data.labels.length
+                  options2 != undefined && isScroll && data.labels.length > 8
                     ? "ScrollArea"
                     : "ChartAreaWrapper"
                 }
@@ -271,12 +273,11 @@ class BarGraphSection extends Component {
                 </div>
               </div>
             </div>
-            {showBadges ? (
-              <CoinBadges
-                handleFunction={this.handleFunction}
-                activeBadge={activeBadge}
-                chainList={coinsList}
-                isScrollVisible={isScrollVisible}
+            {showFooter ? (
+              <BarGraphFooter
+                handleFooterClick={this.handleFooter}
+                active={this.state.activeFooter}
+                footerLabels={footerLabels}
               />
             ) : (
               ""
