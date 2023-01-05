@@ -902,6 +902,7 @@ class Portfolio extends BaseReactComponent {
         },
       },
     ];
+    // console.log("table data", tableData)
     return (
       <div>
         {this.state.loader ? (
