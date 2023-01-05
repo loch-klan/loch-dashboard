@@ -279,8 +279,8 @@ class TransactionHistoryPage extends BaseReactComponent {
   };
 
   TruncateText = (string) => {
-    if (string.length > 5) {
-      return string.substring(0, 4) + "..";
+    if (string.length > 4) {
+      return string.substring(0, 3) + "..";
     }
     return string;
   };
@@ -470,7 +470,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
-                      className="m-l-10 m-r-12 cp copy-icon"
+                      className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
                   </span>
@@ -496,7 +496,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
-                        className="m-l-10 m-r-12 cp copy-icon"
+                        className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
                     </span>
@@ -518,7 +518,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
-                        className="m-l-10 m-r-12 cp copy-icon"
+                        className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
                     </span>
@@ -541,7 +541,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
-                      className="m-l-10 m-r-12 cp copy-icon"
+                      className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
                   </span>
@@ -565,7 +565,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
-                      className="m-l-10 m-r-12 cp copy-icon"
+                      className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
                   </span>
@@ -641,7 +641,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
-                      className="m-l-10 m-r-12 cp copy-icon"
+                      className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
                   </span>
@@ -666,7 +666,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
-                        className="m-l-10 m-r-12 cp copy-icon"
+                        className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
                     </span>
@@ -687,7 +687,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
-                        className="m-l-10 m-r-12 cp copy-icon"
+                        className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
                     </span>
@@ -709,7 +709,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
-                      className="m-l-10 m-r-12 cp copy-icon"
+                      className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
                   </span>
@@ -732,7 +732,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     <Image
                       src={CopyClipboardIcon}
                       onClick={() => this.copyContent(rowData.from.address)}
-                      className="m-l-10 m-r-12 cp copy-icon"
+                      className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
                   </span>

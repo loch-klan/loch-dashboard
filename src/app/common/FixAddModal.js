@@ -268,7 +268,7 @@ class FixAddModal extends BaseReactComponent {
               blockchains_detected: blockchainDetected,
             });
 
-          }, 300)
+          }, 100)
 
 
         }

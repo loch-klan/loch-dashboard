@@ -252,7 +252,7 @@ class PieChart2 extends BaseReactComponent {
         pieSectionDataEnabled: {},
       });
     }
-    if (this.props.chainPortfolio != prevProps.chainPortfolio) {
+    if (this.props.chainPortfolio !== prevProps.chainPortfolio) {
       // console.log("New", this.props.chainPortfolio);
       // console.log("Old", prevProps.chainPortfolio);
       let chainList = [];
@@ -968,9 +968,7 @@ class PieChart2 extends BaseReactComponent {
                           }}
                         >
                           {this.state.chainList &&
-                          this.state.chainList?.length > 5
-                            ? "5+ Chains"
-                            : this.state.chainList?.length === 1
+                          this.state.chainList?.length === 1
                             ? this.state.chainList?.length + " Chain"
                             : this.state.chainList?.length + " Chains"}
                         </span>
