@@ -39,7 +39,7 @@ class BarGraphSection extends Component {
       options: props.options ? props.options : [],
       options2: props.options2 ? props.options2 : [],
       data: props.data ? props.data : null,
-      activeFooter: 0,
+      activeFooter: props.activeTitle ? props.activeTitle : 0,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
       showFooter: props.showFooter,
@@ -65,6 +65,12 @@ class BarGraphSection extends Component {
         data: this.props.data,
         showPercentage: this.props.showPercentage
       });
+      console.log("active badge", this.state.activeBadge)
+      console.log("active badgeList", this.state.activeBadgeList);
+      // this.state.activeBadge && this.state.activeBadge.map((e, i) => {
+      //   this.handleFunction(e);
+      //   console.log("index", i)
+      // });
     }
 
     if (prevProps.digit != this.props.digit) {
@@ -76,12 +82,15 @@ class BarGraphSection extends Component {
 
   handleFooter = (event) => {
     this.setState({
-        activeFooter: event.target.id
+      activeFooter: event.target.id,
+       activeBadge: [{ name: "All", id: "" }],
+                      activeBadgeList: [],
     })
-    // console.log("handle footer", event.target.id);
+    console.log("handle footer", event.target.id);
     this.props.timeFunction(event.target.id, this.state.activeBadgeList);
   };
   handleFunction = (badge) => {
+    console.log("badge",badge)
     let newArr = [...this.state.activeBadge];
     let activeFooter = this.props.showFooterDropdown ? this.props.activeDropdown : this.state.activeFooter;
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
@@ -196,20 +205,22 @@ class BarGraphSection extends Component {
         ) : (
           ""
         )}
+
         {data && options ? (
           <span className={`${comingSoon ? "blur-effect" : ""}`}>
-            {showBadges ? (
-              <CoinBadges
-                handleFunction={this.handleFunction}
-                activeBadge={activeBadge}
-                chainList={coinsList}
-                isScrollVisible={isScrollVisible}
+            {showFooter ? (
+              <BarGraphFooter
+                handleFooterClick={this.handleFooter}
+                active={this.state.activeFooter}
+                footerLabels={footerLabels}
               />
             ) : (
               ""
             )}
             {
-              <p className='inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label'>{CurrencyType()} </p>
+              <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
+                {CurrencyType()}{" "}
+              </p>
             }
             {showPercentage ? (
               <div className="show-percentage-div ">
@@ -243,7 +254,7 @@ class BarGraphSection extends Component {
                 style={{
                   width: `${
                     options2 != undefined && isScroll && data.labels.length > 8
-                      ? "calc(100 % - "+(digit)+"rem)"
+                      ? "calc(100 % - " + digit + "rem)"
                       : "100%"
                   }`,
                 }}
@@ -260,12 +271,12 @@ class BarGraphSection extends Component {
                 </div>
               </div>
             </div>
-
-            {showFooter ? (
-              <BarGraphFooter
-                handleFooterClick={this.handleFooter}
-                active={this.state.activeFooter}
-                footerLabels={footerLabels}
+            {showBadges ? (
+              <CoinBadges
+                handleFunction={this.handleFunction}
+                activeBadge={activeBadge}
+                chainList={coinsList}
+                isScrollVisible={isScrollVisible}
               />
             ) : (
               ""
@@ -275,12 +286,12 @@ class BarGraphSection extends Component {
                 <DropDown
                   class="line-chart-dropdown"
                   list={footerDropdownLabels}
-                  onSelect={(opt)=>{
+                  onSelect={(opt) => {
                     this.setState({
                       activeBadge: [{ name: "All", id: "" }],
                       activeBadgeList: [],
                     });
-                    handleSelect(opt)
+                    handleSelect(opt);
                   }}
                   title={this.props.activeDropdown}
                   activetab={this.props.activeDropdown}

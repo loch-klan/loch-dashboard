@@ -34,7 +34,8 @@ class Intelligence extends Component {
       startTime: "",
       updatedInsightList: "",
       isLoading: true,
-      title: "Max",
+      // title: "Max",
+      title: 0,
     };
   }
 
@@ -47,7 +48,7 @@ class Intelligence extends Component {
        });
         window.scrollTo(0, 0);
     this.props.getAllCoins();
-    this.timeFilter("Max");
+    this.timeFilter(0);
     getAllInsightsApi(this);
   }
   componentWillUnmount() {
@@ -63,6 +64,7 @@ class Intelligence extends Component {
   }
 
   timeFilter = (option) => {
+    // console.log("time filter", option)
     let selectedChains = [];
     // if(activeBadgeList){
     //   this.props.OnboardingState.coinsList.map((item)=>{
@@ -73,61 +75,66 @@ class Intelligence extends Component {
     // }
     this.setState({graphValue: ""})
     const today = moment().unix();
-    if (option == "Max") {
+    if (option == 0) {
       getProfitAndLossApi(this, false, false, selectedChains);
-    } else if (option == "5 Years") {
+    } else if (option == 1) {
+      // console.log("inside 1")
       const fiveyear = moment().subtract(5, "years").unix();
       getProfitAndLossApi(this, fiveyear, today, selectedChains);
-    } else if (option == "4 Years") {
+    } else if (option == 2) {
       const fouryear = moment().subtract(4, "years").unix();
       getProfitAndLossApi(this, fouryear, today, selectedChains);
-    } else if (option == "3 Years") {
+    } else if (option == 3) {
       const threeyear = moment().subtract(3, "years").unix();
       getProfitAndLossApi(this, threeyear, today, selectedChains);
-    } else if (option == "2 Years") {
+    } else if (option == 4) {
       const twoyear = moment().subtract(2, "years").unix();
       getProfitAndLossApi(this, twoyear, today, selectedChains);
-    } else if (option == "1 Year") {
+    } else if (option == 5) {
       const year = moment().subtract(1, "years").unix();
       getProfitAndLossApi(this, year, today, selectedChains);
-    } else if (option == "6 Months") {
+    } else if (option == 6) {
       const sixmonth = moment().subtract(6, "months").unix();
       getProfitAndLossApi(this, sixmonth, today, selectedChains);
-    } else if (option == "1 Month") {
+    } else if (option == 7) {
       const month = moment().subtract(1, "month").unix();
       getProfitAndLossApi(this, month, today, selectedChains);
-    } else if (option == "1 Week") {
+    } else if (option == 8) {
       const week = moment().subtract(1, "week").unix();
       getProfitAndLossApi(this, week, today, selectedChains);
-    } else if (option == "1 Day") {
+    } else if (option == 9) {
       const day = moment().subtract(1, "day").unix();
       getProfitAndLossApi(this, day, today, selectedChains);
     }
+    this.setState({
+      title:option
+    })
   }
 
   handleBadge = (activeBadgeList, activeFooter = this.state.title) => {
+    // console.log("handle badge", activeBadgeList, activeFooter);
     let startDate = moment().unix();
     let endDate;
-    if (activeFooter == "Max") {
+    if (activeFooter == "0") {
       startDate = "";
       endDate = "";
-    } else if (activeFooter == "5 Years") {
+    } else if (activeFooter == "1") {
       endDate = moment().subtract(5, "years").unix();
-    } else if (activeFooter == "4 Years") {
+    } else if (activeFooter == "2") {
       endDate = moment().subtract(4, "years").unix();
-    } else if (activeFooter == "3 Years") {
+    } else if (activeFooter == "3") {
       endDate = moment().subtract(3, "years").unix();
-    } else if (activeFooter == "2 Years") {
+    } else if (activeFooter == "4") {
       endDate = moment().subtract(2, "years").unix();
-    } else if (activeFooter == "1 Year") {
+    } else if (activeFooter == "5") {
       endDate = moment().subtract(1, "years").unix();
-    } else if (activeFooter == "6 Months") {
+    } else if (activeFooter == "6") {
       endDate = moment().subtract(6, "months").unix();
-    } else if (activeFooter == "1 Month") {
+    } else if (activeFooter == "7") {
       endDate = moment().subtract(1, "month").unix();
-    } else if (activeFooter == "1 Week") {
+    } else if (activeFooter == "8") {
       endDate = moment().subtract(1, "week").unix();
-    } else if (activeFooter == "1 Day") {
+    } else if (activeFooter == "9") {
       endDate = moment().subtract(1, "day").unix();
     }
 
@@ -169,7 +176,12 @@ class Intelligence extends Component {
                   showImg={insight}
                   viewMore={true}
                   viewMoreRedirect={"/intelligence/insights"}
-                  handleClick={()=>{InsightsViewMore({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });}}
+                  handleClick={() => {
+                    InsightsViewMore({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
                 />
                 <div style={{ position: "relative" }}>
                   <div className="insights-wrapper">
@@ -238,22 +250,23 @@ class Intelligence extends Component {
                         this.timeFilter(e, activeBadgeList)
                       }
                       marginBottom="m-b-32"
-                      showFooter={false}
-                      showFooterDropdown={true}
-                      footerDropdownLabels={[
+                      // showFooter={false}
+                      showFooterDropdown={false}
+                      showFooter={true}
+                      footerLabels={[
                         "Max",
-                        "5 Years",
-                        "4 Years",
-                        "3 Years",
-                        "2 Years",
-                        "1 Year",
-                        "6 Months",
-                        "1 Month",
+                        "5 Y",
+                        "4 Y",
+                        "3 Y",
+                        "2 Y",
+                        "1 Y",
+                        "6 M",
+                        "1 M",
                         "1 Week",
                         "1 Day",
                       ]}
-                      activeDropdown={this.state.title}
-                      handleSelect={(opt)=>this.handleSelect(opt)}
+                      activeTitle={this.state.title}
+                      // handleSelect={(opt) => this.handleSelect(opt)}
                       showBadges={true}
                       showPercentage={this.state.graphValue[2]}
                       handleBadge={(activeBadgeList, activeFooter) =>
@@ -269,7 +282,7 @@ class Intelligence extends Component {
                     </div>
                   )}
                 </div>
-                  <FeedbackForm page={"Intelligence Page"} />
+                <FeedbackForm page={"Intelligence Page"} />
               </div>
             </div>
           </div>

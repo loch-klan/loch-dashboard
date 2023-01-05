@@ -1,5 +1,6 @@
 .bar-graph-footer {
-    margin-top: 3.4rem;
+    // margin-top: 3.4rem;
+    margin-bottom: 2rem;
     // display: flex;
     // justify-content: space-around;
     // padding-left: 2.7rem;
@@ -11,8 +12,8 @@
     }
     .timeBadge {
         padding: 1.2rem 1rem;
-        width: 7.5vw;
-        min-width: 8.5rem;
+        width: 100%;
+        // min-width: 6.5rem;
         background-color: $grey-F2F;
         border-radius: 0.8rem;
         border: 0.15rem solid $grey-F2F;
@@ -34,7 +35,8 @@
 
     .timeBadgeWrapper{
         display:flex;
-        flex-wrap:wrap;
+        // flex-wrap:wrap;
+        column-gap: 1rem;
         justify-content :space-between;
     }
 
@@ -42,6 +44,16 @@
     {
     .timeBadge {
         margin-bottom: 1.5rem;
+    }
+
+    .timeBadgeWrapper{
+        flex-wrap:wrap;
+    }
+     .timeBadge {
+    
+        width: 20%;
+        // min-width: 6.5rem;
+
     }
 
 

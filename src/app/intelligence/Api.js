@@ -69,6 +69,7 @@ export const getFilters = (ctx) => {
 }
 
 export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = false) => {
+    console.log("inside api", startDate,endDate)
     let data = new URLSearchParams();
      if (startDate) {
           data.append("start_datetime", startDate);

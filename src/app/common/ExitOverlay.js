@@ -208,124 +208,185 @@ class ExitOverlay extends BaseReactComponent {
             </div>
           )}
         <Modal.Header>
-          {
-          (this.props.modalType === "apiModal" || this.props.modalType === "exportModal")
-          ?
+          {this.props.modalType === "apiModal" ||
+          this.props.modalType === "exportModal" ? (
             <div className="api-modal-header">
               <Image src={this.props.iconImage} />
             </div>
-          :
+          ) : (
             <div className="exitOverlayIcon">
               <Image src={ExitOverlayIcon} />
             </div>
-          }
+          )}
           <div className="closebtn" onClick={this.state.onHide}>
             <Image src={CloseIcon} />
           </div>
         </Modal.Header>
         <Modal.Body>
-          {
-          (this.props.modalType === "apiModal" || this.props.modalType === "exportModal") ?
-            <div className={this.props.modalType === "exportModal" ? "export-modal-body" : "api-modal-body"}>
+          {this.props.modalType === "apiModal" ||
+          this.props.modalType === "exportModal" ? (
+            <div
+              className={
+                this.props.modalType === "exportModal"
+                  ? "export-modal-body"
+                  : "api-modal-body"
+              }
+            >
               <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">
                 {this.props.headerTitle}
               </h6>
               <p className="inter-display-regular f-s-13 lh-16 grey-B0B">
-                {
-                  this.props.modalType === "apiModal"
+                {this.props.modalType === "apiModal"
                   ? "Personalized digital asset intelligence via API"
-                  : "Export your exisiting data from Loch"
-                }
+                  : "Export your exisiting data from Loch"}
               </p>
-              {
-                this.props.modalType === "apiModal"
-                ?
+              {this.props.modalType === "apiModal" ? (
                 <div className="api-modal-frame">
                   <Image src={ApiModalFrame} />
                   <p className="inter-display-regular f-s-13 lh-16 black-191">
                     This feature is coming soon
                   </p>
                 </div>
-                :
-                <div className='export-body'>
-                  <div className='export-timeline'>
+              ) : (
+                <div className="export-body">
+                  <div className="export-timeline">
                     <Form onValidSubmit={this.submit}>
-                      <div className='timeline-wrapper'>
-                      <span className='inter-display-medium f-s-16 lh-19 black-191'>Export data from </span>
-                    <FormElement
-                    valueLink={this.linkState(this,"fromDate",this.handleFromDate)}
-                    required
-                    validations={[
-                      {
-                        validate: FormValidator.isRequired,
-                        message: "From date cannot be empty",
-                      }
-                    ]}
-                    control={{
-                      type: DatePickerControl,
-                      settings: {
-                        placeholder: "From Date",
-                        showDateIcon: false,
-                        nextLabel: <Image className='date-navigator-icons-next' src={nextIcon} />,
-                        next2Label: <Image className='date-navigator-icons' src={next2Icon} />,
-                        prevLabel: <Image className='date-navigator-icons-next' src={prevIcon} />,
-                        prev2Label: <Image className='date-navigator-icons' src={prev2Icon} />,
-                      },
-                    }}
-                  />
-                  <span className='inter-display-medium f-s-16 lh-19 black-191'>to</span>
-                  <FormElement
-                    valueLink={this.linkState(this,"toDate")}
-                    required
-                    validations={[
-                      {
-                        validate: FormValidator.isRequired,
-                        message: "To date cannot be empty",
-                      }
-                    ]}
-                    control={{
-                      type: DatePickerControl,
-                      settings: {
-                        placeholder: "To Date",
-                        minDate: this.state.fromDate || new Date(),
-                        showDateIcon: false,
-                        nextLabel: <Image className='date-navigator-icons-next' src={nextIcon} />,
-                        next2Label: <Image className='date-navigator-icons' src={next2Icon} />,
-                        prevLabel: <Image className='date-navigator-icons-next' src={prevIcon} />,
-                        prev2Label: <Image className='date-navigator-icons' src={prev2Icon} />,
-                      },
-                    }}
-                  />
+                      <div className="timeline-wrapper">
+                        <span className="inter-display-medium f-s-16 lh-19 black-191">
+                          Export data from{" "}
+                        </span>
+                        <FormElement
+                          valueLink={this.linkState(
+                            this,
+                            "fromDate",
+                            this.handleFromDate
+                          )}
+                          required
+                          validations={[
+                            {
+                              validate: FormValidator.isRequired,
+                              message: "From date cannot be empty",
+                            },
+                          ]}
+                          control={{
+                            type: DatePickerControl,
+                            settings: {
+                              placeholder: "From Date",
+                              showDateIcon: false,
+                              nextLabel: (
+                                <Image
+                                  className="date-navigator-icons-next"
+                                  src={nextIcon}
+                                />
+                              ),
+                              next2Label: (
+                                <Image
+                                  className="date-navigator-icons"
+                                  src={next2Icon}
+                                />
+                              ),
+                              prevLabel: (
+                                <Image
+                                  className="date-navigator-icons-next"
+                                  src={prevIcon}
+                                />
+                              ),
+                              prev2Label: (
+                                <Image
+                                  className="date-navigator-icons"
+                                  src={prev2Icon}
+                                />
+                              ),
+                            },
+                          }}
+                        />
+                        <span className="inter-display-medium f-s-16 lh-19 black-191">
+                          to
+                        </span>
+                        <FormElement
+                          valueLink={this.linkState(this, "toDate")}
+                          required
+                          validations={[
+                            {
+                              validate: FormValidator.isRequired,
+                              message: "To date cannot be empty",
+                            },
+                          ]}
+                          control={{
+                            type: DatePickerControl,
+                            settings: {
+                              placeholder: "To Date",
+                              minDate: this.state.fromDate || new Date(),
+                              showDateIcon: false,
+                              nextLabel: (
+                                <Image
+                                  className="date-navigator-icons-next"
+                                  src={nextIcon}
+                                />
+                              ),
+                              next2Label: (
+                                <Image
+                                  className="date-navigator-icons"
+                                  src={next2Icon}
+                                />
+                              ),
+                              prevLabel: (
+                                <Image
+                                  className="date-navigator-icons-next"
+                                  src={prevIcon}
+                                />
+                              ),
+                              prev2Label: (
+                                <Image
+                                  className="date-navigator-icons"
+                                  src={prev2Icon}
+                                />
+                              ),
+                            },
+                          }}
+                        />
+                      </div>
+                    </Form>
                   </div>
-                </Form>
-              </div>
-                  <div className='export-item-wrapper'>
-                    {
-                      this.state.exportItem.map((item)=>{
-                        return(
-                          <span className={this.state.selectedExportItem.value===item.value?"inter-display-medium f-s-16 lh-19 grey-636 export-item active":`inter-display-medium f-s-16 lh-19 grey-636 export-item`} onClick={(e)=>this.handleSelectedExportItem(item,e)}>{item.name}</span>
-                        )
-                      })
-                    }
+                  <div className="export-item-wrapper">
+                    {this.state.exportItem.map((item) => {
+                      return (
+                        <span
+                          className={
+                            this.state.selectedExportItem.value === item.value
+                              ? "inter-display-medium f-s-16 lh-19 grey-636 export-item active"
+                              : `inter-display-medium f-s-16 lh-19 grey-636 export-item`
+                          }
+                          onClick={(e) =>
+                            this.handleSelectedExportItem(item, e)
+                          }
+                        >
+                          {item.name}
+                        </span>
+                      );
+                    })}
                     {/* <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span> */}
                   </div>
                   {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
                   {/* <div onClick={()=>this.handleExportNow()} > */}
-                    {this.state.loadingExportFile===true
-                      ?
-                        // <Image src={lochClean} className='loading-export'/>
-                        <Button className="primary-btn">{loadingAnimation()}</Button>
-                      :
-                      <Button className="primary-btn" onClick={()=>this.handleExportNow()}>
-                        Export Now
-                      </Button>
-                    }
+                  {this.state.loadingExportFile === true ? (
+                    // <Image src={lochClean} className='loading-export'/>
+                    <Button className="primary-btn">
+                      {loadingAnimation()}
+                    </Button>
+                  ) : (
+                    <Button
+                      className="primary-btn"
+                      onClick={() => this.handleExportNow()}
+                    >
+                      Export Now
+                    </Button>
+                  )}
                   {/* </div> */}
                 </div>
-              }
-
+              )}
             </div>
-            : (
+          ) : (
             <div className="exit-overlay-body">
               <h6 className="inter-display-medium f-s-20 lh-24 ">
                 Don’t lose your data
@@ -396,6 +457,11 @@ class ExitOverlay extends BaseReactComponent {
                     Copy link
                   </h3>
                 </div>
+                <div className="link" onClick={() => {this.props.history.push("/welcome");}} style={{marginLeft:"4rem"}}>
+                  <h3 className="inter-display-medium f-s-16 lh-19 grey-969">
+                    No thanks, let me leave
+                  </h3>
+                </div>
                 {/* <div className="link" onClick={this.shareLink}>
                   <Image src={ShareLink} className="m-r-8" />
                   <h3 className="inter-display-medium f-s-16 lh-19 black-191">
@@ -424,8 +490,7 @@ class ExitOverlay extends BaseReactComponent {
                 </CustomOverlay>
               </div>
             </div>
-          )
-          }
+          )}
         </Modal.Body>
       </Modal>
     );

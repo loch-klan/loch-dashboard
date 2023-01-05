@@ -30,6 +30,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import { toast } from "react-toastify";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
+import { BarGraphFooter } from "../common/BarGraphFooter";
 
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
@@ -76,6 +77,7 @@ class LineChartSlider extends BaseReactComponent {
         this.setState({
           activeBadge: newArr,
           activeBadgeList: newArr.map((item) => item.id),
+          legends: [],
         });
       }
     } else if (badge.name === "All") {
@@ -111,13 +113,23 @@ class LineChartSlider extends BaseReactComponent {
         });
   };
   handleSelect = (opt) => {
-    console.log("opt", opt);
-    const t = opt.split(" ")[1];
-    this.setState({
-      title: t,
-      selectedEvents: [],
-      steps: 1,
-    });
+    // console.log("opt", opt.target.id);
+    //  let t = opt.split(" ")[1];
+    let t = "Month"
+    if (opt.target.id == 0) {
+      t = "Year";
+    } else if (opt.target.id == 1) {
+      t = "Month";
+    } else if (opt.target.id == 2) {
+      t = "Day";
+    } else {
+       t = "Month";
+    }
+      this.setState({
+        title: t,
+        selectedEvents: [],
+        steps: 1,
+      });
     this.props.handleGroupBy(t);
   };
 
@@ -135,7 +147,7 @@ class LineChartSlider extends BaseReactComponent {
         // console.log("successfully copied");
       })
       .catch(() => {
-        console.log("something went wrong");
+        // console.log("something went wrong");
       });
     // toggleCopied(true)
   };
@@ -536,16 +548,14 @@ class LineChartSlider extends BaseReactComponent {
         AllLegends.push({ label: e.name, value: e.name });
       });
     let topLegends = this.state.legends;
-    // console.log("All Legends", AllLegends);
+
     SelectedSeriesData =
       topLegends.length === 0
         ? seriesData.slice(0, 4)
         : seriesData.filter((e) => topLegends.includes(e.name));
-    // console.log("new", SelectedSeriesData);
-    // console.log("categories", categories);
+
     let selectedValue = null;
-    // console.log("sleected value", this.state.selectedValue)
-    //  seriesData = seriesData;
+
     var UNDEFINED;
     const options = {
       title: {
@@ -555,8 +565,7 @@ class LineChartSlider extends BaseReactComponent {
         type: "column",
         events: {
           click: function (event) {
-            // console.log("event click", parent.state.selectedValue);
-            // console.log("event inside");
+
             if (parent.state.selectedValue !== selectedValue) {
               parent.props.isPage
                 ? IntlAssetValueInternalEvent({
@@ -569,13 +578,13 @@ class LineChartSlider extends BaseReactComponent {
                     email_address: getCurrentUser().email,
                     no_of_events: noOfInternalEvent,
                   });
-              // console.log("inside event click");
+           
               parent.setState({
                 selectedEvents: selectedEvents,
                 selectedValue: selectedValue,
               });
             } else {
-              // console.log("reset");
+            
               parent.setState({
                 selectedEvents: [],
                 selectedValue: null,
@@ -608,10 +617,9 @@ class LineChartSlider extends BaseReactComponent {
       xAxis: {
         events: {
           setExtremes(e) {
-            // console.log("e", e)
-            // console.log("min", e.min, "max", e.max);
+          
             let diff = Math.round(e.max - e.min);
-            // console.log("dif", diff)
+           
             if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
               parent.setState({
                 plotLineHide: 1,
@@ -934,11 +942,10 @@ class LineChartSlider extends BaseReactComponent {
                   handleClick={this.props.handleClick}
                 />
               )}
-              <CoinBadges
-                activeBadge={this.state.activeBadge}
-                chainList={this.props.OnboardingState.coinsList}
-                handleFunction={this.handleFunction}
-                isScrollVisible={this.props.isScrollVisible}
+              <BarGraphFooter
+                handleFooterClick={this.handleSelect}
+                active={this.state.title}
+                footerLabels={["Year", "Month", "Day"]}
               />
               <div className="chart-y-selection" style={{ width: "100%" }}>
                 <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
@@ -970,7 +977,13 @@ class LineChartSlider extends BaseReactComponent {
                 // allowChartUpdate={true}
                 // updateArgs={[true]}
               />
-              <div className="chart-x-selection">
+              <CoinBadges
+                activeBadge={this.state.activeBadge}
+                chainList={this.props.OnboardingState.coinsList}
+                handleFunction={this.handleFunction}
+                isScrollVisible={this.props.isScrollVisible}
+              />
+              {/* <div className="chart-x-selection">
                 <DropDown
                   class="line-chart-dropdown"
                   list={["Year", "Month", "Day"]}
@@ -979,7 +992,7 @@ class LineChartSlider extends BaseReactComponent {
                   title={this.state.title}
                   activetab={this.state.title}
                 />
-              </div>
+              </div> */}
             </div>
             {this.state.selectedEvents.length > 0 && (
               <>
@@ -1034,8 +1047,9 @@ class LineChartSlider extends BaseReactComponent {
                                 <span>
                                   {event.assetValue.toFixed(count)}{" "}
                                   {event.assetCode}
-                                  {` or ${CurrencyType(false)}`}
+                                  {` or `}
                                   <span className="inter-display-semi-bold">
+                                    {CurrencyType(false)}
                                     {numToCurrency(event.usd)}
                                   </span>
                                   {event.text === "from"
