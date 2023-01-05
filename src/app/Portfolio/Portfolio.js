@@ -131,6 +131,7 @@ class Portfolio extends BaseReactComponent {
       currency: JSON.parse(localStorage.getItem("currency")),
       counterGraphDigit: 3,
       assetPrice: null,
+      isTimeOut: true,
     };
   }
 
@@ -205,7 +206,19 @@ class Portfolio extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("group_criteria", groupByValue);
-    getAssetGraphDataApi(data, this);
+    getAssetGraphDataApi(data, this)
+    this.state.isTimeOut &&
+      setTimeout(() => {
+        this.setState(
+          {
+            isTimeOut: false,
+          },
+          () => {
+            getAssetGraphDataApi(data, this);
+            // console.log("api called", this);
+          }
+        );
+      }, 10000);
   };
   handleGroupBy = (value) => {
     let groupByValue = GroupByOptions.getGroupBy(value);
@@ -382,7 +395,7 @@ class Portfolio extends BaseReactComponent {
       table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        console.log("row", userWalletList);
+        // console.log("row", userWalletList);
         userWalletList &&
           userWalletList.map((wallet) => {
             if (

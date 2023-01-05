@@ -124,12 +124,14 @@ export const getAssetGraphDataApi = (data, ctx) => {
   postLoginInstance
     .post("wallet/user-wallet/get-asset-value-graph", data).then((res) => {
       // console.log("all data", res);
+      
       if (!res.data.error) {
         ctx.setState({
           assetValueData: res.data.data.asset_value_data,
           graphLoading: false,
         });
         getExternalEventsApi(ctx);
+        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
