@@ -96,7 +96,12 @@ class AddWallet extends BaseReactComponent {
     let i = this.state.walletInput.findIndex(obj => obj.id === data.id)
     let newAddress = [...this.state.walletInput]
     // data.address === newAddress[i].address && console.log("heyyy", newAddress[i].address, data.address)
-    data.address !== newAddress[i].address ? newAddress[i].coins = [] : newAddress[i].coins.push(...newCoinList);
+      //new code
+      data.address !== newAddress[i].address ? newAddress[i].coins = [] : newAddress[i].coins.push(...newCoinList);
+      
+      // if (data.id === newAddress[i].id) {
+      //   newAddress[i].address = data.address;
+      // }
 
     newAddress[i].coinFound = newAddress[i].coins.some((e) => e.chain_detected === true);
 
@@ -226,7 +231,7 @@ class AddWallet extends BaseReactComponent {
                         key={index}
                         id={`add-wallet-${index}`}
                       >
-                        {index >= 1 ? (
+                        {this.state.walletInput.length > 1 ? (
                           <Image
                             key={index}
                             className={`ob-modal-body-del`}

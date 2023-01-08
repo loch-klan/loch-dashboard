@@ -62,22 +62,23 @@ export const detectCoin = (wallet,ctx=null) => {
                            chains_detected: wallet.coinName,
                          });
                     }
-
+                    // wallet.address = res.data.data.wallet_address;
                     dispatch({
-                        type: WALLET_LIST,
-                        payload: {
-                            id: wallet.id,
-                            coinCode: wallet.coinCode,
-                            coinSymbol: wallet.coinSymbol,
-                            coinName: wallet.coinName,
-                            address: wallet.address,
-                            chain_detected: res.data.data.chain_detected,
-                            coinColor: wallet.coinColor,
-                            subChains: wallet.subChains,
-                        }
+                      type: WALLET_LIST,
+                      payload: {
+                        id: wallet.id,
+                        coinCode: wallet.coinCode,
+                        coinSymbol: wallet.coinSymbol,
+                        coinName: wallet.coinName,
+                        // address: res.data.data.wallet_address,
+                        address: wallet.address,
+                        chain_detected: res.data.data.chain_detected,
+                        coinColor: wallet.coinColor,
+                        subChains: wallet.subChains,
+                      },
                     });
                   if (ctx) {
-                      // console.log("walletr", res.data.data, wallet);
+                      // console.log("walletr", res.data.data.wallet_address, wallet);
                         ctx.handleSetCoin({...wallet,chain_detected:res.data.data.chain_detected})
                     }
                 }

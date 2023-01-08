@@ -56,7 +56,7 @@ class FixAddModal extends BaseReactComponent {
     handleOnchange = (e) => {
 
         let { name, value } = e.target
-        // console.log('e',value.trim());
+        console.log('e',value.trim());
         let prevWallets = [...this.state.addWalletList]
         let currentIndex = prevWallets.findIndex(elem => elem.id === name)
         if (currentIndex > -1) {
@@ -98,37 +98,59 @@ class FixAddModal extends BaseReactComponent {
         }
     }
     handleSetCoin = (data) => {
-
-        let coinList = {
+    //   console.log("data", data);
+      let coinList = {
+        chain_detected: data.chain_detected,
+        coinCode: data.coinCode,
+        coinName: data.coinName,
+        coinSymbol: data.coinSymbol,
+        coinColor: data.coinColor,
+      };
+      let newCoinList = [];
+      newCoinList.push(coinList);
+      data.subChains &&
+        data.subChains.map((item) =>
+          newCoinList.push({
             chain_detected: data.chain_detected,
-            coinCode: data.coinCode,
-            coinName: data.coinName,
-            coinSymbol: data.coinSymbol,
-            coinColor: data.coinColor,
-        }
-        let newCoinList = [];
-        newCoinList.push(coinList);
-        data.subChains && data.subChains.map((item)=>newCoinList.push({
-          chain_detected: data.chain_detected,
-          coinCode: item.code,
-          coinName: item.name,
-          coinSymbol: item.symbol,
-          coinColor: item.color,
-        }))
-        let i = this.state.addWalletList.findIndex(obj => obj.id === data.id)
-        let newAddress = this.state.modalType === "addwallet" ? [...this.state.addWalletList] : [...this.state.fixWalletAddress]
-        data.address === newAddress[i].address && newAddress[i].coins.push(...newCoinList)
-        newAddress[i].coinFound = newAddress[i].coins && newAddress[i].coins.some((e) => e.chain_detected === true)
-        if (this.state.modalType === "addwallet") {
-            this.setState({
-                addWalletList: newAddress
-            })
-        }
-        else if (this.state.modalType === "fixwallet") {
-            this.setState({
-                fixWalletAddress: newAddress
-            })
-        }
+            coinCode: item.code,
+            coinName: item.name,
+            coinSymbol: item.symbol,
+            coinColor: item.color,
+          })
+        );
+      let i = this.state.addWalletList.findIndex((obj) => obj.id === data.id);
+      let newAddress =
+        this.state.modalType === "addwallet"
+          ? [...this.state.addWalletList]
+          : [...this.state.fixWalletAddress];
+
+      data.address === newAddress[i].address && newAddress[i].coins.push(...newCoinList);
+      //new code added
+    //   if (data.id === newAddress[i].id) {
+    //     newAddress[i].address = data.address;
+    //   }
+
+      newAddress[i].coinFound =
+        newAddress[i].coins &&
+        newAddress[i].coins.some((e) => e.chain_detected === true);
+      // console.log(
+      //   "newAddress",
+      //   newAddress,
+      //   data.id,
+      //   newAddress[i].id,
+      //   data.address === newAddress[i].address,
+      //   data.address,
+      //   newAddress[i].address
+      // );
+      if (this.state.modalType === "addwallet") {
+        this.setState({
+          addWalletList: newAddress,
+        });
+      } else if (this.state.modalType === "fixwallet") {
+        this.setState({
+          fixWalletAddress: newAddress,
+        });
+      }
     }
     componentDidMount() {
         this.props.getAllCoins()
@@ -211,6 +233,9 @@ class FixAddModal extends BaseReactComponent {
                 // );
                 if (!arr.includes(curr.address.trim()) && curr.address) {
                     walletList.push(curr);
+                    //new code added
+                    // curr.displayAddress ? arr.push(curr.address.trim()) : arr.push(curr.address.trim());
+                     
                     arr.push(curr.address.trim());
                     // displayAddress.push(curr.displayAddress?.trim());
                     // if (
@@ -223,6 +248,7 @@ class FixAddModal extends BaseReactComponent {
                 }
             }
             let addWallet = walletList;
+            // console.log("add wallet list", walletList)
             addWallet.map((w, i) => { w.id = `wallet${i + 1}` })
             localStorage.setItem("addWallet", JSON.stringify(addWallet))
             this.state.changeList && this.state.changeList(walletList)
@@ -467,44 +493,70 @@ class FixAddModal extends BaseReactComponent {
 
 
         const wallets = this.state.addWalletList.map((elem, index) => {
-                return (<div className='m-t-12 add-wallet-input-section' key={index} id={`add-wallet-${index}`}>
-                    {index >= 1 ?
-                    <div  className="delete-icon" onClick={() => this.deleteAddress(index)}>
-                    <Image src={DeleteIcon} />
-                    </div>
-                    : ""}
+                return (
+                  <div
+                    className="m-t-12 add-wallet-input-section"
+                    key={index}
+                    id={`add-wallet-${index}`}
+                  >
+                    {this.state.addWalletList.length > 1 ? (
+                      <div
+                        className="delete-icon"
+                        onClick={() => this.deleteAddress(index)}
+                      >
+                        <Image src={DeleteIcon} />
+                      </div>
+                    ) : (
+                      ""
+                    )}
 
                     <input
-                        autoFocus
-                        name={`wallet${index + 1}`}
-                        value={elem.displayAddress || elem.address || ""}
-                        placeholder="Paste any wallet address or ENS here"
-                        // className='inter-display-regular f-s-16 lh-20'
-                        className={`inter-display-regular f-s-16 lh-20 ${elem.address ? 'is-valid' : null}`}
-                        onChange={(e) => this.handleOnchange(e)}
-                        id={elem.id}
-                        style={getPadding(`add-wallet-${index}`,elem,this.props.OnboardingState)}
+                      autoFocus
+                      name={`wallet${index + 1}`}
+                      value={elem.displayAddress || elem.address || ""}
+                      placeholder="Paste any wallet address or ENS here"
+                      // className='inter-display-regular f-s-16 lh-20'
+                      className={`inter-display-regular f-s-16 lh-20 ${
+                        elem.address ? "is-valid" : null
+                      }`}
+                      onChange={(e) => this.handleOnchange(e)}
+                      id={elem.id}
+                      style={getPadding(
+                        `add-wallet-${index}`,
+                        elem,
+                        this.props.OnboardingState
+                      )}
                     />
-                    {
-                        elem.address
-                            ?
-                            elem.coinFound && elem.coins.length > 0
-                                ?
-                                // COIN FOUND STATE
-                                <CustomChip coins={elem.coins.filter((c) => c.chain_detected)} key={index} isLoaded={true}></CustomChip>
-                                :
-                                elem.coins.length === this.props.OnboardingState.coinsList.length
-                                // elem.coins.length === 1
-                                    ?
-                                    // UNRECOGNIZED WALLET
-                                    <CustomChip coins={null} key={index} isLoaded={true}></CustomChip>
-                                    :
-                                    // LOADING STATE
-                                    <CustomChip coins={null} key={index} isLoaded={false}></CustomChip>
-                            :
-                            ""
-                    }
-                </div>)
+                    {elem.address ? (
+                      elem.coinFound && elem.coins.length > 0 ? (
+                        // COIN FOUND STATE
+                        <CustomChip
+                          coins={elem.coins.filter((c) => c.chain_detected)}
+                          key={index}
+                          isLoaded={true}
+                        ></CustomChip>
+                      ) : elem.coins.length ===
+                        this.props.OnboardingState.coinsList.length ? (
+                        // elem.coins.length === 1
+                        // UNRECOGNIZED WALLET
+                        <CustomChip
+                          coins={null}
+                          key={index}
+                          isLoaded={true}
+                        ></CustomChip>
+                      ) : (
+                        // LOADING STATE
+                        <CustomChip
+                          coins={null}
+                          key={index}
+                          isLoaded={false}
+                        ></CustomChip>
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                );
             })
 
 

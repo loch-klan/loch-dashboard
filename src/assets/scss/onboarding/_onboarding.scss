@@ -109,11 +109,14 @@
 
                 .ob-modal-body-del {
                     border-radius: 0.8rem;
-                    width: 3.8rem;
+                    // width: 3.8rem;
+                    width: 3.2rem;
                     position: absolute;
-                    left: -5.5rem;
-                    top: 0.14rem;
-                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+                    // left: -5.5rem;
+                      left: -5rem;
+                    // top: 0.14rem;
+                     top: 0.5rem;
+                    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                     cursor: pointer;
                     &.not-allowed{
                         cursor: not-allowed;

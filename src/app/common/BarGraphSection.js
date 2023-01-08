@@ -65,8 +65,8 @@ class BarGraphSection extends Component {
         data: this.props.data,
         showPercentage: this.props.showPercentage
       });
-      console.log("active badge", this.state.activeBadge)
-      console.log("active badgeList", this.state.activeBadgeList);
+      // console.log("active badge", this.state.activeBadge)
+      // console.log("active badgeList", this.state.activeBadgeList);
       // this.state.activeBadge && this.state.activeBadge.map((e, i) => {
       //   this.handleFunction(e);
       //   console.log("index", i)
@@ -86,11 +86,11 @@ class BarGraphSection extends Component {
        activeBadge: [{ name: "All", id: "" }],
                       activeBadgeList: [],
     })
-    console.log("handle footer", event.target.id);
+    // console.log("handle footer", event.target.id);
     this.props.timeFunction(event.target.id, this.state.activeBadgeList);
   };
   handleFunction = (badge) => {
-    console.log("badge",badge)
+    // console.log("badge",badge)
     let newArr = [...this.state.activeBadge];
     let activeFooter = this.props.showFooterDropdown ? this.props.activeDropdown : this.state.activeFooter;
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {

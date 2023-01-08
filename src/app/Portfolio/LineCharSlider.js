@@ -802,7 +802,7 @@ class LineChartSlider extends BaseReactComponent {
               ? moment(x_value, "DD/MM/YYYY").format("DD MMMM YY")
               : x_value;
           //  console.log("checking date", x_value, this.x, tooltip_title);
-          return `${selectedEvents.length > 0 ? `<div class="inter-display-semi-bold f-s-10"  style="color:#96979A; background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:8px; margin-bottom:4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+          return `${selectedEvents.length > 0 ? `<div class="inter-display-semi-bold f-s-10 w-100 text-center"  style="color:#96979A; background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:8px; margin-bottom:4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
 backdrop-filter: blur(15px); padding:1rem 2rem;">Click to show Transactions</div>`: ""}<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
 backdrop-filter: blur(15px);">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
