@@ -83,6 +83,7 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
        if(!res.data.error){
          ctx.setState({
              GraphData: res.data.data.profit_loss,
+             netFlowLoading:false,
              graphValue: getProfitAndLossData(res.data.data.profit_loss)
          });
        } else{

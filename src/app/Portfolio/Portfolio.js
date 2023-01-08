@@ -122,6 +122,7 @@ class Portfolio extends BaseReactComponent {
       graphValue: null,
       externalEvents: [],
       counterGraphLoading: true,
+      netFlowLoading: true,
       counterPartyData: [],
       counterPartyValue: null,
       isUpdate: 0,
@@ -283,7 +284,7 @@ class Portfolio extends BaseReactComponent {
       if (prevProps.userWalletList !== this.state.userWalletList) {
         // console.log('byeee');
         this.state.userWalletList.length > 0 &&
-          this.setState({ isLoading: true });
+          this.setState({ isLoading: true, netFlowLoading: true, counterGraphLoading: true });
         // this.apiCall();
         this.getTableData();
         this.getGraphData();
@@ -1118,7 +1119,7 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
-                      {this.state.graphValue ? (
+                      {this.state.graphValue && !this.state.netFlowLoading ? (
                         <BarGraphSection
                           headerTitle="Net Flows"
                           headerSubTitle="Understand your entire portfolio's performance"
