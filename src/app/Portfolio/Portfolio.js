@@ -1073,7 +1073,7 @@ class Portfolio extends BaseReactComponent {
                 )}
               </div>
 
-              <div className="portfolio-section m-b-32">
+              {/* <div className="portfolio-section m-b-32">
                 <LineChartSlider
                   assetValueData={
                     this.state.assetValueData && this.state.assetValueData
@@ -1090,30 +1090,31 @@ class Portfolio extends BaseReactComponent {
                     this.props.history.push("/intelligence/asset-value");
                   }}
                 />
-              </div>
+              </div> */}
               <div className="m-b-22 graph-table-section">
                 <Row>
                   <Col md={6}>
                     <div
                       className="m-r-16 section-table"
-                      style={{ paddingBottom: "1.15rem" }}
+                      // style={{ paddingBottom: "1.15rem" }}
                     >
-                      <TransactionTable
-                        title="Transaction History"
+                      <LineChartSlider
+                        assetValueData={
+                          this.state.assetValueData && this.state.assetValueData
+                        }
+                        externalEvents={
+                          this.state.externalEvents && this.state.externalEvents
+                        }
+                        coinLists={this.props.OnboardingState.coinsLists}
+                        isScrollVisible={false}
+                        handleGroupBy={(value) => this.handleGroupBy(value)}
+                        graphLoading={this.state.graphLoading}
+                        isUpdate={this.state.isUpdate}
                         handleClick={() => {
-                          this.props.history.push(
-                            "/intelligence/transaction-history"
-                          );
-                          TransactionHistoryEView({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          });
+                          this.props.history.push("/intelligence/asset-value");
                         }}
-                        subTitle="In the last month"
-                        tableData={tableData}
-                        columnList={columnList}
-                        headerHeight={60}
-                        isLoading={this.state.tableLoading}
+                        hideTimeFilter={true}
+                        hideChainFilter={true}
                       />
                     </div>
                   </Col>
@@ -1156,7 +1157,68 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                 </Row>
               </div>
-              <div className="m-b-40 portfolio-cost-table-section">
+              <div className="m-b-22 graph-table-section">
+                <Row>
+                  <Col md={6}>
+                    <div
+                      className="m-r-16 section-table"
+                      style={{ paddingBottom: "1.15rem" }}
+                    >
+                      <TransactionTable
+                        title="Transaction History"
+                        handleClick={() => {
+                          this.props.history.push(
+                            "/intelligence/transaction-history"
+                          );
+                          TransactionHistoryEView({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        }}
+                        subTitle="In the last month"
+                        tableData={tableData}
+                        columnList={columnList}
+                        headerHeight={60}
+                        isLoading={this.state.tableLoading}
+                      />
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="profit-chart">
+                      {this.state.counterPartyValue &&
+                      !this.state.counterGraphLoading ? (
+                        <BarGraphSection
+                          headerTitle="Counterparty Volume Over Time"
+                          headerSubTitle="Understand how much your counterparty charges you"
+                          isArrow={true}
+                          handleClick={() => {
+                            VolumeTradeByCP({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                            this.props.history.push("/costs#cp");
+                          }}
+                          data={this.state.counterPartyValue[0]}
+                          options={this.state.counterPartyValue[1]}
+                          options2={this.state.counterPartyValue[2]}
+                          digit={this.state.counterGraphDigit}
+                          isScroll={true}
+                          isScrollVisible={false}
+                          comingSoon={false}
+                          className={"portfolio-profit-and-loss"}
+                        />
+                      ) : (
+                        <div className="loading-wrapper">
+                          <Loading />
+                          <br />
+                          <br />
+                        </div>
+                      )}
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+              {/* <div className="m-b-40 portfolio-cost-table-section">
                 <div className="section-chart">
                   {this.state.counterPartyValue &&
                   !this.state.counterGraphLoading ? (
@@ -1188,7 +1250,7 @@ class Portfolio extends BaseReactComponent {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
               <FeedbackForm page={"Home Page"} attribution={true} />
             </div>
           </div>

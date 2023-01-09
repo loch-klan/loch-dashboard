@@ -45,7 +45,7 @@ class LineChartSlider extends BaseReactComponent {
       selectedEvents: [],
       selectedValue: null,
       legends: [],
-      steps: 1,
+      steps: this.props.hideTimeFilter ? 3 : 1,
       plotLineHide: 0,
     };
   }
@@ -565,7 +565,6 @@ class LineChartSlider extends BaseReactComponent {
         type: "column",
         events: {
           click: function (event) {
-
             if (parent.state.selectedValue !== selectedValue) {
               parent.props.isPage
                 ? IntlAssetValueInternalEvent({
@@ -578,13 +577,12 @@ class LineChartSlider extends BaseReactComponent {
                     email_address: getCurrentUser().email,
                     no_of_events: noOfInternalEvent,
                   });
-           
+
               parent.setState({
                 selectedEvents: selectedEvents,
                 selectedValue: selectedValue,
               });
             } else {
-            
               parent.setState({
                 selectedEvents: [],
                 selectedValue: null,
@@ -617,9 +615,8 @@ class LineChartSlider extends BaseReactComponent {
       xAxis: {
         events: {
           setExtremes(e) {
-          
             let diff = Math.round(e.max - e.min);
-           
+
             if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
               parent.setState({
                 plotLineHide: 1,
@@ -634,12 +631,12 @@ class LineChartSlider extends BaseReactComponent {
 
             if (diff <= 11 && parent.state.steps !== 1) {
               parent.setState({
-                steps: 1,
+                steps: parent.props.hideTimeFilter ? 3 : 1,
               });
             } else if (diff > 11 && diff <= 20 && parent.state.steps !== 2) {
               // console.log("middle");
               parent.setState({
-                steps: 2,
+                steps: parent.props.hideTimeFilter ? 6 : 2,
                 plotLineHide: 2,
               });
             } else {
@@ -651,7 +648,7 @@ class LineChartSlider extends BaseReactComponent {
               if (diff > 20 && parent.state.steps !== 3) {
                 // console.log("greater than 20");
                 parent.setState({
-                  steps: 3,
+                  steps: parent.props.hideTimeFilter ? 9 : 3,
                 });
               }
             }
@@ -725,7 +722,7 @@ class LineChartSlider extends BaseReactComponent {
       },
       legend: {
         enabled: true,
-        x: -120,
+        x: this.props.hideTimeFilter ? 0 : - 120,
 
         align: "right",
         verticalAlign: "top",
@@ -802,8 +799,12 @@ class LineChartSlider extends BaseReactComponent {
               ? moment(x_value, "DD/MM/YYYY").format("DD MMMM YY")
               : x_value;
           //  console.log("checking date", x_value, this.x, tooltip_title);
-          return `${selectedEvents.length > 0 ? `<div class="inter-display-semi-bold f-s-10 w-100 text-center"  style="color:#96979A; background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:8px; margin-bottom:4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-backdrop-filter: blur(15px); padding:1rem 2rem;">Click to show Transactions</div>`: ""}<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+          return `${
+            selectedEvents.length > 0
+              ? `<div class="inter-display-semi-bold f-s-10 w-100 text-center"  style="color:#96979A; background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:8px; margin-bottom:4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+backdrop-filter: blur(15px); padding:1rem 2rem;">Click to show Transactions</div>`
+              : ""
+          }<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
 backdrop-filter: blur(15px);">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
                                 <div class="inter-display-medium f-s-12 w-100 text-center" style="color:#96979A;"><b>${tooltip_title}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
@@ -922,15 +923,33 @@ backdrop-filter: blur(15px);">
         },
       },
     };
+    const minVersion = { padding: "3.2rem 3.2rem 0rem 3.2rem" }
+     const minVersionSection = {
+       minHeight: "51rem",
+       marginBottom: 0,
+       width: "100%",
+       minWidth: "100%",
+       padding: 0,
+       boxShadow: "none",
+     };
     return (
-      <div className="welcome-card-section lineChartSlider">
+      <div
+        className="welcome-card-section lineChartSlider"
+        style={this.props.hideTimeFilter ? minVersionSection : ""}
+      >
         {this.props.graphLoading ? (
           <Loading />
         ) : (
           <>
             <div
               className="line-chart-section"
-              style={{ padding: "0rem 4.8rem" }}
+              style={
+                !this.props.hideTimeFilter
+                  ? {
+                      padding: "0rem 4.8rem",
+                    }
+                  : minVersion
+              }
               // onMouseLeave={() => {
               //   this.resetEvent();
               // }}
@@ -949,31 +968,36 @@ backdrop-filter: blur(15px);">
                 <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                   {CurrencyType()}
                 </span>
-                <BarGraphFooter
-                  handleFooterClick={this.handleSelect}
-                  active={this.state.title}
-                    footerLabels={["Year", "Month", "Day"]}
-                    lineChart={true}
-                />
-                <span
-                  style={{
-                    width: "120px",
-                    position: "absolute",
-                    right: "0px",
-                    zIndex: "1",
-                    cursor: "pointer",
-                  }}
-                >
-                  <CustomDropdown
-                    filtername="Tokens"
-                    options={AllLegends}
-                    action={null}
-                    selectedTokens={this.state.legends}
-                    handleClick={(arr) => this.DropdownData(arr)}
-                    isLineChart={true}
-                  />
-                </span>
+                {!this.props.hideTimeFilter && (
+                  <>
+                    <BarGraphFooter
+                      handleFooterClick={this.handleSelect}
+                      active={this.state.title}
+                      footerLabels={["Year", "Month", "Day"]}
+                      lineChart={true}
+                    />
+                    <span
+                      style={{
+                        width: "120px",
+                        position: "absolute",
+                        right: "0px",
+                        zIndex: "1",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <CustomDropdown
+                        filtername="Tokens"
+                        options={AllLegends}
+                        action={null}
+                        selectedTokens={this.state.legends}
+                        handleClick={(arr) => this.DropdownData(arr)}
+                        isLineChart={true}
+                      />
+                    </span>
+                  </>
+                )}
               </div>
+
               <HighchartsReact
                 highcharts={Highcharts}
                 options={options}
@@ -981,12 +1005,14 @@ backdrop-filter: blur(15px);">
                 // allowChartUpdate={true}
                 // updateArgs={[true]}
               />
-              <CoinBadges
-                activeBadge={this.state.activeBadge}
-                chainList={this.props.OnboardingState.coinsList}
-                handleFunction={this.handleFunction}
-                isScrollVisible={this.props.isScrollVisible}
-              />
+              {!this.props.hideChainFilter && (
+                <CoinBadges
+                  activeBadge={this.state.activeBadge}
+                  chainList={this.props.OnboardingState.coinsList}
+                  handleFunction={this.handleFunction}
+                  isScrollVisible={this.props.isScrollVisible}
+                />
+              )}
 
               {/* <div className="chart-x-selection">
                 <DropDown
@@ -1001,7 +1027,10 @@ backdrop-filter: blur(15px);">
             </div>
             {this.state.selectedEvents.length > 0 && (
               <>
-                <div className="ChartDivider"></div>
+                <div
+                  className="ChartDivider"
+                  style={this.props.hideTimeFilter ? { marginTop: "1rem" } : ""}
+                ></div>
                 <div className="SliderChartBottom">
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
@@ -1037,7 +1066,8 @@ backdrop-filter: blur(15px);">
                               key={i}
                               style={{
                                 width: `${
-                                  this.state.selectedEvents.length === 1
+                                  this.state.selectedEvents.length === 1 ||
+                                  this.props.hideTimeFilter
                                     ? "100%"
                                     : ""
                                 }`,
