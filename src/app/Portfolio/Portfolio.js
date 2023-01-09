@@ -181,7 +181,7 @@ class Portfolio extends BaseReactComponent {
     }
     this.props.getCoinRate();
     this.getTableData();
-    this.getGraphData();
+    // this.getGraphData();
     getAllCounterFeeApi(this, false, false);
     getProfitAndLossApi(this, false, false, false);
     // getYesterdaysBalanceApi(this);
@@ -1073,7 +1073,7 @@ class Portfolio extends BaseReactComponent {
                 )}
               </div>
 
-              <div className="portfolio-section m-b-32">
+              {/* <div className="portfolio-section m-b-32">
                 <LineChartSlider
                   assetValueData={
                     this.state.assetValueData && this.state.assetValueData
@@ -1090,7 +1090,7 @@ class Portfolio extends BaseReactComponent {
                     this.props.history.push("/intelligence/asset-value");
                   }}
                 />
-              </div>
+              </div> */}
               <div className="m-b-22 graph-table-section">
                 <Row>
                   <Col md={6}>

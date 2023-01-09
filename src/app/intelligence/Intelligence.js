@@ -8,6 +8,7 @@ import insight from "../../assets/images/icons/insight.svg";
 import BarGraphSection from "../common/BarGraphSection";
 import { getAllCoins } from "../onboarding/Api.js";
 import { Image } from "react-bootstrap";
+import LineChartSlider from "../Portfolio/LineCharSlider";
 import {
   InsightsViewMore,
   IntelligencePage,
@@ -21,8 +22,9 @@ import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import { getAllInsightsApi } from "./Api";
-import { InsightType } from "../../utils/Constant";
+import { GroupByOptions, GROUP_BY_MONTH, InsightType } from "../../utils/Constant";
 import FeedbackForm from "../common/FeedbackForm";
+import { getAssetGraphDataApi } from "../Portfolio/Api";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -40,6 +42,10 @@ class Intelligence extends Component {
       isLoading: true,
       // title: "Max",
       title: 0,
+      graphLoading: true,
+      isUpdate: 0,
+      externalEvents: [],
+      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
     };
   }
 
@@ -51,6 +57,7 @@ class Intelligence extends Component {
       email_address: getCurrentUser().email,
     });
     window.scrollTo(0, 0);
+    this.getGraphData();
     this.props.getAllCoins();
     this.timeFilter(0);
     getAllInsightsApi(this);
@@ -66,6 +73,22 @@ class Intelligence extends Component {
       email_address: getCurrentUser().email,
     });
   }
+
+  getGraphData = (groupByValue = GROUP_BY_MONTH) => {
+    this.setState({ graphLoading: true });
+    let addressList = [];
+    this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
+    // console.log('addressList',addressList);
+    let data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("group_criteria", groupByValue);
+    getAssetGraphDataApi(data, this);
+  };
+
+  handleGroupBy = (value) => {
+    let groupByValue = GroupByOptions.getGroupBy(value);
+    this.getGraphData(groupByValue);
+  };
 
   timeFilter = (option) => {
     // console.log("time filter", option)
@@ -174,6 +197,25 @@ class Intelligence extends Component {
             subTitle="Automated and personalized financial intelligence"
           />
           <IntelWelcomeCard history={this.props.history} />
+          <div className="portfolio-bar-graph m-b-40">
+            <PageHeader title="Asset Value" showImg={eyeIcon} />
+            <div style={{ position: "relative" }}>
+              <LineChartSlider
+                assetValueData={
+                  this.state.assetValueData && this.state.assetValueData
+                }
+                externalEvents={
+                  this.state.externalEvents && this.state.externalEvents
+                }
+                coinLists={this.props.OnboardingState.coinsLists}
+                isScrollVisible={false}
+                handleGroupBy={(value) => this.handleGroupBy(value)}
+                graphLoading={this.state.graphLoading}
+                isUpdate={this.state.isUpdate}
+                isPage={true}
+              />
+            </div>
+          </div>
           <div className="insights-image m-b-40">
             <PageHeader
               title="Insights"
@@ -301,6 +343,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   // getPosts: fetchPosts
   getAllCoins,
+  getAssetGraphDataApi
 };
 Intelligence.propTypes = {
   // getPosts: PropTypes.func
