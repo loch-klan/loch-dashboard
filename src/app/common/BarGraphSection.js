@@ -194,7 +194,10 @@ class BarGraphSection extends Component {
       minWidth: "100%",
     };
     return (
-      <div className={`bar-graph-section ${marginBottom ? marginBottom : ""}`}>
+      <div
+        className={`bar-graph-section ${marginBottom ? marginBottom : ""}`}
+        style={this.props.isCounterPartyMini ? {paddingBottom: "0rem"}: {}}
+      >
         {headerTitle || headerSubTitle ? (
           <GraphHeader
             title={headerTitle}

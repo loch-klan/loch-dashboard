@@ -707,7 +707,7 @@ class LineChartSlider extends BaseReactComponent {
         },
         showLastLabel: true,
         opposite: false,
-        offset: 70,
+        offset: this.props.hideTimeFilter? 40 : 70,
         gridLineDashStyle: "longdash",
         labels: {
           formatter: function () {
@@ -722,7 +722,7 @@ class LineChartSlider extends BaseReactComponent {
       },
       legend: {
         enabled: true,
-        x: this.props.hideTimeFilter ? 0 : - 120,
+        x: this.props.hideTimeFilter ? 0 : -120,
 
         align: "right",
         verticalAlign: "top",
@@ -935,7 +935,7 @@ backdrop-filter: blur(15px);">
     return (
       <div
         className="welcome-card-section lineChartSlider"
-        style={this.props.hideTimeFilter ? minVersionSection : ""}
+        style={this.props.hideTimeFilter ? minVersionSection : {}}
       >
         {this.props.graphLoading ? (
           <Loading />
@@ -1029,7 +1029,7 @@ backdrop-filter: blur(15px);">
               <>
                 <div
                   className="ChartDivider"
-                  style={this.props.hideTimeFilter ? { marginTop: "1rem" } : ""}
+                  style={this.props.hideTimeFilter ? { marginTop: "1rem" } : {}}
                 ></div>
                 <div className="SliderChartBottom">
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
@@ -1066,8 +1066,8 @@ backdrop-filter: blur(15px);">
                               key={i}
                               style={{
                                 width: `${
-                                  this.state.selectedEvents.length === 1 ||
-                                  this.props.hideTimeFilter
+                                 ( this.state.selectedEvents.length === 1 ||
+                                  this.props.hideTimeFilter)
                                     ? "100%"
                                     : ""
                                 }`,

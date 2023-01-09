@@ -1206,6 +1206,7 @@ class Portfolio extends BaseReactComponent {
                           isScrollVisible={false}
                           comingSoon={false}
                           className={"portfolio-profit-and-loss"}
+                          isCounterPartyMini={true}
                         />
                       ) : (
                         <div className="loading-wrapper">
