@@ -1113,7 +1113,7 @@ backdrop-filter: blur(15px);">
                                   text={event.tooltip}
                                 >
                                   <span style={{ cursor: "pointer" }}>
-                                    {this.state.selectedEvents.length === 1
+                                    {this.state.selectedEvents.length === 1 && !this.props.hideTimeFilter
                                       ? event.fulladdress
                                       : event.address}
                                     <Image
