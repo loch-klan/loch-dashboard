@@ -1075,7 +1075,7 @@ class PieChart2 extends BaseReactComponent {
                       </div>
                     </div>
                     <div className="balance-sheet-list">
-                      <span className="inter-display-semi-bold f-s-16 lh-19">
+                      <span className="inter-display-medium f-s-16 lh-19">
                         Staked
                       </span>
                       <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
@@ -1091,7 +1091,7 @@ class PieChart2 extends BaseReactComponent {
                         borderTop: "1px solid rgba(229, 229, 230, 0.5)",
                       }}
                     >
-                      <span className="inter-display-semi-bold f-s-16 lh-19">
+                      <span className="inter-display-medium f-s-16 lh-19">
                         Lent
                       </span>
                       <span
@@ -1114,7 +1114,7 @@ class PieChart2 extends BaseReactComponent {
                         borderTop: "1px solid rgba(229, 229, 230, 0.5)",
                       }}
                     >
-                      <span className="inter-display-semi-bold f-s-16 lh-19">
+                      <span className="inter-display-medium f-s-16 lh-19">
                         Liquidity Pool Deposit
                       </span>
                       <span
