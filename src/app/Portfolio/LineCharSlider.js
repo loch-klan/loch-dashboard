@@ -56,7 +56,7 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         title: "Month",
         selectedEvents: [],
-        steps: 1,
+        steps: this.props.hideTimeFilter ? 3 : 1,
       });
     }
   }
@@ -128,7 +128,7 @@ class LineChartSlider extends BaseReactComponent {
       this.setState({
         title: t,
         selectedEvents: [],
-        steps: 1,
+        steps: this.props.hideTimeFilter ? 3 : 1,
       });
     this.props.handleGroupBy(t);
   };
@@ -563,6 +563,7 @@ class LineChartSlider extends BaseReactComponent {
       },
       chart: {
         type: "column",
+        spacingTop: 40,
         events: {
           click: function (event) {
             if (parent.state.selectedValue !== selectedValue) {
@@ -617,39 +618,43 @@ class LineChartSlider extends BaseReactComponent {
           setExtremes(e) {
             let diff = Math.round(e.max - e.min);
 
-            if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
-              parent.setState({
-                plotLineHide: 1,
-              });
+            if (parent.props.hideTimeFilter) {
+              console.log("diff", diff);
             } else {
-              if (diff < 9 && parent.state.plotLineHide !== 0) {
+              if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
                 parent.setState({
-                  plotLineHide: 0,
+                  plotLineHide: 1,
                 });
+              } else {
+                if (diff < 9 && parent.state.plotLineHide !== 0) {
+                  parent.setState({
+                    plotLineHide: 0,
+                  });
+                }
               }
-            }
 
-            if (diff <= 11 && parent.state.steps !== 1) {
-              parent.setState({
-                steps: parent.props.hideTimeFilter ? 3 : 1,
-              });
-            } else if (diff > 11 && diff <= 20 && parent.state.steps !== 2) {
-              // console.log("middle");
-              parent.setState({
-                steps: parent.props.hideTimeFilter ? 6 : 2,
-                plotLineHide: 2,
-              });
-            } else {
-              // if (diff >= 13 && parent.state.plotLineHide !== 3) {
-              //   parent.setState({
-              //     // plotLineHide: 3,
-              //   });
-              // }
-              if (diff > 20 && parent.state.steps !== 3) {
-                // console.log("greater than 20");
+              if (diff <= 11 && parent.state.steps !== 1) {
                 parent.setState({
-                  steps: parent.props.hideTimeFilter ? 9 : 3,
+                  steps:1,
                 });
+              } else if (diff > 11 && diff <= 20 && parent.state.steps !== 2) {
+                // console.log("middle");
+                parent.setState({
+                  steps:2,
+                  plotLineHide: 2,
+                });
+              } else {
+                // if (diff >= 13 && parent.state.plotLineHide !== 3) {
+                //   parent.setState({
+                //     // plotLineHide: 3,
+                //   });
+                // }
+                if (diff > 20 && parent.state.steps !== 3) {
+                  // console.log("greater than 20");
+                  parent.setState({
+                    steps: 3,
+                  });
+                }
               }
             }
           },
@@ -682,6 +687,7 @@ class LineChartSlider extends BaseReactComponent {
           cursor: "pointer",
         },
         scrollbar: {
+          // enabled: this.props.hideTimeFilter ? false : true,
           enabled: true,
           height: 6,
           barBackgroundColor: "#19191A33",
@@ -707,7 +713,7 @@ class LineChartSlider extends BaseReactComponent {
         },
         showLastLabel: true,
         opposite: false,
-        offset: this.props.hideTimeFilter? 40 : 70,
+        offset: this.props.hideTimeFilter ? 40 : 70,
         gridLineDashStyle: "longdash",
         labels: {
           formatter: function () {
@@ -721,7 +727,7 @@ class LineChartSlider extends BaseReactComponent {
         },
       },
       legend: {
-        enabled: true,
+        enabled: this.props.hideTimeFilter ? false : true,
         x: this.props.hideTimeFilter ? 0 : -120,
 
         align: "right",
@@ -964,7 +970,14 @@ backdrop-filter: blur(15px);">
                 />
               )}
 
-              <div className="chart-y-selection" style={{ width: "100%" }}>
+              <div
+                className="chart-y-selection"
+                style={
+                  this.props.hideTimeFilter
+                    ? { width: "100%", marginTop:"3.5rem"}
+                    : { width: "100%" }
+                }
+              >
                 <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                   {CurrencyType()}
                 </span>
@@ -1031,7 +1044,7 @@ backdrop-filter: blur(15px);">
                   className="ChartDivider"
                   style={this.props.hideTimeFilter ? { marginTop: "1rem" } : {}}
                 ></div>
-                <div className="SliderChartBottom">
+                <div className="SliderChartBottom" style={this.props.hideTimeFilter ? {padding: "0rem 3rem", margin: "2.5rem 0 1.5rem"}: {}}>
                   <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     <Image src={CalenderIcon} />
                     Largest Transactions
@@ -1066,8 +1079,8 @@ backdrop-filter: blur(15px);">
                               key={i}
                               style={{
                                 width: `${
-                                 ( this.state.selectedEvents.length === 1 ||
-                                  this.props.hideTimeFilter)
+                                  this.state.selectedEvents.length === 1 ||
+                                  this.props.hideTimeFilter
                                     ? "100%"
                                     : ""
                                 }`,
