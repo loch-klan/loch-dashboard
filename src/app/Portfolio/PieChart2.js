@@ -1036,7 +1036,7 @@ class PieChart2 extends BaseReactComponent {
                     </div>
                   </div>
                   {/* Balance sheet */}
-                  {/* <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     Balance sheet
                   </h2>
                   <div style={{}} className="balance-sheet-card">
@@ -1075,7 +1075,7 @@ class PieChart2 extends BaseReactComponent {
                       </div>
                     </div>
                     <div className="balance-sheet-list">
-                      <span className="inter-display-semi-bold f-s-16 lh-19">
+                      <span className="inter-display-medium f-s-16 lh-19">
                         Staked
                       </span>
                       <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
@@ -1091,7 +1091,7 @@ class PieChart2 extends BaseReactComponent {
                         borderTop: "1px solid rgba(229, 229, 230, 0.5)",
                       }}
                     >
-                      <span className="inter-display-semi-bold f-s-16 lh-19">
+                      <span className="inter-display-medium f-s-16 lh-19">
                         Lent
                       </span>
                       <span
@@ -1114,7 +1114,7 @@ class PieChart2 extends BaseReactComponent {
                         borderTop: "1px solid rgba(229, 229, 230, 0.5)",
                       }}
                     >
-                      <span className="inter-display-semi-bold f-s-16 lh-19">
+                      <span className="inter-display-medium f-s-16 lh-19">
                         Liquidity Pool Deposit
                       </span>
                       <span
@@ -1128,7 +1128,7 @@ class PieChart2 extends BaseReactComponent {
                         $54,769.00
                       </span>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
               </Col>
             </Row>
