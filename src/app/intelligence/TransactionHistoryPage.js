@@ -11,7 +11,7 @@ import { searchTransactionApi, getFilters } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
 import { FormElement, Form, CustomTextControl, BaseReactComponent } from "../../utils/form";
-import unrecognizedIcon from "../../image/unrecognized.svg";
+import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
@@ -1027,7 +1027,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               <Row>
                 <Col md={3}>
                   <CustomDropdown
-                    filtername="All Year"
+                    filtername="All years"
                     options={this.state.yearFilter}
                     action={SEARCH_BY_TIMESTAMP_IN}
                     handleClick={(key, value) => this.addCondition(key, value)}
@@ -1043,7 +1043,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 </Col>
                 <Col md={3}>
                   <CustomDropdown
-                    filtername="All method"
+                    filtername="All methods"
                     options={this.state.methodFilter}
                     action={SEARCH_BY_METHOD_IN}
                     handleClick={(key, value) => this.addCondition(key, value)}
