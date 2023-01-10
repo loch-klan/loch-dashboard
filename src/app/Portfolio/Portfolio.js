@@ -40,7 +40,7 @@ import {
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import moment from "moment";
-import unrecognizedIcon from "../../image/unrecognized.svg";
+import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import {
   ManageWallets,
   TransactionHistoryEView,

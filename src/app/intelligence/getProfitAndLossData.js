@@ -149,9 +149,9 @@ export const getProfitAndLossData = (arr) => {
       };
       let value = ((outflows * currency.rate)-(inflows * currency.rate));
       let showPercentage= {
-        icon: value > 0 ? arrowUpRight : arrowDownRight,
+        icon: value >= 0 ? arrowUpRight : arrowDownRight,
         percent: inflows ? ((value/(inflows * currency.rate))*100).toFixed() : 0,
-        status: value > 0 ? "Increase" : "Decrease",
+        status: value > 0 ? "Increase" : value < 0 ? "Decrease" : "No Change",
       }
     return [data,options, showPercentage]
 }
