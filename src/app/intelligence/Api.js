@@ -39,7 +39,7 @@ export const getFilters = (ctx) => {
                 }
                 assetFilter.push(obj)
             })
-            let yearFilter = [{value:'allYear',label:'All Year'}]
+            let yearFilter = [{value:'allYear',label:'All years'}]
             res.data.data.filters.year_filter.map((item)=>{
                 let obj  = {
                     value: item,
@@ -47,7 +47,7 @@ export const getFilters = (ctx) => {
                 }
                 yearFilter.push(obj)
             })
-            let methodFilter = [{value:'allMethod',label:'All Method'}]
+            let methodFilter = [{value:'allMethod',label:'All methods'}]
             res.data.data.filters.method_filters.map((item)=>{
                 let obj  = {
                     value: item,
