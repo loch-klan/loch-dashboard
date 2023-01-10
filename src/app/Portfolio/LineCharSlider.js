@@ -619,7 +619,7 @@ class LineChartSlider extends BaseReactComponent {
             let diff = Math.round(e.max - e.min);
 
             if (parent.props.hideTimeFilter) {
-              console.log("diff", diff);
+              // console.log("diff", diff);
             } else {
               if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
                 parent.setState({
