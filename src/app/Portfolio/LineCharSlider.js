@@ -563,7 +563,7 @@ class LineChartSlider extends BaseReactComponent {
       },
       chart: {
         type: "column",
-        spacingTop: 40,
+        spacingTop: this.props.hideTimeFilter ? 40 : 10,
         events: {
           click: function (event) {
             if (parent.state.selectedValue !== selectedValue) {
