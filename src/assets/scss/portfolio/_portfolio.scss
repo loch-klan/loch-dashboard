@@ -934,12 +934,15 @@ position: relative;
                       padding: 2rem 2rem 1.6rem;
                       margin-top: 1.6rem;
                       margin-bottom: 2.8rem;
+                      user-select: none;
+                    //   cursor: pointer;
+                      position: relative;
 
                 .balance-card-header{
                      display:flex;
                         align-items: center;
                         justify-content: space-between;
-                        margin-bottom: 1rem;
+                        // margin-bottom: 1rem;
 
                         img{
                              height: 1.25rem;
@@ -947,13 +950,49 @@ position: relative;
                             margin-bottom: 5px;
                         }
                 }
-                .balance-sheet-list{
+                .balance-dropdown{
+                      position: absolute;
+                        top: 4rem;
+                        background-color: #ffffff;
+                        left: 0;
+                        box-shadow:0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+                      border-radius: 0px 0px 12px 12px;
+                      padding: 1.6rem 2rem;
+                      width: 100%;
+                      z-index: 1;
+
+                      .balance-list-content{
+                         max-height: 25rem;
+                        // overflow-y: scroll;
+                        width: 100%;
+                        
+
+                         &::-webkit-scrollbar {
+                            width: 0.4rem;
+                            height: 0.4rem;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            border-radius: 0.8rem;
+                            background-color: $scrollBar-thumb;
+                        }
+
+                        &::-webkit-scrollbar-track {
+                            background-color: rgba(229, 229, 230, 0.5);
+                            // background-color: $grey-E5E;
+                            border-radius: 0.8rem;
+                        }
+                      }
+                      
+
+                     .balance-sheet-list{
                      
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
-                        padding: 1.5rem 0rem;
+                        padding: 1.3rem 0rem;
                         border-top: 1px solid rgba(229, 229, 230, 0.5);
+                        margin-right: 1.6rem;
                     
                         .balance-amt{
                             background-color: rgba(229, 229, 230, 0.5);
@@ -961,6 +1000,8 @@ position: relative;
                           padding: 6px;
                     }
                 }
+                }
+               
     }
     
 }

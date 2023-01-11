@@ -1039,6 +1039,7 @@ class Portfolio extends BaseReactComponent {
                   }
                   // loader={this.state.loader}
                   isLoading={this.state.isLoading}
+                  isUpdate={this.state.isUpdate}
                   walletTotal={this.props.portfolioState.walletTotal}
                   handleAddModal={this.handleAddModal}
                   handleManage={() => {
