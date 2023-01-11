@@ -15,6 +15,7 @@ import {
   OnboardingPage,
   PrivacyMessage, TimeSpentOnboarding
 } from "../../utils/AnalyticsFunctions.js";
+import moment from 'moment';
 // export { default as OnboardingReducer } from "./OnboardingReducer";
 class OnBoarding extends Component {
     constructor(props) {
@@ -25,7 +26,8 @@ class OnBoarding extends Component {
             isVerificationRequired: false,
             isVerified: false,
           currentActiveModal: "signIn",
-            startTime: "",
+          startTime: "",
+          
             // showSignText  :false
         }
     }
@@ -33,8 +35,43 @@ class OnBoarding extends Component {
   componentDidMount() {
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", (this.state.startTime / 1000));
-    OnboardingPage({});
+    // localStorage.setItem("refresh", false);
+    let date = moment();
+    let currentDate = date.format("D/MM/YYYY");
+    // "17/06/2022"
+    let isRefresh = JSON.parse(localStorage.getItem("refresh"));
+    // console.log(
+    //   isRefresh.currentDay !== currentDate,
+    //   isRefresh.currentDay,
+    //   currentDate,
+    //   isRefresh
+    // );
+    if (isRefresh && isRefresh?.currentDay !== currentDate) {
+      localStorage.setItem(
+        "refresh",
+        JSON.stringify({
+          refresh: true,
+          currentDay: currentDate,
+        })
+      );
+
+      window.location.reload(true);
+    } else {
+      if (!isRefresh) {
+        localStorage.setItem(
+          "refresh",
+          JSON.stringify({
+            refresh: true,
+            currentDay: currentDate,
+          })
+        );
+
+        window.location.reload(true);
+      }
     }
+
+    OnboardingPage({});
+  }
 
   componentWillUnmount() {
     let endTime = new Date() * 1;
