@@ -10,7 +10,7 @@
     padding-right:11.4rem;
     .badge-list {
         display: flex;
-        overflow-x: scroll;
+        overflow-x: auto;
         padding-bottom: 1rem;
         // width:84rem;
         // background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
@@ -67,7 +67,27 @@
            border: 0.1rem solid $black-191;
          }
     }
+    &:hover{
+      .badge-list::-webkit-scrollbar{
+       height: 0.4rem;
+      }
+      .badge-list::-webkit-scrollbar-thumb{
+  // border-radius: 2rem;
+  border-radius: 0.8rem;
+  background-color: $scrollBar-thumb;
+  // background: rgb(90, 90, 90);
 }
+  .badge-list::-webkit-scrollbar-track {
+  background-color: rgba(229, 229, 230, 0.5);
+  // background-color: transparent;
+  // background-color: $grey-E5E;
+
+  border-radius: 0.8rem;
+}
+    }
+  
+}
+
 .coinchips::-webkit-scrollbar,.badge-list::-webkit-scrollbar{
   height: 0.4rem;
 }
@@ -75,13 +95,13 @@
   width: 0.4rem;
 }
 
-.coinchips::-webkit-scrollbar-thumb,.dropdown-menu::-webkit-scrollbar-thumb,.badge-list::-webkit-scrollbar-thumb{
+.coinchips::-webkit-scrollbar-thumb,.dropdown-menu::-webkit-scrollbar-thumb{
   // border-radius: 2rem;
   border-radius: 0.8rem;
   background-color: $scrollBar-thumb;
   // background: rgb(90, 90, 90);
 }
-.coinchips::-webkit-scrollbar-track,.badge-list::-webkit-scrollbar-track {
+.coinchips::-webkit-scrollbar-track::-webkit-scrollbar-track {
   background-color: rgba(229, 229, 230, 0.5);
   // background-color: transparent;
   // background-color: $grey-E5E;
