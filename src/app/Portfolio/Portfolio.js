@@ -1109,6 +1109,7 @@ class Portfolio extends BaseReactComponent {
                         isScrollVisible={false}
                         handleGroupBy={(value) => this.handleGroupBy(value)}
                         graphLoading={this.state.graphLoading}
+                        // graphLoading={true}
                         isUpdate={this.state.isUpdate}
                         handleClick={() => {
                           this.props.history.push("/intelligence/asset-value");
@@ -1120,7 +1121,7 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
-                      {this.state.graphValue && !this.state.netFlowLoading ? (
+                      {this.state.graphValue && (
                         <BarGraphSection
                           headerTitle="Net Flows"
                           headerSubTitle="Understand your entire portfolio's performance"
@@ -1144,14 +1145,10 @@ class Portfolio extends BaseReactComponent {
                           // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
                           // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
                           // comingSoon={true}
+                          isLoading={this.state.netFlowLoading}
+                          // isLoading={true}
                           className={"portfolio-profit-and-loss"}
                         />
-                      ) : (
-                        <div className="loading-wrapper">
-                          <Loading />
-                          <br />
-                          <br />
-                        </div>
                       )}
                     </div>
                   </Col>
@@ -1180,13 +1177,13 @@ class Portfolio extends BaseReactComponent {
                         columnList={columnList}
                         headerHeight={60}
                         isLoading={this.state.tableLoading}
+                        // isLoading={true}
                       />
                     </div>
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
-                      {this.state.counterPartyValue &&
-                      !this.state.counterGraphLoading ? (
+                      {this.state.counterPartyValue && (
                         <BarGraphSection
                           headerTitle="Counterparty Volume Over Time"
                           headerSubTitle="Understand how much your counterparty charges you"
@@ -1205,15 +1202,11 @@ class Portfolio extends BaseReactComponent {
                           isScroll={true}
                           isScrollVisible={false}
                           comingSoon={false}
+                          isLoading={this.state.counterGraphLoading}
+                          // isLoading={true}
                           className={"portfolio-profit-and-loss"}
                           isCounterPartyMini={true}
                         />
-                      ) : (
-                        <div className="loading-wrapper">
-                          <Loading />
-                          <br />
-                          <br />
-                        </div>
                       )}
                     </div>
                   </Col>

@@ -635,12 +635,12 @@ class LineChartSlider extends BaseReactComponent {
 
               if (diff <= 11 && parent.state.steps !== 1) {
                 parent.setState({
-                  steps:1,
+                  steps: 1,
                 });
               } else if (diff > 11 && diff <= 20 && parent.state.steps !== 2) {
                 // console.log("middle");
                 parent.setState({
-                  steps:2,
+                  steps: 2,
                   plotLineHide: 2,
                 });
               } else {
@@ -713,7 +713,7 @@ class LineChartSlider extends BaseReactComponent {
         },
         showLastLabel: true,
         opposite: false,
-        offset: this.props.hideTimeFilter ? 40 : 70,
+        offset: this.props.hideTimeFilter ? 20 : 40,
         gridLineDashStyle: "longdash",
         labels: {
           formatter: function () {
@@ -723,13 +723,19 @@ class LineChartSlider extends BaseReactComponent {
           },
           x: 0,
           y: 4,
-          align: "left",
+          align: "right",
+          style: {
+            fontSize: 12,
+            fontFamily: "Inter-Medium",
+            fontWeight: 400,
+            color: "#B0B1B3",
+          },
         },
       },
       legend: {
         enabled: this.props.hideTimeFilter ? false : true,
-        x: this.props.hideTimeFilter ? 0 : -120,
-
+        x: -120,
+        // y:20,
         align: "right",
         verticalAlign: "top",
         itemStyle: {
@@ -943,91 +949,101 @@ backdrop-filter: blur(15px);">
         className="welcome-card-section lineChartSlider"
         style={this.props.hideTimeFilter ? minVersionSection : {}}
       >
-        {this.props.graphLoading ? (
-          <Loading />
-        ) : (
-          <>
-            <div
-              className="line-chart-section"
-              style={
-                !this.props.hideTimeFilter
-                  ? {
-                      padding: "0rem 4.8rem",
-                    }
-                  : minVersion
-              }
-              // onMouseLeave={() => {
-              //   this.resetEvent();
-              // }}
-            >
-              {!this.props.isPage && (
-                <GraphHeader
-                  title="Asset Value"
-                  subtitle="Updated 3mins ago"
-                  isArrow={true}
-                  isAnalytics="Asset Value"
-                  handleClick={this.props.handleClick}
-                />
-              )}
-
-              <div
-                className="chart-y-selection"
-                style={
-                  this.props.hideTimeFilter
-                    ? { width: "100%", marginTop:"3.5rem"}
-                    : { width: "100%" }
-                }
-              >
-                <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
-                  {CurrencyType()}
-                </span>
-                {!this.props.hideTimeFilter && (
-                  <>
-                    <BarGraphFooter
-                      handleFooterClick={this.handleSelect}
-                      active={this.state.title}
-                      footerLabels={["Year", "Month", "Day"]}
-                      lineChart={true}
-                    />
-                    <span
-                      style={{
-                        width: "120px",
-                        position: "absolute",
-                        right: "0px",
-                        zIndex: "1",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <CustomDropdown
-                        filtername="Tokens"
-                        options={AllLegends}
-                        action={null}
-                        selectedTokens={this.state.legends}
-                        handleClick={(arr) => this.DropdownData(arr)}
-                        isLineChart={true}
-                      />
-                    </span>
-                  </>
-                )}
-              </div>
-
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-                constructorType={"stockChart"}
-                // allowChartUpdate={true}
-                // updateArgs={[true]}
+        <>
+          <div
+            className="line-chart-section"
+            style={
+              !this.props.hideTimeFilter
+                ? {
+                    padding: "0rem 4.8rem",
+                  }
+                : minVersion
+            }
+            // onMouseLeave={() => {
+            //   this.resetEvent();
+            // }}
+          >
+            {!this.props.isPage && (
+              <GraphHeader
+                title="Asset Value"
+                subtitle="Updated 3mins ago"
+                isArrow={true}
+                isAnalytics="Asset Value"
+                handleClick={this.props.handleClick}
               />
-              {!this.props.hideChainFilter && (
-                <CoinBadges
-                  activeBadge={this.state.activeBadge}
-                  chainList={this.props.OnboardingState.coinsList}
-                  handleFunction={this.handleFunction}
-                  isScrollVisible={this.props.isScrollVisible}
-                />
-              )}
+            )}
 
-              {/* <div className="chart-x-selection">
+            {this.props.graphLoading ? (
+              <div
+                style={{
+                  height: "30rem",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Loading />
+              </div>
+            ) : (
+              <>
+                <div
+                  className="chart-y-selection"
+                  style={
+                    this.props.hideTimeFilter
+                      ? { width: "100%", marginTop: "3.5rem" }
+                      : { width: "100%" }
+                  }
+                >
+                  <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
+                    {CurrencyType()}
+                  </span>
+                  {!this.props.hideTimeFilter && (
+                    <>
+                      <BarGraphFooter
+                        handleFooterClick={this.handleSelect}
+                        active={this.state.title}
+                        footerLabels={["Year", "Month", "Day"]}
+                        lineChart={true}
+                      />
+                      <span
+                        style={{
+                          width: "120px",
+                          position: "absolute",
+                          right: "0px",
+                          zIndex: "1",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <CustomDropdown
+                          filtername="Tokens"
+                          options={AllLegends}
+                          action={null}
+                          selectedTokens={this.state.legends}
+                          handleClick={(arr) => this.DropdownData(arr)}
+                          isLineChart={true}
+                        />
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                <HighchartsReact
+                  highcharts={Highcharts}
+                  options={options}
+                  constructorType={"stockChart"}
+                  // allowChartUpdate={true}
+                  // updateArgs={[true]}
+                />
+                {!this.props.hideChainFilter && (
+                  <CoinBadges
+                    activeBadge={this.state.activeBadge}
+                    chainList={this.props.OnboardingState.coinsList}
+                    handleFunction={this.handleFunction}
+                    isScrollVisible={this.props.isScrollVisible}
+                  />
+                )}
+
+                {/* <div className="chart-x-selection">
                 <DropDown
                   class="line-chart-dropdown"
                   list={["Year", "Month", "Day"]}
@@ -1037,105 +1053,112 @@ backdrop-filter: blur(15px);">
                   activetab={this.state.title}
                 />
               </div> */}
-            </div>
-            {this.state.selectedEvents.length > 0 && (
-              <>
-                <div
-                  className="ChartDivider"
-                  style={this.props.hideTimeFilter ? { marginTop: "1rem" } : {}}
-                ></div>
-                <div className="SliderChartBottom" style={this.props.hideTimeFilter ? {padding: "0rem 3rem", margin: "2.5rem 0 1.5rem"}: {}}>
-                  <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                    <Image src={CalenderIcon} />
-                    Largest Transactions
-                    {this.state.selectedValue &&
-                      ": " +
-                        (this.state.title == "Year"
-                          ? this.state.selectedValue
-                          : this.state.title == "Month"
-                          ? moment(this.state.selectedValue, "MMMM YY").format(
-                              "MMMM, YYYY"
-                            )
-                          : moment(
-                              this.state.selectedValue,
-                              "DD/MM/YYYY"
-                            ).format("MMM DD, YYYY"))}
-                  </h4>
-
-                  <div className="InternalEventWrapper">
-                    {this.state.selectedEvents.length > 0 &&
-                      this.state.selectedEvents.map((event, i) => {
-                        // console.log("first event", event);
-
-                        let count =
-                          Math.trunc(event.assetValue).toString().length > 6
-                            ? 0
-                            : 6 -
-                              Math.trunc(event.assetValue).toString().length;
-                        return (
-                          <>
-                            <div
-                              className="GreyChip"
-                              key={i}
-                              style={{
-                                width: `${
-                                  this.state.selectedEvents.length === 1 ||
-                                  this.props.hideTimeFilter
-                                    ? "100%"
-                                    : ""
-                                }`,
-                              }}
-                            >
-                              <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                                <Image src={DoubleArrow} />
-                                {event.text === "from" ? "Received" : "Sent"}
-                              </h5>
-
-                              <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                                <span>
-                                  {event.assetValue.toFixed(count)}{" "}
-                                  {event.assetCode}
-                                  {` or `}
-                                  <span className="inter-display-semi-bold">
-                                    {CurrencyType(false)}
-                                    {numToCurrency(event.usd)}
-                                  </span>
-                                  {event.text === "from"
-                                    ? " received from "
-                                    : " sent to "}
-                                </span>
-                                <CustomOverlay
-                                  position="top"
-                                  // className={"coin-hover-tooltip"}
-                                  isIcon={false}
-                                  isInfo={true}
-                                  isText={true}
-                                  text={event.tooltip}
-                                >
-                                  <span style={{ cursor: "pointer" }}>
-                                    {this.state.selectedEvents.length === 1 && !this.props.hideTimeFilter
-                                      ? event.fulladdress
-                                      : event.address}
-                                    <Image
-                                      src={CopyClipboardIcon}
-                                      onClick={() =>
-                                        this.copyContent(event.fulladdress)
-                                      }
-                                      className="m-l-10 m-r-12 cp copy-icon"
-                                    />
-                                  </span>
-                                </CustomOverlay>
-                              </p>
-                            </div>
-                          </>
-                        );
-                      })}
-                  </div>
-                </div>
               </>
             )}
-          </>
-        )}
+          </div>
+          {this.state.selectedEvents.length > 0 && (
+            <>
+              <div
+                className="ChartDivider"
+                style={this.props.hideTimeFilter ? { marginTop: "1rem" } : {}}
+              ></div>
+              <div
+                className="SliderChartBottom"
+                style={
+                  this.props.hideTimeFilter
+                    ? { padding: "0rem 3rem", margin: "2.5rem 0 1.5rem" }
+                    : {}
+                }
+              >
+                <h4 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  <Image src={CalenderIcon} />
+                  Largest Transactions
+                  {this.state.selectedValue &&
+                    ": " +
+                      (this.state.title == "Year"
+                        ? this.state.selectedValue
+                        : this.state.title == "Month"
+                        ? moment(this.state.selectedValue, "MMMM YY").format(
+                            "MMMM, YYYY"
+                          )
+                        : moment(this.state.selectedValue, "DD/MM/YYYY").format(
+                            "MMM DD, YYYY"
+                          ))}
+                </h4>
+
+                <div className="InternalEventWrapper">
+                  {this.state.selectedEvents.length > 0 &&
+                    this.state.selectedEvents.map((event, i) => {
+                      // console.log("first event", event);
+
+                      let count =
+                        Math.trunc(event.assetValue).toString().length > 6
+                          ? 0
+                          : 6 - Math.trunc(event.assetValue).toString().length;
+                      return (
+                        <>
+                          <div
+                            className="GreyChip"
+                            key={i}
+                            style={{
+                              width: `${
+                                this.state.selectedEvents.length === 1 ||
+                                this.props.hideTimeFilter
+                                  ? "100%"
+                                  : ""
+                              }`,
+                            }}
+                          >
+                            <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                              <Image src={DoubleArrow} />
+                              {event.text === "from" ? "Received" : "Sent"}
+                            </h5>
+
+                            <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                              <span>
+                                {event.assetValue.toFixed(count)}{" "}
+                                {event.assetCode}
+                                {` or `}
+                                <span className="inter-display-semi-bold">
+                                  {CurrencyType(false)}
+                                  {numToCurrency(event.usd)}
+                                </span>
+                                {event.text === "from"
+                                  ? " received from "
+                                  : " sent to "}
+                              </span>
+                              <CustomOverlay
+                                position="top"
+                                // className={"coin-hover-tooltip"}
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={event.tooltip}
+                              >
+                                <span style={{ cursor: "pointer" }}>
+                                  {this.state.selectedEvents.length === 1 &&
+                                  !this.props.hideTimeFilter
+                                    ? event.fulladdress
+                                    : event.address}
+                                  <Image
+                                    src={CopyClipboardIcon}
+                                    onClick={() =>
+                                      this.copyContent(event.fulladdress)
+                                    }
+                                    className="m-l-10 m-r-12 cp copy-icon"
+                                  />
+                                </span>
+                              </CustomOverlay>
+                            </p>
+                          </div>
+                        </>
+                      );
+                    })}
+                </div>
+              </div>
+            </>
+          )}
+        </>
       </div>
     );
   }
