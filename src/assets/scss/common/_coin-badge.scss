@@ -30,6 +30,24 @@
         .badge-name:hover{
           border: 0.1rem solid $black-191;
         }
+       &:hover{
+          &::-webkit-scrollbar{
+       height: 0.4rem;
+      }
+      &::-webkit-scrollbar-thumb{
+  // border-radius: 2rem;
+  border-radius: 0.8rem;
+  background-color: $scrollBar-thumb;
+  // background: rgb(90, 90, 90);
+}
+  &::-webkit-scrollbar-track {
+  background-color: rgba(229, 229, 230, 0.5);
+  // background-color: transparent;
+  // background-color: $grey-E5E;
+
+  border-radius: 0.8rem;
+}
+       }
     }
 
     .dropdown {
@@ -67,24 +85,9 @@
            border: 0.1rem solid $black-191;
          }
     }
-    &:hover{
-      .badge-list::-webkit-scrollbar{
-       height: 0.4rem;
-      }
-      .badge-list::-webkit-scrollbar-thumb{
-  // border-radius: 2rem;
-  border-radius: 0.8rem;
-  background-color: $scrollBar-thumb;
-  // background: rgb(90, 90, 90);
-}
-  .badge-list::-webkit-scrollbar-track {
-  background-color: rgba(229, 229, 230, 0.5);
-  // background-color: transparent;
-  // background-color: $grey-E5E;
-
-  border-radius: 0.8rem;
-}
-    }
+    // &:hover{
+     
+    // }
   
 }
 
@@ -101,7 +104,7 @@
   background-color: $scrollBar-thumb;
   // background: rgb(90, 90, 90);
 }
-.coinchips::-webkit-scrollbar-track::-webkit-scrollbar-track {
+.coinchips::-webkit-scrollbar-track {
   background-color: rgba(229, 229, 230, 0.5);
   // background-color: transparent;
   // background-color: $grey-E5E;
