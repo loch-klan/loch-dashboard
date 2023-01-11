@@ -288,7 +288,7 @@ class Wallet extends Component {
           }
 
           <div className="cards">
-            {isLoading === true ? (
+            {isLoading === true || true? (
               <div className="loading-container">
                 <div className="animation-wrapper">
                   <Loading />
