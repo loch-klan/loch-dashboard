@@ -202,7 +202,7 @@ export const getYieldBalanceApi = (ctx,data) => {
     .then((res) => {
       if (!res.data.error) {
         let currency = JSON.parse(localStorage.getItem("currency"));
-          
+        let allAssetType = [20, 40, 30, 50];
         let yieldData = [];
         // console.log("yield balance", res.data.data);
         //   console.log("yield data", yieldData);
@@ -212,9 +212,9 @@ export const getYieldBalanceApi = (ctx,data) => {
           res.data.data.user_wallet.assets.map((item) => {
             let name = AssetType.getText(item.asset.asset_type);
             let type =
-              item.asset.asset_type === 20 ||
+              (item.asset.asset_type === 20 ||
               item.asset.asset_type === 40 ||
-              item.asset.asset_type === 50 ? "Yield" : "Debt";
+              item.asset.asset_type === 50) ? "Yield" : "Debt";
             let matchedCodeData = res.data.data.asset_prices[item.asset.id];
              let value =
                matchedCodeData && matchedCodeData
@@ -225,18 +225,16 @@ export const getYieldBalanceApi = (ctx,data) => {
                (value && value.USD && value.USD.price
                  ? value.USD.price
                  : DEFAULT_PRICE) * currency?.rate;
-            if (yieldData[item.asset.id] === undefined) {
-              yieldData[item.asset.id] = {
-                id: item.asset.id,
+            if (yieldData[item.asset.asset_type] === undefined) {
+              yieldData[item.asset.asset_type] = {
+                id: item.asset.asset_type,
                 name: name ? name : "",
                 totalPrice: currentPrice,
-                type:type,
-              }
-
+                type: type,
+              };
             } else {
-
-              yieldData[item.asset.id].totalPrice = yieldData[item.asset.id]?.totalPrice + currentPrice;
-             
+              yieldData[item.asset.asset_type].totalPrice =
+                yieldData[item.asset.asset_type]?.totalPrice + currentPrice;
             }
             let YieldValues = [];
             let DebtValues = [];
@@ -256,7 +254,35 @@ export const getYieldBalanceApi = (ctx,data) => {
              let debtTotal = 0;
              DebtValues &&
                DebtValues.map((e) => (debtTotal += e.totalPrice));
+            allAssetType.map((e) => {
+             
+              let isfound = false;
+              YieldValues && YieldValues.map((item) => {
+     
+                if (item.id === e) {
+                  isfound = true;
+                }
+              });
 
+              if (!isfound && e !== 30) {
+            
+                YieldValues.push({
+                  id: e,
+                  name: AssetType.getText(e),
+                  totalPrice: 0,
+                  type: "Yield",
+                });
+              }
+            });
+            if (DebtValues.length === 0) {
+              DebtValues.push({
+                id: 30,
+                name: AssetType.getText(30),
+                totalPrice: 0,
+                type: "Debt",
+              });;
+            }
+              // console.log("y value", YieldValues, "D value", DebtValues);
              ctx.setState({
                yieldData: { ...yieldData },
                YieldValues,
