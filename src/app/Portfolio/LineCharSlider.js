@@ -534,7 +534,7 @@ class LineChartSlider extends BaseReactComponent {
       // console.log("default");
       updatedPlotLine = plotLines;
     }
-    //  console.log(updatedPlotLine);
+    //  console.log(seriesData);
     let SelectedSeriesData = [];
     seriesData =
       seriesData &&
