@@ -206,9 +206,9 @@ class PieChart2 extends BaseReactComponent {
       //  console.log("wallet_address", e.address);
       this.state.allProtocols && this.state.allProtocols.map((protocol) => {
         let data = new URLSearchParams();
-        // console.log("protocol_code", protocol.code,
-        //   "wallet_address",
-        //   e.address);
+        console.log("protocol_code", protocol.code,
+          "wallet_address",
+          e.address);
         data.append("protocol_code", protocol.code);
         data.append("wallet_address", e.address);
         getYieldBalanceApi(this, data);
@@ -385,6 +385,16 @@ class PieChart2 extends BaseReactComponent {
     }
 
     if (this.props.isUpdate !== prevProps.isUpdate) {
+      this.setState({
+        allProtocols: null,
+        yieldData: [],
+        DebtValues: [],
+        YieldValues: [],
+        yeldTotal: 0,
+        debtTotal: 0,
+        isYeildToggle: false,
+        isDebtToggle: false,
+      });
       getAllProtocol(this);
       //     let yeldTotal = 0;
       //     this.state.YieldValues &&
@@ -393,10 +403,7 @@ class PieChart2 extends BaseReactComponent {
       //     let debtTotal = 0;
       //     this.state.DebtValues &&
       //       this.state.DebtValues.map((e) => (debtTotal += e.totalPrice));
-      // this.setState({
-      //   yeldTotal,
-      //   debtTotal
-      // })
+      
     }
     
     // if(!this.props.userWalletData && this.props.walletTotal === 0 && !this.props.isLoading){
@@ -1101,7 +1108,7 @@ class PieChart2 extends BaseReactComponent {
                     Balance sheet
                   </h2>
                   <div style={{}} className="balance-sheet-card">
-                    <div className="balance-card-header">
+                    <div className="balance-card-header cp">
                       <div
                         onClick={this.toggleYield}
                         style={
