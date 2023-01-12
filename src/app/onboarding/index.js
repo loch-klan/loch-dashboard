@@ -33,6 +33,16 @@ class OnBoarding extends Component {
   componentDidMount() {
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", (this.state.startTime / 1000));
+      // let date = moment();
+      // let currentDate = date.format("D/MM/YYYY");
+      // // "17/06/2022"
+      let isRefresh = JSON.parse(localStorage.getItem("refresh"));
+      if (!isRefresh) {
+        localStorage.setItem(
+          "refresh",true);
+
+        window.location.reload(true);
+      }
     OnboardingPage({});
     }
 
@@ -41,7 +51,8 @@ class OnBoarding extends Component {
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
     // console.log("page Leave", endTime/1000);
     // console.log("Time Spent", TimeSpent);
-    TimeSpentOnboarding({time_spent: TimeSpent});
+    TimeSpentOnboarding({ time_spent: TimeSpent });
+    localStorage.setItem("refresh", false);
   }
     onClose = () => {
         this.setState({ showModal: false })

@@ -32,7 +32,7 @@ class Login extends BaseReactComponent {
     // window.hj("identify", );
     let baseToken = localStorage.getItem("baseToken");
     console.log("access code", baseToken);
-    window.hj("identify", {
+    window.hj("identify",null ,{
       "access code": baseToken,
       // Add your own custom attributes here. Some EXAMPLES:
       // 'Signed up': '2019—06-20Z', // Signup date in ISO-8601 format.

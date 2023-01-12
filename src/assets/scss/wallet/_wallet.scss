@@ -205,15 +205,20 @@
                 padding: 0;
                 .animation-wrapper{
                     width: 100%;
-                    background-image: url("../../images/walletCardLoadingBackground.png");
-                    background-position: center;
+                    // background-image: url("../../images/walletCardLoadingBackground.png");
+                   background-position: top center;
                     background-repeat: no-repeat;
-                    background-size: contain;
+                    background-size: 100%;
+
                     .loading-animation{
                         backdrop-filter: blur(10px);
                         border-radius: 1.2rem;
                         width: 100%;
                         padding-bottom: 1rem;
+
+                        // img{
+                        //     width: 10rem;
+                        // }
                     }
                 }
             }

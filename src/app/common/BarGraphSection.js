@@ -179,7 +179,15 @@ class BarGraphSection extends Component {
       footerDropdownLabels,
       handleSelect
     } = this.state;
-    const { marginBottom, comingSoon, coinsList, activeFooter, className = "", handleClick } = this.props;
+    const {
+      marginBottom,
+      comingSoon,
+      coinsList,
+      activeFooter,
+      className = "",
+      handleClick,
+      isLoading,
+    } = this.props;
     //  console.log("bar gr state digit", digit);
     // const digit =
     //   data && ("" + Math.round(Math.max(...data.datasets[0].data))).length;
@@ -196,7 +204,7 @@ class BarGraphSection extends Component {
     return (
       <div
         className={`bar-graph-section ${marginBottom ? marginBottom : ""}`}
-        style={this.props.isCounterPartyMini ? {paddingBottom: "0rem"}: {}}
+        style={this.props.isCounterPartyMini ? { paddingBottom: "0rem" } : {}}
       >
         {headerTitle || headerSubTitle ? (
           <GraphHeader
@@ -209,7 +217,7 @@ class BarGraphSection extends Component {
           ""
         )}
 
-        {data && options ? (
+        {data && options && !isLoading ? (
           <span className={`${comingSoon ? "blur-effect" : ""}`}>
             {showFooter ? (
               <BarGraphFooter
@@ -309,7 +317,9 @@ class BarGraphSection extends Component {
             )}
           </span>
         ) : (
-          <Loading />
+          <div style={{height: "30rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <Loading />
+          </div>
         )}
       </div>
     );

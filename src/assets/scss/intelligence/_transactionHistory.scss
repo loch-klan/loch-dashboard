@@ -194,7 +194,7 @@
     .animation-wrapper{
       border-radius: 1.2rem;
       height: 42.0rem;
-      background-image: url("../../images/transactionTableImage.png");
+    //   background-image: url("../../images/transactionTableImage.png");
       background-position: center;
       background-repeat: no-repeat;
       background-size: 100% 100%;
@@ -204,6 +204,7 @@
       backdrop-filter: blur(1rem);
       border-radius: 1.2rem;
       height: 100%;
+      padding-bottom: 8rem;
     }
 }
 .transaction-history-table{
