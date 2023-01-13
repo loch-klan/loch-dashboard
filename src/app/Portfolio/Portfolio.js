@@ -1122,35 +1122,37 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
-                      {this.state.graphValue && (
-                        <BarGraphSection
-                          headerTitle="Net Flows"
-                          headerSubTitle="Understand your entire portfolio's performance"
-                          isArrow={true}
-                          handleClick={() => {
-                            this.props.history.push("/intelligence");
-                            ProfitLossEV({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          }}
-                          isScrollVisible={false}
-                          data={this.state.graphValue[0]}
-                          options={this.state.graphValue[1]}
-                          coinsList={this.props.OnboardingState.coinsList}
-                          // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
-                          marginBottom="m-b-32"
-                          showFooter={false}
-                          showBadges={false}
-                          showPercentage={this.state.graphValue[2]}
-                          // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
-                          // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
-                          // comingSoon={true}
-                          isLoading={this.state.netFlowLoading}
-                          // isLoading={true}
-                          className={"portfolio-profit-and-loss"}
-                        />
-                      )}
+                      <BarGraphSection
+                        headerTitle="Net Flows"
+                        headerSubTitle="Understand your entire portfolio's performance"
+                        isArrow={true}
+                        handleClick={() => {
+                          this.props.history.push("/intelligence");
+                          ProfitLossEV({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        }}
+                        isScrollVisible={false}
+                        data={this.state.graphValue && this.state.graphValue[0]}
+                        options={
+                          this.state.graphValue && this.state.graphValue[1]
+                        }
+                        coinsList={this.props.OnboardingState.coinsList}
+                        // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
+                        marginBottom="m-b-32"
+                        showFooter={false}
+                        showBadges={false}
+                        showPercentage={
+                          this.state.graphValue && this.state.graphValue[2]
+                        }
+                        // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
+                        // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
+                        // comingSoon={true}
+                        isLoading={this.state.netFlowLoading}
+                        // isLoading={true}
+                        className={"portfolio-profit-and-loss"}
+                      />
                     </div>
                   </Col>
                 </Row>
@@ -1184,7 +1186,7 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
-                      {this.state.counterPartyValue && (
+                     
                         <BarGraphSection
                           headerTitle="Counterparty Volume Over Time"
                           headerSubTitle="Understand how much your counterparty charges you"
@@ -1196,9 +1198,18 @@ class Portfolio extends BaseReactComponent {
                             });
                             this.props.history.push("/costs#cp");
                           }}
-                          data={this.state.counterPartyValue[0]}
-                          options={this.state.counterPartyValue[1]}
-                          options2={this.state.counterPartyValue[2]}
+                          data={
+                            this.state.counterPartyValue &&
+                            this.state.counterPartyValue[0]
+                          }
+                          options={
+                            this.state.counterPartyValue &&
+                            this.state.counterPartyValue[1]
+                          }
+                          options2={
+                            this.state.counterPartyValue && this.state
+                              .counterPartyValue[2]
+                          }
                           digit={this.state.counterGraphDigit}
                           isScroll={true}
                           isScrollVisible={false}
@@ -1208,7 +1219,7 @@ class Portfolio extends BaseReactComponent {
                           className={"portfolio-profit-and-loss"}
                           isCounterPartyMini={true}
                         />
-                      )}
+                      
                     </div>
                   </Col>
                 </Row>

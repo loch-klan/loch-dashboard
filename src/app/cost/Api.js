@@ -13,8 +13,9 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
       if(!res.data.error){
         ctx.setState({
           barGraphLoading: false,
-            GraphData: res.data.data.gas_fee_overtime,
-            graphValue: getGraphData(res.data.data.gas_fee_overtime, ctx)
+          GraphData: res.data.data.gas_fee_overtime,
+          graphValue: getGraphData(res.data.data.gas_fee_overtime, ctx),
+          gasFeesGraphLoading:false,
         });
       } else{
         toast.error(res.data.message || "Something Went Wrong")

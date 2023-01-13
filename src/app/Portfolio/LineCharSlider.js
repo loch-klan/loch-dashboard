@@ -285,8 +285,8 @@ class LineChartSlider extends BaseReactComponent {
         },
         showInLegend: true,
         data: graphData,
-        // lastValue: graphData[graphData.length - 1],
-        lastValue: Math.max(...graphData),
+        lastValue: graphData[graphData.length - 1],
+        // lastValue: Math.max(...graphData),
       });
     }
 

@@ -40,6 +40,7 @@ class Cost extends Component {
       GraphData: [],
       graphValue: null,
       counterGraphLoading: true,
+      gasFeesGraphLoading: true,
       counterPartyData: [],
       counterPartyValue: null,
       currentPage: "Cost",
@@ -352,40 +353,32 @@ class Cost extends Component {
             subTitle="Bring light to your hidden costs"
           />
           <div style={{ position: "relative", minHeight: "80rem" }}>
-            {this.state.graphValue ? (
-              <BarGraphSection
-                headerTitle="Blockchain Fees over Time"
-                headerSubTitle="Understand your gas costs"
-                data={this.state.graphValue[0]}
-                options={this.state.graphValue[1]}
-                options2={this.state.graphValue[2]}
-                digit={this.state.GraphDigit}
-                coinsList={this.props.OnboardingState.coinsList}
-                timeFunction={(e) => {
-                  this.getBlockchainFee(e);
-                }}
-                marginBottom="m-b-32"
-                showFooter={true}
-                showBadges={true}
-                isScrollVisible={false}
-                isScroll={true}
-                handleBadge={(activeBadgeList) =>
-                  this.handleBadge(activeBadgeList, 1)
-                }
+            <BarGraphSection
+              headerTitle="Blockchain Fees over Time"
+              headerSubTitle="Understand your gas costs"
+              data={this.state.graphValue && this.state.graphValue[0]}
+              options={this.state.graphValue && this.state.graphValue[1]}
+              options2={this.state.graphValue && this.state.graphValue[2]}
+              digit={this.state.GraphDigit}
+              coinsList={this.props.OnboardingState.coinsList}
+              timeFunction={(e) => {
+                this.getBlockchainFee(e);
+              }}
+              marginBottom="m-b-32"
+              showFooter={true}
+              showBadges={true}
+              isScrollVisible={false}
+              isScroll={true}
+              isLoading={this.state.gasFeesGraphLoading}
+              // isLoading={true}
+              handleBadge={(activeBadgeList) =>
+                this.handleBadge(activeBadgeList, 1)
+              }
 
-                // height={420}
-                // width={824}
-                // comingSoon={false}
-              />
-            ) : (
-              // <></>
-              <div className="loading-wrapper">
-                <Image src={graphImage} className="graph-image" />
-                <Loading />
-                <br />
-                <br />
-              </div>
-            )}
+              // height={420}
+              // width={824}
+              // comingSoon={false}
+            />
           </div>
           <div id="cp" style={{ position: "relative", minHeight: "80rem" }}>
             {/* <div className="coming-soon-div">
@@ -394,36 +387,36 @@ class Cost extends Component {
                 This feature is coming soon.
               </p>
             </div> */}
-            {this.state.counterPartyValue ? (
-              <BarGraphSection
-                headerTitle="Counterparty Volume Over Time"
-                headerSubTitle="Understand how much your counterparty charges you"
-                data={this.state.counterPartyValue[0]}
-                options={this.state.counterPartyValue[1]}
-                options2={this.state.counterPartyValue[2]}
-                digit={this.state.counterGraphDigit}
-                coinsList={this.props.OnboardingState.coinsList}
-                timeFunction={(e) => this.getCounterPartyFee(e)}
-                marginBottom="m-b-32"
-                showFooter={true}
-                showBadges={true}
-                isScrollVisible={false}
-                isScroll={true}
-                handleBadge={(activeBadgeList) =>
-                  this.handleBadge(activeBadgeList, 2)
-                }
-                // height={"400px"}
-                // width={"824px"}
-                // comingSoon={true}
-              />
-            ) : (
-              <div className="loading-wrapper">
-                <Image src={graphImage} className="graph-image" />
-                <Loading />
-                <br />
-                <br />
-              </div>
-            )}
+
+            <BarGraphSection
+              headerTitle="Counterparty Volume Over Time"
+              headerSubTitle="Understand how much your counterparty charges you"
+              data={
+                this.state.counterPartyValue && this.state.counterPartyValue[0]
+              }
+              options={
+                this.state.counterPartyValue && this.state.counterPartyValue[1]
+              }
+              options2={
+                this.state.counterPartyValue && this.state.counterPartyValue[2]
+              }
+              digit={this.state.counterGraphDigit}
+              coinsList={this.props.OnboardingState.coinsList}
+              timeFunction={(e) => this.getCounterPartyFee(e)}
+              marginBottom="m-b-32"
+              showFooter={true}
+              showBadges={true}
+              isScrollVisible={false}
+              isScroll={true}
+              isLoading={this.state.counterGraphLoading}
+              // isLoading={true}
+              handleBadge={(activeBadgeList) =>
+                this.handleBadge(activeBadgeList, 2)
+              }
+              // height={"400px"}
+              // width={"824px"}
+              // comingSoon={true}
+            />
           </div>
           <div className="m-b-40 cost-table-section">
             <div style={{ position: "relative" }}>

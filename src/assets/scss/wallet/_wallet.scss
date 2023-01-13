@@ -200,9 +200,12 @@
                 }
             }
             .loading-container{
-                // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
                 margin-bottom: 2rem;
                 padding: 0;
+                background-color: #fff;
+                padding: 2rem;
+                border-radius: 1.2rem;
                 .animation-wrapper{
                     width: 100%;
                     // background-image: url("../../images/walletCardLoadingBackground.png");
