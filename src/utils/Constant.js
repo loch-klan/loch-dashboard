@@ -184,7 +184,7 @@ export const MonthOptions = Object.keys(Months._presentable).map((month) => ({
 
 
 export const InsightType = {
-  ALL_INSIGHTS: 1,
+  ALL_INSIGHTS: 1, 
   COST_REDUCTION: 10,
   RISK_REDUCTION: 20,
   YIELD_INCREASE: 30,
@@ -203,3 +203,21 @@ export const FeedbackType = {
   POSITIVE: 10,
   NEGATIVE: 20,
 }
+// for balance sheet
+export const AssetType = {
+  REGULAR: 10,
+  STAKED: 20,
+  BORROWED: 30,
+  LENT: 40,
+  DEPOSITED: 50,
+  _presentable: {
+    10: "Regular",
+    20: "Staked",
+    30: "Borrowed",
+    40: "Lent",
+    50: "Deposited",
+  },
+  getText: function (value) {
+    return this._presentable[value];
+  },
+};

@@ -1,6 +1,7 @@
 import { postLoginInstance, preLoginInstance } from "../../utils";
 import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES } from "./ActionTypes";
 import { toast } from "react-toastify";
+import { AssetType, DEFAULT_PRICE } from "../../utils/Constant";
 
 export const getCoinRate = () => {
     return async function (dispatch, getState) {
@@ -175,3 +176,129 @@ export const getYesterdaysBalanceApi = (ctx) =>{
     console.log("Catch", err);
   });
 }
+
+export const getAllProtocol = (ctx) => {
+  postLoginInstance
+    .post("wallet/chain/get-all-protocols")
+    .then((res) => {
+      if (!res.data.error) {
+        console.log("all protocols", res.data.data.protocols);
+        ctx.setState({
+          allProtocols: res.data.data.protocols,
+        });
+        ctx.getYieldBalance();
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    })
+    .catch((err) => {
+      console.log("Catch", err);
+    });
+}
+
+export const getYieldBalanceApi = (ctx,data) => {
+  postLoginInstance
+    .post("wallet/user-wallet/get-yield-balance",data)
+    .then((res) => {
+      if (!res.data.error) {
+        let currency = JSON.parse(localStorage.getItem("currency"));
+        let allAssetType = [20, 40, 30, 50];
+        let yieldData = ctx.state.yieldData || [];
+        console.log("yield balance", res.data.data);
+          console.log("yield data", yieldData);
+        res.data.data &&
+          res.data.data.user_wallet &&
+          res.data.data.user_wallet.assets &&
+          res.data.data.user_wallet.assets.map((item) => {
+            let name = AssetType.getText(item.asset.asset_type);
+            let type =
+              (item.asset.asset_type === 20 ||
+              item.asset.asset_type === 40 ||
+              item.asset.asset_type === 50) ? "Yield" : "Debt";
+            let matchedCodeData = res.data.data.asset_prices[item.asset.id];
+             let value =
+               matchedCodeData && matchedCodeData
+                 ? matchedCodeData.quote
+                 : DEFAULT_PRICE;
+             let currentPrice =
+               item.count *
+               (value && value.USD && value.USD.price
+                 ? value.USD.price
+                 : DEFAULT_PRICE) * currency?.rate;
+            if (yieldData[item.asset.asset_type] === undefined) {
+              yieldData[item.asset.asset_type] = {
+                id: item.asset.asset_type,
+                name: name ? name : "",
+                totalPrice: currentPrice,
+                type: type,
+              };
+            } else {
+              yieldData[item.asset.asset_type].totalPrice =
+                yieldData[item.asset.asset_type]?.totalPrice + currentPrice;
+            }
+            let YieldValues = [];
+            let DebtValues = [];
+     
+          Object.keys(yieldData).map(
+            (key) => {
+              yieldData[key].type === "Yield"
+                ? YieldValues.push(yieldData[key])
+                : DebtValues.push(yieldData[key]);
+            }
+          );
+            console.log("yield", YieldValues, "Debt", DebtValues)
+             let yeldTotal = 0;
+             YieldValues &&
+               YieldValues.map((e) => (yeldTotal += e.totalPrice));
+
+             let debtTotal = 0;
+             DebtValues &&
+               DebtValues.map((e) => (debtTotal += e.totalPrice));
+            allAssetType.map((e) => {
+             
+              let isfound = false;
+              YieldValues && YieldValues.map((item) => {
+     
+                if (item.id === e) {
+                  isfound = true;
+                }
+              });
+
+              if (!isfound && e !== 30) {
+            
+                YieldValues.push({
+                  id: e,
+                  name: AssetType.getText(e),
+                  totalPrice: 0,
+                  type: "Yield",
+                });
+              }
+            });
+            if (DebtValues.length === 0) {
+              DebtValues.push({
+                id: 30,
+                name: AssetType.getText(30),
+                totalPrice: 0,
+                type: "Debt",
+              });;
+            }
+              // console.log("y value", YieldValues, "D value", DebtValues);
+             ctx.setState({
+               yieldData: { ...yieldData },
+               YieldValues,
+               DebtValues,
+               yeldTotal,
+               debtTotal,
+             });
+          });
+        // ctx.setState({
+        //   allProtocols: res.data.data.protocols,
+        // });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    })
+    .catch((err) => {
+      console.log("Catch", err);
+    });
+};

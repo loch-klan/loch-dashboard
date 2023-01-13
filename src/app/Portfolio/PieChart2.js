@@ -27,6 +27,7 @@ import arrowDown from "../../assets/images/arrow-down.svg";
 import Coin1 from "../../assets/images/Coin.svg";
 import Coin2 from "../../assets/images/Coin2.svg";
 import Coin3 from "../../assets/images/Coin3.svg";
+import { getAllProtocol, getYieldBalanceApi } from "./Api";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -47,11 +48,20 @@ class PieChart2 extends BaseReactComponent {
       currency: JSON.parse(localStorage.getItem("currency")),
       isChainToggle: false,
       chainList: null,
-      assetPrice:null,
+      assetPrice: null,
+      isYeildToggle: false,
+      isDebtToggle: false,
+      allProtocols: null,
+      yieldData: [],
+      DebtValues: [],
+      YieldValues: [],
+      yeldTotal:0,
+      debtTotal:0,
     };
   }
 
   componentDidMount() {
+
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
       let assetData = [];
       if (
@@ -185,7 +195,26 @@ class PieChart2 extends BaseReactComponent {
        this.setState({
          assetPrice,
        });
+    getAllProtocol(this);
      
+     
+  }
+
+  getYieldBalance = () => {
+    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    UserWallet && UserWallet.map((e) => {
+      //  console.log("wallet_address", e.address);
+      this.state.allProtocols && this.state.allProtocols.map((protocol) => {
+        let data = new URLSearchParams();
+        console.log("protocol_code", protocol.code,
+          "wallet_address",
+          e.address);
+        data.append("protocol_code", protocol.code);
+        data.append("wallet_address", e.address);
+        getYieldBalanceApi(this, data);
+        
+      })
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -195,6 +224,7 @@ class PieChart2 extends BaseReactComponent {
     }
     if (this.props.userWalletData !== prevProps.userWalletData) {
       // this.props.userWalletData && this.setState({ piechartisLoading: true })
+       
       let assetData = [];
       if (
         this.props.userWalletData &&
@@ -348,10 +378,34 @@ class PieChart2 extends BaseReactComponent {
         obj[element.id] = element;
         return obj;
       }, {});
+     
       this.setState({
         assetPrice,
       });
     }
+
+    if (this.props.isUpdate !== prevProps.isUpdate) {
+      this.setState({
+        allProtocols: null,
+        yieldData: [],
+        DebtValues: [],
+        YieldValues: [],
+        yeldTotal: 0,
+        debtTotal: 0,
+        isYeildToggle: false,
+        isDebtToggle: false,
+      });
+      getAllProtocol(this);
+      //     let yeldTotal = 0;
+      //     this.state.YieldValues &&
+      //       this.state.YieldValues.map((e) => (yeldTotal += e.totalPrice));
+
+      //     let debtTotal = 0;
+      //     this.state.DebtValues &&
+      //       this.state.DebtValues.map((e) => (debtTotal += e.totalPrice));
+      
+    }
+    
     // if(!this.props.userWalletData && this.props.walletTotal === 0 && !this.props.isLoading){
     //   this.setState({piechartisLoading : this.props.isLoading === false ? false : true})
     // }
@@ -366,6 +420,19 @@ class PieChart2 extends BaseReactComponent {
     });
   }
 
+  toggleYield = () => {
+    this.setState({
+      isYeildToggle: !this.state.isYeildToggle,
+      isDebtToggle: false,
+    });
+  }
+
+  toggleDebt = () => {
+    this.setState({
+      isDebtToggle: !this.state.isDebtToggle,
+      isYeildToggle: false,
+    });
+  }
    handleAddWalletClick = () =>{
         this.props.handleAddModal();
     }
@@ -693,6 +760,7 @@ class PieChart2 extends BaseReactComponent {
     const { pieSectionDataEnabled, currency } = this.state;
     // console.log("chainlist", chainList);
     // console.log("uniquelist", uniqueList);
+
     return (
       <div
         className={`portfolio-over-container ${
@@ -1036,12 +1104,17 @@ class PieChart2 extends BaseReactComponent {
                     </div>
                   </div>
                   {/* Balance sheet */}
-                  {/* <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     Balance sheet
                   </h2>
                   <div style={{}} className="balance-sheet-card">
-                    <div className="balance-card-header">
-                      <div>
+                    <div className="balance-card-header cp">
+                      <div
+                        onClick={this.toggleYield}
+                        style={
+                          this.state.isYeildToggle ? { opacity: "0.5" } : {}
+                        }
+                      >
                         <span
                           className="inter-display-semi-bold f-s-16 lh-19"
                           style={{ color: "#636467", marginRight: "0.8rem" }}
@@ -1052,12 +1125,26 @@ class PieChart2 extends BaseReactComponent {
                           className="inter-display-regular f-s-16 lh-19"
                           style={{ color: "#B0B1B3", marginRight: "0.8rem" }}
                         >
-                          $154m
+                          {CurrencyType(false)}
+                          {this.state.YieldValues &&
+                            numToCurrency(this.state.yeldTotal)}
                         </span>
 
-                        <Image src={arrowUp} />
+                        <Image
+                          src={arrowUp}
+                          style={
+                            this.state.isYeildToggle
+                              ? { transform: "rotate(180deg)" }
+                              : {}
+                          }
+                        />
                       </div>
-                      <div style={{ opacity: "0.5" }}>
+                      <div
+                        style={
+                          this.state.isDebtToggle ? { opacity: "0.5" } : {}
+                        }
+                        onClick={this.toggleDebt}
+                      >
                         <span
                           className="inter-display-semi-bold f-s-16 lh-19"
                           style={{ color: "#636467", marginRight: "0.8rem" }}
@@ -1068,67 +1155,89 @@ class PieChart2 extends BaseReactComponent {
                           className="inter-display-regular f-s-16 lh-19"
                           style={{ color: "#B0B1B3", marginRight: "0.8rem" }}
                         >
-                          $154m
+                          {CurrencyType(false)}
+                          {this.state.DebtValues &&
+                            numToCurrency(this.state.debtTotal)}
                         </span>
 
-                        <Image src={arrowDown} />
+                        <Image
+                          src={arrowUp}
+                          style={
+                            this.state.isDebtToggle
+                              ? { transform: "rotate(180deg)" }
+                              : {}
+                          }
+                        />
                       </div>
                     </div>
-                    <div className="balance-sheet-list">
-                      <span className="inter-display-medium f-s-16 lh-19">
-                        Staked
-                      </span>
-                      <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                        $89,733.00
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "1.5rem 0rem",
-                        borderTop: "1px solid rgba(229, 229, 230, 0.5)",
-                      }}
-                    >
-                      <span className="inter-display-medium f-s-16 lh-19">
-                        Lent
-                      </span>
-                      <span
-                        className="inter-display-medium f-s-15 lh-19 grey-233"
-                        style={{
-                          backgroundColor: "rgba(229, 229, 230, 0.5)",
-                          borderRadius: "4px",
-                          padding: "6px",
-                        }}
-                      >
-                        $13,999.00
-                      </span>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "1.5rem 0rem 0rem",
-                        borderTop: "1px solid rgba(229, 229, 230, 0.5)",
-                      }}
-                    >
-                      <span className="inter-display-medium f-s-16 lh-19">
-                        Liquidity Pool Deposit
-                      </span>
-                      <span
-                        className="inter-display-medium f-s-15 lh-19 grey-233"
-                        style={{
-                          backgroundColor: "rgba(229, 229, 230, 0.5)",
-                          borderRadius: "4px",
-                          padding: "6px",
-                        }}
-                      >
-                        $54,769.00
-                      </span>
-                    </div>
-                  </div> */}
+                    {(this.state.isYeildToggle || this.state.isDebtToggle) && (
+                      <div className="balance-dropdown">
+                        <div className="balance-list-content">
+                          {/* For yeild */}
+                          {this.state.isYeildToggle && (
+                            <div>
+                              {this.state.YieldValues &&
+                                this.state.YieldValues.map((item, i) => {
+                                  return (
+                                    <div
+                                      className="balance-sheet-list"
+                                      style={
+                                        i === this.state.YieldValues.length - 1
+                                          ? { paddingBottom: "0.3rem" }
+                                          : {}
+                                      }
+                                    >
+                                      <span className="inter-display-medium f-s-16 lh-19">
+                                        {item.name}
+                                      </span>
+                                      <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                        {CurrencyType(false)}
+                                        {amountFormat(
+                                          item.totalPrice.toFixed(2),
+                                          "en-US",
+                                          "USD"
+                                        )}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          )}
+
+                          {/* For debt */}
+                          {this.state.isDebtToggle && (
+                            <div>
+                              {this.state.DebtValues &&
+                                this.state.DebtValues.map((item, i) => {
+                                  return (
+                                    <div
+                                      className="balance-sheet-list"
+                                      style={
+                                        i === this.state.DebtValues.length - 1
+                                          ? { paddingBottom: "0.3rem" }
+                                          : {}
+                                      }
+                                    >
+                                      <span className="inter-display-medium f-s-16 lh-19">
+                                        {item.name}
+                                      </span>
+                                      <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                        {CurrencyType(false)}
+                                        {amountFormat(
+                                          item.totalPrice.toFixed(2),
+                                          "en-US",
+                                          "USD"
+                                        )}
+                                      </span>
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </Col>
             </Row>
