@@ -13,6 +13,7 @@ import VerifyEmail from "./app/common/VerifyEmail"
 import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounterparty"
 import InsightsPage from "./app/intelligence/InsightsPage"
 import AssetValueGraph from "./app/intelligence/AssetValueGraph";
+import Cohort from "./app/cohort/Cohort"
 const routes = [
   {
     path: "/",
@@ -79,6 +80,12 @@ const routes = [
     name: "Costs",
     type: PrivateRoute,
     component: Cost,
+  },
+  {
+    path: "/cohort",
+    name: "Cohort",
+    type: PrivateRoute,
+    component: Cohort,
   },
   {
     path: "/verify-email",

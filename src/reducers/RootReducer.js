@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 /* PLOP_INJECT_REDUCER_IMPORT */
+import { CohortReducer } from '../app/cohort';
 import { ProfileReducer } from '../app/profile';
 import { CommonReducer } from '../app/common';
 import { HomeReducer } from '../app/home';
@@ -10,6 +11,7 @@ import IntelligenceReducer from '../app/intelligence/IntelligenceReducer';
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
+	CohortState: CohortReducer,
   ProfileState: ProfileReducer,
   CommonState: CommonReducer,
   HomeState: HomeReducer,
