@@ -256,7 +256,7 @@ class LineChartSlider extends BaseReactComponent {
       // console.log("l", timestampList);
     }
 
-    // console.log("lastyear", endYear, "year list", years);
+    // console.log("assetmaster", assetMaster);
     for (const [key, value] of Object.entries(assetMaster)) {
       // seriesData.push({
       //   name: value.assetDetails.name,
@@ -285,7 +285,8 @@ class LineChartSlider extends BaseReactComponent {
         },
         showInLegend: true,
         data: graphData,
-        lastValue: graphData[graphData.length - 1],
+        // lastValue: graphData[graphData.length - 1],
+        lastValue: Math.max(...graphData),
       });
     }
 
@@ -534,14 +535,14 @@ class LineChartSlider extends BaseReactComponent {
       // console.log("default");
       updatedPlotLine = plotLines;
     }
-    //  console.log(seriesData);
+   
     let SelectedSeriesData = [];
     seriesData =
       seriesData &&
       seriesData.sort((a, b) => {
         return b.lastValue - a.lastValue;
       });
-
+  // console.log(seriesData);
     let AllLegends = [{ label: "All", value: "All" }];
     seriesData &&
       seriesData.map((e) => {
