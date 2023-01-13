@@ -224,7 +224,8 @@ class ExitOverlay extends BaseReactComponent {
         </Modal.Header>
         <Modal.Body>
           {this.props.modalType === "apiModal" ||
-          this.props.modalType === "exportModal" ? (
+          this.props.modalType === "exportModal" ||
+          this.props.modalType === "cohort" ? (
             <div
               className={
                 this.props.modalType === "exportModal"
@@ -247,7 +248,7 @@ class ExitOverlay extends BaseReactComponent {
                     This feature is coming soon
                   </p>
                 </div>
-              ) : (
+              ) : this.props.modalType === "exportModal" ? (
                 <div className="export-body">
                   <div className="export-timeline">
                     <Form onValidSubmit={this.submit}>
@@ -384,6 +385,109 @@ class ExitOverlay extends BaseReactComponent {
                   )}
                   {/* </div> */}
                 </div>
+              ) : (
+                <div className="exit-overlay-body">
+                  
+                  <div className="email-section">
+                    <Form onValidSubmit={this.handleSave}>
+                      <FormElement
+                        valueLink={this.linkState(this, "email")}
+                        // label="Email Info"
+                        required
+                        validations={[
+                          {
+                            validate: FormValidator.isRequired,
+                            message: "",
+                          },
+                          {
+                            validate: FormValidator.isEmail,
+                            message: "Please enter valid email id",
+                          },
+                        ]}
+                        control={{
+                          type: CustomTextControl,
+                          settings: {
+                            placeholder: "Email",
+                          },
+                        }}
+                      />
+                      <div className="save-btn-section">
+                        <Button
+                          className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                            this.state.email ? "active" : ""
+                          }`}
+                          type="submit"
+                        >
+                          Save
+                        </Button>
+                      </div>
+                    </Form>
+                  </div>
+                  <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
+                    or
+                  </p>
+                  <div className="m-b-24 links">
+                    <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
+                      {this.state.link}
+                    </div>
+                    {/* <div className='edit-options'>
+                                <Image src={EditBtnImage} className="m-r-8"/>
+                                <Dropdown
+                                    id="edit-option-dropdown"
+                                    title={this.state.dropdowntitle}
+                                    list={["View and edit" , "View only"]}
+                                    onSelect={this.handleSelect}
+                                    activetab = {this.state.activeli}
+                                />
+                            </div> */}
+                  </div>
+                  <div className="copy-link-section">
+                    <div className="link" onClick={this.copyLink}>
+                      <Image src={CopyLink} className="m-r-8" />
+                      <h3 className="inter-display-medium f-s-16 lh-19 black-191">
+                        Copy link
+                      </h3>
+                    </div>
+                    <div
+                      className="link"
+                      onClick={() => {
+                        this.props.history.push("/welcome");
+                      }}
+                      style={{ marginLeft: "4rem" }}
+                    >
+                      <h3 className="inter-display-medium f-s-16 lh-19 grey-969">
+                        No thanks, let me leave
+                      </h3>
+                    </div>
+                    {/* <div className="link" onClick={this.shareLink}>
+                  <Image src={ShareLink} className="m-r-8" />
+                  <h3 className="inter-display-medium f-s-16 lh-19 black-191">
+                    Share
+                  </h3>
+                </div> */}
+                  </div>
+
+                  <div className="m-b-36 footer">
+                    <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                      At Loch, we care intensely about your privacy and
+                      anonymity.
+                    </p>
+                    <CustomOverlay
+                      text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                      position="top"
+                      isIcon={true}
+                      IconImage={LockIcon}
+                      isInfo={true}
+                      className={"fix-width"}
+                    >
+                      <Image
+                        src={InfoIcon}
+                        className="info-icon"
+                        onMouseEnter={this.leavePrivacy}
+                      />
+                    </CustomOverlay>
+                  </div>
+                </div>
               )}
             </div>
           ) : (
@@ -457,7 +561,13 @@ class ExitOverlay extends BaseReactComponent {
                     Copy link
                   </h3>
                 </div>
-                <div className="link" onClick={() => {this.props.history.push("/welcome");}} style={{marginLeft:"4rem"}}>
+                <div
+                  className="link"
+                  onClick={() => {
+                    this.props.history.push("/welcome");
+                  }}
+                  style={{ marginLeft: "4rem" }}
+                >
                   <h3 className="inter-display-medium f-s-16 lh-19 grey-969">
                     No thanks, let me leave
                   </h3>

@@ -509,13 +509,14 @@ function Sidebar(props) {
           ) : (
             ""
           )}
-          {true ? (
+          {false ? (
             <ExitOverlay
               show={true}
               // link="http://loch.one/a2y1jh2jsja"
               onHide={handleLeave}
               history={history}
-              modalType={"exitOverlay"}
+              modalType={"cohort"}
+              headerTitle={"Create a Wallet cohort"}
               handleRedirection={() => {
                 setTimeout(function () {
                   props.history.push("/welcome");
