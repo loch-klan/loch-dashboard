@@ -306,7 +306,7 @@ class CustomDropdown extends Component {
                   <span
                     className={e.isSelected ? "active" : ""}
                     // title={e.label}
-                    key={e.value}
+                    key={i}
                     onClick={() => {
                       // this.onSelect(e);
                       if (

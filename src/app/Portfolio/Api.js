@@ -182,7 +182,7 @@ export const getAllProtocol = (ctx) => {
     .post("wallet/chain/get-all-protocols")
     .then((res) => {
       if (!res.data.error) {
-        console.log("all protocols", res.data.data.protocols);
+        // console.log("all protocols", res.data.data.protocols);
         ctx.setState({
           allProtocols: res.data.data.protocols,
         });
@@ -204,8 +204,8 @@ export const getYieldBalanceApi = (ctx,data) => {
         let currency = JSON.parse(localStorage.getItem("currency"));
         let allAssetType = [20, 40, 30, 50];
         let yieldData = ctx.state.yieldData || [];
-        console.log("yield balance", res.data.data);
-          console.log("yield data", yieldData);
+        // console.log("yield balance", res.data.data);
+        //   console.log("yield data", yieldData);
         res.data.data &&
           res.data.data.user_wallet &&
           res.data.data.user_wallet.assets &&
@@ -246,7 +246,7 @@ export const getYieldBalanceApi = (ctx,data) => {
                 : DebtValues.push(yieldData[key]);
             }
           );
-            console.log("yield", YieldValues, "Debt", DebtValues)
+            // console.log("yield", YieldValues, "Debt", DebtValues)
              let yeldTotal = 0;
              YieldValues &&
                YieldValues.map((e) => (yeldTotal += e.totalPrice));

@@ -257,6 +257,7 @@ class LineChartSlider extends BaseReactComponent {
     }
 
     // console.log("assetmaster", assetMaster);
+  
     for (const [key, value] of Object.entries(assetMaster)) {
       // seriesData.push({
       //   name: value.assetDetails.name,
@@ -275,7 +276,7 @@ class LineChartSlider extends BaseReactComponent {
 
       seriesData.push({
         // linkedTo: key,
-        name: value.assetDetails.name,
+        name: value.assetDetails.code,
         id: key,
         type: "area",
         color: value.assetDetails.color,
@@ -286,9 +287,11 @@ class LineChartSlider extends BaseReactComponent {
         showInLegend: true,
         data: graphData,
         lastValue: graphData[graphData.length - 1],
+        assetName: value.assetDetails.name,
         // lastValue: Math.max(...graphData),
       });
     }
+
 
     let yaxis_max = 0;
     let max = 0;
@@ -799,7 +802,7 @@ class LineChartSlider extends BaseReactComponent {
             //   "Item: ",
             //   item);
             tooltipData.push({
-              name: item.series.userOptions.name,
+              name: item.series.userOptions.assetName,
               x: item.x,
               y: item.y,
               color: item.series.userOptions.color,
