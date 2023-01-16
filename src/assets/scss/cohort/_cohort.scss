@@ -1,0 +1,230 @@
+.cohort-page-section {
+    display: flex;
+
+    .cohort-section {
+        margin-top: 5rem;
+        min-width: 90rem;   //solve overflow issue
+        overflow: hidden;   //solve overflow issue
+        // sortby section begin
+        .sortby-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .dropdown-section {
+                display: flex;
+                .naming{
+                  padding: 1.2rem 0;
+                }
+                .sort-by-title{
+                    display: flex;
+                    align-items: center;
+                    padding: 1.2rem 1.6rem;
+                    cursor: pointer;
+
+                    .rotateUp{
+                        transform:rotate(180deg);
+                        margin-left: 1rem;
+                    }
+                    .rotateDown{
+                        transform: rotate(0deg);
+                        margin-left: 1rem;
+                    }
+                }
+                .sort-by-title:hover{
+                    span{
+                        color:$primary;
+                    }
+                    img{
+                        filter: brightness(0.5);
+                    }
+                }
+                // .dropdown {
+                //     margin-right: 3.6rem;
+
+                //     .dropdown-toggle {
+                //         border: none;
+                //         background: none;
+                //         color: $grey-7C7;
+                //         padding: 0px;
+                //     }
+                // }
+            }
+        }
+
+        // sortby section ends
+
+        .net-worth-wrapper{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 2rem;
+          background-color: $secondary;
+          border-radius: 1.2rem;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+          margin-bottom: 2.4rem;
+          .left{
+            display: flex;
+            align-items: center;
+            h3{
+              padding-left: 1.2rem;
+            }
+          }
+        }
+
+
+        // walletcard section begin
+        .cards {
+            .walletcard {
+                padding: 2.4rem;
+                background-color: $secondary;
+                box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                border-radius: 1.6rem;
+                margin-bottom: 2rem;
+
+                .wallet-details {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .wallet-account-details {
+                        display: flex;
+                        align-items: center;
+                        // margin-right: 4.9rem;
+                        width:85%;
+                        .wallet-img {
+                            box-shadow: 0rem 0.4rem 0.8rem $grey-F2F , 0rem 0.1rem 0.3rem rgba(0, 0, 0, 0.05);
+                            border-radius: 0.8rem;
+                            img {
+                              border-radius: 0.8rem;
+                                width: 4.3rem;
+                            }
+                        }
+
+                        // .wallet-name-details {
+                            // display: flex;
+                            // align-items: center;
+                            h6 {
+                                color: $black-000;
+                            }
+                            .wallet-name {
+                                padding: 0.8rem 1.2rem;
+                                background: $secondary;
+                                border: 0.1rem solid rgba(229, 229, 230, 0.5);
+                                border-radius: 0.8rem;
+                                color: $grey-7C7;
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                                width: max-content;
+                                max-width: 20rem;
+                            }
+                        // }
+
+                        .account-details {
+                            display: flex;
+                            align-items: center;
+                            // margin-left: 1.6rem;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            span {
+                                color: $grey-B0B;
+                                // width: 92%;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                width: max-content;
+                                max-width: 20rem;
+                            }
+
+                            img:hover{
+                                filter: brightness(0.5);
+                            }
+                        }
+                        
+                    }
+
+                    .amount-details {
+                        display: flex;
+                        align-items: center;
+
+                        h6 {
+                            margin-right: 0.6rem;
+                            color: $black-191;
+                        }
+
+                        span {
+                            letter-spacing: 0.125rem;
+                            color: $grey-ADA;
+
+                        }
+                    }
+                }
+
+                .coins-chip {
+                    display: flex;
+                    padding-top: 2rem;
+                    border-top: 1px solid rgba(229, 229, 230, 0.5);
+                    justify-content: space-between;
+                    align-items: center;
+                    .chips-section {
+                        display: flex;
+                        // cursor: pointer;
+                        width: 100%;
+                        overflow-x: auto;
+                        margin-right: 2rem;
+                        .coin-chip {
+                            margin-right: 1.2rem;
+                            img{
+                                width:2.6rem;
+                                height:2.6rem;
+                                border-top-left-radius: 0.55rem;
+                                border-bottom-left-radius: 0.55rem;
+                                position: relative;
+                                left: -1px;
+                                top: -1px;
+                            }
+                             img:hover{
+                                filter: none;
+                            }
+                            
+                        }
+                    }
+                    .secondary-btn{
+                      padding: 1.65rem 2.7rem;
+                      border-color: $grey-636;
+                      color: $grey-636;
+                      &:hover{
+                        color: $secondary;
+                      }
+                    }
+                     img:hover{
+                                filter: brightness(0.5);
+                            }
+                }
+            }
+            .loading-container{
+                // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                margin-bottom: 2rem;
+                padding: 0;
+                .animation-wrapper{
+                    width: 100%;
+                    // background-image: url("../../images/walletCardLoadingBackground.png");
+                   background-position: top center;
+                    background-repeat: no-repeat;
+                    background-size: 100%;
+
+                    .loading-animation{
+                        backdrop-filter: blur(10px);
+                        border-radius: 1.2rem;
+                        width: 100%;
+                        padding-bottom: 1rem;
+
+                        // img{
+                        //     width: 10rem;
+                        // }
+                    }
+                }
+            }
+
+        }
+
+        //  walletcard section end
+    }
+}

@@ -14,6 +14,8 @@ import ProfileIcon from '../../assets/images/icons/InactiveProfileIcon.svg'
 import ActiveProfileIcon from '../../assets/images/icons/ActiveProfileIcon.svg'
 import DollarIcon from '../../assets/images/icons/InactiveCostIcon.svg'
 import ActiveDollarIcon from '../../assets/images/icons/ActiveCostIcon.svg'
+import CohortIcon from "../../assets/images/icons/cohort.svg";
+import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
 
 import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
 import SharePortfolioIcon from '../../assets/images/icons/SharePortfolioIcon.svg'
@@ -61,6 +63,7 @@ function Sidebar(props) {
     const [confirmLeave,setConfirmLeave] = React.useState(false)
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [currencyList, setAllCurrencyList] = React.useState([]);
+     const [cohort, setCohort] = React.useState(false);
     const [selectedCurrency, setCurrency] = React.useState(JSON.parse(localStorage.getItem('currency')));
     let lochUser = JSON.parse(localStorage.getItem('lochUser'));
 
@@ -77,6 +80,11 @@ function Sidebar(props) {
         // props.history.push('/welcome');
       }
     }
+  
+  const handleCohort = () => {
+    setCohort(!cohort);
+    console.log("cohort")
+  }
 
     const handleApiModal = ()=>{
         setApiModal(!apiModal);
@@ -325,22 +333,17 @@ function Sidebar(props) {
                         <NavLink
                           className="nav-link"
                           to="/cohort"
-                          onClick={() => {
-                            // CostsMenu({
-                            //   session_id: getCurrentUser().id,
-                            //   email_address: getCurrentUser().email,
-                            // })
-                          }}
+                          onClick={handleCohort}
                           activeclassname="active"
                         >
                           <Image
                             src={
                               activeTab === "/cohort"
-                                ? ActiveDollarIcon
-                                : DollarIcon
+                                ? ActiveCohortIcon
+                                : CohortIcon
                             }
                           />
-                          Cohort
+                          Wallet Cohorts
                         </NavLink>
                       </li>
 
@@ -509,17 +512,17 @@ function Sidebar(props) {
           ) : (
             ""
           )}
-          {false ? (
+          {cohort ? (
             <ExitOverlay
-              show={true}
+              show={cohort}
               // link="http://loch.one/a2y1jh2jsja"
-              onHide={handleLeave}
+              onHide={handleCohort}
               history={history}
               modalType={"cohort"}
               headerTitle={"Create a Wallet cohort"}
               handleRedirection={() => {
                 setTimeout(function () {
-                  props.history.push("/welcome");
+                  props.history.push("/cohort");
                 }, 3000);
               }}
             />
