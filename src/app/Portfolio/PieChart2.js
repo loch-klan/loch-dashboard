@@ -1045,9 +1045,9 @@ class PieChart2 extends BaseReactComponent {
                 </div>
               </Col>
               <Col
-                md={chainList.length > 1 ? 12 : 7}
+                md={chainList.length > 2 ? 12 : 7}
                 style={
-                  chainList.length > 1
+                  chainList.length > 2
                     ? { padding: 0 }
                     : {
                         display: "flex",
@@ -1061,7 +1061,7 @@ class PieChart2 extends BaseReactComponent {
                 Object.keys(pieSectionDataEnabled).length > 0 ? (
                   <div
                     className="coin-hover-display"
-                    style={chainList.length > 1 ? { width: "100%" } : {}}
+                    style={chainList.length > 2 ? { width: "100%" } : {}}
                   >
                     <div className="coin-hover-display-text">
                       <div className="coin-hover-display-text-icon">
