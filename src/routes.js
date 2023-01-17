@@ -14,6 +14,7 @@ import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounter
 import InsightsPage from "./app/intelligence/InsightsPage"
 import AssetValueGraph from "./app/intelligence/AssetValueGraph";
 import Cohort from "./app/cohort/Cohort"
+import CohortPage from "./app/cohort/cohort-individual"
 const routes = [
   {
     path: "/",
@@ -87,6 +88,13 @@ const routes = [
     type: PrivateRoute,
     component: Cohort,
   },
+  {
+    path: "/cohort/cohort-page",
+    name: "Cohort Page",
+    type: PrivateRoute,
+    component: CohortPage,
+  },
+
   {
     path: "/verify-email",
     name: "Verify Email",

@@ -34,6 +34,7 @@ export const BarGraphFooter = (props) => {
   return (
     <div
       className={`bar-graph-footer ${props.lineChart ? "linechartFooter" : ""}`}
+      style={props.cohort ? {marginBottom:"0px"}:{}}
     >
       {/* <Row>
         {timeBadge}

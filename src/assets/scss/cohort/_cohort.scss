@@ -228,3 +228,22 @@
         //  walletcard section end
     }
 }
+
+
+        .net-worth-wrapper{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 2rem;
+          background-color: $secondary;
+          border-radius: 1.2rem;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+          margin-bottom: 2.4rem;
+          .left{
+            display: flex;
+            align-items: center;
+            h3{
+              padding-left: 1.2rem;
+            }
+          }
+        }
