@@ -1053,9 +1053,9 @@ class PieChart2 extends BaseReactComponent {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                      flexDirection: "column",
-                      padding: 0,
-                        flexWrap: "wrap"
+                        flexDirection: "column",
+                        padding: 0,
+                        flexWrap: "wrap",
                       }
                 }
               >
@@ -1111,10 +1111,12 @@ class PieChart2 extends BaseReactComponent {
                                   : 0}
                                 %
                               </span>
-                              <span className="inter-display-medium f-s-15 l-h-19 black-191 m-l-10">
-                                {pieSectionDataEnabled.assetType === 20 &&
-                                  "Staked"}
-                              </span>
+
+                              {pieSectionDataEnabled.assetType === 20 && (
+                                <span className="inter-display-medium f-s-15 l-h-19 black-191 m-l-10">
+                                  "Staked"
+                                </span>
+                              )}
                             </div>
                             <div className="coin-hover-display-text1-lower">
                               <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount">
