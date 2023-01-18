@@ -247,3 +247,41 @@
             }
           }
         }
+
+.cohort-address-wrapper{
+   max-height: 53.5rem;
+   overflow-y: scroll;
+   
+   .address-list{
+    background-color: #FFFFFF;
+                  padding-bottom: 1.75rem;
+                  border-bottom: 1px solid rgba(229, 229, 230, 0.5);
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 1.75rem;
+
+        .address-left{
+            display: flex;
+            align-items: center;
+        }
+   }
+
+   &::-webkit-scrollbar {
+                            width: 0.4rem;
+                            height: 0.4rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+                            border-radius: 0.8rem;
+                            background-color: $scrollBar-thumb;
+         }
+
+        &::-webkit-scrollbar-track {
+                            background-color: rgba(229, 229, 230, 0.5);
+                            // background-color: $grey-E5E;
+                            border-radius: 0.8rem;
+        }
+
+
+}

@@ -36,6 +36,7 @@ import Coin2 from "../../assets/images/icons/Coin-1.svg";
 import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
 import CoinChip from "../wallet/CoinChip";
+import ExitOverlay from "../common/ExitOverlay";
 class Cohort extends Component {
   constructor(props) {
     super(props);
@@ -48,8 +49,19 @@ class Cohort extends Component {
       activeBadge: [{ name: "All", id: "" }],
       addModal: false,
       isLoading: true,
+      cohortModal: false,
     };
   }
+  handleCohort = () => {
+    console.log("cohort click");
+    this.setState({
+      cohortModal: !this.state.cohortModal,
+    });
+  };
+
+  handleSort = (e) => {
+    
+  };
 
   componentDidMount() {
     // this.state.startTime = new Date() * 1;
@@ -84,23 +96,36 @@ class Cohort extends Component {
     }
   }
 
-  makeApiCall = (cond) => {
-   
-  };
+  makeApiCall = (cond) => {};
 
   handleAddModal = () => {};
+
+  handleFunction = () => {};
 
   render() {
     return (
       <div className="cohort-page-section">
         {/* <Sidebar ownerName="" /> */}
 
+        {this.state.cohortModal ? (
+          <ExitOverlay
+            show={this.state.cohortModal}
+            // link="http://loch.one/a2y1jh2jsja"
+            onHide={this.handleCohort}
+            history={this.props.history}
+            modalType={"cohort"}
+            headerTitle={"Create a Wallet cohort"}
+          />
+        ) : (
+          ""
+        )}
+
         <div className="cohort-section page">
           <PageHeader
             title="Cohorts"
             subTitle="Track all your cohorts here"
             btnText="Create Cohort"
-            handleBtn={this.handleAddModal}
+            handleBtn={this.handleCohort}
             // showData={totalWalletAmt}
             // isLoading={isLoading}
           />
@@ -136,7 +161,7 @@ class Cohort extends Component {
             </div>
           </div>
           {/* card  */}
-          <Row>
+          <Row style={{minWidth: "91rem"}}>
             <Col md={4}>
               <div
                 className="cards"
