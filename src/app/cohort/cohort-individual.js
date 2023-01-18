@@ -18,6 +18,7 @@ import BellIconColor from "../../assets/images/icons/bell-color.svg";
 import VerticalIcon from "../../assets/images/icons/veritcal-line.svg";
 
 import ClockIcon from "../../assets/images/icons/clock.svg";
+import PlusIcon from "../../assets/images/icons/plus-circle.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
@@ -27,6 +28,10 @@ import GlobeIcon from "../../assets/images/icons/globe.svg";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import EditIcon from "../../assets/images/EditIcon.svg";
 import ArrowRight from "../../assets/images/icons/ArrowRight.svg";
+import CartIcon from "../../assets/images/icons/cart-dark.svg";
+import TokenIcon from "../../assets/images/icons/token-dark.svg";
+import MedalIcon from "../../assets/images/icons/medal-dark.svg";
+import StarIcon from "../../assets/images/icons/star-dark.svg";
 
 class CohortPage extends Component {
   constructor(props) {
@@ -117,7 +122,7 @@ class CohortPage extends Component {
                 }}
               >
                 <div>
-                  <Image src={netWorthIcon} className="net-worth-icon" />
+                  <Image src={StarIcon} className="net-worth-icon" />
                   <h3 className="inter-display-medium f-s-16 lh-19 m-t-12">
                     Average net worth
                   </h3>
@@ -144,7 +149,7 @@ class CohortPage extends Component {
                 }}
               >
                 <div>
-                  <Image src={netWorthIcon} className="net-worth-icon" />
+                  <Image src={CartIcon} className="net-worth-icon" />
                   <h3 className="inter-display-medium f-s-16 lh-19 m-t-12">
                     Most frequently purchased token
                   </h3>
@@ -173,7 +178,7 @@ class CohortPage extends Component {
                 }}
               >
                 <div>
-                  <Image src={netWorthIcon} className="net-worth-icon" />
+                  <Image src={TokenIcon} className="net-worth-icon" />
                   <h3 className="inter-display-medium f-s-16 lh-19 m-t-12">
                     Most frequently <br />
                     sold token
@@ -203,7 +208,7 @@ class CohortPage extends Component {
                 }}
               >
                 <div>
-                  <Image src={netWorthIcon} className="net-worth-icon" />
+                  <Image src={MedalIcon} className="net-worth-icon" />
                   <h3 className="inter-display-medium f-s-16 lh-19 m-t-12">
                     Largest Holding
                   </h3>
@@ -337,7 +342,7 @@ class CohortPage extends Component {
             </h2>
 
             <h2
-              className="m-t-40 m-b-20 inter-display-semi-bold f-s-13 lh-16 black-191"
+              className="m-t-40 m-b-20 inter-display-semi-bold f-s-13 lh-16 black-191 cp"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -408,7 +413,7 @@ class CohortPage extends Component {
             </h2>
 
             <h2
-              className="m-t-40 m-b-20 inter-display-semi-bold f-s-13 lh-16 black-191"
+              className="m-t-40 m-b-20 inter-display-semi-bold f-s-13 lh-16 black-191 cp"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -422,49 +427,78 @@ class CohortPage extends Component {
               />
             </h2>
           </div>
+          <div className="cards">
 
-          <div className="walletcard">
-            <>
-              <div className="m-b-32 wallet-details">
-                <div className="wallet-account-details">
-                  <h6 className={`inter-display-medium f-s-20 lh-24`}>
-                    0x7d2d43e63666f45b40316b44212325625dbaeb40
-                  </h6>
-
-                  <div className="account-details">
+            {/* Recomandation Cards */}
+            {
+              [...Array(3)].map((e) => {
+                return (
+                  <div className="walletcard">
                     <>
-                      <span
-                        className="inter-display-regular f-s-13 lh-16"
-                        id="account_number"
-                      >
-                        0x7d2d43e63666f45b40316b44212325625dbaeb40
-                      </span>
-                      <Image
-                        src={CopyClipboardIcon}
-                        onClick={() => {
-                          // copyContent(props.wallet_account_number)
-                        }}
-                        className="m-l-10 m-r-12 cp"
-                      />
+                      <div className="m-b-20 wallet-details">
+                        <div className="account-details">
+                          <span className="inter-display-regular f-s-13 lh-16">
+                            0x7d2d43e63666f45b40316b44212325625dbaeb40
+                          </span>
+                          <Image
+                            src={CopyClipboardIcon}
+                            onClick={() => {
+                              // copyContent(props.wallet_account_number)
+                            }}
+                            className="m-l-10 m-r-12 cp"
+                          />
+                        </div>
+
+                        <div className="amount-details">
+                          <h6 className="inter-display-medium f-s-16 lh-19">
+                            {numToCurrency(47474)}
+                          </h6>
+                          <span className="inter-display-semi-bold f-s-10 lh-12">
+                            {CurrencyType(true)}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="coins-chip">
+                        <div className="chips-section">
+                          <CoinChip
+                            colorCode={"#E84042"}
+                            coin_img_src={Coin}
+                            coin_percent={"Avalanche"}
+                          />
+                          <CoinChip
+                            colorCode={"#E84042"}
+                            coin_img_src={Coin}
+                            coin_percent={"Avalanche"}
+                          />
+                          <CoinChip
+                            colorCode={"#E84042"}
+                            coin_img_src={Coin}
+                            coin_percent={"Avalanche"}
+                          />
+                          <CoinChip
+                            colorCode={"#E84042"}
+                            coin_img_src={Coin}
+                            coin_percent={"Avalanche"}
+                          />
+                          <CoinChip
+                            colorCode={"#E84042"}
+                            coin_img_src={Coin}
+                            coin_percent={"Avalanche"}
+                          />
+                        </div>
+                        <h3 className="inter-display-semi-bold f-s-13 lh-15 cp">
+                          <Image src={PlusIcon} /> Add to cohort
+                        </h3>
+                      </div>
                     </>
                   </div>
-                  {/* </div> */}
-                </div>
-                <div className="amount-details">
-                  <h6 className="inter-display-medium f-s-20 lh-24">
-                    {numToCurrency(47474)}
-                  </h6>
-                  <span className="inter-display-semi-bold f-s-10 lh-12">
-                    {CurrencyType(true)}
-                  </span>
-                </div>
-              </div>
-              <div className="coins-chip">
-                <div className="chips-section">text</div>
-                <Image src={EditIcon} className="cp" />
-              </div>
-            </>
+                );
+              })
+            }
+         
+            
           </div>
+
           {/* Recommandation */}
         </div>
       </div>
