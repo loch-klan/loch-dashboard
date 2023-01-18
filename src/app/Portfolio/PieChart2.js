@@ -1053,7 +1053,9 @@ class PieChart2 extends BaseReactComponent {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        flexDirection: "column",
+                      flexDirection: "column",
+                      padding: 0,
+                        flexWrap: "wrap"
                       }
                 }
               >

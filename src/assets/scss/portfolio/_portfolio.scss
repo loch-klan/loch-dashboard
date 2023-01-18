@@ -689,6 +689,7 @@ position: relative;
         //width: 25.4rem;
 
         .coin-hover-display-text1-upper {
+            
 
             // display: flex;
             // justify-content: space-evenly;
@@ -724,6 +725,10 @@ position: relative;
     }
 
     .coin-hover-display-text2 {
+
+        .coin-hover-display-text2-upper{ display: flex;
+            justify-content: space-between;}
+        
         //margin-left: 32.7rem;
         .coin-hover-display-text2-upper-coin{
           max-width: 11.5rem;
@@ -760,6 +765,9 @@ position: relative;
         .coin-hover-display-text2-lower,
         .coin-hover-display-text3-lower,
         .coin-hover-display-text4-lower {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
             padding-top: 1rem;
         }
 
