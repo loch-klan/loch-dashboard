@@ -161,8 +161,8 @@ class Cohort extends Component {
             </div>
           </div>
           {/* card  */}
-          <Row style={{minWidth: "91rem"}}>
-            <Col md={4}>
+          <Row style={{ minWidth: "91rem" }}>
+            <Col md={4} style={{ padding: "10px" }}>
               <div
                 className="cards"
                 style={{
@@ -171,7 +171,6 @@ class Cohort extends Component {
                     "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
                   borderRadius: "16px",
                   marginBottom: "3rem",
-                  cursor: "pointer",
                 }}
               >
                 {/* Top Section */}
@@ -210,6 +209,9 @@ class Cohort extends Component {
                     style={{
                       cursor: "pointer",
                     }}
+                    onClick={() =>
+                      this.props.history.push("/cohort/avax-whales")
+                    }
                   >
                     <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
                       My AVAX Whales
@@ -219,7 +221,11 @@ class Cohort extends Component {
                     </h4>
                   </div>
                   {/* edit icon */}
-                  <Image src={EditIcon} className="cp" />
+                  <Image
+                    src={EditIcon}
+                    className="cp editIcon"
+                    onClick={this.handleCohort}
+                  />
                 </div>
                 {/* Top Section END */}
                 {/* Bottom Section Address list */}
@@ -240,7 +246,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -261,7 +267,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -285,7 +291,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -307,7 +313,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -323,7 +329,7 @@ class Cohort extends Component {
               </div>
             </Col>
 
-            <Col md={4}>
+            <Col md={4} style={{ padding: "10px" }}>
               <div
                 className="cards"
                 style={{
@@ -370,16 +376,23 @@ class Cohort extends Component {
                     style={{
                       cursor: "pointer",
                     }}
+                    onClick={() =>
+                      this.props.history.push("/cohort/my-curve-whales")
+                    }
                   >
                     <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
-                      My AVAX Whales
+                      My Curve Whales
                     </h4>
                     <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
                       3612.21 <span className="f-s-10 grey-CAC">USD</span>
                     </h4>
                   </div>
                   {/* edit icon */}
-                  <Image src={EditIcon} className="cp" />
+                  <Image
+                    src={EditIcon}
+                    className="cp editIcon"
+                    onClick={this.handleCohort}
+                  />
                 </div>
                 {/* Top Section END */}
                 {/* Bottom Section Address list */}
@@ -400,7 +413,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -421,7 +434,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -445,7 +458,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -467,7 +480,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -483,7 +496,7 @@ class Cohort extends Component {
               </div>
             </Col>
 
-            <Col md={4}>
+            <Col md={4} style={{ padding: "10px" }}>
               <div
                 className="cards"
                 style={{
@@ -530,16 +543,23 @@ class Cohort extends Component {
                     style={{
                       cursor: "pointer",
                     }}
+                    onClick={() =>
+                      this.props.history.push("/cohort/my-uniswap-whales")
+                    }
                   >
                     <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
-                      My AVAX Whales
+                      My Uniswap Whales
                     </h4>
                     <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
                       3612.21 <span className="f-s-10 grey-CAC">USD</span>
                     </h4>
                   </div>
                   {/* edit icon */}
-                  <Image src={EditIcon} className="cp" />
+                  <Image
+                    src={EditIcon}
+                    className="cp editIcon"
+                    onClick={this.handleCohort}
+                  />
                 </div>
                 {/* Top Section END */}
                 {/* Bottom Section Address list */}
@@ -560,7 +580,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -581,7 +601,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -605,7 +625,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 
@@ -627,7 +647,7 @@ class Cohort extends Component {
                       borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
                     }}
                   >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-191">
+                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
                       0x9450...CB0
                     </h4>
 

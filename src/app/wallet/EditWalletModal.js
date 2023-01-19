@@ -128,6 +128,8 @@ class EditWalletModal extends BaseReactComponent {
           </div>
         </div>
       );
+
+      
     });
     const { walletMetaData, walletNameList, walletName } = this.state;
     const { show, handleClose, onHide } = this.props;

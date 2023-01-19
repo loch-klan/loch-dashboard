@@ -40,7 +40,10 @@ import moment from 'moment';
 import lochClean from "../../assets/images/LochClean.gif";
 import { CurrencyType, getPadding, loadingAnimation } from '../../utils/ReusableFunctions';
 import CustomChip from '../../utils/commonComponent/CustomChip';
-
+import Coin1 from "../../assets/images/icons/Coin0.svg";
+import Coin2 from "../../assets/images/icons/Coin-1.svg";
+import Coin3 from "../../assets/images/icons/Coin-2.svg";
+import Coin4 from "../../assets/images/icons/Coin-3.svg";
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -220,6 +223,26 @@ class ExitOverlay extends BaseReactComponent {
             <div className="api-modal-header">
               <Image src={this.props.iconImage} />
             </div>
+          ) : this.props.isEdit ? (
+            <div
+              style={{
+                background: "#FFFFFF",
+                boxShadow:
+                  "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
+                borderRadius: "12px",
+                padding: "10px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexWrap: "wrap",
+                width: "69px",
+              }}
+            >
+              <Image src={Coin1} style={{ margin: "0px 5px 5px 0px" }} />
+              <Image src={Coin2} style={{ margin: "0px 0px 5px 0px" }} />
+              <Image src={Coin3} style={{ margin: "0px 5px 0px 0px" }} />
+              <Image src={Coin4} style={{ margin: "0px 0px 0px 0px" }} />
+            </div>
           ) : (
             <div className="exitOverlayIcon">
               <Image src={ExitOverlayIcon} />
@@ -249,7 +272,9 @@ class ExitOverlay extends BaseReactComponent {
                 {this.props.modalType === "apiModal"
                   ? "Personalized digital asset intelligence via API"
                   : this.props.modalType === "cohort"
-                  ? "Track a cohort of addresses here"
+                  ? this.props.isEdit
+                    ? `added ${this.props.addedon}`
+                    : "Track a cohort of addresses here"
                   : "Export your exisiting data from Loch"}
               </p>
               {this.props.modalType === "apiModal" ? (
@@ -449,186 +474,47 @@ class ExitOverlay extends BaseReactComponent {
                       </div>
                       {/* Multiple address box */}
                       <div className="add-modal-inputs">
-                        <div
-                          className="m-b-12 add-wallet-input-section"
-                          // key={index}
-                          // id={`add-wallet-${index}`}
-                          id={`add-wallet-1`}
-                        >
-                          <div
-                            className="delete-icon"
-                            // onClick={() => this.deleteAddress(index)}
-                          >
-                            <Image src={DeleteIcon} />
-                          </div>
+                        {[...Array(3)].map((e, index) => {
+                          return (
+                            <div
+                              className="m-b-12 add-wallet-input-section"
+                              key={index}
+                              id={`add-wallet-${index}`}
+                            >
+                              <div
+                                className="delete-icon"
+                                // onClick={() => this.deleteAddress(index)}
+                              >
+                                <Image src={DeleteIcon} />
+                              </div>
 
-                          <input
-                            autoFocus
-                            // name={`wallet${index + 1}`}
-                            value={this.state.wallet_address}
-                            placeholder="Paste any wallet address or ENS here"
-                            // className='inter-display-regular f-s-16 lh-20'
-                            className={`inter-display-regular f-s-16 lh-20 ${
-                              this.state.wallet_address ? "is-valid" : null
-                            }`}
-                            onChange={(e) => this.handleOnchange(e)}
-                            // id={elem.id}
-                            // style={getPadding(
-                            //   `add-wallet-${index}`,
-                            //   elem,
-                            //   this.props.OnboardingState
-                            // )}
-                          />
-                          {/* <CustomChip
+                              <input
+                                autoFocus
+                                name={`wallet${index + 1}`}
+                                value={
+                                  index === 0 ? this.state.wallet_address : ""
+                                }
+                                placeholder="Paste any wallet address or ENS here"
+                                // className='inter-display-regular f-s-16 lh-20'
+                                className={`inter-display-regular f-s-16 lh-20 ${
+                                  this.state.wallet_address ? "is-valid" : null
+                                }`}
+                                onChange={(e) => this.handleOnchange(e)}
+                                // id={elem.id}
+                                // style={getPadding(
+                                //   `add-wallet-${index}`,
+                                //   elem,
+                                //   this.props.OnboardingState
+                                // )}
+                              />
+                              {/* <CustomChip
                           coins={elem.coins.filter((c) => c.chain_detected)}
                           // key={index}
                           isLoaded={true}
                         ></CustomChip> */}
-                        </div>
-                        <div
-                          className="m-b-12 add-wallet-input-section"
-                          // key={index}
-                          // id={`add-wallet-${index}`}
-                          id={`add-wallet-1`}
-                        >
-                          <div
-                            className="delete-icon"
-                            // onClick={() => this.deleteAddress(index)}
-                          >
-                            <Image src={DeleteIcon} />
-                          </div>
-
-                          <input
-                            autoFocus
-                            // name={`wallet${index + 1}`}
-                            value={this.state.wallet_address}
-                            placeholder="Paste any wallet address or ENS here"
-                            // className='inter-display-regular f-s-16 lh-20'
-                            className={`inter-display-regular f-s-16 lh-20 ${
-                              this.state.wallet_address ? "is-valid" : null
-                            }`}
-                            onChange={(e) => this.handleOnchange(e)}
-                            // id={elem.id}
-                            // style={getPadding(
-                            //   `add-wallet-${index}`,
-                            //   elem,
-                            //   this.props.OnboardingState
-                            // )}
-                          />
-                          {/* <CustomChip
-                          coins={elem.coins.filter((c) => c.chain_detected)}
-                          // key={index}
-                          isLoaded={true}
-                        ></CustomChip> */}
-                        </div>
-                        <div
-                          className="m-b-12 add-wallet-input-section"
-                          // key={index}
-                          // id={`add-wallet-${index}`}
-                          id={`add-wallet-1`}
-                        >
-                          <div
-                            className="delete-icon"
-                            // onClick={() => this.deleteAddress(index)}
-                          >
-                            <Image src={DeleteIcon} />
-                          </div>
-
-                          <input
-                            autoFocus
-                            // name={`wallet${index + 1}`}
-                            value={this.state.wallet_address}
-                            placeholder="Paste any wallet address or ENS here"
-                            // className='inter-display-regular f-s-16 lh-20'
-                            className={`inter-display-regular f-s-16 lh-20 ${
-                              this.state.wallet_address ? "is-valid" : null
-                            }`}
-                            onChange={(e) => this.handleOnchange(e)}
-                            // id={elem.id}
-                            // style={getPadding(
-                            //   `add-wallet-${index}`,
-                            //   elem,
-                            //   this.props.OnboardingState
-                            // )}
-                          />
-                          {/* <CustomChip
-                          coins={elem.coins.filter((c) => c.chain_detected)}
-                          // key={index}
-                          isLoaded={true}
-                        ></CustomChip> */}
-                        </div>
-                        <div
-                          className="m-b-12 add-wallet-input-section"
-                          // key={index}
-                          // id={`add-wallet-${index}`}
-                          id={`add-wallet-1`}
-                        >
-                          <div
-                            className="delete-icon"
-                            // onClick={() => this.deleteAddress(index)}
-                          >
-                            <Image src={DeleteIcon} />
-                          </div>
-
-                          <input
-                            autoFocus
-                            // name={`wallet${index + 1}`}
-                            value={this.state.wallet_address}
-                            placeholder="Paste any wallet address or ENS here"
-                            // className='inter-display-regular f-s-16 lh-20'
-                            className={`inter-display-regular f-s-16 lh-20 ${
-                              this.state.wallet_address ? "is-valid" : null
-                            }`}
-                            onChange={(e) => this.handleOnchange(e)}
-                            // id={elem.id}
-                            // style={getPadding(
-                            //   `add-wallet-${index}`,
-                            //   elem,
-                            //   this.props.OnboardingState
-                            // )}
-                          />
-                          {/* <CustomChip
-                          coins={elem.coins.filter((c) => c.chain_detected)}
-                          // key={index}
-                          isLoaded={true}
-                        ></CustomChip> */}
-                        </div>
-                        <div
-                          className="add-wallet-input-section"
-                          // key={index}
-                          // id={`add-wallet-${index}`}
-                          id={`add-wallet-1`}
-                        >
-                          <div
-                            className="delete-icon"
-                            // onClick={() => this.deleteAddress(index)}
-                          >
-                            <Image src={DeleteIcon} />
-                          </div>
-
-                          <input
-                            autoFocus
-                            // name={`wallet${index + 1}`}
-                            value={this.state.wallet_address}
-                            placeholder="Paste any wallet address or ENS here"
-                            // className='inter-display-regular f-s-16 lh-20'
-                            className={`inter-display-regular f-s-16 lh-20 ${
-                              this.state.wallet_address ? "is-valid" : null
-                            }`}
-                            onChange={(e) => this.handleOnchange(e)}
-                            // id={elem.id}
-                            // style={getPadding(
-                            //   `add-wallet-${index}`,
-                            //   elem,
-                            //   this.props.OnboardingState
-                            // )}
-                          />
-                          {/* <CustomChip
-                          coins={elem.coins.filter((c) => c.chain_detected)}
-                          // key={index}
-                          isLoaded={true}
-                        ></CustomChip> */}
-                        </div>
+                            </div>
+                          );
+                        })}
                       </div>
                       <div className="m-b-32 add-wallet-btn">
                         <Button className="grey-btn" onClick={this.addAddress}>
@@ -645,14 +531,23 @@ class ExitOverlay extends BaseReactComponent {
                         >
                           Upload CSV / Text file
                         </Button>
-                        <Button
-                          className={`primary-btn ${
-                            this.state.email ? "active" : ""
-                          }`}
-                          type="submit"
-                        >
-                          Save
-                        </Button>
+                        <div>
+                         { this.props.isEdit && <Button
+                            className={`secondary-btn m-r-12`}
+                            type="button"
+                            style={this.props.isEdit ? { border: "none" } : {}}
+                          >
+                            Delete
+                          </Button>}
+                          <Button
+                            className={`primary-btn ${
+                              this.state.email ? "active" : ""
+                            }`}
+                            type="submit"
+                          >
+                            Save
+                          </Button>
+                        </div>
                       </div>
                     </Form>
                   </div>

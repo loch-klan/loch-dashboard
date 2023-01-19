@@ -89,7 +89,7 @@ const routes = [
     component: Cohort,
   },
   {
-    path: "/cohort/cohort-page",
+    path: "/cohort/:cohortName",
     name: "Cohort Page",
     type: PrivateRoute,
     component: CohortPage,

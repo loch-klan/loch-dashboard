@@ -237,6 +237,14 @@
         .address-left{
             display: flex;
             align-items: center;
+
+            img{
+                cursor: pointer;
+            }
+
+            img:hover{
+                        filter: brightness(0.5);
+                    }
         }
    }
 
@@ -259,3 +267,72 @@
 
 }
 
+
+.cohort-dropdown{
+    text-align: left !important;
+    margin-top: 2rem;
+
+
+     
+     .dropdown-menu {
+                    width: auto;
+                    padding: 0.4rem;
+
+                    .dropdown-item {
+                        padding: 0.8rem;
+                        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+                    }
+                }
+
+                .btn-primary:not(:disabled):not(.disabled):active {
+                    background-color: $grey-F2F !important;
+                    border: none !important;
+                    color: $black-191;
+                    
+               
+                }
+
+                .btn-primary.dropdown-toggle {
+                
+                background-color: $grey-F2F !important;
+                    border: none !important;
+                    color: $black-191;
+}
+
+                .dropdown .btn-primary.dropdown-toggle:focus {
+                    box-shadow: none;
+                     background-color: $grey-F2F !important;
+                    border: none !important;
+                    color: $black-191;
+                    
+}
+
+                .dropdown-toggle {
+
+                    background-color: $grey-F2F;
+                    color: $black-191;
+                    padding: 1rem 0.5rem;
+                    border-radius: 0.4rem;
+                    width: 10rem;
+                }
+
+                .dropdown-toggle::after {
+                    margin-left: 0.6rem;
+                    display: inline-block;
+                    vertical-align: 0.255em;
+                     content: "";
+                      border-top: 0.35em solid;
+                    border-right: 0.35em solid transparent;
+                    border-bottom: 0;
+                    border-left: 0.35em solid transparent;
+                }
+
+            
+}
+
+
+.editIcon{
+    &:hover{
+                        filter: brightness(0.5);
+                    }
+}

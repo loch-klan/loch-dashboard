@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Image, Row } from "react-bootstrap";
+import { Button, Col, Image, Row } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
@@ -11,6 +11,7 @@ import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
 import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
+import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 
 import netWorthIcon from "../../assets/images/icons/total-net-dark.svg";
 import BellIcon from "../../assets/images/icons/bell.svg";
@@ -32,37 +33,196 @@ import CartIcon from "../../assets/images/icons/cart-dark.svg";
 import TokenIcon from "../../assets/images/icons/token-dark.svg";
 import MedalIcon from "../../assets/images/icons/medal-dark.svg";
 import StarIcon from "../../assets/images/icons/star-dark.svg";
+import ExitOverlay from "../common/ExitOverlay";
+import Form from "../../utils/form/Form";
+import FormElement from "../../utils/form/FormElement";
+import FormValidator from "./../../utils/form/FormValidator";
+import CustomTextControl from "./../../utils/form/CustomTextControl";
+import { toast } from "react-toastify";
+import DropDown from "../common/DropDown";
+import EditWalletModal from "../wallet/EditWalletModal";
+import checkIcon from "../../assets/images/icons/check-cohort.svg";
 
-class CohortPage extends Component {
+
+class CohortPage extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      activeFooter:0,
+      activeFooter: 0,
+      cohortModal: false,
+      updateEmail: false,
+      title: "$1,000.00",
+      titleday: "> 30 days",
+      edit: false,
+      walletNotification: false,
+      dayNotification: false,
     };
   }
+
+  handleCohort = () => {
+    console.log("cohort click");
+    this.setState({
+      cohortModal: !this.state.cohortModal,
+    });
+  };
   componentDidMount() {}
 
   handleFooter = (e) => {
     // console.log("e",e.target.id)
     this.setState({
-      activeFooter:e.target.id
-    })
+      activeFooter: e.target.id,
+    });
+  };
+
+  handleUpdateEmail = () => {
+    this.setState({
+      updateEmail: true,
+    });
+  };
+
+  handleSave = () => {
+    console.log("save");
+    toast.success(
+      <div className="custom-toast-msg" style={{ width: "43rem" }}>
+        <div>Email updated</div>
+        <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+          You will be receiving notifications from us there
+        </div>
+      </div>
+    );
+  };
+
+  handleFunction = (e) => {
+    const title = e.split(" ")[1];
+    console.log(e, title);
+    this.setState({
+      title: title,
+    });
+  };
+
+  handleFunctionDay = (e) => {
+    const title = e.split(" ")[1] + " " + e.split(" ")[2];
+    console.log(e, title);
+    this.setState({
+      titleday: title,
+    });
+  };
+
+  copyLink = (address) => {
+    navigator.clipboard.writeText(address);
+    toast.success("Wallet Address has been copied");
+  };
+
+  handleShow = () => {
+    this.setState({
+      edit: !this.state.edit,
+    });
+  };
+
+  handleClickWallet = () => {
+    console.log("click check")
+    this.setState({
+      walletNotification: !this.state.walletNotification,
+    });
+     toast.success("You will be receiving notifications");
+  };
+
+  handleClickDay = () => {
+    this.setState({
+      dayNotification: !this.state.dayNotification,
+    });
+     toast.success("You will be receiving notifications");
   };
 
   render() {
+    const nav_list = window.location.pathname.split("/");
+    let PageName = nav_list[2].replace(/-/g, " ");
+    function toTitleCase(str) {
+      return str
+        .toLowerCase()
+        .split(" ")
+        .map(function (val) {
+          return val.slice(0, 1).toUpperCase() + val.slice(1);
+        })
+        .join(" ");
+    }
+    PageName = toTitleCase(PageName);
+
+    // console.log("nav list", nav_list, PageName);
+    const chips = [
+      {
+        chain: {
+          symbol: Coin,
+          name: "Avalanche",
+          color: "#E84042",
+        },
+      },
+      {
+        chain: {
+          symbol: Coin,
+          name: "Avalanche",
+          color: "#E84042",
+        },
+      },
+      {
+        chain: {
+          symbol: Coin,
+          name: "Avalanche",
+          color: "#E84042",
+        },
+      },
+      {
+        chain: {
+          symbol: Coin,
+          name: "Avalanche",
+          color: "#E84042",
+        },
+      },
+    ];
     return (
       <div className="insights-section m-b-80">
+        {this.state.cohortModal ? (
+          <ExitOverlay
+            show={this.state.cohortModal}
+            // link="http://loch.one/a2y1jh2jsja"
+            onHide={this.handleCohort}
+            history={this.props.history}
+            modalType={"cohort"}
+            headerTitle={PageName}
+            isEdit={true}
+            addedon={"10/12/22"}
+          />
+        ) : (
+          ""
+        )}
+        {this.state.edit ? (
+          <EditWalletModal
+            show={this.state.edit}
+            onHide={this.handleShow}
+            createdOn={"2023-01-18 00:00:00+00:00"}
+            walletAddress={"0x401f6c983ea34274ec46f84d70b31c151321188b"}
+            displayAddress={""}
+            // walletMetaData={chips}
+            tag={"tag"}
+            coinchips={chips}
+            // makeApiCall={() => props.makeApiCall()}
+          />
+        ) : (
+          ""
+        )}
         <div className="insights-page page">
           <PageHeader
-            title={"AVAX Whales"}
+            title={PageName}
             subTitle={"Added 10/12/22"}
             showpath={true}
-            currentPage={"insights"}
-            // btnText={"Edit"}
-
-            // history={this.props.history}
+            currentPage={nav_list[2]}
+            btnText={"Edit"}
+            history={this.props.history}
+            btnOutline={true}
+            handleBtn={this.handleCohort}
+            multipleImg={[Coin1, Coin2, Coin3, Coin4]}
           />
-          <h2 className="m-b-20 inter-display-medium f-s-20 l-h-124 black-191">
+          <h2 className="m-t-46 m-b-20 inter-display-medium f-s-20 lh-24 black-191">
             Intelligence
           </h2>
           <div
@@ -245,7 +405,7 @@ class CohortPage extends Component {
             }}
           >
             <Row>
-              <Col md={4}>
+              <Col md={4} style={{ padding: "0 10px" }}>
                 <div
                   style={{
                     background:
@@ -255,29 +415,90 @@ class CohortPage extends Component {
                     borderRadius: "12px",
                     padding: "2.5rem",
                     height: "100%",
+                    position: "relative",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Image src={BellIconColor} />
-                  <h3 className="inter-display-medium f-s-20 lh-24 m-t-12">
-                    Get intelligent notifications for <br />
-                    your cohort
-                  </h3>
-                  <div
-                    style={{
-                      background: "#FFFFFF",
-                      boxShadow:
-                        "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
-                      borderRadius: "8px",
-                      padding: "18px 28px",
-                      width: "max-content",
-                    }}
-                    className="inter-display-medium f-s-16 lh-19 m-t-30"
-                  >
-                    Update email
+                  <div style={{ paddingRight: "2rem" }}>
+                    <Image src={BellIconColor} />
+                    <h3 className="inter-display-medium f-s-20 lh-24 m-t-12">
+                      {this.state.updateEmail
+                        ? `We’ll be sending
+notifications to you
+here`
+                        : `Get intelligent notifications for
+                      your cohort`}
+                    </h3>
                   </div>
+
+                  {/* button */}
+                  {!this.state.updateEmail && (
+                    <div
+                      style={{
+                        background: "#FFFFFF",
+                        boxShadow:
+                          "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
+                        borderRadius: "8px",
+                        padding: "18px 28px",
+                        width: "max-content",
+                      }}
+                      className="inter-display-medium f-s-16 lh-19 m-t-30 cp"
+                      onClick={this.handleUpdateEmail}
+                    >
+                      Update email
+                    </div>
+                  )}
+                  {this.state.updateEmail && (
+                    <div className="m-t-30">
+                      <Form onValidSubmit={this.handleSave}>
+                        <FormElement
+                          valueLink={this.linkState(this, "email")}
+                          // label="Email Info"
+                          required
+                          validations={[
+                            {
+                              validate: FormValidator.isRequired,
+                              message: "",
+                            },
+                            {
+                              validate: FormValidator.isEmail,
+                              message: "Please enter valid email id",
+                            },
+                          ]}
+                          control={{
+                            type: CustomTextControl,
+                            settings: {
+                              placeholder: "Email",
+                            },
+                          }}
+                        />
+                        <div
+                          className=""
+                          style={{
+                            position: "absolute",
+                            top: 20,
+                            right: 20,
+                          }}
+                        >
+                          <button
+                            className={`inter-display-semi-bold f-s-13 lh-16`}
+                            type="submit"
+                            style={{
+                              background: "transparent",
+                              border: "none",
+                            }}
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </Form>
+                    </div>
+                  )}
                 </div>
               </Col>
-              <Col md={4}>
+              <Col md={4} style={{ padding: "0 10px" }}>
                 <div
                   style={{
                     background: "#FFFFFF",
@@ -286,15 +507,67 @@ class CohortPage extends Component {
                     borderRadius: "12px",
                     padding: "2.5rem",
                     height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                    position: "relative",
                   }}
                 >
                   <Image src={VerticalIcon} />
-                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-80">
-                    Notify me when any wallets move more than
-                  </h3>
+                  <div
+                    style={{
+                      // padding: "10px",
+                      background: this.state.walletNotification
+                        ? "#0071E3"
+                        : "rgba(229, 229, 230, 0.5)",
+
+                      width: "20px",
+                      height: "20px",
+                      borderRadius: "6px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      position: "absolute",
+                      top: 20,
+                      right: 20,
+                      cursor: "pointer",
+                      userSelect: "none",
+                    }}
+                    onClick={this.handleClickWallet}
+                  >
+                    <Image
+                      src={checkIcon}
+                      style={{
+                        opacity: this.state.walletNotification ? "1" : "0",
+                      }}
+                    />
+                  </div>
+
+                  {/* checkIcon */}
+                  <div>
+                    <h3 className="inter-display-medium f-s-16 lh-19 m-t-80">
+                      Notify me when any wallets move more than
+                    </h3>
+
+                    <DropDown
+                      class="cohort-dropdown"
+                      list={[
+                        "$1,000.00",
+                        "$10k",
+                        "$100k",
+                        "$1m",
+                        "$10m",
+                        "$100m",
+                      ]}
+                      onSelect={this.handleFunction}
+                      title={this.state.title}
+                      activetab={this.state.title}
+                    />
+                  </div>
                 </div>
               </Col>
-              <Col md={4}>
+              <Col md={4} style={{ padding: "0 10px" }}>
                 <div
                   style={{
                     background: "#FFFFFF",
@@ -303,12 +576,57 @@ class CohortPage extends Component {
                     borderRadius: "12px",
                     padding: "2.5rem",
                     height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                    position: "relative",
                   }}
                 >
                   <Image src={ClockIcon} />
-                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-60">
-                    Notify me when any wallet dormant for
-                  </h3>
+                  <div
+                    style={{
+                      // padding: "10px",
+                      background: this.state.dayNotification
+                        ? "#0071E3"
+                        : "rgba(229, 229, 230, 0.5)",
+
+                      width: "20px",
+                      height: "20px",
+                      borderRadius: "6px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      position: "absolute",
+                      top: 20,
+                      right: 20,
+                      cursor: "pointer",
+                      userSelect: "none",
+                    }}
+                    onClick={this.handleClickDay}
+                  >
+                    <Image
+                      src={checkIcon}
+                      style={{
+                        opacity: this.state.dayNotification ? "1" : "0",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="inter-display-medium f-s-16 lh-19 m-t-60">
+                      Notify me when any wallet dormant for
+                    </h3>
+                    <DropDown
+                      class="cohort-dropdown"
+                      list={["30 days", "60 days", "90 days", "180 days"]}
+                      onSelect={this.handleFunctionDay}
+                      title={this.state.titleday}
+                      activetab={this.state.titleday}
+                    />
+                    <h3 className="inter-display-medium f-s-16 lh-19 m-t-12">
+                      becomes active
+                    </h3>
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -386,8 +704,17 @@ class CohortPage extends Component {
                       <Image
                         src={CopyClipboardIcon}
                         style={{ marginLeft: "0.8rem" }}
+                        onClick={() =>
+                          this.copyLink(
+                            "0x401f6c983ea34274ec46f84d70b31c151321188b"
+                          )
+                        }
                       />
-                      <Image src={EditIcon} style={{ marginLeft: "1.2rem" }} />
+                      <Image
+                        src={EditIcon}
+                        style={{ marginLeft: "1.2rem" }}
+                        onClick={this.handleShow}
+                      />
                     </div>
                     <h4 className="inter-display-medium f-s-16 lh-19">
                       {CurrencyType(false)}3.78m{" "}
@@ -428,75 +755,72 @@ class CohortPage extends Component {
             </h2>
           </div>
           <div className="cards">
-
             {/* Recomandation Cards */}
-            {
-              [...Array(3)].map((e) => {
-                return (
-                  <div className="walletcard">
-                    <>
-                      <div className="m-b-20 wallet-details">
-                        <div className="account-details">
-                          <span className="inter-display-regular f-s-13 lh-16">
-                            0x7d2d43e63666f45b40316b44212325625dbaeb40
-                          </span>
-                          <Image
-                            src={CopyClipboardIcon}
-                            onClick={() => {
-                              // copyContent(props.wallet_account_number)
-                            }}
-                            className="m-l-10 m-r-12 cp"
-                          />
-                        </div>
+            {[...Array(3)].map((e) => {
+              return (
+                <div className="walletcard">
+                  <>
+                    <div className="m-b-20 wallet-details">
+                      <div className="account-details">
+                        <span className="inter-display-regular f-s-13 lh-16">
+                          0x7d2d43e63666f45b40316b44212325625dbaeb40
+                        </span>
+                        <Image
+                          src={CopyClipboardIcon}
+                          onClick={() =>
+                            this.copyLink(
+                              "0x401f6c983ea34274ec46f84d70b31c151321188b"
+                            )
+                          }
+                          className="m-l-10 m-r-12 cp"
+                        />
+                      </div>
 
-                        <div className="amount-details">
-                          <h6 className="inter-display-medium f-s-16 lh-19">
-                            {numToCurrency(47474)}
-                          </h6>
-                          <span className="inter-display-semi-bold f-s-10 lh-12">
-                            {CurrencyType(true)}
-                          </span>
-                        </div>
+                      <div className="amount-details">
+                        <h6 className="inter-display-medium f-s-16 lh-19">
+                          {numToCurrency(47474)}
+                        </h6>
+                        <span className="inter-display-semi-bold f-s-10 lh-12">
+                          {CurrencyType(true)}
+                        </span>
                       </div>
-                      <div className="coins-chip">
-                        <div className="chips-section">
-                          <CoinChip
-                            colorCode={"#E84042"}
-                            coin_img_src={Coin}
-                            coin_percent={"Avalanche"}
-                          />
-                          <CoinChip
-                            colorCode={"#E84042"}
-                            coin_img_src={Coin}
-                            coin_percent={"Avalanche"}
-                          />
-                          <CoinChip
-                            colorCode={"#E84042"}
-                            coin_img_src={Coin}
-                            coin_percent={"Avalanche"}
-                          />
-                          <CoinChip
-                            colorCode={"#E84042"}
-                            coin_img_src={Coin}
-                            coin_percent={"Avalanche"}
-                          />
-                          <CoinChip
-                            colorCode={"#E84042"}
-                            coin_img_src={Coin}
-                            coin_percent={"Avalanche"}
-                          />
-                        </div>
-                        <h3 className="inter-display-semi-bold f-s-13 lh-15 cp">
-                          <Image src={PlusIcon} /> Add to cohort
-                        </h3>
+                    </div>
+                    <div className="coins-chip">
+                      <div className="chips-section">
+                        <CoinChip
+                          colorCode={"#E84042"}
+                          coin_img_src={Coin}
+                          coin_percent={"Avalanche"}
+                        />
+                        <CoinChip
+                          colorCode={"#E84042"}
+                          coin_img_src={Coin}
+                          coin_percent={"Avalanche"}
+                        />
+                        <CoinChip
+                          colorCode={"#E84042"}
+                          coin_img_src={Coin}
+                          coin_percent={"Avalanche"}
+                        />
+                        <CoinChip
+                          colorCode={"#E84042"}
+                          coin_img_src={Coin}
+                          coin_percent={"Avalanche"}
+                        />
+                        <CoinChip
+                          colorCode={"#E84042"}
+                          coin_img_src={Coin}
+                          coin_percent={"Avalanche"}
+                        />
                       </div>
-                    </>
-                  </div>
-                );
-              })
-            }
-         
-            
+                      <h3 className="inter-display-semi-bold f-s-13 lh-15 cp">
+                        <Image src={PlusIcon} /> Add to cohort
+                      </h3>
+                    </div>
+                  </>
+                </div>
+              );
+            })}
           </div>
 
           {/* Recommandation */}
