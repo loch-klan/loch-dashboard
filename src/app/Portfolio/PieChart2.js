@@ -476,7 +476,7 @@ class PieChart2 extends BaseReactComponent {
       unit = " hours ago";
     }
 
-    console.log("timediff str", timeDiffString);
+    // console.log("timediff str", timeDiffString);
     this.setState({
       timeNumber: prevTime ? timeDiffString : "3",
       timeUnit: unit,
@@ -498,7 +498,7 @@ class PieChart2 extends BaseReactComponent {
 
     this.props.portfolioState.walletTotal = 0;
 
-    console.log("Refresh clicked");
+    // console.log("Refresh clicked");
     localStorage.setItem("refreshApiTime", currentTime);
     let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
     userWalletList.map((wallet, i) => {

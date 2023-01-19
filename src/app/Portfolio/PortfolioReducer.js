@@ -19,7 +19,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         let updateWalletTotal = state.walletTotal || 0;
         let updatedChainWallet = state.chainWallet || [];
         let chainPortfolio = state.chainPortfolio || {};
-        // console.log('updatedChainWallet', updatedChainWallet);
+     
 
         // console.log("state", state)
         if (
@@ -81,6 +81,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 action.payload.userWalletList.assets[i].asset.id
               ] === undefined
             ) {
+          
               // updatedChainWallet.push({
               updatedChainWallet[
                 action.payload.userWalletList.assets[i].asset.id
@@ -124,6 +125,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
               // If chain doesn't exist
               // if (chainExist <= -1) {
               // if (updatedChainWallet[action.payload.userWalletList.assets[i].asset.code]["chain"] === undefined) {
+               
               updatedChainWallet[
                 action.payload.userWalletList.assets[i].asset.id
               ]["chain"].push({
@@ -160,7 +162,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
             }
             // console.log(
             //   "updated wallet total",
-            //   updateWalletTotal,
+            //   updateWalletTotal,i
             // );
             updateWalletTotal = updateWalletTotal + currentPrice;
           }

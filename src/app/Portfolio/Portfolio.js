@@ -247,7 +247,7 @@ class Portfolio extends BaseReactComponent {
   componentDidUpdate(prevProps, prevState) {
 
     if (prevState.isUpdate !== this.state.isUpdate) {
-      console.log("btn clicked");
+      // console.log("btn clicked");
       this.props.portfolioState.walletTotal = 0;
     }
 
@@ -262,6 +262,7 @@ class Portfolio extends BaseReactComponent {
         this.state.userWalletList &&
         this.state.userWalletList.length > 0
       ) {
+          //  console.log("reset", this.state.userWalletList);
         // console.log("ComponentdidUpdate")
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
