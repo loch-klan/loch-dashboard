@@ -27,7 +27,9 @@ import arrowDown from "../../assets/images/arrow-down.svg";
 import Coin1 from "../../assets/images/Coin.svg";
 import Coin2 from "../../assets/images/Coin2.svg";
 import Coin3 from "../../assets/images/Coin3.svg";
-import { getAllProtocol, getYieldBalanceApi } from "./Api";
+import { getAllProtocol, getYieldBalanceApi, getUserWallet } from "./Api";
+import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
+
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -55,13 +57,16 @@ class PieChart2 extends BaseReactComponent {
       yieldData: [],
       DebtValues: [],
       YieldValues: [],
-      yeldTotal:0,
-      debtTotal:0,
+      yeldTotal: 0,
+      debtTotal: 0,
+      prevClickTime: 0,
+      timeNumber: 0,
     };
   }
 
   componentDidMount() {
 
+    this.RefreshButton(false);
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
       let assetData = [];
       if (
@@ -122,109 +127,109 @@ class PieChart2 extends BaseReactComponent {
       this.setState({ piechartisLoading: this.props.isLoading });
     }
     // console.log("pie", this.props.chainPortfolio)
-  
-       // console.log("pie", this.props.allCoinList);
-       let chainList = [];
-       
-  let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
-  let uniquechains = [];
-  // console.log("user wallet",UserWallet)
-  UserWallet &&
-    UserWallet.map((item) => {
-      item.coins &&
-        item.coins.map((coin, i) => {
-          let isfound = false;
-          this.props.chainPortfolio &&
-            this.props.chainPortfolio.map((chain) => {
-              if (
-                coin.coinName === chain.name &&
-                !uniquechains.includes(chain.name)
-              ) {
-                isfound = true;
-                uniquechains.push(coin.coinName);
-                chainList.push({
-                  name: chain.name,
-                  symbol: chain.symbol,
-                  total: chain.total,
-                  id: chain.id,
-                  color: chain.color,
-                });
-              }
-            });
-          if (
-            !isfound &&
-            coin.chain_detected &&
-            !uniquechains.includes(coin.coinName)
-          ) {
-            chainList.push({
-              name: coin.coinName,
-              symbol: coin.coinSymbol,
-              total: 0.0,
-              id: i,
-              color: coin.coinColor,
-            });
-          }
-        });
-    });
-  // console.log("coinlist", chainList)
-  // this.props.chainPortfolio &&
-  //   this.props.chainPortfolio.map((chain) => {
-  //     chainList.push({
-  //       name: chain.name,
-  //       symbol: chain.symbol,
-  //       total: chain.total,
-  //       id: chain.id,
-  //       color: chain.color,
-  //     });
-  //   });
 
-  chainList =
-    chainList &&
-    chainList.sort((a, b) => {
-      return b.total - a.total;
+    // console.log("pie", this.props.allCoinList);
+    let chainList = [];
+
+    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let uniquechains = [];
+    // console.log("user wallet",UserWallet)
+    UserWallet &&
+      UserWallet.map((item) => {
+        item.coins &&
+          item.coins.map((coin, i) => {
+            let isfound = false;
+            this.props.chainPortfolio &&
+              this.props.chainPortfolio.map((chain) => {
+                if (
+                  coin.coinName === chain.name &&
+                  !uniquechains.includes(chain.name)
+                ) {
+                  isfound = true;
+                  uniquechains.push(coin.coinName);
+                  chainList.push({
+                    name: chain.name,
+                    symbol: chain.symbol,
+                    total: chain.total,
+                    id: chain.id,
+                    color: chain.color,
+                  });
+                }
+              });
+            if (
+              !isfound &&
+              coin.chain_detected &&
+              !uniquechains.includes(coin.coinName)
+            ) {
+              chainList.push({
+                name: coin.coinName,
+                symbol: coin.coinSymbol,
+                total: 0.0,
+                id: i,
+                color: coin.coinColor,
+              });
+            }
+          });
+      });
+    // console.log("coinlist", chainList)
+    // this.props.chainPortfolio &&
+    //   this.props.chainPortfolio.map((chain) => {
+    //     chainList.push({
+    //       name: chain.name,
+    //       symbol: chain.symbol,
+    //       total: chain.total,
+    //       id: chain.id,
+    //       color: chain.color,
+    //     });
+    //   });
+
+    chainList =
+      chainList &&
+      chainList.sort((a, b) => {
+        return b.total - a.total;
+      });
+    this.setState({
+      chainList,
     });
-  this.setState({
-    chainList,
-  });
-    
-       // console.log("props asset price", this.props.assetPrice);
-       let assetPrice =this.props.assetPrice && this.props.assetPrice?.reduce((obj, element) => {
-         obj[element.id] = element;
-         return obj;
-       }, {});
-       this.setState({
-         assetPrice,
-       });
+
+    // console.log("props asset price", this.props.assetPrice);
+    let assetPrice =
+      this.props.assetPrice &&
+      this.props.assetPrice?.reduce((obj, element) => {
+        obj[element.id] = element;
+        return obj;
+      }, {});
+    this.setState({
+      assetPrice,
+    });
     // getAllProtocol(this);
-     
-     
   }
 
   getYieldBalance = () => {
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
-    UserWallet && UserWallet.map((e) => {
-      //  console.log("wallet_address", e.address);
-      this.state.allProtocols && this.state.allProtocols.map((protocol) => {
-        let data = new URLSearchParams();
-        // console.log("protocol_code", protocol.code,
-        //   "wallet_address",
-        //   e.address);
-        data.append("protocol_code", protocol.code);
-        data.append("wallet_address", e.address);
-        getYieldBalanceApi(this, data);
-        
-      })
-    });
-  }
+    UserWallet &&
+      UserWallet.map((e) => {
+        //  console.log("wallet_address", e.address);
+        this.state.allProtocols &&
+          this.state.allProtocols.map((protocol) => {
+            let data = new URLSearchParams();
+            // console.log("protocol_code", protocol.code,
+            //   "wallet_address",
+            //   e.address);
+            data.append("protocol_code", protocol.code);
+            data.append("wallet_address", e.address);
+            getYieldBalanceApi(this, data);
+          });
+      });
+  };
 
   componentDidUpdate(prevProps) {
-    
     if (this.props.assetTotal !== prevProps.assetTotal) {
       this.setState({ assetTotal: this.props.assetTotal });
     }
     if (this.props.userWalletData !== prevProps.userWalletData) {
       // this.props.userWalletData && this.setState({ piechartisLoading: true })
-       
+
       let assetData = [];
       if (
         this.props.userWalletData &&
@@ -317,41 +322,42 @@ class PieChart2 extends BaseReactComponent {
       // console.log("user wallet",UserWallet)
       UserWallet &&
         UserWallet.map((item) => {
-          item.coins && item.coins.map((coin,i) => {
-            let isfound = false;
-            this.props.chainPortfolio &&
-              this.props.chainPortfolio.map((chain) => {
-                if (
-                  coin.coinName === chain.name &&
-                  !uniquechains.includes(chain.name)
-                ) {
-                  isfound = true;
-                  uniquechains.push(coin.coinName);
-                  chainList.push({
-                    name: chain.name,
-                    symbol: chain.symbol,
-                    total: chain.total,
-                    id: chain.id,
-                    color: chain.color,
-                  });
-                }
-              });
-            if (
-              !isfound &&
-              coin.chain_detected &&
-              !uniquechains.includes(coin.coinName)
-            ) {
-              chainList.push({
-                name: coin.coinName,
-                symbol: coin.coinSymbol,
-                total: 0.0,
-                id: i,
-                color: coin.coinColor,
-              });
-            }
-          })
+          item.coins &&
+            item.coins.map((coin, i) => {
+              let isfound = false;
+              this.props.chainPortfolio &&
+                this.props.chainPortfolio.map((chain) => {
+                  if (
+                    coin.coinName === chain.name &&
+                    !uniquechains.includes(chain.name)
+                  ) {
+                    isfound = true;
+                    uniquechains.push(coin.coinName);
+                    chainList.push({
+                      name: chain.name,
+                      symbol: chain.symbol,
+                      total: chain.total,
+                      id: chain.id,
+                      color: chain.color,
+                    });
+                  }
+                });
+              if (
+                !isfound &&
+                coin.chain_detected &&
+                !uniquechains.includes(coin.coinName)
+              ) {
+                chainList.push({
+                  name: coin.coinName,
+                  symbol: coin.coinSymbol,
+                  total: 0.0,
+                  id: i,
+                  color: coin.coinColor,
+                });
+              }
+            });
         });
-        // console.log("coinlist", chainList)
+      // console.log("coinlist", chainList)
       // this.props.chainPortfolio &&
       //   this.props.chainPortfolio.map((chain) => {
       //     chainList.push({
@@ -378,7 +384,7 @@ class PieChart2 extends BaseReactComponent {
         obj[element.id] = element;
         return obj;
       }, {});
-     
+
       this.setState({
         assetPrice,
       });
@@ -397,9 +403,8 @@ class PieChart2 extends BaseReactComponent {
       });
       // for balance sheet
       // getAllProtocol(this);
-      
     }
-    
+
     // if(!this.props.userWalletData && this.props.walletTotal === 0 && !this.props.isLoading){
     //   this.setState({piechartisLoading : this.props.isLoading === false ? false : true})
     // }
@@ -412,32 +417,90 @@ class PieChart2 extends BaseReactComponent {
     this.setState({
       isChainToggle: !this.state.isChainToggle,
     });
-  }
+  };
 
   toggleYield = () => {
     this.setState({
       isYeildToggle: !this.state.isYeildToggle,
       isDebtToggle: false,
     });
-  }
+  };
 
   toggleDebt = () => {
     this.setState({
       isDebtToggle: !this.state.isDebtToggle,
       isYeildToggle: false,
     });
-  }
-   handleAddWalletClick = () =>{
-        this.props.handleAddModal();
+  };
+  handleAddWalletClick = () => {
+    this.props.handleAddModal();
+  };
+  handleManageClick = () => {
+    this.props.handleManage();
+  };
+
+  RefreshButton = (isClicked) => {
+    // get the current time
+    let currentTime = new Date().getTime();
+
+    let prevTime = JSON.parse(localStorage.getItem("refreshApiTime"));
+    // calculate the time difference since the last click
+    let timeDiff = prevTime ? currentTime - prevTime : currentTime;
+
+    // format the time difference as a string
+  let timeDiffString;
+
+    // calculate the time difference in seconds, minutes, and hours
+    let diffInSeconds = timeDiff / 1000;
+    let diffInMinutes = diffInSeconds / 60;
+    let diffInHours = diffInMinutes / 60;
+
+    let unit = "";
+
+    // format the time difference as a string
+    if (diffInSeconds < 60) {
+      timeDiffString = Math.floor(diffInSeconds);
+      unit = "seconds ago";
+    } else if (diffInMinutes < 60) {
+      timeDiffString = Math.floor(diffInMinutes)
+       unit = " minutes ago";
+    } else {
+      timeDiffString = Math.floor(diffInHours);
+        unit = " hours ago";
     }
-    handleManageClick = ()=>{
-      
-        this.props.handleManage();
+
+    this.setState({
+      timeNumber: timeDiffString,
+      timeUnit: unit
+    });
+
+    
+    if (isClicked) {
+      console.log("Refresh clicked");
+      localStorage.setItem("refreshApiTime", currentTime);
+     let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+      userWalletList.map((wallet, i) => {
+        if (wallet.coinFound) {
+          wallet.coins.map((coin) => {
+            if (coin.chain_detected) {
+              let userCoinWallet = {
+                address: wallet.address,
+                coinCode: coin.coinCode,
+              };
+              this.props.getUserWallet(userCoinWallet, this,true);
+               
+            }
+          });
+        }
+      });
     }
+
+    // getUserWallet(this);
+  };
 
   render() {
     // console.log("asset price state", this.state.assetPrice);
-      //  console.log("asset price props", this.props.assetPrice);
+    //  console.log("asset price props", this.props.assetPrice);
     let self = this;
     let chartOptions = {
       chart: {
@@ -703,45 +766,49 @@ class PieChart2 extends BaseReactComponent {
     let uniqueAddress = [];
     let uniqueList =
       this.state.selectedSection[0] && this.state.selectedSection[0].chain;
-    
-    uniqueList && uniqueList.map((chain) => {
-      let total = 0;
-      uniqueList.map((item) => {
-        
-        if (chain.address === item.address && !uniqueAddress.includes(chain.address)) {
-          total += item.assetCount;
-        }
-      });
-      let displayAddress = "";
-      UserWallet && UserWallet.map((e) => {
-        if (e.address === chain.address) {
-          displayAddress = e.displayAddress;
-        }
-      });
-      !uniqueAddress.includes(chain.address) &&
-        chainList.push({
-          address: chain.address,
-          assetCount: chain.assetCount,
-          chainCode: chain.chainCode,
-          chainName: chain.chainName,
-          chainSymbol: chain.chainSymbol,
-          totalAssetCount: total,
-          displayAddress: displayAddress,
-        });
-       !uniqueAddress.includes(chain.address) && uniqueAddress.push(chain.address)
 
-    });
-   
+    uniqueList &&
+      uniqueList.map((chain) => {
+        let total = 0;
+        uniqueList.map((item) => {
+          if (
+            chain.address === item.address &&
+            !uniqueAddress.includes(chain.address)
+          ) {
+            total += item.assetCount;
+          }
+        });
+        let displayAddress = "";
+        UserWallet &&
+          UserWallet.map((e) => {
+            if (e.address === chain.address) {
+              displayAddress = e.displayAddress;
+            }
+          });
+        !uniqueAddress.includes(chain.address) &&
+          chainList.push({
+            address: chain.address,
+            assetCount: chain.assetCount,
+            chainCode: chain.chainCode,
+            chainName: chain.chainName,
+            chainSymbol: chain.chainSymbol,
+            totalAssetCount: total,
+            displayAddress: displayAddress,
+          });
+        !uniqueAddress.includes(chain.address) &&
+          uniqueAddress.push(chain.address);
+      });
+
     // chainList =
     //   chainList &&
     //   chainList.sort((a, b) => {
     //     return parseFloat(b.assetCount) - parseFloat(a.assetCount);
     //   });
-     chainList =
-       chainList &&
-       chainList.sort((a, b) => {
-         return parseFloat(b.totalAssetCount) - parseFloat(a.totalAssetCount);
-       });
+    chainList =
+      chainList &&
+      chainList.sort((a, b) => {
+        return parseFloat(b.totalAssetCount) - parseFloat(a.totalAssetCount);
+      });
     let totalCount = 0;
     // chainList &&
     //   chainList.slice(2).map((data) => {
@@ -790,9 +857,38 @@ class PieChart2 extends BaseReactComponent {
               <Col md={5} style={{ marginTop: "-2rem", padding: 0, zIndex: 1 }}>
                 <div>
                   {/* Chains */}
-                  {/* <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                    Chains
-                  </h2> */}
+                  <h2
+                    className="inter-display-regular f-s-13 lh-15 grey-969 cp"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      userSelect: "none",
+                    }}
+                    onClick={()=>this.RefreshButton(true)}
+                  >
+                    <Image
+                      src={refreshIcon}
+                      style={{
+                        position: "relative",
+                        marginRight: `6px`,
+                        width: "1.3rem",
+                        height: "1.3rem",
+                        filter: "opacity(0.4)",
+                      }}
+                    />
+                    Updated{" "}
+                    <span
+                      style={{ margin: "0px 3px" }}
+                      className="inter-display-bold f-s-13 lh-15 grey-969"
+                    >
+                      {this.state.timeNumber === 0
+                        ? "3"
+                        : this.state.timeNumber}
+                    </span>{" "}
+                    {" " + this.state.timeUnit
+                      ? this.state.timeUnit
+                      : "hours ago"}
+                  </h2>
                   <div className="chain-card">
                     <div
                       style={{
@@ -1322,4 +1418,9 @@ class PieChart2 extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
 });
-export default connect(mapStateToProps)(PieChart2);
+
+const mapDispatchToProps = {
+  getUserWallet,
+  
+};
+export default connect(mapStateToProps, mapDispatchToProps)(PieChart2);

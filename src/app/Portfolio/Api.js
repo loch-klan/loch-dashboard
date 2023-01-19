@@ -23,17 +23,28 @@ export const getCoinRate = () => {
     };
 };
 
-export const getUserWallet = (wallet,ctx) => {
-    return function (dispatch, getState) {
-        let data = new URLSearchParams();
-        data.append("chain", wallet.coinCode);
-        data.append("wallet_address", wallet.address);
+export const getUserWallet = (wallet, ctx, isRefresh) => {
+  
+  return function (dispatch, getState) {
+      
+      let data = new URLSearchParams();
+       data.append("chain", wallet.coinCode);
+      data.append("wallet_address", wallet.address);
+      
+    if (!isRefresh) {
+        
+         data.append("update_balance", false);
+    } else {
+       console.log("usercoinWallet", wallet);
+          data.append("update_balance", true);
+      }
+    
         postLoginInstance
             .post("wallet/user-wallet/get-balance", data)
             .then((res) => {
               let userWalletList = res.data && res.data.data.user_wallet && res.data.data.user_wallet.assets && res.data.data.user_wallet.assets.length > 0 && res.data.data.user_wallet.active ? res.data.data.user_wallet : []
               
-              // console.log("asset", res.data?.data.asset_prices)
+              // console.log("asset", res.data?.data)
                 dispatch({
                     type: USER_WALLET_LIST,
                     payload: {

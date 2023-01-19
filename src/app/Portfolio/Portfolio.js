@@ -133,6 +133,7 @@ class Portfolio extends BaseReactComponent {
       counterGraphDigit: 3,
       assetPrice: null,
       isTimeOut: true,
+    
     };
   }
 
@@ -173,6 +174,8 @@ class Portfolio extends BaseReactComponent {
       this.apiCall();
     }
   }
+
+ 
 
   apiCall = () => {
     this.props.getAllCoins();
@@ -264,6 +267,7 @@ class Portfolio extends BaseReactComponent {
                   coinCode: coin.coinCode,
                 };
                 this.props.getUserWallet(userCoinWallet, this);
+               
               }
             });
           }
