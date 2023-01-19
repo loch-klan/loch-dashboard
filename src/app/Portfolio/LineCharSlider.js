@@ -179,16 +179,16 @@ class LineChartSlider extends BaseReactComponent {
           }
 
           assetData.assets.map((data) => {
-            // console.log("data", data);
+            console.log("data", data);
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.count) *
+                  new Number(data.max_count) *
                     (data.asset_price * this.state.currency?.rate) +
                   assetMaster[data.asset.id][assetData.timestamp];
               } else {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.count) *
+                  new Number(data.max_count) *
                   (data.asset_price * this.state.currency?.rate);
               }
             } else {
@@ -198,11 +198,11 @@ class LineChartSlider extends BaseReactComponent {
                   ? data.asset_price * this.state.currency?.rate
                   : 0,
                 count:
-                  new Number(data.count) *
+                  new Number(data.max_count) *
                   (data.asset_price * this.state.currency?.rate),
               };
               assetMaster[data.asset.id][assetData.timestamp] =
-                new Number(data.count) *
+                new Number(data.max_count) *
                 (data.asset_price * this.state.currency.rate);
             }
           });
