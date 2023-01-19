@@ -158,11 +158,10 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                   : action.payload.userWalletList.assets[i].count *
                     DEFAULT_PRICE);
             }
-            console.log(
-              "updated wallet total",
-              updateWalletTotal,
-              updateWalletTotal + currentPrice
-            );
+            // console.log(
+            //   "updated wallet total",
+            //   updateWalletTotal,
+            // );
             updateWalletTotal = updateWalletTotal + currentPrice;
           }
         }

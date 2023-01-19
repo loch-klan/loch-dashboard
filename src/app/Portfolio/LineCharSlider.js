@@ -179,6 +179,7 @@ class LineChartSlider extends BaseReactComponent {
           }
 
           assetData.assets.map((data) => {
+            // console.log("data", data);
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
                 assetMaster[data.asset.id][assetData.timestamp] =
