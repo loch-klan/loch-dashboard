@@ -45,7 +45,7 @@ class PieChart2 extends BaseReactComponent {
       chartOptions: [],
       valueChanged: false,
       flag: false,
-      isLoading: props.isLoading,
+      isLoading: false,
       piechartisLoading: true,
       currency: JSON.parse(localStorage.getItem("currency")),
       isChainToggle: false,
@@ -59,14 +59,14 @@ class PieChart2 extends BaseReactComponent {
       YieldValues: [],
       yeldTotal: 0,
       debtTotal: 0,
-      prevClickTime: 0,
-      timeNumber: 0,
+      timeNumber: null,
+      timeUnit:null,
     };
   }
 
   componentDidMount() {
 
-    this.RefreshButton(false);
+    this.getCurrentTime();
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
       let assetData = [];
       if (
@@ -439,16 +439,22 @@ class PieChart2 extends BaseReactComponent {
     this.props.handleManage();
   };
 
-  RefreshButton = (isClicked) => {
-    // get the current time
+  getCurrentTime = () => {
     let currentTime = new Date().getTime();
 
     let prevTime = JSON.parse(localStorage.getItem("refreshApiTime"));
     // calculate the time difference since the last click
     let timeDiff = prevTime ? currentTime - prevTime : currentTime;
-
+    console.log(
+      "time deff",
+      timeDiff,
+      "prev time",
+      prevTime,
+      "current time",
+      currentTime
+    );
     // format the time difference as a string
-  let timeDiffString;
+    let timeDiffString;
 
     // calculate the time difference in seconds, minutes, and hours
     let diffInSeconds = timeDiff / 1000;
@@ -460,40 +466,60 @@ class PieChart2 extends BaseReactComponent {
     // format the time difference as a string
     if (diffInSeconds < 60) {
       timeDiffString = Math.floor(diffInSeconds);
+
       unit = "seconds ago";
     } else if (diffInMinutes < 60) {
-      timeDiffString = Math.floor(diffInMinutes)
-       unit = " minutes ago";
+      timeDiffString = Math.floor(diffInMinutes);
+      unit = " minutes ago";
     } else {
       timeDiffString = Math.floor(diffInHours);
-        unit = " hours ago";
+      unit = " hours ago";
     }
 
+    console.log("timediff str", timeDiffString);
     this.setState({
-      timeNumber: timeDiffString,
-      timeUnit: unit
+      timeNumber: prevTime ? timeDiffString : "3",
+      timeUnit: unit,
+    }, () => {
+      setTimeout(() => {
+        this.getCurrentTime();
+      }, 300000);
     });
+  }
+
+  RefreshButton = () => {
+    // get the current time
+    this.setState({
+      isLoading:true,
+    })
+    let currentTime = new Date().getTime();
+
+    // console.log("state", this)
+
+    this.props.portfolioState.walletTotal = 0;
+
+    console.log("Refresh clicked");
+    localStorage.setItem("refreshApiTime", currentTime);
+    let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    userWalletList.map((wallet, i) => {
+      if (wallet.coinFound) {
+        wallet.coins.map((coin) => {
+          if (coin.chain_detected) {
+            let userCoinWallet = {
+              address: wallet.address,
+              coinCode: coin.coinCode,
+            };
+            this.props.getUserWallet(userCoinWallet, this, true);
+          }
+        });
+      }
+    });
+   
+
+   this.getCurrentTime();
 
     
-    if (isClicked) {
-      console.log("Refresh clicked");
-      localStorage.setItem("refreshApiTime", currentTime);
-     let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
-      userWalletList.map((wallet, i) => {
-        if (wallet.coinFound) {
-          wallet.coins.map((coin) => {
-            if (coin.chain_detected) {
-              let userCoinWallet = {
-                address: wallet.address,
-                coinCode: coin.coinCode,
-              };
-              this.props.getUserWallet(userCoinWallet, this,true);
-               
-            }
-          });
-        }
-      });
-    }
+    
 
     // getUserWallet(this);
   };
@@ -835,7 +861,8 @@ class PieChart2 extends BaseReactComponent {
         <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
           Overview
         </h1>
-        {Object.keys(this.state.assetData).length > 0 ? (
+        {Object.keys(this.state.assetData).length > 0 &&
+        !this.state.isLoading ? (
           <>
             <Row style={{ width: "100%" }}>
               <Col
@@ -864,7 +891,7 @@ class PieChart2 extends BaseReactComponent {
                       alignItems: "center",
                       userSelect: "none",
                     }}
-                    onClick={()=>this.RefreshButton(true)}
+                    onClick={this.RefreshButton}
                   >
                     <Image
                       src={refreshIcon}
@@ -881,7 +908,7 @@ class PieChart2 extends BaseReactComponent {
                       style={{ margin: "0px 3px" }}
                       className="inter-display-bold f-s-13 lh-15 grey-969"
                     >
-                      {this.state.timeNumber === 0
+                      {this.state.timeNumber === null
                         ? "3"
                         : this.state.timeNumber}
                     </span>{" "}
@@ -1394,7 +1421,7 @@ class PieChart2 extends BaseReactComponent {
             </Row>
           </>
         ) : //  this.state.piechartisLoading === true && this.state.assetData === null
-        this.props.isLoading ? (
+        this.props.isLoading || this.state.isLoading ? (
           <Loading />
         ) : this.props.walletTotal === 0 ||
           this.state.assetData.length === 0 ? (

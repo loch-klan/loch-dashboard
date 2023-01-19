@@ -148,11 +148,13 @@ class Portfolio extends BaseReactComponent {
       isUpdate: this.state.isUpdate == 0 ? 1 : 0,
     });
     this.props.getCoinRate();
+   
   };
   handleFixModal = () => {
+   
     this.setState({
       fixModal: !this.state.fixModal,
-      isUpdate: this.state.isUpdate == 0 ? 1 : 0,
+      // isUpdate: this.state.isUpdate == 0 && this.state.fixModal ? 1 : 0,
     });
   };
 
@@ -243,6 +245,12 @@ class Portfolio extends BaseReactComponent {
     this.props.searchTransactionApi(data, this);
   };
   componentDidUpdate(prevProps, prevState) {
+
+    if (prevState.isUpdate !== this.state.isUpdate) {
+      console.log("btn clicked");
+      this.props.portfolioState.walletTotal = 0;
+    }
+
     // Typical usage (don't forget to compare props):
     // Check if the coin rate api values are changed
     if (

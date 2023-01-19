@@ -35,7 +35,7 @@ export const getUserWallet = (wallet, ctx, isRefresh) => {
         
          data.append("update_balance", false);
     } else {
-       console.log("usercoinWallet", wallet);
+      //  console.log("On Refresh Api Called", wallet);
           data.append("update_balance", true);
       }
     
@@ -57,6 +57,8 @@ export const getUserWallet = (wallet, ctx, isRefresh) => {
               //   type: COIN_RATE_LIST,
               //   payload: res.data?.data.asset_prices,
               // });
+              // console.log("state", ctx.props.portfolioState.walletTotal, ctx);
+              
             
                 if(ctx){
                   ctx.setState({

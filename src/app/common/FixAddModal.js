@@ -22,11 +22,11 @@ class FixAddModal extends BaseReactComponent {
     super(props);
     let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
     addWalletList =
-      addWalletList && addWalletList.length > 0
+      addWalletList && addWalletList?.length > 0
         ? addWalletList
         : [
             {
-              id: `wallet${addWalletList.length + 1}`,
+              id: `wallet${addWalletList?.length + 1}`,
               address: "",
               coins: [],
               displayAddress: "",
@@ -219,7 +219,10 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleAddWallet = () => {
-    console.log("add wallet list", this.state.addWalletList);
+
+    
+    
+    console.log("add wallet list", this.state.addWalletList,this);
     if (this.state.addWalletList) {
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -744,16 +747,17 @@ class FixAddModal extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
-    OnboardingState: state.OnboardingState
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
+  portfolioState: state.PortfolioState,
 });
 const mapDispatchToProps = {
-    getAllCoins,
-    detectCoin,
-    updateWalletApi,
-    getAllWalletApi,
-    getAllParentChains,
-}
+  getAllCoins,
+  detectCoin,
+  updateWalletApi,
+  getAllWalletApi,
+  getAllParentChains,
+};
 FixAddModal.propTypes = {
 };
 
