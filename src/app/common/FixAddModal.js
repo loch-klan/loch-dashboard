@@ -256,7 +256,7 @@ class FixAddModal extends BaseReactComponent {
           }
         }
         let addWallet = walletList;
-        // console.log("add wallet list", walletList)
+        console.log("arr", arr);
         addWallet.map((w, i) => {
           w.id = `wallet${i + 1}`;
         });

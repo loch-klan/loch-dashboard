@@ -147,7 +147,7 @@ class Portfolio extends BaseReactComponent {
       userWalletList: value,
       isUpdate: this.state.isUpdate == 0 ? 1 : 0,
     });
-    this.props.getCoinRate();
+    // this.props.getCoinRate();
    
   };
   handleFixModal = () => {
@@ -174,7 +174,9 @@ class Portfolio extends BaseReactComponent {
     if (this.props.location.state?.noLoad) {
     } else {
       this.apiCall();
+   
     }
+    // console.log("Mount");
   }
 
  
@@ -245,6 +247,8 @@ class Portfolio extends BaseReactComponent {
     this.props.searchTransactionApi(data, this);
   };
   componentDidUpdate(prevProps, prevState) {
+    // console.log("props",prevProps)
+    // console.log("state",prevState);
 
     if (prevState.isUpdate !== this.state.isUpdate) {
       // console.log("btn clicked");
@@ -260,9 +264,10 @@ class Portfolio extends BaseReactComponent {
       if (
         this.state &&
         this.state.userWalletList &&
-        this.state.userWalletList.length > 0
+        this.state.userWalletList.length > 0 
       ) {
-           console.log("reset", this.state.userWalletList);
+       
+          //  console.log("reset", this.state.userWalletList);
         // console.log("ComponentdidUpdate")
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();

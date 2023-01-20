@@ -445,14 +445,14 @@ class PieChart2 extends BaseReactComponent {
     let prevTime = JSON.parse(localStorage.getItem("refreshApiTime"));
     // calculate the time difference since the last click
     let timeDiff = prevTime ? currentTime - prevTime : currentTime;
-    console.log(
-      "time deff",
-      timeDiff,
-      "prev time",
-      prevTime,
-      "current time",
-      currentTime
-    );
+    // console.log(
+    //   "time deff",
+    //   timeDiff,
+    //   "prev time",
+    //   prevTime,
+    //   "current time",
+    //   currentTime
+    // );
     // format the time difference as a string
     let timeDiffString;
 
@@ -465,15 +465,16 @@ class PieChart2 extends BaseReactComponent {
 
     // format the time difference as a string
     if (diffInSeconds < 60) {
-      timeDiffString = Math.floor(diffInSeconds);
+      // timeDiffString = Math.floor(diffInSeconds);
+       timeDiffString = 0;
 
-      unit = "seconds ago";
+      unit = " just now";
     } else if (diffInMinutes < 60) {
       timeDiffString = Math.floor(diffInMinutes);
-      unit = " minutes ago";
+      unit = diffInMinutes < 2 ? " minute ago" : " minutes ago";
     } else {
       timeDiffString = Math.floor(diffInHours);
-      unit = " hours ago";
+      unit = diffInMinutes < 2 ? " hour ago" : " hours ago";
     }
 
     // console.log("timediff str", timeDiffString);
@@ -499,7 +500,7 @@ class PieChart2 extends BaseReactComponent {
     this.props.portfolioState.walletTotal = 0;
 
     // console.log("Refresh clicked");
-    localStorage.setItem("refreshApiTime", currentTime);
+    // localStorage.setItem("refreshApiTime", currentTime);
     let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
     userWalletList.map((wallet, i) => {
       if (wallet.coinFound) {
@@ -516,7 +517,7 @@ class PieChart2 extends BaseReactComponent {
     });
    
 
-   this.getCurrentTime();
+  //  this.getCurrentTime();
 
     
     
@@ -884,27 +885,37 @@ class PieChart2 extends BaseReactComponent {
               <Col md={5} style={{ marginTop: "-2rem", padding: 0, zIndex: 1 }}>
                 <div>
                   {/* Chains */}
-                  <h2
-                    className="inter-display-regular f-s-13 lh-15 grey-969 cp refresh-btn"
-                    onClick={this.RefreshButton}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "end",
+                    }}
                   >
-                    <Image src={refreshIcon} />
-                    Updated{" "}
-                    <span
-                      style={{ margin: "0px 3px" }}
-                      className="inter-display-bold f-s-13 lh-15 grey-969"
+                    <h2
+                      className="inter-display-regular f-s-13 lh-15 grey-969 cp refresh-btn"
+                      onClick={this.RefreshButton}
                     >
-                      {this.state.timeNumber === null
-                        ? "3"
-                        : this.state.timeNumber === 0
-                        ? " just now"
-                        : this.state.timeNumber}
-                    </span>{" "}
-                    {" " + this.state.timeUnit !== "" &&
-                    this.state.timeNumber !== 0
-                      ? this.state.timeUnit
-                      :  this.state.timeNumber == 0 ? "" : "hours ago"}
-                  </h2>
+                      <Image src={refreshIcon} />
+                      Updated{" "}
+                      <span
+                        style={{ margin: "0px 3px" }}
+                        className="inter-display-bold f-s-13 lh-15 grey-969"
+                      >
+                        {this.state.timeNumber === null
+                          ? "3"
+                          : this.state.timeNumber === 0 
+                          ? " just now"
+                          : this.state.timeNumber}
+                      </span>{" "}
+                      {" " + this.state.timeUnit !== "" &&
+                      this.state.timeNumber !== 0
+                        ? this.state.timeUnit
+                        : this.state.timeNumber == 0
+                        ? ""
+                        : "hours ago"}
+                    </h2>
+                  </div>
                   <div className="chain-card">
                     <div
                       style={{

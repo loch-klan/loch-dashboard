@@ -2,6 +2,7 @@ import { postLoginInstance, preLoginInstance } from "../../utils";
 import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES } from "./ActionTypes";
 import { toast } from "react-toastify";
 import { AssetType, DEFAULT_PRICE } from "../../utils/Constant";
+import moment from "moment";
 
 export const getCoinRate = () => {
     return async function (dispatch, getState) {
@@ -44,7 +45,21 @@ export const getUserWallet = (wallet, ctx, isRefresh) => {
             .then((res) => {
               let userWalletList = res.data && res.data.data.user_wallet && res.data.data.user_wallet.assets && res.data.data.user_wallet.assets.length > 0 && res.data.data.user_wallet.active ? res.data.data.user_wallet : []
               
-              // console.log("asset", res.data?.data)
+              // console.log(
+              //   "asset",
+              //   moment(res.data?.data.user_wallet?.modified_on).valueOf()
+              // );
+              // if (isRefresh) {
+                
+                localStorage.setItem(
+                  "refreshApiTime",
+                  moment(res.data?.data.user_wallet?.modified_on).valueOf()
+                );
+
+                isRefresh && ctx.getCurrentTime();
+
+              // }
+
                 dispatch({
                     type: USER_WALLET_LIST,
                     payload: {
