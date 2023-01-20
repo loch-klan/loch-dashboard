@@ -56,6 +56,8 @@ class CohortPage extends BaseReactComponent {
       edit: false,
       walletNotification: false,
       dayNotification: false,
+      showBtn: false,
+      isEmailValid: true,
     };
   }
 
@@ -77,19 +79,26 @@ class CohortPage extends BaseReactComponent {
   handleUpdateEmail = () => {
     this.setState({
       updateEmail: true,
+      showBtn: true,
     });
   };
 
   handleSave = () => {
     console.log("save");
-    toast.success(
-      <div className="custom-toast-msg" style={{ width: "43rem" }}>
-        <div>Email updated</div>
-        <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-          You will be receiving notifications from us there
+    if (this.state.isEmailValid) {
+      toast.success(
+        <div className="custom-toast-msg" style={{ width: "43rem" }}>
+          <div>Email updated</div>
+          <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+            You will be receiving notifications from us there
+          </div>
         </div>
-      </div>
-    );
+      );
+
+      setTimeout(() => {
+        this.setState({ showBtn: false });
+      }, 2000);
+    }
   };
 
   handleFunction = (e) => {
@@ -97,6 +106,7 @@ class CohortPage extends BaseReactComponent {
     console.log(e, title);
     this.setState({
       title: title,
+      showBtn: true,
     });
   };
 
@@ -105,6 +115,7 @@ class CohortPage extends BaseReactComponent {
     console.log(e, title);
     this.setState({
       titleday: title,
+      showBtn: true,
     });
   };
 
@@ -123,15 +134,17 @@ class CohortPage extends BaseReactComponent {
     console.log("click check")
     this.setState({
       walletNotification: !this.state.walletNotification,
+      showBtn: true,
     });
-     toast.success("You will be receiving notifications");
+    //  toast.success("You will be receiving notifications");
   };
 
   handleClickDay = () => {
     this.setState({
       dayNotification: !this.state.dayNotification,
+      showBtn: true,
     });
-     toast.success("You will be receiving notifications");
+    //  toast.success("You will be receiving notifications");
   };
 
   render() {
@@ -384,17 +397,33 @@ class CohortPage extends BaseReactComponent {
             </Col>
           </Row>
           {/* 4 card end */}
-          <h2
-            className="m-t-40 m-b-20 inter-display-medium f-s-20 l-h-24 black-191"
+
+          <div
             style={{
               display: "flex",
+              justifyContent: "space-between",
               alignItems: "center",
-              justifyContent: "start",
             }}
+            className="m-t-40 m-b-20 Notification-header"
           >
-            <Image src={BellIcon} style={{ marginRight: "1.2rem" }} />{" "}
-            Notifications
-          </h2>
+            <h2
+              className="inter-display-medium f-s-20 lh-45 black-191"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "start",
+              }}
+            >
+              <Image src={BellIcon} style={{ marginRight: "1.2rem" }} />{" "}
+              Notifications
+            </h2>
+
+            {this.state.showBtn && <button className="secondary-btn"
+              onClick={this.handleSave}
+            >
+              Save
+            </button>}
+          </div>
 
           {/* Notification start */}
           <div
@@ -452,7 +481,7 @@ here`
                   )}
                   {this.state.updateEmail && (
                     <div className="m-t-30">
-                      <Form onValidSubmit={this.handleSave}>
+                      <Form>
                         <FormElement
                           valueLink={this.linkState(this, "email")}
                           // label="Email Info"
@@ -463,7 +492,17 @@ here`
                               message: "",
                             },
                             {
-                              validate: FormValidator.isEmail,
+                              validate: () => {
+                                let isvalid = FormValidator.isEmail(
+                                  this.state.email
+                                );
+
+                                this.setState({
+                                  isEmailValid: isvalid,
+                                  });
+                                
+                                return isvalid;
+                              },
                               message: "Please enter valid email id",
                             },
                           ]}
@@ -474,25 +513,6 @@ here`
                             },
                           }}
                         />
-                        <div
-                          className=""
-                          style={{
-                            position: "absolute",
-                            top: 20,
-                            right: 20,
-                          }}
-                        >
-                          <button
-                            className={`inter-display-semi-bold f-s-13 lh-16`}
-                            type="submit"
-                            style={{
-                              background: "transparent",
-                              border: "none",
-                            }}
-                          >
-                            Save
-                          </button>
-                        </div>
                       </Form>
                     </div>
                   )}
