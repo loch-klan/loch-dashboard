@@ -679,7 +679,7 @@ here`
               </span>
             </h2>
 
-            <h2
+            {/* <h2
               className="m-t-40 m-b-20 inter-display-semi-bold f-s-13 lh-16 black-191 cp"
               style={{
                 display: "flex",
@@ -692,7 +692,7 @@ here`
                 src={ArrowRight}
                 style={{ marginLeft: "1rem", width: "0.55rem" }}
               />
-            </h2>
+            </h2> */}
           </div>
 
           <div
