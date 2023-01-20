@@ -206,8 +206,8 @@ class Cost extends Component {
 
   render() {
 
-    console.log("counter", this.state.counterGraphDigit);
-    console.log("fes", this.state.GraphDigit);
+    // console.log("counter", this.state.counterGraphDigit);
+    // console.log("fes", this.state.GraphDigit);
     const tableData = [
       {
         Asset: Ethereum,

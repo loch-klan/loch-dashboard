@@ -14,7 +14,7 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
         ctx.setState({
           barGraphLoading: false,
           GraphData: res.data.data.gas_fee_overtime,
-          graphValue: getGraphData(res.data.data.gas_fee_overtime, ctx),
+          graphValue: getGraphData(res.data.data, ctx),
           gasFeesGraphLoading:false,
         });
       } else{

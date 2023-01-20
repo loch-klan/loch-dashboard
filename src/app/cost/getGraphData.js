@@ -2,16 +2,18 @@ import { useState } from "react";
 import { CounterpartyFeesSpecificBar, FeesSpecificBar, HomeCounterPartyHover } from "../../utils/AnalyticsFunctions";
 import { DEFAULT_PRICE } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
+import { amountFormat, CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
 
-export const getGraphData = (arr, parentCtx) => {
-
+export const getGraphData = (apidata, parentCtx) => {
+  let arr = apidata.gas_fee_overtime;
+  let assetPrices = apidata.asset_prices;
   let currency = JSON.parse(localStorage.getItem('currency'));
   // const digit = numToCurrency(
   //   Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   // ).length;
+  
   let digit = 3;
-  //  console.log("state",parentCtx);
+  //  console.log("state", parentCtx, arr, assetPrices, apidata);
   const labels = arr.map((e) => e.chain.name);
 
   const options = {
@@ -46,7 +48,22 @@ export const getGraphData = (arr, parentCtx) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 = "Fees: " + CurrencyType(false) + numToCurrency(ctx.raw) + " or " + ctx.dataset.totalFeesAmount[ctx.dataIndex]?.toFixed(6) + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
+            let label0 =
+              "Fees Today (Then): " +
+              CurrencyType(false) +
+              amountFormat(
+                (
+                  ctx.dataset.totalFeesAmount[ctx.dataIndex] *
+                  assetPrices[ctx.dataset.defaultAssetCode[ctx.dataIndex]]
+                )?.toFixed(2),
+                "en-US",
+                "USD"
+              ) +
+              " (" +
+              CurrencyType(false) +
+              numToCurrency(ctx.raw) +
+              ")";
+              ;
             let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex] * currency.rate);
             FeesSpecificBar({
               session_id: getCurrentUser().id,
