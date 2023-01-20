@@ -23,6 +23,16 @@ import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import { getAllInsightsApi } from "./Api";
 import { InsightType } from "../../utils/Constant";
 import FeedbackForm from "../common/FeedbackForm";
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+
+// Add new Wallet
+import {
+  getCoinRate,
+  getUserWallet,
+  settingDefaultValues,
+} from "../Portfolio/Api";
+
+import FixAddModal from "../common/FixAddModal";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -40,6 +50,12 @@ class Intelligence extends Component {
       isLoading: true,
       // title: "Max",
       title: 0,
+
+      // add new wallet
+      userWalletList: localStorage.getItem("addWallet")
+        ? JSON.parse(localStorage.getItem("addWallet"))
+        : [],
+      addModal: false,
     };
   }
 
@@ -54,6 +70,58 @@ class Intelligence extends Component {
     this.props.getAllCoins();
     this.timeFilter(0);
     getAllInsightsApi(this);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Check if the coin rate api values are changed
+    if (
+      this.props.portfolioState.coinRateList !==
+      prevProps.portfolioState.coinRateList
+    ) {
+      if (
+        this.state &&
+        this.state.userWalletList &&
+        this.state.userWalletList.length > 0
+      ) {
+        console.log("reset", this.state.userWalletList);
+        // console.log("ComponentdidUpdate")
+        // Resetting the user wallet list, total and chain wallet
+        this.props.settingDefaultValues();
+        // Loops on coins to fetch details of each coin which exist in wallet
+        this.state.userWalletList.map((wallet, i) => {
+          if (wallet.coinFound) {
+            wallet.coins.map((coin) => {
+              if (coin.chain_detected) {
+                let userCoinWallet = {
+                  address: wallet.address,
+                  coinCode: coin.coinCode,
+                };
+                this.props.getUserWallet(userCoinWallet, this);
+              }
+            });
+          }
+        });
+
+        this.props.getAllCoins();
+        this.timeFilter(0);
+        getAllInsightsApi(this);
+        this.setState({
+          isLoading:false
+        })
+        // this.getTableData()
+      } else {
+        // console.log('Heyyy');
+        // this.getTableData()
+        this.props.settingDefaultValues();
+        this.props.getAllCoins();
+        this.timeFilter(0);
+        getAllInsightsApi(this);
+        this.setState({
+          isLoading: false,
+        });
+        // this.setState({ isLoading: false });
+      }
+    }
   }
   componentWillUnmount() {
     let endTime = new Date() * 1;
@@ -165,6 +233,23 @@ class Intelligence extends Component {
     this.timeFilter(t == "Max" ? t : t + " " + x);
   };
 
+  // For add new address
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+      
+    });
+  };
+
+  handleChangeList = (value) => {
+    this.setState({
+      userWalletList: value,
+      isLoading: true,
+      graphValue:null
+    });
+    this.props.getCoinRate();
+  };
+
   render() {
     return (
       <div className="intelligence-page-section">
@@ -172,6 +257,8 @@ class Intelligence extends Component {
           <PageHeader
             title="Intelligence"
             subTitle="Automated and personalized financial intelligence"
+            // btnText={"Add wallet"}
+            // handleBtn={this.handleAddModal}
           />
           <IntelWelcomeCard history={this.props.history} />
           <div className="insights-image m-b-40">
@@ -289,6 +376,20 @@ class Intelligence extends Component {
             <FeedbackForm page={"Intelligence Page"} />
           </div>
         </div>
+        {this.state.addModal && (
+          <FixAddModal
+            show={this.state.addModal}
+            onHide={this.handleAddModal}
+            modalIcon={AddWalletModalIcon}
+            title="Add wallet address"
+            subtitle="Add more wallet address here"
+            modalType="addwallet"
+            btnStatus={false}
+            btnText="Go"
+            history={this.props.history}
+            changeWalletList={this.handleChangeList}
+          />
+        )}
       </div>
     );
   }
@@ -297,11 +398,28 @@ class Intelligence extends Component {
 const mapStateToProps = (state) => ({
   intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
+
+  // add wallet
+  portfolioState: state.PortfolioState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
   getAllCoins,
+  getCoinRate,
+  getUserWallet,
+  settingDefaultValues,
 };
+
+// const mapDispatchToProps = {
+//   getCoinRate,
+//   getUserWallet,
+//   settingDefaultValues,
+//   getAllCoins,
+//   searchTransactionApi,
+//   getAssetGraphDataApi,
+//   getDetailsByLinkApi,
+// };
+
 Intelligence.propTypes = {
   // getPosts: PropTypes.func
 };

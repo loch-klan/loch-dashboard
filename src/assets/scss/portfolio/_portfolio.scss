@@ -1011,4 +1011,33 @@ position: relative;
                
     }
     
+
+
+    .refresh-btn{
+        display: flex;
+                      align-items: center;
+                      user-select: none;
+
+
+                      img{
+                        position: relative;
+                        margin-right: 6px;
+                        width: 1.3rem;
+                        height: 1.3rem;
+                        filter: opacity(0.4);
+                      }
+
+                      &:hover{
+
+                        color:$primary;
+
+                        span{
+                            color:$primary;
+                        }
+
+                        img{
+                            filter: opacity(1);
+                        }
+                      }
+    }
 }

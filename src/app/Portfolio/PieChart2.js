@@ -60,7 +60,7 @@ class PieChart2 extends BaseReactComponent {
       yeldTotal: 0,
       debtTotal: 0,
       timeNumber: null,
-      timeUnit:null,
+      timeUnit: "",
     };
   }
 
@@ -885,24 +885,10 @@ class PieChart2 extends BaseReactComponent {
                 <div>
                   {/* Chains */}
                   <h2
-                    className="inter-display-regular f-s-13 lh-15 grey-969 cp"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      userSelect: "none",
-                    }}
+                    className="inter-display-regular f-s-13 lh-15 grey-969 cp refresh-btn"
                     onClick={this.RefreshButton}
                   >
-                    <Image
-                      src={refreshIcon}
-                      style={{
-                        position: "relative",
-                        marginRight: `6px`,
-                        width: "1.3rem",
-                        height: "1.3rem",
-                        filter: "opacity(0.4)",
-                      }}
-                    />
+                    <Image src={refreshIcon} />
                     Updated{" "}
                     <span
                       style={{ margin: "0px 3px" }}
@@ -910,11 +896,14 @@ class PieChart2 extends BaseReactComponent {
                     >
                       {this.state.timeNumber === null
                         ? "3"
+                        : this.state.timeNumber === 0
+                        ? " just now"
                         : this.state.timeNumber}
                     </span>{" "}
-                    {" " + this.state.timeUnit
+                    {" " + this.state.timeUnit !== "" &&
+                    this.state.timeNumber !== 0
                       ? this.state.timeUnit
-                      : "hours ago"}
+                      :  this.state.timeNumber == 0 ? "" : "hours ago"}
                   </h2>
                   <div className="chain-card">
                     <div

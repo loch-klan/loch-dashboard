@@ -262,7 +262,7 @@ class Portfolio extends BaseReactComponent {
         this.state.userWalletList &&
         this.state.userWalletList.length > 0
       ) {
-          //  console.log("reset", this.state.userWalletList);
+           console.log("reset", this.state.userWalletList);
         // console.log("ComponentdidUpdate")
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
