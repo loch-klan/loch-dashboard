@@ -547,18 +547,29 @@ class LineChartSlider extends BaseReactComponent {
         return b.lastValue - a.lastValue;
       });
   // console.log(seriesData);
-    let AllLegends = [{ label: "All", value: "All" }];
+    let AllLegends = [];
+      // [{ label: "All", value: "All" }];
     seriesData &&
       seriesData.map((e) => {
         AllLegends.push({ label: e.name, value: e.name });
       });
-    let topLegends = this.state.legends;
+
+    let topLegends =
+      this.state.legends.length === 0
+        ? AllLegends.slice(0, 4).map(e => e.label)
+        : this.state.legends;
+    // console.log("top", topLegends);
+
 
     SelectedSeriesData =
       topLegends.length === 0
         ? seriesData.slice(0, 4)
         : seriesData.filter((e) => topLegends.includes(e.name));
-
+    
+    
+    AllLegends = [{ label: "All", value: "All" }, ...AllLegends.sort((a, b) => (a.label > b.label ? 1 : -1))];
+    
+    // console.log("all legend", AllLegends)
     let selectedValue = null;
 
     var UNDEFINED;
@@ -1025,7 +1036,7 @@ backdrop-filter: blur(15px);">
                           filtername="Tokens"
                           options={AllLegends}
                           action={null}
-                          selectedTokens={this.state.legends}
+                          selectedTokens={ this.state.legends.length === 0 ? topLegends : this.state.legends}
                           handleClick={(arr) => this.DropdownData(arr)}
                           isLineChart={true}
                         />
