@@ -53,6 +53,7 @@ class FixAddModal extends BaseReactComponent {
       pathName: props.pathName,
       walletNameList: [],
       deletedAddress: [],
+      recievedResponse: false,
     };
     this.timeout = 0;
   }
@@ -261,12 +262,13 @@ class FixAddModal extends BaseReactComponent {
           w.id = `wallet${i + 1}`;
         });
         localStorage.setItem("addWallet", JSON.stringify(addWallet));
-        this.state.changeList && this.state.changeList(walletList);
+        
         this.state.onHide();
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(arr));
 
         updateUserWalletApi(data, this);
+        this.state.changeList && this.state.changeList(walletList);
         // if (this.props.handleUpdateWallet) {
         //     this.props.handleUpdateWallet()
         // }

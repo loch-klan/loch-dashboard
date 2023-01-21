@@ -90,6 +90,9 @@ export const updateUserWalletApi = (data,ctx) =>{
       }
       // console.log('newAddWallet',newAddWallet);
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet))
+      ctx.setState({
+         recievedResponse: true
+      })
       if (ctx.props.handleUpdateWallet) {
         ctx.props.handleUpdateWallet()
       }
@@ -97,6 +100,8 @@ export const updateUserWalletApi = (data,ctx) =>{
         pathname: ctx.props.pathName,
         state: {addWallet: JSON.parse(localStorage.getItem("addWallet"))}
       });
+
+     
     } else{
       toast.error(res.data.message || "Something went wrong");
     }

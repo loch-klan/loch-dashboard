@@ -338,7 +338,7 @@ class Intelligence extends Component {
                       flexDirection: "column",
                       // width: "40%",
                       height: "100%",
-                      minHeight: "19rem",
+                      minHeight: "15.3rem",
                     }}
                   >
                     <Image
@@ -357,7 +357,7 @@ class Intelligence extends Component {
                         alignItems: "start",
                         justifyContent: "start",
                       }}
-                      className="m-b-32"
+                      className="m-b-30"
                     >
                       <h3
                         className="inter-display-medium f-s-13 lh-15 black-191"
@@ -379,7 +379,7 @@ class Intelligence extends Component {
                         alignItems: "start",
                         justifyContent: "start",
                       }}
-                      className="m-b-32"
+                      className="m-b-30"
                     >
                       <h3
                         className="inter-display-medium f-s-13 lh-15 black-191"
@@ -435,7 +435,7 @@ class Intelligence extends Component {
                       justifyContent: "start",
                       // width: "58%",
                       height: "100%",
-                      minHeight: "19rem",
+                      minHeight: "15.3rem",
                     }}
                   >
                     <Image
