@@ -314,7 +314,13 @@ class Intelligence extends Component {
             <PageHeader title="Net Flows" showImg={eyeIcon} />
             {/* Netflow Info Start */}
 
-            <Row style={this.state.RightShow || this.state.LeftShow ? { marginBottom: "2.6rem" }:{}}>
+            <Row
+              style={
+                this.state.RightShow || this.state.LeftShow
+                  ? { marginBottom: "2.6rem" }
+                  : {}
+              }
+            >
               {/* 1st */}
               <Col md={5} style={{ padding: "10px" }}>
                 {this.state.LeftShow && (
@@ -332,6 +338,7 @@ class Intelligence extends Component {
                       flexDirection: "column",
                       // width: "40%",
                       height: "100%",
+                      minHeight: "19rem",
                     }}
                   >
                     <Image
@@ -428,6 +435,7 @@ class Intelligence extends Component {
                       justifyContent: "start",
                       // width: "58%",
                       height: "100%",
+                      minHeight: "19rem",
                     }}
                   >
                     <Image
