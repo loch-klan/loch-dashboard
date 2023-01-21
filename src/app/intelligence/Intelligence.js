@@ -7,7 +7,7 @@ import eyeIcon from "../../assets/images/icons/eyeIcon.svg";
 import insight from "../../assets/images/icons/insight.svg";
 import BarGraphSection from "../common/BarGraphSection";
 import { getAllCoins } from "../onboarding/Api.js";
-import { Image } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import {
   InsightsViewMore,
   IntelligencePage,
@@ -24,6 +24,8 @@ import { getAllInsightsApi } from "./Api";
 import { InsightType } from "../../utils/Constant";
 import FeedbackForm from "../common/FeedbackForm";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import NetflowImg from "../../assets/images/icons/netflow.svg";
+import NetflowClose from "../../assets/images/icons/netflow-close.svg";
 
 // Add new Wallet
 import {
@@ -50,6 +52,8 @@ class Intelligence extends Component {
       isLoading: true,
       // title: "Max",
       title: 0,
+      RightShow: true,
+      LeftShow:true,
 
       // add new wallet
       userWalletList: localStorage.getItem("addWallet")
@@ -57,6 +61,8 @@ class Intelligence extends Component {
         : [],
       addModal: false,
       isUpdate: 0,
+
+
     };
   }
 
@@ -74,21 +80,16 @@ class Intelligence extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
     // add wallet
 
     if (prevState.isUpdate != this.state.isUpdate) {
       console.log("update");
       setTimeout(() => {
-      this.props.getAllCoins();
-      this.timeFilter(0);
-      getAllInsightsApi(this);
-      
-    }, 100);
-      
+        this.props.getAllCoins();
+        this.timeFilter(0);
+        getAllInsightsApi(this);
+      }, 100);
     }
-    
-    
   }
   componentWillUnmount() {
     let endTime = new Date() * 1;
@@ -204,7 +205,6 @@ class Intelligence extends Component {
   handleAddModal = () => {
     this.setState({
       addModal: !this.state.addModal,
-      
     });
   };
 
@@ -216,6 +216,18 @@ class Intelligence extends Component {
       // for page
       isLoading: true,
       graphValue: null,
+    });
+  };
+
+  RightClose = () => {
+    this.setState({
+      RightShow: false
+    })
+  };
+
+  LeftClose = () => {
+    this.setState({
+      LeftShow: false,
     });
   };
 
@@ -252,8 +264,8 @@ class Intelligence extends Component {
                   this.state.updatedInsightList.length > 0 ? (
                   this.state.updatedInsightList
                     .slice(0, 2)
-                        .map((insight, key) => {
-                      console.log("insignt", insight)
+                    .map((insight, key) => {
+                      console.log("insignt", insight);
                       return (
                         <div className="insights-card" key={key}>
                           <Image
@@ -300,6 +312,185 @@ class Intelligence extends Component {
           </div>
           <div className="portfolio-bar-graph">
             <PageHeader title="Net Flows" showImg={eyeIcon} />
+            {/* Netflow Info Start */}
+
+            <Row style={this.state.RightShow || this.state.LeftShow ? { marginBottom: "2.6rem" }:{}}>
+              {/* 1st */}
+              <Col md={5} style={{ padding: "10px" }}>
+                {this.state.LeftShow && (
+                  <div
+                    style={{
+                      background: "#FFFFFF",
+                      boxShadow:
+                        "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                      borderRadius: "1.2rem",
+                      padding: "2rem",
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "start",
+                      justifyContent: "start",
+                      flexDirection: "column",
+                      // width: "40%",
+                      height: "100%",
+                    }}
+                  >
+                    <Image
+                      src={NetflowClose}
+                      style={{
+                        position: "absolute",
+                        top: 20,
+                        right: 20,
+                        cursor: "pointer",
+                      }}
+                      onClick={this.LeftClose}
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "start",
+                        justifyContent: "start",
+                      }}
+                      className="m-b-32"
+                    >
+                      <h3
+                        className="inter-display-medium f-s-13 lh-15 black-191"
+                        style={{ width: "75px" }}
+                      >
+                        Inflows
+                      </h3>
+                      <p
+                        className="inter-display-medium f-s-13 lh-15 grey-969"
+                        style={{ width: "215px" }}
+                      >
+                        sum total of all assets received by your portfolio.
+                      </p>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "start",
+                        justifyContent: "start",
+                      }}
+                      className="m-b-32"
+                    >
+                      <h3
+                        className="inter-display-medium f-s-13 lh-15 black-191"
+                        style={{ width: "75px" }}
+                      >
+                        Outflows
+                      </h3>
+                      <p
+                        className="inter-display-medium f-s-13 lh-15 grey-969"
+                        style={{ width: "215px" }}
+                      >
+                        sum total of all assets sent out by your portfolio.
+                      </p>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "start",
+                        justifyContent: "start",
+                      }}
+                    >
+                      <h3
+                        className="inter-display-medium f-s-13 lh-15 black-191"
+                        style={{ width: "75px" }}
+                      >
+                        Net
+                      </h3>
+                      <p
+                        className="inter-display-medium f-s-13 lh-15 grey-969"
+                        style={{ width: "215px" }}
+                      >
+                        outflows - inflows.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </Col>
+
+              {/* Second */}
+              <Col md={7} style={{ padding: "10px" }}>
+                {this.state.RightShow && (
+                  <div
+                    style={{
+                      background: "#FFFFFF",
+                      boxShadow:
+                        "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                      borderRadius: "1.2rem",
+                      padding: "2rem 3.8rem 2rem 2rem",
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "start",
+                      // width: "58%",
+                      height: "100%",
+                    }}
+                  >
+                    <Image
+                      src={NetflowClose}
+                      style={{
+                        position: "absolute",
+                        top: 20,
+                        right: 20,
+                        cursor: "pointer",
+                      }}
+                      onClick={this.RightClose}
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                        width: "30%",
+                      }}
+                    >
+                      <Image src={NetflowImg} />
+                      <h3
+                        className="inter-display-bold f-s-10 lh-12 black-191 m-t-12"
+                        style={{
+                          background: "#F2F2F2",
+                          border: "1px solid rgba(229, 229, 230, 0.5)",
+                          borderRadius: "8px",
+                          padding: "4px 8px",
+                        }}
+                      >
+                        EXPLAINER
+                      </h3>
+                    </div>
+
+                    <div
+                      style={{
+                        width: "68%",
+                      }}
+                    >
+                      <h3
+                        className="inter-display-medium f-s-16 lh-19 black-191 m-b-12"
+                        // style={{ width: "75px" }}
+                      >
+                        Inflows and Outflows might appear inflated if the same
+                        funds went in and out of a single wallet multiple times.
+                      </h3>
+                      <p
+                        className="inter-display-medium f-s-13 lh-15 grey-969"
+                        // style={{ width: "215px" }}
+                      >
+                        This chart is most accurate when all your wallet
+                        addresses are added to Loch. This way we don't double
+                        count funds
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </Col>
+            </Row>
+
+            {/* Netflow Info End */}
+
             <div style={{ position: "relative" }}>
               {this.state.graphValue ? (
                 <BarGraphSection
