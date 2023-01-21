@@ -15,6 +15,9 @@ import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
 import { AssetValuePage } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+// add wallet
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import FixAddModal from "../common/FixAddModal";
 
 
 class AssetValueGraph extends Component {
@@ -22,29 +25,63 @@ class AssetValueGraph extends Component {
     super(props);
     this.state = {
       graphLoading: true,
-      isUpdate: 0,
       externalEvents: [],
       userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      // add new wallet
+
+      addModal: false,
+      isUpdate: 0,
     };
   }
 
   componentDidMount() {
     // this.state.startTime = new Date() * 1;
-     AssetValuePage({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
+    AssetValuePage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     // console.log("page Enter", this.state.startTime / 1000);
     // console.log('this.state',this.state);
     //    this.props.getCoinRate();
-       this.props.getAllCoins();
+    this.props.getAllCoins();
     this.getGraphData();
-
   }
+  componentDidUpdate(prevProps, prevState) {
+    // add wallet
+
+    if (prevState.isUpdate != this.state.isUpdate) {
+      console.log("update");
+      setTimeout(() => {
+      this.props.getAllCoins();
+      this.getGraphData();
+      }, 200);
+       
+    }
+  }
+
+  // For add new address
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+    });
+  };
+
+  handleChangeList = (value) => {
+    this.setState({
+      // for add wallet
+     userWalletList: value,
+      isUpdate: this.state.isUpdate === 0 ? 1 : 0,
+      // for page
+      // graphLoading: true,
+    });
+
+    console.log("updated wallet", value);
+  };
 
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
     this.setState({ graphLoading: true });
     let addressList = [];
+    console.log("wallet addres", this.state.userWalletList);
     this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
     // console.log('addressList',addressList);
     let data = new URLSearchParams();
@@ -62,12 +99,28 @@ class AssetValueGraph extends Component {
     return (
       <div className="volume-traded-section">
         <div className="page volume-traded-page">
+          {this.state.addModal && (
+            <FixAddModal
+              show={this.state.addModal}
+              onHide={this.handleAddModal}
+              modalIcon={AddWalletModalIcon}
+              title="Add wallet address"
+              subtitle="Add more wallet address here"
+              modalType="addwallet"
+              btnStatus={false}
+              btnText="Go"
+              history={this.props.history}
+              changeWalletList={this.handleChangeList}
+            />
+          )}
           <PageHeader
             title={"Asset Value"}
             subTitle={"Updated 3mins ago"}
             showpath={true}
             currentPage={"asset-value"}
             history={this.props.history}
+            btnText={"Add wallet"}
+            handleBtn={this.handleAddModal}
           />
           <div className="graph-container">
             <LineChartSlider
@@ -81,8 +134,8 @@ class AssetValueGraph extends Component {
               isScrollVisible={false}
               handleGroupBy={(value) => this.handleGroupBy(value)}
               graphLoading={this.state.graphLoading}
-                        isUpdate={this.state.isUpdate}
-                        isPage={true}
+              isUpdate={this.state.isUpdate}
+              isPage={true}
             />
           </div>
           <FeedbackForm page={"Asset Value Graph Page"} />

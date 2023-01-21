@@ -25,6 +25,10 @@ import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
 import FeedbackForm from "../common/FeedbackForm";
+import FixAddModal from "../common/FixAddModal";
+
+// add wallet
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 
 
 class Cost extends Component {
@@ -46,24 +50,31 @@ class Cost extends Component {
       currentPage: "Cost",
       counterGraphDigit: 3,
       GraphDigit: 3,
+
+      // add new wallet
+      userWalletList: localStorage.getItem("addWallet")
+        ? JSON.parse(localStorage.getItem("addWallet"))
+        : [],
+      addModal: false,
+      isUpdate: 0,
     };
   }
 
   componentDidMount() {
-     CostsPage({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
-    if(this.props.location.hash !== ''){
+    CostsPage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    if (this.props.location.hash !== "") {
       setTimeout(() => {
-      const id = this.props.location.hash.replace('#', '');
-      // console.log('id',id);
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView();
-      }
-    }, 0);
-    } else{
+        const id = this.props.location.hash.replace("#", "");
+        // console.log('id',id);
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView();
+        }
+      }, 0);
+    } else {
       window.scrollTo(0, 0);
     }
     this.state.startTime = new Date() * 1;
@@ -74,61 +85,89 @@ class Cost extends Component {
     this.getCounterPartyFee(0);
   }
 
-  getBlockchainFee(option) {
+  componentDidUpdate(prevProps, prevState) {
+    // add wallet
 
+    if (prevState.isUpdate != this.state.isUpdate) {
+      console.log("update");
+      setTimeout(() => {
+        this.props.getAllCoins();
+        this.getBlockchainFee(0);
+        this.getCounterPartyFee(0);
+      }, 100);
+    }
+  }
+
+  // For add new address
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+    });
+  };
+
+  handleChangeList = (value) => {
+    this.setState({
+      // for add wallet
+      userWalletList: value,
+      isUpdate: this.state.isUpdate === 0 ? 1 : 0,
+      // for page
+      counterGraphLoading: true,
+      gasFeesGraphLoading: true,
+    });
+  };
+
+  getBlockchainFee(option) {
     const today = moment().valueOf();
     let handleSelected = "";
     // console.log("headle click");
     if (option == 0) {
       getAllFeeApi(this, false, false);
       // console.log(option, "All");
-       handleSelected = "All";
+      handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
       getAllFeeApi(this, fiveyear, today);
       // console.log(fiveyear, today, "5 years");
-       handleSelected = "5 Years";
+      handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
       getAllFeeApi(this, year, today);
       // console.log(year, today, "1 year");
-       handleSelected = "1 Year";
+      handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
       getAllFeeApi(this, sixmonth, today);
       // console.log(sixmonth, today, "6 months");
-       handleSelected = "6 Months";
+      handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
       getAllFeeApi(this, month, today);
       // console.log(month, today, "1 month");
-       handleSelected = "1 Month";
+      handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
       getAllFeeApi(this, week, today);
       // console.log(week, today, "week");
-       handleSelected = "Week";
+      handleSelected = "Week";
     }
     // console.log("handle select", handleSelected);
     FeesTimePeriodFilter({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
-      time_period_selected: handleSelected
+      time_period_selected: handleSelected,
     });
   }
 
   getCounterPartyFee(option) {
-
     const today = moment().unix();
     let handleSelected = "";
     // console.log("headle click");
     if (option == 0) {
       getAllCounterFeeApi(this, false, false);
       // console.log(option, "All");
-    handleSelected = "All";
-
+      handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").unix();
 
@@ -180,32 +219,39 @@ class Cost extends Component {
   }
 
   handleBadge = (activeBadgeList, type) => {
-    const {GraphData, counterPartyData} = this.state;
-      let graphDataMaster = [];
-      let counterPartyDataMaster = [];
-      if(type === 1){
-        GraphData && GraphData.map((tempGraphData)=>{
-          if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
+    const { GraphData, counterPartyData } = this.state;
+    let graphDataMaster = [];
+    let counterPartyDataMaster = [];
+    if (type === 1) {
+      GraphData &&
+        GraphData.map((tempGraphData) => {
+          if (
+            activeBadgeList.includes(tempGraphData.chain._id) ||
+            activeBadgeList.length === 0
+          ) {
             graphDataMaster.push(tempGraphData);
           }
-        })
-        this.setState({
-          graphValue: getGraphData(graphDataMaster,this),
         });
-      } else{
-        counterPartyData && counterPartyData.map((tempGraphData)=>{
-          if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
+      this.setState({
+        graphValue: getGraphData(graphDataMaster, this),
+      });
+    } else {
+      counterPartyData &&
+        counterPartyData.map((tempGraphData) => {
+          if (
+            activeBadgeList.includes(tempGraphData.chain._id) ||
+            activeBadgeList.length === 0
+          ) {
             counterPartyDataMaster.push(tempGraphData);
           }
-        })
-        this.setState({
-          counterPartyValue: getCounterGraphData(counterPartyDataMaster, this),
         });
-      }
-  }
+      this.setState({
+        counterPartyValue: getCounterGraphData(counterPartyDataMaster, this),
+      });
+    }
+  };
 
   render() {
-
     // console.log("counter", this.state.counterGraphDigit);
     // console.log("fes", this.state.GraphDigit);
     const tableData = [
@@ -348,9 +394,25 @@ class Cost extends Component {
     return (
       <div className="cost-page-section">
         <div className="m-t-5 cost-section page">
+          {this.state.addModal && (
+            <FixAddModal
+              show={this.state.addModal}
+              onHide={this.handleAddModal}
+              modalIcon={AddWalletModalIcon}
+              title="Add wallet address"
+              subtitle="Add more wallet address here"
+              modalType="addwallet"
+              btnStatus={false}
+              btnText="Go"
+              history={this.props.history}
+              changeWalletList={this.handleChangeList}
+            />
+          )}
           <PageHeader
             title="Costs"
             subTitle="Bring light to your hidden costs"
+            btnText={"Add wallet"}
+            handleBtn={this.handleAddModal}
           />
           <div style={{ position: "relative", minHeight: "80rem" }}>
             <BarGraphSection

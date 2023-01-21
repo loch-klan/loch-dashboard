@@ -27,25 +27,42 @@ class CustomDropdown extends Component {
       if (this.props.selectedTokens.length !== 0) {
         // console.log("found array");
         //is already selected then this run
+        let options = [];
         this.props.options.map((e) =>
-          this.state.options.push({
+          options.push({
             label: e.label,
             value: e.value,
             isSelected: this.props.selectedTokens.includes(e.label)
               ? true
               : false,
           })
+         
         );
+        this.state.options = [
+          options[0],
+          ...options.slice(1,options.length).sort((a, b) => (a.label > b.label ? 1 : -1)).sort((a, b) => b.isSelected - a.isSelected),
+        ];
+        // console.log("option constructor", this.state.options);
       } else {
         // console.log("empty array");
+        let options = [];
         this.props.options.map((e, i) =>
-          this.state.options.push({
+          options.push({
             label: e.label,
             value: e.value,
             isSelected: i < 5 && i !== 0 ? true : false,
           })
         );
+        this.state.options = [
+          options[0],
+          ...options
+            .slice(1, options.length)
+            .sort((a, b) => (a.label > b.label ? 1 : -1))
+            .sort((a, b) => b.isSelected - a.isSelected),
+        ];
+        
       }
+
     } else {
       // console.log("transaction");
       this.props.options.map((e, i) =>
@@ -82,8 +99,9 @@ class CustomDropdown extends Component {
             if (this.props.selectedTokens.length !== 0) {
               //is already selected then this run
               // console.log("in selected token");
+              let options = [];
               this.props.options.map((e) =>
-                this.state.options.push({
+                options.push({
                   label: e.label,
                   value: e.value,
                   isSelected: this.props.selectedTokens.includes(e.label)
@@ -91,15 +109,33 @@ class CustomDropdown extends Component {
                     : false,
                 })
               );
+              this.setState({
+                options: [
+          options[0],
+          ...options.slice(1,options.length).sort((a, b) => (a.label > b.label ? 1 : -1)).sort((a, b) => b.isSelected - a.isSelected),
+        ]
+              })
+              // console.log("op",options)
             } else {
               // console.log("in line chart empty");
+              let options = [];
               this.props.options.map((e, i) =>
-                this.state.options.push({
+                options.push({
                   label: e.label,
                   value: e.value,
                   isSelected: i < 5 && i !== 0 ? true : false,
                 })
               );
+              this.setState({
+                options: [
+                  options[0],
+                  ...options
+                    .slice(1, options.length)
+                    .sort((a, b) => (a.label > b.label ? 1 : -1))
+                    .sort((a, b) => b.isSelected - a.isSelected),
+                ],
+              });
+              //  console.log("op else", options); 
             }
             this.getSelected();
             this.Apply();
@@ -192,10 +228,17 @@ class CustomDropdown extends Component {
   ClearAll = () => {
     if (this.props.isLineChart) {
       this.onSelect(this.state.options[0]);
-      // for (let i = 1; i <= 4; i++) {
-      //   this.onSelect(this.state.options[i]);
-      //   console.log(this.state.options[i]);
-      // }
+      let options = this.state.options;
+      this.setState({
+        options: [
+          options[0],
+          ...options
+            .slice(1, options.length)
+            .sort((a, b) => (a.label > b.label ? 1 : -1))
+            .sort((a, b) => b.isSelected - a.isSelected),
+        ],
+      });
+
     } else {
       this.onSelect(this.state.options[0]);
     }
@@ -223,6 +266,19 @@ class CustomDropdown extends Component {
       this.setState({ showMenu: false });
     } else {
       // console.log("Please select");
+    }
+
+    if (this.props.isLineChart) {
+      let options = this.state.options;
+      this.setState({
+        options: [
+          options[0],
+          ...options
+            .slice(1, options.length)
+            .sort((a, b) => (a.label > b.label ? 1 : -1))
+            .sort((a, b) => b.isSelected - a.isSelected),
+        ],
+      });
     }
   };
 

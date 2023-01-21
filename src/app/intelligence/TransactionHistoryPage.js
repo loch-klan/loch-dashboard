@@ -21,6 +21,12 @@ import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { toast } from "react-toastify";
+import FixAddModal from "../common/FixAddModal";
+
+// add wallet
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { getAllCoins } from "../onboarding/Api.js";
+
 
 
 class TransactionHistoryPage extends BaseReactComponent {
@@ -94,8 +100,15 @@ class TransactionHistoryPage extends BaseReactComponent {
           up: false,
         },
       ],
+      // add new wallet
+      // userWalletList: localStorage.getItem("addWallet")
+      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      //   : [],
+      addModal: false,
+      isUpdate: 0,
     };
     this.delayTimer = 0;
+    
   }
   componentDidMount() {
     TransactionHistoryPageView({
@@ -107,6 +120,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
     this.callApi(this.state.currentPage || START_INDEX);
     getFilters(this);
+    this.props.getAllCoins();
     // this.props.getCoinRate();
   }
 
@@ -134,7 +148,48 @@ class TransactionHistoryPage extends BaseReactComponent {
     ) {
       this.callApi(page);
     }
+
+    // add wallet
+    if (prevState.isUpdate != this.state.isUpdate) {
+      console.log("update");
+       const address = this.state.walletList.map((wallet) => {
+         return wallet.address;
+       });
+       const cond = [
+         {
+           key: SEARCH_BY_WALLET_ADDRESS_IN,
+           value: address,
+         },
+       ];
+      this.props.getAllCoins();
+      this.setState({
+        condition: cond ? cond : [],
+      });
+      setTimeout(() => {
+        
+        this.callApi(this.state.currentPage || START_INDEX);
+        getFilters(this);
+        
+      }, 100);
+    }
   }
+
+  // For add new address
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+    });
+  };
+
+  handleChangeList = (value) => {
+    this.setState({
+      // for add wallet
+      walletList: value,
+      isUpdate: this.state.isUpdate === 0 ? 1 : 0,
+      // for page
+      tableLoading: false,
+    });
+  };
 
   onValidSubmit = () => {
     // console.log("Sbmit")
@@ -1014,12 +1069,28 @@ class TransactionHistoryPage extends BaseReactComponent {
     return (
       <div className="history-table-section">
         <div className="history-table page">
+          {this.state.addModal && (
+            <FixAddModal
+              show={this.state.addModal}
+              onHide={this.handleAddModal}
+              modalIcon={AddWalletModalIcon}
+              title="Add wallet address"
+              subtitle="Add more wallet address here"
+              modalType="addwallet"
+              btnStatus={false}
+              btnText="Go"
+              history={this.props.history}
+              changeWalletList={this.handleChangeList}
+            />
+          )}
           <PageHeader
             title={"Transaction history"}
             subTitle={"Valuable insights based on your assets"}
             showpath={true}
             currentPage={"transaction-history"}
             history={this.props.history}
+            btnText={"Add wallet"}
+            handleBtn={this.handleAddModal}
           />
 
           <div className="fillter_tabs_section">
@@ -1106,6 +1177,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   searchTransactionApi,
   // getCoinRate,
+  getAllCoins,
   getFilters,
 };
 

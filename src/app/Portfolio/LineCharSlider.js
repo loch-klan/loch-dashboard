@@ -547,8 +547,7 @@ class LineChartSlider extends BaseReactComponent {
         return b.lastValue - a.lastValue;
       });
   // console.log(seriesData);
-    let AllLegends = [];
-      // [{ label: "All", value: "All" }];
+    let AllLegends = [{ label: "All", value: "All" }];
     seriesData &&
       seriesData.map((e) => {
         AllLegends.push({ label: e.name, value: e.name });
@@ -556,9 +555,9 @@ class LineChartSlider extends BaseReactComponent {
 
     let topLegends =
       this.state.legends.length === 0
-        ? AllLegends.slice(0, 4).map(e => e.label)
+        ? AllLegends.slice(1, 5).map(e => e.label)
         : this.state.legends;
-    // console.log("top", topLegends);
+    // console.log("top", seriesData);
 
 
     SelectedSeriesData =
@@ -567,7 +566,7 @@ class LineChartSlider extends BaseReactComponent {
         : seriesData.filter((e) => topLegends.includes(e.name));
     
     
-    AllLegends = [{ label: "All", value: "All" }, ...AllLegends.sort((a, b) => (a.label > b.label ? 1 : -1))];
+    // AllLegends = [{ label: "All", value: "All" }, ...AllLegends.sort((a, b) => (a.label > b.label ? 1 : -1))];
     
     // console.log("all legend", AllLegends)
     let selectedValue = null;
