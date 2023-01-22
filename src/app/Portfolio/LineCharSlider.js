@@ -557,7 +557,7 @@ class LineChartSlider extends BaseReactComponent {
       this.state.legends.length === 0
         ? AllLegends.slice(1, 5).map(e => e.label)
         : this.state.legends;
-    // console.log("top", seriesData);
+    console.log("top", topLegends);
 
 
     SelectedSeriesData =
@@ -568,7 +568,7 @@ class LineChartSlider extends BaseReactComponent {
     
     // AllLegends = [{ label: "All", value: "All" }, ...AllLegends.sort((a, b) => (a.label > b.label ? 1 : -1))];
     
-    // console.log("all legend", AllLegends)
+    console.log("all legend", AllLegends)
     let selectedValue = null;
 
     var UNDEFINED;

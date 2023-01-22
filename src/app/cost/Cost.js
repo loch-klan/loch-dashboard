@@ -94,7 +94,10 @@ class Cost extends Component {
      
         this.props.getAllCoins();
         this.getBlockchainFee(0);
-        this.getCounterPartyFee(0);
+      this.getCounterPartyFee(0);
+      this.setState({
+        apiResponse:false
+      })
       
     }
   }
@@ -230,8 +233,8 @@ class Cost extends Component {
     let graphDataMaster = [];
     let counterPartyDataMaster = [];
     if (type === 1) {
-      GraphData &&
-        GraphData.map((tempGraphData) => {
+      GraphData.gas_fee_overtime &&
+        GraphData.gas_fee_overtime.map((tempGraphData) => {
           if (
             activeBadgeList.includes(tempGraphData.chain._id) ||
             activeBadgeList.length === 0
@@ -239,8 +242,11 @@ class Cost extends Component {
             graphDataMaster.push(tempGraphData);
           }
         });
+      let gas_fee_overtime = graphDataMaster;
+      let asset_prices = GraphData.asset_prices;
+      let graphDataObj = { asset_prices, gas_fee_overtime };
       this.setState({
-        graphValue: getGraphData(graphDataMaster, this),
+        graphValue: getGraphData(graphDataObj, this),
       });
     } else {
       counterPartyData &&

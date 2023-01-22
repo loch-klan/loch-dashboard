@@ -5,8 +5,9 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import { amountFormat, CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
 
 export const getGraphData = (apidata, parentCtx) => {
-  let arr = apidata.gas_fee_overtime;
-  let assetPrices = apidata.asset_prices;
+  let arr = apidata?.gas_fee_overtime;
+  let assetPrices = apidata?.asset_prices;
+  console.log(apidata);
   let currency = JSON.parse(localStorage.getItem('currency'));
   // const digit = numToCurrency(
   //   Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
@@ -14,7 +15,7 @@ export const getGraphData = (apidata, parentCtx) => {
   
   let digit = 3;
   //  console.log("state", parentCtx, arr, assetPrices, apidata);
-  const labels = arr.map((e) => e.chain.name);
+  const labels = arr ? arr?.map((e) => e.chain.name) : [];
 
   const options = {
     responsive: true,
@@ -223,10 +224,10 @@ export const getGraphData = (apidata, parentCtx) => {
     labels,
     datasets: [
       {
-        data: arr.map((e) => e.total_fees * currency?.rate),
-        backgroundColor: arr.map((e) => e.chain.color + "4D"),
-        borderColor: arr.map((e) => e.chain.color),
-        defaultAssetCode: arr.map((e) => e.chain.default_asset_code),
+        data: arr ? arr.map((e) => e.total_fees * currency?.rate) : [],
+        backgroundColor: arr ? arr?.map((e) => e.chain.color + "4D") : [],
+        borderColor: arr ? arr.map((e) => e.chain.color) : [],
+        defaultAssetCode: arr ? arr.map((e) => e.chain.default_asset_code) : [],
         borderWidth: 2,
         borderRadius: {
           topLeft: 6,
@@ -234,12 +235,12 @@ export const getGraphData = (apidata, parentCtx) => {
         },
         borderSkipped: false,
         barThickness: 48,
-        totalFeesAmount: arr.map((e) => e.total_fees_amount * currency?.rate),
+        totalFeesAmount: arr ? arr.map((e) => e.total_fees_amount * currency?.rate): [],
         // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
-        totalVolume: arr.map((e) => e.total_volume),
+        totalVolume: arr ? arr.map((e) => e.total_volume) : [],
       },
     ],
-  }
+  };
 
     return [data, options, options2]
 

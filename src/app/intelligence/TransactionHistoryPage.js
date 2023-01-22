@@ -164,11 +164,13 @@ class TransactionHistoryPage extends BaseReactComponent {
       this.props.getAllCoins();
       this.setState({
         condition: cond ? cond : [],
+        apiResponse: false,
       });
 
       this.callApi(this.state.currentPage || START_INDEX);
       getFilters(this);
     }
+    
   }
 
   // For add new address

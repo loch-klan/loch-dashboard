@@ -90,7 +90,7 @@ class CustomDropdown extends Component {
         prevProps.options.length !== this.props.options.length)
     ) {
       if (this.props.isLineChart) {
-        // console.log("in line chart");
+        console.log("in line chart");
         this.setState(
           {
             options: [],
@@ -98,7 +98,7 @@ class CustomDropdown extends Component {
           () => {
             if (this.props.selectedTokens.length !== 0) {
               //is already selected then this run
-              // console.log("in selected token");
+              console.log("in selected token");
               let options = [];
               this.props.options.map((e) =>
                 options.push({
@@ -117,7 +117,7 @@ class CustomDropdown extends Component {
               })
               // console.log("op",options)
             } else {
-              // console.log("in line chart empty");
+              console.log("in line chart empty");
               let options = [];
               this.props.options.map((e, i) =>
                 options.push({
@@ -206,15 +206,15 @@ class CustomDropdown extends Component {
 
   getSelected = () => {
     let isAll =
-      this.state.options.length !== 0 ? this.state.options[0].isSelected : true;
+      this.state.options?.length !== 0 ? this.state.options[0]?.isSelected : true;
     let selected;
-    selected = this.state.options
-      .filter((e) => e.isSelected === true)
-      .map((e) => e.value);
+    selected = this.state?.options
+      .filter((e) => e?.isSelected === true)
+      .map((e) => e?.value);
 
     let count;
     if (isAll) {
-      selected = selected.toString();
+      selected = selected?.toString();
       count = 0;
     } else {
       count = selected.length;
@@ -234,8 +234,8 @@ class CustomDropdown extends Component {
           options[0],
           ...options
             .slice(1, options.length)
-            .sort((a, b) => (a.label > b.label ? 1 : -1))
-            .sort((a, b) => b.isSelected - a.isSelected),
+            .sort((a, b) => (a?.label > b?.label ? 1 : -1))
+            .sort((a, b) => b?.isSelected - a?.isSelected),
         ],
       });
 
@@ -345,13 +345,13 @@ class CustomDropdown extends Component {
             className="dropdown-list"
             style={{
               overflowY: `${
-                this.state.options.length < 5 ? "hidden" : "scroll"
+                this.state.options?.length < 5 ? "hidden" : "scroll"
               }`,
             }}
           >
-            {this.state.options.length === 0 ||
-            (this.state.options[0].label === "All" &&
-              this.state.options.length === 1) ? (
+            {this.state.options?.length === 0 ||
+            (this.state.options[0]?.label === "All" &&
+              this.state.options?.length === 1) ? (
               <span>No Data</span>
             ) : (
               this.state.options.map((e, i) => {
@@ -360,18 +360,18 @@ class CustomDropdown extends Component {
                   ""
                 ) : (
                   <span
-                    className={e.isSelected ? "active" : ""}
+                    className={e?.isSelected ? "active" : ""}
                     // title={e.label}
                     key={i}
                     onClick={() => {
                       // this.onSelect(e);
                       if (
-                        this.getSelected().length < 4 &&
+                        this.getSelected()?.length < 4 &&
                         this.props.isLineChart
                       ) {
                         //for line Chart
                         this.onSelect(e);
-                      } else if (this.props.isLineChart && e.isSelected) {
+                      } else if (this.props.isLineChart && e?.isSelected) {
                         //for line Chart
                         this.onSelect(e);
                       } else {
@@ -383,10 +383,10 @@ class CustomDropdown extends Component {
                     }}
                   >
                     {this.props.isLineChart
-                      ? this.TruncateText(e.label)
-                      : e.label}
+                      ? this.TruncateText(e?.label)
+                      : e?.label}
                     <svg
-                      className={`${e.isSelected ? "show" : "hide"}`}
+                      className={`${e?.isSelected ? "show" : "hide"}`}
                       width="24px"
                       height="24px"
                       viewBox="0 0 24 24"
