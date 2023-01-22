@@ -31,6 +31,7 @@ class AssetValueGraph extends Component {
 
       addModal: false,
       isUpdate: 0,
+       apiResponse:false
     };
   }
 
@@ -49,13 +50,13 @@ class AssetValueGraph extends Component {
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
-    if (prevState.isUpdate != this.state.isUpdate) {
+    if (prevState.apiResponse != this.state.apiResponse) {
       console.log("update");
-      setTimeout(() => {
       this.props.getAllCoins();
       this.getGraphData();
-      }, 200);
-       
+      this.setState({
+        apiResponse:false
+      })
     }
   }
 
@@ -77,6 +78,13 @@ class AssetValueGraph extends Component {
 
     console.log("updated wallet", value);
   };
+
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value
+    });
+    console.log("api respinse", value)
+  }
 
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
     this.setState({ graphLoading: true });
@@ -111,6 +119,7 @@ class AssetValueGraph extends Component {
               btnText="Go"
               history={this.props.history}
               changeWalletList={this.handleChangeList}
+              apiResponse={(e)=>this.CheckApiResponse(e)}
             />
           )}
           <PageHeader

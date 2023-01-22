@@ -53,7 +53,7 @@ class Intelligence extends Component {
       // title: "Max",
       title: 0,
       RightShow: true,
-      LeftShow:true,
+      LeftShow: true,
 
       // add new wallet
       userWalletList: localStorage.getItem("addWallet")
@@ -61,8 +61,7 @@ class Intelligence extends Component {
         : [],
       addModal: false,
       isUpdate: 0,
-
-
+      apiResponse: false,
     };
   }
 
@@ -82,13 +81,16 @@ class Intelligence extends Component {
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
-    if (prevState.isUpdate != this.state.isUpdate) {
+    if (prevState.apiResponse != this.state.apiResponse) {
       console.log("update");
-      setTimeout(() => {
+     
         this.props.getAllCoins();
         this.timeFilter(0);
-        getAllInsightsApi(this);
-      }, 100);
+      getAllInsightsApi(this);
+      this.setState({
+        apiResponse: false,
+      });
+     
     }
   }
   componentWillUnmount() {
@@ -218,11 +220,17 @@ class Intelligence extends Component {
       graphValue: null,
     });
   };
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+    console.log("api respinse", value);
+  };
 
   RightClose = () => {
     this.setState({
-      RightShow: false
-    })
+      RightShow: false,
+    });
   };
 
   LeftClose = () => {
@@ -369,7 +377,7 @@ class Intelligence extends Component {
                         className="inter-display-medium f-s-13 lh-15 grey-969"
                         style={{ width: "215px" }}
                       >
-                        sum total of all assets received by your portfolio.
+                        sum total of all assets received by your portfolio
                       </p>
                     </div>
 
@@ -389,9 +397,10 @@ class Intelligence extends Component {
                       </h3>
                       <p
                         className="inter-display-medium f-s-13 lh-15 grey-969"
-                        style={{ width: "215px" }}
+                        style={{ width: "223px" }}
                       >
-                        sum total of all assets sent out by your portfolio.
+                        sum total of all assets and fees sent out by your
+                        portfolio
                       </p>
                     </div>
 
@@ -412,7 +421,7 @@ class Intelligence extends Component {
                         className="inter-display-medium f-s-13 lh-15 grey-969"
                         style={{ width: "215px" }}
                       >
-                        outflows - inflows.
+                        outflows - inflows
                       </p>
                     </div>
                   </div>
@@ -489,7 +498,7 @@ class Intelligence extends Component {
                       >
                         This chart is most accurate when all your wallet
                         addresses are added to Loch. This way we don't double
-                        count funds
+                        count funds.
                       </p>
                     </div>
                   </div>
@@ -557,6 +566,7 @@ class Intelligence extends Component {
             btnText="Go"
             history={this.props.history}
             changeWalletList={this.handleChangeList}
+            apiResponse={(e) => this.CheckApiResponse(e)}
           />
         )}
       </div>

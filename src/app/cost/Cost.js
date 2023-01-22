@@ -57,6 +57,7 @@ class Cost extends Component {
         : [],
       addModal: false,
       isUpdate: 0,
+      apiResponse: false,
     };
   }
 
@@ -88,13 +89,13 @@ class Cost extends Component {
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
-    if (prevState.isUpdate != this.state.isUpdate) {
+    if (prevState.apiResponse != this.state.apiResponse) {
       console.log("update");
-      setTimeout(() => {
+     
         this.props.getAllCoins();
         this.getBlockchainFee(0);
         this.getCounterPartyFee(0);
-      }, 100);
+      
     }
   }
 
@@ -114,6 +115,12 @@ class Cost extends Component {
       counterGraphLoading: true,
       gasFeesGraphLoading: true,
     });
+  };
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+    console.log("api respinse", value);
   };
 
   getBlockchainFee(option) {
@@ -406,6 +413,7 @@ class Cost extends Component {
               btnText="Go"
               history={this.props.history}
               changeWalletList={this.handleChangeList}
+              apiResponse={(e) => this.CheckApiResponse(e)}
             />
           )}
           <PageHeader

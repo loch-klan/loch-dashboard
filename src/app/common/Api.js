@@ -90,9 +90,14 @@ export const updateUserWalletApi = (data,ctx) =>{
       }
       // console.log('newAddWallet',newAddWallet);
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet))
-      ctx.setState({
-         recievedResponse: true
-      })
+      if (ctx.props.apiResponse) {
+        // ctx.setState({
+        //    recievedResponse: true
+        // })
+        ctx.props.apiResponse(true);
+        console.log("got api response")
+      }
+     
       if (ctx.props.handleUpdateWallet) {
         ctx.props.handleUpdateWallet()
       }

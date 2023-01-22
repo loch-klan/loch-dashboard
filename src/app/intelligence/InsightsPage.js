@@ -51,6 +51,7 @@ class InsightsPage extends Component {
         : [],
       addModal: false,
       isUpdate: 0,
+      apiResponse: false,
     };
   }
   componentDidMount() {
@@ -64,12 +65,14 @@ class InsightsPage extends Component {
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
-    if (prevState.isUpdate != this.state.isUpdate) {
-      console.log("update");
-      setTimeout(() => {
-         getAllInsightsApi(this);
-      }, 100);
-    }
+     if (prevState.apiResponse != this.state.apiResponse) {
+       console.log("update");
+
+       getAllInsightsApi(this);
+       this.setState({
+         apiResponse: false,
+       });
+     }
   }
 
   // For add new address
@@ -87,6 +90,12 @@ class InsightsPage extends Component {
       // for page
       isLoading: true,
     });
+  };
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+    console.log("api respinse", value);
   };
   handleSelect = (value) => {
     // console.log("value",value)
@@ -143,6 +152,7 @@ class InsightsPage extends Component {
               btnText="Go"
               history={this.props.history}
               changeWalletList={this.handleChangeList}
+              apiResponse={(e) => this.CheckApiResponse(e)}
             />
           )}
           <PageHeader

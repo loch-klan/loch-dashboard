@@ -106,9 +106,9 @@ class TransactionHistoryPage extends BaseReactComponent {
       //   : [],
       addModal: false,
       isUpdate: 0,
+      apiResponse: false,
     };
     this.delayTimer = 0;
-    
   }
   componentDidMount() {
     TransactionHistoryPageView({
@@ -150,27 +150,24 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
 
     // add wallet
-    if (prevState.isUpdate != this.state.isUpdate) {
+    if (prevState.apiResponse != this.state.apiResponse) {
       console.log("update");
-       const address = this.state.walletList.map((wallet) => {
-         return wallet.address;
-       });
-       const cond = [
-         {
-           key: SEARCH_BY_WALLET_ADDRESS_IN,
-           value: address,
-         },
-       ];
+      const address = this.state.walletList.map((wallet) => {
+        return wallet.address;
+      });
+      const cond = [
+        {
+          key: SEARCH_BY_WALLET_ADDRESS_IN,
+          value: address,
+        },
+      ];
       this.props.getAllCoins();
       this.setState({
         condition: cond ? cond : [],
       });
-      setTimeout(() => {
-        
-        this.callApi(this.state.currentPage || START_INDEX);
-        getFilters(this);
-        
-      }, 100);
+
+      this.callApi(this.state.currentPage || START_INDEX);
+      getFilters(this);
     }
   }
 
@@ -187,8 +184,15 @@ class TransactionHistoryPage extends BaseReactComponent {
       walletList: value,
       isUpdate: this.state.isUpdate === 0 ? 1 : 0,
       // for page
-      tableLoading: false,
+      tableLoading: true,
     });
+  };
+
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+    console.log("api respinse", value);
   };
 
   onValidSubmit = () => {
@@ -1081,6 +1085,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               btnText="Go"
               history={this.props.history}
               changeWalletList={this.handleChangeList}
+              apiResponse={(e) => this.CheckApiResponse(e)}
             />
           )}
           <PageHeader
