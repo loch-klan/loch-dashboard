@@ -90,7 +90,7 @@ class CustomDropdown extends Component {
         prevProps.options.length !== this.props.options.length)
     ) {
       if (this.props.isLineChart) {
-        console.log("in line chart");
+        // console.log("in line chart");
         this.setState(
           {
             options: [],
@@ -98,43 +98,63 @@ class CustomDropdown extends Component {
           () => {
             if (this.props.selectedTokens.length !== 0) {
               //is already selected then this run
-              console.log("in selected token");
+              // console.log("in selected token");
               let options = [];
-              this.props.options.map((e) =>
-                options.push({
-                  label: e.label,
-                  value: e.value,
-                  isSelected: this.props.selectedTokens.includes(e.label)
-                    ? true
-                    : false,
-                })
-              );
-              this.setState({
-                options: [
-          options[0],
-          ...options.slice(1,options.length).sort((a, b) => (a.label > b.label ? 1 : -1)).sort((a, b) => b.isSelected - a.isSelected),
-        ]
-              })
+              Promise.all(
+                this.props.options.map((e) =>
+                  options.push({
+                    label: e.label,
+                    value: e.value,
+                    isSelected: this.props.selectedTokens.includes(e.label)
+                      ? true
+                      : false,
+                  })
+                )
+              ).then(() => {
+                this.setState(
+                  {
+                    options: [
+                      options[0],
+                      ...options
+                        .slice(1, options.length)
+                        .sort((a, b) => (a.label > b.label ? 1 : -1))
+                        .sort((a, b) => b.isSelected - a.isSelected),
+                    ],
+                  },
+                  () => {
+                    // console.log("op", this.state.options);
+                  }
+                );
+              });
+              
+              
+             
+              //  this.getSelected();
+              //  this.Apply();
               // console.log("op",options)
             } else {
-              console.log("in line chart empty");
+              // console.log("in line chart empty");
               let options = [];
-              this.props.options.map((e, i) =>
-                options.push({
-                  label: e.label,
-                  value: e.value,
-                  isSelected: i < 5 && i !== 0 ? true : false,
-                })
-              );
-              this.setState({
-                options: [
-                  options[0],
-                  ...options
-                    .slice(1, options.length)
-                    .sort((a, b) => (a.label > b.label ? 1 : -1))
-                    .sort((a, b) => b.isSelected - a.isSelected),
-                ],
-              });
+               Promise.all(
+                 this.props.options.map((e, i) =>
+                   options.push({
+                     label: e.label,
+                     value: e.value,
+                     isSelected: i < 5 && i !== 0 ? true : false,
+                   })
+                 )
+               ).then(() => {
+                 this.setState({
+                   options: [
+                     options[0],
+                     ...options
+                       .slice(1, options.length)
+                       .sort((a, b) => (a.label > b.label ? 1 : -1))
+                       .sort((a, b) => b.isSelected - a.isSelected),
+                   ],
+                 });
+               });
+              
               //  console.log("op else", options); 
             }
             this.getSelected();
