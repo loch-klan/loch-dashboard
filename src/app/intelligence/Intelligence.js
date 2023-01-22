@@ -330,161 +330,74 @@ class Intelligence extends Component {
               }
             >
               {/* 1st */}
-              <Col md={5} style={{ padding: "10px" }}>
+              <Col md={5} style={{ padding: "10px" }} sm={12}>
                 {this.state.LeftShow && (
-                  <div
-                    style={{
-                      background: "#FFFFFF",
-                      boxShadow:
-                        "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                      borderRadius: "1.2rem",
-                      padding: "2rem",
-                      position: "relative",
-                      display: "flex",
-                      alignItems: "start",
-                      justifyContent: "start",
-                      flexDirection: "column",
-                      // width: "40%",
-                      height: "100%",
-                      minHeight: "15.3rem",
-                    }}
-                  >
+                  <div className="InfoCard">
                     <Image
                       src={NetflowClose}
-                      style={{
-                        position: "absolute",
-                        top: 20,
-                        right: 20,
-                        cursor: "pointer",
-                      }}
+                      className="CloseBtn"
                       onClick={this.LeftClose}
                     />
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "start",
-                        justifyContent: "start",
-                      }}
-                      className="m-b-30"
-                    >
-                      <h3
-                        className="inter-display-medium f-s-13 lh-15 black-191"
-                        style={{ width: "75px" }}
-                      >
-                        Inflows
-                      </h3>
-                      <p
-                        className="inter-display-medium f-s-13 lh-15 grey-969"
-                        style={{ width: "215px" }}
-                      >
-                        sum total of all assets received by your portfolio
-                      </p>
+                    <div className="m-b-30 InfoItem">
+                      <div className="title">
+                        <h3 className="inter-display-medium f-s-13 lh-15 black-191">
+                          Inflows
+                        </h3>
+                      </div>
+                      <div className="description">
+                        <p className="inter-display-medium f-s-13 lh-15 grey-969">
+                          sum total of all assets received by your portfolio
+                        </p>
+                      </div>
                     </div>
 
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "start",
-                        justifyContent: "start",
-                      }}
-                      className="m-b-30"
-                    >
-                      <h3
-                        className="inter-display-medium f-s-13 lh-15 black-191"
-                        style={{ width: "75px" }}
-                      >
-                        Outflows
-                      </h3>
-                      <p
-                        className="inter-display-medium f-s-13 lh-15 grey-969"
-                        style={{ width: "223px" }}
-                      >
-                        sum total of all assets and fees sent out by your
-                        portfolio
-                      </p>
+                    <div className="m-b-30 InfoItem">
+                      <div className="title">
+                        <h3 className="inter-display-medium f-s-13 lh-15 black-191">
+                          Outflows
+                        </h3>
+                      </div>
+                      <div className="description">
+                        <p className="inter-display-medium f-s-13 lh-15 grey-969">
+                          sum total of all assets and fees sent out by your
+                          portfolio
+                        </p>
+                      </div>
                     </div>
 
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "start",
-                        justifyContent: "start",
-                      }}
-                    >
-                      <h3
-                        className="inter-display-medium f-s-13 lh-15 black-191"
-                        style={{ width: "75px" }}
-                      >
-                        Net
-                      </h3>
-                      <p
-                        className="inter-display-medium f-s-13 lh-15 grey-969"
-                        style={{ width: "215px" }}
-                      >
-                        outflows - inflows
-                      </p>
+                    <div className="InfoItem">
+                      <div className="title">
+                        <h3 className="inter-display-medium f-s-13 lh-15 black-191">
+                          Net
+                        </h3>
+                      </div>
+                      <div className="description">
+                        <p className="inter-display-medium f-s-13 lh-15 grey-969">
+                          outflows - inflows
+                        </p>
+                      </div>
                     </div>
                   </div>
                 )}
               </Col>
 
               {/* Second */}
-              <Col md={7} style={{ padding: "10px" }}>
+              <Col md={7} style={{ padding: "10px" }} sm={12}>
                 {this.state.RightShow && (
-                  <div
-                    style={{
-                      background: "#FFFFFF",
-                      boxShadow:
-                        "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                      borderRadius: "1.2rem",
-                      padding: "2rem 3.8rem 2rem 2rem",
-                      position: "relative",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "start",
-                      // width: "58%",
-                      height: "100%",
-                      minHeight: "15.3rem",
-                    }}
-                  >
+                  <div className="InfoCardRight">
                     <Image
                       src={NetflowClose}
-                      style={{
-                        position: "absolute",
-                        top: 20,
-                        right: 20,
-                        cursor: "pointer",
-                      }}
+                      className="CloseBtn"
                       onClick={this.RightClose}
                     />
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        width: "30%",
-                      }}
-                    >
+                    <div className="imageSection">
                       <Image src={NetflowImg} />
-                      <h3
-                        className="inter-display-bold f-s-10 lh-12 black-191 m-t-12"
-                        style={{
-                          background: "#F2F2F2",
-                          border: "1px solid rgba(229, 229, 230, 0.5)",
-                          borderRadius: "8px",
-                          padding: "4px 8px",
-                        }}
-                      >
+                      <h3 className="inter-display-bold f-s-10 lh-12 black-191 m-t-12 explainer-text">
                         EXPLAINER
                       </h3>
                     </div>
 
-                    <div
-                      style={{
-                        width: "68%",
-                      }}
-                    >
+                    <div className="RightSection">
                       <h3
                         className="inter-display-medium f-s-16 lh-19 black-191 m-b-12"
                         // style={{ width: "75px" }}
