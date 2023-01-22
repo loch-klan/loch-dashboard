@@ -95,7 +95,7 @@ export const updateUserWalletApi = (data,ctx) =>{
         //    recievedResponse: true
         // })
         ctx.props.apiResponse(true);
-        console.log("got api response")
+        
       }
      
       if (ctx.props.handleUpdateWallet) {

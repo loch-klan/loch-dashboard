@@ -182,7 +182,7 @@ class ExitOverlay extends BaseReactComponent {
   }
 
   submit = () =>{
-    console.log('Hey');
+    // console.log('Hey');
   }
 
   render() {

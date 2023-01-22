@@ -51,7 +51,7 @@ class AssetValueGraph extends Component {
     // add wallet
 
     if (prevState.apiResponse != this.state.apiResponse) {
-      console.log("update");
+      // console.log("update");
       this.props.getAllCoins();
       this.getGraphData();
       this.setState({
@@ -76,20 +76,20 @@ class AssetValueGraph extends Component {
       // graphLoading: true,
     });
 
-    console.log("updated wallet", value);
+    // console.log("updated wallet", value);
   };
 
   CheckApiResponse = (value) => {
     this.setState({
       apiResponse: value
     });
-    console.log("api respinse", value)
+    // console.log("api respinse", value)
   }
 
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
     this.setState({ graphLoading: true });
     let addressList = [];
-    console.log("wallet addres", this.state.userWalletList);
+    // console.log("wallet addres", this.state.userWalletList);
     this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
     // console.log('addressList',addressList);
     let data = new URLSearchParams();

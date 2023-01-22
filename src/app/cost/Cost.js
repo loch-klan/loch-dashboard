@@ -90,7 +90,7 @@ class Cost extends Component {
     // add wallet
 
     if (prevState.apiResponse != this.state.apiResponse) {
-      console.log("update");
+      // console.log("update");
      
         this.props.getAllCoins();
         this.getBlockchainFee(0);
@@ -120,7 +120,7 @@ class Cost extends Component {
     this.setState({
       apiResponse: value,
     });
-    console.log("api respinse", value);
+    // console.log("api respinse", value);
   };
 
   getBlockchainFee(option) {

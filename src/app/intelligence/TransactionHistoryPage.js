@@ -151,7 +151,7 @@ class TransactionHistoryPage extends BaseReactComponent {
 
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
-      console.log("update");
+      // console.log("update");
       const address = this.state.walletList.map((wallet) => {
         return wallet.address;
       });
@@ -192,7 +192,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     this.setState({
       apiResponse: value,
     });
-    console.log("api respinse", value);
+    // console.log("api respinse", value);
   };
 
   onValidSubmit = () => {

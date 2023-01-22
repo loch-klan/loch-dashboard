@@ -31,7 +31,7 @@ class Login extends BaseReactComponent {
    
     // window.hj("identify", );
     let baseToken = localStorage.getItem("baseToken");
-    console.log("access code", baseToken);
+    // console.log("access code", baseToken);
     window.hj("identify",null ,{
       "access code": baseToken,
       // Add your own custom attributes here. Some EXAMPLES:

@@ -82,7 +82,7 @@ class Intelligence extends Component {
     // add wallet
 
     if (prevState.apiResponse != this.state.apiResponse) {
-      console.log("update");
+      // console.log("update");
      
         this.props.getAllCoins();
         this.timeFilter(0);
@@ -224,7 +224,7 @@ class Intelligence extends Component {
     this.setState({
       apiResponse: value,
     });
-    console.log("api respinse", value);
+    // console.log("api respinse", value);
   };
 
   RightClose = () => {
@@ -273,7 +273,7 @@ class Intelligence extends Component {
                   this.state.updatedInsightList
                     .slice(0, 2)
                     .map((insight, key) => {
-                      console.log("insignt", insight);
+                      // console.log("insignt", insight);
                       return (
                         <div className="insights-card" key={key}>
                           <Image

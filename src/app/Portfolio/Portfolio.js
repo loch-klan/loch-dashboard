@@ -146,9 +146,12 @@ class Portfolio extends BaseReactComponent {
     this.setState({
       userWalletList: value,
       isUpdate: this.state.isUpdate == 0 ? 1 : 0,
+      isLoading:true
     });
-    // this.props.getCoinRate();
-    console.log("clicked change list")
+    if (this.props.location.state?.noLoad === undefined) {
+      this.props.getCoinRate();
+    } 
+  
    
   };
   handleFixModal = () => {
@@ -174,16 +177,17 @@ class Portfolio extends BaseReactComponent {
     });
     if (this.props.location.state?.noLoad) {
     } else {
+    
       this.apiCall();
    
     }
-    console.log("Mount");
+   
   }
 
  
 
   apiCall = () => {
-    console.log("APPCALL");
+    // console.log("APPCALL");
     this.props.getAllCoins();
     if (this.props.match.params.id) {
       this.props.getDetailsByLinkApi(this.props.match.params.id, this);
@@ -250,7 +254,7 @@ class Portfolio extends BaseReactComponent {
   };
   componentDidUpdate(prevProps, prevState) {
     // console.log("props",prevProps)
-    console.log("did update");
+    // console.log("did update");
     // console.log("state",prevState);
 
     if (prevState.isUpdate !== this.state.isUpdate) {
@@ -264,14 +268,14 @@ class Portfolio extends BaseReactComponent {
       this.props.portfolioState.coinRateList !==
       prevProps.portfolioState.coinRateList
     ) {
-      console.log("abc")
+      
       if (
         this.state &&
         this.state.userWalletList &&
         this.state.userWalletList.length > 0 
       ) {
        
-           console.log("reset", this.state.userWalletList);
+          //  console.log("reset", this.state.userWalletList);
         // console.log("ComponentdidUpdate")
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
@@ -303,6 +307,7 @@ class Portfolio extends BaseReactComponent {
         this.props.settingDefaultValues();
         this.setState({ isLoading: false });
       }
+     
       if (prevProps.userWalletList !== this.state.userWalletList) {
         // console.log('byeee');
         this.state.userWalletList.length > 0 &&
@@ -319,6 +324,7 @@ class Portfolio extends BaseReactComponent {
     } else if (
       prevProps.location.state?.noLoad !== this.props.location.state?.noLoad
     ) {
+       
       localStorage.setItem(
         "addWallet",
         JSON.stringify(this.props.location.state.addWallet)

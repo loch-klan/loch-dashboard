@@ -66,7 +66,7 @@ class InsightsPage extends Component {
     // add wallet
 
      if (prevState.apiResponse != this.state.apiResponse) {
-       console.log("update");
+      //  console.log("update");
 
        getAllInsightsApi(this);
        this.setState({
@@ -95,7 +95,7 @@ class InsightsPage extends Component {
     this.setState({
       apiResponse: value,
     });
-    console.log("api respinse", value);
+    // console.log("api respinse", value);
   };
   handleSelect = (value) => {
     // console.log("value",value)
