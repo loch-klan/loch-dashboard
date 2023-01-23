@@ -173,18 +173,15 @@ class Portfolio extends BaseReactComponent {
     // if (this.props.match.params.id) {
     //   getDetailsByLinkApi(this.props.match.params.id, this);
     // }
-//     console.log(
-//       "param",
-//       this.props.match.params.id,
-//       this.props.match
-// );
+   
     HomePage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+     //console.log("noload", this.props.location.state?.noLoad);
     if (this.props.location.state?.noLoad) {
     } else {
-    
+    //console.log("api call in mount")
       this.apiCall();
    
     }
@@ -194,24 +191,29 @@ class Portfolio extends BaseReactComponent {
  
 
   apiCall = () => {
-    // console.log("APPCALL");
+    //console.log("APPCALL");
     this.props.getAllCoins();
+    //console.log("this.props.match.params.id", this.props.match.params.id);
     if (this.props.match.params.id) {
+      // //console.log("calling api")
       this.props.getDetailsByLinkApi(this.props.match.params.id, this);
+
     }
-    this.props.getCoinRate();
-    this.getTableData();
-    this.getGraphData();
-    getAllCounterFeeApi(this, false, false);
-    getProfitAndLossApi(this, false, false, false);
-    // getYesterdaysBalanceApi(this);
+    else {
+      this.props.getCoinRate();
+      this.getTableData();
+      this.getGraphData();
+      getAllCounterFeeApi(this, false, false);
+      getProfitAndLossApi(this, false, false, false);
+    }
+
   };
 
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime / 1000);
-    // console.log("Time Spent", TimeSpent);
+    // //console.log("page Leave", endTime / 1000);
+    // //console.log("Time Spent", TimeSpent);
     TimeSpentHome({
       time_spent: TimeSpent,
       session_id: getCurrentUser().id,
@@ -219,11 +221,11 @@ class Portfolio extends BaseReactComponent {
     });
   }
 
-  getGraphData = (groupByValue = GROUP_BY_MONTH) => {
+  getGraphData = (groupByValue = GROUP_BY_MONTH) => { //console.log("calling graph");
     this.setState({ graphLoading: true });
     let addressList = [];
     this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
-    // console.log('addressList',addressList);
+    // //console.log('addressList',addressList);
     let data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("group_criteria", groupByValue);
@@ -236,7 +238,7 @@ class Portfolio extends BaseReactComponent {
           },
           () => {
             getAssetGraphDataApi(data, this);
-            // console.log("api called", this);
+            // //console.log("api called", this);
           }
         );
       }, 10000);
@@ -246,6 +248,7 @@ class Portfolio extends BaseReactComponent {
     this.getGraphData(groupByValue);
   };
   getTableData = () => {
+     //console.log("calling table");
     this.setState({ tableLoading: true });
     let arr = JSON.parse(localStorage.getItem("addWallet") || "");
     let address = arr.map((wallet) => {
@@ -260,12 +263,12 @@ class Portfolio extends BaseReactComponent {
     this.props.searchTransactionApi(data, this);
   };
   componentDidUpdate(prevProps, prevState) {
-    // console.log("props",prevProps)
-    // console.log("did update");
-    // console.log("state",prevState);
+    // //console.log("props",prevProps)
+    // //console.log("did update");
+    // //console.log("state",prevState);
 
     if (prevState.isUpdate !== this.state.isUpdate) {
-      // console.log("btn clicked");
+      // //console.log("btn clicked");
       this.props.portfolioState.walletTotal = 0;
     }
 
@@ -275,6 +278,8 @@ class Portfolio extends BaseReactComponent {
       this.props.portfolioState.coinRateList !==
       prevProps.portfolioState.coinRateList
     ) {
+      //console.log("in coinrate list")
+      //console.log("wallet list", this.state.userWalletList);
       
       if (
         this.state &&
@@ -282,13 +287,15 @@ class Portfolio extends BaseReactComponent {
         this.state.userWalletList.length > 0 
       ) {
        
-          //  console.log("reset", this.state.userWalletList);
-        // console.log("ComponentdidUpdate")
+          //  //console.log("reset", this.state.userWalletList);
+        //console.log("Comp")
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
         // Loops on coins to fetch details of each coin which exist in wallet
+        let isFound = false;
         this.state.userWalletList.map((wallet, i) => {
           if (wallet.coinFound) {
+           isFound = true;
             wallet.coins.map((coin) => {
               if (coin.chain_detected) {
                 let userCoinWallet = {
@@ -306,19 +313,33 @@ class Portfolio extends BaseReactComponent {
               loader: false,
             });
           }
-        });
+        }
+          
+        );
+        //console.log("is found", isFound);
+        if (!isFound) {
+          //console.log("is found if", isFound);
+          this.setState(
+            {
+              loader: false,
+              isLoading: false,
+            } );
+        }
         // this.getTableData()
       } else {
-        // console.log('Heyyy');
+        // //console.log('Heyyy');
         // this.getTableData()
         this.props.settingDefaultValues();
         this.setState({ isLoading: false });
       }
      
       if (prevProps.userWalletList !== this.state.userWalletList) {
-        // console.log('byeee');
+        // //console.log('byeee');
         this.state.userWalletList.length > 0 &&
-          this.setState({ isLoading: true, netFlowLoading: true, counterGraphLoading: true });
+          this.setState({
+            // isLoading: true,
+            netFlowLoading: true, counterGraphLoading: true
+          });
         // this.apiCall();
         this.getTableData();
         this.getGraphData();
@@ -338,11 +359,13 @@ class Portfolio extends BaseReactComponent {
       );
       this.setState({ userWalletList: this.props.location.state.addWallet });
       this.apiCall();
+      //console.log("noload in update if", this.props.location.state?.noLoad);
     }
+    //console.log("noload didupdate", this.props.location.state?.noLoad);
   }
 
   handleTableSort = (val) => {
-    // console.log(val)
+    // //console.log(val)
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort.map((el) => {
@@ -401,12 +424,12 @@ class Portfolio extends BaseReactComponent {
 
     if (check) {
       // when any sort option is true then sort the table with that option key
-      // console.log("Check true")
+      // //console.log("Check true")
       arr = obj;
     } else {
       // when all sort are false then sort by time in descending order
       // arr.slice(1,1)
-      // console.log("Check False ")
+      // //console.log("Check False ")
       arr = [
         {
           key: SORT_BY_TIMESTAMP,
@@ -415,7 +438,7 @@ class Portfolio extends BaseReactComponent {
       ];
     }
 
-    // console.log(obj)
+    // //console.log(obj)
     this.setState({
       sort: arr,
       tableSortOpt: sort,
@@ -425,13 +448,13 @@ class Portfolio extends BaseReactComponent {
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-    // console.log("userWalletList", userWalletList);
+    // //console.log("userWalletList", userWalletList);
     let tableData =
       table &&
       table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        // console.log("row", userWalletList);
+        // //console.log("row", userWalletList);
         userWalletList &&
           userWalletList.map((wallet) => {
             if (
@@ -590,7 +613,7 @@ class Portfolio extends BaseReactComponent {
                     }
                     className="history-table-icon"
                     onMouseEnter={() => {
-                      // console.log("address", rowData.from.metaData);
+                      // //console.log("address", rowData.from.metaData);
                       TransactionHistoryAddress({
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
@@ -608,7 +631,7 @@ class Portfolio extends BaseReactComponent {
                       src={rowData.from.wallet_metaData.symbol}
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        //  console.log(
+                        //  //console.log(
                         //    "address",
                         //    rowData.from.metaData
                         //  );
@@ -625,7 +648,7 @@ class Portfolio extends BaseReactComponent {
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        //  console.log(
+                        //  //console.log(
                         //    "address",
                         //    rowData.from.metaData
                         //  );
@@ -952,7 +975,7 @@ class Portfolio extends BaseReactComponent {
         },
       },
     ];
-    // console.log("table data", tableData)
+    // //console.log("table data", tableData)
     return (
       <div>
         {this.state.loader ? (

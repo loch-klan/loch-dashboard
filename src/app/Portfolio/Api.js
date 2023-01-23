@@ -3,13 +3,17 @@ import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES } from "./ActionTypes"
 import { toast } from "react-toastify";
 import { AssetType, DEFAULT_PRICE } from "../../utils/Constant";
 import moment from "moment";
+import { getAllCounterFeeApi } from "../cost/Api";
+import { getProfitAndLossApi } from "../intelligence/Api";
 
 export const getCoinRate = () => {
+  
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
         postLoginInstance
             .post("wallet/chain/get-crypto-asset-rates", data)
-            .then((res) => {
+          .then((res) => {
+          
               let coinRateList = res.data && res.data.data && Object.keys(res.data.data.rates).length > 0 ? res.data.data.rates : [];
               // console.log("cooin redux", coinRateList);
               // console.log("cooin redux", res.data.data);
@@ -98,15 +102,29 @@ export const settingDefaultValues = (wallet) => {
 
 export const getDetailsByLinkApi = (link,ctx=null) => {
   const data = new URLSearchParams();
-  data.append("token",link);
+  data.append("token", link);
+  
   return async function (dispatch, getState) {
   preLoginInstance.post("organisation/user/get-portfolio-by-link", data)
           .then((res) => {
               if(!res.data.error){
                 // console.log('getState',getState().OnboardingState.coinsList);
                 // console.log('res',res);
-                const allChains = getState().OnboardingState.coinsList;
-                // console.log('allChains',allChains);
+                const allChains = res.data.data.chains;
+                //   .map((chain) => {
+                //   return {
+                //     chain_detected: false,
+                //   coinCode: chain.code,
+                //   coinColor:chain.color,
+                //   coinName:chain.name,
+                //     coinSymbol: chain.symbol,
+                //   }
+                // })
+                  // getState().OnboardingState.coinsList;
+             
+
+                
+                
                 let addWallet = [];
                 const apiResponse = res.data.data;
                 for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
@@ -135,8 +153,26 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
               }
               // console.log('addWallet',addWallet);
               localStorage.setItem("addWallet",JSON.stringify(addWallet))
-              ctx.setState({isLoading:false})
-              ctx.handleResponse && ctx.handleResponse();
+                ctx.setState({
+                  isLoading: false,
+                  userWalletList:addWallet
+                })
+                
+                // ctx.handleResponse && ctx.handleResponse();
+
+                if (ctx.handleResponse) {
+                  ctx.handleResponse();
+                } else {
+
+                 
+                  ctx.props.getCoinRate();
+                  ctx.getTableData();
+                  ctx.getGraphData();
+                  getAllCounterFeeApi(ctx, false, false);
+                  getProfitAndLossApi(ctx, false, false, false);
+                }
+                
+                
               } else{
                 toast.error(res.data.message || "Something Went Wrong")
               }

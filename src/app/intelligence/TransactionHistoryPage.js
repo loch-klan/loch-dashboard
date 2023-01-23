@@ -1113,14 +1113,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
           />
-          <div className="ShowDust">
-            <h3
-              onClick={this.showDust}
-              className="inter-display-medium f-s-15 l-h-19 cp"
-            >
-              {this.state.showDust ? "Show dust (<$1)" : "Hide dust (<$1)"}
-            </h3>
-          </div>
+
           <div className="fillter_tabs_section">
             <Form onValidSubmit={this.onValidSubmit}>
               <Row>
@@ -1179,16 +1172,28 @@ class TransactionHistoryPage extends BaseReactComponent {
             {this.state.tableLoading ? (
               <Loading />
             ) : (
-              <TransactionTable
-                tableData={tableData}
-                columnList={columnList}
-                message={"No Transactions Found"}
-                totalPage={totalPage}
-                history={this.props.history}
-                location={this.props.location}
-                page={currentPage}
-                tableLoading={this.state.tableLoading}
-              />
+              <>
+                <TransactionTable
+                  tableData={tableData}
+                  columnList={columnList}
+                  message={"No Transactions Found"}
+                  totalPage={totalPage}
+                  history={this.props.history}
+                  location={this.props.location}
+                  page={currentPage}
+                  tableLoading={this.state.tableLoading}
+                />
+                <div className="ShowDust">
+                  <p
+                    onClick={this.showDust}
+                    className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
+                  >
+                    {this.state.showDust
+                      ? "Reveal dust (less than $1)"
+                      : "Hide dust (less than $1)"}
+                  </p>
+                </div>
+              </>
             )}
           </div>
           <FeedbackForm page={"Transaction History Page"} />

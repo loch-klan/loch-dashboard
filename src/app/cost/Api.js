@@ -24,6 +24,7 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
     });
 }
 export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
+  
    let data = new URLSearchParams();
     if (startDate) {
          data.append("start_datetime", startDate);
@@ -32,7 +33,7 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
     postLoginInstance.post("wallet/transaction/get-counter-party-volume-traded", data)
     .then((res) => {
       if (!res.data.error) {
-        
+        //  console.log("calling counter fees");
         let g_data = res.data.data.counter_party_volume_traded.sort((a, b) => {
           return b.total_volume - a.total_volume;
         });

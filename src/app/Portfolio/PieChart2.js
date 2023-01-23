@@ -230,6 +230,7 @@ class PieChart2 extends BaseReactComponent {
     if (this.props.userWalletData !== prevProps.userWalletData) {
       // this.props.userWalletData && this.setState({ piechartisLoading: true })
 
+      
       let assetData = [];
       if (
         this.props.userWalletData &&
@@ -287,9 +288,9 @@ class PieChart2 extends BaseReactComponent {
         pieSectionDataEnabled: {},
       });
     }
+    
     if (this.props.chainPortfolio !== prevProps.chainPortfolio) {
-      // console.log("New", this.props.chainPortfolio);
-      // console.log("Old", prevProps.chainPortfolio);
+    //  console.log("inside");
       let chainList = [];
       // this.props.allCoinList && this.props.allCoinList.map((item) => {
       //   let isfound = false;
@@ -319,7 +320,7 @@ class PieChart2 extends BaseReactComponent {
       // });
       let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
       let uniquechains = [];
-      // console.log("user wallet",UserWallet)
+    
       UserWallet &&
         UserWallet.map((item) => {
           item.coins &&
@@ -376,6 +377,8 @@ class PieChart2 extends BaseReactComponent {
         });
       this.setState({
         chainList,
+      }, () => {
+        // console.log("state chianlist", this.state.chainList)
       });
     }
     if (this.props.assetPrice != prevProps.assetPrice) {
@@ -474,7 +477,7 @@ class PieChart2 extends BaseReactComponent {
       unit = diffInMinutes < 2 ? " minute ago" : " minutes ago";
     } else {
       timeDiffString = Math.floor(diffInHours);
-      unit = diffInMinutes < 2 ? " hour ago" : " hours ago";
+      unit = diffInHours < 2 ? " hour ago" : " hours ago";
     }
 
     // console.log("timediff str", timeDiffString);
@@ -848,6 +851,8 @@ class PieChart2 extends BaseReactComponent {
     const { pieSectionDataEnabled, currency } = this.state;
     // console.log("chainlist", chainList);
     // console.log("uniquelist", uniqueList);
+
+    
 
     return (
       <div

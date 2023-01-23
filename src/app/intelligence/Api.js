@@ -70,6 +70,7 @@ export const getFilters = (ctx) => {
 
 export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = false) => {
     // console.log("inside api", startDate,endDate)
+    
     let data = new URLSearchParams();
      if (startDate) {
           data.append("start_datetime", startDate);
@@ -79,7 +80,8 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
         data.append("chains", JSON.stringify(selectedChains));
      }
      postLoginInstance.post("wallet/transaction/get-profit-loss", data)
-     .then((res) => {
+         .then((res) => {
+        //   console.log("calling get profit and loss");
        if(!res.data.error){
          ctx.setState({
              GraphData: res.data.data.profit_loss,

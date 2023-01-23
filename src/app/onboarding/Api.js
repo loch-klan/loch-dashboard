@@ -18,7 +18,7 @@ export const getAllCoins = (handleShareLinkUser = null) => {
                 dispatch({
                     type: COINS_LIST,
                     payload: coinsList
-                });
+                }); 
               handleShareLinkUser && handleShareLinkUser()
             })
             .catch((err) => {
@@ -212,6 +212,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
       localStorage.setItem("lochDummyUser", res.data.data.user.link)
       localStorage.setItem("lochToken", res.data.data.token)
       const allChains = ctx.props.OnboardingState.coinsList
+      
       let newAddWallet = [];
       const apiResponse = res.data.data;
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++){

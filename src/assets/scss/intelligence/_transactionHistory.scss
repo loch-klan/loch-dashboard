@@ -5,14 +5,15 @@
         margin-top: 5rem;
 
         .ShowDust{
-            text-align: right;
-            margin-bottom:1rem;
+                text-align: left;
+    margin-top: -44px;
+    margin-bottom: 3rem;
 
-            h3{
+            p{
                 display:inline;
 
                 &:hover{
-                    color: $grey-ADA;
+                    color: $primary;
                 }
             }
         }
