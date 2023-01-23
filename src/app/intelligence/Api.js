@@ -101,7 +101,7 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
   postLoginInstance.post("wallet/user-wallet/get-wallet-insights", data)
   .then((res)=>{
       if (!res.data.error) {
-        console.log("insights", res.data.data.insights);
+        // console.log("insights", res.data.data.insights);
       ctx.setState({
         insightList: res.data.data.insights,
         updatedInsightList: res.data.data.insights,

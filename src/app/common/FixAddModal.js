@@ -60,7 +60,7 @@ class FixAddModal extends BaseReactComponent {
 
   handleOnchange = (e) => {
     let { name, value } = e.target;
-    console.log("e", value.trim());
+    // console.log("e", value.trim());
     let prevWallets = [...this.state.addWalletList];
     let currentIndex = prevWallets.findIndex((elem) => elem.id === name);
     if (currentIndex > -1) {
@@ -174,7 +174,7 @@ class FixAddModal extends BaseReactComponent {
     });
   }
   addAddress = () => {
-    console.log("add address call")
+    
     this.state.addWalletList.push({
       id: `wallet${this.state.addWalletList.length + 1}`,
       address: "",
@@ -223,7 +223,7 @@ class FixAddModal extends BaseReactComponent {
 
     
     
-    console.log("add wallet list", this.state.addWalletList,this);
+    // console.log("add wallet list", this.state.addWalletList,this);
     if (this.state.addWalletList) {
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -257,7 +257,7 @@ class FixAddModal extends BaseReactComponent {
           }
         }
         let addWallet = walletList;
-        console.log("arr", arr);
+        // console.log("arr", arr);
         addWallet.map((w, i) => {
           w.id = `wallet${i + 1}`;
         });

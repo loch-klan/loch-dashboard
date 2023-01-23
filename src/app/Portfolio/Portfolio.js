@@ -133,7 +133,7 @@ class Portfolio extends BaseReactComponent {
       counterGraphDigit: 3,
       assetPrice: null,
       isTimeOut: true,
-    
+      showBtn: false,
     };
   }
 
@@ -444,6 +444,14 @@ class Portfolio extends BaseReactComponent {
       tableSortOpt: sort,
     });
   };
+
+  // this is for undetected wallet button zIndex
+  undetectedWallet = (e) => {
+    this.setState({
+      showBtn: e
+    });
+    console.log("condition", e)
+  }
 
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
@@ -1107,11 +1115,12 @@ class Portfolio extends BaseReactComponent {
                       email_address: getCurrentUser().email,
                     });
                   }}
+                  undetectedWallet={(e) => this.undetectedWallet(e)}
                 />
                 {this.state.userWalletList.findIndex(
                   (w) => w.coinFound !== true
                 ) > -1 && this.state.userWalletList[0].address !== "" ? (
-                  <div className="fix-div" id="fixbtn">
+                  <div className="fix-div" id="fixbtn" style={this.state.showBtn ? {display:"none"}:{}}>
                     <div className="m-r-8 decribe-div">
                       <div className="inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262">
                         Wallet undetected
@@ -1244,40 +1253,38 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
-                     
-                        <BarGraphSection
-                          headerTitle="Counterparty Volume Over Time"
-                          headerSubTitle="Understand how much your counterparty charges you"
-                          isArrow={true}
-                          handleClick={() => {
-                            VolumeTradeByCP({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                            this.props.history.push("/costs#cp");
-                          }}
-                          data={
-                            this.state.counterPartyValue &&
-                            this.state.counterPartyValue[0]
-                          }
-                          options={
-                            this.state.counterPartyValue &&
-                            this.state.counterPartyValue[1]
-                          }
-                          options2={
-                            this.state.counterPartyValue && this.state
-                              .counterPartyValue[2]
-                          }
-                          digit={this.state.counterGraphDigit}
-                          isScroll={true}
-                          isScrollVisible={false}
-                          comingSoon={false}
-                          isLoading={this.state.counterGraphLoading}
-                          // isLoading={true}
-                          className={"portfolio-profit-and-loss"}
-                          isCounterPartyMini={true}
-                        />
-                      
+                      <BarGraphSection
+                        headerTitle="Counterparty Volume Over Time"
+                        headerSubTitle="Understand how much your counterparty charges you"
+                        isArrow={true}
+                        handleClick={() => {
+                          VolumeTradeByCP({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                          this.props.history.push("/costs#cp");
+                        }}
+                        data={
+                          this.state.counterPartyValue &&
+                          this.state.counterPartyValue[0]
+                        }
+                        options={
+                          this.state.counterPartyValue &&
+                          this.state.counterPartyValue[1]
+                        }
+                        options2={
+                          this.state.counterPartyValue &&
+                          this.state.counterPartyValue[2]
+                        }
+                        digit={this.state.counterGraphDigit}
+                        isScroll={true}
+                        isScrollVisible={false}
+                        comingSoon={false}
+                        isLoading={this.state.counterGraphLoading}
+                        // isLoading={true}
+                        className={"portfolio-profit-and-loss"}
+                        isCounterPartyMini={true}
+                      />
                     </div>
                   </Col>
                 </Row>

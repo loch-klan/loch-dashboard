@@ -403,6 +403,7 @@ class PieChart2 extends BaseReactComponent {
         debtTotal: 0,
         isYeildToggle: false,
         isDebtToggle: false,
+        isChainToggle: false,
       });
       // for balance sheet
       // getAllProtocol(this);
@@ -420,6 +421,8 @@ class PieChart2 extends BaseReactComponent {
     this.setState({
       isChainToggle: !this.state.isChainToggle,
     });
+     this.props.undetectedWallet(!this.state.isChainToggle);
+    
   };
 
   toggleYield = () => {
