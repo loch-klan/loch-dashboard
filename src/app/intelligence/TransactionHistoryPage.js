@@ -6,7 +6,7 @@ import TransactionTable from "./TransactionTable";
 import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD, DEFAULT_PRICE } from "../../utils/Constant";
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD, DEFAULT_PRICE, SEARCH_BY_NOT_DUST } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
@@ -100,6 +100,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           up: false,
         },
       ],
+      showDust:false,
       // add new wallet
       // userWalletList: localStorage.getItem("addWallet")
       //   ? JSON.parse(localStorage.getItem("addWallet"))
@@ -223,6 +224,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     ) {
       arr.splice(index, 1);
     } else {
+      
       let obj = {};
       obj = {
         key: key,
@@ -345,6 +347,18 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
     return string;
   };
+
+  showDust = () => {
+    this.setState(
+      {
+        showDust: !this.state.showDust,
+      },
+      () => {
+        this.addCondition(SEARCH_BY_NOT_DUST, this.state.showDust);
+      }
+    );
+    
+  }
   render() {
     // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
@@ -1099,7 +1113,14 @@ class TransactionHistoryPage extends BaseReactComponent {
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
           />
-
+          <div className="ShowDust">
+            <h3
+              onClick={this.showDust}
+              className="inter-display-medium f-s-15 l-h-19 cp"
+            >
+              {this.state.showDust ? "Show dust (<$1)" : "Hide dust (<$1)"}
+            </h3>
+          </div>
           <div className="fillter_tabs_section">
             <Form onValidSubmit={this.onValidSubmit}>
               <Row>
