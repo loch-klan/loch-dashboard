@@ -170,7 +170,14 @@ class Portfolio extends BaseReactComponent {
   };
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-    // console.log("page Enter", this.state.startTime / 1000);
+    // if (this.props.match.params.id) {
+    //   getDetailsByLinkApi(this.props.match.params.id, this);
+    // }
+//     console.log(
+//       "param",
+//       this.props.match.params.id,
+//       this.props.match
+// );
     HomePage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,

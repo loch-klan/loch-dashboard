@@ -557,7 +557,7 @@ class LineChartSlider extends BaseReactComponent {
       this.state.legends.length === 0
         ? AllLegends.slice(1, 5).map(e => e.label)
         : this.state.legends;
-    console.log("top", topLegends);
+    // console.log("top", topLegends);
 
 
     SelectedSeriesData =
