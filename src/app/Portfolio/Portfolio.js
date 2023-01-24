@@ -399,6 +399,7 @@ class Portfolio extends BaseReactComponent {
             },
           ];
         } else if (val === "usdValue") {
+          // console.log("el.up", el.up)
           obj = [
             {
               key: SORT_BY_USD_VALUE_THEN,
@@ -419,28 +420,28 @@ class Portfolio extends BaseReactComponent {
       }
     });
 
-    let check = sort.some((e) => e.up === true);
-    let arr = [];
+    // let check = sort.some((e) => e.up === true);
+    // let arr = [];
 
-    if (check) {
-      // when any sort option is true then sort the table with that option key
-      // //console.log("Check true")
-      arr = obj;
-    } else {
-      // when all sort are false then sort by time in descending order
-      // arr.slice(1,1)
-      // //console.log("Check False ")
-      arr = [
-        {
-          key: SORT_BY_TIMESTAMP,
-          value: false,
-        },
-      ];
-    }
+    // if (check) {
+    //   // when any sort option is true then sort the table with that option key
+    //   // //console.log("Check true")
+    //   arr = obj;
+    // } else {
+    //   // when all sort are false then sort by time in descending order
+    //   // arr.slice(1,1)
+    //   console.log("Check False ")
+    //   arr = [
+    //     {
+    //       key: SORT_BY_TIMESTAMP,
+    //       value: false,
+    //     },
+    //   ];
+    // }
 
     // //console.log(obj)
     this.setState({
-      sort: arr,
+      sort: obj,
       tableSortOpt: sort,
     });
   };
@@ -450,13 +451,13 @@ class Portfolio extends BaseReactComponent {
     this.setState({
       showBtn: e
     });
-    console.log("condition", e)
+    // console.log("condition", e)
   }
 
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-    // //console.log("userWalletList", userWalletList);
+    // console.log("assetList", assetPriceList);
     let tableData =
       table &&
       table.map((row) => {
