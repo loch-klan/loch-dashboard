@@ -22,7 +22,7 @@ class AddWallet extends BaseReactComponent {
       showModal: true,
       signIn: false,
       addButtonVisible: false,
-      walletInput: [{ id: "wallet1", address: "", coins: [] }],
+      walletInput: [{ id: "wallet1", address: "", coins: [], nickname:"" }],
       loading: false,
     };
     this.timeout = 0;
@@ -31,6 +31,26 @@ class AddWallet extends BaseReactComponent {
   componentDidMount() {
     this.props.getAllCoins();
     this.props.getAllParentChains();
+  }
+
+  nicknameOnChain = (e) => {
+    let { name, value } = e.target;
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    if (foundIndex > -1) {
+      let prevValue = walletCopy[foundIndex].nickname;
+      // console.log(prevValue)
+      walletCopy[foundIndex].nickname = value;
+      
+      // walletCopy[foundIndex].trucatedAddress = value
+    }
+    console.log(walletCopy)
+    this.setState({
+      // addButtonVisible: this.state.walletInput.some((wallet) =>
+      //   wallet.address ? true : false
+      // ),
+      walletInput: walletCopy,
+    });
   }
 
   handleOnChange = (e) => {
@@ -127,6 +147,7 @@ class AddWallet extends BaseReactComponent {
       id: `wallet${this.state.walletInput.length + 1}`,
       address: "",
       coins: [],
+      nickname:""
     });
     this.setState({
       walletInput: this.state.walletInput,
@@ -174,11 +195,14 @@ class AddWallet extends BaseReactComponent {
     let walletAddress = [];
     let addWallet = this.state.walletInput;
     let finalArr = [];
+    let nicknameArr = {};
     for (let i = 0; i < addWallet.length; i++) {
       let curr = addWallet[i];
       if (!walletAddress.includes(curr.address.trim()) && curr.address.trim()) {
         finalArr.push(curr);
         walletAddress.push(curr.address.trim());
+        let address = curr.address.trim();
+        nicknameArr[address] = curr.nickname;
       }
     }
 
@@ -188,6 +212,8 @@ class AddWallet extends BaseReactComponent {
         id: `wallet${index + 1}`,
       };
     });
+
+    console.log("final array", finalArr, nicknameArr)
 
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(walletAddress));
@@ -250,7 +276,7 @@ class AddWallet extends BaseReactComponent {
               {this.state.walletInput.map((c, index) => {
                 return (
                   <div
-                    className="ob-wallet-input-wrapper"
+                    className="ob-wallet-input-wrapper" style={index == this.state.walletInput.length-1 ? {marginBottom:0}:{}}
                     key={index}
                     id={`add-wallet-${index}`}
                   >
@@ -263,6 +289,12 @@ class AddWallet extends BaseReactComponent {
                         onClick={() => this.deleteInputField(index, c)}
                       />
                     ) : null}
+                    <h3
+                      style={{ color: "#B0B1B3", textAlign: "left" }}
+                      className="inter-display-regular f-s-13 lh-15"
+                    >
+                      Address
+                    </h3>
                     <input
                       autoFocus
                       name={`wallet${index + 1}`}
@@ -284,6 +316,38 @@ class AddWallet extends BaseReactComponent {
                       onChange={(e) => this.handleOnChange(e)}
                       // tabIndex={index}
                       onKeyDown={this.handleTabPress}
+                    />
+                    <h3
+                      style={{ color: "#B0B1B3", textAlign: "left" }}
+                      className="inter-display-regular f-s-13 lh-15"
+                    >
+                      Nickname
+                    </h3>
+                    <input
+                      // autoFocus
+                      name={`wallet${index + 1}`}
+                      value={c.nickname || ""}
+                      className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${
+                        this.state.walletInput[index].address
+                          ? "is-valid"
+                          : null
+                      }`}
+                      placeholder="Enter nickname"
+                      title={c.nickname || ""}
+                      // style={{paddingRight: divWidth}}
+                      style={getPadding(
+                        `add-wallet-nickname-${index}`,
+                        c,
+                        this.props.OnboardingState
+                      )}
+                      // onKeyUp={(e) => this.setState({ loading: true })}
+                      onChange={(e) => {
+                        this.nicknameOnChain(e);
+                        // console.log(e.target)
+
+                      }}
+                      // tabIndex={index}
+                      // onKeyDown={this.handleTabPress}
                     />
                     {this.state.walletInput.map((e, i) => {
                       if (

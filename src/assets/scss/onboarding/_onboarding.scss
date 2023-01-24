@@ -61,11 +61,12 @@
             .ob-modal-body-1 {
                 overflow-y: auto;
 
-                max-height: 20rem;
+                // max-height: 20rem;
+                max-height: 22rem;
                 margin-left: 0rem;
 
                 .is-valid {
-                    border-color: #19191A !important;
+                    // border-color: #19191A !important;
                 }
 
                 &::-webkit-scrollbar {
@@ -111,7 +112,7 @@
                 // margin: 0 2.4rem;
                 // padding: 0 4.8rem 0 5.6rem;
                 margin: 0 5.4rem 0 2.4rem;
-                padding: 0 1.7rem 0 5.6rem;
+                padding: 0 1.7rem 0 3.6rem;
 
                 .ob-modal-body-del {
                     border-radius: 0.8rem;
@@ -119,10 +120,10 @@
                     width: 3.2rem;
                     position: absolute;
                     // left: -5.5rem;
-                      left: -5rem;
+                      right: 1rem;
                     // top: 0.14rem;
-                     top: 0.5rem;
-                    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+                     bottom: 1rem;
+                    // box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                     cursor: pointer;
                     &.not-allowed{
                         cursor: not-allowed;
@@ -130,7 +131,8 @@
                 }
 
                 .grey-btn {
-                    width: 59.2rem;
+                    // width: 59.2rem;
+                    width: 61.8rem;
                     line-height: 1.3rem;
                     // margin-bottom: 1rem;
                     margin-top: 1.2rem;
@@ -144,6 +146,10 @@
                     width: fit-content;
                     margin: auto;
                     position: relative;
+                    border: 0.1rem solid #D4D4D4;
+                    border-radius: 0.8rem;
+                    padding:1.2rem 1.2rem 0;
+                    margin-bottom: 1.2rem;
                 }
 
                 input {
@@ -152,12 +158,15 @@
 
                 .ob-modal-body-text {
                     width: 59.2rem;
-                    margin-bottom: 1rem;
+                    // margin-bottom: 1rem;
                     background: #FFFFFF;
-                    border: 0.1rem solid #D4D4D4;
+                    // border: 0.1rem solid #D4D4D4;
+                     border: 0.1rem solid transparent;
                     border-radius: 0.8rem;
-                    height: 4rem;
-                    padding: 1rem 15rem 1.2rem 1.2rem;
+                    // height: 4rem;
+                     height: 3rem;
+                    // padding: 0.5rem 15rem 1.2rem 0rem;
+                    padding: 0.5rem 15rem 1rem 0rem;
                     color: #19191A;
 
                     &:active:focus,
@@ -165,13 +174,19 @@
                     &:focus,
                     &:focus-visible {
                         outline: none;
-                        border-color: #19191A;
+                        // border-color: #19191A;
+                        border-color: transparent;
                     }
                 }
 
                 .text-ellipsis {
                     overflow: hidden;
                     text-overflow: ellipsis;
+                }
+
+                .chip-wrapper{
+                    top:1.2rem;
+                    right:1.2rem;
                 }
 
                 .ob-modal-body-text::placeholder {
