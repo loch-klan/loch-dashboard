@@ -463,7 +463,7 @@ class Portfolio extends BaseReactComponent {
       table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        // //console.log("row", userWalletList);
+        // console.log("row", row);g
         userWalletList &&
           userWalletList.map((wallet) => {
             if (
@@ -523,6 +523,11 @@ class Portfolio extends BaseReactComponent {
           usdValueToday: {
             value: row.asset.value,
             id: row.asset.id,
+          },
+          usdValueThen: {
+            value: row.asset.value,
+            id: row.asset.id,
+            assetPrice: row.asset_price,
           },
           method: row.method,
         };
@@ -922,12 +927,18 @@ class Portfolio extends BaseReactComponent {
             let chain = Object.entries(assetPriceList);
             let value;
             chain.find((chain) => {
-              if (chain[0] === rowData.usdValueToday.id) {
+              // if (chain[0] === rowData.usdValueToday.id) {
+              //   value =
+              //     rowData.usdValueToday.value *
+              //       chain[1].quote.USD.price *
+              //       currency?.rate || DEFAULT_PRICE;
+              //   return;
+              // }
+              if (chain[0] === rowData.usdValueThen.id) {
                 value =
-                  rowData.usdValueToday.value *
-                    chain[1].quote.USD.price *
-                    currency?.rate || DEFAULT_PRICE;
-                return;
+                  rowData.usdValueThen.value *
+                  rowData.usdValueThen.assetPrice *
+                  currency?.rate;
               }
             });
             return (
