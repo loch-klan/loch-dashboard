@@ -47,7 +47,7 @@ class ExitOverlay extends BaseReactComponent {
     this.state = {
       dummyUser,
       show: props.show,
-      link: `${BASE_URL_S3}portfolio/${dummyUser}`,
+      link: `${BASE_URL_S3}home/${dummyUser}`,
       isactive: false,
       email: "",
       dropdowntitle: "View and edit",
