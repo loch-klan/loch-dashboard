@@ -295,7 +295,8 @@ class Wallet extends Component {
                 </div>
               </div>
             ) : walletList.length > 0 ? (
-              walletList.map((wallet, index) => {
+                walletList.map((wallet, index) => {
+                
                 return (
                   <WalletCard
                     key={index}

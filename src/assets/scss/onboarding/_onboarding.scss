@@ -120,9 +120,9 @@
                     width: 3.2rem;
                     position: absolute;
                     // left: -5.5rem;
-                      right: 1rem;
+                      right: 0.5rem;
                     // top: 0.14rem;
-                     bottom: 1rem;
+                     bottom: 0.5rem;
                     // box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                     cursor: pointer;
                     &.not-allowed{
@@ -190,7 +190,7 @@
                 }
 
                 .ob-modal-body-text::placeholder {
-                    color: #D4D4D4;
+                    color: "#96979A";
 
                 }
 

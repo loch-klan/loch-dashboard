@@ -215,6 +215,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
       
       let newAddWallet = [];
       const apiResponse = res.data.data;
+      console.log("res ", apiResponse)
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
         let obj = {}; // <----- new Object
         obj['address'] = apiResponse.user.user_wallets[i].address;
@@ -235,7 +236,8 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
               });
               obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
               obj['id'] = `wallet${i+1}`;
-              obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+        obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+        obj['nickname'] = apiResponse.user.user_wallets[i]?.nickname;
               newAddWallet.push(obj);
       }
       ctx.props.history.replace({

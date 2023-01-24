@@ -4,7 +4,8 @@ import { Modal, Image, Button } from 'react-bootstrap'
 import closeIcon from '../../assets/images/icons/dummyX.svg'
 import { connect } from 'react-redux';
 import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
-import unrecognizedIcon from '../../image/unrecognized.svg';
+
+import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
 import { lightenDarkenColor } from '../../utils/ReusableFunctions';
 import { AddNameTag, DeleteWallet, EditSpecificWallet } from '../../utils/AnalyticsFunctions';
@@ -204,7 +205,7 @@ class EditWalletModal extends BaseReactComponent {
                 />
                 <FormElement
                   valueLink={this.linkState(this, "walletTag")}
-                  label="Wallet tag"
+                  label="Wallet Nickname"
                   control={{
                     type: CustomTextControl,
                     settings: {

@@ -8,6 +8,7 @@ export const getAllWalletListApi = (data,ctx) => {
     postLoginInstance.post("wallet/user-wallet/search-wallet", data)
       .then((res) => {
         if (!res.data.error) {
+          console.log("res wallet", res.data.data.user_wallets);
           let walletdata = res.data.data.user_wallets
           let totalWalletAmt = 0;
           walletdata = walletdata.map((wallet) => {

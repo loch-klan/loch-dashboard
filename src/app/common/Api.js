@@ -65,6 +65,7 @@ export const updateUserWalletApi = (data,ctx) =>{
       const allChains = ctx.props.OnboardingState.coinsList
       let newAddWallet = [];
       const apiResponse = res.data.data;
+      console.log("res", apiResponse)
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
         let obj = {}; // <----- new Object
         obj['address'] = apiResponse.user.user_wallets[i].address;
@@ -85,7 +86,8 @@ export const updateUserWalletApi = (data,ctx) =>{
               });
               obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
               obj['id'] = `wallet${i+1}`;
-              obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+        obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+        obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
               newAddWallet.push(obj);
       }
       // console.log('newAddWallet',newAddWallet);

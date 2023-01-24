@@ -31,6 +31,7 @@ class FixAddModal extends BaseReactComponent {
               coins: [],
               displayAddress: "",
               wallet_metadata: {},
+              nickname: "",
             },
           ];
     // console.log('addWalletList',addWalletList);
@@ -57,6 +58,20 @@ class FixAddModal extends BaseReactComponent {
     };
     this.timeout = 0;
   }
+
+  handleOnchangeNickname = (e) => {
+    let { name, value } = e.target;
+    // console.log("e", value.trim());
+    let prevWallets = [...this.state.addWalletList];
+    let currentIndex = prevWallets.findIndex((elem) => elem.id === name);
+    if (currentIndex > -1) {
+      prevWallets[currentIndex].nickname = value;
+    }
+    this.setState({
+      addWalletList: prevWallets,
+    });
+   
+  };
 
   handleOnchange = (e) => {
     let { name, value } = e.target;
@@ -174,12 +189,12 @@ class FixAddModal extends BaseReactComponent {
     });
   }
   addAddress = () => {
-    
     this.state.addWalletList.push({
       id: `wallet${this.state.addWalletList.length + 1}`,
       address: "",
       coins: [],
       displayAddress: "",
+      nickname:"",
       wallet_metadata: {},
     });
     this.setState({
@@ -220,9 +235,6 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleAddWallet = () => {
-
-    
-    
     // console.log("add wallet list", this.state.addWalletList,this);
     if (this.state.addWalletList) {
       if (this.timeout) {
@@ -231,6 +243,7 @@ class FixAddModal extends BaseReactComponent {
       this.timeout = setTimeout(() => {
         let arr = [];
         let displayAddress = [];
+        let nicknameArr = {};
         let walletList = [];
         for (let i = 0; i < this.state.addWalletList.length; i++) {
           let curr = this.state.addWalletList[i];
@@ -247,6 +260,7 @@ class FixAddModal extends BaseReactComponent {
             // curr.displayAddress ? arr.push(curr.address.trim()) : arr.push(curr.address.trim());
 
             arr.push(curr.address.trim());
+            nicknameArr[curr.address.trim()] = curr.nickname;
             // displayAddress.push(curr.displayAddress?.trim());
             // if (
             //   !displayAddress.includes(curr.displayAddress?.trim()) &&
@@ -262,10 +276,11 @@ class FixAddModal extends BaseReactComponent {
           w.id = `wallet${i + 1}`;
         });
         localStorage.setItem("addWallet", JSON.stringify(addWallet));
-        
+
         this.state.onHide();
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(arr));
+         data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
 
         updateUserWalletApi(data, this);
         this.state.changeList && this.state.changeList(walletList);
@@ -459,7 +474,7 @@ class FixAddModal extends BaseReactComponent {
   handleTabPress = (event) => {
     if (event.key === "Tab") {
       event.preventDefault();
-      console.log("yab press");
+      
       // your function code here
       this.addAddress();
     }
@@ -536,9 +551,14 @@ class FixAddModal extends BaseReactComponent {
     const wallets = this.state.addWalletList.map((elem, index) => {
       return (
         <div
-          className="m-t-12 add-wallet-input-section"
+          className="add-wallet-input-section"
           key={index}
           id={`add-wallet-${index}`}
+          style={
+            index == this.state.addWalletList.length - 1
+              ? { marginBottom: 0 }
+              : {}
+          }
         >
           {this.state.addWalletList.length > 1 ? (
             <div
@@ -550,7 +570,12 @@ class FixAddModal extends BaseReactComponent {
           ) : (
             ""
           )}
-
+          <h3
+            style={{ color: "#B0B1B3", textAlign: "left" }}
+            className="inter-display-regular f-s-13 lh-15"
+          >
+            Address
+          </h3>
           <input
             autoFocus
             name={`wallet${index + 1}`}
@@ -568,6 +593,30 @@ class FixAddModal extends BaseReactComponent {
               this.props.OnboardingState
             )}
             onKeyDown={this.handleTabPress}
+          />
+          <h3
+            style={{ color: "#B0B1B3", textAlign: "left" }}
+            className="inter-display-regular f-s-13 lh-15"
+          >
+            Nickname
+          </h3>
+          <input
+            // autoFocus
+            name={`wallet${index + 1}`}
+            value={elem.nickname || ""}
+            placeholder="Enter Nickname"
+            // className='inter-display-regular f-s-16 lh-20'
+            className={`inter-display-regular f-s-16 lh-20 ${
+              elem.address ? "is-valid" : null
+            }`}
+            onChange={(e) => this.handleOnchangeNickname(e)}
+            id={elem.id}
+            style={getPadding(
+              `add-wallet-${index}`,
+              elem,
+              this.props.OnboardingState
+            )}
+            // onKeyDown={this.handleTabPress}
           />
           {elem.address ? (
             elem.coinFound && elem.coins.length > 0 ? (
@@ -672,12 +721,7 @@ class FixAddModal extends BaseReactComponent {
               {this.state.addWalletList.length >= 0 &&
                 this.state.modalType === "addwallet" && (
                   <div className="m-b-32 add-wallet-btn">
-                    <Button
-                      className="grey-btn"
-                      onClick={this.addAddress}
-                      
-                      
-                    >
+                    <Button className="grey-btn" onClick={this.addAddress}>
                       <Image src={PlusIcon} /> Add another
                     </Button>
                   </div>

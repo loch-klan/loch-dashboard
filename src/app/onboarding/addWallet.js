@@ -38,7 +38,7 @@ class AddWallet extends BaseReactComponent {
     let walletCopy = [...this.state.walletInput];
     let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
     if (foundIndex > -1) {
-      let prevValue = walletCopy[foundIndex].nickname;
+      // let prevValue = walletCopy[foundIndex].nickname;
       // console.log(prevValue)
       walletCopy[foundIndex].nickname = value;
       
@@ -217,6 +217,7 @@ class AddWallet extends BaseReactComponent {
 
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(walletAddress));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
     createAnonymousUserApi(data, this, finalArr);
     // console.log(finalArr);
 
