@@ -349,7 +349,7 @@ class ExitOverlay extends BaseReactComponent {
                     </Form>
                   </div>
                   <div className="export-item-wrapper">
-                    {this.state.exportItem.map((item) => {
+                    {this.state.exportItem?.map((item) => {
                       return (
                         <span
                           className={

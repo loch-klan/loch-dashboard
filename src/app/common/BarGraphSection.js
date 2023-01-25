@@ -110,7 +110,7 @@ class BarGraphSection extends Component {
         this.setState(
           {
             activeBadge: newArr,
-            activeBadgeList: newArr.map((item) => item.id),
+            activeBadgeList: newArr?.map((item) => item.id),
           },
           () => {
             this.props.handleBadge(this.state.activeBadgeList, activeFooter);
@@ -136,7 +136,7 @@ class BarGraphSection extends Component {
       this.setState(
         {
           activeBadge: newArr,
-          activeBadgeList: newArr.map((item) => item.id),
+          activeBadgeList: newArr?.map((item) => item.id),
         },
         () => {
           this.props.handleBadge(this.state.activeBadgeList, activeFooter);

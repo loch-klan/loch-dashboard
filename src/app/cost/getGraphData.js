@@ -224,10 +224,10 @@ export const getGraphData = (apidata, parentCtx) => {
     labels,
     datasets: [
       {
-        data: arr ? arr.map((e) => e.total_fees * currency?.rate) : [],
+        data: arr ? arr?.map((e) => e.total_fees * currency?.rate) : [],
         backgroundColor: arr ? arr?.map((e) => e.chain.color + "4D") : [],
-        borderColor: arr ? arr.map((e) => e.chain.color) : [],
-        defaultAssetCode: arr ? arr.map((e) => e.chain.default_asset_code) : [],
+        borderColor: arr ? arr?.map((e) => e.chain.color) : [],
+        defaultAssetCode: arr ? arr?.map((e) => e.chain.default_asset_code) : [],
         borderWidth: 2,
         borderRadius: {
           topLeft: 6,
@@ -235,9 +235,9 @@ export const getGraphData = (apidata, parentCtx) => {
         },
         borderSkipped: false,
         barThickness: 48,
-        totalFeesAmount: arr ? arr.map((e) => e.total_fees_amount * currency?.rate): [],
+        totalFeesAmount: arr ? arr?.map((e) => e.total_fees_amount * currency?.rate): [],
         // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
-        totalVolume: arr ? arr.map((e) => e.total_volume) : [],
+        totalVolume: arr ? arr?.map((e) => e.total_volume) : [],
       },
     ],
   };
@@ -253,7 +253,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
   //  ).length;
   let digit = 3;
 
-  const labels = arr.map((e) => e._id);
+  const labels = arr?.map((e) => e._id);
 
   const options = {
     responsive: true,
@@ -462,7 +462,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
     labels,
     datasets: [
       {
-        data: arr.map((e) => e.total_volume * currency?.rate),
+        data: arr?.map((e) => e.total_volume * currency?.rate),
         backgroundColor: [
           "rgba(100, 190, 205, 0.3)",
           "rgba(34, 151, 219, 0.3)",
@@ -490,10 +490,10 @@ export const getCounterGraphData = (arr, parentCtx) => {
         },
         borderSkipped: false,
         barThickness: 48,
-        totalFees: arr.map((e) => e.total_fees * currency?.rate),
+        totalFees: arr?.map((e) => e.total_fees * currency?.rate),
         // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
-        totalVolume: arr.map((e) => e.total_volume),
-        defaultAssetCode: arr.map((e) => e.chain.default_asset_code),
+        totalVolume: arr?.map((e) => e.total_volume),
+        defaultAssetCode: arr?.map((e) => e.chain.default_asset_code),
       },
     ],
   };

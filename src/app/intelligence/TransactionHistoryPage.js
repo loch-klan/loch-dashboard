@@ -153,7 +153,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
-      const address = this.state.walletList.map((wallet) => {
+      const address = this.state.walletList?.map((wallet) => {
         return wallet.address;
       });
       const cond = [
@@ -256,7 +256,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     // console.log(val)
     let sort = [...this.state.tableSortOpt];
     let obj = [];
-    sort.map((el) => {
+    sort?.map((el) => {
       if (el.title === val) {
         if (val === "time") {
           obj = [
@@ -366,11 +366,11 @@ class TransactionHistoryPage extends BaseReactComponent {
     const { walletList, currency } = this.state;
     let tableData =
       table &&
-      table.map((row) => {
+      table?.map((row) => {
         let walletFromData = null;
         let walletToData = null;
         walletList &&
-          walletList.map((wallet) => {
+          walletList?.map((wallet) => {
             if (
               wallet.address?.toLowerCase() ===
                 row.from_wallet.address?.toLowerCase() ||

@@ -181,7 +181,7 @@ function Sidebar(props) {
                 <div className='currency-wrapper'>
                 <DropdownButton id="currency-dropdown" title={selectedCurrency && (selectedCurrency.symbol + " " + selectedCurrency.code)}>
                   {
-                    currencyList.map((currency, key)=>{
+                    currencyList?.map((currency, key)=>{
                       return(
                         <Dropdown.Item key={key} onClick={()=>handleFunction(currency)}> <span>{currency.symbol}</span> <span>{currency.code}</span></Dropdown.Item>
                       )

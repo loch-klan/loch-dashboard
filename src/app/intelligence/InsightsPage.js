@@ -168,7 +168,7 @@ class InsightsPage extends Component {
             {
               // this.state.insightList && this.state.insightList.length > 0 &&
               <div className="insights-filter">
-                {this.state.insightFilter.map((filter, key) => {
+                {this.state.insightFilter?.map((filter, key) => {
                   return (
                     <div
                       id={key}
@@ -191,7 +191,7 @@ class InsightsPage extends Component {
                 <Loading />
               ) : this.state.updatedInsightList &&
                 this.state.updatedInsightList.length > 0 ? (
-                this.state.updatedInsightList.map((insight, key) => {
+                this.state.updatedInsightList?.map((insight, key) => {
                   return (
                     <div className="insights-card" key={key}>
                       <Image

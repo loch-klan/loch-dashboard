@@ -135,12 +135,12 @@ class PieChart2 extends BaseReactComponent {
     let uniquechains = [];
     // console.log("user wallet",UserWallet)
     UserWallet &&
-      UserWallet.map((item) => {
+      UserWallet?.map((item) => {
         item.coins &&
-          item.coins.map((coin, i) => {
+          item.coins?.map((coin, i) => {
             let isfound = false;
             this.props.chainPortfolio &&
-              this.props.chainPortfolio.map((chain) => {
+              this.props.chainPortfolio?.map((chain) => {
                 if (
                   coin.coinName === chain.name &&
                   !uniquechains.includes(chain.name)
@@ -208,10 +208,10 @@ class PieChart2 extends BaseReactComponent {
   getYieldBalance = () => {
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     UserWallet &&
-      UserWallet.map((e) => {
+      UserWallet?.map((e) => {
         //  console.log("wallet_address", e.address);
         this.state.allProtocols &&
-          this.state.allProtocols.map((protocol) => {
+          this.state.allProtocols?.map((protocol) => {
             let data = new URLSearchParams();
             // console.log("protocol_code", protocol.code,
             //   "wallet_address",
@@ -322,12 +322,12 @@ class PieChart2 extends BaseReactComponent {
       let uniquechains = [];
     
       UserWallet &&
-        UserWallet.map((item) => {
+        UserWallet?.map((item) => {
           item.coins &&
-            item.coins.map((coin, i) => {
+            item.coins?.map((coin, i) => {
               let isfound = false;
               this.props.chainPortfolio &&
-                this.props.chainPortfolio.map((chain) => {
+                this.props.chainPortfolio?.map((chain) => {
                   if (
                     coin.coinName === chain.name &&
                     !uniquechains.includes(chain.name)
@@ -508,9 +508,9 @@ class PieChart2 extends BaseReactComponent {
     // console.log("Refresh clicked");
     // localStorage.setItem("refreshApiTime", currentTime);
     let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
-    userWalletList.map((wallet, i) => {
+    userWalletList?.map((wallet, i) => {
       if (wallet.coinFound) {
-        wallet.coins.map((coin) => {
+        wallet.coins?.map((coin) => {
           if (coin.chain_detected) {
             let userCoinWallet = {
               address: wallet.address,
@@ -556,7 +556,7 @@ class PieChart2 extends BaseReactComponent {
                 true
               )}</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total Assets</span></div>`,
               fontMetrics = this.renderer.fontMetrics(16);
-            series.data.map((e, i) => {
+            series.data?.map((e, i) => {
               e.dataLabel
                 .css({
                   // opacity: 0,
@@ -723,7 +723,7 @@ class PieChart2 extends BaseReactComponent {
                   display: "block",
                   zIndex: 10,
                 });
-                this.series.data.map((data, i) => {
+                this.series.data?.map((data, i) => {
                   if (currentData.assetCode !== data.assetCode) {
                     data.dataLabel
                       .css({
@@ -747,7 +747,7 @@ class PieChart2 extends BaseReactComponent {
           },
           events: {
             mouseOut: function () {
-              this.points.map((data, i) => {
+              this.points?.map((data, i) => {
                 if (Object.keys(self.state.pieSectionDataEnabled).length > 0) {
                   if (
                     self.state.pieSectionDataEnabled.colorIndex !=
@@ -801,9 +801,9 @@ class PieChart2 extends BaseReactComponent {
       this.state.selectedSection[0] && this.state.selectedSection[0].chain;
 
     uniqueList &&
-      uniqueList.map((chain) => {
+      uniqueList?.map((chain) => {
         let total = 0;
-        uniqueList.map((item) => {
+        uniqueList?.map((item) => {
           if (
             chain.address === item.address &&
             !uniqueAddress.includes(chain.address)
@@ -813,7 +813,7 @@ class PieChart2 extends BaseReactComponent {
         });
         let displayAddress = "";
         UserWallet &&
-          UserWallet.map((e) => {
+          UserWallet?.map((e) => {
             if (e.address === chain.address) {
               displayAddress = e.displayAddress;
             }
@@ -995,7 +995,7 @@ class PieChart2 extends BaseReactComponent {
                     >
                       <div className="chain-content">
                         {this.state.chainList &&
-                          this.state.chainList.map((chain, i) => {
+                          this.state.chainList?.map((chain, i) => {
                             return (
                               <div
                                 className="chain-list-item"

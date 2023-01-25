@@ -10,7 +10,7 @@ export default function CoinBadges(props) {
     let badgeList = [{name:"All",id:""}]
     let dropdownList = []
 
-    props.chainList.map((chain)=>{
+    props.chainList?.map((chain)=>{
         // console.log(chain)
         badgeList.push({name:chain.name,id:chain.id})
         dropdownList.push({name:chain.name,id:chain.id})  
@@ -26,7 +26,7 @@ export default function CoinBadges(props) {
     return (
         <div className='coin-badges'>
             <div className={`badge-list ${ props.isScrollVisible === false ? 'white-scroll' : ""}`}>
-                {badgeList.map((badge, index) => {
+                {badgeList?.map((badge, index) => {
                     const className = props.activeBadge.some(e => e.name === badge.name) ? "inter-display-medium f-s-13 lh-16 m-r-16 badge-name badge-active" :
                         "inter-display-medium f-s-13 lh-16 m-r-16 black-191 badge-name"
                     return (

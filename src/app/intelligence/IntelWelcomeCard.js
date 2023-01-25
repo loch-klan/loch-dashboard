@@ -64,7 +64,7 @@ export default function IntelWelcomeCard(props) {
       },
     ];
 
-    const cards = cardData.map((card, key) => {
+    const cards = cardData?.map((card, key) => {
         return (
             <div className='info' key={key} onClick={() => {
                 props.history.push(card.path);
