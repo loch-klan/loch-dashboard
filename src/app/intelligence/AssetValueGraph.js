@@ -90,8 +90,8 @@ class AssetValueGraph extends Component {
     this.setState({ graphLoading: true });
     let addressList = [];
     // console.log("wallet addres", this.state.userWalletList);
-    this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
-    // console.log('addressList',addressList);
+    this.state.userWalletList?.map((wallet) => addressList.push(wallet.address));
+    // console.log("addressList", this.state.userWalletList);
     let data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("group_criteria", groupByValue);

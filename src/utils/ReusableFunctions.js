@@ -60,25 +60,47 @@ export const compareDate = (dateTimeA, dateTimeB) => {
 
 export const numToCurrency = (num) => {
   num = num.toString().replace(/[^0-9.]/g, '');
+  
   if (num < 1000) {
     return parseFloat(num).toFixed(2);
     // return Math.round(num);
   }
-  let si = [
-    { v: 1E3, s: "K" },
-    { v: 1E6, s: "M" },
-    { v: 1E9, s: "B" },
-    { v: 1E12, s: "T" },
-    { v: 1E15, s: "P" },
-    { v: 1E18, s: "E" }
-  ];
-  let index;
-  for (index = si.length - 1; index > 0; index--) {
-    if (num >= si[index].v) {
-      break;
+  let number;
+  if (CurrencyType(true) == "INR" && num >= 100000) {
+    if (num >= 10000000) {
+      number =
+        (num / 10000000).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") +
+        " cr";
+    } else if (num >= 100000) {
+      number =
+        (num / 100000).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") +
+        " lac";
+    } else {
+      number = num;
     }
+  } else {
+    let si = [
+      { v: 1e3, s: "K" },
+      { v: 1e6, s: "M" },
+      { v: 1e9, s: "B" },
+      { v: 1e12, s: "T" },
+      { v: 1e15, s: "P" },
+      { v: 1e18, s: "E" },
+    ];
+    let index;
+    for (index = si.length - 1; index > 0; index--) {
+      if (num >= si[index].v) {
+        break;
+      }
+    }
+
+    number =
+      (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") +
+      si[index].s;
   }
-  return (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + si[index].s;
+
+ 
+  return number;
 }
 
 export const lightenDarkenColor = (hex, lum) => {

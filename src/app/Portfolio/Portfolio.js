@@ -463,7 +463,7 @@ class Portfolio extends BaseReactComponent {
       table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        // //console.log("row", userWalletList);
+        // console.log("row", row);g
         userWalletList &&
           userWalletList.map((wallet) => {
             if (
@@ -525,6 +525,11 @@ class Portfolio extends BaseReactComponent {
           usdValueToday: {
             value: row.asset.value,
             id: row.asset.id,
+          },
+          usdValueThen: {
+            value: row.asset.value,
+            id: row.asset.id,
+            assetPrice: row.asset_price,
           },
           method: row.method,
         };
@@ -983,12 +988,18 @@ class Portfolio extends BaseReactComponent {
             let chain = Object.entries(assetPriceList);
             let value;
             chain.find((chain) => {
-              if (chain[0] === rowData.usdValueToday.id) {
+              // if (chain[0] === rowData.usdValueToday.id) {
+              //   value =
+              //     rowData.usdValueToday.value *
+              //       chain[1].quote.USD.price *
+              //       currency?.rate || DEFAULT_PRICE;
+              //   return;
+              // }
+              if (chain[0] === rowData.usdValueThen.id) {
                 value =
-                  rowData.usdValueToday.value *
-                    chain[1].quote.USD.price *
-                    currency?.rate || DEFAULT_PRICE;
-                return;
+                  rowData.usdValueThen.value *
+                  rowData.usdValueThen.assetPrice *
+                  currency?.rate;
               }
             });
             return (
@@ -1241,8 +1252,16 @@ class Portfolio extends BaseReactComponent {
                         graphLoading={this.state.graphLoading}
                         // graphLoading={true}
                         isUpdate={this.state.isUpdate}
-                        handleClick={() => {
-                          this.props.history.push("/intelligence/asset-value");
+                          handleClick={() => {
+                          if (
+                            this.state.userWalletList &&
+                            this.state.userWalletList.length !== 0
+                          ) {
+                            this.props.history.push(
+                              "/intelligence/asset-value"
+                            );
+                          }
+                            
                         }}
                         hideTimeFilter={true}
                         hideChainFilter={true}
@@ -1255,12 +1274,16 @@ class Portfolio extends BaseReactComponent {
                         headerTitle="Net Flows"
                         headerSubTitle="Understand your entire portfolio's performance"
                         isArrow={true}
-                        handleClick={() => {
-                          this.props.history.push("/intelligence");
-                          ProfitLossEV({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          });
+                          handleClick={() => {
+                            if (
+                              this.state.userWalletList &&
+                              this.state.userWalletList.length !== 0
+                            ) { this.props.history.push("/intelligence");
+                            ProfitLossEV({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });}
+                          
                         }}
                         isScrollVisible={false}
                         data={this.state.graphValue && this.state.graphValue[0]}
@@ -1295,14 +1318,18 @@ class Portfolio extends BaseReactComponent {
                     >
                       <TransactionTable
                         title="Transaction History"
-                        handleClick={() => {
-                          this.props.history.push(
-                            "/intelligence/transaction-history"
-                          );
-                          TransactionHistoryEView({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          });
+                          handleClick={() => {
+                            // console.log("wallet", this.state.userWalletList);
+                            if (this.state.userWalletList && this.state.userWalletList.length !== 0) {
+                            this.props.history.push(
+                              "/intelligence/transaction-history"
+                            );
+                            TransactionHistoryEView({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          }
+                            
                         }}
                         subTitle="In the last month"
                         tableData={tableData}
@@ -1319,12 +1346,16 @@ class Portfolio extends BaseReactComponent {
                         headerTitle="Counterparty Volume Over Time"
                         headerSubTitle="Understand how much your counterparty charges you"
                         isArrow={true}
-                        handleClick={() => {
-                          VolumeTradeByCP({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          });
-                          this.props.history.push("/costs#cp");
+                          handleClick={() => {
+                            if (this.state.userWalletList && this.state.userWalletList.length !== 0) { 
+                              VolumeTradeByCP({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                              this.props.history.push("/costs#cp");
+                            }
+
+                          
                         }}
                         data={
                           this.state.counterPartyValue &&
