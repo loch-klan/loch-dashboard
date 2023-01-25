@@ -36,7 +36,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     const params = new URLSearchParams(search);
     const page = params.get("p");
     const walletList = JSON.parse(localStorage.getItem("addWallet"));
-    const address = walletList.map((wallet) => {
+    const address = walletList?.map((wallet) => {
       return wallet.address;
     });
     const cond = [

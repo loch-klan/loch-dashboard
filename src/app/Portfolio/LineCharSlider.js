@@ -37,6 +37,7 @@ class LineChartSlider extends BaseReactComponent {
     super(props);
     this.state = {
       currency: JSON.parse(localStorage.getItem("currency")),
+      userWallet: JSON.parse(localStorage.getItem("addWallet")),
       assetValueData: props.assetValueData,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
@@ -986,7 +987,7 @@ backdrop-filter: blur(15px);">
                 subtitle="Updated 3mins ago"
                 isArrow={true}
                 isAnalytics="Asset Value"
-                handleClick={this.props.handleClick}
+                handleClick={this.state.userWallet && this.props.handleClick}
               />
             )}
 
@@ -1035,7 +1036,11 @@ backdrop-filter: blur(15px);">
                           filtername="Tokens"
                           options={AllLegends}
                           action={null}
-                          selectedTokens={ this.state.legends.length === 0 ? topLegends : this.state.legends}
+                          selectedTokens={
+                            this.state.legends.length === 0
+                              ? topLegends
+                              : this.state.legends
+                          }
                           handleClick={(arr) => this.DropdownData(arr)}
                           isLineChart={true}
                         />

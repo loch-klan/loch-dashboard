@@ -234,7 +234,7 @@ class Cost extends Component {
     let counterPartyDataMaster = [];
     if (type === 1) {
       GraphData.gas_fee_overtime &&
-        GraphData.gas_fee_overtime.map((tempGraphData) => {
+        GraphData.gas_fee_overtime?.map((tempGraphData) => {
           if (
             activeBadgeList.includes(tempGraphData.chain._id) ||
             activeBadgeList.length === 0
@@ -250,7 +250,7 @@ class Cost extends Component {
       });
     } else {
       counterPartyData &&
-        counterPartyData.map((tempGraphData) => {
+        counterPartyData?.map((tempGraphData) => {
           if (
             activeBadgeList.includes(tempGraphData.chain._id) ||
             activeBadgeList.length === 0
