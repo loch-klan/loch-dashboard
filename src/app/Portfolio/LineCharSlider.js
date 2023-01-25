@@ -987,7 +987,7 @@ backdrop-filter: blur(15px);">
                 subtitle="Updated 3mins ago"
                 isArrow={true}
                 isAnalytics="Asset Value"
-                handleClick={this.state.userWallet && this.props.handleClick}
+                handleClick={this.props.handleClick}
               />
             )}
 
