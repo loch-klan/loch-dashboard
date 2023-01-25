@@ -92,16 +92,16 @@ export default function WalletCard(props) {
                         <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognizedIcon} />
                     </div>
                         <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_metadata && props.wallet_metadata.name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognized wallet"}</h6>
-                        {props.tag &&
+                        {props.nickname &&
                             <CustomOverlay
                             position="top"
                             // isIcon={true}
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={props.tag}
+                            text={props.nickname}
                             >
-                            <div className='inter-display-medium f-s-16 lh-19 wallet-name m-r-16'>{props.tag}
+                            <div className='inter-display-medium f-s-16 lh-19 wallet-name m-r-16'>{props.nickname}
                             </div>
                             </CustomOverlay>
                         }
@@ -162,7 +162,7 @@ export default function WalletCard(props) {
                         walletAddress={props.wallet_account_number}
                         displayAddress={props.display_address}
                         walletMetaData={props.wallet_metadata}
-                        tag={props.tag}
+                        nickname={props.nickname}
                         coinchips={props.wallet_coins}
                         makeApiCall={()=>props.makeApiCall()}
                     />

@@ -20,12 +20,12 @@ class EditWalletModal extends BaseReactComponent {
         ? props.displayAddress
         : props.walletAddress,
       walletName: props.walletMetaData ? props.walletMetaData.id : "",
-      walletTag: props.tag ? props.tag : "",
+      walletNickname: props.nickname ? props.nickname : "",
       walletMetaData: props.walletMetaData,
       walletNameList: [],
       dropDownActive: {},
       coinchips: props.coinchips,
-      prevTag: props.tag ? props.tag : "",
+      prevNickname: props.nickname ? props.nickname : "",
     };
   }
 
@@ -37,7 +37,7 @@ class EditWalletModal extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("wallet_address", this.state.walletAddress);
     data.append("wallet_id", this.state.walletName);
-    data.append("tag", this.state.walletTag);
+    data.append("nickname", this.state.walletNickname);
     updateWalletApi(this, data);
 
     const walletType = this.state.walletNameList.find(
@@ -54,7 +54,7 @@ class EditWalletModal extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       wallet_type_selected: walletType?.name,
-      name_tag: this.state.walletTag,
+      name_tag: this.state.walletNickname,
       address: this.state.walletAddress,
       ENS: this.state.walletAddress,
       blockchains_detected: blockchains,
@@ -62,15 +62,15 @@ class EditWalletModal extends BaseReactComponent {
 
     //analytic for add tag
 
-    if (this.state.walletTag !== this.state.prevTag) {
+    if (this.state.walletNickname !== this.state.prevNickname) {
       this.setState({
-        prevTag: this.state.walletTag
+        prevNickname: this.state.walletNickname
       });
       AddNameTag({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
         wallet_type_selected: walletType?.name,
-        name_tag: this.state.walletTag,
+        name_tag: this.state.walletNickname,
         address: this.state.walletAddress,
         ENS: this.state.walletAddress,
         blockchains_detected: blockchains,
@@ -93,7 +93,7 @@ class EditWalletModal extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       wallet_type_selected: walletType?.name,
-      name_tag: this.state.walletTag,
+      name_tag: this.state.walletNickname,
       address: this.state.walletAddress,
       ENS: this.state.walletAddress,
       blockchains_detected: blockchains,
@@ -204,7 +204,7 @@ class EditWalletModal extends BaseReactComponent {
                   }}
                 />
                 <FormElement
-                  valueLink={this.linkState(this, "walletTag")}
+                  valueLink={this.linkState(this, "walletNickname")}
                   label="Wallet Nickname"
                   control={{
                     type: CustomTextControl,

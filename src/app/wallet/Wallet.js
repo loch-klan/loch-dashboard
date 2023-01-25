@@ -296,7 +296,7 @@ class Wallet extends Component {
               </div>
             ) : walletList.length > 0 ? (
                 walletList.map((wallet, index) => {
-                
+                console.log("walletlist", walletList)
                 return (
                   <WalletCard
                     key={index}
@@ -309,7 +309,7 @@ class Wallet extends Component {
                     makeApiCall={this.makeApiCall}
                     handleUpdateWallet={this.handleUpdateWallet}
                     history={this.props.history}
-                    tag={wallet.tag}
+                    nickname={wallet.nickname}
                     // isLoading={this.state.isLoading}
                   />
                 );

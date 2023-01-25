@@ -475,6 +475,7 @@ class Portfolio extends BaseReactComponent {
               walletFromData = {
                 wallet_metaData: wallet.wallet_metadata,
                 displayAddress: wallet.displayAddress,
+                nickname: wallet?.nickname,
               };
             }
             if (
@@ -486,6 +487,7 @@ class Portfolio extends BaseReactComponent {
               walletToData = {
                 wallet_metaData: wallet.wallet_metadata,
                 displayAddress: wallet.displayAddress,
+                nickname: wallet?.nickname,
               };
             }
           });
@@ -611,6 +613,18 @@ class Portfolio extends BaseReactComponent {
                     ? rowData.from.metaData?.displayAddress +
                       ": " +
                       rowData.from.address
+                    : rowData.from.metaData?.nickname
+                    ? rowData.from.metaData?.nickname +
+                      ": " +
+                      (rowData.from.wallet_metaData?.text
+                        ? rowData.from.wallet_metaData?.text + ": "
+                        : "") +
+                      (rowData.from.metaData?.displayAddress &&
+                      rowData.from.metaData?.displayAddress !==
+                        rowData.from.address
+                        ? rowData.from.metaData?.displayAddress + ": "
+                        : "") +
+                      rowData.from.address
                     : rowData.from.address
                 }
               >
@@ -634,7 +648,8 @@ class Portfolio extends BaseReactComponent {
                     }}
                   />
                 ) : rowData.from.wallet_metaData.symbol ||
-                  rowData.from.wallet_metaData.text ? (
+                  rowData.from.wallet_metaData.text ||
+                  rowData.from.metaData?.nickname ? (
                   rowData.from.wallet_metaData.symbol ? (
                     <Image
                       src={rowData.from.wallet_metaData.symbol}
@@ -654,6 +669,25 @@ class Portfolio extends BaseReactComponent {
                         });
                       }}
                     />
+                  ) : rowData.from.metaData?.nickname ? (
+                    <span
+                      onMouseEnter={() => {
+                        //  //console.log(
+                        //    "address",
+                        //    rowData.from.metaData
+                        //  );
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.from.metaData?.nickname}
+                    </span>
                   ) : (
                     <span
                       onMouseEnter={() => {
@@ -757,6 +791,17 @@ class Portfolio extends BaseReactComponent {
                     ? rowData.to.metaData?.displayAddress +
                       ": " +
                       rowData.to.address
+                    : rowData.to.metaData?.nickname
+                    ? rowData.to.metaData?.nickname +
+                      ": " +
+                      (rowData.to.wallet_metaData?.text
+                        ? rowData.to.wallet_metaData?.text + ": "
+                        : "") +
+                      (rowData.to.metaData?.displayAddress &&
+                      rowData.to.metaData?.displayAddress !== rowData.to.address
+                        ? rowData.to.metaData?.displayAddress + ": "
+                        : "") +
+                      rowData.to.address
                     : rowData.to.address
                 }
               >
@@ -779,7 +824,8 @@ class Portfolio extends BaseReactComponent {
                     }}
                   />
                 ) : rowData.to.wallet_metaData.symbol ||
-                  rowData.to.wallet_metaData.text ? (
+                  rowData.to.wallet_metaData.text ||
+                  rowData.to.metaData?.nickname ? (
                   rowData.to.wallet_metaData.symbol ? (
                     <Image
                       src={rowData.to.wallet_metaData.symbol}
@@ -795,6 +841,21 @@ class Portfolio extends BaseReactComponent {
                         });
                       }}
                     />
+                  ) : rowData.to.metaData?.nickname ? (
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.to.metaData?.nickname}
+                    </span>
                   ) : (
                     <span
                       onMouseEnter={() => {

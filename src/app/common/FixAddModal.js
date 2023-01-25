@@ -70,7 +70,6 @@ class FixAddModal extends BaseReactComponent {
     this.setState({
       addWalletList: prevWallets,
     });
-   
   };
 
   handleOnchange = (e) => {
@@ -179,6 +178,7 @@ class FixAddModal extends BaseReactComponent {
     getDetectedChainsApi(this);
     const fixWallet = [];
     JSON.parse(localStorage.getItem("addWallet")).map((e) => {
+      console.log("e fix wallet", e);
       if (e.coinFound !== true) {
         fixWallet.push({ ...e, id: `wallet${fixWallet.length + 1}` });
       }
@@ -194,7 +194,7 @@ class FixAddModal extends BaseReactComponent {
       address: "",
       coins: [],
       displayAddress: "",
-      nickname:"",
+      nickname: "",
       wallet_metadata: {},
     });
     this.setState({
@@ -280,7 +280,7 @@ class FixAddModal extends BaseReactComponent {
         this.state.onHide();
         const data = new URLSearchParams();
         data.append("wallet_addresses", JSON.stringify(arr));
-         data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+        data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
 
         updateUserWalletApi(data, this);
         this.state.changeList && this.state.changeList(walletList);
@@ -352,6 +352,23 @@ class FixAddModal extends BaseReactComponent {
     }, 500);
   };
 
+  handleFixWalletChangeNickname = (e) => {
+    let { name, value } = e.target;
+    let prevWallets = [...this.state.fixWalletAddress];
+    let currentIndex = prevWallets.findIndex((elem) => elem.id === name);
+    // console.log('prevWallets',prevWallets);
+    // console.log('currentIndex',currentIndex);
+   
+    prevWallets[currentIndex].nickname = value;
+    // prevWallets[currentIndex].coins = []
+   
+    // prevWallets[currentIndex].address = value
+    this.setState({
+      fixWalletAddress: prevWallets,
+    });
+   
+  };
+
   handleFixWallet = () => {
     // console.log(this.state.fixWalletAddress);`
     this.state.fixWalletAddress &&
@@ -394,11 +411,14 @@ class FixAddModal extends BaseReactComponent {
       // remove repeat address if same address added for unrecognized wallet
       let newArr = [];
       let walletList = [];
+      let nicknameArr = {};
       for (let i = 0; i < localArr.length; i++) {
         let curr = localArr[i];
-        if (!newArr.includes(curr.address)) {
+        if (!newArr.includes(curr.address.trim())) {
           walletList.push(curr);
-          newArr.push(curr.address);
+          newArr.push(curr.address.trim());
+          nicknameArr[curr.address.trim()] = curr.nickname;
+          
         }
       }
       walletList.map((w, index) => (w.id = `wallet${index + 1}`));
@@ -410,6 +430,7 @@ class FixAddModal extends BaseReactComponent {
           coins: [],
           displayAddress: "",
           wallet_metadata: {},
+          nickname:""
         });
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
@@ -418,6 +439,7 @@ class FixAddModal extends BaseReactComponent {
       this.state.changeList && this.state.changeList(walletList);
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(newArr));
+      data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       updateUserWalletApi(data, this);
       // if (this.props.handleUpdateWallet) {
       //     this.props.handleUpdateWallet()
@@ -474,7 +496,7 @@ class FixAddModal extends BaseReactComponent {
   handleTabPress = (event) => {
     if (event.key === "Tab") {
       event.preventDefault();
-      
+
       // your function code here
       this.addAddress();
     }
@@ -490,9 +512,14 @@ class FixAddModal extends BaseReactComponent {
         ? this.state.fixWalletAddress.map((elem, index) => {
             return (
               <div
-                className="m-t-12 fix-wallet-input"
+                className="fix-wallet-input"
                 key={index}
                 id={`fix-input-${index}`}
+                style={
+                  index == this.state.fixWalletAddress.length - 1
+                    ? { marginBottom: 0 }
+                    : {}
+                }
               >
                 <div
                   className="delete-icon"
@@ -500,14 +527,41 @@ class FixAddModal extends BaseReactComponent {
                 >
                   <Image src={DeleteIcon} />
                 </div>
+                <h3
+                  style={{ color: "#B0B1B3", textAlign: "left" }}
+                  className="inter-display-regular f-s-13 lh-15"
+                >
+                  Address
+                </h3>
                 <input
                   value={elem.address || ""}
                   className="inter-display-regular f-s-16  lh-19 black-191"
                   type="text"
                   id={elem.id}
+                  placeholder="Paste valid wallet address or ENS here"
                   name={`wallet${index + 1}`}
                   autoFocus
                   onChange={(e) => this.handleFixWalletChange(e)}
+                  style={getPadding(
+                    `fix-input-${index}`,
+                    elem,
+                    this.props.OnboardingState
+                  )}
+                />
+                <h3
+                  style={{ color: "#B0B1B3", textAlign: "left" }}
+                  className="inter-display-regular f-s-13 lh-15"
+                >
+                  Nickname
+                </h3>
+                <input
+                  value={elem.nickname || ""}
+                  className="inter-display-regular f-s-16  lh-19 black-191"
+                  type="text"
+                  placeholder="Enter Nickname"
+                  id={elem.id}
+                  name={`wallet${index + 1}`}
+                  onChange={(e) => this.handleFixWalletChangeNickname(e)}
                   style={getPadding(
                     `fix-input-${index}`,
                     elem,

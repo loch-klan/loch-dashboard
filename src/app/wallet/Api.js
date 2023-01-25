@@ -8,7 +8,7 @@ export const getAllWalletListApi = (data,ctx) => {
     postLoginInstance.post("wallet/user-wallet/search-wallet", data)
       .then((res) => {
         if (!res.data.error) {
-          console.log("res wallet", res.data.data.user_wallets);
+          // console.log("res wallet", res.data.data.user_wallets);
           let walletdata = res.data.data.user_wallets
           let totalWalletAmt = 0;
           walletdata = walletdata.map((wallet) => {
@@ -87,6 +87,7 @@ export const updateWalletApi = (ctx, data) => {
       if (!res.data.error) {
         let walletAddress = ctx.state.walletAddress;
         let displayAddress = ctx.state.displayAddress;
+        // let nickname = ctx.state.walletNickname;
         let addWallet = JSON.parse(localStorage.getItem("addWallet"));
         addWallet = addWallet.map((wallet)=>{
           // console.log('wallet.address',wallet);
@@ -95,11 +96,13 @@ export const updateWalletApi = (ctx, data) => {
             let metaData = null;
             let newAddress = null;
             let displayAddress = null;
+            let nickname = null;
             res.data.data.user_wallets.map((item)=>{ if(item.address===walletAddress) {
               return(
                 metaData = item.wallet,
                 newAddress = item.address,
-                displayAddress = item.display_address
+                displayAddress = item.display_address,
+                nickname = item.nickname
               )
 
             } })
@@ -109,6 +112,7 @@ export const updateWalletApi = (ctx, data) => {
               address: newAddress,
               displayAddress: displayAddress,
               wallet_metadata: metaData,
+              nickname: nickname
             })
           } else{
             return ({...wallet})

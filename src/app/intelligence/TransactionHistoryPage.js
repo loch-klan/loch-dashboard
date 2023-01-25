@@ -369,6 +369,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
+        console.log("row",row)
         walletList &&
           walletList.map((wallet) => {
             if (
@@ -380,6 +381,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               walletFromData = {
                 wallet_metaData: wallet.wallet_metadata,
                 displayAddress: wallet.displayAddress,
+                nickname: wallet?.nickname
               };
             }
             if (
@@ -391,6 +393,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               walletToData = {
                 wallet_metaData: wallet.wallet_metadata,
                 displayAddress: wallet.displayAddress,
+                nickname: wallet?.nickname,
               };
             }
           });
@@ -519,6 +522,15 @@ class TransactionHistoryPage extends BaseReactComponent {
                     ? rowData.from.metaData?.displayAddress +
                       ": " +
                       rowData.from.address
+                    : rowData.from.metaData?.nickname
+                    ? rowData.from.metaData?.nickname +
+                      ": " +
+                      (rowData.from.wallet_metaData?.text ?
+                        (rowData.from.wallet_metaData?.text + ": "):"") +
+                      ((rowData.from.metaData?.displayAddress &&
+                        rowData.from.metaData?.displayAddress !==
+                          rowData.from.address) ? (rowData.from.metaData?.displayAddress + ": ") : "") +
+                      rowData.from.address
                     : rowData.from.address
                 }
               >
@@ -550,7 +562,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                   </span>
                 ) : rowData.from.wallet_metaData.symbol ||
-                  rowData.from.wallet_metaData.text ? (
+                  rowData.from.wallet_metaData.text ||
+                  rowData.from.metaData?.nickname ? (
                   rowData.from.wallet_metaData.symbol ? (
                     <span>
                       <Image
@@ -568,6 +581,28 @@ class TransactionHistoryPage extends BaseReactComponent {
                           });
                         }}
                       />
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.from.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
+                  ) : rowData.from.metaData?.nickname ? (
+                    <span
+                      onMouseEnter={() => {
+                        // console.log("address", rowData.from.metaData);
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {this.TruncateText(rowData.from.metaData?.nickname)}
                       <Image
                         src={CopyClipboardIcon}
                         onClick={() => this.copyContent(rowData.from.address)}
@@ -687,9 +722,22 @@ class TransactionHistoryPage extends BaseReactComponent {
                       ": " +
                       rowData.to.address
                     : rowData.to.metaData?.displayAddress &&
-                      rowData.to.metaData?.displayAddress !== rowData.to.address
+                      rowData.to.metaData?.displayAddress !==
+                        rowData.to.address
                     ? rowData.to.metaData?.displayAddress +
                       ": " +
+                      rowData.to.address
+                    : rowData.to.metaData?.nickname
+                    ? rowData.to.metaData?.nickname +
+                      ": " +
+                      (rowData.to.wallet_metaData?.text
+                        ? rowData.to.wallet_metaData?.text + ": "
+                        : "") +
+                      (rowData.to.metaData?.displayAddress &&
+                      rowData.to.metaData?.displayAddress !==
+                        rowData.to.address
+                        ? rowData.to.metaData?.displayAddress + ": "
+                        : "") +
                       rowData.to.address
                     : rowData.to.address
                 }
@@ -715,13 +763,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => this.copyContent(rowData.to.address)}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
                   </span>
                 ) : rowData.to.wallet_metaData.symbol ||
-                  rowData.to.wallet_metaData.text ? (
+                  rowData.to.wallet_metaData.text ||
+                  rowData.to.metaData?.nickname ? (
                   rowData.to.wallet_metaData.symbol ? (
                     <span>
                       <Image
@@ -740,7 +789,28 @@ class TransactionHistoryPage extends BaseReactComponent {
                       />
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => this.copyContent(rowData.to.address)}
+                        className="m-l-10 cp copy-icon"
+                        style={{ width: "1rem" }}
+                      />
+                    </span>
+                  ) : rowData.to.metaData?.nickname ? (
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {this.TruncateText(rowData.to.metaData?.nickname)}
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => this.copyContent(rowData.to.address)}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -761,7 +831,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       {this.TruncateText(rowData.to.wallet_metaData.text)}
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => this.copyContent(rowData.to.address)}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -783,7 +853,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     {this.TruncateText(rowData.to.metaData?.displayAddress)}
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => this.copyContent(rowData.to.address)}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -806,7 +876,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => this.copyContent(rowData.to.address)}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
