@@ -181,7 +181,7 @@ class Intelligence extends Component {
     }
 
     let selectedChains = [];
-    this.props.OnboardingState.coinsList.map((item) => {
+    this.props.OnboardingState.coinsList?.map((item) => {
       if (activeBadgeList.includes(item.id)) {
         selectedChains.push(item.code);
       }
@@ -271,7 +271,7 @@ class Intelligence extends Component {
                 ) : this.state.updatedInsightList &&
                   this.state.updatedInsightList.length > 0 ? (
                   this.state.updatedInsightList
-                    .slice(0, 2)
+                    ?.slice(0, 2)
                     .map((insight, key) => {
                       // console.log("insignt", insight);
                       return (

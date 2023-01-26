@@ -240,6 +240,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
         obj['nickname'] = apiResponse.user.user_wallets[i]?.nickname;
               newAddWallet.push(obj);
       }
+      // console.log("wallet", newAddWallet);
       ctx.props.history.replace({
         pathname: ctx.state.id ? ctx.state.link : '/home',
         state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}

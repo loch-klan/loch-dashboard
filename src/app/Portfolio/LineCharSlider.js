@@ -77,7 +77,7 @@ class LineChartSlider extends BaseReactComponent {
       } else {
         this.setState({
           activeBadge: newArr,
-          activeBadgeList: newArr.map((item) => item.id),
+          activeBadgeList: newArr?.map((item) => item.id),
           legends: [],
         });
       }
@@ -96,7 +96,7 @@ class LineChartSlider extends BaseReactComponent {
       newArr.push(badge);
       this.setState({
         activeBadge: newArr,
-        activeBadgeList: newArr.map((item) => item.id),
+        activeBadgeList: newArr?.map((item) => item.id),
         selectedEvents: [],
         legends: [],
       });
@@ -162,7 +162,7 @@ class LineChartSlider extends BaseReactComponent {
     let internalEvents = [];
 
     assetValueData &&
-      assetValueData.map((assetData) => {
+      assetValueData?.map((assetData) => {
         if (
           this.state.activeBadgeList.includes(assetData.chain._id) ||
           this.state.activeBadgeList.length === 0
@@ -179,7 +179,7 @@ class LineChartSlider extends BaseReactComponent {
             // series[assetData.timestamp] = {};
           }
 
-          assetData.assets.map((data) => {
+          assetData.assets?.map((data) => {
             // console.log("data", data);
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
@@ -268,7 +268,7 @@ class LineChartSlider extends BaseReactComponent {
       //   data: []
       // })
       let graphData = [];
-      timestampList.map((timestamp) => {
+      timestampList?.map((timestamp) => {
         if (timestamp in value) {
           graphData.push(value[timestamp]);
         } else {
@@ -314,7 +314,7 @@ class LineChartSlider extends BaseReactComponent {
       let y_value = 0;
       // console.log("yvalue", y_value);
       externalEvents &&
-        externalEvents.map((event, index) => {
+        externalEvents?.map((event, index) => {
           let e_time = moment(event.timestamp).format("DD/MM/YYYY");
           let value = eval(categories.indexOf(abc));
 
@@ -426,7 +426,7 @@ class LineChartSlider extends BaseReactComponent {
     const getIevent = (value) => {
       selectedEvents = [];
       internalEvents &&
-        internalEvents.map((item) => {
+        internalEvents?.map((item) => {
           // console.log("item", item)
           let current = "";
           if (this.state.title === "Year") {
@@ -441,7 +441,7 @@ class LineChartSlider extends BaseReactComponent {
 
           if (current == value) {
             // selectedEvents.push(item);
-            item.event.map((a) => {
+            item.event?.map((a) => {
               let e_usd =
                 a.asset.value * (a.asset_price * this.state.currency?.rate);
               let e_text = "";
@@ -502,7 +502,7 @@ class LineChartSlider extends BaseReactComponent {
       noOfInternalEvent = selectedEvents.length;
       selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
     };
-    timestampList.map((time) => {
+    timestampList?.map((time) => {
       let dummy = new Date(time);
       // console.log("time", time, "dummy", dummy);
       let abc;
@@ -550,7 +550,7 @@ class LineChartSlider extends BaseReactComponent {
   // console.log(seriesData);
     let AllLegends = [{ label: "All", value: "All" }];
     seriesData &&
-      seriesData.map((e) => {
+      seriesData?.map((e) => {
         AllLegends.push({ label: e.name, value: e.name });
       });
 
@@ -783,7 +783,7 @@ class LineChartSlider extends BaseReactComponent {
         hideDelay: 0,
 
         formatter: function () {
-          let walletAddress = JSON.parse(localStorage.getItem("addWallet")).map(
+          let walletAddress = JSON.parse(localStorage.getItem("addWallet"))?.map(
             (e) => e.address
           );
 
@@ -809,7 +809,7 @@ class LineChartSlider extends BaseReactComponent {
                 address: walletAddress,
             });
           let net_amount = 0;
-          this.points.map((item) => {
+          this.points?.map((item) => {
             // console.log(
             //   "Item: ",
             //   item);
@@ -839,7 +839,7 @@ backdrop-filter: blur(15px);">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
                                 <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${tooltip_title}</b> <b class="inter-display-semi-bold" style="color:#16182B;">${CurrencyType(false)} ${numToCurrency(net_amount)}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
                                 ${tooltipData
-                                  .map((item) => {
+                                  ?.map((item) => {
                                     return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
                                     <span style='width:10px; height: 10px; border-radius: 50%; background-color:${
                                       item.color == "#ffffff"
@@ -1109,8 +1109,8 @@ backdrop-filter: blur(15px);">
                 </h4>
 
                 <div className="InternalEventWrapper">
-                  {this.state.selectedEvents.length > 0 &&
-                    this.state.selectedEvents.map((event, i) => {
+                  {this.state.selectedEvents?.length > 0 &&
+                    this.state.selectedEvents?.map((event, i) => {
                       // console.log("first event", event);
 
                       let count =

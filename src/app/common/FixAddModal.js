@@ -127,7 +127,7 @@ class FixAddModal extends BaseReactComponent {
     let newCoinList = [];
     newCoinList.push(coinList);
     data.subChains &&
-      data.subChains.map((item) =>
+      data.subChains?.map((item) =>
         newCoinList.push({
           chain_detected: data.chain_detected,
           coinCode: item.code,
@@ -177,7 +177,7 @@ class FixAddModal extends BaseReactComponent {
     getAllWalletApi(this);
     getDetectedChainsApi(this);
     const fixWallet = [];
-    JSON.parse(localStorage.getItem("addWallet")).map((e) => {
+    JSON.parse(localStorage.getItem("addWallet"))?.map((e) => {
       console.log("e fix wallet", e);
       if (e.coinFound !== true) {
         fixWallet.push({ ...e, id: `wallet${fixWallet.length + 1}` });
@@ -211,7 +211,7 @@ class FixAddModal extends BaseReactComponent {
       });
     }
     this.state.addWalletList.splice(index, 1);
-    this.state.addWalletList.map((w, i) => {
+    this.state.addWalletList?.map((w, i) => {
       w.id = `wallet${i + 1}`;
     });
 
@@ -224,7 +224,7 @@ class FixAddModal extends BaseReactComponent {
   deleteFixWalletAddress = (e) => {
     let { id } = e;
     let fixWalletNewArr = [];
-    this.state.fixWalletAddress.map((wallet, index) => {
+    this.state.fixWalletAddress?.map((wallet, index) => {
       if (wallet.id !== id) {
         fixWalletNewArr.push(wallet);
       }
@@ -272,7 +272,7 @@ class FixAddModal extends BaseReactComponent {
         }
         let addWallet = walletList;
         // console.log("arr", arr);
-        addWallet.map((w, i) => {
+        addWallet?.map((w, i) => {
           w.id = `wallet${i + 1}`;
         });
         localStorage.setItem("addWallet", JSON.stringify(addWallet));
@@ -288,26 +288,18 @@ class FixAddModal extends BaseReactComponent {
         //     this.props.handleUpdateWallet()
         // }
         // console.log("fix",this.state.addWalletList);
-        const address = this.state.addWalletList.map((e) => e.address);
+        const address = this.state.addWalletList?.map((e) => e.address);
         // console.log("address", address);
         const addressDeleted = this.state.deletedAddress;
         // console.log("Deteted address", addressDeleted);
-        const unrecog_address = this.state.addWalletList
-          .filter((e) => !e.coinFound)
-          .map((e) => e.address);
+        const unrecog_address = this.state.addWalletList?.filter((e) => !e.coinFound)?.map((e) => e.address);
         // console.log("Unreq address", unrecog_address);
-        const recog_address = this.state.addWalletList
-          .filter((e) => e.coinFound)
-          .map((e) => e.address);
+        const recog_address = this.state.addWalletList?.filter((e) => e.coinFound)?.map((e) => e.address);
         // console.log("req address", recog_address);
 
         const blockchainDetected = [];
-        this.state.addWalletList
-          .filter((e) => e.coinFound)
-          .map((obj) => {
-            let coinName = obj.coins
-              .filter((e) => e.chain_detected)
-              .map((name) => name.coinName);
+        this.state.addWalletList?.filter((e) => e.coinFound)?.map((obj) => {
+            let coinName = obj.coins?.filter((e) => e.chain_detected)?.map((name) => name.coinName);
             let address = obj.address;
             blockchainDetected.push({ address: address, names: coinName });
           });
@@ -393,7 +385,7 @@ class FixAddModal extends BaseReactComponent {
       for (let i = 0; i < wallets.length; i++) {
         let curr = wallets[i];
         if (!curr.coinFound) {
-          this.state.fixWalletAddress.map((wallet) => {
+          this.state.fixWalletAddress?.map((wallet) => {
             // console.log('wallettt',wallet);
             localArr.push(wallet);
             // if (wallet.address === curr.address) {
@@ -421,7 +413,7 @@ class FixAddModal extends BaseReactComponent {
           
         }
       }
-      walletList.map((w, index) => (w.id = `wallet${index + 1}`));
+      walletList?.map((w, index) => (w.id = `wallet${index + 1}`));
       // console.log('walletList',walletList);
       if (walletList.length === 0) {
         walletList.push({
@@ -449,7 +441,7 @@ class FixAddModal extends BaseReactComponent {
 
   isDisabled = () => {
     let isDisableFlag = true;
-    this.state.addWalletList.map((e) => {
+    this.state.addWalletList?.map((e) => {
       if (e.address) {
         if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
           e.coins.map((a) => {
@@ -470,7 +462,7 @@ class FixAddModal extends BaseReactComponent {
   isFixDisabled = () => {
     let isDisableFlag = true;
     this.state.fixWalletAddress.length > 0
-      ? this.state.fixWalletAddress.map((e) => {
+      ? this.state.fixWalletAddress?.map((e) => {
           if (e.address) {
             if (
               e.coins.length !== this.props.OnboardingState.coinsList.length
@@ -504,12 +496,12 @@ class FixAddModal extends BaseReactComponent {
 
   render() {
     let walletDropDownList = [];
-    this.state.walletNameList.map((wallet) => {
+    this.state.walletNameList?.map((wallet) => {
       walletDropDownList.push({ name: wallet.name, id: wallet.id });
     });
     const inputs =
       this.state.modalType == "fixwallet"
-        ? this.state.fixWalletAddress.map((elem, index) => {
+        ? this.state.fixWalletAddress?.map((elem, index) => {
             return (
               <div
                 className="fix-wallet-input"
@@ -602,7 +594,7 @@ class FixAddModal extends BaseReactComponent {
           })
         : "";
 
-    const wallets = this.state.addWalletList.map((elem, index) => {
+    const wallets = this.state.addWalletList?.map((elem, index) => {
       return (
         <div
           className="add-wallet-input-section"

@@ -68,12 +68,17 @@ import PieChart2 from "./PieChart2";
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
-    props.location.state &&
-      props.location.state.addWallet &&
-      localStorage.setItem(
-        "addWallet",
-        JSON.stringify(props.location.state.addWallet)
-      );
+    // console.log("props", props);
+    if(props.location.state &&
+      props.location.state?.addWallet) {
+  
+      // localStorage.setItem(
+      //   "addWallet",
+      //   JSON.stringify(props.location.state?.addWallet)
+      // );
+      // console.log("update wallet address", props.location.state?.addWallet);
+      }
+      
     this.state = {
       id: props.match.params?.id,
       userWalletList: localStorage.getItem("addWallet")
@@ -134,6 +139,7 @@ class Portfolio extends BaseReactComponent {
       assetPrice: null,
       isTimeOut: true,
       showBtn: false,
+      apiResponse: false,
     };
   }
 
@@ -146,16 +152,13 @@ class Portfolio extends BaseReactComponent {
     this.setState({
       userWalletList: value,
       isUpdate: this.state.isUpdate == 0 ? 1 : 0,
-      isLoading:true
+      isLoading: true,
     });
-    if (this.props.location.state?.noLoad === undefined) {
-      this.props.getCoinRate();
-    } 
-  
-   
+    // if (this.props.location.state?.noLoad === undefined) {
+    //   this.props.getCoinRate();
+    // }
   };
   handleFixModal = () => {
-   
     this.setState({
       fixModal: !this.state.fixModal,
       // isUpdate: this.state.isUpdate == 0 && this.state.fixModal ? 1 : 0,
@@ -173,22 +176,18 @@ class Portfolio extends BaseReactComponent {
     // if (this.props.match.params.id) {
     //   getDetailsByLinkApi(this.props.match.params.id, this);
     // }
-   
+
     HomePage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-     //console.log("noload", this.props.location.state?.noLoad);
+    //console.log("noload", this.props.location.state?.noLoad);
     if (this.props.location.state?.noLoad) {
     } else {
-    //console.log("api call in mount")
+      //console.log("api call in mount")
       this.apiCall();
-   
     }
-   
   }
-
- 
 
   apiCall = () => {
     //console.log("APPCALL");
@@ -197,16 +196,13 @@ class Portfolio extends BaseReactComponent {
     if (this.props.match.params.id) {
       // //console.log("calling api")
       this.props.getDetailsByLinkApi(this.props.match.params.id, this);
-
-    }
-    else {
+    } else {
       this.props.getCoinRate();
       this.getTableData();
       this.getGraphData();
       getAllCounterFeeApi(this, false, false);
       getProfitAndLossApi(this, false, false, false);
     }
-
   };
 
   componentWillUnmount() {
@@ -221,7 +217,8 @@ class Portfolio extends BaseReactComponent {
     });
   }
 
-  getGraphData = (groupByValue = GROUP_BY_MONTH) => { //console.log("calling graph");
+  getGraphData = (groupByValue = GROUP_BY_MONTH) => {
+    //console.log("calling graph");
     this.setState({ graphLoading: true });
     let addressList = [];
     this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
@@ -229,7 +226,7 @@ class Portfolio extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("group_criteria", groupByValue);
-    getAssetGraphDataApi(data, this)
+    getAssetGraphDataApi(data, this);
     this.state.isTimeOut &&
       setTimeout(() => {
         this.setState(
@@ -248,10 +245,12 @@ class Portfolio extends BaseReactComponent {
     this.getGraphData(groupByValue);
   };
   getTableData = () => {
-     //console.log("calling table");
+    //console.log("calling table");
     this.setState({ tableLoading: true });
-    let arr = JSON.parse(localStorage.getItem("addWallet") || "");
-    let address = arr.map((wallet) => {
+    // console.log("wallet", this.state.userWalletList);
+    // let arr = JSON.parse(localStorage.getItem("addWallet") !== undefined ? localStorage.getItem("addWallet") : "");
+    let arr = this.state.userWalletList;
+    let address = arr?.map((wallet) => {
       return wallet.address;
     });
     let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }];
@@ -262,10 +261,29 @@ class Portfolio extends BaseReactComponent {
     data.append("sorts", JSON.stringify(this.state.sort));
     this.props.searchTransactionApi(data, this);
   };
+
+  CheckApiResponse = (value) => {
+    if (this.props.location.state?.noLoad === undefined) {
+      this.setState({
+        apiResponse: value,
+      });
+    }
+    
+    console.log("api respinse", value);
+  };
   componentDidUpdate(prevProps, prevState) {
-    // //console.log("props",prevProps)
-    // //console.log("did update");
-    // //console.log("state",prevState);
+    //Wallet update response
+  
+    if (this.state.apiResponse) {
+     
+      if (this.props.location.state?.noLoad === undefined) {
+       
+        this.props.getCoinRate();
+        this.setState({
+          apiResponse: false,
+        });
+      }
+    }
 
     if (prevState.isUpdate !== this.state.isUpdate) {
       // //console.log("btn clicked");
@@ -280,22 +298,21 @@ class Portfolio extends BaseReactComponent {
     ) {
       //console.log("in coinrate list")
       //console.log("wallet list", this.state.userWalletList);
-      
+
       if (
         this.state &&
         this.state.userWalletList &&
-        this.state.userWalletList.length > 0 
+        this.state.userWalletList?.length > 0
       ) {
-       
-          //  //console.log("reset", this.state.userWalletList);
+        //  //console.log("reset", this.state.userWalletList);
         //console.log("Comp")
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
         // Loops on coins to fetch details of each coin which exist in wallet
         let isFound = false;
-        this.state.userWalletList.map((wallet, i) => {
+        this.state.userWalletList?.map((wallet, i) => {
           if (wallet.coinFound) {
-           isFound = true;
+            isFound = true;
             wallet.coins.map((coin) => {
               if (coin.chain_detected) {
                 let userCoinWallet = {
@@ -303,27 +320,23 @@ class Portfolio extends BaseReactComponent {
                   coinCode: coin.coinCode,
                 };
                 this.props.getUserWallet(userCoinWallet, this);
-               
               }
             });
           }
-          if (i === this.state.userWalletList.length - 1) {
+          if (i === this.state.userWalletList?.length - 1) {
             getYesterdaysBalanceApi(this);
             this.setState({
               loader: false,
             });
           }
-        }
-          
-        );
+        });
         //console.log("is found", isFound);
         if (!isFound) {
           //console.log("is found if", isFound);
-          this.setState(
-            {
-              loader: false,
-              isLoading: false,
-            } );
+          this.setState({
+            loader: false,
+            isLoading: false,
+          });
         }
         // this.getTableData()
       } else {
@@ -332,13 +345,14 @@ class Portfolio extends BaseReactComponent {
         this.props.settingDefaultValues();
         this.setState({ isLoading: false });
       }
-     
+
       if (prevProps.userWalletList !== this.state.userWalletList) {
         // //console.log('byeee');
-        this.state.userWalletList.length > 0 &&
+        this.state.userWalletList?.length > 0 &&
           this.setState({
             // isLoading: true,
-            netFlowLoading: true, counterGraphLoading: true
+            netFlowLoading: true,
+            counterGraphLoading: true,
           });
         // this.apiCall();
         this.getTableData();
@@ -352,13 +366,16 @@ class Portfolio extends BaseReactComponent {
     } else if (
       prevProps.location.state?.noLoad !== this.props.location.state?.noLoad
     ) {
-       
-      localStorage.setItem(
-        "addWallet",
-        JSON.stringify(this.props.location.state.addWallet)
-      );
-      this.setState({ userWalletList: this.props.location.state.addWallet });
-      this.apiCall();
+      console.log("in didup", this.props.location.state);
+      if (this.props.location.state?.addWallet != undefined) {
+        localStorage.setItem(
+          "addWallet",
+          JSON.stringify(this.props.location.state?.addWallet)
+        );
+        this.setState({ userWalletList: this.props.location.state?.addWallet });
+        this.apiCall();
+      }
+
       //console.log("noload in update if", this.props.location.state?.noLoad);
     }
     //console.log("noload didupdate", this.props.location.state?.noLoad);
@@ -449,10 +466,10 @@ class Portfolio extends BaseReactComponent {
   // this is for undetected wallet button zIndex
   undetectedWallet = (e) => {
     this.setState({
-      showBtn: e
+      showBtn: e,
     });
     // console.log("condition", e)
-  }
+  };
 
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
@@ -1190,10 +1207,14 @@ class Portfolio extends BaseReactComponent {
                   }}
                   undetectedWallet={(e) => this.undetectedWallet(e)}
                 />
-                {this.state.userWalletList.findIndex(
+                {this.state.userWalletList?.findIndex(
                   (w) => w.coinFound !== true
-                ) > -1 && this.state.userWalletList[0].address !== "" ? (
-                  <div className="fix-div" id="fixbtn" style={this.state.showBtn ? {display:"none"}:{}}>
+                ) > -1 && this.state.userWalletList[0]?.address !== "" ? (
+                  <div
+                    className="fix-div"
+                    id="fixbtn"
+                    style={this.state.showBtn ? { display: "none" } : {}}
+                  >
                     <div className="m-r-8 decribe-div">
                       <div className="inter-display-semi-bold f-s-16 lh-19 m-b-4 black-262">
                         Wallet undetected
@@ -1252,16 +1273,15 @@ class Portfolio extends BaseReactComponent {
                         graphLoading={this.state.graphLoading}
                         // graphLoading={true}
                         isUpdate={this.state.isUpdate}
-                          handleClick={() => {
+                        handleClick={() => {
                           if (
                             this.state.userWalletList &&
-                            this.state.userWalletList.length !== 0
+                            this.state.userWalletList?.length !== 0
                           ) {
                             this.props.history.push(
                               "/intelligence/asset-value"
                             );
                           }
-                            
                         }}
                         hideTimeFilter={true}
                         hideChainFilter={true}
@@ -1274,16 +1294,17 @@ class Portfolio extends BaseReactComponent {
                         headerTitle="Net Flows"
                         headerSubTitle="Understand your entire portfolio's performance"
                         isArrow={true}
-                          handleClick={() => {
-                            if (
-                              this.state.userWalletList &&
-                              this.state.userWalletList.length !== 0
-                            ) { this.props.history.push("/intelligence");
+                        handleClick={() => {
+                          if (
+                            this.state.userWalletList &&
+                            this.state.userWalletList?.length !== 0
+                          ) {
+                            this.props.history.push("/intelligence");
                             ProfitLossEV({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
-                            });}
-                          
+                            });
+                          }
                         }}
                         isScrollVisible={false}
                         data={this.state.graphValue && this.state.graphValue[0]}
@@ -1318,9 +1339,12 @@ class Portfolio extends BaseReactComponent {
                     >
                       <TransactionTable
                         title="Transaction History"
-                          handleClick={() => {
-                            // console.log("wallet", this.state.userWalletList);
-                            if (this.state.userWalletList && this.state.userWalletList.length !== 0) {
+                        handleClick={() => {
+                          // console.log("wallet", this.state.userWalletList);
+                          if (
+                            this.state.userWalletList &&
+                            this.state.userWalletList?.length !== 0
+                          ) {
                             this.props.history.push(
                               "/intelligence/transaction-history"
                             );
@@ -1329,7 +1353,6 @@ class Portfolio extends BaseReactComponent {
                               email_address: getCurrentUser().email,
                             });
                           }
-                            
                         }}
                         subTitle="In the last month"
                         tableData={tableData}
@@ -1346,16 +1369,17 @@ class Portfolio extends BaseReactComponent {
                         headerTitle="Counterparty Volume Over Time"
                         headerSubTitle="Understand how much your counterparty charges you"
                         isArrow={true}
-                          handleClick={() => {
-                            if (this.state.userWalletList && this.state.userWalletList.length !== 0) { 
-                              VolumeTradeByCP({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                              this.props.history.push("/costs#cp");
-                            }
-
-                          
+                        handleClick={() => {
+                          if (
+                            this.state.userWalletList &&
+                            this.state.userWalletList?.length !== 0
+                          ) {
+                            VolumeTradeByCP({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                            this.props.history.push("/costs#cp");
+                          }
                         }}
                         data={
                           this.state.counterPartyValue &&
@@ -1432,6 +1456,7 @@ class Portfolio extends BaseReactComponent {
             history={this.props.history}
             modalType="fixwallet"
             changeWalletList={this.handleChangeList}
+            apiResponse={(e) => this.CheckApiResponse(e)}
           />
         )}
         {this.state.addModal && (
@@ -1446,6 +1471,7 @@ class Portfolio extends BaseReactComponent {
             btnText="Go"
             history={this.props.history}
             changeWalletList={this.handleChangeList}
+            apiResponse={(e) => this.CheckApiResponse(e)}
           />
         )}
       </div>

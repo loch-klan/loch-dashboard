@@ -102,7 +102,9 @@ export const updateUserWalletApi = (data,ctx) =>{
      
       if (ctx.props.handleUpdateWallet) {
         ctx.props.handleUpdateWallet()
+        
       }
+      // console.log("in if", JSON.parse(localStorage.getItem("addWallet")));
       ctx.props.history.push({
         pathname: ctx.props.pathName,
         state: {addWallet: JSON.parse(localStorage.getItem("addWallet"))}

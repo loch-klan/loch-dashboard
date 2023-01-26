@@ -112,7 +112,7 @@ class AddWallet extends BaseReactComponent {
     let newCoinList = [];
     newCoinList.push(coinList);
     data.subChains &&
-      data.subChains.map((item) =>
+      data.subChains?.map((item) =>
         newCoinList.push({
           chain_detected: data.chain_detected,
           coinCode: item.code,
@@ -157,8 +157,8 @@ class AddWallet extends BaseReactComponent {
 
   deleteInputField = (index, wallet) => {
     if (!this.isDisabled() || wallet.address === "") {
-      this.state.walletInput.splice(index, 1);
-      this.state.walletInput.map((w, i) => (w.id = `wallet${i + 1}`));
+      this.state.walletInput?.splice(index, 1);
+      this.state.walletInput?.map((w, i) => (w.id = `wallet${i + 1}`));
       DeleteWalletAddress({
         address: wallet.address,
       });
@@ -174,7 +174,7 @@ class AddWallet extends BaseReactComponent {
     // if (this.state.walletInput.length <= 0) {
     //     isDisableFlag = true;
     // }
-    this.state.walletInput.map((e) => {
+    this.state.walletInput?.map((e) => {
       if (e.address) {
         if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
           // isDisableFlag = true;
@@ -206,7 +206,7 @@ class AddWallet extends BaseReactComponent {
       }
     }
 
-    finalArr = finalArr.map((item, index) => {
+    finalArr = finalArr?.map((item, index) => {
       return {
         ...item,
         id: `wallet${index + 1}`,
@@ -221,7 +221,7 @@ class AddWallet extends BaseReactComponent {
     createAnonymousUserApi(data, this, finalArr);
     // console.log(finalArr);
 
-    const address = finalArr.map((e) => e.address);
+    const address = finalArr?.map((e) => e.address);
     // console.log("address", address);
 
     const unrecog_address = finalArr
@@ -274,7 +274,7 @@ class AddWallet extends BaseReactComponent {
         >
           <div className="ob-modal-body-wrapper">
             <div className="ob-modal-body-1">
-              {this.state.walletInput.map((c, index) => {
+              {this.state.walletInput?.map((c, index) => {
                 return (
                   <div
                     className="ob-wallet-input-wrapper"
@@ -365,7 +365,7 @@ class AddWallet extends BaseReactComponent {
                       // tabIndex={index}
                       // onKeyDown={this.handleTabPress}
                     />
-                    {this.state.walletInput.map((e, i) => {
+                    {this.state.walletInput?.map((e, i) => {
                       if (
                         this.state.walletInput[index].address &&
                         e.id === `wallet${index + 1}`
