@@ -68,13 +68,17 @@ import PieChart2 from "./PieChart2";
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
-    console.log("props", props);
-    props.location.state &&
-      props.location.state?.addWallet &&
-      localStorage.setItem(
-        "addWallet",
-        JSON.stringify(props.location.state?.addWallet)
-      );
+    // console.log("props", props);
+    if(props.location.state &&
+      props.location.state?.addWallet) {
+  
+      // localStorage.setItem(
+      //   "addWallet",
+      //   JSON.stringify(props.location.state?.addWallet)
+      // );
+      // console.log("update wallet address", props.location.state?.addWallet);
+      }
+      
     this.state = {
       id: props.match.params?.id,
       userWalletList: localStorage.getItem("addWallet")
@@ -362,7 +366,7 @@ class Portfolio extends BaseReactComponent {
     } else if (
       prevProps.location.state?.noLoad !== this.props.location.state?.noLoad
     ) {
-      // console.log("in didup", this.props.location.state?.addWallet);
+      console.log("in didup", this.props.location.state);
       if (this.props.location.state?.addWallet != undefined) {
         localStorage.setItem(
           "addWallet",
