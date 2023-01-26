@@ -232,7 +232,7 @@ class InsightsPage extends Component {
               )}
             </div>
           </div>
-          <FeedbackForm page={"Insights Page"} />
+          {/* <FeedbackForm page={"Insights Page"} /> */}
         </div>
       </div>
     );

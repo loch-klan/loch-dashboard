@@ -1196,7 +1196,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               </>
             )}
           </div>
-          <FeedbackForm page={"Transaction History Page"} />
+          {/* <FeedbackForm page={"Transaction History Page"} /> */}
         </div>
       </div>
     );

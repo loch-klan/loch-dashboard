@@ -1378,7 +1378,7 @@ class Portfolio extends BaseReactComponent {
                   )}
                 </div>
               </div> */}
-              <FeedbackForm page={"Home Page"} attribution={true} />
+              {/* <FeedbackForm page={"Home Page"} attribution={true} /> */}
             </div>
           </div>
         )}

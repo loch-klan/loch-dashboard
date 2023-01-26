@@ -464,7 +464,7 @@ class Intelligence extends Component {
                 </div>
               )}
             </div>
-            <FeedbackForm page={"Intelligence Page"} />
+            {/* <FeedbackForm page={"Intelligence Page"} /> */}
           </div>
         </div>
         {this.state.addModal && (

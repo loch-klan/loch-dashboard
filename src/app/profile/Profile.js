@@ -75,7 +75,7 @@ class Profile extends Component {
           <div className="profile-form-section">
             <ProfileForm />
           </div>
-          <FeedbackForm page={"Profile Page"} />
+          {/* <FeedbackForm page={"Profile Page"} /> */}
         </div>
       </div>
     );
