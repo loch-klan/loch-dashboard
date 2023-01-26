@@ -277,7 +277,12 @@ class AddWallet extends BaseReactComponent {
               {this.state.walletInput.map((c, index) => {
                 return (
                   <div
-                    className="ob-wallet-input-wrapper" style={index == this.state.walletInput.length-1 ? {marginBottom:0}:{}}
+                    className="ob-wallet-input-wrapper"
+                    style={
+                      index == this.state.walletInput.length - 1
+                        ? { marginBottom: 0 }
+                        : {}
+                    }
                     key={index}
                     id={`add-wallet-${index}`}
                   >
@@ -290,17 +295,17 @@ class AddWallet extends BaseReactComponent {
                         onClick={() => this.deleteInputField(index, c)}
                       />
                     ) : null}
-                    <h3
+                    {/* <h3
                       style={{ color: "#B0B1B3", textAlign: "left" }}
                       className="inter-display-regular f-s-13 lh-15"
                     >
                       Address
-                    </h3>
+                    </h3> */}
                     <input
                       autoFocus
                       name={`wallet${index + 1}`}
                       value={c.address || ""}
-                      className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${
+                      className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text ${
                         this.state.walletInput[index].address
                           ? "is-valid"
                           : null
@@ -308,27 +313,30 @@ class AddWallet extends BaseReactComponent {
                       placeholder="Paste any wallet address or ENS here"
                       title={c.address || ""}
                       // style={{paddingRight: divWidth}}
-                      style={getPadding(
-                        `add-wallet-${index}`,
-                        c,
-                        this.props.OnboardingState
-                      )}
+                      style={
+                        (getPadding(
+                          `add-wallet-${index}`,
+                          c,
+                          this.props.OnboardingState
+                        ),
+                        { width: "30rem" })
+                      }
                       // onKeyUp={(e) => this.setState({ loading: true })}
                       onChange={(e) => this.handleOnChange(e)}
                       // tabIndex={index}
                       onKeyDown={this.handleTabPress}
                     />
-                    <h3
+                    {/* <h3
                       style={{ color: "#B0B1B3", textAlign: "left" }}
                       className="inter-display-regular f-s-13 lh-15"
                     >
                       Nickname
-                    </h3>
+                    </h3> */}
                     <input
                       // autoFocus
                       name={`wallet${index + 1}`}
                       value={c.nickname || ""}
-                      className={`inter-display-regular f-s-16 lh-20 ob-modal-body-text ${
+                      className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text ${
                         this.state.walletInput[index].address
                           ? "is-valid"
                           : null
@@ -336,16 +344,23 @@ class AddWallet extends BaseReactComponent {
                       placeholder="Enter nickname"
                       title={c.nickname || ""}
                       // style={{paddingRight: divWidth}}
-                      style={getPadding(
-                        `add-wallet-nickname-${index}`,
-                        c,
-                        this.props.OnboardingState
-                      )}
+                      style={
+                        (getPadding(
+                          `add-wallet-nickname-${index}`,
+                          c,
+                          this.props.OnboardingState
+                        ),
+                        {
+                          width: "15rem",
+                          marginRight: "16.5rem",
+                          padding: "0.5rem 1rem",
+                          border:"1px solid lightgray"
+                        })
+                      }
                       // onKeyUp={(e) => this.setState({ loading: true })}
                       onChange={(e) => {
                         this.nicknameOnChain(e);
                         // console.log(e.target)
-
                       }}
                       // tabIndex={index}
                       // onKeyDown={this.handleTabPress}

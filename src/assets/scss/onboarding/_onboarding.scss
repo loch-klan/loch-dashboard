@@ -112,18 +112,18 @@
                 // margin: 0 2.4rem;
                 // padding: 0 4.8rem 0 5.6rem;
                 margin: 0 5.4rem 0 2.4rem;
-                padding: 0 1.7rem 0 3.6rem;
+                padding: 0 1.7rem 0 6rem;
 
                 .ob-modal-body-del {
                     border-radius: 0.8rem;
-                    // width: 3.8rem;
-                    width: 3.2rem;
+                    width: 3.8rem;
+                    // width: 3.2rem;
                     position: absolute;
-                    // left: -5.5rem;
-                      right: 0.5rem;
-                    // top: 0.14rem;
-                     bottom: 0.5rem;
-                    // box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+                    left: -5.5rem;
+                    //   right: 0.5rem;
+                    top: 0.14rem;
+                    //  bottom: 0.5rem;
+                    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
                     cursor: pointer;
                     &.not-allowed{
                         cursor: not-allowed;
@@ -132,7 +132,7 @@
 
                 .grey-btn {
                     // width: 59.2rem;
-                    width: 61.8rem;
+                  width: 58rem;
                     line-height: 1.3rem;
                     // margin-bottom: 1rem;
                     margin-top: 1.2rem;
@@ -143,17 +143,20 @@
                 }
 
                 .ob-wallet-input-wrapper {
-                    width: fit-content;
+                    // width: fit-content;
+                     width: 58rem;
                     margin: auto;
                     position: relative;
                     border: 0.1rem solid #D4D4D4;
                     border-radius: 0.8rem;
-                    padding:1.2rem 1.2rem 0.2rem;
+                    // padding:0.5rem;
                     margin-bottom: 1.2rem;
+                    display: flex;
+                    align-items: center;
                 }
 
                 input {
-                    padding-right: 12rem;
+                    padding-right: 1rem;
                 }
 
                 .ob-modal-body-text {
@@ -164,9 +167,10 @@
                      border: 0.1rem solid transparent;
                     border-radius: 0.8rem;
                     // height: 4rem;
-                     height: 3rem;
+                     height: 4rem;
                     // padding: 0.5rem 15rem 1.2rem 0rem;
-                    padding: 0.5rem 15rem 1rem 0rem;
+                    // padding: 0.5rem 1rem 1rem 0rem
+                    padding: 2.2rem 1.5rem;
                     color: #19191A;
 
                     &:active:focus,
@@ -185,8 +189,8 @@
                 }
 
                 .chip-wrapper{
-                    top:1.2rem;
-                    right:1.2rem;
+                    top:1rem;
+                    right:1rem;
                 }
 
                 .ob-modal-body-text::placeholder {
