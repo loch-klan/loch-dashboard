@@ -110,7 +110,7 @@ class OnBoarding extends Component {
               subTitle={
                 this.state.signInReq
                   ? "Get right back into your account"
-                  : "Add any wallet address(es) to get started"
+                  : "Add any ENS or wallet address(es) to get started"
               }
               icon={this.state.signInReq ? SignInIcon : WalletIcon}
               isSignInActive={this.state.signInReq}
@@ -155,7 +155,11 @@ class OnBoarding extends Component {
                     isInfo={true}
                     className={"fix-width"}
                   >
-                    <Image src={InfoIcon} className="info-icon" onMouseEnter={ this.privacymessage} />
+                    <Image
+                      src={InfoIcon}
+                      className="info-icon"
+                      onMouseEnter={this.privacymessage}
+                    />
                   </CustomOverlay>
                 </p>
               </div>
