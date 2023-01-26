@@ -341,7 +341,7 @@ class AddWallet extends BaseReactComponent {
                           ? "is-valid"
                           : null
                       }`}
-                      placeholder="Enter nickname"
+                      placeholder="nickname"
                       title={c.nickname || ""}
                       // style={{paddingRight: divWidth}}
                       style={
