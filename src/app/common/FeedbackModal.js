@@ -16,7 +16,7 @@ class FeedbackModal extends BaseReactComponent {
     super(props);
     this.state = {
       feedback: "",
-      page: "Select Area",
+      page: "Select Section",
       hoverStar: 0,
       starSelected: 0,
     };
@@ -28,8 +28,8 @@ class FeedbackModal extends BaseReactComponent {
     });
   };
   handleSubmit = () => {
-    console.log("values", this.state.page, this.state.starSelected, this.state.feedback)
-    if (this.state.page !== "Select Area") {
+    // console.log("values", this.state.page, this.state.starSelected, this.state.feedback)g
+    if (this.state.page !== "Select Section" && this.starSelected != 0 && this.state.feedback != "") {
        let data = new URLSearchParams();
        data.append("page", this.state.page);
        data.append("rating", this.state.starSelected);
@@ -67,8 +67,9 @@ class FeedbackModal extends BaseReactComponent {
           </div>
         </Modal.Header>
         <Modal.Body>
-          <h6 className="inter-display-medium f-s-25 lh-30 m-b-8 black-191">
-            Your feedback help us to improve our products
+          <h6 className="inter-display-medium f-s-24 lh-30 m-b-8 black-191">
+            Your feedback is invaluable to us. <br/>Please let us know any feedback
+            or requests.
           </h6>
           <div
             style={{
@@ -164,15 +165,15 @@ class FeedbackModal extends BaseReactComponent {
             </div>
           </div>
 
-          {this.state.hoverStar === 0 && this.state.starSelected === 0 ? (
+          {/* {this.state.hoverStar === 0 && this.state.starSelected === 0 ? (
             <p className="inter-display-medium f-s-16 lh-19 grey-969 m-b-63">
               Rate our platform with the stars
             </p>
           ) : (
             ""
-          )}
-          {this.state.hoverStar !== 0 || this.state.starSelected !== 0 ? (
-            <p className="inter-display-medium f-s-16 lh-19 m-b-63">
+          )} */}
+       
+            <p className="inter-display-medium f-s-16 lh-19 m-b-63" style={{height: "20px"}}>
               {this.state.hoverStar === 5 || this.state.starSelected === 5
                 ? "It was excellent"
                 : this.state.hoverStar === 4 || this.state.starSelected === 4
@@ -183,20 +184,18 @@ class FeedbackModal extends BaseReactComponent {
                 ? "It was bad"
                 : this.state.hoverStar === 1 || this.state.starSelected === 1
                 ? "It was terrible"
-                : ""}
+                : " "}
             </p>
-          ) : (
-            ""
-          )}
+          
           <Form>
             <Row>
               <Col md={4}>
-                <h3
+                {/* <h3
                   className="inter-display-medium f-s-12 "
                   styele={{ color: "#313233" }}
                 >
                   Area
-                </h3>
+                </h3> */}
                 <DropDown
                   class="feedback-dropdown"
                   list={[
@@ -220,12 +219,12 @@ class FeedbackModal extends BaseReactComponent {
               <Col md={8}>
                 <FormElement
                   valueLink={this.linkState(this, "feedback")}
-                  label="Feedback"
+                  // label="Feedback"
                   control={{
                     type: CustomTextControl,
 
                     settings: {
-                      placeholder: "Enter your feedback here",
+                      placeholder: "Enter any feedback or requests here.",
                       as: "textarea",
                       rows: 4,
                     },
