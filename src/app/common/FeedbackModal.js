@@ -42,7 +42,7 @@ class FeedbackModal extends BaseReactComponent {
   handleDropdown = (e) => {
    const second = e?.split(" ")[2] != "undefined" ? e.split(" ")[2] : "";
     const title = e.split(" ")[1] + " " + second;
-    console.log(e, "title",title);
+    // console.log(e, "title",title);
     this.setState({
       page: title,
     });
