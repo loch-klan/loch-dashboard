@@ -134,7 +134,7 @@ class AssetValueGraph extends Component {
               `This chart reflects the largest value for each token on a given day, month, or year.`
             }
           />
-          <div className="graph-container">
+          <div className="graph-container" style={{marginBottom:"5rem"}}>
             <LineChartSlider
               assetValueData={
                 this.state.assetValueData && this.state.assetValueData

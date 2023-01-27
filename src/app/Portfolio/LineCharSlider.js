@@ -63,11 +63,9 @@ class LineChartSlider extends BaseReactComponent {
   }
 
   handleFunction = (badge) => {
-    let newArr = [...this.state.activeBadge];
-    if (this.state.activeBadge.some((e) => e.name === badge.name)) {
-      let index = newArr.findIndex((x) => x.name === badge.name);
-      newArr.splice(index, 1);
-      if (newArr.length === 0) {
+    console.log("badge", badge)
+
+    if (badge?.[0].name === "All") {
         this.setState({
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
@@ -76,31 +74,13 @@ class LineChartSlider extends BaseReactComponent {
         });
       } else {
         this.setState({
-          activeBadge: newArr,
-          activeBadgeList: newArr?.map((item) => item.id),
+          activeBadge: badge,
+          activeBadgeList: badge?.map((item) => item.id),
           legends: [],
+          selectedEvents: [],
         });
       }
-    } else if (badge.name === "All") {
-      this.setState({
-        activeBadge: [{ name: "All", id: "" }],
-        activeBadgeList: [],
-        selectedEvents: [],
-        legends: [],
-      });
-    } else {
-      let index = newArr.findIndex((x) => x.name === "All");
-      if (index !== -1) {
-        newArr.splice(index, 1);
-      }
-      newArr.push(badge);
-      this.setState({
-        activeBadge: newArr,
-        activeBadgeList: newArr?.map((item) => item.id),
-        selectedEvents: [],
-        legends: [],
-      });
-    }
+    
     this.props.isPage
       ? IntlAssetValueFilter({
           session_id: getCurrentUser().id,
@@ -984,7 +964,7 @@ backdrop-filter: blur(15px);">
             {!this.props.isPage && (
               <GraphHeader
                 title="Asset Value"
-                subtitle="Understand your performance over time"
+                subtitle="Updated 3mins ago"
                 isArrow={true}
                 isAnalytics="Asset Value"
                 handleClick={this.props.handleClick}
@@ -1004,6 +984,59 @@ backdrop-filter: blur(15px);">
               </div>
             ) : (
               <>
+                {!this.props.hideTimeFilter && (
+                  <>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "4rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          width: "66%",
+                        }}
+                      >
+                        <h4 className="inter-display-medium f-s-13 lh-15 grey-7C7 m-r-12">
+                          Timeframe
+                        </h4>
+                        <BarGraphFooter
+                          handleFooterClick={this.handleSelect}
+                          active={this.state.title}
+                          footerLabels={["Year", "Month", "Day"]}
+                          lineChart={true}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "start",
+                          alignItems: "center",
+                          // width: "35%",
+                        }}
+                      >
+                        <h4 className="inter-display-medium f-s-13 lh-15 grey-7C7 m-r-12">
+                          Chains
+                        </h4>
+                        <div style={{ width: "20rem" }}>
+                          <CustomDropdown
+                            filtername="All"
+                            options={this.props.OnboardingState.coinsList}
+                            action={null}
+                            handleClick={this.handleFunction}
+                            isChain={true}
+                            // selectedTokens={this.state.activeBadge}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
                 <div
                   className="chart-y-selection"
                   style={
@@ -1017,12 +1050,6 @@ backdrop-filter: blur(15px);">
                   </span>
                   {!this.props.hideTimeFilter && (
                     <>
-                      <BarGraphFooter
-                        handleFooterClick={this.handleSelect}
-                        active={this.state.title}
-                        footerLabels={["Year", "Month", "Day"]}
-                        lineChart={true}
-                      />
                       <span
                         style={{
                           width: "120px",
@@ -1056,14 +1083,14 @@ backdrop-filter: blur(15px);">
                   // allowChartUpdate={true}
                   // updateArgs={[true]}
                 />
-                {!this.props.hideChainFilter && (
+                {/* {!this.props.hideChainFilter && (
                   <CoinBadges
                     activeBadge={this.state.activeBadge}
                     chainList={this.props.OnboardingState.coinsList}
                     handleFunction={this.handleFunction}
                     isScrollVisible={this.props.isScrollVisible}
                   />
-                )}
+                )} */}
 
                 {/* <div className="chart-x-selection">
                 <DropDown
