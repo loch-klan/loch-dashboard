@@ -1306,7 +1306,7 @@ class Portfolio extends BaseReactComponent {
                     <div className="profit-chart">
                       <BarGraphSection
                         headerTitle="Counterparty Volume Over Time"
-                        headerSubTitle="Understand how much your counterparty charges you"
+                        headerSubTitle="Understand where you’ve exchanged the most value"
                         isArrow={true}
                         handleClick={() => {
                           if (

@@ -466,7 +466,7 @@ class Cost extends Component {
 
             <BarGraphSection
               headerTitle="Counterparty Volume Over Time"
-              headerSubTitle="Understand how much your counterparty charges you"
+              headerSubTitle="Understand where you’ve exchanged the most value"
               data={
                 this.state.counterPartyValue && this.state.counterPartyValue[0]
               }

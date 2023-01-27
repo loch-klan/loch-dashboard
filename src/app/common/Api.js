@@ -158,7 +158,7 @@ export const getDetectedChainsApi = (ctx) =>{
         chains: res.data.data.chains[chain].chains
       }))
       // console.log('xyz',xyz);
-      addWallet.map((wallet)=>{
+      addWallet?.map((wallet)=>{
         let userWallet = null;
         let coinFound = false;
         xyz.map((item)=>{

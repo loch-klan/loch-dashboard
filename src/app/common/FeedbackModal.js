@@ -69,8 +69,7 @@ class FeedbackModal extends BaseReactComponent {
         </Modal.Header>
         <Modal.Body>
           <h6 className="inter-display-medium f-s-24 lh-30 m-b-8 black-191">
-            Your feedback is invaluable to us. <br/>Please let us know any feedback
-            or requests.
+            Your feedback is invaluable to us.
           </h6>
           <div
             style={{
@@ -173,21 +172,24 @@ class FeedbackModal extends BaseReactComponent {
           ) : (
             ""
           )} */}
-       
-            <p className="inter-display-medium f-s-16 lh-19 m-b-63" style={{height: "20px"}}>
-              {this.state.hoverStar === 5 || this.state.starSelected === 5
-                ? "It was excellent"
-                : this.state.hoverStar === 4 || this.state.starSelected === 4
-                ? "It was good"
-                : this.state.hoverStar === 3 || this.state.starSelected === 3
-                ? "It was alright"
-                : this.state.hoverStar === 2 || this.state.starSelected === 2
-                ? "It was bad"
-                : this.state.hoverStar === 1 || this.state.starSelected === 1
-                ? "It was terrible"
-                : " "}
-            </p>
-          
+
+          <p
+            className="inter-display-medium f-s-16 lh-19 m-b-63"
+            style={{ height: "20px" }}
+          >
+            {this.state.hoverStar === 5 || this.state.starSelected === 5
+              ? "It was excellent"
+              : this.state.hoverStar === 4 || this.state.starSelected === 4
+              ? "It was good"
+              : this.state.hoverStar === 3 || this.state.starSelected === 3
+              ? "It was alright"
+              : this.state.hoverStar === 2 || this.state.starSelected === 2
+              ? "It was bad"
+              : this.state.hoverStar === 1 || this.state.starSelected === 1
+              ? "It was terrible"
+              : " "}
+          </p>
+
           <Form>
             <Row>
               <Col md={4}>
@@ -225,7 +227,7 @@ class FeedbackModal extends BaseReactComponent {
                     type: CustomTextControl,
 
                     settings: {
-                      placeholder: "Enter any feedback or requests here.",
+                      placeholder: "Please enter any feedback or requests here.",
                       as: "textarea",
                       rows: 4,
                     },

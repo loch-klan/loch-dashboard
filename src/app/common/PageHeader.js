@@ -3,6 +3,8 @@ import { Button, Breadcrumb, Image } from "react-bootstrap";
 import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIcon.svg";
 import { Link } from "react-router-dom";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
 
@@ -72,7 +74,26 @@ export default function PageHeader(props) {
             </h4>
             {props.subTitle ? (
               <p className="inter-display-medium f-s-16 lh-19">
-                {props.subTitle}
+                {props.subTitle}{" "}
+                {props.hoverText ? (
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={props.hoverText}
+                    className={"fix-width"}
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="info-icon"
+                      style={{ width: "1.6rem", marginTop: "-3px" }}
+                      // onMouseEnter={this.privacymessage}
+                    />
+                  </CustomOverlay>
+                ) : (
+                  ""
+                )}
               </p>
             ) : (
               ""
