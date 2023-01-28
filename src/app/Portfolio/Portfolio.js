@@ -1293,7 +1293,7 @@ class Portfolio extends BaseReactComponent {
                             });
                           }
                         }}
-                        subTitle="In the last month"
+                        subTitle="Sort, filter, and dissect all your transactions from one place"
                         tableData={tableData}
                         columnList={columnList}
                         headerHeight={60}

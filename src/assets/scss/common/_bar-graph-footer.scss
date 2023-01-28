@@ -21,7 +21,7 @@
         }
     }
     .timeBadge {
-        padding: 1.2rem 1rem;
+        padding: 1.125rem 1rem;
         width: 100%;
         // min-width: 6.5rem;
         background-color: $grey-F2F;
@@ -84,11 +84,11 @@
     @media only screen and (max-width : 1123px)
     {
     .timeBadge {
-        margin-bottom: 1.5rem;
+        // margin-bottom: 1.5rem;
     }
 
     .timeBadgeWrapper{
-        flex-wrap:wrap;
+        // flex-wrap:wrap;
 
          &.lineChart{
             display:flex;

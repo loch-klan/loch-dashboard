@@ -365,12 +365,18 @@ class CustomDropdown extends Component {
               : ""
           }`}
           onClick={this.dropdownClicked}
-          style={this.props.isChain ? {textAlign:"left", paddingLeft:"1.6rem"}:{}}
+          style={
+            this.props.isChain
+              ? { textAlign: "left", paddingLeft: "1.6rem" }
+              : {}
+          }
         >
           {this.getSelected().length === 0
             ? this.state.name
             : this.props.isLineChart
             ? this.getSelected().length + "/4 Selected"
+            : this.props.isChain
+            ? this.getSelected().length + (this.getSelected().length > 1 ? " chains selected" : " chain selected")
             : this.getSelected().length + " Selected"}
 
           {!this.props.isLineChart && !this.props.isChain && (

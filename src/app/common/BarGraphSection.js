@@ -244,15 +244,38 @@ class BarGraphSection extends Component {
 
         {data && options && !isLoading ? (
           <span className={`${comingSoon ? "blur-effect" : ""}`}>
-            {showFooter ? (
-              <BarGraphFooter
-                handleFooterClick={this.handleFooter}
-                active={this.state.activeFooter}
-                footerLabels={footerLabels}
-              />
-            ) : (
-              ""
-            )}
+          
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                  }}
+                >
+                 {showFooter && <div style={{
+                    width:"75%"
+                  }}>
+                    <BarGraphFooter
+                      handleFooterClick={this.handleFooter}
+                      active={this.state.activeFooter}
+                      footerLabels={footerLabels}
+                    />
+                  </div>}
+
+                 {showBadges && <div style={{ width: "100%", minWidth:"18rem", maxWidth:"20rem", marginLeft:"1rem" }}>
+                    <CustomDropdown
+                      filtername="All chains selected"
+                      options={coinsList}
+                      action={null}
+                      handleClick={this.handleFunction}
+                      isChain={true}
+                      // selectedTokens={this.state.activeBadge}
+                    />
+                  </div>}
+                </div>
+              </>
+           
             {
               <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
                 {CurrencyType()}{" "}
@@ -311,17 +334,24 @@ class BarGraphSection extends Component {
                 </div>
               </div>
             </div>
-            {showBadges ? (
+            {/* {showBadges ? (
               // <CoinBadges
               //   handleFunction={this.handleFunction}
               //   activeBadge={activeBadge}
               //   chainList={coinsList}
               //   isScrollVisible={isScrollVisible}
               // />
-              <div style={{display:"flex", justifyContent:"right", alignItems:"center", marginTop: "2rem" }}>
-                <div style={{ width: "20rem"}}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "right",
+                  alignItems: "center",
+                  marginTop: "2rem",
+                }}
+              >
+                <div style={{ width: "20rem" }}>
                   <CustomDropdown
-                    filtername="All"
+                    filtername="All chains selected"
                     options={coinsList}
                     action={null}
                     handleClick={this.handleFunction}
@@ -332,7 +362,7 @@ class BarGraphSection extends Component {
               </div>
             ) : (
               ""
-            )}
+            )} */}
             {showFooterDropdown ? (
               <div className="chart-x-selection">
                 <DropDown

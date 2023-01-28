@@ -421,7 +421,7 @@ class Intelligence extends Component {
 
             {/* Netflow Info End */}
 
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative", minWidth: "85rem" }}>
               {this.state.graphValue ? (
                 <BarGraphSection
                   isScrollVisible={false}
@@ -444,8 +444,8 @@ class Intelligence extends Component {
                     "1 Y",
                     "6 M",
                     "1 M",
-                    "1 Week",
-                    "1 Day",
+                    "1 W",
+                    "1 D",
                   ]}
                   activeTitle={this.state.title}
                   // handleSelect={(opt) => this.handleSelect(opt)}

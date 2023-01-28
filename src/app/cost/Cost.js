@@ -428,7 +428,13 @@ class Cost extends Component {
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
           />
-          <div style={{ position: "relative", minHeight: "80rem" }}>
+          <div
+            style={{
+              position: "relative",
+              minHeight: "80rem",
+              minWidth: "85rem",
+            }}
+          >
             <BarGraphSection
               headerTitle="Blockchain Fees over Time"
               headerSubTitle="Understand your gas costs"
@@ -456,7 +462,14 @@ class Cost extends Component {
               // comingSoon={false}
             />
           </div>
-          <div id="cp" style={{ position: "relative", minHeight: "80rem" }}>
+          <div
+            id="cp"
+            style={{
+              position: "relative",
+              minHeight: "80rem",
+              minWidth: "85rem",
+            }}
+          >
             {/* <div className="coming-soon-div">
               <Image src={ExportIconWhite} className="coming-soon-img" />
               <p className="inter-display-regular f-s-13 lh-16 black-191">

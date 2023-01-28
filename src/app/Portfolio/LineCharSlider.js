@@ -1025,7 +1025,7 @@ backdrop-filter: blur(15px);">
                         </h4>
                         <div style={{ width: "20rem" }}>
                           <CustomDropdown
-                            filtername="All"
+                            filtername="All chains selected"
                             options={this.props.OnboardingState.coinsList}
                             action={null}
                             handleClick={this.handleFunction}
