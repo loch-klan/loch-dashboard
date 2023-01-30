@@ -235,15 +235,15 @@ class FixAddModal extends BaseReactComponent {
         let walletList = [];
         for (let i = 0; i < this.state.addWalletList.length; i++) {
           let curr = this.state.addWalletList[i];
-          console.log(
-            "current address",
-            curr.address.trim(),
-            "display",
-            curr.displayAddress,
-            "arr",
-            arr,
+          // console.log(
+          //   "current address",
+          //   curr.address.trim(),
+          //   "display",
+          //   curr.displayAddress,
+          //   "arr",
+          //   arr,
             
-          );
+          // );
           if (!arr.includes(curr.address.trim()) && curr.address) {
 
             
