@@ -2,17 +2,20 @@ import { useState } from "react";
 import { CounterpartyFeesSpecificBar, FeesSpecificBar, HomeCounterPartyHover } from "../../utils/AnalyticsFunctions";
 import { DEFAULT_PRICE } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
+import { amountFormat, CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
 
-export const getGraphData = (arr, parentCtx) => {
-
+export const getGraphData = (apidata, parentCtx) => {
+  let arr = apidata?.gas_fee_overtime;
+  let assetPrices = apidata?.asset_prices;
+  console.log(apidata);
   let currency = JSON.parse(localStorage.getItem('currency'));
   // const digit = numToCurrency(
   //   Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   // ).length;
+  
   let digit = 3;
-  //  console.log("state",parentCtx);
-  const labels = arr.map((e) => e.chain.name);
+  //  console.log("state", parentCtx, arr, assetPrices, apidata);
+  const labels = arr ? arr?.map((e) => e.chain.name) : [];
 
   const options = {
     responsive: true,
@@ -46,7 +49,22 @@ export const getGraphData = (arr, parentCtx) => {
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-            let label0 = "Fees: " + CurrencyType(false) + numToCurrency(ctx.raw) + " or " + ctx.dataset.totalFeesAmount[ctx.dataIndex]?.toFixed(6) + " " + ctx.dataset.defaultAssetCode[ctx.dataIndex];
+            let label0 =
+              "Fees Today (Then): " +
+              CurrencyType(false) +
+              amountFormat(
+                (
+                  ctx.dataset.totalFeesAmount[ctx.dataIndex] *
+                  assetPrices[ctx.dataset.defaultAssetCode[ctx.dataIndex]]
+                )?.toFixed(2),
+                "en-US",
+                "USD"
+              ) +
+              " (" +
+              CurrencyType(false) +
+              numToCurrency(ctx.raw) +
+              ")";
+              ;
             let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex] * currency.rate);
             FeesSpecificBar({
               session_id: getCurrentUser().id,
@@ -206,10 +224,10 @@ export const getGraphData = (arr, parentCtx) => {
     labels,
     datasets: [
       {
-        data: arr.map((e) => e.total_fees * currency?.rate),
-        backgroundColor: arr.map((e) => e.chain.color + "4D"),
-        borderColor: arr.map((e) => e.chain.color),
-        defaultAssetCode: arr.map((e) => e.chain.default_asset_code),
+        data: arr ? arr?.map((e) => e.total_fees * currency?.rate) : [],
+        backgroundColor: arr ? arr?.map((e) => e.chain.color + "4D") : [],
+        borderColor: arr ? arr?.map((e) => e.chain.color) : [],
+        defaultAssetCode: arr ? arr?.map((e) => e.chain.default_asset_code) : [],
         borderWidth: 2,
         borderRadius: {
           topLeft: 6,
@@ -217,12 +235,12 @@ export const getGraphData = (arr, parentCtx) => {
         },
         borderSkipped: false,
         barThickness: 48,
-        totalFeesAmount: arr.map((e) => e.total_fees_amount * currency?.rate),
+        totalFeesAmount: arr ? arr?.map((e) => e.total_fees_amount * currency?.rate): [],
         // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
-        totalVolume: arr.map((e) => e.total_volume),
+        totalVolume: arr ? arr?.map((e) => e.total_volume) : [],
       },
     ],
-  }
+  };
 
     return [data, options, options2]
 
@@ -235,7 +253,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
   //  ).length;
   let digit = 3;
 
-  const labels = arr.map((e) => e._id);
+  const labels = arr?.map((e) => e._id);
 
   const options = {
     responsive: true,
@@ -444,7 +462,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
     labels,
     datasets: [
       {
-        data: arr.map((e) => e.total_volume * currency?.rate),
+        data: arr?.map((e) => e.total_volume * currency?.rate),
         backgroundColor: [
           "rgba(100, 190, 205, 0.3)",
           "rgba(34, 151, 219, 0.3)",
@@ -472,10 +490,10 @@ export const getCounterGraphData = (arr, parentCtx) => {
         },
         borderSkipped: false,
         barThickness: 48,
-        totalFees: arr.map((e) => e.total_fees * currency?.rate),
+        totalFees: arr?.map((e) => e.total_fees * currency?.rate),
         // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
-        totalVolume: arr.map((e) => e.total_volume),
-        defaultAssetCode: arr.map((e) => e.chain.default_asset_code),
+        totalVolume: arr?.map((e) => e.total_volume),
+        defaultAssetCode: arr?.map((e) => e.chain.default_asset_code),
       },
     ],
   };

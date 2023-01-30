@@ -16,6 +16,7 @@ import DollarIcon from '../../assets/images/icons/InactiveCostIcon.svg'
 import ActiveDollarIcon from '../../assets/images/icons/ActiveCostIcon.svg'
 import CohortIcon from "../../assets/images/icons/cohort.svg";
 import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
+import ActiveFeedbackIcon from "../../assets/images/icons/feedback.svg";
 
 import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
 import SharePortfolioIcon from '../../assets/images/icons/SharePortfolioIcon.svg'
@@ -51,6 +52,7 @@ import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
 import { getAllCurrencyApi, getAllCurrencyRatesApi, setCurrencyApi } from './Api'
 import { setCurrencyReducer } from './CommonAction'
+import FeedbackModal from './FeedbackModal'
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -64,6 +66,7 @@ function Sidebar(props) {
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [currencyList, setAllCurrencyList] = React.useState([]);
      const [cohort, setCohort] = React.useState(false);
+  const [showFeedbackModal, setFeedbackModal] = React.useState(false);
     const [selectedCurrency, setCurrency] = React.useState(JSON.parse(localStorage.getItem('currency')));
     let lochUser = JSON.parse(localStorage.getItem('lochUser'));
 
@@ -100,6 +103,10 @@ function Sidebar(props) {
         setExportModal(!exportModal);
         ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
+  const handleFeedback = () => {
+    setFeedbackModal(!showFeedbackModal);
+    console.log("clicked modal")
+  };
     const handleShareModal = ()=>{
         setShareModal(!shareModal);
         // ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
@@ -175,7 +182,9 @@ function Sidebar(props) {
         }, 15000);
 
         return()=>clearInterval(interval);
-      },[currentIndex]);
+    }, [currentIndex]);
+  
+    
       return (
         <div className="sidebar-section">
           <Container>
@@ -194,7 +203,7 @@ function Sidebar(props) {
                         selectedCurrency.symbol + " " + selectedCurrency.code
                       }
                     >
-                      {currencyList.map((currency, key) => {
+                      {currencyList?.map((currency, key) => {
                         return (
                           <Dropdown.Item
                             key={key}
@@ -221,7 +230,7 @@ function Sidebar(props) {
                         <NavLink
                           exact={true}
                           className="nav-link"
-                          to="/home"
+                          to={ activeTab === "/home" ? "#" :"/home"}
                           onClick={() => {
                             // console.log("user",getCurrentUser())
                             HomeMenu({
@@ -368,6 +377,18 @@ function Sidebar(props) {
                             }
                           />
                           Profile
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          exact={true}
+                          onClick={handleFeedback}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                        >
+                          <Image src={ActiveFeedbackIcon} />
+                          Feedback
                         </NavLink>
                       </li>
                     </ul>
@@ -572,7 +593,11 @@ function Sidebar(props) {
               handleClose={handleConfirmLeaveModal}
             />
           ) : (
-            ""
+            "")}
+        
+
+          {showFeedbackModal && (
+            <FeedbackModal show={showFeedbackModal} onHide={handleFeedback} />
           )}
         </div>
       );

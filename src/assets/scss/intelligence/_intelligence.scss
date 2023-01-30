@@ -1,174 +1,280 @@
 .intelligence-page-section {
-    display: flex;
+  display: flex;
 
-    .intelligence-section {
+  .intelligence-section {
+    margin-top: 5rem;
 
-        margin-top: 5rem;
+    .intell-welcome-card {
+      .page-title {
+        color: $black-000;
+      }
 
-        .intell-welcome-card {
+      .subtitle {
+        color: $grey-ADA;
+      }
 
-            .page-title {
-                color: $black-000;
-            }
+      .row-card {
+        position: relative;
+        // overflow: hidden;
 
-            .subtitle {
-                color: $grey-ADA;
-            }
-
-            .row-card {
-                position: relative;
-                // overflow: hidden;
-
-                .bg-img {
-                    position: absolute;
-                    right: 0px;
-                    // top: 0.7rem;
-                    // top: 1.3rem;
-                    top:0.5rem;
-                    // height:92%;
-                    z-index: 1;
-                }
-
-                .welcome-card {
-                    background: $secondary;
-                    box-shadow: 0rem 0.6rem 1.2rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 0.8rem 2.4rem -0.4rem rgba(24, 39, 75, 0.08);
-                    border-radius: 1.2rem;
-                    // padding: 6rem 4.8rem 5.2rem 4.8rem;
-                    padding: 4.8rem;
-
-                    h3, p{
-                        position: relative;
-                        z-index: 2;
-                    }
-                    .welcome-card-title {
-                        color: $black-191;
-                    }
-
-                    .card-subtitle {
-                        color: $grey-969;
-                    }
-
-                    .info-container {
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: flex-start;
-                        flex-wrap: wrap;
-                        .info {
-                            display: flex;
-                            align-items: center;
-                            z-index: 1;
-                            .icon {
-                                // width: 4.8rem;
-                                // height: 4.8rem;
-                                border-radius: 0.8rem;
-                                padding:1.2rem;
-                                margin-right: 1.6rem;
-                            }
-                            .lightblue{
-                                background-color: $blue-E5F;
-                            }
-                            .lightyellow{
-                                background-color:$yellow-FEF ;
-                            }
-                            .lightpurple{
-                                background-color: $purple-E3C;
-                            }
-                            .info-detail {
-                                .info-title {
-                                    color: $grey-636;
-                                }
-
-                                .viewmore {
-                                    display: flex;
-                                    cursor:pointer;
-                                    align-items: center;
-                                    h4 {
-                                        margin-right: 0.4rem;
-                                    }
-                                    img{
-                                        margin-top: 2px;
-                                    }
-                                }
-                                 .viewmore:hover{
-                                    h4{
-                                        color: $grey-636;
-                                    }
-
-                                    img{
-                                        filter: opacity(0.5);
-                                    }
-                                }
-                            }
-                        }
-
-                        @media only screen  and (max-width : 1240px)
-                        {
-                            .info {
-                                 margin-bottom: 1.5rem;
-
-                                 }
-                                }
-                            }
-
-                }
-            }
+        .bg-img {
+          position: absolute;
+          right: 0px;
+          // top: 0.7rem;
+          // top: 1.3rem;
+          top: 0.5rem;
+          // height:92%;
+          z-index: 1;
         }
-        .portfolio-bar-graph{
-            .page-header{
-                margin-bottom: 2.8rem;
-                h4{
-                    font-size:2rem;
-                    line-height:2.4 ;
-                }
-            }
-            .bar-graph-section{
-                width: 100% ;
-                padding : 3.4rem 3.2rem;
-                .chartArea{
-                    height: 37rem;
-                }
-                .bar-graph-footer{
-                    .row{
-                        margin-left:2.5rem;
-                    }
-                }
-                .chart-x-selection{
-                  position: relative;
-                  .dropdown{
-                    position: absolute;
-                    top: -0.5rem;
-                    right: 0rem;
 
-                    .dropdown-menu{
-                        width: auto;
-                        padding: 0.4rem;
-                        max-height: 20rem;
-                        overflow-y: auto;
-                    }
-                    .dropdown-toggle {
-                        @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
-                          background: $secondary;
-                          padding-left: 4.5rem;
+        .welcome-card {
+          background: $secondary;
+          box-shadow: 0rem 0.6rem 1.2rem -0.6rem rgba(24, 39, 75, 0.12),
+            0rem 0.8rem 2.4rem -0.4rem rgba(24, 39, 75, 0.08);
+          border-radius: 1.2rem;
+          // padding: 6rem 4.8rem 5.2rem 4.8rem;
+          padding: 4.8rem;
 
-                          &:hover{
-                            color: $primary;
-                          }
-                    }
-                  }
-                .dropdown .btn-primary:not(:disabled):not(.disabled):active {
-                  border: none;
+          h3,
+          p {
+            position: relative;
+            z-index: 2;
+          }
+          .welcome-card-title {
+            color: $black-191;
+          }
+
+          .card-subtitle {
+            color: $grey-969;
+          }
+
+          .info-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            .info {
+              display: flex;
+              align-items: center;
+              z-index: 1;
+              .icon {
+                // width: 4.8rem;
+                // height: 4.8rem;
+                border-radius: 0.8rem;
+                padding: 1.2rem;
+                margin-right: 1.6rem;
               }
+              .lightblue {
+                background-color: $blue-E5F;
+              }
+              .lightyellow {
+                background-color: $yellow-FEF;
+              }
+              .lightpurple {
+                background-color: $purple-E3C;
+              }
+              .info-detail {
+                .info-title {
+                  color: $grey-636;
                 }
+
+                .viewmore {
+                  display: flex;
+                  cursor: pointer;
+                  align-items: center;
+                  h4 {
+                    margin-right: 0.4rem;
+                  }
+                  img {
+                    margin-top: 2px;
+                  }
+                }
+                .viewmore:hover {
+                  h4 {
+                    color: $grey-636;
+                  }
+
+                  img {
+                    filter: opacity(0.5);
+                  }
+                }
+              }
             }
-        }
-        .insights-image{
-          .insights-feed{
-            img{
-              width: 100%;
+
+            @media only screen and (max-width: 1240px) {
+              .info {
+                margin-bottom: 1.5rem;
+              }
             }
           }
         }
+      }
     }
+    .portfolio-bar-graph {
+      .page-header {
+        margin-bottom: 2.8rem;
+        h4 {
+          font-size: 2rem;
+          line-height: 2.4;
+        }
+      }
+      .bar-graph-section {
+        width: 100%;
+        padding: 3.4rem 3.2rem;
+        .chartArea {
+          height: 37rem;
+        }
+        .bar-graph-footer {
+          .row {
+            margin-left: 2.5rem;
+          }
+        }
+        .chart-x-selection {
+          position: relative;
+          .dropdown {
+            position: absolute;
+            top: -0.5rem;
+            right: 0rem;
+
+            .dropdown-menu {
+              width: auto;
+              padding: 0.4rem;
+              max-height: 20rem;
+              overflow-y: auto;
+            }
+            .dropdown-toggle {
+              @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
+              background: $secondary;
+              padding-left: 4.5rem;
+
+              &:hover {
+                color: $primary;
+              }
+            }
+          }
+          .dropdown .btn-primary:not(:disabled):not(.disabled):active {
+            border: none;
+          }
+        }
+      }
+
+      // Netflow Explainer
+      .InfoCard {
+        background: #ffffff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+          0px 1px 1px rgba(0, 0, 0, 0.04);
+        border-radius: 1.2rem;
+        padding: 2rem;
+        position: relative;
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        flex-direction: column;
+        // width: "40%",
+        height: 100%;
+        min-height: 15.3rem;
+
+        .InfoItem {
+          display: flex;
+          align-items: start;
+          justify-content: start;
+          width: 100%;
+
+          .title {
+            width: 22%;
+          }
+
+          .description {
+            width: 65%;
+          }
+        }
+      }
+      .CloseBtn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+      }
+
+      .InfoCardRight {
+        background: #ffffff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+          0px 1px 1px rgba(0, 0, 0, 0.04);
+        border-radius: 1.2rem;
+        padding: 2rem 3.8rem 2rem 2rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        height: 100%;
+        min-height: 15.3rem;
+
+        .imageSection {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          width: 30%;
+        }
+
+        .explainer-text {
+          background: #f2f2f2;
+          border: 1px solid rgba(229, 229, 230, 0.5);
+          border-radius: 8px;
+          padding: 4px 8px;
+        }
+
+        .RightSection {
+          width: 68%;
+        }
+      }
+
+      @media only screen and (max-width: 1240px) {
+        .InfoCardRight {
+          display: flex;
+          align-items: start;
+          justify-content: start;
+          flex-direction: column;
+          padding: 2rem;
+
+          .RightSection{
+            width: 100%;
+            margin-top: 2rem;
+          }
+        }
+
+
+        .InfoCard{
+             justify-content: center;
+
+             .InfoItem {
+          display: flex;
+          align-items: start;
+          justify-content: start;
+          flex-direction: column;
+
+          .title {
+            width: 100%;
+          }
+
+          .description {
+            margin-top: 1rem;
+            width: 100%;
+          }
+        }
+        }
+        
+
+      }
+    }
+    .insights-image {
+      .insights-feed {
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
 }
 
 // @media screen  and (max-device-width : 1240px)
@@ -176,6 +282,5 @@
 //     .intelligence-page-section .intelligence-section .intell-welcome-card .row-card .welcome-card .info-container .info {
 //         margin-bottom: 1.5rem;
 //     }
-
 
 // }

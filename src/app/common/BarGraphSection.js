@@ -19,6 +19,7 @@ import { getCurrentUser } from '../../utils/ManageToken';
 import Loading from './Loading';
 import { CurrencyType } from '../../utils/ReusableFunctions';
 import DropDown from './DropDown';
+import CustomDropdown from '../../utils/form/CustomDropdown';
 // import { BarGraphSection } from './BarGraphSection';
 
 ChartJS.register(
@@ -91,58 +92,82 @@ class BarGraphSection extends Component {
   };
   handleFunction = (badge) => {
     // console.log("badge",badge)
-    let newArr = [...this.state.activeBadge];
     let activeFooter = this.props.showFooterDropdown ? this.props.activeDropdown : this.state.activeFooter;
-    if (this.state.activeBadge.some((e) => e.name === badge.name)) {
-      let index = newArr.findIndex((x) => x.name === badge.name);
-      newArr.splice(index, 1);
-      if (newArr.length === 0) {
-        this.setState(
-          {
-            activeBadge: [{ name: "All", id: "" }],
-            activeBadgeList: [],
-          },
-          () => {
-            this.props.handleBadge(this.state.activeBadgeList, activeFooter);
-          }
-        );
-      } else {
-        this.setState(
-          {
-            activeBadge: newArr,
-            activeBadgeList: newArr.map((item) => item.id),
-          },
-          () => {
-            this.props.handleBadge(this.state.activeBadgeList, activeFooter);
-          }
-        );
-      }
-    } else if (badge.name === "All") {
+    if (badge?.[0].name === "All") {
       this.setState(
         {
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
+        
         },
         () => {
           this.props.handleBadge(this.state.activeBadgeList, activeFooter);
         }
       );
     } else {
-      let index = newArr.findIndex((x) => x.name === "All");
-      if (index !== -1) {
-        newArr.splice(index, 1);
-      }
-      newArr.push(badge);
       this.setState(
         {
-          activeBadge: newArr,
-          activeBadgeList: newArr.map((item) => item.id),
+          activeBadge: badge,
+          activeBadgeList: badge?.map((item) => item.id),
+        
         },
         () => {
           this.props.handleBadge(this.state.activeBadgeList, activeFooter);
         }
       );
     }
+    // let newArr = [...this.state.activeBadge];
+    // let activeFooter = this.props.showFooterDropdown ? this.props.activeDropdown : this.state.activeFooter;
+    // if (this.state.activeBadge.some((e) => e.name === badge.name)) {
+    //   let index = newArr.findIndex((x) => x.name === badge.name);
+    //   newArr.splice(index, 1);
+    //   if (newArr.length === 0) {
+    //     this.setState(
+    //       {
+    //         activeBadge: [{ name: "All", id: "" }],
+    //         activeBadgeList: [],
+    //       },
+    //       () => {
+    //         this.props.handleBadge(this.state.activeBadgeList, activeFooter);
+    //       }
+    //     );
+    //   } else {
+    //     this.setState(
+    //       {
+    //         activeBadge: newArr,
+    //         activeBadgeList: newArr?.map((item) => item.id),
+    //       },
+    //       () => {
+    //         this.props.handleBadge(this.state.activeBadgeList, activeFooter);
+    //       }
+    //     );
+    //   }
+    // } else if (badge.name === "All") {
+    //   this.setState(
+    //     {
+    //       activeBadge: [{ name: "All", id: "" }],
+    //       activeBadgeList: [],
+    //     },
+    //     () => {
+    //       this.props.handleBadge(this.state.activeBadgeList, activeFooter);
+    //     }
+    //   );
+    // } else {
+    //   let index = newArr.findIndex((x) => x.name === "All");
+    //   if (index !== -1) {
+    //     newArr.splice(index, 1);
+    //   }
+    //   newArr.push(badge);
+    //   this.setState(
+    //     {
+    //       activeBadge: newArr,
+    //       activeBadgeList: newArr?.map((item) => item.id),
+    //     },
+    //     () => {
+    //       this.props.handleBadge(this.state.activeBadgeList, activeFooter);
+    //     }
+    //   );
+    // }
 
     if (this.props.headerTitle === "Blockchain Fees over Time")
       BlockchainFeesFilter({
@@ -219,15 +244,38 @@ class BarGraphSection extends Component {
 
         {data && options && !isLoading ? (
           <span className={`${comingSoon ? "blur-effect" : ""}`}>
-            {showFooter ? (
-              <BarGraphFooter
-                handleFooterClick={this.handleFooter}
-                active={this.state.activeFooter}
-                footerLabels={footerLabels}
-              />
-            ) : (
-              ""
-            )}
+          
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "start",
+                  }}
+                >
+                 {showFooter && <div style={{
+                    width:"75%"
+                  }}>
+                    <BarGraphFooter
+                      handleFooterClick={this.handleFooter}
+                      active={this.state.activeFooter}
+                      footerLabels={footerLabels}
+                    />
+                  </div>}
+
+                 {showBadges && <div style={{ width: "100%", minWidth:"18rem", maxWidth:"20rem", marginLeft:"1rem" }}>
+                    <CustomDropdown
+                      filtername="All chains selected"
+                      options={coinsList}
+                      action={null}
+                      handleClick={this.handleFunction}
+                      isChain={true}
+                      // selectedTokens={this.state.activeBadge}
+                    />
+                  </div>}
+                </div>
+              </>
+           
             {
               <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
                 {CurrencyType()}{" "}
@@ -286,16 +334,35 @@ class BarGraphSection extends Component {
                 </div>
               </div>
             </div>
-            {showBadges ? (
-              <CoinBadges
-                handleFunction={this.handleFunction}
-                activeBadge={activeBadge}
-                chainList={coinsList}
-                isScrollVisible={isScrollVisible}
-              />
+            {/* {showBadges ? (
+              // <CoinBadges
+              //   handleFunction={this.handleFunction}
+              //   activeBadge={activeBadge}
+              //   chainList={coinsList}
+              //   isScrollVisible={isScrollVisible}
+              // />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "right",
+                  alignItems: "center",
+                  marginTop: "2rem",
+                }}
+              >
+                <div style={{ width: "20rem" }}>
+                  <CustomDropdown
+                    filtername="All chains selected"
+                    options={coinsList}
+                    action={null}
+                    handleClick={this.handleFunction}
+                    isChain={true}
+                    // selectedTokens={this.state.activeBadge}
+                  />
+                </div>
+              </div>
             ) : (
               ""
-            )}
+            )} */}
             {showFooterDropdown ? (
               <div className="chart-x-selection">
                 <DropDown
@@ -317,7 +384,14 @@ class BarGraphSection extends Component {
             )}
           </span>
         ) : (
-          <div style={{height: "30rem", display: "flex", justifyContent: "center", alignItems: "center"}}>
+          <div
+            style={{
+              height: "30rem",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Loading />
           </div>
         )}

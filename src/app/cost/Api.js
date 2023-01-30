@@ -13,8 +13,9 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
       if(!res.data.error){
         ctx.setState({
           barGraphLoading: false,
-            GraphData: res.data.data.gas_fee_overtime,
-            graphValue: getGraphData(res.data.data.gas_fee_overtime, ctx)
+          GraphData: res.data.data,
+          graphValue: getGraphData(res.data.data, ctx),
+          gasFeesGraphLoading:false,
         });
       } else{
         toast.error(res.data.message || "Something Went Wrong")
@@ -23,6 +24,7 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
     });
 }
 export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
+  
    let data = new URLSearchParams();
     if (startDate) {
          data.append("start_datetime", startDate);
@@ -31,7 +33,7 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
     postLoginInstance.post("wallet/transaction/get-counter-party-volume-traded", data)
     .then((res) => {
       if (!res.data.error) {
-        
+        //  console.log("calling counter fees");
         let g_data = res.data.data.counter_party_volume_traded.sort((a, b) => {
           return b.total_volume - a.total_volume;
         });

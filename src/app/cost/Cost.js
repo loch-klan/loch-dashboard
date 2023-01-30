@@ -25,6 +25,10 @@ import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
 import FeedbackForm from "../common/FeedbackForm";
+import FixAddModal from "../common/FixAddModal";
+
+// add wallet
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 
 
 class Cost extends Component {
@@ -40,29 +44,38 @@ class Cost extends Component {
       GraphData: [],
       graphValue: null,
       counterGraphLoading: true,
+      gasFeesGraphLoading: true,
       counterPartyData: [],
       counterPartyValue: null,
       currentPage: "Cost",
       counterGraphDigit: 3,
       GraphDigit: 3,
+
+      // add new wallet
+      userWalletList: localStorage.getItem("addWallet")
+        ? JSON.parse(localStorage.getItem("addWallet"))
+        : [],
+      addModal: false,
+      isUpdate: 0,
+      apiResponse: false,
     };
   }
 
   componentDidMount() {
-     CostsPage({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
-    if(this.props.location.hash !== ''){
+    CostsPage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    if (this.props.location.hash !== "") {
       setTimeout(() => {
-      const id = this.props.location.hash.replace('#', '');
-      // console.log('id',id);
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView();
-      }
-    }, 0);
-    } else{
+        const id = this.props.location.hash.replace("#", "");
+        // console.log('id',id);
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView();
+        }
+      }, 0);
+    } else {
       window.scrollTo(0, 0);
     }
     this.state.startTime = new Date() * 1;
@@ -73,61 +86,98 @@ class Cost extends Component {
     this.getCounterPartyFee(0);
   }
 
-  getBlockchainFee(option) {
+  componentDidUpdate(prevProps, prevState) {
+    // add wallet
 
+    if (prevState.apiResponse != this.state.apiResponse) {
+      // console.log("update");
+     
+        this.props.getAllCoins();
+        this.getBlockchainFee(0);
+      this.getCounterPartyFee(0);
+      this.setState({
+        apiResponse:false
+      })
+      
+    }
+  }
+
+  // For add new address
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+    });
+  };
+
+  handleChangeList = (value) => {
+    this.setState({
+      // for add wallet
+      userWalletList: value,
+      isUpdate: this.state.isUpdate === 0 ? 1 : 0,
+      // for page
+      counterGraphLoading: true,
+      gasFeesGraphLoading: true,
+    });
+  };
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+    // console.log("api respinse", value);
+  };
+
+  getBlockchainFee(option) {
     const today = moment().valueOf();
     let handleSelected = "";
     // console.log("headle click");
     if (option == 0) {
       getAllFeeApi(this, false, false);
       // console.log(option, "All");
-       handleSelected = "All";
+      handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
       getAllFeeApi(this, fiveyear, today);
       // console.log(fiveyear, today, "5 years");
-       handleSelected = "5 Years";
+      handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
       getAllFeeApi(this, year, today);
       // console.log(year, today, "1 year");
-       handleSelected = "1 Year";
+      handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
       getAllFeeApi(this, sixmonth, today);
       // console.log(sixmonth, today, "6 months");
-       handleSelected = "6 Months";
+      handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
       getAllFeeApi(this, month, today);
       // console.log(month, today, "1 month");
-       handleSelected = "1 Month";
+      handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
       getAllFeeApi(this, week, today);
       // console.log(week, today, "week");
-       handleSelected = "Week";
+      handleSelected = "Week";
     }
     // console.log("handle select", handleSelected);
     FeesTimePeriodFilter({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
-      time_period_selected: handleSelected
+      time_period_selected: handleSelected,
     });
   }
 
   getCounterPartyFee(option) {
-
     const today = moment().unix();
     let handleSelected = "";
     // console.log("headle click");
     if (option == 0) {
       getAllCounterFeeApi(this, false, false);
       // console.log(option, "All");
-    handleSelected = "All";
-
+      handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").unix();
 
@@ -179,34 +229,44 @@ class Cost extends Component {
   }
 
   handleBadge = (activeBadgeList, type) => {
-    const {GraphData, counterPartyData} = this.state;
-      let graphDataMaster = [];
-      let counterPartyDataMaster = [];
-      if(type === 1){
-        GraphData && GraphData.map((tempGraphData)=>{
-          if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
+    const { GraphData, counterPartyData } = this.state;
+    let graphDataMaster = [];
+    let counterPartyDataMaster = [];
+    if (type === 1) {
+      GraphData.gas_fee_overtime &&
+        GraphData.gas_fee_overtime?.map((tempGraphData) => {
+          if (
+            activeBadgeList.includes(tempGraphData.chain._id) ||
+            activeBadgeList.length === 0
+          ) {
             graphDataMaster.push(tempGraphData);
           }
-        })
-        this.setState({
-          graphValue: getGraphData(graphDataMaster,this),
         });
-      } else{
-        counterPartyData && counterPartyData.map((tempGraphData)=>{
-          if(activeBadgeList.includes(tempGraphData.chain._id) || activeBadgeList.length === 0){
+      let gas_fee_overtime = graphDataMaster;
+      let asset_prices = GraphData.asset_prices;
+      let graphDataObj = { asset_prices, gas_fee_overtime };
+      this.setState({
+        graphValue: getGraphData(graphDataObj, this),
+      });
+    } else {
+      counterPartyData &&
+        counterPartyData?.map((tempGraphData) => {
+          if (
+            activeBadgeList.includes(tempGraphData.chain._id) ||
+            activeBadgeList.length === 0
+          ) {
             counterPartyDataMaster.push(tempGraphData);
           }
-        })
-        this.setState({
-          counterPartyValue: getCounterGraphData(counterPartyDataMaster, this),
         });
-      }
-  }
+      this.setState({
+        counterPartyValue: getCounterGraphData(counterPartyDataMaster, this),
+      });
+    }
+  };
 
   render() {
-
-    console.log("counter", this.state.counterGraphDigit);
-    console.log("fes", this.state.GraphDigit);
+    // console.log("counter", this.state.counterGraphDigit);
+    // console.log("fes", this.state.GraphDigit);
     const tableData = [
       {
         Asset: Ethereum,
@@ -347,83 +407,105 @@ class Cost extends Component {
     return (
       <div className="cost-page-section">
         <div className="m-t-5 cost-section page">
+          {this.state.addModal && (
+            <FixAddModal
+              show={this.state.addModal}
+              onHide={this.handleAddModal}
+              modalIcon={AddWalletModalIcon}
+              title="Add wallet address"
+              subtitle="Add more wallet address here"
+              modalType="addwallet"
+              btnStatus={false}
+              btnText="Go"
+              history={this.props.history}
+              changeWalletList={this.handleChangeList}
+              apiResponse={(e) => this.CheckApiResponse(e)}
+            />
+          )}
           <PageHeader
             title="Costs"
             subTitle="Bring light to your hidden costs"
+            btnText={"Add wallet"}
+            handleBtn={this.handleAddModal}
           />
-          <div style={{ position: "relative", minHeight: "80rem" }}>
-            {this.state.graphValue ? (
-              <BarGraphSection
-                headerTitle="Blockchain Fees over Time"
-                headerSubTitle="Understand your gas costs"
-                data={this.state.graphValue[0]}
-                options={this.state.graphValue[1]}
-                options2={this.state.graphValue[2]}
-                digit={this.state.GraphDigit}
-                coinsList={this.props.OnboardingState.coinsList}
-                timeFunction={(e) => {
-                  this.getBlockchainFee(e);
-                }}
-                marginBottom="m-b-32"
-                showFooter={true}
-                showBadges={true}
-                isScrollVisible={false}
-                isScroll={true}
-                handleBadge={(activeBadgeList) =>
-                  this.handleBadge(activeBadgeList, 1)
-                }
+          <div
+            style={{
+              position: "relative",
+              minHeight: "80rem",
+              minWidth: "85rem",
+            }}
+          >
+            <BarGraphSection
+              headerTitle="Blockchain Fees over Time"
+              headerSubTitle="Understand your gas costs"
+              data={this.state.graphValue && this.state.graphValue[0]}
+              options={this.state.graphValue && this.state.graphValue[1]}
+              options2={this.state.graphValue && this.state.graphValue[2]}
+              digit={this.state.GraphDigit}
+              coinsList={this.props.OnboardingState.coinsList}
+              timeFunction={(e) => {
+                this.getBlockchainFee(e);
+              }}
+              marginBottom="m-b-32"
+              showFooter={true}
+              showBadges={true}
+              isScrollVisible={false}
+              isScroll={true}
+              isLoading={this.state.gasFeesGraphLoading}
+              // isLoading={true}
+              handleBadge={(activeBadgeList) =>
+                this.handleBadge(activeBadgeList, 1)
+              }
 
-                // height={420}
-                // width={824}
-                // comingSoon={false}
-              />
-            ) : (
-              // <></>
-              <div className="loading-wrapper">
-                <Image src={graphImage} className="graph-image" />
-                <Loading />
-                <br />
-                <br />
-              </div>
-            )}
+              // height={420}
+              // width={824}
+              // comingSoon={false}
+            />
           </div>
-          <div id="cp" style={{ position: "relative", minHeight: "80rem" }}>
+          <div
+            id="cp"
+            style={{
+              position: "relative",
+              minHeight: "80rem",
+              minWidth: "85rem",
+            }}
+          >
             {/* <div className="coming-soon-div">
               <Image src={ExportIconWhite} className="coming-soon-img" />
               <p className="inter-display-regular f-s-13 lh-16 black-191">
                 This feature is coming soon.
               </p>
             </div> */}
-            {this.state.counterPartyValue ? (
-              <BarGraphSection
-                headerTitle="Counterparty Volume Over Time"
-                headerSubTitle="Understand how much your counterparty charges you"
-                data={this.state.counterPartyValue[0]}
-                options={this.state.counterPartyValue[1]}
-                options2={this.state.counterPartyValue[2]}
-                digit={this.state.counterGraphDigit}
-                coinsList={this.props.OnboardingState.coinsList}
-                timeFunction={(e) => this.getCounterPartyFee(e)}
-                marginBottom="m-b-32"
-                showFooter={true}
-                showBadges={true}
-                isScrollVisible={false}
-                isScroll={true}
-                handleBadge={(activeBadgeList) =>
-                  this.handleBadge(activeBadgeList, 2)
-                }
-                // height={"400px"}
-                // width={"824px"}
-                // comingSoon={true}
-              />
-            ) : (
-              <div className="loading-wrapper">
-                <Image src={graphImage} className="graph-image" />
-                <Loading />
-                <br />
-                <br />
-              </div>
-            )}
+
+            <BarGraphSection
+              headerTitle="Counterparty Volume Over Time"
+              headerSubTitle="Understand where you’ve exchanged the most value"
+              data={
+                this.state.counterPartyValue && this.state.counterPartyValue[0]
+              }
+              options={
+                this.state.counterPartyValue && this.state.counterPartyValue[1]
+              }
+              options2={
+                this.state.counterPartyValue && this.state.counterPartyValue[2]
+              }
+              digit={this.state.counterGraphDigit}
+              coinsList={this.props.OnboardingState.coinsList}
+              timeFunction={(e) => this.getCounterPartyFee(e)}
+              marginBottom="m-b-32"
+              showFooter={true}
+              showBadges={true}
+              isScrollVisible={false}
+              isScroll={true}
+              isLoading={this.state.counterGraphLoading}
+              // isLoading={true}
+              handleBadge={(activeBadgeList) =>
+                this.handleBadge(activeBadgeList, 2)
+              }
+              // height={"400px"}
+              // width={"824px"}
+              // comingSoon={true}
+            />
           </div>
           <div className="m-b-40 cost-table-section">
             <div style={{ position: "relative" }}>
@@ -443,7 +525,7 @@ class Cost extends Component {
               />
             </div>
           </div>
-          <FeedbackForm page={"Cost Page"} />
+          {/* <FeedbackForm page={"Cost Page"} /> */}
         </div>
       </div>
     );

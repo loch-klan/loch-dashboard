@@ -2,13 +2,18 @@ import { postLoginInstance, preLoginInstance } from "../../utils";
 import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES } from "./ActionTypes";
 import { toast } from "react-toastify";
 import { AssetType, DEFAULT_PRICE } from "../../utils/Constant";
+import moment from "moment";
+import { getAllCounterFeeApi } from "../cost/Api";
+import { getProfitAndLossApi } from "../intelligence/Api";
 
 export const getCoinRate = () => {
+  
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
         postLoginInstance
             .post("wallet/chain/get-crypto-asset-rates", data)
-            .then((res) => {
+          .then((res) => {
+          
               let coinRateList = res.data && res.data.data && Object.keys(res.data.data.rates).length > 0 ? res.data.data.rates : [];
               // console.log("cooin redux", coinRateList);
               // console.log("cooin redux", res.data.data);
@@ -23,17 +28,42 @@ export const getCoinRate = () => {
     };
 };
 
-export const getUserWallet = (wallet,ctx) => {
-    return function (dispatch, getState) {
-        let data = new URLSearchParams();
-        data.append("chain", wallet.coinCode);
-        data.append("wallet_address", wallet.address);
+export const getUserWallet = (wallet, ctx, isRefresh) => {
+  
+  return function (dispatch, getState) {
+      
+      let data = new URLSearchParams();
+       data.append("chain", wallet.coinCode);
+      data.append("wallet_address", wallet.address);
+      
+    if (!isRefresh) {
+        
+         data.append("update_balance", false);
+    } else {
+      //  console.log("On Refresh Api Called", wallet);
+          data.append("update_balance", true);
+      }
+    
         postLoginInstance
             .post("wallet/user-wallet/get-balance", data)
             .then((res) => {
               let userWalletList = res.data && res.data.data.user_wallet && res.data.data.user_wallet.assets && res.data.data.user_wallet.assets.length > 0 && res.data.data.user_wallet.active ? res.data.data.user_wallet : []
               
-              // console.log("asset", res.data?.data.asset_prices)
+              // console.log(
+              //   "asset",
+              //   moment(res.data?.data.user_wallet?.modified_on).valueOf()
+              // );
+              // if (isRefresh) {
+                
+                localStorage.setItem(
+                  "refreshApiTime",
+                  moment(res.data?.data.user_wallet?.modified_on).valueOf()
+                );
+
+                isRefresh && ctx.getCurrentTime();
+
+              // }
+
                 dispatch({
                     type: USER_WALLET_LIST,
                     payload: {
@@ -46,6 +76,8 @@ export const getUserWallet = (wallet,ctx) => {
               //   type: COIN_RATE_LIST,
               //   payload: res.data?.data.asset_prices,
               // });
+              // console.log("state", ctx.props.portfolioState.walletTotal, ctx);
+              
             
                 if(ctx){
                   ctx.setState({
@@ -70,15 +102,29 @@ export const settingDefaultValues = (wallet) => {
 
 export const getDetailsByLinkApi = (link,ctx=null) => {
   const data = new URLSearchParams();
-  data.append("token",link);
+  data.append("token", link);
+  
   return async function (dispatch, getState) {
   preLoginInstance.post("organisation/user/get-portfolio-by-link", data)
           .then((res) => {
               if(!res.data.error){
                 // console.log('getState',getState().OnboardingState.coinsList);
                 // console.log('res',res);
-                const allChains = getState().OnboardingState.coinsList;
-                // console.log('allChains',allChains);
+                const allChains = res.data.data.chains;
+                //   .map((chain) => {
+                //   return {
+                //     chain_detected: false,
+                //   coinCode: chain.code,
+                //   coinColor:chain.color,
+                //   coinName:chain.name,
+                //     coinSymbol: chain.symbol,
+                //   }
+                // })
+                  // getState().OnboardingState.coinsList;
+             
+
+                
+                
                 let addWallet = [];
                 const apiResponse = res.data.data;
                 for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
@@ -106,9 +152,28 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
 
               }
               // console.log('addWallet',addWallet);
-              localStorage.setItem("addWallet",JSON.stringify(addWallet))
-              ctx.setState({isLoading:false})
-              ctx.handleResponse && ctx.handleResponse();
+                localStorage.setItem("addWallet", JSON.stringify(addWallet))
+                sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+                ctx.setState({
+                  isLoading: false,
+                  userWalletList:addWallet
+                })
+                
+                // ctx.handleResponse && ctx.handleResponse();
+
+                if (ctx.handleResponse) {
+                  ctx.handleResponse();
+                } else {
+
+                 
+                  ctx.props.getCoinRate();
+                  ctx.getTableData();
+                  ctx.getGraphData();
+                  getAllCounterFeeApi(ctx, false, false);
+                  getProfitAndLossApi(ctx, false, false, false);
+                }
+                
+                
               } else{
                 toast.error(res.data.message || "Something Went Wrong")
               }
@@ -182,7 +247,7 @@ export const getAllProtocol = (ctx) => {
     .post("wallet/chain/get-all-protocols")
     .then((res) => {
       if (!res.data.error) {
-        console.log("all protocols", res.data.data.protocols);
+        // console.log("all protocols", res.data.data.protocols);
         ctx.setState({
           allProtocols: res.data.data.protocols,
         });
@@ -204,8 +269,8 @@ export const getYieldBalanceApi = (ctx,data) => {
         let currency = JSON.parse(localStorage.getItem("currency"));
         let allAssetType = [20, 40, 30, 50];
         let yieldData = ctx.state.yieldData || [];
-        console.log("yield balance", res.data.data);
-          console.log("yield data", yieldData);
+        // console.log("yield balance", res.data.data);
+        //   console.log("yield data", yieldData);
         res.data.data &&
           res.data.data.user_wallet &&
           res.data.data.user_wallet.assets &&
@@ -246,7 +311,7 @@ export const getYieldBalanceApi = (ctx,data) => {
                 : DebtValues.push(yieldData[key]);
             }
           );
-            console.log("yield", YieldValues, "Debt", DebtValues)
+            // console.log("yield", YieldValues, "Debt", DebtValues)
              let yeldTotal = 0;
              YieldValues &&
                YieldValues.map((e) => (yeldTotal += e.totalPrice));

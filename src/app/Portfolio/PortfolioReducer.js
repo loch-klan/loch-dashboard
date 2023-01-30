@@ -19,7 +19,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         let updateWalletTotal = state.walletTotal || 0;
         let updatedChainWallet = state.chainWallet || [];
         let chainPortfolio = state.chainPortfolio || {};
-        // console.log('updatedChainWallet', updatedChainWallet);
+     let currencyRate = state.currency?.rate || 1;
 
         // console.log("state", state)
         if (
@@ -58,7 +58,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
               (value && value.USD && value.USD.price
                 ? value.USD.price
                 : DEFAULT_PRICE) *
-              state.currency?.rate;
+              currencyRate;
             // Get coin asset index
             // let assetIndex = updatedChainWallet.findIndex(
             //     assetList => assetList.assetCode === action.payload.userWalletList.assets[i].asset.code
@@ -70,7 +70,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 (value && value.USD && value.USD.price
                   ? value.USD.price
                   : DEFAULT_PRICE) *
-                state.currency?.rate
+                currencyRate
               : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE;
             chainPortfolio[action.payload.userWalletList.chain.id].total =
               chainPortfolio[action.payload.userWalletList.chain.id].total +
@@ -81,6 +81,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 action.payload.userWalletList.assets[i].asset.id
               ] === undefined
             ) {
+          
               // updatedChainWallet.push({
               updatedChainWallet[
                 action.payload.userWalletList.assets[i].asset.id
@@ -111,7 +112,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                     (value && value.USD && value.USD.price
                       ? value.USD.price
                       : DEFAULT_PRICE) *
-                    state.currency?.rate
+                    currencyRate
                   : action.payload.userWalletList.assets[i].count *
                     DEFAULT_PRICE,
               };
@@ -124,6 +125,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
               // If chain doesn't exist
               // if (chainExist <= -1) {
               // if (updatedChainWallet[action.payload.userWalletList.assets[i].asset.code]["chain"] === undefined) {
+               
               updatedChainWallet[
                 action.payload.userWalletList.assets[i].asset.id
               ]["chain"].push({
@@ -154,10 +156,14 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                     (value && value.USD && value.USD.price
                       ? value.USD.price
                       : DEFAULT_PRICE) *
-                    state.currency?.rate
+                    currencyRate
                   : action.payload.userWalletList.assets[i].count *
                     DEFAULT_PRICE);
             }
+            // console.log(
+            //   "updated wallet total",
+            //   updateWalletTotal,i
+            // );
             updateWalletTotal = updateWalletTotal + currentPrice;
           }
         }

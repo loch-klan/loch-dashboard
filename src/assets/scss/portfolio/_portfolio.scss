@@ -654,7 +654,6 @@ position: relative;
 
 .coin-hover-display {
     width: max-content;
-    // width: 100%;
     margin-top: 1rem;
     display: flex;
     padding: 1rem;
@@ -690,6 +689,7 @@ position: relative;
         //width: 25.4rem;
 
         .coin-hover-display-text1-upper {
+            
 
             // display: flex;
             // justify-content: space-evenly;
@@ -725,6 +725,10 @@ position: relative;
     }
 
     .coin-hover-display-text2 {
+
+        .coin-hover-display-text2-upper{ display: flex;
+            justify-content: space-between;}
+        
         //margin-left: 32.7rem;
         .coin-hover-display-text2-upper-coin{
           max-width: 11.5rem;
@@ -756,11 +760,14 @@ position: relative;
         padding: 1rem 1rem;
         //width: 17.4rem;
         // height: 7rem;
-        border-left: 0.1rem solid #E5E5E6;
+        // border-left: 0.1rem solid #E5E5E6;
 
         .coin-hover-display-text2-lower,
         .coin-hover-display-text3-lower,
         .coin-hover-display-text4-lower {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
             padding-top: 1rem;
         }
 
@@ -1004,4 +1011,34 @@ position: relative;
                
     }
     
+
+
+    .refresh-btn{
+        display: flex;
+                      align-items: center;
+                      user-select: none;
+                    width: max-content;
+
+
+                      img{
+                        position: relative;
+                        margin-right: 6px;
+                        width: 1.3rem;
+                        height: 1.3rem;
+                        filter: opacity(0.4);
+                      }
+
+                      &:hover{
+
+                        color:$primary;
+
+                        span{
+                            color:$primary;
+                        }
+
+                        img{
+                            filter: opacity(1);
+                        }
+                      }
+    }
 }

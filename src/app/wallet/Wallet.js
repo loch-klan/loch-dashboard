@@ -288,7 +288,7 @@ class Wallet extends Component {
           }
 
           <div className="cards">
-            {isLoading === true ? (
+            {isLoading === true? (
               <div className="loading-container">
                 <div className="animation-wrapper">
                   <Loading />
@@ -322,7 +322,7 @@ class Wallet extends Component {
               </div>
             )}
           </div>
-          <FeedbackForm page={"Wallet Page"} />
+          {/* <FeedbackForm page={"Wallet Page"} /> */}
         </div>
       </div>
     );

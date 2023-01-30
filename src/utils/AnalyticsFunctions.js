@@ -31,7 +31,7 @@ export const test = ({ session_id, chains }) => {
     "list of all chains detected": chains,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Test");
+  // //console.log("Test");
 };
 
 //1. Landing Page Conversion:preview demo
@@ -41,7 +41,7 @@ export const PreviewDemo = ({ session_id }) => {
     "session id": session_id,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:preview demo");
+  //console.log("Landing Page Conversion:preview demo");
 };
 
 //2. Landing Page Conversion:go
@@ -61,7 +61,7 @@ export const LPC_Go = ({
     "unrecognized ENS": unrecognized_ENS,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:go");
+  //console.log("Landing Page Conversion:go");
 };
 
 //3. Landing Page Conversion:privacy message
@@ -71,7 +71,7 @@ export const PrivacyMessage = ({ session_id }) => {
 
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:privacy message");
+  //console.log("Landing Page Conversion:privacy message");
 };
 
 //4. Landing Page Conversion:email address added
@@ -82,7 +82,7 @@ export const EmailAddressAdded = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:email address added");
+  //console.log("Landing Page Conversion:email address added");
 };
 
 //5. Landing Page Conversion:email address verified
@@ -93,7 +93,7 @@ export const EmailAddressVerified = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:email address verified");
+  ////console.log("Landing Page Conversion:email address verified");
 };
 
 //6. Landing Page Conversion:returning user signed in correctly
@@ -105,7 +105,7 @@ export const UserSignedinCorrectly = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:returning user signed in correctly");
+  ////console.log("Landing Page Conversion:returning user signed in correctly");
 };
 
 //7. Landing Page Conversion:returning user wrong verification code
@@ -117,7 +117,7 @@ export const UserWrongCode = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:returning user wrong verification code");
+  ////console.log("Landing Page Conversion:returning user wrong verification code");
 };
 
 //8. Landing Page Conversion:time spent on onboarding
@@ -133,7 +133,7 @@ export const TimeSpentOnboarding = ({
     "time spent onboarding": time_spent,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:time spent on onboarding");
+  ////console.log("Landing Page Conversion:time spent on onboarding");
 };
 
 //9. Home:manage wallets
@@ -144,7 +144,7 @@ export const ManageWallets = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:manage wallets");
+  ////console.log("Home:manage wallets");
 };
 
 //10. Home:add wallet address
@@ -173,7 +173,7 @@ export const AddWalletAddress = ({
     "blockchains detected": blockchains_detected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:add wallet_address");
+  ////console.log("Home:add wallet_address");
 };
 
 //11. Home:piechart overview
@@ -189,7 +189,7 @@ export const PiechartOverview = ({
     "list of assets and amounts": list_of_assets_and_amounts,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:piechart overview");
+  ////console.log("Home:piechart overview");
 };
 
 //12. Home:piechart specific chain name
@@ -207,7 +207,7 @@ export const PiechartChainName = ({
     "asset amount": asset_amount,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:piechart specific chain name");
+  ////console.log("Home:piechart specific chain name");
 };
 
 //13. Home:asset value chart deposits and withdrawals
@@ -223,7 +223,7 @@ export const AssetValueChart = ({
     "asset hovered": asset_hovered,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:asset value chart deposits and withdrawals");
+  ////console.log("Home:asset value chart deposits and withdrawals");
 };
 
 //14. Home:asset value chart crypto asset filter
@@ -239,7 +239,7 @@ export const AssetValueFilter = ({
     "filter clicked": filter_clicked,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:asset value chart crypto asset filter");
+  //console.log("Home:asset value chart crypto asset filter");
 };
 
 //15. Home:asset value chart fiat currency
@@ -255,7 +255,7 @@ export const AssetValueFaitCurrency = ({
     "fiat currency selected": fiat_currency_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:asset value chart fiat currency ");
+  //console.log("Home:asset value chart fiat currency ");
 };
 
 //16. Home:asset value chart time period
@@ -271,7 +271,7 @@ export const AssetValueTimePeriod = ({
     "time filter selected": time_filter_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:asset value chart time period");
+  //console.log("Home:asset value chart time period");
 };
 
 //17. Home:portfolio performance asset filter
@@ -287,7 +287,7 @@ export const PortfolioAssetFilter = ({
     "asset filter(s) selected": asset_filter_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:portfolio performance asset filter");
+  //console.log("Home:portfolio performance asset filter");
 };
 
 //18. Home:portfolio performance time period filter
@@ -303,7 +303,7 @@ export const PortfolioTimePeriodFilter = ({
     "time period filter selected": time_period_filter_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:portfolio performance time period filter");
+  //console.log("Home:portfolio performance time period filter");
 };
 
 //19. Home:portfolio performance expanded view
@@ -314,7 +314,7 @@ export const PortfolioPerformanceEView = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:portfolio performance expanded view");
+  //console.log("Home:portfolio performance expanded view");
 };
 
 //20. Home:transaction history expanded view
@@ -325,7 +325,7 @@ export const TransactionHistoryEView = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:transaction history expanded view");
+  //console.log("Home:transaction history expanded view");
 };
 
 //21. Home:transaction history addresses
@@ -343,7 +343,7 @@ export const TransactionHistoryAddress = ({
     "display address": display_name,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:transaction history addresses");
+  //console.log("Home:transaction history addresses");
 };
 
 //22. Home:volume traded by counterparty expanded view
@@ -354,7 +354,7 @@ export const VolumeTradeByCP = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:volume traded by counterparty expanded view");
+  //console.log("Home:volume traded by counterparty expanded view");
 };
 
 //23. Home:average cost basis expanded view
@@ -365,7 +365,7 @@ export const AverageCostBasisEView = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:average cost basis expanded view");
+  //console.log("Home:average cost basis expanded view");
 };
 
 //24. Home:average cost basis specific asset selected
@@ -381,7 +381,7 @@ export const AverageCostBasisAsset = ({
     "asset clicked": asset_clicked,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:average cost basis specific asset selected");
+  //console.log("Home:average cost basis specific asset selected");
 };
 
 //25. Home:language clicked
@@ -397,7 +397,7 @@ export const LanguageClicked = ({
     "language selected": language_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:language clicked");
+  //console.log("Home:language clicked");
 };
 
 //26. Home:language changed
@@ -413,7 +413,7 @@ export const LanguageChnaged = ({
     "language selected": language_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:language changed");
+  //console.log("Home:language changed");
 };
 
 //27. Home:fiat currency clicked
@@ -429,7 +429,7 @@ export const FiatCurrencyClicked = ({
     "currency selected": currency_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:fiat currency clicked");
+  //console.log("Home:fiat currency clicked");
 };
 
 //28. Home:fiat currency changed
@@ -447,7 +447,7 @@ export const FiatCurrencyChanged = ({
     "latest fiat currency": latest_currency,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:fiat currency changed");
+  //console.log("Home:fiat currency changed");
 };
 
 //29. Home:time spent on home page
@@ -459,7 +459,7 @@ export const TimeSpentHome = ({ session_id, email_address, time_spent }) => {
     "time spent home": time_spent
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:time spent on home page");
+  //console.log("Home:time spent on home page");
 };
 
 //30. Menu:intelligence menu
@@ -470,7 +470,7 @@ export const IntelligenceMenu = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:intelligence menu");
+  //console.log("Menu:intelligence menu");
 };
 
 //Menu:Home menu
@@ -481,7 +481,7 @@ export const HomeMenu = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:Home menu");
+  //console.log("Menu:Home menu");
 };
 
 //31. Menu:wallets menu
@@ -492,7 +492,7 @@ export const WalletsMenu = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:wallets menu");
+  //console.log("Menu:wallets menu");
 };
 
 //32. Menu:costs menu
@@ -503,7 +503,7 @@ export const CostsMenu = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:costs menu");
+  //console.log("Menu:costs menu");
 };
 
 //33. Menu:profile menu
@@ -514,7 +514,7 @@ export const ProfileMenu = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:profile menu");
+  //console.log("Menu:profile menu");
 };
 
 //34. Menu:export
@@ -525,7 +525,7 @@ export const ExportMenu = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:export");
+  //console.log("Menu:export");
 };
 
 //35. Menu:export date range drop down selected
@@ -541,7 +541,7 @@ export const ExportDateSelected = ({
     "date range selected": date_range_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:export date range drop down selected");
+  //console.log("Menu:export date range drop down selected");
 };
 
 //36. Menu:export data downloaded
@@ -559,7 +559,7 @@ export const ExportDataDownlaod = ({
     "data exported": data_exported,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:export data downloaded");
+  //console.log("Menu:export data downloaded");
 };
 
 //37. Menu:api
@@ -570,7 +570,7 @@ export const MenuApi = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:api");
+  //console.log("Menu:api");
 };
 
 //38. Menu:dark mode
@@ -581,7 +581,7 @@ export const MenuDarkMode = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:dark mode");
+  //console.log("Menu:dark mode");
 };
 
 //39. Menu:leave
@@ -592,7 +592,7 @@ export const MenuLeave = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:leave");
+  //console.log("Menu:leave");
 };
 
 //40. Menu:leave: email added
@@ -603,7 +603,7 @@ export const LeaveEmailAdded = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:leave: email added");
+  //console.log("Menu:leave: email added");
 };
 
 //41. Menu:leave: link copied
@@ -614,7 +614,7 @@ export const LeaveLinkCopied = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:leave: link copied");
+  //console.log("Menu:leave: link copied");
 };
 
 //42. Menu:leave: link shared
@@ -625,7 +625,7 @@ export const LeaveLinkShared = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:leave: link shared");
+  //console.log("Menu:leave: link shared");
 };
 
 //43. Menu:leave: privacy message
@@ -636,7 +636,7 @@ export const LeavePrivacyMessage = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:leave: privacy message");
+  //console.log("Menu:leave: privacy message");
 };
 
 //44. Intelligence:transaction history
@@ -647,7 +647,7 @@ export const TransactionHistory = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:transaction history");
+  //console.log("Intelligence:transaction history");
 };
 
 //45. Intelligence:traded by counterparty - removed page
@@ -658,7 +658,7 @@ export const TradeByCounterParty = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:traded by counterparty");
+  //console.log("Intelligence:traded by counterparty");
 };
 
 // 45. Intelligence:asset value graph
@@ -669,7 +669,7 @@ export const AssetValueAnalytics = ({ session_id, email_address }) => {
      "email address": email_address,
    };
    sendAmplitudeData(event_name, eventProperties);
-   console.log("Intelligence:asset value");
+   //console.log("Intelligence:asset value");
 };
 
 
@@ -681,7 +681,7 @@ export const Insights = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:insights");
+  //console.log("Intelligence:insights");
 };
 
 //47. Intelligence:portfolio performance asset filter
@@ -697,7 +697,7 @@ export const PPAssetFilter = ({
     "asset filter(s) selected": asset_filter_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:portfolio performance asset filter");
+  //console.log("Intelligence:portfolio performance asset filter");
 };
 
 //48. Intelligence:portfolio performance time period filter
@@ -713,7 +713,7 @@ export const PPTimePeriodFilter = ({
     "asset filter(s) selected": time_period_filter_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:portfolio performance time period filter");
+  //console.log("Intelligence:portfolio performance time period filter");
 };
 
 //49. Intelligence:portfolio performance expanded view
@@ -729,7 +729,7 @@ export const PPTimePeriodFilterEView = ({
     "asset filter(s) selected": time_period_filter_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:portfolio performance expanded view");
+  //console.log("Intelligence:portfolio performance expanded view");
 };
 
 //50. Intelligence:insights view more
@@ -740,7 +740,7 @@ export const InsightsViewMore = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:insights view more");
+  //console.log("Intelligence:insights view more");
 };
 
 //51. Intelligence:time spent on intelligence page
@@ -752,7 +752,7 @@ export const TimeSpentIntelligence = ({ session_id, email_address,time_spent }) 
     "time spent Intelligence":time_spent
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:time spent on intelligence page");
+  //console.log("Intelligence:time spent on intelligence page");
 };
 
 //52. Intelligence:yield view more
@@ -763,7 +763,7 @@ export const YieldViewMore = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:yield view more");
+  //console.log("Intelligence:yield view more");
 };
 
 //53. Wallets:add wallet
@@ -787,7 +787,7 @@ export const AddWallets = ({
     "blockchains detected": blockchains_detected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:add wallet");
+  //console.log("Wallets:add wallet");
 };
 
 //54. Wallets:filter based on assets
@@ -803,7 +803,7 @@ export const FilterBasedAssest = ({
     "assets selected": assets_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:filter based on assets");
+  //console.log("Wallets:filter based on assets");
 };
 
 //55. Wallets:sort by amount
@@ -814,7 +814,7 @@ export const SortByAmount = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:sort by amount");
+  //console.log("Wallets:sort by amount");
 };
 
 //56. Wallets:sort by date
@@ -825,7 +825,7 @@ export const SortByDate = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:sort by date");
+  //console.log("Wallets:sort by date");
 };
 
 //57. Wallets:sort by name
@@ -836,7 +836,7 @@ export const SortByName = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:sort by name");
+  //console.log("Wallets:sort by name");
 };
 
 //58. Wallets:edit specific wallet
@@ -860,7 +860,7 @@ export const EditSpecificWallet = ({
     "blockchains detected": blockchains_detected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:edit specific wallet");
+  //console.log("Wallets:edit specific wallet");
 };
 
 
@@ -885,7 +885,7 @@ export const AddNameTag = ({
     "blockchains detected": blockchains_detected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:add name tag");
+  //console.log("Wallets:add name tag");
 };
 
 
@@ -898,7 +898,7 @@ export const FixUndetectedWallet = ({ session_id, email_address,undetected_addre
     "undetected address": undetected_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:fix undetected wallet");
+  //console.log("Wallets:fix undetected wallet");
 };
 
 //61. Wallets:add wallet type for unrecognized wallet
@@ -914,7 +914,7 @@ export const AddWalletType = ({ session_id, email_address, wallet_type_selected,
     "blockchains detected": blockchains_detected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:add wallet type for unrecognized wallet");
+  //console.log("Wallets:add wallet type for unrecognized wallet");
 };
 
 
@@ -931,7 +931,7 @@ export const AddChainType = ({ session_id, email_address, wallet_type_selected, 
     "blockchains detected": blockchains_detected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:add chain type for unrecognized wallet");
+  //console.log("Wallets:add chain type for unrecognized wallet");
 };
 
 //63. Wallets:delete wallet
@@ -947,7 +947,7 @@ export const DeleteWallet = ({ session_id, email_address, wallet_type_selected, 
     "blockchains detected": blockchains_detected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:delete wallet");
+  //console.log("Wallets:delete wallet");
 };
 
 
@@ -966,7 +966,7 @@ export const DoneFixingConnection = ({
     "blockchain detected": blockchainDetected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:Clicked done after fixing connection");
+  //console.log("Wallets:Clicked done after fixing connection");
 };
 
 //65. Wallets:hover for anonymity for wallet connection
@@ -977,7 +977,7 @@ export const AnonymityWalletConnection = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:hover for anonymity for wallet connection");
+  //console.log("Wallets:hover for anonymity for wallet connection");
 }
 
 
@@ -990,7 +990,7 @@ export const TimeSpentWallet = ({ session_id, email_address, time_spent }) => {
     "time spent wallet": time_spent
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:time spent on wallet page");
+  //console.log("Wallets:time spent on wallet page");
 };
 
 //67. Wallets:analyze asset values for specific wallet
@@ -1004,7 +1004,7 @@ export const AnalyzeAssetValue = ({ session_id, email_address, wallet_address, c
     "percent value": percent_value
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Wallets:analyze asset values for specific wallet");
+  //console.log("Wallets:analyze asset values for specific wallet");
 }
 
 //68. Costs:time spent on costs page
@@ -1016,7 +1016,7 @@ export const TimeSpentCosts = ({ session_id, email_address, time_spent}) => {
     "time spent cost": time_spent
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:time spent on cost page");
+  //console.log("Costs:time spent on cost page");
 }
 
 //69. Costs:blockchain fees asset filter
@@ -1028,7 +1028,7 @@ export const BlockchainFeesFilter = ({ session_id, email_address, asset_selected
     "asset selected":asset_selected
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:blockchain fees asset filter");
+  //console.log("Costs:blockchain fees asset filter");
 }
 
 //70. Costs:blockchain fees time period filter
@@ -1040,7 +1040,7 @@ export const FeesTimePeriodFilter = ({ session_id, email_address, time_period_se
     "time period selected": time_period_selected
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:blockchain fees time period filter");
+  //console.log("Costs:blockchain fees time period filter");
 }
 
 
@@ -1053,7 +1053,7 @@ export const FeesSpecificBar = ({ session_id, email_address, blockchain_selected
     "blockchain selected": blockchain_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:blockchain fees specific bar");
+  //console.log("Costs:blockchain fees specific bar");
 }
 
 //72. Costs:counterparty fees asset filter
@@ -1065,7 +1065,7 @@ export const CounterpartyFeesFilter = ({ session_id, email_address, asset_select
     "asset selected": asset_selected
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:counterparty fees asset filter");
+  //console.log("Costs:counterparty fees asset filter");
 }
 
 //73. Costs:counterparty fees time period filter
@@ -1077,7 +1077,7 @@ export const CounterpartyFeesTimeFilter = ({ session_id, email_address, time_per
     "time period selected": time_period_selected
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:counterparty fees time period filter");
+  //console.log("Costs:counterparty fees time period filter");
 }
 
 //74. Costs:counterparty fees specific bar
@@ -1089,7 +1089,7 @@ export const CounterpartyFeesSpecificBar = ({ session_id, email_address, counter
     "counterparty selected": counterparty_selected
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:counterparty fees specific bar");
+  //console.log("Costs:counterparty fees specific bar");
 }
 
 
@@ -1101,7 +1101,7 @@ export const CAverageCostBasis = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:average cost basis expanded view");
+  //console.log("Costs:average cost basis expanded view");
 }
 
 
@@ -1114,7 +1114,7 @@ export const CAverageCostBasisSpecific = ({ session_id, email_address,asset_sele
     "asset selected":asset_selected
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:average cost basis specific asset selected");
+  //console.log("Costs:average cost basis specific asset selected");
 }
 
 
@@ -1126,7 +1126,7 @@ export const CostSortByAsset = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:average cost basis: sort by asset");
+  //console.log("Costs:average cost basis: sort by asset");
 }
 
 //78. Costs:average cost basis: sort by average cost price
@@ -1137,7 +1137,7 @@ export const CostSortByCostPrice = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:average cost basis: sort by average cost price");
+  //console.log("Costs:average cost basis: sort by average cost price");
 }
 
 //79. Costs:average cost basis: sort by current price
@@ -1148,7 +1148,7 @@ export const CostSortByCurrentPrice = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:average cost basis: sort by current price");
+  //console.log("Costs:average cost basis: sort by current price");
 }
 
 //80. Costs:average cost basis: sort by amount
@@ -1159,7 +1159,7 @@ export const CostSortByAmount = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:average cost basis: sort by amount");
+  //console.log("Costs:average cost basis: sort by amount");
 }
 
 //81. Costs:average cost basis: sort by cost basis
@@ -1170,7 +1170,7 @@ export const SortByCostBasis = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:average cost basis: sort by cost basis");
+  //console.log("Costs:average cost basis: sort by cost basis");
 }
 
 //82. Costs:average cost basis: sort by current value
@@ -1181,7 +1181,7 @@ export const SortByCurrentValue = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:average cost basis: sort by current value");
+  //console.log("Costs:average cost basis: sort by current value");
 }
 
 //83. Costs:average cost basis: sort by % gain / loss
@@ -1192,7 +1192,7 @@ export const SortByGainLoss = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Costs:average cost basis: sort by % gain / loss");
+  //console.log("Costs:average cost basis: sort by % gain / loss");
 }
 
 
@@ -1205,7 +1205,7 @@ export const FirstNameAdded = ({ session_id, email_address,first_name}) => {
     "first name":first_name
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Profile:first name added");
+  //console.log("Profile:first name added");
 }
 
 //85. Profile:last name added
@@ -1217,7 +1217,7 @@ export const LastNameAdded = ({ session_id, email_address,last_name}) => {
     "last name":last_name
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Profile:last name added");
+  //console.log("Profile:last name added");
 }
 
 //86. Profile:email added
@@ -1229,7 +1229,7 @@ export const EmailAdded = ({ session_id, new_email_address,prev_email_address}) 
     "prev email address": prev_email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Profile:email added");
+  //console.log("Profile:email added");
 }
 
 //87. Profile:mobile number added
@@ -1240,7 +1240,7 @@ export const MobileNumberAdded = ({ session_id, phone_number}) => {
     "phone number": phone_number
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Profile:mobile number added");
+  //console.log("Profile:mobile number added");
 }
 
 //88. Profile:language changed
@@ -1251,7 +1251,7 @@ export const LanguageChanged = ({ session_id, language }) => {
     language: language,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Profile:language changed");
+  //console.log("Profile:language changed");
 };
 
 //89. Profile:fiat currency changed
@@ -1262,7 +1262,7 @@ export const CurrencyChanged = ({ session_id, currency }) => {
     currency: currency,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Profile:fiat currency changed");
+  //console.log("Profile:fiat currency changed");
 };
 
 //90. Profile:saved
@@ -1273,7 +1273,7 @@ export const ProfileSaved = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Profile:saved");
+  //console.log("Profile:saved");
 };
 
 //91. Landing Page Conversion:WalletAddressTextbox
@@ -1285,7 +1285,7 @@ export const WalletAddressTextbox = ({ session_id, address, chains_detected }) =
     "list of all chains detected":chains_detected
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:WalletAddressTextbox");
+  //console.log("Landing Page Conversion:WalletAddressTextbox");
 };
 
 
@@ -1297,7 +1297,7 @@ export const DeleteWalletAddress = ({ session_id, address}) => {
     "address": address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:deleted wallet address");
+  //console.log("Landing Page Conversion:deleted wallet address");
 };
 
 //93. Landing Page Conversion:add textbox
@@ -1307,7 +1307,7 @@ export const AddTextbox = ({ session_id}) => {
     "session id": session_id
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:add textbox");
+  //console.log("Landing Page Conversion:add textbox");
 };
 
 //94. Landing Page Conversion:Email not Found
@@ -1318,7 +1318,7 @@ export const EmailNotFound = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:Email Not found");
+  //console.log("Landing Page Conversion:Email Not found");
 };
 
 //95. Landing Page Conversion:Invalid Email
@@ -1329,7 +1329,7 @@ export const InvalidEmail = ({ email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Landing Page Conversion:Invalid Email");
+  //console.log("Landing Page Conversion:Invalid Email");
 };
 
 //96. Home:asset value chart internal events
@@ -1341,7 +1341,7 @@ export const AssetValueInternalEvent = ({ session_id, email_address, no_of_event
     "no of internal events": no_of_events
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:asset value chart internal events ");
+  //console.log("Home:asset value chart internal events ");
 };
 
 //97.Home:asset value chart hover 
@@ -1354,7 +1354,7 @@ export const AssetValueHover = ({ session_id, email_address, value, address }) =
     "Wallet address": address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:asset value chart hover");
+  //console.log("Home:asset value chart hover");
 };
 
 
@@ -1366,7 +1366,7 @@ export const TransactionHistoryDate = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home: transaction history date");
+  //console.log("Home: transaction history date");
 };
 
 //97.Home Page: transaction history from
@@ -1377,7 +1377,7 @@ export const TransactionHistoryFrom = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home: transaction history from");
+  //console.log("Home: transaction history from");
 };
 
 
@@ -1389,7 +1389,7 @@ export const TransactionHistoryTo = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home Page: transaction history to");
+  //console.log("Home Page: transaction history to");
 };
 
 
@@ -1401,7 +1401,7 @@ export const TransactionHistoryAsset = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home Page:transaction history asset");
+  //console.log("Home Page:transaction history asset");
 };
 
 //97.Home Page:transaction history USD value
@@ -1412,7 +1412,7 @@ export const TransactionHistoryUSD = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home Page:transaction history USD value");
+  //console.log("Home Page:transaction history USD value");
 };
 
 
@@ -1424,7 +1424,7 @@ export const TransactionHistoryMethod = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home Page:transaction history method");
+  //console.log("Home Page:transaction history method");
 };
 
 
@@ -1436,7 +1436,7 @@ export const TransactionHistoryHover = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home Page:transaction history hover");
+  //console.log("Home Page:transaction history hover");
 };
 
 
@@ -1449,7 +1449,7 @@ export const ProfitLossEV = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home Page:Profit and Loss expanded view");
+  //console.log("Home Page:Profit and Loss expanded view");
 };
 
 
@@ -1462,7 +1462,7 @@ export const ProfitLossHover = ({ session_id, email_address, hover_value }) => {
     "bar hovered": hover_value
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home Page:Profit and Loss hover");
+  //console.log("Home Page:Profit and Loss hover");
 };
 
 
@@ -1475,7 +1475,7 @@ export const HomeCounterPartyHover = ({ session_id, email_address, counterparty_
     "counterparty selected": counterparty_selected
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home:counterparty fees hover");
+  //console.log("Home:counterparty fees hover");
 }
 
 
@@ -1487,7 +1487,7 @@ export const AllInsights = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:insights: all insights");
+  //console.log("Intelligence:insights: all insights");
 }
 
 
@@ -1499,7 +1499,7 @@ export const InsightsReduceCost = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:insights: reduce cost");
+  //console.log("Intelligence:insights: reduce cost");
 }
 
 
@@ -1511,7 +1511,7 @@ export const InsightsIncreaseYield = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:insights: increase yield");
+  //console.log("Intelligence:insights: increase yield");
 }
 
 
@@ -1524,7 +1524,7 @@ export const InsightsReduceRisk = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:insights: reduce risk");
+  //console.log("Intelligence:insights: reduce risk");
 }
 
 //14. Intelligent:asset value chart crypto asset filter
@@ -1540,7 +1540,7 @@ export const IntlAssetValueFilter = ({
     "filter clicked": filter_clicked,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:asset value chart crypto asset filter");
+  //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
 
@@ -1554,7 +1554,7 @@ export const IntlAssetValueHover = ({ session_id, email_address, value, address 
     "Wallet address": address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:asset value chart hover ");
+  //console.log("Intelligence:asset value chart hover ");
 };
 
 //Intelligence:asset value chart internal events
@@ -1566,7 +1566,7 @@ export const IntlAssetValueInternalEvent = ({ session_id, email_address, no_of_e
     "no of internal events": no_of_events
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Intelligence:asset value chart internal events");
+  //console.log("Intelligence:asset value chart internal events");
 };
 
 
@@ -1578,7 +1578,7 @@ export const TitleAssetValueHover = ({ session_id, email_address }) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Home Page:asset value hover");
+  //console.log("Home Page:asset value hover");
 };
 
 // Menu: share
@@ -1589,7 +1589,7 @@ export const MenuShare = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:share");
+  //console.log("Menu:share");
 };
 
 // Menu:share: link copied
@@ -1601,7 +1601,7 @@ export const ShareLinkCopy = ({ session_id, email_address, link }) => {
     "Copied Link": link
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Menu:share: link copied");
+  //console.log("Menu:share: link copied");
 };
 
 
@@ -1613,7 +1613,7 @@ export const HomePage = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Pageview Home");
+  //console.log("Pageview Home");
 };
 
 // Page View: IntelligencePage
@@ -1624,7 +1624,7 @@ export const IntelligencePage = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Pageview Intelligence");
+  //console.log("Pageview Intelligence");
 };
 
 // Page View: Cost page
@@ -1635,7 +1635,7 @@ export const CostsPage = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Pageview Cost");
+  //console.log("Pageview Cost");
 };
 
 // Page View: wallets page
@@ -1646,7 +1646,7 @@ export const WalletsPage = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Pageview Wallets");
+  //console.log("Pageview Wallets");
 };
 
 // Page View: Profile page
@@ -1657,7 +1657,7 @@ export const ProfilePage = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Pageview Profile");
+  //console.log("Pageview Profile");
 };
 
 // Page View: Transaction History
@@ -1668,7 +1668,7 @@ export const TransactionHistoryPageView = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Pageview Transaction History");
+  //console.log("Pageview Transaction History");
 };
 
 // Page View: Asset Value
@@ -1679,7 +1679,7 @@ export const AssetValuePage = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Pageview Asset Value");
+  //console.log("Pageview Asset Value");
 };
 
 // Page View: Insights
@@ -1690,7 +1690,7 @@ export const InsightPage = ({ session_id, email_address}) => {
     "email address": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Pageview Insights");
+  //console.log("Pageview Insights");
 };
 
 // Page View: Onboarding
@@ -1700,5 +1700,5 @@ export const OnboardingPage = () => {
   
   };
   sendAmplitudeData(event_name, eventProperties);
-  console.log("Pageview Onboarding");
+  //console.log("Pageview Onboarding");
 };

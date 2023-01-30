@@ -90,13 +90,25 @@ export const updateUserWalletApi = (data,ctx) =>{
       }
       // console.log('newAddWallet',newAddWallet);
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet))
+      if (ctx.props.apiResponse) {
+        // ctx.setState({
+        //    recievedResponse: true
+        // })
+        ctx.props.apiResponse(true);
+        
+      }
+     
       if (ctx.props.handleUpdateWallet) {
         ctx.props.handleUpdateWallet()
+        
       }
+      // console.log("in if", JSON.parse(localStorage.getItem("addWallet")));
       ctx.props.history.push({
         pathname: ctx.props.pathName,
         state: {addWallet: JSON.parse(localStorage.getItem("addWallet"))}
       });
+
+     
     } else{
       toast.error(res.data.message || "Something went wrong");
     }
@@ -146,7 +158,7 @@ export const getDetectedChainsApi = (ctx) =>{
         chains: res.data.data.chains[chain].chains
       }))
       // console.log('xyz',xyz);
-      addWallet.map((wallet)=>{
+      addWallet?.map((wallet)=>{
         let userWallet = null;
         let coinFound = false;
         xyz.map((item)=>{

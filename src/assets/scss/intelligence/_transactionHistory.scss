@@ -4,6 +4,20 @@
     .history-table {
         margin-top: 5rem;
 
+        .ShowDust{
+                text-align: left;
+    margin-top: -42px;
+    margin-bottom: 3rem;
+
+            p{
+                display:inline;
+
+                &:hover{
+                    color: $primary;
+                }
+            }
+        }
+
         .fillter_tabs_section {
             // display: flex;
             // align-items: center;

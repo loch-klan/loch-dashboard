@@ -18,7 +18,7 @@ export const getAllCoins = (handleShareLinkUser = null) => {
                 dispatch({
                     type: COINS_LIST,
                     payload: coinsList
-                });
+                }); 
               handleShareLinkUser && handleShareLinkUser()
             })
             .catch((err) => {
@@ -212,6 +212,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
       localStorage.setItem("lochDummyUser", res.data.data.user.link)
       localStorage.setItem("lochToken", res.data.data.token)
       const allChains = ctx.props.OnboardingState.coinsList
+      
       let newAddWallet = [];
       const apiResponse = res.data.data;
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
@@ -237,6 +238,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
               obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
               newAddWallet.push(obj);
       }
+      console.log("wallet", newAddWallet);
       ctx.props.history.replace({
         pathname: ctx.state.id ? ctx.state.link : '/home',
         state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}

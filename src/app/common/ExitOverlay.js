@@ -53,7 +53,7 @@ class ExitOverlay extends BaseReactComponent {
     this.state = {
       dummyUser,
       show: props.show,
-      link: `${BASE_URL_S3}portfolio/${dummyUser}`,
+      link: `${BASE_URL_S3}home/${dummyUser}`,
       isactive: false,
       email: "",
       dropdowntitle: "View and edit",
@@ -188,7 +188,7 @@ class ExitOverlay extends BaseReactComponent {
   }
 
   submit = () =>{
-    console.log('Hey');
+    // console.log('Hey');
   }
 
   handleOnchange = (e) => {
@@ -386,7 +386,7 @@ class ExitOverlay extends BaseReactComponent {
                     </Form>
                   </div>
                   <div className="export-item-wrapper">
-                    {this.state.exportItem.map((item) => {
+                    {this.state.exportItem?.map((item) => {
                       return (
                         <span
                           className={

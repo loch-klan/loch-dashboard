@@ -260,7 +260,7 @@ class Sandbox extends BaseReactComponent {
                       searchable: true,
                       onChangeCallback: (onBlur) => {
                         onBlur(this.state.searchableSingleRegion);
-                        console.log('Hello world!');
+                        // console.log('Hello world!');
                       }
                     }
                   }}
@@ -292,7 +292,7 @@ class Sandbox extends BaseReactComponent {
                       // menuIsOpen: true,
                       onChangeCallback: (onBlur) => {
                         onBlur(this.state.searchableMultipleRegion);
-                        console.log('Hello world!');
+                        // console.log('Hello world!');
                       }
                     }
                   }}

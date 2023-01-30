@@ -3,6 +3,8 @@ const deleteToken = () => {
   localStorage.removeItem("addWallet")
   localStorage.removeItem("lochUser")
   localStorage.removeItem("lochDummyUser")
+  localStorage.removeItem("currencyRates");
+  localStorage.removeItem("currency")
 };
 
 const getToken = () => {

@@ -110,6 +110,15 @@
                               box-shadow: none;
                             }
                         }
+                        .none{
+                           background-color: transparent;
+ @include font($grey-636, "Inter-Medium", 1.5rem, 500, 19.2px);
+                           &:hover{
+                             cursor: pointer;
+                              box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+                              border-radius: 1.2rem;
+                            }
+                        }
                     }
                 }
             }

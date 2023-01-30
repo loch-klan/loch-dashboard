@@ -35,7 +35,7 @@ class FeedbackForm extends BaseReactComponent {
   }
   handleKeyDown = (e, type) =>{
     if (e.key === 'Enter') {
-      console.log('do validate');
+      // console.log('do validate');
       this.setState({
         ...(type === FeedbackType.POSITIVE ? {disabledFav: true} : {disabled: true}),
       })

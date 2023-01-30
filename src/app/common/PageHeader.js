@@ -1,27 +1,39 @@
-import React from 'react'
-import { Button, Breadcrumb, Image } from 'react-bootstrap'
-import InActiveHomeSmallIcon from '../../assets/images/icons/InactiveHomeSmallIcon.svg'
-import {Link} from 'react-router-dom'
-import { CurrencyType, numToCurrency } from '../../utils/ReusableFunctions';
+import React from "react";
+import { Button, Breadcrumb, Image } from "react-bootstrap";
+import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIcon.svg";
+import { Link } from "react-router-dom";
+import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
 export default function PageHeader(props) {
-
   const nav_list = window.location.pathname.split("/");
 
   const breads = nav_list.map((e, key) => {
     // console.log(e , props.currentPage)
-    return e &&
-      <>
-        <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/${e}`}}className="inter-display-medium f-s-13 lh-16" active={e === props.currentPage} key={key} >
-          {e.replace(/-/g, " ")}
-        </Breadcrumb.Item>
-
-      </>
-  })
-  const breadCrumb =
-    <Breadcrumb >
-      <Breadcrumb.Item linkAs= {Link} linkProps= {{to: `/home`}}><Image src={InActiveHomeSmallIcon} /></Breadcrumb.Item>
+    return (
+      e && (
+        <>
+          <Breadcrumb.Item
+            linkAs={Link}
+            linkProps={{ to: `/${e}` }}
+            className="inter-display-medium f-s-13 lh-16"
+            active={e === props.currentPage}
+            key={key}
+          >
+            {e.replace(/-/g, " ")}
+          </Breadcrumb.Item>
+        </>
+      )
+    );
+  });
+  const breadCrumb = (
+    <Breadcrumb>
+      <Breadcrumb.Item linkAs={Link} linkProps={{ to: `/home` }}>
+        <Image src={InActiveHomeSmallIcon} />
+      </Breadcrumb.Item>
       {breads}
-    </Breadcrumb >
+    </Breadcrumb>
+  );
 
   return (
     <div

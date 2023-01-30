@@ -6,7 +6,7 @@ import TransactionTable from "./TransactionTable";
 import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD, DEFAULT_PRICE } from "../../utils/Constant";
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD, DEFAULT_PRICE, SEARCH_BY_NOT_DUST } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
@@ -21,6 +21,12 @@ import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { toast } from "react-toastify";
+import FixAddModal from "../common/FixAddModal";
+
+// add wallet
+import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { getAllCoins } from "../onboarding/Api.js";
+
 
 
 class TransactionHistoryPage extends BaseReactComponent {
@@ -30,7 +36,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     const params = new URLSearchParams(search);
     const page = params.get("p");
     const walletList = JSON.parse(localStorage.getItem("addWallet"));
-    const address = walletList.map((wallet) => {
+    const address = walletList?.map((wallet) => {
       return wallet.address;
     });
     const cond = [
@@ -94,6 +100,14 @@ class TransactionHistoryPage extends BaseReactComponent {
           up: false,
         },
       ],
+      showDust:false,
+      // add new wallet
+      // userWalletList: localStorage.getItem("addWallet")
+      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      //   : [],
+      addModal: false,
+      isUpdate: 0,
+      apiResponse: false,
     };
     this.delayTimer = 0;
   }
@@ -107,6 +121,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
     this.callApi(this.state.currentPage || START_INDEX);
     getFilters(this);
+    this.props.getAllCoins();
     // this.props.getCoinRate();
   }
 
@@ -134,7 +149,54 @@ class TransactionHistoryPage extends BaseReactComponent {
     ) {
       this.callApi(page);
     }
+
+    // add wallet
+    if (prevState.apiResponse != this.state.apiResponse) {
+      // console.log("update");
+      const address = this.state.walletList?.map((wallet) => {
+        return wallet.address;
+      });
+      const cond = [
+        {
+          key: SEARCH_BY_WALLET_ADDRESS_IN,
+          value: address,
+        },
+      ];
+      this.props.getAllCoins();
+      this.setState({
+        condition: cond ? cond : [],
+        apiResponse: false,
+      });
+
+      this.callApi(this.state.currentPage || START_INDEX);
+      getFilters(this);
+    }
+    
   }
+
+  // For add new address
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+    });
+  };
+
+  handleChangeList = (value) => {
+    this.setState({
+      // for add wallet
+      walletList: value,
+      isUpdate: this.state.isUpdate === 0 ? 1 : 0,
+      // for page
+      tableLoading: true,
+    });
+  };
+
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+    // console.log("api respinse", value);
+  };
 
   onValidSubmit = () => {
     // console.log("Sbmit")
@@ -162,6 +224,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     ) {
       arr.splice(index, 1);
     } else {
+      
       let obj = {};
       obj = {
         key: key,
@@ -193,7 +256,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     // console.log(val)
     let sort = [...this.state.tableSortOpt];
     let obj = [];
-    sort.map((el) => {
+    sort?.map((el) => {
       if (el.title === val) {
         if (val === "time") {
           obj = [
@@ -284,6 +347,18 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
     return string;
   };
+
+  showDust = () => {
+    this.setState(
+      {
+        showDust: !this.state.showDust,
+      },
+      () => {
+        this.addCondition(SEARCH_BY_NOT_DUST, this.state.showDust);
+      }
+    );
+    
+  }
   render() {
     // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
@@ -291,11 +366,11 @@ class TransactionHistoryPage extends BaseReactComponent {
     const { walletList, currency } = this.state;
     let tableData =
       table &&
-      table.map((row) => {
+      table?.map((row) => {
         let walletFromData = null;
         let walletToData = null;
         walletList &&
-          walletList.map((wallet) => {
+          walletList?.map((wallet) => {
             if (
               wallet.address?.toLowerCase() ===
                 row.from_wallet.address?.toLowerCase() ||
@@ -640,7 +715,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => this.copyContent(rowData.to.address)}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -665,7 +740,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       />
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => this.copyContent(rowData.to.address)}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -686,7 +761,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       {this.TruncateText(rowData.to.wallet_metaData.text)}
                       <Image
                         src={CopyClipboardIcon}
-                        onClick={() => this.copyContent(rowData.from.address)}
+                        onClick={() => this.copyContent(rowData.to.address)}
                         className="m-l-10 cp copy-icon"
                         style={{ width: "1rem" }}
                       />
@@ -708,7 +783,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     {this.TruncateText(rowData.to.metaData?.displayAddress)}
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => this.copyContent(rowData.to.address)}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -731,7 +806,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     />
                     <Image
                       src={CopyClipboardIcon}
-                      onClick={() => this.copyContent(rowData.from.address)}
+                      onClick={() => this.copyContent(rowData.to.address)}
                       className="m-l-10 cp copy-icon"
                       style={{ width: "1rem" }}
                     />
@@ -1003,9 +1078,18 @@ class TransactionHistoryPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
             return (
-              <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
-                {rowData.method}
-              </div>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.method}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
+                  
+                  {rowData.method}
+                </div>
+              </CustomOverlay>
             );
           }
         },
@@ -1014,12 +1098,31 @@ class TransactionHistoryPage extends BaseReactComponent {
     return (
       <div className="history-table-section">
         <div className="history-table page">
+          {this.state.addModal && (
+            <FixAddModal
+              show={this.state.addModal}
+              onHide={this.handleAddModal}
+              modalIcon={AddWalletModalIcon}
+              title="Add wallet address"
+              subtitle="Add more wallet address here"
+              modalType="addwallet"
+              btnStatus={false}
+              btnText="Go"
+              history={this.props.history}
+              changeWalletList={this.handleChangeList}
+              apiResponse={(e) => this.CheckApiResponse(e)}
+            />
+          )}
           <PageHeader
             title={"Transaction history"}
-            subTitle={"Valuable insights based on your assets"}
+            subTitle={
+              "Sort, filter, and dissect all your transactions from one place."
+            }
             showpath={true}
             currentPage={"transaction-history"}
             history={this.props.history}
+            btnText={"Add wallet"}
+            handleBtn={this.handleAddModal}
           />
 
           <div className="fillter_tabs_section">
@@ -1080,19 +1183,31 @@ class TransactionHistoryPage extends BaseReactComponent {
             {this.state.tableLoading ? (
               <Loading />
             ) : (
-              <TransactionTable
-                tableData={tableData}
-                columnList={columnList}
-                message={"No Transactions Found"}
-                totalPage={totalPage}
-                history={this.props.history}
-                location={this.props.location}
-                page={currentPage}
-                tableLoading={this.state.tableLoading}
-              />
+              <>
+                <TransactionTable
+                  tableData={tableData}
+                  columnList={columnList}
+                  message={"No Transactions Found"}
+                  totalPage={totalPage}
+                  history={this.props.history}
+                  location={this.props.location}
+                  page={currentPage}
+                  tableLoading={this.state.tableLoading}
+                />
+                <div className="ShowDust">
+                  <p
+                    onClick={this.showDust}
+                    className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
+                  >
+                    {this.state.showDust
+                      ? "Reveal dust (less than $1)"
+                      : "Hide dust (less than $1)"}
+                  </p>
+                </div>
+              </>
             )}
           </div>
-          <FeedbackForm page={"Transaction History Page"} />
+          {/* <FeedbackForm page={"Transaction History Page"} /> */}
         </div>
       </div>
     );
@@ -1106,6 +1221,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   searchTransactionApi,
   // getCoinRate,
+  getAllCoins,
   getFilters,
 };
 
