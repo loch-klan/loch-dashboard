@@ -269,7 +269,7 @@ class Portfolio extends BaseReactComponent {
       });
     }
     
-    console.log("api respinse", value);
+    // console.log("api respinse", value);
   };
   componentDidUpdate(prevProps, prevState) {
     //Wallet update response

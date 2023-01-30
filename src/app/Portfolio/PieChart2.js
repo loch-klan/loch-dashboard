@@ -290,7 +290,7 @@ class PieChart2 extends BaseReactComponent {
     }
     
     if (this.props.chainPortfolio !== prevProps.chainPortfolio) {
-    //  console.log("inside");
+    //  console.log("inside", this.props.chainPortfolio, prevProps.chainPortfolio);
       let chainList = [];
       // this.props.allCoinList && this.props.allCoinList.map((item) => {
       //   let isfound = false;
@@ -504,6 +504,7 @@ class PieChart2 extends BaseReactComponent {
     // console.log("state", this)
 
     this.props.portfolioState.walletTotal = 0;
+    this.props.portfolioState.chainPortfolio = {};
 
     // console.log("Refresh clicked");
     // localStorage.setItem("refreshApiTime", currentTime);
