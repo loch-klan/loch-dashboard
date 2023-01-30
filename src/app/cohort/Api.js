@@ -1,18 +1,31 @@
-// import { receivedPosts } from "./HomeAction";
-// import { preLoginInstance } from "../../utils";
+import { toast } from "react-toastify";
+import { postLoginInstance } from "../../utils";
 
-// const fetchPosts = (cityName) => {
-//     return function (dispatch, getState) {
-//         // dispatch(requestPosts());
-//         console.log('====================================');
-//         console.log('clicked', getState());
-//         console.log('====================================');
-//         return preLoginInstance.get(`weather?q=${cityName},uk&APPID=${process.env.REACT_APP_WEATHER_API}/`)
-//             .then(res => {
-//                 console.log('res', res);
-//                 dispatch(receivedPosts(res.data));
-//             });
-//     };
-// }
+export const createCohort = (data,ctx) => {
+//   let data = new URLSearchParams();
+  
+  postLoginInstance
+    .post("wallet/user-cohort/add-update-user-cohort", data)
+    .then((res) => {
+        if (!res.data.error) {
+        //   console.log("res cohort", res.data.data)
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
 
-// export default fetchPosts;
+
+export const searchCohort = (data,ctx) => {
+    // let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("wallet/user-cohort/search-user-cohort", data)
+    .then((res) => {
+      if (!res.data.error) {
+          console.log("search cohort", res.data.data)
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};

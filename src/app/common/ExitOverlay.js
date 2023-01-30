@@ -10,6 +10,11 @@ import FormValidator from './../../utils/form/FormValidator';
 import CloseIcon from '../../assets/images/icons/dummyX.svg'
 import CustomTextControl from './../../utils/form/CustomTextControl';
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import {
+  getAllCoins,
+  detectCoin,
+  getAllParentChains,
+} from "../onboarding//Api";
 // import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
 // import Dropdown from '../common/DropDown.js';
 import CopyLink from '../../assets/images/icons/CopyLink.svg';
@@ -44,12 +49,14 @@ import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
 import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
+import { createCohort } from '../cohort/Api';
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
     const dummyUser = localStorage.getItem("lochDummyUser");
     let startDate = new Date();
     startDate.setFullYear(startDate.getFullYear() - 1);
+
     this.state = {
       dummyUser,
       show: props.show,
@@ -62,31 +69,31 @@ class ExitOverlay extends BaseReactComponent {
       showRedirection: false,
       fromDate: startDate,
       toDate: new Date(),
-      selectedExportItem:{
+      selectedExportItem: {
         name: "Transaction History",
         value: 10,
         apiurl: "wallet/transaction/export-transactions",
-        fileName:"transaction-history-export"
+        fileName: "transaction-history-export",
       },
-      loadingExportFile:false,
-      exportItem:[
+      loadingExportFile: false,
+      exportItem: [
         {
           name: "Transaction History",
           value: 10,
           apiurl: "wallet/transaction/export-transactions",
-          fileName:"transaction-history-export"
+          fileName: "transaction-history-export",
         },
         {
           name: "Blockchain Gas Costs",
           value: 20,
           apiurl: "wallet/transaction/export-gas-fee-overtime",
-          fileName:"blockchain-gas-costs-export"
+          fileName: "blockchain-gas-costs-export",
         },
         {
           name: "Counterparty Costs",
           value: 30,
           apiurl: "wallet/transaction/export-counter-party-volume-traded",
-          fileName:"counterparty-costs-export"
+          fileName: "counterparty-costs-export",
         },
         // {
         //   name: "Average Cost Basis",
@@ -96,13 +103,203 @@ class ExitOverlay extends BaseReactComponent {
         //   name: "Portfolio Performance",
         //   value: 50,
         // },
-      ]
+      ],
+      addWalletList: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+        },
+      ],
+      isCohort: true,
+      changeList: props.changeWalletList,
     };
   }
 
+  componentDidMount() {
+    this.props.getAllCoins();
+    this.props.getAllParentChains();
+  }
+
+  addAddress = () => {
+    this.state.addWalletList.push({
+      id: `wallet${this.state.addWalletList.length + 1}`,
+      address: "",
+      coins: [],
+      displayAddress: "",
+      wallet_metadata: {},
+    });
+    this.setState({
+      addWalletList: this.state.addWalletList,
+      wallet_address: "",
+    });
+  };
+
+  deleteAddress = (index) => {
+    // const ad/dress = this.state.addWalletList.at(index).address;
+    // if (address !== "") {
+    //   this.state.deletedAddress.push(address);
+    //   this.setState({
+    //     deletedAddress: this.state.deletedAddress,
+    //   });
+    // }
+    this.state.addWalletList.splice(index, 1);
+    this.state.addWalletList?.map((w, i) => {
+      w.id = `wallet${i + 1}`;
+    });
+
+    this.setState({
+      addWalletList: this.state.addWalletList,
+    });
+    // console.log("Delete", this.state.addWalletList);
+    // console.log("Prev 1", this.state.deletedAddress);
+  };
+
+  handleTabPress = (event) => {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      // console.log("yab press");
+      // your function code here
+      this.addAddress();
+    }
+  };
+  handleOnchange = (e) => {
+    let { name, value } = e.target;
+    // console.log("e", this.state.addWalletList);
+    let prevWallets = [...this.state.addWalletList];
+    let currentIndex = prevWallets.findIndex((elem) => elem.id === name);
+    if (currentIndex > -1) {
+      let prevValue = prevWallets[currentIndex].address;
+      prevWallets[currentIndex].address = value;
+      prevWallets[currentIndex].displayAddress = value;
+      if (value === "" || prevValue !== value) {
+        prevWallets[currentIndex].coins = [];
+      }
+    }
+    this.setState({
+      addWalletList: prevWallets,
+    });
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      this.getCoinBasedOnWalletAddress(name, value);
+    }, 500);
+  };
+
+  getCoinBasedOnWalletAddress = (name, value) => {
+    
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+       
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          true
+        );
+      }
+    }
+  };
+  handleSetCoin = (data) => {
+  
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+    let i = this.state.addWalletList.findIndex((obj) => obj.id === data.id);
+    let newAddress = [...this.state.addWalletList];
+
+    data.address === newAddress[i].address &&
+      newAddress[i].coins.push(...newCoinList);
+    //new code added
+    //   if (data.id === newAddress[i].id) {
+    //     newAddress[i].address = data.address;
+    //   }
+
+    newAddress[i].coinFound =
+      newAddress[i].coins &&
+      newAddress[i].coins.some((e) => e.chain_detected === true);
+    // console.log(
+    //   "newAddress",
+    //   newAddress,
+    //   data.id,
+    //   newAddress[i].id,
+    //   data.address === newAddress[i].address,
+    //   data.address,
+    //   newAddress[i].address
+    // );
+    this.setState({
+      addWalletList: newAddress,
+    });
+  };
+
+  handleCohortSave = () => {
+    // console.log("save", this.state.cohort_name, this.state.addWalletList)
+      if (this.state.addWalletList) {
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout(() => {
+          let arr = [];
+          let displayAddress = [];
+          let walletList = [];
+          for (let i = 0; i < this.state.addWalletList.length; i++) {
+            let curr = this.state.addWalletList[i];
+            if (!arr.includes(curr.address.trim()) && curr.address) {
+              walletList.push(curr);
+              arr.push(curr.address.trim());
+            }
+          }
+          let addWallet = walletList;
+          // console.log("arr", arr, JSON.stringify(arr));
+          addWallet?.map((w, i) => {
+            w.id = `wallet${i + 1}`;
+          });
+          // localStorage.setItem("CohortWallet", JSON.stringify(addWallet));
+
+          // this.state.onHide();
+          const data = new URLSearchParams();
+           data.append("name", this.state.cohort_name);
+          data.append("wallet_addresses", JSON.stringify(arr));
+
+          createCohort(data, this);
+          this.state.onHide();
+  
+          this.state.changeList && this.state.changeList(walletList);
+         
+        }, 100);
+      }
+  };
+
   copyLink = () => {
     navigator.clipboard.writeText(this.state.link);
-     toast.success("Share link has been copied");
+    toast.success("Share link has been copied");
     LeaveLinkCopied({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -157,9 +354,9 @@ class ExitOverlay extends BaseReactComponent {
     this.setState({ toDate: "" });
   };
 
-  handleExportNow = ()=>{
+  handleExportNow = () => {
     // console.log('Export');
-    this.setState({loadingExportFile : true})
+    this.setState({ loadingExportFile: true });
     const data = new URLSearchParams();
     data.append("currency_code", CurrencyType(true));
     data.append("start_datetime", moment(this.state.fromDate).format("X"));
@@ -168,8 +365,9 @@ class ExitOverlay extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       date_range_selected: [
-        moment(this.state.fromDate).format("DD MMMM YY") + " to " +
-        moment(this.state.toDate).format("DD MMMM YY"),
+        moment(this.state.fromDate).format("DD MMMM YY") +
+          " to " +
+          moment(this.state.toDate).format("DD MMMM YY"),
       ],
       data_exported: this.state.selectedExportItem.fileName,
     });
@@ -179,21 +377,16 @@ class ExitOverlay extends BaseReactComponent {
     //   moment(this.state.toDate).format("DD MMMM YY")
     // );
     exportDataApi(data, this);
+  };
 
-  }
+  handleSelectedExportItem = (item, e) => {
+    e.currentTarget.classList.add("active");
+    this.setState({ selectedExportItem: item });
+  };
 
-  handleSelectedExportItem = (item,e) => {
-    e.currentTarget.classList.add('active')
-    this.setState({selectedExportItem:item})
-  }
-
-  submit = () =>{
+  submit = () => {
     // console.log('Hey');
-  }
-
-  handleOnchange = (e) => {
-    
-  }
+  };
 
   render() {
     return (
@@ -424,7 +617,7 @@ class ExitOverlay extends BaseReactComponent {
               ) : this.props.modalType === "cohort" ? (
                 <div className="cohort-body">
                   <div className="cohort-item-wrapper">
-                    <Form onValidSubmit={this.handleSave}>
+                    <Form onValidSubmit={this.handleCohortSave}>
                       <FormElement
                         valueLink={this.linkState(this, "cohort_name")}
                         label="Cohort title"
@@ -442,85 +635,134 @@ class ExitOverlay extends BaseReactComponent {
                           },
                         }}
                       />
-                      <div className="" style={{ position: "relative" }}>
-                        <FormElement
-                          valueLink={this.linkState(this, "wallet_address")}
-                          label="Wallets"
-                          required
-                          validations={[
-                            {
-                              validate: FormValidator.isRequired,
-                              message: "",
-                            },
-                          ]}
-                          control={{
-                            type: CustomTextControl,
-                            settings: {
-                              placeholder: "Paste your address here",
-                            },
-                          }}
-                        />
 
-                        <span className="paste-text">
-                          <Image
-                            src={CopyLink}
-                            // onClick={() => this.setState({ emailError: false })}
-                            style={{ cursor: "pointer" }}
-                          />
-                          <p className="inter-display-medium f-s-16 lh-19">
-                            Paste
-                          </p>
-                        </span>
-                      </div>
+                      <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
+                        Wallets
+                      </h4>
+
                       {/* Multiple address box */}
-                      <div className="add-modal-inputs">
-                        {[...Array(3)].map((e, index) => {
+
+                      <div
+                        className="add-modal-inputs"
+                        style={{
+                          paddingLeft: `${
+                            this.state.addWalletList?.length === 1
+                              ? "0rem"
+                              : "6rem"
+                          }`,
+                          paddingRight: `${
+                            this.state.addWalletList?.length < 5
+                              ? "0rem"
+                              : "2rem"
+                          }`,
+                        }}
+                      >
+                        {this.state.addWalletList?.map((elem, index) => {
                           return (
                             <div
-                              className="m-b-12 add-wallet-input-section"
+                              className="add-wallet-input-section"
                               key={index}
                               id={`add-wallet-${index}`}
+                              style={{
+                                marginBottom: `${
+                                  this.state.addWalletList?.length - 1 === index
+                                    ? "0rem"
+                                    : "1.2rem"
+                                }`,
+                              }}
                             >
-                              <div
-                                className="delete-icon"
-                                // onClick={() => this.deleteAddress(index)}
-                              >
-                                <Image src={DeleteIcon} />
-                              </div>
+                              {this.state.addWalletList.length > 1 ? (
+                                <div
+                                  className="delete-icon"
+                                  onClick={() => this.deleteAddress(index)}
+                                >
+                                  <Image src={DeleteIcon} />
+                                </div>
+                              ) : (
+                                ""
+                              )}
+
+                              {(elem.address == "" ||
+                                elem.displayAddress == "") &&
+                                index == 0 && (
+                                  <span className="paste-text">
+                                    <Image
+                                      src={CopyLink}
+                                      // onClick={() => this.setState({ emailError: false })}
+                                      style={{ cursor: "pointer" }}
+                                    />
+                                    <p className="inter-display-medium f-s-16 lh-19">
+                                      Paste
+                                    </p>
+                                  </span>
+                                )}
 
                               <input
                                 autoFocus
                                 name={`wallet${index + 1}`}
                                 value={
-                                  index === 0 ? this.state.wallet_address : ""
+                                  elem.displayAddress || elem.address || ""
                                 }
                                 placeholder="Paste any wallet address or ENS here"
                                 // className='inter-display-regular f-s-16 lh-20'
                                 className={`inter-display-regular f-s-16 lh-20 ${
-                                  this.state.wallet_address ? "is-valid" : null
+                                  elem.address ? "is-valid" : null
                                 }`}
                                 onChange={(e) => this.handleOnchange(e)}
-                                // id={elem.id}
+                                id={elem?.id}
+                                onKeyDown={this.handleTabPress}
                                 // style={getPadding(
                                 //   `add-wallet-${index}`,
                                 //   elem,
                                 //   this.props.OnboardingState
                                 // )}
                               />
-                              {/* <CustomChip
-                          coins={elem.coins.filter((c) => c.chain_detected)}
-                          // key={index}
-                          isLoaded={true}
-                        ></CustomChip> */}
+                              {elem.address ? (
+                                elem.coinFound && elem.coins.length > 0 ? (
+                                  // COIN FOUND STATE
+                                  <CustomChip
+                                    coins={elem.coins.filter(
+                                      (c) => c.chain_detected
+                                    )}
+                                    key={index}
+                                    isLoaded={true}
+                                  ></CustomChip>
+                                ) : elem.coins.length ===
+                                  this.props.OnboardingState.coinsList
+                                    .length ? (
+                                  // elem.coins.length === 1
+                                  // UNRECOGNIZED WALLET
+                                  <CustomChip
+                                    coins={null}
+                                    key={index}
+                                    isLoaded={true}
+                                  ></CustomChip>
+                                ) : (
+                                  // LOADING STATE
+                                  <CustomChip
+                                    coins={null}
+                                    key={index}
+                                    isLoaded={false}
+                                  ></CustomChip>
+                                )
+                              ) : (
+                                ""
+                              )}
                             </div>
                           );
                         })}
                       </div>
-                      <div className="m-b-32 add-wallet-btn">
-                        <Button className="grey-btn" onClick={this.addAddress}>
-                          <Image src={PlusIcon} /> Add another
-                        </Button>
-                      </div>
+
+                      {this.state.addWalletList[0]?.address !== "" && (
+                        <div className="m-b-32 add-wallet-btn">
+                          <Button
+                            className="grey-btn"
+                            onClick={this.addAddress}
+                          >
+                            <Image src={PlusIcon} /> Add another
+                          </Button>
+                        </div>
+                      )}
 
                       <div className="save-btn-section">
                         <Button
@@ -532,13 +774,17 @@ class ExitOverlay extends BaseReactComponent {
                           Upload CSV / Text file
                         </Button>
                         <div>
-                         { this.props.isEdit && <Button
-                            className={`secondary-btn m-r-12`}
-                            type="button"
-                            style={this.props.isEdit ? { border: "none" } : {}}
-                          >
-                            Delete
-                          </Button>}
+                          {this.props.isEdit && (
+                            <Button
+                              className={`secondary-btn m-r-12`}
+                              type="button"
+                              style={
+                                this.props.isEdit ? { border: "none" } : {}
+                              }
+                            >
+                              Delete
+                            </Button>
+                          )}
                           <Button
                             className={`primary-btn ${
                               this.state.email ? "active" : ""
@@ -673,11 +919,18 @@ class ExitOverlay extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
+  portfolioState: state.PortfolioState,
 });
 const mapDispatchToProps = {
-  fixWalletApi
-}
+  fixWalletApi,
+  getAllCoins,
+  detectCoin,
+  getAllParentChains,
+};
+
+
 ExitOverlay.propTypes = {
 };
 

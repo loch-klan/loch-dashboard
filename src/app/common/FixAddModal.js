@@ -86,7 +86,7 @@ class FixAddModal extends BaseReactComponent {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
       for (let i = 0; i < parentCoinList.length; i++) {
-        this.props.detectCoin(
+        this.props.detectCoin( 
           {
             id: name,
             coinCode: parentCoinList[i].code,

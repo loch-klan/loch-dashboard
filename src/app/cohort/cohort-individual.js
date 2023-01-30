@@ -730,11 +730,11 @@ here`
                           )
                         }
                       />
-                      <Image
+                      {/* <Image
                         src={EditIcon}
                         style={{ marginLeft: "1.2rem" }}
                         onClick={this.handleShow}
-                      />
+                      /> */}
                     </div>
                     <h4 className="inter-display-medium f-s-16 lh-19">
                       {CurrencyType(false)}3.78m{" "}

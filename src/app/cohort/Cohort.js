@@ -37,6 +37,7 @@ import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
 import CoinChip from "../wallet/CoinChip";
 import ExitOverlay from "../common/ExitOverlay";
+import { searchCohort } from "./Api";
 class Cohort extends Component {
   constructor(props) {
     super(props);
@@ -50,18 +51,14 @@ class Cohort extends Component {
       addModal: false,
       isLoading: true,
       cohortModal: false,
+
+      start: 0,
+      sorts: [],
+      sortByAmount: false,
+      sortByDate: false,
+      sortByName: false,
     };
   }
-  handleCohort = () => {
-    console.log("cohort click");
-    this.setState({
-      cohortModal: !this.state.cohortModal,
-    });
-  };
-
-  handleSort = (e) => {
-    
-  };
 
   componentDidMount() {
     // this.state.startTime = new Date() * 1;
@@ -96,11 +93,126 @@ class Cohort extends Component {
     }
   }
 
-  makeApiCall = (cond) => {};
+  handleCohort = () => {
+    console.log("cohort click");
+    this.setState({
+      cohortModal: !this.state.cohortModal,
+    });
+  };
 
-  handleAddModal = () => {};
+  handleChangeList = (value) => {
+    // this.setState({
+    //   // userWalletList: value,
+      
+    //   // isLoading: true,
+    // });
+    this.makeApiCall();
+    
+  };
 
-  handleFunction = () => {};
+  makeApiCall = (cond) => {
+    let data = new URLSearchParams();
+    data.append("start", this.state.start);
+    data.append("conditions", JSON.stringify(cond ? cond : []));
+    data.append("limit", 50);
+    // data.append("limit", API_LIMIT)
+    data.append("sorts", JSON.stringify(this.state.sorts));
+    searchCohort(data, this);
+    // console.log(data);
+  };
+
+  handleSort = (e) => {
+    let sort = [...this.state.sortBy];
+    sort.map((el) => {
+      if (el.title === e.title) {
+        el.down = !el.down;
+      } else {
+        el.down = true;
+      }
+    });
+
+    if (e.title === "Amount") {
+      let obj = [
+        {
+          key: SORT_BY_PORTFOLIO_AMOUNT,
+          value: !this.state.sortByAmount,
+        },
+      ];
+      this.setState({
+        sorts: obj,
+        sortByAmount: !this.state.sortByAmount,
+        sortBy: sort,
+      });
+      // SortByAmount({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
+    } else if (e.title === "Date added") {
+      let obj = [
+        {
+          key: SORT_BY_CREATED_ON,
+          value: !this.state.sortByDate,
+        },
+      ];
+      this.setState({
+        sorts: obj,
+        sortByDate: !this.state.sortByDate,
+        sortBy: sort,
+      });
+      // SortByDate({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
+    } else if (e.title === "Name") {
+      let obj = [
+        {
+          key: SORT_BY_NAME,
+          value: !this.state.sortByName,
+        },
+      ];
+      this.setState({
+        sorts: obj,
+        sortByName: !this.state.sortByName,
+        sortBy: sort,
+      });
+      // SortByName({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
+    }
+
+    // this.makeApiCall()
+  };
+
+  handleFunction = (badge) => {
+    let newArr = [...this.state.activeBadge];
+    if (this.state.activeBadge.some((e) => e.name === badge.name)) {
+      let index = newArr.findIndex((x) => x.name === badge.name);
+      newArr.splice(index, 1);
+      if (newArr.length === 0) {
+        this.setState({
+          activeBadge: [{ name: "All", id: "" }],
+        });
+      } else {
+        this.setState({
+          activeBadge: newArr,
+        });
+      }
+    } else if (badge.name === "All") {
+      this.setState({
+        activeBadge: [{ name: "All", id: "" }],
+      });
+    } else {
+      let index = newArr.findIndex((x) => x.name === "All");
+      if (index !== -1) {
+        newArr.splice(index, 1);
+      }
+      newArr.push(badge);
+      this.setState({
+        activeBadge: newArr,
+      });
+    }
+  };
 
   render() {
     return (
@@ -115,6 +227,7 @@ class Cohort extends Component {
             history={this.props.history}
             modalType={"cohort"}
             headerTitle={"Create a Wallet cohort"}
+            changeWalletList={this.handleChangeList}
           />
         ) : (
           ""

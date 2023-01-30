@@ -337,6 +337,19 @@
                   margin-bottom: 2.6rem;
                   text-align: start;
 
+                    .paste-text{
+                        position:absolute;
+                        text-align: center;
+                        top: 1.2rem;
+                        right: 2.2rem;
+                        display: flex;
+                        align-items: center;
+                        p{
+                            margin-left:0.5rem;
+                             color: $black-191;
+                        }
+                    }
+
                   .form-group {
                         label {
                             font-family: Inter-Medium;
@@ -358,6 +371,16 @@
                             padding:1.3rem 1.6rem;
                             min-height: 4.3rem;
                             margin-bottom: 2rem;
+                            border: 1px solid #D4D4D4;
+
+                             &:active:focus,
+                    &:active,
+                    &:focus,
+                    &:focus-visible {
+                        outline: none;
+                        border-color: #19191A;
+                    }
+
                             &::placeholder{
                               font-size: 1.6rem;
                             line-height: 1.8rem;
@@ -366,25 +389,14 @@
                         }
                     }
 
-                     .paste-text{
-                        position:absolute;
-                        text-align: center;
-                        top: 4rem;
-                        right: 2.2rem;
-                        display: flex;
-                        align-items: center;
-                        p{
-                            margin-left:0.5rem;
-                             color: $black-191;
-                        }
-                    }
+                   
 
                      .add-modal-inputs {
                 // display: flex;
                 // flex-direction: column;
                 // width: 100%;
                 // padding: 0rem 8.4rem 0rem 8.4rem;
-                padding: 0rem 2rem 0rem 6rem;
+                padding: 0rem 0rem 0rem 6rem;
                 max-height: 22rem;
                 overflow-y: auto;
                 margin: 0 0rem 1.2rem 0rem;
@@ -417,14 +429,24 @@
 
                     input {
                         width: 100%;
-                        border: 0.1rem solid $black-191;
+                        // border: 0.1rem solid $black-191;
+                        border: 1px solid #D4D4D4;
                         border-radius: 0.8rem;
                         // padding: 1.05rem 15.7rem 1.05rem 1.2rem;
                         // padding: 1.05rem 14.4rem 1.05rem 1.2rem;
                         padding: 1.05rem 5.7rem 1.05rem 1.2rem;
-                        &:focus-visible{
-                          outline: none;
-                        }
+                         
+                        &:active:focus,
+                    &:active,
+                    &:focus,
+                    &:focus-visible {
+                        outline: none;
+                        border-color: #19191A;
+                    }
+
+                    &::placeholder{
+                         color: $grey-D4D;
+                    }
                     }
 
                     .customchip {
