@@ -131,9 +131,9 @@ class FixAddModal extends BaseReactComponent {
     data.address === newAddress[i].address &&
       newAddress[i].coins.push(...newCoinList);
     //new code added
-    //   if (data.id === newAddress[i].id) {
-    //     newAddress[i].address = data.address;
-    //   }
+      // if (data.id === newAddress[i].id) {
+      //   newAddress[i].address = data.address;
+      // }
 
     newAddress[i].coinFound =
       newAddress[i].coins &&
@@ -230,34 +230,33 @@ class FixAddModal extends BaseReactComponent {
       }
       this.timeout = setTimeout(() => {
         let arr = [];
+        let addressList = [];
         let displayAddress = [];
         let walletList = [];
         for (let i = 0; i < this.state.addWalletList.length; i++) {
           let curr = this.state.addWalletList[i];
-          // console.log(
-          //   "current address",
-          //   curr.address.trim(),
-          //   curr.address,
-          //   "condition",
-          //   !arr.includes(curr.address.trim()), curr, arr
-          // );
+          console.log(
+            "current address",
+            curr.address.trim(),
+            "display",
+            curr.displayAddress,
+            "arr",
+            arr,
+            
+          );
           if (!arr.includes(curr.address.trim()) && curr.address) {
+
+            
             walletList.push(curr);
-            //new code added
-            // curr.displayAddress ? arr.push(curr.address.trim()) : arr.push(curr.address.trim());
-
             arr.push(curr.address.trim());
-            // displayAddress.push(curr.displayAddress?.trim());
-            // if (
-            //   !displayAddress.includes(curr.displayAddress?.trim()) &&
-            //   curr.displayAddress
-            // ) {
+            arr.push(curr.displayAddress?.trim());
+            addressList.push(curr.address.trim());
 
-            // }
           }
         }
+        
         let addWallet = walletList;
-        // console.log("arr", arr);
+
         addWallet?.map((w, i) => {
           w.id = `wallet${i + 1}`;
         });
@@ -265,7 +264,7 @@ class FixAddModal extends BaseReactComponent {
         
         this.state.onHide();
         const data = new URLSearchParams();
-        data.append("wallet_addresses", JSON.stringify(arr));
+        data.append("wallet_addresses", JSON.stringify(addressList));
 
         updateUserWalletApi(data, this);
         this.state.changeList && this.state.changeList(walletList);
