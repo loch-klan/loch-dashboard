@@ -1116,7 +1116,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           <PageHeader
             title={"Transaction history"}
             subTitle={
-              "Sort, filter, and dissect all your transactions from one place."
+              "Sort, filter, and dissect all your transactions from one place"
             }
             showpath={true}
             currentPage={"transaction-history"}
