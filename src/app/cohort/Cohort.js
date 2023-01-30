@@ -69,7 +69,7 @@ class Cohort extends Component {
     // });
 
     this.props.getAllCoins();
-    // this.makeApiCall();
+    this.makeApiCall();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -83,10 +83,13 @@ class Cohort extends Component {
       if (arr.length > 0) {
         arr.map((badge) => {
           condition[0].value.push(badge.id);
+          // console.log("cond", condition);
         });
       } else {
         condition = [];
       }
+
+      // console.log("cond", condition)
       this.makeApiCall(condition);
     } else if (prevState.sorts !== this.state.sorts) {
       this.makeApiCall();

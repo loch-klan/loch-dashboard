@@ -267,6 +267,7 @@ class ExitOverlay extends BaseReactComponent {
         }
         this.timeout = setTimeout(() => {
           let arr = [];
+          let addressList = [];
           let displayAddress = [];
           let walletList = [];
           for (let i = 0; i < this.state.addWalletList.length; i++) {
@@ -274,6 +275,8 @@ class ExitOverlay extends BaseReactComponent {
             if (!arr.includes(curr.address.trim()) && curr.address) {
               walletList.push(curr);
               arr.push(curr.address.trim());
+              arr.push(curr.displayAddress?.trim());
+              addressList.push(curr.address.trim());
             }
           }
           let addWallet = walletList;
