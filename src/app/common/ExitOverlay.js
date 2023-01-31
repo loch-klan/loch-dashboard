@@ -104,16 +104,20 @@ class ExitOverlay extends BaseReactComponent {
         //   value: 50,
         // },
       ],
-      addWalletList: [
-        {
-          id: `wallet1`,
-          address: "",
-          coins: [],
-          displayAddress: "",
-          wallet_metadata: {},
-        },
-      ],
+      addWalletList:
+        props?.walletaddress && props.isEdit
+          ? props?.walletaddress
+          : [
+              {
+                id: `wallet1`,
+                address: "",
+                coins: [],
+                displayAddress: "",
+                wallet_metadata: {},
+              },
+            ],
       isCohort: true,
+      cohort_name: props.isEdit && props?.headerTitle  ? props?.headerTitle : "",
       changeList: props.changeWalletList,
     };
   }
@@ -289,7 +293,7 @@ class ExitOverlay extends BaseReactComponent {
           // this.state.onHide();
           const data = new URLSearchParams();
            data.append("name", this.state.cohort_name);
-          data.append("wallet_addresses", JSON.stringify(arr));
+          data.append("wallet_addresses", JSON.stringify(addressList));
 
           createCohort(data, this);
           this.state.onHide();

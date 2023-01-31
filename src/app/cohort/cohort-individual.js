@@ -4,7 +4,7 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi } from "./Api";
+import { getAllInsightsApi, getCohort } from "./Api";
 import { InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
@@ -42,10 +42,12 @@ import { toast } from "react-toastify";
 import DropDown from "../common/DropDown";
 import EditWalletModal from "../wallet/EditWalletModal";
 import checkIcon from "../../assets/images/icons/check-cohort.svg";
+import moment from "moment";
 
 
 class CohortPage extends BaseReactComponent {
   constructor(props) {
+    console.log("props",props)
     super(props);
     this.state = {
       activeFooter: 0,
@@ -58,6 +60,14 @@ class CohortPage extends BaseReactComponent {
       dayNotification: false,
       showBtn: false,
       isEmailValid: true,
+      cohortId: props?.location?.state.id,
+      cohortWalletAddress: props?.location?.state?.cohortWalletList,
+      walletAddresses: [],
+      totalNetWorth: 0,
+      createOn: "",
+      frequentlyPurchasedAsset: "",
+      frequentlySoldAsset: "",
+      largestHoldingChain: "",
     };
   }
 
@@ -67,7 +77,15 @@ class CohortPage extends BaseReactComponent {
       cohortModal: !this.state.cohortModal,
     });
   };
-  componentDidMount() {}
+  componentDidMount() { 
+    this.getCohortDetail();
+  }
+  
+  getCohortDetail = () => {
+    let data = new URLSearchParams();
+    data.append("cohort_id", this.state.cohortId);
+    getCohort(data, this);
+  }
 
   handleFooter = (e) => {
     // console.log("e",e.target.id)
@@ -75,6 +93,7 @@ class CohortPage extends BaseReactComponent {
       activeFooter: e.target.id,
     });
   };
+
 
   handleUpdateEmail = () => {
     this.setState({
@@ -203,30 +222,18 @@ class CohortPage extends BaseReactComponent {
             modalType={"cohort"}
             headerTitle={PageName}
             isEdit={true}
-            addedon={"10/12/22"}
+            walletaddress={this.state.cohortWalletAddress}
+            addedon={moment(this.state?.createOn).format("DD/MM/YY")}
           />
         ) : (
           ""
         )}
-        {this.state.edit ? (
-          <EditWalletModal
-            show={this.state.edit}
-            onHide={this.handleShow}
-            createdOn={"2023-01-18 00:00:00+00:00"}
-            walletAddress={"0x401f6c983ea34274ec46f84d70b31c151321188b"}
-            displayAddress={""}
-            // walletMetaData={chips}
-            tag={"tag"}
-            coinchips={chips}
-            // makeApiCall={() => props.makeApiCall()}
-          />
-        ) : (
-          ""
-        )}
+
         <div className="insights-page page">
           <PageHeader
             title={PageName}
-            subTitle={"Added 10/12/22"}
+            subTitle={`
+              Added ${moment(this.state?.createOn).format("DD/MM/YY")}`}
             showpath={true}
             currentPage={nav_list[2]}
             btnText={"Edit"}
@@ -274,7 +281,7 @@ class CohortPage extends BaseReactComponent {
             <div className="right">
               <h3 className="space-grotesk-medium f-s-24 lh-29">
                 {CurrencyType(false)}
-                {numToCurrency(417.44)}
+                {numToCurrency(this.state.totalNetWorth)}
               </h3>
             </div>
           </div>
@@ -302,8 +309,11 @@ class CohortPage extends BaseReactComponent {
                 </div>
 
                 <h4 className="inter-display-medium f-s-16 l-h-19 m-t-46">
-                  {CurrencyType(false)}3612.21{" "}
-                  <span className="f-s-12 grey-ADA">USD</span>
+                  {CurrencyType(false)}
+                  {numToCurrency(
+                    this.state.totalNetWorth / this.state.walletAddresses.length
+                  )}{" "}
+                  <span className="f-s-12 grey-ADA"> {CurrencyType(true)}</span>
                 </h4>
               </div>
             </Col>
@@ -329,9 +339,13 @@ class CohortPage extends BaseReactComponent {
                 </div>
 
                 <CoinChip
-                  colorCode={"#E84042"}
-                  coin_img_src={Coin}
-                  coin_percent={"Avalanche"}
+                  colorCode={this.state.frequentlyPurchasedAsset?.asset?.color}
+                  coin_img_src={
+                    this.state.frequentlyPurchasedAsset?.asset?.symbol
+                  }
+                  coin_percent={
+                    this.state.frequentlyPurchasedAsset?.asset?.name
+                  }
                   type={"cohort"}
                 />
               </div>
@@ -359,9 +373,9 @@ class CohortPage extends BaseReactComponent {
                 </div>
 
                 <CoinChip
-                  colorCode={"#E84042"}
-                  coin_img_src={Coin}
-                  coin_percent={"Avalanche"}
+                  colorCode={this.state.frequentlySoldAsset?.asset?.color}
+                  coin_img_src={this.state.frequentlySoldAsset?.asset?.symbol}
+                  coin_percent={this.state.frequentlySoldAsset?.asset?.name}
                   type={"cohort"}
                 />
               </div>
@@ -388,9 +402,9 @@ class CohortPage extends BaseReactComponent {
                 </div>
 
                 <CoinChip
-                  colorCode={"#E84042"}
-                  coin_img_src={Coin}
-                  coin_percent={"Avalanche"}
+                  colorCode={this.state?.largestHoldingChain?.color}
+                  coin_img_src={this.state?.largestHoldingChain?.symbol}
+                  coin_percent={this.state?.largestHoldingChain?.name}
                   type={"cohort"}
                 />
               </div>
@@ -418,11 +432,11 @@ class CohortPage extends BaseReactComponent {
               Notifications
             </h2>
 
-            {this.state.showBtn && <button className="secondary-btn"
-              onClick={this.handleSave}
-            >
-              Save
-            </button>}
+            {this.state.showBtn && (
+              <button className="secondary-btn" onClick={this.handleSave}>
+                Save
+              </button>
+            )}
           </div>
 
           {/* Notification start */}
@@ -499,8 +513,8 @@ here`
 
                                 this.setState({
                                   isEmailValid: isvalid,
-                                  });
-                                
+                                });
+
                                 return isvalid;
                               },
                               message: "Please enter valid email id",
@@ -675,7 +689,7 @@ here`
                 style={{ marginLeft: "0.8rem" }}
                 className="inter-display-medium f-s-13 l-h-16 grey-7C7"
               >
-                13 addresses
+                {this.state.walletAddresses?.length} addresses
               </span>
             </h2>
 
@@ -705,44 +719,65 @@ here`
             }}
           >
             {/* Address */}
-            <div className="cohort-address-wrapper">
+            <div
+              className="cohort-address-wrapper"
+              style={
+                this.state.walletAddresses.length < 10
+                  ? { overflowY: "visible" }
+                  : {}
+              }
+            >
               {/* Address list */}
-              {[...Array(13)].map((e, i) => {
-                return (
-                  <div
-                    style={
-                      i === 12
-                        ? { marginBottom: "0rem", marginRight: "1rem" }
-                        : { marginRight: "1rem" }
-                    }
-                    className="address-list"
-                  >
-                    <div style={{}} className="address-left">
-                      <h4 className="inter-display-medium f-s-13 l-h-16 grey-636">
-                        0x401f6c983ea34274ec46f84d70b31c151321188b
-                      </h4>
-                      <Image
-                        src={CopyClipboardIcon}
-                        style={{ marginLeft: "0.8rem" }}
-                        onClick={() =>
-                          this.copyLink(
-                            "0x401f6c983ea34274ec46f84d70b31c151321188b"
-                          )
-                        }
-                      />
-                      {/* <Image
+              {this.state.walletAddresses &&
+                this.state.walletAddresses?.map((e, i) => {
+                  return (
+                    <div
+                      style={
+                        i === this.state.walletAddresses.length - 1
+                          ? {
+                              marginBottom: "0rem",
+                              marginRight: `${
+                                this.state.walletAddresses.length < 10
+                                  ? "1rem"
+                                  : "0rem"
+                              }`,
+                            }
+                          : {
+                              marginRight: `${
+                                this.state.walletAddresses.length < 10
+                                  ? "1rem"
+                                  : "0rem"
+                              }`,
+                            }
+                      }
+                      className="address-list"
+                    >
+                      <div style={{}} className="address-left">
+                        <h4 className="inter-display-medium f-s-13 l-h-16 grey-636">
+                          {e}
+                        </h4>
+                        <Image
+                          src={CopyClipboardIcon}
+                          style={{ marginLeft: "0.8rem" }}
+                          onClick={() => this.copyLink(e)}
+                        />
+                        {/* <Image
                         src={EditIcon}
                         style={{ marginLeft: "1.2rem" }}
                         onClick={this.handleShow}
                       /> */}
+                      </div>
+                      <h4 className="inter-display-medium f-s-16 lh-19">
+                        {CurrencyType(false)}
+                        {numToCurrency(370000000)}{" "}
+                        <span className="f-s-10 grey-ADA">
+                          {" "}
+                          {CurrencyType(true)}
+                        </span>
+                      </h4>
                     </div>
-                    <h4 className="inter-display-medium f-s-16 lh-19">
-                      {CurrencyType(false)}3.78m{" "}
-                      <span className="f-s-10 grey-ADA">USD</span>
-                    </h4>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
           {/* Address End */}

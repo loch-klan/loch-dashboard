@@ -19,6 +19,7 @@ import netWorthIcon from "../../assets/images/icons/net-worth.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { Col, Image, Row } from "react-bootstrap";
 import Loading from "../common/Loading";
+import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import {
   FilterBasedAssest,
   SortByAmount,
@@ -38,10 +39,12 @@ import Coin4 from "../../assets/images/icons/Coin-3.svg";
 import CoinChip from "../wallet/CoinChip";
 import ExitOverlay from "../common/ExitOverlay";
 import { searchCohort } from "./Api";
+import moment from "moment";
 class Cohort extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currency: JSON.parse(localStorage.getItem("currency")),
       sortBy: [
         { title: "Amount", down: true },
         { title: "Date added", down: true },
@@ -51,12 +54,19 @@ class Cohort extends Component {
       addModal: false,
       isLoading: true,
       cohortModal: false,
+      cohortWalletList: [],
 
       start: 0,
       sorts: [],
       sortByAmount: false,
       sortByDate: false,
       sortByName: false,
+      apiResponse: false,
+      cardList: [],
+      isEdit: false,
+      createOn: "",
+      editItemName: "",
+      editWalletAddressList: [],
     };
   }
 
@@ -94,6 +104,14 @@ class Cohort extends Component {
     } else if (prevState.sorts !== this.state.sorts) {
       this.makeApiCall();
     }
+
+    if (prevState.apiResponse != this.state.apiResponse) {
+      console.log("update");
+       this.makeApiCall();
+      this.setState({
+        apiResponse: false,
+      });
+    }
   }
 
   handleCohort = () => {
@@ -103,14 +121,24 @@ class Cohort extends Component {
     });
   };
 
+  handleEdit = (i, name) => {
+    let walletList = this.state.cardList;
+
+    this.setState({
+      isEdit: !this.state.isEdit,
+      createOn: walletList[i]?.created_on,
+      editItemName: walletList[i]?.name,
+      editWalletAddressList: walletList[i]?.wallet_addresses,
+    });
+  }
+
   handleChangeList = (value) => {
-    // this.setState({
-    //   // userWalletList: value,
-      
-    //   // isLoading: true,
-    // });
-    this.makeApiCall();
-    
+    this.setState({
+      cohortWalletList: value,
+      isLoading: true,
+      cardList: [],
+    });
+    // this.makeApiCall();
   };
 
   makeApiCall = (cond) => {
@@ -217,6 +245,13 @@ class Cohort extends Component {
     }
   };
 
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+    console.log("api respinse", value);
+  };
+
   render() {
     return (
       <div className="cohort-page-section">
@@ -231,6 +266,23 @@ class Cohort extends Component {
             modalType={"cohort"}
             headerTitle={"Create a Wallet cohort"}
             changeWalletList={this.handleChangeList}
+            apiResponse={(e) => this.CheckApiResponse(e)}
+          />
+        ) : (
+          ""
+        )}
+
+        {this.state.isEdit ? (
+          <ExitOverlay
+            show={this.state.cohortModal}
+            // link="http://loch.one/a2y1jh2jsja"
+            onHide={this.handleEdit}
+            history={this.props.history}
+            modalType={"cohort"}
+            headerTitle={this.state.editItemName}
+            isEdit={true}
+            // walletaddress={this.state.cohortWalletList}
+            addedon={moment(this.state?.createOn).format("DD/MM/YY")}
           />
         ) : (
           ""
@@ -278,506 +330,165 @@ class Cohort extends Component {
           </div>
           {/* card  */}
           <Row style={{ minWidth: "91rem" }}>
-            <Col md={4} style={{ padding: "10px" }}>
-              <div
-                className="cards"
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "16px",
-                  marginBottom: "3rem",
-                }}
-              >
-                {/* Top Section */}
-                <div
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(229, 229, 230, 0) 0%, #E5E5E6 250.99%)",
-                    borderRadius: "16px 16px 0px 0px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "20px",
-                  }}
-                >
-                  <div
-                    style={{
-                      background: "#FFFFFF",
-                      boxShadow:
-                        "0px 8px 28px - 6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
-                      borderRadius: "12px",
-                      padding: "10px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexWrap: "wrap",
-                      width: "69px",
-                    }}
-                  >
-                    <Image src={Coin1} style={{ margin: "0px 5px 5px 0px" }} />
-                    <Image src={Coin2} style={{ margin: "0px 0px 5px 0px" }} />
-                    <Image src={Coin3} style={{ margin: "0px 5px 0px 0px" }} />
-                    <Image src={Coin4} style={{ margin: "0px 0px 0px 0px" }} />
-                  </div>
-                  {/* title*/}
-                  <div
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    onClick={() =>
-                      this.props.history.push("/cohort/avax-whales")
-                    }
-                  >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
-                      My AVAX Whales
-                    </h4>
-                    <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
-                      3612.21 <span className="f-s-10 grey-CAC">USD</span>
-                    </h4>
-                  </div>
-                  {/* edit icon */}
-                  <Image
-                    src={EditIcon}
-                    className="cp editIcon"
-                    onClick={this.handleCohort}
-                  />
-                </div>
-                {/* Top Section END */}
-                {/* Bottom Section Address list */}
-                <div
-                  style={
-                    {
-                      // padding: "20px",
-                    }
-                  }
-                >
-                  {/* List Item */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
+            {this.state.cardList.length !== 0
+              ? this.state.cardList?.map((item, i) => {
+                  return (
+                    <Col
+                      md={4}
+                      style={{ padding: "10px", marginBottom: "1rem" }}
+                      key={item.id}
+                    >
+                      <div
+                        className="cards"
+                        style={{
+                          background: "#FFFFFF",
+                          boxShadow:
+                            "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                          borderRadius: "16px",
+                          // marginBottom: "3rem",
+                          height: "100%",
+                        }}
+                      >
+                        {/* Top Section */}
+                        <div
+                          style={{
+                            background:
+                              "linear-gradient(180deg, rgba(229, 229, 230, 0) 0%, #E5E5E6 250.99%)",
+                            borderRadius: "16px 16px 0px 0px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-start",
+                            padding: "20px",
+                          }}
+                        >
+                          <div
+                            style={{
+                              background: "#FFFFFF",
+                              boxShadow:
+                                "0px 8px 28px - 6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
+                              borderRadius: "12px",
+                              padding: `${true ? "0px" : "10px"}`,
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              flexWrap: "wrap",
+                              width: `${true ? "5rem" : "6.9rem"}`,
+                              marginRight: "1.2rem",
+                            }}
+                          >
+                            {true ? (
+                              <Image
+                                src={unrecognizedIcon}
+                                style={{
+                                  width: "5rem",
+                                  borderRadius: "12px",
+                                }}
+                              />
+                            ) : (
+                              <>
+                                <Image
+                                  src={Coin1}
+                                  style={{ margin: "0px 5px 5px 0px" }}
+                                />
+                                <Image
+                                  src={Coin2}
+                                  style={{ margin: "0px 0px 5px 0px" }}
+                                />
+                                <Image
+                                  src={Coin3}
+                                  style={{ margin: "0px 5px 0px 0px" }}
+                                />
+                                <Image
+                                  src={Coin4}
+                                  style={{ margin: "0px 0px 0px 0px" }}
+                                />
+                              </>
+                            )}
+                          </div>
+                          {/* title*/}
+                          <div
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={() =>
+                              this.props.history.push({
+                                pathname: `/cohort/${item.slug}`,
+                                state: {
+                                  id: item.id,
+                                  cohortWalletList:
+                                    this.state?.cohortWalletList,
+                                },
+                              })
+                            }
+                          >
+                            <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
+                              {item.name}
+                            </h4>
+                            <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
+                              {/* {CurrencyType(false)} */}
+                              {numToCurrency(
+                                item.total_net_worth * this.state.currency?.rate
+                              )}{" "}
+                              <span className="f-s-10 grey-CAC">
+                                {CurrencyType(true)}
+                              </span>
+                            </h4>
+                          </div>
+                          {/* edit icon */}
+                          <Image
+                            src={EditIcon}
+                            className="cp editIcon"
+                            onClick={() => this.handleEdit(i, item.name)}
+                            style={{ marginLeft: "auto" }}
+                          />
+                        </div>
+                        {/* Top Section END */}
+                        {/* Bottom Section Address list */}
+                        <div>
+                          {/* List Item */}
+                          {item?.wallet_addresses?.map((e, i) => {
+                            let address = e;
+                            if (e?.length > 14) {
+                              address =
+                                e.substr(0, 6) +
+                                "..." +
+                                e.substr(e.length - 6, e.length);
+                            }
+                            return (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                  padding: "1.5rem",
+                                  borderBottom: `${
+                                    item?.wallet_addresses.length - 1 === i
+                                      ? "none"
+                                      : "1px solid rgba(229, 229, 230, 0.5)"
+                                  }`,
+                                }}
+                                key={i}
+                              >
+                                <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
+                                  {address}
+                                </h4>
 
-                    {/* chip */}
-                    <CoinChip
-                      colorCode={"#E84042"}
-                      coin_img_src={Coin}
-                      coin_percent={"Avalanche"}
-                      type={"cohort"}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <div>
-                      <CoinChip
-                        colorCode={"#E84042"}
-                        coin_img_src={Coin}
-                        coin_percent={"Avalanche"}
-                        type={"cohort"}
-                      />
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <CoinChip
-                      colorCode={"#E84042"}
-                      coin_img_src={Coin}
-                      coin_percent={"Avalanche"}
-                      type={"cohort"}
-                    />
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <CoinChip
-                      colorCode={"#E84042"}
-                      coin_img_src={Coin}
-                      coin_percent={"Avalanche"}
-                      type={"cohort"}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Col>
-
-            <Col md={4} style={{ padding: "10px" }}>
-              <div
-                className="cards"
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "16px",
-                  marginBottom: "3rem",
-                }}
-              >
-                {/* Top Section */}
-                <div
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(229, 229, 230, 0) 0%, #E5E5E6 250.99%)",
-                    borderRadius: "16px 16px 0px 0px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "20px",
-                  }}
-                >
-                  <div
-                    style={{
-                      background: "#FFFFFF",
-                      boxShadow:
-                        "0px 8px 28px - 6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
-                      borderRadius: "12px",
-                      padding: "10px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexWrap: "wrap",
-                      width: "69px",
-                    }}
-                  >
-                    <Image src={Coin1} style={{ margin: "0px 5px 5px 0px" }} />
-                    <Image src={Coin2} style={{ margin: "0px 0px 5px 0px" }} />
-                    <Image src={Coin3} style={{ margin: "0px 5px 0px 0px" }} />
-                    <Image src={Coin4} style={{ margin: "0px 0px 0px 0px" }} />
-                  </div>
-                  {/* title*/}
-                  <div
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    onClick={() =>
-                      this.props.history.push("/cohort/my-curve-whales")
-                    }
-                  >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
-                      My Curve Whales
-                    </h4>
-                    <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
-                      3612.21 <span className="f-s-10 grey-CAC">USD</span>
-                    </h4>
-                  </div>
-                  {/* edit icon */}
-                  <Image
-                    src={EditIcon}
-                    className="cp editIcon"
-                    onClick={this.handleCohort}
-                  />
-                </div>
-                {/* Top Section END */}
-                {/* Bottom Section Address list */}
-                <div
-                  style={
-                    {
-                      // padding: "20px",
-                    }
-                  }
-                >
-                  {/* List Item */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <CoinChip
-                      colorCode={"#E84042"}
-                      coin_img_src={Coin}
-                      coin_percent={"Avalanche"}
-                      type={"cohort"}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <div>
-                      <CoinChip
-                        colorCode={"#E84042"}
-                        coin_img_src={Coin}
-                        coin_percent={"Avalanche"}
-                        type={"cohort"}
-                      />
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <CoinChip
-                      colorCode={"#E84042"}
-                      coin_img_src={Coin}
-                      coin_percent={"Avalanche"}
-                      type={"cohort"}
-                    />
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <CoinChip
-                      colorCode={"#E84042"}
-                      coin_img_src={Coin}
-                      coin_percent={"Avalanche"}
-                      type={"cohort"}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Col>
-
-            <Col md={4} style={{ padding: "10px" }}>
-              <div
-                className="cards"
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "16px",
-                  marginBottom: "3rem",
-                }}
-              >
-                {/* Top Section */}
-                <div
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(229, 229, 230, 0) 0%, #E5E5E6 250.99%)",
-                    borderRadius: "16px 16px 0px 0px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "20px",
-                  }}
-                >
-                  <div
-                    style={{
-                      background: "#FFFFFF",
-                      boxShadow:
-                        "0px 8px 28px - 6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
-                      borderRadius: "12px",
-                      padding: "10px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexWrap: "wrap",
-                      width: "69px",
-                    }}
-                  >
-                    <Image src={Coin1} style={{ margin: "0px 5px 5px 0px" }} />
-                    <Image src={Coin2} style={{ margin: "0px 0px 5px 0px" }} />
-                    <Image src={Coin3} style={{ margin: "0px 5px 0px 0px" }} />
-                    <Image src={Coin4} style={{ margin: "0px 0px 0px 0px" }} />
-                  </div>
-                  {/* title*/}
-                  <div
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    onClick={() =>
-                      this.props.history.push("/cohort/my-uniswap-whales")
-                    }
-                  >
-                    <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
-                      My Uniswap Whales
-                    </h4>
-                    <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
-                      3612.21 <span className="f-s-10 grey-CAC">USD</span>
-                    </h4>
-                  </div>
-                  {/* edit icon */}
-                  <Image
-                    src={EditIcon}
-                    className="cp editIcon"
-                    onClick={this.handleCohort}
-                  />
-                </div>
-                {/* Top Section END */}
-                {/* Bottom Section Address list */}
-                <div
-                  style={
-                    {
-                      // padding: "20px",
-                    }
-                  }
-                >
-                  {/* List Item */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <CoinChip
-                      colorCode={"#E84042"}
-                      coin_img_src={Coin}
-                      coin_percent={"Avalanche"}
-                      type={"cohort"}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <div>
-                      <CoinChip
-                        colorCode={"#E84042"}
-                        coin_img_src={Coin}
-                        coin_percent={"Avalanche"}
-                        type={"cohort"}
-                      />
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <CoinChip
-                      colorCode={"#E84042"}
-                      coin_img_src={Coin}
-                      coin_percent={"Avalanche"}
-                      type={"cohort"}
-                    />
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding: "20px",
-                      borderBottom: "1px solid rgba(229, 229, 230, 0.5)",
-                    }}
-                  >
-                    <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                      0x9450...CB0
-                    </h4>
-
-                    {/* chip */}
-                    <CoinChip
-                      colorCode={"#E84042"}
-                      coin_img_src={Coin}
-                      coin_percent={"Avalanche"}
-                      type={"cohort"}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Col>
+                                {/* chip */}
+                                <CoinChip
+                                  colorCode={"#E84042"}
+                                  coin_img_src={Coin}
+                                  coin_percent={"Avalanche"}
+                                  type={"cohort"}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </Col>
+                  );
+                })
+              : ""}
           </Row>
         </div>
       </div>
