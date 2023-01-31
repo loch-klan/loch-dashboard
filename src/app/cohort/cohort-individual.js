@@ -4,7 +4,7 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi, getCohort } from "./Api";
+import { getAllInsightsApi, getCohort, GetPurchasedAsset, GetSoldAsset } from "./Api";
 import { InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
@@ -17,12 +17,13 @@ import netWorthIcon from "../../assets/images/icons/total-net-dark.svg";
 import BellIcon from "../../assets/images/icons/bell.svg";
 import BellIconColor from "../../assets/images/icons/bell-color.svg";
 import VerticalIcon from "../../assets/images/icons/veritcal-line.svg";
+import TrendIcon from "../../assets/images/icons/trending-up.svg";
 
 import ClockIcon from "../../assets/images/icons/clock.svg";
 import PlusIcon from "../../assets/images/icons/plus-circle.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BarGraphFooter } from "../common/BarGraphFooter";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import { CurrencyType, loadingAnimation, numToCurrency } from "../../utils/ReusableFunctions";
 import CoinChip from "../wallet/CoinChip";
 import Coin from "../../assets/images/coin-ava.svg";
 import GlobeIcon from "../../assets/images/icons/globe.svg";
@@ -47,7 +48,6 @@ import moment from "moment";
 
 class CohortPage extends BaseReactComponent {
   constructor(props) {
-    console.log("props",props)
     super(props);
     this.state = {
       activeFooter: 0,
@@ -68,6 +68,9 @@ class CohortPage extends BaseReactComponent {
       frequentlyPurchasedAsset: "",
       frequentlySoldAsset: "",
       largestHoldingChain: "",
+      PurchasedAssetLoader: false,
+      SoldAssetLoader: false,
+      LargestChainLoader: false,
     };
   }
 
@@ -77,23 +80,76 @@ class CohortPage extends BaseReactComponent {
       cohortModal: !this.state.cohortModal,
     });
   };
-  componentDidMount() { 
+  componentDidMount() {
     this.getCohortDetail();
+    this.getAssetData(0);
   }
+
+  getAssetData = (activeFooter) => {
+    this.setState({
+      PurchasedAssetLoader: true,
+      SoldAssetLoader: true,
+    });
+    console.log("option", activeFooter);
+    let startDate = moment().unix();
+    let endDate;
+    if (activeFooter == "0") {
+      startDate = "";
+      endDate = "";
+    } else if (activeFooter == "1") {
+      endDate = moment().subtract(5, "years").unix();
+    } else if (activeFooter == "2") {
+      endDate = moment().subtract(4, "years").unix();
+    } else if (activeFooter == "3") {
+      endDate = moment().subtract(3, "years").unix();
+    } else if (activeFooter == "4") {
+      endDate = moment().subtract(2, "years").unix();
+    } else if (activeFooter == "5") {
+      endDate = moment().subtract(1, "years").unix();
+    } else if (activeFooter == "6") {
+      endDate = moment().subtract(6, "months").unix();
+    } else if (activeFooter == "7") {
+      endDate = moment().subtract(1, "month").unix();
+    } else if (activeFooter == "8") {
+      endDate = moment().subtract(1, "week").unix();
+    } else if (activeFooter == "9") {
+      endDate = moment().subtract(1, "day").unix();
+    }
+
+    let data = new URLSearchParams();
+    data.append("cohort_id", this.state.cohortId);
+    data.append("start_datetime", endDate);
+    data.append("end_datetime", startDate);
+
+    // api for Get Sold Asset
+    GetSoldAsset(data, this);
+    // api for get purchased asset
+    GetPurchasedAsset(data, this);
+  };
+
   
+
   getCohortDetail = () => {
+    this.setState({
+      LargestChainLoader: true,
+    });
     let data = new URLSearchParams();
     data.append("cohort_id", this.state.cohortId);
     getCohort(data, this);
-  }
+  };
 
   handleFooter = (e) => {
     // console.log("e",e.target.id)
-    this.setState({
-      activeFooter: e.target.id,
-    });
+    this.setState(
+      {
+        activeFooter: e.target.id,
+      },
+      () => {
+        this.getAssetData(this.state.activeFooter);
+       
+      }
+    );
   };
-
 
   handleUpdateEmail = () => {
     this.setState({
@@ -150,7 +206,7 @@ class CohortPage extends BaseReactComponent {
   };
 
   handleClickWallet = () => {
-    console.log("click check")
+    console.log("click check");
     this.setState({
       walletNotification: !this.state.walletNotification,
       showBtn: true,
@@ -243,14 +299,71 @@ class CohortPage extends BaseReactComponent {
             handleBtn={this.handleCohort}
             multipleImg={[Coin1, Coin2, Coin3, Coin4]}
           />
-          <h2 className="m-t-46 m-b-20 inter-display-medium f-s-20 lh-24 black-191">
-            Intelligence
+          {/* Net Worth */}
+          <Row>
+            <Col md={6} style={{ paddingRight: "0.8rem" }}>
+              <div className="net-worth-wrapper m-t-20">
+                <div className="left">
+                  <Image src={netWorthIcon} className="net-worth-icon" />
+                  <h3 className="inter-display-medium f-s-20 lh-24 ">
+                    Total net worth
+                  </h3>
+                </div>
+                <div className="right">
+                  <h3 className="space-grotesk-medium f-s-24 lh-29">
+                    {CurrencyType(false)}
+                    {numToCurrency(this.state.totalNetWorth)}
+                    <span className="inter-display-semi-bold f-s-12 grey-ADA">
+                      {" "}
+                      {CurrencyType(true)}
+                    </span>
+                  </h3>
+                </div>
+              </div>
+            </Col>
+            <Col md={6} style={{ paddingLeft: "0.8rem" }}>
+              <div className="net-worth-wrapper m-t-20">
+                <div className="left">
+                  <Image src={StarIcon} className="net-worth-icon" />
+                  <h3 className="inter-display-medium f-s-20 lh-24 ">
+                    Average net worth
+                  </h3>
+                </div>
+                <div className="right">
+                  <h3 className="space-grotesk-medium f-s-24 lh-29">
+                    {CurrencyType(false)}
+                    {numToCurrency(
+                      this.state.totalNetWorth /
+                        this.state.walletAddresses.length
+                    )}
+                    <span className="inter-display-semi-bold f-s-12 grey-ADA">
+                      {CurrencyType(true)}
+                    </span>
+                  </h3>
+                </div>
+              </div>
+            </Col>
+          </Row>
+
+          {/* Net worth end */}
+
+          <h2
+            className="inter-display-medium f-s-20 lh-20 black-191 m-b-24"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "start",
+            }}
+          >
+            <Image src={TrendIcon} style={{ marginRight: "1.2rem" }} /> Trends
           </h2>
+
           <div
             style={{
               background: "#FFFFFF",
               borderRadius: "12px",
               padding: "12px",
+              marginBottom: "1.6rem",
             }}
           >
             <BarGraphFooter
@@ -271,54 +384,9 @@ class CohortPage extends BaseReactComponent {
               ]}
             />
           </div>
-          {/* Net Worth */}
-          <div className="net-worth-wrapper m-t-30">
-            <div className="left">
-              <Image src={netWorthIcon} className="net-worth-icon" />
-              <h3 className="inter-display-medium f-s-20 lh-24 ">
-                Total net worth
-              </h3>
-            </div>
-            <div className="right">
-              <h3 className="space-grotesk-medium f-s-24 lh-29">
-                {CurrencyType(false)}
-                {numToCurrency(this.state.totalNetWorth)}
-              </h3>
-            </div>
-          </div>
-          {/* Net worth end */}
-          <Row>
-            <Col md={3}>
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "12px",
-                  padding: "2rem",
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
-                }}
-              >
-                <div>
-                  <Image src={StarIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12">
-                    Average net worth
-                  </h3>
-                </div>
 
-                <h4 className="inter-display-medium f-s-16 l-h-19 m-t-46">
-                  {CurrencyType(false)}
-                  {numToCurrency(
-                    this.state.totalNetWorth / this.state.walletAddresses.length
-                  )}{" "}
-                  <span className="f-s-12 grey-ADA"> {CurrencyType(true)}</span>
-                </h4>
-              </div>
-            </Col>
-            <Col md={3}>
+          <Row>
+            <Col md={4} style={{ paddingRight: "0.8rem" }}>
               <div
                 style={{
                   background: "#FFFFFF",
@@ -334,24 +402,31 @@ class CohortPage extends BaseReactComponent {
               >
                 <div>
                   <Image src={CartIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12">
+                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
                     Most frequently purchased token
                   </h3>
                 </div>
-
-                <CoinChip
-                  colorCode={this.state.frequentlyPurchasedAsset?.asset?.color}
-                  coin_img_src={
-                    this.state.frequentlyPurchasedAsset?.asset?.symbol
-                  }
-                  coin_percent={
-                    this.state.frequentlyPurchasedAsset?.asset?.name
-                  }
-                  type={"cohort"}
-                />
+                <div style={{ height: "3rem", width: "max-content" }}>
+                  {this.state.frequentlyPurchasedAsset &&
+                  !this.state.PurchasedAssetLoader ? (
+                    <CoinChip
+                      colorCode={this.state.frequentlyPurchasedAsset?.color}
+                      coin_img_src={this.state.frequentlyPurchasedAsset?.symbol}
+                      coin_percent={this.state.frequentlyPurchasedAsset?.name}
+                      type={"cohort"}
+                    />
+                  ) : this.state.PurchasedAssetLoader ? (
+                    loadingAnimation()
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </Col>
-            <Col md={3}>
+            <Col
+              md={4}
+              style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
+            >
               <div
                 style={{
                   background: "#FFFFFF",
@@ -367,21 +442,30 @@ class CohortPage extends BaseReactComponent {
               >
                 <div>
                   <Image src={TokenIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12">
+                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
                     Most frequently <br />
                     sold token
                   </h3>
                 </div>
 
-                <CoinChip
-                  colorCode={this.state.frequentlySoldAsset?.asset?.color}
-                  coin_img_src={this.state.frequentlySoldAsset?.asset?.symbol}
-                  coin_percent={this.state.frequentlySoldAsset?.asset?.name}
-                  type={"cohort"}
-                />
+                <div style={{ height: "3rem", width: "max-content" }}>
+                  {this.state.frequentlySoldAsset &&
+                  !this.state.SoldAssetLoader ? (
+                    <CoinChip
+                      colorCode={this.state.frequentlySoldAsset?.color}
+                      coin_img_src={this.state.frequentlySoldAsset?.symbol}
+                      coin_percent={this.state.frequentlySoldAsset?.name}
+                      type={"cohort"}
+                    />
+                  ) : this.state.SoldAssetLoader ? (
+                    loadingAnimation()
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </Col>
-            <Col md={3}>
+            <Col md={4} style={{ paddingLeft: "0.8rem" }}>
               <div
                 style={{
                   background: "#FFFFFF",
@@ -397,17 +481,26 @@ class CohortPage extends BaseReactComponent {
               >
                 <div>
                   <Image src={MedalIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12">
+                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
                     Largest Holding
                   </h3>
                 </div>
 
-                <CoinChip
-                  colorCode={this.state?.largestHoldingChain?.color}
-                  coin_img_src={this.state?.largestHoldingChain?.symbol}
-                  coin_percent={this.state?.largestHoldingChain?.name}
-                  type={"cohort"}
-                />
+                <div style={{ height: "3rem", width: "max-content" }}>
+                  {this.state?.largestHoldingChain &&
+                  !this.state.LargestChainLoader ? (
+                    <CoinChip
+                      colorCode={this.state?.largestHoldingChain?.color}
+                      coin_img_src={this.state?.largestHoldingChain?.symbol}
+                      coin_percent={this.state?.largestHoldingChain?.name}
+                      type={"cohort"}
+                    />
+                  ) : this.state.LargestChainLoader ? (
+                    loadingAnimation()
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </Col>
           </Row>
@@ -422,7 +515,7 @@ class CohortPage extends BaseReactComponent {
             className="m-t-40 m-b-20 Notification-header"
           >
             <h2
-              className="inter-display-medium f-s-20 lh-45 black-191"
+              className="inter-display-medium f-s-20 lh-20 black-191"
               style={{
                 display: "flex",
                 alignItems: "center",

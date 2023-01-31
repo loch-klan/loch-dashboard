@@ -20,6 +20,7 @@
                     align-items: center;
                     padding: 1.2rem 1.6rem;
                     cursor: pointer;
+                    user-select: none;
 
                     .rotateUp{
                         transform:rotate(180deg);

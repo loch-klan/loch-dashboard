@@ -5,6 +5,16 @@
         margin-top: 5rem;
         min-width: 90rem;   //solve overflow issue
         overflow: hidden;   //solve overflow issue
+
+        .animation-wrapper{
+            box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                margin-bottom: 2rem;
+                padding: 0;
+                background-color: #fff;
+                padding: 2rem 2rem 4rem;
+                border-radius: 1.2rem;
+
+        }
         // sortby section begin
         .sortby-section {
             display: flex;
@@ -20,6 +30,7 @@
                     align-items: center;
                     padding: 1.2rem 1.6rem;
                     cursor: pointer;
+                    user-select: none;
 
                     .rotateUp{
                         transform:rotate(180deg);
@@ -53,23 +64,23 @@
 
         // sortby section ends
 
-        .net-worth-wrapper{
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 2rem;
-          background-color: $secondary;
-          border-radius: 1.2rem;
-          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-          margin-bottom: 2.4rem;
-          .left{
-            display: flex;
-            align-items: center;
-            h3{
-              padding-left: 1.2rem;
-            }
-          }
-        }
+        // .net-worth-wrapper{
+        //   display: flex;
+        //   justify-content: space-between;
+        //   align-items: center;
+        //   padding: 2rem;
+        //   background-color: $secondary;
+        //   border-radius: 1.2rem;
+        //   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+        //   margin-bottom: 2.4rem;
+        //   .left{
+        //     display: flex;
+        //     align-items: center;
+        //     h3{
+        //       padding-left: 1.2rem;
+        //     }
+        //   }
+        // }
 
 
        
@@ -215,6 +226,18 @@
             align-items: center;
             h3{
               padding-left: 1.2rem;
+            }
+          }
+          .right{
+            display: flex;
+            align-items: center;
+            h3{
+              display: flex;
+            align-items: center;
+
+            span{
+                margin-left:0.4rem;
+            }
             }
           }
         }
