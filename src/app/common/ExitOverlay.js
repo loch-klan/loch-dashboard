@@ -50,6 +50,8 @@ import Coin2 from "../../assets/images/icons/Coin-1.svg";
 import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
 import { createCohort, deleteCohort } from '../cohort/Api';
+import Papa from "papaparse";
+
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -108,25 +110,26 @@ class ExitOverlay extends BaseReactComponent {
       ],
       addWalletList:
         props?.walletaddress && props.isEdit
-          ? props?.walletaddress?.map((e, i) =>
-          {
-            return {
-              id: `wallet${i + 1}`,
-              address: e?.wallet_address ? e.wallet_address : "",
-              displayAddress: e?.display_address ? e.display_address : "",
-              wallet_metadata: {},
-              coinFound: true,
-              coins: e?.chains ? e?.chains.map(e => {
-                return {
-                  chain_detected: true,
-                  coinCode: e.code,
-                  coinName: e.name,
-                  coinColor: e.color,
-                  coinSymbol: e.symbol,
-                };
-              }) : [],
-            };
-          })
+          ? props?.walletaddress?.map((e, i) => {
+              return {
+                id: `wallet${i + 1}`,
+                address: e?.wallet_address ? e.wallet_address : "",
+                displayAddress: e?.display_address ? e.display_address : "",
+                wallet_metadata: {},
+                coinFound: true,
+                coins: e?.chains
+                  ? e?.chains.map((e) => {
+                      return {
+                        chain_detected: true,
+                        coinCode: e.code,
+                        coinName: e.name,
+                        coinColor: e.color,
+                        coinSymbol: e.symbol,
+                      };
+                    })
+                  : [],
+              };
+            })
           : [
               {
                 id: `wallet1`,
@@ -141,6 +144,8 @@ class ExitOverlay extends BaseReactComponent {
       changeList: props.changeWalletList,
     };
   }
+
+  fileInputRef = React.createRef();
 
   componentDidMount() {
     this.props.getAllCoins();
@@ -214,11 +219,9 @@ class ExitOverlay extends BaseReactComponent {
   };
 
   getCoinBasedOnWalletAddress = (name, value) => {
-    
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
       for (let i = 0; i < parentCoinList.length; i++) {
-       
         this.props.detectCoin(
           {
             id: name,
@@ -236,7 +239,6 @@ class ExitOverlay extends BaseReactComponent {
     }
   };
   handleSetCoin = (data) => {
-  
     let coinList = {
       chain_detected: data.chain_detected,
       coinCode: data.coinCode,
@@ -285,65 +287,59 @@ class ExitOverlay extends BaseReactComponent {
 
   handleCohortSave = () => {
     // console.log("save", this.state.cohort_name, this.state.addWalletList)
-      if (this.state.addWalletList) {
-        if (this.timeout) {
-          clearTimeout(this.timeout);
-        }
-        this.timeout = setTimeout(() => {
-          let arr = [];
-          let addressList = [];
-          let displayAddress = [];
-          let walletList = [];
-          for (let i = 0; i < this.state.addWalletList.length; i++) {
-            let curr = this.state.addWalletList[i];
-            if (!arr.includes(curr.address.trim()) && curr.address) {
-              walletList.push(curr);
-              arr.push(curr.address.trim());
-              arr.push(curr.displayAddress?.trim());
-              addressList.push(curr.address.trim());
-            }
-          }
-          let addWallet = walletList;
-          // console.log("arr", arr, JSON.stringify(arr));
-          addWallet?.map((w, i) => {
-            w.id = `wallet${i + 1}`;
-          });
-          // localStorage.setItem("CohortWallet", JSON.stringify(addWallet));
-
-          // this.state.onHide();
-          const data = new URLSearchParams();
-           data.append("name", this.state.cohort_name);
-          data.append("wallet_addresses", JSON.stringify(addressList));
-
-          if (this.props.isEdit && this.props.cohortId) {
-            
-            data.append("cohort_id", this.props.cohortId);
-            // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
-          }
-
-          createCohort(data, this);
-          this.state.onHide();
-  
-          this.state.changeList && this.state.changeList(walletList);
-         
-        }, 100);
+    if (this.state.addWalletList) {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
       }
-  };
+      this.timeout = setTimeout(() => {
+        let arr = [];
+        let addressList = [];
+        let displayAddress = [];
+        let walletList = [];
+        for (let i = 0; i < this.state.addWalletList.length; i++) {
+          let curr = this.state.addWalletList[i];
+          if (!arr.includes(curr.address.trim()) && curr.address) {
+            walletList.push(curr);
+            arr.push(curr.address.trim());
+            arr.push(curr.displayAddress?.trim());
+            addressList.push(curr.address.trim());
+          }
+        }
+        let addWallet = walletList;
+        // console.log("arr", arr, JSON.stringify(arr));
+        addWallet?.map((w, i) => {
+          w.id = `wallet${i + 1}`;
+        });
+        // localStorage.setItem("CohortWallet", JSON.stringify(addWallet));
 
+        // this.state.onHide();
+        const data = new URLSearchParams();
+        data.append("name", this.state.cohort_name);
+        data.append("wallet_addresses", JSON.stringify(addressList));
+
+        if (this.props.isEdit && this.props.cohortId) {
+          data.append("cohort_id", this.props.cohortId);
+          // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
+        }
+
+        createCohort(data, this);
+        this.state.onHide();
+
+        this.state.changeList && this.state.changeList(walletList);
+      }, 100);
+    }
+  };
 
   handleDeleteCohort = () => {
     //  let addressList = this.props?.walletaddress && this.props?.walletaddress?.map(e => e.wallet_address);
     const data = new URLSearchParams();
     // data.append("name", this.state.cohort_name);
     // data.append("wallet_addresses", JSON.stringify(addressList));
-      data.append("cohort_id", this.props.cohortId);
-      
-
+    data.append("cohort_id", this.props.cohortId);
 
     deleteCohort(data, this);
     this.state.onHide();
-    
-  }
+  };
   copyLink = () => {
     navigator.clipboard.writeText(this.state.link);
     toast.success("Share link has been copied");
@@ -435,8 +431,50 @@ class ExitOverlay extends BaseReactComponent {
     // console.log('Hey');
   };
 
+  handleUpload = () => {
+    this.fileInputRef.current.click();
+     console.log("upload click");
+  }
+
+  handleFileSelect = (event) => {
+  
+    const file = event.target.files[0];
+   
+    if (file.type === 'text/csv' || file.type === 'text/plain') {
+      Papa.parse(file, {
+        complete: (results) => {
+          let addressList = [];
+          let prevAddressList = [];
+          this.state?.addWalletList && this.state?.addWalletList.map((e) => {
+            if (e.address !== "" || e.displayAddress != "") {
+              prevAddressList.push(e);
+              }
+            });
+         
+          results?.data?.map((e,i) => {
+            addressList.push({
+              id: `wallet${prevAddressList.length + (i + 1)}`,
+              address: e[0],
+              coins: [],
+              displayAddress: "",
+              wallet_metadata: {},
+            });
+
+          })
+
+          this.setState({
+            addWalletList: [...prevAddressList, ...addressList],
+          });
+           console.log(results.data, addressList, prevAddressList);
+        },
+      });
+    } else {
+      console.log('Invalid file type. Only CSV and text files are allowed.');
+    }
+
+  };
+
   render() {
- 
     return (
       <Modal
         show={this.state.show}
@@ -816,11 +854,18 @@ class ExitOverlay extends BaseReactComponent {
                       )}
 
                       <div className="save-btn-section">
+                        <input
+                          type="file"
+                          ref={this.fileInputRef}
+                          onChange={this.handleFileSelect}
+                          style={{ display: "none" }}
+                        />
                         <Button
                           className={`secondary-btn ${
                             this.state.email ? "active" : ""
                           }`}
                           type="button"
+                          onClick={this.handleUpload}
                         >
                           Upload CSV / Text file
                         </Button>
