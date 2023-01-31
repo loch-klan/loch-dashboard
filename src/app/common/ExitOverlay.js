@@ -332,10 +332,10 @@ class ExitOverlay extends BaseReactComponent {
 
 
   handleDeleteCohort = () => {
-     let addressList = this.props?.walletaddress && this.props?.walletaddress?.map(e => e.wallet_address);
+    //  let addressList = this.props?.walletaddress && this.props?.walletaddress?.map(e => e.wallet_address);
     const data = new URLSearchParams();
-    data.append("name", this.state.cohort_name);
-    data.append("wallet_addresses", JSON.stringify(addressList));
+    // data.append("name", this.state.cohort_name);
+    // data.append("wallet_addresses", JSON.stringify(addressList));
       data.append("cohort_id", this.props.cohortId);
       
 
