@@ -17,6 +17,22 @@ export const createCohort = (data,ctx) => {
 };
 
 
+export const deleteCohort = (data, ctx) => {
+  //   let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("wallet/user-cohort/delete-user-cohort", data)
+    .then((res) => {
+      if (!res.data.error) {
+        ctx.props.apiResponse(true);
+        console.log("delete cohort", res.data.data, ctx);
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+
 export const searchCohort = (data,ctx) => {
     // let data = new URLSearchParams();
 

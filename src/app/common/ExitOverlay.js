@@ -49,13 +49,15 @@ import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
 import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
-import { createCohort } from '../cohort/Api';
+import { createCohort, deleteCohort } from '../cohort/Api';
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
     const dummyUser = localStorage.getItem("lochDummyUser");
     let startDate = new Date();
     startDate.setFullYear(startDate.getFullYear() - 1);
+
+    // console.log("props add", props?.walletaddress);
 
     this.state = {
       dummyUser,
@@ -106,7 +108,25 @@ class ExitOverlay extends BaseReactComponent {
       ],
       addWalletList:
         props?.walletaddress && props.isEdit
-          ? props?.walletaddress
+          ? props?.walletaddress?.map((e, i) =>
+          {
+            return {
+              id: `wallet${i + 1}`,
+              address: e?.wallet_address ? e.wallet_address : "",
+              displayAddress: e?.display_address ? e.display_address : "",
+              wallet_metadata: {},
+              coinFound: true,
+              coins: e?.chains ? e?.chains.map(e => {
+                return {
+                  chain_detected: true,
+                  coinCode: e.code,
+                  coinName: e.name,
+                  coinColor: e.color,
+                  coinSymbol: e.symbol,
+                };
+              }) : [],
+            };
+          })
           : [
               {
                 id: `wallet1`,
@@ -117,7 +137,7 @@ class ExitOverlay extends BaseReactComponent {
               },
             ],
       isCohort: true,
-      cohort_name: props.isEdit && props?.headerTitle  ? props?.headerTitle : "",
+      cohort_name: props.isEdit && props?.headerTitle ? props?.headerTitle : "",
       changeList: props.changeWalletList,
     };
   }
@@ -295,6 +315,12 @@ class ExitOverlay extends BaseReactComponent {
            data.append("name", this.state.cohort_name);
           data.append("wallet_addresses", JSON.stringify(addressList));
 
+          if (this.props.isEdit && this.props.cohortId) {
+            
+            data.append("cohort_id", this.props.cohortId);
+            // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
+          }
+
           createCohort(data, this);
           this.state.onHide();
   
@@ -304,6 +330,20 @@ class ExitOverlay extends BaseReactComponent {
       }
   };
 
+
+  handleDeleteCohort = () => {
+     let addressList = this.props?.walletaddress && this.props?.walletaddress?.map(e => e.wallet_address);
+    const data = new URLSearchParams();
+    data.append("name", this.state.cohort_name);
+    data.append("wallet_addresses", JSON.stringify(addressList));
+      data.append("cohort_id", this.props.cohortId);
+      
+
+
+    deleteCohort(data, this);
+    this.state.onHide();
+    
+  }
   copyLink = () => {
     navigator.clipboard.writeText(this.state.link);
     toast.success("Share link has been copied");
@@ -396,6 +436,7 @@ class ExitOverlay extends BaseReactComponent {
   };
 
   render() {
+ 
     return (
       <Modal
         show={this.state.show}
@@ -691,18 +732,21 @@ class ExitOverlay extends BaseReactComponent {
 
                               {(elem.address == "" ||
                                 elem.displayAddress == "") &&
-                                index == 0 && (
-                                  <span className="paste-text">
-                                    <Image
-                                      src={CopyLink}
-                                      // onClick={() => this.setState({ emailError: false })}
-                                      style={{ cursor: "pointer" }}
-                                    />
-                                    <p className="inter-display-medium f-s-16 lh-19">
-                                      Paste
-                                    </p>
-                                  </span>
-                                )}
+                              index == 0 &&
+                              !this.props?.isEdit ? (
+                                <span className="paste-text">
+                                  <Image
+                                    src={CopyLink}
+                                    // onClick={() => this.setState({ emailError: false })}
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                  <p className="inter-display-medium f-s-16 lh-19">
+                                    Paste
+                                  </p>
+                                </span>
+                              ) : (
+                                ""
+                              )}
 
                               <input
                                 autoFocus
@@ -788,6 +832,7 @@ class ExitOverlay extends BaseReactComponent {
                               style={
                                 this.props.isEdit ? { border: "none" } : {}
                               }
+                              onClick={this.handleDeleteCohort}
                             >
                               Delete
                             </Button>

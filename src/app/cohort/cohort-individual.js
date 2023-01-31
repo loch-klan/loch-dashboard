@@ -222,6 +222,7 @@ class CohortPage extends BaseReactComponent {
             modalType={"cohort"}
             headerTitle={PageName}
             isEdit={true}
+            cohortId={this.state.cohortId}
             walletaddress={this.state.cohortWalletAddress}
             addedon={moment(this.state?.createOn).format("DD/MM/YY")}
           />

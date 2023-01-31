@@ -40,6 +40,7 @@ import CoinChip from "../wallet/CoinChip";
 import ExitOverlay from "../common/ExitOverlay";
 import { searchCohort } from "./Api";
 import moment from "moment";
+import CustomChip from "../../utils/commonComponent/CustomChip";
 class Cohort extends Component {
   constructor(props) {
     super(props);
@@ -63,10 +64,11 @@ class Cohort extends Component {
       sortByName: false,
       apiResponse: false,
       cardList: [],
-      isEdit: false,
+      isEditModal: false,
       createOn: "",
       editItemName: "",
       editWalletAddressList: [],
+      editcohortId:"",
     };
   }
 
@@ -105,7 +107,7 @@ class Cohort extends Component {
       this.makeApiCall();
     }
 
-    if (prevState.apiResponse != this.state.apiResponse) {
+    if (this.state.apiResponse) {
       console.log("update");
        this.makeApiCall();
       this.setState({
@@ -121,14 +123,14 @@ class Cohort extends Component {
     });
   };
 
-  handleEdit = (i, name) => {
+  handleEdit = (i) => {
     let walletList = this.state.cardList;
-
     this.setState({
-      isEdit: !this.state.isEdit,
+      isEditModal: !this.state.isEditModal,
       createOn: walletList[i]?.created_on,
       editItemName: walletList[i]?.name,
-      editWalletAddressList: walletList[i]?.wallet_addresses,
+      editWalletAddressList: walletList[i]?.wallet_address_details,
+      editcohortId:walletList[i]?.id,
     });
   }
 
@@ -252,6 +254,8 @@ class Cohort extends Component {
     console.log("api respinse", value);
   };
 
+  // sortByAmount = ()
+
   render() {
     return (
       <div className="cohort-page-section">
@@ -272,17 +276,20 @@ class Cohort extends Component {
           ""
         )}
 
-        {this.state.isEdit ? (
+        {this.state.isEditModal ? (
           <ExitOverlay
-            show={this.state.cohortModal}
+            show={this.state.isEditModal}
             // link="http://loch.one/a2y1jh2jsja"
             onHide={this.handleEdit}
             history={this.props.history}
             modalType={"cohort"}
             headerTitle={this.state.editItemName}
             isEdit={true}
-            // walletaddress={this.state.cohortWalletList}
+            changeWalletList={this.handleChangeList}
+            apiResponse={(e) => this.CheckApiResponse(e)}
+            walletaddress={this.state.editWalletAddressList}
             addedon={moment(this.state?.createOn).format("DD/MM/YY")}
+            cohortId={this.state.editcohortId}
           />
         ) : (
           ""
@@ -416,7 +423,7 @@ class Cohort extends Component {
                                 state: {
                                   id: item.id,
                                   cohortWalletList:
-                                    this.state?.cohortWalletList,
+                                    item?.wallet_address_details,
                                 },
                               })
                             }
@@ -438,7 +445,7 @@ class Cohort extends Component {
                           <Image
                             src={EditIcon}
                             className="cp editIcon"
-                            onClick={() => this.handleEdit(i, item.name)}
+                            onClick={() => this.handleEdit(i)}
                             style={{ marginLeft: "auto" }}
                           />
                         </div>
@@ -446,13 +453,16 @@ class Cohort extends Component {
                         {/* Bottom Section Address list */}
                         <div>
                           {/* List Item */}
-                          {item?.wallet_addresses?.map((e, i) => {
-                            let address = e;
-                            if (e?.length > 14) {
+                          {item?.wallet_address_details?.map((e, i) => {
+                            let address = e?.wallet_address;
+                            if (e?.wallet_address.length > 14) {
                               address =
-                                e.substr(0, 6) +
+                                e?.wallet_address.substr(0, 4) +
                                 "..." +
-                                e.substr(e.length - 6, e.length);
+                                e?.wallet_address.substr(
+                                  e?.wallet_address.length - 4,
+                                  e?.wallet_address.length
+                                );
                             }
                             return (
                               <div
@@ -462,7 +472,8 @@ class Cohort extends Component {
                                   alignItems: "center",
                                   padding: "1.5rem",
                                   borderBottom: `${
-                                    item?.wallet_addresses.length - 1 === i
+                                    item?.wallet_address_details.length - 1 ===
+                                    i
                                       ? "none"
                                       : "1px solid rgba(229, 229, 230, 0.5)"
                                   }`,
@@ -474,12 +485,18 @@ class Cohort extends Component {
                                 </h4>
 
                                 {/* chip */}
-                                <CoinChip
+                                {/* <CoinChip
                                   colorCode={"#E84042"}
                                   coin_img_src={Coin}
                                   coin_percent={"Avalanche"}
                                   type={"cohort"}
-                                />
+                                /> */}
+                                <CustomChip
+                                  coins={e.chains}
+                                  key={i}
+                                  isLoaded={true}
+                                  isCohort={true}
+                                ></CustomChip>
                               </div>
                             );
                           })}
