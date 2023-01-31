@@ -431,7 +431,7 @@ class Cost extends Component {
           <div
             style={{
               position: "relative",
-              minHeight: "80rem",
+              minHeight: "68rem",
               minWidth: "85rem",
             }}
           >
@@ -466,7 +466,7 @@ class Cost extends Component {
             id="cp"
             style={{
               position: "relative",
-              minHeight: "80rem",
+              minHeight: "68rem",
               minWidth: "85rem",
             }}
           >
