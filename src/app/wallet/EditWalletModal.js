@@ -4,7 +4,7 @@ import { Modal, Image, Button } from 'react-bootstrap'
 import closeIcon from '../../assets/images/icons/dummyX.svg'
 import { connect } from 'react-redux';
 import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
-import unrecognizedIcon from '../../image/unrecognized.svg';
+import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
 import { lightenDarkenColor } from '../../utils/ReusableFunctions';
 import { AddNameTag, DeleteWallet, EditSpecificWallet } from '../../utils/AnalyticsFunctions';
@@ -63,7 +63,7 @@ class EditWalletModal extends BaseReactComponent {
 
     if (this.state.walletTag !== this.state.prevTag) {
       this.setState({
-        prevTag: this.state.walletTag
+        prevTag: this.state.walletTag,
       });
       AddNameTag({
         session_id: getCurrentUser().id,
@@ -102,16 +102,22 @@ class EditWalletModal extends BaseReactComponent {
     deleteWallet(this, data);
   };
 
-  getDays = (d) => {
-    const date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    let today = `${year}-${month}-${day}`;
-    return (
-      (new Date(today).getTime() - new Date(d.split(" ")[0]).getTime()) /
-      (1000 * 3600 * 24)
-    );
+  getDays = (dateString) => {
+    console.log("date",dateString)
+    // const date = new Date();
+    // let day = date.getDate();
+    // let month = date.getMonth() + 1;
+    // let year = date.getFullYear();
+    // let today = `${year}-${month}-${day}`;
+    // return (
+    //   (new Date(today).getTime() - new Date(d.split(" ")[0]).getTime()) /
+    //   (1000 * 3600 * 24)
+    // );
+    const date = new Date(dateString);
+    const now = new Date();
+    const timeDiff = Math.abs(now - date);
+    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    return daysDiff;
   };
   render() {
     const chips = this.state.coinchips.map((e, index) => {
