@@ -57,7 +57,6 @@ class Cohort extends Component {
       isLoading: true,
       cohortModal: false,
 
-
       start: 0,
       sorts: [],
       // sortByAmount: false,
@@ -70,7 +69,8 @@ class Cohort extends Component {
       editItemName: "",
       editWalletAddressList: [],
       editcohortId: "",
-      sortedList:[],
+      sortedList: [],
+      RegisterModal:false,
     };
   }
 
@@ -100,9 +100,29 @@ class Cohort extends Component {
 
   handleCohort = () => {
     console.log("cohort click");
-    this.setState({
-      cohortModal: !this.state.cohortModal,
-    });
+    const isDummy = localStorage.getItem("lochDummyUser");
+    const islochUser = JSON.parse(localStorage.getItem("lochUser"));
+    // console.log("isDummy", isDummy, "isLoch", islochUser)
+  
+    if (islochUser) {
+     
+      console.log("loch user");
+      this.setState({
+        RegisterModal: false,
+      }, () => {
+        this.setState({
+        cohortModal: !this.state.cohortModal,
+      })
+      });
+    } else if (isDummy) {
+       console.log("create account");
+       this.setState({
+         RegisterModal: !this.state.RegisterModal,
+         cohortModal: false,
+       });
+      
+    }
+   
   };
 
   handleEdit = (i) => {
@@ -290,6 +310,17 @@ class Cohort extends Component {
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
           />
+        ) : this.state.RegisterModal ? (
+          <ExitOverlay
+            show={this.state.RegisterModal}
+            // link="http://loch.one/a2y1jh2jsja"
+            onHide={this.handleCohort}
+            history={this.props.history}
+            modalType={"create_account"}
+            // headerTitle={"Create a Wallet cohort"}
+            // changeWalletList={this.handleChangeList}
+            // apiResponse={(e) => this.CheckApiResponse(e)}
+          />
         ) : (
           ""
         )}
@@ -355,7 +386,7 @@ class Cohort extends Component {
           </div>
           {/* card  */}
           <Row style={{ minWidth: "91rem" }}>
-            {this.state?.sortedList?.length !== 0  ? (
+            {this.state?.sortedList?.length !== 0 ? (
               this.state?.sortedList?.map((item, i) => {
                 return (
                   <Col
@@ -523,11 +554,9 @@ class Cohort extends Component {
               })
             ) : (
               <Col md={12}>
-          
-                  <div className="animation-wrapper">
-                    <Loading />
-                  </div>
-              
+                <div className="animation-wrapper">
+                  <Loading />
+                </div>
               </Col>
             )}
           </Row>

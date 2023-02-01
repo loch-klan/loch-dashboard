@@ -51,6 +51,7 @@ import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
 import { createCohort, deleteCohort } from '../cohort/Api';
 import Papa from "papaparse";
+import { updateUser } from '../profile/Api';
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -61,10 +62,17 @@ class ExitOverlay extends BaseReactComponent {
 
     // console.log("props add", props?.walletaddress);
 
+    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
     this.state = {
+      // create account for cohort 
+      firstName: userDetails?.first_name || "",
+      lastName: userDetails?.last_name || "",
+      mobileNumber: userDetails?.mobile || "",
+      link: userDetails?.link || dummyUser || "",
+
       dummyUser,
       show: props.show,
-      link: `${BASE_URL_S3}home/${dummyUser}`,
+      sharelink: `${BASE_URL_S3}home/${dummyUser}`,
       isactive: false,
       email: "",
       dropdowntitle: "View and edit",
@@ -344,7 +352,7 @@ class ExitOverlay extends BaseReactComponent {
     this.state.onHide();
   };
   copyLink = () => {
-    navigator.clipboard.writeText(this.state.link);
+    navigator.clipboard.writeText(this.state.sharelink);
     toast.success("Share link has been copied");
     LeaveLinkCopied({
       session_id: getCurrentUser().id,
@@ -352,26 +360,40 @@ class ExitOverlay extends BaseReactComponent {
     });
   };
   handleSave = () => {
-    let email_arr = [];
-    let data = JSON.parse(localStorage.getItem("addWallet"));
-    if (data) {
-      data.map((info) => {
-        email_arr.push(info.address);
-      });
-      const url = new URLSearchParams();
-      url.append("email", this.state.email);
-      // url.append("wallet_addresses", JSON.stringify(email_arr));
-      fixWalletApi(this, url);
-      LeaveEmailAdded({
-        session_id: getCurrentUser().id,
-        email_address: this.state.email,
-      });
+    // console.log("create email", this.state.email);
+    if (this.props.modalType === "create_account") {
+       const data = new URLSearchParams();
+       data.append("first_name", this.state.firstName);
+       data.append("last_name", this.state.lastName);
+       data.append("email", this.state.email);
+       data.append("mobile", this.state.mobileNumber);
+       updateUser(data, this);
+    } else {
+       let email_arr = [];
+       let data = JSON.parse(localStorage.getItem("addWallet"));
+       if (data) {
+         data.map((info) => {
+           email_arr.push(info.address);
+         });
+         const url = new URLSearchParams();
+         url.append("email", this.state.email);
+         // url.append("wallet_addresses", JSON.stringify(email_arr));
+         fixWalletApi(this, url);
+         LeaveEmailAdded({
+           session_id: getCurrentUser().id,
+           email_address: this.state.email,
+         });
+       }
+      
     }
+   
   };
   handleRedirection = () => {
     // console.log("this", this.props);
-    this.setState({ show: false, showRedirection: true });
-    this.props.handleRedirection();
+    
+       this.setState({ show: false, showRedirection: true });
+       this.props.handleRedirection();
+   
   };
   handleSelect = (e) => {
     // console.log(e);
@@ -472,7 +494,7 @@ class ExitOverlay extends BaseReactComponent {
             );
            
           });
-          console.log(results.data, addressList, prevAddressList);
+          // console.log(results.data, addressList, prevAddressList);
         },
       });
     } else {
@@ -809,7 +831,6 @@ class ExitOverlay extends BaseReactComponent {
                                   <Image
                                     src={CopyLink}
                                     // onClick={() => this.setState({ emailError: false })}
-                                    
                                   />
                                   <p className="inter-display-medium f-s-16 lh-19">
                                     Paste
@@ -825,7 +846,7 @@ class ExitOverlay extends BaseReactComponent {
                                 value={
                                   elem.displayAddress || elem.address || ""
                                 }
-                                ref={index == 0 ? this.pasteInput:""}
+                                ref={index == 0 ? this.pasteInput : ""}
                                 placeholder="Paste any wallet address or ENS here"
                                 // className='inter-display-regular f-s-16 lh-20'
                                 className={`inter-display-regular f-s-16 lh-20 ${
@@ -933,6 +954,73 @@ class ExitOverlay extends BaseReactComponent {
                 ""
               )}
             </div>
+          ) : this.props.modalType === "create_account" ? (
+            <div className="exit-overlay-body">
+              <h6 className="inter-display-medium f-s-20 lh-24 ">
+                Don’t lose your data
+              </h6>
+              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center">
+                Don’t let your hard work go to waste
+              </p>
+              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
+                Save your email so you know exactly what’s happening
+              </p>
+              <div className="email-section">
+                <Form onValidSubmit={this.handleSave}>
+                  <FormElement
+                    valueLink={this.linkState(this, "email")}
+                    // label="Email Info"
+                    required
+                    validations={[
+                      {
+                        validate: FormValidator.isRequired,
+                        message: "",
+                      },
+                      {
+                        validate: FormValidator.isEmail,
+                        message: "Please enter valid email id",
+                      },
+                    ]}
+                    control={{
+                      type: CustomTextControl,
+                      settings: {
+                        placeholder: "Email",
+                      },
+                    }}
+                  />
+                  <div className="save-btn-section">
+                    <Button
+                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                        this.state.email ? "active" : ""
+                      }`}
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </Form>
+              </div>
+
+              <div className="m-b-36 footer">
+                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                  At Loch, we care intensely about your privacy and anonymity.
+                </p>
+                <CustomOverlay
+                  text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                  position="top"
+                  isIcon={true}
+                  IconImage={LockIcon}
+                  isInfo={true}
+                  className={"fix-width"}
+                >
+                  <Image
+                    src={InfoIcon}
+                    className="info-icon"
+                    onMouseEnter={this.leavePrivacy}
+                  />
+                </CustomOverlay>
+              </div>
+            </div>
           ) : (
             <div className="exit-overlay-body">
               <h6 className="inter-display-medium f-s-20 lh-24 ">
@@ -984,7 +1072,7 @@ class ExitOverlay extends BaseReactComponent {
               </p>
               <div className="m-b-24 links">
                 <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
-                  {this.state.link}
+                  {this.state.sharelink}
                 </div>
                 {/* <div className='edit-options'>
                                 <Image src={EditBtnImage} className="m-r-8"/>

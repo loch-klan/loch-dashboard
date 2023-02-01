@@ -16,16 +16,20 @@ export const updateUser = (data,ctx) =>{
         }
         localStorage.setItem("lochUser",JSON.stringify(obj))
         // toast.success("Profile Successfully Updated");
-        toast.success(
-          <div className="custom-toast-msg">
-            <div>
-            Profile updated
+        // console.log("ctx",ctx)
+        if (ctx.props.modalType === "create_account") {
+          ctx.state.onHide();
+        } else {
+          toast.success(
+            <div className="custom-toast-msg">
+              <div>Profile updated</div>
+              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                You’ve sucessfully updated your profile
+              </div>
             </div>
-            <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-            You’ve sucessfully updated your profile
-            </div>
-          </div>
           );
+        }
+       
       } else{
         toast.error(res.data.message || "Something went wrong");
       }

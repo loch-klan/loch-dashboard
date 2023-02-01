@@ -342,7 +342,7 @@ function Sidebar(props) {
                         <NavLink
                           className="nav-link"
                           to="/cohort"
-                          onClick={handleCohort}
+                          // onClick={handleCohort}
                           activeclassname="active"
                         >
                           <Image
@@ -533,7 +533,7 @@ function Sidebar(props) {
           ) : (
             ""
           )}
-          {cohort ? (
+          {/* {cohort ? (
             <ExitOverlay
               show={cohort}
               // link="http://loch.one/a2y1jh2jsja"
@@ -549,7 +549,7 @@ function Sidebar(props) {
             />
           ) : (
             ""
-          )}
+          )} */}
           {apiModal ? (
             <ExitOverlay
               show={apiModal}

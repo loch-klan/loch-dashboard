@@ -1063,6 +1063,14 @@ form {
   &:not(.disabled) {
     cursor: auto;
   }
+
+  .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    // color: #fff;
+    outline: none;
+    box-shadow: none;
+    border: 1px solid $black-191 !important;
+    background-color: $black-191 !important;
+}
 }
 
 .secondary-btn {
