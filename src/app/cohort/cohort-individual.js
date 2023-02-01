@@ -836,6 +836,7 @@ here`
                 "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
               borderRadius: "16px",
               padding: "2.1rem 2.4rem",
+              bottomBottom:"1rem",
             }}
           >
             {/* Address */}
@@ -858,8 +859,8 @@ here`
                               marginBottom: "0rem",
                               marginRight: `${
                                 this.state.walletAddresses.length < 10
-                                  ? "1rem"
-                                  : "0rem"
+                                  ? "0rem"
+                                  : "1rem"
                               }`,
                             }
                           : {
@@ -874,12 +875,12 @@ here`
                     >
                       <div style={{}} className="address-left">
                         <h4 className="inter-display-medium f-s-13 l-h-16 grey-636">
-                          {e}
+                          {e.wallet_address}
                         </h4>
                         <Image
                           src={CopyClipboardIcon}
                           style={{ marginLeft: "0.8rem" }}
-                          onClick={() => this.copyLink(e)}
+                          onClick={() => this.copyLink(e.wallet_address)}
                         />
                         {/* <Image
                         src={EditIcon}
@@ -889,7 +890,7 @@ here`
                       </div>
                       <h4 className="inter-display-medium f-s-16 lh-19">
                         {CurrencyType(false)}
-                        {numToCurrency(370000000)}{" "}
+                        {numToCurrency(e.net_worth)}{" "}
                         <span className="f-s-10 grey-ADA">
                           {" "}
                           {CurrencyType(true)}
@@ -903,7 +904,7 @@ here`
           {/* Address End */}
 
           {/* Recommandation Start */}
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -928,10 +929,10 @@ here`
                 style={{ marginLeft: "1rem", width: "0.55rem" }}
               />
             </h2>
-          </div>
-          <div className="cards">
+          </div> */}
+          {/* <div className="cards"> */}
             {/* Recomandation Cards */}
-            {[...Array(3)].map((e) => {
+            {/* {[...Array(3)].map((e) => {
               return (
                 <div className="walletcard">
                   <>
@@ -995,8 +996,8 @@ here`
                   </>
                 </div>
               );
-            })}
-          </div>
+            })} */}
+          {/* </div> */}
 
           {/* Recommandation */}
         </div>

@@ -25,7 +25,11 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
       {isLoaded ? (
         sortedCoins ? (
           sortedCoins.length > 1 ? (
-            <div className="chip-wrapper" id={id} style={isCohort ? {position:"static"}:{}}>
+            <div
+              className="chip-wrapper"
+              id={id}
+              style={isCohort ? { position: "static" } : {}}
+            >
               <div className="chip-container-dual">
                 <Image
                   src={sortedCoins[0]?.coinSymbol}
@@ -49,7 +53,11 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
               </div>
             </div>
           ) : (
-            <div className="chip-wrapper" id={id}>
+            <div
+              className="chip-wrapper"
+              id={id}
+              style={isCohort ? { position: "static" } : {}}
+            >
               <div className="chip-container">
                 <Image
                   src={sortedCoins[0]?.coinSymbol}
@@ -67,7 +75,11 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
             </div>
           )
         ) : (
-          <div className="chip-wrapper" id={id}>
+          <div
+            className="chip-wrapper"
+            id={id}
+            style={isCohort ? { position: "static" } : {}}
+          >
             {/* <div className="chip-container">
                             <Image src={unrecognized} className="unrecognized" style={{border: `1px solid ${lightenDarkenColor("#CACBCC",-0.15)} `}} />
                                 <Badge className="inter-display-medium f-s-13 lh-16 grey-313">Unrecognized</Badge>
@@ -75,7 +87,11 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
           </div>
         )
       ) : (
-        <div className="chip-wrapper" id={id}>
+        <div
+          className="chip-wrapper"
+          id={id}
+          style={isCohort ? { position: "static" } : {}}
+        >
           {/* <div className="spinner-chip-container">
                             <div className="spinner">
                                 <div className="bounce1"></div>

@@ -61,7 +61,7 @@ export const getCohort = (data, ctx) => {
         // console.log("get cohort", res.data.data.user_cohort);
         let response = res.data.data?.user_cohort;
         ctx.setState({
-          walletAddresses: response?.wallet_addresses,
+          walletAddresses: response?.wallet_address_details,
           totalNetWorth: response?.total_net_worth,
           createOn: response?.created_on,
           // frequentlyPurchasedAsset: response.frequently_purchased_asset,

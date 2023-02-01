@@ -579,15 +579,15 @@ class ExitOverlay extends BaseReactComponent {
               <Image src={ExitOverlayIcon} />
             </div>
           )}
-          <div className="closebtn" onClick={
-            () => {
-              if (this.props.modalType === "create_account") {
-                this.props.isSkip();
-              }
+          <div
+            className="closebtn"
+            onClick={() => {
+              // if (this.props.modalType === "create_account") {
+              //   this.props.isSkip();
+              // }
               this.state.onHide();
-
-            }
-          }>
+            }}
+          >
             <Image src={CloseIcon} />
           </div>
         </Modal.Header>
@@ -973,6 +973,7 @@ class ExitOverlay extends BaseReactComponent {
               <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
                 Save your email so you know exactly what’s happening
               </p>
+              {/* this.props.isSkip(); */}
               <div className="email-section">
                 <Form onValidSubmit={this.handleSave}>
                   <FormElement
@@ -1007,8 +1008,12 @@ class ExitOverlay extends BaseReactComponent {
                     </Button>
                   </div>
                 </Form>
+                  <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-t-16 skip-link" onClick={() => {
+                    this.props.isSkip();
+                  }}>
+                Skip for now
+                </p>
               </div>
-
               <div className="m-b-36 footer">
                 <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
                   At Loch, we care intensely about your privacy and anonymity.

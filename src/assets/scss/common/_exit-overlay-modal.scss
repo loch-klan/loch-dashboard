@@ -76,6 +76,12 @@
                 align-items: center;
                 padding: 0rem 15.5rem;
 
+                .skip-link{
+                    &:hover{
+                        color:$primary;
+                    }
+                }
+
                 h6 {
                     color: $primary;
                     margin-bottom: 0.6rem;

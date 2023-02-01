@@ -103,7 +103,7 @@ class Cohort extends Component {
     // console.log("cohort click");
     const isDummy = localStorage.getItem("lochDummyUser");
     const islochUser = JSON.parse(localStorage.getItem("lochUser"));
-    // console.log("isDummy", isDummy, "isLoch", islochUser)
+    // console.log("skip", this.state.skip)
   
     if (islochUser || this.state.skip) {
       // console.log("loch user");
@@ -296,8 +296,11 @@ class Cohort extends Component {
   };
 
   handleSkip = () => {
+    // console.log("handle skip")
     this.setState({
       skip:true,
+    }, () => {
+       this.handleCohort();
     });
   }
 
@@ -326,7 +329,7 @@ class Cohort extends Component {
             onHide={this.handleCohort}
             history={this.props.history}
               modalType={"create_account"}
-              isSkip={this.handleSkip}
+              isSkip={()=> this.handleSkip()}
             // headerTitle={"Create a Wallet cohort"}
             // changeWalletList={this.handleChangeList}
             // apiResponse={(e) => this.CheckApiResponse(e)}
@@ -501,12 +504,14 @@ class Cohort extends Component {
                           </h4>
                         </div>
                         {/* edit icon */}
-                        <Image
-                          src={EditIcon}
-                          className="cp editIcon"
-                          onClick={() => this.handleEdit(i)}
-                          style={{ marginLeft: "auto" }}
-                        />
+                        {item.name != "Loch Template Whales" && (
+                          <Image
+                            src={EditIcon}
+                            className="cp editIcon"
+                            onClick={() => this.handleEdit(i)}
+                            style={{ marginLeft: "auto" }}
+                          />
+                        )}
                       </div>
                       {/* Top Section END */}
                       {/* Bottom Section Address list */}
@@ -515,14 +520,18 @@ class Cohort extends Component {
                         {(item?.wallet_address_details)
                           .slice(0, 5)
                           ?.map((e, i) => {
-                            let address = e?.wallet_address;
-                            if (e?.wallet_address.length > 14) {
+                            let fulladdress =
+                              e?.display_address && e?.display_address != ""
+                                ? e?.display_address
+                                : e?.wallet_address;
+                            let address = fulladdress;
+                            if (fulladdress.length > 11) {
                               address =
-                                e?.wallet_address.substr(0, 4) +
+                                fulladdress.substr(0, 4) +
                                 "..." +
-                                e?.wallet_address.substr(
-                                  e?.wallet_address.length - 4,
-                                  e?.wallet_address.length
+                                fulladdress.substr(
+                                  fulladdress.length - 4,
+                                  fulladdress.length
                                 );
                             }
                             return (
