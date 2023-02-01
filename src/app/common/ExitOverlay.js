@@ -146,6 +146,7 @@ class ExitOverlay extends BaseReactComponent {
   }
 
   fileInputRef = React.createRef();
+  pasteInput = React.createRef();
 
   componentDidMount() {
     this.props.getAllCoins();
@@ -306,26 +307,28 @@ class ExitOverlay extends BaseReactComponent {
           }
         }
         let addWallet = walletList;
-        // console.log("arr", arr, JSON.stringify(arr));
-        addWallet?.map((w, i) => {
-          w.id = `wallet${i + 1}`;
-        });
-        // localStorage.setItem("CohortWallet", JSON.stringify(addWallet));
+        if (addressList.length !== 0) {
+          addWallet?.map((w, i) => {
+            w.id = `wallet${i + 1}`;
+          });
+          // localStorage.setItem("CohortWallet", addWallet);
 
-        // this.state.onHide();
-        const data = new URLSearchParams();
-        data.append("name", this.state.cohort_name);
-        data.append("wallet_addresses", JSON.stringify(addressList));
+          // this.state.onHide();
+          const data = new URLSearchParams();
+          data.append("name", this.state.cohort_name);
+          data.append("wallet_addresses", JSON.stringify(addressList));
 
-        if (this.props.isEdit && this.props.cohortId) {
-          data.append("cohort_id", this.props.cohortId);
-          // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
-        }
+          if (this.props.isEdit && this.props.cohortId) {
+            data.append("cohort_id", this.props.cohortId);
+            // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
+          }
 
-        createCohort(data, this);
-        this.state.onHide();
+          createCohort(data, this);
+          this.state.onHide();
 
-        this.state.changeList && this.state.changeList(walletList);
+          this.state.changeList && this.state.changeList(walletList);
+        } 
+        
       }, 100);
     }
   };
@@ -433,45 +436,72 @@ class ExitOverlay extends BaseReactComponent {
 
   handleUpload = () => {
     this.fileInputRef.current.click();
-     console.log("upload click");
-  }
+    // console.log("upload click");
+  };
 
   handleFileSelect = (event) => {
-  
     const file = event.target.files[0];
-   
-    if (file.type === 'text/csv' || file.type === 'text/plain') {
+
+    if (file.type === "text/csv" || file.type === "text/plain") {
       Papa.parse(file, {
         complete: (results) => {
           let addressList = [];
           let prevAddressList = [];
-          this.state?.addWalletList && this.state?.addWalletList.map((e) => {
-            if (e.address !== "" || e.displayAddress != "") {
-              prevAddressList.push(e);
+          this.state?.addWalletList &&
+            this.state?.addWalletList.map((e) => {
+              if (e.address !== "" || e.displayAddress != "") {
+                prevAddressList.push(e);
               }
             });
-         
-          results?.data?.map((e,i) => {
+
+          results?.data?.map((e, i) => {
             addressList.push({
               id: `wallet${prevAddressList.length + (i + 1)}`,
               address: e[0],
               coins: [],
-              displayAddress: "",
+              displayAddress: e[0],
               wallet_metadata: {},
             });
-
-          })
+          });
 
           this.setState({
             addWalletList: [...prevAddressList, ...addressList],
+          }, () => {
+            this.state.addWalletList?.map((e) =>
+              this.getCoinBasedOnWalletAddress(e.id,e.address)
+            );
+           
           });
-           console.log(results.data, addressList, prevAddressList);
+          console.log(results.data, addressList, prevAddressList);
         },
       });
     } else {
-      console.log('Invalid file type. Only CSV and text files are allowed.');
+      console.log("Invalid file type. Only CSV and text files are allowed.");
     }
+  };
 
+  handlePaste = async () => {
+    try {
+      const clipboardText = await navigator.clipboard.readText();
+      // setPasteValue(clipboardText);
+   
+      let addressList = this.state.addWalletList;
+        //  console.log("paste value", clipboardText, addressList)
+      addressList[0]["address"] = clipboardText;
+      addressList[0]["displayAddress"] = clipboardText;
+
+      this.setState({
+        addWalletList:addressList
+      }, () => {
+         this.getCoinBasedOnWalletAddress(
+           addressList[0]["id"],
+           addressList[0]["address"]
+         );
+      })
+  
+    } catch (error) {
+      console.error('Failed to paste from clipboard: ', error);
+    }
   };
 
   render() {
@@ -772,11 +802,14 @@ class ExitOverlay extends BaseReactComponent {
                                 elem.displayAddress == "") &&
                               index == 0 &&
                               !this.props?.isEdit ? (
-                                <span className="paste-text">
+                                <span
+                                  className="paste-text cp"
+                                  onClick={this.handlePaste}
+                                >
                                   <Image
                                     src={CopyLink}
                                     // onClick={() => this.setState({ emailError: false })}
-                                    style={{ cursor: "pointer" }}
+                                    
                                   />
                                   <p className="inter-display-medium f-s-16 lh-19">
                                     Paste
@@ -792,6 +825,7 @@ class ExitOverlay extends BaseReactComponent {
                                 value={
                                   elem.displayAddress || elem.address || ""
                                 }
+                                ref={index == 0 ? this.pasteInput:""}
                                 placeholder="Paste any wallet address or ENS here"
                                 // className='inter-display-regular f-s-16 lh-20'
                                 className={`inter-display-regular f-s-16 lh-20 ${
