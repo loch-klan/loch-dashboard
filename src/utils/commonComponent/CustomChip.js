@@ -28,16 +28,16 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
             <div className="chip-wrapper" id={id} style={isCohort ? {position:"static"}:{}}>
               <div className="chip-container-dual">
                 <Image
-                  src={sortedCoins[0].coinSymbol}
+                  src={sortedCoins[0]?.coinSymbol}
                   style={{
                     border: `1px solid ${lightenDarkenColor(
-                      sortedCoins[0].coinColor,
+                      sortedCoins[0]?.coinColor,
                       -0.15
                     )} `,
                   }}
                 />
                 <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {sortedCoins[0].coinName}
+                  {sortedCoins[0]?.coinName}
                 </Badge>
               </div>
               <div className="chip-container">
@@ -52,16 +52,16 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
             <div className="chip-wrapper" id={id}>
               <div className="chip-container">
                 <Image
-                  src={sortedCoins[0].coinSymbol}
+                  src={sortedCoins[0]?.coinSymbol}
                   style={{
                     border: `1px solid ${lightenDarkenColor(
-                      sortedCoins[0].coinColor,
+                      sortedCoins[0]?.coinColor,
                       -0.15
                     )} `,
                   }}
                 />
                 <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {sortedCoins[0].coinName}
+                  {sortedCoins[0]?.coinName}
                 </Badge>
               </div>
             </div>

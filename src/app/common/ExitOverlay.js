@@ -579,7 +579,15 @@ class ExitOverlay extends BaseReactComponent {
               <Image src={ExitOverlayIcon} />
             </div>
           )}
-          <div className="closebtn" onClick={this.state.onHide}>
+          <div className="closebtn" onClick={
+            () => {
+              if (this.props.modalType === "create_account") {
+                this.props.isSkip();
+              }
+              this.state.onHide();
+
+            }
+          }>
             <Image src={CloseIcon} />
           </div>
         </Modal.Header>

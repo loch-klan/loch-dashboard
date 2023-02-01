@@ -18,6 +18,7 @@ export const updateUser = (data,ctx) =>{
         // toast.success("Profile Successfully Updated");
         // console.log("ctx",ctx)
         if (ctx.props.modalType === "create_account") {
+          ctx.props.isSkip();
           ctx.state.onHide();
         } else {
           toast.success(

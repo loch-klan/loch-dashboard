@@ -70,7 +70,8 @@ class Cohort extends Component {
       editWalletAddressList: [],
       editcohortId: "",
       sortedList: [],
-      RegisterModal:false,
+      RegisterModal: false,
+      skip: false,
     };
   }
 
@@ -90,7 +91,7 @@ class Cohort extends Component {
    
 
     if (this.state.apiResponse) {
-      console.log("update");
+      // console.log("update");
       this.makeApiCall();
       this.setState({
         apiResponse: false,
@@ -99,29 +100,31 @@ class Cohort extends Component {
   }
 
   handleCohort = () => {
-    console.log("cohort click");
+    // console.log("cohort click");
     const isDummy = localStorage.getItem("lochDummyUser");
     const islochUser = JSON.parse(localStorage.getItem("lochUser"));
     // console.log("isDummy", isDummy, "isLoch", islochUser)
   
-    if (islochUser) {
-     
-      console.log("loch user");
+    if (islochUser || this.state.skip) {
+      // console.log("loch user");
+      this.setState(
+        {
+          RegisterModal: false,
+          skip: true,
+        },
+        () => {
+          this.setState({
+            cohortModal: !this.state.cohortModal,
+          });
+        }
+      );
+    } else if (isDummy && !this.state.skip) {
+      // console.log("create account");
       this.setState({
-        RegisterModal: false,
-      }, () => {
-        this.setState({
-        cohortModal: !this.state.cohortModal,
-      })
+        RegisterModal: !this.state.RegisterModal,
+        cohortModal: false,
       });
-    } else if (isDummy) {
-       console.log("create account");
-       this.setState({
-         RegisterModal: !this.state.RegisterModal,
-         cohortModal: false,
-       });
-      
-    }
+    } 
    
   };
 
@@ -292,6 +295,12 @@ class Cohort extends Component {
     // console.log("api respinse", value);
   };
 
+  handleSkip = () => {
+    this.setState({
+      skip:true,
+    });
+  }
+
   // sortByAmount = ()
 
   render() {
@@ -316,7 +325,8 @@ class Cohort extends Component {
             // link="http://loch.one/a2y1jh2jsja"
             onHide={this.handleCohort}
             history={this.props.history}
-            modalType={"create_account"}
+              modalType={"create_account"}
+              isSkip={this.handleSkip}
             // headerTitle={"Create a Wallet cohort"}
             // changeWalletList={this.handleChangeList}
             // apiResponse={(e) => this.CheckApiResponse(e)}
@@ -402,7 +412,8 @@ class Cohort extends Component {
                           "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
                         borderRadius: "16px",
                         // marginBottom: "3rem",
-                        height: "100%",
+                        // height: "100%",
+                        height: "37.5rem",
                       }}
                     >
                       {/* Top Section */}
@@ -501,52 +512,54 @@ class Cohort extends Component {
                       {/* Bottom Section Address list */}
                       <div>
                         {/* List Item */}
-                        {item?.wallet_address_details?.map((e, i) => {
-                          let address = e?.wallet_address;
-                          if (e?.wallet_address.length > 14) {
-                            address =
-                              e?.wallet_address.substr(0, 4) +
-                              "..." +
-                              e?.wallet_address.substr(
-                                e?.wallet_address.length - 4,
-                                e?.wallet_address.length
-                              );
-                          }
-                          return (
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                padding: "1.5rem",
-                                borderBottom: `${
-                                  item?.wallet_address_details.length - 1 === i
-                                    ? "none"
-                                    : "1px solid rgba(229, 229, 230, 0.5)"
-                                }`,
-                              }}
-                              key={i}
-                            >
-                              <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                                {address}
-                              </h4>
+                        {(item?.wallet_address_details)
+                          .slice(0, 5)
+                          ?.map((e, i) => {
+                            let address = e?.wallet_address;
+                            if (e?.wallet_address.length > 14) {
+                              address =
+                                e?.wallet_address.substr(0, 4) +
+                                "..." +
+                                e?.wallet_address.substr(
+                                  e?.wallet_address.length - 4,
+                                  e?.wallet_address.length
+                                );
+                            }
+                            return (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                  padding: "1.5rem",
+                                  borderBottom: `${
+                                    i === 4
+                                      ? "none"
+                                      : "1px solid rgba(229, 229, 230, 0.5)"
+                                  }`,
+                                }}
+                                key={i}
+                              >
+                                <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
+                                  {address}
+                                </h4>
 
-                              {/* chip */}
-                              {/* <CoinChip
+                                {/* chip */}
+                                {/* <CoinChip
                                   colorCode={"#E84042"}
                                   coin_img_src={Coin}
                                   coin_percent={"Avalanche"}
                                   type={"cohort"}
                                 /> */}
-                              <CustomChip
-                                coins={e.chains}
-                                key={i}
-                                isLoaded={true}
-                                isCohort={true}
-                              ></CustomChip>
-                            </div>
-                          );
-                        })}
+                                <CustomChip
+                                  coins={e.chains}
+                                  key={i}
+                                  isLoaded={true}
+                                  isCohort={true}
+                                ></CustomChip>
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
                   </Col>
