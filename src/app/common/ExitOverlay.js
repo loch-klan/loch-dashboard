@@ -458,11 +458,12 @@ class ExitOverlay extends BaseReactComponent {
 
   handleUpload = () => {
     this.fileInputRef.current.click();
-    // console.log("upload click");
+    console.log("upload click");
   };
 
   handleFileSelect = (event) => {
     const file = event.target.files[0];
+    console.log("event", event)
 
     if (file.type === "text/csv" || file.type === "text/plain") {
       Papa.parse(file, {
@@ -478,7 +479,7 @@ class ExitOverlay extends BaseReactComponent {
 
           results?.data?.map((e, i) => {
             addressList.push({
-              id: `wallet${prevAddressList.length + (i + 1)}`,
+              id: `wallet${prevAddressList?.length + (i + 1)}`,
               address: e[0],
               coins: [],
               displayAddress: e[0],
@@ -486,9 +487,11 @@ class ExitOverlay extends BaseReactComponent {
             });
           });
 
+          console.log("address",addressList, prevAddressList);
           this.setState({
             addWalletList: [...prevAddressList, ...addressList],
           }, () => {
+            console.log("address", this.state.addWalletList);
             this.state.addWalletList?.map((e) =>
               this.getCoinBasedOnWalletAddress(e.id,e.address)
             );
@@ -500,6 +503,7 @@ class ExitOverlay extends BaseReactComponent {
     } else {
       console.log("Invalid file type. Only CSV and text files are allowed.");
     }
+    event.target.value = "";
   };
 
   handlePaste = async () => {
@@ -561,18 +565,65 @@ class ExitOverlay extends BaseReactComponent {
                 boxShadow:
                   "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
                 borderRadius: "12px",
-                padding: "10px",
+                padding: "6px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 flexWrap: "wrap",
-                width: "69px",
+                width: "60px",
               }}
             >
-              <Image src={Coin1} style={{ margin: "0px 5px 5px 0px" }} />
-              <Image src={Coin2} style={{ margin: "0px 0px 5px 0px" }} />
-              <Image src={Coin3} style={{ margin: "0px 5px 0px 0px" }} />
-              <Image src={Coin4} style={{ margin: "0px 0px 0px 0px" }} />
+              {/* chainImages */}
+              <Image
+                src={this.props.chainImages[0]}
+                style={{
+                  margin: "0px 4px 4px 0px",
+                  width: "2.2rem",
+                  borderRadius: "0.6rem",
+                }}
+              />
+              <Image
+                src={this.props.chainImages[1]}
+                style={{
+                  margin: "0px 0px 4px 0px",
+                  width: "2.2rem",
+                  borderRadius: "0.6rem",
+                }}
+              />
+              <Image
+                src={this.props.chainImages[2]}
+                style={{
+                  margin: "0px 4px 0px 0px",
+                  width: "2.2rem",
+                  borderRadius: "0.6rem",
+                }}
+              />
+              {this.props.chainImages?.length < 5 ? (
+                <Image
+                  src={this.props.chainImages[3]}
+                  style={{
+                    margin: "0px 0px 0px 0px",
+                    width: "2.2rem",
+                    borderRadius: "0.6rem",
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    margin: "0px 0px 0px 0px",
+                    height: "2.2rem",
+                    width: "2.2rem",
+                    borderRadius: "0.6rem",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "rgba(229, 229, 230, 0.5)",
+                  }}
+                  className="inter-display-semi-bold f-s-10"
+                >
+                  {this.props.chainImages?.length - 3}+
+                </div>
+              )}
             </div>
           ) : (
             <div className="exitOverlayIcon">
@@ -1008,10 +1059,13 @@ class ExitOverlay extends BaseReactComponent {
                     </Button>
                   </div>
                 </Form>
-                  <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-t-16 skip-link" onClick={() => {
+                <p
+                  className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-t-16 skip-link"
+                  onClick={() => {
                     this.props.isSkip();
-                  }}>
-                Skip for now
+                  }}
+                >
+                  Skip for now
                 </p>
               </div>
               <div className="m-b-36 footer">

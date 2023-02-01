@@ -40,7 +40,7 @@ export const searchCohort = (data,ctx) => {
     .post("wallet/user-cohort/search-user-cohort", data)
     .then((res) => {
       if (!res.data.error) {
-        // console.log("search cohort", res.data.data)
+        // console.log("search cohort", res.data.data?.user_cohorts.results);
         ctx.setState({
           cardList: res.data.data?.user_cohorts.results,
           sortedList: res.data.data?.user_cohorts.results,
@@ -84,11 +84,14 @@ export const GetSoldAsset = (data, ctx) => {
     .post("wallet/user-cohort/get-frequently-sold-asset", data)
     .then((res) => {
       if (!res.data.error) {
-        console.log("get-frequently-sold-asset", res.data.data);
-        ctx.setState({
-          frequentlySoldAsset: res.data.data?.asset?.asset,
-          SoldAssetLoader: false,
-        });
+        // console.log("get-frequently-sold-asset", res.data.data);
+        setTimeout(() => {
+          ctx.setState({
+            frequentlySoldAsset: res.data.data?.asset?.asset,
+            SoldAssetLoader: false,
+          });
+        }, 1000);
+        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
@@ -102,11 +105,14 @@ export const GetPurchasedAsset = (data, ctx) => {
     .post("wallet/user-cohort/get-frequently-purchased-asset", data)
     .then((res) => {
       if (!res.data.error) {
-        console.log("get-frequently-purchased-asset", res.data.data);
-        ctx.setState({
-          frequentlyPurchasedAsset: res.data.data?.asset?.asset,
-          PurchasedAssetLoader: false,
-        });
+        // console.log("get-frequently-purchased-asset", res.data.data);
+        setTimeout(() => {
+          ctx.setState({
+            frequentlyPurchasedAsset: res.data.data?.asset?.asset,
+            PurchasedAssetLoader: false,
+          });
+        }, 1000);
+        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }

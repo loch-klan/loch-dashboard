@@ -47,14 +47,14 @@ export default function PageHeader(props) {
             <div className="m-r-16 show-img">
               <Image src={props.showImg} />
             </div>
-          ) : props.multipleImg ? (
+          ) : props?.multipleImg ? (
             <div className="multiple-img m-r-16">
               {props.multipleImg.map((e, i) => {
                 return (
                   <Image
                     src={e}
                     style={{
-                      zIndex: props.multipleImg.length - i,
+                      zIndex: props.multipleImg?.length - i,
                       marginLeft: i === 0 ? "0" : "-2.7rem",
                     }}
                   />

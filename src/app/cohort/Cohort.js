@@ -72,6 +72,7 @@ class Cohort extends Component {
       sortedList: [],
       RegisterModal: false,
       skip: false,
+      chainImages:[],
     };
   }
 
@@ -128,7 +129,7 @@ class Cohort extends Component {
    
   };
 
-  handleEdit = (i) => {
+  handleEdit = (i,images) => {
     let walletList = this.state?.sortedList;
     this.setState({
       isEditModal: !this.state.isEditModal,
@@ -136,6 +137,7 @@ class Cohort extends Component {
       editItemName: walletList[i]?.name,
       editWalletAddressList: walletList[i]?.wallet_address_details,
       editcohortId: walletList[i]?.id,
+      chainImages: images
     });
   };
 
@@ -352,6 +354,7 @@ class Cohort extends Component {
             walletaddress={this.state.editWalletAddressList}
             addedon={moment(this.state?.createOn).format("DD/MM/YY")}
             cohortId={this.state.editcohortId}
+            chainImages={this.state?.chainImages}
           />
         ) : (
           ""
@@ -399,8 +402,19 @@ class Cohort extends Component {
           </div>
           {/* card  */}
           <Row style={{ minWidth: "91rem" }}>
-            {this.state?.sortedList?.length !== 0 ? (
+            {this.state?.sortedList?.length !== 0  ? (
               this.state?.sortedList?.map((item, i) => {
+                let sortedAddress = (item?.wallet_address_details).sort(
+                  (a, b) => b.net_worth - a.net_worth
+                );
+                let sortedChains = sortedAddress[0]?.chains
+                  ?.sort((a, b) => (a.name > b.name ? 1 : -1))
+                  ?.map((e) => e?.symbol);
+                
+                // console.log("images", sortedChains)
+
+                
+                
                 return (
                   <Col
                     md={4}
@@ -416,7 +430,7 @@ class Cohort extends Component {
                         borderRadius: "16px",
                         // marginBottom: "3rem",
                         // height: "100%",
-                        height: "37.5rem",
+                        height: "38.5rem",
                       }}
                     >
                       {/* Top Section */}
@@ -435,18 +449,22 @@ class Cohort extends Component {
                           style={{
                             background: "#FFFFFF",
                             boxShadow:
-                              "0px 8px 28px - 6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
+                              "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
                             borderRadius: "12px",
-                            padding: `${true ? "0px" : "10px"}`,
+                            padding: `${
+                              sortedChains?.length === 0 ? "0px" : "6px"
+                            }`,
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
                             flexWrap: "wrap",
-                            width: `${true ? "5rem" : "6.9rem"}`,
+                            width: `${
+                              sortedChains?.length === 0 ? "5rem" : "6rem"
+                            }`,
                             marginRight: "1.2rem",
                           }}
                         >
-                          {true ? (
+                          {sortedChains?.length === 0 ? (
                             <Image
                               src={unrecognizedIcon}
                               style={{
@@ -457,21 +475,55 @@ class Cohort extends Component {
                           ) : (
                             <>
                               <Image
-                                src={Coin1}
-                                style={{ margin: "0px 5px 5px 0px" }}
+                                src={sortedChains[0]}
+                                style={{
+                                  margin: "0px 4px 4px 0px",
+                                  width: "2.2rem",
+                                  borderRadius: "0.6rem",
+                                }}
                               />
                               <Image
-                                src={Coin2}
-                                style={{ margin: "0px 0px 5px 0px" }}
+                                src={sortedChains[1]}
+                                style={{
+                                  margin: "0px 0px 4px 0px",
+                                  width: "2.2rem",
+                                  borderRadius: "0.6rem",
+                                }}
                               />
                               <Image
-                                src={Coin3}
-                                style={{ margin: "0px 5px 0px 0px" }}
+                                src={sortedChains[2]}
+                                style={{
+                                  margin: "0px 4px 0px 0px",
+                                  width: "2.2rem",
+                                  borderRadius: "0.6rem",
+                                }}
                               />
-                              <Image
-                                src={Coin4}
-                                style={{ margin: "0px 0px 0px 0px" }}
-                              />
+                              {sortedChains?.length < 5 ? (
+                                <Image
+                                  src={sortedChains[3]}
+                                  style={{
+                                    margin: "0px 0px 0px 0px",
+                                    width: "2.2rem",
+                                    borderRadius: "0.6rem",
+                                  }}
+                                />
+                              ) : (
+                                <div
+                                  style={{
+                                    margin: "0px 0px 0px 0px",
+                                    height: "2.2rem",
+                                    width: "2.2rem",
+                                    borderRadius: "0.6rem",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    backgroundColor: "rgba(229, 229, 230, 0.5)",
+                                  }}
+                                  className="inter-display-semi-bold f-s-10"
+                                >
+                                  {sortedChains?.length - 3}+
+                                </div>
+                              )}
                             </>
                           )}
                         </div>
@@ -486,6 +538,7 @@ class Cohort extends Component {
                               state: {
                                 id: item.id,
                                 cohortWalletList: item?.wallet_address_details,
+                                chainImages: sortedChains,
                               },
                             })
                           }
@@ -508,7 +561,7 @@ class Cohort extends Component {
                           <Image
                             src={EditIcon}
                             className="cp editIcon"
-                            onClick={() => this.handleEdit(i)}
+                            onClick={() => this.handleEdit(i, sortedChains)}
                             style={{ marginLeft: "auto" }}
                           />
                         )}
@@ -517,58 +570,56 @@ class Cohort extends Component {
                       {/* Bottom Section Address list */}
                       <div>
                         {/* List Item */}
-                        {(item?.wallet_address_details)
-                          .slice(0, 5)
-                          ?.map((e, i) => {
-                            let fulladdress =
-                              e?.display_address && e?.display_address != ""
-                                ? e?.display_address
-                                : e?.wallet_address;
-                            let address = fulladdress;
-                            if (fulladdress.length > 11) {
-                              address =
-                                fulladdress.substr(0, 4) +
-                                "..." +
-                                fulladdress.substr(
-                                  fulladdress.length - 4,
-                                  fulladdress.length
-                                );
-                            }
-                            return (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                  padding: "1.5rem",
-                                  borderBottom: `${
-                                    i === 4
-                                      ? "none"
-                                      : "1px solid rgba(229, 229, 230, 0.5)"
-                                  }`,
-                                }}
-                                key={i}
-                              >
-                                <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                                  {address}
-                                </h4>
+                        {sortedAddress?.slice(0, 5)?.map((e, i) => {
+                          let fulladdress =
+                            e?.display_address && e?.display_address != ""
+                              ? e?.display_address
+                              : e?.wallet_address;
+                          let address = fulladdress;
+                          if (fulladdress.length > 13) {
+                            address =
+                              fulladdress.substr(0, 5) +
+                              "..." +
+                              fulladdress.substr(
+                                fulladdress.length - 4,
+                                fulladdress.length
+                              );
+                          }
+                          return (
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                padding: "1.5rem",
+                                borderBottom: `${
+                                  i === 4
+                                    ? "none"
+                                    : "1px solid rgba(229, 229, 230, 0.5)"
+                                }`,
+                              }}
+                              key={i}
+                            >
+                              <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
+                                {address}
+                              </h4>
 
-                                {/* chip */}
-                                {/* <CoinChip
+                              {/* chip */}
+                              {/* <CoinChip
                                   colorCode={"#E84042"}
                                   coin_img_src={Coin}
                                   coin_percent={"Avalanche"}
                                   type={"cohort"}
                                 /> */}
-                                <CustomChip
-                                  coins={e.chains}
-                                  key={i}
-                                  isLoaded={true}
-                                  isCohort={true}
-                                ></CustomChip>
-                              </div>
-                            );
-                          })}
+                              <CustomChip
+                                coins={e.chains}
+                                key={i}
+                                isLoaded={true}
+                                isCohort={true}
+                              ></CustomChip>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </Col>

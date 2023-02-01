@@ -314,9 +314,13 @@ body {
 }
 
 // MARGIN LEFT
+.m-l-4 {
+  margin-left: 0.4rem;
+}
 .m-l-10 {
   margin-left: 1rem;
 }
+
 
 .m-l-27 {
   margin-left: 27.2rem;
@@ -1752,6 +1756,11 @@ form {
   color: #55575a;
   background: blur(3px);
   align-items: center;
+  white-space: nowrap;
+
+  span{
+    white-space: nowrap;
+  }
 
   .slick-slider {
     padding-left: 2px;
