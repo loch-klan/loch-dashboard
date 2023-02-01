@@ -71,6 +71,7 @@ class CohortPage extends BaseReactComponent {
       PurchasedAssetLoader: false,
       SoldAssetLoader: false,
       LargestChainLoader: false,
+      apiResponse: false,
     };
   }
 
@@ -83,6 +84,16 @@ class CohortPage extends BaseReactComponent {
   componentDidMount() {
     this.getCohortDetail();
     this.getAssetData(0);
+  }
+
+  componentDidUpdate() {
+    if (this.state.apiResponse) {
+      this.getCohortDetail();
+      this.getAssetData(0);
+      this.setState({
+        apiResponse: false,
+      });
+    }
   }
 
   getAssetData = (activeFooter) => {
@@ -127,8 +138,6 @@ class CohortPage extends BaseReactComponent {
     GetPurchasedAsset(data, this);
   };
 
-  
-
   getCohortDetail = () => {
     this.setState({
       LargestChainLoader: true,
@@ -146,7 +155,6 @@ class CohortPage extends BaseReactComponent {
       },
       () => {
         this.getAssetData(this.state.activeFooter);
-       
       }
     );
   };
@@ -222,6 +230,22 @@ class CohortPage extends BaseReactComponent {
     //  toast.success("You will be receiving notifications");
   };
 
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+    // console.log("api respinse", value);
+  };
+
+  handleChangeList = (value) => {
+    this.setState({
+      PurchasedAssetLoader: false,
+      SoldAssetLoader: false,
+      LargestChainLoader: false,
+    });
+    // this.makeApiCall();
+  };
+
   render() {
     const nav_list = window.location.pathname.split("/");
     let PageName = nav_list[2].replace(/-/g, " ");
@@ -281,6 +305,8 @@ class CohortPage extends BaseReactComponent {
             cohortId={this.state.cohortId}
             walletaddress={this.state.cohortWalletAddress}
             addedon={moment(this.state?.createOn).format("DD/MM/YY")}
+            changeWalletList={this.handleChangeList}
+            apiResponse={(e) => this.CheckApiResponse(e)}
           />
         ) : (
           ""
