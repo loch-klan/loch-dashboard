@@ -544,7 +544,7 @@ class Cohort extends Component {
                                     src={
                                       sortedChains?.length === 2
                                         ? sortedChains[1]
-                                      : sortedChains[3]
+                                        : sortedChains[3]
                                     }
                                     style={{
                                       margin: "0px 0px 0px 0px",
@@ -595,7 +595,7 @@ class Cohort extends Component {
                           </h4>
                         </div>
                         {/* edit icon */}
-                        {item.name != "Loch Template Whales" && (
+                        {item.name != "Loch Whale Template" && (
                           <Image
                             src={EditIcon}
                             className="cp editIcon"
