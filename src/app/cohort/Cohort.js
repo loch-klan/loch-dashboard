@@ -467,7 +467,10 @@ class Cohort extends Component {
                               alignItems: "center",
                               flexWrap: "wrap",
                               width: `${
-                                sortedChains?.length === 0 ? "5rem" : "6rem"
+                                sortedChains?.length === 0 ? "5rem" : "6.2rem"
+                                }`,
+                              height:`${
+                                sortedChains?.length === 0 ? "5rem" : "6.2rem"
                               }`,
                               marginRight: "1.2rem",
                             }}
