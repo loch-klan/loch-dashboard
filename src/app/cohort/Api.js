@@ -66,7 +66,7 @@ export const getCohort = (data, ctx) => {
           createOn: response?.created_on,
           // frequentlyPurchasedAsset: response.frequently_purchased_asset,
           // frequentlySoldAsset: response.frequently_sold_asset,
-          largestHoldingChain: response?.largest_holding_chain,
+          largestHoldingChain: response?.largest_holding_asset?.asset,
           LargestChainLoader: false,
         });
       } else {
@@ -131,6 +131,7 @@ export const GetLargestAsset = (data, ctx) => {
         setTimeout(() => {
           ctx.setState({
             LargestAsset: res.data.data?.asset?.asset,
+            LargestValue: res.data.data?.asset?.total_value,
             LargestAssetLoader: false,
           });
         }, 1000);

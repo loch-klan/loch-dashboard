@@ -75,6 +75,7 @@ class CohortPage extends BaseReactComponent {
       apiResponse: false,
       LargestAsset: "",
       LargestAssetLoader: false,
+      LargestValue:0,
     };
   }
 
