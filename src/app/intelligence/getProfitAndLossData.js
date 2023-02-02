@@ -5,6 +5,7 @@ import { ProfitLossHover } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 export const getProfitAndLossData = (arr) => {
+  console.log("array", arr);
   let currency= JSON.parse(localStorage.getItem('currency'));
   let inflows = Number(noExponents(arr.inflows));
   let outflows = Number(noExponents(arr.outflows));

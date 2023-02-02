@@ -3,7 +3,7 @@ import { GraphHeader } from './GraphHeader'
 import CoinBadges from './CoinBadges';
 import { BarGraphFooter } from './BarGraphFooter';
 import { connect } from "react-redux";
-import { Image } from 'react-bootstrap'
+import { Form, Image } from 'react-bootstrap'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -55,6 +55,7 @@ class BarGraphSection extends Component {
       footerDropdownLabels: props.footerDropdownLabels,
       // activeDropdown: props.activeDropdown,
       handleSelect: props.handleSelect,
+      switchselected:false,
     };
   }
 
@@ -212,6 +213,7 @@ class BarGraphSection extends Component {
       className = "",
       handleClick,
       isLoading,
+      showSwitch,
     } = this.props;
     //  console.log("bar gr state digit", digit);
     // const digit =
@@ -244,26 +246,37 @@ class BarGraphSection extends Component {
 
         {data && options && !isLoading ? (
           <span className={`${comingSoon ? "blur-effect" : ""}`}>
-          
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "start",
-                  }}
-                >
-                 {showFooter && <div style={{
-                    width:"75%"
-                  }}>
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "start",
+                }}
+              >
+                {showFooter && (
+                  <div
+                    style={{
+                      width: "75%",
+                    }}
+                  >
                     <BarGraphFooter
                       handleFooterClick={this.handleFooter}
                       active={this.state.activeFooter}
                       footerLabels={footerLabels}
                     />
-                  </div>}
+                  </div>
+                )}
 
-                 {showBadges && <div style={{ width: "100%", minWidth:"18rem", maxWidth:"20rem", marginLeft:"1rem" }}>
+                {showBadges && (
+                  <div
+                    style={{
+                      width: "100%",
+                      minWidth: "18rem",
+                      maxWidth: "20rem",
+                      marginLeft: "1rem",
+                    }}
+                  >
                     <CustomDropdown
                       filtername="All chains selected"
                       options={coinsList}
@@ -272,15 +285,38 @@ class BarGraphSection extends Component {
                       isChain={true}
                       // selectedTokens={this.state.activeBadge}
                     />
-                  </div>}
-                </div>
-              </>
-           
+                  </div>
+                )}
+              </div>
+            </>
+
             {
               <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
                 {CurrencyType()}{" "}
               </p>
             }
+            {showSwitch ? (
+              <div style={{ textAlign: "right", marginTop: "-2rem", marginBottom: "2rem", display:"flex", justifyContent:"flex-end" }}>
+                <div>
+                  <Form.Check
+                  type="switch"
+                  id="custom-switch"
+                  label="click to show breakdown"
+                  // checked={this.state.switchselected}
+
+                  onChange={(e) => {
+                    console.log(e.target.checked);
+                    this.setState({
+                      switchselected: e.target.checked,
+                    });
+                  }}
+                />
+                </div>
+                
+              </div>
+            ) : (
+              ""
+            )}
             {showPercentage ? (
               <div className="show-percentage-div ">
                 <div
