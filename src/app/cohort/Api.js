@@ -58,7 +58,7 @@ export const getCohort = (data, ctx) => {
     .post("wallet/user-cohort/get-cohort-details", data)
     .then((res) => {
       if (!res.data.error) {
-        // console.log("get cohort", res.data.data.user_cohort);
+        console.log("get cohort", res.data.data.user_cohort);
         let response = res.data.data?.user_cohort;
         ctx.setState({
           walletAddresses: response?.wallet_address_details,
@@ -68,6 +68,9 @@ export const getCohort = (data, ctx) => {
           // frequentlySoldAsset: response.frequently_sold_asset,
           largestHoldingChain: response?.largest_holding_asset?.asset,
           LargestChainLoader: false,
+          cohortId: response?.id,
+          cohortName: response?.name,
+          cohortSlug: response?.slug,
         });
       } else {
         toast.error(res.data.message || "Something Went Wrong");

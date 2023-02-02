@@ -285,7 +285,7 @@ class Cohort extends Component {
     });
 
     this.setState({
-      sortedList: activeBadgeIds.length === 0 ? allList : sortedList,
+      sortedList: activeBadgeIds.length === 0 ? allList : sortedList.length === 0 ? "": sortedList
     });
 
   };
@@ -330,8 +330,8 @@ class Cohort extends Component {
             // link="http://loch.one/a2y1jh2jsja"
             onHide={this.handleCohort}
             history={this.props.history}
-              modalType={"create_account"}
-              isSkip={()=> this.handleSkip()}
+            modalType={"create_account"}
+            isSkip={() => this.handleSkip()}
             // headerTitle={"Create a Wallet cohort"}
             // changeWalletList={this.handleChangeList}
             // apiResponse={(e) => this.CheckApiResponse(e)}
@@ -402,245 +402,247 @@ class Cohort extends Component {
           </div>
           {/* card  */}
           <Row style={{ minWidth: "91rem" }}>
-            {this.state?.sortedList?.length !== 0  ? (
-              this.state?.sortedList?.map((item, i) => {
-                let sortedAddress = (item?.wallet_address_details).sort(
-                  (a, b) => b.net_worth - a.net_worth
-                );
-                // let sortedChains = sortedAddress[0]?.chains
-                //   ?.sort((a, b) => (a.name > b.name ? 1 : -1))
-                //   ?.map((e) => e?.symbol);
-                
-                
-                let sortedChains = [];
-                sortedAddress && sortedAddress?.map((e => {
-                  e.chains?.map((chain) => {
-                    if (!sortedChains.includes(chain?.symbol)) {
-                      sortedChains.push(chain?.symbol);
-                    }
-                  })
-                }));
-                // console.log("images", sortedChains);
+            {this.state?.sortedList?.length !== 0 &&
+            this.state?.sortedList !== ""
+              ? this.state?.sortedList?.map((item, i) => {
+                  let sortedAddress = (item?.wallet_address_details).sort(
+                    (a, b) => b.net_worth - a.net_worth
+                  );
+                  // let sortedChains = sortedAddress[0]?.chains
+                  //   ?.sort((a, b) => (a.name > b.name ? 1 : -1))
+                  //   ?.map((e) => e?.symbol);
 
-                
-                
-                return (
-                  <Col
-                    md={4}
-                    style={{ padding: "10px", marginBottom: "1rem" }}
-                    key={item.id}
-                  >
-                    <div
-                      className="cards"
-                      style={{
-                        background: "#FFFFFF",
-                        boxShadow:
-                          "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                        borderRadius: "16px",
-                        // marginBottom: "3rem",
-                        // height: "100%",
-                        height: "38.5rem",
-                      }}
+                  let sortedChains = [];
+                  sortedAddress &&
+                    sortedAddress?.map((e) => {
+                      e.chains?.map((chain) => {
+                        if (!sortedChains.includes(chain?.symbol)) {
+                          sortedChains.push(chain?.symbol);
+                        }
+                      });
+                    });
+                  // console.log("images", sortedChains);
+
+                  return (
+                    <Col
+                      md={4}
+                      style={{ padding: "10px", marginBottom: "1rem" }}
+                      key={item.id}
                     >
-                      {/* Top Section */}
                       <div
+                        className="cards"
                         style={{
-                          background:
-                            "linear-gradient(180deg, rgba(229, 229, 230, 0) 0%, #E5E5E6 250.99%)",
-                          borderRadius: "16px 16px 0px 0px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "flex-start",
-                          padding: "20px",
+                          background: "#FFFFFF",
+                          boxShadow:
+                            "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                          borderRadius: "16px",
+                          // marginBottom: "3rem",
+                          // height: "100%",
+                          height: "38.5rem",
                         }}
                       >
+                        {/* Top Section */}
                         <div
                           style={{
-                            background: "#FFFFFF",
-                            boxShadow:
-                              "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
-                            borderRadius: "12px",
-                            padding: `${
-                              sortedChains?.length === 0 ? "0px" : "6px"
-                            }`,
+                            background:
+                              "linear-gradient(180deg, rgba(229, 229, 230, 0) 0%, #E5E5E6 250.99%)",
+                            borderRadius: "16px 16px 0px 0px",
                             display: "flex",
-                            justifyContent: "center",
                             alignItems: "center",
-                            flexWrap: "wrap",
-                            width: `${
-                              sortedChains?.length === 0 ? "5rem" : "6rem"
-                            }`,
-                            marginRight: "1.2rem",
+                            justifyContent: "flex-start",
+                            padding: "20px",
                           }}
                         >
-                          {sortedChains?.length === 0 ? (
-                            <Image
-                              src={unrecognizedIcon}
-                              style={{
-                                width: "5rem",
-                                borderRadius: "12px",
-                              }}
-                            />
-                          ) : (
-                            <>
+                          <div
+                            style={{
+                              background: "#FFFFFF",
+                              boxShadow:
+                                "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
+                              borderRadius: "12px",
+                              padding: `${
+                                sortedChains?.length === 0 ? "0px" : "6px"
+                              }`,
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              flexWrap: "wrap",
+                              width: `${
+                                sortedChains?.length === 0 ? "5rem" : "6rem"
+                              }`,
+                              marginRight: "1.2rem",
+                            }}
+                          >
+                            {sortedChains?.length === 0 ? (
                               <Image
-                                src={sortedChains[0]}
+                                src={unrecognizedIcon}
                                 style={{
-                                  margin: "0px 4px 4px 0px",
-                                  width: "2.2rem",
-                                  borderRadius: "0.6rem",
+                                  width: "5rem",
+                                  borderRadius: "12px",
                                 }}
                               />
-                              <Image
-                                src={sortedChains[1]}
-                                style={{
-                                  margin: "0px 0px 4px 0px",
-                                  width: "2.2rem",
-                                  borderRadius: "0.6rem",
-                                }}
-                              />
-                              <Image
-                                src={sortedChains[2]}
-                                style={{
-                                  margin: "0px 4px 0px 0px",
-                                  width: "2.2rem",
-                                  borderRadius: "0.6rem",
-                                }}
-                              />
-                              {sortedChains?.length < 5 ? (
+                            ) : (
+                              <>
                                 <Image
-                                  src={sortedChains[3]}
+                                  src={sortedChains[0]}
                                   style={{
-                                    margin: "0px 0px 0px 0px",
+                                    margin: "0px 4px 4px 0px",
                                     width: "2.2rem",
                                     borderRadius: "0.6rem",
                                   }}
                                 />
-                              ) : (
-                                <div
+                                <Image
+                                  src={sortedChains[1]}
                                   style={{
-                                    margin: "0px 0px 0px 0px",
-                                    height: "2.2rem",
+                                    margin: "0px 0px 4px 0px",
                                     width: "2.2rem",
                                     borderRadius: "0.6rem",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "rgba(229, 229, 230, 0.5)",
                                   }}
-                                  className="inter-display-semi-bold f-s-10"
-                                >
-                                  {sortedChains?.length - 3}+
-                                </div>
-                              )}
-                            </>
+                                />
+                                <Image
+                                  src={sortedChains[2]}
+                                  style={{
+                                    margin: "0px 4px 0px 0px",
+                                    width: "2.2rem",
+                                    borderRadius: "0.6rem",
+                                  }}
+                                />
+                                {sortedChains?.length < 5 ? (
+                                  <Image
+                                    src={sortedChains[3]}
+                                    style={{
+                                      margin: "0px 0px 0px 0px",
+                                      width: "2.2rem",
+                                      borderRadius: "0.6rem",
+                                    }}
+                                  />
+                                ) : (
+                                  <div
+                                    style={{
+                                      margin: "0px 0px 0px 0px",
+                                      height: "2.2rem",
+                                      width: "2.2rem",
+                                      borderRadius: "0.6rem",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      backgroundColor:
+                                        "rgba(229, 229, 230, 0.5)",
+                                    }}
+                                    className="inter-display-semi-bold f-s-10"
+                                  >
+                                    {sortedChains?.length - 3}+
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
+                          {/* title*/}
+                          <div
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={() =>
+                              this.props.history.push({
+                                pathname: `/cohort/${item.slug}`,
+                                state: {
+                                  id: item.id,
+                                  cohortWalletList:
+                                    item?.wallet_address_details,
+                                  chainImages: sortedChains,
+                                },
+                              })
+                            }
+                          >
+                            <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
+                              {item.name}
+                            </h4>
+                            <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
+                              {/* {CurrencyType(false)} */}
+                              {numToCurrency(
+                                item.total_net_worth * this.state.currency?.rate
+                              )}{" "}
+                              <span className="f-s-10 grey-CAC">
+                                {CurrencyType(true)}
+                              </span>
+                            </h4>
+                          </div>
+                          {/* edit icon */}
+                          {item.name != "Loch Template Whales" && (
+                            <Image
+                              src={EditIcon}
+                              className="cp editIcon"
+                              onClick={() => this.handleEdit(i, sortedChains)}
+                              style={{ marginLeft: "auto" }}
+                            />
                           )}
                         </div>
-                        {/* title*/}
-                        <div
-                          style={{
-                            cursor: "pointer",
-                          }}
-                          onClick={() =>
-                            this.props.history.push({
-                              pathname: `/cohort/${item.slug}`,
-                              state: {
-                                id: item.id,
-                                cohortWalletList: item?.wallet_address_details,
-                                chainImages: sortedChains,
-                              },
-                            })
-                          }
-                        >
-                          <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
-                            {item.name}
-                          </h4>
-                          <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
-                            {/* {CurrencyType(false)} */}
-                            {numToCurrency(
-                              item.total_net_worth * this.state.currency?.rate
-                            )}{" "}
-                            <span className="f-s-10 grey-CAC">
-                              {CurrencyType(true)}
-                            </span>
-                          </h4>
-                        </div>
-                        {/* edit icon */}
-                        {item.name != "Loch Template Whales" && (
-                          <Image
-                            src={EditIcon}
-                            className="cp editIcon"
-                            onClick={() => this.handleEdit(i, sortedChains)}
-                            style={{ marginLeft: "auto" }}
-                          />
-                        )}
-                      </div>
-                      {/* Top Section END */}
-                      {/* Bottom Section Address list */}
-                      <div>
-                        {/* List Item */}
-                        {sortedAddress?.slice(0, 5)?.map((e, i) => {
-                          let fulladdress =
-                            e?.display_address && e?.display_address != ""
-                              ? e?.display_address
-                              : e?.wallet_address;
-                          let address = fulladdress;
-                          if (fulladdress.length > 13) {
-                            address =
-                              fulladdress.substr(0, 5) +
-                              "..." +
-                              fulladdress.substr(
-                                fulladdress.length - 4,
-                                fulladdress.length
-                              );
-                          }
-                          return (
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                padding: "1.5rem",
-                                borderBottom: `${
-                                  i === 4
-                                    ? "none"
-                                    : "1px solid rgba(229, 229, 230, 0.5)"
-                                }`,
-                              }}
-                              key={i}
-                            >
-                              <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
-                                {address}
-                              </h4>
+                        {/* Top Section END */}
+                        {/* Bottom Section Address list */}
+                        <div>
+                          {/* List Item */}
+                          {sortedAddress?.slice(0, 5)?.map((e, i) => {
+                            let fulladdress =
+                              e?.display_address && e?.display_address != ""
+                                ? e?.display_address
+                                : e?.wallet_address;
+                            let address = fulladdress;
+                            if (fulladdress.length > 13) {
+                              address =
+                                fulladdress.substr(0, 5) +
+                                "..." +
+                                fulladdress.substr(
+                                  fulladdress.length - 4,
+                                  fulladdress.length
+                                );
+                            }
+                            return (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                  padding: "1.5rem",
+                                  borderBottom: `${
+                                    i === 4
+                                      ? "none"
+                                      : "1px solid rgba(229, 229, 230, 0.5)"
+                                  }`,
+                                }}
+                                key={i}
+                              >
+                                <h4 className="inter-display-regular f-s-16 l-h-19 black-191">
+                                  {address}
+                                </h4>
 
-                              {/* chip */}
-                              {/* <CoinChip
+                                {/* chip */}
+                                {/* <CoinChip
                                   colorCode={"#E84042"}
                                   coin_img_src={Coin}
                                   coin_percent={"Avalanche"}
                                   type={"cohort"}
                                 /> */}
-                              <CustomChip
-                                coins={e.chains}
-                                key={i}
-                                isLoaded={true}
-                                isCohort={true}
-                              ></CustomChip>
-                            </div>
-                          );
-                        })}
+                                <CustomChip
+                                  coins={e.chains}
+                                  key={i}
+                                  isLoaded={true}
+                                  isCohort={true}
+                                ></CustomChip>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
+                    </Col>
+                  );
+                })
+              : this.state?.sortedList !==
+                "" ? (
+                  <Col md={12}>
+                    <div className="animation-wrapper">
+                      <Loading />
                     </div>
                   </Col>
-                );
-              })
-            ) : (
-              <Col md={12}>
-                <div className="animation-wrapper">
-                  <Loading />
-                </div>
-              </Col>
-            )}
+                ):""}
           </Row>
         </div>
       </div>

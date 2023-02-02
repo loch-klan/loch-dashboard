@@ -61,6 +61,8 @@ class CohortPage extends BaseReactComponent {
       showBtn: false,
       isEmailValid: true,
       cohortId: props?.location?.state.id,
+      cohortName: "",
+      cohortSlug: "",
       cohortWalletAddress: props?.location?.state?.cohortWalletList,
       chainImages: props?.location?.state?.chainImages,
       walletAddresses: [],
@@ -75,7 +77,7 @@ class CohortPage extends BaseReactComponent {
       apiResponse: false,
       LargestAsset: "",
       LargestAssetLoader: false,
-      LargestValue:0,
+      LargestValue: 0,
     };
   }
 
@@ -324,12 +326,16 @@ class CohortPage extends BaseReactComponent {
 
         <div className="insights-page page">
           <PageHeader
-            title={PageName}
+            title={this.state.cohortName ? this.state.cohortName : PageName}
             subTitle={`
               Added ${moment(this.state?.createOn).format("DD/MM/YY")}`}
             showpath={true}
             currentPage={nav_list[2]}
-            btnText={PageName !== "Loch Template Whales" ? "Edit" : false}
+            btnText={
+              this.state.cohortName || PageName !== "Loch Template Whales"
+                ? "Edit"
+                : false
+            }
             history={this.props.history}
             btnOutline={true}
             handleBtn={this.handleCohort}
@@ -474,15 +480,24 @@ class CohortPage extends BaseReactComponent {
                   </h3>
                 </div>
 
-                <div style={{ height: "3rem", width: "max-content" }}>
+                <div style={{ height: "1.7rem", width: "max-content" }}>
                   {this.state?.largestHoldingChain &&
                   !this.state.LargestChainLoader ? (
-                    <CoinChip
-                      colorCode={this.state?.largestHoldingChain?.color}
-                      coin_img_src={this.state?.largestHoldingChain?.symbol}
-                      coin_percent={this.state?.largestHoldingChain?.name}
-                      type={"cohort"}
-                    />
+                    // <CoinChip
+                    //   colorCode={this.state?.largestHoldingChain?.color}
+                    //   coin_img_src={this.state?.largestHoldingChain?.symbol}
+                    //   coin_percent={this.state?.largestHoldingChain?.name}
+                    //   type={"cohort"}
+                    // />
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <Image
+                        src={this.state?.largestHoldingChain?.symbol}
+                        style={{ width: "1.7rem" }}
+                      />
+                      <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                        {this.state?.largestHoldingChain?.name}
+                      </h3>
+                    </div>
                   ) : this.state.LargestChainLoader ? (
                     loadingAnimation()
                   ) : (
