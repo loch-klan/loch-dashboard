@@ -4,7 +4,7 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi, getCohort, GetPurchasedAsset, GetSoldAsset } from "./Api";
+import { getAllInsightsApi, getCohort, GetLargestAsset, GetPurchasedAsset, GetSoldAsset } from "./Api";
 import { InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
@@ -73,6 +73,8 @@ class CohortPage extends BaseReactComponent {
       SoldAssetLoader: false,
       LargestChainLoader: false,
       apiResponse: false,
+      LargestAsset: "",
+      LargestAssetLoader: false,
     };
   }
 
@@ -101,6 +103,7 @@ class CohortPage extends BaseReactComponent {
     this.setState({
       PurchasedAssetLoader: true,
       SoldAssetLoader: true,
+      LargestAssetLoader:true,
     });
     // console.log("option", activeFooter);
     let startDate = moment().unix();
@@ -137,6 +140,9 @@ class CohortPage extends BaseReactComponent {
     GetSoldAsset(data, this);
     // api for get purchased asset
     GetPurchasedAsset(data, this);
+
+    // api for largest holding
+    GetLargestAsset(data,this);
   };
 
   getCohortDetail = () => {
@@ -243,6 +249,7 @@ class CohortPage extends BaseReactComponent {
       PurchasedAssetLoader: false,
       SoldAssetLoader: false,
       LargestChainLoader: false,
+      LargestAssetLoader:false,
     });
     // this.makeApiCall();
   };
@@ -399,8 +406,7 @@ class CohortPage extends BaseReactComponent {
                   style={{ display: "flex", alignItems: "center" }}
                 >
                   {CurrencyType(false)}
-                  {numToCurrency(
-                    this.state.totalNetWorth)}
+                  {numToCurrency(this.state.totalNetWorth)}
                   <span className="inter-display-semi-bold f-s-12 grey-ADA m-l-4">
                     {/* {" "} */}
                     {CurrencyType(true)}
@@ -441,7 +447,6 @@ class CohortPage extends BaseReactComponent {
                     this.state.totalNetWorth / this.state.walletAddresses.length
                   )}
                   <span className="inter-display-semi-bold f-s-12 grey-ADA m-l-4">
-                
                     {CurrencyType(true)}
                   </span>
                 </h3>
@@ -652,7 +657,7 @@ class CohortPage extends BaseReactComponent {
                   flexDirection: "column",
                 }}
               >
-                {!this.state.LargestChainLoader ? (
+                {!this.state.LargestAssetLoader ? (
                   <>
                     <div>
                       <Image src={MedalIcon} className="net-worth-icon" />
@@ -662,12 +667,12 @@ class CohortPage extends BaseReactComponent {
                     </div>
 
                     <div style={{ height: "3rem", width: "max-content" }}>
-                      {this.state?.largestHoldingChain &&
-                      !this.state.LargestChainLoader ? (
+                      {this.state?.LargestAsset &&
+                      !this.state.LargestAssetLoader ? (
                         <CoinChip
-                          colorCode={this.state?.largestHoldingChain?.color}
-                          coin_img_src={this.state?.largestHoldingChain?.symbol}
-                          coin_percent={this.state?.largestHoldingChain?.name}
+                          colorCode={this.state?.LargestAsset?.color}
+                          coin_img_src={this.state?.LargestAsset?.symbol}
+                          coin_percent={this.state?.LargestAsset?.name}
                           type={"cohort"}
                         />
                       ) : (

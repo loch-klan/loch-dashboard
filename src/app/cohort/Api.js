@@ -118,3 +118,24 @@ export const GetPurchasedAsset = (data, ctx) => {
       }
     });
 };
+
+
+export const GetLargestAsset = (data, ctx) => {
+  // let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("wallet/user-cohort/get-largest-transacted-asset", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // console.log("largest", res.data.data);
+        setTimeout(() => {
+          ctx.setState({
+            LargestAsset: res.data.data?.asset?.asset,
+            LargestAssetLoader: false,
+          });
+        }, 1000);
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
