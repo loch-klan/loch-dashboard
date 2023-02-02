@@ -407,11 +407,20 @@ class Cohort extends Component {
                 let sortedAddress = (item?.wallet_address_details).sort(
                   (a, b) => b.net_worth - a.net_worth
                 );
-                let sortedChains = sortedAddress[0]?.chains
-                  ?.sort((a, b) => (a.name > b.name ? 1 : -1))
-                  ?.map((e) => e?.symbol);
+                // let sortedChains = sortedAddress[0]?.chains
+                //   ?.sort((a, b) => (a.name > b.name ? 1 : -1))
+                //   ?.map((e) => e?.symbol);
                 
-                // console.log("images", sortedChains)
+                
+                let sortedChains = [];
+                sortedAddress && sortedAddress?.map((e => {
+                  e.chains?.map((chain) => {
+                    if (!sortedChains.includes(chain?.symbol)) {
+                      sortedChains.push(chain?.symbol);
+                    }
+                  })
+                }));
+                // console.log("images", sortedChains);
 
                 
                 
