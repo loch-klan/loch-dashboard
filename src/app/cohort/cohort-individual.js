@@ -400,8 +400,7 @@ class CohortPage extends BaseReactComponent {
                 >
                   {CurrencyType(false)}
                   {numToCurrency(
-                    this.state.totalNetWorth / this.state.walletAddresses.length
-                  )}
+                    this.state.totalNetWorth)}
                   <span className="inter-display-semi-bold f-s-12 grey-ADA m-l-4">
                     {/* {" "} */}
                     {CurrencyType(true)}
