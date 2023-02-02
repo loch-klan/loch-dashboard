@@ -572,19 +572,28 @@ class CohortPage extends BaseReactComponent {
                         Most frequently purchased token
                       </h3>
                     </div>
-                    <div style={{ height: "3rem", width: "max-content" }}>
+                    <div style={{ height: "1.7rem", width: "max-content" }}>
                       {this.state.frequentlyPurchasedAsset &&
                       !this.state.PurchasedAssetLoader ? (
-                        <CoinChip
-                          colorCode={this.state.frequentlyPurchasedAsset?.color}
-                          coin_img_src={
-                            this.state.frequentlyPurchasedAsset?.symbol
-                          }
-                          coin_percent={
-                            this.state.frequentlyPurchasedAsset?.name
-                          }
-                          type={"cohort"}
-                        />
+                        // <CoinChip
+                        //   colorCode={this.state.frequentlyPurchasedAsset?.color}
+                        //   coin_img_src={
+                        //     this.state.frequentlyPurchasedAsset?.symbol
+                        //   }
+                        //   coin_percent={
+                        //     this.state.frequentlyPurchasedAsset?.name
+                        //   }
+                        //   type={"cohort"}
+                        // />
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <Image
+                            src={this.state.frequentlyPurchasedAsset?.symbol}
+                            style={{ width: "1.7rem" }}
+                          />
+                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                            {this.state.frequentlyPurchasedAsset?.name}
+                          </h3>
+                        </div>
                       ) : (
                         ""
                       )}
@@ -631,15 +640,24 @@ class CohortPage extends BaseReactComponent {
                       </h3>
                     </div>
 
-                    <div style={{ height: "3rem", width: "max-content" }}>
+                    <div style={{ height: "1.7rem", width: "max-content" }}>
                       {this.state.frequentlySoldAsset &&
                       !this.state.SoldAssetLoader ? (
-                        <CoinChip
-                          colorCode={this.state.frequentlySoldAsset?.color}
-                          coin_img_src={this.state.frequentlySoldAsset?.symbol}
-                          coin_percent={this.state.frequentlySoldAsset?.name}
-                          type={"cohort"}
-                        />
+                        // <CoinChip
+                        //   colorCode={this.state.frequentlySoldAsset?.color}
+                        //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
+                        //   coin_percent={this.state.frequentlySoldAsset?.name}
+                        //   type={"cohort"}
+                        // />
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <Image
+                            src={this.state.frequentlySoldAsset?.symbol}
+                            style={{ width: "1.7rem" }}
+                          />
+                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                            {this.state.frequentlySoldAsset?.name}
+                          </h3>
+                        </div>
                       ) : (
                         ""
                       )}
@@ -682,15 +700,24 @@ class CohortPage extends BaseReactComponent {
                       </h3>
                     </div>
 
-                    <div style={{ height: "3rem", width: "max-content" }}>
+                    <div style={{ height: "1.7rem", width: "max-content" }}>
                       {this.state?.LargestAsset &&
                       !this.state.LargestAssetLoader ? (
-                        <CoinChip
-                          colorCode={this.state?.LargestAsset?.color}
-                          coin_img_src={this.state?.LargestAsset?.symbol}
-                          coin_percent={this.state?.LargestAsset?.name}
-                          type={"cohort"}
-                        />
+                        // <CoinChip
+                        //   colorCode={this.state?.LargestAsset?.color}
+                        //   coin_img_src={this.state?.LargestAsset?.symbol}
+                        //   coin_percent={this.state?.LargestAsset?.name}
+                        //   type={"cohort"}
+                        // />
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <Image
+                            src={this.state?.LargestAsset?.symbol}
+                            style={{ width: "1.7rem" }}
+                          />
+                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                            {this.state?.LargestAsset?.name}
+                          </h3>
+                        </div>
                       ) : (
                         ""
                       )}
