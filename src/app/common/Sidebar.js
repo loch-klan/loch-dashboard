@@ -230,7 +230,7 @@ function Sidebar(props) {
                         <NavLink
                           exact={true}
                           className="nav-link"
-                          to={ activeTab === "/home" ? "#" :"/home"}
+                          to={activeTab === "/home" ? "#" : "/home"}
                           onClick={() => {
                             // console.log("user",getCurrentUser())
                             HomeMenu({
@@ -341,18 +341,18 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           className="nav-link"
-                          to="/cohort"
+                          to="/whale-watching"
                           // onClick={handleCohort}
                           activeclassname="active"
                         >
                           <Image
                             src={
-                              activeTab === "/cohort"
+                              activeTab === "/whale-watching"
                                 ? ActiveCohortIcon
                                 : CohortIcon
                             }
                           />
-                          Wallet Cohorts
+                          Whale Watching
                         </NavLink>
                       </li>
 
@@ -593,8 +593,8 @@ function Sidebar(props) {
               handleClose={handleConfirmLeaveModal}
             />
           ) : (
-            "")}
-        
+            ""
+          )}
 
           {showFeedbackModal && (
             <FeedbackModal show={showFeedbackModal} onHide={handleFeedback} />

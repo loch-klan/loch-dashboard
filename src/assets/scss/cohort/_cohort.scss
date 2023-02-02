@@ -85,11 +85,27 @@
 
        
 
-        //  walletcard section end
+        //  walletcard 
+
+        .cohort-card{
+            cursor: pointer;
+            
+            &:hover{
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 15px 15px rgba(0, 0, 0, 0.04) !important;
+            }
+        }
+
+
     }
 }
 
+
+
+// cohort individual page
  .cards {
+
+
+
             .walletcard {
                 padding: 2.4rem;
                 background-color: $secondary;
@@ -367,3 +383,7 @@
                         filter: brightness(0.5);
                     }
 }
+
+
+// Cohort main page
+

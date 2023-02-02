@@ -83,14 +83,14 @@ const routes = [
     component: Cost,
   },
   {
-    path: "/cohort",
-    name: "Cohort",
+    path: "/whale-watching",
+    name: "Whale Watching",
     type: PrivateRoute,
     component: Cohort,
   },
   {
-    path: "/cohort/:cohortName",
-    name: "Cohort Page",
+    path: "/whale-watching/:cohortName",
+    name: "Whale Watching Page",
     type: PrivateRoute,
     component: CohortPage,
   },

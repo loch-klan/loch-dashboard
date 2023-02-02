@@ -285,7 +285,7 @@ class Cohort extends Component {
     });
 
     this.setState({
-      sortedList: activeBadgeIds.length === 0 ? allList : sortedList,
+      sortedList: activeBadgeIds.length === 0 ? allList : sortedList.length === 0 ? "": sortedList
     });
 
   };
@@ -330,8 +330,8 @@ class Cohort extends Component {
             // link="http://loch.one/a2y1jh2jsja"
             onHide={this.handleCohort}
             history={this.props.history}
-              modalType={"create_account"}
-              isSkip={()=> this.handleSkip()}
+            modalType={"create_account"}
+            isSkip={() => this.handleSkip()}
             // headerTitle={"Create a Wallet cohort"}
             // changeWalletList={this.handleChangeList}
             // apiResponse={(e) => this.CheckApiResponse(e)}
@@ -362,9 +362,9 @@ class Cohort extends Component {
 
         <div className="cohort-section page">
           <PageHeader
-            title="Cohorts"
-            subTitle="Track all your cohorts here"
-            btnText="Create Cohort"
+            title="Pods"
+            subTitle="Track all your whale pods here"
+            btnText="Create cohorts"
             handleBtn={this.handleCohort}
             // showData={totalWalletAmt}
             // isLoading={isLoading}
@@ -402,19 +402,29 @@ class Cohort extends Component {
           </div>
           {/* card  */}
           <Row style={{ minWidth: "91rem" }}>
-            {this.state?.sortedList?.length !== 0  ? (
+            {this.state?.sortedList?.length !== 0 &&
+            this.state?.sortedList !== "" ? (
               this.state?.sortedList?.map((item, i) => {
                 let sortedAddress = (item?.wallet_address_details).sort(
                   (a, b) => b.net_worth - a.net_worth
                 );
-                let sortedChains = sortedAddress[0]?.chains
-                  ?.sort((a, b) => (a.name > b.name ? 1 : -1))
-                  ?.map((e) => e?.symbol);
-                
-                // console.log("images", sortedChains)
+                // let sortedChains = sortedAddress[0]?.chains
+                //   ?.sort((a, b) => (a.name > b.name ? 1 : -1))
+                //   ?.map((e) => e?.symbol);
 
+                let sortedChains = [];
+                sortedAddress &&
+                  sortedAddress?.map((e) => {
+                    e.chains?.map((chain) => {
+                      if (!sortedChains.includes(chain?.symbol)) {
+                        sortedChains.push(chain?.symbol);
+                      }
+                    });
+                  });
                 
-                
+                // sortedChains = sortedChains.slice(0,4);
+                // console.log("images", sortedChains);
+
                 return (
                   <Col
                     md={4}
@@ -422,7 +432,7 @@ class Cohort extends Component {
                     key={item.id}
                   >
                     <div
-                      className="cards"
+                      className="cohort-card"
                       style={{
                         background: "#FFFFFF",
                         boxShadow:
@@ -431,7 +441,18 @@ class Cohort extends Component {
                         // marginBottom: "3rem",
                         // height: "100%",
                         height: "38.5rem",
+                        zIndex: 1,
                       }}
+                      onClick={() =>
+                        this.props.history.push({
+                          pathname: `/whale-watching/${item.slug}`,
+                          state: {
+                            id: item.id,
+                            cohortWalletList: item?.wallet_address_details,
+                            chainImages: sortedChains,
+                          },
+                        })
+                      }
                     >
                       {/* Top Section */}
                       <div
@@ -459,7 +480,10 @@ class Cohort extends Component {
                             alignItems: "center",
                             flexWrap: "wrap",
                             width: `${
-                              sortedChains?.length === 0 ? "5rem" : "6rem"
+                              sortedChains?.length === 0 ? "5rem" : "6.2rem"
+                            }`,
+                            height: `${
+                              sortedChains?.length === 0 ? "5rem" : "6.2rem"
                             }`,
                             marginRight: "1.2rem",
                           }}
@@ -477,53 +501,77 @@ class Cohort extends Component {
                               <Image
                                 src={sortedChains[0]}
                                 style={{
-                                  margin: "0px 4px 4px 0px",
-                                  width: "2.2rem",
+                                  margin: `${
+                                    sortedChains?.length === 1
+                                      ? "0px"
+                                      : "0px 4px 4px 0px"
+                                  }`,
+                                  width: `${
+                                    sortedChains?.length === 1
+                                      ? "4rem"
+                                      : "2.2rem"
+                                  }`,
                                   borderRadius: "0.6rem",
                                 }}
                               />
-                              <Image
-                                src={sortedChains[1]}
-                                style={{
-                                  margin: "0px 0px 4px 0px",
-                                  width: "2.2rem",
-                                  borderRadius: "0.6rem",
-                                }}
-                              />
-                              <Image
-                                src={sortedChains[2]}
-                                style={{
-                                  margin: "0px 4px 0px 0px",
-                                  width: "2.2rem",
-                                  borderRadius: "0.6rem",
-                                }}
-                              />
-                              {sortedChains?.length < 5 ? (
+                              {sortedChains?.length !== 1 && (
                                 <Image
-                                  src={sortedChains[3]}
+                                  src={
+                                    sortedChains?.length === 2
+                                      ? ""
+                                      : sortedChains[1]
+                                  }
                                   style={{
-                                    margin: "0px 0px 0px 0px",
+                                    margin: "0px 0px 4px 0px",
                                     width: "2.2rem",
                                     borderRadius: "0.6rem",
                                   }}
                                 />
-                              ) : (
-                                <div
+                              )}
+                              {sortedChains?.length !== 1 && (
+                                <Image
+                                  src={sortedChains[2]}
                                   style={{
-                                    margin: "0px 0px 0px 0px",
-                                    height: "2.2rem",
+                                    margin: "0px 4px 0px 0px",
                                     width: "2.2rem",
                                     borderRadius: "0.6rem",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    backgroundColor: "rgba(229, 229, 230, 0.5)",
                                   }}
-                                  className="inter-display-semi-bold f-s-10"
-                                >
-                                  {sortedChains?.length - 3}+
-                                </div>
+                                />
                               )}
+                              {sortedChains?.length <= 4 &&
+                                sortedChains?.length !== 1 && (
+                                  <Image
+                                    src={
+                                      sortedChains?.length === 2
+                                        ? sortedChains[1]
+                                        : sortedChains[3]
+                                    }
+                                    style={{
+                                      margin: "0px 0px 0px 0px",
+                                      width: "2.2rem",
+                                      borderRadius: "0.6rem",
+                                    }}
+                                  />
+                                )}
+                              {sortedChains?.length > 4 &&
+                                sortedChains?.length !== 1 && (
+                                  <div
+                                    style={{
+                                      margin: "0px 0px 0px 0px",
+                                      height: "2.2rem",
+                                      width: "2.2rem",
+                                      borderRadius: "0.6rem",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      backgroundColor:
+                                        "rgba(229, 229, 230, 0.5)",
+                                    }}
+                                    className="inter-display-semi-bold f-s-10"
+                                  >
+                                    {sortedChains?.length - 3}+
+                                  </div>
+                                )}
                             </>
                           )}
                         </div>
@@ -532,16 +580,6 @@ class Cohort extends Component {
                           style={{
                             cursor: "pointer",
                           }}
-                          onClick={() =>
-                            this.props.history.push({
-                              pathname: `/cohort/${item.slug}`,
-                              state: {
-                                id: item.id,
-                                cohortWalletList: item?.wallet_address_details,
-                                chainImages: sortedChains,
-                              },
-                            })
-                          }
                         >
                           <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
                             {item.name}
@@ -557,12 +595,16 @@ class Cohort extends Component {
                           </h4>
                         </div>
                         {/* edit icon */}
-                        {item.name != "Loch Template Whales" && (
+                        {item.name != "Loch Whale Template" && (
                           <Image
                             src={EditIcon}
                             className="cp editIcon"
-                            onClick={() => this.handleEdit(i, sortedChains)}
-                            style={{ marginLeft: "auto" }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              this.handleEdit(i, sortedChains);
+                            }}
+                            style={{ marginLeft: "auto", zIndex: 99 }}
                           />
                         )}
                       </div>
@@ -625,12 +667,14 @@ class Cohort extends Component {
                   </Col>
                 );
               })
-            ) : (
+            ) : this.state?.sortedList !== "" ? (
               <Col md={12}>
                 <div className="animation-wrapper">
                   <Loading />
                 </div>
               </Col>
+            ) : (
+              ""
             )}
           </Row>
         </div>
