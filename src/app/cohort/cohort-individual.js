@@ -4,7 +4,7 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi, getCohort, GetLargestAsset, GetPurchasedAsset, GetSoldAsset } from "./Api";
+import { getAllInsightsApi, getCohort, GetLargestAsset, GetLargestVolumeBought, GetLargestVolumeSold, GetPurchasedAsset, GetSoldAsset } from "./Api";
 import { InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
@@ -12,6 +12,7 @@ import Coin2 from "../../assets/images/icons/Coin-1.svg";
 import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
 import BaseReactComponent from "./../../utils/form/BaseReactComponent";
+import TransactionIcon from "../../image/TransactionHistoryIcon.svg";
 
 import netWorthIcon from "../../assets/images/icons/total-net-dark.svg";
 import BellIcon from "../../assets/images/icons/bell.svg";
@@ -78,7 +79,12 @@ class CohortPage extends BaseReactComponent {
       LargestAsset: "",
       LargestAssetLoader: false,
       LargestValue: 0,
+      SoldVolumeLoader: false,
+      VolumeBoughtLoader: false,
+      LargestSoldVolume: "",
+      LargestBoughtVolume:"",
     };
+
   }
 
   handleCohort = () => {
@@ -106,7 +112,9 @@ class CohortPage extends BaseReactComponent {
     this.setState({
       PurchasedAssetLoader: true,
       SoldAssetLoader: true,
-      LargestAssetLoader:true,
+      LargestAssetLoader: true,
+      SoldVolumeLoader: true,
+      VolumeBoughtLoader: true,
     });
     // console.log("option", activeFooter);
     let startDate = moment().unix();
@@ -145,7 +153,13 @@ class CohortPage extends BaseReactComponent {
     GetPurchasedAsset(data, this);
 
     // api for largest holding
-    GetLargestAsset(data,this);
+    GetLargestAsset(data, this);
+
+    // api for larget volumn bought
+    GetLargestVolumeBought(data, this);
+
+    // api for larget volumn sold
+    GetLargestVolumeSold(data, this);
   };
 
   getCohortDetail = () => {
@@ -252,7 +266,9 @@ class CohortPage extends BaseReactComponent {
       PurchasedAssetLoader: false,
       SoldAssetLoader: false,
       LargestChainLoader: false,
-      LargestAssetLoader:false,
+      LargestAssetLoader: false,
+      SoldVolumeLoader: false,
+      VolumeBoughtLoader: false
     });
     // this.makeApiCall();
   };
@@ -331,10 +347,7 @@ class CohortPage extends BaseReactComponent {
               Added ${moment(this.state?.createOn).format("DD/MM/YY")}`}
             showpath={true}
             currentPage={nav_list[2]}
-            btnText={PageName !== "Loch Template Whales"
-                ? "Edit"
-                : false
-            }
+            btnText={PageName !== "Loch Template Whales" ? "Edit" : false}
             history={this.props.history}
             btnOutline={true}
             handleBtn={this.handleCohort}
@@ -475,7 +488,7 @@ class CohortPage extends BaseReactComponent {
                 <div>
                   <Image src={MedalIcon} className="net-worth-icon" />
                   <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                    Largest Holding
+                    Largest holding
                   </h3>
                 </div>
 
@@ -548,7 +561,10 @@ class CohortPage extends BaseReactComponent {
           </div>
 
           <Row>
-            <Col md={4} style={{ paddingRight: "0.8rem" }}>
+            <Col
+              md={4}
+              style={{ paddingRight: "0.8rem", marginBottom: "1.6rem" }}
+            >
               <div
                 style={{
                   background: "#FFFFFF",
@@ -568,7 +584,8 @@ class CohortPage extends BaseReactComponent {
                     <div>
                       <Image src={CartIcon} className="net-worth-icon" />
                       <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                        Most frequently purchased token
+                        Most frequently <br />
+                        purchased token
                       </h3>
                     </div>
                     <div style={{ height: "1.7rem", width: "max-content" }}>
@@ -613,7 +630,11 @@ class CohortPage extends BaseReactComponent {
             </Col>
             <Col
               md={4}
-              style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
+              style={{
+                paddingRight: "0.8rem",
+                paddingLeft: "0.8rem",
+                marginBottom: "1.6rem",
+              }}
             >
               <div
                 style={{
@@ -675,7 +696,10 @@ class CohortPage extends BaseReactComponent {
                 )}
               </div>
             </Col>
-            <Col md={4} style={{ paddingLeft: "0.8rem" }}>
+            <Col
+              md={4}
+              style={{ paddingLeft: "0.8rem", marginBottom: "1.6rem" }}
+            >
               <div
                 style={{
                   background: "#FFFFFF",
@@ -693,9 +717,27 @@ class CohortPage extends BaseReactComponent {
                 {!this.state.LargestAssetLoader ? (
                   <>
                     <div>
-                      <Image src={MedalIcon} className="net-worth-icon" />
+                      <div
+                        style={{
+                          backgroundColor: "#19191A",
+                          padding: "0.9rem",
+                          width: "4rem",
+                          height: "4rem",
+                          borderRadius: "1.2rem",
+                        }}
+                      >
+                        <Image
+                          src={TransactionIcon}
+                          className="net-worth-icon"
+                          style={{
+                            filter: "invert(1)",
+                            width: "2.3rem",
+                          }}
+                        />
+                      </div>
                       <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                        Largest Volume
+                        Largest volume <br />
+                        exchanged token
                       </h3>
                     </div>
 
@@ -735,7 +777,137 @@ class CohortPage extends BaseReactComponent {
                 )}
               </div>
             </Col>
+            <Col md={4} style={{ paddingRight: "0.8rem" }}>
+              <div
+                style={{
+                  background: "#FFFFFF",
+                  boxShadow:
+                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                  borderRadius: "12px",
+                  padding: "2rem",
+                  // height: "100%",
+                  height: "19rem",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "column",
+                }}
+              >
+                {!this.state.VolumeBoughtLoader ? (
+                  <>
+                    <div>
+                      <Image src={CartIcon} className="net-worth-icon" />
+                      <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                        Largest volume
+                        <br />
+                        bought token
+                      </h3>
+                    </div>
+                    <div style={{ height: "1.7rem", width: "max-content" }}>
+                      {this.state.LargestBoughtVolume &&
+                      !this.state.VolumeBoughtLoader ? (
+                        // <CoinChip
+                        //   colorCode={this.state.frequentlyPurchasedAsset?.color}
+                        //   coin_img_src={
+                        //     this.state.frequentlyPurchasedAsset?.symbol
+                        //   }
+                        //   coin_percent={
+                        //     this.state.frequentlyPurchasedAsset?.name
+                        //   }
+                        //   type={"cohort"}
+                        // />
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <Image
+                            src={this.state.LargestBoughtVolume?.symbol}
+                            style={{ width: "1.7rem" }}
+                          />
+                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                            {this.state.LargestBoughtVolume?.name}
+                          </h3>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    style={{
+                      transform: "scale(0.65)",
+                      marginTop: "-3.5rem",
+                      marginLeft: "1rem",
+                    }}
+                  >
+                    <Loading />
+                  </div>
+                )}
+              </div>
+            </Col>
+            <Col
+              md={4}
+              style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
+            >
+              <div
+                style={{
+                  background: "#FFFFFF",
+                  boxShadow:
+                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                  borderRadius: "12px",
+                  padding: "2rem",
+                  // height: "100%",
+                  height: "19rem",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexDirection: "column",
+                }}
+              >
+                {!this.state.SoldVolumeLoader ? (
+                  <>
+                    <div>
+                      <Image src={TokenIcon} className="net-worth-icon" />
+                      <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                        Largest volume <br />
+                        sold token
+                      </h3>
+                    </div>
+
+                    <div style={{ height: "1.7rem", width: "max-content" }}>
+                      {this.state.LargestSoldVolume &&
+                      !this.state.SoldVolumeLoader ? (
+                        // <CoinChip
+                        //   colorCode={this.state.frequentlySoldAsset?.color}
+                        //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
+                        //   coin_percent={this.state.frequentlySoldAsset?.name}
+                        //   type={"cohort"}
+                        // />
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <Image
+                            src={this.state.LargestSoldVolume?.symbol}
+                            style={{ width: "1.7rem" }}
+                          />
+                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                            {this.state.LargestSoldVolume?.name}
+                          </h3>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    style={{
+                      transform: "scale(0.65)",
+                      marginTop: "-3.5rem",
+                      marginLeft: "1rem",
+                    }}
+                  >
+                    <Loading />
+                  </div>
+                )}
+              </div>
+            </Col>
           </Row>
+
           {/* 4 card end */}
 
           <div

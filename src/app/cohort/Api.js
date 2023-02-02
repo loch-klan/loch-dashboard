@@ -88,12 +88,10 @@ export const GetSoldAsset = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         // console.log("get-frequently-sold-asset", res.data.data);
-        setTimeout(() => {
-          ctx.setState({
-            frequentlySoldAsset: res.data.data?.asset?.asset,
-            SoldAssetLoader: false,
-          });
-        }, 1000);
+        ctx.setState({
+          frequentlySoldAsset: res.data.data?.asset?.asset,
+          SoldAssetLoader: false,
+        });
         
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -109,12 +107,10 @@ export const GetPurchasedAsset = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         // console.log("get-frequently-purchased-asset", res.data.data);
-        setTimeout(() => {
-          ctx.setState({
-            frequentlyPurchasedAsset: res.data.data?.asset?.asset,
-            PurchasedAssetLoader: false,
-          });
-        }, 1000);
+         ctx.setState({
+           frequentlyPurchasedAsset: res.data.data?.asset?.asset,
+           PurchasedAssetLoader: false,
+         });
         
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -131,13 +127,53 @@ export const GetLargestAsset = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         // console.log("largest", res.data.data);
-        setTimeout(() => {
-          ctx.setState({
-            LargestAsset: res.data.data?.asset?.asset,
-            LargestValue: res.data.data?.asset?.total_value,
-            LargestAssetLoader: false,
-          });
-        }, 1000);
+        ctx.setState({
+          LargestAsset: res.data.data?.asset?.asset,
+          LargestValue: res.data.data?.asset?.total_value,
+          LargestAssetLoader: false,
+        });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+
+export const GetLargestVolumeSold = (data, ctx) => {
+  // let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("wallet/user-cohort/get-largest-sold-asset", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // console.log("largest sold", res.data.data);
+        ctx.setState({
+          // LargestAsset: res.data.data?.asset?.asset,
+          SoldVolumeLoader: false,
+          LargestSoldVolume: res.data.data?.asset?.asset,
+         
+        });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+export const GetLargestVolumeBought = (data, ctx) => {
+  // let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("wallet/user-cohort/get-largest-purchased-asset", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // console.log("largest purchased asset", res.data.data);
+        ctx.setState({
+          // LargestAsset: res.data.data?.asset?.asset,
+          // LargestValue: res.data.data?.asset?.total_value,
+          // LargestAssetLoader: false,
+          LargestBoughtVolume: res.data.data?.asset?.asset,
+          VolumeBoughtLoader: false,
+        });
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
