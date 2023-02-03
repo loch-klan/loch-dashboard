@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { getAllTransactionHistory } from "./IntelligenceAction";
 import { getProfitAndLossData} from "./getProfitAndLossData";
 import { CurrencyType } from "../../utils/ReusableFunctions";
+import { getProfitLossAsset } from "./stackGrapgh";
 
 export const searchTransactionApi = (data , ctx, page = 0) => {
     return function (dispatch, getState) {
@@ -115,3 +116,37 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
     // console.log("err ", err)
   })
  }
+
+ export const getAssetProfitLoss = (
+   ctx,
+   startDate,
+   endDate,
+   selectedChains = false
+ ) => {
+   let data = new URLSearchParams();
+   if (startDate) {
+     data.append("start_datetime", startDate);
+     data.append("end_datetime", endDate);
+   }
+   if (selectedChains && selectedChains.length > 0) {
+     data.append("chains", JSON.stringify(selectedChains));
+   }
+
+   postLoginInstance
+     .post("wallet/transaction/get-asset-profit-loss", data)
+     .then((res) => {
+       if (!res.data.error) {
+        //  console.log("get profit loss", res.data.data);
+         ctx.setState({
+           ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
+           //    updatedInsightList: res.data.data.insights,
+           //    isLoading: false,
+         });
+       } else {
+         toast.error(res.data.message || "Something Went Wrong");
+       }
+     })
+     .catch((err) => {
+       // console.log("err ", err)
+     });
+ };

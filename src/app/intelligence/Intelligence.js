@@ -15,7 +15,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment/moment";
-import { getProfitAndLossApi } from "./Api";
+import { getAssetProfitLoss, getProfitAndLossApi } from "./Api";
 import Loading from "../common/Loading";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
@@ -52,6 +52,8 @@ class Intelligence extends Component {
       startTime: "",
       updatedInsightList: "",
       isLoading: true,
+      // profit loss asset data
+      ProfitLossAsset:[],
       // title: "Max",
       title: 0,
       RightShow: true,
@@ -64,6 +66,7 @@ class Intelligence extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
+      
     };
   }
 
@@ -121,34 +124,47 @@ class Intelligence extends Component {
     const today = moment().unix();
     if (option == 0) {
       getProfitAndLossApi(this, false, false, selectedChains);
+      // for asset Breakdown
+      getAssetProfitLoss(this, false, false, selectedChains);
+     
     } else if (option == 1) {
       // console.log("inside 1")
       const fiveyear = moment().subtract(5, "years").unix();
       getProfitAndLossApi(this, fiveyear, today, selectedChains);
+      // for asset Breakdown
+      getAssetProfitLoss(this, fiveyear, today, selectedChains);
     } else if (option == 2) {
       const fouryear = moment().subtract(4, "years").unix();
       getProfitAndLossApi(this, fouryear, today, selectedChains);
+      getAssetProfitLoss(this, fouryear, today, selectedChains);
     } else if (option == 3) {
       const threeyear = moment().subtract(3, "years").unix();
       getProfitAndLossApi(this, threeyear, today, selectedChains);
+      getAssetProfitLoss(this, threeyear, today, selectedChains);
     } else if (option == 4) {
       const twoyear = moment().subtract(2, "years").unix();
       getProfitAndLossApi(this, twoyear, today, selectedChains);
+      getAssetProfitLoss(this, twoyear, today, selectedChains);
     } else if (option == 5) {
       const year = moment().subtract(1, "years").unix();
       getProfitAndLossApi(this, year, today, selectedChains);
+      getAssetProfitLoss(this, year, today, selectedChains);
     } else if (option == 6) {
       const sixmonth = moment().subtract(6, "months").unix();
       getProfitAndLossApi(this, sixmonth, today, selectedChains);
+      getAssetProfitLoss(this, sixmonth, today, selectedChains);
     } else if (option == 7) {
       const month = moment().subtract(1, "month").unix();
       getProfitAndLossApi(this, month, today, selectedChains);
+      getAssetProfitLoss(this, month, today, selectedChains);
     } else if (option == 8) {
       const week = moment().subtract(1, "week").unix();
       getProfitAndLossApi(this, week, today, selectedChains);
+      getAssetProfitLoss(this, week, today, selectedChains);
     } else if (option == 9) {
       const day = moment().subtract(1, "day").unix();
       getProfitAndLossApi(this, day, today, selectedChains);
+      getAssetProfitLoss(this, day, today, selectedChains);
     }
     this.setState({
       title: option,
@@ -191,8 +207,12 @@ class Intelligence extends Component {
 
     if ((activeFooter = 0)) {
       getProfitAndLossApi(this, false, false, selectedChains);
+      getAssetProfitLoss(this, false, false, selectedChains);
     } else {
       getProfitAndLossApi(this, startDate, endDate, selectedChains);
+
+      // for asset Breakdown
+       getAssetProfitLoss(this, startDate, endDate, selectedChains);
     }
   };
 
@@ -453,11 +473,11 @@ class Intelligence extends Component {
                   activeTitle={this.state.title}
                   // handleSelect={(opt) => this.handleSelect(opt)}
                   showBadges={true}
-                  
                   showPercentage={this.state.graphValue[2]}
                   handleBadge={(activeBadgeList, activeFooter) =>
                     this.handleBadge(activeBadgeList, activeFooter)
                   }
+                  ProfitLossAsset={this.state.ProfitLossAsset}
                   // comingSoon={true}
                 />
               ) : (

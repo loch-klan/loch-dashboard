@@ -311,20 +311,19 @@ class BarGraphSection extends Component {
                   justifyContent: "flex-end",
                 }}
               >
-                  <Form.Check
-                    type="switch"
-                    id="custom-switch"
-                    label="click to show breakdown"
-                    // checked={this.state.switchselected}
+                <Form.Check
+                  type="switch"
+                  id="custom-switch"
+                  label="click to show breakdown"
+                  // checked={this.state.switchselected}
 
-                    onChange={(e) => {
-                      console.log(e.target.checked);
-                      this.setState({
-                        switchselected: e.target.checked,
-                      });
-                    }}
-                  />
-              
+                  onChange={(e) => {
+                    console.log(e.target.checked);
+                    this.setState({
+                      switchselected: e.target.checked,
+                    });
+                  }}
+                />
               </div>
             ) : (
               ""
@@ -386,7 +385,7 @@ class BarGraphSection extends Component {
                   <div className="chartArea">
                     <HighchartsReact
                       highcharts={Highcharts}
-                      options={this.state.stackedgraphdata.options}
+                      options={this.props?.ProfitLossAsset}
                       // constructorType={"stockChart"}
                       // allowChartUpdate={true}
                       // updateArgs={[true]}

@@ -722,7 +722,7 @@ class LineChartSlider extends BaseReactComponent {
           align: "right",
           style: {
             fontSize: 12,
-            fontFamily: "Inter-Medium",
+            fontFamily: "Inter-Regular",
             fontWeight: 400,
             color: "#B0B1B3",
           },
@@ -763,9 +763,9 @@ class LineChartSlider extends BaseReactComponent {
         hideDelay: 0,
 
         formatter: function () {
-          let walletAddress = JSON.parse(localStorage.getItem("addWallet"))?.map(
-            (e) => e.address
-          );
+          let walletAddress = JSON.parse(
+            localStorage.getItem("addWallet")
+          )?.map((e) => e.address);
 
           let tooltipData = [];
 
@@ -787,7 +787,7 @@ class LineChartSlider extends BaseReactComponent {
                 email_address: getCurrentUser().email,
                 value: x_value,
                 address: walletAddress,
-            });
+              });
           let net_amount = 0;
           this.points?.map((item) => {
             // console.log(
@@ -817,7 +817,11 @@ backdrop-filter: blur(15px); padding:1rem 2rem;">Click to show Transactions</div
           }<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
 backdrop-filter: blur(15px);">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${tooltip_title}</b> <b class="inter-display-semi-bold m-l-10" style="color:#16182B;">${CurrencyType(false)}${numToCurrency(net_amount)}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
+                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${tooltip_title}</b> <b class="inter-display-semi-bold m-l-10" style="color:#16182B;">${CurrencyType(
+            false
+          )}${numToCurrency(
+            net_amount
+          )}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
                                 ${tooltipData
                                   ?.map((item) => {
                                     return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
