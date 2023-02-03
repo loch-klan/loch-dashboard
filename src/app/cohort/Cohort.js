@@ -7,6 +7,7 @@ import CoinBadges from "./../common/CoinBadges";
 import { getAllWalletListApi, getAllWalletApi } from "../wallet/Api";
 import { getAllCoins } from "../onboarding/Api.js";
 import EditIcon from "../../assets/images/EditIcon.svg";
+import CohortIcon from "../../assets/images/icons/active-cohort.svg";
 import {
   SEARCH_BY_CHAIN_IN,
   SORT_BY_NAME,
@@ -320,7 +321,8 @@ class Cohort extends Component {
             onHide={this.handleCohort}
             history={this.props.history}
             modalType={"cohort"}
-            headerTitle={"Create a Wallet cohort"}
+            iconImage={CohortIcon}
+            headerTitle={"Create a whale pod"}
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
           />
@@ -331,6 +333,7 @@ class Cohort extends Component {
             onHide={this.handleCohort}
             history={this.props.history}
             modalType={"create_account"}
+            iconImage={CohortIcon}
             isSkip={() => this.handleSkip()}
             // headerTitle={"Create a Wallet cohort"}
             // changeWalletList={this.handleChangeList}
@@ -364,7 +367,7 @@ class Cohort extends Component {
           <PageHeader
             title="Pods"
             subTitle="Track all your whale pods here"
-            btnText="Create cohorts"
+            btnText="Create a pod"
             handleBtn={this.handleCohort}
             // showData={totalWalletAmt}
             // isLoading={isLoading}
@@ -421,7 +424,7 @@ class Cohort extends Component {
                       }
                     });
                   });
-                
+
                 // sortedChains = sortedChains.slice(0,4);
                 // console.log("images", sortedChains);
 

@@ -554,7 +554,9 @@ class ExitOverlay extends BaseReactComponent {
           )}
         <Modal.Header>
           {this.props.modalType === "apiModal" ||
-          this.props.modalType === "exportModal" ? (
+          this.props.modalType === "exportModal" ||
+          this.props.modalType === "create_account" ||
+          (this.props.modalType === "cohort" && !this.props.isEdit) ? (
             <div className="api-modal-header">
               <Image src={this.props.iconImage} />
             </div>
@@ -664,7 +666,7 @@ class ExitOverlay extends BaseReactComponent {
                   : this.props.modalType === "cohort"
                   ? this.props.isEdit
                     ? `added ${this.props.addedon}`
-                    : "Track a cohort of addresses here"
+                    : "Track a pod of whales here"
                   : "Export your exisiting data from Loch"}
               </p>
               {this.props.modalType === "apiModal" ? (
@@ -817,7 +819,7 @@ class ExitOverlay extends BaseReactComponent {
                     <Form onValidSubmit={this.handleCohortSave}>
                       <FormElement
                         valueLink={this.linkState(this, "cohort_name")}
-                        label="Cohort title"
+                        label="Pod Name"
                         required
                         validations={[
                           {
@@ -828,7 +830,7 @@ class ExitOverlay extends BaseReactComponent {
                         control={{
                           type: CustomTextControl,
                           settings: {
-                            placeholder: "Give your cohort a title",
+                            placeholder: "Give your pod a name",
                           },
                         }}
                       />
