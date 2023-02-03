@@ -102,7 +102,10 @@ backdrop-filter: blur(15px);">
   legend: false,
   plotOptions: {
     series: {
-      stacking: "normal",
+      // stacking: "normal",
+       grouping: false,
+      // borderRadiusTopLeft: 10,
+      //   	borderRadiusTopRight: 10,
 
       dataLabels: {
         enabled: false,
@@ -114,7 +117,7 @@ backdrop-filter: blur(15px);">
       name: "Asset Name 1",
       data: [
         {
-          y: 200,
+          y: 100,
           color: "rgba(100, 190, 205, 0.3)",
           borderColor: "#64BECD",
           borderWidth: 2,
@@ -133,6 +136,7 @@ backdrop-filter: blur(15px);">
         },
       ],
       maxPointWidth: 50,
+      borderRadius: 5,
     },
     {
       name: "Asset Name 2",
@@ -157,12 +161,13 @@ backdrop-filter: blur(15px);">
         },
       ],
       maxPointWidth: 50,
+      borderRadius: 5,
     },
     {
       name: "Asset Name 3",
       data: [
         {
-          y: 200,
+          y: 300,
           color: "rgba(114, 87, 211, 0.3)",
           borderColor: "#7257D3",
           borderWidth: 2,
@@ -181,6 +186,7 @@ backdrop-filter: blur(15px);">
         },
       ],
       maxPointWidth: 50,
+      borderRadius: 5,
     },
   ],
 };
