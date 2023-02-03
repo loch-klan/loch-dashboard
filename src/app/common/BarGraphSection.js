@@ -23,6 +23,8 @@ import CustomDropdown from '../../utils/form/CustomDropdown';
 import { info } from '../intelligence/stackGrapgh';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import HC_rounded from "highcharts-rounded-corners";
+HC_rounded(Highcharts);
 // import { BarGraphSection } from './BarGraphSection';
 
 ChartJS.register(
@@ -59,9 +61,9 @@ class BarGraphSection extends Component {
       // activeDropdown: props.activeDropdown,
       handleSelect: props.handleSelect,
       switchselected: props.isSwitch,
-      stackedgraphdata: {
-        options: info[0],
-      },
+      // stackedgraphdata: {
+      //   options: info[0],
+      // },
     };
   }
 
