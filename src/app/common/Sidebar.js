@@ -419,7 +419,7 @@ function Sidebar(props) {
                       onClick={handleExportModal}
                     >
                       <Image src={ExportIcon} />
-                      <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
+                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
                         Export
                       </Button>
                     </span>
@@ -436,13 +436,13 @@ function Sidebar(props) {
                         style={{ marginRight: "1rem" }}
                       >
                         <Image src={SharePortfolioIconWhite} />
-                        <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
+                        <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
                           Share
                         </Button>
                       </span>
                     )}
                   </li>
-                  <li>
+                  {/* <li>
                     <span
                       onMouseOver={(e) =>
                         (e.currentTarget.children[0].src = ApiBlackIcon)
@@ -453,11 +453,11 @@ function Sidebar(props) {
                       onClick={handleApiModal}
                     >
                       <Image src={ApiIcon} />
-                      <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
+                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
                         API
                       </Button>
                     </span>
-                  </li>
+                  </li> */}
                   {/* {JSON.parse(localStorage.getItem("lochUser")) && (
                   <li
                     onMouseOver={(e) =>
@@ -488,7 +488,7 @@ function Sidebar(props) {
                       }
                     >
                       <Image src={LeaveIcon} />
-                      <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
+                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
                         Leave
                       </Button>
                     </span>

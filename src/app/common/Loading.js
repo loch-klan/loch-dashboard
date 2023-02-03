@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import lochClean from "../../assets/images/LochClean.gif";
 import { Image } from "react-bootstrap";
 
-function Loading() {
+function Loading(props) {
   const settings = {
     dots: false,
     infinite: true,
@@ -17,9 +17,11 @@ function Loading() {
     className: "slider variable-width",
   };
   return (
+    <div className="loading-animation">
+      <Image src={lochClean} className="no-data" />
 
-        <div className="loading-animation">
-          <Image src={lochClean} className="no-data" />
+      {!props.showIcon && (
+        <>
           <div className="slick-text">
             <span>Indexing blockchains is </span>
             <div className="slick-slider">
@@ -36,10 +38,10 @@ function Loading() {
               </Slider>
             </div>
           </div>
-          <span className="slick-text">
-            Hang On. We got you.
-          </span>
-        </div>
+          <span className="slick-text">Hang On. We got you.</span>
+        </>
+      )}
+    </div>
   );
 }
 

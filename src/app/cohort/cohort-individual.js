@@ -353,53 +353,8 @@ class CohortPage extends BaseReactComponent {
             handleBtn={this.handleCohort}
             multipleImg={this.state?.chainImages.slice(0, 4)}
           />
-          {/* Net Worth */}
-          {/* <Row>
-            <Col md={6} style={{ paddingRight: "0.8rem" }}>
-              <div className="net-worth-wrapper m-t-20">
-                <div className="left">
-                  <Image src={netWorthIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-20 lh-24 ">
-                    Total net worth
-                  </h3>
-                </div>
-                <div className="right">
-                  <h3 className="space-grotesk-medium f-s-24 lh-29">
-                    {CurrencyType(false)}
-                    {numToCurrency(this.state.totalNetWorth)}
-                    <span className="inter-display-semi-bold f-s-12 grey-ADA">
-                      {" "}
-                      {CurrencyType(true)}
-                    </span>
-                  </h3>
-                </div>
-              </div>
-            </Col>
-            <Col md={6} style={{ paddingLeft: "0.8rem" }}>
-              <div className="net-worth-wrapper m-t-20">
-                <div className="left">
-                  <Image src={StarIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-20 lh-24 ">
-                    Average net worth
-                  </h3>
-                </div>
-                <div className="right">
-                  <h3 className="space-grotesk-medium f-s-24 lh-29">
-                    {CurrencyType(false)}
-                    {numToCurrency(
-                      this.state.totalNetWorth /
-                        this.state.walletAddresses.length
-                    )}
-                    <span className="inter-display-semi-bold f-s-12 grey-ADA">
-                      {CurrencyType(true)}
-                    </span>
-                  </h3>
-                </div>
-              </div>
-            </Col>
-          </Row> */}
 
-          <Row className="m-t-40 m-b-24">
+          <Row className="m-t-40 m-b-40">
             <Col md={4} style={{ paddingRight: "0.8rem" }}>
               <div
                 style={{
@@ -414,10 +369,19 @@ class CohortPage extends BaseReactComponent {
                   flexDirection: "column",
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    marginBottom: "2rem",
+                  }}
+                >
                   <Image src={netWorthIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                    Total net worth
+                  <h3 className="inter-display-medium f-s-18 lh-22 m-l-12">
+                    Total
+                    <br />
+                    net worth
                   </h3>
                 </div>
                 <h3
@@ -450,10 +414,18 @@ class CohortPage extends BaseReactComponent {
                   flexDirection: "column",
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    marginBottom: "2rem",
+                  }}
+                >
                   <Image src={StarIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                    Average net worth
+                  <h3 className="inter-display-medium f-s-18 lh-22 m-l-12">
+                    Average <br />
+                    net worth
                   </h3>
                 </div>
 
@@ -485,10 +457,19 @@ class CohortPage extends BaseReactComponent {
                   flexDirection: "column",
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    marginBottom: "2rem",
+                  }}
+                >
                   <Image src={MedalIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                    Largest holding
+                  <h3 className="inter-display-medium f-s-18 lh-22 m-l-12">
+                    Largest
+                    <br />
+                    holding
                   </h3>
                 </div>
 
@@ -617,13 +598,13 @@ class CohortPage extends BaseReactComponent {
                   </>
                 ) : (
                   <div
-                    style={{
-                      transform: "scale(0.65)",
-                      marginTop: "-3.5rem",
-                      marginLeft: "1rem",
-                    }}
+                  // style={{
+                  //   transform: "scale(0.65)",
+                  //   marginTop: "-3.5rem",
+                  //   marginLeft: "1rem",
+                  // }}
                   >
-                    <Loading />
+                    <Loading showIcon={true} />
                   </div>
                 )}
               </div>
@@ -685,13 +666,13 @@ class CohortPage extends BaseReactComponent {
                   </>
                 ) : (
                   <div
-                    style={{
-                      transform: "scale(0.65)",
-                      marginTop: "-3.5rem",
-                      marginLeft: "1rem",
-                    }}
+                  // style={{
+                  //   transform: "scale(0.65)",
+                  //   marginTop: "-3.5rem",
+                  //   marginLeft: "1rem",
+                  // }}
                   >
-                    <Loading />
+                    <Loading showIcon={true} />
                   </div>
                 )}
               </div>
@@ -766,13 +747,13 @@ class CohortPage extends BaseReactComponent {
                   </>
                 ) : (
                   <div
-                    style={{
-                      transform: "scale(0.65)",
-                      marginTop: "-3.5rem",
-                      marginLeft: "1rem",
-                    }}
+                  // style={{
+                  //   transform: "scale(0.65)",
+                  //   marginTop: "-3.5rem",
+                  //   marginLeft: "1rem",
+                  // }}
                   >
-                    <Loading />
+                    <Loading showIcon={true} />
                   </div>
                 )}
               </div>
@@ -831,13 +812,13 @@ class CohortPage extends BaseReactComponent {
                   </>
                 ) : (
                   <div
-                    style={{
-                      transform: "scale(0.65)",
-                      marginTop: "-3.5rem",
-                      marginLeft: "1rem",
-                    }}
+                  // style={{
+                  //   transform: "scale(0.65)",
+                  //   marginTop: "-3.5rem",
+                  //   marginLeft: "1rem",
+                  // }}
                   >
-                    <Loading />
+                    <Loading showIcon={true} />
                   </div>
                 )}
               </div>
@@ -895,13 +876,13 @@ class CohortPage extends BaseReactComponent {
                   </>
                 ) : (
                   <div
-                    style={{
-                      transform: "scale(0.65)",
-                      marginTop: "-3.5rem",
-                      marginLeft: "1rem",
-                    }}
+                  // style={{
+                  //   transform: "scale(0.65)",
+                  //   marginTop: "-3.5rem",
+                  //   marginLeft: "1rem",
+                  // }}
                   >
-                    <Loading />
+                    <Loading showIcon={true} />
                   </div>
                 )}
               </div>
