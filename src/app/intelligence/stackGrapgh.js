@@ -276,16 +276,32 @@ export const getProfitLossAsset = (arr) => {
 // Find total fees by calculating fees.totalfees
 // Net would be total outflows+ totalfees-totalinflows
   let fees = arr?.fees;
-  let inFlows = arr?.inflows?.sort((a,b)=> b.total_volume - a.total_volume);
-  let outFlows = arr?.outflows.sort((a,b)=> b.total_volume - a.total_volume);
+    
+  let totalFees = 0;
+  fees?.map((e) => (totalFees = totalFees + e.total_fees));
+
+ 
+  let inFlows = arr?.inflows?.sort((a, b) => b.total_volume - a.total_volume);
+  
+  // push()
+  
+  let outFlows = arr?.outflows;
+  outFlows.push({
+    asset: {
+      name: "Fees",
+      color: "#000000",
+    },
+    total_volume: totalFees,
+  });
+    outFlows = arr?.outflows?.sort(
+    (a, b) => b.total_volume - a.total_volume
+  );
 
   let totalInflow = 0;
     inFlows?.map((e) => (totalInflow = totalInflow + e.total_volume));
   let totalOutflow = 0;
   outFlows?.map((e) => (totalOutflow = totalOutflow + e.total_volume));
-  
-  let totalFees = 0;
-  fees?.map((e) => (totalFees = totalFees + e.total_fees));
+
   
 
   let totalNetflow = (totalOutflow + totalFees) - totalInflow;
@@ -301,7 +317,12 @@ export const getProfitLossAsset = (arr) => {
   topOutflow?.map((e) => (topOutFlowTotal = topOutFlowTotal + e.total_volume));
   let otherOutflow = totalOutflow - topOutFlowTotal;
 
-  // console.log("inflow",topInflow,"outflow",topOutflow,"netflow",totalNetflow)
+  console.log(
+   
+    "outflow",
+    outFlows,
+   
+  );
 
 
 const options = {
@@ -368,47 +389,66 @@ const options = {
       // console.log("ctx", this);
       let tooltipData = [];
 
-      let net_amount = 0;
+      let net_amount = this.x === "Inflow" ? totalInflow : this.x === "Outflow" ? totalOutflow : this.x === "Net" ? totalNetflow : 0;
       this.points.map((item) => {
         // console.log(
         //   "Item: ",
         //   item);
-        tooltipData.push({
-          name: item.key,
-          x: item.x,
-          y: item.y,
-          color: item?.point?.borderColor,
-        });
+        if (item.key === "Other" && item.y > 0) {
+          tooltipData.push({
+            name: item.key,
+            x: item.x,
+            y: item.y,
+            color: item?.point?.borderColor,
+          });
+        }
+        else if (item.key !== "Other") {
+          tooltipData.push({
+            name: item.key,
+            x: item.x,
+            y: item.y,
+            color: item?.point?.borderColor,
+          });
+        }
+        
       });
 
       if (this.x === "Net") {
-        tooltipData = tooltipData.slice(4,5);
+        tooltipData = tooltipData.slice(4, 5);
       }
         // console.log("sorted", tooltipData);
 
         // const tooltip_title = "Week";
         //  console.log("checking date", x_value, this.x, tooltip_title);
-        return `<div class="inter-display-semi-bold f-s-10 w-100 text-center"  style="color:#96979A; background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:8px; margin-bottom:4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-backdrop-filter: blur(15px); padding:1rem 2rem;">Asset Breakdown</div><div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+        return `<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
 backdrop-filter: blur(15px);">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:center"><b>${
+                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${
                                   this.x
-                                }</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
-    ${tooltipData
-      .map((item) => {
-        return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
+                                }</b> <b class="inter-display-semi-bold m-l-10" style="color:${
+          this.x === "Net" ? tooltipData[0]?.color : "#16182B"
+        };">${CurrencyType(false)}${numToCurrency(net_amount)}</b></div>${
+          this.x !==
+          "Net" ? `<div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>`:""
+        }
+    ${
+      this.x !== "Net"
+        ? tooltipData
+            .map((item) => {
+              return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
                                     <span style='width:10px; height: 10px; border-radius: 50%; background-color:${
                                       item.color == "#ffffff"
                                         ? "#16182B"
                                         : item.color
                                     }; display: inline-block; margin-right: 0.6rem'> </span>
                                        ${item.name} <span style="color:${
-          item.color == "#ffffff" ? "#16182B" : item.color
-        }">${CurrencyType(false)}${numToCurrency(item.y)}</span>
+                item.color == "#ffffff" ? "#16182B" : item.color
+              }">${CurrencyType(false)}${numToCurrency(item.y)}</span>
                                     </div>`;
-      })
-      .join(" ")}
+            })
+            .join(" ")
+        : ""
+    }
                             </div>
                         </div>`;
     },
@@ -416,8 +456,8 @@ backdrop-filter: blur(15px);">
   legend: false,
   plotOptions: {
     series: {
-      // stacking: "normal",
-      grouping: false,
+      stacking: "normal",
+      // grouping: false,
       // borderRadiusTopLeft: 10,
       //   	borderRadiusTopRight: 10,
 

@@ -48,12 +48,12 @@ class Intelligence extends Component {
       //   GraphData: [],
       //   graphValue: "null",
       // },
-    
+
       startTime: "",
       updatedInsightList: "",
       isLoading: true,
       // profit loss asset data
-      ProfitLossAsset:[],
+      ProfitLossAsset: [],
       // title: "Max",
       title: 0,
       RightShow: true,
@@ -66,8 +66,15 @@ class Intelligence extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-      
+      isSwitch:false,
     };
+  }
+  
+  setSwitch = () => {
+    this.setState({
+      isSwitch: !this.state.isSwitch,
+    });
+    // console.log("switch")
   }
 
   componentDidMount() {
@@ -454,6 +461,8 @@ class Intelligence extends Component {
                     this.timeFilter(e, activeBadgeList)
                   }
                   showSwitch={true}
+                  isSwitch={this.state.isSwitch}
+                  setSwitch={this.setSwitch}
                   marginBottom="m-b-32"
                   // showFooter={false}
                   showFooterDropdown={false}
@@ -478,6 +487,7 @@ class Intelligence extends Component {
                     this.handleBadge(activeBadgeList, activeFooter)
                   }
                   ProfitLossAsset={this.state.ProfitLossAsset}
+
                   // comingSoon={true}
                 />
               ) : (

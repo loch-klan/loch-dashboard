@@ -58,7 +58,7 @@ class BarGraphSection extends Component {
       footerDropdownLabels: props.footerDropdownLabels,
       // activeDropdown: props.activeDropdown,
       handleSelect: props.handleSelect,
-      switchselected: false,
+      switchselected: props.isSwitch,
       stackedgraphdata: {
         options: info[0],
       },
@@ -315,13 +315,14 @@ class BarGraphSection extends Component {
                   type="switch"
                   id="custom-switch"
                   label="click to show breakdown"
-                  // checked={this.state.switchselected}
+                  checked={this.state.switchselected}
 
                   onChange={(e) => {
-                    console.log(e.target.checked);
+                    // console.log(e.target.checked);
                     this.setState({
                       switchselected: e.target.checked,
                     });
+                    this.props.setSwitch();
                   }}
                 />
               </div>
