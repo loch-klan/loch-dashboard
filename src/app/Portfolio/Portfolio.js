@@ -546,7 +546,7 @@ class Portfolio extends BaseReactComponent {
             id: row.asset.id,
             assetPrice: row.asset_price,
           },
-          method: row.method,
+          // method: row.method,
         };
       });
 
@@ -611,7 +611,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "from",
         // coumnWidth: 61,
-        coumnWidth: 0.14,
+        coumnWidth: 0.17,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
@@ -758,7 +758,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        coumnWidth: 0.14,
+        coumnWidth: 0.17,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "to") {
@@ -937,7 +937,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "usdValue",
-        coumnWidth: 0.15,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "usdValue") {
@@ -974,43 +974,43 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="method"
-            onClick={() => {
-              this.handleTableSort("method");
-              TransactionHistoryMethod({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              });
-            }}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Method
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "method",
-        coumnWidth: 0.22,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "method") {
-            return (
-              <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
-                {rowData.method}
-              </div>
-            );
-          }
-        },
-      },
+      // {
+      //   labelName: (
+      //     <div
+      //       className="cp history-table-header-col"
+      //       id="method"
+      //       onClick={() => {
+      //         this.handleTableSort("method");
+      //         TransactionHistoryMethod({
+      //           session_id: getCurrentUser().id,
+      //           email_address: getCurrentUser().email,
+      //         });
+      //       }}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         Method
+      //       </span>
+      //       <Image
+      //         src={sortByIcon}
+      //         className={
+      //           !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+      //         }
+      //       />
+      //     </div>
+      //   ),
+      //   dataKey: "method",
+      //   coumnWidth: 0.22,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "method") {
+      //       return (
+      //         <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
+      //           {rowData.method}
+      //         </div>
+      //       );
+      //     }
+      //   },
+      // },
     ];
     // //console.log("table data", tableData)
     return (
