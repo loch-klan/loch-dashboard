@@ -88,7 +88,7 @@ class CohortPage extends BaseReactComponent {
   }
 
   handleCohort = () => {
-    console.log("cohort click");
+    // console.log("cohort click");
     this.setState({
       cohortModal: !this.state.cohortModal,
     });
@@ -951,7 +951,7 @@ class CohortPage extends BaseReactComponent {
 notifications to you
 here`
                         : `Get intelligent notifications for
-                      your cohort`}
+                      your pod`}
                     </h3>
                   </div>
 
