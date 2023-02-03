@@ -480,7 +480,7 @@ class LineChartSlider extends BaseReactComponent {
           return b.usd - a.usd;
         });
       noOfInternalEvent = selectedEvents.length;
-      selectedEvents = selectedEvents && selectedEvents.slice(0, 4);
+      selectedEvents = selectedEvents && selectedEvents.slice(0, this.props.hideTimeFilter ? 4 : 10);
     };
     timestampList?.map((time) => {
       let dummy = new Date(time);
