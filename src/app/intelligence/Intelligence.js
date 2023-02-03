@@ -48,11 +48,7 @@ class Intelligence extends Component {
       //   GraphData: [],
       //   graphValue: "null",
       // },
-      stackedgraphdata: {
-        data: info[0],
-        options: info[1],
-        options2: info[2],
-      },
+    
       startTime: "",
       updatedInsightList: "",
       isLoading: true,
@@ -457,6 +453,7 @@ class Intelligence extends Component {
                   activeTitle={this.state.title}
                   // handleSelect={(opt) => this.handleSelect(opt)}
                   showBadges={true}
+                  
                   showPercentage={this.state.graphValue[2]}
                   handleBadge={(activeBadgeList, activeFooter) =>
                     this.handleBadge(activeBadgeList, activeFooter)
@@ -471,53 +468,6 @@ class Intelligence extends Component {
                 </div>
               )}
             </div>
-
-            {/* Stack Graph */}
-            <div style={{ position: "relative", minWidth: "85rem" }}>
-              {this.state.graphValue ? (
-                <BarGraphSection
-                  isScrollVisible={false}
-                  data={this.state.stackedgraphdata.data}
-                  options={this.state.stackedgraphdata.options}
-                  coinsList={this.props.OnboardingState.coinsList}
-                  timeFunction={(e, activeBadgeList) =>
-                    this.timeFilter(e, activeBadgeList)
-                  }
-                  showSwitch={true}
-                  marginBottom="m-b-32"
-                  // showFooter={false}
-                  showFooterDropdown={false}
-                  showFooter={true}
-                  footerLabels={[
-                    "Max",
-                    "5 Y",
-                    "4 Y",
-                    "3 Y",
-                    "2 Y",
-                    "1 Y",
-                    "6 M",
-                    "1 M",
-                    "1 W",
-                    "1 D",
-                  ]}
-                  activeTitle={this.state.title}
-                  // handleSelect={(opt) => this.handleSelect(opt)}
-                  showBadges={true}
-                  showPercentage={this.state.graphValue[2]}
-                  handleBadge={(activeBadgeList, activeFooter) =>
-                    this.handleBadge(activeBadgeList, activeFooter)
-                  }
-                  // comingSoon={true}
-                />
-              ) : (
-                <div className="loading-wrapper">
-                  <Loading />
-                  <br />
-                  <br />
-                </div>
-              )}
-            </div>
-            {/* <FeedbackForm page={"Intelligence Page"} /> */}
           </div>
         </div>
         {this.state.addModal && (

@@ -1804,12 +1804,18 @@ textarea{
     width: max-content;
     transform: scale(1.5) translateX(-2.5rem);
     cursor: pointer;
+
+    input{
+        cursor: pointer;
+    }
 }
 
 .custom-control-input:checked~.custom-control-label::before {
     color: #fff;
     border-color: $primary;
-    background-color: $primary;}
+    background-color: $primary;
+     cursor: pointer;
+  }
 
     .custom-control-label::before {
     position: absolute;
@@ -1822,6 +1828,7 @@ textarea{
     content: "";
     background-color: #fff;
     border: 1px solid $primary;
+     cursor: pointer;
 }
 
 .custom-switch .custom-control-label::after {
@@ -1829,18 +1836,22 @@ textarea{
     background-color: $primary;
     border-radius: 0.5rem;
     transition: transform .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+     cursor: pointer;
 }
 
 .custom-control-input:focus~.custom-control-label::before {
     box-shadow: none;
+     cursor: pointer;
 }
 
 .custom-control-input:not(:disabled):active~.custom-control-label::before {
     color: $primary;
     background-color: #fff;
     border-color: #fff;
+     cursor: pointer;
 }
 
 .custom-control-input:focus:not(:checked)~.custom-control-label::before {
     border-color: $primary;
+     cursor: pointer;
 }

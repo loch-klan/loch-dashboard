@@ -20,6 +20,9 @@ import Loading from './Loading';
 import { CurrencyType } from '../../utils/ReusableFunctions';
 import DropDown from './DropDown';
 import CustomDropdown from '../../utils/form/CustomDropdown';
+import { info } from '../intelligence/stackGrapgh';
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 // import { BarGraphSection } from './BarGraphSection';
 
 ChartJS.register(
@@ -55,7 +58,10 @@ class BarGraphSection extends Component {
       footerDropdownLabels: props.footerDropdownLabels,
       // activeDropdown: props.activeDropdown,
       handleSelect: props.handleSelect,
-      switchselected:false,
+      switchselected: false,
+      stackedgraphdata: {
+        options: info[0],
+      },
     };
   }
 
@@ -296,23 +302,29 @@ class BarGraphSection extends Component {
               </p>
             }
             {showSwitch ? (
-              <div style={{ textAlign: "right", marginTop: "-2rem", marginBottom: "2rem", display:"flex", justifyContent:"flex-end" }}>
-                <div>
+              <div
+                style={{
+                  textAlign: "right",
+                  marginTop: "-2rem",
+                  marginBottom: "2rem",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
                   <Form.Check
-                  type="switch"
-                  id="custom-switch"
-                  label="click to show breakdown"
-                  // checked={this.state.switchselected}
+                    type="switch"
+                    id="custom-switch"
+                    label="click to show breakdown"
+                    // checked={this.state.switchselected}
 
-                  onChange={(e) => {
-                    console.log(e.target.checked);
-                    this.setState({
-                      switchselected: e.target.checked,
-                    });
-                  }}
-                />
-                </div>
-                
+                    onChange={(e) => {
+                      console.log(e.target.checked);
+                      this.setState({
+                        switchselected: e.target.checked,
+                      });
+                    }}
+                  />
+              
               </div>
             ) : (
               ""
@@ -335,6 +347,7 @@ class BarGraphSection extends Component {
             ) : (
               ""
             )}
+            {/* Graph Section */}
             <div className={className} style={{ display: "flex" }}>
               {options2 != undefined && isScroll && data.labels.length > 8 ? (
                 <div style={{ width: `${digit}rem` }}>
@@ -358,47 +371,32 @@ class BarGraphSection extends Component {
                   }`,
                 }}
               >
-                <div
-                  className="chartArea"
-                  style={
-                    data.labels.length > 8 && isScroll
-                      ? ScrollStyle
-                      : NormalStyle
-                  }
-                >
-                  <Bar options={options} data={data} />
-                </div>
+                {!this.state.switchselected ? (
+                  <div
+                    className="chartArea"
+                    style={
+                      data.labels.length > 8 && isScroll
+                        ? ScrollStyle
+                        : NormalStyle
+                    }
+                  >
+                    <Bar options={options} data={data} />
+                  </div>
+                ) : (
+                  <div className="chartArea">
+                    <HighchartsReact
+                      highcharts={Highcharts}
+                      options={this.state.stackedgraphdata.options}
+                      // constructorType={"stockChart"}
+                      // allowChartUpdate={true}
+                      // updateArgs={[true]}
+                    />
+                  </div>
+                )}
               </div>
             </div>
-            {/* {showBadges ? (
-              // <CoinBadges
-              //   handleFunction={this.handleFunction}
-              //   activeBadge={activeBadge}
-              //   chainList={coinsList}
-              //   isScrollVisible={isScrollVisible}
-              // />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "right",
-                  alignItems: "center",
-                  marginTop: "2rem",
-                }}
-              >
-                <div style={{ width: "20rem" }}>
-                  <CustomDropdown
-                    filtername="All chains selected"
-                    options={coinsList}
-                    action={null}
-                    handleClick={this.handleFunction}
-                    isChain={true}
-                    // selectedTokens={this.state.activeBadge}
-                  />
-                </div>
-              </div>
-            ) : (
-              ""
-            )} */}
+            {/* Grapgh Section End */}
+
             {showFooterDropdown ? (
               <div className="chart-x-selection">
                 <DropDown
