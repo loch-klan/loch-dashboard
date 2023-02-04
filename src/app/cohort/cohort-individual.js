@@ -4,8 +4,8 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi, getCohort, GetLargestAsset, GetLargestVolumeBought, GetLargestVolumeSold, GetPurchasedAsset, GetSoldAsset } from "./Api";
-import { InsightType } from "../../utils/Constant";
+import { CreateUpdateNotification, getAllInsightsApi, getCohort, GetLargestAsset, GetLargestVolumeBought, GetLargestVolumeSold, GetNotification, GetPurchasedAsset, GetSoldAsset } from "./Api";
+import { AmountType, DormantType, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
@@ -55,7 +55,7 @@ class CohortPage extends BaseReactComponent {
       cohortModal: false,
       updateEmail: false,
       title: "$1,000.00",
-      titleday: "> 30 days",
+      titleday: ">30 days",
       edit: false,
       walletNotification: false,
       dayNotification: false,
@@ -82,9 +82,9 @@ class CohortPage extends BaseReactComponent {
       SoldVolumeLoader: false,
       VolumeBoughtLoader: false,
       LargestSoldVolume: "",
-      LargestBoughtVolume:"",
+      LargestBoughtVolume: "",
+      notificationId: false,
     };
-
   }
 
   handleCohort = () => {
@@ -96,8 +96,13 @@ class CohortPage extends BaseReactComponent {
   componentDidMount() {
     this.getCohortDetail();
     this.getAssetData(0);
+    this.getNotificationApi();
   }
-
+  getNotificationApi = () => {
+    let data = new URLSearchParams();
+    data.append("cohort_id", this.state.cohortId);
+    GetNotification(data, this);
+  }
   componentDidUpdate() {
     if (this.state.apiResponse) {
       this.getCohortDetail();
@@ -191,16 +196,28 @@ class CohortPage extends BaseReactComponent {
   };
 
   handleSave = () => {
-    console.log("save");
-    if (this.state.isEmailValid) {
-      toast.success(
-        <div className="custom-toast-msg" style={{ width: "43rem" }}>
-          <div>Email updated</div>
-          <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-            You will be receiving notifications from us there
-          </div>
-        </div>
-      );
+    // console.log("save");
+    if (this.state.isEmailValid && this.state.email !== "") {
+      let data = new URLSearchParams();
+      data.append("cohort_id", this.state.cohortId);
+      data.append("email", this.state.email);
+
+      if (this.state.walletNotification) {
+        data.append("amount_type", AmountType.getNumber(this.state.title));
+      }
+
+      if (this.state.dayNotification) {
+        data.append("dormant_type", DormantType.getNumber(this.state.titleday));
+      }
+      if (this.state.notificationId) {
+        data.append(
+          "whale_notification_id",this.state.notificationId)
+        ;
+      }
+      //   console.log("amout", AmountType.getNumber(this.state.title));
+      // console.log("dormant", DormantType.getNumber(this.state.titleday));
+
+      CreateUpdateNotification(data,this);
 
       setTimeout(() => {
         this.setState({ showBtn: false });
@@ -210,7 +227,7 @@ class CohortPage extends BaseReactComponent {
 
   handleFunction = (e) => {
     const title = e.split(" ")[1];
-    console.log(e, title);
+    // console.log(e, title);
     this.setState({
       title: title,
       showBtn: true,
@@ -219,7 +236,7 @@ class CohortPage extends BaseReactComponent {
 
   handleFunctionDay = (e) => {
     const title = e.split(" ")[1] + " " + e.split(" ")[2];
-    console.log(e, title);
+    // console.log(e, title);
     this.setState({
       titleday: title,
       showBtn: true,
@@ -238,7 +255,7 @@ class CohortPage extends BaseReactComponent {
   };
 
   handleClickWallet = () => {
-    console.log("click check");
+    // console.log("click check");
     this.setState({
       walletNotification: !this.state.walletNotification,
       showBtn: true,
@@ -268,10 +285,14 @@ class CohortPage extends BaseReactComponent {
       LargestChainLoader: false,
       LargestAssetLoader: false,
       SoldVolumeLoader: false,
-      VolumeBoughtLoader: false
+      VolumeBoughtLoader: false,
     });
     // this.makeApiCall();
   };
+
+  onSubmit = () => {
+    
+  }
 
   render() {
     const nav_list = window.location.pathname.split("/");
@@ -318,6 +339,7 @@ class CohortPage extends BaseReactComponent {
         },
       },
     ];
+
     return (
       <div className="insights-section m-b-80">
         {this.state.cohortModal ? (
@@ -974,7 +996,7 @@ here`
                   )}
                   {this.state.updateEmail && (
                     <div className="m-t-30">
-                      <Form>
+                      <Form onValidSubmit={this.onSubmit}>
                         <FormElement
                           valueLink={this.linkState(this, "email")}
                           // label="Email Info"
@@ -1001,6 +1023,7 @@ here`
                           ]}
                           control={{
                             type: CustomTextControl,
+
                             settings: {
                               placeholder: "Email",
                             },
@@ -1132,7 +1155,7 @@ here`
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <DropDown
                         class="cohort-dropdown"
-                        list={["30 days", "60 days", "90 days", "180 days"]}
+                        list={[">30 days", "60 days", "90 days", "180 days"]}
                         onSelect={this.handleFunctionDay}
                         title={this.state.titleday}
                         activetab={this.state.titleday}

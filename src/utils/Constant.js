@@ -222,3 +222,52 @@ export const AssetType = {
     return this._presentable[value];
   },
 };
+
+// for Amount Type
+export const AmountType = {
+  _numbers: {
+    1000: "$1,000.00",
+    10000: "$10k",
+    100000: "$100k",
+    1000000: "$1m",
+    10000000: "$10m",
+    100000000: "$100m",
+  },
+
+  _presentable: {
+    "$1,000.00": 1000,
+    "$10k": 10000,
+    "$100k": 100000,
+    "$1m": 1000000,
+    "$10m": 10000000,
+    "$100m": 100000000,
+  },
+
+  getText: function (value) {
+    return this._numbers[value];
+  },
+  getNumber: function (value) {
+    return this._presentable[value];
+  },
+};
+
+
+// for Dormant Type
+export const DormantType = {
+  _numbers:{30: ">30 days",
+  60: "60 days",
+  90: "90 days",
+  180: "180 days",},
+  _presentable: {
+    ">30 days": 30,
+    "60 days": 60,
+    "90 days": 90,
+    "180 days": 180,
+  },
+  getText: function (value) {
+    return this._numbers[value];
+  },
+  getNumber: function (value) {
+    return this._presentable[value];
+  },
+};
