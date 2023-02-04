@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
+import { AmountType, DormantType } from "../../utils/Constant";
 
 export const createCohort = (data,ctx) => {
 //   let data = new URLSearchParams();
@@ -58,7 +59,7 @@ export const getCohort = (data, ctx) => {
     .post("wallet/user-cohort/get-cohort-details", data)
     .then((res) => {
       if (!res.data.error) {
-        console.log("get cohort", res.data.data.user_cohort);
+        // console.log("get cohort", res.data.data.user_cohort);
         let response = res.data.data?.user_cohort;
         ctx.setState({
           walletAddresses: response?.wallet_address_details,
@@ -173,6 +174,77 @@ export const GetLargestVolumeBought = (data, ctx) => {
           // LargestAssetLoader: false,
           LargestBoughtVolume: res.data.data?.asset?.asset,
           VolumeBoughtLoader: false,
+        });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+
+// add-update-whale-notification
+export const CreateUpdateNotification = (data,ctx) => {
+  // let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("communication/notification/add-update-whale-notification", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // console.log("create user", res.data.data);
+        // ctx.setState({
+        //   // LargestAsset: res.data.data?.asset?.asset,
+        //   // LargestValue: res.data.data?.asset?.total_value,
+        //   // LargestAssetLoader: false,
+        //   LargestBoughtVolume: res.data.data?.asset?.asset,
+        //   VolumeBoughtLoader: false,
+        // });
+          
+      toast.success(
+        <div className="custom-toast-msg" style={{ width: "43rem" }}>
+          <div>Email updated</div>
+          <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+            You will be receiving notifications from us there
+          </div>
+        </div>
+      );
+        
+        ctx.getNotificationApi();
+
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+
+// get-whale-notification
+export const GetNotification = (data,ctx) => {
+  // let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("communication/notification/get-whale-notification", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // console.log("get notification", res.data.data);
+        let response = res.data.data.notification;
+        // console.log(
+        //   DormantType.getText(response.dormant_type),
+        //   AmountType.getText(response.amount_type)
+        // );
+        ctx.setState({
+          // LargestAsset: res.data.data?.asset?.asset,
+          // LargestValue: res.data.data?.asset?.total_value,
+          // LargestAssetLoader: false,
+          title: response?.amount_type
+            ? AmountType.getText(response?.amount_type)
+            : "$1,000.00",
+          titleday: response?.dormant_type
+            ? DormantType.getText(response?.dormant_type)
+            : ">30 days",
+          email: response?.email ? response?.email : "",
+          walletNotification: response?.amount_type ? true : false,
+          dayNotification: response?.dormant_type ? true : false,
+          notificationId: response ? response.id : false,
         });
       } else {
         toast.error(res.data.message || "Something Went Wrong");
