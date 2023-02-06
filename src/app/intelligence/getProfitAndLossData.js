@@ -5,10 +5,16 @@ import { ProfitLossHover } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 export const getProfitAndLossData = (arr) => {
-  console.log("array", arr);
+  // console.log("array", arr);
   let currency= JSON.parse(localStorage.getItem('currency'));
   let inflows = Number(noExponents(arr.inflows));
   let outflows = Number(noExponents(arr.outflows));
+
+  // console.log(
+  //   "wothout breadown",
+  //   outflows * currency.rate, inflows * currency.rate,
+  //   Math.abs(outflows * currency.rate - inflows * currency.rate)
+  // );
     const labels = ["Inflows", "Outflows", "Net"];
     const profitOrLossData = {
         profit:{

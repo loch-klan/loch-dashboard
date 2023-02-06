@@ -78,13 +78,24 @@ class Intelligence extends Component {
   }
 
   componentDidMount() {
+     if (this.props.location.hash !== "") {
+       setTimeout(() => {
+         const id = this.props.location.hash.replace("#", "");
+         // console.log('id',id);
+         const element = document.getElementById(id);
+         if (element) {
+           element.scrollIntoView();
+         }
+       }, 0);
+     } else {
+       window.scrollTo(0, 0);
+     }
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", this.state.startTime);
     IntelligencePage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    window.scrollTo(0, 0);
     this.props.getAllCoins();
     this.timeFilter(0);
     getAllInsightsApi(this);
@@ -347,7 +358,7 @@ class Intelligence extends Component {
               </div>
             </div>
           </div>
-          <div className="portfolio-bar-graph">
+          <div className="portfolio-bar-graph" id="netflow">
             <PageHeader title="Net Flows" showImg={eyeIcon} />
             {/* Netflow Info Start */}
 

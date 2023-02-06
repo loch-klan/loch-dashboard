@@ -1806,11 +1806,15 @@ textarea{
     user-select: none;
     width: max-content;
     // transform: scale(1.5) translateX(-2.5rem);
-    transform: scale(1.5) translateX(2.8rem);
+    transform: scale(1.45) translateX(2.6rem);
     cursor: pointer;
 
     input{
         cursor: pointer;
+    }
+
+    label{
+       @include font($primary, "Inter-Medium", 0.9rem, 500, 15px);
     }
 }
 

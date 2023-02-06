@@ -1238,11 +1238,11 @@ class Portfolio extends BaseReactComponent {
                             this.state.userWalletList &&
                             this.state.userWalletList?.length !== 0
                           ) {
-                            this.props.history.push("/intelligence");
                             ProfitLossEV({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
+                             this.props.history.push("/intelligence#netflow");
                           }
                         }}
                         isScrollVisible={false}
@@ -1317,7 +1317,7 @@ class Portfolio extends BaseReactComponent {
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                            this.props.history.push("/costs#cp");
+                            this.props.history.push("/intelligence/costs#cp");
                           }
                         }}
                         data={

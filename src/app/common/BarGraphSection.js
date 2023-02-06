@@ -310,7 +310,7 @@ class BarGraphSection extends Component {
                   {showSwitch && <Form.Check
                     type="switch"
                     id="custom-switch"
-                    label="click to show breakdown"
+                    label="Click to show breakdown"
                     checked={this.state.switchselected}
                     onChange={(e) => {
                       // console.log(e.target.checked);

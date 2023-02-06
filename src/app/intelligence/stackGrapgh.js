@@ -13,6 +13,7 @@ export const getProfitLossAsset = (arr) => {
 // Find total outflows by calculating outflows.totalvolume
 // Find total fees by calculating fees.totalfees
 // Net would be total outflows+ totalfees-totalinflows
+   let currency = JSON.parse(localStorage.getItem("currency"));
   let fees = arr?.fees;
     
   let totalFees = 0;
@@ -55,6 +56,13 @@ export const getProfitLossAsset = (arr) => {
   topOutflow?.map((e) => (topOutFlowTotal = topOutFlowTotal + e.total_volume));
   let otherOutflow = totalOutflow - topOutFlowTotal;
 
+  // console.log(
+  //   "in breadown",
+  //   totalOutflow * currency?.rate,
+  //   totalInflow * currency?.rate,
+  //   totalNetflow * currency?.rate,
+  //   totalFees * currency?.rate
+  // );
 
 const options = {
   chart: {
@@ -129,17 +137,21 @@ const options = {
           ? totalNetflow
           : 0;
       this.points.map((item) => {
-        // console.log(
-        //   "Item: ",
-        //   item);
-        if ((item.key === "Other" && item.y > 0) || item.key === this.x) {
+        console.log(
+          "Item: ",
+          item);
+        if (
+          (item.key === "Other" && item.y > 0) ||
+          item.key === this.x ||
+          (item.key === "Fees" && item.y > 0)
+        ) {
           tooltipData.push({
             name: item.key,
             x: item.x,
             y: item.y,
             color: item?.point?.borderColor,
           });
-        } else if (item.key !== "Other" && item.key !== "Net") {
+        } else if (item.key !== "Other" && item.key !== "Net" && item.key !== "Fees") {
           tooltipData.push({
             name: item.key,
             x: item.x,
@@ -149,8 +161,10 @@ const options = {
         }
       });
 
+      let netColor = "#16182B";
       if (this.x === "Net") {
-        tooltipData = tooltipData.slice(4, 5);
+        netColor = tooltipData.slice(4, 5)[0]?.color;
+        tooltipData = [];
       }
       // console.log("sorted", tooltipData);
 
@@ -162,14 +176,16 @@ backdrop-filter: blur(15px);">
                                 <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${
                                   this.x
                                 }</b> <b class="inter-display-semi-bold m-l-10" style="color:${
-        this.x === "Net" ? tooltipData[0]?.color : "#16182B"
-      };">${CurrencyType(false)}${numToCurrency(net_amount)}</b></div>${
-        this.x !== "Net"
+        this.x === "Net" ? netColor : "#16182B"
+      };">${CurrencyType(false)}${numToCurrency(
+        net_amount * currency?.rate
+      )}</b></div>${
+        tooltipData.length !== 0
           ? `<div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>`
           : ""
       }
     ${
-      this.x !== "Net"
+      tooltipData.length !== 0
         ? tooltipData
             .map((item) => {
               return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
@@ -206,14 +222,14 @@ backdrop-filter: blur(15px);">
       name: "One",
       data: [
         {
-          y: topInflow[0]?.total_volume,
+          y: topInflow[0]?.total_volume * currency?.rate,
           color: topInflow[0]?.asset?.color + "4D",
           borderColor: topInflow[0]?.asset?.color,
           borderWidth: 2,
           name: topInflow[0]?.asset?.name,
         },
         {
-          y: topOutflow[0]?.total_volume,
+          y: topOutflow[0]?.total_volume * currency?.rate,
           color: topOutflow[0]?.asset?.color + "4D",
           borderColor: topOutflow[0]?.asset?.color,
           borderWidth: 2,
@@ -235,14 +251,14 @@ backdrop-filter: blur(15px);">
       name: "Two",
       data: [
         {
-          y: topInflow[1]?.total_volume,
+          y: topInflow[1]?.total_volume * currency?.rate,
           color: topInflow[1]?.asset?.color + "4D",
           borderColor: topInflow[1]?.asset?.color,
           borderWidth: 2,
           name: topInflow[1]?.asset?.name,
         },
         {
-          y: topOutflow[1]?.total_volume,
+          y: topOutflow[1]?.total_volume * currency?.rate,
           color: topOutflow[1]?.asset?.color + "4D",
           borderColor: topOutflow[1]?.asset?.color,
           borderWidth: 2,
@@ -262,14 +278,14 @@ backdrop-filter: blur(15px);">
       name: "Three",
       data: [
         {
-          y: topInflow[2]?.total_volume,
+          y: topInflow[2]?.total_volume * currency?.rate,
           color: topInflow[2]?.asset?.color + "4D",
           borderColor: topInflow[2]?.asset?.color,
           borderWidth: 2,
           name: topInflow[2]?.asset?.name,
         },
         {
-          y: topOutflow[2]?.total_volume,
+          y: topOutflow[2]?.total_volume * currency?.rate,
           color: topOutflow[2]?.asset?.color + "4D",
           borderColor: topOutflow[2]?.asset?.color,
           borderWidth: 2,
@@ -289,14 +305,14 @@ backdrop-filter: blur(15px);">
       name: "Four",
       data: [
         {
-          y: topInflow[3]?.total_volume,
+          y: topInflow[3]?.total_volume * currency?.rate,
           color: topInflow[3]?.asset?.color + "4D",
           borderColor: topInflow[3]?.asset?.color,
           borderWidth: 2,
           name: topInflow[3]?.asset?.name,
         },
         {
-          y: topOutflow[3]?.total_volume,
+          y: topOutflow[3]?.total_volume * currency?.rate,
           color: topOutflow[3]?.asset?.color + "4D",
           borderColor: topOutflow[3]?.asset?.color,
           borderWidth: 2,
@@ -317,14 +333,14 @@ backdrop-filter: blur(15px);">
       name: "Other",
       data: [
         {
-          y: otherInflow,
+          y: otherInflow * currency?.rate,
           color: "#16182B4D",
           borderColor: "#16182B",
           borderWidth: 2,
           name: "Other",
         },
         {
-          y: otherOutflow,
+          y: otherOutflow * currency?.rate,
           color: "#16182B4D",
           borderColor: "#16182B",
           borderWidth: 2,
@@ -363,9 +379,10 @@ backdrop-filter: blur(15px);">
           borderRadius: 0,
         },
         {
-          y: Math.abs(totalNetflow),
-          color: totalNetflow < 0 ? "#FFE0D9" : "#A9F4C4",
-          borderColor: totalNetflow < 0 ? "#CF1011" : "#18C278",
+          y: Math.abs(totalNetflow * currency?.rate),
+          color: totalNetflow * currency?.rate < 0 ? "#FFE0D9" : "#A9F4C4",
+          borderColor:
+            totalNetflow * currency?.rate < 0 ? "#CF1011" : "#18C278",
           borderWidth: 2,
         },
       ],

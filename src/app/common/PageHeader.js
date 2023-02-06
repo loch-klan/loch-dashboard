@@ -42,7 +42,7 @@ export default function PageHeader(props) {
       {props.showpath ? breadCrumb : ""}
 
       <div className="header">
-        <div className='header-left'>
+        <div className="header-left">
           {props.showImg ? (
             <div className="m-r-16 show-img">
               <Image src={props.showImg} />
@@ -74,7 +74,26 @@ export default function PageHeader(props) {
             </h4>
             {props.subTitle ? (
               <p className="inter-display-medium f-s-16 lh-19">
-                {props.subTitle}
+                {props.subTitle}{" "}
+                {props.hoverText ? (
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={props.hoverText}
+                    className={"fix-width"}
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="info-icon"
+                      style={{ width: "1.6rem", marginTop: "-3px" }}
+                      // onMouseEnter={this.privacymessage}
+                    />
+                  </CustomOverlay>
+                ) : (
+                  ""
+                )}
               </p>
             ) : (
               ""
