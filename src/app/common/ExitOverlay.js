@@ -330,11 +330,11 @@ class ExitOverlay extends BaseReactComponent {
             data.append("cohort_id", this.props.cohortId);
             // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
           }
-
+          this.state.changeList && this.state.changeList(walletList);
           createCohort(data, this);
           this.state.onHide();
 
-          this.state.changeList && this.state.changeList(walletList);
+          
         } 
         
       }, 100);
@@ -1072,10 +1072,11 @@ class ExitOverlay extends BaseReactComponent {
               </div>
               <div className="m-b-36 footer">
                 <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                  At Loch, we care intensely about your privacy and anonymity.
+                  At Loch, we care intensely about your privacy and
+                  pseudonymity.
                 </p>
                 <CustomOverlay
-                  text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                  text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
                   position="top"
                   isIcon={true}
                   IconImage={LockIcon}
