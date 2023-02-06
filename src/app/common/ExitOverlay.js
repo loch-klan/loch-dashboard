@@ -1020,12 +1020,13 @@ class ExitOverlay extends BaseReactComponent {
               <h6 className="inter-display-medium f-s-20 lh-24 ">
                 Don’t lose your data
               </h6>
-              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center">
-                Don’t let your hard work go to waste
+              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center m-b-24">
+                Don’t let your hard work go to waste. Add your email so you can
+                watch your whales with binoculars
               </p>
-              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
+              {/* <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
                 Save your email so you know exactly what’s happening
-              </p>
+              </p> */}
               {/* this.props.isSkip(); */}
               <div className="email-section">
                 <Form onValidSubmit={this.handleSave}>

@@ -303,36 +303,24 @@ class BarGraphSection extends Component {
                 {CurrencyType()}{" "}
               </p>
             }
-            {showSwitch ? (
-              <div
-                style={{
-                  textAlign: "right",
-                  marginTop: "-2rem",
-                  marginBottom: "2rem",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Form.Check
-                  type="switch"
-                  id="custom-switch"
-                  label="click to show breakdown"
-                  checked={this.state.switchselected}
-
-                  onChange={(e) => {
-                    // console.log(e.target.checked);
-                    this.setState({
-                      switchselected: e.target.checked,
-                    });
-                    this.props.setSwitch();
-                  }}
-                />
-              </div>
-            ) : (
-              ""
-            )}
+           
             {showPercentage ? (
               <div className="show-percentage-div ">
+                <div>
+                  {showSwitch && <Form.Check
+                    type="switch"
+                    id="custom-switch"
+                    label="click to show breakdown"
+                    checked={this.state.switchselected}
+                    onChange={(e) => {
+                      // console.log(e.target.checked);
+                      this.setState({
+                        switchselected: e.target.checked,
+                      });
+                      this.props.setSwitch();
+                    }}
+                  />}
+                </div>
                 <div
                   className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
                     showPercentage.status === "Increase"

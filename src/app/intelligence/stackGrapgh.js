@@ -27,7 +27,7 @@ export const getProfitLossAsset = (arr) => {
   outFlows.push({
     asset: {
       name: "Fees",
-      color: "#000000",
+      color: "#2297DB",
     },
     total_volume: totalFees,
   });
@@ -132,14 +132,14 @@ const options = {
         // console.log(
         //   "Item: ",
         //   item);
-        if (item.key === "Other" && item.y > 0) {
+        if ((item.key === "Other" && item.y > 0) || item.key === this.x) {
           tooltipData.push({
             name: item.key,
             x: item.x,
             y: item.y,
             color: item?.point?.borderColor,
           });
-        } else if (item.key !== "Other") {
+        } else if (item.key !== "Other" && item.key !== "Net") {
           tooltipData.push({
             name: item.key,
             x: item.x,
@@ -195,8 +195,6 @@ backdrop-filter: blur(15px);">
     series: {
       stacking: "normal",
       // grouping: false,
-      borderRadiusTopLeft: 6,
-      borderRadiusTopRight: 6,
 
       dataLabels: {
         enabled: false,
@@ -229,6 +227,8 @@ backdrop-filter: blur(15px);">
         },
       ],
       maxPointWidth: 50,
+      borderRadiusTopLeft: 6,
+      borderRadiusTopRight: 6,
       // borderRadius: 5,
     },
     {
@@ -318,17 +318,49 @@ backdrop-filter: blur(15px);">
       data: [
         {
           y: otherInflow,
-          color: "#D6D8DE",
+          color: "#16182B4D",
           borderColor: "#16182B",
           borderWidth: 2,
           name: "Other",
         },
         {
           y: otherOutflow,
-          color: "#D6D8DE",
+          color: "#16182B4D",
           borderColor: "#16182B",
           borderWidth: 2,
           name: "Other",
+        },
+        {
+          y: 0,
+          color: "transparent",
+          borderColor: "transparent",
+          borderWidth: 0,
+          name: "Other",
+        },
+      ],
+      maxPointWidth: 50,
+      // borderRadiusTopLeft: 6,
+      // borderRadiusTopRight: 6,
+      // borderRadius: 5,
+    },
+    {
+      name: "Net",
+      data: [
+        {
+          y: 0,
+          color: "transparent",
+          borderColor: "transparent",
+          borderWidth: 2,
+          name: "Net",
+          borderRadius: 0,
+        },
+        {
+          y: 0,
+          color: "transparent",
+          borderColor: "transparent",
+          borderWidth: 2,
+          name: "Net",
+          borderRadius: 0,
         },
         {
           y: Math.abs(totalNetflow),
@@ -338,6 +370,8 @@ backdrop-filter: blur(15px);">
         },
       ],
       maxPointWidth: 50,
+      borderRadiusTopLeft: 6,
+      borderRadiusTopRight: 6,
       // borderRadius: 5,
     },
   ],
