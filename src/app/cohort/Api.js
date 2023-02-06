@@ -10,7 +10,7 @@ export const createCohort = (data,ctx) => {
     .then((res) => {
       if (!res.data.error) {
         //  console.log("res cohort", ctx);
-          ctx.props.apiResponse(true);
+          ctx.props.apiResponse && ctx.props.apiResponse(true);
          
       } else {
         toast.error(res.data.message || "Something Went Wrong");

@@ -74,7 +74,7 @@ class Cohort extends Component {
       RegisterModal: false,
       skip: false,
       chainImages: [],
-      isSave: false,
+     
     };
   }
 
@@ -106,23 +106,26 @@ class Cohort extends Component {
     const islochUser = JSON.parse(localStorage.getItem("lochUser"));
      
     
-      console.log("loch user");
+      // console.log("loch user");
       this.setState(
         {
           cohortModal: !this.state.cohortModal,
           skip: islochUser ? true : this.state.skip,
         },
-      );
+        () => {
+        
+      });
   
   
   };
 
   AddEmailModal = () => {
+    // console.log("handle emailc close");
     this.setState({
       RegisterModal: !this.state.RegisterModal,
-      isSave: false,
+      
     });
-  }
+  };
 
   CheckApiResponse = (value) => {
     this.setState({
@@ -132,13 +135,14 @@ class Cohort extends Component {
   };
 
   handleSkip = () => {
-    console.log("handle skip")
-    this.setState(
-      {
-        skip: true,
-        isSave: false,
-      },
-    );
+    // console.log("handle skip")
+    this.setState({
+      skip: true,
+    }, () => {
+      if (this.state.skip) {
+        this.AddEmailModal();
+      }
+    });
   };
 
   handleEdit = (i, images) => {
@@ -159,10 +163,10 @@ class Cohort extends Component {
       cardList: [],
       sortedList: [],
     });
-
-    // if (!this.state.isSkip) {
-    //    this.AddEmailModal();
-    // }
+if (!this.state.skip) {
+  this.AddEmailModal();
+}
+    
     // this.makeApiCall();
   };
 

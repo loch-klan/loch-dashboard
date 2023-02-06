@@ -330,9 +330,10 @@ class ExitOverlay extends BaseReactComponent {
             data.append("cohort_id", this.props.cohortId);
             // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
           }
-          this.state.changeList && this.state.changeList(walletList);
+          
           createCohort(data, this);
           this.state.onHide();
+          this.state.changeList && this.state.changeList(walletList);
 
           
         } 
@@ -458,12 +459,12 @@ class ExitOverlay extends BaseReactComponent {
 
   handleUpload = () => {
     this.fileInputRef.current.click();
-    console.log("upload click");
+    // console.log("upload click");
   };
 
   handleFileSelect = (event) => {
     const file = event.target.files[0];
-    console.log("event", event)
+    // console.log("event", event)
 
     if (file.type === "text/csv" || file.type === "text/plain") {
       Papa.parse(file, {
@@ -487,11 +488,11 @@ class ExitOverlay extends BaseReactComponent {
             });
           });
 
-          console.log("address",addressList, prevAddressList);
+          // console.log("address",addressList, prevAddressList);
           this.setState({
             addWalletList: [...prevAddressList, ...addressList],
           }, () => {
-            console.log("address", this.state.addWalletList);
+            // console.log("address", this.state.addWalletList);
             this.state.addWalletList?.map((e) =>
               this.getCoinBasedOnWalletAddress(e.id,e.address)
             );
@@ -1020,11 +1021,12 @@ class ExitOverlay extends BaseReactComponent {
               <h6 className="inter-display-medium f-s-20 lh-24 ">
                 Don’t lose your data
               </h6>
-              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center">
+              {/* <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center">
                 Don’t let your hard work go to waste
-              </p>
+              </p> */}
               <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-                Save your email so you know exactly what’s happening
+                Don’t let your hard work go to waste. Add your email so you can
+                watch your whales with binoculars
               </p>
               {/* this.props.isSkip(); */}
               <div className="email-section">
