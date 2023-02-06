@@ -6,6 +6,8 @@ import TransactionIcon from '../../image/TransactionHistoryIcon.svg'
 import ShuffleIcon from '../../image/ShuffleIcon.svg'
 import InsightsIcon from '../../image/InsightsIcon.svg'
 import ArrowRight from '../../image/ArrowRight.svg'
+import ActiveDollarIcon from "../../assets/images/icons/ActiveCostIcon.svg";
+
 import {
   TransactionHistory,
   TradeByCounterParty,
@@ -60,6 +62,18 @@ export default function IntelWelcomeCard(props) {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+        },
+      },
+      {
+        icon: ActiveDollarIcon,
+        title: "Costs",
+        background: "lightgreen",
+        path: "/intelligence/costs",
+        analyticEvent: () => {
+          // Insights({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         },
       },
     ];

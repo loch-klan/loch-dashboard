@@ -9,8 +9,9 @@ export const createCohort = (data,ctx) => {
     .post("wallet/user-cohort/add-update-user-cohort", data)
     .then((res) => {
       if (!res.data.error) {
+        //  console.log("res cohort", ctx);
           ctx.props.apiResponse(true);
-          // console.log("res cohort", res.data.data)
+         
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }

@@ -71,16 +71,16 @@ const routes = [
     component: InsightsPage,
   },
   {
+    path: "/intelligence/costs",
+    name: "Costs",
+    type: PrivateRoute,
+    component: Cost,
+  },
+  {
     path: "/wallets",
     name: "Wallet",
     type: PrivateRoute,
     component: Wallet,
-  },
-  {
-    path: "/costs",
-    name: "Costs",
-    type: PrivateRoute,
-    component: Cost,
   },
   {
     path: "/whale-watching",

@@ -968,7 +968,7 @@ backdrop-filter: blur(15px);">
             {!this.props.isPage && (
               <GraphHeader
                 title="Asset Value"
-                subtitle="Understand your performance over time"
+                subtitle="Analyze your portfolio value over time"
                 isArrow={true}
                 isAnalytics="Asset Value"
                 handleClick={this.props.handleClick}

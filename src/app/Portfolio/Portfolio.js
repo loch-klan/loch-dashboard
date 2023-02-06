@@ -1231,7 +1231,7 @@ class Portfolio extends BaseReactComponent {
                     <div className="profit-chart">
                       <BarGraphSection
                         headerTitle="Net Flows"
-                        headerSubTitle="Understand your entire portfolio's performance"
+                        headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
                         handleClick={() => {
                           if (

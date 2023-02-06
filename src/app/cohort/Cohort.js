@@ -73,7 +73,8 @@ class Cohort extends Component {
       sortedList: [],
       RegisterModal: false,
       skip: false,
-      chainImages:[],
+      chainImages: [],
+      isSave: false,
     };
   }
 
@@ -90,8 +91,6 @@ class Cohort extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-   
-
     if (this.state.apiResponse) {
       // console.log("update");
       this.makeApiCall();
@@ -105,32 +104,44 @@ class Cohort extends Component {
     // console.log("cohort click");
     const isDummy = localStorage.getItem("lochDummyUser");
     const islochUser = JSON.parse(localStorage.getItem("lochUser"));
-    // console.log("skip", this.state.skip)
-  
-    if (islochUser || this.state.skip) {
-      // console.log("loch user");
+     
+    
+      console.log("loch user");
       this.setState(
         {
-          RegisterModal: false,
-          skip: true,
+          cohortModal: !this.state.cohortModal,
+          skip: islochUser ? true : this.state.skip,
         },
-        () => {
-          this.setState({
-            cohortModal: !this.state.cohortModal,
-          });
-        }
       );
-    } else if (isDummy && !this.state.skip) {
-      // console.log("create account");
-      this.setState({
-        RegisterModal: !this.state.RegisterModal,
-        cohortModal: false,
-      });
-    } 
-   
+  
+  
   };
 
-  handleEdit = (i,images) => {
+  AddEmailModal = () => {
+    this.setState({
+      RegisterModal: !this.state.RegisterModal,
+      isSave: false,
+    });
+  }
+
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+    // console.log("api respinse", value);
+  };
+
+  handleSkip = () => {
+    console.log("handle skip")
+    this.setState(
+      {
+        skip: true,
+        isSave: false,
+      },
+    );
+  };
+
+  handleEdit = (i, images) => {
     let walletList = this.state?.sortedList;
     this.setState({
       isEditModal: !this.state.isEditModal,
@@ -138,7 +149,7 @@ class Cohort extends Component {
       editItemName: walletList[i]?.name,
       editWalletAddressList: walletList[i]?.wallet_address_details,
       editcohortId: walletList[i]?.id,
-      chainImages: images
+      chainImages: images,
     });
   };
 
@@ -146,8 +157,12 @@ class Cohort extends Component {
     this.setState({
       isLoading: true,
       cardList: [],
-      sortedList:[],
+      sortedList: [],
     });
+
+    // if (!this.state.isSkip) {
+    //    this.AddEmailModal();
+    // }
     // this.makeApiCall();
   };
 
@@ -163,7 +178,6 @@ class Cohort extends Component {
   };
 
   sortArray = (key, order) => {
-    
     let array = this.state?.cardList; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
@@ -186,7 +200,6 @@ class Cohort extends Component {
       } else {
         return valueB - valueA;
       }
-
     });
 
     this.setState({
@@ -195,12 +208,11 @@ class Cohort extends Component {
   };
 
   handleSort = (e) => {
-    // down == true means ascending and down == false means descending 
+    // down == true means ascending and down == false means descending
     let isDown = true;
     let sort = [...this.state.sortBy];
     sort.map((el) => {
       if (el.title === e.title) {
-
         el.down = !el.down;
         isDown = el.down;
       } else {
@@ -208,15 +220,11 @@ class Cohort extends Component {
       }
     });
 
-
-    
-
     if (e.title === "Amount") {
       this.sortArray("total_net_worth", isDown);
       this.setState({
         sortBy: sort,
       });
-     
     } else if (e.title === "Date added") {
       this.sortArray("created_on", isDown);
       this.setState({
@@ -228,8 +236,6 @@ class Cohort extends Component {
         sortBy: sort,
       });
     }
-
-    
   };
 
   handleFunction = (badge) => {
@@ -241,22 +247,19 @@ class Cohort extends Component {
       if (newArr.length === 0) {
         this.setState({
           activeBadge: [{ name: "All", id: "" }],
-         
         });
-         activeBadgeIds= [];
+        activeBadgeIds = [];
       } else {
         this.setState({
           activeBadge: newArr,
-         
         });
-        activeBadgeIds= newArr?.map(e => e.id);
+        activeBadgeIds = newArr?.map((e) => e.id);
       }
     } else if (badge.name === "All") {
       this.setState({
         activeBadge: [{ name: "All", id: "" }],
-       
       });
-      activeBadgeIds= [];
+      activeBadgeIds = [];
     } else {
       let index = newArr.findIndex((x) => x.name === "All");
       if (index !== -1) {
@@ -266,7 +269,7 @@ class Cohort extends Component {
       this.setState({
         activeBadge: newArr,
       });
-      activeBadgeIds= newArr?.map((e) => e.id);
+      activeBadgeIds = newArr?.map((e) => e.id);
     }
 
     // console.log("active badge id", activeBadgeIds);
@@ -274,38 +277,30 @@ class Cohort extends Component {
     let sortedList = [];
     let uniqueitems = [];
 
-    allList && allList?.map((item) => {
-      item?.wallet_address_details?.map((address) => {
-        address?.chains?.map((chain) => {
-          if (activeBadgeIds.includes(chain.id) && !uniqueitems.includes(item.id)) {
-            sortedList.push(item);
-            uniqueitems.push(item.id);
-          }
-        })
-      })
-    });
+    allList &&
+      allList?.map((item) => {
+        item?.wallet_address_details?.map((address) => {
+          address?.chains?.map((chain) => {
+            if (
+              activeBadgeIds.includes(chain.id) &&
+              !uniqueitems.includes(item.id)
+            ) {
+              sortedList.push(item);
+              uniqueitems.push(item.id);
+            }
+          });
+        });
+      });
 
     this.setState({
-      sortedList: activeBadgeIds.length === 0 ? allList : sortedList.length === 0 ? "": sortedList
+      sortedList:
+        activeBadgeIds.length === 0
+          ? allList
+          : sortedList.length === 0
+          ? ""
+          : sortedList,
     });
-
   };
-
-  CheckApiResponse = (value) => {
-    this.setState({
-      apiResponse: value,
-    });
-    // console.log("api respinse", value);
-  };
-
-  handleSkip = () => {
-    // console.log("handle skip")
-    this.setState({
-      skip:true,
-    }, () => {
-       this.handleCohort();
-    });
-  }
 
   // sortByAmount = ()
 
@@ -330,7 +325,7 @@ class Cohort extends Component {
           <ExitOverlay
             show={this.state.RegisterModal}
             // link="http://loch.one/a2y1jh2jsja"
-            onHide={this.handleCohort}
+            onHide={this.AddEmailModal}
             history={this.props.history}
             modalType={"create_account"}
             iconImage={CohortIcon}

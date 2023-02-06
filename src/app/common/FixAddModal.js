@@ -663,12 +663,7 @@ class FixAddModal extends BaseReactComponent {
               {this.state.addWalletList.length >= 0 &&
                 this.state.modalType === "addwallet" && (
                   <div className="m-b-32 add-wallet-btn">
-                    <Button
-                      className="grey-btn"
-                      onClick={this.addAddress}
-                      
-                      
-                    >
+                    <Button className="grey-btn" onClick={this.addAddress}>
                       <Image src={PlusIcon} /> Add another
                     </Button>
                   </div>
@@ -710,9 +705,10 @@ class FixAddModal extends BaseReactComponent {
               </div>
               <div className="m-b-26 footer">
                 <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                  At Loch, we care intensely about your privacy and anonymity.
+                  At Loch, we care intensely about your privacy and
+                  pseudonymity.
                   <CustomOverlay
-                    text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
                     position="top"
                     isIcon={true}
                     IconImage={LockIcon}

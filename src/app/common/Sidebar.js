@@ -252,6 +252,24 @@ function Sidebar(props) {
                       </li>
                       <li>
                         <NavLink
+                          className="nav-link"
+                          to="/whale-watching"
+                          // onClick={handleCohort}
+                          activeclassname="active"
+                        >
+                          <Image
+                            src={
+                              activeTab === "/whale-watching"
+                                ? ActiveCohortIcon
+                                : CohortIcon
+                            }
+                          />
+                          Whale Watching
+                        </NavLink>
+                      </li>
+
+                      <li>
+                        <NavLink
                           exact={true}
                           className={`nav-link
                         ${
@@ -285,6 +303,7 @@ function Sidebar(props) {
                                 "/intelligence",
                                 "/intelligence/volume-traded-by-counterparty",
                                 "/intelligence/insights",
+                                "/intelligence/costs",
                               ].includes(activeTab)
                                 ? ActiveIntelligenceIcon
                                 : IntelligenceIcon
@@ -316,7 +335,7 @@ function Sidebar(props) {
                           Wallets
                         </NavLink>
                       </li>
-                      <li>
+                      {/* <li>
                         <NavLink
                           className="nav-link"
                           to="/costs"
@@ -337,24 +356,7 @@ function Sidebar(props) {
                           />
                           Costs
                         </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          className="nav-link"
-                          to="/whale-watching"
-                          // onClick={handleCohort}
-                          activeclassname="active"
-                        >
-                          <Image
-                            src={
-                              activeTab === "/whale-watching"
-                                ? ActiveCohortIcon
-                                : CohortIcon
-                            }
-                          />
-                          Whale Watching
-                        </NavLink>
-                      </li>
+                      </li> */}
 
                       <li>
                         <NavLink
