@@ -1096,6 +1096,14 @@ here`
                         "$10m",
                         "$100m",
                       ]}
+                      // list={[
+                      //   `${CurrencyType(false)}1,000.00`,
+                      //   `${CurrencyType(false)}10k`,
+                      //   `${CurrencyType(false)}100k`,
+                      //   `${CurrencyType(false)}1m`,
+                      //   `${CurrencyType(false)}10m`,
+                      //   `${CurrencyType(false)}100m`,
+                      // ]}
                       onSelect={this.handleFunction}
                       title={this.state.title}
                       activetab={this.state.title}

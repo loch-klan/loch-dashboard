@@ -234,13 +234,22 @@ export const AmountType = {
     100000000: "$100m",
   },
 
+  // _numbers: {
+  //   1000: `${CurrencyType(false)}1,000.00`,
+  //   10000: `${CurrencyType(false)}10k`,
+  //   100000: `${CurrencyType(false)}100k`,
+  //   1000000: `${CurrencyType(false)}1m`,
+  //   10000000: `${CurrencyType(false)}10m`,
+  //   100000000: `${CurrencyType(false)}100m`,
+  // },
+
   _presentable: {
     "$1,000.00": 1000,
-    "$10k": 10000,
-    "$100k": 100000,
-    "$1m": 1000000,
-    "$10m": 10000000,
-    "$100m": 100000000,
+    $10k: 10000,
+    $100k: 100000,
+    $1m: 1000000,
+    $10m: 10000000,
+    $100m: 100000000,
   },
 
   getText: function (value) {

@@ -19,7 +19,7 @@ export const updateUser = (data,ctx) =>{
         // console.log("ctx",ctx)
         if (ctx.props.modalType === "create_account") {
           ctx.props.isSkip();
-          ctx.state.onHide();
+          // ctx.state.onHide();
         } else {
           toast.success(
             <div className="custom-toast-msg">
