@@ -71,7 +71,7 @@ const routes = [
     component: InsightsPage,
   },
   {
-    path: "/intelligencecoh/costs",
+    path: "/intelligence/costs",
     name: "Costs",
     type: PrivateRoute,
     component: Cost,

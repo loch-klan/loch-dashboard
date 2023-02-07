@@ -15,7 +15,7 @@ import { DEFAULT_COLOR, DEFAULT_PRICE } from "../../utils/Constant";
 import { Col, Image, Row } from "react-bootstrap";
 import noDataImage from "../../image/no-data.png";
 import Loading from "../common/Loading";
-import { PiechartChainName } from "../../utils/AnalyticsFunctions";
+import { HomeRefreshButton, PiechartChainName } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import ManageWallet from "../../assets/images/icons/ManageWallet.svg";
@@ -495,6 +495,11 @@ class PieChart2 extends BaseReactComponent {
   }
 
   RefreshButton = () => {
+
+    HomeRefreshButton({
+      email_address: getCurrentUser().email,
+      session_id:getCurrentUser().id
+    });
     // get the current time
     this.setState({
       isLoading:true,

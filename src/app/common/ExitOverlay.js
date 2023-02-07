@@ -39,6 +39,7 @@ import {
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
+  MenuLetMeLeave,
 } from "../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
@@ -1167,7 +1168,11 @@ class ExitOverlay extends BaseReactComponent {
                 </div>
                 <div
                   className="link"
-                  onClick={() => {
+                      onClick={() => {
+                    MenuLetMeLeave({
+                      email_address: getCurrentUser().email,
+                      session_id: getCurrentUser().id,
+                    });
                     this.props.history.push("/welcome");
                   }}
                   style={{ marginLeft: "4rem" }}

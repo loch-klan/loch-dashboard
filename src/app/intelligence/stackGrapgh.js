@@ -81,7 +81,7 @@ const options = {
   },
   yAxis: {
     showLastLabel: true,
-    min: 0,
+    // min: 0,
     title: {
       text: null,
     },

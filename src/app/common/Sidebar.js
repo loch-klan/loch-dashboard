@@ -47,6 +47,7 @@ import {
   MenuDarkMode,
   MenuLeave,
   MenuShare,
+  MenuWhale,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
@@ -254,7 +255,12 @@ function Sidebar(props) {
                         <NavLink
                           className="nav-link"
                           to="/whale-watching"
-                          // onClick={handleCohort}
+                          onClick={() => {
+                            MenuWhale({
+                              email_address: getCurrentUser().email,
+                              session_id: getCurrentUser().id,
+                            });
+                          }}
                           activeclassname="active"
                         >
                           <Image

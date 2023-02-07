@@ -370,7 +370,7 @@ class Intelligence extends Component {
               }
             >
               {/* 1st */}
-              <Col md={5} style={{ padding: "10px" }} sm={12}>
+              <Col md={5} style={{ paddingRight: "10px" }} sm={12}>
                 {this.state.LeftShow && (
                   <div className="InfoCard">
                     <Image
@@ -422,7 +422,7 @@ class Intelligence extends Component {
               </Col>
 
               {/* Second */}
-              <Col md={7} style={{ padding: "10px" }} sm={12}>
+              <Col md={7} style={{ paddingLeft: "10px" }} sm={12}>
                 {this.state.RightShow && (
                   <div className="InfoCardRight">
                     <Image

@@ -1810,11 +1810,12 @@ export const WhaleSortByName = ({ session_id, email_address }) => {
 
 //Whale:hover pods
 
-export const WhaleHoverPod = ({ session_id, email_address }) => {
+export const WhaleHoverPod = ({ session_id, email_address, pod_name }) => {
   const event_name = "Whale:hover pods";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "pod name": pod_name
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:hover pods");

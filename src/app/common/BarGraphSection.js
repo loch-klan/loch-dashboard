@@ -14,7 +14,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2'
-import { BlockchainFeesFilter, CounterpartyFeesFilter } from '../../utils/AnalyticsFunctions';
+import { BlockchainFeesFilter, CounterpartyFeesFilter, NetflowSwitch } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
 import Loading from './Loading';
 import { CurrencyType } from '../../utils/ReusableFunctions';
@@ -313,7 +313,10 @@ class BarGraphSection extends Component {
                     label="Click to show breakdown"
                     checked={this.state.switchselected}
                     onChange={(e) => {
-                      // console.log(e.target.checked);
+                      NetflowSwitch({
+                        email_address: getCurrentUser().email,
+                        session_id: getCurrentUser().id,
+                      });
                       this.setState({
                         switchselected: e.target.checked,
                       });

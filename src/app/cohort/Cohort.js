@@ -28,6 +28,10 @@ import {
   SortByName,
   TimeSpentWallet,
   WalletsPage,
+  WhaleHoverPod,
+  WhaleSortByAmt,
+  WhaleSortByDate,
+  WhaleSortByName,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
@@ -229,15 +233,27 @@ class Cohort extends Component {
       this.setState({
         sortBy: sort,
       });
+      WhaleSortByAmt({
+        email_address: getCurrentUser().email,
+        session_id: getCurrentUser().id,
+      });
     } else if (e.title === "Date added") {
       this.sortArray("created_on", isDown);
       this.setState({
         sortBy: sort,
       });
+      WhaleSortByDate({
+        email_address: getCurrentUser().email,
+        session_id: getCurrentUser().id,
+      });
     } else if (e.title === "Name") {
       this.sortArray("name", isDown);
       this.setState({
         sortBy: sort,
+      });
+      WhaleSortByName({
+        email_address: getCurrentUser().email,
+        session_id: getCurrentUser().id,
       });
     }
   };
@@ -410,10 +426,6 @@ class Cohort extends Component {
                 let sortedAddress = (item?.wallet_address_details).sort(
                   (a, b) => b.net_worth - a.net_worth
                 );
-                // let sortedChains = sortedAddress[0]?.chains
-                //   ?.sort((a, b) => (a.name > b.name ? 1 : -1))
-                //   ?.map((e) => e?.symbol);
-
                 let sortedChains = [];
                 sortedAddress &&
                   sortedAddress?.map((e) => {
@@ -423,9 +435,6 @@ class Cohort extends Component {
                       }
                     });
                   });
-
-                // sortedChains = sortedChains.slice(0,4);
-                // console.log("images", sortedChains);
 
                 return (
                   <Col
@@ -445,6 +454,13 @@ class Cohort extends Component {
                         height: "38.5rem",
                         zIndex: 1,
                       }}
+                      onMouseEnter={() => {
+                      WhaleHoverPod({
+                        email_address: getCurrentUser().email,
+                        session_id: getCurrentUser().id,
+                        pod_name:item.name
+                      });
+                    }}
                       onClick={() =>
                         this.props.history.push({
                           pathname: `/whale-watching/${item.slug}`,
