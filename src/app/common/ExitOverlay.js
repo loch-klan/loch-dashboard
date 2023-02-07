@@ -311,9 +311,10 @@ class ExitOverlay extends BaseReactComponent {
             walletList.push(curr);
             arr.push(curr.address.trim());
             arr.push(curr.displayAddress?.trim());
-            addressList.push(curr.address.trim());
+            addressList.push(curr.displayAddress !== "" ? curr.displayAddress?.trim() : curr.address.trim());
           }
         }
+        // console.log("address list", addressList, this.state.addWalletList);
         let addWallet = walletList;
         if (addressList.length !== 0) {
           addWallet?.map((w, i) => {
