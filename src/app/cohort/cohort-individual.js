@@ -45,6 +45,7 @@ import DropDown from "../common/DropDown";
 import EditWalletModal from "../wallet/EditWalletModal";
 import checkIcon from "../../assets/images/icons/check-cohort.svg";
 import moment from "moment";
+import CohortIcon from "../../assets/images/icons/active-cohort.svg";
 
 
 class CohortPage extends BaseReactComponent {
@@ -84,8 +85,39 @@ class CohortPage extends BaseReactComponent {
       LargestSoldVolume: "",
       LargestBoughtVolume: "",
       notificationId: false,
+      RegisterModal: false,
+      skip: false,
     };
   }
+
+  AddEmailModal = () => {
+    // console.log("handle emailc close");
+    const isDummy = localStorage.getItem("lochDummyUser");
+    const islochUser = JSON.parse(localStorage.getItem("lochUser"));
+    if (islochUser || this.state.skip) {
+      this.setState({
+        RegisterModal: false,
+      });
+    } else {
+      this.setState({
+        RegisterModal: !this.state.RegisterModal,
+      });
+    }
+  };
+
+  handleSkip = () => {
+    // console.log("handle skip")
+    this.setState(
+      {
+        skip: true,
+      },
+      () => {
+        if (this.state.skip) {
+          this.AddEmailModal();
+        }
+      }
+    );
+  };
 
   handleCohort = () => {
     // console.log("cohort click");
@@ -97,12 +129,16 @@ class CohortPage extends BaseReactComponent {
     this.getCohortDetail();
     this.getAssetData(0);
     this.getNotificationApi();
+
+    setTimeout(() => {
+      this.AddEmailModal();
+    }, 2000);
   }
   getNotificationApi = () => {
     let data = new URLSearchParams();
     data.append("cohort_id", this.state.cohortId);
     GetNotification(data, this);
-  }
+  };
   componentDidUpdate() {
     if (this.state.apiResponse) {
       this.getCohortDetail();
@@ -210,14 +246,12 @@ class CohortPage extends BaseReactComponent {
         data.append("dormant_type", DormantType.getNumber(this.state.titleday));
       }
       if (this.state.notificationId) {
-        data.append(
-          "whale_notification_id",this.state.notificationId)
-        ;
+        data.append("whale_notification_id", this.state.notificationId);
       }
       //   console.log("amout", AmountType.getNumber(this.state.title));
       // console.log("dormant", DormantType.getNumber(this.state.titleday));
 
-      CreateUpdateNotification(data,this);
+      CreateUpdateNotification(data, this);
 
       setTimeout(() => {
         this.setState({ showBtn: false });
@@ -290,9 +324,7 @@ class CohortPage extends BaseReactComponent {
     // this.makeApiCall();
   };
 
-  onSubmit = () => {
-    
-  }
+  onSubmit = () => {};
 
   render() {
     const nav_list = window.location.pathname.split("/");
@@ -349,14 +381,32 @@ class CohortPage extends BaseReactComponent {
             onHide={this.handleCohort}
             history={this.props.history}
             modalType={"cohort"}
-            headerTitle={PageName}
+            headerTitle={
+              this.state.cohortName ? this.state.cohortName : PageName
+            }
             isEdit={true}
             chainImages={this.state?.chainImages}
             cohortId={this.state.cohortId}
-            walletaddress={this.state.cohortWalletAddress}
+            walletaddress={this.state.walletAddresses}
             addedon={moment(this.state?.createOn).format("DD/MM/YY")}
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
+          />
+        ) : (
+          ""
+        )}
+        {this.state.RegisterModal ? (
+          <ExitOverlay
+            show={this.state.RegisterModal}
+            // link="http://loch.one/a2y1jh2jsja"
+            onHide={this.AddEmailModal}
+            history={this.props.history}
+            modalType={"create_account"}
+            iconImage={CohortIcon}
+            isSkip={() => this.handleSkip()}
+            // headerTitle={"Create a Wallet cohort"}
+            // changeWalletList={this.handleChangeList}
+            // apiResponse={(e) => this.CheckApiResponse(e)}
           />
         ) : (
           ""
@@ -516,7 +566,9 @@ class CohortPage extends BaseReactComponent {
                   ) : this.state.LargestChainLoader ? (
                     loadingAnimation()
                   ) : (
-                    ""
+                    <h3 className="inter-display-medium f-s-13 lh-15">
+                      No movement
+                    </h3>
                   )}
                 </div>
               </div>
@@ -614,7 +666,9 @@ class CohortPage extends BaseReactComponent {
                           </h3>
                         </div>
                       ) : (
-                        ""
+                        <h3 className="inter-display-medium f-s-13 lh-15">
+                          No movement
+                        </h3>
                       )}
                     </div>
                   </>
@@ -682,7 +736,9 @@ class CohortPage extends BaseReactComponent {
                           </h3>
                         </div>
                       ) : (
-                        ""
+                        <h3 className="inter-display-medium f-s-13 lh-15">
+                          No movement
+                        </h3>
                       )}
                     </div>
                   </>
@@ -763,7 +819,9 @@ class CohortPage extends BaseReactComponent {
                           </h3>
                         </div>
                       ) : (
-                        ""
+                        <h3 className="inter-display-medium f-s-13 lh-15">
+                          No movement
+                        </h3>
                       )}
                     </div>
                   </>
@@ -828,7 +886,9 @@ class CohortPage extends BaseReactComponent {
                           </h3>
                         </div>
                       ) : (
-                        ""
+                        <h3 className="inter-display-medium f-s-13 lh-15">
+                          No movement
+                        </h3>
                       )}
                     </div>
                   </>
@@ -892,7 +952,9 @@ class CohortPage extends BaseReactComponent {
                           </h3>
                         </div>
                       ) : (
-                        ""
+                        <h3 className="inter-display-medium f-s-13 lh-15">
+                          No movement
+                        </h3>
                       )}
                     </div>
                   </>

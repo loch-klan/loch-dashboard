@@ -102,15 +102,15 @@ class Cohort extends Component {
 
   handleCohort = () => {
     // console.log("cohort click");
-    const isDummy = localStorage.getItem("lochDummyUser");
-    const islochUser = JSON.parse(localStorage.getItem("lochUser"));
+    // const isDummy = localStorage.getItem("lochDummyUser");
+    // const islochUser = JSON.parse(localStorage.getItem("lochUser"));
      
     
       // console.log("loch user");
       this.setState(
         {
           cohortModal: !this.state.cohortModal,
-          skip: islochUser ? true : this.state.skip,
+          // skip: islochUser ? true : this.state.skip,
         },
         () => {
         
@@ -119,13 +119,13 @@ class Cohort extends Component {
   
   };
 
-  AddEmailModal = () => {
-    // console.log("handle emailc close");
-    this.setState({
-      RegisterModal: !this.state.RegisterModal,
+  // AddEmailModal = () => {
+  //   // console.log("handle emailc close");
+  //   this.setState({
+  //     RegisterModal: !this.state.RegisterModal,
       
-    });
-  };
+  //   });
+  // };
 
   CheckApiResponse = (value) => {
     this.setState({
@@ -134,16 +134,16 @@ class Cohort extends Component {
     // console.log("api respinse", value);
   };
 
-  handleSkip = () => {
-    // console.log("handle skip")
-    this.setState({
-      skip: true,
-    }, () => {
-      if (this.state.skip) {
-        this.AddEmailModal();
-      }
-    });
-  };
+  // handleSkip = () => {
+  //   // console.log("handle skip")
+  //   this.setState({
+  //     skip: true,
+  //   }, () => {
+  //     if (this.state.skip) {
+  //       this.AddEmailModal();
+  //     }
+  //   });
+  // };
 
   handleEdit = (i, images) => {
     let walletList = this.state?.sortedList;
@@ -163,9 +163,9 @@ class Cohort extends Component {
       cardList: [],
       sortedList: [],
     });
-if (!this.state.skip) {
-  this.AddEmailModal();
-}
+// if (!this.state.skip) {
+//   this.AddEmailModal();
+// }
     
     // this.makeApiCall();
   };

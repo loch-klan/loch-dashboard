@@ -62,6 +62,20 @@ export const getCohort = (data, ctx) => {
       if (!res.data.error) {
         // console.log("get cohort", res.data.data.user_cohort);
         let response = res.data.data?.user_cohort;
+        let sortedAddress = (response?.wallet_address_details).sort(
+          (a, b) => b.net_worth - a.net_worth
+        );
+
+        let sortedChains = [];
+        sortedAddress &&
+          sortedAddress?.map((e) => {
+            e.chains?.map((chain) => {
+              if (!sortedChains.includes(chain?.symbol)) {
+                sortedChains.push(chain?.symbol);
+              }
+            });
+          });
+        // console.log("sorted chain", sortedChains)
         ctx.setState({
           walletAddresses: response?.wallet_address_details,
           totalNetWorth: response?.total_net_worth,
