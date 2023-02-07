@@ -246,6 +246,7 @@ export const GetNotification = (data,ctx) => {
         //   DormantType.getText(response.dormant_type),
         //   AmountType.getText(response.amount_type)
         // );
+         const userDetails = JSON.parse(localStorage.getItem("lochUser"));
         ctx.setState({
           // LargestAsset: res.data.data?.asset?.asset,
           // LargestValue: res.data.data?.asset?.total_value,
@@ -256,7 +257,7 @@ export const GetNotification = (data,ctx) => {
           titleday: response?.dormant_type
             ? DormantType.getText(response?.dormant_type)
             : ">30 days",
-          email: response?.email ? response?.email : "",
+          email: response?.email ? response?.email : userDetails?.email || "",
           walletNotification: response?.amount_type ? true : false,
           dayNotification: response?.dormant_type ? true : false,
           notificationId: response ? response.id : false,

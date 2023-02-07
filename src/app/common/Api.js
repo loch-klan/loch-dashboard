@@ -280,3 +280,85 @@ export const getAllCurrencyRatesApi = () =>{
     console.log('err',err);
   })
 }
+
+// Send Email OTP from whale pod
+
+export const SendOtp = (data,ctx) => {
+  postLoginInstance
+    .post("organisation/user/send-email-otp", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // console.log("res", res.data);
+        let otp = res.data.data.opt_token;
+        ctx.setState({
+          isShowOtp: true,
+          isEmailNotExist: res.data.data.is_new_user,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};
+
+// Verify email
+
+export const VerifyEmail = (data,ctx) => {
+  postLoginInstance
+    .post("organisation/user/verify-otp", data)
+    .then((res) => {
+      
+      if (!res.data.error) {
+
+        let isOptValid = res.data.data.otp_verified;
+        let token = res.data.data.token;
+       const userId = localStorage.getItem("lochDummyUser");
+        ctx.setState({
+          isOptInValid: false,
+        });
+        
+         let userdata = new URLSearchParams();
+        userdata.append("old_user_id", userId);
+        UpdateUserDetails(userdata,ctx);
+        // console.log("user id ", userId)
+      } else if (res.data.error === true) {
+        // invalid otp
+        ctx.setState({
+          isOptInValid: true,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};
+
+
+
+// Update user details
+
+export const UpdateUserDetails = (data,ctx) => {
+  postLoginInstance
+    .post("organisation/user/update-user-details", data)
+    .then((res) => {
+      if (!res.data.error) {
+
+         let obj = JSON.parse(localStorage.getItem("lochUser"));
+         obj = {
+           ...obj,
+           first_name: ctx.state.firstName,
+           last_name: ctx.state.lastName,
+           email: ctx.state.email,
+           mobile: ctx.state.mobileNumber,
+           link: ctx.state.link,
+         };
+         localStorage.setItem("lochUser", JSON.stringify(obj));
+        
+        ctx.state.onHide();
+
+      } 
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};

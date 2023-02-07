@@ -46,15 +46,21 @@ import EditWalletModal from "../wallet/EditWalletModal";
 import checkIcon from "../../assets/images/icons/check-cohort.svg";
 import moment from "moment";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
+import AuthModal from "../common/AuthModal";
 
 
 class CohortPage extends BaseReactComponent {
   constructor(props) {
     super(props);
+     const dummyUser = localStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    console.log(userDetails)
     this.state = {
+      isLochUser: userDetails,
       activeFooter: 0,
       cohortModal: false,
-      updateEmail: false,
+      updateEmail: userDetails?.email ? true : false,
+      email: userDetails?.email ? userDetails?.email : "",
       title: "$1,000.00",
       titleday: ">30 days",
       edit: false,
@@ -97,10 +103,14 @@ class CohortPage extends BaseReactComponent {
     if (islochUser || this.state.skip) {
       this.setState({
         RegisterModal: false,
+        email: islochUser?.email || "",
+        updateEmail: true,
+        isLochUser: islochUser,
       });
     } else {
       this.setState({
         RegisterModal: !this.state.RegisterModal,
+        // updateEmail: false,
       });
     }
   };
@@ -225,9 +235,12 @@ class CohortPage extends BaseReactComponent {
   };
 
   handleUpdateEmail = () => {
+   
     this.setState({
-      updateEmail: true,
+      // updateEmail: true,
       showBtn: true,
+    }, () => {
+       this.AddEmailModal();
     });
   };
 
@@ -396,7 +409,7 @@ class CohortPage extends BaseReactComponent {
           ""
         )}
         {this.state.RegisterModal ? (
-          <ExitOverlay
+          <AuthModal
             show={this.state.RegisterModal}
             // link="http://loch.one/a2y1jh2jsja"
             onHide={this.AddEmailModal}
@@ -404,6 +417,7 @@ class CohortPage extends BaseReactComponent {
             modalType={"create_account"}
             iconImage={CohortIcon}
             isSkip={() => this.handleSkip()}
+            hideSkip={this.state.showBtn ? true : false}
             // headerTitle={"Create a Wallet cohort"}
             // changeWalletList={this.handleChangeList}
             // apiResponse={(e) => this.CheckApiResponse(e)}
@@ -981,10 +995,10 @@ class CohortPage extends BaseReactComponent {
               justifyContent: "space-between",
               alignItems: "center",
             }}
-            className="m-t-40 m-b-20 Notification-header"
+            className="m-t-40 m-b-24 Notification-header"
           >
             <h2
-              className="inter-display-medium f-s-20 lh-20 black-191"
+              className="inter-display-medium f-s-20 lh-45 black-191"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -1063,6 +1077,7 @@ here`
                           valueLink={this.linkState(this, "email")}
                           // label="Email Info"
                           required
+                          disabled={this.state.isLochUser ? true : false}
                           validations={[
                             {
                               validate: FormValidator.isRequired,

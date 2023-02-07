@@ -138,48 +138,56 @@ export const verifyUser = (ctx, info) => {
     .then(res=>{
         // console.log(res.data.data.user)
         if(!res.data.error){
-            localStorage.setItem("lochUser",JSON.stringify(res.data.data.user));
-            localStorage.setItem('lochToken', res.data.data.token);
+          localStorage.setItem("lochUser", JSON.stringify(res.data.data.user));
+          localStorage.setItem("lochToken", res.data.data.token);
 
-            const allChains = ctx.props.OnboardingState.coinsList
-            let addWallet = [];
-            const apiResponse = res.data.data;
-            for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
-              let obj = {}; // <----- new Object
-              // obj['address'] = apiResponse.user.wallets[i].address;
-              obj['address'] = apiResponse.user.user_wallets[i].address;
-              // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
-              obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
-              const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
-              obj['coins'] = allChains.map((chain)=>{
-                let coinDetected = false;
-                chainsDetected.map((item)=>{
-                  if(item.id === chain.id){
-                    coinDetected = true;
-                  }
-                })
-                return ({coinCode: chain.code,
-                    coinSymbol: chain.symbol,
-                    coinName: chain.name,
-                    chain_detected: coinDetected,
-                  coinColor: chain.color})
+          const allChains = ctx.props.OnboardingState.coinsList;
+          let addWallet = [];
+          const apiResponse = res.data.data;
+          for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
+            let obj = {}; // <----- new Object
+            // obj['address'] = apiResponse.user.wallets[i].address;
+            obj["address"] = apiResponse.user.user_wallets[i].address;
+            // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
+            obj["displayAddress"] =
+              apiResponse.user.user_wallets[i]?.display_address;
+            const chainsDetected =
+              apiResponse.wallets[apiResponse.user.user_wallets[i].address]
+                .chains;
+            obj["coins"] = allChains.map((chain) => {
+              let coinDetected = false;
+              chainsDetected.map((item) => {
+                if (item.id === chain.id) {
+                  coinDetected = true;
+                }
               });
-              obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
-              obj['id'] = `wallet${i+1}`;
-              obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
-              addWallet.push(obj);
-          }
-            // console.log('addWallet',addWallet);
-            ctx.props.history.push({
-              pathname: "/home",
-              state: {addWallet}
-            })
-            UserSignedinCorrectly({
-              email_address: res.data.data.user.email,
-              session_id: res.data.data.user.id,
+              return {
+                coinCode: chain.code,
+                coinSymbol: chain.symbol,
+                coinName: chain.name,
+                chain_detected: coinDetected,
+                coinColor: chain.color,
+              };
             });
-
-
+            obj["wallet_metadata"] = apiResponse.user.user_wallets[i].wallet;
+            obj["id"] = `wallet${i + 1}`;
+            obj["coinFound"] =
+              apiResponse.wallets[apiResponse.user.user_wallets[i].address]
+                .chains.length > 0
+                ? true
+                : false;
+            addWallet.push(obj);
+          }
+          // console.log("addWallet", addWallet);
+          localStorage.setItem("addWallet", JSON.stringify(addWallet));
+          ctx.props.history.push({
+            pathname: "/home",
+            state: { addWallet },
+          });
+          UserSignedinCorrectly({
+            email_address: res.data.data.user.email,
+            session_id: res.data.data.user.id,
+          });
         }
         else {
 

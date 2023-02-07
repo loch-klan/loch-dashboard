@@ -124,3 +124,17 @@
       // overflow: 1;
    }
 }
+
+
+
+.modal.fade .modal-dialog.date-picker-control-modal{
+    transition: transform 0.3s ease-out !important;
+    animation-name: none;
+  animation-duration: 0;
+  // transform: translate(0,-50px) !important;
+   
+}
+
+.fade {
+    // transition: opacity 0.3s ease-out !important
+}

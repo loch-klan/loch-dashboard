@@ -153,7 +153,7 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
               }
               // console.log('addWallet',addWallet);
                 localStorage.setItem("addWallet", JSON.stringify(addWallet))
-                sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+                // sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
                 ctx.setState({
                   isLoading: false,
                   userWalletList:addWallet
