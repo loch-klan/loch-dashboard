@@ -72,7 +72,8 @@ function Sidebar(props) {
     let lochUser = JSON.parse(localStorage.getItem('lochUser'));
 
     const handleLeave = () => {
-        const isDummy = localStorage.getItem("lochDummyUser");
+      const isDummy = localStorage.getItem("lochDummyUser");
+      // console.log("isDummy user", isDummy)
         MenuLeave({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,

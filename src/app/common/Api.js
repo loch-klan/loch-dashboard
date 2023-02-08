@@ -351,15 +351,16 @@ export const UpdateUserDetails = (data,ctx) => {
     .post("organisation/user/update-user-details", data)
     .then((res) => {
       if (!res.data.error) {
-
+        // localStorage.setItem("lochDummyUser", null);g
+        localStorage.removeItem("lochDummyUser");
          let obj = JSON.parse(localStorage.getItem("lochUser"));
          obj = {
            ...obj,
            first_name: ctx.state.firstName,
            last_name: ctx.state.lastName,
-           email: ctx.state.email,
+           email: res.data.data.user.email ? res.data.data.user.email : ctx.state.email,
            mobile: ctx.state.mobileNumber,
-           link: ctx.state.link,
+           link: res.data.data.user.link,
          };
         localStorage.setItem("lochUser", JSON.stringify(obj));
          toast.success(" Your data has been saved");

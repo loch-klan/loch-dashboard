@@ -67,7 +67,7 @@ class CohortPage extends BaseReactComponent {
       walletNotification: false,
       dayNotification: false,
       showBtn: false,
-      isEmailValid: true,
+      isEmailValid: false,
       cohortId: props?.location?.state.id,
       cohortName: "",
       cohortSlug: "",
@@ -110,6 +110,7 @@ class CohortPage extends BaseReactComponent {
     } else {
       this.setState({
         RegisterModal: !this.state.RegisterModal,
+        // showBtn: false,
         // updateEmail: false,
       });
     }
@@ -245,7 +246,7 @@ class CohortPage extends BaseReactComponent {
   };
 
   handleSave = () => {
-    // console.log("save");
+    console.log("save", this.state.email, this.state.isEmailValid);
     if (this.state.isEmailValid && this.state.email !== "") {
       let data = new URLSearchParams();
       data.append("cohort_id", this.state.cohortId);
