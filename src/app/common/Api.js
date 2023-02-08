@@ -293,6 +293,10 @@ export const SendOtp = (data,ctx) => {
         ctx.setState({
           isShowOtp: true,
           isEmailNotExist: res.data.data.is_new_user,
+          modalTitle: "Verify email",
+          modalDescription: res.data.data.is_new_user
+            ? "Enter the verification code sent to your email, to save the data to your account"
+            : "Enter the verification code sent to your email, to overwrite the existing data of your account",
         });
       }
     })
@@ -305,21 +309,26 @@ export const SendOtp = (data,ctx) => {
 
 export const VerifyEmail = (data,ctx) => {
   postLoginInstance
-    .post("organisation/user/verify-otp", data)
+    .post("organisation/user/verify-otp-code", data)
     .then((res) => {
-      
       if (!res.data.error) {
-
         let isOptValid = res.data.data.otp_verified;
         let token = res.data.data.token;
-       const userId = localStorage.getItem("lochDummyUser");
-        ctx.setState({
-          isOptInValid: false,
-        });
-        
-         let userdata = new URLSearchParams();
-        userdata.append("old_user_id", userId);
-        UpdateUserDetails(userdata,ctx);
+      
+        localStorage.setItem("lochToken", token);
+        const userId = localStorage.getItem("lochDummyUser");
+        ctx.setState(
+          {
+            isOptInValid: false,
+          },
+          () => {
+            let userdata = new URLSearchParams();
+            userdata.append("old_user_id", userId);
+
+            UpdateUserDetails(userdata, ctx);
+          }
+        );
+
         // console.log("user id ", userId)
       } else if (res.data.error === true) {
         // invalid otp
@@ -352,7 +361,8 @@ export const UpdateUserDetails = (data,ctx) => {
            mobile: ctx.state.mobileNumber,
            link: ctx.state.link,
          };
-         localStorage.setItem("lochUser", JSON.stringify(obj));
+        localStorage.setItem("lochUser", JSON.stringify(obj));
+         toast.success(" Your data has been saved");
         
         ctx.state.onHide();
 

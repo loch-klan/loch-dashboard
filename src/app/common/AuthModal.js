@@ -20,6 +20,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
+import backIcon from "../../assets/images/icons/Icon-back.svg";
 
 class AuthModal extends BaseReactComponent {
   constructor(props) {
@@ -88,6 +89,17 @@ class AuthModal extends BaseReactComponent {
         VerifyEmail(data,this);
     }
 
+    handleBack = () => {
+        this.setState({
+          email: "",
+          otp: "",
+          isShowOtp: false,
+          modalTitle: null,
+          modalDescription: null,
+          isEmailNotExist: false,
+        });
+    }
+
   submit = () => {
     // console.log('Hey');
   };
@@ -106,6 +118,11 @@ class AuthModal extends BaseReactComponent {
         backdropClassName="exitoverlaymodal"
       >
         <Modal.Header>
+          {this.state.isShowOtp ? (
+            <div className="signin-header back-icon" onClick={this.handleBack}>
+              <Image className="cp" src={backIcon} />
+            </div>
+          ) : null}
           {this.props.iconImage ? (
             <div className="api-modal-header">
               <Image src={this.props.iconImage} />
@@ -180,23 +197,25 @@ class AuthModal extends BaseReactComponent {
                       valueLink={this.linkState(this, "otp")}
                       // label="Email Info"
                       required
-                      validations={[
-                        // {
-                        //   validate: FormValidator.isRequired,
-                        //   message: "",
-                        // },
-                        //   {
-                        //     validate: FormValidator.isNum,
-                        //     message: "Verification code can have only numbers",
-                        //     },
-                        // {
-                        //     validate: () => {
-                        //       console.log("state", this.state.isOptInValid);
-                        //        return !this.state.isOptInValid;
-                        //   },
-                        //     message:"invalid verification code"
-                        // }
-                      ]}
+                      validations={
+                        [
+                          // {
+                          //   validate: FormValidator.isRequired,
+                          //   message: "",
+                          // },
+                          //   {
+                          //     validate: FormValidator.isNum,
+                          //     message: "Verification code can have only numbers",
+                          //     },
+                          // {
+                          //     validate: () => {
+                          //       console.log("state", this.state.isOptInValid);
+                          //        return !this.state.isOptInValid;
+                          //   },
+                          //     message:"invalid verification code"
+                          // }
+                        ]
+                      }
                       control={{
                         type: CustomTextControl,
                         settings: {
@@ -227,14 +246,16 @@ class AuthModal extends BaseReactComponent {
                 </>
               )}
             </div>
-            {!this.props.hideSkip && <p
-              className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-b-10 skip-link"
-              onClick={() => {
-                this.props.isSkip();
-              }}
-            >
-              Skip for now
-            </p>}
+            {!this.props.hideSkip && (
+              <p
+                className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-b-10 skip-link"
+                onClick={() => {
+                  this.props.isSkip();
+                }}
+              >
+                Skip for now
+              </p>
+            )}
             <div className="m-b-36 footer">
               <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
                 At Loch, we care intensely about your privacy and pseudonymity.

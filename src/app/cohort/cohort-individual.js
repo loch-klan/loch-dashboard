@@ -269,6 +269,8 @@ class CohortPage extends BaseReactComponent {
       setTimeout(() => {
         this.setState({ showBtn: false });
       }, 2000);
+    } else {
+       toast.success("Please update your email");
     }
   };
 
