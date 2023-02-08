@@ -296,8 +296,8 @@ export const SendOtp = (data,ctx) => {
           isEmailNotExist: res.data.data.is_new_user,
           modalTitle: "Verify email",
           modalDescription: res.data.data.is_new_user
-            ? "Enter the verification code sent to your email, to save the data to your account"
-            : "Enter the verification code sent to your email, to overwrite the existing data of your account",
+            ? "enter the verification code sent to your email to save the wallets and pods to your account"
+            : "enter the verification code sent to your email to update the existing wallets and pods for your account",
         });
       }
     })
@@ -374,7 +374,7 @@ export const UpdateUserDetails = (data,ctx) => {
           link: res.data.data.user.link,
         };
         localStorage.setItem("lochUser", JSON.stringify(obj));
-        toast.success(" Your data has been saved");
+        toast.success(" Your wallets and pods has been saved");
 
         ctx.state.onHide();
       } 

@@ -1497,7 +1497,7 @@ form {
   margin-left: 0.7rem;
 
   .badge {
-    padding: 0.35rem 0.8rem 0.4rem;
+    // padding: 0.35rem 0.8rem 0.4rem;
   }
 
   img {
@@ -1557,6 +1557,7 @@ form {
   cursor: default;
   width: max-content;
   height: 2.6rem;
+  align-items: center;
 
   img {
     width: 2.6rem;

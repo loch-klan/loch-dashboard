@@ -37,16 +37,17 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
                     border: `1px solid ${lightenDarkenColor(
                       sortedCoins[0]?.coinColor,
                       -0.15
-                    )} `,
+                    )}`,
+                    backgroundColor: sortedCoins[0]?.coinColor,
                   }}
                 />
-                <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
+                <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
                   {sortedCoins[0]?.coinName}
                 </Badge>
               </div>
               <div className="chip-container">
                 <CustomOverlay text={sortedCoins} position="top">
-                  <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
+                  <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
                     +{sortedCoins.length - 1}
                   </Badge>
                 </CustomOverlay>
@@ -66,9 +67,10 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
                       sortedCoins[0]?.coinColor,
                       -0.15
                     )} `,
+                    backgroundColor: sortedCoins[0]?.coinColor,
                   }}
                 />
-                <Badge className="inter-display-medium f-s-13 lh-16 grey-313">
+                <Badge className="inter-display-medium f-s-13 lh-13 grey-313">
                   {sortedCoins[0]?.coinName}
                 </Badge>
               </div>

@@ -47,7 +47,7 @@ import checkIcon from "../../assets/images/icons/check-cohort.svg";
 import moment from "moment";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
 import AuthModal from "../common/AuthModal";
-import { WhaleCreateAccountModal, WhaleCreateAccountSkip, WhaleExpandedPodFilter } from "../../utils/AnalyticsFunctions";
+import { NotificationAmount, NotificationCheckbox1, NotificationCheckbox2, NotificationDays, NotificationDropdown1, NotificationDropdown2, NotificationSaved, WhaleCreateAccountModal, WhaleCreateAccountSkip, WhaleExpandedPodFilter } from "../../utils/AnalyticsFunctions";
 
 
 class CohortPage extends BaseReactComponent {
@@ -276,8 +276,17 @@ class CohortPage extends BaseReactComponent {
   };
 
   handleSave = () => {
-    console.log("save", this.state.email, this.state.isEmailValid);
-    if (this.state.isEmailValid && this.state.email !== "") {
+    // console.log("save", this.state.email, this.state.isEmailValid);
+    if (this.state.email !== "") {
+      NotificationSaved({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+        pod_name: this.state.cohortName,
+        checked1: this.state.walletNotification,
+        checked2: this.state.dayNotification,
+        dropdown_name1: this.state.title,
+        dropdown_name2: this.state.titleday,
+      });
       let data = new URLSearchParams();
       data.append("cohort_id", this.state.cohortId);
       data.append("email", this.state.email);
@@ -311,7 +320,16 @@ class CohortPage extends BaseReactComponent {
     this.setState({
       title: title,
       showBtn: true,
+    }, () => {
+       NotificationAmount({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+         pod_name: this.state.cohortName,
+         is_checked: this.state.walletNotification,
+         amount_selected: title,
+       });
     });
+
   };
 
   handleFunctionDay = (e) => {
@@ -320,6 +338,14 @@ class CohortPage extends BaseReactComponent {
     this.setState({
       titleday: title,
       showBtn: true,
+    }, () => {
+       NotificationDays({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+         pod_name: this.state.cohortName,
+         is_checked: this.state.dayNotification,
+         day_selected: title,
+       });
     });
   };
 
@@ -339,7 +365,16 @@ class CohortPage extends BaseReactComponent {
     this.setState({
       walletNotification: !this.state.walletNotification,
       showBtn: true,
+    }, () => {
+      NotificationAmount({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        pod_name: this.state.cohortName,
+        is_checked: this.state.walletNotification,
+        amount_selected:this.state.title
+      });
     });
+    
     //  toast.success("You will be receiving notifications");
   };
 
@@ -347,6 +382,14 @@ class CohortPage extends BaseReactComponent {
     this.setState({
       dayNotification: !this.state.dayNotification,
       showBtn: true,
+    }, () => {
+       NotificationDays({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+         pod_name: this.state.cohortName,
+         is_checked: this.state.dayNotification,
+         day_selected: this.state.titleday,
+       });
     });
     //  toast.success("You will be receiving notifications");
   };
@@ -1043,7 +1086,7 @@ class CohortPage extends BaseReactComponent {
             </h2>
 
             {this.state.showBtn && (
-              <button className="secondary-btn" onClick={this.handleSave}>
+              <button className="secondary-btn cp" onClick={this.handleSave}>
                 Save
               </button>
             )}

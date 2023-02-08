@@ -2042,3 +2042,70 @@ export const PodName = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:create a whale pod: pod name added");
 };
+
+// Whale:Expanded Pod page: email notification checked 1
+export const NotificationAmount = ({
+  session_id,
+  email_address,
+  is_checked,
+  pod_name,
+  amount_selected
+
+}) => {
+  const event_name = "Whale:Expanded Pod page: amount email notification";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    checked: is_checked,
+    "amount selected": amount_selected
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:Expanded Pod page: email notification checked 1");
+};
+
+
+// Whale:Expanded Pod page: email notification checked 2
+export const NotificationDays = ({
+  session_id,
+  email_address,
+  is_checked,
+  pod_name,
+  day_selected
+
+}) => {
+  const event_name = "Whale:Expanded Pod page: dormant email notification";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    checked: is_checked,
+    "days selected": day_selected
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:Expanded Pod page: email notification checked 2");
+};
+
+// Whale:Expanded Pod page: email notification saved
+export const NotificationSaved = ({
+  session_id,
+  email_address,
+  dropdown_name1,
+  dropdown_name2,
+  checked1,
+  checked2,
+  pod_name
+}) => {
+  const event_name = "Whale:Expanded Pod page: email notification saved";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    "amount dropdown": dropdown_name1,
+    "dormant dropdown": dropdown_name2,
+    "amount checked": checked1,
+    "dormant checked": checked2,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:Expanded Pod page: email notification saved");
+};
