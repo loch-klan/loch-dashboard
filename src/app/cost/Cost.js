@@ -188,7 +188,7 @@ class Cost extends Component {
       const year = moment().subtract(1, "years").unix();
       getAllCounterFeeApi(this, year, today);
       // console.log(year, today, "1 year");
-      handleSelected = "1 Years";
+      handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").unix();
 

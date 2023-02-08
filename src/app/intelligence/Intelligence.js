@@ -290,7 +290,7 @@ class Intelligence extends Component {
             handleBtn={this.handleAddModal}
           />
           <IntelWelcomeCard history={this.props.history} />
-          <div className="insights-image m-b-40">
+          <div className="insights-image m-b-60">
             <PageHeader
               title="Insights"
               showImg={insight}

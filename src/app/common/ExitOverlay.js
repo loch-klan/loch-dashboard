@@ -34,12 +34,13 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import {
 
+  CreateWhalePodSave,
   ExportDataDownlaod,
   LeaveEmailAdded,
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
-  MenuLetMeLeave,
+  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName,
 } from "../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
@@ -174,6 +175,11 @@ class ExitOverlay extends BaseReactComponent {
       addWalletList: this.state.addWalletList,
       wallet_address: "",
     });
+
+    WhalePodAddTextbox({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   deleteAddress = (index) => {
@@ -184,6 +190,12 @@ class ExitOverlay extends BaseReactComponent {
     //     deletedAddress: this.state.deletedAddress,
     //   });
     // }
+    // console.log("index", index, this.state.addWalletList)
+    WhalePodAddressDelete({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      address: this.state.addWalletList[index]?.address,
+    });
     this.state.addWalletList.splice(index, 1);
     this.state.addWalletList?.map((w, i) => {
       w.id = `wallet${i + 1}`;
@@ -336,7 +348,34 @@ class ExitOverlay extends BaseReactComponent {
           createCohort(data, this);
           this.state.onHide();
           this.state.changeList && this.state.changeList(walletList);
+          
+            const address = walletList?.map((e) => e.displayAddress ? e.displayAddress:e.address);
+            // console.log("address", address);
 
+            const unrecog_address = walletList
+              .filter((e) => !e.coinFound)
+              .map((e) => e.address);
+            // console.log("Unreq address", unrecog_address);
+
+            const blockchainDetected = [];
+            walletList
+              .filter((e) => e.coinFound)
+              .map((obj) => {
+                let coinName = obj.coins
+                  .filter((e) => e.chain_detected)
+                  .map((name) => name.coinName);
+                let address = obj.address;
+                blockchainDetected.push({ address: address, names: coinName });
+              });
+          
+          CreateWhalePodSave({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            pod_name: this.state.cohort_name,
+            addresses: address,
+            unrecognized_addresses: unrecog_address,
+            chains_detected_against_them: blockchainDetected,
+          });
           
         } 
         
@@ -346,9 +385,19 @@ class ExitOverlay extends BaseReactComponent {
 
   handleDeleteCohort = () => {
     //  let addressList = this.props?.walletaddress && this.props?.walletaddress?.map(e => e.wallet_address);
+    
+    // WhalePodDeleted();
+    // console.log("name", this.state.cohort_name);
+    // console.log("address", this.state.addWalletList?.map(e => e.displayAddress ? e.displayAddress : e.address))
+    WhalePodDeleted({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohort_name,
+      addresses: this.state.addWalletList?.map((e) =>
+        e.displayAddress ? e.displayAddress : e.address
+      ),
+    });
     const data = new URLSearchParams();
-    // data.append("name", this.state.cohort_name);
-    // data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("cohort_id", this.props.cohortId);
 
     deleteCohort(data, this);
@@ -479,8 +528,9 @@ class ExitOverlay extends BaseReactComponent {
                 prevAddressList.push(e);
               }
             });
-
+          let uploadedAddress = [];
           results?.data?.map((e, i) => {
+            uploadedAddress.push(e[0]);
             addressList.push({
               id: `wallet${prevAddressList?.length + (i + 1)}`,
               address: e[0],
@@ -490,7 +540,11 @@ class ExitOverlay extends BaseReactComponent {
             });
           });
 
-          // console.log("address",addressList, prevAddressList);
+          WhalePodUploadFile({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            addresses: uploadedAddress,
+          });
           this.setState({
             addWalletList: [...prevAddressList, ...addressList],
           }, () => {
@@ -834,6 +888,14 @@ class ExitOverlay extends BaseReactComponent {
                           type: CustomTextControl,
                           settings: {
                             placeholder: "Give your pod a name",
+                            onBlur: ((onBlur) => {
+                                // console.log("pod", this.state.cohort_name)
+                                PodName({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                  pod_name:this.state.cohort_name
+                                });
+                              }),
                           },
                         }}
                       />
@@ -1168,7 +1230,7 @@ class ExitOverlay extends BaseReactComponent {
                 </div>
                 <div
                   className="link"
-                      onClick={() => {
+                  onClick={() => {
                     MenuLetMeLeave({
                       email_address: getCurrentUser().email,
                       session_id: getCurrentUser().id,

@@ -1,6 +1,7 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
+import { WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import postLoginInstance from './../../utils/PostLoginAxios';
 
@@ -322,6 +323,7 @@ export const VerifyEmail = (data,ctx) => {
             isOptInValid: false,
           },
           () => {
+           
             let userdata = new URLSearchParams();
             userdata.append("old_user_id", userId);
 
@@ -351,22 +353,30 @@ export const UpdateUserDetails = (data,ctx) => {
     .post("organisation/user/update-user-details", data)
     .then((res) => {
       if (!res.data.error) {
+        // Analytics
+        WhaleCreateAccountEmailVerified({
+          session_id: res.data.data.user.link,
+          email_address: res.data.data.user.email
+            ? res.data.data.user.email
+            : ctx.state.email,
+        });
         // localStorage.setItem("lochDummyUser", null);g
         localStorage.removeItem("lochDummyUser");
-         let obj = JSON.parse(localStorage.getItem("lochUser"));
-         obj = {
-           ...obj,
-           first_name: ctx.state.firstName,
-           last_name: ctx.state.lastName,
-           email: res.data.data.user.email ? res.data.data.user.email : ctx.state.email,
-           mobile: ctx.state.mobileNumber,
-           link: res.data.data.user.link,
-         };
+        let obj = JSON.parse(localStorage.getItem("lochUser"));
+        obj = {
+          ...obj,
+          first_name: ctx.state.firstName,
+          last_name: ctx.state.lastName,
+          email: res.data.data.user.email
+            ? res.data.data.user.email
+            : ctx.state.email,
+          mobile: ctx.state.mobileNumber,
+          link: res.data.data.user.link,
+        };
         localStorage.setItem("lochUser", JSON.stringify(obj));
-         toast.success(" Your data has been saved");
-        
-        ctx.state.onHide();
+        toast.success(" Your data has been saved");
 
+        ctx.state.onHide();
       } 
     })
     .catch((err) => {

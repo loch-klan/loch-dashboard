@@ -47,6 +47,7 @@ import checkIcon from "../../assets/images/icons/check-cohort.svg";
 import moment from "moment";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
 import AuthModal from "../common/AuthModal";
+import { WhaleCreateAccountModal, WhaleCreateAccountSkip, WhaleExpandedPodFilter } from "../../utils/AnalyticsFunctions";
 
 
 class CohortPage extends BaseReactComponent {
@@ -114,10 +115,22 @@ class CohortPage extends BaseReactComponent {
         // updateEmail: false,
       });
     }
+    if (this.state.RegisterModal) {
+      WhaleCreateAccountModal({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        pod_name: this.state.cohortName
+      });
+    }
   };
 
   handleSkip = () => {
     // console.log("handle skip")
+    WhaleCreateAccountSkip({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+    });
     this.setState(
       {
         skip: true,
@@ -171,27 +184,38 @@ class CohortPage extends BaseReactComponent {
     // console.log("option", activeFooter);
     let startDate = moment().unix();
     let endDate;
+     let handleSelected = "";
     if (activeFooter == "0") {
       startDate = "";
       endDate = "";
+      handleSelected = "All";
     } else if (activeFooter == "1") {
       endDate = moment().subtract(5, "years").unix();
+       handleSelected = "5 Years";
     } else if (activeFooter == "2") {
       endDate = moment().subtract(4, "years").unix();
+       handleSelected = "4 Years";
     } else if (activeFooter == "3") {
       endDate = moment().subtract(3, "years").unix();
+       handleSelected = "3 Years";
     } else if (activeFooter == "4") {
       endDate = moment().subtract(2, "years").unix();
+       handleSelected = "2 Years";
     } else if (activeFooter == "5") {
       endDate = moment().subtract(1, "years").unix();
+       handleSelected = "1 Year";
     } else if (activeFooter == "6") {
       endDate = moment().subtract(6, "months").unix();
+       handleSelected = "6 months";
     } else if (activeFooter == "7") {
       endDate = moment().subtract(1, "month").unix();
+       handleSelected = "1 month";
     } else if (activeFooter == "8") {
       endDate = moment().subtract(1, "week").unix();
+       handleSelected = "1 week";
     } else if (activeFooter == "9") {
       endDate = moment().subtract(1, "day").unix();
+       handleSelected = "1 day";
     }
 
     let data = new URLSearchParams();
@@ -199,6 +223,12 @@ class CohortPage extends BaseReactComponent {
     data.append("start_datetime", endDate);
     data.append("end_datetime", startDate);
 
+    // Analyics
+    WhaleExpandedPodFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      time_period_selected: handleSelected,
+    });
     // api for Get Sold Asset
     GetSoldAsset(data, this);
     // api for get purchased asset

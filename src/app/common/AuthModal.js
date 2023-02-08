@@ -21,6 +21,8 @@ import {fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { WhaleCreateAccountEmailSaved, WhaleCreateAccountPrivacyHover } from "../../utils/AnalyticsFunctions";
 
 class AuthModal extends BaseReactComponent {
   constructor(props) {
@@ -72,7 +74,12 @@ class AuthModal extends BaseReactComponent {
     //   console.log("create email", this.state.email);
          let data = new URLSearchParams();
          data.append("email", this.state.email);
-      SendOtp(data,this);
+    SendOtp(data, this);
+    
+    WhaleCreateAccountEmailSaved({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+    });
       
     //   check email valid or not if valid set email exist to true then this will change copy of signin and if invalid then show copy for signup 
     
@@ -271,7 +278,12 @@ class AuthModal extends BaseReactComponent {
                 <Image
                   src={InfoIcon}
                   className="info-icon"
-                  onMouseEnter={this.leavePrivacy}
+                  onMouseEnter={() => {
+                    WhaleCreateAccountPrivacyHover({
+                      session_id: getCurrentUser().id,
+                      email_address: this.state.email,
+                    });
+                  }}
                 />
               </CustomOverlay>
             </div>

@@ -22,12 +22,10 @@ import { Col, Image, Row } from "react-bootstrap";
 import Loading from "../common/Loading";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import {
-  FilterBasedAssest,
-  SortByAmount,
-  SortByDate,
-  SortByName,
-  TimeSpentWallet,
-  WalletsPage,
+
+  CreateWhalePod,
+  WhaleExpandedPod,
+  WhaleFilterByChain,
   WhaleHoverPod,
   WhaleSortByAmt,
   WhaleSortByDate,
@@ -116,11 +114,12 @@ class Cohort extends Component {
           cohortModal: !this.state.cohortModal,
           // skip: islochUser ? true : this.state.skip,
         },
-        () => {
-        
-      });
+       );
   
-  
+    CreateWhalePod({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   // AddEmailModal = () => {
@@ -259,6 +258,14 @@ class Cohort extends Component {
   };
 
   handleFunction = (badge) => {
+    // console.log("badge", badge)
+    // analytics
+    WhaleFilterByChain({
+      email_address: getCurrentUser().email,
+      session_id: getCurrentUser().id,
+      chain_name:badge.name
+    });
+
     let newArr = [...this.state.activeBadge];
     let activeBadgeIds = [];
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
@@ -462,6 +469,12 @@ class Cohort extends Component {
                       });
                     }}
                       onClick={() =>
+                      {
+                        WhaleExpandedPod({
+                          email_address: getCurrentUser().email,
+                          session_id: getCurrentUser().id,
+                          pod_name: item.name,
+                        });
                         this.props.history.push({
                           pathname: `/whale-watching/${item.slug}`,
                           state: {
@@ -469,7 +482,7 @@ class Cohort extends Component {
                             cohortWalletList: item?.wallet_address_details,
                             chainImages: sortedChains,
                           },
-                        })
+                        })}
                       }
                     >
                       {/* Top Section */}

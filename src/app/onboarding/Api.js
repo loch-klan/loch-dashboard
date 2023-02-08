@@ -7,7 +7,9 @@ import {
   UserSignedinCorrectly,
   UserWrongCode,
   EmailNotFound,
+  WhaleWalletAddressTextbox,
 } from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser } from "../../utils/ManageToken";
 export const getAllCoins = (handleShareLinkUser = null) => {
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
@@ -62,8 +64,19 @@ export const detectCoin = (wallet, ctx = null, isCohort= false) => {
               chains_detected: wallet.coinName,
             });
           }
+
+          if (isCohort) {
+             WhaleWalletAddressTextbox({
+               session_id: getCurrentUser().id,
+               email_address: getCurrentUser().email,
+               address: wallet.address,
+               chains_detected: wallet.coinName,
+             });
+          }
+          
           // wallet.address = res.data.data.wallet_address;
           if (!isCohort) {
+
             dispatch({
               type: WALLET_LIST,
               payload: {
@@ -251,7 +264,11 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
               obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
               newAddWallet.push(obj);
       }
-      console.log("wallet", newAddWallet);
+       localStorage.setItem(
+         "addWallet",
+         JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
+       );
+      // console.log("wallet", newAddWallet);
       ctx.props.history.replace({
         pathname: ctx.state.id ? ctx.state.link : '/home',
         state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}

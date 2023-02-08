@@ -1755,18 +1755,27 @@ export const NetflowSwitch = ({ session_id, email_address }) => {
   //console.log("Menu:whale");
 };
 
-//Whale:create a pod
+//Whale:create a whale pod: save
 
-export const CreateWhalePod = ({ session_id, email_address, pod_name, addresses }) => {
-  const event_name = "Whale:create a pod";
+export const CreateWhalePodSave = ({
+  session_id,
+  email_address,
+  pod_name,
+  addresses,
+  unrecognized_addresses,
+  chains_detected_against_them,
+}) => {
+  const event_name = "Whale:create a whale pod: save";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "pod name": pod_name,
-    addressess: addresses
+    addressess: addresses,
+    unrecognized_addresses: unrecognized_addresses,
+    chains_detected_against_them: chains_detected_against_them,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Whale:create a pod");
+  // console.log("Whale:create a pod: save");
 };
 
 
@@ -1837,11 +1846,12 @@ export const WhaleFilterByChain = ({ session_id, email_address, chain_name }) =>
 
 //Whale:don’t lose your data
 
-export const WhaleCreateAccountModal = ({ session_id, email_address }) => {
+export const WhaleCreateAccountModal = ({ session_id, email_address, pod_name }) => {
   const event_name = "Whale:don’t lose your data";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "pod name": pod_name,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:don’t lose your data");
@@ -1849,11 +1859,12 @@ export const WhaleCreateAccountModal = ({ session_id, email_address }) => {
 
 //Whale:don’t lose your data: skip
 
-export const WhaleCreateAccountSkip = ({ session_id, email_address }) => {
+export const WhaleCreateAccountSkip = ({ session_id, email_address, pod_name }) => {
   const event_name = "Whale:don’t lose your data: skip";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    "pod name": pod_name,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:don’t lose your data: skip");
@@ -1872,12 +1883,25 @@ export const WhaleCreateAccountEmailSaved = ({ session_id, email_address }) => {
   //console.log("Whale:don’t lose your data: email saved");
 };
 
+//Whale:don’t lose your data: email verified
+
+export const WhaleCreateAccountEmailVerified= ({ session_id, email_address }) => {
+  const event_name = "Whale:don’t lose your data: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:don’t lose your data: email saved");
+};
+
 //Whale:don’t lose your data: privacy hover
 export const WhaleCreateAccountPrivacyHover = ({ session_id, email_address }) => {
   const event_name = "Whale:don’t lose your data: privacy hover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:don’t lose your data: privacy hover");
@@ -1910,12 +1934,14 @@ export const WhaleExpandedPod = ({ session_id, email_address, pod_name}) => {
 
 
 //Whale:Expanded Pod page: time filter
-export const WhaleExpandedPodFilter = ({ session_id, email_address, pod_name}) => {
+export const WhaleExpandedPodFilter = ({ session_id, email_address, pod_name,time_period_selected}) => {
   const event_name = "Whale:Expanded Pod page: time filter";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "pod name": pod_name,
+    "time period selected": time_period_selected,
+    
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:Expanded Pod page: time filter");
@@ -1945,7 +1971,7 @@ export const WhaleWalletAddressTextbox = ({
   address,
   chains_detected,
 }) => {
-  const event_name = "Landing Page Conversion:WalletAddressTextbox";
+  const event_name = "Whale:create a whale pod: WalletAddress added";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -1953,7 +1979,7 @@ export const WhaleWalletAddressTextbox = ({
     "list of all chains detected": chains_detected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Landing Page Conversion:WalletAddressTextbox");
+  //console.log("Whale:create a whale pod: WalletAddress added");
 };
 
 // Whale:create a whale pod: delete wallet address
@@ -1985,4 +2011,34 @@ export const WhalePodAddTextbox = ({
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:create a whale pod: add textbox");
+};
+
+// Whale:create a whale pod
+export const CreateWhalePod = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Whale:create a whale pod";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:create a whale pod");
+};
+
+// Whale:create a whale pod
+export const PodName = ({
+  session_id,
+  email_address,
+  pod_name
+}) => {
+  const event_name = "Whale:create a whale pod: pod name added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:create a whale pod: pod name added");
 };
