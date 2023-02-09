@@ -163,13 +163,14 @@ export const deleteWallet = (ctx, data) => {
         })})
         if(newArr.length === 0)
         {
-          newArr.push(
-            {
-              id: `wallet1`,
-              address: "",
-              coins: [],
-          }
-          )
+          newArr.push({
+            id: `wallet1`,
+            address: "",
+            nickname: "",
+            showAddress: true,
+            showNickname: true,
+            coins: [],
+          });
         }
         localStorage.setItem("addWallet", JSON.stringify(newArr))
         ctx.props.onHide()

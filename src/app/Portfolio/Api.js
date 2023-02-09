@@ -149,6 +149,15 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                   obj['id'] = `wallet${i+1}`;
                   obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
                   addWallet.push(obj);
+                  obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
+                  obj["showAddress"] =
+                    apiResponse.user.user_wallets[i]?.nickname === ""
+                      ? true
+                      : false;
+                  obj["showNickname"] =
+                    apiResponse.user.user_wallets[i]?.nickname !== ""
+                      ? true
+                      : false;
 
               }
               // console.log('addWallet',addWallet);

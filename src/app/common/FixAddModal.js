@@ -24,12 +24,12 @@ class FixAddModal extends BaseReactComponent {
     addWalletList =
       addWalletList && addWalletList?.length > 0
         ? addWalletList?.map((e) => {
-          return {
-            ...e,
-            showAddress: e.nickname === "" ? true : false,
-            showNickname: e.nickname === "" ? false : true,
-          };
-        })
+            return {
+              ...e,
+              showAddress: e.nickname === "" ? true : false,
+              showNickname: e.nickname === "" ? false : true,
+            };
+          })
         : [
             {
               id: `wallet${addWalletList?.length + 1}`,
@@ -42,7 +42,7 @@ class FixAddModal extends BaseReactComponent {
               showNickname: true,
             },
           ];
-    console.log('addWalletList',addWalletList);
+    console.log("addWalletList", addWalletList);
     this.state = {
       onHide: props.onHide,
       show: props.show,
@@ -407,6 +407,38 @@ class FixAddModal extends BaseReactComponent {
     });
   };
 
+  FocusInInputFixWallet = (e) => {
+    let { name } = e.target;
+    let walletCopy = [...this.state.fixWalletAddress];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    // if (foundIndex > -1) {
+    //   // let prevValue = walletCopy[foundIndex].nickname;
+    //   // console.log(prevValue)
+    //   walletCopy[foundIndex].showAddress = true;
+    //   walletCopy[foundIndex].showNickname = true;
+
+    //   // walletCopy[foundIndex].trucatedAddress = value
+    // }
+    walletCopy?.map((address, i) => {
+      if (address.id === name) {
+        walletCopy[i].showAddress = true;
+        walletCopy[i].showNickname = true;
+      } else {
+        walletCopy[i].showAddress =
+          walletCopy[i].nickname === "" ? true : false;
+        walletCopy[i].showNickname =
+          walletCopy[i].nickname !== "" ? true : false;
+      }
+    });
+    // console.log(walletCopy)
+    this.setState({
+      // addButtonVisible: this.state.walletInput.some((wallet) =>
+      //   wallet.address ? true : false
+      // ),
+      fixWalletAddress: walletCopy,
+    });
+  };
+
   handleFixWallet = () => {
     // console.log(this.state.fixWalletAddress);`
     this.state.fixWalletAddress &&
@@ -559,12 +591,7 @@ class FixAddModal extends BaseReactComponent {
                 >
                   <Image src={DeleteIcon} />
                 </div>
-                <h3
-                  style={{ color: "#B0B1B3", textAlign: "left" }}
-                  className="inter-display-regular f-s-13 lh-15"
-                >
-                  Address
-                </h3>
+              {  elem.showAddress &&   
                 <input
                   value={elem.address || ""}
                   className="inter-display-regular f-s-16  lh-19 black-191"
@@ -579,14 +606,13 @@ class FixAddModal extends BaseReactComponent {
                     elem,
                     this.props.OnboardingState
                   )}
-                />
-                <h3
-                  style={{ color: "#B0B1B3", textAlign: "left" }}
-                  className="inter-display-regular f-s-13 lh-15"
-                >
-                  Nickname
-                </h3>
-                <input
+                  onFocus={(e) => {
+                    // console.log(e);
+                    this.FocusInInputFixWallet(e);
+                  }}
+                />}
+
+                {elem.showNickname && elem.coinFound && <input
                   value={elem.nickname || ""}
                   className="inter-display-regular f-s-16  lh-19 black-191"
                   type="text"
@@ -599,8 +625,12 @@ class FixAddModal extends BaseReactComponent {
                     elem,
                     this.props.OnboardingState
                   )}
+                  onFocus={(e) => {
+                    // console.log(e);
+                    this.FocusInInputFixWallet(e);
+                  }}
                 />
-
+}
                 {elem.address ? (
                   elem.coinFound && elem.coins.length > 0 ? (
                     <CustomChip

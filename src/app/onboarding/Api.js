@@ -189,6 +189,14 @@ export const verifyUser = (ctx, info) => {
                 .chains.length > 0
                 ? true
                 : false;
+          
+            obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
+            obj["showAddress"] = apiResponse.user.user_wallets[i]?.nickname === "" ? true
+                        : false;
+            obj["showNickname"] = apiResponse.user.user_wallets[i]?.nickname !== ""
+                        ? true
+                        : false;
+            
             addWallet.push(obj);
           }
           // console.log("addWallet", addWallet);
@@ -269,12 +277,12 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
           apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
         newAddWallet.push(obj);
       }
-      
+
        localStorage.setItem(
          "addWallet",
          JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
        );
-      // console.log("wallet", newAddWallet);
+      console.log("wallet", addWallet);
       ctx.props.history.replace({
         pathname: ctx.state.id ? ctx.state.link : '/home',
         state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}
