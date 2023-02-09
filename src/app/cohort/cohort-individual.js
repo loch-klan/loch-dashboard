@@ -4,7 +4,7 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { CreateUpdateNotification, getAllInsightsApi, getCohort, GetLargestAsset, GetLargestVolumeBought, GetLargestVolumeSold, GetNotification, GetPurchasedAsset, GetSoldAsset } from "./Api";
+import { CreateUpdateNotification, getAllInsightsApi, getCohort, GetLargestAsset, GetLargestVolumeBought, GetLargestVolumeSold, GetNotification, GetPurchasedAsset, GetSoldAsset, UpdateCohortNickname } from "./Api";
 import { AmountType, DormantType, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
@@ -53,9 +53,9 @@ import { NotificationAmount, NotificationCheckbox1, NotificationCheckbox2, Notif
 class CohortPage extends BaseReactComponent {
   constructor(props) {
     super(props);
-     const dummyUser = localStorage.getItem("lochDummyUser");
+    const dummyUser = localStorage.getItem("lochDummyUser");
     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
-    console.log(userDetails)
+    console.log(userDetails);
     this.state = {
       isLochUser: userDetails,
       activeFooter: 0,
@@ -119,7 +119,7 @@ class CohortPage extends BaseReactComponent {
       WhaleCreateAccountModal({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        pod_name: this.state.cohortName
+        pod_name: this.state.cohortName,
       });
     }
   };
@@ -184,38 +184,38 @@ class CohortPage extends BaseReactComponent {
     // console.log("option", activeFooter);
     let startDate = moment().unix();
     let endDate;
-     let handleSelected = "";
+    let handleSelected = "";
     if (activeFooter == "0") {
       startDate = "";
       endDate = "";
       handleSelected = "All";
     } else if (activeFooter == "1") {
       endDate = moment().subtract(5, "years").unix();
-       handleSelected = "5 Years";
+      handleSelected = "5 Years";
     } else if (activeFooter == "2") {
       endDate = moment().subtract(4, "years").unix();
-       handleSelected = "4 Years";
+      handleSelected = "4 Years";
     } else if (activeFooter == "3") {
       endDate = moment().subtract(3, "years").unix();
-       handleSelected = "3 Years";
+      handleSelected = "3 Years";
     } else if (activeFooter == "4") {
       endDate = moment().subtract(2, "years").unix();
-       handleSelected = "2 Years";
+      handleSelected = "2 Years";
     } else if (activeFooter == "5") {
       endDate = moment().subtract(1, "years").unix();
-       handleSelected = "1 Year";
+      handleSelected = "1 Year";
     } else if (activeFooter == "6") {
       endDate = moment().subtract(6, "months").unix();
-       handleSelected = "6 months";
+      handleSelected = "6 months";
     } else if (activeFooter == "7") {
       endDate = moment().subtract(1, "month").unix();
-       handleSelected = "1 month";
+      handleSelected = "1 month";
     } else if (activeFooter == "8") {
       endDate = moment().subtract(1, "week").unix();
-       handleSelected = "1 week";
+      handleSelected = "1 week";
     } else if (activeFooter == "9") {
       endDate = moment().subtract(1, "day").unix();
-       handleSelected = "1 day";
+      handleSelected = "1 day";
     }
 
     let data = new URLSearchParams();
@@ -266,13 +266,15 @@ class CohortPage extends BaseReactComponent {
   };
 
   handleUpdateEmail = () => {
-   
-    this.setState({
-      // updateEmail: true,
-      showBtn: true,
-    }, () => {
-       this.AddEmailModal();
-    });
+    this.setState(
+      {
+        // updateEmail: true,
+        showBtn: true,
+      },
+      () => {
+        this.AddEmailModal();
+      }
+    );
   };
 
   handleSave = () => {
@@ -310,43 +312,48 @@ class CohortPage extends BaseReactComponent {
         this.setState({ showBtn: false });
       }, 2000);
     } else {
-       toast.success("Please update your email");
+      toast.success("Please update your email");
     }
   };
 
   handleFunction = (e) => {
     const title = e.split(" ")[1];
     // console.log(e, title);
-    this.setState({
-      title: title,
-      showBtn: true,
-    }, () => {
-       NotificationAmount({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-         pod_name: this.state.cohortName,
-         is_checked: this.state.walletNotification,
-         amount_selected: title,
-       });
-    });
-
+    this.setState(
+      {
+        title: title,
+        showBtn: true,
+      },
+      () => {
+        NotificationAmount({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          pod_name: this.state.cohortName,
+          is_checked: this.state.walletNotification,
+          amount_selected: title,
+        });
+      }
+    );
   };
 
   handleFunctionDay = (e) => {
     const title = e.split(" ")[1] + " " + e.split(" ")[2];
     // console.log(e, title);
-    this.setState({
-      titleday: title,
-      showBtn: true,
-    }, () => {
-       NotificationDays({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-         pod_name: this.state.cohortName,
-         is_checked: this.state.dayNotification,
-         day_selected: title,
-       });
-    });
+    this.setState(
+      {
+        titleday: title,
+        showBtn: true,
+      },
+      () => {
+        NotificationDays({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          pod_name: this.state.cohortName,
+          is_checked: this.state.dayNotification,
+          day_selected: title,
+        });
+      }
+    );
   };
 
   copyLink = (address) => {
@@ -362,35 +369,41 @@ class CohortPage extends BaseReactComponent {
 
   handleClickWallet = () => {
     // console.log("click check");
-    this.setState({
-      walletNotification: !this.state.walletNotification,
-      showBtn: true,
-    }, () => {
-      NotificationAmount({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        pod_name: this.state.cohortName,
-        is_checked: this.state.walletNotification,
-        amount_selected:this.state.title
-      });
-    });
-    
+    this.setState(
+      {
+        walletNotification: !this.state.walletNotification,
+        showBtn: true,
+      },
+      () => {
+        NotificationAmount({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          pod_name: this.state.cohortName,
+          is_checked: this.state.walletNotification,
+          amount_selected: this.state.title,
+        });
+      }
+    );
+
     //  toast.success("You will be receiving notifications");
   };
 
   handleClickDay = () => {
-    this.setState({
-      dayNotification: !this.state.dayNotification,
-      showBtn: true,
-    }, () => {
-       NotificationDays({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-         pod_name: this.state.cohortName,
-         is_checked: this.state.dayNotification,
-         day_selected: this.state.titleday,
-       });
-    });
+    this.setState(
+      {
+        dayNotification: !this.state.dayNotification,
+        showBtn: true,
+      },
+      () => {
+        NotificationDays({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          pod_name: this.state.cohortName,
+          is_checked: this.state.dayNotification,
+          day_selected: this.state.titleday,
+        });
+      }
+    );
     //  toast.success("You will be receiving notifications");
   };
 
@@ -414,6 +427,14 @@ class CohortPage extends BaseReactComponent {
   };
 
   onSubmit = () => {};
+
+  onSubmitNickname = (address,i) => {
+     let data = new URLSearchParams();
+     data.append("cohort_id", this.state.cohortId);
+    data.append("wallet_address", address);
+    data.append("nickname", this.state[`nickname-${i+1}`]);
+    UpdateCohortNickname(data,this);
+  };
 
   render() {
     const nav_list = window.location.pathname.split("/");
@@ -1433,6 +1454,30 @@ here`
                           style={{ marginLeft: "0.8rem" }}
                           onClick={() => this.copyLink(e.wallet_address)}
                         />
+                        {this.state.cohortId !== "63da35fe3c8af3c678ac936e" && (
+                          <div className="nickname-input">
+                            <Form
+                              onValidSubmit={() => {
+                                this.onSubmitNickname(address, i);
+                              }}
+                            >
+                              <FormElement
+                                valueLink={this.linkState(
+                                  this,
+                                  `nickname-${i + 1}`
+                                )}
+                                required
+                                control={{
+                                  type: CustomTextControl,
+                                  settings: {
+                                    placeholder: "Enter nickname",
+                                  },
+                                }}
+                              />
+                            </Form>
+                          </div>
+                        )}
+
                         {/* <Image
                         src={EditIcon}
                         style={{ marginLeft: "1.2rem" }}

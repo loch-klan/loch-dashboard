@@ -76,6 +76,10 @@ export const getCohort = (data, ctx) => {
             });
           });
         // console.log("sorted chain", sortedChains)
+        let nicknames = {};
+        response?.wallet_address_details.map((item,i) => {
+          nicknames[`nickname-${i+1}`] = item.nickname
+        });
         ctx.setState({
           walletAddresses: response?.wallet_address_details,
           totalNetWorth: response?.total_net_worth,
@@ -87,6 +91,7 @@ export const getCohort = (data, ctx) => {
           cohortId: response?.id,
           cohortName: response?.name,
           cohortSlug: response?.slug,
+          ...nicknames,
         });
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -262,6 +267,26 @@ export const GetNotification = (data,ctx) => {
           dayNotification: response?.dormant_type ? true : false,
           notificationId: response ? response.id : false,
         });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+
+
+// Update cohort name
+export const UpdateCohortNickname = (data,ctx) => {
+  // let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("wallet/user-cohort/update-user-cohort-nickname", data)
+    .then((res) => {
+      if (!res.data.error) {
+        
+        // let response = res.data.data;
+        toast.success("Nickname updated");
+        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
