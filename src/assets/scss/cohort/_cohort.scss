@@ -1,0 +1,381 @@
+.cohort-page-section {
+    display: flex;
+
+    .cohort-section {
+        margin-top: 5rem;
+        min-width: 90rem;   //solve overflow issue
+        overflow: hidden;   //solve overflow issue
+
+        .animation-wrapper{
+            box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                margin-bottom: 2rem;
+                padding: 0;
+                background-color: #fff;
+                padding: 2rem 2rem 4rem;
+                border-radius: 1.2rem;
+
+        }
+        // sortby section begin
+        .sortby-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .dropdown-section {
+                display: flex;
+                .naming{
+                  padding: 1.2rem 0;
+                }
+                .sort-by-title{
+                    display: flex;
+                    align-items: center;
+                    padding: 1.2rem 1.6rem;
+                    cursor: pointer;
+                    user-select: none;
+
+                    .rotateUp{
+                        transform:rotate(180deg);
+                        margin-left: 1rem;
+                    }
+                    .rotateDown{
+                        transform: rotate(0deg);
+                        margin-left: 1rem;
+                    }
+                }
+                .sort-by-title:hover{
+                    span{
+                        color:$primary;
+                    }
+                    img{
+                        filter: brightness(0.5);
+                    }
+                }
+                // .dropdown {
+                //     margin-right: 3.6rem;
+
+                //     .dropdown-toggle {
+                //         border: none;
+                //         background: none;
+                //         color: $grey-7C7;
+                //         padding: 0px;
+                //     }
+                // }
+            }
+        }
+
+        // sortby section ends
+
+        // .net-worth-wrapper{
+        //   display: flex;
+        //   justify-content: space-between;
+        //   align-items: center;
+        //   padding: 2rem;
+        //   background-color: $secondary;
+        //   border-radius: 1.2rem;
+        //   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+        //   margin-bottom: 2.4rem;
+        //   .left{
+        //     display: flex;
+        //     align-items: center;
+        //     h3{
+        //       padding-left: 1.2rem;
+        //     }
+        //   }
+        // }
+
+
+       
+
+        //  walletcard 
+
+        .cohort-card{
+            cursor: pointer;
+            border: 1px solid transparent;
+            
+            &:hover{
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 15px 15px rgba(0, 0, 0, 0.04) !important;
+               border: 1px solid #cacbcc;
+            }
+        }
+
+
+    }
+}
+
+ .cards {
+            .walletcard {
+                padding: 2.4rem;
+                background-color: $secondary;
+                box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                border-radius: 1.6rem;
+                margin-bottom: 2rem;
+
+                .wallet-details {
+                    display: flex;
+                    justify-content: space-between;
+
+                
+                    .amount-details {
+                        display: flex;
+                        align-items: center;
+
+                        h6 {
+                            margin-right: 0.6rem;
+                            color: $black-191;
+                        }
+
+                        span {
+                            letter-spacing: 0.125rem;
+                            color: $grey-ADA;
+
+                        }
+
+                    }
+
+                    .account-details {
+                            display: flex;
+                            align-items: center;
+                            // margin-left: 1.6rem;
+                            span {
+                                color: $grey-636;
+                            }
+
+                            img:hover{
+                                filter: brightness(0.5);
+                            }
+                        }
+                }
+
+                .coins-chip {
+                    display: flex;
+                    padding-top: 1.6rem;
+                    border-top: 1px solid rgba(229, 229, 230, 0.5);
+                    justify-content: space-between;
+                    align-items: center;
+                    .chips-section {
+                        display: flex;
+                        // cursor: pointer;
+                        width: 85%;
+                        overflow-x: auto;
+                        margin-right: 2rem;
+                        .coin-chip {
+                            margin-right: 1.2rem;
+                            img{
+                                width:2.6rem;
+                                height:2.6rem;
+                                border-top-left-radius: 0.55rem;
+                                border-bottom-left-radius: 0.55rem;
+                                position: relative;
+                                left: -0.1rem;
+                                top: -0.1rem;
+                            }
+                             img:hover{
+                                filter: none;
+                            }
+                            
+                        }
+                    }
+                    .secondary-btn{
+                      padding: 1.65rem 2.7rem;
+                      border-color: $grey-636;
+                      color: $grey-636;
+                      &:hover{
+                        color: $secondary;
+                      }
+                    }
+                    h3{
+                        display: flex;
+                        align-items: center;
+
+                        img{
+                            margin-right: 0.4rem;
+                        }
+
+                         img:hover{
+                                filter: brightness(0.5);
+                            }
+                    }
+                    
+                }
+            }
+            .loading-container{
+                // box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                margin-bottom: 2rem;
+                padding: 0;
+                .animation-wrapper{
+                    width: 100%;
+                    // background-image: url("../../images/walletCardLoadingBackground.png");
+                   background-position: top center;
+                    background-repeat: no-repeat;
+                    background-size: 100%;
+
+                    .loading-animation{
+                        backdrop-filter: blur(10px);
+                        border-radius: 1.2rem;
+                        width: 100%;
+                        padding-bottom: 1rem;
+
+                        // img{
+                        //     width: 10rem;
+                        // }
+                    }
+                }
+            }
+
+        }
+
+
+        .net-worth-wrapper{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 2rem;
+          background-color: $secondary;
+          border-radius: 1.2rem;
+          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+          margin-bottom: 2.4rem;
+          .left{
+            display: flex;
+            align-items: center;
+            h3{
+              padding-left: 1.2rem;
+            }
+          }
+          .right{
+            display: flex;
+            align-items: center;
+            h3{
+              display: flex;
+            align-items: center;
+
+            span{
+                margin-left:0.4rem;
+            }
+            }
+          }
+        }
+
+
+        
+.cohort-address-wrapper{
+   max-height: 53.5rem;
+   overflow-y: scroll;
+   
+   .address-list{
+    background-color: #FFFFFF;
+                  padding-bottom: 1.75rem;
+                  border-bottom: 1px solid rgba(229, 229, 230, 0.5);
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 1.75rem;
+
+        .address-left{
+            display: flex;
+            align-items: center;
+
+            img{
+                cursor: pointer;
+            }
+
+            img:hover{
+                        filter: brightness(0.5);
+                    }
+        }
+   }
+
+   &::-webkit-scrollbar {
+                            width: 0.4rem;
+                            height: 0.4rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+                            border-radius: 0.8rem;
+                            background-color: $scrollBar-thumb;
+         }
+
+        &::-webkit-scrollbar-track {
+                            background-color: rgba(229, 229, 230, 0.5);
+                            // background-color: $grey-E5E;
+                            border-radius: 0.8rem;
+        }
+
+
+}
+
+
+.cohort-dropdown{
+    text-align: left !important;
+    margin-top: 2rem;
+
+
+     
+     .dropdown-menu {
+                    width: auto;
+                    padding: 0.4rem;
+
+                    .dropdown-item {
+                        padding: 0.8rem;
+                        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+                    }
+                }
+
+                .btn-primary:not(:disabled):not(.disabled):active {
+                    background-color: $grey-F2F !important;
+                    border: none !important;
+                    color: $black-191;
+                    
+               
+                }
+
+                .btn-primary.dropdown-toggle {
+                
+                background-color: $grey-F2F !important;
+                    border: none !important;
+                    color: $black-191;
+}
+
+                .dropdown .btn-primary.dropdown-toggle:focus {
+                    box-shadow: none;
+                     background-color: $grey-F2F !important;
+                    border: none !important;
+                    color: $black-191;
+                    
+}
+
+                .dropdown-toggle {
+
+                    background-color: $grey-F2F;
+                    color: $black-191;
+                    padding: 1rem 0.5rem;
+                    border-radius: 0.4rem;
+                    width: 10rem;
+                }
+
+                .dropdown-toggle::after {
+                    margin-left: 0.6rem;
+                    display: inline-block;
+                    vertical-align: 0.255em;
+                     content: "";
+                      border-top: 0.35em solid;
+                    border-right: 0.35em solid transparent;
+                    border-bottom: 0;
+                    border-left: 0.35em solid transparent;
+                }
+
+            
+}
+
+.Notification-header{ 
+
+    .secondary-btn{
+        padding: 1rem 3rem;
+    }
+
+}
+
+
+.editIcon{
+    &:hover{
+                        filter: brightness(0.5);
+                    }
+}

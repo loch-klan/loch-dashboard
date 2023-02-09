@@ -5,9 +5,16 @@ import { ProfitLossHover } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 export const getProfitAndLossData = (arr) => {
+  // console.log("array", arr);
   let currency= JSON.parse(localStorage.getItem('currency'));
   let inflows = Number(noExponents(arr.inflows));
   let outflows = Number(noExponents(arr.outflows));
+
+  // console.log(
+  //   "wothout breadown",
+  //   outflows * currency.rate, inflows * currency.rate,
+  //   Math.abs(outflows * currency.rate - inflows * currency.rate)
+  // );
     const labels = ["Inflows", "Outflows", "Net"];
     const profitOrLossData = {
         profit:{
@@ -49,104 +56,111 @@ export const getProfitAndLossData = (arr) => {
     }
 
     const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-          padding: {
-            top: 15,
-          },
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 15,
         },
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            displayColors: false,
-            backgroundColor: '#ffffff',
-            // fontColor: '#000000',
-            intersect: false,
-            color: '#000000',
-            padding: 12,
-            borderWidth: 1,
-            borderColor: '#E5E7EB',
-            // boxPadding: 5,
-            bodyFont: {
-              family: 'Inter-Medium',
-              size: 13,
-            },
-            bodySpacing: 8,
-            callbacks: {
-              title: function() {}, //REMOVE TITLE
-              label: (ctx) => {
-                let label = ctx.label + ": " + CurrencyType(false) + numToCurrency(ctx.raw);
-                ProfitLossHover({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                  hover_value: label,
-                });
-                return [label];
-              },
-              labelColor: function(context) {
-                return {
-                    padding: 10,
-                };
-            },
-              labelTextColor: function(context) {
-                return '#19191A';
-            }
-            },
-          },
-        },
-        scales: {
-          y: {
-            //   min: min,
-            //   max: 22574,
-            // beginAtZero: true,
-            // title: {
-            //   display: true,
-            //   text: "$ USD",
-            //   position: 'bottom',
-            // },
-            ticks: {
-              display: labels.length > 8 ? false : true,
-              // display: false,
-              // stepSize: 1500,
-              padding: 8,
-              size: 12,
-              lineHeight: 20,
+      },
+      plugins: {
+        legend: {
+          display: false,
+          labels: {
+            // This more specific font property overrides the global property
+            font: {
               family: "Inter-Regular",
-              weight: 400,
-              color: "#B0B1B3",
-              callback: function(value, index, ticks) {
-                let val = Number(noExponents(value))
-                return CurrencyType(false) + numToCurrency(val);
-              }
-            },
-            grid: {
-              drawBorder: false,
-              display: true,
-              borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
-              drawTicks: false,
-            },
-          },
-          x: {
-            ticks: {
-              font: "Inter-SemiBold",
-              size: 10,
-              lineHeight: 12,
-              weight: 600,
-              color: "#86909C",
-              maxRotation: 0,
-              minRotation: 0,
-              autoSkip: false,
-            },
-            grid: {
-              display: false,
-              borderWidth: 1,
             },
           },
         },
-      };
+        tooltip: {
+          displayColors: false,
+          backgroundColor: "#ffffff",
+          // fontColor: '#000000',
+          intersect: false,
+          color: "#000000",
+          padding: 12,
+          borderWidth: 1,
+          borderColor: "#E5E7EB",
+          // boxPadding: 5,
+          bodyFont: {
+            family: "Inter-Medium",
+            size: 13,
+          },
+          bodySpacing: 8,
+          callbacks: {
+            title: function () {}, //REMOVE TITLE
+            label: (ctx) => {
+              let label =
+                ctx.label + ": " + CurrencyType(false) + numToCurrency(ctx.raw);
+              ProfitLossHover({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+                hover_value: label,
+              });
+              return [label];
+            },
+            labelColor: function (context) {
+              return {
+                padding: 10,
+              };
+            },
+            labelTextColor: function (context) {
+              return "#19191A";
+            },
+          },
+        },
+      },
+      scales: {
+        y: {
+          //   min: min,
+          //   max: 22574,
+          // beginAtZero: true,
+          // title: {
+          //   display: true,
+          //   text: "$ USD",
+          //   position: 'bottom',
+          // },
+          ticks: {
+            display: labels.length > 8 ? false : true,
+            // display: false,
+            // stepSize: 1500,
+            padding: 8,
+            size: 12,
+            lineHeight: 20,
+            fontFamily: "'Inter-Regular'",
+            weight: 400,
+            color: "#B0B1B3",
+            callback: function (value, index, ticks) {
+              let val = Number(noExponents(value));
+              return CurrencyType(false) + numToCurrency(val);
+            },
+          },
+          grid: {
+            drawBorder: false,
+            display: true,
+            borderDash: (ctx) => (ctx.index == 0 ? [0] : [4]),
+            drawTicks: false,
+          },
+        },
+        x: {
+          ticks: {
+            font: "Inter-SemiBold",
+            size: 10,
+            lineHeight: 12,
+            weight: 600,
+            color: "#86909C",
+            maxRotation: 0,
+            minRotation: 0,
+            autoSkip: false,
+          },
+          grid: {
+            display: false,
+            borderWidth: 1,
+          },
+        },
+      },
+    };
       let value = ((outflows * currency.rate)-(inflows * currency.rate));
       let showPercentage= {
         icon: value >= 0 ? arrowUpRight : arrowDownRight,

@@ -1,6 +1,7 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
+import { WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import postLoginInstance from './../../utils/PostLoginAxios';
 
@@ -88,6 +89,10 @@ export const updateUserWalletApi = (data,ctx) =>{
               obj['id'] = `wallet${i+1}`;
         obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
         obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
+         obj["showAddress"] =
+           apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
+         obj["showNickname"] =
+           apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
               newAddWallet.push(obj);
       }
       // console.log('newAddWallet',newAddWallet);
@@ -160,7 +165,7 @@ export const getDetectedChainsApi = (ctx) =>{
         chains: res.data.data.chains[chain].chains
       }))
       // console.log('xyz',xyz);
-      addWallet.map((wallet)=>{
+      addWallet?.map((wallet)=>{
         let userWallet = null;
         let coinFound = false;
         xyz.map((item)=>{
@@ -282,3 +287,105 @@ export const getAllCurrencyRatesApi = () =>{
     console.log('err',err);
   })
 }
+
+// Send Email OTP from whale pod
+
+export const SendOtp = (data,ctx) => {
+  postLoginInstance
+    .post("organisation/user/send-email-otp", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // console.log("res", res.data);
+        let otp = res.data.data.opt_token;
+        ctx.setState({
+          isShowOtp: true,
+          isEmailNotExist: res.data.data.is_new_user,
+          modalTitle: "Verify email",
+          modalDescription: res.data.data.is_new_user
+            ? "enter the verification code sent to your email to save the wallets and pods to your account"
+            : "enter the verification code sent to your email to update the existing wallets and pods for your account",
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};
+
+// Verify email
+
+export const VerifyEmail = (data,ctx) => {
+  postLoginInstance
+    .post("organisation/user/verify-otp-code", data)
+    .then((res) => {
+      if (!res.data.error) {
+        let isOptValid = res.data.data.otp_verified;
+        let token = res.data.data.token;
+      
+        localStorage.setItem("lochToken", token);
+        const userId = localStorage.getItem("lochDummyUser");
+        ctx.setState(
+          {
+            isOptInValid: false,
+          },
+          () => {
+           
+            let userdata = new URLSearchParams();
+            userdata.append("old_user_id", userId);
+
+            UpdateUserDetails(userdata, ctx);
+          }
+        );
+
+        // console.log("user id ", userId)
+      } else if (res.data.error === true) {
+        // invalid otp
+        ctx.setState({
+          isOptInValid: true,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};
+
+
+
+// Update user details
+
+export const UpdateUserDetails = (data,ctx) => {
+  postLoginInstance
+    .post("organisation/user/update-user-details", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // Analytics
+        WhaleCreateAccountEmailVerified({
+          session_id: res.data.data.user.link,
+          email_address: res.data.data.user.email
+            ? res.data.data.user.email
+            : ctx.state.email,
+        });
+        // localStorage.setItem("lochDummyUser", null);g
+        localStorage.removeItem("lochDummyUser");
+        let obj = JSON.parse(localStorage.getItem("lochUser"));
+        obj = {
+          ...obj,
+          first_name: ctx.state.firstName,
+          last_name: ctx.state.lastName,
+          email: res.data.data.user.email
+            ? res.data.data.user.email
+            : ctx.state.email,
+          mobile: ctx.state.mobileNumber,
+          link: res.data.data.user.link,
+        };
+        localStorage.setItem("lochUser", JSON.stringify(obj));
+        toast.success(" Your wallets and pods has been saved");
+
+        ctx.state.onHide();
+      } 
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};

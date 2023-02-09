@@ -15,7 +15,7 @@ import { DEFAULT_COLOR, DEFAULT_PRICE } from "../../utils/Constant";
 import { Col, Image, Row } from "react-bootstrap";
 import noDataImage from "../../image/no-data.png";
 import Loading from "../common/Loading";
-import { PiechartChainName } from "../../utils/AnalyticsFunctions";
+import { HomeRefreshButton, PiechartChainName } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import ManageWallet from "../../assets/images/icons/ManageWallet.svg";
@@ -290,7 +290,7 @@ class PieChart2 extends BaseReactComponent {
     }
     
     if (this.props.chainPortfolio !== prevProps.chainPortfolio) {
-    //  console.log("inside");
+    //  console.log("inside", this.props.chainPortfolio, prevProps.chainPortfolio);
       let chainList = [];
       // this.props.allCoinList && this.props.allCoinList.map((item) => {
       //   let isfound = false;
@@ -495,6 +495,11 @@ class PieChart2 extends BaseReactComponent {
   }
 
   RefreshButton = () => {
+
+    HomeRefreshButton({
+      email_address: getCurrentUser().email,
+      session_id:getCurrentUser().id
+    });
     // get the current time
     this.setState({
       isLoading:true,
@@ -504,6 +509,7 @@ class PieChart2 extends BaseReactComponent {
     // console.log("state", this)
 
     this.props.portfolioState.walletTotal = 0;
+    this.props.portfolioState.chainPortfolio = {};
 
     // console.log("Refresh clicked");
     // localStorage.setItem("refreshApiTime", currentTime);

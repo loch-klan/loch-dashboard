@@ -269,7 +269,7 @@ class Portfolio extends BaseReactComponent {
       });
     }
     
-    console.log("api respinse", value);
+    // console.log("api respinse", value);
   };
   componentDidUpdate(prevProps, prevState) {
     //Wallet update response
@@ -548,7 +548,7 @@ class Portfolio extends BaseReactComponent {
             id: row.asset.id,
             assetPrice: row.asset_price,
           },
-          method: row.method,
+          // method: row.method,
         };
       });
 
@@ -613,7 +613,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "from",
         // coumnWidth: 61,
-        coumnWidth: 0.14,
+        coumnWidth: 0.17,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
@@ -625,29 +625,17 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 // text={rowData.from.address}
                 text={
-                  rowData.from.wallet_metaData?.text
-                    ? rowData.from.wallet_metaData?.text +
-                      ": " +
-                      rowData.from.address
-                    : rowData.from.metaData?.displayAddress &&
-                      rowData.from.metaData?.displayAddress !==
-                        rowData.from.address
-                    ? rowData.from.metaData?.displayAddress +
-                      ": " +
-                      rowData.from.address
-                    : rowData.from.metaData?.nickname
-                    ? rowData.from.metaData?.nickname +
-                      ": " +
-                      (rowData.from.wallet_metaData?.text
-                        ? rowData.from.wallet_metaData?.text + ": "
-                        : "") +
-                      (rowData.from.metaData?.displayAddress &&
-                      rowData.from.metaData?.displayAddress !==
-                        rowData.from.address
-                        ? rowData.from.metaData?.displayAddress + ": "
-                        : "") +
-                      rowData.from.address
-                    : rowData.from.address
+                  (rowData.from.metaData?.nickname
+                    ? rowData.from.metaData?.nickname + ": "
+                    : "") +
+                  (rowData.from.wallet_metaData?.text
+                    ? rowData.from.wallet_metaData?.text + ": "
+                    : "") +
+                  (rowData.from.metaData?.displayAddress &&
+                  rowData.from.metaData?.displayAddress !== rowData.from.address
+                    ? rowData.from.metaData?.displayAddress + ": "
+                    : "") +
+                  rowData.from.address
                 }
               >
                 {rowData.from.metaData?.wallet_metaData ? (
@@ -792,7 +780,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "to",
-        coumnWidth: 0.14,
+        coumnWidth: 0.17,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "to") {
@@ -804,27 +792,17 @@ class Portfolio extends BaseReactComponent {
                 isText={true}
                 // text={rowData.to.address}
                 text={
-                  rowData.to.wallet_metaData?.text
-                    ? rowData.to.wallet_metaData?.text +
-                      ": " +
-                      rowData.to.address
-                    : rowData.to.metaData?.displayAddress &&
-                      rowData.to.metaData?.displayAddress !== rowData.to.address
-                    ? rowData.to.metaData?.displayAddress +
-                      ": " +
-                      rowData.to.address
-                    : rowData.to.metaData?.nickname
-                    ? rowData.to.metaData?.nickname +
-                      ": " +
-                      (rowData.to.wallet_metaData?.text
-                        ? rowData.to.wallet_metaData?.text + ": "
-                        : "") +
-                      (rowData.to.metaData?.displayAddress &&
-                      rowData.to.metaData?.displayAddress !== rowData.to.address
-                        ? rowData.to.metaData?.displayAddress + ": "
-                        : "") +
-                      rowData.to.address
-                    : rowData.to.address
+                  (rowData.to.metaData?.nickname
+                    ? rowData.to.metaData?.nickname + ": "
+                    : "") +
+                  (rowData.to.wallet_metaData?.text
+                    ? rowData.to.wallet_metaData?.text + ": "
+                    : "") +
+                  (rowData.to.metaData?.displayAddress &&
+                  rowData.to.metaData?.displayAddress !== rowData.to.address
+                    ? rowData.to.metaData?.displayAddress + ": "
+                    : "") +
+                  rowData.to.address
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
@@ -998,7 +976,7 @@ class Portfolio extends BaseReactComponent {
           </div>
         ),
         dataKey: "usdValue",
-        coumnWidth: 0.15,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "usdValue") {
@@ -1035,43 +1013,43 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="method"
-            onClick={() => {
-              this.handleTableSort("method");
-              TransactionHistoryMethod({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              });
-            }}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Method
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "method",
-        coumnWidth: 0.22,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "method") {
-            return (
-              <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
-                {rowData.method}
-              </div>
-            );
-          }
-        },
-      },
+      // {
+      //   labelName: (
+      //     <div
+      //       className="cp history-table-header-col"
+      //       id="method"
+      //       onClick={() => {
+      //         this.handleTableSort("method");
+      //         TransactionHistoryMethod({
+      //           session_id: getCurrentUser().id,
+      //           email_address: getCurrentUser().email,
+      //         });
+      //       }}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         Method
+      //       </span>
+      //       <Image
+      //         src={sortByIcon}
+      //         className={
+      //           !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+      //         }
+      //       />
+      //     </div>
+      //   ),
+      //   dataKey: "method",
+      //   coumnWidth: 0.22,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "method") {
+      //       return (
+      //         <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
+      //           {rowData.method}
+      //         </div>
+      //       );
+      //     }
+      //   },
+      // },
     ];
     // //console.log("table data", tableData)
     return (
@@ -1292,18 +1270,18 @@ class Portfolio extends BaseReactComponent {
                     <div className="profit-chart">
                       <BarGraphSection
                         headerTitle="Net Flows"
-                        headerSubTitle="Understand your entire portfolio's performance"
+                        headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
                         handleClick={() => {
                           if (
                             this.state.userWalletList &&
                             this.state.userWalletList?.length !== 0
                           ) {
-                            this.props.history.push("/intelligence");
                             ProfitLossEV({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
+                             this.props.history.push("/intelligence#netflow");
                           }
                         }}
                         isScrollVisible={false}
@@ -1354,7 +1332,7 @@ class Portfolio extends BaseReactComponent {
                             });
                           }
                         }}
-                        subTitle="In the last month"
+                        subTitle="Sort, filter, and dissect all your transactions from one place"
                         tableData={tableData}
                         columnList={columnList}
                         headerHeight={60}
@@ -1367,7 +1345,7 @@ class Portfolio extends BaseReactComponent {
                     <div className="profit-chart">
                       <BarGraphSection
                         headerTitle="Counterparty Volume Over Time"
-                        headerSubTitle="Understand how much your counterparty charges you"
+                        headerSubTitle="Understand where you’ve exchanged the most value"
                         isArrow={true}
                         handleClick={() => {
                           if (
@@ -1378,7 +1356,7 @@ class Portfolio extends BaseReactComponent {
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                            this.props.history.push("/costs#cp");
+                            this.props.history.push("/intelligence/costs#cp");
                           }
                         }}
                         data={
@@ -1439,7 +1417,7 @@ class Portfolio extends BaseReactComponent {
                   )}
                 </div>
               </div> */}
-              <FeedbackForm page={"Home Page"} attribution={true} />
+              {/* <FeedbackForm page={"Home Page"} attribution={true} /> */}
             </div>
           </div>
         )}

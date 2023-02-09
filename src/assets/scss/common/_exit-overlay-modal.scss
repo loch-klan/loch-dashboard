@@ -59,6 +59,38 @@
                 }
             }
 
+             .back-icon {
+                position: absolute;
+                left: 2.8rem;
+                top: 2.8rem;
+                padding: 1.3rem;
+                background-color: $drop-button-hover;
+                border-radius: 5rem;
+                cursor: pointer;
+                transition: all 0.4s ease;
+                width: 4rem;
+                height: 4rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+               
+                img{
+                    filter:invert(1);
+                }
+                 
+
+                &:hover{
+                    // top: 2.5rem;
+                    // left: 2.5rem;
+                    // padding: 1.6rem;
+                    img{
+                     transform: scale(1);
+                }
+                    transform: scale(1.1);
+                }
+            }
+
             // .exitOverlayIcon {
             //     padding: 1.81rem 1.77rem;
             //     background: $secondary;
@@ -75,6 +107,12 @@
                 flex-direction: column;
                 align-items: center;
                 padding: 0rem 15.5rem;
+
+                .skip-link{
+                    &:hover{
+                        color:$primary;
+                    }
+                }
 
                 h6 {
                     color: $primary;
@@ -130,6 +168,21 @@
 
                             .save-btn:focus {
                                 box-shadow: none;
+                            }
+                        }
+                    }
+                    &.auth-modal{
+                        form{
+                            .is-valid {
+                                border: 0.1rem solid $black-191;
+                                border-radius: 0.8rem;
+                                box-shadow: none;
+                                // padding: 2.7rem 10.1rem 2.7rem 2.8rem;
+                                padding-right: 2rem !important;
+                            }
+
+                            .is-invalid {
+                                padding-right: 2rem !important;
                             }
                         }
                     }
@@ -322,6 +375,203 @@
                     background-color: transparent;
                   }
                 }
+              }
+            }
+
+
+             .cohort-modal-body{
+              text-align: center;
+              padding-bottom: 3.4rem;
+              .cohort-body{
+
+                .cohort-item-wrapper{
+
+                  padding: 4rem 4.2rem 0;
+                  margin-bottom: 2.6rem;
+                  text-align: start;
+
+                    .paste-text{
+                        position:absolute;
+                        text-align: center;
+                        top: 1.2rem;
+                        right: 2.2rem;
+                        display: flex;
+                        align-items: center;
+                        p{
+                            margin-left:0.5rem;
+                             color: $black-191;
+                        }
+                    }
+
+                  .form-group {
+                        label {
+                            font-family: Inter-Medium;
+                            line-height: 1.6rem;
+                            font-size: 1.3rem;
+                            color: $grey-313;
+                            margin-bottom: 1.2rem;
+
+                            span {
+                                display: none;
+                            }
+                        }
+
+                        .form-control{
+                            font-size: 1.6rem;
+                            line-height: 1.8rem;
+                            color: $black-191;
+                            font-weight: 400;
+                            padding:1.3rem 1.6rem;
+                            min-height: 4.3rem;
+                            margin-bottom: 2rem;
+                            border: 1px solid #D4D4D4;
+
+                             &:active:focus,
+                    &:active,
+                    &:focus,
+                    &:focus-visible {
+                        outline: none;
+                        border-color: #19191A;
+                    }
+
+                            &::placeholder{
+                              font-size: 1.6rem;
+                            line-height: 1.8rem;
+                            color: $grey-D4D;
+                            }
+                        }
+                    }
+
+                   
+
+                     .add-modal-inputs {
+                // display: flex;
+                // flex-direction: column;
+                // width: 100%;
+                // padding: 0rem 8.4rem 0rem 8.4rem;
+                padding: 0rem 0rem 0rem 6rem;
+                max-height: 22rem;
+                overflow-y: auto;
+                margin: 0 0rem 1.2rem 0rem;
+                .add-wallet-input-section {
+                    // display: flex;
+                    // align-items: center;
+                    position: relative;
+                    .chip-wrapper{
+                        top:0.7rem
+                    }
+
+                    .delete-icon {
+                        box-shadow: 0rem 0.2rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                        position: absolute;
+                        // left:-5.34rem;
+                        left:-5.5rem;
+                        // top: 3.5px;
+                         top: 2.7px;
+                        cursor: pointer;
+                        // padding:0.8rem;
+                         padding:0.9rem;
+                        border-radius: 0.8rem;
+                        img{
+                            // width: 1.8rem;
+                            // height: 1.8rem;
+                            width: 2rem;
+                            height: 2rem;
+                        }
+                    }
+
+                    input {
+                        width: 100%;
+                        // border: 0.1rem solid $black-191;
+                        border: 1px solid #D4D4D4;
+                        border-radius: 0.8rem;
+                        // padding: 1.05rem 15.7rem 1.05rem 1.2rem;
+                        // padding: 1.05rem 14.4rem 1.05rem 1.2rem;
+                        padding: 1.05rem 5.7rem 1.05rem 1.2rem;
+                         
+                        &:active:focus,
+                    &:active,
+                    &:focus,
+                    &:focus-visible {
+                        outline: none;
+                        border-color: #19191A;
+                    }
+
+                    &::placeholder{
+                         color: $grey-D4D;
+                    }
+                    }
+
+                    .customchip {
+                        display:block;
+                        text-align: center;
+                        position: absolute;
+                        right: 1.2rem;
+                        top: 0.8rem;
+                        background: rgba(229, 229, 230, 0.5);
+                        border: 0.1rem solid $grey-CAC;
+                        border-radius: 0.4rem;
+                        padding: 0.4rem 0.8rem;
+                        img{
+                            margin-right: 0.6rem;
+                        }
+                    }
+                }
+                &::-webkit-scrollbar {
+                    width: 0.4rem;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    // background: rgb(90, 90, 90);
+                    background-color: $scrollBar-thumb;
+                    // border-radius: 2rem;
+                    border-radius: 0.8rem;
+                }
+
+                &::-webkit-scrollbar-track {
+                  background-color: rgba(229, 229, 230, 0.5);
+                    // background-color: $grey-E5E;
+                    // border-radius: 2rem;
+                    border-radius: 0.8rem;
+                }
+            }
+            .add-wallet-btn{
+                    width: 100%;
+                    // padding: 0rem 8.4rem;
+                    // padding: 0rem 6.2rem 0rem 7rem;
+                    .grey-btn{
+                        width: 100%;
+                    }
+                }
+
+              
+               
+                    .save-btn-section{
+                        margin-top: 4.8rem;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                    .primary-btn{
+                        padding: 1.6rem 2.7rem;
+                        .spinner-chip-container{
+                            margin: 0;
+                            .spinner{
+                            margin: 0;
+                            }
+                        }
+                        &:hover{
+                            color: $black-191;
+                            border: 1px solid $black-191;
+                            background-color: transparent;
+                        }
+                        }
+                    }
+                  
+                  
+                }
+               
+               
               }
             }
         }

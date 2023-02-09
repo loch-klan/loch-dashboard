@@ -93,10 +93,92 @@
           color: $grey-313;
         }
       }
+      .feedback-dropdown{
+        text-align: left !important;
+          // margin-top: 1.1rem;
+
+
+     
+     .dropdown-menu {
+                    width: 100%;
+                    padding: 0.4rem;
+                    margin-top: 0.5rem;
+                    border: 1px solid #B0B1B3;
+                    border-radius: 0.4rem;
+                     height: 16rem;
+                    overflow-y: scroll;
+                    
+
+                    .dropdown-item {
+                        padding: 0.8rem;
+                        @include font($grey-313, "Inter-Medium", 1.3rem, 500, 1.6rem);
+                    }
+                }
+
+                .btn-primary:not(:disabled):not(.disabled):active {
+                    // background-color: $grey-F2F !important;
+                    border: 1px solid #B0B1B3;
+                    color: $black-191;
+                    
+               
+                }
+
+                .btn-primary.dropdown-toggle {
+                
+                // background-color: $grey-F2F !important;
+                    border: 1px solid #B0B1B3;
+                    color: $black-191;
+                    text-align: left;
+                    background-color: transparent;
+                    // color: $black-191;
+                    padding: 1.2rem 1.6rem;
+                    border-radius: 0.8rem;
+                    width: 100%;
+                    // border: 1px solid #B0B1B3;
+
+                    &:hover{
+                       border: 1px solid $primary;
+                    }
+}
+
+                .dropdown .btn-primary.dropdown-toggle:focus {
+                    box-shadow: none;
+                    //  background-color: $grey-F2F !important;
+                    border: 1px solid #B0B1B3;
+                    color: $black-191;
+                    
+}
+
+                // .dropdown-toggle {
+
+                //     background-color: transparent;
+                //     color: $black-191;
+                //     padding: 1rem 0.5rem;
+                //     border-radius: 0.4rem;
+                //     width: 100%;
+                //     border: 1px solid #B0B1B3;
+                // }
+
+                .dropdown-toggle::after {
+                    margin-left: 0.6rem;
+                    display: inline-block;
+                    vertical-align: 0.255em;
+                     content: "";
+                      border-top: 0.35em solid;
+                    border-right: 0.35em solid transparent;
+                    border-bottom: 0;
+                    border-left: 0.35em solid transparent;
+                    position: absolute;
+                    right: 18px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+
+      }
       .form-control{
         padding: 1.2rem 1.6rem;
         min-height: 4.3rem;
-        border:0.1rem solid $grey-D4D;
+        border: 1px solid #B0B1B3;
       }
       .form-control:hover{
           border:0.1rem solid $black-191;

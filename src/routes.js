@@ -13,6 +13,8 @@ import VerifyEmail from "./app/common/VerifyEmail"
 import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounterparty"
 import InsightsPage from "./app/intelligence/InsightsPage"
 import AssetValueGraph from "./app/intelligence/AssetValueGraph";
+import Cohort from "./app/cohort/Cohort"
+import CohortPage from "./app/cohort/cohort-individual"
 const routes = [
   {
     path: "/",
@@ -69,17 +71,30 @@ const routes = [
     component: InsightsPage,
   },
   {
+    path: "/intelligence/costs",
+    name: "Costs",
+    type: PrivateRoute,
+    component: Cost,
+  },
+  {
     path: "/wallets",
     name: "Wallet",
     type: PrivateRoute,
     component: Wallet,
   },
   {
-    path: "/costs",
-    name: "Costs",
+    path: "/whale-watching",
+    name: "Whale Watching",
     type: PrivateRoute,
-    component: Cost,
+    component: Cohort,
   },
+  {
+    path: "/whale-watching/:cohortName",
+    name: "Whale Watching Page",
+    type: PrivateRoute,
+    component: CohortPage,
+  },
+
   {
     path: "/verify-email",
     name: "Verify Email",

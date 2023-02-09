@@ -139,7 +139,12 @@ body {
   margin-top: 0.4rem;
 }
 
+
 .m-t-5 {
+  margin-top: 0.5rem;
+}
+
+.m-t-50 {
   margin-top: 5rem;
 }
 
@@ -149,8 +154,17 @@ body {
 .m-t-12{
   margin-top: 1.2rem;
 }
+.m-t-16{
+  margin-top: 1.6rem;
+}
+.m-t-20{
+  margin-top: 2rem;
+}
 .m-t-30 {
   margin-top: 3rem;
+}
+.m-t-40 {
+  margin-top: 4rem;
 }
 
 .m-t-80 {
@@ -159,6 +173,10 @@ body {
 
 .m-t-60 {
   margin-top: 6rem;
+}
+
+.m-t-46 {
+  margin-top: 4.6rem;
 }
 
 // MARGIN RIGHT
@@ -301,9 +319,16 @@ body {
 }
 
 // MARGIN LEFT
+.m-l-4 {
+  margin-left: 0.4rem;
+}
 .m-l-10 {
   margin-left: 1rem;
 }
+.m-l-12 {
+  margin-left: 1.2rem;
+}
+
 
 .m-l-27 {
   margin-left: 27.2rem;
@@ -497,7 +522,9 @@ body {
 }
 
 .Toastify__toast-container {
-  width: 40rem;
+  // width: 40rem;
+      min-width: 40rem;
+    width: max-content;
 }
 
 .Toastify__toast {
@@ -1048,6 +1075,14 @@ form {
   &:not(.disabled) {
     cursor: auto;
   }
+
+  .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    // color: #fff;
+    outline: none;
+    box-shadow: none;
+    border: 1px solid $black-191 !important;
+    background-color: $black-191 !important;
+}
 }
 
 .secondary-btn {
@@ -1462,7 +1497,7 @@ form {
   margin-left: 0.7rem;
 
   .badge {
-    padding: 0.35rem 0.8rem 0.4rem;
+    // padding: 0.35rem 0.8rem 0.4rem;
   }
 
   img {
@@ -1522,6 +1557,7 @@ form {
   cursor: default;
   width: max-content;
   height: 2.6rem;
+  align-items: center;
 
   img {
     width: 2.6rem;
@@ -1729,6 +1765,11 @@ form {
   color: #55575a;
   background: blur(3px);
   align-items: center;
+  white-space: nowrap;
+
+  span{
+    white-space: nowrap;
+  }
 
   .slick-slider {
     padding-left: 2px;
@@ -1766,3 +1807,65 @@ textarea{
 //       // background-color: $secondary;
 //   }
 // }
+.custom-switch {
+    padding-left: 2.25rem;
+    user-select: none;
+    width: max-content;
+    // transform: scale(1.5) translateX(-2.5rem);
+    transform: scale(1.45) translateX(2.6rem);
+    cursor: pointer;
+
+    input{
+        cursor: pointer;
+    }
+
+    label{
+       @include font($primary, "Inter-Medium", 0.9rem, 500, 15px);
+    }
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: $primary;
+    background-color: $primary;
+     cursor: pointer;
+  }
+
+    .custom-control-label::before {
+    position: absolute;
+    top: 0.25rem;
+    left: -1.5rem;
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    pointer-events: none;
+    content: "";
+    background-color: #fff;
+    border: 1px solid $primary;
+     cursor: pointer;
+}
+
+.custom-switch .custom-control-label::after {
+    
+    background-color: $primary;
+    border-radius: 0.5rem;
+    transition: transform .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+     cursor: pointer;
+}
+
+.custom-control-input:focus~.custom-control-label::before {
+    box-shadow: none;
+     cursor: pointer;
+}
+
+.custom-control-input:not(:disabled):active~.custom-control-label::before {
+    color: $primary;
+    background-color: #fff;
+    border-color: #fff;
+     cursor: pointer;
+}
+
+.custom-control-input:focus:not(:checked)~.custom-control-label::before {
+    border-color: $primary;
+     cursor: pointer;
+}

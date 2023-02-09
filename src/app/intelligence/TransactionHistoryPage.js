@@ -342,7 +342,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   };
 
   TruncateText = (string) => {
-    if (string.length > 4) {
+    if (string?.length > 4) {
       return string.substring(0, 3) + "..";
     }
     return string;
@@ -512,26 +512,37 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isText={true}
                 // text={rowData.from.address}
                 text={
-                  rowData.from.wallet_metaData?.text
-                    ? rowData.from.wallet_metaData?.text +
-                      ": " +
-                      rowData.from.address
-                    : rowData.from.metaData?.displayAddress &&
-                      rowData.from.metaData?.displayAddress !==
-                        rowData.from.address
-                    ? rowData.from.metaData?.displayAddress +
-                      ": " +
-                      rowData.from.address
-                    : rowData.from.metaData?.nickname
-                    ? rowData.from.metaData?.nickname +
-                      ": " +
-                      (rowData.from.wallet_metaData?.text ?
-                        (rowData.from.wallet_metaData?.text + ": "):"") +
-                      ((rowData.from.metaData?.displayAddress &&
-                        rowData.from.metaData?.displayAddress !==
-                          rowData.from.address) ? (rowData.from.metaData?.displayAddress + ": ") : "") +
-                      rowData.from.address
-                    : rowData.from.address
+                  // rowData.from.wallet_metaData?.text
+                  //   ? rowData.from.wallet_metaData?.text +
+                  //     ": " +
+                  //     rowData.from.address
+                  //   : rowData.from.metaData?.displayAddress &&
+                  //     rowData.from.metaData?.displayAddress !==
+                  //       rowData.from.address
+                  //   ? rowData.from.metaData?.displayAddress +
+                  //     ": " +
+                  //     rowData.from.address
+                  //   : rowData.from.metaData?.nickname
+                  //   ? rowData.from.metaData?.nickname +
+                  //     ": " +
+                  //     (rowData.from.wallet_metaData?.text ?
+                  //       (rowData.from.wallet_metaData?.text + ": "):"") +
+                  //     ((rowData.from.metaData?.displayAddress &&
+                  //       rowData.from.metaData?.displayAddress !==
+                  //         rowData.from.address) ? (rowData.from.metaData?.displayAddress + ": ") : "") +
+                  //     rowData.from.address
+                  //   : rowData.from.address
+                  (rowData.from.metaData?.nickname
+                    ? rowData.from.metaData?.nickname + ": "
+                    : "") +
+                  (rowData.from.wallet_metaData?.text
+                    ? rowData.from.wallet_metaData?.text + ": "
+                    : "") +
+                  (rowData.from.metaData?.displayAddress &&
+                  rowData.from.metaData?.displayAddress !== rowData.from.address
+                    ? rowData.from.metaData?.displayAddress + ": "
+                    : "") +
+                  rowData.from.address
                 }
               >
                 {rowData.from.metaData?.wallet_metaData ? (
@@ -717,29 +728,37 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  rowData.to.wallet_metaData?.text
-                    ? rowData.to.wallet_metaData?.text +
-                      ": " +
-                      rowData.to.address
-                    : rowData.to.metaData?.displayAddress &&
-                      rowData.to.metaData?.displayAddress !==
-                        rowData.to.address
-                    ? rowData.to.metaData?.displayAddress +
-                      ": " +
-                      rowData.to.address
-                    : rowData.to.metaData?.nickname
-                    ? rowData.to.metaData?.nickname +
-                      ": " +
+                  (rowData.to.metaData?.nickname ? rowData.to.metaData?.nickname +
+                      ": " : "") +
                       (rowData.to.wallet_metaData?.text
                         ? rowData.to.wallet_metaData?.text + ": "
                         : "") +
                       (rowData.to.metaData?.displayAddress &&
-                      rowData.to.metaData?.displayAddress !==
-                        rowData.to.address
+                      rowData.to.metaData?.displayAddress !== rowData.to.address
                         ? rowData.to.metaData?.displayAddress + ": "
                         : "") +
                       rowData.to.address
-                    : rowData.to.address
+                  // rowData.to.wallet_metaData?.text
+                  //   ? rowData.to.wallet_metaData?.text +
+                  //     ": " +
+                  //     rowData.to.address
+                  //   : rowData.to.metaData?.displayAddress &&
+                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
+                  //   ? rowData.to.metaData?.displayAddress +
+                  //     ": " +
+                  //     rowData.to.address
+                  //   : rowData.to.metaData?.nickname
+                  //   ? (rowData.to.metaData?.nickname ? rowData.to.metaData?.nickname +
+                  //     ": " : "") +
+                  //     (rowData.to.wallet_metaData?.text
+                  //       ? rowData.to.wallet_metaData?.text + ": "
+                  //       : "") +
+                  //     (rowData.to.metaData?.displayAddress &&
+                  //     rowData.to.metaData?.displayAddress !== rowData.to.address
+                  //       ? rowData.to.metaData?.displayAddress + ": "
+                  //       : "") +
+                  //     rowData.to.address
+                  //   : rowData.to.address
                 }
               >
                 {rowData.to.metaData?.wallet_metaData ? (
@@ -1148,9 +1167,18 @@ class TransactionHistoryPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
             return (
-              <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
-                {rowData.method}
-              </div>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.method}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
+                  
+                  {rowData.method}
+                </div>
+              </CustomOverlay>
             );
           }
         },
@@ -1176,7 +1204,9 @@ class TransactionHistoryPage extends BaseReactComponent {
           )}
           <PageHeader
             title={"Transaction history"}
-            subTitle={"Valuable insights based on your assets"}
+            subTitle={
+              "Sort, filter, and dissect all your transactions from one place"
+            }
             showpath={true}
             currentPage={"transaction-history"}
             history={this.props.history}
@@ -1266,7 +1296,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               </>
             )}
           </div>
-          <FeedbackForm page={"Transaction History Page"} />
+          {/* <FeedbackForm page={"Transaction History Page"} /> */}
         </div>
       </div>
     );

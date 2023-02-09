@@ -56,7 +56,9 @@
     border-radius: 0.8rem;
     color: #19191A;
     user-select: none;
+    z-index: 2;
   }
+  
 
    &.lineChart:hover{
 
@@ -131,6 +133,43 @@
       }
     }
 
+    .dropdown-search-wrapper{
+      padding: 0.4rem 0.4rem 0.1rem;
+      position: relative;
+         .dropdown-search-input{
+      background: #FFFFFF;
+      width: 100%;
+      border: none;
+      box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+      border-radius: 4px;
+      padding: 1rem 1rem 1rem 2.5rem;
+       @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+
+
+
+      &:focus,:active,:focus-visible
+      {
+        border:none;
+        outline: none;
+      }
+
+      &::placeholder{
+         @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
+      }
+
+     
+    }
+     img{
+            position: absolute;
+    top: 52%;
+    transform: translateY(-50%);
+    left: 1rem;
+
+      }
+    }
+
+ 
+
 
     .dropdown-footer{
         display: flex;
@@ -138,7 +177,7 @@
         align-items: center;
         flex-wrap: wrap;
         padding: 4px 4px;
-        border-top: 1px solid $secondary-6;
+        // border-top: 1px solid $secondary-6;
         .primary-btn{
           &:hover{
             background-color: $secondary;
@@ -164,9 +203,9 @@
             // border: none;
             text-align: center;
             width: 48%;
-            padding: 0.5rem;
+            padding: 0.8rem;
             user-select: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
             // @include font($black-191, "Inter-Medium", 1.1rem, 500, 3rem);
             font-size: 1.1rem

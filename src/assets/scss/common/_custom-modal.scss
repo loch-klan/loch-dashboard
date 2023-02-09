@@ -100,3 +100,41 @@
     }
   }
 }
+
+
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out !important;
+    animation-name: transform1;
+  animation-duration: 0.4s;
+  // transform: translate(0,-50px) !important;
+   
+}
+
+.fade {
+    transition: opacity 0.3s ease-out !important
+}
+
+@keyframes transform1 {
+   from{
+    transform: translate(0,1000px);
+    // opacity: 0;
+   }
+   to{
+      transform: translate(0,0px);
+      // overflow: 1;
+   }
+}
+
+
+
+.modal.fade .modal-dialog.date-picker-control-modal{
+    transition: transform 0.3s ease-out !important;
+    animation-name: none;
+  animation-duration: 0;
+  // transform: translate(0,-50px) !important;
+   
+}
+
+.fade {
+    // transition: opacity 0.3s ease-out !important
+}

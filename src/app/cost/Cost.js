@@ -188,7 +188,7 @@ class Cost extends Component {
       const year = moment().subtract(1, "years").unix();
       getAllCounterFeeApi(this, year, today);
       // console.log(year, today, "1 year");
-      handleSelected = "1 Years";
+      handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").unix();
 
@@ -406,7 +406,7 @@ class Cost extends Component {
 
     return (
       <div className="cost-page-section">
-        <div className="m-t-5 cost-section page">
+        <div className="m-t-50 cost-section page">
           {this.state.addModal && (
             <FixAddModal
               show={this.state.addModal}
@@ -427,8 +427,16 @@ class Cost extends Component {
             subTitle="Bring light to your hidden costs"
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
+            showpath={true}
+            currentPage={"costs"}
           />
-          <div style={{ position: "relative", minHeight: "80rem" }}>
+          <div
+            style={{
+              position: "relative",
+              minHeight: "68rem",
+              minWidth: "85rem",
+            }}
+          >
             <BarGraphSection
               headerTitle="Blockchain Fees over Time"
               headerSubTitle="Understand your gas costs"
@@ -456,7 +464,14 @@ class Cost extends Component {
               // comingSoon={false}
             />
           </div>
-          <div id="cp" style={{ position: "relative", minHeight: "80rem" }}>
+          <div
+            id="cp"
+            style={{
+              position: "relative",
+              minHeight: "68rem",
+              minWidth: "85rem",
+            }}
+          >
             {/* <div className="coming-soon-div">
               <Image src={ExportIconWhite} className="coming-soon-img" />
               <p className="inter-display-regular f-s-13 lh-16 black-191">
@@ -466,7 +481,7 @@ class Cost extends Component {
 
             <BarGraphSection
               headerTitle="Counterparty Volume Over Time"
-              headerSubTitle="Understand how much your counterparty charges you"
+              headerSubTitle="Understand where you’ve exchanged the most value"
               data={
                 this.state.counterPartyValue && this.state.counterPartyValue[0]
               }
@@ -512,7 +527,7 @@ class Cost extends Component {
               />
             </div>
           </div>
-          <FeedbackForm page={"Cost Page"} />
+          {/* <FeedbackForm page={"Cost Page"} /> */}
         </div>
       </div>
     );

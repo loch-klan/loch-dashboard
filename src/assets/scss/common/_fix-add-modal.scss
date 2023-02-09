@@ -271,7 +271,10 @@
         .add-wallet-btn {
           width: 100%;
           // padding: 0rem 8.4rem;
-          padding: 0rem 5.7rem 0rem 5rem;
+          padding: 0rem 7rem 0rem 8rem;
+              margin-top: 1.5rem;
+
+          
         
           .grey-btn {
             width: 100%;
@@ -284,33 +287,35 @@
         // flex-direction: column;
         // width: 100%;
         // padding: 0rem 8.4rem 0rem 8.4rem;
-        padding: 0rem 1.7rem 0rem 5rem;
+        // padding: 0rem 1.7rem 0rem 5rem;
         max-height: 22.4rem;
         overflow-y: auto;
-        margin: 0 4.1rem 1.2rem 0rem;
+        // margin: 0 4.1rem 1.2rem 0rem;
+        margin: 0 5.4rem 0 2.4rem;
+                padding: 0 1.7rem 0 5.6rem;
         .add-wallet-input-section {
           // display: flex;
           // align-items: center;
           position: relative;
           border: 0.1rem solid #d4d4d4;
           border-radius: 0.8rem;
-          padding: 1.2rem 1.2rem 0.2rem;
+          padding: 0.8rem 1.2rem 0.2rem;
           margin-bottom: 1.2rem;
 
           .chip-wrapper {
-            // top:0.7rem
-            top: 1.2rem;
+            top:0.7rem;
+            // top: 1.2rem;
             right: 1.2rem;
           }
 
           .delete-icon {
-            // box-shadow: 0rem 0.2rem 1rem rgba(0, 0, 0, 0.04),
-            //   0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+            box-shadow: 0rem 0.2rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
             position: absolute;
             
-            right: 0.2rem;
-            // top: 0.14rem;
-            bottom: 0rem;
+            // right: 0.2rem;
+            top: 0.14rem;
+            left: -5.5rem;
+            // bottom: 0rem;
             cursor: pointer;
             // padding:0.8rem;
             padding: 0.9rem;

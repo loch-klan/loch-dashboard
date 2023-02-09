@@ -1702,3 +1702,410 @@ export const OnboardingPage = () => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Onboarding");
 };
+
+
+// Home Page: Updated refresh button
+
+export const HomeRefreshButton = ({ session_id, email_address}) => {
+  const event_name = "Home Page: Updated refresh button";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Updated refresh button");
+};
+
+
+// Menu:leave: let me leave
+
+export const MenuLetMeLeave = ({ session_id, email_address}) => {
+  const event_name = "Menu:leave: let me leave";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:leave: let me leave");
+};
+
+
+// Menu:whale
+
+export const MenuWhale = ({ session_id, email_address }) => {
+  const event_name = "Menu:whale";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:whale");
+};
+
+
+//Intelligence:netflows: click to show breakdown
+
+export const NetflowSwitch = ({ session_id, email_address }) => {
+  const event_name = "Intelligence:netflows: click to show breakdown";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:whale");
+};
+
+//Whale:create a whale pod: save
+
+export const CreateWhalePodSave = ({
+  session_id,
+  email_address,
+  pod_name,
+  addresses,
+  unrecognized_addresses,
+  chains_detected_against_them,
+}) => {
+  const event_name = "Whale:create a whale pod: save";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    addressess: addresses,
+    unrecognized_addresses: unrecognized_addresses,
+    chains_detected_against_them: chains_detected_against_them,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  // console.log("Whale:create a pod: save");
+};
+
+
+//Whale:sort by amount
+
+export const WhaleSortByAmt = ({ session_id, email_address }) => {
+  const event_name = "Whale:sort by amount";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:sort by amount");
+};
+
+
+//Whale:sort by date added
+
+export const WhaleSortByDate = ({ session_id, email_address }) => {
+  const event_name = "Whale:sort by date added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:sort by date added");
+};
+
+//Whale:sort by name
+
+export const WhaleSortByName = ({ session_id, email_address }) => {
+  const event_name = "Whale:sort by name";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:sort by name");
+};
+
+
+//Whale:hover pods
+
+export const WhaleHoverPod = ({ session_id, email_address, pod_name }) => {
+  const event_name = "Whale:hover pods";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:hover pods");
+};
+
+
+//Whale:filter by chain
+
+export const WhaleFilterByChain = ({ session_id, email_address, chain_name }) => {
+  const event_name = "Whale:filter by chain";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "chain name": chain_name
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:filter by chain");
+};
+
+//Whale:don’t lose your data
+
+export const WhaleCreateAccountModal = ({ session_id, email_address, pod_name }) => {
+  const event_name = "Whale:don’t lose your data";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:don’t lose your data");
+};
+
+//Whale:don’t lose your data: skip
+
+export const WhaleCreateAccountSkip = ({ session_id, email_address, pod_name }) => {
+  const event_name = "Whale:don’t lose your data: skip";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:don’t lose your data: skip");
+};
+
+
+//Whale:don’t lose your data: email saved
+
+export const WhaleCreateAccountEmailSaved = ({ session_id, email_address }) => {
+  const event_name = "Whale:don’t lose your data: email saved";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:don’t lose your data: email saved");
+};
+
+//Whale:don’t lose your data: email verified
+
+export const WhaleCreateAccountEmailVerified= ({ session_id, email_address }) => {
+  const event_name = "Whale:don’t lose your data: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:don’t lose your data: email saved");
+};
+
+//Whale:don’t lose your data: privacy hover
+export const WhaleCreateAccountPrivacyHover = ({ session_id, email_address }) => {
+  const event_name = "Whale:don’t lose your data: privacy hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:don’t lose your data: privacy hover");
+};
+
+//Whale:whale pod deleted
+export const WhalePodDeleted = ({ session_id, email_address, pod_name, addresses}) => {
+  const event_name = "Whale:whale pod deleted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    addresses:addresses
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:whale pod deleted");
+};
+
+//Whale:Expanded Pod page
+export const WhaleExpandedPod = ({ session_id, email_address, pod_name}) => {
+  const event_name = "Whale:Expanded Pod page clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:Expanded Pod page");
+};
+
+
+//Whale:Expanded Pod page: time filter
+export const WhaleExpandedPodFilter = ({ session_id, email_address, pod_name,time_period_selected}) => {
+  const event_name = "Whale:Expanded Pod page: time filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    "time period selected": time_period_selected,
+    
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:Expanded Pod page: time filter");
+};
+
+// Whale:create a whale pod: csv or text file uploaded
+export const WhalePodUploadFile = ({
+  session_id,
+  email_address,
+  addresses,
+}) => {
+  const event_name = "Whale:create a whale pod: csv or text file uploaded";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "addresses": addresses,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:Expanded Pod page: time filter");
+};
+
+
+// Whale:create a whale pod: WalletAddress added
+export const WhaleWalletAddressTextbox = ({
+  session_id,
+  email_address,
+  address,
+  chains_detected,
+}) => {
+  const event_name = "Whale:create a whale pod: WalletAddress added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    "list of all chains detected": chains_detected,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:create a whale pod: WalletAddress added");
+};
+
+// Whale:create a whale pod: delete wallet address
+export const WhalePodAddressDelete = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Whale:create a whale pod: delete wallet address";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:create a whale pod: delete wallet address");
+};
+
+
+// Whale:create a whale pod: add textbox
+export const WhalePodAddTextbox = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Whale:create a whale pod: add textbox";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:create a whale pod: add textbox");
+};
+
+// Whale:create a whale pod
+export const CreateWhalePod = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Whale:create a whale pod";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:create a whale pod");
+};
+
+// Whale:create a whale pod
+export const PodName = ({
+  session_id,
+  email_address,
+  pod_name
+}) => {
+  const event_name = "Whale:create a whale pod: pod name added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:create a whale pod: pod name added");
+};
+
+// Whale:Expanded Pod page: email notification checked 1
+export const NotificationAmount = ({
+  session_id,
+  email_address,
+  is_checked,
+  pod_name,
+  amount_selected
+
+}) => {
+  const event_name = "Whale:Expanded Pod page: amount email notification";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    checked: is_checked,
+    "amount selected": amount_selected
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:Expanded Pod page: email notification checked 1");
+};
+
+
+// Whale:Expanded Pod page: email notification checked 2
+export const NotificationDays = ({
+  session_id,
+  email_address,
+  is_checked,
+  pod_name,
+  day_selected
+
+}) => {
+  const event_name = "Whale:Expanded Pod page: dormant email notification";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    checked: is_checked,
+    "days selected": day_selected
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:Expanded Pod page: email notification checked 2");
+};
+
+// Whale:Expanded Pod page: email notification saved
+export const NotificationSaved = ({
+  session_id,
+  email_address,
+  dropdown_name1,
+  dropdown_name2,
+  checked1,
+  checked2,
+  pod_name
+}) => {
+  const event_name = "Whale:Expanded Pod page: email notification saved";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    "amount dropdown": dropdown_name1,
+    "dormant dropdown": dropdown_name2,
+    "amount checked": checked1,
+    "dormant checked": checked2,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale:Expanded Pod page: email notification saved");
+};

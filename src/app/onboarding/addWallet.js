@@ -22,7 +22,16 @@ class AddWallet extends BaseReactComponent {
       showModal: true,
       signIn: false,
       addButtonVisible: false,
-      walletInput: [{ id: "wallet1", address: "", coins: [], nickname:"" }],
+      walletInput: [
+        {
+          id: "wallet1",
+          address: "",
+          coins: [],
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+        },
+      ],
       loading: false,
     };
     this.timeout = 0;
@@ -41,17 +50,71 @@ class AddWallet extends BaseReactComponent {
       // let prevValue = walletCopy[foundIndex].nickname;
       // console.log(prevValue)
       walletCopy[foundIndex].nickname = value;
-      
+
       // walletCopy[foundIndex].trucatedAddress = value
     }
-    console.log(walletCopy)
+    // console.log(walletCopy)
     this.setState({
       // addButtonVisible: this.state.walletInput.some((wallet) =>
       //   wallet.address ? true : false
       // ),
       walletInput: walletCopy,
     });
-  }
+  };
+
+  FocusOutInput = (e) => {
+    let { name } = e.target;
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    if (foundIndex > -1) {
+      // let prevValue = walletCopy[foundIndex].nickname;
+      // console.log(prevValue)
+      walletCopy[foundIndex].showAddress =
+        walletCopy[foundIndex].nickname === "" ? true : false;
+      walletCopy[foundIndex].showNickname =
+        walletCopy[foundIndex].nickname === "" ? false : true;
+
+      // walletCopy[foundIndex].trucatedAddress = value
+    }
+    // console.log(walletCopy)
+    this.setState({
+      // addButtonVisible: this.state.walletInput.some((wallet) =>
+      //   wallet.address ? true : false
+      // ),
+      walletInput: walletCopy,
+    });
+  };
+
+  FocusInInput = (e) => {
+    let { name } = e.target;
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    // if (foundIndex > -1) {
+    //   // let prevValue = walletCopy[foundIndex].nickname;
+    //   // console.log(prevValue)
+    //   walletCopy[foundIndex].showAddress = true;
+    //   walletCopy[foundIndex].showNickname = true;
+
+    //   // walletCopy[foundIndex].trucatedAddress = value
+    // }
+    walletCopy?.map((address,i) => {
+      if (address.id === name) {
+          walletCopy[i].showAddress = true;
+          walletCopy[i].showNickname = true;
+      } else {
+        walletCopy[i].showAddress = walletCopy[i].nickname === "" ? true: false;
+        walletCopy[i].showNickname =
+          walletCopy[i].nickname !== "" ? true : false;
+      }
+    })
+    // console.log(walletCopy)
+    this.setState({
+      // addButtonVisible: this.state.walletInput.some((wallet) =>
+      //   wallet.address ? true : false
+      // ),
+      walletInput: walletCopy,
+    });
+  };
 
   handleOnChange = (e) => {
     let { name, value } = e.target;
@@ -147,7 +210,9 @@ class AddWallet extends BaseReactComponent {
       id: `wallet${this.state.walletInput.length + 1}`,
       address: "",
       coins: [],
-      nickname:""
+      nickname: "",
+      showAddress: true,
+      showNickname: true,
     });
     this.setState({
       walletInput: this.state.walletInput,
@@ -213,7 +278,7 @@ class AddWallet extends BaseReactComponent {
       };
     });
 
-    console.log("final array", finalArr, nicknameArr)
+    // console.log("final array", finalArr, nicknameArr);
 
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(walletAddress));
@@ -275,9 +340,14 @@ class AddWallet extends BaseReactComponent {
           <div className="ob-modal-body-wrapper">
             <div className="ob-modal-body-1">
               {this.state.walletInput?.map((c, index) => {
+                // console.log(c);
                 return (
                   <div
-                    className="ob-wallet-input-wrapper"
+                    className={`ob-wallet-input-wrapper ${
+                            this.state.walletInput[index].address
+                              ? "is-valid"
+                              : null
+                          }`}
                     style={
                       index == this.state.walletInput.length - 1
                         ? { marginBottom: 0 }
@@ -285,126 +355,123 @@ class AddWallet extends BaseReactComponent {
                     }
                     key={index}
                     id={`add-wallet-${index}`}
+                    // onFocus={(e) => {
+                    //   console.log(e);
+                    //   this.FocusInInput(`wallet${index + 1}`);
+                    // }}
+                    // onBlur={(e) => {
+                    //   console.log(e);
+                    //   this.FocusOutInput(`wallet${index + 1}`);
+                    // }}
                   >
-                    {this.state.walletInput.length > 1 ? (
-                      <Image
-                        key={index}
-                        className={`ob-modal-body-del`}
-                        // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
-                        src={DeleteIcon}
-                        onClick={() => this.deleteInputField(index, c)}
-                      />
-                    ) : null}
-                    {/* <h3
-                      style={{ color: "#B0B1B3", textAlign: "left" }}
-                      className="inter-display-regular f-s-13 lh-15"
-                    >
-                      Address
-                    </h3> */}
-                    <input
-                      autoFocus
-                      name={`wallet${index + 1}`}
-                      value={c.address || ""}
-                      className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text ${
-                        this.state.walletInput[index].address
-                          ? "is-valid"
-                          : null
-                      }`}
-                      placeholder="Paste any wallet address or ENS here"
-                      title={c.address || ""}
-                      // style={{paddingRight: divWidth}}
-                      style={
-                        (getPadding(
-                          `add-wallet-${index}`,
-                          c,
-                          this.props.OnboardingState
-                        ),
-                        { width: "30rem" })
-                      }
-                      // onKeyUp={(e) => this.setState({ loading: true })}
-                      onChange={(e) => this.handleOnChange(e)}
-                      // tabIndex={index}
-                      onKeyDown={this.handleTabPress}
-                    />
-                    {/* <h3
-                      style={{ color: "#B0B1B3", textAlign: "left" }}
-                      className="inter-display-regular f-s-13 lh-15"
-                    >
-                      Nickname
-                    </h3> */}
-                    <input
-                      // autoFocus
-                      name={`wallet${index + 1}`}
-                      value={c.nickname || ""}
-                      className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text ${
-                        this.state.walletInput[index].address
-                          ? "is-valid"
-                          : null
-                      }`}
-                      placeholder="nickname"
-                      title={c.nickname || ""}
-                      // style={{paddingRight: divWidth}}
-                      style={
-                        (getPadding(
-                          `add-wallet-nickname-${index}`,
-                          c,
-                          this.props.OnboardingState
-                        ),
-                        {
-                          width: "15rem",
-                          marginRight: "16.5rem",
-                          padding: "0.5rem 1rem",
-                          border:"1px solid lightgray"
-                        })
-                      }
-                      // onKeyUp={(e) => this.setState({ loading: true })}
-                      onChange={(e) => {
-                        this.nicknameOnChain(e);
-                        // console.log(e.target)
-                      }}
-                      // tabIndex={index}
-                      // onKeyDown={this.handleTabPress}
-                    />
-                    {this.state.walletInput?.map((e, i) => {
-                      if (
-                        this.state.walletInput[index].address &&
-                        e.id === `wallet${index + 1}`
-                      ) {
-                        // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                        if (e.coinFound && e.coins.length > 0) {
-                          return (
-                            <CustomChip
-                              coins={e.coins.filter((c) => c.chain_detected)}
-                              key={i}
-                              isLoaded={true}
-                            ></CustomChip>
-                          );
-                        } else {
-                          if (
-                            e.coins.length ===
-                            this.props.OnboardingState.coinsList.length
-                          ) {
+                    <>
+                      {this.state.walletInput.length > 1 ? (
+                        <Image
+                          key={index}
+                          className={`ob-modal-body-del`}
+                          // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
+                          src={DeleteIcon}
+                          onClick={() => this.deleteInputField(index, c)}
+                        />
+                      ) : null}
+                      {c.showAddress && (
+                        <input
+                          autoFocus
+                          name={`wallet${index + 1}`}
+                          value={c.address || ""}
+                          className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text`}
+                          placeholder="Paste any wallet address or ENS here"
+                          title={c.address || ""}
+                          // style={{paddingRight: divWidth}}
+                          style={getPadding(
+                            `add-wallet-${index}`,
+                            c,
+                            this.props.OnboardingState
+                          )}
+                          // onKeyUp={(e) => this.setState({ loading: true })}
+                          onChange={(e) => this.handleOnChange(e)}
+                          // tabIndex={index}
+                          onKeyDown={this.handleTabPress}
+                          onFocus={(e) => {
+                            // console.log(e);
+                            this.FocusInInput(e);
+                          }}
+                          // onBlur={(e) => {
+                          //   // console.log(e);
+                          //   // this.FocusOutInput(e);
+                          // }}
+                        />
+                      )}
+                      {c.coinFound && c.showNickname && (
+                        <input
+                          name={`wallet${index + 1}`}
+                          value={c.nickname || ""}
+                          className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text`}
+                          placeholder="Enter nickname"
+                          title={c.nickname || ""}
+                          // style={{paddingRight: divWidth}}
+                          style={getPadding(
+                            `add-wallet-nickname-${index}`,
+                            c,
+                            this.props.OnboardingState
+                          )}
+                          // onKeyUp={(e) => this.setState({ loading: true })}
+                          onChange={(e) => {
+                            this.nicknameOnChain(e);
+                            // console.log(e.target)
+                          }}
+                          // onBlur={(e) => {
+                          //   // console.log(e);
+                          //   this.FocusOutInput(e);
+                          // }}
+                          // autoFocus
+                          onFocus={(e) => {
+                            // console.log(e);
+                            this.FocusInInput(e);
+                          }}
+                        />
+                      )}
+                      {this.state.walletInput?.map((e, i) => {
+                        if (
+                          this.state.walletInput[index].address &&
+                          e.id === `wallet${index + 1}`
+                        ) {
+                          // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                          if (e.coinFound && e.coins.length > 0) {
                             return (
                               <CustomChip
-                                coins={null}
+                                coins={e.coins.filter((c) => c.chain_detected)}
                                 key={i}
                                 isLoaded={true}
                               ></CustomChip>
                             );
                           } else {
-                            return (
-                              <CustomChip
-                                coins={null}
-                                key={i}
-                                isLoaded={false}
-                              ></CustomChip>
-                            );
+                            if (
+                              e.coins.length ===
+                              this.props.OnboardingState.coinsList.length
+                            ) {
+                              return (
+                                <CustomChip
+                                  coins={null}
+                                  key={i}
+                                  isLoaded={true}
+                                ></CustomChip>
+                              );
+                            } else {
+                              return (
+                                <CustomChip
+                                  coins={null}
+                                  key={i}
+                                  isLoaded={false}
+                                ></CustomChip>
+                              );
+                            }
                           }
+                        } else {
+                          return "";
                         }
-                      } else {
-                        return "";
-                      }
-                    })}
+                      })}
+                    </>
                   </div>
                 );
               })}
@@ -412,10 +479,7 @@ class AddWallet extends BaseReactComponent {
           </div>
           {this.state.addButtonVisible ? (
             <div className="ob-modal-body-2">
-              <Button
-                className="grey-btn"
-                onClick={this.addInputField}
-              >
+              <Button className="grey-btn" onClick={this.addInputField}>
                 <Image src={PlusIcon} /> Add another
               </Button>
             </div>

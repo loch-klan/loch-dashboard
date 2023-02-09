@@ -146,9 +146,10 @@ class OnBoarding extends Component {
                             ""
                           } */}
                 <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
-                  At Loch, we care intensely about your privacy and anonymity.
+                  At Loch, we care intensely about your privacy and
+                  pseudonymity.
                   <CustomOverlay
-                    text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
                     position="top"
                     isIcon={true}
                     IconImage={LockIcon}

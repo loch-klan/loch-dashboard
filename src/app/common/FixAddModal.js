@@ -23,7 +23,13 @@ class FixAddModal extends BaseReactComponent {
     let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
     addWalletList =
       addWalletList && addWalletList?.length > 0
-        ? addWalletList
+        ? addWalletList?.map((e) => {
+          return {
+            ...e,
+            showAddress: e.nickname === "" ? true : false,
+            showNickname: e.nickname === "" ? false : true,
+          };
+        })
         : [
             {
               id: `wallet${addWalletList?.length + 1}`,
@@ -32,9 +38,11 @@ class FixAddModal extends BaseReactComponent {
               displayAddress: "",
               wallet_metadata: {},
               nickname: "",
+              showAddress: true,
+              showNickname: true,
             },
           ];
-    // console.log('addWalletList',addWalletList);
+    console.log('addWalletList',addWalletList);
     this.state = {
       onHide: props.onHide,
       show: props.show,
@@ -69,6 +77,38 @@ class FixAddModal extends BaseReactComponent {
     }
     this.setState({
       addWalletList: prevWallets,
+    });
+  };
+
+  FocusInInput = (e) => {
+    let { name } = e.target;
+    let walletCopy = [...this.state.addWalletList];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    // if (foundIndex > -1) {
+    //   // let prevValue = walletCopy[foundIndex].nickname;
+    //   // console.log(prevValue)
+    //   walletCopy[foundIndex].showAddress = true;
+    //   walletCopy[foundIndex].showNickname = true;
+
+    //   // walletCopy[foundIndex].trucatedAddress = value
+    // }
+    walletCopy?.map((address, i) => {
+      if (address.id === name) {
+        walletCopy[i].showAddress = true;
+        walletCopy[i].showNickname = true;
+      } else {
+        walletCopy[i].showAddress =
+          walletCopy[i].nickname === "" ? true : false;
+        walletCopy[i].showNickname =
+          walletCopy[i].nickname !== "" ? true : false;
+      }
+    });
+    // console.log(walletCopy)
+    this.setState({
+      // addButtonVisible: this.state.walletInput.some((wallet) =>
+      //   wallet.address ? true : false
+      // ),
+      addWalletList: walletCopy,
     });
   };
 
@@ -145,9 +185,9 @@ class FixAddModal extends BaseReactComponent {
     data.address === newAddress[i].address &&
       newAddress[i].coins.push(...newCoinList);
     //new code added
-    //   if (data.id === newAddress[i].id) {
-    //     newAddress[i].address = data.address;
-    //   }
+    // if (data.id === newAddress[i].id) {
+    //   newAddress[i].address = data.address;
+    // }
 
     newAddress[i].coinFound =
       newAddress[i].coins &&
@@ -195,6 +235,8 @@ class FixAddModal extends BaseReactComponent {
       coins: [],
       displayAddress: "",
       nickname: "",
+      showAddress: true,
+      showNickname: true,
       wallet_metadata: {},
     });
     this.setState({
@@ -242,6 +284,7 @@ class FixAddModal extends BaseReactComponent {
       }
       this.timeout = setTimeout(() => {
         let arr = [];
+        let addressList = [];
         let displayAddress = [];
         let nicknameArr = {};
         let walletList = [];
@@ -250,28 +293,23 @@ class FixAddModal extends BaseReactComponent {
           // console.log(
           //   "current address",
           //   curr.address.trim(),
-          //   curr.address,
-          //   "condition",
-          //   !arr.includes(curr.address.trim()), curr, arr
+          //   "display",
+          //   curr.displayAddress,
+          //   "arr",
+          //   arr,
+
           // );
           if (!arr.includes(curr.address.trim()) && curr.address) {
             walletList.push(curr);
-            //new code added
-            // curr.displayAddress ? arr.push(curr.address.trim()) : arr.push(curr.address.trim());
-
             arr.push(curr.address.trim());
             nicknameArr[curr.address.trim()] = curr.nickname;
-            // displayAddress.push(curr.displayAddress?.trim());
-            // if (
-            //   !displayAddress.includes(curr.displayAddress?.trim()) &&
-            //   curr.displayAddress
-            // ) {
-
-            // }
+            arr.push(curr.displayAddress?.trim());
+            addressList.push(curr.address.trim());
           }
         }
+
         let addWallet = walletList;
-        // console.log("arr", arr);
+
         addWallet?.map((w, i) => {
           w.id = `wallet${i + 1}`;
         });
@@ -279,8 +317,9 @@ class FixAddModal extends BaseReactComponent {
 
         this.state.onHide();
         const data = new URLSearchParams();
-        data.append("wallet_addresses", JSON.stringify(arr));
+        // data.append("wallet_addresses", JSON.stringify(arr));
         data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+        data.append("wallet_addresses", JSON.stringify(addressList));
 
         updateUserWalletApi(data, this);
         this.state.changeList && this.state.changeList(walletList);
@@ -292,14 +331,22 @@ class FixAddModal extends BaseReactComponent {
         // console.log("address", address);
         const addressDeleted = this.state.deletedAddress;
         // console.log("Deteted address", addressDeleted);
-        const unrecog_address = this.state.addWalletList?.filter((e) => !e.coinFound)?.map((e) => e.address);
+        const unrecog_address = this.state.addWalletList
+          ?.filter((e) => !e.coinFound)
+          ?.map((e) => e.address);
         // console.log("Unreq address", unrecog_address);
-        const recog_address = this.state.addWalletList?.filter((e) => e.coinFound)?.map((e) => e.address);
+        const recog_address = this.state.addWalletList
+          ?.filter((e) => e.coinFound)
+          ?.map((e) => e.address);
         // console.log("req address", recog_address);
 
         const blockchainDetected = [];
-        this.state.addWalletList?.filter((e) => e.coinFound)?.map((obj) => {
-            let coinName = obj.coins?.filter((e) => e.chain_detected)?.map((name) => name.coinName);
+        this.state.addWalletList
+          ?.filter((e) => e.coinFound)
+          ?.map((obj) => {
+            let coinName = obj.coins
+              ?.filter((e) => e.chain_detected)
+              ?.map((name) => name.coinName);
             let address = obj.address;
             blockchainDetected.push({ address: address, names: coinName });
           });
@@ -350,15 +397,14 @@ class FixAddModal extends BaseReactComponent {
     let currentIndex = prevWallets.findIndex((elem) => elem.id === name);
     // console.log('prevWallets',prevWallets);
     // console.log('currentIndex',currentIndex);
-   
+
     prevWallets[currentIndex].nickname = value;
     // prevWallets[currentIndex].coins = []
-   
+
     // prevWallets[currentIndex].address = value
     this.setState({
       fixWalletAddress: prevWallets,
     });
-   
   };
 
   handleFixWallet = () => {
@@ -386,14 +432,7 @@ class FixAddModal extends BaseReactComponent {
         let curr = wallets[i];
         if (!curr.coinFound) {
           this.state.fixWalletAddress?.map((wallet) => {
-            // console.log('wallettt',wallet);
             localArr.push(wallet);
-            // if (wallet.address === curr.address) {
-            //     localArr.push(wallet)
-            // }
-            // else if (wallet.coinFound === true) {
-            //     localArr.push(wallet)
-            // }
           });
         } else {
           localArr.push(wallets[i]);
@@ -410,7 +449,6 @@ class FixAddModal extends BaseReactComponent {
           walletList.push(curr);
           newArr.push(curr.address.trim());
           nicknameArr[curr.address.trim()] = curr.nickname;
-          
         }
       }
       walletList?.map((w, index) => (w.id = `wallet${index + 1}`));
@@ -422,7 +460,9 @@ class FixAddModal extends BaseReactComponent {
           coins: [],
           displayAddress: "",
           wallet_metadata: {},
-          nickname:""
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
         });
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
@@ -616,54 +656,55 @@ class FixAddModal extends BaseReactComponent {
           ) : (
             ""
           )}
-          <h3
-            style={{ color: "#B0B1B3", textAlign: "left" }}
-            className="inter-display-regular f-s-13 lh-15"
-          >
-            Address
-          </h3>
-          <input
-            autoFocus
-            name={`wallet${index + 1}`}
-            value={elem.displayAddress || elem.address || ""}
-            placeholder="Paste any wallet address or ENS here"
-            // className='inter-display-regular f-s-16 lh-20'
-            className={`inter-display-regular f-s-16 lh-20 ${
-              elem.address ? "is-valid" : null
-            }`}
-            onChange={(e) => this.handleOnchange(e)}
-            id={elem.id}
-            style={getPadding(
-              `add-wallet-${index}`,
-              elem,
-              this.props.OnboardingState
-            )}
-            onKeyDown={this.handleTabPress}
-          />
-          <h3
-            style={{ color: "#B0B1B3", textAlign: "left" }}
-            className="inter-display-regular f-s-13 lh-15"
-          >
-            Nickname
-          </h3>
-          <input
-            // autoFocus
-            name={`wallet${index + 1}`}
-            value={elem.nickname || ""}
-            placeholder="Enter Nickname"
-            // className='inter-display-regular f-s-16 lh-20'
-            className={`inter-display-regular f-s-16 lh-20 ${
-              elem.address ? "is-valid" : null
-            }`}
-            onChange={(e) => this.handleOnchangeNickname(e)}
-            id={elem.id}
-            style={getPadding(
-              `add-wallet-${index}`,
-              elem,
-              this.props.OnboardingState
-            )}
-            // onKeyDown={this.handleTabPress}
-          />
+          {elem.showAddress && (
+            <input
+              autoFocus
+              name={`wallet${index + 1}`}
+              value={elem.displayAddress || elem.address || ""}
+              placeholder="Paste any wallet address or ENS here"
+              // className='inter-display-regular f-s-16 lh-20'
+              className={`inter-display-regular f-s-16 lh-20 ${
+                elem.address ? "is-valid" : null
+              }`}
+              onChange={(e) => this.handleOnchange(e)}
+              id={elem.id}
+              style={getPadding(
+                `add-wallet-${index}`,
+                elem,
+                this.props.OnboardingState
+              )}
+              onKeyDown={this.handleTabPress}
+              onFocus={(e) => {
+                // console.log(e);
+                this.FocusInInput(e);
+              }}
+            />
+          )}
+
+          {elem.coinFound && elem.showNickname && (
+            <input
+              // autoFocus
+              name={`wallet${index + 1}`}
+              value={elem.nickname || ""}
+              placeholder="Enter Nickname"
+              // className='inter-display-regular f-s-16 lh-20'
+              className={`inter-display-regular f-s-16 lh-20 ${
+                elem.address ? "is-valid" : null
+              }`}
+              onChange={(e) => this.handleOnchangeNickname(e)}
+              id={elem.id}
+              style={getPadding(
+                `add-wallet-${index}`,
+                elem,
+                this.props.OnboardingState
+              )}
+              onFocus={(e) => {
+                // console.log(e);
+                this.FocusInInput(e);
+              }}
+              // onKeyDown={this.handleTabPress}
+            />
+          )}
           {elem.address ? (
             elem.coinFound && elem.coins.length > 0 ? (
               // COIN FOUND STATE
@@ -809,9 +850,10 @@ class FixAddModal extends BaseReactComponent {
               </div>
               <div className="m-b-26 footer">
                 <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                  At Loch, we care intensely about your privacy and anonymity.
+                  At Loch, we care intensely about your privacy and
+                  pseudonymity.
                   <CustomOverlay
-                    text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
                     position="top"
                     isIcon={true}
                     IconImage={LockIcon}

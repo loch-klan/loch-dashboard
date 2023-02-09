@@ -119,19 +119,20 @@ class AssetValueGraph extends Component {
               btnText="Go"
               history={this.props.history}
               changeWalletList={this.handleChangeList}
-              apiResponse={(e)=>this.CheckApiResponse(e)}
+              apiResponse={(e) => this.CheckApiResponse(e)}
             />
           )}
           <PageHeader
             title={"Asset Value"}
-            subTitle={"Updated 3mins ago"}
+            subTitle={"Analyze your portfolio value over time"}
             showpath={true}
             currentPage={"asset-value"}
             history={this.props.history}
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
+            hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
           />
-          <div className="graph-container">
+          <div className="graph-container" style={{ marginBottom: "5rem" }}>
             <LineChartSlider
               assetValueData={
                 this.state.assetValueData && this.state.assetValueData
@@ -147,7 +148,7 @@ class AssetValueGraph extends Component {
               isPage={true}
             />
           </div>
-          <FeedbackForm page={"Asset Value Graph Page"} />
+          {/* <FeedbackForm page={"Asset Value Graph Page"} /> */}
         </div>
       </div>
     );

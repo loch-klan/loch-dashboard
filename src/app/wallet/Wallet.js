@@ -323,7 +323,7 @@ class Wallet extends Component {
               </div>
             )}
           </div>
-          <FeedbackForm page={"Wallet Page"} />
+          {/* <FeedbackForm page={"Wallet Page"} /> */}
         </div>
       </div>
     );

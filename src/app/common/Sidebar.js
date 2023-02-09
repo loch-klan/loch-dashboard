@@ -14,6 +14,9 @@ import ProfileIcon from '../../assets/images/icons/InactiveProfileIcon.svg'
 import ActiveProfileIcon from '../../assets/images/icons/ActiveProfileIcon.svg'
 import DollarIcon from '../../assets/images/icons/InactiveCostIcon.svg'
 import ActiveDollarIcon from '../../assets/images/icons/ActiveCostIcon.svg'
+import CohortIcon from "../../assets/images/icons/cohort.svg";
+import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
+import ActiveFeedbackIcon from "../../assets/images/icons/feedback.svg";
 
 import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
 import SharePortfolioIcon from '../../assets/images/icons/SharePortfolioIcon.svg'
@@ -44,11 +47,13 @@ import {
   MenuDarkMode,
   MenuLeave,
   MenuShare,
+  MenuWhale,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
 import { getAllCurrencyApi, getAllCurrencyRatesApi, setCurrencyApi } from './Api'
 import { setCurrencyReducer } from './CommonAction'
+import FeedbackModal from './FeedbackModal'
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -61,11 +66,14 @@ function Sidebar(props) {
     const [confirmLeave,setConfirmLeave] = React.useState(false)
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [currencyList, setAllCurrencyList] = React.useState([]);
+     const [cohort, setCohort] = React.useState(false);
+  const [showFeedbackModal, setFeedbackModal] = React.useState(false);
     const [selectedCurrency, setCurrency] = React.useState(JSON.parse(localStorage.getItem('currency')));
     let lochUser = JSON.parse(localStorage.getItem('lochUser'));
 
     const handleLeave = () => {
-        const isDummy = localStorage.getItem("lochDummyUser");
+      const isDummy = localStorage.getItem("lochDummyUser");
+      // console.log("isDummy user", isDummy)
         MenuLeave({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
@@ -77,6 +85,11 @@ function Sidebar(props) {
         // props.history.push('/welcome');
       }
     }
+  
+  const handleCohort = () => {
+    setCohort(!cohort);
+    console.log("cohort")
+  }
 
     const handleApiModal = ()=>{
         setApiModal(!apiModal);
@@ -92,6 +105,10 @@ function Sidebar(props) {
         setExportModal(!exportModal);
         ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
     }
+  const handleFeedback = () => {
+    setFeedbackModal(!showFeedbackModal);
+    console.log("clicked modal")
+  };
     const handleShareModal = ()=>{
         setShareModal(!shareModal);
         // ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
@@ -167,160 +184,226 @@ function Sidebar(props) {
         }, 15000);
 
         return()=>clearInterval(interval);
-      },[currentIndex]);
+    }, [currentIndex]);
+  
+    
       return (
-      <div className="sidebar-section">
-        <Container>
-          <div className="sidebar">
-            <div style={{ width: "100%" }}>
-              <div className="logo">
-                <div>
-                <Image src={logo} />
-                <span className="loch-text">Loch</span>
+        <div className="sidebar-section">
+          <Container>
+            <div className="sidebar">
+              <div style={{ width: "100%" }}>
+                <div className="logo">
+                  <div>
+                    <Image src={logo} />
+                    <span className="loch-text">Loch</span>
+                  </div>
+                  <div className="currency-wrapper">
+                    <DropdownButton
+                      id="currency-dropdown"
+                      title={
+                        selectedCurrency &&
+                        selectedCurrency.symbol + " " + selectedCurrency.code
+                      }
+                    >
+                      {currencyList?.map((currency, key) => {
+                        return (
+                          <Dropdown.Item
+                            key={key}
+                            onClick={() => handleFunction(currency)}
+                          >
+                            {" "}
+                            <span>{currency.symbol}</span>{" "}
+                            <span>{currency.code}</span>
+                          </Dropdown.Item>
+                        );
+                      })}
+                    </DropdownButton>
+                  </div>
                 </div>
-                <div className='currency-wrapper'>
-                <DropdownButton id="currency-dropdown" title={selectedCurrency && (selectedCurrency.symbol + " " + selectedCurrency.code)}>
-                  {
-                    currencyList?.map((currency, key)=>{
-                      return(
-                        <Dropdown.Item key={key} onClick={()=>handleFunction(currency)}> <span>{currency.symbol}</span> <span>{currency.code}</span></Dropdown.Item>
-                      )
-                    })
+
+                <div
+                  className={
+                    props.ownerName ? "sidebar-body" : "sidebar-body nowallet"
                   }
-                </DropdownButton>
-              </div>
-              </div>
+                >
+                  <nav>
+                    <ul>
+                      <li>
+                        <NavLink
+                          exact={true}
+                          className="nav-link"
+                          to={activeTab === "/home" ? "#" : "/home"}
+                          onClick={() => {
+                            // console.log("user",getCurrentUser())
+                            HomeMenu({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          }}
+                          activeclassname="active"
+                        >
+                          <Image
+                            src={
+                              activeTab === "/home"
+                                ? ActiveHomeIcon
+                                : InActiveHomeIcon
+                            }
+                          />
+                          Home
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          className="nav-link"
+                          to="/whale-watching"
+                          onClick={() => {
+                            MenuWhale({
+                              email_address: getCurrentUser().email,
+                              session_id: getCurrentUser().id,
+                            });
+                          }}
+                          activeclassname="active"
+                        >
+                          <Image
+                            src={
+                              activeTab === "/whale-watching"
+                                ? ActiveCohortIcon
+                                : CohortIcon
+                            }
+                          />
+                          Whale Watching
+                        </NavLink>
+                      </li>
 
-              <div
-                className={
-                  props.ownerName ? "sidebar-body" : "sidebar-body nowallet"
-                }
-              >
-                <nav>
-                  <ul>
-                    <li>
-                      <NavLink
-                        exact={true}
-                        className="nav-link"
-                        to="/home"
-                        onClick={() =>{
-                          // console.log("user",getCurrentUser())
-                          HomeMenu({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          })}
+                      <li>
+                        <NavLink
+                          exact={true}
+                          className={`nav-link
+                        ${
+                          activeTab === "/intelligence/transaction-history"
+                            ? "active"
+                            : ""
                         }
-                        activeclassname="active"
-                      >
-                        <Image
-                          src={
-                            activeTab === "/home"
-                              ? ActiveHomeIcon
-                              : InActiveHomeIcon
-                          }
-                        />
-                        Home
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        exact={true}
-                        className={`nav-link
-                        ${activeTab === "/intelligence/transaction-history" ? "active" : ""}
-                        ${activeTab === "/intelligence/volume-traded-by-counterparty" ? "active" : ""}
-                        ${activeTab === "/intelligence/insights" ? "active" : ""}
-                        `
-                      } to="/intelligence"
-                        activeclassname="active"
-                        onClick={() =>
-                          IntelligenceMenu({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          })
+                        ${
+                          activeTab ===
+                          "/intelligence/volume-traded-by-counterparty"
+                            ? "active"
+                            : ""
                         }
-                      >
-                        <Image
-                          src={["/intelligence/transaction-history","/intelligence","/intelligence/volume-traded-by-counterparty","/intelligence/insights"].includes(activeTab)
-                              ? ActiveIntelligenceIcon
-                              : IntelligenceIcon
-                          }
-                        />
-                        Intelligence
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        exact={true}
-                        onClick={() =>
-                          WalletsMenu({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          })
+                        ${
+                          activeTab === "/intelligence/insights" ? "active" : ""
                         }
-                        className="nav-link"
-                        to="/wallets"
-                        activeclassname="active"
-                      >
-                        <Image
-                          src={
-                            activeTab === "/wallets"
-                              ? ActiveWalletIcon
-                              : NavWalletIcon
+                        `}
+                          to="/intelligence"
+                          activeclassname="active"
+                          onClick={() =>
+                            IntelligenceMenu({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            })
                           }
-                        />
-                        Wallets
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        className="nav-link"
-                        to="/costs"
-                        onClick={() =>
-                          CostsMenu({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          })
-                        }
-                        activeclassname="active"
-                      >
-                        <Image
-                          src={
-                            activeTab === "/costs"
-                              ? ActiveDollarIcon
-                              : DollarIcon
+                        >
+                          <Image
+                            src={
+                              [
+                                "/intelligence/transaction-history",
+                                "/intelligence",
+                                "/intelligence/volume-traded-by-counterparty",
+                                "/intelligence/insights",
+                                "/intelligence/costs",
+                              ].includes(activeTab)
+                                ? ActiveIntelligenceIcon
+                                : IntelligenceIcon
+                            }
+                          />
+                          Intelligence
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          exact={true}
+                          onClick={() =>
+                            WalletsMenu({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            })
                           }
-                        />
-                        Costs
-                      </NavLink>
-                    </li>
+                          className="nav-link"
+                          to="/wallets"
+                          activeclassname="active"
+                        >
+                          <Image
+                            src={
+                              activeTab === "/wallets"
+                                ? ActiveWalletIcon
+                                : NavWalletIcon
+                            }
+                          />
+                          Wallets
+                        </NavLink>
+                      </li>
+                      {/* <li>
+                        <NavLink
+                          className="nav-link"
+                          to="/costs"
+                          onClick={() =>
+                            CostsMenu({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            })
+                          }
+                          activeclassname="active"
+                        >
+                          <Image
+                            src={
+                              activeTab === "/costs"
+                                ? ActiveDollarIcon
+                                : DollarIcon
+                            }
+                          />
+                          Costs
+                        </NavLink>
+                      </li> */}
 
-                    <li>
-                      <NavLink
-                        exact={true}
-                        onClick={() =>
-                          ProfileMenu({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          })
-                        }
-                        className="nav-link"
-                        to="/profile"
-                        activeclassname="active"
-                      >
-                        <Image
-                          src={
-                            activeTab === "/profile"
-                              ? ActiveProfileIcon
-                              : ProfileIcon
+                      <li>
+                        <NavLink
+                          exact={true}
+                          onClick={() =>
+                            ProfileMenu({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            })
                           }
-                        />
-                        Profile
-                      </NavLink>
-                    </li>
-                  </ul>
-                </nav>
+                          className="nav-link"
+                          to="/profile"
+                          activeclassname="active"
+                        >
+                          <Image
+                            src={
+                              activeTab === "/profile"
+                                ? ActiveProfileIcon
+                                : ProfileIcon
+                            }
+                          />
+                          Profile
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          exact={true}
+                          onClick={handleFeedback}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                        >
+                          <Image src={ActiveFeedbackIcon} />
+                          Feedback
+                        </NavLink>
+                      </li>
+                    </ul>
+                  </nav>
 
-                {/* {props.ownerName &&
+                  {/* {props.ownerName &&
                         <div className="nav-addwallet">
                             <Image fluid src={bgImg} />
                             <div className='wallet-info-para'>
@@ -330,61 +413,61 @@ function Sidebar(props) {
                                 <Button className='addwallet-btn'>Add wallet</Button>
                             </div>
                         </div> } */}
+                </div>
               </div>
-            </div>
-            <div className="sidebar-footer">
-              <ul>
-                <li style={{justifyContent:"space-between"}}>
-                  <span
-                    onMouseOver={(e) =>
-                      (e.currentTarget.children[0].src = ExportIconWhite)
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.children[0].src = ExportIcon)
-                    }
-                    onClick={handleExportModal}
-                  >
-                    <Image src={ExportIcon} />
-                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
-                      Export
-                    </Button>
-                  </span>
-                  {
-                    lochUser &&
+              <div className="sidebar-footer">
+                <ul>
+                  <li style={{ justifyContent: "space-between" }}>
                     <span
                       onMouseOver={(e) =>
-                        (e.currentTarget.children[0].src = SharePortfolioIcon)
+                        (e.currentTarget.children[0].src = ExportIconWhite)
                       }
                       onMouseLeave={(e) =>
-                        (e.currentTarget.children[0].src = SharePortfolioIconWhite )
+                        (e.currentTarget.children[0].src = ExportIcon)
                       }
-                      onClick={handleShareModal}
-                      style={{marginRight:"1rem"}}
-                  >
-                    <Image src={SharePortfolioIconWhite} />
-                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
-                      Share
-                    </Button>
-                  </span>
-                  }
-                </li>
-                <li>
-                  <span
-                    onMouseOver={(e) =>
-                      (e.currentTarget.children[0].src = ApiBlackIcon)
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.children[0].src = ApiIcon)
-                    }
-                    onClick={handleApiModal}
-                  >
-                    <Image src={ApiIcon} />
-                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
-                      API
-                    </Button>
-                  </span>
-                </li>
-                {/* {JSON.parse(localStorage.getItem("lochUser")) && (
+                      onClick={handleExportModal}
+                    >
+                      <Image src={ExportIcon} />
+                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                        Export
+                      </Button>
+                    </span>
+                    {lochUser && (
+                      <span
+                        onMouseOver={(e) =>
+                          (e.currentTarget.children[0].src = SharePortfolioIcon)
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.children[0].src =
+                            SharePortfolioIconWhite)
+                        }
+                        onClick={handleShareModal}
+                        style={{ marginRight: "1rem" }}
+                      >
+                        <Image src={SharePortfolioIconWhite} />
+                        <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                          Share
+                        </Button>
+                      </span>
+                    )}
+                  </li>
+                  {/* <li>
+                    <span
+                      onMouseOver={(e) =>
+                        (e.currentTarget.children[0].src = ApiBlackIcon)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.children[0].src = ApiIcon)
+                      }
+                      onClick={handleApiModal}
+                    >
+                      <Image src={ApiIcon} />
+                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                        API
+                      </Button>
+                    </span>
+                  </li> */}
+                  {/* {JSON.parse(localStorage.getItem("lochUser")) && (
                   <li
                     onMouseOver={(e) =>
                       (e.currentTarget.children[0].src = ShareProfileDarkIcon)
@@ -403,109 +486,130 @@ function Sidebar(props) {
                   </li>
                 )} */}
 
-                <li>
-                  <span
-                    onClick={handleLeave}
-                    onMouseOver={(e) =>
-                      (e.currentTarget.children[0].src = LeaveBlackIcon)
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.children[0].src = LeaveIcon)
-                    }
-                  >
-                    <Image src={LeaveIcon} />
-                    <Button className="inter-display-medium f-s-15 lh-19 navbar-button">
-                      Leave
-                    </Button>
-                  </span>
-                </li>
-              </ul>
+                  <li>
+                    <span
+                      onClick={handleLeave}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.children[0].src = LeaveBlackIcon)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.children[0].src = LeaveIcon)
+                      }
+                    >
+                      <Image src={LeaveIcon} />
+                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                        Leave
+                      </Button>
+                    </span>
+                  </li>
+                </ul>
 
-              <div
-                className="m-b-12 footer-divOne"
-                style={{ fontStyle: "italic" }}
-              >
-                {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
+                <div
+                  className="m-b-12 footer-divOne"
+                  style={{ fontStyle: "italic" }}
+                >
+                  {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from </p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>small things come."</p> */}
-                <p className="inter-display-medium f-s-15 grey-CAC lh-19">
-                  {quotes[currentIndex]}
-                </p>
-              </div>
-              <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo m-b-40">
-                {authors[currentIndex]}
-              </div>
+                  <p className="inter-display-medium f-s-15 grey-CAC lh-19">
+                    {quotes[currentIndex]}
+                  </p>
+                </div>
+                <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo m-b-40">
+                  {authors[currentIndex]}
+                </div>
 
-              {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
+                {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
                         <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from small things come.</p>
                         <p className='inter-display-semi-bold f-s-15 grey-B0B lh-19'>Sir Francis Drake</p> */}
+              </div>
             </div>
-          </div>
-        </Container>
+          </Container>
 
-        {leave ? (
-          <ExitOverlay
-            show={leave}
-            // link="http://loch.one/a2y1jh2jsja"
-            onHide={handleLeave}
-            history={history}
-            modalType={"exitOverlay"}
-            handleRedirection={() => {
-              setTimeout(function () {
-                props.history.push("/welcome");
-              }, 3000);
-            }}
-          />
-        ) : (
-          ""
-        )}
-        {apiModal ? (
-          <ExitOverlay
-            show={apiModal}
-            onHide={handleApiModal}
-            history={history}
-            headerTitle={"API"}
-            modalType={"apiModal"}
-            iconImage={ApiModalIcon}
-          />
-        ) : (
-          ""
-        )}
-        {exportModal ? (
-          <ExitOverlay
-            show={exportModal}
-            onHide={handleExportModal}
-            history={history}
-            headerTitle={"Download all your data"}
-            modalType={"exportModal"}
-            iconImage={ExportIconWhite}
-          />
-        ) : (
-          ""
-        )}
-        {shareModal ? (
-          <SharePortfolio
-            show={shareModal}
-            onHide={handleShareModal}
-            history={history}
-            headerTitle={"Share this portfolio"}
-            modalType={"shareModal"}
-            iconImage={SharePortfolioIcon}
-          />
-        ) : (
-          ""
-        )}
-        {confirmLeave ? (
-          <ConfirmLeaveModal
-            show={confirmLeave}
-            history={history}
-            handleClose={handleConfirmLeaveModal}
-          />
-        ) : (
-          ""
-        )}
-      </div>
-    );
+          {leave ? (
+            <ExitOverlay
+              show={leave}
+              // link="http://loch.one/a2y1jh2jsja"
+              onHide={handleLeave}
+              history={history}
+              modalType={"exitOverlay"}
+              handleRedirection={() => {
+                setTimeout(function () {
+                  props.history.push("/welcome");
+                }, 3000);
+              }}
+            />
+          ) : (
+            ""
+          )}
+          {/* {cohort ? (
+            <ExitOverlay
+              show={cohort}
+              // link="http://loch.one/a2y1jh2jsja"
+              onHide={handleCohort}
+              history={history}
+              modalType={"cohort"}
+              headerTitle={"Create a Wallet cohort"}
+              handleRedirection={() => {
+                setTimeout(function () {
+                  props.history.push("/cohort");
+                }, 3000);
+              }}
+            />
+          ) : (
+            ""
+          )} */}
+          {apiModal ? (
+            <ExitOverlay
+              show={apiModal}
+              onHide={handleApiModal}
+              history={history}
+              headerTitle={"API"}
+              modalType={"apiModal"}
+              iconImage={ApiModalIcon}
+            />
+          ) : (
+            ""
+          )}
+          {exportModal ? (
+            <ExitOverlay
+              show={exportModal}
+              onHide={handleExportModal}
+              history={history}
+              headerTitle={"Download all your data"}
+              modalType={"exportModal"}
+              iconImage={ExportIconWhite}
+            />
+          ) : (
+            ""
+          )}
+          {shareModal ? (
+            <SharePortfolio
+              show={shareModal}
+              onHide={handleShareModal}
+              history={history}
+              headerTitle={"Share this portfolio"}
+              modalType={"shareModal"}
+              iconImage={SharePortfolioIcon}
+            />
+          ) : (
+            ""
+          )}
+          {confirmLeave ? (
+            <ConfirmLeaveModal
+              show={confirmLeave}
+              history={history}
+              handleClose={handleConfirmLeaveModal}
+            />
+          ) : (
+            ""
+          )}
+
+          {showFeedbackModal && (
+            <FeedbackModal show={showFeedbackModal} onHide={handleFeedback} />
+          )}
+        </div>
+      );
 }
 
 export default Sidebar

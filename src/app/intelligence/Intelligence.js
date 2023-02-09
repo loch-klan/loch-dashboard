@@ -15,7 +15,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment/moment";
-import { getProfitAndLossApi } from "./Api";
+import { getAssetProfitLoss, getProfitAndLossApi } from "./Api";
 import Loading from "../common/Loading";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
@@ -35,6 +35,7 @@ import {
 } from "../Portfolio/Api";
 
 import FixAddModal from "../common/FixAddModal";
+import { info } from "./stackGrapgh";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -47,9 +48,12 @@ class Intelligence extends Component {
       //   GraphData: [],
       //   graphValue: "null",
       // },
+
       startTime: "",
       updatedInsightList: "",
       isLoading: true,
+      // profit loss asset data
+      ProfitLossAsset: [],
       // title: "Max",
       title: 0,
       RightShow: true,
@@ -62,17 +66,36 @@ class Intelligence extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
+      isSwitch:false,
     };
+  }
+  
+  setSwitch = () => {
+    this.setState({
+      isSwitch: !this.state.isSwitch,
+    });
+    // console.log("switch")
   }
 
   componentDidMount() {
+     if (this.props.location.hash !== "") {
+       setTimeout(() => {
+         const id = this.props.location.hash.replace("#", "");
+         // console.log('id',id);
+         const element = document.getElementById(id);
+         if (element) {
+           element.scrollIntoView();
+         }
+       }, 0);
+     } else {
+       window.scrollTo(0, 0);
+     }
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", this.state.startTime);
     IntelligencePage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    window.scrollTo(0, 0);
     this.props.getAllCoins();
     this.timeFilter(0);
     getAllInsightsApi(this);
@@ -119,34 +142,47 @@ class Intelligence extends Component {
     const today = moment().unix();
     if (option == 0) {
       getProfitAndLossApi(this, false, false, selectedChains);
+      // for asset Breakdown
+      getAssetProfitLoss(this, false, false, selectedChains);
+     
     } else if (option == 1) {
       // console.log("inside 1")
       const fiveyear = moment().subtract(5, "years").unix();
       getProfitAndLossApi(this, fiveyear, today, selectedChains);
+      // for asset Breakdown
+      getAssetProfitLoss(this, fiveyear, today, selectedChains);
     } else if (option == 2) {
       const fouryear = moment().subtract(4, "years").unix();
       getProfitAndLossApi(this, fouryear, today, selectedChains);
+      getAssetProfitLoss(this, fouryear, today, selectedChains);
     } else if (option == 3) {
       const threeyear = moment().subtract(3, "years").unix();
       getProfitAndLossApi(this, threeyear, today, selectedChains);
+      getAssetProfitLoss(this, threeyear, today, selectedChains);
     } else if (option == 4) {
       const twoyear = moment().subtract(2, "years").unix();
       getProfitAndLossApi(this, twoyear, today, selectedChains);
+      getAssetProfitLoss(this, twoyear, today, selectedChains);
     } else if (option == 5) {
       const year = moment().subtract(1, "years").unix();
       getProfitAndLossApi(this, year, today, selectedChains);
+      getAssetProfitLoss(this, year, today, selectedChains);
     } else if (option == 6) {
       const sixmonth = moment().subtract(6, "months").unix();
       getProfitAndLossApi(this, sixmonth, today, selectedChains);
+      getAssetProfitLoss(this, sixmonth, today, selectedChains);
     } else if (option == 7) {
       const month = moment().subtract(1, "month").unix();
       getProfitAndLossApi(this, month, today, selectedChains);
+      getAssetProfitLoss(this, month, today, selectedChains);
     } else if (option == 8) {
       const week = moment().subtract(1, "week").unix();
       getProfitAndLossApi(this, week, today, selectedChains);
+      getAssetProfitLoss(this, week, today, selectedChains);
     } else if (option == 9) {
       const day = moment().subtract(1, "day").unix();
       getProfitAndLossApi(this, day, today, selectedChains);
+      getAssetProfitLoss(this, day, today, selectedChains);
     }
     this.setState({
       title: option,
@@ -189,8 +225,12 @@ class Intelligence extends Component {
 
     if ((activeFooter = 0)) {
       getProfitAndLossApi(this, false, false, selectedChains);
+      getAssetProfitLoss(this, false, false, selectedChains);
     } else {
       getProfitAndLossApi(this, startDate, endDate, selectedChains);
+
+      // for asset Breakdown
+       getAssetProfitLoss(this, startDate, endDate, selectedChains);
     }
   };
 
@@ -250,7 +290,7 @@ class Intelligence extends Component {
             handleBtn={this.handleAddModal}
           />
           <IntelWelcomeCard history={this.props.history} />
-          <div className="insights-image m-b-40">
+          <div className="insights-image m-b-60">
             <PageHeader
               title="Insights"
               showImg={insight}
@@ -318,7 +358,7 @@ class Intelligence extends Component {
               </div>
             </div>
           </div>
-          <div className="portfolio-bar-graph">
+          <div className="portfolio-bar-graph" id="netflow">
             <PageHeader title="Net Flows" showImg={eyeIcon} />
             {/* Netflow Info Start */}
 
@@ -330,7 +370,7 @@ class Intelligence extends Component {
               }
             >
               {/* 1st */}
-              <Col md={5} style={{ padding: "10px" }} sm={12}>
+              <Col md={5} style={{ paddingRight: "10px" }} sm={12}>
                 {this.state.LeftShow && (
                   <div className="InfoCard">
                     <Image
@@ -382,7 +422,7 @@ class Intelligence extends Component {
               </Col>
 
               {/* Second */}
-              <Col md={7} style={{ padding: "10px" }} sm={12}>
+              <Col md={7} style={{ paddingLeft: "10px" }} sm={12}>
                 {this.state.RightShow && (
                   <div className="InfoCardRight">
                     <Image
@@ -421,7 +461,7 @@ class Intelligence extends Component {
 
             {/* Netflow Info End */}
 
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative", minWidth: "85rem" }}>
               {this.state.graphValue ? (
                 <BarGraphSection
                   isScrollVisible={false}
@@ -431,6 +471,9 @@ class Intelligence extends Component {
                   timeFunction={(e, activeBadgeList) =>
                     this.timeFilter(e, activeBadgeList)
                   }
+                  showSwitch={true}
+                  isSwitch={this.state.isSwitch}
+                  setSwitch={this.setSwitch}
                   marginBottom="m-b-32"
                   // showFooter={false}
                   showFooterDropdown={false}
@@ -444,8 +487,8 @@ class Intelligence extends Component {
                     "1 Y",
                     "6 M",
                     "1 M",
-                    "1 Week",
-                    "1 Day",
+                    "1 W",
+                    "1 D",
                   ]}
                   activeTitle={this.state.title}
                   // handleSelect={(opt) => this.handleSelect(opt)}
@@ -454,6 +497,8 @@ class Intelligence extends Component {
                   handleBadge={(activeBadgeList, activeFooter) =>
                     this.handleBadge(activeBadgeList, activeFooter)
                   }
+                  ProfitLossAsset={this.state.ProfitLossAsset}
+
                   // comingSoon={true}
                 />
               ) : (
@@ -464,7 +509,6 @@ class Intelligence extends Component {
                 </div>
               )}
             </div>
-            <FeedbackForm page={"Intelligence Page"} />
           </div>
         </div>
         {this.state.addModal && (
