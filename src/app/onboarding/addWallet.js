@@ -13,7 +13,10 @@ import {
   PreviewDemo,
   AddTextbox,
   LPC_Go,
+  LandingPagePodName,
+  LandingPageNickname,
 } from "../../utils/AnalyticsFunctions.js";
+import { getCurrentUser } from '../../utils/ManageToken';
 
 class AddWallet extends BaseReactComponent {
   constructor(props) {
@@ -295,6 +298,7 @@ class AddWallet extends BaseReactComponent {
     // console.log("Unreq address", unrecog_address);
 
     const blockchainDetected = [];
+     const nicknames = [];
     finalArr
       .filter((e) => e.coinFound)
       .map((obj) => {
@@ -302,7 +306,9 @@ class AddWallet extends BaseReactComponent {
           .filter((e) => e.chain_detected)
           .map((name) => name.coinName);
         let address = obj.address;
+         let nickname = obj.nickname;
         blockchainDetected.push({ address: address, names: coinName });
+         nicknames.push({ address: address, nickname: nickname });
       });
 
     // console.log("blockchain detected", blockchainDetected);
@@ -313,6 +319,7 @@ class AddWallet extends BaseReactComponent {
       chains_detected_against_them: blockchainDetected,
       unrecognized_addresses: unrecog_address,
       unrecognized_ENS: unrecog_address,
+      nicknames:nicknames
     });
   };
   handleSignText = () => {
@@ -420,10 +427,16 @@ class AddWallet extends BaseReactComponent {
                             this.nicknameOnChain(e);
                             // console.log(e.target)
                           }}
-                          // onBlur={(e) => {
-                          //   // console.log(e);
-                          //   this.FocusOutInput(e);
-                          // }}
+                          onBlur={(e) => {
+                            // console.log(e);
+                            // this.FocusOutInput(e);
+                            LandingPageNickname({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                              nickname: e.target?.value,
+                              address: c.address,
+                            });
+                          }}
                           // autoFocus
                           onFocus={(e) => {
                             // console.log(e);

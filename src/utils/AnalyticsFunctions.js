@@ -51,6 +51,7 @@ export const LPC_Go = ({
   chains_detected_against_them,
   unrecognized_addresses,
   unrecognized_ENS,
+  nicknames
 }) => {
   const event_name = "Landing Page Conversion:go";
   const eventProperties = {
@@ -59,6 +60,7 @@ export const LPC_Go = ({
     "chains detected against them": chains_detected_against_them,
     "unrecognized addresses": unrecognized_addresses,
     "unrecognized ENS": unrecognized_ENS,
+    nicknames:nicknames
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:go");
@@ -136,6 +138,19 @@ export const TimeSpentOnboarding = ({
   ////console.log("Landing Page Conversion:time spent on onboarding");
 };
 
+//4. Landing Page Conversion: nickname
+export const LandingPageNickname = ({ session_id, email_address, nickname, address }) => {
+  const event_name = "Landing Page Conversion: nickname";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "nickname": nickname,
+    address:address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Landing Page Conversion: nickname");
+};
+
 //9. Home:manage wallets
 export const ManageWallets = ({ session_id, email_address }) => {
   const event_name = "Home:manage wallets";
@@ -158,6 +173,7 @@ export const AddWalletAddress = ({
   unrecognized_addresses,
   recognized_addresses,
   blockchains_detected,
+  nicknames
 }) => {
   const event_name = "Home:add wallet_address";
   const eventProperties = {
@@ -171,6 +187,26 @@ export const AddWalletAddress = ({
       unrecognized_addresses.length == 0 ? ["None"] : unrecognized_addresses,
     "recognized addresses": recognized_addresses,
     "blockchains detected": blockchains_detected,
+    nicknames:nicknames
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Home:add wallet_address");
+};
+
+
+//10. Home:add wallet address nickname
+export const AddWalletAddressNickname = ({
+  session_id,
+  email_address,
+  addresses_added,
+  nickname
+}) => {
+  const event_name = "Home:add wallet_address nickname";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "addresses added": addresses_added,
+    nickname: nickname
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Home:add wallet_address");
@@ -2108,4 +2144,28 @@ export const NotificationSaved = ({
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:Expanded Pod page: email notification saved");
+};
+
+
+//Whale: Expanded Pod page: nickname
+export const PodNickname = ({
+  session_id,
+  email_address,
+  pod_name,
+  nickname,
+  address,
+  pod_id,
+
+}) => {
+  const event_name = "Whale: Expanded Pod page: nickname";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+    "address": address,
+    nickname: nickname,
+    "pod id":pod_id
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: nickname");
 };

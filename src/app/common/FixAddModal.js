@@ -15,7 +15,7 @@ import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding//Api"
 import { getDetectedChainsApi, updateUserWalletApi } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
-import { AddWalletAddress, AnonymityWalletConnection, DoneFixingConnection } from '../../utils/AnalyticsFunctions';
+import { AddWalletAddress, AddWalletAddressNickname, AddWalletAddressPodName, AnonymityWalletConnection, DoneFixingConnection } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
@@ -341,6 +341,7 @@ class FixAddModal extends BaseReactComponent {
         // console.log("req address", recog_address);
 
         const blockchainDetected = [];
+        const nicknames = [];
         this.state.addWalletList
           ?.filter((e) => e.coinFound)
           ?.map((obj) => {
@@ -348,7 +349,9 @@ class FixAddModal extends BaseReactComponent {
               ?.filter((e) => e.chain_detected)
               ?.map((name) => name.coinName);
             let address = obj.address;
+            let nickname = obj.nickname;
             blockchainDetected.push({ address: address, names: coinName });
+            nicknames.push({address: address, nickname: nickname});
           });
 
         // console.log("blockchain detected", blockchainDetected);
@@ -362,6 +365,7 @@ class FixAddModal extends BaseReactComponent {
           unrecognized_addresses: unrecog_address,
           recognized_addresses: recog_address,
           blockchains_detected: blockchainDetected,
+          nicknames: nicknames,
         });
       }, 100);
     }
@@ -732,6 +736,15 @@ class FixAddModal extends BaseReactComponent {
                 // console.log(e);
                 this.FocusInInput(e);
               }}
+              onBlur={ (e) => {
+                AddWalletAddressNickname({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  nickname: e.target?.value,
+                  address: elem.address,
+                });
+                }
+              }
               // onKeyDown={this.handleTabPress}
             />
           )}

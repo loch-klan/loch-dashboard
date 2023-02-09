@@ -85,115 +85,153 @@ export default function WalletCard(props) {
     }
     //  console.log("prop", props.createdOn);
     return (
-       
-        <>
+      <>
         <div className="walletcard">
-        <>
-            <div className='m-b-32 wallet-details'>
-                <div className='wallet-account-details'>
-                    <div className='m-r-16 wallet-img'>
-                        <Image src={props.wallet_metadata ? props.wallet_metadata.symbol : unrecognizedIcon} />
-                    </div>
-                        <h6 className={`inter-display-medium f-s-20 lh-24 ${props.wallet_metadata && props.wallet_metadata.name ? "m-r-16" : ""}`}>{props.wallet_metadata || props.wallet_coins.length>0 ? props.wallet_metadata ? props.wallet_metadata.name : `` : "Unrecognized wallet"}</h6>
-                        {props.nickname &&
-                            <CustomOverlay
-                            position="top"
-                            // isIcon={true}
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={props.nickname}
-                            >
-                            <div className='inter-display-medium f-s-16 lh-19 wallet-name m-r-16'>{props.nickname}
-                            </div>
-                            </CustomOverlay>
-                        }
-                    <div className='account-details'>
-                        {
-                          props.display_address &&
-                          <>
-                          <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.display_address}</span>
-                          <Image src={CopyClipboardIcon} onClick={()=>copyContent(props.display_address)} className="m-l-10 m-r-12 cp" />
-                        </>
-                        }
-                        {
-                          props.wallet_account_number &&
-                          <>
-                          <span className='inter-display-regular f-s-13 lh-16' id="account_number">{props.wallet_account_number}</span>
-                          <Image src={CopyClipboardIcon} onClick={()=>copyContent(props.wallet_account_number)} className="m-l-10 m-r-12 cp" />
-                          </>
-                        }
-
-                    </div>
-                    {/* </div> */}
+          <>
+            <div className="m-b-32 wallet-details">
+              <div className="wallet-account-details">
+                <div className="m-r-16 wallet-img">
+                  <Image
+                    src={
+                      props.wallet_metadata
+                        ? props.wallet_metadata.symbol
+                        : unrecognizedIcon
+                    }
+                  />
                 </div>
-                <div className='amount-details'>
-                    <h6 className='inter-display-medium f-s-20 lh-24' >{numToCurrency(props.wallet_amount)}</h6>
-                    <span className='inter-display-semi-bold f-s-10 lh-12'>{CurrencyType(true)}</span>
+                <h6
+                  className={`inter-display-medium f-s-20 lh-24 ${
+                    props.wallet_metadata && props.wallet_metadata.name
+                      ? "m-r-16"
+                      : ""
+                  }`}
+                >
+                  {props.wallet_metadata || props.wallet_coins.length > 0
+                    ? props.wallet_metadata
+                      ? props.wallet_metadata.name
+                      : ``
+                    : "Unrecognized wallet " + " "}
+                </h6>
+                {props.nickname && (
+                  <CustomOverlay
+                    position="top"
+                    // isIcon={true}
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={props.nickname}
+                  >
+                    <div className="inter-display-medium f-s-16 lh-19 wallet-name m-r-16">
+                      {props.nickname}
+                    </div>
+                  </CustomOverlay>
+                )}
+                <div className="account-details">
+                  {props.display_address && (
+                    <>
+                      <span
+                        className="inter-display-regular f-s-13 lh-16"
+                        id="account_number"
+                      >
+                        {props.display_address}
+                      </span>
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => copyContent(props.display_address)}
+                        className="m-l-10 m-r-12 cp"
+                      />
+                    </>
+                  )}
+                  {props.wallet_account_number && (
+                    <>
+                      <span
+                        className="inter-display-regular f-s-13 lh-16"
+                        id="account_number"
+                      >
+                        {props.wallet_account_number}
+                      </span>
+                      <Image
+                        src={CopyClipboardIcon}
+                        onClick={() => copyContent(props.wallet_account_number)}
+                        className="m-l-10 m-r-12 cp"
+                      />
+                    </>
+                  )}
                 </div>
+                {/* </div> */}
+              </div>
+              <div className="amount-details">
+                <h6 className="inter-display-medium f-s-20 lh-24">
+                  {numToCurrency(props.wallet_amount)}
+                </h6>
+                <span className="inter-display-semi-bold f-s-10 lh-12">
+                  {CurrencyType(true)}
+                </span>
+              </div>
             </div>
-            <div className='coins-chip'>
-              {
-                props.wallet_coins.length>0
-                ?
+            <div className="coins-chip">
+              {props.wallet_coins.length > 0 ? (
                 <>
-                <div className='chips-section'>{chips}</div>
-                <Image src={EditIcon} className="cp" onClick={handleShow} />
+                  <div className="chips-section">{chips}</div>
+                  <Image src={EditIcon} className="cp" onClick={handleShow} />
                 </>
-                :
+              ) : (
                 <>
-                <h6 className='inter-display-medium f-s-16 lh-19 grey-B0B'>This wallet address is not detected. Please fix it now.</h6>
-                                <Button className='secondary-btn' onClick={() => {
-                                    handleFixModal();
-                                     FixUndetectedWallet({
-                                       session_id: getCurrentUser().id,
-                                       email_address: getCurrentUser().email,
-                                       undetected_address:
-                                         props.wallet_account_number,
-                                     });
-                                }}>Fix now</Button>
+                  <h6 className="inter-display-medium f-s-16 lh-19 grey-B0B">
+                    This wallet address is not detected. Please fix it now.
+                  </h6>
+                  <Button
+                    className="secondary-btn"
+                    onClick={() => {
+                      handleFixModal();
+                      FixUndetectedWallet({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        undetected_address: props.wallet_account_number,
+                      });
+                    }}
+                  >
+                    Fix now
+                  </Button>
                 </>
-              }
+              )}
             </div>
-            {
-                show
-                  ?
-                    <EditWalletModal
-                        show={show}
-                        onHide={handleClose}
-                        createdOn={props.createdOn}
-                        walletAddress={props.wallet_account_number}
-                        displayAddress={props.display_address}
-                        walletMetaData={props.wallet_metadata}
-                        nickname={props.nickname}
-                        coinchips={props.wallet_coins}
-                        makeApiCall={()=>props.makeApiCall()}
-                    />
-                    :
-                    ""
-            }
-            {showFixModal ?
-               <FixAddModal
-               show={showFixModal}
-               onHide={handleFixModal}
-               //  modalIcon={AddWalletModalIcon}
-               title="Fix your wallet address"
-               subtitle="Add your wallet address to get started"
-               fixWalletAddress={[props.wallet_account_number]}
-               btnText="Done"
-               btnStatus={true}
-               modalType="fixwallet"
-               pathName="/wallets"
-               history={props.history}
-            //    makeApiCall={props.makeApiCall}
-            handleUpdateWallet = {props.handleUpdateWallet}
-           />
-           :""
-            }
-        </>
-
+            {show ? (
+              <EditWalletModal
+                show={show}
+                onHide={handleClose}
+                createdOn={props.createdOn}
+                walletAddress={props.wallet_account_number}
+                displayAddress={props.display_address}
+                walletMetaData={props.wallet_metadata}
+                nickname={props.nickname}
+                coinchips={props.wallet_coins}
+                makeApiCall={() => props.makeApiCall()}
+              />
+            ) : (
+              ""
+            )}
+            {showFixModal ? (
+              <FixAddModal
+                show={showFixModal}
+                onHide={handleFixModal}
+                //  modalIcon={AddWalletModalIcon}
+                title="Fix your wallet address"
+                subtitle="Add your wallet address to get started"
+                fixWalletAddress={[props.wallet_account_number]}
+                btnText="Done"
+                btnStatus={true}
+                modalType="fixwallet"
+                pathName="/wallets"
+                history={props.history}
+                //    makeApiCall={props.makeApiCall}
+                handleUpdateWallet={props.handleUpdateWallet}
+              />
+            ) : (
+              ""
+            )}
+          </>
         </div>
-        </>
-
-    )
+      </>
+    );
 }

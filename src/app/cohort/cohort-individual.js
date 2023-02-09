@@ -47,7 +47,7 @@ import checkIcon from "../../assets/images/icons/check-cohort.svg";
 import moment from "moment";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
 import AuthModal from "../common/AuthModal";
-import { NotificationAmount, NotificationCheckbox1, NotificationCheckbox2, NotificationDays, NotificationDropdown1, NotificationDropdown2, NotificationSaved, WhaleCreateAccountModal, WhaleCreateAccountSkip, WhaleExpandedPodFilter } from "../../utils/AnalyticsFunctions";
+import { NotificationAmount, NotificationCheckbox1, NotificationCheckbox2, NotificationDays, NotificationDropdown1, NotificationDropdown2, NotificationSaved, PodNickname, WhaleCreateAccountModal, WhaleCreateAccountSkip, WhaleExpandedPodFilter } from "../../utils/AnalyticsFunctions";
 
 
 class CohortPage extends BaseReactComponent {
@@ -433,7 +433,16 @@ class CohortPage extends BaseReactComponent {
      data.append("cohort_id", this.state.cohortId);
     data.append("wallet_address", address);
     data.append("nickname", this.state[`nickname-${i+1}`]);
-    UpdateCohortNickname(data,this);
+    UpdateCohortNickname(data, this);
+    
+    PodNickname({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+      pod_id: this.state.cohortId,
+      nickname: this.state[`nickname-${i + 1}`],
+      address:address
+    });
   };
 
   render() {
