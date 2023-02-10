@@ -1482,12 +1482,12 @@ here`
                                     placeholder: "Nickname",
                                   },
                                 }}
-                                classes={{
-                                  inputField:
-                                    this.state[`nickname-${i + 1}`] !== ""
-                                      ? "done"
-                                      : "",
-                                }}
+                                // classes={{
+                                //   inputField:
+                                //     this.state[`nickname-${i + 1}`] !== ""
+                                //       ? "done"
+                                //       : "",
+                                // }}
                               />
                             </Form>
                           </div>
