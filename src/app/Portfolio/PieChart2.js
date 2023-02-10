@@ -808,6 +808,7 @@ class PieChart2 extends BaseReactComponent {
 
     uniqueList &&
       uniqueList?.map((chain) => {
+        // console.log("chain",chain)
         let total = 0;
         uniqueList?.map((item) => {
           if (
@@ -818,10 +819,13 @@ class PieChart2 extends BaseReactComponent {
           }
         });
         let displayAddress = "";
+        let nickname = "";
         UserWallet &&
           UserWallet?.map((e) => {
+           
             if (e.address === chain.address) {
-              displayAddress = e.displayAddress;
+              displayAddress = e?.displayAddress;
+              nickname = e?.nickname;
             }
           });
         !uniqueAddress.includes(chain.address) &&
@@ -833,6 +837,7 @@ class PieChart2 extends BaseReactComponent {
             chainSymbol: chain.chainSymbol,
             totalAssetCount: total,
             displayAddress: displayAddress,
+            nickname:nickname
           });
         !uniqueAddress.includes(chain.address) &&
           uniqueAddress.push(chain.address);
@@ -1300,12 +1305,7 @@ class PieChart2 extends BaseReactComponent {
                     >
                       {chainList &&
                         chainList.slice(0, 3).map((data, index) => {
-                          // console.log(
-                          //   "portfolio state",g
-                          //   this.props.portfolioState,
-                          //   "selected",
-                          //   this.state.selectedSection[0].assetId
-                          // );
+                          console.log(data);
                           let isQuote =
                             this.state.assetPrice &&
                             this.state.assetPrice[
@@ -1329,10 +1329,12 @@ class PieChart2 extends BaseReactComponent {
                                       isIcon={false}
                                       isInfo={true}
                                       isText={true}
-                                      text={data.displayAddress}
+                                      text={
+                                        data?.displayAddress || data?.address
+                                      }
                                     >
                                       <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
-                                        {data.displayAddress}
+                                        {data?.nickname || data?.displayAddress || data?.address}
                                       </span>
                                     </CustomOverlay>
                                     <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
@@ -1386,7 +1388,10 @@ class PieChart2 extends BaseReactComponent {
                                       isIcon={false}
                                       isInfo={true}
                                       isText={true}
-                                      text={data.displayAddress}
+                                      text={
+                                        data?.displayAddress ||
+                                        data?.address
+                                      }
                                     >
                                       <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
                                         Other

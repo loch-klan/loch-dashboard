@@ -97,6 +97,7 @@ export const updateUserWalletApi = (data,ctx) =>{
       }
       // console.log('newAddWallet',newAddWallet);
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet))
+      ctx.state.changeList && ctx.state.changeList(newAddWallet);
       if (ctx.props.apiResponse) {
         // ctx.setState({
         //    recievedResponse: true
@@ -189,13 +190,22 @@ export const getDetectedChainsApi = (ctx) =>{
       wallet.coins = chainsDetected
       })
       // console.log('addWallet',addWallet);
-      ctx.setState({addWalletList: addWallet.length > 0 ? addWallet : [{
-        id: `wallet${addWallet.length + 1}`,
-        address: "",
-        coins: [],
-        displayAddress: "",
-        wallet_metadata: {}
-    }]})
+      ctx.setState({
+        addWalletList:
+          addWallet.length > 0
+            ? addWallet
+            : [
+                {
+                  id: `wallet${addWallet.length + 1}`,
+                  address: "",
+                  coins: [],
+                  displayAddress: "",
+                  wallet_metadata: {},
+                  showAddress: true,
+                  showNickname: true,
+                },
+              ],
+      });
       addWallet && addWallet.length > 0 && localStorage.setItem('addWallet',JSON.stringify(addWallet))
     } else{
       toast.error(res.data.message || "Something went wrong");

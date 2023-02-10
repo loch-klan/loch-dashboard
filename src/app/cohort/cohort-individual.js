@@ -1460,7 +1460,7 @@ here`
                         </h4>
                         <Image
                           src={CopyClipboardIcon}
-                          style={{ marginLeft: "0.8rem" }}
+                          style={{ marginLeft: "1.5rem" }}
                           onClick={() => this.copyLink(e.wallet_address)}
                         />
                         {this.state.cohortId !== "63da35fe3c8af3c678ac936e" && (
@@ -1479,8 +1479,14 @@ here`
                                 control={{
                                   type: CustomTextControl,
                                   settings: {
-                                    placeholder: "Enter nickname",
+                                    placeholder: "Nickname",
                                   },
+                                }}
+                                classes={{
+                                  inputField:
+                                    this.state[`nickname-${i + 1}`] !== ""
+                                      ? "done"
+                                      : "",
                                 }}
                               />
                             </Form>
