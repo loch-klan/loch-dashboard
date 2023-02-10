@@ -4,7 +4,18 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { CreateUpdateNotification, getAllInsightsApi, getCohort, GetLargestAsset, GetLargestVolumeBought, GetLargestVolumeSold, GetNotification, GetPurchasedAsset, GetSoldAsset, UpdateCohortNickname } from "./Api";
+import {
+  CreateUpdateNotification,
+  getAllInsightsApi,
+  getCohort,
+  GetLargestAsset,
+  GetLargestVolumeBought,
+  GetLargestVolumeSold,
+  GetNotification,
+  GetPurchasedAsset,
+  GetSoldAsset,
+  UpdateCohortNickname,
+} from "./Api";
 import { AmountType, DormantType, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
@@ -24,7 +35,11 @@ import ClockIcon from "../../assets/images/icons/clock.svg";
 import PlusIcon from "../../assets/images/icons/plus-circle.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BarGraphFooter } from "../common/BarGraphFooter";
-import { CurrencyType, loadingAnimation, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  loadingAnimation,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import CoinChip from "../wallet/CoinChip";
 import Coin from "../../assets/images/coin-ava.svg";
 import GlobeIcon from "../../assets/images/icons/globe.svg";
@@ -47,8 +62,19 @@ import checkIcon from "../../assets/images/icons/check-cohort.svg";
 import moment from "moment";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
 import AuthModal from "../common/AuthModal";
-import { NotificationAmount, NotificationCheckbox1, NotificationCheckbox2, NotificationDays, NotificationDropdown1, NotificationDropdown2, NotificationSaved, PodNickname, WhaleCreateAccountModal, WhaleCreateAccountSkip, WhaleExpandedPodFilter } from "../../utils/AnalyticsFunctions";
-
+import {
+  NotificationAmount,
+  NotificationCheckbox1,
+  NotificationCheckbox2,
+  NotificationDays,
+  NotificationDropdown1,
+  NotificationDropdown2,
+  NotificationSaved,
+  PodNickname,
+  WhaleCreateAccountModal,
+  WhaleCreateAccountSkip,
+  WhaleExpandedPodFilter,
+} from "../../utils/AnalyticsFunctions";
 
 class CohortPage extends BaseReactComponent {
   constructor(props) {
@@ -428,20 +454,20 @@ class CohortPage extends BaseReactComponent {
 
   onSubmit = () => {};
 
-  onSubmitNickname = (address,i) => {
-     let data = new URLSearchParams();
-     data.append("cohort_id", this.state.cohortId);
+  onSubmitNickname = (address, i) => {
+    let data = new URLSearchParams();
+    data.append("cohort_id", this.state.cohortId);
     data.append("wallet_address", address);
-    data.append("nickname", this.state[`nickname-${i+1}`]);
+    data.append("nickname", this.state[`nickname-${i + 1}`]);
     UpdateCohortNickname(data, this);
-    
+
     PodNickname({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       pod_name: this.state.cohortName,
       pod_id: this.state.cohortId,
       nickname: this.state[`nickname-${i + 1}`],
-      address:address
+      address: address,
     });
   };
 
@@ -1095,7 +1121,7 @@ class CohortPage extends BaseReactComponent {
 
           {/* 4 card end */}
 
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -1120,10 +1146,10 @@ class CohortPage extends BaseReactComponent {
                 Save
               </button>
             )}
-          </div>
+          </div> */}
 
           {/* Notification start */}
-          <div
+          {/* <div
             style={{
               background: "rgba(229, 229, 230, 0.5)",
               borderRadius: "16px",
@@ -1151,15 +1177,11 @@ class CohortPage extends BaseReactComponent {
                     <Image src={BellIconColor} />
                     <h3 className="inter-display-medium f-s-20 lh-24 m-t-12">
                       {this.state.updateEmail
-                        ? `We’ll be sending
-notifications to you
-here`
-                        : `Get intelligent notifications for
-                      your pod`}
+                        ? `We’ll be sending notifications to you here`
+                        : `Get intelligent notifications for your pod`}
                     </h3>
                   </div>
 
-                  {/* button */}
                   {!this.state.updateEmail && (
                     <div
                       style={{
@@ -1263,7 +1285,7 @@ here`
                     />
                   </div>
 
-                  {/* checkIcon */}
+               
                   <div>
                     <h3 className="inter-display-medium f-s-16 lh-19 m-t-80">
                       Notify me when any wallets move more than
@@ -1359,7 +1381,7 @@ here`
                 </div>
               </Col>
             </Row>
-          </div>
+          </div> */}
           {/* notification end */}
 
           {/* Address Start */}
