@@ -13,6 +13,7 @@ import {
   SORT_BY_NAME,
   SORT_BY_PORTFOLIO_AMOUNT,
   SORT_BY_CREATED_ON,
+  Plans,
 } from "../../utils/Constant.js";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -44,6 +45,7 @@ import ExitOverlay from "../common/ExitOverlay";
 import { searchCohort } from "./Api";
 import moment from "moment";
 import CustomChip from "../../utils/commonComponent/CustomChip";
+import UpgradeModal from "../common/upgradeModal";
 class Cohort extends Component {
   constructor(props) {
     super(props);
@@ -76,7 +78,8 @@ class Cohort extends Component {
       RegisterModal: false,
       skip: false,
       chainImages: [],
-     
+     userPlan: "Free",
+      upgradeModal: false,
     };
   }
 
@@ -102,24 +105,28 @@ class Cohort extends Component {
     }
   }
 
-  handleCohort = () => {
-    // console.log("cohort click");
-    // const isDummy = localStorage.getItem("lochDummyUser");
-    // const islochUser = JSON.parse(localStorage.getItem("lochUser"));
-     
-    
-      // console.log("loch user");
-      this.setState(
-        {
-          cohortModal: !this.state.cohortModal,
-          // skip: islochUser ? true : this.state.skip,
-        },
-       );
-  
-    CreateWhalePod({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
+    upgradeModal = () => {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
     });
+  };
+
+  handleCohort = () => {
+    let { whale_pod_limit } = Plans.getPlan(this.state.userPlan);
+    console.log(whale_pod_limit, this.state.cardList?.length);
+    if (this.state.cardList?.length <= whale_pod_limit) {
+      this.setState({
+        cohortModal: !this.state.cohortModal,
+        // skip: islochUser ? true : this.state.skip,
+      });
+
+      CreateWhalePod({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    } else {
+      this.upgradeModal();
+    }
   };
 
   // AddEmailModal = () => {
@@ -335,6 +342,13 @@ class Cohort extends Component {
     return (
       <div className="cohort-page-section">
         {/* <Sidebar ownerName="" /> */}
+        {this.state.upgradeModal && (
+          <UpgradeModal
+            show={this.state.upgradeModal}
+            onHide={this.upgradeModal}
+            history={this.props.history}
+          />
+        )}
 
         {this.state.cohortModal ? (
           <ExitOverlay
@@ -462,14 +476,13 @@ class Cohort extends Component {
                         zIndex: 1,
                       }}
                       onMouseEnter={() => {
-                      WhaleHoverPod({
-                        email_address: getCurrentUser().email,
-                        session_id: getCurrentUser().id,
-                        pod_name:item.name
-                      });
-                    }}
-                      onClick={() =>
-                      {
+                        WhaleHoverPod({
+                          email_address: getCurrentUser().email,
+                          session_id: getCurrentUser().id,
+                          pod_name: item.name,
+                        });
+                      }}
+                      onClick={() => {
                         WhaleExpandedPod({
                           email_address: getCurrentUser().email,
                           session_id: getCurrentUser().id,
@@ -482,8 +495,8 @@ class Cohort extends Component {
                             cohortWalletList: item?.wallet_address_details,
                             chainImages: sortedChains,
                           },
-                        })}
-                      }
+                        });
+                      }}
                     >
                       {/* Top Section */}
                       <div

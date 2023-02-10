@@ -17,6 +17,8 @@ import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
 import { AddWalletAddress, AddWalletAddressNickname, AddWalletAddressPodName, AnonymityWalletConnection, DoneFixingConnection } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
+import { Plans } from '../../utils/Constant';
+import UpgradeModal from './upgradeModal';
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -63,8 +65,17 @@ class FixAddModal extends BaseReactComponent {
       walletNameList: [],
       deletedAddress: [],
       recievedResponse: false,
+      userPlan: "Free",
+      upgradeModal:false,
     };
     this.timeout = 0;
+   
+  }
+
+  upgradeModal = () => {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
   }
 
   handleOnchangeNickname = (e) => {
@@ -229,19 +240,30 @@ class FixAddModal extends BaseReactComponent {
     });
   }
   addAddress = () => {
-    this.state.addWalletList.push({
-      id: `wallet${this.state.addWalletList.length + 1}`,
-      address: "",
-      coins: [],
-      displayAddress: "",
-      nickname: "",
-      showAddress: true,
-      showNickname: true,
-      wallet_metadata: {},
-    });
-    this.setState({
-      addWalletList: this.state.addWalletList,
-    });
+    let { wallet_address_limit } = Plans.getPlan(this.state.userPlan);
+    // console.log(
+    //   wallet_address_limit,
+    //   this.state.addWalletList.length,
+    //   this.state.addWalletList
+    // );
+    if ((this.state.addWalletList.length + 1) <= wallet_address_limit) {
+      this.state.addWalletList.push({
+        id: `wallet${this.state.addWalletList.length + 1}`,
+        address: "",
+        coins: [],
+        displayAddress: "",
+        nickname: "",
+        showAddress: true,
+        showNickname: true,
+        wallet_metadata: {},
+      });
+      this.setState({
+        addWalletList: this.state.addWalletList,
+      });
+    } else {
+      this.upgradeModal();
+    }
+      
   };
 
   deleteAddress = (index) => {
@@ -919,6 +941,13 @@ class FixAddModal extends BaseReactComponent {
             </div>
           </Modal.Body>
         </Modal>
+        {this.state.upgradeModal && (
+          <UpgradeModal
+            show={this.state.upgradeModal}
+            onHide={this.upgradeModal}
+            history={this.props.history}
+          />
+        )}
       </>
     );
   }

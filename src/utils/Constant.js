@@ -280,3 +280,47 @@ export const DormantType = {
     return this._presentable[value];
   },
 };
+
+
+export const Plans = {
+  //-1 for unlimited
+  _presentable: {
+    Free: {
+      price: 0,
+      wallet_address_limit: 5,
+      whale_pod_limit: 1,
+      whale_pod_addr_limit: 5,
+      notifications_provided: false,
+      notification_limit: 0,
+      defi_details_provided: false,
+      export_address_limit: 1,
+      upload_csv_address: 5,
+    },
+    Baron: {
+      price: 300,
+      wallet_address_limit: 50,
+      whale_pod_limit: 100,
+      whale_pod_addr_limit: 50,
+      notifications_provided: true,
+      notification_limit: 100,
+      defi_details_provided: false,
+      export_address_limit: -1,
+      upload_csv_address: 50,
+    },
+    Sovereign: {
+      price: 1000,
+      wallet_address_limit: -1,
+      whale_pod_limit: -1,
+      whale_pod_addr_limit: 5, //update after update on sheet
+      notifications_provided: false, //update after update on sheet
+      notification_limit: 0, //update after update on sheet
+      defi_details_provided: false,
+      export_address_limit: -1,
+      upload_csv_address: -1,
+    },
+  },
+
+  getPlan: function (value) {
+    return this._presentable[value];
+  },
+};

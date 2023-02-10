@@ -22,7 +22,7 @@ import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import ShareLink from '../../assets/images/icons/ShareLink.svg'
 import {exportDataApi, fixWalletApi} from './Api.js'
-import { BASE_URL_S3 } from '../../utils/Constant';
+import { BASE_URL_S3, Plans } from '../../utils/Constant';
 import { toast } from 'react-toastify';
 import ApiModalFrame from '../../assets/images/apiModalFrame.svg';
 import nextIcon from '../../assets/images/icons/next.svg'
@@ -54,6 +54,7 @@ import Coin4 from "../../assets/images/icons/Coin-3.svg";
 import { createCohort, deleteCohort } from '../cohort/Api';
 import Papa from "papaparse";
 import { updateUser } from '../profile/Api';
+import UpgradeModal from './upgradeModal';
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -66,7 +67,7 @@ class ExitOverlay extends BaseReactComponent {
 
     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
     this.state = {
-      // create account for cohort 
+      // create account for cohort
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
       mobileNumber: userDetails?.mobile || "",
@@ -152,9 +153,15 @@ class ExitOverlay extends BaseReactComponent {
       isCohort: true,
       cohort_name: props.isEdit && props?.headerTitle ? props?.headerTitle : "",
       changeList: props.changeWalletList,
+      userPlan: "Free",
+      upgradeModal: false,
     };
   }
-
+  upgradeModal = () => {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
+  };
   fileInputRef = React.createRef();
   pasteInput = React.createRef();
 
@@ -164,22 +171,29 @@ class ExitOverlay extends BaseReactComponent {
   }
 
   addAddress = () => {
-    this.state.addWalletList.push({
-      id: `wallet${this.state.addWalletList.length + 1}`,
-      address: "",
-      coins: [],
-      displayAddress: "",
-      wallet_metadata: {},
-    });
-    this.setState({
-      addWalletList: this.state.addWalletList,
-      wallet_address: "",
-    });
+     let { whale_pod_addr_limit } = Plans.getPlan(this.state.userPlan);
+     
+    if (this.state.addWalletList.length + 1 <= whale_pod_addr_limit) {
+      this.state.addWalletList.push({
+        id: `wallet${this.state.addWalletList.length + 1}`,
+        address: "",
+        coins: [],
+        displayAddress: "",
+        wallet_metadata: {},
+      });
+      this.setState({
+        addWalletList: this.state.addWalletList,
+        wallet_address: "",
+      });
 
-    WhalePodAddTextbox({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+      WhalePodAddTextbox({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    } else {
+      this.upgradeModal();
+    }
+  
   };
 
   deleteAddress = (index) => {
@@ -324,7 +338,11 @@ class ExitOverlay extends BaseReactComponent {
             walletList.push(curr);
             arr.push(curr.address.trim());
             arr.push(curr.displayAddress?.trim());
-            addressList.push(curr.displayAddress !== "" ? curr.displayAddress?.trim() : curr.address.trim());
+            addressList.push(
+              curr.displayAddress !== ""
+                ? curr.displayAddress?.trim()
+                : curr.address.trim()
+            );
           }
         }
         // console.log("address list", addressList, this.state.addWalletList);
@@ -344,30 +362,32 @@ class ExitOverlay extends BaseReactComponent {
             data.append("cohort_id", this.props.cohortId);
             // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
           }
-          
+
           createCohort(data, this);
           this.state.onHide();
           this.state.changeList && this.state.changeList(walletList);
-          
-            const address = walletList?.map((e) => e.displayAddress ? e.displayAddress:e.address);
-            // console.log("address", address);
 
-            const unrecog_address = walletList
-              .filter((e) => !e.coinFound)
-              .map((e) => e.address);
-            // console.log("Unreq address", unrecog_address);
+          const address = walletList?.map((e) =>
+            e.displayAddress ? e.displayAddress : e.address
+          );
+          // console.log("address", address);
 
-            const blockchainDetected = [];
-            walletList
-              .filter((e) => e.coinFound)
-              .map((obj) => {
-                let coinName = obj.coins
-                  .filter((e) => e.chain_detected)
-                  .map((name) => name.coinName);
-                let address = obj.address;
-                blockchainDetected.push({ address: address, names: coinName });
-              });
-          
+          const unrecog_address = walletList
+            .filter((e) => !e.coinFound)
+            .map((e) => e.address);
+          // console.log("Unreq address", unrecog_address);
+
+          const blockchainDetected = [];
+          walletList
+            .filter((e) => e.coinFound)
+            .map((obj) => {
+              let coinName = obj.coins
+                .filter((e) => e.chain_detected)
+                .map((name) => name.coinName);
+              let address = obj.address;
+              blockchainDetected.push({ address: address, names: coinName });
+            });
+
           CreateWhalePodSave({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
@@ -376,16 +396,14 @@ class ExitOverlay extends BaseReactComponent {
             unrecognized_addresses: unrecog_address,
             chains_detected_against_them: blockchainDetected,
           });
-          
-        } 
-        
+        }
       }, 100);
     }
   };
 
   handleDeleteCohort = () => {
     //  let addressList = this.props?.walletaddress && this.props?.walletaddress?.map(e => e.wallet_address);
-    
+
     // WhalePodDeleted();
     // console.log("name", this.state.cohort_name);
     // console.log("address", this.state.addWalletList?.map(e => e.displayAddress ? e.displayAddress : e.address))
@@ -414,38 +432,35 @@ class ExitOverlay extends BaseReactComponent {
   handleSave = () => {
     // console.log("create email", this.state.email);
     if (this.props.modalType === "create_account") {
-       const data = new URLSearchParams();
-       data.append("first_name", this.state.firstName);
-       data.append("last_name", this.state.lastName);
-       data.append("email", this.state.email);
-       data.append("mobile", this.state.mobileNumber);
-       updateUser(data, this);
+      const data = new URLSearchParams();
+      data.append("first_name", this.state.firstName);
+      data.append("last_name", this.state.lastName);
+      data.append("email", this.state.email);
+      data.append("mobile", this.state.mobileNumber);
+      updateUser(data, this);
     } else {
-       let email_arr = [];
-       let data = JSON.parse(localStorage.getItem("addWallet"));
-       if (data) {
-         data.map((info) => {
-           email_arr.push(info.address);
-         });
-         const url = new URLSearchParams();
-         url.append("email", this.state.email);
-         // url.append("wallet_addresses", JSON.stringify(email_arr));
-         fixWalletApi(this, url);
-         LeaveEmailAdded({
-           session_id: getCurrentUser().id,
-           email_address: this.state.email,
-         });
-       }
-      
+      let email_arr = [];
+      let data = JSON.parse(localStorage.getItem("addWallet"));
+      if (data) {
+        data.map((info) => {
+          email_arr.push(info.address);
+        });
+        const url = new URLSearchParams();
+        url.append("email", this.state.email);
+        // url.append("wallet_addresses", JSON.stringify(email_arr));
+        fixWalletApi(this, url);
+        LeaveEmailAdded({
+          session_id: getCurrentUser().id,
+          email_address: this.state.email,
+        });
+      }
     }
-   
   };
   handleRedirection = () => {
     // console.log("this", this.props);
-    
-       this.setState({ show: false, showRedirection: true });
-       this.props.handleRedirection();
-   
+
+    this.setState({ show: false, showRedirection: true });
+    this.props.handleRedirection();
   };
   handleSelect = (e) => {
     // console.log(e);
@@ -545,15 +560,17 @@ class ExitOverlay extends BaseReactComponent {
             email_address: getCurrentUser().email,
             addresses: uploadedAddress,
           });
-          this.setState({
-            addWalletList: [...prevAddressList, ...addressList],
-          }, () => {
-            // console.log("address", this.state.addWalletList);
-            this.state.addWalletList?.map((e) =>
-              this.getCoinBasedOnWalletAddress(e.id,e.address)
-            );
-           
-          });
+          this.setState(
+            {
+              addWalletList: [...prevAddressList, ...addressList],
+            },
+            () => {
+              // console.log("address", this.state.addWalletList);
+              this.state.addWalletList?.map((e) =>
+                this.getCoinBasedOnWalletAddress(e.id, e.address)
+              );
+            }
+          );
           // console.log(results.data, addressList, prevAddressList);
         },
       });
@@ -567,23 +584,25 @@ class ExitOverlay extends BaseReactComponent {
     try {
       const clipboardText = await navigator.clipboard.readText();
       // setPasteValue(clipboardText);
-   
+
       let addressList = this.state.addWalletList;
-        //  console.log("paste value", clipboardText, addressList)
+      //  console.log("paste value", clipboardText, addressList)
       addressList[0]["address"] = clipboardText;
       addressList[0]["displayAddress"] = clipboardText;
 
-      this.setState({
-        addWalletList:addressList
-      }, () => {
-         this.getCoinBasedOnWalletAddress(
-           addressList[0]["id"],
-           addressList[0]["address"]
-         );
-      })
-  
+      this.setState(
+        {
+          addWalletList: addressList,
+        },
+        () => {
+          this.getCoinBasedOnWalletAddress(
+            addressList[0]["id"],
+            addressList[0]["address"]
+          );
+        }
+      );
     } catch (error) {
-      console.error('Failed to paste from clipboard: ', error);
+      console.error("Failed to paste from clipboard: ", error);
     }
   };
 
@@ -888,14 +907,14 @@ class ExitOverlay extends BaseReactComponent {
                           type: CustomTextControl,
                           settings: {
                             placeholder: "Give your pod a name",
-                            onBlur: ((onBlur) => {
-                                // console.log("pod", this.state.cohort_name)
-                                PodName({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                  pod_name:this.state.cohort_name
-                                });
-                              }),
+                            onBlur: (onBlur) => {
+                              // console.log("pod", this.state.cohort_name)
+                              PodName({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                                pod_name: this.state.cohort_name,
+                              });
+                            },
                           },
                         }}
                       />
@@ -1271,6 +1290,13 @@ class ExitOverlay extends BaseReactComponent {
                 </CustomOverlay>
               </div>
             </div>
+          )}
+          {this.state.upgradeModal && (
+            <UpgradeModal
+              show={this.state.upgradeModal}
+              onHide={this.upgradeModal}
+              history={this.props.history}
+            />
           )}
         </Modal.Body>
       </Modal>
