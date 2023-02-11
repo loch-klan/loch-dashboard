@@ -89,6 +89,7 @@ export const getCohort = (data, ctx) => {
           largestHoldingChain: response?.largest_holding_asset?.asset,
           LargestChainLoader: false,
           cohortId: response?.id,
+          userId: response?.user_id,
           cohortName: response?.name,
           cohortSlug: response?.slug,
           ...nicknames,

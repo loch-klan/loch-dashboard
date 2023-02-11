@@ -120,6 +120,7 @@ class CohortPage extends BaseReactComponent {
       notificationId: false,
       RegisterModal: false,
       skip: false,
+      userId: null,
     };
   }
 
@@ -1485,7 +1486,7 @@ class CohortPage extends BaseReactComponent {
                           style={{ marginLeft: "1.5rem" }}
                           onClick={() => this.copyLink(e.wallet_address)}
                         />
-                        {this.state.cohortId !== "63da35fe3c8af3c678ac936e" && (
+                        {this.state.userId && (
                           <div className="nickname-input">
                             <Form
                               onValidSubmit={() => {
