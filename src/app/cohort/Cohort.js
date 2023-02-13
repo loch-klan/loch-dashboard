@@ -78,7 +78,7 @@ class Cohort extends Component {
       RegisterModal: false,
       skip: false,
       chainImages: [],
-     userPlan: "Free",
+      userPlan: "Free",
       upgradeModal: false,
     };
   }
@@ -113,8 +113,8 @@ class Cohort extends Component {
 
   handleCohort = () => {
     let { whale_pod_limit } = Plans.getPlan(this.state.userPlan);
-    console.log(whale_pod_limit, this.state.cardList?.length);
-    if (this.state.cardList?.length <= whale_pod_limit) {
+    // console.log(whale_pod_limit, this.state.cardList?.length);
+    if (this.state.cardList?.length <= whale_pod_limit || whale_pod_limit === -1) {
       this.setState({
         cohortModal: !this.state.cohortModal,
         // skip: islochUser ? true : this.state.skip,

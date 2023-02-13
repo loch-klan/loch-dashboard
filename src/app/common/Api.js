@@ -390,7 +390,7 @@ export const UpdateUserDetails = (data,ctx) => {
           link: res.data.data.user.link,
         };
         localStorage.setItem("lochUser", JSON.stringify(obj));
-        toast.success(" Your wallets and pods has been saved");
+        // toast.success(" Your wallets and pods has been saved");
 
         ctx.state.onHide();
       } 

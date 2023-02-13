@@ -66,7 +66,7 @@ class FixAddModal extends BaseReactComponent {
       deletedAddress: [],
       recievedResponse: false,
       userPlan: "Free",
-      upgradeModal:false,
+      upgradeModal: false,
     };
     this.timeout = 0;
    
@@ -246,7 +246,10 @@ class FixAddModal extends BaseReactComponent {
     //   this.state.addWalletList.length,
     //   this.state.addWalletList
     // );
-    if ((this.state.addWalletList.length + 1) <= wallet_address_limit) {
+    if (
+      this.state.addWalletList.length + 1 <= wallet_address_limit ||
+      wallet_address_limit === -1
+    ) {
       this.state.addWalletList.push({
         id: `wallet${this.state.addWalletList.length + 1}`,
         address: "",

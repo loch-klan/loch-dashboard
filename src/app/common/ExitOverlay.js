@@ -173,7 +173,10 @@ class ExitOverlay extends BaseReactComponent {
   addAddress = () => {
      let { whale_pod_addr_limit } = Plans.getPlan(this.state.userPlan);
      
-    if (this.state.addWalletList.length + 1 <= whale_pod_addr_limit) {
+    if (
+      this.state.addWalletList.length + 1 <= whale_pod_addr_limit ||
+      whale_pod_addr_limit === -1
+    ) {
       this.state.addWalletList.push({
         id: `wallet${this.state.addWalletList.length + 1}`,
         address: "",
@@ -531,46 +534,57 @@ class ExitOverlay extends BaseReactComponent {
   handleFileSelect = (event) => {
     const file = event.target.files[0];
     // console.log("event", event)
-
+    let { upload_csv_address } = Plans.getPlan(this.state.userPlan);
+  
     if (file.type === "text/csv" || file.type === "text/plain") {
       Papa.parse(file, {
         complete: (results) => {
-          let addressList = [];
-          let prevAddressList = [];
-          this.state?.addWalletList &&
-            this.state?.addWalletList.map((e) => {
-              if (e.address !== "" || e.displayAddress != "") {
-                prevAddressList.push(e);
-              }
+         
+          
+        
+            let addressList = [];
+            let prevAddressList = [];
+            this.state?.addWalletList &&
+              this.state?.addWalletList.map((e) => {
+                if (e.address !== "" || e.displayAddress != "") {
+                  prevAddressList.push(e);
+                }
+              });
+            let uploadedAddress = [];
+            results?.data?.map((e, i) => {
+              uploadedAddress.push(e[0]);
+              addressList.push({
+                id: `wallet${prevAddressList?.length + (i + 1)}`,
+                address: e[0],
+                coins: [],
+                displayAddress: e[0],
+                wallet_metadata: {},
+              });
             });
-          let uploadedAddress = [];
-          results?.data?.map((e, i) => {
-            uploadedAddress.push(e[0]);
-            addressList.push({
-              id: `wallet${prevAddressList?.length + (i + 1)}`,
-              address: e[0],
-              coins: [],
-              displayAddress: e[0],
-              wallet_metadata: {},
-            });
-          });
+          
+  let total_address = prevAddressList?.length + addressList?.length;
+  if (total_address <= upload_csv_address || upload_csv_address === -1) {
+    WhalePodUploadFile({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      addresses: uploadedAddress,
+    });
 
-          WhalePodUploadFile({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            addresses: uploadedAddress,
-          });
-          this.setState(
-            {
-              addWalletList: [...prevAddressList, ...addressList],
-            },
-            () => {
-              // console.log("address", this.state.addWalletList);
-              this.state.addWalletList?.map((e) =>
-                this.getCoinBasedOnWalletAddress(e.id, e.address)
-              );
-            }
-          );
+    this.setState(
+      {
+        addWalletList: [...prevAddressList, ...addressList],
+      },
+      () => {
+        // console.log("address", this.state.addWalletList);
+        this.state.addWalletList?.map((e) =>
+          this.getCoinBasedOnWalletAddress(e.id, e.address)
+        );
+      }
+    );
+  } else {
+    this.upgradeModal();
+  }
+         
           // console.log(results.data, addressList, prevAddressList);
         },
       });

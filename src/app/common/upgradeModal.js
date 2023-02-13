@@ -26,6 +26,8 @@ import {
   WhaleCreateAccountEmailSaved,
   WhaleCreateAccountPrivacyHover,
 } from "../../utils/AnalyticsFunctions";
+import CheckoutModal from "./checkout-modal";
+import AuthModal from "./AuthModal";
 
 class UpgradeModal extends BaseReactComponent {
   constructor(props) {
@@ -48,8 +50,156 @@ class UpgradeModal extends BaseReactComponent {
       isShowOtp: false,
       onHide: props.onHide,
       changeList: props.changeWalletList,
+      CheckOutModal: false,
+      planList: [
+        {
+          price: 0,
+          name: "Free",
+          features: [
+            {
+              name: "Wallet addresses",
+              limit: 5,
+            },
+            {
+              name: "Whale pod",
+              limit: 1,
+            },
+            {
+              name: "Whale pod addresses",
+              limit: 5,
+            },
+            {
+              name: "Notifications provided",
+              limit: false,
+            },
+            {
+              name: "Notifications limit",
+              limit: 0,
+            },
+            {
+              name: "Defi details provided",
+              limit: false,
+            },
+            {
+              name: "Export addresses",
+              limit: 1,
+            },
+            {
+              name: "upload address csv/text",
+              limit: 5,
+            },
+          ],
+        },
+        {
+          price: 300,
+          features: [
+            {
+              name: "Wallet addresses",
+              limit: 50,
+            },
+            {
+              name: "Whale pod",
+              limit: 100,
+            },
+            {
+              name: "Whale pod addresses",
+              limit: 50,
+            },
+            {
+              name: "Notifications provided",
+              limit: true,
+            },
+            {
+              name: "Notifications limit",
+              limit: 100,
+            },
+            {
+              name: "Defi details provided",
+              limit: false,
+            },
+            {
+              name: "Export addresses",
+              limit: "Unlimited",
+            },
+            {
+              name: "upload address csv/text",
+              limit: 50,
+            },
+          ],
+          name: "Baron",
+        },
+        {
+          price: 1000,
+          features: [
+            {
+              name: "Wallet addresses",
+              limit: "Unlimited",
+            },
+            {
+              name: "Whale pod",
+              limit: "Unlimited",
+            },
+            {
+              name: "Whale pod addresses",
+              limit: "Unlimited",
+            },
+            {
+              name: "Notifications provided",
+              limit: true,
+            },
+            {
+              name: "Notifications limit",
+              limit: 100,
+            },
+            {
+              name: "Defi details provided",
+              limit: false,
+            },
+            {
+              name: "Export addresses",
+              limit: "Unlimited",
+            },
+            {
+              name: "upload address csv/text",
+              limit: "Unlimited",
+            },
+          ],
+          name: "Sovereign",
+        },
+      ],
+      hideUpgradeModal: false,
+      RegisterModal: false,
     };
   }
+
+  checkoutModal = () => {
+
+    this.setState(
+      {
+        CheckOutModal: !this.state.CheckOutModal,
+        hideUpgradeModal: true,
+      },
+     
+    );
+  };
+
+  AddEmailModal = () => {
+    // console.log("handle emailc close");
+    const isDummy = localStorage.getItem("lochDummyUser");
+    const islochUser = JSON.parse(localStorage.getItem("lochUser"));
+    if (islochUser) {
+      this.setState({
+        RegisterModal: false,
+        email: islochUser?.email || "",
+      }, () => {
+        this.checkoutModal();
+      });
+    } else {
+      this.setState({
+        RegisterModal: !this.state.RegisterModal,
+      });
+    }
+  };
 
   componentDidMount() {
     // this.props.getAllCoins();
@@ -87,192 +237,147 @@ class UpgradeModal extends BaseReactComponent {
     //   check email valid or not if valid set email exist to true then this will change copy of signin and if invalid then show copy for signup
   };
 
-
-  handleBack = () => {
-    this.setState({
-      email: "",
-      otp: "",
-      isShowOtp: false,
-      modalTitle: null,
-      modalDescription: null,
-      isEmailNotExist: false,
-    });
-  };
-
   submit = () => {
     // console.log('Hey');
   };
 
   render() {
     return (
-      <Modal
-        show={this.state.show}
-        className="exit-overlay-form"
-        // backdrop="static"
-        onHide={this.state.onHide}
-        size="lg"
-        dialogClassName={"exit-overlay-modal"}
-        centered
-        aria-labelledby="contained-modal-title-vcenter"
-        backdropClassName="exitoverlaymodal"
-      >
-        <Modal.Header>
-          {this.state.isShowOtp ? (
-            <div className="signin-header back-icon" onClick={this.handleBack}>
-              <Image className="cp" src={backIcon} />
-            </div>
-          ) : null}
-          {this.props.iconImage ? (
-            <div className="api-modal-header">
-              <Image src={this.props.iconImage} />
-            </div>
-          ) : (
-            <div className="exitOverlayIcon">
-              <Image src={ExitOverlayIcon} />
-            </div>
-          )}
-          <div
-            className="closebtn"
-            onClick={() => {
-              this.state.onHide();
-            }}
+      <>
+        {!this.state.hideUpgradeModal && (
+          <Modal
+            show={this.state.show}
+            className="exit-overlay-form"
+            onHide={this.state.onHide}
+            size="xl"
+            dialogClassName={"exit-overlay-modal upgrade"}
+            centered
+            aria-labelledby="contained-modal-title-vcenter"
+            backdropClassName="exitoverlaymodal"
           >
-            <Image src={CloseIcon} />
-          </div>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="exit-overlay-body">
-            <h6 className="inter-display-medium f-s-20 lh-24 ">
-              {this.state.modalTitle
-                ? this.state.modalTitle
-                : "Upgrade you plan"}
-            </h6>
-            <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-              {this.state.modalDescription
-                ? this.state.modalDescription
-                : "Take your usage to the next level"}
-            </p>
-            {/* this.props.isSkip(); */}
-            <div className="email-section auth-modal">
-              {/* For Signin or Signup */}
-              {/* {!this.state.isShowOtp ? (
-                <Form onValidSubmit={this.handleAccountCreate}>
-                  <FormElement
-                    valueLink={this.linkState(this, "email")}
-                    // label="Email Info"
-                    required
-                    validations={[
-                      {
-                        validate: FormValidator.isRequired,
-                        message: "",
-                      },
-                      {
-                        validate: FormValidator.isEmail,
-                        message: "Please enter valid email id",
-                      },
-                    ]}
-                    control={{
-                      type: CustomTextControl,
-                      settings: {
-                        placeholder: "Email",
-                      },
-                    }}
-                  />
-                  <div className="save-btn-section">
-                    <Button
-                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                        this.state.email ? "active" : ""
-                      }`}
-                      type="submit"
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </Form>
+            <Modal.Header>
+              {this.props.iconImage ? (
+                <div className="api-modal-header">
+                  <Image src={this.props.iconImage} />
+                </div>
               ) : (
-                <>
-                  <Form onValidSubmit={this.handleOtp}>
-                    <FormElement
-                      valueLink={this.linkState(this, "otp")}
-                      // label="Email Info"
-                      required
-                      validations={
-                        [
-                          // {
-                          //   validate: FormValidator.isRequired,
-                          //   message: "",
-                          // },
-                          //   {
-                          //     validate: FormValidator.isNum,
-                          //     message: "Verification code can have only numbers",
-                          //     },
-                          // {
-                          //     validate: () => {
-                          //       console.log("state", this.state.isOptInValid);
-                          //        return !this.state.isOptInValid;
-                          //   },
-                          //     message:"invalid verification code"
-                          // }
-                        ]
-                      }
-                      control={{
-                        type: CustomTextControl,
-                        settings: {
-                          placeholder: "Enter Verification Code",
-                        },
-                      }}
-                      // className={"is-valid"}
-                    />
-                    <div className="save-btn-section">
-                      <Button
-                        className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                          this.state.otp ? "active" : ""
-                        }`}
-                        type="submit"
-                      >
-                        Verify
-                      </Button>
-                    </div>
-                  </Form>
-                  {this.state.isOptInValid && (
-                    <p
-                      className="inter-display-regular f-s-10 lh-11 m-t-5"
-                      style={{ color: "#ea4e3c" }}
-                    >
-                      Invalid verification code
-                    </p>
-                  )}
-                </>
-              )} */}
-            </div>
-            
-            <div className="m-b-36 footer">
-              <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                At Loch, we care intensely about your privacy and pseudonymity.
-              </p>
-              <CustomOverlay
-                text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
-                position="top"
-                isIcon={true}
-                IconImage={LockIcon}
-                isInfo={true}
-                className={"fix-width"}
+                <div className="exitOverlayIcon">
+                  <Image src={ExitOverlayIcon} />
+                </div>
+              )}
+              <div
+                className="closebtn"
+                onClick={() => {
+                  this.state.onHide();
+                }}
               >
-                <Image
-                  src={InfoIcon}
-                  className="info-icon"
-                  onMouseEnter={() => {
-                    WhaleCreateAccountPrivacyHover({
-                      session_id: getCurrentUser().id,
-                      email_address: this.state.email,
-                    });
-                  }}
-                />
-              </CustomOverlay>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
+                <Image src={CloseIcon} />
+              </div>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="upgrade-overlay-body">
+                <h6 className="inter-display-medium f-s-20 lh-24 ">
+                  {this.state.modalTitle
+                    ? this.state.modalTitle
+                    : "Upgrade you plan"}
+                </h6>
+                <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
+                  {this.state.modalDescription
+                    ? this.state.modalDescription
+                    : "Take your usage to the next level"}
+                </p>
+                {/* this.props.isSkip(); */}
+                <div className="pricing-plan">
+                  {this.state?.planList.map((plan, i) => {
+                    return (
+                      <div className="plan-card-wrapper">
+                        <div className={`plan-card ${i === 0 ? "active" : ""}`}>
+                          <div className="plan-name-wrapper">
+                            <div>{plan.name} </div>{" "}
+                            <div>{"$" + plan.price}</div>
+                          </div>
+                          <div className="feature-list-wrapper">
+                            {plan?.features.map((list) => {
+                              return (
+                                <div className="feature-list">
+                                  <h3>{list.name}</h3>
+                                  <h4>
+                                    {list.limit === false
+                                      ? "No"
+                                      : list.limit === true
+                                      ? "Yes"
+                                      : list.limit}
+                                  </h4>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                        <Button
+                          className="primary-btn"
+                          onClick={() => this.AddEmailModal()}
+                        >
+                          Upgrade now
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="m-b-36 footer">
+                  <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                    At Loch, we care intensely about your privacy and
+                    pseudonymity.
+                  </p>
+                  <CustomOverlay
+                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                    position="top"
+                    isIcon={true}
+                    IconImage={LockIcon}
+                    isInfo={true}
+                    className={"fix-width"}
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="info-icon"
+                      onMouseEnter={() => {
+                        WhaleCreateAccountPrivacyHover({
+                          session_id: getCurrentUser().id,
+                          email_address: this.state.email,
+                        });
+                      }}
+                    />
+                  </CustomOverlay>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
+        )}
+        {this.state.CheckOutModal && (
+          <CheckoutModal
+            show={this.state.CheckOutModal}
+            onHide={this.checkoutModal}
+            history={this.props.history}
+          />
+        )}
+        {this.state.RegisterModal ? (
+          <AuthModal
+            show={this.state.RegisterModal}
+            // link="http://loch.one/a2y1jh2jsja"
+            onHide={this.AddEmailModal}
+            history={this.props.history}
+            modalType={"create_account"}
+            // iconImage={CohortIcon}
+
+            hideSkip={false}
+            // headerTitle={"Create a Wallet cohort"}
+            // changeWalletList={this.handleChangeList}
+            // apiResponse={(e) => this.CheckApiResponse(e)}
+          />
+        ) : (
+          ""
+        )}
+      </>
     );
   }
 }

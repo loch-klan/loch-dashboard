@@ -295,6 +295,7 @@ export const Plans = {
       defi_details_provided: false,
       export_address_limit: 1,
       upload_csv_address: 5,
+      name: "Free",
     },
     Baron: {
       price: 300,
@@ -306,17 +307,19 @@ export const Plans = {
       defi_details_provided: false,
       export_address_limit: -1,
       upload_csv_address: 50,
+      name: "Baron",
     },
     Sovereign: {
       price: 1000,
       wallet_address_limit: -1,
       whale_pod_limit: -1,
-      whale_pod_addr_limit: 5, //update after update on sheet
+      whale_pod_addr_limit: -1, //update after update on sheet
       notifications_provided: false, //update after update on sheet
       notification_limit: 0, //update after update on sheet
       defi_details_provided: false,
       export_address_limit: -1,
       upload_csv_address: -1,
+      name: "Sovereign",
     },
   },
 
