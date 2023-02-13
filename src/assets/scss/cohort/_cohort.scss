@@ -301,7 +301,8 @@
         }
 
         .nickname-input{
-            margin-left: 0.8rem;
+            margin-left: 2rem;
+            width: 9rem;
 
             .form-group{
                 margin:0;
@@ -319,7 +320,28 @@
                         line-height: 1.5rem;
 
                     }
+
+                    &:focus{
+                        border: 1px solid $primary !important;
+                    }
+
+                    
             }
+             
+                    .form-control.is-valid{
+                        box-shadow: none;
+                         border: 1px solid #D4D4D4;
+
+                         &:hover{
+                         border: 1px solid $primary;
+                    }
+                        
+                    }
+                    
+                    .done{
+                        // box-shadow: 0 0 0.4rem  $grey-D3D;
+                        border:0.1rem solid $black-191 !important;
+                    }
         }
 
 

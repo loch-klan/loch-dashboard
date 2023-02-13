@@ -44,7 +44,7 @@ class FixAddModal extends BaseReactComponent {
               showNickname: true,
             },
           ];
-    console.log("addWalletList", addWalletList);
+    // console.log("addWalletList", addWalletList);
     this.state = {
       onHide: props.onHide,
       show: props.show,
@@ -229,7 +229,7 @@ class FixAddModal extends BaseReactComponent {
     getDetectedChainsApi(this);
     const fixWallet = [];
     JSON.parse(localStorage.getItem("addWallet"))?.map((e) => {
-      console.log("e fix wallet", e);
+      // console.log("e fix wallet", e);
       if (e.coinFound !== true) {
         fixWallet.push({ ...e, id: `wallet${fixWallet.length + 1}` });
       }
@@ -344,7 +344,7 @@ class FixAddModal extends BaseReactComponent {
         data.append("wallet_addresses", JSON.stringify(addressList));
 
         updateUserWalletApi(data, this);
-        this.state.changeList && this.state.changeList(walletList);
+        // this.state.changeList && this.state.changeList(walletList);
         // if (this.props.handleUpdateWallet) {
         //     this.props.handleUpdateWallet()
         // }
@@ -422,7 +422,7 @@ class FixAddModal extends BaseReactComponent {
     let prevWallets = [...this.state.fixWalletAddress];
     let currentIndex = prevWallets.findIndex((elem) => elem.id === name);
     // console.log('prevWallets',prevWallets);
-    // console.log('currentIndex',currentIndex);
+    // p'currentIndex',currentIndex);
 
     prevWallets[currentIndex].nickname = value;
     // prevWallets[currentIndex].coins = []

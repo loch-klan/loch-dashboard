@@ -480,7 +480,7 @@ class Portfolio extends BaseReactComponent {
       table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        // console.log("row", row);g
+       
         userWalletList &&
           userWalletList.map((wallet) => {
             if (
@@ -489,6 +489,7 @@ class Portfolio extends BaseReactComponent {
               wallet.displayAddress?.toLowerCase() ===
                 row.from_wallet.address?.toLowerCase()
             ) {
+              
               walletFromData = {
                 wallet_metaData: wallet.wallet_metadata,
                 displayAddress: wallet.displayAddress,
@@ -501,6 +502,7 @@ class Portfolio extends BaseReactComponent {
               wallet.displayAddress?.toLowerCase() ==
                 row.to_wallet.address?.toLowerCase()
             ) {
+              //  console.log("inside second if");
               walletToData = {
                 wallet_metaData: wallet.wallet_metadata,
                 displayAddress: wallet.displayAddress,
@@ -508,6 +510,7 @@ class Portfolio extends BaseReactComponent {
               };
             }
           });
+        
         return {
           time: row.timestamp,
           from: {
@@ -617,6 +620,7 @@ class Portfolio extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
+            // console.log("row", rowData)
             return (
               <CustomOverlay
                 position="top"
