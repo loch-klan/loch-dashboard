@@ -22,6 +22,12 @@ const routes = [
     type: Route,
     component: Login,
   },
+  // {
+  //   path: "/",
+  //   name: "Home",
+  //   type: PrivateRoute,
+  //   component: Home,
+  // },
   {
     path: "/welcome",
     name: "Home",

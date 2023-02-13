@@ -231,7 +231,8 @@ export const verifyUser = (ctx, info) => {
     })
 }
 
-export const createAnonymousUserApi = (data, ctx, addWallet) =>{
+export const createAnonymousUserApi = (data, ctx, addWallet) => {
+  console.log("data",ctx.state?.id)
   {
     !ctx.state.id &&
     ctx.props.history.push({
@@ -282,7 +283,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
          "addWallet",
          JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
        );
-      console.log("wallet", addWallet);
+      // console.log("wallet", addWallet);
       ctx.props.history.replace({
         pathname: ctx.state.id ? ctx.state.link : '/home',
         state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}

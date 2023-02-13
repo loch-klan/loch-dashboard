@@ -366,7 +366,7 @@ class Portfolio extends BaseReactComponent {
     } else if (
       prevProps.location.state?.noLoad !== this.props.location.state?.noLoad
     ) {
-      console.log("in didup", this.props.location.state);
+      // console.log("in didup", this.props.location.state);
       if (this.props.location.state?.addWallet != undefined) {
         localStorage.setItem(
           "addWallet",
