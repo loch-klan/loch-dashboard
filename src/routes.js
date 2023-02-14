@@ -1,37 +1,37 @@
-import { Route } from "react-router-dom"
-import Login from "./app/common/Login"
-import { Home } from "./app/home"
-import { Profile } from "./app/profile"
-import Sandbox from "./utils/form/Sandbox"
-import PrivateRoute from "./utils/PrivateRoute"
-import Portfolio from "./app/Portfolio/Portfolio"
-import Intelligence from "./app/intelligence/Intelligence"
-import Wallet from "./app/wallet/Wallet"
-import Cost  from "./app/cost/Cost"
-import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage"
-import VerifyEmail from "./app/common/VerifyEmail"
-import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounterparty"
-import InsightsPage from "./app/intelligence/InsightsPage"
+import { Route } from "react-router-dom";
+import Login from "./app/common/Login";
+import { Home } from "./app/home";
+import { Profile } from "./app/profile";
+import Sandbox from "./utils/form/Sandbox";
+import PrivateRoute from "./utils/PrivateRoute";
+import Portfolio from "./app/Portfolio/Portfolio";
+import Intelligence from "./app/intelligence/Intelligence";
+import Wallet from "./app/wallet/Wallet";
+import Cost from "./app/cost/Cost";
+import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
+import VerifyEmail from "./app/common/VerifyEmail";
+import VolumeTradedByCounterparty from "./app/intelligence/VolumeTradedByCounterparty";
+import InsightsPage from "./app/intelligence/InsightsPage";
 import AssetValueGraph from "./app/intelligence/AssetValueGraph";
-import Cohort from "./app/cohort/Cohort"
-import CohortPage from "./app/cohort/cohort-individual"
+import Cohort from "./app/cohort/Cohort";
+import CohortPage from "./app/cohort/cohort-individual";
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "Login",
-  //   type: Route,
-  //   component: Login,
-  // },
   {
     path: "/",
-    name: "Home",
+    name: "Login",
     type: Route,
-    component: Home,
+    component: Login,
   },
+  // {
+  //   path: "/",
+  //   name: "Home",
+  //   type: Route,
+  //   component: Home,
+  // },
   {
     path: "/welcome",
     name: "Home",
-    type: PrivateRoute,
+    type: Route,
     component: Home,
   },
   {
@@ -114,4 +114,4 @@ const routes = [
     component: Sandbox,
   },
 ];
-export default routes
+export default routes;

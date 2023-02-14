@@ -232,7 +232,7 @@ export const verifyUser = (ctx, info) => {
 }
 
 export const createAnonymousUserApi = (data, ctx, addWallet) => {
-  console.log("data",ctx.state?.id)
+   localStorage.setItem("lochToken", "jsk");
   {
     !ctx.state.id &&
     ctx.props.history.push({

@@ -282,7 +282,7 @@ class AddWallet extends BaseReactComponent {
     });
 
     // console.log("final array", finalArr, nicknameArr);
-
+ 
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(walletAddress));
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
