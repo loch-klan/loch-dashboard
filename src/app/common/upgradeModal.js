@@ -34,7 +34,53 @@ class UpgradeModal extends BaseReactComponent {
     super(props);
     const dummyUser = localStorage.getItem("lochDummyUser");
     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
-    // const Plans = JSON.parse(localStorage.getItem("Plans"));
+    const Plans = JSON.parse(localStorage.getItem("Plans"));
+
+    let AllPlan = Plans?.map(plan => {
+      return {
+        price: plan.prices ? (plan.prices[0]?.unit_amount/100) : 0,
+        price_id: plan.prices ? plan.prices[0]?.id : "",
+        name: plan.name,
+        id: plan.id,
+        plan_reference_id: plan.plan_reference_id,
+        features: [
+          {
+            name: "Wallet addresses",
+            limit: plan.wallet_address_limit,
+          },
+          {
+            name: "Whale pod",
+            limit: plan.whale_pod_limit,
+          },
+          {
+            name: "Whale pod addresses",
+            limit: plan.whale_pod_address_limit,
+          },
+          {
+            name: "Notifications provided",
+            limit: plan.notifications_provided,
+          },
+          {
+            name: "Notifications limit",
+            limit: plan.notifications_limit,
+          },
+          {
+            name: "Defi details provided",
+            limit: plan.defi_enabled,
+          },
+          {
+            name: "Export addresses",
+            limit: plan.export_address_limit,
+          },
+          {
+            name: "upload address csv/text",
+            limit: plan.whale_pod_address_limit,
+          },
+        ],
+      };
+    })
+    
+    // console.log("AllPlan ", AllPlan);
 
     this.state = {
       firstName: userDetails?.first_name || "",
@@ -56,7 +102,7 @@ class UpgradeModal extends BaseReactComponent {
       planList: [
         {
           price: 0,
-          price_id: "price_1MbJGiFKqIbhlomAxxadBadm",
+          price_id: "",
           name: "Free",
           features: [
             {
@@ -174,7 +220,85 @@ class UpgradeModal extends BaseReactComponent {
       ],
       hideUpgradeModal: false,
       RegisterModal: false,
-      price_id:0,
+      price_id: 0,
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) ||   {
+          price: 0,
+          price_id: "",
+          name: "Free",
+          features: [
+            {
+              name: "Wallet addresses",
+              limit: 5,
+            },
+            {
+              name: "Whale pod",
+              limit: 1,
+            },
+            {
+              name: "Whale pod addresses",
+              limit: 5,
+            },
+            {
+              name: "Notifications provided",
+              limit: false,
+            },
+            {
+              name: "Notifications limit",
+              limit: 0,
+            },
+            {
+              name: "Defi details provided",
+              limit: false,
+            },
+            {
+              name: "Export addresses",
+              limit: 1,
+            },
+            {
+              name: "upload address csv/text",
+              limit: 5,
+            },
+          ],
+        },
+      selectedPlan: JSON.parse(localStorage.getItem("currentPlan")) ||   {
+          price: 0,
+          price_id: "",
+          name: "Free",
+          features: [
+            {
+              name: "Wallet addresses",
+              limit: 5,
+            },
+            {
+              name: "Whale pod",
+              limit: 1,
+            },
+            {
+              name: "Whale pod addresses",
+              limit: 5,
+            },
+            {
+              name: "Notifications provided",
+              limit: false,
+            },
+            {
+              name: "Notifications limit",
+              limit: 0,
+            },
+            {
+              name: "Defi details provided",
+              limit: false,
+            },
+            {
+              name: "Export addresses",
+              limit: 1,
+            },
+            {
+              name: "upload address csv/text",
+              limit: 5,
+            },
+          ],
+        },
     };
   }
 
@@ -277,14 +401,16 @@ class UpgradeModal extends BaseReactComponent {
                   <Image src={ExitOverlayIcon} />
                 </div>
               )}
-             {!this.props.isShare &&  <div
-                className="closebtn"
-                onClick={() => {
-                  this.state.onHide();
-                }}
-              >
-                <Image src={CloseIcon} />
-              </div>}
+              {!this.props.isShare && (
+                <div
+                  className="closebtn"
+                  onClick={() => {
+                    this.state.onHide();
+                  }}
+                >
+                  <Image src={CloseIcon} />
+                </div>
+              )}
             </Modal.Header>
             <Modal.Body>
               <div className="upgrade-overlay-body">
@@ -303,7 +429,13 @@ class UpgradeModal extends BaseReactComponent {
                   {this.state?.planList.map((plan, i) => {
                     return (
                       <div className="plan-card-wrapper">
-                        <div className={`plan-card ${i === 0 ? "active" : ""}`}>
+                        <div
+                          className={`plan-card ${
+                            plan.name === this.state.userPlan.name
+                              ? "active"
+                              : ""
+                          }`}
+                        >
                           <div className="plan-name-wrapper">
                             <div>{plan.name} </div>{" "}
                             <div>{"$" + plan.price}</div>
@@ -326,12 +458,19 @@ class UpgradeModal extends BaseReactComponent {
                           </div>
                         </div>
                         <Button
-                          className="primary-btn"
+                          className={`primary-btn ${
+                            plan.name === this.state.userPlan.name
+                              ? "disabled"
+                              : ""
+                          }`}
                           onClick={() => {
-                            this.AddEmailModal();
-                            this.setState({
-                              price_id:plan.price_id
-                            })
+                            if (plan.name !== this.state.userPlan.name) {
+                              this.AddEmailModal();
+                              this.setState({
+                                price_id: plan.price_id,
+                                selectedPlan: plan,
+                              });
+                            }
                           }}
                         >
                           Upgrade now
@@ -376,6 +515,7 @@ class UpgradeModal extends BaseReactComponent {
             onHide={this.checkoutModal}
             history={this.props.history}
             price_id={this.state.price_id}
+            selectedPlan={this.state.selectedPlan}
           />
         )}
         {this.state.RegisterModal ? (

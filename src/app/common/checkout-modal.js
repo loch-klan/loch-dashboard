@@ -49,46 +49,48 @@ class CheckoutModal extends BaseReactComponent {
       isShowOtp: false,
       onHide: props.onHide,
       changeList: props.changeWalletList,
-      planList: [
-        {
-          price: 1000,
-          features: [
+      planList: this.props.selectedPlan
+        ? [this.props.selectedPlan]
+        : [
             {
-              name: "Wallet addresses",
-              limit: "Unlimited",
-            },
-            {
-              name: "Whale pod",
-              limit: "Unlimited",
-            },
-            {
-              name: "Whale pod addresses",
-              limit: "Unlimited",
-            },
-            {
-              name: "Notifications provided",
-              limit: true,
-            },
-            {
-              name: "Notifications limit",
-              limit: 100,
-            },
-            {
-              name: "Defi details provided",
-              limit: false,
-            },
-            {
-              name: "Export addresses",
-              limit: "Unlimited",
-            },
-            {
-              name: "upload address csv/text",
-              limit: "Unlimited",
+              price: 1000,
+              features: [
+                {
+                  name: "Wallet addresses",
+                  limit: "Unlimited",
+                },
+                {
+                  name: "Whale pod",
+                  limit: "Unlimited",
+                },
+                {
+                  name: "Whale pod addresses",
+                  limit: "Unlimited",
+                },
+                {
+                  name: "Notifications provided",
+                  limit: true,
+                },
+                {
+                  name: "Notifications limit",
+                  limit: 100,
+                },
+                {
+                  name: "Defi details provided",
+                  limit: false,
+                },
+                {
+                  name: "Export addresses",
+                  limit: "Unlimited",
+                },
+                {
+                  name: "upload address csv/text",
+                  limit: "Unlimited",
+                },
+              ],
+              name: "Sovereign",
             },
           ],
-          name: "Sovereign",
-        },
-      ],
       RegisterModal: false,
       payment_link: "",
     };

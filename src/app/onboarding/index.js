@@ -44,7 +44,7 @@ class OnBoarding extends Component {
 
         window.location.reload(true);
       }
-    GetAllPlan();
+   
     OnboardingPage({});
     }
 

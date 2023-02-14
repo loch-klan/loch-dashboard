@@ -65,7 +65,7 @@ import FeedbackForm from "../common/FeedbackForm";
 import { CurrencyType } from "../../utils/ReusableFunctions";
 import PieChart2 from "./PieChart2";
 import UpgradeModal from "../common/upgradeModal";
-import { getUser } from "../common/Api";
+import { GetAllPlan, getUser } from "../common/Api";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -182,7 +182,7 @@ class Portfolio extends BaseReactComponent {
   };
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-
+     GetAllPlan();
     getUser()
     // if (this.props.match.params.id) {
     //   getDetailsByLinkApi(this.props.match.params.id, this);

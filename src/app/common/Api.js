@@ -419,6 +419,22 @@ export const GetAllPlan = () => {
     });
 };
 
+export const GetDefaultPlan = () => {
+  postLoginInstance
+    .post("commerce/plan/get-default-plan")
+    .then((res) => {
+      if (!res.data.error) {
+        // Analytics
+
+        localStorage.setItem("Plans", JSON.stringify(res.data.data.plans));
+        // toast.success(" Your wallets and pods has been saved");
+      }
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};
+
 
 // get-all-plans
 export const CreatePyment = (data,ctx) => {

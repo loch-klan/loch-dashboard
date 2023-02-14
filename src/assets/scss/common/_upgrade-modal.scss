@@ -24,6 +24,17 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    .primary-btn{
+
+        &.disabled, .btn-primary:disabled {
+    outline: none;
+    box-shadow: none;
+    border: 1px solid #19191A;
+    background-color: #19191A;
+    color:#fff;
+}
+    }
       .plan-card{
  
    
