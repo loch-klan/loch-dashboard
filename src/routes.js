@@ -16,18 +16,18 @@ import AssetValueGraph from "./app/intelligence/AssetValueGraph";
 import Cohort from "./app/cohort/Cohort"
 import CohortPage from "./app/cohort/cohort-individual"
 const routes = [
-  {
-    path: "/",
-    name: "Login",
-    type: Route,
-    component: Login,
-  },
   // {
   //   path: "/",
-  //   name: "Home",
-  //   type: PrivateRoute,
-  //   component: Home,
+  //   name: "Login",
+  //   type: Route,
+  //   component: Login,
   // },
+  {
+    path: "/",
+    name: "Home",
+    type: Route,
+    component: Home,
+  },
   {
     path: "/welcome",
     name: "Home",
