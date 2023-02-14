@@ -25,6 +25,8 @@ class Login extends BaseReactComponent {
     // console.log('this.props',this.props);
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     deleteToken();
+    
+
   }
 
   componentWillUnmount() {
