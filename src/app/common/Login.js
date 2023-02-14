@@ -92,7 +92,7 @@ class Login extends BaseReactComponent {
     }
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(walletAddress));
-    data.append("link", this.state.link);
+    data.append("link", this.state.id);
     createAnonymousUserApi(data, this, addWallet);
   };
 
