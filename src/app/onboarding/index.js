@@ -38,7 +38,8 @@ class OnBoarding extends Component {
       // let currentDate = date.format("D/MM/YYYY");
       // // "17/06/2022"
       let isRefresh = JSON.parse(localStorage.getItem("refresh"));
-      if (!isRefresh) {
+    if (!isRefresh) {
+        
         localStorage.setItem("refresh",true);
 
         window.location.reload(true);

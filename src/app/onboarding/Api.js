@@ -231,7 +231,8 @@ export const verifyUser = (ctx, info) => {
     })
 }
 
-export const createAnonymousUserApi = (data, ctx, addWallet) =>{
+export const createAnonymousUserApi = (data, ctx, addWallet) => {
+  console.log("data",ctx.state?.id)
   {
     !ctx.state.id &&
     ctx.props.history.push({
