@@ -5,7 +5,9 @@ const deleteToken = () => {
   localStorage.removeItem("lochDummyUser")
   localStorage.removeItem("currencyRates");
   localStorage.removeItem("currency");
-  localStorage.removeItem("currenyPlan");
+  localStorage.removeItem("currentPlan");
+  localStorage.removeItem("share_id");
+   localStorage.removeItem("Plans");
 };
 
 const getToken = () => {

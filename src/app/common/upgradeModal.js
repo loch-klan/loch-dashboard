@@ -254,6 +254,8 @@ class UpgradeModal extends BaseReactComponent {
             centered
             aria-labelledby="contained-modal-title-vcenter"
             backdropClassName="exitoverlaymodal"
+            keyboard={false}
+            backdrop={this.props.isShare ? "static" : true}
           >
             <Modal.Header>
               {this.props.iconImage ? (
@@ -265,14 +267,14 @@ class UpgradeModal extends BaseReactComponent {
                   <Image src={ExitOverlayIcon} />
                 </div>
               )}
-              <div
+             {!this.props.isShare &&  <div
                 className="closebtn"
                 onClick={() => {
                   this.state.onHide();
                 }}
               >
                 <Image src={CloseIcon} />
-              </div>
+              </div>}
             </Modal.Header>
             <Modal.Body>
               <div className="upgrade-overlay-body">

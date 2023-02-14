@@ -15,6 +15,7 @@ import {
   OnboardingPage,
   PrivacyMessage, TimeSpentOnboarding
 } from "../../utils/AnalyticsFunctions.js";
+import { GetAllPlan } from '../common/Api';
 // export { default as OnboardingReducer } from "./OnboardingReducer";
 class OnBoarding extends Component {
     constructor(props) {
@@ -42,6 +43,7 @@ class OnBoarding extends Component {
 
         window.location.reload(true);
       }
+    GetAllPlan();
     OnboardingPage({});
     }
 

@@ -65,7 +65,7 @@ class FixAddModal extends BaseReactComponent {
       walletNameList: [],
       deletedAddress: [],
       recievedResponse: false,
-      userPlan: "Sovereign",
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
     };
     this.timeout = 0;
@@ -240,15 +240,16 @@ class FixAddModal extends BaseReactComponent {
     });
   }
   addAddress = () => {
-    let { wallet_address_limit } = Plans.getPlan(this.state.userPlan);
+    
     // console.log(
     //   wallet_address_limit,
     //   this.state.addWalletList.length,
     //   this.state.addWalletList
     // );
     if (
-      this.state.addWalletList.length + 1 <= wallet_address_limit ||
-      wallet_address_limit === -1
+      this.state.addWalletList.length + 1 <=
+        this.state.userPlan.wallet_address_limit ||
+      this.state.userPlan.wallet_address_limit === -1
     ) {
       this.state.addWalletList.push({
         id: `wallet${this.state.addWalletList.length + 1}`,
@@ -949,6 +950,7 @@ class FixAddModal extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
+            isShare={localStorage.getItem("share_id")}
           />
         )}
       </>

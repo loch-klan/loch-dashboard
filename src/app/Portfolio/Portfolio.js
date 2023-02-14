@@ -139,7 +139,7 @@ class Portfolio extends BaseReactComponent {
       isTimeOut: true,
       showBtn: false,
       apiResponse: false,
-      userPlan: "Sovereign",
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
     };
   }
@@ -190,7 +190,7 @@ class Portfolio extends BaseReactComponent {
        
      }
     
-    let isShare = localStorage.getItem("share_id");
+    // let isShare = localStorage.getItem("share_id");
 
     HomePage({
       session_id: getCurrentUser().id,
@@ -1474,6 +1474,7 @@ class Portfolio extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
+            isShare={localStorage.getItem("share_id")}
           />
         )}
       </div>

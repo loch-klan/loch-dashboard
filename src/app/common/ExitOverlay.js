@@ -153,7 +153,7 @@ class ExitOverlay extends BaseReactComponent {
       isCohort: true,
       cohort_name: props.isEdit && props?.headerTitle ? props?.headerTitle : "",
       changeList: props.changeWalletList,
-      userPlan: "Free",
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
     };
   }
@@ -171,11 +171,12 @@ class ExitOverlay extends BaseReactComponent {
   }
 
   addAddress = () => {
-     let { whale_pod_addr_limit } = Plans.getPlan(this.state.userPlan);
+     
      
     if (
-      this.state.addWalletList.length + 1 <= whale_pod_addr_limit ||
-      whale_pod_addr_limit === -1
+      this.state.addWalletList.length + 1 <=
+        this.state.userPlan?.whale_pod_address_limit ||
+      this.state.userPlan?.whale_pod_address_limit === -1
     ) {
       this.state.addWalletList.push({
         id: `wallet${this.state.addWalletList.length + 1}`,
@@ -534,8 +535,7 @@ class ExitOverlay extends BaseReactComponent {
   handleFileSelect = (event) => {
     const file = event.target.files[0];
     // console.log("event", event)
-    let { upload_csv_address } = Plans.getPlan(this.state.userPlan);
-  
+    
     if (file.type === "text/csv" || file.type === "text/plain") {
       Papa.parse(file, {
         complete: (results) => {
@@ -563,7 +563,10 @@ class ExitOverlay extends BaseReactComponent {
             });
           
   let total_address = prevAddressList?.length + addressList?.length;
-  if (total_address <= upload_csv_address || upload_csv_address === -1) {
+  if (
+    total_address <= this.state.userPlan?.whale_pod_address_limit ||
+    this.state.userPlan?.whale_pod_address_limit === -1
+  ) {
     WhalePodUploadFile({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -1310,6 +1313,7 @@ class ExitOverlay extends BaseReactComponent {
               show={this.state.upgradeModal}
               onHide={this.upgradeModal}
               history={this.props.history}
+              isShare={localStorage.getItem("share_id")}
             />
           )}
         </Modal.Body>

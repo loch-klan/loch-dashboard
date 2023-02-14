@@ -399,3 +399,22 @@ export const UpdateUserDetails = (data,ctx) => {
       console.log("err", err);
     });
 };
+
+
+// get-all-plans
+export const GetAllPlan = () => {
+  postLoginInstance
+    .post("commerce/plan/get-all-plans")
+    .then((res) => {
+      if (!res.data.error) {
+        // Analytics
+       
+        localStorage.setItem("Plans", JSON.stringify(res.data.data.plans));
+        // toast.success(" Your wallets and pods has been saved");
+
+      }
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};
