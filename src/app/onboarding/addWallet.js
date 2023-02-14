@@ -286,6 +286,7 @@ class AddWallet extends BaseReactComponent {
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(walletAddress));
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    // data.append("link", );
     createAnonymousUserApi(data, this, finalArr);
     // console.log(finalArr);
 

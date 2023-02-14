@@ -218,8 +218,8 @@ class Portfolio extends BaseReactComponent {
       this.getGraphData();
       getAllCounterFeeApi(this, false, false);
       getProfitAndLossApi(this, false, false, false);
-      //  GetAllPlan();
-      //  getUser();
+       GetAllPlan();
+       getUser();
     }
   };
 
