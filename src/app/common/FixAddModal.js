@@ -65,7 +65,7 @@ class FixAddModal extends BaseReactComponent {
       walletNameList: [],
       deletedAddress: [],
       recievedResponse: false,
-      userPlan: "Free",
+      userPlan: "Sovereign",
       upgradeModal: false,
     };
     this.timeout = 0;

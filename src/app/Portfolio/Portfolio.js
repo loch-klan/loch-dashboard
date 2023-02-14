@@ -64,21 +64,20 @@ import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
 import { CurrencyType } from "../../utils/ReusableFunctions";
 import PieChart2 from "./PieChart2";
+import UpgradeModal from "../common/upgradeModal";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
-    // console.log("props", props);
-    if(props.location.state &&
-      props.location.state?.addWallet) {
-  
+    console.log("props", props);
+    if (props.location.state) {
       // localStorage.setItem(
       //   "addWallet",
       //   JSON.stringify(props.location.state?.addWallet)
       // );
-      // console.log("update wallet address", props.location.state?.addWallet);
-      }
-      
+     
+    }
+
     this.state = {
       id: props.match.params?.id,
       userWalletList: localStorage.getItem("addWallet")
@@ -140,8 +139,17 @@ class Portfolio extends BaseReactComponent {
       isTimeOut: true,
       showBtn: false,
       apiResponse: false,
+      userPlan: "Sovereign",
+      upgradeModal: false,
     };
   }
+
+  upgradeModal = () => {
+
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
+  };
 
   handleToggleAddWallet = () => {
     this.setState({
@@ -176,6 +184,13 @@ class Portfolio extends BaseReactComponent {
     // if (this.props.match.params.id) {
     //   getDetailsByLinkApi(this.props.match.params.id, this);
     // }
+     if (this.props.match.params.id) {
+       localStorage.setItem(
+         "share_id", this.props.match.params.id)
+       
+     }
+    
+    let isShare = localStorage.getItem("share_id");
 
     HomePage({
       session_id: getCurrentUser().id,
@@ -268,16 +283,14 @@ class Portfolio extends BaseReactComponent {
         apiResponse: value,
       });
     }
-    
+
     // console.log("api respinse", value);
   };
   componentDidUpdate(prevProps, prevState) {
     //Wallet update response
-  
+
     if (this.state.apiResponse) {
-     
       if (this.props.location.state?.noLoad === undefined) {
-       
         this.props.getCoinRate();
         this.setState({
           apiResponse: false,
@@ -366,7 +379,7 @@ class Portfolio extends BaseReactComponent {
     } else if (
       prevProps.location.state?.noLoad !== this.props.location.state?.noLoad
     ) {
-      console.log("in didup", this.props.location.state);
+      // console.log("in didup", this.props.location.state);
       if (this.props.location.state?.addWallet != undefined) {
         localStorage.setItem(
           "addWallet",
@@ -480,7 +493,7 @@ class Portfolio extends BaseReactComponent {
       table.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-       
+
         userWalletList &&
           userWalletList.map((wallet) => {
             if (
@@ -489,7 +502,6 @@ class Portfolio extends BaseReactComponent {
               wallet.displayAddress?.toLowerCase() ===
                 row.from_wallet.address?.toLowerCase()
             ) {
-              
               walletFromData = {
                 wallet_metaData: wallet.wallet_metadata,
                 displayAddress: wallet.displayAddress,
@@ -510,7 +522,7 @@ class Portfolio extends BaseReactComponent {
               };
             }
           });
-        
+
         return {
           time: row.timestamp,
           from: {
@@ -1285,7 +1297,7 @@ class Portfolio extends BaseReactComponent {
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                             this.props.history.push("/intelligence#netflow");
+                            this.props.history.push("/intelligence#netflow");
                           }
                         }}
                         isScrollVisible={false}
@@ -1454,6 +1466,14 @@ class Portfolio extends BaseReactComponent {
             history={this.props.history}
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
+          />
+        )}
+
+        {this.state.upgradeModal && (
+          <UpgradeModal
+            show={this.state.upgradeModal}
+            onHide={this.upgradeModal}
+            history={this.props.history}
           />
         )}
       </div>

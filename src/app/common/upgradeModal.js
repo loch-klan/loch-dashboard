@@ -368,8 +368,7 @@ class UpgradeModal extends BaseReactComponent {
             history={this.props.history}
             modalType={"create_account"}
             // iconImage={CohortIcon}
-
-            hideSkip={false}
+            hideSkip={true}
             // headerTitle={"Create a Wallet cohort"}
             // changeWalletList={this.handleChangeList}
             // apiResponse={(e) => this.CheckApiResponse(e)}

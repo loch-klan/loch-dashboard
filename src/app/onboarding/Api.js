@@ -245,6 +245,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
     if(!res.data.error){
       localStorage.setItem("lochDummyUser", res.data.data.user.link)
       localStorage.setItem("lochToken", res.data.data.token)
+      localStorage.setItem("currenyPlan", res.data.data.current_plan);
       const allChains = ctx.props.OnboardingState.coinsList
       
       let newAddWallet = [];
@@ -282,7 +283,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) =>{
          "addWallet",
          JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
        );
-      console.log("wallet", addWallet);
+      // console.log("wallet", addWallet);
       ctx.props.history.replace({
         pathname: ctx.state.id ? ctx.state.link : '/home',
         state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}

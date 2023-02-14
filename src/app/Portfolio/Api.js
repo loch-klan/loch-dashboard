@@ -169,6 +169,11 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                 })
                 
                 // ctx.handleResponse && ctx.handleResponse();
+                console.log("add",addWallet.length)
+                if (addWallet.length > 5) {
+                   ctx.upgradeModal && ctx.upgradeModal();
+                }
+               
 
                 if (ctx.handleResponse) {
                   ctx.handleResponse();
