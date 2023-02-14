@@ -31,7 +31,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       ) : (
         <Redirect
           to={{
-            pathname: "/welcome",
+            pathname: "/",
             state: { from: props.location, params: props.match.params },
           }}
         />
@@ -44,7 +44,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 const requireAuth = () => {
   const token = getToken();
   // return token;
-   return true;
+  return true;
 }
 
 export default PrivateRoute;
