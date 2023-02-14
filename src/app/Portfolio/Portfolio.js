@@ -182,8 +182,6 @@ class Portfolio extends BaseReactComponent {
   };
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-     GetAllPlan();
-    getUser()
     // if (this.props.match.params.id) {
     //   getDetailsByLinkApi(this.props.match.params.id, this);
     // }
@@ -220,6 +218,8 @@ class Portfolio extends BaseReactComponent {
       this.getGraphData();
       getAllCounterFeeApi(this, false, false);
       getProfitAndLossApi(this, false, false, false);
+      //  GetAllPlan();
+      //  getUser();
     }
   };
 

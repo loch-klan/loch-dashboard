@@ -5,6 +5,7 @@ import OnBoarding from "../onboarding";
 import "../../assets/scss/onboarding/_onboarding.scss";
 import { Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
+import { deleteToken } from '../../utils/ManageToken';
 
 class Home extends Component {
   constructor(props) {
@@ -20,8 +21,10 @@ class Home extends Component {
     // if(JSON.parse(localStorage.getItem("addWallet")) || JSON.parse(localStorage.getItem("lochUser")) || localStorage.getItem("lochDummyUser")){
     //   localStorage.removeItem("addWallet")
     //   localStorage.removeItem("lochUser")
-    //   localStorage.removeItem("lochDummyUser") 
+    //   localStorage.removeItem("lochDummyUser")
     // }
+    
+ 
   }
 
   render() {

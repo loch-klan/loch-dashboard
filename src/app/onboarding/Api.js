@@ -232,18 +232,17 @@ export const verifyUser = (ctx, info) => {
 }
 
 export const createAnonymousUserApi = (data, ctx, addWallet) => {
-  localStorage.setItem(
-    "currency",
-    JSON.stringify({
-      active: true,
-      code: "USD",
-      id: "6399a2d35a10114b677299fe",
-      name: "United States Dollar",
-      symbol: "$",
-      rate: 1,
-    })
-  );
-  console.log("data",ctx.state?.id)
+  localStorage.setItem('currency',JSON.stringify({
+          active: true,
+          code: "USD",
+          id: "6399a2d35a10114b677299fe",
+          name: "United States Dollar",
+          symbol: "$",
+          rate: 1,
+  }))
+      
+   localStorage.setItem("lochToken", "jsk");
+ 
   {
     !ctx.state.id &&
     ctx.props.history.push({

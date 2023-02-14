@@ -31,7 +31,7 @@ const routes = [
   {
     path: "/welcome",
     name: "Home",
-    type: PrivateRoute,
+    type: Route,
     component: Home,
   },
   {

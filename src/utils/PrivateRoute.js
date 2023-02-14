@@ -43,8 +43,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const requireAuth = () => {
   const token = getToken();
-  // return token;
-  return true;
+  return token;
 }
 
 export default PrivateRoute;
