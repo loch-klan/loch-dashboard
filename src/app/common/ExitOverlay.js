@@ -495,27 +495,37 @@ class ExitOverlay extends BaseReactComponent {
 
   handleExportNow = () => {
     // console.log('Export');
-    this.setState({ loadingExportFile: true });
-    const data = new URLSearchParams();
-    data.append("currency_code", CurrencyType(true));
-    data.append("start_datetime", moment(this.state.fromDate).format("X"));
-    data.append("end_datetime", moment(this.state.toDate).format("X"));
-    ExportDataDownlaod({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      date_range_selected: [
-        moment(this.state.fromDate).format("DD MMMM YY") +
-          " to " +
-          moment(this.state.toDate).format("DD MMMM YY"),
-      ],
-      data_exported: this.state.selectedExportItem.fileName,
-    });
-    // console.log(
-    //   "date range",
-    //   moment(this.state.fromDate).format("DD MMMM YY"),
-    //   moment(this.state.toDate).format("DD MMMM YY")
-    // );
-    exportDataApi(data, this);
+    let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    console.log("add", addWalletList)
+    if (
+      addWalletList.length <= this.state.userPlan?.export_address_limit ||
+      this.state.userPlan?.export_address_limit === -1
+    ) {
+       this.setState({ loadingExportFile: true });
+       const data = new URLSearchParams();
+       data.append("currency_code", CurrencyType(true));
+       data.append("start_datetime", moment(this.state.fromDate).format("X"));
+       data.append("end_datetime", moment(this.state.toDate).format("X"));
+       ExportDataDownlaod({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+         date_range_selected: [
+           moment(this.state.fromDate).format("DD MMMM YY") +
+             " to " +
+             moment(this.state.toDate).format("DD MMMM YY"),
+         ],
+         data_exported: this.state.selectedExportItem.fileName,
+       });
+       // console.log(
+       //   "date range",
+       //   moment(this.state.fromDate).format("DD MMMM YY"),
+       //   moment(this.state.toDate).format("DD MMMM YY")
+       // );
+       exportDataApi(data, this);
+    } else {
+      this.upgradeModal();
+    }
+     
   };
 
   handleSelectedExportItem = (item, e) => {
