@@ -34,6 +34,8 @@ class UpgradeModal extends BaseReactComponent {
     super(props);
     const dummyUser = localStorage.getItem("lochDummyUser");
     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    // const Plans = JSON.parse(localStorage.getItem("Plans"));
+
     this.state = {
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
@@ -54,6 +56,7 @@ class UpgradeModal extends BaseReactComponent {
       planList: [
         {
           price: 0,
+          price_id: "price_1MbJGiFKqIbhlomAxxadBadm",
           name: "Free",
           features: [
             {
@@ -92,6 +95,7 @@ class UpgradeModal extends BaseReactComponent {
         },
         {
           price: 300,
+          price_id: "price_1MbJGiFKqIbhlomAxxadBadm",
           features: [
             {
               name: "Wallet addresses",
@@ -130,6 +134,7 @@ class UpgradeModal extends BaseReactComponent {
         },
         {
           price: 1000,
+          price_id: "price_1MbJHEFKqIbhlomAPfEjgShp",
           features: [
             {
               name: "Wallet addresses",
@@ -169,16 +174,20 @@ class UpgradeModal extends BaseReactComponent {
       ],
       hideUpgradeModal: false,
       RegisterModal: false,
+      price_id:0,
     };
   }
 
   checkoutModal = () => {
+
+    
 
     this.setState(
       {
         CheckOutModal: !this.state.CheckOutModal,
         hideUpgradeModal: true,
       },
+
      
     );
   };
@@ -191,6 +200,7 @@ class UpgradeModal extends BaseReactComponent {
       this.setState({
         RegisterModal: false,
         email: islochUser?.email || "",
+      
       }, () => {
         this.checkoutModal();
       });
@@ -317,7 +327,12 @@ class UpgradeModal extends BaseReactComponent {
                         </div>
                         <Button
                           className="primary-btn"
-                          onClick={() => this.AddEmailModal()}
+                          onClick={() => {
+                            this.AddEmailModal();
+                            this.setState({
+                              price_id:plan.price_id
+                            })
+                          }}
                         >
                           Upgrade now
                         </Button>
@@ -360,6 +375,7 @@ class UpgradeModal extends BaseReactComponent {
             show={this.state.CheckOutModal}
             onHide={this.checkoutModal}
             history={this.props.history}
+            price_id={this.state.price_id}
           />
         )}
         {this.state.RegisterModal ? (

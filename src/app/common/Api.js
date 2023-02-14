@@ -418,3 +418,41 @@ export const GetAllPlan = () => {
       console.log("err", err);
     });
 };
+
+
+// get-all-plans
+export const CreatePyment = (data,ctx) => {
+  postLoginInstance
+    .post("commerce/payment/create-payment", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // Analytics
+        ctx.setState({
+          payment_link: res.data.data.payment.payment_url,
+        });
+        
+        // toast.success(" Your wallets and pods has been saved");
+      }
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};
+
+
+
+export const getUser = () => {
+ 
+  postLoginInstance.post("organisation/user/get-user").then((res) => {
+    if (!res.data.error) {
+    
+      localStorage.setItem(
+        "currentPlan",
+        JSON.stringify(res.data.data.current_plan)
+      );
+
+    } else {
+      toast.error(res.data.message || "Something Went Wrong");
+    }
+  });
+};

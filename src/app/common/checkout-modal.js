@@ -17,7 +17,7 @@ import {
 } from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
+import { CreatePyment, fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
@@ -89,14 +89,19 @@ class CheckoutModal extends BaseReactComponent {
           name: "Sovereign",
         },
       ],
-      RegisterModal:false,
+      RegisterModal: false,
+      payment_link: "",
     };
   }
 
   componentDidMount() {
     // this.props.getAllCoins();
     // this.props.getAllParentChains();
-    //    this.AddEmailModal(); 
+    //    this.AddEmailModal();
+
+      let data = new URLSearchParams();
+      data.append("price_id", this.props.price_id);
+      CreatePyment(data, this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -223,7 +228,12 @@ class CheckoutModal extends BaseReactComponent {
                       </div>
                       <Button
                         className="primary-btn"
-                        // onClick={() => this.handleExportNow()}
+                        onClick={() => {
+                          // this.handleExportNow()
+                          //  payment_link;
+                          window.open(this.state.payment_link);
+
+                        }}
                       >
                         Pay now
                       </Button>
