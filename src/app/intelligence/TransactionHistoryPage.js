@@ -216,17 +216,17 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allMethod" &&
       value !== "allYear"
     ) {
-      console.log("first if", index)
+      // console.log("first if", index)
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
       value === "allYear"
     ) {
-       console.log("second if", index);
+      //  console.log("second if", index);
       arr.splice(index, 1);
     } else {
-      console.log("else", index);
+      // console.log("else", index);
       let obj = {};
       obj = {
         key: key,

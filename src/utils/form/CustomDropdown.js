@@ -73,8 +73,8 @@ class CustomDropdown extends Component {
         this.state.options.push({
           label: this.props.isChain ? e.name : e.label,
           value: this.props.isChain ? e.id : e.value,
-          // isSelected: i === 0 && !this.props.isChain ? true : false,
-          isSelected: true,
+          isSelected: i === 0 && !this.props.isChain ? true : false,
+          // isSelected: true,
         })
       );
       if (this.props.isChain) {
@@ -184,8 +184,8 @@ class CustomDropdown extends Component {
           this.state.options.push({
             label: this.props.isChain ? e.name : e.label,
             value: this.props.isChain ? e.id : e.value,
-            // isSelected: i === 0 && !this.props.isChain ? true : false,
-            isSelected: true,
+            isSelected: i === 0 && !this.props.isChain ? true : false,
+            // isSelected: true,
           })
         );
 
@@ -227,7 +227,7 @@ class CustomDropdown extends Component {
   onSelect = (option) => {
     // console.log("option",option)
     if (option.value === this.state.options[0].value) {
-      console.log("all clicked")
+      // console.log("all clicked")
     }
     let updatedOptions = this.state.options.map((e) => {
       if (e.value === this.state.options[0].value && e.value === option.value) {
@@ -267,12 +267,12 @@ class CustomDropdown extends Component {
   
     let count;
     if (isAll) {
-      // selected = this.props.isChain
-      //   ? [{ name: "All", id: "" }]
-      //   : selected?.toString();
       selected = this.props.isChain
         ? [{ name: "All", id: "" }]
-        : selected[0]?.toString();
+        : selected?.toString();
+      // selected = this.props.isChain
+      //   ? [{ name: "All", id: "" }]
+      //   : selected[0]?.toString();
       count = 0;
     } else {
       count = selected.length;

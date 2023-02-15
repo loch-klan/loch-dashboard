@@ -1122,7 +1122,7 @@ class CohortPage extends BaseReactComponent {
 
           {/* 4 card end */}
 
-          {/* <div
+          <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -1147,10 +1147,10 @@ class CohortPage extends BaseReactComponent {
                 Save
               </button>
             )}
-          </div> */}
+          </div>
 
           {/* Notification start */}
-          {/* <div
+          <div
             style={{
               background: "rgba(229, 229, 230, 0.5)",
               borderRadius: "16px",
@@ -1382,7 +1382,7 @@ class CohortPage extends BaseReactComponent {
                 </div>
               </Col>
             </Row>
-          </div> */}
+          </div>
           {/* notification end */}
 
           {/* Address Start */}
