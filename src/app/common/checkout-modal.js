@@ -221,6 +221,8 @@ class CheckoutModal extends BaseReactComponent {
                                     ? "No"
                                     : list.limit === true
                                     ? "Yes"
+                                    : list.limit === -1
+                                    ? "Unlimited"
                                     : list.limit}
                                 </h4>
                               </div>
