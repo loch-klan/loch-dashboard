@@ -577,7 +577,7 @@ export const ExportDateSelected = ({
     "date range selected": date_range_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:export date range drop down selected");
+  // console.log("Menu:export date range drop down selected");
 };
 
 //36. Menu:export data downloaded

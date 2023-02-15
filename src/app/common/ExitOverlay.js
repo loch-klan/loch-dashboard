@@ -40,7 +40,7 @@ import {
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
-  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName,
+  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName, ExportDateSelected,
 } from "../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
@@ -162,6 +162,19 @@ class ExitOverlay extends BaseReactComponent {
     this.props.getAllCoins();
     this.props.getAllParentChains();
   }
+
+   onDataSelected = () => {
+      ExportDateSelected({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        date_range_selected: 
+          moment(this.state.fromDate).format("DD MMMM YY") +
+            " to " +
+            moment(this.state.toDate).format("DD MMMM YY")
+        
+      });
+
+      };
 
   addAddress = () => {
     this.state.addWalletList.push({
@@ -790,7 +803,11 @@ class ExitOverlay extends BaseReactComponent {
                           to
                         </span>
                         <FormElement
-                          valueLink={this.linkState(this, "toDate")}
+                          valueLink={this.linkState(
+                            this,
+                            "toDate",
+                            this.onDataSelected
+                          )}
                           required
                           validations={[
                             {
@@ -888,14 +905,14 @@ class ExitOverlay extends BaseReactComponent {
                           type: CustomTextControl,
                           settings: {
                             placeholder: "Give your pod a name",
-                            onBlur: ((onBlur) => {
-                                // console.log("pod", this.state.cohort_name)
-                                PodName({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                  pod_name:this.state.cohort_name
-                                });
-                              }),
+                            onBlur: (onBlur) => {
+                              // console.log("pod", this.state.cohort_name)
+                              PodName({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                                pod_name: this.state.cohort_name,
+                              });
+                            },
                           },
                         }}
                       />
