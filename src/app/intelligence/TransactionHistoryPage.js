@@ -203,9 +203,9 @@ class TransactionHistoryPage extends BaseReactComponent {
   };
 
   addCondition = (key, value) => {
-    // console.log('key, value',key, value);
+    console.log("key, value", key, value, this.state.condition);
     let index = this.state.condition.findIndex((e) => e.key === key);
-    // console.log('index',index);
+    console.log('index',index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -216,15 +216,17 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allMethod" &&
       value !== "allYear"
     ) {
+      console.log("first if", index)
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
       value === "allYear"
     ) {
+       console.log("second if", index);
       arr.splice(index, 1);
     } else {
-      
+      console.log("else", index);
       let obj = {};
       obj = {
         key: key,
@@ -369,7 +371,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table?.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        console.log("row",row)
+        // console.log("row",row)
         walletList &&
           walletList?.map((wallet) => {
             if (

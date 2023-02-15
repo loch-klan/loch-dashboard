@@ -73,7 +73,8 @@ class CustomDropdown extends Component {
         this.state.options.push({
           label: this.props.isChain ? e.name : e.label,
           value: this.props.isChain ? e.id : e.value,
-          isSelected: i === 0 && !this.props.isChain ? true : false,
+          // isSelected: i === 0 && !this.props.isChain ? true : false,
+          isSelected: true,
         })
       );
       if (this.props.isChain) {
@@ -95,8 +96,7 @@ class CustomDropdown extends Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.options.length === 0 ||
-      (this.props.isLineChart &&
-        prevProps.options.length !== this.props.options.length)
+        prevProps.options.length !== this.props.options.length
     ) {
       if (this.props.isLineChart) {
         // console.log("in line chart");
@@ -179,13 +179,17 @@ class CustomDropdown extends Component {
         // );
 
         // console.log("transaction", this.props.options);
+        this.state.options = [];
         this.props.options.map((e, i) =>
           this.state.options.push({
             label: this.props.isChain ? e.name : e.label,
             value: this.props.isChain ? e.id : e.value,
-            isSelected: i === 0 && !this.props.isChain ? true : false,
+            // isSelected: i === 0 && !this.props.isChain ? true : false,
+            isSelected: true,
           })
         );
+
+        // for chain
         if (this.props.isChain) {
           this.state.options = [
             { label: "All", value: "", isSelected: true },
@@ -222,6 +226,9 @@ class CustomDropdown extends Component {
 
   onSelect = (option) => {
     // console.log("option",option)
+    if (option.value === this.state.options[0].value) {
+      console.log("all clicked")
+    }
     let updatedOptions = this.state.options.map((e) => {
       if (e.value === this.state.options[0].value && e.value === option.value) {
         e.isSelected = true;
@@ -257,12 +264,15 @@ class CustomDropdown extends Component {
       .map((e) =>
         this.props.isChain ? { name: e.label, id: e.value } : e?.value
       );
-
+  
     let count;
     if (isAll) {
+      // selected = this.props.isChain
+      //   ? [{ name: "All", id: "" }]
+      //   : selected?.toString();
       selected = this.props.isChain
         ? [{ name: "All", id: "" }]
-        : selected?.toString();
+        : selected[0]?.toString();
       count = 0;
     } else {
       count = selected.length;
@@ -294,7 +304,7 @@ class CustomDropdown extends Component {
     //   this.props.handleClick(this.props.action, this.getSelected().selected);
     // //    console.log(this.props.action, this.getSelected().selected, "apply");
     //     this.setState({ showMenu: false });
-
+//  console.log(this.props.action, this.getSelected().selected, "apply");
     this.props.isLineChart || this.props.isChain
       ? this.props.handleClick(this.getSelected().selected)
       : this.props.handleClick(this.props.action, this.getSelected().selected);
