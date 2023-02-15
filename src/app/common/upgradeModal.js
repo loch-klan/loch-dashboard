@@ -310,7 +310,11 @@ class UpgradeModal extends BaseReactComponent {
     this.setState(
       {
         CheckOutModal: !this.state.CheckOutModal,
-        hideUpgradeModal: true,
+     
+      }, () => {
+        this.setState({
+          hideUpgradeModal: this.state.CheckOutModal === true ? true : false,
+        });
       },
 
      
@@ -332,6 +336,10 @@ class UpgradeModal extends BaseReactComponent {
     } else {
       this.setState({
         RegisterModal: !this.state.RegisterModal,
+      }, () => {
+        this.setState({
+          hideUpgradeModal: this.state.RegisterModal === true ? true : false,
+        });
       });
     }
   };

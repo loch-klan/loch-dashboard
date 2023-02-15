@@ -156,12 +156,21 @@ class ExitOverlay extends BaseReactComponent {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
+      hidePrevModal: false,
     };
   }
   upgradeModal = () => {
-    this.setState({
-      upgradeModal: !this.state.upgradeModal,
-    });
+    this.setState(
+      {
+        upgradeModal: !this.state.upgradeModal,
+        hidePrevModal: !this.state.upgradeModal,
+      },
+      () => {
+        // this.setState({
+        //   hidePrevModal: this.state.upgradeModal,
+        // });
+      }
+    );
   };
   fileInputRef = React.createRef();
   pasteInput = React.createRef();
@@ -636,628 +645,632 @@ class ExitOverlay extends BaseReactComponent {
 
   render() {
     return (
-      <Modal
-        show={this.state.show}
-        className="exit-overlay-form"
-        // backdrop="static"
-        onHide={this.state.onHide}
-        size="lg"
-        dialogClassName={"exit-overlay-modal"}
-        centered
-        aria-labelledby="contained-modal-title-vcenter"
-        backdropClassName="exitoverlaymodal"
-      >
-        {this.state.showRedirection &&
-          toast.success(
-            <div className="custom-toast-msg">
-              <div>Successful</div>
-              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-                Please check your mailbox for the verification link
-              </div>
-            </div>
-          )}
-        <Modal.Header>
-          {this.props.modalType === "apiModal" ||
-          this.props.modalType === "exportModal" ||
-          this.props.modalType === "create_account" ||
-          (this.props.modalType === "cohort" && !this.props.isEdit) ? (
-            <div className="api-modal-header">
-              <Image src={this.props.iconImage} />
-            </div>
-          ) : this.props.isEdit ? (
-            <div
-              style={{
-                background: "#FFFFFF",
-                boxShadow:
-                  "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
-                borderRadius: "12px",
-                padding: "6px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexWrap: "wrap",
-                width: "60px",
-              }}
-            >
-              {/* chainImages */}
-              <Image
-                src={this.props.chainImages[0]}
-                style={{
-                  margin: "0px 4px 4px 0px",
-                  width: "2.2rem",
-                  borderRadius: "0.6rem",
-                }}
-              />
-              <Image
-                src={this.props.chainImages[1]}
-                style={{
-                  margin: "0px 0px 4px 0px",
-                  width: "2.2rem",
-                  borderRadius: "0.6rem",
-                }}
-              />
-              <Image
-                src={this.props.chainImages[2]}
-                style={{
-                  margin: "0px 4px 0px 0px",
-                  width: "2.2rem",
-                  borderRadius: "0.6rem",
-                }}
-              />
-              {this.props.chainImages?.length < 5 ? (
-                <Image
-                  src={this.props.chainImages[3]}
-                  style={{
-                    margin: "0px 0px 0px 0px",
-                    width: "2.2rem",
-                    borderRadius: "0.6rem",
-                  }}
-                />
-              ) : (
+      <>
+        {!this.state.hidePrevModal && (
+          <Modal
+            show={this.state.show}
+            className="exit-overlay-form"
+            // backdrop="static"
+            onHide={this.state.onHide}
+            size="lg"
+            dialogClassName={"exit-overlay-modal"}
+            centered
+            aria-labelledby="contained-modal-title-vcenter"
+            backdropClassName="exitoverlaymodal"
+          >
+            {this.state.showRedirection &&
+              toast.success(
+                <div className="custom-toast-msg">
+                  <div>Successful</div>
+                  <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                    Please check your mailbox for the verification link
+                  </div>
+                </div>
+              )}
+            <Modal.Header>
+              {this.props.modalType === "apiModal" ||
+              this.props.modalType === "exportModal" ||
+              this.props.modalType === "create_account" ||
+              (this.props.modalType === "cohort" && !this.props.isEdit) ? (
+                <div className="api-modal-header">
+                  <Image src={this.props.iconImage} />
+                </div>
+              ) : this.props.isEdit ? (
                 <div
                   style={{
-                    margin: "0px 0px 0px 0px",
-                    height: "2.2rem",
-                    width: "2.2rem",
-                    borderRadius: "0.6rem",
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
+                    borderRadius: "12px",
+                    padding: "6px",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "rgba(229, 229, 230, 0.5)",
+                    flexWrap: "wrap",
+                    width: "60px",
                   }}
-                  className="inter-display-semi-bold f-s-10"
                 >
-                  {this.props.chainImages?.length - 3}+
+                  {/* chainImages */}
+                  <Image
+                    src={this.props.chainImages[0]}
+                    style={{
+                      margin: "0px 4px 4px 0px",
+                      width: "2.2rem",
+                      borderRadius: "0.6rem",
+                    }}
+                  />
+                  <Image
+                    src={this.props.chainImages[1]}
+                    style={{
+                      margin: "0px 0px 4px 0px",
+                      width: "2.2rem",
+                      borderRadius: "0.6rem",
+                    }}
+                  />
+                  <Image
+                    src={this.props.chainImages[2]}
+                    style={{
+                      margin: "0px 4px 0px 0px",
+                      width: "2.2rem",
+                      borderRadius: "0.6rem",
+                    }}
+                  />
+                  {this.props.chainImages?.length < 5 ? (
+                    <Image
+                      src={this.props.chainImages[3]}
+                      style={{
+                        margin: "0px 0px 0px 0px",
+                        width: "2.2rem",
+                        borderRadius: "0.6rem",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        margin: "0px 0px 0px 0px",
+                        height: "2.2rem",
+                        width: "2.2rem",
+                        borderRadius: "0.6rem",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "rgba(229, 229, 230, 0.5)",
+                      }}
+                      className="inter-display-semi-bold f-s-10"
+                    >
+                      {this.props.chainImages?.length - 3}+
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="exitOverlayIcon">
+                  <Image src={ExitOverlayIcon} />
                 </div>
               )}
-            </div>
-          ) : (
-            <div className="exitOverlayIcon">
-              <Image src={ExitOverlayIcon} />
-            </div>
-          )}
-          <div
-            className="closebtn"
-            onClick={() => {
-              // if (this.props.modalType === "create_account") {
-              //   this.props.isSkip();
-              // }
-              this.state.onHide();
-            }}
-          >
-            <Image src={CloseIcon} />
-          </div>
-        </Modal.Header>
-        <Modal.Body>
-          {this.props.modalType === "apiModal" ||
-          this.props.modalType === "exportModal" ||
-          this.props.modalType === "cohort" ? (
-            <div
-              className={
-                this.props.modalType === "exportModal"
-                  ? "export-modal-body"
-                  : this.props.modalType === "cohort"
-                  ? "cohort-modal-body"
-                  : "api-modal-body"
-              }
-            >
-              <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">
-                {this.props.headerTitle}
-              </h6>
-              <p className="inter-display-regular f-s-13 lh-16 grey-B0B">
-                {this.props.modalType === "apiModal"
-                  ? "Personalized digital asset intelligence via API"
-                  : this.props.modalType === "cohort"
-                  ? this.props.isEdit
-                    ? `added ${this.props.addedon}`
-                    : "Track a pod of whales here"
-                  : "Export your exisiting data from Loch"}
-              </p>
-              {this.props.modalType === "apiModal" ? (
-                <div className="api-modal-frame">
-                  <Image src={ApiModalFrame} />
-                  <p className="inter-display-regular f-s-13 lh-16 black-191">
-                    This feature is coming soon
+              <div
+                className="closebtn"
+                onClick={() => {
+                  // if (this.props.modalType === "create_account") {
+                  //   this.props.isSkip();
+                  // }
+                  this.state.onHide();
+                }}
+              >
+                <Image src={CloseIcon} />
+              </div>
+            </Modal.Header>
+            <Modal.Body>
+              {this.props.modalType === "apiModal" ||
+              this.props.modalType === "exportModal" ||
+              this.props.modalType === "cohort" ? (
+                <div
+                  className={
+                    this.props.modalType === "exportModal"
+                      ? "export-modal-body"
+                      : this.props.modalType === "cohort"
+                      ? "cohort-modal-body"
+                      : "api-modal-body"
+                  }
+                >
+                  <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">
+                    {this.props.headerTitle}
+                  </h6>
+                  <p className="inter-display-regular f-s-13 lh-16 grey-B0B">
+                    {this.props.modalType === "apiModal"
+                      ? "Personalized digital asset intelligence via API"
+                      : this.props.modalType === "cohort"
+                      ? this.props.isEdit
+                        ? `added ${this.props.addedon}`
+                        : "Track a pod of whales here"
+                      : "Export your exisiting data from Loch"}
                   </p>
-                </div>
-              ) : this.props.modalType === "exportModal" ? (
-                <div className="export-body">
-                  <div className="export-timeline">
-                    <Form onValidSubmit={this.submit}>
-                      <div className="timeline-wrapper">
-                        <span className="inter-display-medium f-s-16 lh-19 black-191">
-                          Export data from{" "}
-                        </span>
-                        <FormElement
-                          valueLink={this.linkState(
-                            this,
-                            "fromDate",
-                            this.handleFromDate
-                          )}
-                          required
-                          validations={[
-                            {
-                              validate: FormValidator.isRequired,
-                              message: "From date cannot be empty",
-                            },
-                          ]}
-                          control={{
-                            type: DatePickerControl,
-                            settings: {
-                              placeholder: "From Date",
-                              showDateIcon: false,
-                              nextLabel: (
-                                <Image
-                                  className="date-navigator-icons-next"
-                                  src={nextIcon}
-                                />
-                              ),
-                              next2Label: (
-                                <Image
-                                  className="date-navigator-icons"
-                                  src={next2Icon}
-                                />
-                              ),
-                              prevLabel: (
-                                <Image
-                                  className="date-navigator-icons-next"
-                                  src={prevIcon}
-                                />
-                              ),
-                              prev2Label: (
-                                <Image
-                                  className="date-navigator-icons"
-                                  src={prev2Icon}
-                                />
-                              ),
-                            },
-                          }}
-                        />
-                        <span className="inter-display-medium f-s-16 lh-19 black-191">
-                          to
-                        </span>
-                        <FormElement
-                          valueLink={this.linkState(this, "toDate")}
-                          required
-                          validations={[
-                            {
-                              validate: FormValidator.isRequired,
-                              message: "To date cannot be empty",
-                            },
-                          ]}
-                          control={{
-                            type: DatePickerControl,
-                            settings: {
-                              placeholder: "To Date",
-                              minDate: this.state.fromDate || new Date(),
-                              showDateIcon: false,
-                              nextLabel: (
-                                <Image
-                                  className="date-navigator-icons-next"
-                                  src={nextIcon}
-                                />
-                              ),
-                              next2Label: (
-                                <Image
-                                  className="date-navigator-icons"
-                                  src={next2Icon}
-                                />
-                              ),
-                              prevLabel: (
-                                <Image
-                                  className="date-navigator-icons-next"
-                                  src={prevIcon}
-                                />
-                              ),
-                              prev2Label: (
-                                <Image
-                                  className="date-navigator-icons"
-                                  src={prev2Icon}
-                                />
-                              ),
-                            },
-                          }}
-                        />
+                  {this.props.modalType === "apiModal" ? (
+                    <div className="api-modal-frame">
+                      <Image src={ApiModalFrame} />
+                      <p className="inter-display-regular f-s-13 lh-16 black-191">
+                        This feature is coming soon
+                      </p>
+                    </div>
+                  ) : this.props.modalType === "exportModal" ? (
+                    <div className="export-body">
+                      <div className="export-timeline">
+                        <Form onValidSubmit={this.submit}>
+                          <div className="timeline-wrapper">
+                            <span className="inter-display-medium f-s-16 lh-19 black-191">
+                              Export data from{" "}
+                            </span>
+                            <FormElement
+                              valueLink={this.linkState(
+                                this,
+                                "fromDate",
+                                this.handleFromDate
+                              )}
+                              required
+                              validations={[
+                                {
+                                  validate: FormValidator.isRequired,
+                                  message: "From date cannot be empty",
+                                },
+                              ]}
+                              control={{
+                                type: DatePickerControl,
+                                settings: {
+                                  placeholder: "From Date",
+                                  showDateIcon: false,
+                                  nextLabel: (
+                                    <Image
+                                      className="date-navigator-icons-next"
+                                      src={nextIcon}
+                                    />
+                                  ),
+                                  next2Label: (
+                                    <Image
+                                      className="date-navigator-icons"
+                                      src={next2Icon}
+                                    />
+                                  ),
+                                  prevLabel: (
+                                    <Image
+                                      className="date-navigator-icons-next"
+                                      src={prevIcon}
+                                    />
+                                  ),
+                                  prev2Label: (
+                                    <Image
+                                      className="date-navigator-icons"
+                                      src={prev2Icon}
+                                    />
+                                  ),
+                                },
+                              }}
+                            />
+                            <span className="inter-display-medium f-s-16 lh-19 black-191">
+                              to
+                            </span>
+                            <FormElement
+                              valueLink={this.linkState(this, "toDate")}
+                              required
+                              validations={[
+                                {
+                                  validate: FormValidator.isRequired,
+                                  message: "To date cannot be empty",
+                                },
+                              ]}
+                              control={{
+                                type: DatePickerControl,
+                                settings: {
+                                  placeholder: "To Date",
+                                  minDate: this.state.fromDate || new Date(),
+                                  showDateIcon: false,
+                                  nextLabel: (
+                                    <Image
+                                      className="date-navigator-icons-next"
+                                      src={nextIcon}
+                                    />
+                                  ),
+                                  next2Label: (
+                                    <Image
+                                      className="date-navigator-icons"
+                                      src={next2Icon}
+                                    />
+                                  ),
+                                  prevLabel: (
+                                    <Image
+                                      className="date-navigator-icons-next"
+                                      src={prevIcon}
+                                    />
+                                  ),
+                                  prev2Label: (
+                                    <Image
+                                      className="date-navigator-icons"
+                                      src={prev2Icon}
+                                    />
+                                  ),
+                                },
+                              }}
+                            />
+                          </div>
+                        </Form>
                       </div>
-                    </Form>
-                  </div>
-                  <div className="export-item-wrapper">
-                    {this.state.exportItem?.map((item) => {
-                      return (
-                        <span
-                          className={
-                            this.state.selectedExportItem.value === item.value
-                              ? "inter-display-medium f-s-16 lh-19 grey-636 export-item active"
-                              : `inter-display-medium f-s-16 lh-19 grey-636 export-item`
-                          }
-                          onClick={(e) =>
-                            this.handleSelectedExportItem(item, e)
-                          }
+                      <div className="export-item-wrapper">
+                        {this.state.exportItem?.map((item) => {
+                          return (
+                            <span
+                              className={
+                                this.state.selectedExportItem.value ===
+                                item.value
+                                  ? "inter-display-medium f-s-16 lh-19 grey-636 export-item active"
+                                  : `inter-display-medium f-s-16 lh-19 grey-636 export-item`
+                              }
+                              onClick={(e) =>
+                                this.handleSelectedExportItem(item, e)
+                              }
+                            >
+                              {item.name}
+                            </span>
+                          );
+                        })}
+                        {/* <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span> */}
+                      </div>
+                      {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
+                      {/* <div onClick={()=>this.handleExportNow()} > */}
+                      {this.state.loadingExportFile === true ? (
+                        // <Image src={lochClean} className='loading-export'/>
+                        <Button className="primary-btn">
+                          {loadingAnimation()}
+                        </Button>
+                      ) : (
+                        <Button
+                          className="primary-btn"
+                          onClick={() => this.handleExportNow()}
                         >
-                          {item.name}
-                        </span>
-                      );
-                    })}
-                    {/* <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span> */}
-                  </div>
-                  {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
-                  {/* <div onClick={()=>this.handleExportNow()} > */}
-                  {this.state.loadingExportFile === true ? (
-                    // <Image src={lochClean} className='loading-export'/>
-                    <Button className="primary-btn">
-                      {loadingAnimation()}
-                    </Button>
+                          Export Now
+                        </Button>
+                      )}
+                      {/* </div> */}
+                    </div>
+                  ) : this.props.modalType === "cohort" ? (
+                    <div className="cohort-body">
+                      <div className="cohort-item-wrapper">
+                        <Form onValidSubmit={this.handleCohortSave}>
+                          <FormElement
+                            valueLink={this.linkState(this, "cohort_name")}
+                            label="Pod Name"
+                            required
+                            validations={[
+                              {
+                                validate: FormValidator.isRequired,
+                                message: "",
+                              },
+                            ]}
+                            control={{
+                              type: CustomTextControl,
+                              settings: {
+                                placeholder: "Give your pod a name",
+                                onBlur: (onBlur) => {
+                                  // console.log("pod", this.state.cohort_name)
+                                  PodName({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                    pod_name: this.state.cohort_name,
+                                  });
+                                },
+                              },
+                            }}
+                          />
+
+                          <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
+                            Wallets
+                          </h4>
+
+                          {/* Multiple address box */}
+
+                          <div
+                            className="add-modal-inputs"
+                            style={{
+                              paddingLeft: `${
+                                this.state.addWalletList?.length === 1
+                                  ? "0rem"
+                                  : "6rem"
+                              }`,
+                              paddingRight: `${
+                                this.state.addWalletList?.length < 5
+                                  ? "0rem"
+                                  : "2rem"
+                              }`,
+                            }}
+                          >
+                            {this.state.addWalletList?.map((elem, index) => {
+                              return (
+                                <div
+                                  className="add-wallet-input-section"
+                                  key={index}
+                                  id={`add-wallet-${index}`}
+                                  style={{
+                                    marginBottom: `${
+                                      this.state.addWalletList?.length - 1 ===
+                                      index
+                                        ? "0rem"
+                                        : "1.2rem"
+                                    }`,
+                                  }}
+                                >
+                                  {this.state.addWalletList.length > 1 ? (
+                                    <div
+                                      className="delete-icon"
+                                      onClick={() => this.deleteAddress(index)}
+                                    >
+                                      <Image src={DeleteIcon} />
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+
+                                  {(elem.address == "" ||
+                                    elem.displayAddress == "") &&
+                                  index == 0 &&
+                                  !this.props?.isEdit ? (
+                                    <span
+                                      className="paste-text cp"
+                                      onClick={this.handlePaste}
+                                    >
+                                      <Image
+                                        src={CopyLink}
+                                        // onClick={() => this.setState({ emailError: false })}
+                                      />
+                                      <p className="inter-display-medium f-s-16 lh-19">
+                                        Paste
+                                      </p>
+                                    </span>
+                                  ) : (
+                                    ""
+                                  )}
+
+                                  <input
+                                    autoFocus
+                                    name={`wallet${index + 1}`}
+                                    value={
+                                      elem.displayAddress || elem.address || ""
+                                    }
+                                    ref={index == 0 ? this.pasteInput : ""}
+                                    placeholder="Paste any wallet address or ENS here"
+                                    // className='inter-display-regular f-s-16 lh-20'
+                                    className={`inter-display-regular f-s-16 lh-20 ${
+                                      elem.address ? "is-valid" : null
+                                    }`}
+                                    onChange={(e) => this.handleOnchange(e)}
+                                    id={elem?.id}
+                                    onKeyDown={this.handleTabPress}
+                                    // style={getPadding(
+                                    //   `add-wallet-${index}`,
+                                    //   elem,
+                                    //   this.props.OnboardingState
+                                    // )}
+                                  />
+                                  {elem.address ? (
+                                    elem.coinFound && elem.coins.length > 0 ? (
+                                      // COIN FOUND STATE
+                                      <CustomChip
+                                        coins={elem.coins.filter(
+                                          (c) => c.chain_detected
+                                        )}
+                                        key={index}
+                                        isLoaded={true}
+                                      ></CustomChip>
+                                    ) : elem.coins.length ===
+                                      this.props.OnboardingState.coinsList
+                                        .length ? (
+                                      // elem.coins.length === 1
+                                      // UNRECOGNIZED WALLET
+                                      <CustomChip
+                                        coins={null}
+                                        key={index}
+                                        isLoaded={true}
+                                      ></CustomChip>
+                                    ) : (
+                                      // LOADING STATE
+                                      <CustomChip
+                                        coins={null}
+                                        key={index}
+                                        isLoaded={false}
+                                      ></CustomChip>
+                                    )
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+
+                          {this.state.addWalletList[0]?.address !== "" && (
+                            <div className="m-b-32 add-wallet-btn">
+                              <Button
+                                className="grey-btn"
+                                onClick={this.addAddress}
+                              >
+                                <Image src={PlusIcon} /> Add another
+                              </Button>
+                            </div>
+                          )}
+
+                          <div className="save-btn-section">
+                            <input
+                              type="file"
+                              ref={this.fileInputRef}
+                              onChange={this.handleFileSelect}
+                              style={{ display: "none" }}
+                            />
+                            <Button
+                              className={`secondary-btn ${
+                                this.state.email ? "active" : ""
+                              }`}
+                              type="button"
+                              onClick={this.handleUpload}
+                            >
+                              Upload CSV / Text file
+                            </Button>
+                            <div>
+                              {this.props.isEdit && (
+                                <Button
+                                  className={`secondary-btn m-r-12`}
+                                  type="button"
+                                  style={
+                                    this.props.isEdit ? { border: "none" } : {}
+                                  }
+                                  onClick={this.handleDeleteCohort}
+                                >
+                                  Delete
+                                </Button>
+                              )}
+                              <Button
+                                className={`primary-btn ${
+                                  this.state.email ? "active" : ""
+                                }`}
+                                type="submit"
+                              >
+                                Save
+                              </Button>
+                            </div>
+                          </div>
+                        </Form>
+                      </div>
+                    </div>
                   ) : (
-                    <Button
-                      className="primary-btn"
-                      onClick={() => this.handleExportNow()}
-                    >
-                      Export Now
-                    </Button>
+                    ""
                   )}
-                  {/* </div> */}
                 </div>
-              ) : this.props.modalType === "cohort" ? (
-                <div className="cohort-body">
-                  <div className="cohort-item-wrapper">
-                    <Form onValidSubmit={this.handleCohortSave}>
+              ) : this.props.modalType === "create_account" ? (
+                <div className="exit-overlay-body">
+                  <h6 className="inter-display-medium f-s-20 lh-24 ">
+                    Don’t lose your data
+                  </h6>
+                  {/* <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center">
+                Don’t let your hard work go to waste
+              </p> */}
+                  <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
+                    Don’t let your hard work go to waste. Add your email so you
+                    can watch your whales with binoculars
+                  </p>
+                  {/* this.props.isSkip(); */}
+                  <div className="email-section">
+                    <Form onValidSubmit={this.handleSave}>
                       <FormElement
-                        valueLink={this.linkState(this, "cohort_name")}
-                        label="Pod Name"
+                        valueLink={this.linkState(this, "email")}
+                        // label="Email Info"
                         required
                         validations={[
                           {
                             validate: FormValidator.isRequired,
                             message: "",
                           },
+                          {
+                            validate: FormValidator.isEmail,
+                            message: "Please enter valid email id",
+                          },
                         ]}
                         control={{
                           type: CustomTextControl,
                           settings: {
-                            placeholder: "Give your pod a name",
-                            onBlur: (onBlur) => {
-                              // console.log("pod", this.state.cohort_name)
-                              PodName({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                                pod_name: this.state.cohort_name,
-                              });
-                            },
+                            placeholder: "Email",
                           },
                         }}
                       />
-
-                      <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
-                        Wallets
-                      </h4>
-
-                      {/* Multiple address box */}
-
-                      <div
-                        className="add-modal-inputs"
-                        style={{
-                          paddingLeft: `${
-                            this.state.addWalletList?.length === 1
-                              ? "0rem"
-                              : "6rem"
-                          }`,
-                          paddingRight: `${
-                            this.state.addWalletList?.length < 5
-                              ? "0rem"
-                              : "2rem"
-                          }`,
-                        }}
-                      >
-                        {this.state.addWalletList?.map((elem, index) => {
-                          return (
-                            <div
-                              className="add-wallet-input-section"
-                              key={index}
-                              id={`add-wallet-${index}`}
-                              style={{
-                                marginBottom: `${
-                                  this.state.addWalletList?.length - 1 === index
-                                    ? "0rem"
-                                    : "1.2rem"
-                                }`,
-                              }}
-                            >
-                              {this.state.addWalletList.length > 1 ? (
-                                <div
-                                  className="delete-icon"
-                                  onClick={() => this.deleteAddress(index)}
-                                >
-                                  <Image src={DeleteIcon} />
-                                </div>
-                              ) : (
-                                ""
-                              )}
-
-                              {(elem.address == "" ||
-                                elem.displayAddress == "") &&
-                              index == 0 &&
-                              !this.props?.isEdit ? (
-                                <span
-                                  className="paste-text cp"
-                                  onClick={this.handlePaste}
-                                >
-                                  <Image
-                                    src={CopyLink}
-                                    // onClick={() => this.setState({ emailError: false })}
-                                  />
-                                  <p className="inter-display-medium f-s-16 lh-19">
-                                    Paste
-                                  </p>
-                                </span>
-                              ) : (
-                                ""
-                              )}
-
-                              <input
-                                autoFocus
-                                name={`wallet${index + 1}`}
-                                value={
-                                  elem.displayAddress || elem.address || ""
-                                }
-                                ref={index == 0 ? this.pasteInput : ""}
-                                placeholder="Paste any wallet address or ENS here"
-                                // className='inter-display-regular f-s-16 lh-20'
-                                className={`inter-display-regular f-s-16 lh-20 ${
-                                  elem.address ? "is-valid" : null
-                                }`}
-                                onChange={(e) => this.handleOnchange(e)}
-                                id={elem?.id}
-                                onKeyDown={this.handleTabPress}
-                                // style={getPadding(
-                                //   `add-wallet-${index}`,
-                                //   elem,
-                                //   this.props.OnboardingState
-                                // )}
-                              />
-                              {elem.address ? (
-                                elem.coinFound && elem.coins.length > 0 ? (
-                                  // COIN FOUND STATE
-                                  <CustomChip
-                                    coins={elem.coins.filter(
-                                      (c) => c.chain_detected
-                                    )}
-                                    key={index}
-                                    isLoaded={true}
-                                  ></CustomChip>
-                                ) : elem.coins.length ===
-                                  this.props.OnboardingState.coinsList
-                                    .length ? (
-                                  // elem.coins.length === 1
-                                  // UNRECOGNIZED WALLET
-                                  <CustomChip
-                                    coins={null}
-                                    key={index}
-                                    isLoaded={true}
-                                  ></CustomChip>
-                                ) : (
-                                  // LOADING STATE
-                                  <CustomChip
-                                    coins={null}
-                                    key={index}
-                                    isLoaded={false}
-                                  ></CustomChip>
-                                )
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      {this.state.addWalletList[0]?.address !== "" && (
-                        <div className="m-b-32 add-wallet-btn">
-                          <Button
-                            className="grey-btn"
-                            onClick={this.addAddress}
-                          >
-                            <Image src={PlusIcon} /> Add another
-                          </Button>
-                        </div>
-                      )}
-
                       <div className="save-btn-section">
-                        <input
-                          type="file"
-                          ref={this.fileInputRef}
-                          onChange={this.handleFileSelect}
-                          style={{ display: "none" }}
-                        />
                         <Button
-                          className={`secondary-btn ${
+                          className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
                             this.state.email ? "active" : ""
                           }`}
-                          type="button"
-                          onClick={this.handleUpload}
+                          type="submit"
                         >
-                          Upload CSV / Text file
+                          Save
                         </Button>
-                        <div>
-                          {this.props.isEdit && (
-                            <Button
-                              className={`secondary-btn m-r-12`}
-                              type="button"
-                              style={
-                                this.props.isEdit ? { border: "none" } : {}
-                              }
-                              onClick={this.handleDeleteCohort}
-                            >
-                              Delete
-                            </Button>
-                          )}
-                          <Button
-                            className={`primary-btn ${
-                              this.state.email ? "active" : ""
-                            }`}
-                            type="submit"
-                          >
-                            Save
-                          </Button>
-                        </div>
                       </div>
                     </Form>
+                    <p
+                      className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-t-16 skip-link"
+                      onClick={() => {
+                        this.props.isSkip();
+                      }}
+                    >
+                      Skip for now
+                    </p>
+                  </div>
+                  <div className="m-b-36 footer">
+                    <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                      At Loch, we care intensely about your privacy and
+                      pseudonymity.
+                    </p>
+                    <CustomOverlay
+                      text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                      position="top"
+                      isIcon={true}
+                      IconImage={LockIcon}
+                      isInfo={true}
+                      className={"fix-width"}
+                    >
+                      <Image
+                        src={InfoIcon}
+                        className="info-icon"
+                        onMouseEnter={this.leavePrivacy}
+                      />
+                    </CustomOverlay>
                   </div>
                 </div>
               ) : (
-                ""
-              )}
-            </div>
-          ) : this.props.modalType === "create_account" ? (
-            <div className="exit-overlay-body">
-              <h6 className="inter-display-medium f-s-20 lh-24 ">
-                Don’t lose your data
-              </h6>
-              {/* <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center">
-                Don’t let your hard work go to waste
-              </p> */}
-              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-                Don’t let your hard work go to waste. Add your email so you can
-                watch your whales with binoculars
-              </p>
-              {/* this.props.isSkip(); */}
-              <div className="email-section">
-                <Form onValidSubmit={this.handleSave}>
-                  <FormElement
-                    valueLink={this.linkState(this, "email")}
-                    // label="Email Info"
-                    required
-                    validations={[
-                      {
-                        validate: FormValidator.isRequired,
-                        message: "",
-                      },
-                      {
-                        validate: FormValidator.isEmail,
-                        message: "Please enter valid email id",
-                      },
-                    ]}
-                    control={{
-                      type: CustomTextControl,
-                      settings: {
-                        placeholder: "Email",
-                      },
-                    }}
-                  />
-                  <div className="save-btn-section">
-                    <Button
-                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                        this.state.email ? "active" : ""
-                      }`}
-                      type="submit"
-                    >
-                      Save
-                    </Button>
+                <div className="exit-overlay-body">
+                  <h6 className="inter-display-medium f-s-20 lh-24 ">
+                    Don’t lose your data
+                  </h6>
+                  <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
+                    Access your data again through the unique reusable link,
+                  </p>
+                  <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24">
+                    or link your email
+                  </p>
+                  <div className="email-section">
+                    <Form onValidSubmit={this.handleSave}>
+                      <FormElement
+                        valueLink={this.linkState(this, "email")}
+                        // label="Email Info"
+                        required
+                        validations={[
+                          {
+                            validate: FormValidator.isRequired,
+                            message: "",
+                          },
+                          {
+                            validate: FormValidator.isEmail,
+                            message: "Please enter valid email id",
+                          },
+                        ]}
+                        control={{
+                          type: CustomTextControl,
+                          settings: {
+                            placeholder: "Email",
+                          },
+                        }}
+                      />
+                      <div className="save-btn-section">
+                        <Button
+                          className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                            this.state.email ? "active" : ""
+                          }`}
+                          type="submit"
+                        >
+                          Save
+                        </Button>
+                      </div>
+                    </Form>
                   </div>
-                </Form>
-                <p
-                  className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-t-16 skip-link"
-                  onClick={() => {
-                    this.props.isSkip();
-                  }}
-                >
-                  Skip for now
-                </p>
-              </div>
-              <div className="m-b-36 footer">
-                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                  At Loch, we care intensely about your privacy and
-                  pseudonymity.
-                </p>
-                <CustomOverlay
-                  text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
-                  position="top"
-                  isIcon={true}
-                  IconImage={LockIcon}
-                  isInfo={true}
-                  className={"fix-width"}
-                >
-                  <Image
-                    src={InfoIcon}
-                    className="info-icon"
-                    onMouseEnter={this.leavePrivacy}
-                  />
-                </CustomOverlay>
-              </div>
-            </div>
-          ) : (
-            <div className="exit-overlay-body">
-              <h6 className="inter-display-medium f-s-20 lh-24 ">
-                Don’t lose your data
-              </h6>
-              <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
-                Access your data again through the unique reusable link,
-              </p>
-              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24">
-                or link your email
-              </p>
-              <div className="email-section">
-                <Form onValidSubmit={this.handleSave}>
-                  <FormElement
-                    valueLink={this.linkState(this, "email")}
-                    // label="Email Info"
-                    required
-                    validations={[
-                      {
-                        validate: FormValidator.isRequired,
-                        message: "",
-                      },
-                      {
-                        validate: FormValidator.isEmail,
-                        message: "Please enter valid email id",
-                      },
-                    ]}
-                    control={{
-                      type: CustomTextControl,
-                      settings: {
-                        placeholder: "Email",
-                      },
-                    }}
-                  />
-                  <div className="save-btn-section">
-                    <Button
-                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                        this.state.email ? "active" : ""
-                      }`}
-                      type="submit"
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </Form>
-              </div>
-              <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
-                or
-              </p>
-              <div className="m-b-24 links">
-                <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
-                  {this.state.sharelink}
-                </div>
-                {/* <div className='edit-options'>
+                  <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
+                    or
+                  </p>
+                  <div className="m-b-24 links">
+                    <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
+                      {this.state.sharelink}
+                    </div>
+                    {/* <div className='edit-options'>
                                 <Image src={EditBtnImage} className="m-r-8"/>
                                 <Dropdown
                                     id="edit-option-dropdown"
@@ -1267,69 +1280,73 @@ class ExitOverlay extends BaseReactComponent {
                                     activetab = {this.state.activeli}
                                 />
                             </div> */}
-              </div>
-              <div className="copy-link-section">
-                <div className="link" onClick={this.copyLink}>
-                  <Image src={CopyLink} className="m-r-8" />
-                  <h3 className="inter-display-medium f-s-16 lh-19 black-191">
-                    Copy link
-                  </h3>
-                </div>
-                <div
-                  className="link"
-                  onClick={() => {
-                    MenuLetMeLeave({
-                      email_address: getCurrentUser().email,
-                      session_id: getCurrentUser().id,
-                    });
-                    this.props.history.push("/welcome");
-                  }}
-                  style={{ marginLeft: "4rem" }}
-                >
-                  <h3 className="inter-display-medium f-s-16 lh-19 grey-969">
-                    No thanks, let me leave
-                  </h3>
-                </div>
-                {/* <div className="link" onClick={this.shareLink}>
+                  </div>
+                  <div className="copy-link-section">
+                    <div className="link" onClick={this.copyLink}>
+                      <Image src={CopyLink} className="m-r-8" />
+                      <h3 className="inter-display-medium f-s-16 lh-19 black-191">
+                        Copy link
+                      </h3>
+                    </div>
+                    <div
+                      className="link"
+                      onClick={() => {
+                        MenuLetMeLeave({
+                          email_address: getCurrentUser().email,
+                          session_id: getCurrentUser().id,
+                        });
+                        this.props.history.push("/welcome");
+                      }}
+                      style={{ marginLeft: "4rem" }}
+                    >
+                      <h3 className="inter-display-medium f-s-16 lh-19 grey-969">
+                        No thanks, let me leave
+                      </h3>
+                    </div>
+                    {/* <div className="link" onClick={this.shareLink}>
                   <Image src={ShareLink} className="m-r-8" />
                   <h3 className="inter-display-medium f-s-16 lh-19 black-191">
                     Share
                   </h3>
                 </div> */}
-              </div>
+                  </div>
 
-              <div className="m-b-36 footer">
-                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                  At Loch, we care intensely about your privacy and anonymity.
-                </p>
-                <CustomOverlay
-                  text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
-                  position="top"
-                  isIcon={true}
-                  IconImage={LockIcon}
-                  isInfo={true}
-                  className={"fix-width"}
-                >
-                  <Image
-                    src={InfoIcon}
-                    className="info-icon"
-                    onMouseEnter={this.leavePrivacy}
-                  />
-                </CustomOverlay>
-              </div>
-            </div>
-          )}
-          {this.state.upgradeModal && (
-            <UpgradeModal
-              show={this.state.upgradeModal}
-              onHide={this.upgradeModal}
-              history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
-              isStatic={this.state.isStatic}
-            />
-          )}
-        </Modal.Body>
-      </Modal>
+                  <div className="m-b-36 footer">
+                    <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                      At Loch, we care intensely about your privacy and
+                      anonymity.
+                    </p>
+                    <CustomOverlay
+                      text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                      position="top"
+                      isIcon={true}
+                      IconImage={LockIcon}
+                      isInfo={true}
+                      className={"fix-width"}
+                    >
+                      <Image
+                        src={InfoIcon}
+                        className="info-icon"
+                        onMouseEnter={this.leavePrivacy}
+                      />
+                    </CustomOverlay>
+                  </div>
+                </div>
+              )}
+            </Modal.Body>
+          </Modal>
+        )}
+
+        {this.state.upgradeModal && (
+          <UpgradeModal
+            show={this.state.upgradeModal}
+            onHide={this.upgradeModal}
+            history={this.props.history}
+            isShare={localStorage.getItem("share_id")}
+            isStatic={this.state.isStatic}
+          />
+        )}
+      </>
     );
   }
 }
