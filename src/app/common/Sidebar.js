@@ -57,7 +57,8 @@ import FeedbackModal from './FeedbackModal'
 function Sidebar(props) {
 // console.log('props',props);
 
-    const activeTab = window.location.pathname
+  const activeTab = window.location.pathname;
+  // console.log("active", activeTab)
     const history = useHistory();
     const [leave, setLeave] = React.useState(false);
     const [apiModal,setApiModal]  =React.useState(false);
@@ -292,7 +293,15 @@ function Sidebar(props) {
                         }
                         ${
                           activeTab === "/intelligence/insights" ? "active" : ""
-                        }
+                        } ${
+                            activeTab === "/intelligence/asset-value"
+                              ? "active"
+                              : ""
+                          } ${
+                            activeTab === "/intelligence/costs"
+                              ? "active"
+                              : ""
+                          }
                         `}
                           to="/intelligence"
                           activeclassname="active"
@@ -311,6 +320,7 @@ function Sidebar(props) {
                                 "/intelligence/volume-traded-by-counterparty",
                                 "/intelligence/insights",
                                 "/intelligence/costs",
+                                "/intelligence/asset-value",
                               ].includes(activeTab)
                                 ? ActiveIntelligenceIcon
                                 : IntelligenceIcon
