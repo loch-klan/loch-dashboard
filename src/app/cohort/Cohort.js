@@ -377,7 +377,7 @@ class Cohort extends Component {
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
             walletaddress={this.state.editWalletAddressList}
-            addedon={moment(this.state?.createOn).format("DD/MM/YY")}
+            addedon={moment(this.state?.createOn).format("MM/DD/YY")}
             cohortId={this.state.editcohortId}
             chainImages={this.state?.chainImages}
           />
@@ -462,14 +462,13 @@ class Cohort extends Component {
                         zIndex: 1,
                       }}
                       onMouseEnter={() => {
-                      WhaleHoverPod({
-                        email_address: getCurrentUser().email,
-                        session_id: getCurrentUser().id,
-                        pod_name:item.name
-                      });
-                    }}
-                      onClick={() =>
-                      {
+                        WhaleHoverPod({
+                          email_address: getCurrentUser().email,
+                          session_id: getCurrentUser().id,
+                          pod_name: item.name,
+                        });
+                      }}
+                      onClick={() => {
                         WhaleExpandedPod({
                           email_address: getCurrentUser().email,
                           session_id: getCurrentUser().id,
@@ -482,8 +481,8 @@ class Cohort extends Component {
                             cohortWalletList: item?.wallet_address_details,
                             chainImages: sortedChains,
                           },
-                        })}
-                      }
+                        });
+                      }}
                     >
                       {/* Top Section */}
                       <div
