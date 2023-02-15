@@ -196,7 +196,9 @@ class EditWalletModal extends BaseReactComponent {
               />
               <p className="inter-display-regular f-s-13 lh-16 m-b-16 subtitle">{`added ${this.getDays(
                 this.state.createdOn
-              ).toFixed(2)} days ago`}</p>
+              ).toFixed(0)} ${this.getDays(this.state.createdOn).toFixed(
+                0
+              ) > 1 ? "days" : "day"} ago`}</p>
               <div className="m-b-32 coinchips">{chips}</div>
               <div className="edit-form">
                 <FormElement

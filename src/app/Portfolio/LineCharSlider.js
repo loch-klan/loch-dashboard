@@ -665,7 +665,7 @@ class LineChartSlider extends BaseReactComponent {
             // console.log("this", this);
             return parent.state.title === "Day" &&
               categories[this.pos] !== undefined
-              ? moment(categories[this.pos], "DD/MM/YYYY").format("DD/MM/YY")
+              ? moment(categories[this.pos], "DD/MM/YYYY").format("MM/DD/YY")
               : categories[this.pos];
           },
           autoRotation: false,
@@ -806,7 +806,7 @@ class LineChartSlider extends BaseReactComponent {
 
           const tooltip_title =
             parent.state.title === "Week" || parent.state.title === "Day"
-              ? moment(x_value, "DD/MM/YYYY").format("DD MMMM YY")
+              ? moment(x_value, "DD/MM/YYYY").format("MMMM DD, YYYY")
               : x_value;
           //  console.log("checking date", x_value, this.x, tooltip_title);
           return `${
