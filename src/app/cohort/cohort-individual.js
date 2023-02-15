@@ -534,7 +534,7 @@ class CohortPage extends BaseReactComponent {
             chainImages={this.state?.chainImages}
             cohortId={this.state.cohortId}
             walletaddress={this.state.walletAddresses}
-            addedon={moment(this.state?.createOn).format("DD/MM/YY")}
+            addedon={moment(this.state?.createOn).format("MM/DD/YY")}
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
           />
@@ -563,7 +563,7 @@ class CohortPage extends BaseReactComponent {
           <PageHeader
             title={this.state.cohortName ? this.state.cohortName : PageName}
             subTitle={`
-              Added ${moment(this.state?.createOn).format("DD/MM/YY")}`}
+              Added ${moment(this.state?.createOn).format("MM/DD/YY")}`}
             showpath={true}
             currentPage={nav_list[2]}
             btnText={PageName !== "Loch Whale Template" ? "Edit" : false}

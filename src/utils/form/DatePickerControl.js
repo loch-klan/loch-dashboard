@@ -37,7 +37,7 @@ prev2Label,
         disabled={disabled}
         className="form-control date-picker-control"
         onClick={() => setShowModal(true)}
-        value={valueLink.value ? format(valueLink.value, 'dd-MM-yyyy') : ""} />
+        value={valueLink.value ? format(valueLink.value, 'MM-dd-yyyy') : ""} />
       {showDateIcon && <Image src={dateIcon} className='date-icon' />}
       <CustomModal
         modalClass="date-picker-control-modal"
@@ -69,6 +69,7 @@ prev2Label,
           next2Label={next2Label}
           prevLabel={prevLabel}
           prev2Label={prev2Label}
+         
         />
       </CustomModal>
     </>

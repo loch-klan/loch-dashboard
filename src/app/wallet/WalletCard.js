@@ -56,7 +56,7 @@ export default function WalletCard(props) {
                         colorCode={coin.chain.color}
                         key={index}
                         coin_img_src={coin.chain.symbol}
-                        coin_percent={coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0 + "%"}
+                        coin_percent={(coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0) + "%"}
                     />
                 </div>
             </CustomOverlay>

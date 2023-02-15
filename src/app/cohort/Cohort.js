@@ -403,7 +403,7 @@ class Cohort extends Component {
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
             walletaddress={this.state.editWalletAddressList}
-            addedon={moment(this.state?.createOn).format("DD/MM/YY")}
+            addedon={moment(this.state?.createOn).format("MM/DD/YY")}
             cohortId={this.state.editcohortId}
             chainImages={this.state?.chainImages}
           />
