@@ -70,7 +70,7 @@ import { GetAllPlan, getUser } from "../common/Api";
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
-    console.log("props", props);
+    // console.log("props", props);
     if (props.location.state) {
       // localStorage.setItem(
       //   "addWallet",
@@ -142,6 +142,7 @@ class Portfolio extends BaseReactComponent {
       apiResponse: false,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
+      isStatic: false,
     };
   }
 
@@ -376,6 +377,8 @@ class Portfolio extends BaseReactComponent {
         getAllCounterFeeApi(this, false, false);
         getProfitAndLossApi(this, false, false, false);
         getYesterdaysBalanceApi(this);
+               GetAllPlan();
+               getUser();
       }
     } else if (prevState.sort !== this.state.sort) {
       this.getTableData();
@@ -1478,6 +1481,7 @@ class Portfolio extends BaseReactComponent {
             onHide={this.upgradeModal}
             history={this.props.history}
             isShare={localStorage.getItem("share_id")}
+            isStatic={this.state.isStatic}
           />
         )}
       </div>

@@ -265,7 +265,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) => {
       
       let newAddWallet = [];
       const apiResponse = res.data.data;
-      console.log("res ", apiResponse)
+      // console.log("res ", apiResponse)
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
         let obj = {}; // <----- new Object
         obj['address'] = apiResponse.user.user_wallets[i].address;

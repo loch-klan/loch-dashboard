@@ -80,6 +80,7 @@ class Cohort extends Component {
       chainImages: [],
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
+      isStatic: false,
     };
   }
 
@@ -91,8 +92,11 @@ class Cohort extends Component {
     //   email_address: getCurrentUser().email,
     // });
 
+
     this.props.getAllCoins();
     this.makeApiCall();
+
+    
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -113,7 +117,10 @@ class Cohort extends Component {
 
   handleCohort = () => {
      
-    // console.log(whale_pod_limit, this.state.cardList?.length);
+    // console.log(
+    //   this.state.userPlan?.whale_pod_limit,
+    //   this.state.cardList?.length
+    // );
     if (
       this.state.cardList?.length <= this.state.userPlan?.whale_pod_limit ||
       this.state.userPlan?.whale_pod_limit === -1
@@ -351,6 +358,7 @@ class Cohort extends Component {
             onHide={this.upgradeModal}
             history={this.props.history}
             isShare={localStorage.getItem("share_id")}
+            isStatic={this.state.isStatic}
           />
         )}
 

@@ -99,7 +99,7 @@ class UpgradeModal extends BaseReactComponent {
       onHide: props.onHide,
       changeList: props.changeWalletList,
       CheckOutModal: false,
-      planList: [
+      planList: AllPlan ? AllPlan : [
         {
           price: 0,
           price_id: "",
@@ -221,84 +221,85 @@ class UpgradeModal extends BaseReactComponent {
       hideUpgradeModal: false,
       RegisterModal: false,
       price_id: 0,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) ||   {
-          price: 0,
-          price_id: "",
-          name: "Free",
-          features: [
-            {
-              name: "Wallet addresses",
-              limit: 5,
-            },
-            {
-              name: "Whale pod",
-              limit: 1,
-            },
-            {
-              name: "Whale pod addresses",
-              limit: 5,
-            },
-            {
-              name: "Notifications provided",
-              limit: false,
-            },
-            {
-              name: "Notifications limit",
-              limit: 0,
-            },
-            {
-              name: "Defi details provided",
-              limit: false,
-            },
-            {
-              name: "Export addresses",
-              limit: 1,
-            },
-            {
-              name: "upload address csv/text",
-              limit: 5,
-            },
-          ],
-        },
-      selectedPlan: JSON.parse(localStorage.getItem("currentPlan")) ||   {
-          price: 0,
-          price_id: "",
-          name: "Free",
-          features: [
-            {
-              name: "Wallet addresses",
-              limit: 5,
-            },
-            {
-              name: "Whale pod",
-              limit: 1,
-            },
-            {
-              name: "Whale pod addresses",
-              limit: 5,
-            },
-            {
-              name: "Notifications provided",
-              limit: false,
-            },
-            {
-              name: "Notifications limit",
-              limit: 0,
-            },
-            {
-              name: "Defi details provided",
-              limit: false,
-            },
-            {
-              name: "Export addresses",
-              limit: 1,
-            },
-            {
-              name: "upload address csv/text",
-              limit: 5,
-            },
-          ],
-        },
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || {
+        price: 0,
+        price_id: "",
+        name: "Free",
+        features: [
+          {
+            name: "Wallet addresses",
+            limit: 5,
+          },
+          {
+            name: "Whale pod",
+            limit: 1,
+          },
+          {
+            name: "Whale pod addresses",
+            limit: 5,
+          },
+          {
+            name: "Notifications provided",
+            limit: false,
+          },
+          {
+            name: "Notifications limit",
+            limit: 0,
+          },
+          {
+            name: "Defi details provided",
+            limit: false,
+          },
+          {
+            name: "Export addresses",
+            limit: 1,
+          },
+          {
+            name: "upload address csv/text",
+            limit: 5,
+          },
+        ],
+      },
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      selectedPlan: JSON.parse(localStorage.getItem("currentPlan")) || {
+        price: 0,
+        price_id: "",
+        name: "Free",
+        features: [
+          {
+            name: "Wallet addresses",
+            limit: 5,
+          },
+          {
+            name: "Whale pod",
+            limit: 1,
+          },
+          {
+            name: "Whale pod addresses",
+            limit: 5,
+          },
+          {
+            name: "Notifications provided",
+            limit: false,
+          },
+          {
+            name: "Notifications limit",
+            limit: 0,
+          },
+          {
+            name: "Defi details provided",
+            limit: false,
+          },
+          {
+            name: "Export addresses",
+            limit: 1,
+          },
+          {
+            name: "upload address csv/text",
+            limit: 5,
+          },
+        ],
+      },
     };
   }
 
@@ -389,7 +390,9 @@ class UpgradeModal extends BaseReactComponent {
             aria-labelledby="contained-modal-title-vcenter"
             backdropClassName="exitoverlaymodal"
             keyboard={false}
-            backdrop={this.props.isShare ? "static" : true}
+            backdrop={
+              this.props.isShare && this.props.isStatic ? "static" : true
+            }
           >
             <Modal.Header>
               {this.props.iconImage ? (
@@ -401,7 +404,7 @@ class UpgradeModal extends BaseReactComponent {
                   <Image src={ExitOverlayIcon} />
                 </div>
               )}
-              {!this.props.isShare && (
+              {(!this.props.isStatic) && (
                 <div
                   className="closebtn"
                   onClick={() => {
@@ -450,7 +453,7 @@ class UpgradeModal extends BaseReactComponent {
                                       ? "No"
                                       : list.limit === true
                                       ? "Yes"
-                                      : list.limit}
+                                      : list.limit === -1 ? "Unlimited": list.limit}
                                   </h4>
                                 </div>
                               );

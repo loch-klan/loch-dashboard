@@ -6,6 +6,7 @@ import "../../assets/scss/onboarding/_onboarding.scss";
 import { Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
 import { deleteToken } from '../../utils/ManageToken';
+import { GetDefaultPlan } from '../common/Api';
 
 class Home extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class Home extends Component {
     //   localStorage.removeItem("lochUser")
     //   localStorage.removeItem("lochDummyUser")
     // }
-    
+     GetDefaultPlan();
  
   }
 

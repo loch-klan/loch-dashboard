@@ -5,6 +5,7 @@ import { AssetType, DEFAULT_PRICE } from "../../utils/Constant";
 import moment from "moment";
 import { getAllCounterFeeApi } from "../cost/Api";
 import { getProfitAndLossApi } from "../intelligence/Api";
+import { GetAllPlan, getUser } from "../common/Api";
 
 export const getCoinRate = () => {
   
@@ -169,9 +170,15 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                 })
                 
                 // ctx.handleResponse && ctx.handleResponse();
-                console.log("add",addWallet.length)
-                if (addWallet.length > 5) {
-                   ctx.upgradeModal && ctx.upgradeModal();
+                // console.log("add",addWallet.length)
+                let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free"; 
+                if (addWallet.length > userPlan.wallet_address_limit) {
+                  ctx.setState({
+                    isStatic: true,
+                  }, () => {
+                      ctx.upgradeModal && ctx.upgradeModal();
+                  })
+                  
                 }
                
 
@@ -185,6 +192,8 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                   ctx.getGraphData();
                   getAllCounterFeeApi(ctx, false, false);
                   getProfitAndLossApi(ctx, false, false, false);
+                         GetAllPlan();
+                         getUser();
                 }
                 
                 

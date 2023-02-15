@@ -155,6 +155,7 @@ class ExitOverlay extends BaseReactComponent {
       changeList: props.changeWalletList,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
+      isStatic: false,
     };
   }
   upgradeModal = () => {
@@ -1324,6 +1325,7 @@ class ExitOverlay extends BaseReactComponent {
               onHide={this.upgradeModal}
               history={this.props.history}
               isShare={localStorage.getItem("share_id")}
+              isStatic={this.state.isStatic}
             />
           )}
         </Modal.Body>

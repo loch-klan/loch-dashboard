@@ -137,9 +137,9 @@ const options = {
           ? totalNetflow
           : 0;
       this.points.map((item) => {
-        console.log(
-          "Item: ",
-          item);
+        // console.log(
+        //   "Item: ",
+        //   item);
         if (
           (item.key === "Other" && item.y > 0) ||
           item.key === this.x ||

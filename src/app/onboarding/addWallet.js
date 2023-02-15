@@ -17,6 +17,8 @@ import {
   LandingPageNickname,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from '../../utils/ManageToken';
+import UpgradeModal from '../common/upgradeModal';
+import { GetAllPlan, GetDefaultPlan } from '../common/Api';
 
 class AddWallet extends BaseReactComponent {
   constructor(props) {
@@ -36,13 +38,32 @@ class AddWallet extends BaseReactComponent {
         },
       ],
       loading: false,
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      upgradeModal: false,
+      isStatic: false,
     };
     this.timeout = 0;
   }
 
+  upgradeModal = () => {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
+  };
+
   componentDidMount() {
     this.props.getAllCoins();
     this.props.getAllParentChains();
+     this.setState({
+       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+     });
+   
+    // GetAllPlan();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+   
+   
   }
 
   nicknameOnChain = (e) => {
@@ -100,16 +121,17 @@ class AddWallet extends BaseReactComponent {
 
     //   // walletCopy[foundIndex].trucatedAddress = value
     // }
-    walletCopy?.map((address,i) => {
+    walletCopy?.map((address, i) => {
       if (address.id === name) {
-          walletCopy[i].showAddress = true;
-          walletCopy[i].showNickname = true;
+        walletCopy[i].showAddress = true;
+        walletCopy[i].showNickname = true;
       } else {
-        walletCopy[i].showAddress = walletCopy[i].nickname === "" ? true: false;
+        walletCopy[i].showAddress =
+          walletCopy[i].nickname === "" ? true : false;
         walletCopy[i].showNickname =
           walletCopy[i].nickname !== "" ? true : false;
       }
-    })
+    });
     // console.log(walletCopy)
     this.setState({
       // addButtonVisible: this.state.walletInput.some((wallet) =>
@@ -209,18 +231,28 @@ class AddWallet extends BaseReactComponent {
   };
 
   addInputField = () => {
-    this.state.walletInput.push({
-      id: `wallet${this.state.walletInput.length + 1}`,
-      address: "",
-      coins: [],
-      nickname: "",
-      showAddress: true,
-      showNickname: true,
-    });
-    this.setState({
-      walletInput: this.state.walletInput,
-    });
-    AddTextbox({});
+
+    if (
+      this.state.walletInput.length + 1 <=
+        this.state.userPlan?.wallet_address_limit ||
+      this.state.userPlan?.wallet_address_limit === -1
+    ) {
+        this.state.walletInput.push({
+          id: `wallet${this.state.walletInput.length + 1}`,
+          address: "",
+          coins: [],
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+        });
+        this.setState({
+          walletInput: this.state.walletInput,
+        });
+        AddTextbox({});
+    } else {
+      this.upgradeModal();
+    }
+    
   };
 
   deleteInputField = (index, wallet) => {
@@ -299,7 +331,7 @@ class AddWallet extends BaseReactComponent {
     // console.log("Unreq address", unrecog_address);
 
     const blockchainDetected = [];
-     const nicknames = [];
+    const nicknames = [];
     finalArr
       .filter((e) => e.coinFound)
       .map((obj) => {
@@ -307,9 +339,9 @@ class AddWallet extends BaseReactComponent {
           .filter((e) => e.chain_detected)
           .map((name) => name.coinName);
         let address = obj.address;
-         let nickname = obj.nickname;
+        let nickname = obj.nickname;
         blockchainDetected.push({ address: address, names: coinName });
-         nicknames.push({ address: address, nickname: nickname });
+        nicknames.push({ address: address, nickname: nickname });
       });
 
     // console.log("blockchain detected", blockchainDetected);
@@ -320,7 +352,7 @@ class AddWallet extends BaseReactComponent {
       chains_detected_against_them: blockchainDetected,
       unrecognized_addresses: unrecog_address,
       unrecognized_ENS: unrecog_address,
-      nicknames:nicknames
+      nicknames: nicknames,
     });
   };
   handleSignText = () => {
@@ -352,10 +384,8 @@ class AddWallet extends BaseReactComponent {
                 return (
                   <div
                     className={`ob-wallet-input-wrapper ${
-                            this.state.walletInput[index].address
-                              ? "is-valid"
-                              : null
-                          }`}
+                      this.state.walletInput[index].address ? "is-valid" : null
+                    }`}
                     style={
                       index == this.state.walletInput.length - 1
                         ? { marginBottom: 0 }
@@ -539,6 +569,15 @@ class AddWallet extends BaseReactComponent {
             ""
           )}
         </Form>
+        {this.state.upgradeModal && (
+          <UpgradeModal
+            show={this.state.upgradeModal}
+            onHide={this.upgradeModal}
+            history={this.props.history}
+            // isShare={localStorage.getItem("share_id")}
+            // isStatic={this.state.isStatic}
+          />
+        )}
       </>
     );
   }

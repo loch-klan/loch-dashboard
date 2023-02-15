@@ -9,7 +9,7 @@ export const getProfitAndLossData = (arr) => {
   let currency= JSON.parse(localStorage.getItem('currency'));
   let inflows = Number(noExponents(arr.inflows));
   let outflows = Number(noExponents(arr.outflows));
-
+  let currencyRate = currency?.rate || 1
   // console.log(
   //   "wothout breadown",
   //   outflows * currency.rate, inflows * currency.rate,
@@ -17,43 +17,50 @@ export const getProfitAndLossData = (arr) => {
   // );
     const labels = ["Inflows", "Outflows", "Net"];
     const profitOrLossData = {
-        profit:{
-            data:(inflows * currency.rate),
-            barColor:"#A9F4C4",
-            borderColor:"#18C278"
-        },
-        loss:{
-            data:(outflows * currency.rate),
-            barColor:"#FFE0D9",
-            borderColor:"#CF1011"
-        }
+      profit: {
+        data: inflows * currencyRate,
+        barColor: "#A9F4C4",
+        borderColor: "#18C278",
+      },
+      loss: {
+        data: outflows * currencyRate,
+        barColor: "#FFE0D9",
+        borderColor: "#CF1011",
+      },
     };
     const data = {
-        labels,
-        datasets: [
-            {
-                data: [(inflows * currency.rate), (outflows * currency.rate) ,Math.abs((outflows * currency.rate)-(inflows * currency.rate))],
-                backgroundColor: [
-                    "rgba(100, 190, 205, 0.3)",
-                    "rgba(34, 151, 219, 0.3)",
-                    ((inflows * currency.rate) < (outflows * currency.rate) ? profitOrLossData.profit.barColor : profitOrLossData.loss.barColor),
-                ],
-                borderColor: [
-                    "#64BECD",
-                    "#2297DB",
-                    ((inflows * currency.rate) < (outflows * currency.rate) ? profitOrLossData.profit.borderColor : profitOrLossData.loss.borderColor),
-                ],
-                borderWidth: 2,
-                borderRadius: {
-                    topLeft: 6,
-                    topRight: 6
-                },
-                borderSkipped: false,
-                barThickness:48,
-
-            }
-        ]
-    }
+      labels,
+      datasets: [
+        {
+          data: [
+            inflows * currencyRate,
+            outflows * currencyRate,
+            Math.abs(outflows * currencyRate - inflows * currencyRate),
+          ],
+          backgroundColor: [
+            "rgba(100, 190, 205, 0.3)",
+            "rgba(34, 151, 219, 0.3)",
+            inflows * currencyRate < outflows * currencyRate
+              ? profitOrLossData.profit.barColor
+              : profitOrLossData.loss.barColor,
+          ],
+          borderColor: [
+            "#64BECD",
+            "#2297DB",
+            inflows * currencyRate < outflows * currencyRate
+              ? profitOrLossData.profit.borderColor
+              : profitOrLossData.loss.borderColor,
+          ],
+          borderWidth: 2,
+          borderRadius: {
+            topLeft: 6,
+            topRight: 6,
+          },
+          borderSkipped: false,
+          barThickness: 48,
+        },
+      ],
+    };
 
     const options = {
       responsive: true,
@@ -161,10 +168,10 @@ export const getProfitAndLossData = (arr) => {
         },
       },
     };
-      let value = ((outflows * currency.rate)-(inflows * currency.rate));
+      let value = outflows * currencyRate - inflows * currencyRate;
       let showPercentage= {
         icon: value >= 0 ? arrowUpRight : arrowDownRight,
-        percent: inflows ? ((value/(inflows * currency.rate))*100).toFixed() : 0,
+        percent: inflows ? ((value/(inflows * currencyRate))*100).toFixed() : 0,
         status: value > 0 ? "Increase" : value < 0 ? "Decrease" : "No Change",
       }
     return [data,options, showPercentage]

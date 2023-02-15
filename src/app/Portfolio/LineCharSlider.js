@@ -184,7 +184,7 @@ class LineChartSlider extends BaseReactComponent {
               };
               assetMaster[data.asset.id][assetData.timestamp] =
                 new Number(data.max_count) *
-                (data.asset_price * this.state.currency.rate);
+                (data.asset_price * this.state.currency?.rate);
             }
           });
         }

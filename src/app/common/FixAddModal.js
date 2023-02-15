@@ -67,6 +67,7 @@ class FixAddModal extends BaseReactComponent {
       recievedResponse: false,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
+      isStatic: false,
     };
     this.timeout = 0;
    
@@ -234,6 +235,7 @@ class FixAddModal extends BaseReactComponent {
         fixWallet.push({ ...e, id: `wallet${fixWallet.length + 1}` });
       }
     });
+    
     // console.log('fixWallet',fixWallet);
     this.setState({
       fixWalletAddress: fixWallet,
@@ -951,6 +953,7 @@ class FixAddModal extends BaseReactComponent {
             onHide={this.upgradeModal}
             history={this.props.history}
             isShare={localStorage.getItem("share_id")}
+            isStatic={this.state.isStatic}
           />
         )}
       </>
