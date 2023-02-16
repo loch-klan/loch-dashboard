@@ -36,7 +36,7 @@ class CustomDropdown extends Component {
           options.push({
             label: e.label,
             value: e.value,
-            isSelected: this.props.selectedTokens.includes(e.label)
+            isSelected: this.props.selectedTokens.includes(e.value)
               ? true
               : false,
           })
@@ -114,7 +114,7 @@ class CustomDropdown extends Component {
                   options.push({
                     label: e.label,
                     value: e.value,
-                    isSelected: this.props.selectedTokens.includes(e.label)
+                    isSelected: this.props.selectedTokens.includes(e.value)
                       ? true
                       : false,
                   })
@@ -281,7 +281,7 @@ class CustomDropdown extends Component {
       selected = this.props.isChain
         ? [{ name: "All", id: "" }]
         : this.props.isLineChart
-        ? selected?.toString()
+        ? []
         : selected[0]?.toString();
       count = 0;
     } else {
@@ -331,9 +331,9 @@ class CustomDropdown extends Component {
     // //    console.log(this.props.action, this.getSelected().selected, "apply");
     //     this.setState({ showMenu: false });
 //  console.log(this.props.action, this.getSelected().selected, "apply");
-    this.props.isLineChart || this.props.isChain
-      ? this.props.handleClick(this.getSelected().selected)
-      : this.props.handleClick(this.props.action, this.getSelected().selected);
+    // this.props.isLineChart || this.props.isChain
+    //   ? this.props.handleClick(this.getSelected().selected)
+    //   : this.props.handleClick(this.props.action, this.getSelected().selected);
     // this.setState({ showMenu: false });
   };
 
@@ -343,8 +343,12 @@ class CustomDropdown extends Component {
     if (this.getSelected()?.selected.length !== 0) {
       this.props.isLineChart || this.props.isChain
         ? this.props.handleClick(this.getSelected()?.selected)
-        : this.props.handleClick(
+        : this.props.action
+        ? this.props.handleClick(
             this.props.action,
+            this.getSelected()?.selected
+          )
+        : this.props.handleClick(
             this.getSelected()?.selected
           );
       this.setState({ showMenu: false });
@@ -389,20 +393,24 @@ class CustomDropdown extends Component {
     return (
       <div
         className={`custom-dropdown cp ${
-          this.props.isLineChart || this.props.isChain ? "lineChart" : ""
+          this.props.isLineChart || this.props.isChain || this.props.LightTheme
+            ? "lineChart"
+            : ""
         }`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}
       >
         <div
           className={`placeholder ${
-            this.props.isLineChart || this.props.isChain
+            this.props.isLineChart ||
+            this.props.isChain ||
+            this.props.LightTheme
               ? "lineChartPlaceholder"
               : ""
           }`}
           onClick={this.dropdownClicked}
           style={
-            this.props.isChain
+            this.props.isChain || this.props.LightTheme
               ? { textAlign: "left", paddingLeft: "1.6rem" }
               : {}
           }
@@ -412,23 +420,30 @@ class CustomDropdown extends Component {
             : this.props.isLineChart
             ? this.getSelected().length + "/4 Selected"
             : this.props.isChain
-            ? this.getSelected().length + (this.getSelected().length > 1 ? " chains selected" : " chain selected")
+            ? this.getSelected().length +
+              (this.getSelected().length > 1
+                ? " chains selected"
+                : " chain selected")
             : this.getSelected().length + " Selected"}
 
-          {!this.props.isLineChart && !this.props.isChain && (
-            <span>
-              <svg
-                height="20"
-                width="20"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
-              </svg>
-            </span>
-          )}
-          {(this.props.isLineChart || this.props.isChain) && (
+          {!this.props.isLineChart &&
+            !this.props.isChain &&
+            !this.props.LightTheme && (
+              <span>
+                <svg
+                  height="20"
+                  width="20"
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
+                </svg>
+              </span>
+            )}
+          {(this.props.isLineChart ||
+            this.props.isChain ||
+            this.props.LightTheme) && (
             <span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
