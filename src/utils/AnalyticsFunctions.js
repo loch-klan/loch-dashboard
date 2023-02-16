@@ -2169,3 +2169,45 @@ export const PodNickname = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale: Expanded Pod page: nickname");
 };
+
+//8. Landing Page Conversion:time spent on onboarding
+export const TimeSpentWhalePod = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Whale: time spent on whale pod page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+//8. Landing Page Conversion:time spent on onboarding
+export const TimeSpentWhalePodPage = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Whale: time spent on Expanded whale pod page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+export const WhaleMenu = ({ session_id, email_address }) => {
+  const event_name = "Menu:Whale pod menu";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};

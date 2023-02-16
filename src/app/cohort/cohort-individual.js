@@ -73,6 +73,7 @@ import {
   NotificationDropdown2,
   NotificationSaved,
   PodNickname,
+  TimeSpentWhalePodPage,
   WhaleCreateAccountModal,
   WhaleCreateAccountSkip,
   WhaleExpandedPodFilter,
@@ -129,7 +130,8 @@ class CohortPage extends BaseReactComponent {
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
       activeAsset: [],
-      AssetFilterList:[],
+      AssetFilterList: [],
+     
     };
   }
 
@@ -137,36 +139,45 @@ class CohortPage extends BaseReactComponent {
     // console.log("badge", badge);
 
     if (badge?.[0].name === "All") {
-      this.setState({
-        activeBadge: [{ name: "All", id: "" }],
-        activeBadgeList: [],
-      }, () => {
-        this.getAssetData(this.state.activeFooter);
-      });
+      this.setState(
+        {
+          activeBadge: [{ name: "All", id: "" }],
+          activeBadgeList: [],
+        },
+        () => {
+          this.getAssetData(this.state.activeFooter);
+        }
+      );
     } else {
-      this.setState({
-        activeBadge: badge,
-        activeBadgeList: badge?.map((item) => item.id),
-      }, () => {
-        this.getAssetData(this.state.activeFooter);
-      });
+      this.setState(
+        {
+          activeBadge: badge,
+          activeBadgeList: badge?.map((item) => item.id),
+        },
+        () => {
+          this.getAssetData(this.state.activeFooter);
+        }
+      );
     }
   };
 
   handleAsset = (arr) => {
     // console.log("arr",arr)
-    this.setState({
-      activeAsset: arr === "allAssets" ? [] : arr,
-    }, () => {
-      this.getAssetData(this.state.activeFooter);
-    });
-  }
+    this.setState(
+      {
+        activeAsset: arr === "allAssets" ? [] : arr,
+      },
+      () => {
+        this.getAssetData(this.state.activeFooter);
+      }
+    );
+  };
 
   getAssetFilter = () => {
-     let data = new URLSearchParams();
-     data.append("cohort_id", this.state.cohortId);
-    GetAssetFilter(data,this);
-  }
+    let data = new URLSearchParams();
+    data.append("cohort_id", this.state.cohortId);
+    GetAssetFilter(data, this);
+  };
 
   AddEmailModal = () => {
     // console.log("handle emailc close");
@@ -221,6 +232,7 @@ class CohortPage extends BaseReactComponent {
     });
   };
   componentDidMount() {
+     this.state.startTime = new Date() * 1;
     this.getCohortDetail();
     this.getAssetData(0);
     this.getNotificationApi();
@@ -230,6 +242,18 @@ class CohortPage extends BaseReactComponent {
       this.AddEmailModal();
     }, 2000);
   }
+
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000;
+
+    TimeSpentWhalePodPage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      time_spent: TimeSpent,
+    });
+  }
+
   getNotificationApi = () => {
     let data = new URLSearchParams();
     data.append("cohort_id", this.state.cohortId);
@@ -292,8 +316,6 @@ class CohortPage extends BaseReactComponent {
       endDate = moment().subtract(1, "day").unix();
       handleSelected = "1 day";
     }
-
-
 
     let data = new URLSearchParams();
     data.append("cohort_id", this.state.cohortId);

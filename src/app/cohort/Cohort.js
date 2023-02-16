@@ -24,6 +24,7 @@ import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import {
 
   CreateWhalePod,
+  TimeSpentWhalePod,
   WhaleExpandedPod,
   WhaleFilterByChain,
   WhaleHoverPod,
@@ -81,15 +82,28 @@ class Cohort extends Component {
   }
 
   componentDidMount() {
-    // this.state.startTime = new Date() * 1;
+    this.state.startTime = new Date() * 1;
     // // console.log("page Enter", this.state.startTime / 1000);
     // WalletsPage({
     //   session_id: getCurrentUser().id,
     //   email_address: getCurrentUser().email,
     // });
 
+   
+
     this.props.getAllCoins();
     this.makeApiCall();
+  }
+
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; 
+
+     TimeSpentWhalePod({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+       time_spent: TimeSpent,
+     });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -101,6 +115,8 @@ class Cohort extends Component {
       });
     }
   }
+
+
 
   handleCohort = () => {
     // console.log("cohort click");
