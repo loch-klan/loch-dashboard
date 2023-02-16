@@ -2201,13 +2201,3 @@ export const TimeSpentWhalePodPage = ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:time spent on onboarding");
 };
-
-export const WhaleMenu = ({ session_id, email_address }) => {
-  const event_name = "Menu:Whale pod menu";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:intelligence menu");
-};
