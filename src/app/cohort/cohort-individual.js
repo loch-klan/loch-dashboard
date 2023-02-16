@@ -818,6 +818,7 @@ class CohortPage extends BaseReactComponent {
                   action={null}
                   handleClick={(arr) => this.handleAsset(arr)}
                   LightTheme={true}
+                  placeholderName={"asset"}
                   // isChain={true}
                   // selectedTokens={this.state.activeBadge}
                 />

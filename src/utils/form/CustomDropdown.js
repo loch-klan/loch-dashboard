@@ -228,7 +228,11 @@ class CustomDropdown extends Component {
     // console.log("option",option)
     if (option.value === this.state.options[0].value && !this.props.isLineChart) {
       // console.log("all clicked")
-       this.selectedAll(true);
+      if (this.state.options[0].isSelected) {
+        this.selectedAll(false);
+      } else {
+        this.selectedAll(true);
+      }
     } else {
        let updatedOptions = this.state.options.map((e) => {
          if (
@@ -424,6 +428,11 @@ class CustomDropdown extends Component {
               (this.getSelected().length > 1
                 ? " chains selected"
                 : " chain selected")
+            : this.props.placeholderName
+            ? this.getSelected().length +
+              (this.getSelected().length > 1
+                ? " " + this.props.placeholderName + "s selected"
+                : " " + this.props.placeholderName + " selected")
             : this.getSelected().length + " Selected"}
 
           {!this.props.isLineChart &&
@@ -544,7 +553,7 @@ class CustomDropdown extends Component {
 
           <div className="dropdown-footer">
             <span
-              className="primary-btn dropdown-btn"
+              className="secondary-btn dropdown-btn"
               onClick={this.ClearAll}
               onMouseEnter={() => {
                 this.setState({
@@ -561,7 +570,7 @@ class CustomDropdown extends Component {
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path
                     d="M13.41,12l6.3-6.29a1,1,0,1,0-1.42-1.42L12,10.59,5.71,4.29A1,1,0,0,0,4.29,5.71L10.59,12l-6.3,6.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l6.29,6.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"
-                    fill={`${this.state.clearAll ? "#000" : "#fff"}`}
+                    fill={`${this.state.clearAll ? "#fff" : "#000"}`}
                   />
                 </svg>
               ) : (
@@ -569,7 +578,7 @@ class CustomDropdown extends Component {
               )}
             </span>
             <span
-              className="secondary-btn dropdown-btn"
+              className="primary-btn dropdown-btn"
               onClick={this.Apply}
               onMouseEnter={() => {
                 this.setState({
@@ -587,7 +596,7 @@ class CustomDropdown extends Component {
                   <rect width="256" height="256" fill="none" />
                   <polyline
                     fill="none"
-                    stroke={`${this.state.apply ? "#fff" : "#000"}`}
+                    stroke={`${this.state.apply ? "#000" : "#fff"}`}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="16"

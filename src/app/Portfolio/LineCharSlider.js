@@ -184,7 +184,7 @@ class LineChartSlider extends BaseReactComponent {
               };
               assetMaster[data.asset.id][assetData.timestamp] =
                 new Number(data.max_count) *
-                (data.asset_price * this.state.currency.rate);
+                (data.asset_price * this.state.currency?.rate);
             }
           });
         }
@@ -527,7 +527,7 @@ class LineChartSlider extends BaseReactComponent {
       seriesData.sort((a, b) => {
         return b.lastValue - a.lastValue;
       });
-  console.log(seriesData);
+
     let AllLegends = [{ label: "All", value: "All" }];
     seriesData &&
       seriesData?.map((e) => {
