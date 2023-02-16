@@ -320,3 +320,29 @@ export const UpdateCohortNickname = (data,ctx) => {
       }
     });
 };
+
+
+// Get Asset filter by  Cohort
+export const GetAssetFilter= (data,ctx) => {
+  // let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("wallet/user-cohort/get-asset-filter", data)
+    .then((res) => {
+      if (!res.data.error) {
+        let response = res.data.data?.assets;
+        let assetFilter = [{ value: "allAssets", label: "All assets" }];
+        response?.map((e) => {
+          assetFilter.push({
+            value: e._id,
+            label: e.asset.name,
+          });
+        })
+          ctx.setState({
+            AssetFilterList: assetFilter,
+          });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};

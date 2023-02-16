@@ -86,12 +86,13 @@
       /* Links inside the dropdown */
       span {
         @include font($black-191, "Inter-Medium", 1.3rem, 500, 1.6rem);
-        padding: 8px 8px;
+        padding: 8px 22px 8px 8px;
         margin-bottom: 1.5px;
         border-radius: 2px;
         text-decoration: none;
         display: block;
         position: relative;
+        word-wrap: break-word;
 
         svg {
           position: absolute;

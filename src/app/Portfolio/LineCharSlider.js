@@ -527,16 +527,16 @@ class LineChartSlider extends BaseReactComponent {
       seriesData.sort((a, b) => {
         return b.lastValue - a.lastValue;
       });
-  // console.log(seriesData);
+
     let AllLegends = [{ label: "All", value: "All" }];
     seriesData &&
       seriesData?.map((e) => {
-        AllLegends.push({ label: e.name, value: e.name });
+        AllLegends.push({ label: e.name, value: e.id });
       });
 
     let topLegends =
       this.state.legends.length === 0
-        ? AllLegends.slice(1, 5).map(e => e.label)
+        ? AllLegends.slice(1, 5).map(e => e.value)
         : this.state.legends;
     // console.log("top", topLegends);
 
@@ -544,7 +544,7 @@ class LineChartSlider extends BaseReactComponent {
     SelectedSeriesData =
       topLegends.length === 0
         ? seriesData.slice(0, 4)
-        : seriesData.filter((e) => topLegends.includes(e.name));
+        : seriesData.filter((e) => topLegends.includes(e.id));
     
     
     // AllLegends = [{ label: "All", value: "All" }, ...AllLegends.sort((a, b) => (a.label > b.label ? 1 : -1))];

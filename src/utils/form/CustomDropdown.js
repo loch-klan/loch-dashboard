@@ -36,7 +36,7 @@ class CustomDropdown extends Component {
           options.push({
             label: e.label,
             value: e.value,
-            isSelected: this.props.selectedTokens.includes(e.label)
+            isSelected: this.props.selectedTokens.includes(e.value)
               ? true
               : false,
           })
@@ -73,7 +73,8 @@ class CustomDropdown extends Component {
         this.state.options.push({
           label: this.props.isChain ? e.name : e.label,
           value: this.props.isChain ? e.id : e.value,
-          isSelected: i === 0 && !this.props.isChain ? true : false,
+          // isSelected: i === 0 && !this.props.isChain ? true : false,
+          isSelected: true,
         })
       );
       if (this.props.isChain) {
@@ -95,8 +96,7 @@ class CustomDropdown extends Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.options.length === 0 ||
-      (this.props.isLineChart &&
-        prevProps.options.length !== this.props.options.length)
+        prevProps.options.length !== this.props.options.length
     ) {
       if (this.props.isLineChart) {
         // console.log("in line chart");
@@ -114,7 +114,7 @@ class CustomDropdown extends Component {
                   options.push({
                     label: e.label,
                     value: e.value,
-                    isSelected: this.props.selectedTokens.includes(e.label)
+                    isSelected: this.props.selectedTokens.includes(e.value)
                       ? true
                       : false,
                   })
@@ -179,13 +179,17 @@ class CustomDropdown extends Component {
         // );
 
         // console.log("transaction", this.props.options);
+        this.state.options = [];
         this.props.options.map((e, i) =>
           this.state.options.push({
             label: this.props.isChain ? e.name : e.label,
             value: this.props.isChain ? e.id : e.value,
-            isSelected: i === 0 && !this.props.isChain ? true : false,
+            // isSelected: i === 0 && !this.props.isChain ? true : false,
+            isSelected: true,
           })
         );
+
+        // for chain
         if (this.props.isChain) {
           this.state.options = [
             { label: "All", value: "", isSelected: true },
@@ -222,26 +226,41 @@ class CustomDropdown extends Component {
 
   onSelect = (option) => {
     // console.log("option",option)
-    let updatedOptions = this.state.options.map((e) => {
-      if (e.value === this.state.options[0].value && e.value === option.value) {
-        e.isSelected = true;
+    if (option.value === this.state.options[0].value && !this.props.isLineChart) {
+      // console.log("all clicked")
+      if (this.state.options[0].isSelected) {
+        this.selectedAll(false);
       } else {
-        if (option.value === e.value) {
-          e.isSelected = !option.isSelected;
-        }
-        if (
-          e.value === this.state.options[0].value ||
-          (option.value === this.state.options[0].value &&
-            e.value !== option.value)
-        ) {
-          e.isSelected = false;
-        }
+        this.selectedAll(true);
       }
-      return e;
-    });
-    this.setState({
-      options: updatedOptions,
-    });
+    } else {
+       let updatedOptions = this.state.options.map((e) => {
+         if (
+           e.value === this.state.options[0].value &&
+           e.value === option.value
+         ) {
+           e.isSelected = true;
+         } else {
+           if (option.value === e.value) {
+             e.isSelected = !option.isSelected;
+           }
+           if (
+             e.value === this.state.options[0].value ||
+             (option.value === this.state.options[0].value &&
+               e.value !== option.value)
+           ) {
+             e.isSelected = false;
+           }
+         }
+         return e;
+       });
+      
+      this.setState({
+        options: updatedOptions,
+      });
+    }
+   
+    
 
     // console.log("option", option, "updated Option", this.state.options);
   };
@@ -257,12 +276,17 @@ class CustomDropdown extends Component {
       .map((e) =>
         this.props.isChain ? { name: e.label, id: e.value } : e?.value
       );
-
+  
     let count;
     if (isAll) {
+      // selected = this.props.isChain
+      //   ? [{ name: "All", id: "" }]
+      //   : selected?.toString();
       selected = this.props.isChain
         ? [{ name: "All", id: "" }]
-        : selected?.toString();
+        : this.props.isLineChart
+        ? []
+        : selected[0]?.toString();
       count = 0;
     } else {
       count = selected.length;
@@ -272,6 +296,21 @@ class CustomDropdown extends Component {
     //   console.log(this.state.options);
     return { selected: selected, length: count };
   };
+
+  selectedAll = (value) => {
+    let options = [];
+    this.state?.options?.map(e => {
+      options.push({
+        label: e.label,
+        value: e.value,
+        isSelected: value,
+      });
+    });
+
+    this.setState({
+      options
+    })
+  }
 
   ClearAll = () => {
     if (this.props.isLineChart) {
@@ -288,28 +327,33 @@ class CustomDropdown extends Component {
       });
     } else {
       // console.log("clear", this.state.options[0]);
-      this.onSelect(this.state.options[0]);
+      // this.onSelect(this.state.options[0]);//
+      this.selectedAll(false);
     }
 
     //   this.props.handleClick(this.props.action, this.getSelected().selected);
     // //    console.log(this.props.action, this.getSelected().selected, "apply");
     //     this.setState({ showMenu: false });
-
-    this.props.isLineChart || this.props.isChain
-      ? this.props.handleClick(this.getSelected().selected)
-      : this.props.handleClick(this.props.action, this.getSelected().selected);
-    this.setState({ showMenu: false });
+//  console.log(this.props.action, this.getSelected().selected, "apply");
+    // this.props.isLineChart || this.props.isChain
+    //   ? this.props.handleClick(this.getSelected().selected)
+    //   : this.props.handleClick(this.props.action, this.getSelected().selected);
+    // this.setState({ showMenu: false });
   };
 
   Apply = () => {
-    // console.log(this.getSelected().selected, "apply");
+    // console.log(this.getSelected()?.selected, "apply");
     // console.log(this.props.action, this.getSelected().selected, "apply");
-    if (this.getSelected().selected.length !== 0) {
+    if (this.getSelected()?.selected.length !== 0) {
       this.props.isLineChart || this.props.isChain
-        ? this.props.handleClick(this.getSelected().selected)
-        : this.props.handleClick(
+        ? this.props.handleClick(this.getSelected()?.selected)
+        : this.props.action
+        ? this.props.handleClick(
             this.props.action,
-            this.getSelected().selected
+            this.getSelected()?.selected
+          )
+        : this.props.handleClick(
+            this.getSelected()?.selected
           );
       this.setState({ showMenu: false });
     } else {
@@ -353,20 +397,24 @@ class CustomDropdown extends Component {
     return (
       <div
         className={`custom-dropdown cp ${
-          this.props.isLineChart || this.props.isChain ? "lineChart" : ""
+          this.props.isLineChart || this.props.isChain || this.props.LightTheme
+            ? "lineChart"
+            : ""
         }`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}
       >
         <div
           className={`placeholder ${
-            this.props.isLineChart || this.props.isChain
+            this.props.isLineChart ||
+            this.props.isChain ||
+            this.props.LightTheme
               ? "lineChartPlaceholder"
               : ""
           }`}
           onClick={this.dropdownClicked}
           style={
-            this.props.isChain
+            this.props.isChain || this.props.LightTheme
               ? { textAlign: "left", paddingLeft: "1.6rem" }
               : {}
           }
@@ -376,23 +424,35 @@ class CustomDropdown extends Component {
             : this.props.isLineChart
             ? this.getSelected().length + "/4 Selected"
             : this.props.isChain
-            ? this.getSelected().length + (this.getSelected().length > 1 ? " chains selected" : " chain selected")
+            ? this.getSelected().length +
+              (this.getSelected().length > 1
+                ? " chains selected"
+                : " chain selected")
+            : this.props.placeholderName
+            ? this.getSelected().length +
+              (this.getSelected().length > 1
+                ? " " + this.props.placeholderName + "s selected"
+                : " " + this.props.placeholderName + " selected")
             : this.getSelected().length + " Selected"}
 
-          {!this.props.isLineChart && !this.props.isChain && (
-            <span>
-              <svg
-                height="20"
-                width="20"
-                viewBox="0 0 20 20"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
-              </svg>
-            </span>
-          )}
-          {(this.props.isLineChart || this.props.isChain) && (
+          {!this.props.isLineChart &&
+            !this.props.isChain &&
+            !this.props.LightTheme && (
+              <span>
+                <svg
+                  height="20"
+                  width="20"
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
+                </svg>
+              </span>
+            )}
+          {(this.props.isLineChart ||
+            this.props.isChain ||
+            this.props.LightTheme) && (
             <span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -493,7 +553,7 @@ class CustomDropdown extends Component {
 
           <div className="dropdown-footer">
             <span
-              className="primary-btn dropdown-btn"
+              className="secondary-btn dropdown-btn"
               onClick={this.ClearAll}
               onMouseEnter={() => {
                 this.setState({
@@ -510,7 +570,7 @@ class CustomDropdown extends Component {
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path
                     d="M13.41,12l6.3-6.29a1,1,0,1,0-1.42-1.42L12,10.59,5.71,4.29A1,1,0,0,0,4.29,5.71L10.59,12l-6.3,6.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l6.29,6.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42Z"
-                    fill={`${this.state.clearAll ? "#000" : "#fff"}`}
+                    fill={`${this.state.clearAll ? "#fff" : "#000"}`}
                   />
                 </svg>
               ) : (
@@ -518,7 +578,7 @@ class CustomDropdown extends Component {
               )}
             </span>
             <span
-              className="secondary-btn dropdown-btn"
+              className="primary-btn dropdown-btn"
               onClick={this.Apply}
               onMouseEnter={() => {
                 this.setState({
@@ -536,7 +596,7 @@ class CustomDropdown extends Component {
                   <rect width="256" height="256" fill="none" />
                   <polyline
                     fill="none"
-                    stroke={`${this.state.apply ? "#fff" : "#000"}`}
+                    stroke={`${this.state.apply ? "#000" : "#fff"}`}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="16"

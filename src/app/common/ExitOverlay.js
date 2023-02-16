@@ -40,7 +40,7 @@ import {
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
-  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName,
+  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName, ExportDateSelected,
 } from "../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
@@ -179,6 +179,19 @@ class ExitOverlay extends BaseReactComponent {
     this.props.getAllCoins();
     this.props.getAllParentChains();
   }
+
+   onDataSelected = () => {
+      ExportDateSelected({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        date_range_selected: 
+          moment(this.state.fromDate).format("DD MMMM YY") +
+            " to " +
+            moment(this.state.toDate).format("DD MMMM YY")
+        
+      });
+
+      };
 
   addAddress = () => {
      
@@ -848,7 +861,7 @@ class ExitOverlay extends BaseReactComponent {
                               to
                             </span>
                             <FormElement
-                              valueLink={this.linkState(this, "toDate")}
+                              valueLink={this.linkState(this, "toDate",this.onDataSelected)}
                               required
                               validations={[
                                 {

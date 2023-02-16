@@ -577,7 +577,7 @@ export const ExportDateSelected = ({
     "date range selected": date_range_selected,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:export date range drop down selected");
+  // console.log("Menu:export date range drop down selected");
 };
 
 //36. Menu:export data downloaded
@@ -2168,4 +2168,36 @@ export const PodNickname = ({
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale: Expanded Pod page: nickname");
+};
+
+//8. Landing Page Conversion:time spent on onboarding
+export const TimeSpentWhalePod = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Whale: time spent on whale pod page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+//8. Landing Page Conversion:time spent on onboarding
+export const TimeSpentWhalePodPage = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Whale: time spent on Expanded whale pod page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
 };

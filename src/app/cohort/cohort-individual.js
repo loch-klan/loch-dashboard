@@ -7,6 +7,7 @@ import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import {
   CreateUpdateNotification,
   getAllInsightsApi,
+  GetAssetFilter,
   getCohort,
   GetLargestAsset,
   GetLargestVolumeBought,
@@ -16,6 +17,7 @@ import {
   GetSoldAsset,
   UpdateCohortNickname,
 } from "./Api";
+import { getAllCoins } from "../onboarding/Api.js";
 import { AmountType, DormantType, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
@@ -71,17 +73,20 @@ import {
   NotificationDropdown2,
   NotificationSaved,
   PodNickname,
+  TimeSpentWhalePodPage,
   WhaleCreateAccountModal,
   WhaleCreateAccountSkip,
   WhaleExpandedPodFilter,
 } from "../../utils/AnalyticsFunctions";
+import { connect } from "react-redux";
+import CustomDropdown from "../../utils/form/CustomDropdown";
 
 class CohortPage extends BaseReactComponent {
   constructor(props) {
     super(props);
     const dummyUser = localStorage.getItem("lochDummyUser");
     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
-    console.log(userDetails);
+    // console.log(userDetails);
     this.state = {
       isLochUser: userDetails,
       activeFooter: 0,
@@ -121,8 +126,58 @@ class CohortPage extends BaseReactComponent {
       RegisterModal: false,
       skip: false,
       userId: null,
+
+      activeBadge: [{ name: "All", id: "" }],
+      activeBadgeList: [],
+      activeAsset: [],
+      AssetFilterList: [],
+     
     };
   }
+
+  handleFunctionChain = (badge) => {
+    // console.log("badge", badge);
+
+    if (badge?.[0].name === "All") {
+      this.setState(
+        {
+          activeBadge: [{ name: "All", id: "" }],
+          activeBadgeList: [],
+        },
+        () => {
+          this.getAssetData(this.state.activeFooter);
+        }
+      );
+    } else {
+      this.setState(
+        {
+          activeBadge: badge,
+          activeBadgeList: badge?.map((item) => item.id),
+        },
+        () => {
+          this.getAssetData(this.state.activeFooter);
+        }
+      );
+    }
+  };
+
+  handleAsset = (arr) => {
+    // console.log("arr",arr)
+    this.setState(
+      {
+        activeAsset: arr === "allAssets" ? [] : arr,
+      },
+      () => {
+        this.getAssetData(this.state.activeFooter);
+      }
+    );
+  };
+
+  getAssetFilter = () => {
+    let data = new URLSearchParams();
+    data.append("cohort_id", this.state.cohortId);
+    GetAssetFilter(data, this);
+  };
 
   AddEmailModal = () => {
     // console.log("handle emailc close");
@@ -177,14 +232,28 @@ class CohortPage extends BaseReactComponent {
     });
   };
   componentDidMount() {
+     this.state.startTime = new Date() * 1;
     this.getCohortDetail();
     this.getAssetData(0);
     this.getNotificationApi();
-
+    this.props.getAllCoins();
+    this.getAssetFilter();
     setTimeout(() => {
       this.AddEmailModal();
     }, 2000);
   }
+
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000;
+
+    TimeSpentWhalePodPage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      time_spent: TimeSpent,
+    });
+  }
+
   getNotificationApi = () => {
     let data = new URLSearchParams();
     data.append("cohort_id", this.state.cohortId);
@@ -194,6 +263,9 @@ class CohortPage extends BaseReactComponent {
     if (this.state.apiResponse) {
       this.getCohortDetail();
       this.getAssetData(0);
+      this.getNotificationApi();
+      this.props.getAllCoins();
+      this.getAssetFilter();
       this.setState({
         apiResponse: false,
       });
@@ -249,6 +321,8 @@ class CohortPage extends BaseReactComponent {
     data.append("cohort_id", this.state.cohortId);
     data.append("start_datetime", endDate);
     data.append("end_datetime", startDate);
+    data.append("chain_ids", JSON.stringify(this.state.activeBadgeList));
+    data.append("asset_ids", JSON.stringify(this.state.activeAsset));
 
     // Analyics
     WhaleExpandedPodFilter({
@@ -724,16 +798,55 @@ class CohortPage extends BaseReactComponent {
 
           {/* Net worth end */}
 
-          <h2
-            className="inter-display-medium f-s-20 lh-20 black-191 m-b-24"
+          <div
             style={{
               display: "flex",
+              justifyContent: "space-between",
               alignItems: "center",
-              justifyContent: "start",
+              marginBottom: "2rem",
             }}
           >
-            <Image src={TrendIcon} style={{ marginRight: "1.2rem" }} /> Trends
-          </h2>
+            <h2
+              className="inter-display-medium f-s-20 lh-20 black-191"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "start",
+              }}
+            >
+              <Image src={TrendIcon} style={{ marginRight: "1.2rem" }} /> Trends
+            </h2>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ width: "20rem" }}>
+                <CustomDropdown
+                  filtername="All chains selected"
+                  options={this.props.OnboardingState.coinsList}
+                  action={null}
+                  handleClick={this.handleFunctionChain}
+                  isChain={true}
+                  // selectedTokens={this.state.activeBadge}
+                />
+              </div>
+              <div style={{ width: "20rem", marginLeft: "1rem" }}>
+                <CustomDropdown
+                  filtername="All assets selected"
+                  options={this.state.AssetFilterList}
+                  action={null}
+                  handleClick={(arr) => this.handleAsset(arr)}
+                  LightTheme={true}
+                  placeholderName={"asset"}
+                  // isChain={true}
+                  // selectedTokens={this.state.activeBadge}
+                />
+              </div>
+            </div>
+          </div>
 
           <div
             style={{
@@ -1122,7 +1235,7 @@ class CohortPage extends BaseReactComponent {
 
           {/* 4 card end */}
 
-          {/* <div
+          <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -1147,10 +1260,10 @@ class CohortPage extends BaseReactComponent {
                 Save
               </button>
             )}
-          </div> */}
+          </div>
 
           {/* Notification start */}
-          {/* <div
+          <div
             style={{
               background: "rgba(229, 229, 230, 0.5)",
               borderRadius: "16px",
@@ -1286,7 +1399,6 @@ class CohortPage extends BaseReactComponent {
                     />
                   </div>
 
-               
                   <div>
                     <h3 className="inter-display-medium f-s-16 lh-19 m-t-80">
                       Notify me when any wallets move more than
@@ -1382,7 +1494,7 @@ class CohortPage extends BaseReactComponent {
                 </div>
               </Col>
             </Row>
-          </div> */}
+          </div>
           {/* notification end */}
 
           {/* Address Start */}
@@ -1639,5 +1751,12 @@ class CohortPage extends BaseReactComponent {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
+});
 
-export default CohortPage;
+const mapDispatchToProps = {
+  getAllCoins,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CohortPage);
