@@ -94,34 +94,67 @@ class CustomDropdown extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.options.length === 0 ||
+    if (!this.props.isLineChart && this.state.options?.length - 1 === this.getSelected().selected?.length) {
+      this.selectedAll(true);
+    }
+      if (
+        prevProps.options.length === 0 ||
         prevProps.options.length !== this.props.options.length
-    ) {
-      if (this.props.isLineChart) {
-        // console.log("in line chart");
-        this.setState(
-          {
-            options: [],
-          },
-          () => {
-            if (this.props.selectedTokens.length !== 0) {
-              //is already selected then this run
-              // console.log("in selected token");
-              let options = [];
-              Promise.all(
-                this.props.options.map((e) =>
-                  options.push({
-                    label: e.label,
-                    value: e.value,
-                    isSelected: this.props.selectedTokens.includes(e.value)
-                      ? true
-                      : false,
-                  })
-                )
-              ).then(() => {
-                this.setState(
-                  {
+      ) {
+        if (this.props.isLineChart) {
+          // console.log("in line chart");
+          this.setState(
+            {
+              options: [],
+            },
+            () => {
+              if (this.props.selectedTokens.length !== 0) {
+                //is already selected then this run
+                // console.log("in selected token");
+                let options = [];
+                Promise.all(
+                  this.props.options.map((e) =>
+                    options.push({
+                      label: e.label,
+                      value: e.value,
+                      isSelected: this.props.selectedTokens.includes(e.value)
+                        ? true
+                        : false,
+                    })
+                  )
+                ).then(() => {
+                  this.setState(
+                    {
+                      options: [
+                        options[0],
+                        ...options
+                          .slice(1, options.length)
+                          .sort((a, b) => (a.label > b.label ? 1 : -1))
+                          .sort((a, b) => b.isSelected - a.isSelected),
+                      ],
+                    },
+                    () => {
+                      // console.log("op", this.state.options);
+                    }
+                  );
+                });
+
+                //  this.getSelected();
+                //  this.Apply();
+                // console.log("op",options)
+              } else {
+                // console.log("in line chart empty");
+                let options = [];
+                Promise.all(
+                  this.props.options.map((e, i) =>
+                    options.push({
+                      label: e.label,
+                      value: e.value,
+                      isSelected: i < 5 && i !== 0 ? true : false,
+                    })
+                  )
+                ).then(() => {
+                  this.setState({
                     options: [
                       options[0],
                       ...options
@@ -129,75 +162,45 @@ class CustomDropdown extends Component {
                         .sort((a, b) => (a.label > b.label ? 1 : -1))
                         .sort((a, b) => b.isSelected - a.isSelected),
                     ],
-                  },
-                  () => {
-                    // console.log("op", this.state.options);
-                  }
-                );
-              });
-
-              //  this.getSelected();
-              //  this.Apply();
-              // console.log("op",options)
-            } else {
-              // console.log("in line chart empty");
-              let options = [];
-              Promise.all(
-                this.props.options.map((e, i) =>
-                  options.push({
-                    label: e.label,
-                    value: e.value,
-                    isSelected: i < 5 && i !== 0 ? true : false,
-                  })
-                )
-              ).then(() => {
-                this.setState({
-                  options: [
-                    options[0],
-                    ...options
-                      .slice(1, options.length)
-                      .sort((a, b) => (a.label > b.label ? 1 : -1))
-                      .sort((a, b) => b.isSelected - a.isSelected),
-                  ],
+                  });
                 });
-              });
 
-              //  console.log("op else", options);
+                //  console.log("op else", options);
+              }
+              this.getSelected();
+              this.Apply();
             }
-            this.getSelected();
-            this.Apply();
+          );
+        } else {
+          // console.log("in transaction");
+          // this.props.options.map((e, i) =>
+          //   this.state.options.push({
+          //     label: e.label,
+          //     value: e.value,
+          //     isSelected: i === 0 ? true : false,
+          //   })
+          // );
+
+          // console.log("transaction", this.props.options);
+          this.state.options = [];
+          this.props.options.map((e, i) =>
+            this.state.options.push({
+              label: this.props.isChain ? e.name : e.label,
+              value: this.props.isChain ? e.id : e.value,
+              // isSelected: i === 0 && !this.props.isChain ? true : false,
+              isSelected: true,
+            })
+          );
+
+          // for chain
+          if (this.props.isChain) {
+            this.state.options = [
+              { label: "All", value: "", isSelected: true },
+              ...this.state.options,
+            ];
           }
-        );
-      } else {
-        // console.log("in transaction");
-        // this.props.options.map((e, i) =>
-        //   this.state.options.push({
-        //     label: e.label,
-        //     value: e.value,
-        //     isSelected: i === 0 ? true : false,
-        //   })
-        // );
-
-        // console.log("transaction", this.props.options);
-        this.state.options = [];
-        this.props.options.map((e, i) =>
-          this.state.options.push({
-            label: this.props.isChain ? e.name : e.label,
-            value: this.props.isChain ? e.id : e.value,
-            // isSelected: i === 0 && !this.props.isChain ? true : false,
-            isSelected: true,
-          })
-        );
-
-        // for chain
-        if (this.props.isChain) {
-          this.state.options = [
-            { label: "All", value: "", isSelected: true },
-            ...this.state.options,
-          ];
         }
       }
-    }
   }
 
   componentWillUnmount() {
@@ -415,7 +418,7 @@ class CustomDropdown extends Component {
           onClick={this.dropdownClicked}
           style={
             this.props.isChain || this.props.LightTheme
-              ? { textAlign: "left", paddingLeft: "1.6rem" }
+              ? { justifyContent: "flex-start", paddingLeft: "1.6rem" }
               : {}
           }
         >
