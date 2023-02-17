@@ -51,6 +51,7 @@ class PieChart2 extends BaseReactComponent {
       isChainToggle: false,
       chainList: null,
       assetPrice: null,
+
       isYeildToggle: false,
       isDebtToggle: false,
       allProtocols: null,
@@ -202,6 +203,7 @@ class PieChart2 extends BaseReactComponent {
     this.setState({
       assetPrice,
     });
+    // temp hide
     // getAllProtocol(this);
   }
 

@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 /* PLOP_INJECT_REDUCER_IMPORT */
+import { DefiReducer } from '../app/defi';
 import { CohortReducer } from '../app/cohort';
 import { ProfileReducer } from '../app/profile';
 import { CommonReducer } from '../app/common';
@@ -11,6 +12,7 @@ import IntelligenceReducer from '../app/intelligence/IntelligenceReducer';
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
+	DefiState: DefiReducer,
 	CohortState: CohortReducer,
   ProfileState: ProfileReducer,
   CommonState: CommonReducer,

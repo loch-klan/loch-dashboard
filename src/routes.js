@@ -15,6 +15,7 @@ import InsightsPage from "./app/intelligence/InsightsPage";
 import AssetValueGraph from "./app/intelligence/AssetValueGraph";
 import Cohort from "./app/cohort/Cohort";
 import CohortPage from "./app/cohort/cohort-individual";
+import Defi from "./app/defi/Defi";
 const routes = [
   {
     path: "/",
@@ -100,7 +101,12 @@ const routes = [
     type: PrivateRoute,
     component: CohortPage,
   },
-
+  {
+    path: "/decentralized-finance",
+    name: "Decentralized Finance",
+    type: PrivateRoute,
+    component: Defi,
+  },
   {
     path: "/verify-email",
     name: "Verify Email",
