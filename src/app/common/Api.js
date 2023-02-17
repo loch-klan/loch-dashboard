@@ -391,8 +391,12 @@ export const UpdateUserDetails = (data,ctx) => {
         };
         localStorage.setItem("lochUser", JSON.stringify(obj));
         // toast.success(" Your wallets and pods has been saved");
-
-        ctx.state.onHide();
+        if (ctx.AddEmailModal) {
+          ctx.AddEmailModal()
+        } else {
+           ctx.state.onHide();
+        };
+       
       } 
     })
     .catch((err) => {
