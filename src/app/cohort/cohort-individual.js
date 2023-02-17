@@ -80,6 +80,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { connect } from "react-redux";
 import CustomDropdown from "../../utils/form/CustomDropdown";
+import UpgradeModal from "../common/upgradeModal";
 
 class CohortPage extends BaseReactComponent {
   constructor(props) {
@@ -131,9 +132,21 @@ class CohortPage extends BaseReactComponent {
       activeBadgeList: [],
       activeAsset: [],
       AssetFilterList: [],
-     
+      upgradeModal: false,
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      triggerId:0,
     };
   }
+
+  upgradeModal = () => {
+    this.setState(
+      {
+        upgradeModal: !this.state.upgradeModal,
+        
+      },
+      
+    );
+  };
 
   handleFunctionChain = (badge) => {
     // console.log("badge", badge);
@@ -232,7 +245,7 @@ class CohortPage extends BaseReactComponent {
     });
   };
   componentDidMount() {
-     this.state.startTime = new Date() * 1;
+    this.state.startTime = new Date() * 1;
     this.getCohortDetail();
     this.getAssetData(0);
     this.getNotificationApi();
@@ -380,40 +393,54 @@ class CohortPage extends BaseReactComponent {
 
   handleSave = () => {
     // console.log("save", this.state.email, this.state.isEmailValid);
-    if (this.state.email !== "") {
-      NotificationSaved({
-        session_id: getCurrentUser().id,
-        email_address: this.state.email,
-        pod_name: this.state.cohortName,
-        checked1: this.state.walletNotification,
-        checked2: this.state.dayNotification,
-        dropdown_name1: this.state.title,
-        dropdown_name2: this.state.titleday,
-      });
-      let data = new URLSearchParams();
-      data.append("cohort_id", this.state.cohortId);
-      data.append("email", this.state.email);
+    if (this.state.userPlan?.notifications_provided) {
+      if (this.state.email !== "") {
+        NotificationSaved({
+          session_id: getCurrentUser().id,
+          email_address: this.state.email,
+          pod_name: this.state.cohortName,
+          checked1: this.state.walletNotification,
+          checked2: this.state.dayNotification,
+          dropdown_name1: this.state.title,
+          dropdown_name2: this.state.titleday,
+        });
+        let data = new URLSearchParams();
+        data.append("cohort_id", this.state.cohortId);
+        data.append("email", this.state.email);
 
-      if (this.state.walletNotification) {
-        data.append("amount_type", AmountType.getNumber(this.state.title));
+        if (this.state.walletNotification) {
+          data.append("amount_type", AmountType.getNumber(this.state.title));
+        }
+
+        if (this.state.dayNotification) {
+          data.append(
+            "dormant_type",
+            DormantType.getNumber(this.state.titleday)
+          );
+        }
+        if (this.state.notificationId) {
+          data.append("whale_notification_id", this.state.notificationId);
+        }
+        //   console.log("amout", AmountType.getNumber(this.state.title));
+        // console.log("dormant", DormantType.getNumber(this.state.titleday));
+
+        CreateUpdateNotification(data, this);
+
+        setTimeout(() => {
+          this.setState({ showBtn: false });
+        }, 2000);
+      } else {
+        toast.error("Please update your email");
       }
-
-      if (this.state.dayNotification) {
-        data.append("dormant_type", DormantType.getNumber(this.state.titleday));
-      }
-      if (this.state.notificationId) {
-        data.append("whale_notification_id", this.state.notificationId);
-      }
-      //   console.log("amout", AmountType.getNumber(this.state.title));
-      // console.log("dormant", DormantType.getNumber(this.state.titleday));
-
-      CreateUpdateNotification(data, this);
-
-      setTimeout(() => {
-        this.setState({ showBtn: false });
-      }, 2000);
     } else {
-      toast.success("Please update your email");
+      this.setState(
+        {
+          triggerId: 4,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
     }
   };
 
@@ -631,6 +658,16 @@ class CohortPage extends BaseReactComponent {
           />
         ) : (
           ""
+        )}
+        {this.state.upgradeModal && (
+          <UpgradeModal
+            show={this.state.upgradeModal}
+            onHide={this.upgradeModal}
+            history={this.props.history}
+            isShare={localStorage.getItem("share_id")}
+            isStatic={this.state.isStatic}
+            triggerId={this.state.triggerId}
+          />
         )}
 
         <div className="insights-page page">

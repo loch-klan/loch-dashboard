@@ -339,11 +339,89 @@ export const VerifyEmail = (data,ctx) => {
             isOptInValid: false,
           },
           () => {
-           
-            let userdata = new URLSearchParams();
-            userdata.append("old_user_id", userId);
+            if (userId) {
+               let userdata = new URLSearchParams();
+               userdata.append("old_user_id", userId);
+               UpdateUserDetails(userdata, ctx);
+            } else {
+              let obj = JSON.parse(localStorage.getItem("lochUser"));
+              obj = {
+                ...obj,
+                first_name: "",
+                last_name: "",
+                email: res.data.data.user?.email,
+                mobile: "",
+                link: res.data.data.user?.link,
+              };
+              localStorage.setItem("lochUser", JSON.stringify(obj));
 
-            UpdateUserDetails(userdata, ctx);
+              // update wallet
+                const apiResponse = res.data.data;
+              if (apiResponse?.user) {
+                let newAddWallet = [];
+                const allChains = ctx.props.OnboardingState.coinsList;
+                // console.log("res ", apiResponse)
+                for (
+                  let i = 0;
+                  i < apiResponse.user?.user_wallets?.length;
+                  i++
+                ) {
+                  let obj = {}; // <----- new Object
+                  obj["address"] = apiResponse.user?.user_wallets[i].address;
+                  obj["displayAddress"] =
+                    apiResponse.user?.user_wallets[i]?.display_address;
+                  obj["wallet_metadata"] =
+                    apiResponse.user?.user_wallets[i].wallet;
+                  obj["id"] = `wallet${i + 1}`;
+
+                  const chainsDetected =
+                    apiResponse.wallets[
+                      apiResponse.user?.user_wallets[i].address
+                    ].chains;
+                  obj["coins"] = allChains.map((chain) => {
+                    let coinDetected = false;
+                    chainsDetected.map((item) => {
+                      if (item.id === chain.id) {
+                        coinDetected = true;
+                      }
+                    });
+                    return {
+                      coinCode: chain.code,
+                      coinSymbol: chain.symbol,
+                      coinName: chain.name,
+                      chain_detected: coinDetected,
+                      coinColor: chain.color,
+                    };
+                  });
+
+                  obj["coinFound"] =
+                    apiResponse.wallets[
+                      apiResponse.user?.user_wallets[i].address
+                    ].chains.length > 0
+                      ? true
+                      : false;
+                  obj["nickname"] = apiResponse.user?.user_wallets[i]?.nickname;
+                  obj["showAddress"] =
+                    apiResponse.user?.user_wallets[i]?.nickname === ""
+                      ? true
+                      : false;
+                  obj["showNickname"] =
+                    apiResponse.user?.user_wallets[i]?.nickname !== ""
+                      ? true
+                      : false;
+                  newAddWallet.push(obj);
+                }
+
+                localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+              }
+              
+              if (ctx.AddEmailModal) {
+                ctx.AddEmailModal();
+              } else {
+                ctx.state.onHide();
+              }
+            }
+          
           }
         );
 

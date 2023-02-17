@@ -82,6 +82,7 @@ class Cohort extends Component {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
+      triggerId:0,
     };
   }
 
@@ -151,7 +152,15 @@ class Cohort extends Component {
         email_address: getCurrentUser().email,
       });
     } else {
-      this.upgradeModal();
+       this.setState(
+         {
+           triggerId: 2,
+         },
+         () => {
+           this.upgradeModal();
+         }
+       );
+     
     }
   };
 
@@ -375,6 +384,7 @@ class Cohort extends Component {
             history={this.props.history}
             isShare={localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
+            triggerId={this.state.triggerId}
           />
         )}
 

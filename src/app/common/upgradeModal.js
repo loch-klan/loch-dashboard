@@ -11,6 +11,7 @@ import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import CustomTextControl from "./../../utils/form/CustomTextControl";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LochIcon from "../../assets/images/icons/loch-icon.svg";
+import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 import {
   getAllCoins,
   detectCoin,
@@ -18,7 +19,7 @@ import {
 } from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
+import { CreatePyment, fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Back-icon.svg";
@@ -62,7 +63,7 @@ class UpgradeModal extends BaseReactComponent {
             id: 1,
           },
           {
-            name: "Whale pod",
+            name: plan.whale_pod_limit > 1 ? "Whale pods" : "Whale pod",
             limit: plan.whale_pod_limit,
             img: WhalePodIcon,
             id: 2,
@@ -110,6 +111,9 @@ class UpgradeModal extends BaseReactComponent {
     // console.log("AllPlan ", AllPlan);
 
     this.state = {
+      // checkout
+      payment_link: "",
+
       // limit exceed id this is used for modal message and highlight feature
       upgradeType: 4,
 
@@ -186,7 +190,7 @@ class UpgradeModal extends BaseReactComponent {
       selectedPlan: JSON.parse(localStorage.getItem("currentPlan")),
 
       //
-      hideAuthModal: false
+      hideAuthModal: false,
     };
   }
 
@@ -223,7 +227,9 @@ class UpgradeModal extends BaseReactComponent {
         hideUpgradeModal: true,
       },
       () => {
-        
+             let data = new URLSearchParams();
+             data.append("price_id", this.state.selectedPlan?.price_id);
+             CreatePyment(data, this);
       }
     );
   };
@@ -357,7 +363,7 @@ class UpgradeModal extends BaseReactComponent {
                                   return (
                                     <div
                                       className={`feature-list ${
-                                        this.state.upgradeType === list?.id
+                                        this.props.triggerId === list?.id
                                           ? i === 0
                                             ? "free-plan"
                                             : i === 1
@@ -420,8 +426,19 @@ class UpgradeModal extends BaseReactComponent {
               ) : (
                 <div className="pricing-plan">
                   <Row>
-                    <Col md={4}>
-                      <div className="plan-card-wrapper">
+                    <Col
+                      md={5}
+                      style={{
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        display: "flex",
+                        paddingRight: "1rem",
+                      }}
+                    >
+                      <div
+                        className="plan-card-wrapper"
+                        style={{ width: "85%" }}
+                      >
                         <div className={"plan-card active"}>
                           <div
                             className={`pricing-section
@@ -449,7 +466,7 @@ class UpgradeModal extends BaseReactComponent {
                               return (
                                 <div
                                   className={`feature-list ${
-                                    this.state.upgradeType === list?.id
+                                    this.props.triggerId === list?.id
                                       ? this.state.selectedPlan?.id ===
                                         "63eb32759b5e4daf6b588205"
                                         ? "free-plan"
@@ -497,16 +514,46 @@ class UpgradeModal extends BaseReactComponent {
                         </Button>
                       </div>
                     </Col>
-                    <Col md={8}>
-                      <p>
-                        {this.state.RegisterModal
-                          ? "Verify your email address to create an account with Loch"
-                          : this.state.isShowOtp
-                          ? "We’ve sent you a verification code to your email"
-                          : this.state.CheckOutModal
-                          ? "Great! We’ve verified your account. You’re just one step away to becoming a Baron!"
-                          : ""}
-                      </p>
+                    <Col
+                      md={7}
+                      style={{
+                        paddingLeft: "3.5rem",
+                        paddingBottom: "10rem",
+                      }}
+                    >
+                      {this.state.RegisterModal && !this.state.isShowOtp ? (
+                        <p className="inter-display-medium f-s-16 lh-19 m-b-28 grey-969">
+                          Verify your email address to create an <br />
+                          account with Loch
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                      {this.state.isShowOtp && !this.state.CheckOutModal ? (
+                        <p className="inter-display-medium f-s-16 lh-19 m-b-28 black-191">
+                          We’ve sent you a verification code to your email
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                      {this.state.CheckOutModal ? (
+                        <>
+                          <Image src={CheckIcon} className="m-b-5" />
+                          <p
+                            className="inter-display-medium f-s-16 lh-19 m-b-20 black-191"
+                            style={{ opacity: "0.8" }}
+                          >
+                            Great! We’ve verified your account. <br />
+                            You’re just one step away to becoming a{" "}
+                            <span class="inter-display-bold f-s-16 lh-19">
+                              {this.state.selectedPlan?.name}!
+                            </span>
+                          </p>
+                        </>
+                      ) : (
+                        ""
+                      )}
+
                       <div className="email-section auth-modal">
                         {/* For Signin or Signup */}
                         {this.state.RegisterModal && (
@@ -613,6 +660,7 @@ class UpgradeModal extends BaseReactComponent {
                               //     selectedPlan: plan,
                               //   });
                               // }
+                              window.open(this.state.payment_link);
                             }}
                           >
                             Complete payment

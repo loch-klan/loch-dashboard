@@ -41,14 +41,24 @@ class AddWallet extends BaseReactComponent {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
       upgradeModal: false,
       isStatic: false,
+      triggerId: 0,
+      GoToHome:false,
     };
     this.timeout = 0;
   }
 
   upgradeModal = () => {
+
     this.setState({
       upgradeModal: !this.state.upgradeModal,
+    }, () => {
+      const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+      if (userDetails) {
+        this.props.history.push("/home")
+      }
     });
+
+    
   };
 
   componentDidMount() {
@@ -58,12 +68,16 @@ class AddWallet extends BaseReactComponent {
        userPlan: JSON.parse(localStorage.getItem("currentPlan")),
      });
    
-    // GetAllPlan();
+    GetAllPlan();
   }
 
   componentDidUpdate(prevProps, prevState) {
-   
-   
+  
+    if (this.state.userPlan === null) {
+
+      this.state.userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+    
+   }
   }
 
   nicknameOnChain = (e) => {
@@ -231,7 +245,18 @@ class AddWallet extends BaseReactComponent {
   };
 
   addInputField = () => {
-
+console.log(
+  "con",
+  this.state.walletInput.length + 1 <=
+    this.state.userPlan?.wallet_address_limit ||
+    this.state.userPlan?.wallet_address_limit === -1
+);
+    console.log(
+      "con value",
+      this.state.walletInput.length + 1 ,
+        this.state.userPlan?.wallet_address_limit,
+        
+    );
     if (
       this.state.walletInput.length + 1 <=
         this.state.userPlan?.wallet_address_limit ||
@@ -250,7 +275,15 @@ class AddWallet extends BaseReactComponent {
         });
         AddTextbox({});
     } else {
-      this.upgradeModal();
+       this.setState(
+         {
+           triggerId: 1,
+         },
+         () => {
+           this.upgradeModal();
+         }
+       );
+     
     }
     
   };
@@ -574,6 +607,7 @@ class AddWallet extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
+            triggerId={this.state.triggerId}
             // isShare={localStorage.getItem("share_id")}
             // isStatic={this.state.isStatic}
           />

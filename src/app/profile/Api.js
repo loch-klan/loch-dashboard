@@ -39,3 +39,22 @@ export const updateUser = (data,ctx) =>{
       console.log("fixwallet",err)
     })
   }
+
+
+export const ManageLink = (ctx) => {
+  postLoginInstance
+    .post("commerce/payment/get-manage-billing-url")
+    .then((res) => {
+      if (!res.data.error) {
+        ctx.setState({
+          manageUrl: res.data?.data?.url,
+        })
+      }
+      // console.log(data)
+    })
+    .catch((err) => {
+      console.log("fixwallet", err);
+    });
+};
+
+

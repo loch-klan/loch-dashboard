@@ -143,6 +143,7 @@ class Portfolio extends BaseReactComponent {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
+      triggerId: 0,
     };
   }
 
@@ -1482,6 +1483,7 @@ class Portfolio extends BaseReactComponent {
             history={this.props.history}
             isShare={localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
+            triggerId={this.state.triggerId}
           />
         )}
       </div>

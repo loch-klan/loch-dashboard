@@ -157,6 +157,7 @@ class ExitOverlay extends BaseReactComponent {
       upgradeModal: false,
       isStatic: false,
       hidePrevModal: false,
+      triggerId: 0,
     };
   }
   upgradeModal = () => {
@@ -218,7 +219,12 @@ class ExitOverlay extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
     } else {
-      this.upgradeModal();
+      this.setState({
+        triggerId: 3,
+      }, () => {
+         this.upgradeModal();
+      });
+     
     }
   
   };
@@ -546,7 +552,15 @@ class ExitOverlay extends BaseReactComponent {
        // );
        exportDataApi(data, this);
     } else {
-      this.upgradeModal();
+      this.setState(
+        {
+          triggerId: 7,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+     
     }
      
   };
@@ -618,7 +632,15 @@ class ExitOverlay extends BaseReactComponent {
       }
     );
   } else {
-    this.upgradeModal();
+     this.setState(
+       {
+         triggerId: 8,
+       },
+       () => {
+         this.upgradeModal();
+       }
+     );
+     
   }
          
           // console.log(results.data, addressList, prevAddressList);
@@ -861,7 +883,11 @@ class ExitOverlay extends BaseReactComponent {
                               to
                             </span>
                             <FormElement
-                              valueLink={this.linkState(this, "toDate",this.onDataSelected)}
+                              valueLink={this.linkState(
+                                this,
+                                "toDate",
+                                this.onDataSelected
+                              )}
                               required
                               validations={[
                                 {
@@ -1357,6 +1383,7 @@ class ExitOverlay extends BaseReactComponent {
             history={this.props.history}
             isShare={localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
+            triggerId={this.state.triggerId}
           />
         )}
       </>
