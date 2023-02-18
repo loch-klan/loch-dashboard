@@ -22,6 +22,7 @@ import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWalle
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import { GetAllPlan, getUser } from "../common/Api";
 
 class Wallet extends Component {
   constructor(props) {
@@ -60,6 +61,8 @@ class Wallet extends Component {
 
     this.props.getAllCoins();
     this.makeApiCall();
+    GetAllPlan();
+    getUser();
   }
 
   componentWillUnmount() {

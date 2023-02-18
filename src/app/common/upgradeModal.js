@@ -75,7 +75,7 @@ class UpgradeModal extends BaseReactComponent {
             id: 3,
           },
           {
-            name: "Notifications provided",
+            name: "Notifications",
             limit: plan.notifications_provided,
             img: NotificationIcon,
             id: 4,
@@ -87,7 +87,7 @@ class UpgradeModal extends BaseReactComponent {
             id: 5,
           },
           {
-            name: "Defi details provided",
+            name: "DeFi details",
             limit: plan.defi_enabled,
             img: DefiIcon,
             id: 6,
@@ -99,7 +99,7 @@ class UpgradeModal extends BaseReactComponent {
             id: 7,
           },
           {
-            name: "upload address csv/text",
+            name: "Upload address csv/txt",
             limit: plan.whale_pod_address_limit,
             img: UploadIcon,
             id: 8,
@@ -500,6 +500,7 @@ class UpgradeModal extends BaseReactComponent {
                         </div>
                         <Button
                           className={`primary-btn  disabled`}
+                          style={{ cursor: "auto" }}
                           onClick={() => {
                             // if (plan.name !== this.state.userPlan.name) {
                             //   this.AddEmailModal();

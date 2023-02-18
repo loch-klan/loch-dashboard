@@ -29,6 +29,7 @@ import FixAddModal from "../common/FixAddModal";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import { GetAllPlan, getUser } from "../common/Api";
 
 
 class Cost extends Component {
@@ -84,6 +85,8 @@ class Cost extends Component {
     this.props.getAllCoins();
     this.getBlockchainFee(0);
     this.getCounterPartyFee(0);
+    GetAllPlan();
+    getUser();
   }
 
   componentDidUpdate(prevProps, prevState) {

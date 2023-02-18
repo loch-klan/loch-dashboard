@@ -16,6 +16,7 @@ import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
 import { connect } from "react-redux";
 import FixAddModal from "../common/FixAddModal";
+import { GetAllPlan, getUser } from "../common/Api";
 
 
 class InsightsPage extends Component {
@@ -60,6 +61,8 @@ class InsightsPage extends Component {
       email_address: getCurrentUser().email,
     });
     getAllInsightsApi(this);
+    GetAllPlan();
+    getUser();
   }
 
   componentDidUpdate(prevProps, prevState) {

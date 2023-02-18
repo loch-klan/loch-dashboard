@@ -47,6 +47,7 @@ import { searchCohort } from "./Api";
 import moment from "moment";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import UpgradeModal from "../common/upgradeModal";
+import { GetAllPlan, getUser } from "../common/Api";
 class Cohort extends Component {
   constructor(props) {
     super(props);
@@ -96,6 +97,8 @@ class Cohort extends Component {
 
     this.props.getAllCoins();
     this.makeApiCall();
+    GetAllPlan();
+    getUser();
     
   }
 

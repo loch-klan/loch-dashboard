@@ -36,6 +36,7 @@ import {
 
 import FixAddModal from "../common/FixAddModal";
 import { info } from "./stackGrapgh";
+import { GetAllPlan, getUser } from "../common/Api";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -99,6 +100,8 @@ class Intelligence extends Component {
     this.props.getAllCoins();
     this.timeFilter(0);
     getAllInsightsApi(this);
+    GetAllPlan();
+    getUser();
   }
 
   componentDidUpdate(prevProps, prevState) {
