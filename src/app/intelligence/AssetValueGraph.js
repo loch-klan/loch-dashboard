@@ -18,6 +18,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
+import { GetAllPlan, getUser } from "../common/Api";
 
 
 class AssetValueGraph extends Component {
@@ -46,6 +47,8 @@ class AssetValueGraph extends Component {
     //    this.props.getCoinRate();
     this.props.getAllCoins();
     this.getGraphData();
+    GetAllPlan();
+    getUser();
   }
   componentDidUpdate(prevProps, prevState) {
     // add wallet

@@ -26,6 +26,7 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
+import { GetAllPlan, getUser } from "../common/Api";
 
 
 
@@ -123,6 +124,8 @@ class TransactionHistoryPage extends BaseReactComponent {
     getFilters(this);
     this.props.getAllCoins();
     // this.props.getCoinRate();
+    GetAllPlan();
+    getUser();
   }
 
   callApi = (page = START_INDEX) => {

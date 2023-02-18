@@ -330,6 +330,35 @@
            .email-section {
                     margin-bottom: 2.2rem;
 
+                    .primary-btn {
+              // margin-top: 2.8rem;
+              // width: 100%;
+
+               &:hover:not([disabled]) {
+                    border-color: $secondary;
+                    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                    color: $black-191;
+                    background-color: $secondary;
+                }
+
+              &.disabled,
+              .btn-primary:disabled {
+                outline: none;
+                cursor:not-allowed;
+                box-shadow: none;
+                border: 1px solid rgba(229, 229, 230, 0.5);
+                background-color: rgba(229, 229, 230, 0.5);
+                color: #0a0c12;
+                opacity: 1;
+
+                &:hover{
+                  box-shadow: none;
+                  border: 1px solid rgba(229, 229, 230, 0.5);
+                background-color: rgba(229, 229, 230, 0.5);
+                }
+              }
+            }
+
                     form {
                         display: flex;
 

@@ -11,6 +11,7 @@ import { getCurrentUser } from '../../utils/ManageToken';
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from '../common/FixAddModal';
+import { GetAllPlan, getUser } from '../common/Api';
 
 class Profile extends Component {
   constructor(props) {
@@ -30,6 +31,8 @@ class Profile extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    GetAllPlan();
+    getUser();
   }
 
   // For add new address

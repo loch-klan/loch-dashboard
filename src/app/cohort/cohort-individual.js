@@ -81,6 +81,7 @@ import {
 import { connect } from "react-redux";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import UpgradeModal from "../common/upgradeModal";
+import { GetAllPlan, getUser } from "../common/Api";
 
 class CohortPage extends BaseReactComponent {
   constructor(props) {
@@ -251,6 +252,8 @@ class CohortPage extends BaseReactComponent {
     this.getNotificationApi();
     this.props.getAllCoins();
     this.getAssetFilter();
+    GetAllPlan();
+    getUser();
     setTimeout(() => {
       this.AddEmailModal();
     }, 2000);
