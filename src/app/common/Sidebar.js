@@ -361,6 +361,9 @@ function Sidebar(props) {
                             // })
                           }}
                           activeclassname="active"
+                          // className="nav-link none"
+                          // to="#"
+                          // activeclassname="none"
                         >
                           <Image
                             src={
@@ -369,7 +372,7 @@ function Sidebar(props) {
                                 : DollarIcon
                             }
                           />
-                         DeFi
+                          DeFi
                         </NavLink>
                       </li>
 
@@ -567,6 +570,7 @@ function Sidebar(props) {
           ) : (
             ""
           )} */}
+
           {apiModal ? (
             <ExitOverlay
               show={apiModal}
