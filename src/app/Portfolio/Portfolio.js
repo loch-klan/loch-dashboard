@@ -66,6 +66,7 @@ import { CurrencyType } from "../../utils/ReusableFunctions";
 import PieChart2 from "./PieChart2";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
+import { toast } from "react-toastify";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -184,9 +185,7 @@ class Portfolio extends BaseReactComponent {
   };
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-    // if (this.props.match.params.id) {
-    //   getDetailsByLinkApi(this.props.match.params.id, this);
-    // }
+   
      if (this.props.match.params.id) {
        localStorage.setItem(
          "share_id", this.props.match.params.id)
@@ -221,7 +220,19 @@ class Portfolio extends BaseReactComponent {
       getAllCounterFeeApi(this, false, false);
       getProfitAndLossApi(this, false, false, false);
        GetAllPlan();
-       getUser();
+      getUser();
+      
+       if (this.props.location.search === "?status=success") {
+       
+         toast.success(
+                <div className="custom-toast-msg">
+                
+                  <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                    Congratulations! You’re officially a {this.state.userPlan.name}.
+                  </div>
+                </div>
+              )
+       }
     }
   };
 

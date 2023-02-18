@@ -528,7 +528,7 @@ class Defi extends Component {
                         <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
                           Asset
                         </span>
-                        <Image src={sortByIcon} className={"rotateDown"} />
+                        {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
                         {/* className=
                         {!this.state.tableSortOpt[4].up
                           ? "rotateDown"
@@ -548,7 +548,7 @@ class Defi extends Component {
                         <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
                           Type
                         </span>
-                        <Image src={sortByIcon} className={"rotateDown"} />
+                        {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
                       </div>
                     </Col>
                     <Col
@@ -564,7 +564,7 @@ class Defi extends Component {
                         <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
                           Balance
                         </span>
-                        <Image src={sortByIcon} className={"rotateDown"} />
+                        {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
                       </div>
                     </Col>
                     <Col
@@ -580,7 +580,7 @@ class Defi extends Component {
                         <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
                           USD Value
                         </span>
-                        <Image src={sortByIcon} className={"rotateDown"} />
+                        {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
                       </div>
                     </Col>
                   </Row>

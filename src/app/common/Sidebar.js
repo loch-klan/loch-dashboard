@@ -76,7 +76,8 @@ function Sidebar(props) {
 
   let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
   let triggerId = 6;
-  let isDefi = userPlan?.defi_enabled;
+  // let isDefi = userPlan?.defi_enabled;
+   let isDefi = true;
 
 
     const handleLeave = () => {
