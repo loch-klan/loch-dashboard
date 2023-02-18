@@ -298,9 +298,7 @@ function Sidebar(props) {
                               ? "active"
                               : ""
                           } ${
-                            activeTab === "/intelligence/costs"
-                              ? "active"
-                              : ""
+                            activeTab === "/intelligence/costs" ? "active" : ""
                           }
                         `}
                           to="/intelligence"
@@ -352,28 +350,28 @@ function Sidebar(props) {
                           Wallets
                         </NavLink>
                       </li>
-                      {/* <li>
+                      <li>
                         <NavLink
                           className="nav-link"
-                          to="/costs"
-                          onClick={() =>
-                            CostsMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            })
-                          }
+                          to="/decentralized-finance"
+                          onClick={() => {
+                            // CostsMenu({
+                            //   session_id: getCurrentUser().id,
+                            //   email_address: getCurrentUser().email,
+                            // })
+                          }}
                           activeclassname="active"
                         >
                           <Image
                             src={
-                              activeTab === "/costs"
+                              activeTab === "/decentralized-finance"
                                 ? ActiveDollarIcon
                                 : DollarIcon
                             }
                           />
-                          Costs
+                         DeFi
                         </NavLink>
-                      </li> */}
+                      </li>
 
                       <li>
                         <NavLink
