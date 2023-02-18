@@ -518,7 +518,7 @@ class Defi extends Component {
                                       src={e?.symbol}
                                       style={{
                                         zIndex: item.assets?.length - i,
-                                        marginLeft: i === 0 ? "0" : "-2.7rem",
+                                        marginLeft: i === 0 ? "0" : "-1rem",
                                       }}
                                     />
                                   );
