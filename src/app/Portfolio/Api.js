@@ -407,12 +407,13 @@ export const getProtocolBalanceApi = (ctx,data) => {
                 totalPrice: 0,
               });
             }
+        // let sorted = cardList.sort((a,b) => b.totalUsd - a.totalUsd)
 
         ctx.setState({
           totalYield,
           totalDebt,
           cardList,
-          sortedList:cardList,
+          sortedList: cardList,
           DebtValues,
           YieldValues,
           BalanceSheetValue,
