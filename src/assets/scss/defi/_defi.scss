@@ -36,7 +36,7 @@
                       z-index: 1;
 
                       .balance-list-content{
-                         max-height: 25rem;
+                        //  max-height: 25rem;
                         // overflow-y: scroll;
                         width: 100%;
                         
@@ -125,6 +125,15 @@
             }
         }
 
+        .animation-wrapper{
+            box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+                margin-bottom: 2rem;
+                width: 100%;
+                background-color: #fff;
+                padding: 2rem 0rem 4rem;
+                border-radius: 1.2rem;
+
+        }
 
     .defi-card-wrapper{
         background: #FFFFFF;
@@ -146,8 +155,12 @@
 
             img{
                 margin-right:1.6rem;
+                width: 4.3rem;
+                border-radius:8px;
+                box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
             }
             }
+
 
 
         }
@@ -203,8 +216,8 @@ text-align: center;
          .overlap-img{
                     img{
                         // box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.12), 0px 10px 32px -4px rgba(24, 39, 75, 0.1);
-                        // border-radius: 20px;
-                        // width: 60px;
+                        border-radius: 8px;
+                        width: 2.6rem;
                         // height: 60px;
                         position: relative;
                     }

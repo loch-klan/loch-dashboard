@@ -207,23 +207,23 @@ class PieChart2 extends BaseReactComponent {
     // getAllProtocol(this);
   }
 
-  getYieldBalance = () => {
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
-    UserWallet &&
-      UserWallet?.map((e) => {
-        //  console.log("wallet_address", e.address);
-        this.state.allProtocols &&
-          this.state.allProtocols?.map((protocol) => {
-            let data = new URLSearchParams();
-            // console.log("protocol_code", protocol.code,
-            //   "wallet_address",
-            //   e.address);
-            data.append("protocol_code", protocol.code);
-            data.append("wallet_address", e.address);
-            getYieldBalanceApi(this, data);
-          });
-      });
-  };
+  // getYieldBalance = () => {
+  //   let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+  //   UserWallet &&
+  //     UserWallet?.map((e) => {
+  //       //  console.log("wallet_address", e.address);
+  //       this.state.allProtocols &&
+  //         this.state.allProtocols?.map((protocol) => {
+  //           let data = new URLSearchParams();
+  //           // console.log("protocol_code", protocol.code,
+  //           //   "wallet_address",
+  //           //   e.address);
+  //           data.append("protocol_code", protocol.code);
+  //           data.append("wallet_address", e.address);
+  //           getYieldBalanceApi(this, data);
+  //         });
+  //     });
+  // };
 
   componentDidUpdate(prevProps) {
     if (this.props.assetTotal !== prevProps.assetTotal) {

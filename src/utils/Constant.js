@@ -211,12 +211,18 @@ export const AssetType = {
   BORROWED: 30,
   LENT: 40,
   DEPOSITED: 50,
+  POOL_DEPOSIT: 60,
+  REWARD: 70,
+  FARM: 80,
   _presentable: {
     10: "Regular",
     20: "Staked",
     30: "Borrowed",
     40: "Lent",
-    50: "Deposited",
+    50: "Supplied",
+    60: "Pool",
+    70: "Reward",
+    80: "Farm",
   },
   getText: function (value) {
     return this._presentable[value];
