@@ -54,6 +54,7 @@ import DropDown from './DropDown'
 import { getAllCurrencyApi, getAllCurrencyRatesApi, setCurrencyApi } from './Api'
 import { setCurrencyReducer } from './CommonAction'
 import FeedbackModal from './FeedbackModal'
+import UpgradeModal from './upgradeModal'
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -70,7 +71,13 @@ function Sidebar(props) {
      const [cohort, setCohort] = React.useState(false);
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
     const [selectedCurrency, setCurrency] = React.useState(JSON.parse(localStorage.getItem('currency')));
-    let lochUser = JSON.parse(localStorage.getItem('lochUser'));
+  let lochUser = JSON.parse(localStorage.getItem('lochUser'));
+  const [Upgrade, setUpgradeModal] = React.useState(false);
+
+  let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
+  let triggerId = 6;
+  let isDefi = userPlan?.defi_enabled;
+
 
     const handleLeave = () => {
       const isDummy = localStorage.getItem("lochDummyUser");
@@ -187,6 +194,9 @@ function Sidebar(props) {
         return()=>clearInterval(interval);
     }, [currentIndex]);
   
+  const upgradeModal = () => {
+    setUpgradeModal(!Upgrade);
+     };
     
       return (
         <div className="sidebar-section">
@@ -352,15 +362,18 @@ function Sidebar(props) {
                       </li>
                       <li>
                         <NavLink
-                          className="nav-link"
-                          to="/decentralized-finance"
+                          className={`nav-link ${!isDefi ? "none" : ""}`}
+                          to={`${!isDefi ? "#" : "/decentralized-finance"}`}
                           onClick={() => {
                             // CostsMenu({
                             //   session_id: getCurrentUser().id,
                             //   email_address: getCurrentUser().email,
                             // })
+                            if (!isDefi) {
+                              upgradeModal();
+                            }
                           }}
-                          activeclassname="active"
+                          activeclassname={`${!isDefi ? "none" : "active"}`}
                           // className="nav-link none"
                           // to="#"
                           // activeclassname="none"
@@ -583,6 +596,20 @@ function Sidebar(props) {
           ) : (
             ""
           )}
+
+          {Upgrade ? (
+            <UpgradeModal
+              show={Upgrade}
+              onHide={upgradeModal}
+              history={history}
+              isShare={localStorage.getItem("share_id")}
+              // isStatic={isStatic}
+              triggerId={triggerId}
+            />
+          ) : (
+            ""
+          )}
+
           {exportModal ? (
             <ExitOverlay
               show={exportModal}

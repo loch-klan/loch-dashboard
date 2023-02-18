@@ -355,6 +355,8 @@ export const getProtocolBalanceApi = (ctx,data) => {
                 balance: balance,
               });
             });
+
+            
             // card total
             totalUsd = yeild_total - debt_total;
 
