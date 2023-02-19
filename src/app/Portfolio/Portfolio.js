@@ -226,8 +226,7 @@ class Portfolio extends BaseReactComponent {
        
          toast.success(
                 <div className="custom-toast-msg">
-                
-                  <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                  <div className="inter-display-medium f-s-13 lh-16 grey-737">
                     Congratulations! You’re officially a {this.state.userPlan.name}.
                   </div>
                 </div>
