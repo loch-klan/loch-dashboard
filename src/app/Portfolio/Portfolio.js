@@ -220,19 +220,9 @@ class Portfolio extends BaseReactComponent {
       getAllCounterFeeApi(this, false, false);
       getProfitAndLossApi(this, false, false, false);
        GetAllPlan();
-      getUser();
-      
-       if (this.props.location.search === "?status=success") {
-       
-         toast.success(
-                <div className="custom-toast-msg">
-                  <div className="inter-display-medium f-s-13 lh-16 grey-737">
-                    Congratulations! You’re officially a {this.state.userPlan.name}.
-                  </div>
-                </div>
-              )
-       }
+       getUser(this);
     }
+    
   };
 
   componentWillUnmount() {
@@ -389,7 +379,7 @@ class Portfolio extends BaseReactComponent {
         getProfitAndLossApi(this, false, false, false);
         getYesterdaysBalanceApi(this);
                GetAllPlan();
-               getUser();
+               getUser(this);
       }
     } else if (prevState.sort !== this.state.sort) {
       this.getTableData();

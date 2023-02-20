@@ -107,6 +107,7 @@ class CohortPage extends BaseReactComponent {
       cohortSlug: "",
       cohortWalletAddress: props?.location?.state?.cohortWalletList,
       chainImages: props?.location?.state?.chainImages,
+      total_addresses: props?.location?.state?.total_addresses,
       walletAddresses: [],
       totalNetWorth: 0,
       createOn: "",
@@ -135,7 +136,8 @@ class CohortPage extends BaseReactComponent {
       AssetFilterList: [],
       upgradeModal: false,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
-      triggerId:0,
+      triggerId: 0,
+      
     };
   }
 
@@ -641,6 +643,8 @@ class CohortPage extends BaseReactComponent {
             addedon={moment(this.state?.createOn).format("MM/DD/YY")}
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
+            total_addresses={this.state.total_addresses}
+            totalEditAddress={this.state.walletAddresses?.length}
           />
         ) : (
           ""

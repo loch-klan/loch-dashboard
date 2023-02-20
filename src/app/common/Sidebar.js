@@ -133,22 +133,33 @@ function Sidebar(props) {
       toast.success("Share link has been copied");
     }
 
-    React.useEffect(() => {
-      let currency = JSON.parse(localStorage.getItem('currency'))
-      // console.log('curr',currency);
-      !currency && localStorage.setItem('currency',JSON.stringify({
-        active: true,
-        code: "USD",
-        id: "6399a2d35a10114b677299fe",
-        name: "United States Dollar",
-        symbol: "$",
-        rate: 1,
-    }))
-      let currencyRates = JSON.parse(localStorage.getItem('currencyRates'))
-      // console.log('currency',currencyRates);
-      getAllCurrencyApi(setAllCurrencyList)
-      !currencyRates && getAllCurrencyRatesApi()
-    }, []); // <-- Have to pass in [] here!
+   React.useEffect(() => {
+     let currency = JSON.parse(localStorage.getItem("currency"));
+
+     if (!currency) {
+       localStorage.setItem(
+         "currency",
+         JSON.stringify({
+           active: true,
+           code: "USD",
+           id: "6399a2d35a10114b677299fe",
+           name: "United States Dollar",
+           symbol: "$",
+           rate: 1,
+         })
+       );
+
+       setCurrency(JSON.parse(localStorage.getItem("currency")));
+     }
+
+     setTimeout(() => {
+       //  console.log("curr", currency);
+       let currencyRates = JSON.parse(localStorage.getItem("currencyRates"));
+       // console.log("currency", currencyRates);
+       getAllCurrencyApi(setAllCurrencyList);
+       !currencyRates && getAllCurrencyRatesApi();
+     }, 1000);
+   }, []); // <-- Have to pass in [] here!
 
     const handleFunction=(currency)=>{
       let currencyRates = JSON.parse(localStorage.getItem('currencyRates'))
