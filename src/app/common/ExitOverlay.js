@@ -122,12 +122,13 @@ class ExitOverlay extends BaseReactComponent {
       addWalletList:
         props?.walletaddress && props.isEdit
           ? props?.walletaddress?.map((e, i) => {
+            let isCoinFound = false;
               return {
                 id: `wallet${i + 1}`,
                 address: e?.wallet_address ? e.wallet_address : "",
                 displayAddress: e?.display_address ? e.display_address : "",
                 wallet_metadata: {},
-                coinFound: true,
+                coinFound:e?.chains.length > 0 ? true : false,
                 coins: e?.chains
                   ? e?.chains.map((e) => {
                       return {
@@ -172,7 +173,7 @@ class ExitOverlay extends BaseReactComponent {
         //   hidePrevModal: this.state.upgradeModal,
         // });
       }
-    );
+    );g
   };
   fileInputRef = React.createRef();
   pasteInput = React.createRef();
