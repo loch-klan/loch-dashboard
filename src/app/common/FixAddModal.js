@@ -19,6 +19,7 @@ import { AddWalletAddress, AddWalletAddressNickname, AddWalletAddressPodName, An
 import { getCurrentUser } from '../../utils/ManageToken';
 import { Plans } from '../../utils/Constant';
 import UpgradeModal from './upgradeModal';
+import { searchCohort } from '../cohort/Api';
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -69,17 +70,31 @@ class FixAddModal extends BaseReactComponent {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
+
+      start: 0,
+      sorts: [],
+      total_addresses: 0,
+      prevWalletAddress: addWalletList,
     };
     this.timeout = 0;
-
-   
   }
+// for get cohort details
+  makeApiCall = (cond) => {
+    let data = new URLSearchParams();
+    data.append("start", this.state.start);
+    data.append("conditions", JSON.stringify(cond ? cond : []));
+    data.append("limit", 50);
+    // data.append("limit", API_LIMIT)
+    data.append("sorts", JSON.stringify(this.state.sorts));
+    searchCohort(data, this);
+    // console.log(data);
+  };
 
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
     });
-  }
+  };
 
   handleOnchangeNickname = (e) => {
     let { name, value } = e.target;
@@ -228,6 +243,7 @@ class FixAddModal extends BaseReactComponent {
   componentDidMount() {
     this.props.getAllCoins();
     this.props.getAllParentChains();
+    //  this.makeApiCall();
     getAllWalletApi(this);
     getDetectedChainsApi(this);
     const fixWallet = [];
@@ -237,22 +253,23 @@ class FixAddModal extends BaseReactComponent {
         fixWallet.push({ ...e, id: `wallet${fixWallet.length + 1}` });
       }
     });
-    
+
+   
+
     // console.log('fixWallet',fixWallet);
     this.setState({
       fixWalletAddress: fixWallet,
     });
   }
   addAddress = () => {
-    
-    // console.log(
-    //   wallet_address_limit,
-    //   this.state.addWalletList.length,
-    //   this.state.addWalletList
-    // );
+    console.log(this.state.addWalletList.length, this.state.total_addresses);
+    let total =
+      this.state.addWalletList.length +
+      this.state.total_addresses +
+      1 -
+      this.state.prevWalletAddress?.length;
     if (
-      this.state.addWalletList.length + 1 <=
-        this.state.userPlan.wallet_address_limit ||
+      total <= this.state.userPlan.wallet_address_limit ||
       this.state.userPlan.wallet_address_limit === -1
     ) {
       this.state.addWalletList.push({
@@ -269,17 +286,15 @@ class FixAddModal extends BaseReactComponent {
         addWalletList: this.state.addWalletList,
       });
     } else {
-       this.setState(
-         {
-           triggerId: 1,
-         },
-         () => {
-           this.upgradeModal();
-         }
-       );
-     
+      this.setState(
+        {
+          triggerId: 1,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
     }
-      
   };
 
   deleteAddress = (index) => {
@@ -316,97 +331,112 @@ class FixAddModal extends BaseReactComponent {
 
   handleAddWallet = () => {
     // console.log("add wallet list", this.state.addWalletList,this);
-    if (this.state.addWalletList) {
-      if (this.timeout) {
-        clearTimeout(this.timeout);
-      }
-      this.timeout = setTimeout(() => {
-        let arr = [];
-        let addressList = [];
-        let displayAddress = [];
-        let nicknameArr = {};
-        let walletList = [];
-        for (let i = 0; i < this.state.addWalletList.length; i++) {
-          let curr = this.state.addWalletList[i];
-          // console.log(
-          //   "current address",
-          //   curr.address.trim(),
-          //   "display",
-          //   curr.displayAddress,
-          //   "arr",
-          //   arr,
+     if (
+       this.state.total_addresses > this.state.userPlan.wallet_address_limit &&
+       this.state.userPlan.wallet_address_limit !== -1
+     ) {
+       this.setState(
+         {
+           triggerId: 1,
+         },
+         () => {
+           this.upgradeModal();
+         }
+       );
+     } else {
+       if (this.state.addWalletList) {
+         if (this.timeout) {
+           clearTimeout(this.timeout);
+         }
+         this.timeout = setTimeout(() => {
+           let arr = [];
+           let addressList = [];
+           let displayAddress = [];
+           let nicknameArr = {};
+           let walletList = [];
+           for (let i = 0; i < this.state.addWalletList.length; i++) {
+             let curr = this.state.addWalletList[i];
+             // console.log(
+             //   "current address",
+             //   curr.address.trim(),
+             //   "display",
+             //   curr.displayAddress,
+             //   "arr",
+             //   arr,
 
-          // );
-          if (!arr.includes(curr.address.trim()) && curr.address) {
-            walletList.push(curr);
-            arr.push(curr.address.trim());
-            nicknameArr[curr.address.trim()] = curr.nickname;
-            arr.push(curr.displayAddress?.trim());
-            addressList.push(curr.address.trim());
-          }
-        }
+             // );
+             if (!arr.includes(curr.address.trim()) && curr.address) {
+               walletList.push(curr);
+               arr.push(curr.address.trim());
+               nicknameArr[curr.address.trim()] = curr.nickname;
+               arr.push(curr.displayAddress?.trim());
+               addressList.push(curr.address.trim());
+             }
+           }
 
-        let addWallet = walletList;
+           let addWallet = walletList;
 
-        addWallet?.map((w, i) => {
-          w.id = `wallet${i + 1}`;
-        });
-        localStorage.setItem("addWallet", JSON.stringify(addWallet));
+           addWallet?.map((w, i) => {
+             w.id = `wallet${i + 1}`;
+           });
+           localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
-        this.state.onHide();
-        const data = new URLSearchParams();
-        // data.append("wallet_addresses", JSON.stringify(arr));
-        data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
-        data.append("wallet_addresses", JSON.stringify(addressList));
+           this.state.onHide();
+           const data = new URLSearchParams();
+           // data.append("wallet_addresses", JSON.stringify(arr));
+           data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+           data.append("wallet_addresses", JSON.stringify(addressList));
 
-        updateUserWalletApi(data, this);
-        // this.state.changeList && this.state.changeList(walletList);
-        // if (this.props.handleUpdateWallet) {
-        //     this.props.handleUpdateWallet()
-        // }
-        // console.log("fix",this.state.addWalletList);
-        const address = this.state.addWalletList?.map((e) => e.address);
-        // console.log("address", address);
-        const addressDeleted = this.state.deletedAddress;
-        // console.log("Deteted address", addressDeleted);
-        const unrecog_address = this.state.addWalletList
-          ?.filter((e) => !e.coinFound)
-          ?.map((e) => e.address);
-        // console.log("Unreq address", unrecog_address);
-        const recog_address = this.state.addWalletList
-          ?.filter((e) => e.coinFound)
-          ?.map((e) => e.address);
-        // console.log("req address", recog_address);
+           updateUserWalletApi(data, this);
+           // this.state.changeList && this.state.changeList(walletList);
+           // if (this.props.handleUpdateWallet) {
+           //     this.props.handleUpdateWallet()
+           // }
+           // console.log("fix",this.state.addWalletList);
+           const address = this.state.addWalletList?.map((e) => e.address);
+           // console.log("address", address);
+           const addressDeleted = this.state.deletedAddress;
+           // console.log("Deteted address", addressDeleted);
+           const unrecog_address = this.state.addWalletList
+             ?.filter((e) => !e.coinFound)
+             ?.map((e) => e.address);
+           // console.log("Unreq address", unrecog_address);
+           const recog_address = this.state.addWalletList
+             ?.filter((e) => e.coinFound)
+             ?.map((e) => e.address);
+           // console.log("req address", recog_address);
 
-        const blockchainDetected = [];
-        const nicknames = [];
-        this.state.addWalletList
-          ?.filter((e) => e.coinFound)
-          ?.map((obj) => {
-            let coinName = obj.coins
-              ?.filter((e) => e.chain_detected)
-              ?.map((name) => name.coinName);
-            let address = obj.address;
-            let nickname = obj.nickname;
-            blockchainDetected.push({ address: address, names: coinName });
-            nicknames.push({address: address, nickname: nickname});
-          });
+           const blockchainDetected = [];
+           const nicknames = [];
+           this.state.addWalletList
+             ?.filter((e) => e.coinFound)
+             ?.map((obj) => {
+               let coinName = obj.coins
+                 ?.filter((e) => e.chain_detected)
+                 ?.map((name) => name.coinName);
+               let address = obj.address;
+               let nickname = obj.nickname;
+               blockchainDetected.push({ address: address, names: coinName });
+               nicknames.push({ address: address, nickname: nickname });
+             });
 
-        // console.log("blockchain detected", blockchainDetected);
-        AddWalletAddress({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          addresses_added: address,
-          ENS_added: address,
-          addresses_deleted: addressDeleted,
-          ENS_deleted: addressDeleted,
-          unrecognized_addresses: unrecog_address,
-          recognized_addresses: recog_address,
-          blockchains_detected: blockchainDetected,
-          nicknames: nicknames,
-        });
-      }, 100);
-    }
+           // console.log("blockchain detected", blockchainDetected);
+           AddWalletAddress({
+             session_id: getCurrentUser().id,
+             email_address: getCurrentUser().email,
+             addresses_added: address,
+             ENS_added: address,
+             addresses_deleted: addressDeleted,
+             ENS_deleted: addressDeleted,
+             unrecognized_addresses: unrecog_address,
+             recognized_addresses: recog_address,
+             blockchains_detected: blockchainDetected,
+             nicknames: nicknames,
+           });
+         }, 100);
+       }
+     }
+    
   };
 
   handleFixWalletChange = (e) => {
@@ -633,46 +663,48 @@ class FixAddModal extends BaseReactComponent {
                 >
                   <Image src={DeleteIcon} />
                 </div>
-              {  elem.showAddress &&   
-                <input
-                  value={elem.address || ""}
-                  className="inter-display-regular f-s-16  lh-19 black-191"
-                  type="text"
-                  id={elem.id}
-                  placeholder="Paste valid wallet address or ENS here"
-                  name={`wallet${index + 1}`}
-                  autoFocus
-                  onChange={(e) => this.handleFixWalletChange(e)}
-                  style={getPadding(
-                    `fix-input-${index}`,
-                    elem,
-                    this.props.OnboardingState
-                  )}
-                  onFocus={(e) => {
-                    // console.log(e);
-                    this.FocusInInputFixWallet(e);
-                  }}
-                />}
+                {elem.showAddress && (
+                  <input
+                    value={elem.address || ""}
+                    className="inter-display-regular f-s-16  lh-19 black-191"
+                    type="text"
+                    id={elem.id}
+                    placeholder="Paste valid wallet address or ENS here"
+                    name={`wallet${index + 1}`}
+                    autoFocus
+                    onChange={(e) => this.handleFixWalletChange(e)}
+                    style={getPadding(
+                      `fix-input-${index}`,
+                      elem,
+                      this.props.OnboardingState
+                    )}
+                    onFocus={(e) => {
+                      // console.log(e);
+                      this.FocusInInputFixWallet(e);
+                    }}
+                  />
+                )}
 
-                {elem.showNickname && elem.coinFound && <input
-                  value={elem.nickname || ""}
-                  className="inter-display-regular f-s-16  lh-19 black-191"
-                  type="text"
-                  placeholder="Enter Nickname"
-                  id={elem.id}
-                  name={`wallet${index + 1}`}
-                  onChange={(e) => this.handleFixWalletChangeNickname(e)}
-                  style={getPadding(
-                    `fix-input-${index}`,
-                    elem,
-                    this.props.OnboardingState
-                  )}
-                  onFocus={(e) => {
-                    // console.log(e);
-                    this.FocusInInputFixWallet(e);
-                  }}
-                />
-}
+                {elem.showNickname && elem.coinFound && (
+                  <input
+                    value={elem.nickname || ""}
+                    className="inter-display-regular f-s-16  lh-19 black-191"
+                    type="text"
+                    placeholder="Enter Nickname"
+                    id={elem.id}
+                    name={`wallet${index + 1}`}
+                    onChange={(e) => this.handleFixWalletChangeNickname(e)}
+                    style={getPadding(
+                      `fix-input-${index}`,
+                      elem,
+                      this.props.OnboardingState
+                    )}
+                    onFocus={(e) => {
+                      // console.log(e);
+                      this.FocusInInputFixWallet(e);
+                    }}
+                  />
+                )}
                 {elem.address ? (
                   elem.coinFound && elem.coins.length > 0 ? (
                     <CustomChip
@@ -774,15 +806,14 @@ class FixAddModal extends BaseReactComponent {
                 // console.log(e);
                 this.FocusInInput(e);
               }}
-              onBlur={ (e) => {
+              onBlur={(e) => {
                 AddWalletAddressNickname({
                   session_id: getCurrentUser().id,
                   email_address: getCurrentUser().email,
                   nickname: e.target?.value,
                   address: elem.address,
                 });
-                }
-              }
+              }}
               // onKeyDown={this.handleTabPress}
             />
           )}
@@ -964,7 +995,7 @@ class FixAddModal extends BaseReactComponent {
             history={this.props.history}
             isShare={localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
-             triggerId={this.state.triggerId}
+            triggerId={this.state.triggerId}
           />
         )}
       </>

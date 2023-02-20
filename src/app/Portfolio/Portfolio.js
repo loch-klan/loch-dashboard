@@ -221,8 +221,9 @@ class Portfolio extends BaseReactComponent {
       getAllCounterFeeApi(this, false, false);
       getProfitAndLossApi(this, false, false, false);
        GetAllPlan();
-       getUser();
+       getUser(this);
     }
+    
   };
 
   componentWillUnmount() {
@@ -379,7 +380,7 @@ class Portfolio extends BaseReactComponent {
         getProfitAndLossApi(this, false, false, false);
         getYesterdaysBalanceApi(this);
                GetAllPlan();
-               getUser();
+               getUser(this);
       }
     } else if (prevState.sort !== this.state.sort) {
       this.getTableData();

@@ -193,7 +193,7 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                   getAllCounterFeeApi(ctx, false, false);
                   getProfitAndLossApi(ctx, false, false, false);
                          GetAllPlan();
-                         getUser();
+                          getUser(ctx);
                 }
                 
                 

@@ -158,6 +158,7 @@ class ExitOverlay extends BaseReactComponent {
       isStatic: false,
       hidePrevModal: false,
       triggerId: 0,
+      total_addresses: 0,
     };
   }
   upgradeModal = () => {
@@ -195,12 +196,16 @@ class ExitOverlay extends BaseReactComponent {
       };
 
   addAddress = () => {
-     
+     let total = this.props.isEdit
+       ? this.state.addWalletList.length +
+         this.props.total_addresses +
+         1 -
+         this.props.totalEditAddress
+       : this.state.addWalletList.length + this.props.total_addresses + 1;
      
     if (
-      this.state.addWalletList.length + 1 <=
-        this.state.userPlan?.whale_pod_address_limit ||
-      this.state.userPlan?.whale_pod_address_limit === -1
+      total <= this.state.userPlan?.wallet_address_limit ||
+      this.state.userPlan?.wallet_address_limit === -1
     ) {
       this.state.addWalletList.push({
         id: `wallet${this.state.addWalletList.length + 1}`,
@@ -219,12 +224,14 @@ class ExitOverlay extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
     } else {
-      this.setState({
-        triggerId: 3,
-      }, () => {
-         this.upgradeModal();
-      });
-     
+      this.setState(
+        {
+          triggerId: 1,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
     }
   
   };
@@ -525,7 +532,7 @@ class ExitOverlay extends BaseReactComponent {
   handleExportNow = () => {
     // console.log('Export');
     let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
-    console.log("add", addWalletList)
+    // console.log("add", addWalletList)
     if (
       addWalletList.length <= this.state.userPlan?.export_address_limit ||
       this.state.userPlan?.export_address_limit === -1
@@ -575,7 +582,18 @@ class ExitOverlay extends BaseReactComponent {
   };
 
   handleUpload = () => {
-    this.fileInputRef.current.click();
+    if (this.state.userPlan?.upload_csv) {
+      this.fileInputRef.current.click();
+    } else {
+      this.setState(
+        {
+          triggerId: 8,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+    }
     // console.log("upload click");
   };
 
@@ -609,7 +627,8 @@ class ExitOverlay extends BaseReactComponent {
               });
             });
           
-  let total_address = prevAddressList?.length + addressList?.length;
+  let total_address = this.props.isEdit ?  prevAddressList?.length + addressList?.length + this.props.total_addresses - this.props.totalEditAddress :
+    prevAddressList?.length + addressList?.length + this.props.total_addresses;
   if (
     total_address <= this.state.userPlan?.whale_pod_address_limit ||
     this.state.userPlan?.whale_pod_address_limit === -1
@@ -634,7 +653,7 @@ class ExitOverlay extends BaseReactComponent {
   } else {
      this.setState(
        {
-         triggerId: 8,
+         triggerId: 1,
        },
        () => {
          this.upgradeModal();

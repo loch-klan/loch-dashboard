@@ -147,6 +147,12 @@ export const getDetectedChainsApi = (ctx) =>{
     if(!res.data.error){
       // console.log('res',res);
       // CHAIN LIST
+      //
+      ctx.setState({
+        total_addresses: res.data.data.total_wallet_address,
+      });
+      
+      
       let chainList = [];
       ctx.props.OnboardingState.coinsList.map((item)=>{
           return(chainList.push({
@@ -539,7 +545,7 @@ export const CreatePyment = (data,ctx) => {
 
 
 
-export const getUser = () => {
+export const getUser = (ctx = null) => {
  
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
@@ -548,6 +554,18 @@ export const getUser = () => {
         "currentPlan",
         JSON.stringify(res.data.data.current_plan)
       );
+
+      if (ctx?.props.location.search === "?status=success") {
+        toast.success(
+          <div className="custom-toast-msg">
+            <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+              Congratulations! You’re officially a{" "}
+              {res.data.data.current_plan.name}.
+            </div>
+          </div>
+        );
+        ctx.props.history.replace("/home");
+      }
 
     } else {
       toast.error(res.data.message || "Something Went Wrong");

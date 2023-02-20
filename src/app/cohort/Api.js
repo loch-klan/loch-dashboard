@@ -44,20 +44,28 @@ export const searchCohort = (data,ctx) => {
       if (!res.data.error) {
         // console.log("search cohort", res.data.data?.user_cohorts.results);
         let isShare = localStorage.getItem("share_id");
+        let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
         let isLimitExceed = res.data.data?.user_cohorts.results?.length >
           ctx.state.userPlan?.whale_pod_limit + 1;
 
         let isWhaleAddressLimitExceed = false;
         
         // ctx.state.userPlan?.whale_pod_address_limit;
+        let total_addresses = 0;
 
         res.data.data?.user_cohorts.results?.map(e => {
           if (e.user_id) {
+            total_addresses = total_addresses + e.wallet_address_details?.length;
             if (e.wallet_address_details?.length > ctx.state.userPlan?.whale_pod_address_limit) {
               isWhaleAddressLimitExceed= true;
             }
           }
         });
+
+        total_addresses = total_addresses + walletAddress?.length;
+
+        // console.log(total_addresses);
+        // console.log(walletAddress);
         
     
          if ((isLimitExceed && isShare) || isWhaleAddressLimitExceed && isShare) {
@@ -73,7 +81,10 @@ export const searchCohort = (data,ctx) => {
         ctx.setState({
           cardList: res.data.data?.user_cohorts.results,
           sortedList: res.data.data?.user_cohorts.results,
+          total_addresses,
         });
+
+        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
