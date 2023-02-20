@@ -1017,7 +1017,7 @@ class Portfolio extends BaseReactComponent {
                 value =
                   rowData.usdValueThen.value *
                   rowData.usdValueThen.assetPrice *
-                  currency?.rate;
+                  (currency?.rate || 1);
               }
             });
             return (

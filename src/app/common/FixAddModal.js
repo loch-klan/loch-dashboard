@@ -335,7 +335,7 @@ class FixAddModal extends BaseReactComponent {
       this.state.total_addresses , this.state.userPlan.wallet_address_limit
     );
      if (
-       this.state.total_addresses > this.state.userPlan.wallet_address_limit &&
+       this.state.total_addresses + this.state.addWalletList?.length > this.state.userPlan.wallet_address_limit &&
        this.state.userPlan.wallet_address_limit !== -1
      ) {
        this.setState(

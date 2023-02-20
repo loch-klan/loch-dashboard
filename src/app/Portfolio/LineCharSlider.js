@@ -165,26 +165,26 @@ class LineChartSlider extends BaseReactComponent {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
                 assetMaster[data.asset.id][assetData.timestamp] =
                   new Number(data.max_count) *
-                    (data.asset_price * this.state.currency?.rate) +
+                    (data.asset_price * (this.state.currency?.rate || 1)) +
                   assetMaster[data.asset.id][assetData.timestamp];
               } else {
                 assetMaster[data.asset.id][assetData.timestamp] =
                   new Number(data.max_count) *
-                  (data.asset_price * this.state.currency?.rate);
+                  (data.asset_price * (this.state.currency?.rate || 1));
               }
             } else {
               assetMaster[data.asset.id] = {
                 assetDetails: data.asset,
                 assetPrice: data.asset_price
-                  ? data.asset_price * this.state.currency?.rate
+                  ? data.asset_price * (this.state.currency?.rate || 1)
                   : 0,
                 count:
                   new Number(data.max_count) *
-                  (data.asset_price * this.state.currency?.rate),
+                  (data.asset_price * (this.state.currency?.rate || 1)),
               };
               assetMaster[data.asset.id][assetData.timestamp] =
                 new Number(data.max_count) *
-                (data.asset_price * this.state.currency?.rate);
+                (data.asset_price * (this.state.currency?.rate || 1));
             }
           });
         }
@@ -423,7 +423,7 @@ class LineChartSlider extends BaseReactComponent {
             // selectedEvents.push(item);
             item.event?.map((a) => {
               let e_usd =
-                a.asset.value * (a.asset_price * this.state.currency?.rate);
+                a.asset.value * (a.asset_price * (this.state.currency?.rate || 1));
               let e_text = "";
               let e_assetValue = a.asset.value;
               let e_assetCode = a.asset.code;

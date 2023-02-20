@@ -353,7 +353,10 @@ class Defi extends Component {
                         >
                           {CurrencyType(false)}
                           {this.state.totalYield &&
-                            numToCurrency(this.state.totalYield)}
+                            numToCurrency(
+                              this.state.totalYield *
+                                (this.state.currency?.rate || 1)
+                            )}
                         </span>
                       </div>
                       <Image
@@ -383,7 +386,8 @@ class Defi extends Component {
                             <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
                               {CurrencyType(false)}
                               {amountFormat(
-                                item.totalPrice.toFixed(2),
+                                item.totalPrice.toFixed(2) *
+                                  (this.state.currency?.rate || 1),
                                 "en-US",
                                 "USD"
                               )}
@@ -415,7 +419,10 @@ class Defi extends Component {
                         >
                           {CurrencyType(false)}
                           {this.state.totalDebt &&
-                            numToCurrency(this.state.totalDebt)}
+                            numToCurrency(
+                              this.state.totalDebt *
+                                (this.state.currency?.rate || 1)
+                            )}
                         </span>
                       </div>
                       <Image
@@ -446,7 +453,8 @@ class Defi extends Component {
                             <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
                               {CurrencyType(false)}
                               {amountFormat(
-                                item.totalPrice.toFixed(2),
+                                item.totalPrice.toFixed(2) *
+                                  (this.state.currency?.rate || 1),
                                 "en-US",
                                 "USD"
                               )}
@@ -495,11 +503,9 @@ class Defi extends Component {
 
           {this.state?.sortedList?.length !== 0 &&
           this.state?.sortedList !== "" ? (
-              this.state?.sortedList?.map((card, index) => {
-                let tableRows = card?.row.sort(
-                  (a, b) => b.usdValue - a.usdValue
-                );
-           
+            this.state?.sortedList?.map((card, index) => {
+              let tableRows = card?.row.sort((a, b) => b.usdValue - a.usdValue);
+
               return (
                 <div className="defi-card-wrapper">
                   <div className="top-title-wrapper">
@@ -511,7 +517,9 @@ class Defi extends Component {
                     </div>
                     <h3 className="inter-display-medium f-s-16 lh-19">
                       {CurrencyType(false)}
-                      {numToCurrency(card?.totalUsd)}{" "}
+                      {numToCurrency(
+                        card?.totalUsd * (this.state.currency?.rate || 1)
+                      )}{" "}
                       <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
                         {CurrencyType(true)}
                       </span>
@@ -650,7 +658,9 @@ class Defi extends Component {
                             <div className="gray-chip inter-display-medium f-s-15 lh-15">
                               {item?.balance.map((e, i) => {
                                 return `${amountFormat(
-                                  e?.value.toFixed(2),
+                                  e?.value.toFixed(2)*(
+                                    this.state.currency?.rate || 1
+                                  ),
                                   "en-US",
                                   "USD"
                                 )}  ${
@@ -684,7 +694,7 @@ class Defi extends Component {
             })
           ) : this.state?.sortedList !== "" ? (
             // <Col md={12}>
-            <div className="animation-wrapper">
+            <div className="defi animation-wrapper">
               <Loading />
             </div>
           ) : (
