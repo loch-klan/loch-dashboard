@@ -4,10 +4,9 @@ import unrecognized from '../../image/unrecognized.svg';
 import { lightenDarkenColor, loadingAnimation } from "../ReusableFunctions";
 
 function CustomChip({ coins, isLoaded, id, isCohort }) {
-   
-    if (isCohort)
-    {
-        coins = coins?.map((e) => {
+  console.log("coins", coins);
+  if (isCohort) {
+    coins = coins?.map((e) => {
       return {
         chain_detected: true,
         coinCode: e.code,
@@ -15,8 +14,9 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
         coinColor: e.color,
         coinSymbol: e.symbol,
       };
-    });}
-    // console.log("coins", coins);
+    });
+  }
+
   let sortedCoins = coins
     ? coins.sort((a, b) => a.coinName - b.coinName)
     : null;

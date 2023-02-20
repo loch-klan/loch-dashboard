@@ -557,11 +557,10 @@ export const getUser = (ctx = null) => {
 
       if (ctx?.props.location.search === "?status=success") {
         toast.success(
-          <div className="custom-toast-msg">
-            <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-              Congratulations! You’re officially a{" "}
-              {res.data.data.current_plan.name}.
-            </div>
+          <div style={{
+            width: "38rem"
+          }}>
+            Congratulations! You’re officially a{" "}{res.data.data.current_plan.name}.
           </div>
         );
         ctx.props.history.replace("/home");

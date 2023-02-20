@@ -196,6 +196,10 @@ class ExitOverlay extends BaseReactComponent {
       };
 
   addAddress = () => {
+    // console.log("us", this.state.addWalletList.length ,
+    //   this.props.total_addresses ,
+    
+    //   this.props.totalEditAddress);
      let total = this.props.isEdit
        ? this.state.addWalletList.length +
          this.props.total_addresses +
@@ -1038,7 +1042,8 @@ class ExitOverlay extends BaseReactComponent {
                               }`,
                             }}
                           >
-                            {this.state.addWalletList?.map((elem, index) => {
+                                  {this.state.addWalletList?.map((elem, index) => {
+                              console.log(elem.coinFound)
                               return (
                                 <div
                                   className="add-wallet-input-section"
@@ -1132,6 +1137,7 @@ class ExitOverlay extends BaseReactComponent {
                                         key={index}
                                         isLoaded={false}
                                       ></CustomChip>
+                                          
                                     )
                                   ) : (
                                     ""
