@@ -173,7 +173,7 @@ class ExitOverlay extends BaseReactComponent {
         //   hidePrevModal: this.state.upgradeModal,
         // });
       }
-    );g
+    );
   };
   fileInputRef = React.createRef();
   pasteInput = React.createRef();
