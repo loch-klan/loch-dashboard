@@ -122,7 +122,7 @@ class ExitOverlay extends BaseReactComponent {
       addWalletList:
         props?.walletaddress && props.isEdit
           ? props?.walletaddress?.map((e, i) => {
-            let isCoinFound = false;
+            console.log(e)
               return {
                 id: `wallet${i + 1}`,
                 address: e?.wallet_address ? e.wallet_address : "",
@@ -367,7 +367,7 @@ class ExitOverlay extends BaseReactComponent {
   };
 
   handleCohortSave = () => {
-    // console.log("save", this.state.cohort_name, this.state.addWalletList)
+    console.log("save",  this.state.addWalletList)
     if (this.state.addWalletList) {
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -410,12 +410,12 @@ class ExitOverlay extends BaseReactComponent {
 
           createCohort(data, this);
           this.state.onHide();
+          console.log("address", walletList);
           this.state.changeList && this.state.changeList(walletList);
 
           const address = walletList?.map((e) =>
             e.displayAddress ? e.displayAddress : e.address
           );
-          // console.log("address", address);
 
           const unrecog_address = walletList
             .filter((e) => !e.coinFound)
