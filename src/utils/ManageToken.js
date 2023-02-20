@@ -20,10 +20,10 @@ const getCurrentUser = () => {
   const lochUser = JSON.parse(localStorage.getItem("lochUser"));
   const lochDummyUser = localStorage.getItem("lochDummyUser");
 
- 
+
   // console.log("Loch User",lochUser.email, "Loch ID", lochUser.id, lochUser);
   // console.log("Loch Dummy User", lochDummyUser);
-// // // 
+// // //
   return lochUser != null ? {id:lochUser.id ,email:lochUser.email} : {id: lochDummyUser, email: ""}
 }
 

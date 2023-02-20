@@ -16,6 +16,8 @@ import 'react-calendar/dist/Calendar.css'; // theme css file
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-virtualized/styles.css';
 import './assets/scss/style.scss';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 //Amplitude
 import { initAmplitude } from "./utils/AnalyticsFunctions";

@@ -1,11 +1,8 @@
 import React from 'react'
-import BaseReactComponent from './../../utils/form/BaseReactComponent';
+import {BaseReactComponent, Form, FormElement, FormValidator} from './../../utils/form';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
 import ExitOverlayIcon from '../../assets/images/icons/ExitOverlayWalletIcon.svg'
-import Form from '../../utils/form/Form'
-import FormElement from '../../utils/form/FormElement'
-import FormValidator from './../../utils/form/FormValidator';
 // import CloseIcon from '../../assets/images/icons/close-icon.svg'
 import CloseIcon from '../../assets/images/icons/dummyX.svg'
 import CustomTextControl from './../../utils/form/CustomTextControl';

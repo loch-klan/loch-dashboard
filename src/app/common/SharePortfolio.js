@@ -19,7 +19,7 @@ import { getCurrentUser } from '../../utils/ManageToken';
 
 function SharePortfolio(props) {
   let lochUser = JSON.parse(localStorage.getItem('lochUser'));
-  // let shareLink = BASE_URL_S3 + "portfolio/" + lochUser.link;
+  // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
     let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
   return (
     <div>

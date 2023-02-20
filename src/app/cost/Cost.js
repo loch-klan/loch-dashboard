@@ -25,7 +25,8 @@ import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
 import FeedbackForm from "../common/FeedbackForm";
-import FixAddModal from "../common/FixAddModal";
+import LinkIcon from '../../assets/images/icons/link.svg';
+import ConnectModal from "../common/ConnectModal";import FixAddModal from "../common/FixAddModal";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -49,6 +50,7 @@ class Cost extends Component {
       counterPartyData: [],
       counterPartyValue: null,
       currentPage: "Cost",
+      connectModal: false,
       counterGraphDigit: 3,
       GraphDigit: 3,
 
@@ -266,6 +268,9 @@ class Cost extends Component {
       });
     }
   };
+  handleConnectModal = ()=>{
+    this.setState({connectModal: !this.state.connectModal})
+  }
 
   render() {
     // console.log("counter", this.state.counterGraphDigit);
@@ -409,6 +414,18 @@ class Cost extends Component {
 
     return (
       <div className="cost-page-section">
+         {this.state.connectModal ? (
+          <ConnectModal
+            show={this.state.connectModal}
+            onHide={this.handleConnectModal}
+            history={this.props.history}
+            headerTitle={"Connect exchanges"}
+            modalType={"connectModal"}
+            iconImage={LinkIcon}
+          />
+        ) : (
+          ""
+        )}
         <div className="m-t-50 cost-section page">
           {this.state.addModal && (
             <FixAddModal
@@ -527,6 +544,8 @@ class Cost extends Component {
                 columnList={columnData}
                 headerHeight={64}
                 comingSoon={true}
+                isConnect={true}
+                handleExchange={this.handleConnectModal}
               />
             </div>
           </div>

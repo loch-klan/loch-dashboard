@@ -20,6 +20,8 @@ function TransactionTable(props) {
             isArrow={true}
             handleClick={props.handleClick}
             isAnalytics="Transaction Table"
+            isConnect={props.isConnect}
+            handleExchange={props.handleExchange}
           />
         ) : (
           ""

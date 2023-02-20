@@ -34,6 +34,8 @@ import ExitOverlay from './ExitOverlay'
 import { BASE_URL_S3 } from '../../utils/Constant'
 import { toast } from 'react-toastify'
 import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
+import ConnectModalIcon from '../../assets/images/icons/connectIcon.svg';
+
 import ConfirmLeaveModal from './ConformLeaveModal';
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
@@ -55,6 +57,7 @@ import { getAllCurrencyApi, getAllCurrencyRatesApi, setCurrencyApi } from './Api
 import { setCurrencyReducer } from './CommonAction'
 import FeedbackModal from './FeedbackModal'
 import UpgradeModal from './upgradeModal'
+import ConnectModal from './ConnectModal'
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -62,7 +65,7 @@ function Sidebar(props) {
   // console.log("active", activeTab)
     const history = useHistory();
     const [leave, setLeave] = React.useState(false);
-    const [apiModal,setApiModal]  =React.useState(false);
+    const [apiModal,setApiModal] = React.useState(false);
     const [exportModal,setExportModal] = React.useState(false)
     const [shareModal,setShareModal] = React.useState(false);
     const [confirmLeave,setConfirmLeave] = React.useState(false)
@@ -128,7 +131,7 @@ function Sidebar(props) {
     }
     const handleShare=()=>{
         const user= JSON.parse(localStorage.getItem('lochUser'));
-      const link= `${BASE_URL_S3}portfolio/${user.link}`
+      const link= `${BASE_URL_S3}home/${user.link}`
       navigator.clipboard.writeText(link);
       toast.success("Share link has been copied");
     }
