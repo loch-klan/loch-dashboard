@@ -330,7 +330,10 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleAddWallet = () => {
-    // console.log("add wallet list", this.state.addWalletList,this);
+    console.log(
+      "add wallet list",
+      this.state.total_addresses , this.state.userPlan.wallet_address_limit
+    );
      if (
        this.state.total_addresses > this.state.userPlan.wallet_address_limit &&
        this.state.userPlan.wallet_address_limit !== -1

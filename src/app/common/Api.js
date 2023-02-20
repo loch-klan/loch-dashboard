@@ -149,7 +149,7 @@ export const getDetectedChainsApi = (ctx) =>{
       // CHAIN LIST
       //
       ctx.setState({
-        total_addresses: res.data.data.total_wallet_address,
+        total_addresses: res.data.data.total_wallet_addresses,
       });
       
       
