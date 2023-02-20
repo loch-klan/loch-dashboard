@@ -296,7 +296,8 @@ class UpgradeModal extends BaseReactComponent {
           aria-labelledby="contained-modal-title-vcenter"
           backdropClassName="exitoverlaymodal"
           keyboard={false}
-          backdrop={this.props.isShare && this.props.isStatic ? "static" : true}
+          // backdrop={this.props.isShare && this.props.isStatic ? "static" : true}
+          backdrop={this.props.isStatic ? "static" : true}
         >
           <Modal.Header>
             <div className="UpgradeIcon">

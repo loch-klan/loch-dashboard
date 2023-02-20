@@ -32,6 +32,8 @@ import CoinChip from "../wallet/CoinChip";
 
 import Coin2 from "../../assets/images/icons/temp-coin1.svg";
 import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
+import { AssetType } from "../../utils/Constant";
+import UpgradeModal from "../common/upgradeModal";
 
 class Defi extends Component {
   constructor(props) {
@@ -69,38 +71,15 @@ class Defi extends Component {
       BalanceSheetValue: {},
       isYeildToggle: false,
       isDebtToggle: false,
+      upgradeModal: false,
+      triggerId: 6,
     };
   }
-
-    //  handleTableSort = (key,index,order) => {
-    //    let sortedList = sortedList?.map((e, i) => {
-    //      if (index === i) {
-    //        e.row[key] = 
-    //      }
-    //    });
-    //      tableRows.sort((a, b) => {
-    //   let valueA = a[key];
-    //   let valueB = b[key];
-    //    if (key === "name") {
-    //     valueA = valueA.toLowerCase();
-    //     valueB = valueB.toLowerCase();
-    //     return order
-    //       ? valueA.localeCompare(valueB)
-    //       : valueB.localeCompare(valueA);
-    //   } else if (key === "usdValue") {
-    //     valueA = parseFloat(valueA);
-    //     valueB = parseFloat(valueB);
-    //   }
-    //   if (order) {
-    //     return valueA - valueB;
-    //   } else {
-    //     return valueB - valueA;
-    //   }
-    //             });
-                
-    //             console.log(tableRows);
-    //           }
-
+  upgradeModal = () => {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
+  };
   toggleYield = () => {
     this.setState({
       isYeildToggle: !this.state.isYeildToggle,
@@ -116,9 +95,14 @@ class Defi extends Component {
   };
 
   componentDidMount() {
-    this.props.getAllCoins();
-    // getAllProtocol(this);
-    this.getYieldBalance();
+    if (this.state.userPlan?.defi_enabled) {
+      this.props.getAllCoins();
+      // getAllProtocol(this);
+      this.getYieldBalance();
+    } else {
+      this.handleReset();
+      this.upgradeModal();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -233,25 +217,55 @@ class Defi extends Component {
   };
 
   getYieldBalance = () => {
+    console.log("wallet_address");
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
-    UserWallet &&
+    if (UserWallet.length !== 0) {
+      console.log("wallet_addres3s");
       UserWallet?.map((e) => {
-        //  console.log("wallet_address", e.address);
         let data = new URLSearchParams();
         data.append("wallet_address", e.address);
         getProtocolBalanceApi(this, data);
         // this.state.allProtocols &&
         //   this.state.allProtocols?.map((protocol) => {
         //     let data = new URLSearchParams();
-        //     // console.log("protocol_code", protocol.code,
+        //     // consolee.log("protocol_code", protocol.code,
         //     //   "wallet_address",
         //     //   e.address);
         //     // data.append("protocol_code", protocol.code);
 
         //   });
       });
+    } else {
+      this.handleReset();
+    }
   };
+  // for 0 all value
+  handleReset = () => {
+    let YieldValues = [];
+    let DebtValues = [];
+    let allAssetType = [20, 30, 40, 50, 60, 70];
+    allAssetType.map((e) => {
+      if (e !== 30) {
+        YieldValues.push({
+          id: e,
+          name: AssetType.getText(e),
+          totalPrice: 0,
+        });
+      } else {
+        DebtValues.push({
+          id: 30,
+          name: AssetType.getText(30),
+          totalPrice: 0,
+        });
+      }
+    });
 
+    this.setState({
+      sortedList: "",
+      YieldValues,
+      DebtValues,
+    });
+  };
   // For add new address
   handleAddModal = () => {
     this.setState({
@@ -308,6 +322,16 @@ class Defi extends Component {
               history={this.props.history}
               changeWalletList={this.handleChangeList}
               apiResponse={(e) => this.CheckApiResponse(e)}
+            />
+          )}
+          {this.state.upgradeModal && (
+            <UpgradeModal
+              show={this.state.upgradeModal}
+              onHide={this.upgradeModal}
+              history={this.props.history}
+              isShare={localStorage.getItem("share_id")}
+              isStatic={true}
+              triggerId={this.state.triggerId}
             />
           )}
           <PageHeader
@@ -658,9 +682,8 @@ class Defi extends Component {
                             <div className="gray-chip inter-display-medium f-s-15 lh-15">
                               {item?.balance.map((e, i) => {
                                 return `${amountFormat(
-                                  e?.value.toFixed(2)*(
-                                    this.state.currency?.rate || 1
-                                  ),
+                                  e?.value.toFixed(2) *
+                                    (this.state.currency?.rate || 1),
                                   "en-US",
                                   "USD"
                                 )}  ${
@@ -699,7 +722,14 @@ class Defi extends Component {
             </div>
           ) : (
             // </Col>
-            ""
+            <div
+              className="defi animation-wrapper"
+              style={{ padding: "3rem", textAlign: "center" }}
+            >
+              <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
+                No data found
+              </h3>
+            </div>
           )}
         </div>
       </div>

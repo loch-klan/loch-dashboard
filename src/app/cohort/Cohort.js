@@ -83,8 +83,7 @@ class Cohort extends Component {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
-      triggerId: 0,
-      total_addresses: 0,
+      triggerId:0,
     };
   }
 
@@ -100,8 +99,6 @@ class Cohort extends Component {
     this.makeApiCall();
     GetAllPlan();
     getUser();
-
-  
     
   }
 
@@ -144,46 +141,30 @@ class Cohort extends Component {
     //   this.state.userPlan?.whale_pod_limit,
     //   this.state.cardList?.length
     // );
-      if (
-        this.state.total_addresses >=
-          this.state.userPlan.wallet_address_limit &&
-        this.state.userPlan.wallet_address_limit !== -1
-      ) {
-        this.setState(
-          {
-            triggerId: 1,
-          },
-          () => {
-            this.upgradeModal();
-          }
-        );
-      } else {
-         if (
-           this.state.cardList?.length <=
-             this.state.userPlan?.whale_pod_limit ||
-           this.state.userPlan?.whale_pod_limit === -1
-         ) {
-           this.setState({
-             cohortModal: !this.state.cohortModal,
-             // skip: islochUser ? true : this.state.skip,
-           });
+    if (
+      this.state.cardList?.length <= this.state.userPlan?.whale_pod_limit ||
+      this.state.userPlan?.whale_pod_limit === -1
+    ) {
+      this.setState({
+        cohortModal: !this.state.cohortModal,
+        // skip: islochUser ? true : this.state.skip,
+      });
 
-           CreateWhalePod({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-           });
-         } else {
-           this.setState(
-             {
-               triggerId: 2,
-             },
-             () => {
-               this.upgradeModal();
-             }
-           );
+      CreateWhalePod({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    } else {
+       this.setState(
+         {
+           triggerId: 2,
+         },
+         () => {
+           this.upgradeModal();
          }
-      }
-   
+       );
+     
+    }
   };
 
   // AddEmailModal = () => {
@@ -421,7 +402,6 @@ class Cohort extends Component {
             headerTitle={"Create a whale pod"}
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
-            total_addresses={this.state.total_addresses}
           />
         ) : this.state.RegisterModal ? (
           <ExitOverlay
@@ -455,8 +435,6 @@ class Cohort extends Component {
             addedon={moment(this.state?.createOn).format("MM/DD/YY")}
             cohortId={this.state.editcohortId}
             chainImages={this.state?.chainImages}
-            total_addresses={this.state.total_addresses}
-            totalEditAddress={this.state.editWalletAddressList?.length}
           />
         ) : (
           ""
@@ -557,7 +535,6 @@ class Cohort extends Component {
                             id: item.id,
                             cohortWalletList: item?.wallet_address_details,
                             chainImages: sortedChains,
-                            total_addresses: this.state.total_addresses,
                           },
                         });
                       }}
@@ -761,12 +738,12 @@ class Cohort extends Component {
                                   coin_percent={"Avalanche"}
                                   type={"cohort"}
                                 /> */}
-                              <CustomChip
+                              {e.chains.length != 0 && <CustomChip
                                 coins={e.chains}
                                 key={i}
                                 isLoaded={true}
                                 isCohort={true}
-                              ></CustomChip>
+                              ></CustomChip>}
                             </div>
                           );
                         })}
