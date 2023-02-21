@@ -22,7 +22,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { CreatePyment, fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
-import backIcon from "../../assets/images/icons/Back-icon.svg";
+import backIcon from "../../assets/images/icons/Back-icon-upgrade.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   WhaleCreateAccountEmailSaved,

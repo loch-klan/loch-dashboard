@@ -56,3 +56,42 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
 
     });
 }
+
+// add update account - connect exchange
+export const addUpdateAccount = (data,ctx) => {
+
+  postLoginInstance
+    .post("organisation/user/add-update-user-account", data)
+    .then((res) => {
+      if (!res.data.error) {
+
+        ctx.state.onHide();
+        
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+// get user account - connect exchange
+export const getUserAccount = (data,ctx) => {
+
+  postLoginInstance
+    .post("organisation/user/get-user-account-by-exchange", data)
+    .then((res) => {
+      if (!res.data.error) {
+        let apiResponse = res.data.data.account;
+        if (apiResponse) {
+          ctx.setState({
+            connectionName: apiResponse?.name,
+            apiSecret: apiResponse.credentials.api_secret,
+            apiKey: apiResponse.credentials.api_key,
+          });
+        }
+        
+       
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
