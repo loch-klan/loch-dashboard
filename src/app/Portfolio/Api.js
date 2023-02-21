@@ -93,6 +93,53 @@ export const getUserWallet = (wallet, ctx, isRefresh) => {
     };
 };
 
+export const getExchangeBalance = (exchangeName, ctx) => {
+  return function (dispatch, getState) {
+   console.log(exchangeName);
+   let data = new URLSearchParams();
+   data.append("exchange", exchangeName);
+
+   postLoginInstance
+     .post("wallet/user-wallet/get-exchange-balance", data)
+     .then((res) => {
+       let userWalletList =
+         res.data &&
+         res.data.data.user_wallet &&
+         res.data.data.user_wallet.assets &&
+         res.data.data.user_wallet.assets.length > 0 &&
+         res.data.data.user_wallet.active
+           ? res.data.data.user_wallet
+           : [];
+       // localStorage.setItem(
+       //   "refreshApiTime",
+       //   moment(res.data?.data.user_wallet?.modified_on).valueOf()
+       // );
+       // isRefresh && ctx.getCurrentTime();
+       dispatch({
+         type: USER_WALLET_LIST,
+         payload: {
+           address: exchangeName,
+           userWalletList: userWalletList,
+           assetPrice: res.data?.data.asset_prices,
+         },
+       });
+       if (ctx) {
+         ctx.setState({
+           isLoading: false,
+           assetPrice: {
+             ...ctx.state.assetPrice,
+             ...res.data?.data.asset_prices,
+           },
+         });
+       }
+     })
+     .catch((err) => {
+       console.log("Catch", err);
+     });
+  };
+   
+};
+
 export const settingDefaultValues = (wallet) => {
     return function (dispatch, getState) {
         dispatch({

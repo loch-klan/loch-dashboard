@@ -94,9 +94,10 @@ class CustomDropdown extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!this.props.isLineChart && this.state.options?.length - 1 === this.getSelected().selected?.length) {
-      this.selectedAll(true);
-    }
+    // if (!this.props.isLineChart && this.state.options?.length - 1 === this.getSelected().selected?.length) {
+    //   this.selectedAll(true);
+    //   console.log("in")
+    // }
       if (
         prevProps.options.length === 0 ||
         prevProps.options.length !== this.props.options.length
@@ -237,29 +238,37 @@ class CustomDropdown extends Component {
         this.selectedAll(true);
       }
     } else {
-       let updatedOptions = this.state.options.map((e) => {
-         if (
-           e.value === this.state.options[0].value &&
-           e.value === option.value
-         ) {
-           e.isSelected = true;
-         } else {
-           if (option.value === e.value) {
-             e.isSelected = !option.isSelected;
-           }
-           if (
-             e.value === this.state.options[0].value ||
-             (option.value === this.state.options[0].value &&
-               e.value !== option.value)
-           ) {
-             e.isSelected = false;
-           }
-         }
-         return e;
-       });
-      
+      let updatedOptions = this.state.options.map((e) => {
+        if (
+          e.value === this.state.options[0].value &&
+          e.value === option.value
+        ) {
+          e.isSelected = true;
+        } else {
+          if (option.value === e.value) {
+            e.isSelected = !option.isSelected;
+          }
+          if (
+            e.value === this.state.options[0].value ||
+            (option.value === this.state.options[0].value &&
+              e.value !== option.value)
+          ) {
+            e.isSelected = false;
+          }
+        }
+        return e;
+      });
+
       this.setState({
         options: updatedOptions,
+      }, () => {
+        if (
+          !this.props.isLineChart &&
+          this.state.options?.length - 1 === this.getSelected().selected?.length
+        ) {
+          this.selectedAll(true);
+          console.log("in");
+        }
       });
     }
    
@@ -313,6 +322,7 @@ class CustomDropdown extends Component {
     this.setState({
       options
     })
+    // this.state.options = options;
   }
 
   ClearAll = () => {

@@ -7,6 +7,7 @@ import LineChartSlider from "./LineCharSlider";
 import {
   getCoinRate,
   getDetailsByLinkApi,
+  getExchangeBalance,
   getUserWallet,
   getYesterdaysBalanceApi,
   settingDefaultValues,
@@ -215,12 +216,14 @@ class Portfolio extends BaseReactComponent {
       this.props.getDetailsByLinkApi(this.props.match.params.id, this);
     } else {
       this.props.getCoinRate();
+      
       this.getTableData();
       this.getGraphData();
       getAllCounterFeeApi(this, false, false);
       getProfitAndLossApi(this, false, false, false);
        GetAllPlan();
-       getUser(this);
+      getUser(this);
+      
     }
     
   };
@@ -314,7 +317,7 @@ class Portfolio extends BaseReactComponent {
       this.props.portfolioState.coinRateList !==
       prevProps.portfolioState.coinRateList
     ) {
-      //console.log("in coinrate list")
+      // console.log("in coinrate list")
       //console.log("wallet list", this.state.userWalletList);
 
       if (
@@ -348,6 +351,8 @@ class Portfolio extends BaseReactComponent {
             });
           }
         });
+        this.props.getExchangeBalance("Binance", this);
+        this.props.getExchangeBalance("Coinbase", this);
         //console.log("is found", isFound);
         if (!isFound) {
           //console.log("is found if", isFound);
@@ -1504,6 +1509,7 @@ const mapDispatchToProps = {
   searchTransactionApi,
   getAssetGraphDataApi,
   getDetailsByLinkApi,
+  getExchangeBalance,
 };
 Portfolio.propTypes = {};
 

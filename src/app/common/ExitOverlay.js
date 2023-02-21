@@ -130,10 +130,10 @@ class ExitOverlay extends BaseReactComponent {
                   ? e?.chains.map((e) => {
                       return {
                         chain_detected: true,
-                        coinCode: e.code,
-                        coinName: e.name,
-                        coinColor: e.color,
-                        coinSymbol: e.symbol,
+                        coinCode: e?.code,
+                        coinName: e?.name,
+                        coinColor: e?.color,
+                        coinSymbol: e?.symbol,
                       };
                     })
                   : [],

@@ -143,31 +143,31 @@ class PieChart2 extends BaseReactComponent {
             this.props.chainPortfolio &&
               this.props.chainPortfolio?.map((chain) => {
                 if (
-                  coin.coinName === chain.name &&
-                  !uniquechains.includes(chain.name)
+                  coin?.coinName === chain?.name &&
+                  !uniquechains.includes(chain?.name)
                 ) {
                   isfound = true;
-                  uniquechains.push(coin.coinName);
+                  uniquechains.push(coin?.coinName);
                   chainList.push({
-                    name: chain.name,
-                    symbol: chain.symbol,
-                    total: chain.total,
-                    id: chain.id,
-                    color: chain.color,
+                    name: chain?.name,
+                    symbol: chain?.symbol,
+                    total: chain?.total,
+                    id: chain?.id,
+                    color: chain?.color,
                   });
                 }
               });
             if (
               !isfound &&
-              coin.chain_detected &&
-              !uniquechains.includes(coin.coinName)
+              coin?.chain_detected &&
+              !uniquechains.includes(coin?.coinName)
             ) {
               chainList.push({
-                name: coin.coinName,
-                symbol: coin.coinSymbol,
+                name: coin?.coinName,
+                symbol: coin?.coinSymbol,
                 total: 0.0,
                 id: i,
-                color: coin.coinColor,
+                color: coin?.coinColor,
               });
             }
           });
@@ -331,31 +331,31 @@ class PieChart2 extends BaseReactComponent {
               this.props.chainPortfolio &&
                 this.props.chainPortfolio?.map((chain) => {
                   if (
-                    coin.coinName === chain.name &&
-                    !uniquechains.includes(chain.name)
+                    coin?.coinName === chain?.name &&
+                    !uniquechains.includes(chain?.name)
                   ) {
                     isfound = true;
-                    uniquechains.push(coin.coinName);
+                    uniquechains.push(coin?.coinName);
                     chainList.push({
-                      name: chain.name,
-                      symbol: chain.symbol,
-                      total: chain.total,
-                      id: chain.id,
-                      color: chain.color,
+                      name: chain?.name,
+                      symbol: chain?.symbol,
+                      total: chain?.total,
+                      id: chain?.id,
+                      color: chain?.color,
                     });
                   }
                 });
               if (
                 !isfound &&
-                coin.chain_detected &&
-                !uniquechains.includes(coin.coinName)
+                coin?.chain_detected &&
+                !uniquechains.includes(coin?.coinName)
               ) {
                 chainList.push({
-                  name: coin.coinName,
-                  symbol: coin.coinSymbol,
+                  name: coin?.coinName,
+                  symbol: coin?.coinSymbol,
                   total: 0.0,
                   id: i,
-                  color: coin.coinColor,
+                  color: coin?.coinColor,
                 });
               }
             });
@@ -806,43 +806,47 @@ class PieChart2 extends BaseReactComponent {
     let chainList = [];
     let uniqueAddress = [];
     let uniqueList =
-      this.state.selectedSection[0] && this.state.selectedSection[0].chain;
+      this.state.selectedSection[0] && this.state.selectedSection[0]?.chain;
 
     uniqueList &&
       uniqueList?.map((chain) => {
         // console.log("chain",chain)
         let total = 0;
+        let protocalName  = chain?.protocalName;
         uniqueList?.map((item) => {
           if (
-            chain.address === item.address &&
-            !uniqueAddress.includes(chain.address)
+            chain?.address === item.address &&
+            !uniqueAddress.includes(chain?.address)
           ) {
             total += item.assetCount;
           }
         });
         let displayAddress = "";
         let nickname = "";
+        
         UserWallet &&
           UserWallet?.map((e) => {
            
-            if (e.address === chain.address) {
+            if (e.address === chain?.address) {
               displayAddress = e?.displayAddress;
               nickname = e?.nickname;
+              
             }
           });
-        !uniqueAddress.includes(chain.address) &&
+        !uniqueAddress.includes(chain?.address) &&
           chainList.push({
-            address: chain.address,
+            address: chain?.address,
             assetCount: chain.assetCount,
-            chainCode: chain.chainCode,
-            chainName: chain.chainName,
-            chainSymbol: chain.chainSymbol,
+            chainCode: chain?.chainCode,
+            chainName: chain?.chainName,
+            chainSymbol: chain?.chainSymbol,
             totalAssetCount: total,
             displayAddress: displayAddress,
-            nickname:nickname
+            nickname: nickname,
+            protocalName: protocalName,
           });
-        !uniqueAddress.includes(chain.address) &&
-          uniqueAddress.push(chain.address);
+        !uniqueAddress.includes(chain?.address) &&
+          uniqueAddress.push(chain?.address);
       });
 
     // chainList =
@@ -1023,24 +1027,24 @@ class PieChart2 extends BaseReactComponent {
                               >
                                 <span className="inter-display-medium f-s-16 lh-19">
                                   <Image
-                                    src={chain.symbol}
+                                    src={chain?.symbol}
                                     style={{
                                       width: "2.6rem",
                                       height: "2.6rem",
                                       borderRadius: "6px",
                                       objectFit: "cover",
                                       border: `1px solid ${lightenDarkenColor(
-                                        chain.color,
+                                        chain?.color,
                                         -0.15
                                       )}`,
                                     }}
                                   />
-                                  {chain.name}
+                                  {chain?.name}
                                 </span>
                                 <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
                                   {CurrencyType(false)}
                                   {amountFormat(
-                                    chain.total.toFixed(2),
+                                    chain?.total.toFixed(2),
                                     "en-US",
                                     "USD"
                                   )}
@@ -1307,7 +1311,7 @@ class PieChart2 extends BaseReactComponent {
                     >
                       {chainList &&
                         chainList.slice(0, 3).map((data, index) => {
-                          console.log(data);
+                          // console.log(data);
                           let isQuote =
                             this.state.assetPrice &&
                             this.state.assetPrice[
@@ -1336,7 +1340,9 @@ class PieChart2 extends BaseReactComponent {
                                       }
                                     >
                                       <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
-                                        {data?.nickname || data?.displayAddress || data?.address}
+                                        {data?.protocalName || data?.nickname ||
+                                          data?.displayAddress ||
+                                          data?.address}
                                       </span>
                                     </CustomOverlay>
                                     <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">

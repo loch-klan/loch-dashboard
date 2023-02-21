@@ -378,158 +378,7 @@
               }
             }
 
-
-        }
-    }
-    &.connect-exchange{
-      .modal-content{
-        width: 74.4rem;
-      }
-      .modal-header{
-        .connect-icon{
-          margin-top: 0.8rem;
-          width: 6rem;
-          height: 6rem;
-          border-radius: 2rem;
-          box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
-        }
-        .back-icon{
-          position: absolute;
-          left: 3rem;
-          padding: 1.3rem;
-          background-color: rgba(229, 229, 230, 0.5);
-          border-radius: 5rem;
-        }
-      }
-      .connect-modal-body{
-        padding-bottom: 1.2rem;
-        .connect-head{
-          padding: 0 21rem;
-          h6{
-            color: $black-191;
-          }
-          h6,.sub-heading{
-            text-align: center;
-          }
-        }
-        .connect-wrapper{
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 3.2rem 0;
-          .connect-div{
-            cursor: pointer;
-            padding: 2rem;
-            border: 1px solid $grey-E5E;
-            background-color: $grey-F8F;
-            border-radius: 1.6rem;
-            display: flex;
-            align-items: center;
-            width: 21.3rem;
-            img{
-              width: 4.3rem;
-              height: 4.3rem;
-              margin-right: 1.6rem;
-            }
-            &:first-child{
-              margin-right: 1.6rem;
-            }
-          }
-
-        }
-        .selection-wrapper{
-          padding: 3rem;
-          .exchange-form{
-            padding-right: 0.9rem;
-            form{
-              .form-group{
-                margin-bottom: 2rem;
-                label{
-                  margin-bottom: 1.2rem;
-                  font-size: 1.3rem;
-                  color: $grey-313;
-                  line-height: 16px;
-                }
-              }
-              .form-control{
-                padding: 1.2rem 1.6rem;
-                min-height: 4.3rem;
-                border:0.1rem solid $grey-D4D;
-            }
-              .form-control:hover{
-                border:0.1rem solid $black-191;
-            }
-            .is-valid{
-                box-shadow: none;
-            }
-            .done{
-                box-shadow: 0 0 0.4rem  $grey-D3D;
-                border:0.1rem solid $black-191;
-            }
-            }
-          }
-          .connect-steps{
-            padding-left: 0.9rem;
-            padding-bottom: 1.8rem;
-            .steps{
-              padding: 1.6rem 2rem;
-              border: 1px solid $grey-E5E;
-              border-radius: 1.2rem;
-              background-color: $grey-F8F;
-              margin-right: 0.6rem;
-              margin-left: 1rem;
-            }
-            .slick-dots{
-              width: max-content;
-              li{
-                margin: 0;
-                width: 12px;
-                button{
-                  width: 12px;
-                  &::before{
-                    width: 12px;
-                    color: $grey-E6E;
-                    opacity: 1;
-                  }
-                }
-                &.slick-active{
-                  button{
-                    &::before{
-                      color: $grey-636;
-                    }
-                  }
-                }
-              }
-            }
-            .slick-next,
-            .slick-prev{
-              top: auto;
-              bottom: -3.5rem;
-            }
-            .slick-next{
-              right: 0;
-            }
-            .slick-prev{
-              right: 2rem;
-              left: auto;
-            }
-            .connect-btn{
-              // margin-top: 4rem;
-              // float: right;
-              position: absolute;
-    bottom: 0;
-    right: 0;
-              &:hover{
-                background-color: $secondary;
-                border: 1px solid $black-191;
-                color: $black-191;
-              }
-            }
-          }
-        }
-
-
-             .cohort-modal-body{
+            .cohort-modal-body{
               text-align: center;
               padding-bottom: 3.4rem;
               .cohort-body{
@@ -724,6 +573,160 @@
                
               }
             }
+
+
+        }
+    }
+     
+    &.connect-exchange{
+      .modal-content{
+        width: 74.4rem;
+      }
+      .modal-header{
+        .connect-icon{
+          margin-top: 0.8rem;
+          width: 6rem;
+          height: 6rem;
+          border-radius: 2rem;
+          box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+        }
+        .back-icon{
+          position: absolute;
+          left: 3rem;
+          padding: 1.3rem;
+          background-color: rgba(229, 229, 230, 0.5);
+          border-radius: 5rem;
+        }
+      }
+      .connect-modal-body{
+        padding-bottom: 1.2rem;
+        .connect-head{
+          padding: 0 21rem;
+          h6{
+            color: $black-191;
+          }
+          h6,.sub-heading{
+            text-align: center;
+          }
+        }
+        .connect-wrapper{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 3.2rem 0;
+          .connect-div{
+            cursor: pointer;
+            padding: 2rem;
+            border: 1px solid $grey-E5E;
+            background-color: $grey-F8F;
+            border-radius: 1.6rem;
+            display: flex;
+            align-items: center;
+            width: 21.3rem;
+            img{
+              width: 4.3rem;
+              height: 4.3rem;
+              margin-right: 1.6rem;
+            }
+            &:first-child{
+              margin-right: 1.6rem;
+            }
+          }
+
+        }
+        .selection-wrapper{
+          padding: 3rem;
+          .exchange-form{
+            padding-right: 0.9rem;
+            form{
+              .form-group{
+                margin-bottom: 2rem;
+                label{
+                  margin-bottom: 1.2rem;
+                  font-size: 1.3rem;
+                  color: $grey-313;
+                  line-height: 16px;
+                }
+              }
+              .form-control{
+                padding: 1.2rem 1.6rem;
+                min-height: 4.3rem;
+                border:0.1rem solid $grey-D4D;
+            }
+              .form-control:hover{
+                border:0.1rem solid $black-191;
+            }
+            .is-valid{
+                box-shadow: none;
+            }
+            .done{
+                box-shadow: 0 0 0.4rem  $grey-D3D;
+                border:0.1rem solid $black-191;
+            }
+            }
+          }
+          .connect-steps{
+            padding-left: 0.9rem;
+            padding-bottom: 1.8rem;
+            .steps{
+              padding: 1.6rem 2rem;
+              border: 1px solid $grey-E5E;
+              border-radius: 1.2rem;
+              background-color: $grey-F8F;
+              margin-right: 0.6rem;
+              margin-left: 1rem;
+            }
+            .slick-dots{
+              width: max-content;
+              li{
+                margin: 0;
+                width: 12px;
+                button{
+                  width: 12px;
+                  &::before{
+                    width: 12px;
+                    color: $grey-E6E;
+                    opacity: 1;
+                  }
+                }
+                &.slick-active{
+                  button{
+                    &::before{
+                      color: $grey-636;
+                    }
+                  }
+                }
+              }
+            }
+            .slick-next,
+            .slick-prev{
+              top: auto;
+              bottom: -3.5rem;
+            }
+            .slick-next{
+              right: 0;
+            }
+            .slick-prev{
+              right: 2rem;
+              left: auto;
+            }
+            .connect-btn{
+              // margin-top: 4rem;
+              // float: right;
+              position: absolute;
+    bottom: 0;
+    right: 0;
+              &:hover{
+                background-color: $secondary;
+                border: 1px solid $black-191;
+                color: $black-191;
+              }
+            }
+          }
+        }
+
+
+            
       }
     }
 }

@@ -21,18 +21,19 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         let chainPortfolio = state.chainPortfolio || {};
      let currencyRate = state.currency?.rate || 1;
 
-        // console.log("state", state)
+      
         if (
           action.payload &&
           action.payload.userWalletList &&
           action.payload.userWalletList.assets &&
           action.payload.userWalletList.assets.length > 0
         ) {
-          if (!(action.payload.userWalletList.chain.id in chainPortfolio)) {
-            chainPortfolio[action.payload.userWalletList.chain.id] =
-              action.payload.userWalletList.chain;
+          if (!(action.payload.userWalletList?.chain?.id in chainPortfolio)) {
+            chainPortfolio[action.payload.userWalletList?.chain?.id] =
+              action.payload.userWalletList?.chain;
 
-            chainPortfolio[action.payload.userWalletList.chain.id].total = 0.0;
+            if(action.payload.userWalletList?.chain){
+            chainPortfolio[action.payload.userWalletList?.chain?.id].total = 0.0;}
           }
           for (
             let i = 0;
@@ -72,10 +73,13 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                   : DEFAULT_PRICE) *
                 currencyRate
               : action.payload.userWalletList.assets[i].count * DEFAULT_PRICE;
-            chainPortfolio[action.payload.userWalletList.chain.id].total =
-              chainPortfolio[action.payload.userWalletList.chain.id].total +
-              assetValue;
-
+            
+            if (action.payload.userWalletList?.chain) {
+              chainPortfolio[action.payload.userWalletList?.chain?.id].total =
+                chainPortfolio[action.payload.userWalletList?.chain?.id].total +
+                assetValue;
+            }
+              // console.log("state", action.payload.userWalletList);
             if (
               updatedChainWallet[
                 action.payload.userWalletList.assets[i].asset.id
@@ -97,13 +101,14 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 chain: [
                   {
                     chainCode:
-                      action.payload.userWalletList.assets[i].chain.code,
+                      action.payload.userWalletList.assets[i]?.chain?.code,
                     chainSymbol:
-                      action.payload.userWalletList.assets[i].chain.symbol,
+                      action.payload.userWalletList.assets[i]?.chain?.symbol,
                     chainName:
-                      action.payload.userWalletList.assets[i].chain.name,
+                      action.payload.userWalletList.assets[i]?.chain?.name,
                     assetCount: action.payload.userWalletList.assets[i].count,
                     address: action.payload.userWalletList.address,
+                    protocalName: action.payload.userWalletList?.protocol?.name,
                   },
                 ],
                 totalCount: action.payload.userWalletList.assets[i].count,
@@ -129,13 +134,14 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
               updatedChainWallet[
                 action.payload.userWalletList.assets[i].asset.id
               ]["chain"].push({
-                chainCode: action.payload.userWalletList.assets[i].chain.code,
+                chainCode: action.payload.userWalletList.assets[i]?.chain?.code,
                 chainSymbol:
-                  action.payload.userWalletList.assets[i].chain.symbol,
-                chainName: action.payload.userWalletList.assets[i].chain.name,
-                assetCount: action.payload.userWalletList.assets[i].count,
+                  action.payload.userWalletList.assets[i]?.chain?.symbol,
+                chainName: action.payload.userWalletList.assets[i]?.chain?.name,
+                assetCount: action.payload.userWalletList.assets[i]?.count,
                 // color: action.payload.userWalletList.assets[i].asset.color,
                 address: action.payload.userWalletList.address,
+                protocalName: action.payload.userWalletList?.protocol?.name,
               });
               // }
               // Update the total count and asset value
