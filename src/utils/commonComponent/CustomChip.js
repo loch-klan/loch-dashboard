@@ -4,7 +4,7 @@ import unrecognized from '../../image/unrecognized.svg';
 import { lightenDarkenColor, loadingAnimation } from "../ReusableFunctions";
 
 function CustomChip({ coins, isLoaded, id, isCohort }) {
-  console.log("coins", coins);
+  // console.log("coins", coins);
   if (isCohort) {
     coins = coins?.map((e) => {
       return {

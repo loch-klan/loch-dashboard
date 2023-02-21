@@ -10,6 +10,7 @@ import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import backIcon from "../../assets/images/icons/back-icon.svg";
 import Slider from 'react-slick';
 import { addUpdateAccount, getUserAccount } from '../cost/Api';
+import {getExchangeBalance } from "../Portfolio/Api";
 
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
@@ -389,8 +390,8 @@ class ConnectModal extends BaseReactComponent {
 const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
-
-}
+  getExchangeBalance
+};
 ConnectModal.propTypes = {
 };
 

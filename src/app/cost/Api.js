@@ -65,6 +65,8 @@ export const addUpdateAccount = (data,ctx) => {
     .then((res) => {
       if (!res.data.error) {
 
+         ctx.props.getExchangeBalance("Binance", ctx);
+         ctx.props.getExchangeBalance("Coinbase", ctx);
         ctx.state.onHide();
         
       } else {

@@ -95,7 +95,7 @@ export const getUserWallet = (wallet, ctx, isRefresh) => {
 
 export const getExchangeBalance = (exchangeName, ctx) => {
   return function (dispatch, getState) {
-   console.log(exchangeName);
+  //  console.log(exchangeName);
    let data = new URLSearchParams();
    data.append("exchange", exchangeName);
 
