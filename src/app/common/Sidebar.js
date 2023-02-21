@@ -35,6 +35,7 @@ import { BASE_URL_S3 } from '../../utils/Constant'
 import { toast } from 'react-toastify'
 import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
 import ConnectModalIcon from '../../assets/images/icons/connectIcon.svg';
+import LinkIcon from "../../assets/images/icons/link.svg";
 
 import ConfirmLeaveModal from './ConformLeaveModal';
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -76,6 +77,7 @@ function Sidebar(props) {
     const [selectedCurrency, setCurrency] = React.useState(JSON.parse(localStorage.getItem('currency')));
   let lochUser = JSON.parse(localStorage.getItem('lochUser'));
   const [Upgrade, setUpgradeModal] = React.useState(false);
+  const [connectModal, setconnectModal] = React.useState(false);
 
   let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
   let triggerId = 6;
@@ -211,7 +213,11 @@ function Sidebar(props) {
   
   const upgradeModal = () => {
     setUpgradeModal(!Upgrade);
-     };
+  };
+  
+  const handleConnectModal = () => {
+      setconnectModal(!connectModal);
+  };
     
       return (
         <div className="sidebar-section">
@@ -403,6 +409,18 @@ function Sidebar(props) {
                           DeFi
                         </NavLink>
                       </li>
+                      <li>
+                        <NavLink
+                          exact={true}
+                          onClick={handleConnectModal}
+                          className="nav-link none"
+                          to="#"
+                          activeclassname="none"
+                        >
+                          <Image src={LinkIcon} style={ {filter: "opacity(0.6)"}} />
+                          Connect Exchange
+                        </NavLink>
+                      </li>
 
                       <li>
                         <NavLink
@@ -564,6 +582,19 @@ function Sidebar(props) {
               </div>
             </div>
           </Container>
+
+          {connectModal ? (
+            <ConnectModal
+              show={connectModal}
+              onHide={handleConnectModal}
+              history={history}
+              headerTitle={"Connect exchanges"}
+              modalType={"connectModal"}
+              iconImage={LinkIcon}
+            />
+          ) : (
+            ""
+          )}
 
           {leave ? (
             <ExitOverlay
