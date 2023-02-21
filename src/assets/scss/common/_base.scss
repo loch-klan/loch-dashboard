@@ -1595,8 +1595,11 @@ form {
       border: 0;
       padding: 8px;
       img{
-        width: 1.2rem;
-      }
+           width: 1.2rem;
+    margin-bottom: 1.5px;
+}
+
+
       @include font($black-191, "Inter-SemiBold", 1.3rem, 600, 16px);
       &:active{
         border: 0 !important;

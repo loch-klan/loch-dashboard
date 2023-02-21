@@ -57,13 +57,13 @@ class ConnectModal extends BaseReactComponent {
   getUserConnectExchange = () => {
     let data = new URLSearchParams();
 
-    data.append("exchange", this.state.selection.name);
+    data.append("exchange", this.state.selection.name.toLowerCase());
 
     getUserAccount(data, this);
   };
 
   handleConnect = () => {
-    console.log("Hey");
+    // console.log("Hey");
     if (
       this.state.apiKey &&
       this.state.connectionName &&
@@ -71,7 +71,7 @@ class ConnectModal extends BaseReactComponent {
     ) {
       let data = new URLSearchParams();
 
-      data.append("exchange", this.state.selection.name);
+      data.append("exchange", this.state.selection.name.toLowerCase());
       data.append("account_name", this.state.connectionName);
       data.append("api_secret", this.state.apiSecret);
       data.append("api_key", this.state.apiKey);

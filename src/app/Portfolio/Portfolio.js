@@ -351,8 +351,8 @@ class Portfolio extends BaseReactComponent {
             });
           }
         });
-        this.props.getExchangeBalance("Binance", this);
-        this.props.getExchangeBalance("Coinbase", this);
+        this.props.getExchangeBalance("binance", this);
+        this.props.getExchangeBalance("coinbase", this);
         //console.log("is found", isFound);
         if (!isFound) {
           //console.log("is found if", isFound);

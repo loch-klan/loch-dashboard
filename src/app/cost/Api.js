@@ -65,8 +65,9 @@ export const addUpdateAccount = (data,ctx) => {
     .then((res) => {
       if (!res.data.error) {
 
-         ctx.props.getExchangeBalance("Binance", ctx);
-         ctx.props.getExchangeBalance("Coinbase", ctx);
+        //  ctx.props.getExchangeBalance("binance", ctx);
+        // ctx.props.getExchangeBalance("coinbase", ctx);
+        toast.success(ctx.state.selection.name + " connected to loch");
         ctx.state.onHide();
         
       } else {
