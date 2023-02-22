@@ -1,7 +1,7 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
-import { WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
+import { signInUser, signUpProperties, WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import postLoginInstance from './../../utils/PostLoginAxios';
 
@@ -340,96 +340,110 @@ export const VerifyEmail = (data,ctx) => {
       
         localStorage.setItem("lochToken", token);
         const userId = localStorage.getItem("lochDummyUser");
-        ctx.setState(
-          {
-            isOptInValid: false,
-          },
-          () => {
-            if (userId) {
-               let userdata = new URLSearchParams();
-               userdata.append("old_user_id", userId);
-               UpdateUserDetails(userdata, ctx);
-            } else {
-              let obj = JSON.parse(localStorage.getItem("lochUser"));
-              obj = {
-                ...obj,
-                first_name: "",
-                last_name: "",
-                email: res.data.data.user?.email,
-                mobile: "",
-                link: res.data.data.user?.link,
-              };
-              localStorage.setItem("lochUser", JSON.stringify(obj));
+        if (res.data.data.is_new_user) {
+          signUpProperties({
+            email_address: res.data.data.user?.email,
+            userId: res.data.data.user?.link,
+            first_name: res.data.data.user?.first_name,
+            last_name: res.data.data.user?.last_name,
+          });
+          
+        } else {
+          signInUser(res.data.data.user?.link);
+        }
+          ctx.setState(
+            {
+              isOptInValid: false,
+            },
+            () => {
+              if (userId) {
+                let userdata = new URLSearchParams();
+                userdata.append("old_user_id", userId);
+                UpdateUserDetails(userdata, ctx);
+              } else {
+                let obj = JSON.parse(localStorage.getItem("lochUser"));
+                obj = {
+                  ...obj,
+                  first_name: "",
+                  last_name: "",
+                  email: res.data.data.user?.email,
+                  mobile: "",
+                  link: res.data.data.user?.link,
+                };
+                localStorage.setItem("lochUser", JSON.stringify(obj));
 
-              // update wallet
+                // update wallet
                 const apiResponse = res.data.data;
-              if (apiResponse?.user) {
-                let newAddWallet = [];
-                const allChains = ctx.props.OnboardingState.coinsList;
-                // console.log("res ", apiResponse)
-                for (
-                  let i = 0;
-                  i < apiResponse.user?.user_wallets?.length;
-                  i++
-                ) {
-                  let obj = {}; // <----- new Object
-                  obj["address"] = apiResponse.user?.user_wallets[i].address;
-                  obj["displayAddress"] =
-                    apiResponse.user?.user_wallets[i]?.display_address;
-                  obj["wallet_metadata"] =
-                    apiResponse.user?.user_wallets[i].wallet;
-                  obj["id"] = `wallet${i + 1}`;
+                if (apiResponse?.user) {
+                  let newAddWallet = [];
+                  const allChains = ctx.props.OnboardingState.coinsList;
+                  // console.log("res ", apiResponse)
+                  for (
+                    let i = 0;
+                    i < apiResponse.user?.user_wallets?.length;
+                    i++
+                  ) {
+                    let obj = {}; // <----- new Object
+                    obj["address"] = apiResponse.user?.user_wallets[i].address;
+                    obj["displayAddress"] =
+                      apiResponse.user?.user_wallets[i]?.display_address;
+                    obj["wallet_metadata"] =
+                      apiResponse.user?.user_wallets[i].wallet;
+                    obj["id"] = `wallet${i + 1}`;
 
-                  const chainsDetected =
-                    apiResponse.wallets[
-                      apiResponse.user?.user_wallets[i].address
-                    ].chains;
-                  obj["coins"] = allChains.map((chain) => {
-                    let coinDetected = false;
-                    chainsDetected.map((item) => {
-                      if (item.id === chain.id) {
-                        coinDetected = true;
-                      }
+                    const chainsDetected =
+                      apiResponse.wallets[
+                        apiResponse.user?.user_wallets[i].address
+                      ].chains;
+                    obj["coins"] = allChains.map((chain) => {
+                      let coinDetected = false;
+                      chainsDetected.map((item) => {
+                        if (item.id === chain.id) {
+                          coinDetected = true;
+                        }
+                      });
+                      return {
+                        coinCode: chain.code,
+                        coinSymbol: chain.symbol,
+                        coinName: chain.name,
+                        chain_detected: coinDetected,
+                        coinColor: chain.color,
+                      };
                     });
-                    return {
-                      coinCode: chain.code,
-                      coinSymbol: chain.symbol,
-                      coinName: chain.name,
-                      chain_detected: coinDetected,
-                      coinColor: chain.color,
-                    };
-                  });
 
-                  obj["coinFound"] =
-                    apiResponse.wallets[
-                      apiResponse.user?.user_wallets[i].address
-                    ].chains.length > 0
-                      ? true
-                      : false;
-                  obj["nickname"] = apiResponse.user?.user_wallets[i]?.nickname;
-                  obj["showAddress"] =
-                    apiResponse.user?.user_wallets[i]?.nickname === ""
-                      ? true
-                      : false;
-                  obj["showNickname"] =
-                    apiResponse.user?.user_wallets[i]?.nickname !== ""
-                      ? true
-                      : false;
-                  newAddWallet.push(obj);
+                    obj["coinFound"] =
+                      apiResponse.wallets[
+                        apiResponse.user?.user_wallets[i].address
+                      ].chains.length > 0
+                        ? true
+                        : false;
+                    obj["nickname"] =
+                      apiResponse.user?.user_wallets[i]?.nickname;
+                    obj["showAddress"] =
+                      apiResponse.user?.user_wallets[i]?.nickname === ""
+                        ? true
+                        : false;
+                    obj["showNickname"] =
+                      apiResponse.user?.user_wallets[i]?.nickname !== ""
+                        ? true
+                        : false;
+                    newAddWallet.push(obj);
+                  }
+
+                  localStorage.setItem(
+                    "addWallet",
+                    JSON.stringify(newAddWallet)
+                  );
                 }
 
-                localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
-              }
-              
-              if (ctx.AddEmailModal) {
-                ctx.AddEmailModal();
-              } else {
-                ctx.state.onHide();
+                if (ctx.AddEmailModal) {
+                  ctx.AddEmailModal();
+                } else {
+                  ctx.state.onHide();
+                }
               }
             }
-          
-          }
-        );
+          );
 
         // console.log("user id ", userId)
       } else if (res.data.error === true) {

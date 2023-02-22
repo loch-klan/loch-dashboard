@@ -245,18 +245,7 @@ class AddWallet extends BaseReactComponent {
   };
 
   addInputField = () => {
-console.log(
-  "con",
-  this.state.walletInput.length + 1 <=
-    this.state.userPlan?.wallet_address_limit ||
-    this.state.userPlan?.wallet_address_limit === -1
-);
-    console.log(
-      "con value",
-      this.state.walletInput.length + 1 ,
-        this.state.userPlan?.wallet_address_limit,
-        
-    );
+
     if (
       this.state.walletInput.length + 1 <=
         this.state.userPlan?.wallet_address_limit ||
