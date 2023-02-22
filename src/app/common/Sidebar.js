@@ -13,6 +13,7 @@ import ActiveWalletIcon from '../../assets/images/icons/ActiveWalletIcon.svg'
 import ProfileIcon from '../../assets/images/icons/InactiveProfileIcon.svg'
 import ActiveProfileIcon from '../../assets/images/icons/ActiveProfileIcon.svg'
 import DollarIcon from '../../assets/images/icons/InactiveCostIcon.svg'
+import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import ActiveDollarIcon from '../../assets/images/icons/ActiveCostIcon.svg'
 import CohortIcon from "../../assets/images/icons/cohort.svg";
 import ActiveCohortIcon from "../../assets/images/icons/active-cohort.svg";
@@ -402,9 +403,12 @@ function Sidebar(props) {
                           <Image
                             src={
                               activeTab === "/decentralized-finance"
-                                ? ActiveDollarIcon
-                                : DollarIcon
+                                ? DefiIcon
+                                : DefiIcon
                             }
+                            style={activeTab === "/decentralized-finance" ? {
+                              filter: "brightness(0)",
+                            }:{}}
                           />
                           DeFi
                         </NavLink>
