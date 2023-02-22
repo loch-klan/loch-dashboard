@@ -6,7 +6,19 @@ import Mixpanel from "mixpanel-browser";
 export const initAmplitude = () => {
 
   // amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
-  Mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY);
+  Mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY, {
+    loaded: function (mixpanel) {
+      let distinct_id = mixpanel.get_distinct_id();
+      // Mixpanel.alias("test");
+      Mixpanel.identify(distinct_id);
+       mixpanel.people.set({
+        //  $first_name: "Test",
+        //  $last_name: "Test",
+        //  $email: "Test",
+       });
+    },
+  });
+ 
 
 };
 
