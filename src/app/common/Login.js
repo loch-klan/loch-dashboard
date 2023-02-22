@@ -32,7 +32,7 @@ class Login extends BaseReactComponent {
   componentDidMount() {
     // console.log('this.props',this.props);
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
-    deleteToken();
+    // deleteToken();
 
     localStorage.setItem(
       "currency",

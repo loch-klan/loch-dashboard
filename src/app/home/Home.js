@@ -5,7 +5,7 @@ import OnBoarding from "../onboarding";
 import "../../assets/scss/onboarding/_onboarding.scss";
 import { Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
-import { deleteToken } from '../../utils/ManageToken';
+import { deleteToken, getToken } from '../../utils/ManageToken';
 import { GetDefaultPlan } from '../common/Api';
 
 class Home extends Component {
@@ -18,8 +18,20 @@ class Home extends Component {
   }
 
   componentDidMount() {
-     deleteToken();
-    // if(JSON.parse(localStorage.getItem("addWallet")) || JSON.parse(localStorage.getItem("lochUser")) || localStorage.getItem("lochDummyUser")){
+    //  console.log("has token ", getToken());
+    if (getToken()) {
+      // console.log("has token ", getToken())
+      this.props.history.push("/home");
+    } else {
+      deleteToken();
+         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
+         if (!isRefresh) {
+           localStorage.setItem("refresh", true);
+
+           window.location.reload(true);
+         }
+    }
+// if(JSON.parse(localStorage.getItem("addWallet")) || JSON.parse(localStorage.getItem("lochUser")) || localStorage.getItem("lochDummyUser")){
     //   localStorage.removeItem("addWallet")
     //   localStorage.removeItem("lochUser")
     //   localStorage.removeItem("lochDummyUser")

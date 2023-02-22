@@ -37,7 +37,7 @@ import {
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
-  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName, ExportDateSelected,
+  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName, ExportDateSelected, signUpProperties, resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
@@ -474,6 +474,7 @@ class ExitOverlay extends BaseReactComponent {
   handleSave = () => {
     // console.log("create email", this.state.email);
     if (this.props.modalType === "create_account") {
+      // for chort signup and signin
       const data = new URLSearchParams();
       data.append("first_name", this.state.firstName);
       data.append("last_name", this.state.lastName);
@@ -495,6 +496,14 @@ class ExitOverlay extends BaseReactComponent {
           session_id: getCurrentUser().id,
           email_address: this.state.email,
         });
+         signUpProperties({
+           userId: getCurrentUser().id,
+           email_address: this.state.email,
+           first_name: "",
+           last_name: "",
+         });
+        
+        resetUser();
       }
     }
   };
@@ -1357,6 +1366,7 @@ class ExitOverlay extends BaseReactComponent {
                           email_address: getCurrentUser().email,
                           session_id: getCurrentUser().id,
                         });
+                        resetUser();
                         this.props.history.push("/welcome");
                       }}
                       style={{ marginLeft: "4rem" }}

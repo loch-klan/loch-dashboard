@@ -1,5 +1,6 @@
 import amplitude from "amplitude-js";
 import Mixpanel from "mixpanel-browser";
+import { deleteToken } from "./ManageToken";
 
 
 //Api Config
@@ -50,6 +51,12 @@ export const signUpProperties = ({ email_address, userId, first_name, last_name 
      $last_name: last_name,
     //  $user_id:userId
    });
+}
+
+export const resetUser = () => {
+  Mixpanel.reset();
+  deleteToken();
+  console.log("reset");
 }
 
 //use this to call function
