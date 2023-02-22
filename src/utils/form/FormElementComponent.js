@@ -80,30 +80,26 @@ class FormElementComponent extends BaseReactComponent {
     };
     // console.log('valueLink', valueLink);
     return (
-
       <div>
-
         <FormGroup
-          controlId={Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}
+          controlId={
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15)
+          }
           // validationState={failedValidation ? "error" : ""}
           // validated={failedValidation}
           className={classes.formGroup}
         >
-          {
-            label && (
-              required ?
-                (
-                  // <ControlLabel className={classes.label}>{label} <span style={requiredStyle}>*</span></ControlLabel>
-                  <Form.Label className={classes.label}>{label} <span style={requiredStyle}>*</span></Form.Label>
-                )
-                :
-                (
-                  // <ControlLabel className={classes.label} > {label}</ControlLabel>
-                  <Form.Label className={classes.label}>{label}</Form.Label>
-                )
-
-            )
-          }
+          {label &&
+            (required ? (
+              // <ControlLabel className={classes.label}>{label} <span style={requiredStyle}>*</span></ControlLabel>
+              <Form.Label className={classes.label}>
+                {label} <span style={requiredStyle}>*</span>
+              </Form.Label>
+            ) : (
+              // <ControlLabel className={classes.label} > {label}</ControlLabel>
+              <Form.Label className={classes.label}>{label}</Form.Label>
+            ))}
           <FormElementControl
             valueLink={valueLink}
             onBlur={this.validate}
@@ -117,22 +113,50 @@ class FormElementComponent extends BaseReactComponent {
           {/* (isValid && failedValidation) || (failedValidation && toolTipText) */}
           {/* (isInvalid && failedValidation) || (failedValidation && toolTipText) */}
 
-          {
-            (failedValidation || helpText) &&
-            <Form.Text className={`${failedValidation ? "has-error" : ""} custom-form-error`}>
-              {isCancel && <Image src={cancelIcon} onClick={()=>{this.setState({failedValidation: null, isInvalid: null, isValid: null, isInvalidState: null})}} className="cancel-icon" />}
+          {(failedValidation || helpText) && (
+            <Form.Text
+              className={`${
+                failedValidation ? "has-error" : ""
+              } custom-form-error`}
+              onClick={() => {
+                if (!isCancel) {
+                  this.setState({
+                    failedValidation: null,
+                    isInvalid: null,
+                    isValid: null,
+                    isInvalidState: null,
+                  });
+                }
+              }}
+            >
+              {isCancel && (
+                <Image
+                  src={cancelIcon}
+                  onClick={() => {
+                    this.setState({
+                      failedValidation: null,
+                      isInvalid: null,
+                      isValid: null,
+                      isInvalidState: null,
+                    });
+                  }}
+                  className="cancel-icon"
+                />
+              )}
               {failedValidation ? failedValidation.message : helpText}
             </Form.Text>
-          }
+          )}
 
-          {
-            (toolTipText) &&
-            <Form.Control.Feedback tooltip type={`${failedValidation ? "invalid" : "valid"}`}>{failedValidation ? failedValidation.message : toolTipText}</Form.Control.Feedback>
-          }
-
+          {toolTipText && (
+            <Form.Control.Feedback
+              tooltip
+              type={`${failedValidation ? "invalid" : "valid"}`}
+            >
+              {failedValidation ? failedValidation.message : toolTipText}
+            </Form.Control.Feedback>
+          )}
         </FormGroup>
       </div>
-
     );
   }
 }

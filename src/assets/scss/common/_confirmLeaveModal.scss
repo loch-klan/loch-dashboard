@@ -21,10 +21,10 @@
                     .primary-btn {
                         
                         &:hover:not([disabled]) {
-                            border-color: $secondary;
-                            box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
-                            color: $black-191;
-                            background-color: $secondary;
+                             border-color: $secondary;
+                    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                    color: $black-191;
+                    background-color: $secondary;
                         }
                     }
                 }

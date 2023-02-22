@@ -373,8 +373,8 @@ class Intelligence extends Component {
               }
             >
               {/* 1st */}
-              <Col md={5} style={{ paddingRight: "10px" }} sm={12}>
-                {this.state.LeftShow && (
+              {this.state.LeftShow && (
+                <Col md={5} style={{ paddingRight: "10px" }} sm={12}>
                   <div className="InfoCard">
                     <Image
                       src={NetflowClose}
@@ -421,12 +421,12 @@ class Intelligence extends Component {
                       </div>
                     </div>
                   </div>
-                )}
-              </Col>
+                </Col>
+              )}
 
               {/* Second */}
-              <Col md={7} style={{ paddingLeft: "10px" }} sm={12}>
-                {this.state.RightShow && (
+              {this.state.RightShow && (
+                <Col md={7} style={{ paddingLeft: "10px" }} sm={12}>
                   <div className="InfoCardRight">
                     <Image
                       src={NetflowClose}
@@ -458,8 +458,8 @@ class Intelligence extends Component {
                       </p>
                     </div>
                   </div>
-                )}
-              </Col>
+                </Col>
+              )}
             </Row>
 
             {/* Netflow Info End */}
@@ -505,7 +505,15 @@ class Intelligence extends Component {
                   // comingSoon={true}
                 />
               ) : (
-                <div className="loading-wrapper">
+                <div
+                  className="loading-wrapper"
+                  style={{
+                    height: "57.8rem",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Loading />
                   <br />
                   <br />

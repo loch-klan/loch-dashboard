@@ -160,9 +160,10 @@
                                 background-color: $primary;
                                 border: 1px solid $black-191;
                                 &:hover{
-                                  background-color: $secondary;
-                                  border: 1px solid $black-191;
-                                  color: $black-191;
+                                  border-color: $secondary;
+                    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                    color: $black-191;
+                    background-color: $secondary;
                                 }
                             }
 
@@ -370,9 +371,13 @@
                     }
                   }
                   &:hover{
+                    // color: $black-191;
+                    // border: 1px solid $black-191;
+                    // background-color: transparent;
+                       border-color: $secondary;
+                    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
                     color: $black-191;
-                    border: 1px solid $black-191;
-                    background-color: transparent;
+                    background-color: $secondary;
                   }
                 }
               }
@@ -560,9 +565,13 @@
                             }
                         }
                         &:hover{
-                            color: $black-191;
-                            border: 1px solid $black-191;
-                            background-color: transparent;
+                            // color: $black-191;
+                            // border: 1px solid $black-191;
+                            // background-color: transparent;
+                              border-color: $secondary;
+                    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                    color: $black-191;
+                    background-color: $secondary;
                         }
                         }
                     }

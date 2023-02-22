@@ -105,7 +105,7 @@ export default function IntelWelcomeCard(props) {
                 {/* <h4 className="inter-display-medium f-s-31 lh-37 m-b-12 page-title ">Intelligence</h4>
                 <p className=' inter-display-medium f-s-16 lh-19 m-b-32 subtitle'>Automated and personalized financial intelligence</p> */}
                 <div className="row-card">
-                    <Image src={bgimg} className="bg-img" />
+                    {/* <Image src={bgimg} className="bg-img" /> */}
                     <div className='welcome-card'>
                         <h3 className='inter-display-semi-bold f-s-20 lh-24 welcome-card-title '>Valuable intelligence,</h3>
                         <h3 className='inter-display-semi-bold  f-s-20 lh-24 m-b-12 welcome-card-title '>personalized to you</h3>
