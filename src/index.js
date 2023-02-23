@@ -25,6 +25,7 @@ import { initAmplitude } from "./utils/AnalyticsFunctions";
 //sentry
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
+import MobileDevice from './app/common/mobileDevice';
 
 //Sentry Init
 if (process.env.NODE_ENV === "production") {
