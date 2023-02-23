@@ -19,6 +19,7 @@ import { createAnonymousUserApi, getAllCoins } from "../onboarding/Api";
 import Loading from "./Loading";
 
 import DesktopImg from '../../assets/images/icons/desktop.svg'
+import LochIcon from "../../assets/images/icons/grey-loch.svg";
 
 class MobileDevice extends BaseReactComponent {
   constructor(props) {
@@ -38,11 +39,12 @@ class MobileDevice extends BaseReactComponent {
           alignItems: "center",
           justifyContent: "center",
           height: "100vh",
-                width: "100vw",
-          padding:"0 5%",
+          width: "100vw",
+          padding: "0 5%",
           flexDirection: "column",
         }}
       >
+        <Image src={LochIcon} style={{position:"relative", top:"-8rem"}} />
         <div
           style={{
             background: "#FFFFFF",
@@ -64,14 +66,19 @@ class MobileDevice extends BaseReactComponent {
             mobile just yet.
           </h3>
           <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-t-8">
-            Come back on your desktop, laptop or <br/>tablet for the best Loch
-            experience.
+            Come back on your desktop, laptop or <br />
+            tablet for the best Loch experience.
           </h4>
         </div>
-            <Button className="btn primary-btn m-t-30 w-100" onClick={(e) => {
-                 e.preventDefault();
-                window.location.href = "https://loch.one/";
-        }}>Go home</Button>
+        <Button
+          className="btn primary-btn m-t-30 w-100"
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = "https://loch.one/";
+          }}
+        >
+          Go home
+        </Button>
       </div>
     );
   }
