@@ -1341,7 +1341,7 @@ class Portfolio extends BaseReactComponent {
                   <Col md={6}>
                     <div
                       className="m-r-16 section-table"
-                      style={{ paddingBottom: "1.15rem" }}
+                      style={{ paddingBottom: "1.6rem" }}
                     >
                       <TransactionTable
                         title="Transaction History"
