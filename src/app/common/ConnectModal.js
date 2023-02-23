@@ -294,13 +294,13 @@ class ConnectModal extends BaseReactComponent {
                             control={{
                               type: CustomTextControl,
                               settings: {
-                                placeholder: "Enter here",
+                                placeholder: "Enter connection name here",
                               },
                             }}
-                            classes={{
-                              inputField:
-                                this.state.connectionName !== "" ? "done" : "",
-                            }}
+                            // classes={{
+                            //   inputField:
+                            //     this.state.connectionName !== "" ? "done" : "",
+                            // }}
                           />
                           <FormElement
                             valueLink={this.linkState(this, "apiKey")}
@@ -308,13 +308,13 @@ class ConnectModal extends BaseReactComponent {
                             control={{
                               type: CustomTextControl,
                               settings: {
-                                placeholder: "Enter here",
+                                placeholder: "Enter api key here",
                               },
                             }}
-                            classes={{
-                              inputField:
-                                this.state.apiKey !== "" ? "done" : "",
-                            }}
+                            // classes={{
+                            //   inputField:
+                            //     this.state.apiKey !== "" ? "done" : "",
+                            // }}
                           />
                           <FormElement
                             valueLink={this.linkState(this, "apiSecret")}
@@ -322,13 +322,13 @@ class ConnectModal extends BaseReactComponent {
                             control={{
                               type: CustomTextControl,
                               settings: {
-                                placeholder: "Enter here",
+                                placeholder: "Enter api secret here",
                               },
                             }}
-                            classes={{
-                              inputField:
-                                this.state.apiSecret !== "" ? "done" : "",
-                            }}
+                            // classes={{
+                            //   inputField:
+                            //     this.state.apiSecret !== "" ? "done" : "",
+                            // }}
                           />
                         </Form>
                       </div>
