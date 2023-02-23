@@ -131,7 +131,7 @@ class ProfileForm extends BaseReactComponent {
                       },
                     }}
                     classes={{
-                      inputField: this.state.firstName !== "" ? "done" : "",
+                      // inputField: this.state.firstName !== "" ? "done" : "",
                     }}
                   />
                 </Col>
@@ -146,7 +146,7 @@ class ProfileForm extends BaseReactComponent {
                       },
                     }}
                     classes={{
-                      inputField: this.state.lastName !== "" ? "done" : "",
+                      // inputField: this.state.lastName !== "" ? "done" : "",
                     }}
                   />
                 </Col>
@@ -165,7 +165,7 @@ class ProfileForm extends BaseReactComponent {
                       },
                     }}
                     classes={{
-                      inputField: this.state.email !== "" ? "done" : "",
+                      // inputField: this.state.email !== "" ? "done" : "",
                     }}
                   />
                 </Col>
@@ -184,7 +184,7 @@ class ProfileForm extends BaseReactComponent {
                       },
                     }}
                     classes={{
-                      inputField: this.state.mobileNumber !== "" ? "done" : "",
+                      // inputField: this.state.mobileNumber !== "" ? "done" : "",
                     }}
                   />
                 </Col>
