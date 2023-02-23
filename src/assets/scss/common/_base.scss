@@ -1,16 +1,94 @@
-@include font-face(Inter-Regular, "/assets/fonts/Inter/Inter-Regular", normal, normal, ttf);
-@include font-face(Inter-Black, "/assets/fonts/Inter/Inter-Black", 900, bold, ttf);
-@include font-face(Inter-Bold, "/assets/fonts/Inter/Inter-Bold", bold, bold, ttf);
-@include font-face(Inter-Medium, "/assets/fonts/Inter/Inter-Medium", 500, normal, ttf);
-@include font-face(Inter-SemiBold, "/assets/fonts/Inter/Inter-SemiBold", 600, bold, ttf);
-@include font-face(Inter-ExtraBold, "/assets/fonts/Inter/Inter-ExtraBold", 900, bold, ttf); //Need to change values
-@include font-face(Inter-Thin, "/assets/fonts/Inter/Inter-Thin", 400, normal, ttf); //Need to change values
-@include font-face(Inter-Light, "/assets/fonts/Inter/Inter-Light", 500, normal, ttf); //Need to change values
-@include font-face(Inter-ExtraLight, "/assets/fonts/Inter/Inter-ExtraLight", 500, normal, ttf); //Need to change values
-@include font-face(SpaceGrotesk-Bold, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Bold", bold, bold, ttf); //Need to change values
-@include font-face(SpaceGrotesk-Light, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Light", 500, normal, ttf); //Need to change values
-@include font-face(SpaceGrotesk-Medium, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Medium", 500, normal, ttf);
-@include font-face(SpaceGrotesk-Regular, "/assets/fonts/Space-Grotesk/SpaceGrotesk-Regular", normal, normal, ttf);
+@include font-face(
+  Inter-Regular,
+  "/assets/fonts/Inter/Inter-Regular",
+  normal,
+  normal,
+  ttf
+);
+@include font-face(
+  Inter-Black,
+  "/assets/fonts/Inter/Inter-Black",
+  900,
+  bold,
+  ttf
+);
+@include font-face(
+  Inter-Bold,
+  "/assets/fonts/Inter/Inter-Bold",
+  bold,
+  bold,
+  ttf
+);
+@include font-face(
+  Inter-Medium,
+  "/assets/fonts/Inter/Inter-Medium",
+  500,
+  normal,
+  ttf
+);
+@include font-face(
+  Inter-SemiBold,
+  "/assets/fonts/Inter/Inter-SemiBold",
+  600,
+  bold,
+  ttf
+);
+@include font-face(
+  Inter-ExtraBold,
+  "/assets/fonts/Inter/Inter-ExtraBold",
+  900,
+  bold,
+  ttf
+); //Need to change values
+@include font-face(
+  Inter-Thin,
+  "/assets/fonts/Inter/Inter-Thin",
+  400,
+  normal,
+  ttf
+); //Need to change values
+@include font-face(
+  Inter-Light,
+  "/assets/fonts/Inter/Inter-Light",
+  500,
+  normal,
+  ttf
+); //Need to change values
+@include font-face(
+  Inter-ExtraLight,
+  "/assets/fonts/Inter/Inter-ExtraLight",
+  500,
+  normal,
+  ttf
+); //Need to change values
+@include font-face(
+  SpaceGrotesk-Bold,
+  "/assets/fonts/Space-Grotesk/SpaceGrotesk-Bold",
+  bold,
+  bold,
+  ttf
+); //Need to change values
+@include font-face(
+  SpaceGrotesk-Light,
+  "/assets/fonts/Space-Grotesk/SpaceGrotesk-Light",
+  500,
+  normal,
+  ttf
+); //Need to change values
+@include font-face(
+  SpaceGrotesk-Medium,
+  "/assets/fonts/Space-Grotesk/SpaceGrotesk-Medium",
+  500,
+  normal,
+  ttf
+);
+@include font-face(
+  SpaceGrotesk-Regular,
+  "/assets/fonts/Space-Grotesk/SpaceGrotesk-Regular",
+  normal,
+  normal,
+  ttf
+);
 // @include font-face(Inter-BoldItalic, "/assets/fonts/Inter/Inter-BoldItalic", bold, bold, ttf);
 
 // SET THE BASE HTML REM, MAKING 1REM=10PX
@@ -50,7 +128,6 @@ body {
   // overflow: scroll;
 
   .main-section-right {
-
     // flex: 1;
     // margin-left: 27.2rem;
     .main-content-wrapper {
@@ -114,19 +191,19 @@ body {
 
 @for $i from 1 through 100 {
   .f-s-#{$i} {
-    font-size: $i+px;
+    font-size: $i + px;
   }
 }
 
 @for $x from 1 through 100 {
   .lh-#{$x} {
-    line-height: $x+px;
+    line-height: $x + px;
   }
 }
 
 @for $y from 0 through 100 {
   .op-#{$y} {
-    opacity: "0." +$y;
+    opacity: "0." + $y;
   }
 }
 
@@ -139,7 +216,6 @@ body {
   margin-top: 0.4rem;
 }
 
-
 .m-t-5 {
   margin-top: 0.5rem;
 }
@@ -151,19 +227,19 @@ body {
 .m-t-8 {
   margin-top: 0.8rem;
 }
-.m-t-12{
+.m-t-12 {
   margin-top: 1.2rem;
 }
-.m-t-16{
+.m-t-16 {
   margin-top: 1.6rem;
 }
-.m-t-18{
+.m-t-18 {
   margin-top: 1.8rem;
 }
-.m-t-20{
+.m-t-20 {
   margin-top: 2rem;
 }
-.m-t-28{
+.m-t-28 {
   margin-top: 2.8rem;
 }
 
@@ -336,7 +412,6 @@ body {
   margin-left: 1.2rem;
 }
 
-
 .m-l-27 {
   margin-left: 27.2rem;
 }
@@ -348,21 +423,21 @@ body {
 .p-r-0 {
   padding-right: 0rem;
 }
-.p-t-10{
+.p-t-10 {
   padding-top: 1rem;
 }
-.p-b-10{
+.p-b-10 {
   padding-bottom: 1rem;
 }
-.p-b-20{
+.p-b-20 {
   padding-bottom: 2rem;
 }
 
-.p-b-32{
+.p-b-32 {
   padding-bottom: 3.2rem;
 }
 
-.p-b-46{
+.p-b-46 {
   padding-bottom: 4.6rem;
 }
 
@@ -480,11 +555,11 @@ body {
   flex-direction: column;
 }
 
-.text-center{
+.text-center {
   text-align: center;
 }
 
-.va-m{
+.va-m {
   vertical-align: middle;
 }
 
@@ -508,7 +583,8 @@ body {
   }
 
   label {
-    h2 {}
+    h2 {
+    }
 
     /* span {
       display: inline-block;
@@ -521,7 +597,8 @@ body {
     } */
   }
 
-  input {}
+  input {
+  }
 }
 
 .add-more-section {
@@ -530,8 +607,8 @@ body {
 
 .Toastify__toast-container {
   // width: 40rem;
-      min-width: 40rem;
-    width: max-content;
+  min-width: 40rem;
+  width: max-content;
 }
 
 .Toastify__toast {
@@ -647,8 +724,8 @@ form {
         box-shadow: none;
       }
 
-      &:hover{
-         border: 1px solid $primary;
+      &:hover {
+        border: 1px solid $primary;
       }
     }
 
@@ -658,7 +735,8 @@ form {
 
     .css-26l3qy-menu {
       margin: 0.3rem 0rem 0rem 0rem;
-      box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+      box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
+        0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
       // border: 0.1rem solid $grey-CAC;
     }
 
@@ -669,9 +747,9 @@ form {
 
       .custom-select__menu-list {
         border-radius: 0.4rem;
-      padding: 0.4rem;
-      border: 0.1rem solid $grey-CAC;
-      height: 20rem;
+        padding: 0.4rem;
+        border: 0.1rem solid $grey-CAC;
+        height: 20rem;
         // padding: 1rem;
         // padding: 0.4rem;
         .custom-select__option {
@@ -682,7 +760,6 @@ form {
           &.custom-select__option--is-focused,
           &.custom-select__option--is-selected {
             background-color: $drop-button-hover;
-
           }
         }
 
@@ -690,11 +767,11 @@ form {
           background-color: $drop-button-hover;
         }
 
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
           width: 0.4rem;
         }
 
-        &::-webkit-scrollbar-thumb{
+        &::-webkit-scrollbar-thumb {
           // border-radius: 2rem;
           border-radius: 0.8rem;
           background-color: $scrollBar-thumb;
@@ -881,11 +958,11 @@ form {
   position: relative;
 }
 
-.date-navigator-icons{
+.date-navigator-icons {
   position: relative;
   top: -1px;
 }
-.date-navigator-icons-next{
+.date-navigator-icons-next {
   position: relative;
   top: -1px;
 }
@@ -943,7 +1020,8 @@ form {
     // box-shadow: 0 -4px 21px 0 rgba(0, 0, 0, 0.12);
     border-radius: 0.4rem;
     border: 0.1rem solid $grey-CAC;
-    box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04), 0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+    box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
     // border: 0;
 
     .dropdown-item {
@@ -953,13 +1031,13 @@ form {
       // border-radius: 4px;
       border-radius: 0.2rem;
 
-      &:hover {}
+      &:hover {
+      }
     }
     &::-webkit-scrollbar {
       border-top-right-radius: 0.9rem;
       border-bottom-right-radius: 0.9rem;
     }
-
   }
 }
 
@@ -974,7 +1052,8 @@ form {
 //     font-size: 1.3rem;
 //   }
 // }
-.custom-table {}
+.custom-table {
+}
 
 .table-wrapper {
   .form-group {
@@ -1009,7 +1088,7 @@ form {
       overflow: visible !important;
 
       .ReactVirtualized__Table__row {
-        border: none
+        border: none;
       }
     }
   }
@@ -1050,8 +1129,6 @@ form {
   }
 }
 
-
-
 // btn
 .primary-btn {
   @include font($secondary, "Inter-SemiBold", 1.6rem, 600, normal);
@@ -1072,9 +1149,10 @@ form {
     // border: 1px solid $black-191;
     // background-color: $black-191;
     border-color: $secondary;
-                    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
-                    color: $black-191;
-                    background-color: $secondary;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0px 1rem 1rem rgba(0, 0, 0, 0.04);
+    color: $black-191;
+    background-color: $secondary;
   }
 
   &.btn-primary:disabled {
@@ -1087,13 +1165,15 @@ form {
     cursor: auto;
   }
 
-  .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  .btn-primary:not(:disabled):not(.disabled).active,
+  .btn-primary:not(:disabled):not(.disabled):active,
+  .show > .btn-primary.dropdown-toggle {
     // color: #fff;
     outline: none;
     box-shadow: none;
     border: 1px solid $black-191 !important;
     background-color: $black-191 !important;
-}
+  }
 }
 
 .secondary-btn {
@@ -1154,7 +1234,6 @@ form {
   cursor: not-allowed !important;
   opacity: 0.6;
 }
-
 
 .react-datepicker {
   display: flex;
@@ -1246,7 +1325,6 @@ form {
           }
         }
       }
-
     }
   }
 }
@@ -1326,7 +1404,6 @@ form {
 
 // START FROM HERE
 .tool-tip-container {
-
   .tooltip-inner {
     background-color: $secondary;
     max-width: max-content;
@@ -1380,9 +1457,7 @@ form {
           margin-right: 0rem;
           margin-top: 0rem;
         }
-
       }
-
     }
 
     .text-tooltip {
@@ -1426,8 +1501,8 @@ form {
       // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15), 0px 1px 1px rgba(0, 0, 0, 0.15);
     }
   }
-  &.fix-width{
-    .tooltip-inner{
+  &.fix-width {
+    .tooltip-inner {
       width: 39rem;
     }
   }
@@ -1441,8 +1516,8 @@ form {
       // border: 0.1rem solid $grey-E5E;
     }
   }
-  &.coin-hover-tooltip{
-    .tooltip-inner{
+  &.coin-hover-tooltip {
+    .tooltip-inner {
       max-width: max-content;
     }
   }
@@ -1458,7 +1533,7 @@ form {
   }
 
   .button-tooltip {
-    background-color: $secondary ;
+    background-color: $secondary;
     color: $grey-313;
     border-radius: 0.8rem;
     display: flex;
@@ -1543,18 +1618,17 @@ form {
       img {
         margin-left: 1rem;
       }
-      &.active-pointer{
+      &.active-pointer {
         cursor: pointer;
 
-         &:hover{
-       color: $grey-636;
+        &:hover {
+          color: $grey-636;
 
-        img{
+          img {
             filter: opacity(0.5);
+          }
         }
       }
-      }
-    
     }
   }
 }
@@ -1590,22 +1664,29 @@ form {
     p {
       margin-bottom: 0.3rem;
     }
-    .header{
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .grey-btn{
+    .grey-btn {
       border: 0;
       padding: 8px;
-      img{
-           width: 1.2rem;
-    margin-bottom: 1.5px;
-}
+      img {
+        width: 1.2rem;
+        margin-bottom: 1.5px;
+      }
 
+      &:hover{
+                  border-color: $secondary;
+                  box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+                    0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                  color: $black-191;
+                  background-color: $secondary;
+      }
 
       @include font($black-191, "Inter-SemiBold", 1.3rem, 600, 16px);
-      &:active{
+      &:active {
         border: 0 !important;
         color: $black-191 !important;
       }
@@ -1637,14 +1718,14 @@ form {
           .rotateUp {
             transform: rotate(180deg);
             margin-left: 1rem;
+          }
+          &:hover {
+            span {
+              color: $primary;
             }
-             &:hover{
-               span{
-                        color:$primary;
-                    }
-                    img{
-                        filter: brightness(0.5);
-                    }
+            img {
+              filter: brightness(0.5);
+            }
           }
 
           .rotateDown {
@@ -1681,7 +1762,8 @@ form {
             width: 2.4rem;
             height: 2.4rem;
             border-radius: 0.8rem;
-            box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12), 0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+            box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
+              0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
           }
 
           .history-table-coin-icon {
@@ -1731,7 +1813,7 @@ form {
               border-radius: 0.8rem;
             }
           }
-          .asset-symbol{
+          .asset-symbol {
             width: 2.4rem;
             height: 2.4rem;
             border-radius: 0.8rem;
@@ -1769,11 +1851,11 @@ form {
   }
 }
 
-
-.loading-wrapper{
+.loading-wrapper {
   background-color: $secondary;
   padding: 5rem;
-  box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12), 0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
+  box-shadow: 0px 3.15493px 4.73239px -3.15493px rgba(24, 39, 75, 0.12),
+    0px 6.30986px 6.30986px -3.15493px rgba(24, 39, 75, 0.08);
   border-radius: 1.2rem;
   margin-bottom: 3.2rem;
 }
@@ -1798,7 +1880,7 @@ form {
   align-items: center;
   white-space: nowrap;
 
-  span{
+  span {
     white-space: nowrap;
   }
 
@@ -1822,13 +1904,12 @@ form {
   }
 }
 
-textarea{
-  resize:none;
+textarea {
+  resize: none;
 }
 
-.copy-icon{
-  &:hover
-  {
+.copy-icon {
+  &:hover {
     filter: brightness(0.5);
   }
 }
@@ -1839,64 +1920,64 @@ textarea{
 //   }
 // }
 .custom-switch {
-    padding-left: 2.25rem;
-    user-select: none;
-    width: max-content;
-    // transform: scale(1.5) translateX(-2.5rem);
-    transform: scale(1.45) translateX(2.6rem);
+  padding-left: 2.25rem;
+  user-select: none;
+  width: max-content;
+  // transform: scale(1.5) translateX(-2.5rem);
+  transform: scale(1.45) translateX(2.6rem);
+  cursor: pointer;
+
+  input {
     cursor: pointer;
-
-    input{
-        cursor: pointer;
-    }
-
-    label{
-       @include font($primary, "Inter-Medium", 0.9rem, 500, 15px);
-    }
-}
-
-.custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: $primary;
-    background-color: $primary;
-     cursor: pointer;
   }
 
-    .custom-control-label::before {
-    position: absolute;
-    top: 0.25rem;
-    left: -1.5rem;
-    display: block;
-    width: 1rem;
-    height: 1rem;
-    pointer-events: none;
-    content: "";
-    background-color: #fff;
-    border: 1px solid $primary;
-     cursor: pointer;
+  label {
+    @include font($primary, "Inter-Medium", 0.9rem, 500, 15px);
+  }
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: #fff;
+  border-color: $primary;
+  background-color: $primary;
+  cursor: pointer;
+}
+
+.custom-control-label::before {
+  position: absolute;
+  top: 0.25rem;
+  left: -1.5rem;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+  content: "";
+  background-color: #fff;
+  border: 1px solid $primary;
+  cursor: pointer;
 }
 
 .custom-switch .custom-control-label::after {
-    
-    background-color: $primary;
-    border-radius: 0.5rem;
-    transition: transform .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-     cursor: pointer;
+  background-color: $primary;
+  border-radius: 0.5rem;
+  transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  cursor: pointer;
 }
 
-.custom-control-input:focus~.custom-control-label::before {
-    box-shadow: none;
-     cursor: pointer;
+.custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow: none;
+  cursor: pointer;
 }
 
-.custom-control-input:not(:disabled):active~.custom-control-label::before {
-    color: $primary;
-    background-color: #fff;
-    border-color: #fff;
-     cursor: pointer;
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+  color: $primary;
+  background-color: #fff;
+  border-color: #fff;
+  cursor: pointer;
 }
 
-.custom-control-input:focus:not(:checked)~.custom-control-label::before {
-    border-color: $primary;
-     cursor: pointer;
+.custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
+  border-color: $primary;
+  cursor: pointer;
 }
