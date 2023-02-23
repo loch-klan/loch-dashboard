@@ -544,8 +544,8 @@ class Cost extends Component {
                 columnList={columnData}
                 headerHeight={64}
                 comingSoon={true}
-                isConnect={true}
-                handleExchange={this.handleConnectModal}
+                // isConnect={true}
+                // handleExchange={this.handleConnectModal}
               />
             </div>
           </div>
