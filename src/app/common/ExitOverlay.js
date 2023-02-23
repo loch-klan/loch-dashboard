@@ -16,6 +16,8 @@ import {
 // import Dropdown from '../common/DropDown.js';
 import CopyLink from '../../assets/images/icons/CopyLink.svg';
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
+
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import ShareLink from '../../assets/images/icons/ShareLink.svg'
 import {exportDataApi, fixWalletApi} from './Api.js'
@@ -29,6 +31,7 @@ import prev2Icon from '../../assets/images/icons/prev2.svg'
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
+import FileIcon from "../../assets/images/icons/file-text.svg";
 import {
 
   CreateWhalePodSave,
@@ -157,6 +160,8 @@ class ExitOverlay extends BaseReactComponent {
       hidePrevModal: false,
       triggerId: 0,
       total_addresses: 0,
+
+      showWarningMsg:false,
     };
   }
   upgradeModal = () => {
@@ -364,7 +369,7 @@ class ExitOverlay extends BaseReactComponent {
   };
 
   handleCohortSave = () => {
-    console.log("save",  this.state.addWalletList)
+    // console.log("save",  this.state.addWalletList)
     if (this.state.addWalletList) {
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -407,7 +412,7 @@ class ExitOverlay extends BaseReactComponent {
 
           createCohort(data, this);
           this.state.onHide();
-          console.log("address", walletList);
+          // console.log("address", walletList);
           this.state.changeList && this.state.changeList(walletList);
 
           const address = walletList?.map((e) =>
@@ -610,14 +615,12 @@ class ExitOverlay extends BaseReactComponent {
 
   handleFileSelect = (event) => {
     const file = event.target.files[0];
-    // console.log("event", event)
+    
     
     if (file.type === "text/csv" || file.type === "text/plain") {
       Papa.parse(file, {
         complete: (results) => {
-         
-          
-        
+
             let addressList = [];
             let prevAddressList = [];
             this.state?.addWalletList &&
@@ -1001,210 +1004,330 @@ class ExitOverlay extends BaseReactComponent {
                   ) : this.props.modalType === "cohort" ? (
                     <div className="cohort-body">
                       <div className="cohort-item-wrapper">
-                        <Form onValidSubmit={this.handleCohortSave}>
-                          <FormElement
-                            valueLink={this.linkState(this, "cohort_name")}
-                            label="Pod Name"
-                            required
-                            validations={[
-                              {
-                                validate: FormValidator.isRequired,
-                                message: "",
-                              },
-                            ]}
-                            control={{
-                              type: CustomTextControl,
-                              settings: {
-                                placeholder: "Give your pod a name",
-                                onBlur: (onBlur) => {
-                                  // console.log("pod", this.state.cohort_name)
-                                  PodName({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                    pod_name: this.state.cohort_name,
-                                  });
+                        {!this.state.showWarningMsg ? (
+                          <Form onValidSubmit={this.handleCohortSave}>
+                            <FormElement
+                              valueLink={this.linkState(this, "cohort_name")}
+                              label="Pod Name"
+                              required
+                              validations={[
+                                {
+                                  validate: FormValidator.isRequired,
+                                  message: "",
                                 },
-                              },
-                            }}
-                          />
-
-                          <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
-                            Wallets
-                          </h4>
-
-                          {/* Multiple address box */}
-
-                          <div
-                            className="add-modal-inputs"
-                            style={{
-                              paddingLeft: `${
-                                this.state.addWalletList?.length === 1
-                                  ? "0rem"
-                                  : "6rem"
-                              }`,
-                              paddingRight: `${
-                                this.state.addWalletList?.length < 5
-                                  ? "0rem"
-                                  : "2rem"
-                              }`,
-                            }}
-                          >
-                                  {this.state.addWalletList?.map((elem, index) => {
-                              console.log(elem.coinFound)
-                              return (
-                                <div
-                                  className="add-wallet-input-section"
-                                  key={index}
-                                  id={`add-wallet-${index}`}
-                                  style={{
-                                    marginBottom: `${
-                                      this.state.addWalletList?.length - 1 ===
-                                      index
-                                        ? "0rem"
-                                        : "1.2rem"
-                                    }`,
-                                  }}
-                                >
-                                  {this.state.addWalletList.length > 1 ? (
-                                    <div
-                                      className="delete-icon"
-                                      onClick={() => this.deleteAddress(index)}
-                                    >
-                                      <Image src={DeleteIcon} />
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
-
-                                  {(elem.address == "" ||
-                                    elem.displayAddress == "") &&
-                                  index == 0 &&
-                                  !this.props?.isEdit ? (
-                                    <span
-                                      className="paste-text cp"
-                                      onClick={this.handlePaste}
-                                    >
-                                      <Image
-                                        src={CopyLink}
-                                        // onClick={() => this.setState({ emailError: false })}
-                                      />
-                                      <p className="inter-display-medium f-s-16 lh-19">
-                                        Paste
-                                      </p>
-                                    </span>
-                                  ) : (
-                                    ""
-                                  )}
-
-                                  <input
-                                    autoFocus
-                                    name={`wallet${index + 1}`}
-                                    value={
-                                      elem.displayAddress || elem.address || ""
-                                    }
-                                    ref={index == 0 ? this.pasteInput : ""}
-                                    placeholder="Paste any wallet address or ENS here"
-                                    // className='inter-display-regular f-s-16 lh-20'
-                                    className={`inter-display-regular f-s-16 lh-20 ${
-                                      elem.address ? "is-valid" : null
-                                    }`}
-                                    onChange={(e) => this.handleOnchange(e)}
-                                    id={elem?.id}
-                                    onKeyDown={this.handleTabPress}
-                                    // style={getPadding(
-                                    //   `add-wallet-${index}`,
-                                    //   elem,
-                                    //   this.props.OnboardingState
-                                    // )}
-                                  />
-                                  {elem.address ? (
-                                    elem.coinFound && elem.coins.length > 0 ? (
-                                      // COIN FOUND STATE
-                                      <CustomChip
-                                        coins={elem.coins.filter(
-                                          (c) => c.chain_detected
-                                        )}
-                                        key={index}
-                                        isLoaded={true}
-                                      ></CustomChip>
-                                    ) : elem.coins.length ===
-                                      this.props.OnboardingState.coinsList
-                                        .length ? (
-                                      // elem.coins.length === 1
-                                      // UNRECOGNIZED WALLET
-                                      <CustomChip
-                                        coins={null}
-                                        key={index}
-                                        isLoaded={true}
-                                      ></CustomChip>
-                                    ) : (
-                                      // LOADING STATE
-                                      <CustomChip
-                                        coins={null}
-                                        key={index}
-                                        isLoaded={false}
-                                      ></CustomChip>
-                                          
-                                    )
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-
-                          {this.state.addWalletList[0]?.address !== "" && (
-                            <div className="m-b-32 add-wallet-btn">
-                              <Button
-                                className="grey-btn"
-                                onClick={this.addAddress}
-                              >
-                                <Image src={PlusIcon} /> Add another
-                              </Button>
-                            </div>
-                          )}
-
-                          <div className="save-btn-section">
-                            <input
-                              type="file"
-                              ref={this.fileInputRef}
-                              onChange={this.handleFileSelect}
-                              style={{ display: "none" }}
+                              ]}
+                              control={{
+                                type: CustomTextControl,
+                                settings: {
+                                  placeholder: "Give your pod a name",
+                                  onBlur: (onBlur) => {
+                                    // console.log("pod", this.state.cohort_name)
+                                    PodName({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      pod_name: this.state.cohort_name,
+                                    });
+                                  },
+                                },
+                              }}
                             />
-                            <Button
-                              className={`secondary-btn ${
-                                this.state.email ? "active" : ""
-                              }`}
-                              type="button"
-                              onClick={this.handleUpload}
+
+                            <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
+                              Wallets
+                            </h4>
+
+                            {/* Multiple address box */}
+
+                            <div
+                              className="add-modal-inputs"
+                              style={{
+                                paddingLeft: `${
+                                  this.state.addWalletList?.length === 1
+                                    ? "0rem"
+                                    : "6rem"
+                                }`,
+                                paddingRight: `${
+                                  this.state.addWalletList?.length < 5
+                                    ? "0rem"
+                                    : "2rem"
+                                }`,
+                              }}
                             >
-                              Upload CSV / Text file
-                            </Button>
-                            <div>
-                              {this.props.isEdit && (
+                              {this.state.addWalletList?.map((elem, index) => {
+                                // console.log(elem.coinFound)
+                                return (
+                                  <div
+                                    className="add-wallet-input-section"
+                                    key={index}
+                                    id={`add-wallet-${index}`}
+                                    style={{
+                                      marginBottom: `${
+                                        this.state.addWalletList?.length - 1 ===
+                                        index
+                                          ? "0rem"
+                                          : "1.2rem"
+                                      }`,
+                                    }}
+                                  >
+                                    {this.state.addWalletList.length > 1 ? (
+                                      <div
+                                        className="delete-icon"
+                                        onClick={() =>
+                                          this.deleteAddress(index)
+                                        }
+                                      >
+                                        <Image src={DeleteIcon} />
+                                      </div>
+                                    ) : (
+                                      ""
+                                    )}
+
+                                    {(elem.address == "" ||
+                                      elem.displayAddress == "") &&
+                                    index == 0 &&
+                                    !this.props?.isEdit ? (
+                                      <span
+                                        className="paste-text cp"
+                                        onClick={this.handlePaste}
+                                      >
+                                        <Image
+                                          src={CopyLink}
+                                          // onClick={() => this.setState({ emailError: false })}
+                                        />
+                                        <p className="inter-display-medium f-s-16 lh-19">
+                                          Paste
+                                        </p>
+                                      </span>
+                                    ) : (
+                                      ""
+                                    )}
+
+                                    <input
+                                      autoFocus
+                                      name={`wallet${index + 1}`}
+                                      value={
+                                        elem.displayAddress ||
+                                        elem.address ||
+                                        ""
+                                      }
+                                      ref={index == 0 ? this.pasteInput : ""}
+                                      placeholder="Paste any wallet address or ENS here"
+                                      // className='inter-display-regular f-s-16 lh-20'
+                                      className={`inter-display-regular f-s-16 lh-20 ${
+                                        elem.address ? "is-valid" : null
+                                      }`}
+                                      onChange={(e) => this.handleOnchange(e)}
+                                      id={elem?.id}
+                                      onKeyDown={this.handleTabPress}
+                                      // style={getPadding(
+                                      //   `add-wallet-${index}`,
+                                      //   elem,
+                                      //   this.props.OnboardingState
+                                      // )}
+                                    />
+                                    {elem.address ? (
+                                      elem.coinFound &&
+                                      elem.coins.length > 0 ? (
+                                        // COIN FOUND STATE
+                                        <CustomChip
+                                          coins={elem.coins.filter(
+                                            (c) => c.chain_detected
+                                          )}
+                                          key={index}
+                                          isLoaded={true}
+                                        ></CustomChip>
+                                      ) : elem.coins.length ===
+                                        this.props.OnboardingState.coinsList
+                                          .length ? (
+                                        // elem.coins.length === 1
+                                        // UNRECOGNIZED WALLET
+                                        <CustomChip
+                                          coins={null}
+                                          key={index}
+                                          isLoaded={true}
+                                        ></CustomChip>
+                                      ) : (
+                                        // LOADING STATE
+                                        <CustomChip
+                                          coins={null}
+                                          key={index}
+                                          isLoaded={false}
+                                        ></CustomChip>
+                                      )
+                                    ) : (
+                                      ""
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            {this.state.addWalletList[0]?.address !== "" && (
+                              <div className="m-b-32 add-wallet-btn">
                                 <Button
-                                  className={`secondary-btn m-r-12`}
-                                  type="button"
-                                  style={
-                                    this.props.isEdit ? { border: "none" } : {}
-                                  }
-                                  onClick={this.handleDeleteCohort}
+                                  className="grey-btn"
+                                  onClick={this.addAddress}
                                 >
-                                  Delete
+                                  <Image src={PlusIcon} /> Add another
                                 </Button>
-                              )}
+                              </div>
+                            )}
+
+                            <div className="save-btn-section">
+                              <input
+                                type="file"
+                                ref={this.fileInputRef}
+                                onChange={this.handleFileSelect}
+                                style={{ display: "none" }}
+                              />
                               <Button
-                                className={`primary-btn ${
+                                className={`secondary-btn ${
                                   this.state.email ? "active" : ""
                                 }`}
-                                type="submit"
+                                type="button"
+                                onClick={this.handleUpload}
                               >
-                                Save
+                                Upload CSV / Text file
+                              </Button>
+                              <div>
+                                {this.props.isEdit && (
+                                  <Button
+                                    className={`secondary-btn m-r-12`}
+                                    type="button"
+                                    style={
+                                      this.props.isEdit
+                                        ? { border: "none" }
+                                        : {}
+                                    }
+                                    onClick={this.handleDeleteCohort}
+                                  >
+                                    Delete
+                                  </Button>
+                                )}
+                                <Button
+                                  className={`primary-btn ${
+                                    this.state.email ? "active" : ""
+                                  }`}
+                                  type="submit"
+                                >
+                                  Save
+                                </Button>
+                              </div>
+                            </div>
+                          </Form>
+                        ) : (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexDirection: "column",
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  background: "#E5E5E680",
+                                  marginRight: "2rem",
+                                  borderRadius: "1.2rem",
+                                  padding: "1.1rem 1.6rem",
+                                }}
+                              >
+                                <Image
+                                  src={FileIcon}
+                                  style={{ marginRight: "1rem" }}
+                                />
+                                <h4 className="inter-display-medium f-s-13 lh-15 grey-7C7">
+                                  Filename.csv
+                                </h4>
+                              </div>
+                              <Button
+                                className={`secondary-btn`}
+                                type="button"
+                                style={{
+                                  paddingLeft: "1.8rem",
+                                  paddingRight: "1.8rem",
+                                }}
+                              >
+                                Change file
                               </Button>
                             </div>
+                            {/* Loader */}
+                            <div className="upload-loader"></div>
+                            <h4 className="inter-display-medium f-s-16 lh-19 grey-B0B m-t-20 m-b-20">
+                              Uploading
+                            </h4>
+                            {/* Form */}
+                            <div className="form-wrapper">
+                              <Image src={FileIcon} />
+                              <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
+                                Enter your email address and we will notify{" "}
+                                <br />
+                                you once the addresses have been updated
+                              </h4>
+                              <div className="email-section">
+                                <Form onValidSubmit={this.handleSave}>
+                                  <FormElement
+                                    valueLink={this.linkState(this, "email")}
+                                    // label="Email Info"
+                                    required
+                                    validations={[
+                                      {
+                                        validate: FormValidator.isRequired,
+                                        message: "",
+                                      },
+                                      {
+                                        validate: FormValidator.isEmail,
+                                        message: "Please enter valid email id",
+                                      },
+                                    ]}
+                                    control={{
+                                      type: CustomTextControl,
+                                      settings: {
+                                        placeholder: "Enter your email address",
+                                      },
+                                    }}
+                                  />
+                                  <div className="save-btn-section">
+                                    <Button
+                                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                        this.state.email ? "active" : ""
+                                      }`}
+                                      type="submit"
+                                    >
+                                      Confirm
+                                    </Button>
+                                  </div>
+                                </Form>
+                              </div>
+                              {/* After email messgae */}
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  textAlign: "start",
+                                }}
+                              >
+                                <Image
+                                  src={CheckIcon}
+                                  style={{ marginRight: "1rem", position:"static", width:"3rem" }}
+                                />
+                                <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
+                                  Great! We will let you know once the indexing
+                                  is complete.
+                                </h4>
+                              </div>
+                            </div>
                           </div>
-                        </Form>
+                        )}
                       </div>
                     </div>
                   ) : (

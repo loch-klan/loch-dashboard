@@ -553,6 +553,7 @@ class Cohort extends Component {
                             id: item.id,
                             cohortWalletList: item?.wallet_address_details,
                             chainImages: sortedChains,
+                            total_addresses: this.state.total_addresses,
                           },
                         });
                       }}
