@@ -122,13 +122,13 @@ class ExitOverlay extends BaseReactComponent {
       addWalletList:
         props?.walletaddress && props.isEdit
           ? props?.walletaddress?.map((e, i) => {
-            console.log(e)
+              // console.log(e);
               return {
                 id: `wallet${i + 1}`,
                 address: e?.wallet_address ? e.wallet_address : "",
                 displayAddress: e?.display_address ? e.display_address : "",
                 wallet_metadata: {},
-                coinFound:e?.chains.length > 0 ? true : false,
+                coinFound: e?.chains.length > 0 ? true : false,
                 coins: e?.chains
                   ? e?.chains.map((e) => {
                       return {
@@ -161,9 +161,35 @@ class ExitOverlay extends BaseReactComponent {
       triggerId: 0,
       total_addresses: 0,
 
-      showWarningMsg:false,
+      // upload csv/txt
+      showWarningMsg: false,
+      uploadStatus: "Uploading",
+      // set pod id when we get response after creating new pod and,
+      // call getStatus api until isLoaded true
+      podId: null,
+      // if this true then show email message and done btn and stop call getStatus api
+      emailAdded: false,
+
+      // set false if email added or get Status
+      getStateApi:true,
+      
     };
   }
+
+  EmailNotification = () => {
+    this.setState({
+      getStateApi:false,
+    })
+  };
+
+  getPodStatus = () => {
+
+      setTimeout(() => {
+        if (this.state.getStateApi) {
+          // this.getPodStatus();
+        }
+      }, 100);    
+  };
   upgradeModal = () => {
     this.setState(
       {
@@ -185,31 +211,29 @@ class ExitOverlay extends BaseReactComponent {
     this.props.getAllParentChains();
   }
 
-   onDataSelected = () => {
-      ExportDateSelected({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        date_range_selected: 
-          moment(this.state.fromDate).format("DD MMMM YY") +
-            " to " +
-            moment(this.state.toDate).format("DD MMMM YY")
-        
-      });
-
-      };
+  onDataSelected = () => {
+    ExportDateSelected({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      date_range_selected:
+        moment(this.state.fromDate).format("DD MMMM YY") +
+        " to " +
+        moment(this.state.toDate).format("DD MMMM YY"),
+    });
+  };
 
   addAddress = () => {
     // console.log("us", this.state.addWalletList.length ,
     //   this.props.total_addresses ,
-    
+
     //   this.props.totalEditAddress);
-     let total = this.props.isEdit
-       ? this.state.addWalletList.length +
-         this.props.total_addresses +
-         1 -
-         this.props.totalEditAddress
-       : this.state.addWalletList.length + this.props.total_addresses + 1;
-     
+    let total = this.props.isEdit
+      ? this.state.addWalletList.length +
+        this.props.total_addresses +
+        1 -
+        this.props.totalEditAddress
+      : this.state.addWalletList.length + this.props.total_addresses + 1;
+
     if (
       total <= this.state.userPlan?.wallet_address_limit ||
       this.state.userPlan?.wallet_address_limit === -1
@@ -240,7 +264,6 @@ class ExitOverlay extends BaseReactComponent {
         }
       );
     }
-  
   };
 
   deleteAddress = (index) => {
@@ -379,8 +402,10 @@ class ExitOverlay extends BaseReactComponent {
         let addressList = [];
         let displayAddress = [];
         let walletList = [];
+        let isChainDetected = [];
         for (let i = 0; i < this.state.addWalletList.length; i++) {
           let curr = this.state.addWalletList[i];
+          console.log(curr)
           if (!arr.includes(curr.address.trim()) && curr.address) {
             walletList.push(curr);
             arr.push(curr.address.trim());
@@ -388,10 +413,15 @@ class ExitOverlay extends BaseReactComponent {
             addressList.push(
               curr.displayAddress !== ""
                 ? curr.displayAddress?.trim()
-                : curr.address.trim()
+                : curr.address.trim()  
             );
+              
+            
+                  isChainDetected.push(curr?.coinFound);
+            
           }
         }
+        let chain_detechted = isChainDetected.includes(false) ? false : true;
         // console.log("address list", addressList, this.state.addWalletList);
         let addWallet = walletList;
         if (addressList.length !== 0) {
@@ -403,6 +433,7 @@ class ExitOverlay extends BaseReactComponent {
           // this.state.onHide();
           const data = new URLSearchParams();
           data.append("name", this.state.cohort_name);
+           data.append("chain_detected", chain_detechted);
           data.append("wallet_addresses", JSON.stringify(addressList));
 
           if (this.props.isEdit && this.props.cohortId) {
@@ -411,7 +442,10 @@ class ExitOverlay extends BaseReactComponent {
           }
 
           createCohort(data, this);
-          this.state.onHide();
+          // hide if upload click
+          if (!this.state.showWarningMsg) {
+            this.state.onHide();
+          }
           // console.log("address", walletList);
           this.state.changeList && this.state.changeList(walletList);
 
@@ -501,13 +535,13 @@ class ExitOverlay extends BaseReactComponent {
           session_id: getCurrentUser().id,
           email_address: this.state.email,
         });
-         signUpProperties({
-           userId: getCurrentUser().id,
-           email_address: this.state.email,
-           first_name: "",
-           last_name: "",
-         });
-        
+        signUpProperties({
+          userId: getCurrentUser().id,
+          email_address: this.state.email,
+          first_name: "",
+          last_name: "",
+        });
+
         resetUser();
       }
     }
@@ -553,27 +587,27 @@ class ExitOverlay extends BaseReactComponent {
       addWalletList.length <= this.state.userPlan?.export_address_limit ||
       this.state.userPlan?.export_address_limit === -1
     ) {
-       this.setState({ loadingExportFile: true });
-       const data = new URLSearchParams();
-       data.append("currency_code", CurrencyType(true));
-       data.append("start_datetime", moment(this.state.fromDate).format("X"));
-       data.append("end_datetime", moment(this.state.toDate).format("X"));
-       ExportDataDownlaod({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-         date_range_selected: [
-           moment(this.state.fromDate).format("DD MMMM YY") +
-             " to " +
-             moment(this.state.toDate).format("DD MMMM YY"),
-         ],
-         data_exported: this.state.selectedExportItem.fileName,
-       });
-       // console.log(
-       //   "date range",
-       //   moment(this.state.fromDate).format("DD MMMM YY"),
-       //   moment(this.state.toDate).format("DD MMMM YY")
-       // );
-       exportDataApi(data, this);
+      this.setState({ loadingExportFile: true });
+      const data = new URLSearchParams();
+      data.append("currency_code", CurrencyType(true));
+      data.append("start_datetime", moment(this.state.fromDate).format("X"));
+      data.append("end_datetime", moment(this.state.toDate).format("X"));
+      ExportDataDownlaod({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        date_range_selected: [
+          moment(this.state.fromDate).format("DD MMMM YY") +
+            " to " +
+            moment(this.state.toDate).format("DD MMMM YY"),
+        ],
+        data_exported: this.state.selectedExportItem.fileName,
+      });
+      // console.log(
+      //   "date range",
+      //   moment(this.state.fromDate).format("DD MMMM YY"),
+      //   moment(this.state.toDate).format("DD MMMM YY")
+      // );
+      exportDataApi(data, this);
     } else {
       this.setState(
         {
@@ -583,9 +617,7 @@ class ExitOverlay extends BaseReactComponent {
           this.upgradeModal();
         }
       );
-     
     }
-     
   };
 
   handleSelectedExportItem = (item, e) => {
@@ -599,7 +631,21 @@ class ExitOverlay extends BaseReactComponent {
 
   handleUpload = () => {
     if (this.state.userPlan?.upload_csv) {
+      if (this.state.showWarningMsg) {
+        this.setState({
+          addWalletList: [
+              {
+                id: `wallet1`,
+                address: "",
+                coins: [],
+                displayAddress: "",
+                wallet_metadata: {},
+              },
+            ],
+        });
+      }
       this.fileInputRef.current.click();
+      
     } else {
       this.setState(
         {
@@ -615,67 +661,77 @@ class ExitOverlay extends BaseReactComponent {
 
   handleFileSelect = (event) => {
     const file = event.target.files[0];
-    
-    
+
     if (file.type === "text/csv" || file.type === "text/plain") {
+      
       Papa.parse(file, {
         complete: (results) => {
-
-            let addressList = [];
-            let prevAddressList = [];
-            this.state?.addWalletList &&
-              this.state?.addWalletList.map((e) => {
-                if (e.address !== "" || e.displayAddress != "") {
-                  prevAddressList.push(e);
-                }
-              });
-            let uploadedAddress = [];
-            results?.data?.map((e, i) => {
-              uploadedAddress.push(e[0]);
-              addressList.push({
-                id: `wallet${prevAddressList?.length + (i + 1)}`,
-                address: e[0],
-                coins: [],
-                displayAddress: e[0],
-                wallet_metadata: {},
-              });
+          this.setState({
+            showWarningMsg: true,
+          });
+          let addressList = [];
+          let prevAddressList = [];
+          this.state?.addWalletList &&
+            this.state?.addWalletList.map((e) => {
+              if (e.address !== "" || e.displayAddress != "") {
+                prevAddressList.push(e);
+              }
             });
-          
-  let total_address = this.props.isEdit ?  prevAddressList?.length + addressList?.length + this.props.total_addresses - this.props.totalEditAddress :
-    prevAddressList?.length + addressList?.length + this.props.total_addresses;
-  if (
-    total_address <= this.state.userPlan?.whale_pod_address_limit ||
-    this.state.userPlan?.whale_pod_address_limit === -1
-  ) {
-    WhalePodUploadFile({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      addresses: uploadedAddress,
-    });
+          let uploadedAddress = [];
+          results?.data?.map((e, i) => {
+            
+            uploadedAddress.push(e[0]);
+            addressList.push({
+              id: `wallet${prevAddressList?.length + (i + 1)}`,
+              address: e[0],
+              coins: [],
+              displayAddress: e[0],
+              wallet_metadata: {},
+            });
+          });
 
-    this.setState(
-      {
-        addWalletList: [...prevAddressList, ...addressList],
-      },
-      () => {
-        // console.log("address", this.state.addWalletList);
-        this.state.addWalletList?.map((e) =>
-          this.getCoinBasedOnWalletAddress(e.id, e.address)
-        );
-      }
-    );
-  } else {
-     this.setState(
-       {
-         triggerId: 1,
-       },
-       () => {
-         this.upgradeModal();
-       }
-     );
-     
-  }
-         
+          let total_address = this.props.isEdit
+            ? prevAddressList?.length +
+              addressList?.length +
+              this.props.total_addresses -
+              this.props.totalEditAddress
+            : prevAddressList?.length +
+              addressList?.length +
+              this.props.total_addresses;
+          if (
+            total_address <= this.state.userPlan?.whale_pod_address_limit ||
+            this.state.userPlan?.whale_pod_address_limit === -1
+          ) {
+            WhalePodUploadFile({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              addresses: uploadedAddress,
+            });
+
+            this.setState(
+              {
+                addWalletList: [...prevAddressList, ...addressList],
+                uploadStatus:"Indexing"
+              },
+              () => {
+           
+                // call api to store pod 
+                this.state.addWalletList?.map((e) =>
+                  this.getCoinBasedOnWalletAddress(e.id, e.address)
+                );
+              }
+            );
+          } else {
+            this.setState(
+              {
+                triggerId: 1,
+              },
+              () => {
+                this.upgradeModal();
+              }
+            );
+          }
+
           // console.log(results.data, addressList, prevAddressList);
         },
       });
@@ -1249,12 +1305,21 @@ class ExitOverlay extends BaseReactComponent {
                                   Filename.csv
                                 </h4>
                               </div>
+                              <input
+                                type="file"
+                                ref={this.fileInputRef}
+                                onChange={this.handleFileSelect}
+                                style={{ display: "none" }}
+                              />
                               <Button
                                 className={`secondary-btn`}
                                 type="button"
                                 style={{
                                   paddingLeft: "1.8rem",
                                   paddingRight: "1.8rem",
+                                }}
+                                onClick={() => {
+                                  this.handleUpload();
                                 }}
                               >
                                 Change file
@@ -1263,69 +1328,84 @@ class ExitOverlay extends BaseReactComponent {
                             {/* Loader */}
                             <div className="upload-loader"></div>
                             <h4 className="inter-display-medium f-s-16 lh-19 grey-B0B m-t-20 m-b-20">
-                              Uploading
+                              {this.state.uploadStatus}
                             </h4>
                             {/* Form */}
-                            <div className="form-wrapper">
-                              <Image src={FileIcon} />
-                              <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
-                                Enter your email address and we will notify{" "}
-                                <br />
-                                you once the addresses have been updated
-                              </h4>
-                              <div className="email-section">
-                                <Form onValidSubmit={this.handleSave}>
-                                  <FormElement
-                                    valueLink={this.linkState(this, "email")}
-                                    // label="Email Info"
-                                    required
-                                    validations={[
-                                      {
-                                        validate: FormValidator.isRequired,
-                                        message: "",
-                                      },
-                                      {
-                                        validate: FormValidator.isEmail,
-                                        message: "Please enter valid email id",
-                                      },
-                                    ]}
-                                    control={{
-                                      type: CustomTextControl,
-                                      settings: {
-                                        placeholder: "Enter your email address",
-                                      },
-                                    }}
-                                  />
-                                  <div className="save-btn-section">
-                                    <Button
-                                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                                        this.state.email ? "active" : ""
-                                      }`}
-                                      type="submit"
-                                    >
-                                      Confirm
-                                    </Button>
-                                  </div>
-                                </Form>
-                              </div>
-                              {/* After email messgae */}
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  textAlign: "start",
-                                }}
-                              >
-                                <Image
-                                  src={CheckIcon}
-                                  style={{ marginRight: "1rem", position:"static", width:"3rem" }}
-                                />
-                                <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
-                                  Great! We will let you know once the indexing
-                                  is complete.
+                            {this.state.podId && (
+                              <div className="form-wrapper">
+                                <Image src={FileIcon} />
+                                <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
+                                  Enter your email address and we will notify{" "}
+                                  <br />
+                                  you once the addresses have been updated
                                 </h4>
+                                {!this.state.emailAdded && (
+                                  <div className="email-section">
+                                    <Form onValidSubmit={this.handleSave}>
+                                      <FormElement
+                                        valueLink={this.linkState(
+                                          this,
+                                          "email"
+                                        )}
+                                        // label="Email Info"
+                                        required
+                                        validations={[
+                                          {
+                                            validate: FormValidator.isRequired,
+                                            message: "",
+                                          },
+                                          {
+                                            validate: FormValidator.isEmail,
+                                            message:
+                                              "Please enter valid email id",
+                                          },
+                                        ]}
+                                        control={{
+                                          type: CustomTextControl,
+                                          settings: {
+                                            placeholder:
+                                              "Enter your email address",
+                                          },
+                                        }}
+                                      />
+                                      <div className="save-btn-section">
+                                        <Button
+                                          className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                            this.state.email ? "active" : ""
+                                          }`}
+                                          type="submit"
+                                        >
+                                          Confirm
+                                        </Button>
+                                      </div>
+                                    </Form>
+                                  </div>
+                                )}
+                                {/* After email messgae */}
+                                {this.state.emailAdded && (
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      textAlign: "start",
+                                    }}
+                                  >
+                                    <Image
+                                      src={CheckIcon}
+                                      style={{
+                                        marginRight: "1rem",
+                                        position: "static",
+                                        width: "3rem",
+                                      }}
+                                    />
+                                    <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
+                                      Great! We will let you know once the
+                                      indexing is complete.
+                                    </h4>
+                                  </div>
+                                )}
                               </div>
-                            </div>
+                            )}
                           </div>
                         )}
                       </div>
