@@ -51,7 +51,7 @@ import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
 import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
-import { createCohort, deleteCohort } from '../cohort/Api';
+import { createCohort, deleteCohort, getPodStatus, notificationSend } from '../cohort/Api';
 import Papa from "papaparse";
 import { updateUser } from '../profile/Api';
 import UpgradeModal from './upgradeModal';
@@ -171,25 +171,38 @@ class ExitOverlay extends BaseReactComponent {
       emailAdded: false,
 
       // set false if email added or get Status
-      getStateApi:true,
-      
+      isIndexed: false,
+      email_notification: getCurrentUser().email,
+      fileName:null,
     };
   }
 
   EmailNotification = () => {
     this.setState({
-      getStateApi:false,
-    })
+      isIndexed: true,
+      emailAdded: true,
+    }, () => {
+        const data = new URLSearchParams();
+        data.append("cohort_id", this.state.podId);
+        notificationSend(data, this);
+    });
   };
 
-  getPodStatus = () => {
-
+  getPodStatusFunction = () => {
+      const data = new URLSearchParams();
+      data.append("cohort_id", this.state.podId);
+      getPodStatus(data,this);
       setTimeout(() => {
-        if (this.state.getStateApi) {
-          // this.getPodStatus();
+        if (!this.state.isIndexed && !this.state.emailAdded) {
+          this.getPodStatusFunction();
         }
-      }, 100);    
+      }, 2000);    
   };
+
+  handleDone = () => {
+    // this.props.apiResponse(true);
+    this.state.onHide();
+  }
   upgradeModal = () => {
     this.setState(
       {
@@ -405,7 +418,7 @@ class ExitOverlay extends BaseReactComponent {
         let isChainDetected = [];
         for (let i = 0; i < this.state.addWalletList.length; i++) {
           let curr = this.state.addWalletList[i];
-          console.log(curr)
+          // console.log(curr)
           if (!arr.includes(curr.address.trim()) && curr.address) {
             walletList.push(curr);
             arr.push(curr.address.trim());
@@ -421,8 +434,12 @@ class ExitOverlay extends BaseReactComponent {
             
           }
         }
-        let chain_detechted = isChainDetected.includes(false) ? false : true;
-        // console.log("address list", addressList, this.state.addWalletList);
+        let chain_detechted =
+          isChainDetected.includes(undefined) ||
+          isChainDetected.includes(false)
+            ? false
+            : true;
+        // console.log("address list", chain_detechted, isChainDetected);
         let addWallet = walletList;
         if (addressList.length !== 0) {
           addWallet?.map((w, i) => {
@@ -661,6 +678,11 @@ class ExitOverlay extends BaseReactComponent {
 
   handleFileSelect = (event) => {
     const file = event.target.files[0];
+    const name = event.target.files[0]?.name;
+    // console.log(name)
+    this.setState({
+      fileName: name
+    })
 
     if (file.type === "text/csv" || file.type === "text/plain") {
       
@@ -716,9 +738,11 @@ class ExitOverlay extends BaseReactComponent {
               () => {
            
                 // call api to store pod 
-                this.state.addWalletList?.map((e) =>
-                  this.getCoinBasedOnWalletAddress(e.id, e.address)
-                );
+                // this.state.addWalletList?.map((e) =>
+                //   this.getCoinBasedOnWalletAddress(e.id, e.address)
+                // );
+                this.handleCohortSave();
+
               }
             );
           } else {
@@ -877,7 +901,15 @@ class ExitOverlay extends BaseReactComponent {
                   // if (this.props.modalType === "create_account") {
                   //   this.props.isSkip();
                   // }
-                  this.state.onHide();
+                  this.setState(
+                    {
+                      isIndexed: true,
+                      // emailAdded: true,
+                    },
+                    () => {
+                      this.state.onHide();
+                    }
+                  );
                 }}
               >
                 <Image src={CloseIcon} />
@@ -1302,7 +1334,7 @@ class ExitOverlay extends BaseReactComponent {
                                   style={{ marginRight: "1rem" }}
                                 />
                                 <h4 className="inter-display-medium f-s-13 lh-15 grey-7C7">
-                                  Filename.csv
+                                  {this.state.fileName}
                                 </h4>
                               </div>
                               <input
@@ -1332,79 +1364,101 @@ class ExitOverlay extends BaseReactComponent {
                             </h4>
                             {/* Form */}
                             {this.state.podId && (
-                              <div className="form-wrapper">
-                                <Image src={FileIcon} />
-                                <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
-                                  Enter your email address and we will notify{" "}
-                                  <br />
-                                  you once the addresses have been updated
-                                </h4>
-                                {!this.state.emailAdded && (
-                                  <div className="email-section">
-                                    <Form onValidSubmit={this.handleSave}>
-                                      <FormElement
-                                        valueLink={this.linkState(
-                                          this,
-                                          "email"
-                                        )}
-                                        // label="Email Info"
-                                        required
-                                        validations={[
-                                          {
-                                            validate: FormValidator.isRequired,
-                                            message: "",
-                                          },
-                                          {
-                                            validate: FormValidator.isEmail,
-                                            message:
-                                              "Please enter valid email id",
-                                          },
-                                        ]}
-                                        control={{
-                                          type: CustomTextControl,
-                                          settings: {
-                                            placeholder:
-                                              "Enter your email address",
-                                          },
+                              <>
+                                <div className="form-wrapper">
+                                  {/* <Image src={FileIcon} /> */}
+                                  {!this.state.emailAdded &&
+                                    !this.state.isIndexed && (
+                                      <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
+                                        Enter your email address and we will
+                                        notify <br />
+                                        you once the addresses have been updated
+                                      </h4>
+                                    )}
+                                  {!this.state.emailAdded &&
+                                    !this.state.isIndexed && (
+                                      <div className="email-section">
+                                        <Form
+                                          onValidSubmit={this.EmailNotification}
+                                        >
+                                          <FormElement
+                                            valueLink={this.linkState(
+                                              this,
+                                              "email_notification"
+                                            )}
+                                            // label="Email Info"
+                                            required
+                                            validations={[
+                                              {
+                                                validate:
+                                                  FormValidator.isRequired,
+                                                message: "",
+                                              },
+                                              {
+                                                validate: FormValidator.isEmail,
+                                                message:
+                                                  "Please enter valid email id",
+                                              },
+                                            ]}
+                                            control={{
+                                              type: CustomTextControl,
+                                              settings: {
+                                                placeholder:
+                                                  "Enter your email address",
+                                              },
+                                            }}
+                                          />
+                                          <div className="save-btn-section">
+                                            <Button
+                                              className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                                this.state.email_notification
+                                                  ? "active"
+                                                  : ""
+                                              }`}
+                                              type="submit"
+                                            >
+                                              Confirm
+                                            </Button>
+                                          </div>
+                                        </Form>
+                                      </div>
+                                    )}
+                                  {/* After email messgae */}
+                                  {(this.state.emailAdded ||
+                                    this.state.isIndexed) && (
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        textAlign: "start",
+                                      }}
+                                    >
+                                      <Image
+                                        src={CheckIcon}
+                                        style={{
+                                          marginRight: "1rem",
+                                          position: "static",
+                                          width: "3rem",
                                         }}
                                       />
-                                      <div className="save-btn-section">
-                                        <Button
-                                          className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                                            this.state.email ? "active" : ""
-                                          }`}
-                                          type="submit"
-                                        >
-                                          Confirm
-                                        </Button>
-                                      </div>
-                                    </Form>
-                                  </div>
-                                )}
-                                {/* After email messgae */}
-                                {this.state.emailAdded && (
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      textAlign: "start",
-                                    }}
+                                      <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
+                                        {this.state.isIndexed
+                                          ? "Great! Indexing is completed and your pod has been created."
+                                          : "Great! We will let you know once the indexing is complete."}
+                                      </h4>
+                                    </div>
+                                  )}
+                                </div>
+                                {(this.state.emailAdded ||
+                                  this.state.isIndexed) && (
+                                  <Button
+                                    className="btn primary-btn m-t-20"
+                                    onClick={this.handleDone}
                                   >
-                                    <Image
-                                      src={CheckIcon}
-                                      style={{
-                                        marginRight: "1rem",
-                                        position: "static",
-                                        width: "3rem",
-                                      }}
-                                    />
-                                    <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
-                                      Great! We will let you know once the
-                                      indexing is complete.
-                                    </h4>
-                                  </div>
+                                    Done
+                                  </Button>
                                 )}
-                              </div>
+                              </>
                             )}
                           </div>
                         )}
