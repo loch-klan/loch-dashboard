@@ -348,6 +348,95 @@
 }
 
 
+
+.Notification-header{ 
+
+    h2{
+         display: flex;
+                align-items: center;
+                justify-content: start;
+
+                 img{
+         margin-right: 1.2rem;
+    }
+    }
+
+   
+
+    .secondary-btn{
+        padding: 1rem 3rem;
+    }
+
+}
+
+.notification-row{
+     background: rgba(229, 229, 230, 0.5);
+              border-radius: 16px;
+              padding: 2rem;
+
+
+              .email-card{
+                  background:
+                      linear-gradient(180deg, rgba(255, 255, 255, 0.2) 27.5%, rgba(22, 93, 255, 0.162) 157.71%), #FFFFFF;
+                    box-shadow:0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+                    border-radius: 12px;
+                    padding: 2.5rem;
+                    height: 100%;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+
+                    .upload-email-btn{
+                         background: #FFFFFF;
+                        box-shadow:
+                          0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+                        border-radius: 8px;
+                        padding: 18px 28px;
+                        width: max-content;
+
+                        &:hover{
+                            background-color: $primary;
+                            color:#ffffff;
+                        }
+                    }
+              }
+
+              .dropdown-card{
+                 background: #FFFFFF;
+                    box-shadow:
+                      0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+                    border-radius: 12px;
+                    padding: 2.5rem;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    align-items: start;
+                    position: relative;
+
+                    .card-checkbox{
+                        width: 20px;
+                      height: 20px;
+                      border-radius: 6px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      position: absolute;
+                      top: 2rem;
+                      right: 2rem;
+                      cursor: pointer;
+                      user-select: none;
+                       border: 0.1rem solid transparent;
+
+                      &:hover{
+                        box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.05), 0px 1rem 1rem rgba(0, 0, 0, 0.05) !important;
+                        border: 0.1rem solid rgba(229, 229, 230, 1);
+                        // background-color: #fff !important;
+                      }
+                    }
+
+
 .cohort-dropdown{
     text-align: left !important;
     margin-top: 2rem;
@@ -375,14 +464,18 @@
                 .btn-primary.dropdown-toggle {
                 
                 background-color: $grey-F2F !important;
-                    border: none !important;
+                    border: 0.1rem solid transparent !important;
                     color: $black-191;
+
+                    &:hover{
+                        border: 0.1rem solid $primary !important;
+                    }
 }
 
-                .dropdown .btn-primary.dropdown-toggle:focus {
+                .btn-primary.dropdown-toggle:focus {
                     box-shadow: none;
-                     background-color: $grey-F2F !important;
-                    border: none !important;
+                    background-color: $grey-F2F !important;
+                    border: 0.1rem solid $primary !important;
                     color: $black-191;
                     
 }
@@ -409,13 +502,7 @@
 
             
 }
-
-.Notification-header{ 
-
-    .secondary-btn{
-        padding: 1rem 3rem;
-    }
-
+              }
 }
 
 

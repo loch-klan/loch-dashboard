@@ -1287,16 +1287,8 @@ class CohortPage extends BaseReactComponent {
             }}
             className="m-t-40 m-b-24 Notification-header"
           >
-            <h2
-              className="inter-display-medium f-s-20 lh-45 black-191"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "start",
-              }}
-            >
-              <Image src={BellIcon} style={{ marginRight: "1.2rem" }} />{" "}
-              Notifications
+            <h2 className="inter-display-medium f-s-20 lh-45 black-191">
+              <Image src={BellIcon} /> Notifications
             </h2>
 
             {this.state.showBtn && (
@@ -1307,30 +1299,10 @@ class CohortPage extends BaseReactComponent {
           </div>
 
           {/* Notification start */}
-          <div
-            style={{
-              background: "rgba(229, 229, 230, 0.5)",
-              borderRadius: "16px",
-              padding: "2rem",
-            }}
-          >
+          <div className="notification-row">
             <Row>
               <Col md={4} style={{ padding: "0 10px" }}>
-                <div
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(255, 255, 255, 0.2) 27.5%, rgba(22, 93, 255, 0.162) 157.71%), #FFFFFF",
-                    boxShadow:
-                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                    borderRadius: "12px",
-                    padding: "2.5rem",
-                    height: "100%",
-                    position: "relative",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
+                <div className="email-card">
                   <div style={{ paddingRight: "2rem" }}>
                     <Image src={BellIconColor} />
                     <h3 className="inter-display-medium f-s-20 lh-24 m-t-12">
@@ -1342,15 +1314,7 @@ class CohortPage extends BaseReactComponent {
 
                   {!this.state.updateEmail && (
                     <div
-                      style={{
-                        background: "#FFFFFF",
-                        boxShadow:
-                          "0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14)",
-                        borderRadius: "8px",
-                        padding: "18px 28px",
-                        width: "max-content",
-                      }}
-                      className="inter-display-medium f-s-16 lh-19 m-t-30 cp"
+                      className="inter-display-medium f-s-16 lh-19 m-t-30 cp upload-email-btn"
                       onClick={this.handleUpdateEmail}
                     >
                       Update email
@@ -1399,19 +1363,22 @@ class CohortPage extends BaseReactComponent {
               </Col>
               <Col md={4} style={{ padding: "0 10px" }}>
                 <div
-                  style={{
-                    background: "#FFFFFF",
-                    boxShadow:
-                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                    borderRadius: "12px",
-                    padding: "2.5rem",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    alignItems: "start",
-                    position: "relative",
-                  }}
+                  style={
+                    {
+                      // background: "#FFFFFF",
+                      // boxShadow:
+                      //   "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                      // borderRadius: "12px",
+                      // padding: "2.5rem",
+                      // height: "100%",
+                      // display: "flex",
+                      // flexDirection: "column",
+                      // justifyContent: "space-between",
+                      // alignItems: "start",
+                      // position: "relative",
+                    }
+                  }
+                  className="dropdown-card"
                 >
                   <Image src={VerticalIcon} />
                   <div
@@ -1420,19 +1387,11 @@ class CohortPage extends BaseReactComponent {
                       background: this.state.walletNotification
                         ? "#0071E3"
                         : "rgba(229, 229, 230, 0.5)",
-
-                      width: "20px",
-                      height: "20px",
-                      borderRadius: "6px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      position: "absolute",
-                      top: 20,
-                      right: 20,
-                      cursor: "pointer",
-                      userSelect: "none",
+                      boxShadow: this.state.walletNotification
+                        ? "0px 0.4rem 1rem rgba(0, 0, 0, 0.05), 0px 1rem 1rem rgba(0, 0, 0, 0.05)"
+                        : "none",
                     }}
+                    className="card-checkbox"
                     onClick={this.handleClickWallet}
                   >
                     <Image
@@ -1474,21 +1433,7 @@ class CohortPage extends BaseReactComponent {
                 </div>
               </Col>
               <Col md={4} style={{ padding: "0 10px" }}>
-                <div
-                  style={{
-                    background: "#FFFFFF",
-                    boxShadow:
-                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                    borderRadius: "12px",
-                    padding: "2.5rem",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    alignItems: "start",
-                    position: "relative",
-                  }}
-                >
+                <div className="dropdown-card">
                   <Image src={ClockIcon} />
                   <div
                     style={{
@@ -1496,19 +1441,8 @@ class CohortPage extends BaseReactComponent {
                       background: this.state.dayNotification
                         ? "#0071E3"
                         : "rgba(229, 229, 230, 0.5)",
-
-                      width: "20px",
-                      height: "20px",
-                      borderRadius: "6px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      position: "absolute",
-                      top: 20,
-                      right: 20,
-                      cursor: "pointer",
-                      userSelect: "none",
                     }}
+                    className="card-checkbox"
                     onClick={this.handleClickDay}
                   >
                     <Image
