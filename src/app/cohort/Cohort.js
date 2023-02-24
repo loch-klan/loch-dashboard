@@ -592,6 +592,7 @@ class Cohort extends Component {
                               sortedChains?.length === 0 ? "5rem" : "6.2rem"
                             }`,
                             marginRight: "1.2rem",
+                            flexShrink: 0,
                           }}
                         >
                           {sortedChains?.length === 0 ? (
@@ -685,6 +686,9 @@ class Cohort extends Component {
                         <div
                           style={{
                             cursor: "pointer",
+                            minWidth: !item.indexed
+                              ? "calc(100% - 7rem)"
+                              : "10rem",
                           }}
                         >
                           <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
@@ -702,13 +706,19 @@ class Cohort extends Component {
                             </h4>
                           )}
                           {!item.indexed && (
-                            <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
-                              Indexing...
-                            </h4>
+                            <>
+                              <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
+                                Indexing...
+                              </h4>
+                              <div
+                                className="upload-loader"
+                                style={{ width: "100%", marginTop: "0.5rem" }}
+                              ></div>
+                            </>
                           )}
                         </div>
                         {/* edit icon */}
-                        {item.name != "Loch Whale Template" && (
+                        {item.name != "Loch Whale Template" && item.indexed && (
                           <Image
                             src={EditIcon}
                             className="cp editIcon"

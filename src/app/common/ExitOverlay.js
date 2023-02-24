@@ -175,6 +175,7 @@ class ExitOverlay extends BaseReactComponent {
       email_notification: getCurrentUser().email,
       fileName: null,
       isChangeFile: false,
+      podnameError:false
     };
   }
 
@@ -655,19 +656,26 @@ class ExitOverlay extends BaseReactComponent {
   };
 
   handleUpload = () => {
-    if (this.state.userPlan?.upload_csv) {
-      
-      this.fileInputRef.current.click();
-      
+    if (this.state.cohort_name != "") {
+      this.setState({
+        podnameError:false,
+      })
+      if (this.state.userPlan?.upload_csv) {
+        this.fileInputRef.current.click();
+      } else {
+        this.setState(
+          {
+            triggerId: 8,
+          },
+          () => {
+            this.upgradeModal();
+          }
+        );
+      }
     } else {
-      this.setState(
-        {
-          triggerId: 8,
-        },
-        () => {
-          this.upgradeModal();
-        }
-      );
+      this.setState({
+        podnameError:true,
+      })
     }
     // console.log("upload click");
   };
@@ -1118,7 +1126,7 @@ class ExitOverlay extends BaseReactComponent {
                               validations={[
                                 {
                                   validate: FormValidator.isRequired,
-                                  message: "",
+                                  message: "Enter your pod name",
                                 },
                               ]}
                               control={{
@@ -1136,6 +1144,12 @@ class ExitOverlay extends BaseReactComponent {
                                 },
                               }}
                             />
+                           {this.state.podnameError && <p
+                              className="inter-display-regular f-s-10 lh-11 m-t-5"
+                              style={{ color: "#ea4e3c",marginTop: "-1.5rem",marginBottom: "2rem" }}
+                            >
+                              Pod name required
+                            </p>}
 
                             <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
                               Wallets

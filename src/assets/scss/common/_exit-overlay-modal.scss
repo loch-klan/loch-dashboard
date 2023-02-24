@@ -390,33 +390,7 @@
             margin-bottom: 2.6rem;
             text-align: start;
 
-            // Upload
-
-            .upload-loader {
-              margin-top: 3.2rem;
-              height: 4px;
-              border-radius: 2px;
-              width: 50%;
-              //  background: linear-gradient(90deg, #E5E5E6 9.79%, #5ADDA6 27.38%, #E5E5E6 51.06%);
-              animation: 1.5s linear infinite loader;
-              background: linear-gradient(
-                to right,
-                #e5e5e6 0%,
-                #5adda6 8%,
-                #e5e5e6 16%
-              );
-              background-size: 200%;
-
-              @keyframes loader {
-                0% {
-                  background-position: 100%;
-                }
-                100% {
-                  background-position: -100%;
-                }
-              }
-            }
-
+          
             .paste-text {
               position: absolute;
               text-align: center;
