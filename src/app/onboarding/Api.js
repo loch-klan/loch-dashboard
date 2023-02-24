@@ -160,15 +160,15 @@ export const verifyUser = (ctx, info) => {
           const allChains = ctx.props.OnboardingState.coinsList;
           let addWallet = [];
           const apiResponse = res.data.data;
-          for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
+          for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
             let obj = {}; // <----- new Object
             // obj['address'] = apiResponse.user.wallets[i].address;
-            obj["address"] = apiResponse.user.user_wallets[i].address;
+            obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
             // obj['displayAddress'] = apiResponse.user.wallets[i]?.display_address;
             obj["displayAddress"] =
               apiResponse.user.user_wallets[i]?.display_address;
             const chainsDetected =
-              apiResponse.wallets[apiResponse.user.user_wallets[i].address]
+              apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
                 .chains;
             obj["coins"] = allChains.map((chain) => {
               let coinDetected = false;
@@ -185,18 +185,18 @@ export const verifyUser = (ctx, info) => {
                 coinColor: chain.color,
               };
             });
-            obj["wallet_metadata"] = apiResponse.user.user_wallets[i].wallet;
+            obj["wallet_metadata"] = apiResponse?.user?.user_wallets[i]?.wallet;
             obj["id"] = `wallet${i + 1}`;
             obj["coinFound"] =
-              apiResponse.wallets[apiResponse.user.user_wallets[i].address]
-                .chains.length > 0
+              apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
+                ?.chains.length > 0
                 ? true
                 : false;
           
-            obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
-            obj["showAddress"] = apiResponse.user.user_wallets[i]?.nickname === "" ? true
+            obj["nickname"] = apiResponse?.user?.user_wallets[i]?.nickname;
+            obj["showAddress"] = apiResponse?.user?.user_wallets[i]?.nickname === "" ? true
                         : false;
-            obj["showNickname"] = apiResponse.user.user_wallets[i]?.nickname !== ""
+            obj["showNickname"] = apiResponse?.user?.user_wallets[i]?.nickname !== ""
                         ? true
                         : false;
             
