@@ -52,6 +52,7 @@ import {
   MenuLeave,
   MenuShare,
   MenuWhale,
+  resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
@@ -309,18 +310,6 @@ function Sidebar(props) {
                           Home
                         </NavLink>
                       </li>
-                      {/* <li>
-                        <NavLink
-                          exact={true}
-                          onClick={handleFeedback}
-                          className="nav-link none"
-                          to="#"
-                          activeclassname="none"
-                        >
-                          <Image src={ActiveFeedbackIcon} />
-                          Feedback
-                        </NavLink>
-                      </li> */}
                       <li>
                         <NavLink
                           className="nav-link"
@@ -467,7 +456,7 @@ function Sidebar(props) {
                           DeFi
                         </NavLink>
                       </li>
-                      {/* <li>
+                      <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
@@ -476,9 +465,9 @@ function Sidebar(props) {
                           activeclassname="none"
                         >
                           <Image src={LinkIcon} style={ {filter: "opacity(0.6)"}} />
-                          Connect Exchange
+                          Connect Exchanges
                         </NavLink>
-                      </li> */}
+                      </li>
 
                       <li>
                         <NavLink
@@ -664,6 +653,7 @@ function Sidebar(props) {
               history={history}
               modalType={"exitOverlay"}
               handleRedirection={() => {
+                resetUser();
                 setTimeout(function () {
                   props.history.push("/welcome");
                 }, 3000);

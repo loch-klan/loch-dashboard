@@ -507,8 +507,7 @@ class ExitOverlay extends BaseReactComponent {
            first_name: "",
            last_name: "",
          });
-        
-        resetUser();
+      
       }
     }
   };
@@ -517,6 +516,8 @@ class ExitOverlay extends BaseReactComponent {
 
     this.setState({ show: false, showRedirection: true });
     this.props.handleRedirection();
+      
+        
   };
   handleSelect = (e) => {
     // console.log(e);
