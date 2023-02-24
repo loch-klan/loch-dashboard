@@ -542,20 +542,22 @@ class Cohort extends Component {
                         });
                       }}
                       onClick={() => {
-                        WhaleExpandedPod({
-                          email_address: getCurrentUser().email,
-                          session_id: getCurrentUser().id,
-                          pod_name: item.name,
-                        });
-                        this.props.history.push({
-                          pathname: `/whale-watching/${item.slug}`,
-                          state: {
-                            id: item.id,
-                            cohortWalletList: item?.wallet_address_details,
-                            chainImages: sortedChains,
-                            total_addresses: this.state.total_addresses,
-                          },
-                        });
+                        if (item.indexed) {
+                          WhaleExpandedPod({
+                            email_address: getCurrentUser().email,
+                            session_id: getCurrentUser().id,
+                            pod_name: item.name,
+                          });
+                          this.props.history.push({
+                            pathname: `/whale-watching/${item.slug}`,
+                            state: {
+                              id: item.id,
+                              cohortWalletList: item?.wallet_address_details,
+                              chainImages: sortedChains,
+                              total_addresses: this.state.total_addresses,
+                            },
+                          });
+                        }
                       }}
                     >
                       {/* Top Section */}
@@ -688,15 +690,22 @@ class Cohort extends Component {
                           <h4 className="inter-display-medium f-s-16 l-h-19 black-000">
                             {item.name}
                           </h4>
-                          <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
-                            {/* {CurrencyType(false)} */}
-                            {numToCurrency(
-                              item.total_net_worth * this.state.currency?.rate
-                            )}{" "}
-                            <span className="f-s-10 grey-CAC">
-                              {CurrencyType(true)}
-                            </span>
-                          </h4>
+                          {item.indexed && (
+                            <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
+                              {/* {CurrencyType(false)} */}
+                              {numToCurrency(
+                                item.total_net_worth * this.state.currency?.rate
+                              )}{" "}
+                              <span className="f-s-10 grey-CAC">
+                                {CurrencyType(true)}
+                              </span>
+                            </h4>
+                          )}
+                          {!item.indexed && (
+                            <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
+                              Indexing...
+                            </h4>
+                          )}
                         </div>
                         {/* edit icon */}
                         {item.name != "Loch Whale Template" && (
@@ -706,7 +715,9 @@ class Cohort extends Component {
                             onClick={(e) => {
                               e.preventDefault();
                               e.stopPropagation();
-                              this.handleEdit(i, sortedChains);
+                              if (item.indexed) {
+                                this.handleEdit(i, sortedChains);
+                              }
                             }}
                             style={{ marginLeft: "auto", zIndex: 99 }}
                           />

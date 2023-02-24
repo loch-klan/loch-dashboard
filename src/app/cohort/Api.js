@@ -10,19 +10,27 @@ export const createCohort = (data,ctx) => {
     .then((res) => {
       if (!res.data.error) {
         //  console.log("res cohort", ctx);
-        ctx.setState({
-          podId: res?.data?.data?.cohort_id,
-        }, () => {
-          if (ctx.state.showWarningMsg) {
-            // console.log("in")
-            ctx.getPodStatusFunction();
+        ctx.setState(
+          {
+            podId: res?.data?.data?.cohort_id,
+            uploadStatus: "Indexing",
+          },
+          () => {
+            if (ctx.state.showWarningMsg) {
+              // console.log("in")
+              ctx.getPodStatusFunction();
+            }
           }
-        });
+        );
+        if (!ctx.state.showWarningMsg) {
+          ctx.state.onHide();
+        }
         // if (!ctx.state.showWarningMsg) {
             ctx.props.apiResponse && ctx.props.apiResponse(true);
         // }
          
       } else {
+         ctx.props.apiResponse && ctx.props.apiResponse(true);
         toast.error(res.data.message || "Something Went Wrong");
       }
     });

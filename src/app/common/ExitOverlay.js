@@ -173,13 +173,14 @@ class ExitOverlay extends BaseReactComponent {
       // set false if email added or get Status
       isIndexed: false,
       email_notification: getCurrentUser().email,
-      fileName:null,
+      fileName: null,
+      isChangeFile: false,
     };
   }
 
   EmailNotification = () => {
     this.setState({
-      isIndexed: true,
+      // isIndexed: true,
       emailAdded: true,
     }, () => {
         const data = new URLSearchParams();
@@ -458,11 +459,18 @@ class ExitOverlay extends BaseReactComponent {
             // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
           }
 
+          if (this.state.isChangeFile) {
+            data.append("cohort_id", this.state.podId);
+            this.setState({
+              isChangeFile: false,
+            });
+          }
+
           createCohort(data, this);
           // hide if upload click
-          if (!this.state.showWarningMsg) {
-            this.state.onHide();
-          }
+          // if (!this.state.showWarningMsg) {
+          //   this.state.onHide();
+          // }
           // console.log("address", walletList);
           this.state.changeList && this.state.changeList(walletList);
 
@@ -648,19 +656,7 @@ class ExitOverlay extends BaseReactComponent {
 
   handleUpload = () => {
     if (this.state.userPlan?.upload_csv) {
-      if (this.state.showWarningMsg) {
-        this.setState({
-          addWalletList: [
-              {
-                id: `wallet1`,
-                address: "",
-                coins: [],
-                displayAddress: "",
-                wallet_metadata: {},
-              },
-            ],
-        });
-      }
+      
       this.fileInputRef.current.click();
       
     } else {
@@ -679,10 +675,31 @@ class ExitOverlay extends BaseReactComponent {
   handleFileSelect = (event) => {
     const file = event.target.files[0];
     const name = event.target.files[0]?.name;
+
     // console.log(name)
-    this.setState({
-      fileName: name
-    })
+    
+    if (this.state.showWarningMsg) {
+        this.setState({
+          addWalletList: [
+            {
+              id: `wallet1`,
+              address: "",
+              coins: [],
+              displayAddress: "",
+              wallet_metadata: {},
+            },
+          ],
+          uploadStatus: "Uploading",
+          emailAdded: false,
+          isIndexed: false,
+          isChangeFile: true,
+          fileName: name,
+        });
+    } else {
+      this.setState({
+        fileName: name,
+      });
+      }
 
     if (file.type === "text/csv" || file.type === "text/plain") {
       
@@ -733,7 +750,7 @@ class ExitOverlay extends BaseReactComponent {
             this.setState(
               {
                 addWalletList: [...prevAddressList, ...addressList],
-                uploadStatus:"Indexing"
+                
               },
               () => {
            
@@ -1358,14 +1375,18 @@ class ExitOverlay extends BaseReactComponent {
                               </Button>
                             </div>
                             {/* Loader */}
-                            <div className="upload-loader"></div>
-                            <h4 className="inter-display-medium f-s-16 lh-19 grey-B0B m-t-20 m-b-20">
-                              {this.state.uploadStatus}
-                            </h4>
+                            {!this.state.isIndexed && (
+                              <>
+                                <div className="upload-loader"></div>
+                                <h4 className="inter-display-medium f-s-16 lh-19 grey-B0B m-t-20">
+                                  {this.state.uploadStatus}
+                                </h4>
+                              </>
+                            )}
                             {/* Form */}
                             {this.state.podId && (
                               <>
-                                <div className="form-wrapper">
+                                <div className="form-wrapper m-t-20">
                                   {/* <Image src={FileIcon} /> */}
                                   {!this.state.emailAdded &&
                                     !this.state.isIndexed && (
