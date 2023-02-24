@@ -22,7 +22,7 @@ export default function WalletCard(props) {
     function handleShow() {
         setShow(true)
     }
-    const chips = props.wallet_coins.map((coin, index) => {
+    const chips = props?.wallet_coins?.map((coin, index) => {
         return (
             <CustomOverlay
                 position="top"
@@ -31,8 +31,8 @@ export default function WalletCard(props) {
                 isInfo={true}
                 key={index}
                 isText={true}
-                isName={coin.chain.name}
-                colorCode={coin.chain.color}
+                isName={coin?.chain?.name}
+                colorCode={coin?.chain?.color}
                 text={ (coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0) + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + CurrencyType(true)}
                 className="wallet-tooltip"
             >
@@ -83,12 +83,27 @@ export default function WalletCard(props) {
 
 
     }
+  
+  const toTitleCase = (str)=> {
+      return str
+        .toLowerCase()
+        .split(" ")
+        .map(function (val) {
+          return val.slice(0, 1).toUpperCase() + val.slice(1);
+        })
+        .join(" ");
+    }
     //  console.log("prop", props.createdOn);
     return (
       <>
-        <div className="walletcard">
+        <div
+          className="walletcard"
+          style={props?.protocol ? { paddingBottom: "2.4rem" } : {}}
+        >
           <>
-            <div className="m-b-32 wallet-details">
+            <div
+              className={`${!props?.protocol ? "m-b-32" : ""} wallet-details`}
+            >
               <div className="wallet-account-details">
                 <div className="m-r-16 wallet-img">
                   <Image
@@ -108,7 +123,7 @@ export default function WalletCard(props) {
                 >
                   {props.wallet_metadata || props.wallet_coins.length > 0
                     ? props.wallet_metadata
-                      ? props.wallet_metadata.name
+                      ? toTitleCase(props.wallet_metadata.name)
                       : ``
                     : "Unrecognized wallet " + " "}
                 </h6>
@@ -169,33 +184,35 @@ export default function WalletCard(props) {
                 </span>
               </div>
             </div>
-            <div className="coins-chip">
-              {props.wallet_coins.length > 0 ? (
-                <>
-                  <div className="chips-section">{chips}</div>
-                  <Image src={EditIcon} className="cp" onClick={handleShow} />
-                </>
-              ) : (
-                <>
-                  <h6 className="inter-display-medium f-s-16 lh-19 grey-B0B">
-                    This wallet address is not detected. Please fix it now.
-                  </h6>
-                  <Button
-                    className="secondary-btn"
-                    onClick={() => {
-                      handleFixModal();
-                      FixUndetectedWallet({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        undetected_address: props.wallet_account_number,
-                      });
-                    }}
-                  >
-                    Fix now
-                  </Button>
-                </>
-              )}
-            </div>
+            {!props?.protocol && (
+              <div className="coins-chip">
+                {props.wallet_coins.length > 0 ? (
+                  <>
+                    <div className="chips-section">{chips}</div>
+                    <Image src={EditIcon} className="cp" onClick={handleShow} />
+                  </>
+                ) : (
+                  <>
+                    <h6 className="inter-display-medium f-s-16 lh-19 grey-B0B">
+                      This wallet address is not detected. Please fix it now.
+                    </h6>
+                    <Button
+                      className="secondary-btn"
+                      onClick={() => {
+                        handleFixModal();
+                        FixUndetectedWallet({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          undetected_address: props.wallet_account_number,
+                        });
+                      }}
+                    >
+                      Fix now
+                    </Button>
+                  </>
+                )}
+              </div>
+            )}
             {show ? (
               <EditWalletModal
                 show={show}

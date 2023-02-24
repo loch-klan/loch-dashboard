@@ -299,7 +299,7 @@ class Wallet extends Component {
               </div>
             ) : walletList.length > 0 ? (
                 walletList.map((wallet, index) => {
-                console.log("walletlist", walletList)
+                // console.log("walletlist", walletList)
                 return (
                   <WalletCard
                     key={index}
@@ -308,11 +308,12 @@ class Wallet extends Component {
                     wallet_account_number={wallet.address}
                     display_address={wallet.display_address}
                     wallet_amount={wallet.total_value * currency?.rate}
-                    wallet_coins={wallet.chains}
+                    wallet_coins={wallet?.chains}
                     makeApiCall={this.makeApiCall}
                     handleUpdateWallet={this.handleUpdateWallet}
                     history={this.props.history}
                     nickname={wallet.nickname}
+                    protocol={wallet.protocol}
                     // isLoading={this.state.isLoading}
                   />
                 );
