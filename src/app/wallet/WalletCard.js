@@ -141,7 +141,7 @@ export default function WalletCard(props) {
                     </div>
                   </CustomOverlay>
                 )}
-                <div className="account-details">
+               {!props.protocol && <div className="account-details">
                   {props.display_address && (
                     <>
                       <span
@@ -150,11 +150,13 @@ export default function WalletCard(props) {
                       >
                         {props.display_address}
                       </span>
-                      <Image
-                        src={CopyClipboardIcon}
-                        onClick={() => copyContent(props.display_address)}
-                        className="m-l-10 m-r-12 cp"
-                      />
+                      {!props.protocol && (
+                        <Image
+                          src={CopyClipboardIcon}
+                          onClick={() => copyContent(props.display_address)}
+                          className="m-l-10 m-r-12 cp"
+                        />
+                      )}
                     </>
                   )}
                   {props.wallet_account_number && (
@@ -165,14 +167,18 @@ export default function WalletCard(props) {
                       >
                         {props.wallet_account_number}
                       </span>
-                      <Image
-                        src={CopyClipboardIcon}
-                        onClick={() => copyContent(props.wallet_account_number)}
-                        className="m-l-10 m-r-12 cp"
-                      />
+                      {!props.protocol && (
+                        <Image
+                          src={CopyClipboardIcon}
+                          onClick={() =>
+                            copyContent(props.wallet_account_number)
+                          }
+                          className="m-l-10 m-r-12 cp"
+                        />
+                      )}
                     </>
                   )}
-                </div>
+                </div>}
                 {/* </div> */}
               </div>
               <div className="amount-details">
