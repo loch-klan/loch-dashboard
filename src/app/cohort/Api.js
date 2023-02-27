@@ -23,10 +23,11 @@ export const createCohort = (data,ctx) => {
           }
         );
         if (!ctx.state.showWarningMsg) {
-          ctx.state.onHide();
+          // ctx.state.onHide();
+           ctx.props.apiResponse && ctx.props.apiResponse(true);
         }
         // if (!ctx.state.showWarningMsg) {
-            ctx.props.apiResponse && ctx.props.apiResponse(true);
+           
         // }
          
       } else {

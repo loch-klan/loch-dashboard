@@ -202,8 +202,9 @@ class ExitOverlay extends BaseReactComponent {
   };
 
   handleDone = () => {
-    // this.props.apiResponse(true);
-    this.state.onHide();
+    this.props.apiResponse(true);
+     this.state.onHide();
+     this.state.changeList && this.state.changeList();
   }
   upgradeModal = () => {
     this.setState(
@@ -441,7 +442,7 @@ class ExitOverlay extends BaseReactComponent {
           isChainDetected.includes(false)
             ? false
             : true;
-        // console.log("address list", chain_detechted, isChainDetected);
+        console.log("address list", chain_detechted, isChainDetected);
         let addWallet = walletList;
         if (addressList.length !== 0) {
           addWallet?.map((w, i) => {
@@ -469,11 +470,12 @@ class ExitOverlay extends BaseReactComponent {
 
           createCohort(data, this);
           // hide if upload click
-          // if (!this.state.showWarningMsg) {
-          //   this.state.onHide();
-          // }
+          if (!this.state.showWarningMsg) {
+            this.state.onHide();
+             this.state.changeList && this.state.changeList(walletList);
+          }
           // console.log("address", walletList);
-          this.state.changeList && this.state.changeList(walletList);
+         
 
           const address = walletList?.map((e) =>
             e.displayAddress ? e.displayAddress : e.address
@@ -1116,7 +1118,7 @@ class ExitOverlay extends BaseReactComponent {
                     </div>
                   ) : this.props.modalType === "cohort" ? (
                     <div className="cohort-body">
-                      <div className="cohort-item-wrapper">
+                      <div className="cohort-item-wrapper" style={{marginBottom:"0rem"}}>
                         {!this.state.showWarningMsg ? (
                           <Form onValidSubmit={this.handleCohortSave}>
                             <FormElement
@@ -1144,12 +1146,18 @@ class ExitOverlay extends BaseReactComponent {
                                 },
                               }}
                             />
-                           {this.state.podnameError && <p
-                              className="inter-display-regular f-s-10 lh-11 m-t-5"
-                              style={{ color: "#ea4e3c",marginTop: "-1.5rem",marginBottom: "2rem" }}
-                            >
-                              Pod name required
-                            </p>}
+                            {this.state.podnameError && (
+                              <p
+                                className="inter-display-regular f-s-10 lh-11 m-t-5"
+                                style={{
+                                  color: "#ea4e3c",
+                                  marginTop: "-1.5rem",
+                                  marginBottom: "2rem",
+                                }}
+                              >
+                                Pod name required
+                              </p>
+                            )}
 
                             <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
                               Wallets
@@ -1497,6 +1505,10 @@ class ExitOverlay extends BaseReactComponent {
                             )}
                           </div>
                         )}
+                        {!this.state.showWarningMsg && <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-t-16">
+                          Note: the file should contain addresses or ENS' only,
+                          no titles or headers.
+                        </p>}
                       </div>
                     </div>
                   ) : (
