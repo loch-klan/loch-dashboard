@@ -367,8 +367,8 @@ class Portfolio extends BaseReactComponent {
         // this.getTableData()
         this.props.settingDefaultValues();
         // when wallet address not present
-         this.props.getExchangeBalance("binance", this);
-         this.props.getExchangeBalance("coinbase", this);
+        //  this.props.getExchangeBalance("binance", this);
+        //  this.props.getExchangeBalance("coinbase", this);
         this.setState({ isLoading: false });
       }
 

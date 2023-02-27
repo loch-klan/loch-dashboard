@@ -456,7 +456,7 @@ function Sidebar(props) {
                           DeFi
                         </NavLink>
                       </li>
-                      <li>
+                      {/* <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
@@ -467,7 +467,7 @@ function Sidebar(props) {
                           <Image src={LinkIcon} style={ {filter: "opacity(0.6)"}} />
                           Connect Exchanges
                         </NavLink>
-                      </li>
+                      </li> */}
 
                       <li>
                         <NavLink
