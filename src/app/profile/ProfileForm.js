@@ -1,13 +1,19 @@
 import React from "react";
-import { Form, FormElement, CustomTextControl } from '../../utils/form'
-import { Row, Col, Image, Button } from 'react-bootstrap';
-import profileInfoIcon from "../../image/ProfileInfoIcon.svg"
+import { Form, FormElement, CustomTextControl } from "../../utils/form";
+import { Row, Col, Image, Button } from "react-bootstrap";
+import profileInfoIcon from "../../image/ProfileInfoIcon.svg";
 // import CustomButton from "../../utils/form/CustomButton";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import ReactDOM from 'react-dom';
-import {ManageLink, updateUser} from  './Api.js'
-import { connect } from 'react-redux';
-import { EmailAdded, FirstNameAdded, LastNameAdded, MobileNumberAdded, ProfileSaved } from "../../utils/AnalyticsFunctions";
+import { ManageLink, updateUser } from "./Api.js";
+import { connect } from "react-redux";
+import {
+  EmailAdded,
+  FirstNameAdded,
+  LastNameAdded,
+  MobileNumberAdded,
+  ProfileSaved,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import UpgradeModal from "../common/upgradeModal";
 
@@ -35,12 +41,9 @@ class ProfileForm extends BaseReactComponent {
   }
 
   upgradeModal = () => {
-    this.setState(
-      {
-        upgradeModal: !this.state.upgradeModal,
-      },
-     
-    );
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
   };
 
   onValidSubmit = () => {
@@ -120,7 +123,7 @@ class ProfileForm extends BaseReactComponent {
           <Form onValidSubmit={this.onValidSubmit}>
             <div className="m-b-13">
               <Row>
-                <Col md={4} className="p-r-0">
+                <Col md={6} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "firstName")}
                     label="First Name"
@@ -130,12 +133,14 @@ class ProfileForm extends BaseReactComponent {
                         placeholder: "John",
                       },
                     }}
-                    classes={{
-                      // inputField: this.state.firstName !== "" ? "done" : "",
-                    }}
+                    classes={
+                      {
+                        // inputField: this.state.firstName !== "" ? "done" : "",
+                      }
+                    }
                   />
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <FormElement
                     valueLink={this.linkState(this, "lastName")}
                     label="Last Name"
@@ -145,16 +150,18 @@ class ProfileForm extends BaseReactComponent {
                         placeholder: "Loch",
                       },
                     }}
-                    classes={{
-                      // inputField: this.state.lastName !== "" ? "done" : "",
-                    }}
+                    classes={
+                      {
+                        // inputField: this.state.lastName !== "" ? "done" : "",
+                      }
+                    }
                   />
                 </Col>
               </Row>
             </div>
             <div className="m-b-13">
               <Row>
-                <Col md={8}>
+                <Col md={12}>
                   <FormElement
                     valueLink={this.linkState(this, "email")}
                     label="Email"
@@ -164,16 +171,18 @@ class ProfileForm extends BaseReactComponent {
                         placeholder: "john@loch.one",
                       },
                     }}
-                    classes={{
-                      // inputField: this.state.email !== "" ? "done" : "",
-                    }}
+                    classes={
+                      {
+                        // inputField: this.state.email !== "" ? "done" : "",
+                      }
+                    }
                   />
                 </Col>
               </Row>
             </div>
             <div className="m-b-13">
               <Row>
-                <Col md={4} className="p-r-0">
+                <Col md={8}>
                   <FormElement
                     valueLink={this.linkState(this, "mobileNumber")}
                     label="Mobile Number"
@@ -183,9 +192,11 @@ class ProfileForm extends BaseReactComponent {
                         placeholder: "(217) 331 - 1312",
                       },
                     }}
-                    classes={{
-                      // inputField: this.state.mobileNumber !== "" ? "done" : "",
-                    }}
+                    classes={
+                      {
+                        // inputField: this.state.mobileNumber !== "" ? "done" : "",
+                      }
+                    }
                   />
                 </Col>
               </Row>
@@ -205,7 +216,7 @@ class ProfileForm extends BaseReactComponent {
                 Save changes
               </Button>
 
-              <Button
+              {/* <Button
                 className="secondary-btn m-l-10"
                 onClick={() => {
                   if (this.state.manageUrl === "" || this.state.manageUrl === undefined) {
@@ -216,7 +227,7 @@ class ProfileForm extends BaseReactComponent {
                 }}
               >
                 Manage subscriptions
-              </Button>
+              </Button> */}
             </div>
           </Form>
           {this.state.upgradeModal && (
@@ -234,14 +245,10 @@ class ProfileForm extends BaseReactComponent {
     );
   }
 }
-const mapStateToProps = state => ({
-
-});
+const mapStateToProps = (state) => ({});
 const mapDispatchToProps = {
-    updateUser
-}
-ProfileForm.propTypes = {
-
+  updateUser,
 };
+ProfileForm.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
