@@ -120,7 +120,7 @@ class ProfileForm extends BaseReactComponent {
           <Form onValidSubmit={this.onValidSubmit}>
             <div className="m-b-13">
               <Row>
-                <Col md={4} className="p-r-0">
+                <Col md={6} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "firstName")}
                     label="First Name"
@@ -135,7 +135,7 @@ class ProfileForm extends BaseReactComponent {
                     }}
                   />
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <FormElement
                     valueLink={this.linkState(this, "lastName")}
                     label="Last Name"
@@ -154,7 +154,7 @@ class ProfileForm extends BaseReactComponent {
             </div>
             <div className="m-b-13">
               <Row>
-                <Col md={8}>
+                <Col md={12}>
                   <FormElement
                     valueLink={this.linkState(this, "email")}
                     label="Email"
@@ -173,7 +173,7 @@ class ProfileForm extends BaseReactComponent {
             </div>
             <div className="m-b-13">
               <Row>
-                <Col md={4} className="p-r-0">
+                <Col md={8}>
                   <FormElement
                     valueLink={this.linkState(this, "mobileNumber")}
                     label="Mobile Number"
@@ -205,7 +205,7 @@ class ProfileForm extends BaseReactComponent {
                 Save changes
               </Button>
 
-              <Button
+              {/* <Button
                 className="secondary-btn m-l-10"
                 onClick={() => {
                   if (this.state.manageUrl === "" || this.state.manageUrl === undefined) {
@@ -216,7 +216,7 @@ class ProfileForm extends BaseReactComponent {
                 }}
               >
                 Manage subscriptions
-              </Button>
+              </Button> */}
             </div>
           </Form>
           {this.state.upgradeModal && (

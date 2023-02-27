@@ -3,14 +3,15 @@
     .profile-section{
         margin-top: 5rem;
     .profile-form-section {
+         background-color: $secondary;
+            padding: 3.2rem;
+            box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12), 0rem 0.8rem 0.8rem -0.4rem rgba(24, 39, 75, 0.08);
+            border-radius: 1.6rem;
         margin-bottom: 4rem;
         width:100%;
         .profile-form {
 
-            background-color: $secondary;
-            padding: 3.2rem;
-            box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12), 0rem 0.8rem 0.8rem -0.4rem rgba(24, 39, 75, 0.08);
-            border-radius: 1.6rem;
+           
             .form-title {
                 display: flex;
                 align-items: center;
@@ -56,6 +57,236 @@
                 }
             }
         }
+
+
+        // plan
+
+          .plan-card-wrapper {
+            .plan-card {
+             /* White */
+
+background: #FFFFFF;
+/* Grey/50 */
+
+border: 1px solid rgba(229, 229, 230, 0.5);
+/* ShadowDropdown */
+
+box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+border-radius: 12px;
+              padding: 1.5rem 1.3rem 1rem;
+
+             
+
+              .pricing-section {
+                display: flex;
+                justify-content: start;
+                align-items: start;
+                flex-direction: column;
+                background: rgba(229, 229, 230, 0.5);
+                // border: 1px solid rgba(229, 229, 230, 0.5);
+                // box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                border-radius: 8px;
+                padding: 1.6rem;
+
+                h3 {
+                  @include font($primary, "Inter-Medium", 2rem, 500, normal);
+                }
+                 h4 {
+                    @include font($black-191, "Inter-Medium", 1.3rem, 500, normal);
+                    opacity: 0.5;
+                  }
+            
+
+                &.baron-bg {
+                  background-image: url("../../../image/plan-bg.png");
+                  background-size: cover;
+                  background-repeat: no-repeat;
+                  background-color: #ffffff;
+                  box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                  border-radius: 8px;
+                  margin: 0rem 0.2rem;
+
+                  h3 {
+                    @include font(#ffffff, "Inter-Medium", 2.5rem, 500, 3rem);
+                  }
+                  h4 {
+                      @include font(#ffffff, "Inter-Medium", 1.3rem, 500, 1.5rem);
+                      opacity: 0.8;
+                    }
+                 
+                }
+
+                &.soverign-bg {
+                  background-image: url("../../../image/soverign.png");
+                  background-size: cover;
+                  background-repeat: no-repeat;
+                  background-color: #ffffff;
+                  box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                  border-radius: 8px;
+                  margin: 0rem 0.2rem;
+
+                    h3 {
+                    @include font(#ffffff, "Inter-Medium", 2.5rem, 500, 3rem);
+                  }
+                  h4 {
+                      @include font(#ffffff, "Inter-Medium", 1.3rem, 500, 1.5rem);
+                      opacity: 0.8;
+                    }
+                
+                }
+              }
+
+            
+              .feature-list-wrapper {
+                // padding: 1.6rem 0rem 0rem;
+                .feature-list {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  padding: 0.7rem;
+
+                  .label {
+                    display: flex;
+                    align-items: center;
+                    img {
+                      width: 1.3rem;
+                      margin-right: 1rem;
+                    }
+                    h3 {
+                      @include font(
+                        $grey-969,
+                        "Inter-Medium",
+                        1.3rem,
+                        500,
+                        normal
+                      );
+                      margin-right: 0.5rem;
+                    }
+                  }
+
+                  h4 {
+                    @include font(
+                      $primary,
+                      "Inter-Medium",
+                      1.3rem,
+                      500,
+                      normal
+                    );
+                  }
+
+                  &.free-plan {
+                    background: linear-gradient(0deg, #3c3c3b, #3c3c3b),
+                      linear-gradient(
+                        88.51deg,
+                        #fa9a0b -18.43%,
+                        #df909b 35.61%,
+                        #2c32ef 122.72%
+                      );
+                    //   background-repeat: no-repeat;
+                    // border: 1px solid rgba(0, 0, 0, 0.1);
+                    box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
+                      0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                    border-radius: 4px;
+
+                    .label {
+                      img {
+                        filter: brightness(100);
+
+                      }
+                      h3 {
+                        color: #fff;
+                      }
+                    }
+                    h4{
+                        color:#fff;
+                    }
+                  }
+
+                  &.baron-plan {
+                    background: linear-gradient(
+                      88.51deg,
+                      #fa9a0b -18.43%,
+                      #df909b 35.61%,
+                      #2c32ef 122.72%
+                    );
+                    // background-repeat: no-repeat;
+                    // border: 1px solid rgba(0, 0, 0, 0.1);
+                    box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
+                      0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                    border-radius: 4px;
+
+                     .label {
+                      img {
+                        filter: brightness(100);
+
+                      }
+                      h3 {
+                        color: #fff;
+                      }
+                    }
+                    h4{
+                        color:#fff;
+                    }
+                  }
+                    &.soverign-plan {
+                      background: linear-gradient(
+                        88.51deg,
+                        #2c6999 11.7%,
+                        #d1853a 56.18%,
+                        #d36c44 122.72%
+                      );
+                    //   background-repeat: no-repeat;
+                    //   border: 1px solid rgba(0, 0, 0, 0.1);
+                      box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12),
+                        0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                      border-radius: 4px;
+
+                       .label {
+                      img {
+                        filter: brightness(100);
+
+                      }
+                      h3 {
+                        color: #fff;
+                      }
+                    }
+                    h4{
+                        color:#fff;
+                    }
+                    }
+                }
+              }
+            }
+
+            .primary-btn {
+              margin-top: 2rem;
+              width: 100%;
+
+               &:hover:not([disabled]) {
+                    border-color: $secondary;
+                    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                    color: $black-191;
+                    background-color: $secondary;
+                }
+
+              &.grey-bg {
+                outline: none;
+                // cursor:not-allowed;
+                box-shadow: none;
+                border: 0;
+                background-color: rgba(229, 229, 230, 0.5);
+                color: #0a0c12;
+                opacity: 1;
+
+                &:hover{
+                  box-shadow: none;
+                  border: 0;
+                background-color: $primary;
+                color: #ffffff;
+                }
+              }
+            }
+          }
     }
 }
 }
