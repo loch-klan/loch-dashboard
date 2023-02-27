@@ -13,8 +13,10 @@ import FixAddModal from '../common/FixAddModal';
 import { toast } from 'react-toastify';
 import { AnalyzeAssetValue, FixUndetectedWallet } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
+import EditWalletExchange from './EditWalletExchange';
 export default function WalletCard(props) {
-    const [show, setShow] = React.useState(false);
+  const [show, setShow] = React.useState(false);
+  const [EditModal, setEditModal] = React.useState(false);
     // const [showModal, toggleCopied] = React.useState(false);
     function handleClose() {
         setShow(false);
@@ -22,6 +24,10 @@ export default function WalletCard(props) {
     function handleShow() {
         setShow(true)
     }
+  
+  function handleEdit() {
+    setEditModal((prev) => !prev);
+  }
     const chips = props?.wallet_coins?.map((coin, index) => {
         return (
             <CustomOverlay
@@ -93,7 +99,7 @@ export default function WalletCard(props) {
         })
         .join(" ");
     }
-    //  console.log("prop", props.createdOn);
+    
     return (
       <>
         <div
@@ -141,44 +147,51 @@ export default function WalletCard(props) {
                     </div>
                   </CustomOverlay>
                 )}
-               {!props.protocol && <div className="account-details">
-                  {props.display_address && (
-                    <>
-                      <span
-                        className="inter-display-regular f-s-13 lh-16"
-                        id="account_number"
-                      >
-                        {props.display_address}
-                      </span>
-                      {!props.protocol && (
-                        <Image
-                          src={CopyClipboardIcon}
-                          onClick={() => copyContent(props.display_address)}
-                          className="m-l-10 m-r-12 cp"
-                        />
-                      )}
-                    </>
-                  )}
-                  {props.wallet_account_number && (
-                    <>
-                      <span
-                        className="inter-display-regular f-s-13 lh-16"
-                        id="account_number"
-                      >
-                        {props.wallet_account_number}
-                      </span>
-                      {!props.protocol && (
-                        <Image
-                          src={CopyClipboardIcon}
-                          onClick={() =>
-                            copyContent(props.wallet_account_number)
-                          }
-                          className="m-l-10 m-r-12 cp"
-                        />
-                      )}
-                    </>
-                  )}
-                </div>}
+                {props.protocol && <Image
+                  src={EditIcon}
+                  onClick={handleEdit}
+                  className="m-l-4 cp"
+                />}
+                {!props.protocol && (
+                  <div className="account-details">
+                    {props.display_address && (
+                      <>
+                        <span
+                          className="inter-display-regular f-s-13 lh-16"
+                          id="account_number"
+                        >
+                          {props.display_address}
+                        </span>
+                        {!props.protocol && (
+                          <Image
+                            src={CopyClipboardIcon}
+                            onClick={() => copyContent(props.display_address)}
+                            className="m-l-10 m-r-12 cp"
+                          />
+                        )}
+                      </>
+                    )}
+                    {props.wallet_account_number && (
+                      <>
+                        <span
+                          className="inter-display-regular f-s-13 lh-16"
+                          id="account_number"
+                        >
+                          {props.wallet_account_number}
+                        </span>
+                        {!props.protocol && (
+                          <Image
+                            src={CopyClipboardIcon}
+                            onClick={() =>
+                              copyContent(props.wallet_account_number)
+                            }
+                            className="m-l-10 m-r-12 cp"
+                          />
+                        )}
+                      </>
+                    )}
+                  </div>
+                )}
                 {/* </div> */}
               </div>
               <div className="amount-details">
@@ -229,6 +242,17 @@ export default function WalletCard(props) {
                 walletMetaData={props.wallet_metadata}
                 nickname={props.nickname}
                 coinchips={props.wallet_coins}
+                makeApiCall={() => props.makeApiCall()}
+              />
+            ) : (
+              ""
+            )}
+            {EditModal ? (
+              <EditWalletExchange
+                show={handleEdit}
+                onHide={handleEdit}
+                nickname={props.nickname}
+                walletMetaData={props.wallet_metadata}
                 makeApiCall={() => props.makeApiCall()}
               />
             ) : (
