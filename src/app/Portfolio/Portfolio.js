@@ -326,7 +326,7 @@ class Portfolio extends BaseReactComponent {
         this.state.userWalletList?.length > 0
       ) {
         //  //console.log("reset", this.state.userWalletList);
-        //console.log("Comp")
+       
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
         // Loops on coins to fetch details of each coin which exist in wallet
@@ -366,6 +366,9 @@ class Portfolio extends BaseReactComponent {
         // //console.log('Heyyy');
         // this.getTableData()
         this.props.settingDefaultValues();
+        // when wallet address not present
+         this.props.getExchangeBalance("binance", this);
+         this.props.getExchangeBalance("coinbase", this);
         this.setState({ isLoading: false });
       }
 

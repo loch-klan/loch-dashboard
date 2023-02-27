@@ -109,7 +109,7 @@ class Defi extends Component {
     // add wallet
 
     if (this.state.apiResponse) {
-      console.log("update");
+      // console.log("update");
 
       this.props.getAllCoins();
       this.setState(
@@ -133,7 +133,7 @@ class Defi extends Component {
           //  getAllProtocol(this);
           this.getYieldBalance();
           // this.setState({
-          //   apiResponse: false,
+          //   // apiResponse: false,
           // });
         }
       );

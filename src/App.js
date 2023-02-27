@@ -10,7 +10,7 @@ function App() {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-      const mediaQuery = window.matchMedia("(max-width: 768px)");
+      const mediaQuery = window.matchMedia("(max-width: 480px)");
       setIsMobile(mediaQuery.matches);
 
       function handleResize() {

@@ -52,6 +52,7 @@ import {
   MenuLeave,
   MenuShare,
   MenuWhale,
+  resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
@@ -79,13 +80,33 @@ function Sidebar(props) {
   let lochUser = JSON.parse(localStorage.getItem('lochUser'));
   const [Upgrade, setUpgradeModal] = React.useState(false);
   const [connectModal, setconnectModal] = React.useState(false);
+  const [isWallet, setWallet] = React.useState(JSON.parse(localStorage.getItem("addWallet")) ? true:false);
 
   let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
   let triggerId = 6;
   let isDefi = userPlan?.defi_enabled;
   //  let isDefi = true;
 
+  
+  
+   React.useEffect(() => {
+     getWalletFunction();
+   }, []);
+  
+  const getWalletFunction = () => {
+    
+    let status = JSON.parse(localStorage.getItem("addWallet"));
+    if (status) {
+      setWallet(true)
+  // console.log("wallet", isWallet);
+    } else {
+      setTimeout(() => {
+        getWalletFunction();
+      }, 2000);
+    }
 
+  };
+  
     const handleLeave = () => {
       const isDummy = localStorage.getItem("lochDummyUser");
       // console.log("isDummy user", isDummy)
@@ -266,12 +287,16 @@ function Sidebar(props) {
                           exact={true}
                           className="nav-link"
                           to={activeTab === "/home" ? "#" : "/home"}
-                          onClick={() => {
+                          onClick={(e) => {
                             // console.log("user",getCurrentUser())
-                            HomeMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
+                            if (!isWallet) {
+                              e.preventDefault();
+                            } else {
+                              HomeMenu({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }
                           }}
                           activeclassname="active"
                         >
@@ -288,12 +313,15 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           className="nav-link"
-                          to="/whale-watching"
-                          onClick={() => {
-                            MenuWhale({
-                              email_address: getCurrentUser().email,
-                              session_id: getCurrentUser().id,
-                            });
+                          to={"/whale-watching"}
+                          onClick={(e) => {
+                            if (!isWallet) {
+                              e.preventDefault();
+                           }else{MenuWhale({
+                             email_address: getCurrentUser().email,
+                             session_id: getCurrentUser().id,
+                           });}
+                            
                           }}
                           activeclassname="active"
                         >
@@ -335,11 +363,15 @@ function Sidebar(props) {
                         `}
                           to="/intelligence"
                           activeclassname="active"
-                          onClick={() =>
-                            IntelligenceMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            })
+                          onClick={(e) =>
+                           {  if (!isWallet) {
+                             e.preventDefault();
+                           } else {
+                             IntelligenceMenu({
+                               session_id: getCurrentUser().id,
+                               email_address: getCurrentUser().email,
+                             });
+                           }}
                           }
                         >
                           <Image
@@ -362,11 +394,15 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           exact={true}
-                          onClick={() =>
-                            WalletsMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            })
+                          onClick={(e) =>
+                            {if (!isWallet) {
+                              e.preventDefault();
+                            } else {
+                              WalletsMenu({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }}
                           }
                           className="nav-link"
                           to="/wallets"
@@ -386,7 +422,7 @@ function Sidebar(props) {
                         <NavLink
                           className={`nav-link ${!isDefi ? "none" : ""}`}
                           to={`${!isDefi ? "#" : "/decentralized-finance"}`}
-                          onClick={() => {
+                          onClick={(e) => {
                             // CostsMenu({
                             //   session_id: getCurrentUser().id,
                             //   email_address: getCurrentUser().email,
@@ -394,6 +430,9 @@ function Sidebar(props) {
                             if (!isDefi) {
                               upgradeModal();
                             }
+                            if (!isWallet) {
+                             e.preventDefault();
+                           } 
                           }}
                           activeclassname={`${!isDefi ? "none" : "active"}`}
                           // className="nav-link none"
@@ -406,14 +445,18 @@ function Sidebar(props) {
                                 ? DefiIcon
                                 : DefiIcon
                             }
-                            style={activeTab === "/decentralized-finance" ? {
-                              filter: "brightness(0)",
-                            }:{}}
+                            style={
+                              activeTab === "/decentralized-finance"
+                                ? {
+                                    filter: "brightness(0)",
+                                  }
+                                : {}
+                            }
                           />
                           DeFi
                         </NavLink>
                       </li>
-                      {/* <li>
+                      <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
@@ -422,18 +465,20 @@ function Sidebar(props) {
                           activeclassname="none"
                         >
                           <Image src={LinkIcon} style={ {filter: "opacity(0.6)"}} />
-                          Connect Exchange
+                          Connect Exchanges
                         </NavLink>
-                      </li> */}
+                      </li>
 
                       <li>
                         <NavLink
                           exact={true}
-                          onClick={() =>
-                            ProfileMenu({
+                          onClick={(e) =>
+                            {if (!isWallet) {
+                              e.preventDefault();
+                            } else{ProfileMenu({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
-                            })
+                            })}}
                           }
                           className="nav-link"
                           to="/profile"
@@ -608,6 +653,7 @@ function Sidebar(props) {
               history={history}
               modalType={"exitOverlay"}
               handleRedirection={() => {
+                resetUser();
                 setTimeout(function () {
                   props.history.push("/welcome");
                 }, 3000);

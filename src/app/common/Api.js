@@ -70,8 +70,17 @@ export const updateUserWalletApi = (data,ctx) =>{
       for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
         let obj = {}; // <----- new Object
         obj['address'] = apiResponse.user.user_wallets[i].address;
-              obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
-              const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
+        obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
+        
+        // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
+
+          const chainsDetected =
+            apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
+              ?.chains ||
+            apiResponse.wallets[
+              apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+            ]?.chains;
+        
               obj['coins'] = allChains.map((chain)=>{
                 let coinDetected = false;
                 chainsDetected.map((item)=>{
@@ -87,7 +96,15 @@ export const updateUserWalletApi = (data,ctx) =>{
               });
               obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
               obj['id'] = `wallet${i+1}`;
-        obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+        // obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+        let chainLength =
+          apiResponse.wallets[apiResponse.user?.user_wallets[i]?.address]
+            ?.chains?.length ||
+          apiResponse.wallets[
+            apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+          ]?.chains?.length;
+        obj["coinFound"] = chainLength > 0 ? true : false;
+        
         obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
          obj["showAddress"] =
            apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
@@ -180,6 +197,7 @@ export const getDetectedChainsApi = (ctx) =>{
             userWallet = item
           }
         })
+
         let chainsDetected = chainList.map((chain)=>{
           let dummyChain = {...chain}
           let isDetected = false;
@@ -391,10 +409,18 @@ export const VerifyEmail = (data,ctx) => {
                       apiResponse.user?.user_wallets[i].wallet;
                     obj["id"] = `wallet${i + 1}`;
 
-                    const chainsDetected =
-                      apiResponse.wallets[
-                        apiResponse.user?.user_wallets[i].address
-                      ].chains;
+                    // const chainsDetected =
+                    //   apiResponse.wallets[
+                    //     apiResponse.user?.user_wallets[i].address
+                    //   ].chains;
+                     const chainsDetected =
+                       apiResponse.wallets[
+                         apiResponse?.user?.user_wallets[i]?.address
+                       ]?.chains ||
+                       apiResponse.wallets[
+                         apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+                       ]?.chains;
+                    
                     obj["coins"] = allChains.map((chain) => {
                       let coinDetected = false;
                       chainsDetected.map((item) => {
@@ -411,12 +437,21 @@ export const VerifyEmail = (data,ctx) => {
                       };
                     });
 
-                    obj["coinFound"] =
+                    // obj["coinFound"] =
+                    //   apiResponse.wallets[
+                    //     apiResponse.user?.user_wallets[i].address
+                    //   ].chains.length > 0
+                    //     ? true
+                    //     : false;
+                    let chainLength =
                       apiResponse.wallets[
-                        apiResponse.user?.user_wallets[i].address
-                      ].chains.length > 0
-                        ? true
-                        : false;
+                        apiResponse.user?.user_wallets[i]?.address
+                      ]?.chains?.length ||
+                      apiResponse.wallets[
+                        apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+                      ]?.chains?.length;
+                    obj["coinFound"] = chainLength > 0 ? true : false;
+
                     obj["nickname"] =
                       apiResponse.user?.user_wallets[i]?.nickname;
                     obj["showAddress"] =

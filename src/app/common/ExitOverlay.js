@@ -563,14 +563,13 @@ class ExitOverlay extends BaseReactComponent {
           session_id: getCurrentUser().id,
           email_address: this.state.email,
         });
-        signUpProperties({
-          userId: getCurrentUser().id,
-          email_address: this.state.email,
-          first_name: "",
-          last_name: "",
-        });
-
-        resetUser();
+         signUpProperties({
+           userId: getCurrentUser().id,
+           email_address: this.state.email,
+           first_name: "",
+           last_name: "",
+         });
+      
       }
     }
   };
@@ -579,6 +578,8 @@ class ExitOverlay extends BaseReactComponent {
 
     this.setState({ show: false, showRedirection: true });
     this.props.handleRedirection();
+      
+        
   };
   handleSelect = (e) => {
     // console.log(e);
