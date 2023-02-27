@@ -135,7 +135,8 @@ function Sidebar(props) {
         });
     }
     const handleConfirmLeaveModal = () =>{
-        setConfirmLeave(!confirmLeave)
+      setConfirmLeave(!confirmLeave)
+       
     }
     const handleExportModal = ()=>{
         setExportModal(!exportModal);
