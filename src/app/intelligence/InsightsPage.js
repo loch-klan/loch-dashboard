@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import reduceCost from '../../assets/images/icons/reduce-cost.svg'
 import reduceRisk from '../../assets/images/icons/reduce-risk.svg'
@@ -13,10 +13,12 @@ import FeedbackForm from "../common/FeedbackForm";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
+import GradientImg from "../../assets/images/insight-upgrade.png";
 import { getAllCoins } from "../onboarding/Api.js";
 import { connect } from "react-redux";
 import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
+import UpgradeModal from "../common/upgradeModal";
 
 
 class InsightsPage extends Component {
@@ -53,8 +55,19 @@ class InsightsPage extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      upgradeModal: false,
+      isStatic: false,
+      triggerId: 0,
     };
   }
+
+  upgradeModal = () => {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
+  };
+
   componentDidMount() {
     InsightPage({
       session_id: getCurrentUser().id,
@@ -68,14 +81,14 @@ class InsightsPage extends Component {
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
-     if (prevState.apiResponse != this.state.apiResponse) {
+    if (prevState.apiResponse != this.state.apiResponse) {
       //  console.log("update");
 
-       getAllInsightsApi(this);
-       this.setState({
-         apiResponse: false,
-       });
-     }
+      getAllInsightsApi(this);
+      this.setState({
+        apiResponse: false,
+      });
+    }
   }
 
   // For add new address
@@ -158,6 +171,18 @@ class InsightsPage extends Component {
               apiResponse={(e) => this.CheckApiResponse(e)}
             />
           )}
+
+          {this.state.upgradeModal && (
+            <UpgradeModal
+              show={this.state.upgradeModal}
+              onHide={this.upgradeModal}
+              history={this.props.history}
+              isShare={localStorage.getItem("share_id")}
+              isStatic={this.state.isStatic}
+              // triggerId={this.state.triggerId}
+            />
+          )}
+
           <PageHeader
             title={"Insights"}
             subTitle={"Valuable insights based on your assets"}
@@ -235,6 +260,27 @@ class InsightsPage extends Component {
               )}
             </div>
           </div>
+          {/* Upgrade Insight section */}
+         {this.state.userPlan.name === "Free" && <div className="Insight-upgrade-wrapper">
+            <div className="Insight-upgrade">
+              <Image src={GradientImg} />
+              <h3 className="inter-display-medium f-s-25 lh-30 m-b-5 text-center">
+                More insights with Loch
+              </h3>
+              <h5 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-24 text-center">
+                Upgrade your plan
+              </h5>
+              <Button
+                className="secondary-btn text-center"
+                onClick={this.upgradeModal}
+              >
+                Upgrade
+              </Button>
+            </div>
+            <div className="inner-box"></div>
+            <div className="inner-box2"></div>
+          </div>}
+
           {/* <FeedbackForm page={"Insights Page"} /> */}
         </div>
       </div>
