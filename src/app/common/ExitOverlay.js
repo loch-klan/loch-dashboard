@@ -487,6 +487,12 @@ class ExitOverlay extends BaseReactComponent {
       data.append("mobile", this.state.mobileNumber);
       updateUser(data, this);
     } else {
+      signUpProperties({
+        userId: getCurrentUser().id,
+        email_address: this.state.email,
+        first_name: "",
+        last_name: "",
+      });
       let email_arr = [];
       let data = JSON.parse(localStorage.getItem("addWallet"));
       if (data) {
@@ -501,12 +507,7 @@ class ExitOverlay extends BaseReactComponent {
           session_id: getCurrentUser().id,
           email_address: this.state.email,
         });
-         signUpProperties({
-           userId: getCurrentUser().id,
-           email_address: this.state.email,
-           first_name: "",
-           last_name: "",
-         });
+         
       
       }
     }

@@ -615,7 +615,7 @@ function Sidebar(props) {
                       >
                         <Image src={SignInIcon} />
                         <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                          Signin
+                          Sign in
                         </Button>
                       </span>
                     )}

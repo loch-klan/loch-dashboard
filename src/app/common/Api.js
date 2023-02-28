@@ -336,7 +336,7 @@ export const SendOtp = (data,ctx) => {
           isEmailNotExist: res.data.data.is_new_user,
           modalTitle: "Verify email",
           modalDescription: ctx?.props?.stopUpdate
-            ? "enter the verification code sent to your email to signin your account"
+            ? "enter the verification code sent to your email to sign in your account"
             : res.data.data.is_new_user
             ? "enter the verification code sent to your email to save the wallets and pods to your account"
             : "enter the verification code sent to your email to update the existing wallets and pods for your account",
@@ -369,7 +369,13 @@ export const VerifyEmail = (data,ctx) => {
           });
           
         } else {
-          signInUser(res.data.data.user?.link);
+          
+          signInUser({
+            email_address: res.data.data.user?.email,
+            userId: res.data.data.user?.link,
+            first_name: res.data.data.user?.first_name,
+            last_name: res.data.data.user?.last_name,
+          });
         }
           ctx.setState(
             {

@@ -212,13 +212,14 @@ export const verifyUser = (ctx, info) => {
             
             addWallet.push(obj);
           }
-          // setUserProperties({
-          //   $email: res.data.data.user?.email,
-          //   $first_name: res.data.data.user?.first_name,
-          //   $last_name: res.data.data.user?.last_name,
-          // });
+        
           // Mixpanel function
-          signInUser(res.data.data.user?.link);
+          signInUser({
+            email_address: res.data.data.user?.email,
+            userId: res.data.data.user?.link,
+            first_name: res.data.data.user?.first_name,
+            last_name: res.data.data.user?.last_name,
+          });
           // console.log("addWallet", addWallet);
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
           ctx.props.history.push({

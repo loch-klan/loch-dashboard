@@ -34,11 +34,18 @@ export const sendAmplitudeData = (eventType, eventProperties) => {
 };
 
 
-export const signInUser = (userId) => {
+export const signInUser = ({ email_address, userId, first_name, last_name }) => {
   // console.log(userId);
   // Mixpanel.people.set_once(properties);
+
   Mixpanel.alias(userId);
   Mixpanel.identify(userId);
+  Mixpanel.people.set({
+    $email: email_address,
+    $first_name: first_name,
+    $last_name: last_name,
+    //  $user_id:userId
+  });
 };
 
 export const signUpProperties = ({ email_address, userId, first_name, last_name }) => {
