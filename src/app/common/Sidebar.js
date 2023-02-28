@@ -295,7 +295,7 @@ function Sidebar(props) {
                   </div>
                 </div>
                 <div
-                  className={`sidebar-plan soverign-bg ${
+                  className={`sidebar-plan ${
                     selectedPlan?.id === "63eb32769b5e4daf6b588206"
                       ? "baron-bg"
                       : selectedPlan?.id === "63eb32769b5e4daf6b588207"
@@ -303,7 +303,7 @@ function Sidebar(props) {
                       : ""
                   }`}
                 >
-                  <Image src={BaronIcon} />
+                  {/* <Image src={BaronIcon} /> */}
                   <h3>
                     Loch <span>{selectedPlan.name}</span>
                   </h3>
