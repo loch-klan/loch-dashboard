@@ -35,9 +35,10 @@ class Profile extends Component {
     let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
     Plans?.map((plan) => {
       if (plan.id === userPlan.id) {
+        let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
         selectedPlan = {
           // Upgrade plan
-          price: plan.prices ? plan.prices[0]?.unit_amount / 100 : 0,
+          price: price,
           price_id: plan.prices ? plan.prices[0]?.id : "",
           name: plan.name,
           id: plan.id,
@@ -81,7 +82,7 @@ class Profile extends Component {
             },
             {
               name: "Insights",
-              limit: plan?.insight || true,
+              limit: plan?.insight ? true : price > 0 ? true : false,
               img: insight,
               id: 9,
             },
@@ -181,11 +182,11 @@ class Profile extends Component {
                     <div
                       className={`pricing-section
                               ${
-                                this.state.selectedPlan?.id ===
-                                "63eb32769b5e4daf6b588206"
+                                this.state.selectedPlan?.name ===
+                                "Baron"
                                   ? "baron-bg"
-                                  : this.state.selectedPlan?.id ===
-                                    "63eb32769b5e4daf6b588207"
+                                  : this.state.selectedPlan?.name ===
+                                    "Soverign"
                                   ? "soverign-bg"
                                   : ""
                               }
@@ -241,13 +242,19 @@ class Profile extends Component {
                               <h3>{list.name}</h3>
                             </div>
                             <h4>
-                              {list.limit === false
+                              {
+                              list.name !== "Insights"
+                              ? list.limit === false
                                 ? "No"
                                 : list.limit === true
                                 ? "Yes"
                                 : list.limit === -1
                                 ? "Unlimited"
-                                : list.limit}
+                                : list.limit
+                              : list.limit === false
+                                ? "Limited"
+                                : "Unlimited"
+                              }
                             </h4>
                           </div>
                         );

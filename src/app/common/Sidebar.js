@@ -305,7 +305,7 @@ function Sidebar(props) {
                     </DropdownButton>
                   </div>
                 </div>
-                {selectedPlan?.id !== "63eb32759b5e4daf6b588205" && (
+                {selectedPlan?.name !== "Free" && (
                   <div className={`sidebar-plan`}>
                     {/* <Image src={BaronIcon} /> */}
                     <h3>
@@ -615,7 +615,7 @@ function Sidebar(props) {
                       >
                         <Image src={SignInIcon} />
                         <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                          Signin
+                          Sign in
                         </Button>
                       </span>
                     )}
