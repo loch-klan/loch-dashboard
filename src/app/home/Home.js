@@ -18,16 +18,24 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    const searchParams = new URLSearchParams(this.props.location.search);
+    const planId = searchParams.get("plan_id");
+    console.log(planId);
+    if (planId) {
+      console.log("plan id", planId)
+    } else {
     if (getToken()) {
       this.props.history.push("/home");
     } else {
       deleteToken();
-         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
-         if (!isRefresh) {
-           localStorage.setItem("refresh", true);
-           window.location.reload(true);
-         }
+      let isRefresh = JSON.parse(localStorage.getItem("refresh"));
+      if (!isRefresh) {
+        localStorage.setItem("refresh", true);
+        window.location.reload(true);
+      }
     }
+    }
+
      GetDefaultPlan();
  
   }

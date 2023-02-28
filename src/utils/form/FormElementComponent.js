@@ -143,7 +143,7 @@ class FormElementComponent extends BaseReactComponent {
                   className="cancel-icon"
                 />
               )}
-              {failedValidation ? failedValidation.message : helpText}
+              {failedValidation ? failedValidation.message : helpText + "ab"}
             </Form.Text>
           )}
 

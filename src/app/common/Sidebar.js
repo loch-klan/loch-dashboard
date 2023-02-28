@@ -37,6 +37,7 @@ import { toast } from 'react-toastify'
 import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
 import ConnectModalIcon from '../../assets/images/icons/connectIcon.svg';
 import LinkIcon from "../../assets/images/icons/link.svg";
+import BaronIcon from "../../assets/images/icons/baron-logo.svg";
 
 import ConfirmLeaveModal from './ConformLeaveModal';
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -294,7 +295,7 @@ function Sidebar(props) {
                   </div>
                 </div>
                 <div
-                  className={`sidebar-plan ${
+                  className={`sidebar-plan soverign-bg ${
                     selectedPlan?.id === "63eb32769b5e4daf6b588206"
                       ? "baron-bg"
                       : selectedPlan?.id === "63eb32769b5e4daf6b588207"
@@ -302,6 +303,7 @@ function Sidebar(props) {
                       : ""
                   }`}
                 >
+                  <Image src={BaronIcon} />
                   <h3>
                     Loch <span>{selectedPlan.name}</span>
                   </h3>

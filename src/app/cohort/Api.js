@@ -27,6 +27,9 @@ export const deleteCohort = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         ctx.props.apiResponse(true);
+        if (ctx.props.isEdit && ctx.props.isRedirect) {
+          ctx.props.history.push("/whale-watching");
+        }
         // console.log("delete cohort", res.data.data);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -100,8 +103,8 @@ export const getCohort = (data, ctx) => {
       if (!res.data.error) {
         // console.log("get cohort", res.data.data.user_cohort);
         let response = res.data.data?.user_cohort;
-        let sortedAddress = (response?.wallet_address_details).sort(
-          (a, b) => b.net_worth - a.net_worth
+        let sortedAddress = (response?.wallet_address_details)?.sort(
+          (a, b) => b?.net_worth - a?.net_worth
         );
 
         let sortedChains = [];

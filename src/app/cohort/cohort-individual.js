@@ -636,6 +636,7 @@ class CohortPage extends BaseReactComponent {
             headerTitle={
               this.state.cohortName ? this.state.cohortName : PageName
             }
+            isRedirect={true}
             isEdit={true}
             chainImages={this.state?.chainImages}
             cohortId={this.state.cohortId}
