@@ -30,6 +30,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import CheckoutModal from "./checkout-modal";
 import AuthModal from "./AuthModal";
+import insight from "../../assets/images/icons/insight.svg";
 
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
 import ExportIcon from "../../assets/images/icons/upgrade-export.svg";
@@ -92,6 +93,12 @@ class UpgradeModal extends BaseReactComponent {
             img: DefiIcon,
             id: 6,
           },
+          // {
+          //   name: "Insights",
+          //   limit: plan?.insight || true,
+          //   img: insight,
+          //   id: 9,
+          // },
           {
             name: "Export addresses",
             limit: plan.export_address_limit,
@@ -158,6 +165,12 @@ class UpgradeModal extends BaseReactComponent {
               img: DefiIcon,
               id: 6,
             },
+            // {
+            //   name: "Insights",
+            //   limit: plan?.insight || true,
+            //   img: insight,
+            //   id: 9,
+            // },
             {
               name: "Export addresses",
               limit: plan.export_address_limit,
@@ -446,7 +459,17 @@ class UpgradeModal extends BaseReactComponent {
                                       }`}
                                     >
                                       <div className="label">
-                                        <Image src={list?.img} />
+                                        <Image
+                                          src={list?.img}
+                                          style={
+                                            list?.id == 9
+                                              ? {
+                                                  opacity: "opacity: 0.6;",
+                                                  // filter: "invert(1)",
+                                                }
+                                              : {}
+                                          }
+                                        />
                                         <h3>{list.name}</h3>
                                       </div>
                                       <h4>
@@ -552,7 +575,17 @@ class UpgradeModal extends BaseReactComponent {
                                   }`}
                                 >
                                   <div className="label">
-                                    <Image src={list?.img} />
+                                    <Image
+                                      src={list?.img}
+                                      style={
+                                        list?.id == 9
+                                          ? {
+                                              opacity: "opacity: 0.6;",
+                                              // filter: "invert(1)",
+                                            }
+                                          :{ }
+                                      }
+                                    />
                                     <h3>{list.name}</h3>
                                   </div>
                                   <h4>

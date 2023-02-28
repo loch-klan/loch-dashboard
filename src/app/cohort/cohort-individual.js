@@ -890,14 +890,14 @@ class CohortPage extends BaseReactComponent {
                 alignItems: "center",
               }}
             >
-              <p
+              {/* <p
                 onClick={this.showDust}
                 className="inter-display-medium f-s-16 lh-19 cp grey-ADA m-r-12 cohort-dust"
               >
                 {this.state.showDust
                   ? "Reveal dust (less than $1)"
                   : "Hide dust (less than $1)"}
-              </p>
+              </p> */}
               <div style={{ width: "20rem" }}>
                 <CustomDropdown
                   filtername="All chains selected"
@@ -1607,13 +1607,13 @@ class CohortPage extends BaseReactComponent {
                           style={{ marginLeft: "1.5rem" }}
                           onClick={() => this.copyLink(e.wallet_address)}
                         />
-                        {this.state.userId && (
+                        {/* {this.state.userId && (
                           <Image
                             src={DeleteIcon}
                             style={{ width: "1.5rem", marginLeft: "1.5rem" }}
                             onClick={() => this.deleteAddress(address, i)}
                           />
-                        )}
+                        )} */}
                         {this.state.userId && (
                           <div className="nickname-input">
                             <Form

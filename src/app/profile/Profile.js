@@ -25,6 +25,7 @@ import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
 import { ManageLink } from "./Api";
 import UpgradeModal from "../common/upgradeModal";
+import insight from "../../assets/images/icons/insight.svg";
 
 class Profile extends Component {
   constructor(props) {
@@ -78,6 +79,12 @@ class Profile extends Component {
               img: DefiIcon,
               id: 6,
             },
+            // {
+            //   name: "Insights",
+            //   limit: plan?.insight || true,
+            //   img: insight,
+            //   id: 9,
+            // },
             {
               name: "Export addresses",
               limit: plan.export_address_limit,
@@ -191,7 +198,7 @@ class Profile extends Component {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         rowGap: "1.2rem",
                         margin: "1.7rem 1rem 1rem",
                       }}
@@ -200,12 +207,12 @@ class Profile extends Component {
                         style={{
                           backgroundColor: "#E5E5E680",
                           width: "30%",
-                          height: "1px",
+                          height: "1.5px",
                           marginRight: "1.2rem",
                         }}
                       ></div>
                       <h4
-                        className="inter-display-semi-bold f-s-10 lh-12 grey-CAC"
+                        className="inter-display-semi-bold f-s-12 lh-12 grey-CAC"
                         style={{
                           whiteSpace: "nowrap",
                           textTransform: "uppercase",
@@ -217,7 +224,7 @@ class Profile extends Component {
                         style={{
                           backgroundColor: "#E5E5E680",
                           width: "30%",
-                          height: "1px",
+                          height: "1.5px",
                           marginLeft: "1.2rem",
                         }}
                       ></div>
@@ -227,7 +234,10 @@ class Profile extends Component {
                         return (
                           <div className={`feature-list`}>
                             <div className="label">
-                              <Image src={list?.img} />
+                              <Image
+                                src={list?.img}
+                                style={list?.id == 9 ? { opacity: "0.6" } : {}}
+                              />
                               <h3>{list.name}</h3>
                             </div>
                             <h4>

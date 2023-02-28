@@ -131,14 +131,14 @@ class EditWalletExchange extends BaseReactComponent {
       >
         <Modal.Header
           style={{
-            backgroundColor: walletMetaData?.color || "#0d0d0d",
+            backgroundColor:walletMetaData?.color || "#0d0d0d",
           }}
         >
           <Image
             src={walletMetaData?.symbol || unrecognizedIcon}
             className="walletIcon"
           />
-          <h3 className="inter-display-medium f-s-16 m-t-5">
+          <h3 className="inter-display-medium f-s-16 m-t-5" style={{color:"#ffffff"}}>
             {this.toTitleCase(walletMetaData.name)}
           </h3>
           <div className="closebtn" onClick={onHide}>

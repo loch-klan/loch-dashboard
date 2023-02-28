@@ -100,6 +100,12 @@
                             }
                         }
 
+                        .delete-icon{
+                            &:hover{
+                                filter: brightness(0.5);
+                            }
+                        }
+
                         // .wallet-name-details {
                             // display: flex;
                             // align-items: center;

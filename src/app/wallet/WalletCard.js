@@ -150,7 +150,7 @@ export default function WalletCard(props) {
                 {props.protocol && <Image
                   src={EditIcon}
                   onClick={handleEdit}
-                  className="m-l-4 cp"
+                  className="m-l-4 cp delete-icon"
                 />}
                 {!props.protocol && (
                   <div className="account-details">

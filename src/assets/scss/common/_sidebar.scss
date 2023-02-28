@@ -72,35 +72,20 @@
         }
 
         .sidebar-plan{
-            // border: 1px solid rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+
             display: flex;
             align-items: center;
             justify-content: start;
-             background: rgba(229, 229, 230, 0.5);
              padding: 0.8rem 1.2rem;
              margin-bottom: 1rem;
 
-             img{
-              margin-right: 0.4rem;
-              filter: brightness(0);
-             }
-
-             h3 {
-                  @include font($primary, "Inter-Regular", 1.3rem, 400, normal);
-
-                  span{
-                     @include font($primary, "Inter-Bold", 1.3rem, 700, normal);
-                  }
-                }
-
-                 &.baron-bg {
-                  background-image: url("../../../image/plan-bg.png");
+             background-image: url("../../../image/plan-bg.png");
                   background-size: cover;
                   background-repeat: no-repeat;
                   background-color: #ffffff;
-                  box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                  // box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
                   border-radius: 8px;
+
                   img{
                     margin-right: 0.4rem;
                      filter: brightness(1);
@@ -111,33 +96,52 @@
 
                   span{
                      @include font(#ffffff, "Inter-Bold", 1.3rem, 700, normal);
-                  }
-                }
+                  }}
+
+                //  &.baron-bg {
+                //   background-image: url("../../../image/plan-bg.png");
+                //   background-size: cover;
+                //   background-repeat: no-repeat;
+                //   background-color: #ffffff;
+                //   box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                //   border-radius: 8px;
+                //   img{
+                //     margin-right: 0.4rem;
+                //      filter: brightness(1);
+                //   }
+
+                //  h3 {
+                //   @include font(#ffffff, "Inter-Regular", 1.3rem, 400, normal);
+
+                //   span{
+                //      @include font(#ffffff, "Inter-Bold", 1.3rem, 700, normal);
+                //   }
+                // }
                  
-                }
+                // }
 
-                &.soverign-bg {
-                  background-image: url("../../../image/soverign.png");
-                  background-size: cover;
-                  background-repeat: no-repeat;
-                  background-color: #ffffff;
-                  box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
-                  border-radius: 8px;
+                // &.soverign-bg {
+                //   background-image: url("../../../image/soverign.png");
+                //   background-size: cover;
+                //   background-repeat: no-repeat;
+                //   background-color: #ffffff;
+                //   box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+                //   border-radius: 8px;
                 
-                  img{
-                    margin-right: 0.4rem;
-                    filter: brightness(1);
-                  }
+                //   img{
+                //     margin-right: 0.4rem;
+                //     filter: brightness(1);
+                //   }
 
-                  h3 {
-                  @include font(#ffffff, "Inter-Regular", 1.3rem, 400, normal);
+                //   h3 {
+                //   @include font(#ffffff, "Inter-Regular", 1.3rem, 400, normal);
 
-                  span{
-                     @include font(#ffffff, "Inter-Bold", 1.3rem, 700, normal);
-                  }
-                }
+                //   span{
+                //      @include font(#ffffff, "Inter-Bold", 1.3rem, 700, normal);
+                //   }
+                // }
                 
-                }
+                // }
         }
         ul {
             list-style: none;

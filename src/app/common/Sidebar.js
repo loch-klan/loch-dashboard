@@ -305,20 +305,14 @@ function Sidebar(props) {
                     </DropdownButton>
                   </div>
                 </div>
-                <div
-                  className={`sidebar-plan ${
-                    selectedPlan?.id === "63eb32769b5e4daf6b588206"
-                      ? "baron-bg"
-                      : selectedPlan?.id === "63eb32769b5e4daf6b588207"
-                      ? "soverign-bg"
-                      : ""
-                  }`}
-                >
-                  {/* <Image src={BaronIcon} /> */}
-                  <h3>
-                    Loch <span>{selectedPlan.name}</span>
-                  </h3>
-                </div>
+                {selectedPlan?.id !== "63eb32759b5e4daf6b588205" && (
+                  <div className={`sidebar-plan`}>
+                    {/* <Image src={BaronIcon} /> */}
+                    <h3>
+                      Loch <span>{selectedPlan.name}</span>
+                    </h3>
+                  </div>
+                )}
 
                 <div
                   className={
@@ -821,8 +815,8 @@ function Sidebar(props) {
               modalType={"create_account"}
               iconImage={SignInIcon}
               hideSkip={true}
-              title="Signin"
-              description="Enter your email to signin"
+              title="Sign in"
+              description="Get right back into your account"
               stopUpdate={true}
             />
           ) : (

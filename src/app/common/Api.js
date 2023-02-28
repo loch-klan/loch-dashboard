@@ -462,7 +462,7 @@ export const VerifyEmail = (data,ctx) => {
                 setTimeout(() => {
                   ctx.state.onHide();
                    window.location.reload();
-                }, 500);
+                }, 1000);
               } else {
                   if (userId) {
                     let userdata = new URLSearchParams();
