@@ -18,24 +18,16 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    //  console.log("has token ", getToken());
     if (getToken()) {
-      // console.log("has token ", getToken())
       this.props.history.push("/home");
     } else {
       deleteToken();
          let isRefresh = JSON.parse(localStorage.getItem("refresh"));
          if (!isRefresh) {
            localStorage.setItem("refresh", true);
-
            window.location.reload(true);
          }
     }
-// if(JSON.parse(localStorage.getItem("addWallet")) || JSON.parse(localStorage.getItem("lochUser")) || localStorage.getItem("lochDummyUser")){
-    //   localStorage.removeItem("addWallet")
-    //   localStorage.removeItem("lochUser")
-    //   localStorage.removeItem("lochDummyUser")
-    // }
      GetDefaultPlan();
  
   }

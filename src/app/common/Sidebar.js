@@ -61,6 +61,9 @@ import { setCurrencyReducer } from './CommonAction'
 import FeedbackModal from './FeedbackModal'
 import UpgradeModal from './upgradeModal'
 import ConnectModal from './ConnectModal'
+
+
+
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -85,8 +88,23 @@ function Sidebar(props) {
   let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
   let triggerId = 6;
   let isDefi = userPlan?.defi_enabled;
-  //  let isDefi = true;
 
+  let selectedPlan = {};
+  const Plans = JSON.parse(localStorage.getItem("Plans"));
+  Plans?.map((plan) => {
+    if (plan.id === userPlan.id) {
+      selectedPlan = {
+        // Upgrade plan
+        price: plan.prices ? plan.prices[0]?.unit_amount / 100 : 0,
+        price_id: plan.prices ? plan.prices[0]?.id : "",
+        name: plan.name,
+        id: plan.id,
+        plan_reference_id: plan.plan_reference_id,
+
+      };
+    }
+  });
+ 
   
   
    React.useEffect(() => {
@@ -275,6 +293,19 @@ function Sidebar(props) {
                     </DropdownButton>
                   </div>
                 </div>
+                <div
+                  className={`sidebar-plan ${
+                    selectedPlan?.id === "63eb32769b5e4daf6b588206"
+                      ? "baron-bg"
+                      : selectedPlan?.id === "63eb32769b5e4daf6b588207"
+                      ? "soverign-bg"
+                      : ""
+                  }`}
+                >
+                  <h3>
+                    Loch <span>{selectedPlan.name}</span>
+                  </h3>
+                </div>
 
                 <div
                   className={
@@ -318,11 +349,12 @@ function Sidebar(props) {
                           onClick={(e) => {
                             if (!isWallet) {
                               e.preventDefault();
-                           }else{MenuWhale({
-                             email_address: getCurrentUser().email,
-                             session_id: getCurrentUser().id,
-                           });}
-                            
+                            } else {
+                              MenuWhale({
+                                email_address: getCurrentUser().email,
+                                session_id: getCurrentUser().id,
+                              });
+                            }
                           }}
                           activeclassname="active"
                         >
@@ -364,16 +396,16 @@ function Sidebar(props) {
                         `}
                           to="/intelligence"
                           activeclassname="active"
-                          onClick={(e) =>
-                           {  if (!isWallet) {
-                             e.preventDefault();
-                           } else {
-                             IntelligenceMenu({
-                               session_id: getCurrentUser().id,
-                               email_address: getCurrentUser().email,
-                             });
-                           }}
-                          }
+                          onClick={(e) => {
+                            if (!isWallet) {
+                              e.preventDefault();
+                            } else {
+                              IntelligenceMenu({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }
+                          }}
                         >
                           <Image
                             src={
@@ -395,16 +427,16 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           exact={true}
-                          onClick={(e) =>
-                            {if (!isWallet) {
+                          onClick={(e) => {
+                            if (!isWallet) {
                               e.preventDefault();
                             } else {
                               WalletsMenu({
                                 session_id: getCurrentUser().id,
                                 email_address: getCurrentUser().email,
                               });
-                            }}
-                          }
+                            }
+                          }}
                           className="nav-link"
                           to="/wallets"
                           activeclassname="active"
@@ -432,8 +464,8 @@ function Sidebar(props) {
                               upgradeModal();
                             }
                             if (!isWallet) {
-                             e.preventDefault();
-                           } 
+                              e.preventDefault();
+                            }
                           }}
                           activeclassname={`${!isDefi ? "none" : "active"}`}
                           // className="nav-link none"
@@ -465,7 +497,10 @@ function Sidebar(props) {
                           to="#"
                           activeclassname="none"
                         >
-                          <Image src={LinkIcon} style={ {filter: "opacity(0.6)"}} />
+                          <Image
+                            src={LinkIcon}
+                            style={{ filter: "opacity(0.6)" }}
+                          />
                           Connect Exchanges
                         </NavLink>
                       </li>
@@ -473,14 +508,16 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           exact={true}
-                          onClick={(e) =>
-                            {if (!isWallet) {
+                          onClick={(e) => {
+                            if (!isWallet) {
                               e.preventDefault();
-                            } else{ProfileMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            })}}
-                          }
+                            } else {
+                              ProfileMenu({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }
+                          }}
                           className="nav-link"
                           to="/profile"
                           activeclassname="active"
