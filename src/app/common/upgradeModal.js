@@ -111,7 +111,7 @@ class UpgradeModal extends BaseReactComponent {
     // console.log("AllPlan ", AllPlan);
 
     let selectedPlan = {};
-    let PlanId = props.plan_id || "63eb32759b5e4daf6b588205";
+    let PlanId = props.selectedId || "63eb32759b5e4daf6b588205";
     Plans?.map((plan) => {
       if (plan.id === PlanId) {
         selectedPlan = {
@@ -327,7 +327,10 @@ class UpgradeModal extends BaseReactComponent {
   };
 
   componentDidMount() {
-    // this.AddEmailModal();
+    if (this.props.selectedId) {
+      this.AddEmailModal();
+    }
+    
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -530,7 +533,7 @@ class UpgradeModal extends BaseReactComponent {
                             </div>
                           </div>
                           <div className="feature-list-wrapper">
-                            {this.state.selectedPlan?.features.map((list) => {
+                            {this.state.selectedPlan?.features?.map((list) => {
                               return (
                                 <div
                                   className={`feature-list ${
