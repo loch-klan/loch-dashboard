@@ -336,10 +336,10 @@ export const SendOtp = (data,ctx) => {
           isEmailNotExist: res.data.data.is_new_user,
           modalTitle: "Verify email",
           modalDescription: ctx?.props?.stopUpdate
-            ? "enter the verification code sent to your email to sign in your account"
+            ? "Enter the verification code sent to your email to sign in your account"
             : res.data.data.is_new_user
-            ? "enter the verification code sent to your email to save the wallets and pods to your account"
-            : "enter the verification code sent to your email to update the existing wallets and pods for your account",
+            ? "Enter the verification code sent to your email to save the wallets and pods to your account"
+            : "Enter the verification code sent to your email to update the existing wallets and pods for your account",
         });
       }
     })
@@ -358,6 +358,10 @@ export const VerifyEmail = (data,ctx) => {
         let isOptValid = res.data.data.otp_verified;
         let token = res.data.data.token;
       
+         localStorage.setItem(
+           "currentPlan",
+           JSON.stringify(res.data.data?.current_plan)
+         );
         localStorage.setItem("lochToken", token);
         const userId = localStorage.getItem("lochDummyUser");
         if (res.data.data.is_new_user) {

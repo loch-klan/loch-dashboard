@@ -95,7 +95,7 @@ function Sidebar(props) {
   let selectedPlan = {};
   const Plans = JSON.parse(localStorage.getItem("Plans"));
   Plans?.map((plan) => {
-    if (plan.id === userPlan.id) {
+    if (plan?.name === userPlan?.name) {
       selectedPlan = {
         // Upgrade plan
         price: plan.prices ? plan.prices[0]?.unit_amount / 100 : 0,
@@ -305,7 +305,7 @@ function Sidebar(props) {
                     </DropdownButton>
                   </div>
                 </div>
-                {selectedPlan?.id !== "63eb32759b5e4daf6b588205" && (
+                {selectedPlan?.name !== "Free" && (
                   <div className={`sidebar-plan`}>
                     {/* <Image src={BaronIcon} /> */}
                     <h3>

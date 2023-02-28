@@ -49,9 +49,10 @@ class UpgradeModal extends BaseReactComponent {
     const Plans = JSON.parse(localStorage.getItem("Plans"));
 
     let AllPlan = Plans?.map((plan) => {
+      let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
       return {
         // Upgrade plan
-        price: plan.prices ? plan.prices[0]?.unit_amount / 100 : 0,
+        price: price,
         price_id: plan.prices ? plan.prices[0]?.id : "",
         name: plan.name,
         id: plan.id,
@@ -95,7 +96,7 @@ class UpgradeModal extends BaseReactComponent {
           },
           {
             name: "Insights",
-            limit: plan?.insight || true,
+            limit: plan?.insight ? true : price > 0? true :false,
             img: insight,
             id: 9,
           },
@@ -121,6 +122,7 @@ class UpgradeModal extends BaseReactComponent {
     let PlanId = props.selectedId || "63eb32759b5e4daf6b588205";
     Plans?.map((plan) => {
       if (plan.id === PlanId) {
+        let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
         selectedPlan = {
           // Upgrade plan
           price: plan.prices ? plan.prices[0]?.unit_amount / 100 : 0,
@@ -167,7 +169,7 @@ class UpgradeModal extends BaseReactComponent {
             },
             {
               name: "Insights",
-              limit: plan?.insight || true,
+              limit: plan?.insight ? true : price > 0? true : false ,
               img: insight,
               id: 9,
             },
@@ -473,13 +475,19 @@ class UpgradeModal extends BaseReactComponent {
                                         <h3>{list.name}</h3>
                                       </div>
                                       <h4>
-                                        {list.limit === false
+                                      {
+                                        list.name !== "Insights"
+                                        ? list.limit === false
                                           ? "No"
                                           : list.limit === true
                                           ? "Yes"
                                           : list.limit === -1
                                           ? "Unlimited"
-                                          : list.limit}
+                                          : list.limit
+                                        : list.limit === false
+                                          ? "Limited"
+                                          : "Unlimited"
+                                      }
                                       </h4>
                                     </div>
                                   );
@@ -537,11 +545,11 @@ class UpgradeModal extends BaseReactComponent {
                           <div
                             className={`pricing-section
                               ${
-                                this.state.selectedPlan?.id ===
-                                "63eb32769b5e4daf6b588206"
+                                this.state.selectedPlan?.name ===
+                                "Baron"
                                   ? "baron-bg"
-                                  : this.state.selectedPlan?.id ===
-                                    "63eb32769b5e4daf6b588207"
+                                  : this.state.selectedPlan?.name ===
+                                    "Soverign"
                                   ? "soverign-bg"
                                   : ""
                               }
@@ -561,14 +569,14 @@ class UpgradeModal extends BaseReactComponent {
                                 <div
                                   className={`feature-list ${
                                     this.props.triggerId === list?.id
-                                      ? this.state.selectedPlan?.id ===
-                                        "63eb32759b5e4daf6b588205"
+                                      ? this.state.selectedPlan?.name ===
+                                        "Free"
                                         ? "free-plan"
-                                        : this.state.selectedPlan?.id ===
-                                          "63eb32769b5e4daf6b588206"
+                                        : this.state.selectedPlan?.name ===
+                                          "Baron"
                                         ? "baron-plan"
-                                        : this.state.selectedPlan?.id ===
-                                          "63eb32769b5e4daf6b588207"
+                                        : this.state.selectedPlan?.name ===
+                                          "Soverign"
                                         ? "soverign-plan"
                                         : ""
                                       : ""
@@ -589,13 +597,19 @@ class UpgradeModal extends BaseReactComponent {
                                     <h3>{list.name}</h3>
                                   </div>
                                   <h4>
-                                    {list.limit === false
-                                      ? "No"
-                                      : list.limit === true
-                                      ? "Yes"
-                                      : list.limit === -1
-                                      ? "Unlimited"
-                                      : list.limit}
+                                      {
+                                        list.name !== "Insights"
+                                        ? list.limit === false
+                                          ? "No"
+                                          : list.limit === true
+                                          ? "Yes"
+                                          : list.limit === -1
+                                          ? "Unlimited"
+                                          : list.limit
+                                        : list.limit === false
+                                          ? "Limited"
+                                          : "Unlimited"
+                                      }
                                   </h4>
                                 </div>
                               );

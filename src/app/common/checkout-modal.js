@@ -212,7 +212,7 @@ class CheckoutModal extends BaseReactComponent {
                           <div>{plan.name} </div> <div>{"$" + plan.price}</div>
                         </div>
                         <div className="feature-list-wrapper">
-                          {plan?.features.map((list) => {
+                          {plan?.features?.map((list) => {
                             return (
                               <div className="feature-list">
                                 <h3>{list.name}</h3>
