@@ -1607,11 +1607,13 @@ class CohortPage extends BaseReactComponent {
                           style={{ marginLeft: "1.5rem" }}
                           onClick={() => this.copyLink(e.wallet_address)}
                         />
-                        <Image
-                          src={DeleteIcon}
-                          style={{ width: "1.5rem", marginLeft: "1.5rem" }}
-                          onClick={() => this.deleteAddress(address, i)}
-                        />
+                        {this.state.userId && (
+                          <Image
+                            src={DeleteIcon}
+                            style={{ width: "1.5rem", marginLeft: "1.5rem" }}
+                            onClick={() => this.deleteAddress(address, i)}
+                          />
+                        )}
                         {this.state.userId && (
                           <div className="nickname-input">
                             <Form
