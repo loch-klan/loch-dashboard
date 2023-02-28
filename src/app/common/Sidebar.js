@@ -3,7 +3,7 @@ import { Image, Container, Button, DropdownButton, Dropdown } from 'react-bootst
 import { NavLink } from 'react-router-dom'
 // import logo from '../../image/logo.png'
 import logo from '../../image/Loch.svg'
-
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ActiveHomeIcon from '../../image/HomeIcon.svg'
 import InActiveHomeIcon from '../../assets/images/icons/InactiveHomeIcon.svg'
 import ActiveIntelligenceIcon from '../../assets/images/icons/ActiveIntelligenceIcon.svg';
@@ -62,6 +62,7 @@ import { setCurrencyReducer } from './CommonAction'
 import FeedbackModal from './FeedbackModal'
 import UpgradeModal from './upgradeModal'
 import ConnectModal from './ConnectModal'
+import AuthModal from './AuthModal';
 
 
 
@@ -74,7 +75,8 @@ function Sidebar(props) {
     const [leave, setLeave] = React.useState(false);
     const [apiModal,setApiModal] = React.useState(false);
     const [exportModal,setExportModal] = React.useState(false)
-    const [shareModal,setShareModal] = React.useState(false);
+  const [shareModal, setShareModal] = React.useState(false);
+      const [signinModal, setSigninModal] = React.useState(false);
     const [confirmLeave,setConfirmLeave] = React.useState(false)
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [currencyList, setAllCurrencyList] = React.useState([]);
@@ -173,6 +175,15 @@ function Sidebar(props) {
         email_address: getCurrentUser().email,
       });
     }
+  
+   const handleSigninModal = () => {
+     setSigninModal(!signinModal);
+     // ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
+    //  MenuShare({
+    //    session_id: getCurrentUser().id,
+    //    email_address: getCurrentUser().email,
+    //  });
+   };
     const handleShare=()=>{
         const user= JSON.parse(localStorage.getItem('lochUser'));
       const link= `${BASE_URL_S3}home/${user.link}`
@@ -578,7 +589,7 @@ function Sidebar(props) {
                         Export
                       </Button>
                     </span>
-                    {lochUser && (
+                    {lochUser ? (
                       <span
                         onMouseOver={(e) =>
                           (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -593,6 +604,24 @@ function Sidebar(props) {
                         <Image src={SharePortfolioIconWhite} />
                         <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
                           Share
+                        </Button>
+                      </span>
+                    ) : (
+                      <span
+                        // onMouseOver={(e) =>
+                        //   (e.currentTarget.children[0].src = SharePortfolioIcon)
+                        // }
+                        // onMouseLeave={(e) =>
+                        //   (e.currentTarget.children[0].src =
+                        //     SharePortfolioIconWhite)
+                        // }
+                        onClick={handleSigninModal}
+                        style={{ marginRight: "1rem" }}
+                        className="signin"
+                      >
+                        <Image src={SignInIcon} />
+                        <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                          Signin
                         </Button>
                       </span>
                     )}
@@ -782,6 +811,22 @@ function Sidebar(props) {
 
           {showFeedbackModal && (
             <FeedbackModal show={showFeedbackModal} onHide={handleFeedback} />
+          )}
+
+          {signinModal ? (
+            <AuthModal
+              show={signinModal}
+              onHide={handleSigninModal}
+              history={history}
+              modalType={"create_account"}
+              iconImage={SignInIcon}
+              hideSkip={true}
+              title="Signin"
+              description="Enter your email to signin"
+              stopUpdate={true}
+            />
+          ) : (
+            ""
           )}
         </div>
       );

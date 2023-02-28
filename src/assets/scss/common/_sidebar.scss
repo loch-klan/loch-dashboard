@@ -266,7 +266,24 @@
                         &:hover .navbar-button{
                             color:$primary
                         }
+
+                      
                     }
+                    .signin{
+                      img{
+                        width:1.6rem;
+                        opacity: 0.4;
+                      }
+                      
+
+                      &:hover{
+                        img{
+                          opacity: 1;
+
+                        }
+                      }
+                        
+                      }
                 }
             }
             // p {

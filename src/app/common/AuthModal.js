@@ -37,14 +37,16 @@ class AuthModal extends BaseReactComponent {
 
       dummyUser,
       show: props.show,
-        email: "",
-        otp: "",
-        prevOtp:"",
-        isEmailNotExist: false,
-        isOptInValid: false,
-        isShowOtp: false,
+      email: "",
+      otp: "",
+      prevOtp: "",
+      isEmailNotExist: false,
+      isOptInValid: false,
+      isShowOtp: false,
       onHide: props.onHide,
       changeList: props.changeWalletList,
+      modalTitle: props.title || null,
+      modalDescription: props.description  || null,
     };
   }
 

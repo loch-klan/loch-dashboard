@@ -335,6 +335,20 @@ export const UpdateCohortNickname = (data,ctx) => {
     });
 };
 
+export const DeleteCohortAddress = (data, ctx) => {
+  console.log("delete")
+  //  postLoginInstance
+  //    .post("wallet/user-cohort/update-user-cohort-nickname", data)
+  //    .then((res) => {
+  //      if (!res.data.error) {
+  //        // let response = res.data.data;
+  //       //  toast.success("Nickname updated");
+  //        ctx.CheckApiResponse(true);
+  //      } else {
+  //        toast.error(res.data.message || "Something Went Wrong");
+  //      }
+  //    });
+}
 
 // Get Asset filter by  Cohort
 export const GetAssetFilter= (data,ctx) => {
