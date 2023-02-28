@@ -549,7 +549,7 @@ class UpgradeModal extends BaseReactComponent {
                                 "Baron"
                                   ? "baron-bg"
                                   : this.state.selectedPlan?.name ===
-                                    "Soverign"
+                                    "Sovereign"
                                   ? "soverign-bg"
                                   : ""
                               }

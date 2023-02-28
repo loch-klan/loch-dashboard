@@ -186,7 +186,7 @@ class Profile extends Component {
                                 "Baron"
                                   ? "baron-bg"
                                   : this.state.selectedPlan?.name ===
-                                    "Soverign"
+                                    "Sovereign"
                                   ? "soverign-bg"
                                   : ""
                               }
