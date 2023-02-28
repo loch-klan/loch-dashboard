@@ -209,7 +209,7 @@ export const deleteAccount = (data, ctx) => {
   postLoginInstance
     .post("organisation/user/delete-user-account", data)
     .then((res) => {
-      console.log(res)
+      // console.log(res)
       if (!res.data.error) {
          ctx.props.onHide();
          ctx.props.makeApiCall();

@@ -50,7 +50,7 @@ class EditWalletExchange extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("exchange", this.state.walletMetaData?.name);
     data.append("account_name", this.state.walletNickname);
-    updateAccountName(this, data);
+    updateAccountName(data,this);
 
 
     // EditSpecificWallet({
@@ -98,7 +98,7 @@ class EditWalletExchange extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("exchange", this.state.walletMetaData?.name);
     data.append("account_name", this.state.walletNickname);
-    deleteAccount(this, data);
+    deleteAccount(data,this);
 
   };
 
@@ -187,9 +187,9 @@ const mapStateToProps = (state) => ({
   walletState: state.WalletState,
 });
 const mapDispatchToProps = {
-  updateWalletApi,
-  getAllWalletListApi,
-  deleteWallet,
+  
+   updateAccountName,
+  deleteAccount,
 };
 EditWalletExchange.propTypes = {};
 
