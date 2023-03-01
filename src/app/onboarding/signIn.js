@@ -87,13 +87,16 @@ class SignIn extends BaseReactComponent {
                                 this.state.email
                               );
 
-                              if (!isvalid && this.state.prevEmail !== this.state.email) {
+                              if (
+                                !isvalid &&
+                                this.state.prevEmail !== this.state.email
+                              ) {
                                 InvalidEmail({
-                                  email_address: this.state.email
+                                  email_address: this.state.email,
                                 });
-                                this.setState({prevEmail: this.state.email})
+                                this.setState({ prevEmail: this.state.email });
                               }
-                              return isvalid
+                              return isvalid;
                             },
                             message: "Please enter a valid email id",
                           },
@@ -143,6 +146,7 @@ class SignIn extends BaseReactComponent {
                           placeholder: "Verification code",
                         },
                       }}
+                      hideOnblur={true}
                     />
                   )}
                 </div>

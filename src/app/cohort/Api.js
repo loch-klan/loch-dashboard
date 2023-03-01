@@ -10,8 +10,62 @@ export const createCohort = (data,ctx) => {
     .then((res) => {
       if (!res.data.error) {
         //  console.log("res cohort", ctx);
-          ctx.props.apiResponse && ctx.props.apiResponse(true);
+        ctx.setState(
+          {
+            podId: res?.data?.data?.cohort_id,
+            uploadStatus: "Indexing",
+          },
+          () => {
+            if (ctx.state.showWarningMsg) {
+              // console.log("in")
+              ctx.getPodStatusFunction();
+            }
+          }
+        );
+        if (!ctx.state.showWarningMsg) {
+          // ctx.state.onHide();
+           ctx.props.apiResponse && ctx.props.apiResponse(true);
+        }
+        // if (!ctx.state.showWarningMsg) {
+           
+        // }
          
+      } else {
+         ctx.props.apiResponse && ctx.props.apiResponse(true);
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+export const getPodStatus = (data, ctx) => {
+  //   let data = new URLSearchParams();
+  // console.log("api")
+
+  postLoginInstance
+    .post("wallet/user-cohort/get-user-cohort-status", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // getStateApi;
+        ctx.setState({
+          isIndexed: res?.data?.data?.indexed,
+        });
+        //  console.log("res cohort", ctx);
+        // ctx.props.apiResponse && ctx.props.apiResponse(true);
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+export const notificationSend = (data, ctx) => {
+  //   let data = new URLSearchParams();
+
+  postLoginInstance
+    .post("wallet/user-cohort/send-cohort-update-email", data)
+    .then((res) => {
+      if (!res.data.error) {
+        //  console.log("res cohort", ctx);
+        // ctx.props.apiResponse && ctx.props.apiResponse(true);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
