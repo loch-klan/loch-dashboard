@@ -140,7 +140,7 @@ export const searchCohort = (data,ctx) => {
           sortedList: res.data.data?.user_cohorts.results,
           total_addresses,
         });
-
+      
         
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -157,38 +157,43 @@ export const getCohort = (data, ctx) => {
       if (!res.data.error) {
         // console.log("get cohort", res.data.data.user_cohort);
         let response = res.data.data?.user_cohort;
-        let sortedAddress = (response?.wallet_address_details)?.sort(
-          (a, b) => b?.net_worth - a?.net_worth
-        );
+        if (response) {
+          let sortedAddress = response?.wallet_address_details?.sort(
+            (a, b) => b?.net_worth - a?.net_worth
+          );
 
-        let sortedChains = [];
-        sortedAddress &&
-          sortedAddress?.map((e) => {
-            e.chains?.map((chain) => {
-              if (!sortedChains.includes(chain?.symbol)) {
-                sortedChains.push(chain?.symbol);
-              }
+          let sortedChains = [];
+          sortedAddress &&
+            sortedAddress?.map((e) => {
+              e.chains?.map((chain) => {
+                if (!sortedChains.includes(chain?.symbol)) {
+                  sortedChains.push(chain?.symbol);
+                }
+              });
             });
+          // console.log("sorted chain", sortedChains)
+          let nicknames = {};
+          response?.wallet_address_details.map((item, i) => {
+            nicknames[`nickname-${i + 1}`] = item.nickname;
           });
-        // console.log("sorted chain", sortedChains)
-        let nicknames = {};
-        response?.wallet_address_details.map((item,i) => {
-          nicknames[`nickname-${i+1}`] = item.nickname
-        });
-        ctx.setState({
-          walletAddresses: response?.wallet_address_details,
-          totalNetWorth: response?.total_net_worth,
-          createOn: response?.created_on,
-          // frequentlyPurchasedAsset: response.frequently_purchased_asset,
-          // frequentlySoldAsset: response.frequently_sold_asset,
-          largestHoldingChain: response?.largest_holding_asset?.asset,
-          LargestChainLoader: false,
-          cohortId: response?.id,
-          userId: response?.user_id,
-          cohortName: response?.name,
-          cohortSlug: response?.slug,
-          ...nicknames,
-        });
+          ctx.setState({
+            walletAddresses: response?.wallet_address_details,
+            totalNetWorth: response?.total_net_worth,
+            createOn: response?.created_on,
+            // frequentlyPurchasedAsset: response.frequently_purchased_asset,
+            // frequentlySoldAsset: response.frequently_sold_asset,
+            largestHoldingChain: response?.largest_holding_asset?.asset,
+            LargestChainLoader: false,
+            cohortId: response?.id,
+            userId: response?.user_id,
+            cohortName: response?.name,
+            cohortSlug: response?.slug,
+            ...nicknames,
+          });
+          
+        } else {
+          ctx.props.history.push("/whale-watching");
+        }
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
@@ -390,18 +395,17 @@ export const UpdateCohortNickname = (data,ctx) => {
 };
 
 export const DeleteCohortAddress = (data, ctx) => {
-  console.log("delete")
-  //  postLoginInstance
-  //    .post("wallet/user-cohort/update-user-cohort-nickname", data)
-  //    .then((res) => {
-  //      if (!res.data.error) {
-  //        // let response = res.data.data;
-  //       //  toast.success("Nickname updated");
-  //        ctx.CheckApiResponse(true);
-  //      } else {
-  //        toast.error(res.data.message || "Something Went Wrong");
-  //      }
-  //    });
+  // console.log("delete")
+   postLoginInstance
+     .post("wallet/user-cohort/delete-cohort-address", data)
+     .then((res) => {
+       if (!res.data.error) {
+
+         ctx.CheckApiResponse(true);
+       } else {
+         toast.error(res.data.message || "Something Went Wrong");
+       }
+     });
 }
 
 // Get Asset filter by  Cohort
