@@ -58,7 +58,7 @@ class InsightsPage extends Component {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
-      triggerId: 0,
+      triggerId: 9,
     };
   }
 
@@ -179,7 +179,7 @@ class InsightsPage extends Component {
               history={this.props.history}
               isShare={localStorage.getItem("share_id")}
               isStatic={this.state.isStatic}
-              // triggerId={this.state.triggerId}
+              triggerId={this.state.triggerId}
             />
           )}
 
@@ -252,34 +252,38 @@ class InsightsPage extends Component {
                   );
                 })
               ) : (
-                <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
-                  {
-                    "This wallet is not active enough for us to generate any useful insights here :)."
-                  }
-                </h5>
+                this.state.userPlan.name !== "Free" && (
+                  <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
+                    {
+                      "This wallet is not active enough for us to generate any useful insights here :)."
+                    }
+                  </h5>
+                )
               )}
             </div>
           </div>
           {/* Upgrade Insight section */}
-         {this.state.userPlan.name === "Free" && <div className="Insight-upgrade-wrapper">
-            <div className="Insight-upgrade">
-              <Image src={GradientImg} />
-              <h3 className="inter-display-medium f-s-25 lh-30 m-b-5 text-center">
-                More insights with Loch
-              </h3>
-              <h5 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-24 text-center">
-                Upgrade your plan
-              </h5>
-              <Button
-                className="secondary-btn text-center"
-                onClick={this.upgradeModal}
-              >
-                Upgrade
-              </Button>
+          {this.state.userPlan.name === "Free" && (
+            <div className="Insight-upgrade-wrapper">
+              <div className="Insight-upgrade">
+                <Image src={GradientImg} />
+                <h3 className="inter-display-medium f-s-25 lh-30 m-b-5 text-center">
+                  More insights with Loch
+                </h3>
+                <h5 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-24 text-center">
+                  Upgrade your plan
+                </h5>
+                <Button
+                  className="secondary-btn text-center"
+                  onClick={this.upgradeModal}
+                >
+                  Upgrade
+                </Button>
+              </div>
+              <div className="inner-box"></div>
+              <div className="inner-box2"></div>
             </div>
-            <div className="inner-box"></div>
-            <div className="inner-box2"></div>
-          </div>}
+          )}
 
           {/* <FeedbackForm page={"Insights Page"} /> */}
         </div>

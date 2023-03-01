@@ -6,6 +6,7 @@ import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import {
   CreateUpdateNotification,
+  DeleteCohortAddress,
   getAllInsightsApi,
   GetAssetFilter,
   getCohort,
@@ -64,6 +65,7 @@ import checkIcon from "../../assets/images/icons/check-cohort.svg";
 import moment from "moment";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
 import AuthModal from "../common/AuthModal";
+import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import {
   NotificationAmount,
   NotificationCheckbox1,
@@ -137,18 +139,25 @@ class CohortPage extends BaseReactComponent {
       upgradeModal: false,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       triggerId: 0,
-      
+      showDust: false,
     };
   }
 
-  upgradeModal = () => {
+  showDust = () => {
     this.setState(
       {
-        upgradeModal: !this.state.upgradeModal,
-        
+        showDust: !this.state.showDust,
       },
-      
+      () => {
+        this.getAssetData(this.state.activeFooter);
+      }
     );
+  };
+
+  upgradeModal = () => {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
   };
 
   handleFunctionChain = (badge) => {
@@ -341,6 +350,12 @@ class CohortPage extends BaseReactComponent {
     data.append("end_datetime", startDate);
     data.append("chain_ids", JSON.stringify(this.state.activeBadgeList));
     data.append("asset_ids", JSON.stringify(this.state.activeAsset));
+
+    // if hide dust clicked
+    if (this.state.showDust) {
+        data.append("hide_dust", this.state.showDust);
+    }
+    
 
     // Analyics
     WhaleExpandedPodFilter({
@@ -578,6 +593,13 @@ class CohortPage extends BaseReactComponent {
     });
   };
 
+  deleteAddress = (address, i) => {
+    let data = new URLSearchParams();
+    data.append("cohort_id", this.state.cohortId);
+    data.append("wallet_address", address);
+    DeleteCohortAddress(data, this);
+  };
+
   render() {
     const nav_list = window.location.pathname.split("/");
     let PageName = nav_list[2].replace(/-/g, " ");
@@ -636,6 +658,7 @@ class CohortPage extends BaseReactComponent {
             headerTitle={
               this.state.cohortName ? this.state.cohortName : PageName
             }
+            isRedirect={true}
             isEdit={true}
             chainImages={this.state?.chainImages}
             cohortId={this.state.cohortId}
@@ -867,6 +890,14 @@ class CohortPage extends BaseReactComponent {
                 alignItems: "center",
               }}
             >
+              {/* <p
+                onClick={this.showDust}
+                className="inter-display-medium f-s-16 lh-19 cp grey-ADA m-r-12 cohort-dust"
+              >
+                {this.state.showDust
+                  ? "Reveal dust (less than $1)"
+                  : "Hide dust (less than $1)"}
+              </p> */}
               <div style={{ width: "20rem" }}>
                 <CustomDropdown
                   filtername="All chains selected"
@@ -1576,6 +1607,13 @@ class CohortPage extends BaseReactComponent {
                           style={{ marginLeft: "1.5rem" }}
                           onClick={() => this.copyLink(e.wallet_address)}
                         />
+                        {/* {this.state.userId && (
+                          <Image
+                            src={DeleteIcon}
+                            style={{ width: "1.5rem", marginLeft: "1.5rem" }}
+                            onClick={() => this.deleteAddress(address, i)}
+                          />
+                        )} */}
                         {this.state.userId && (
                           <div className="nickname-input">
                             <Form

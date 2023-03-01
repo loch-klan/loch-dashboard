@@ -3,7 +3,7 @@ import { Image, Container, Button, DropdownButton, Dropdown } from 'react-bootst
 import { NavLink } from 'react-router-dom'
 // import logo from '../../image/logo.png'
 import logo from '../../image/Loch.svg'
-
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ActiveHomeIcon from '../../image/HomeIcon.svg'
 import InActiveHomeIcon from '../../assets/images/icons/InactiveHomeIcon.svg'
 import ActiveIntelligenceIcon from '../../assets/images/icons/ActiveIntelligenceIcon.svg';
@@ -37,6 +37,7 @@ import { toast } from 'react-toastify'
 import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
 import ConnectModalIcon from '../../assets/images/icons/connectIcon.svg';
 import LinkIcon from "../../assets/images/icons/link.svg";
+import BaronIcon from "../../assets/images/icons/baron-logo.svg";
 
 import ConfirmLeaveModal from './ConformLeaveModal';
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -61,6 +62,10 @@ import { setCurrencyReducer } from './CommonAction'
 import FeedbackModal from './FeedbackModal'
 import UpgradeModal from './upgradeModal'
 import ConnectModal from './ConnectModal'
+import AuthModal from './AuthModal';
+
+
+
 function Sidebar(props) {
 // console.log('props',props);
 
@@ -70,7 +75,8 @@ function Sidebar(props) {
     const [leave, setLeave] = React.useState(false);
     const [apiModal,setApiModal] = React.useState(false);
     const [exportModal,setExportModal] = React.useState(false)
-    const [shareModal,setShareModal] = React.useState(false);
+  const [shareModal, setShareModal] = React.useState(false);
+      const [signinModal, setSigninModal] = React.useState(false);
     const [confirmLeave,setConfirmLeave] = React.useState(false)
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [currencyList, setAllCurrencyList] = React.useState([]);
@@ -85,8 +91,23 @@ function Sidebar(props) {
   let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
   let triggerId = 6;
   let isDefi = userPlan?.defi_enabled;
-  //  let isDefi = true;
 
+  let selectedPlan = {};
+  const Plans = JSON.parse(localStorage.getItem("Plans"));
+  Plans?.map((plan) => {
+    if (plan?.name === userPlan?.name) {
+      selectedPlan = {
+        // Upgrade plan
+        price: plan.prices ? plan.prices[0]?.unit_amount / 100 : 0,
+        price_id: plan.prices ? plan.prices[0]?.id : "",
+        name: plan.name,
+        id: plan.id,
+        plan_reference_id: plan.plan_reference_id,
+
+      };
+    }
+  });
+ 
   
   
    React.useEffect(() => {
@@ -135,7 +156,8 @@ function Sidebar(props) {
         });
     }
     const handleConfirmLeaveModal = () =>{
-        setConfirmLeave(!confirmLeave)
+      setConfirmLeave(!confirmLeave)
+       
     }
     const handleExportModal = ()=>{
         setExportModal(!exportModal);
@@ -153,6 +175,15 @@ function Sidebar(props) {
         email_address: getCurrentUser().email,
       });
     }
+  
+   const handleSigninModal = () => {
+     setSigninModal(!signinModal);
+     // ExportMenu({ session_id: getCurrentUser().id, email_address: getCurrentUser().email });
+    //  MenuShare({
+    //    session_id: getCurrentUser().id,
+    //    email_address: getCurrentUser().email,
+    //  });
+   };
     const handleShare=()=>{
         const user= JSON.parse(localStorage.getItem('lochUser'));
       const link= `${BASE_URL_S3}home/${user.link}`
@@ -274,6 +305,14 @@ function Sidebar(props) {
                     </DropdownButton>
                   </div>
                 </div>
+                {selectedPlan?.name !== "Free" && (
+                  <div className={`sidebar-plan`}>
+                    {/* <Image src={BaronIcon} /> */}
+                    <h3>
+                      Loch <span>{selectedPlan.name}</span>
+                    </h3>
+                  </div>
+                )}
 
                 <div
                   className={
@@ -317,11 +356,12 @@ function Sidebar(props) {
                           onClick={(e) => {
                             if (!isWallet) {
                               e.preventDefault();
-                           }else{MenuWhale({
-                             email_address: getCurrentUser().email,
-                             session_id: getCurrentUser().id,
-                           });}
-                            
+                            } else {
+                              MenuWhale({
+                                email_address: getCurrentUser().email,
+                                session_id: getCurrentUser().id,
+                              });
+                            }
                           }}
                           activeclassname="active"
                         >
@@ -363,16 +403,16 @@ function Sidebar(props) {
                         `}
                           to="/intelligence"
                           activeclassname="active"
-                          onClick={(e) =>
-                           {  if (!isWallet) {
-                             e.preventDefault();
-                           } else {
-                             IntelligenceMenu({
-                               session_id: getCurrentUser().id,
-                               email_address: getCurrentUser().email,
-                             });
-                           }}
-                          }
+                          onClick={(e) => {
+                            if (!isWallet) {
+                              e.preventDefault();
+                            } else {
+                              IntelligenceMenu({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }
+                          }}
                         >
                           <Image
                             src={
@@ -394,16 +434,16 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           exact={true}
-                          onClick={(e) =>
-                            {if (!isWallet) {
+                          onClick={(e) => {
+                            if (!isWallet) {
                               e.preventDefault();
                             } else {
                               WalletsMenu({
                                 session_id: getCurrentUser().id,
                                 email_address: getCurrentUser().email,
                               });
-                            }}
-                          }
+                            }
+                          }}
                           className="nav-link"
                           to="/wallets"
                           activeclassname="active"
@@ -431,8 +471,8 @@ function Sidebar(props) {
                               upgradeModal();
                             }
                             if (!isWallet) {
-                             e.preventDefault();
-                           } 
+                              e.preventDefault();
+                            }
                           }}
                           activeclassname={`${!isDefi ? "none" : "active"}`}
                           // className="nav-link none"
@@ -464,7 +504,10 @@ function Sidebar(props) {
                           to="#"
                           activeclassname="none"
                         >
-                          <Image src={LinkIcon} style={ {filter: "opacity(0.6)"}} />
+                          <Image
+                            src={LinkIcon}
+                            style={{ filter: "opacity(0.6)" }}
+                          />
                           Connect Exchanges
                         </NavLink>
                       </li> */}
@@ -472,14 +515,16 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           exact={true}
-                          onClick={(e) =>
-                            {if (!isWallet) {
+                          onClick={(e) => {
+                            if (!isWallet) {
                               e.preventDefault();
-                            } else{ProfileMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            })}}
-                          }
+                            } else {
+                              ProfileMenu({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }
+                          }}
                           className="nav-link"
                           to="/profile"
                           activeclassname="active"
@@ -538,7 +583,7 @@ function Sidebar(props) {
                         Export
                       </Button>
                     </span>
-                    {lochUser && (
+                    {lochUser ? (
                       <span
                         onMouseOver={(e) =>
                           (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -553,6 +598,24 @@ function Sidebar(props) {
                         <Image src={SharePortfolioIconWhite} />
                         <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
                           Share
+                        </Button>
+                      </span>
+                    ) : (
+                      <span
+                        // onMouseOver={(e) =>
+                        //   (e.currentTarget.children[0].src = SharePortfolioIcon)
+                        // }
+                        // onMouseLeave={(e) =>
+                        //   (e.currentTarget.children[0].src =
+                        //     SharePortfolioIconWhite)
+                        // }
+                        onClick={handleSigninModal}
+                        style={{ marginRight: "1rem" }}
+                        className="signin"
+                      >
+                        <Image src={SignInIcon} />
+                        <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                          Sign in
                         </Button>
                       </span>
                     )}
@@ -742,6 +805,22 @@ function Sidebar(props) {
 
           {showFeedbackModal && (
             <FeedbackModal show={showFeedbackModal} onHide={handleFeedback} />
+          )}
+
+          {signinModal ? (
+            <AuthModal
+              show={signinModal}
+              onHide={handleSigninModal}
+              history={history}
+              modalType={"create_account"}
+              iconImage={SignInIcon}
+              hideSkip={true}
+              title="Sign in"
+              description="Get right back into your account"
+              stopUpdate={true}
+            />
+          ) : (
+            ""
           )}
         </div>
       );

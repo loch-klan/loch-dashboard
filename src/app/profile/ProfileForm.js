@@ -1,13 +1,19 @@
 import React from "react";
-import { Form, FormElement, CustomTextControl } from '../../utils/form'
-import { Row, Col, Image, Button } from 'react-bootstrap';
-import profileInfoIcon from "../../image/ProfileInfoIcon.svg"
+import { Form, FormElement, CustomTextControl } from "../../utils/form";
+import { Row, Col, Image, Button } from "react-bootstrap";
+import profileInfoIcon from "../../image/ProfileInfoIcon.svg";
 // import CustomButton from "../../utils/form/CustomButton";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import ReactDOM from 'react-dom';
-import {ManageLink, updateUser} from  './Api.js'
-import { connect } from 'react-redux';
-import { EmailAdded, FirstNameAdded, LastNameAdded, MobileNumberAdded, ProfileSaved } from "../../utils/AnalyticsFunctions";
+import { ManageLink, updateUser } from "./Api.js";
+import { connect } from "react-redux";
+import {
+  EmailAdded,
+  FirstNameAdded,
+  LastNameAdded,
+  MobileNumberAdded,
+  ProfileSaved,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import UpgradeModal from "../common/upgradeModal";
 
@@ -35,12 +41,9 @@ class ProfileForm extends BaseReactComponent {
   }
 
   upgradeModal = () => {
-    this.setState(
-      {
-        upgradeModal: !this.state.upgradeModal,
-      },
-     
-    );
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
   };
 
   onValidSubmit = () => {
@@ -130,9 +133,11 @@ class ProfileForm extends BaseReactComponent {
                         placeholder: "John",
                       },
                     }}
-                    classes={{
-                      // inputField: this.state.firstName !== "" ? "done" : "",
-                    }}
+                    classes={
+                      {
+                        // inputField: this.state.firstName !== "" ? "done" : "",
+                      }
+                    }
                   />
                 </Col>
                 <Col md={6}>
@@ -145,9 +150,11 @@ class ProfileForm extends BaseReactComponent {
                         placeholder: "Loch",
                       },
                     }}
-                    classes={{
-                      // inputField: this.state.lastName !== "" ? "done" : "",
-                    }}
+                    classes={
+                      {
+                        // inputField: this.state.lastName !== "" ? "done" : "",
+                      }
+                    }
                   />
                 </Col>
               </Row>
@@ -164,9 +171,11 @@ class ProfileForm extends BaseReactComponent {
                         placeholder: "john@loch.one",
                       },
                     }}
-                    classes={{
-                      // inputField: this.state.email !== "" ? "done" : "",
-                    }}
+                    classes={
+                      {
+                        // inputField: this.state.email !== "" ? "done" : "",
+                      }
+                    }
                   />
                 </Col>
               </Row>
@@ -183,9 +192,11 @@ class ProfileForm extends BaseReactComponent {
                         placeholder: "(217) 331 - 1312",
                       },
                     }}
-                    classes={{
-                      // inputField: this.state.mobileNumber !== "" ? "done" : "",
-                    }}
+                    classes={
+                      {
+                        // inputField: this.state.mobileNumber !== "" ? "done" : "",
+                      }
+                    }
                   />
                 </Col>
               </Row>
@@ -234,14 +245,10 @@ class ProfileForm extends BaseReactComponent {
     );
   }
 }
-const mapStateToProps = state => ({
-
-});
+const mapStateToProps = (state) => ({});
 const mapDispatchToProps = {
-    updateUser
-}
-ProfileForm.propTypes = {
-
+  updateUser,
 };
+ProfileForm.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);

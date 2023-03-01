@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 // import Sidebar from '../common/Sidebar';
-import ProfileForm from './ProfileForm';
-import PageHeader from './../common/PageHeader';
-import FeedbackForm from '../common/FeedbackForm';
-import { ProfilePage } from '../../utils/AnalyticsFunctions';
-import { getCurrentUser } from '../../utils/ManageToken';
+import ProfileForm from "./ProfileForm";
+import PageHeader from "./../common/PageHeader";
+import FeedbackForm from "../common/FeedbackForm";
+import { ProfilePage } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import FixAddModal from '../common/FixAddModal';
-import { GetAllPlan, getUser } from '../common/Api';
-import { Button, Col, Image, Row } from 'react-bootstrap';
+import FixAddModal from "../common/FixAddModal";
+import { GetAllPlan, getUser } from "../common/Api";
+import { Button, Col, Image, Row } from "react-bootstrap";
 
 // Upgrade
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
@@ -23,8 +23,9 @@ import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
 // import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
-import { ManageLink } from './Api';
-import UpgradeModal from '../common/upgradeModal';
+import { ManageLink } from "./Api";
+import UpgradeModal from "../common/upgradeModal";
+import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 
 class Profile extends Component {
   constructor(props) {
@@ -33,10 +34,11 @@ class Profile extends Component {
     let selectedPlan = {};
     let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
     Plans?.map((plan) => {
-      if (plan.id === userPlan.id) {
+      if (plan.name === userPlan.name) {
+        let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
         selectedPlan = {
           // Upgrade plan
-          price: plan.prices ? plan.prices[0]?.unit_amount / 100 : 0,
+          price: price,
           price_id: plan.prices ? plan.prices[0]?.id : "",
           name: plan.name,
           id: plan.id,
@@ -77,6 +79,12 @@ class Profile extends Component {
               limit: plan.defi_enabled,
               img: DefiIcon,
               id: 6,
+            },
+            {
+              name: "Insights",
+              limit: plan?.insight ? true : price > 0 ? true : false,
+              img: insight,
+              id: 9,
             },
             {
               name: "Export addresses",
@@ -174,11 +182,11 @@ class Profile extends Component {
                     <div
                       className={`pricing-section
                               ${
-                                this.state.selectedPlan?.id ===
-                                "63eb32769b5e4daf6b588206"
+                                this.state.selectedPlan?.name ===
+                                "Baron"
                                   ? "baron-bg"
-                                  : this.state.selectedPlan?.id ===
-                                    "63eb32769b5e4daf6b588207"
+                                  : this.state.selectedPlan?.name ===
+                                    "Sovereign"
                                   ? "soverign-bg"
                                   : ""
                               }
@@ -191,7 +199,7 @@ class Profile extends Component {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         rowGap: "1.2rem",
                         margin: "1.7rem 1rem 1rem",
                       }}
@@ -200,12 +208,12 @@ class Profile extends Component {
                         style={{
                           backgroundColor: "#E5E5E680",
                           width: "30%",
-                          height: "1px",
+                          height: "1.5px",
                           marginRight: "1.2rem",
                         }}
                       ></div>
                       <h4
-                        className="inter-display-semi-bold f-s-10 lh-12 grey-CAC"
+                        className="inter-display-semi-bold f-s-12 lh-12 grey-CAC"
                         style={{
                           whiteSpace: "nowrap",
                           textTransform: "uppercase",
@@ -217,7 +225,7 @@ class Profile extends Component {
                         style={{
                           backgroundColor: "#E5E5E680",
                           width: "30%",
-                          height: "1px",
+                          height: "1.5px",
                           marginLeft: "1.2rem",
                         }}
                       ></div>
@@ -227,17 +235,26 @@ class Profile extends Component {
                         return (
                           <div className={`feature-list`}>
                             <div className="label">
-                              <Image src={list?.img} />
+                              <Image
+                                src={list?.img}
+                                // style={list?.id == 9 ? { opacity: "0.6" } : {}}
+                              />
                               <h3>{list.name}</h3>
                             </div>
                             <h4>
-                              {list.limit === false
+                              {
+                              list.name !== "Insights"
+                              ? list.limit === false
                                 ? "No"
                                 : list.limit === true
                                 ? "Yes"
                                 : list.limit === -1
                                 ? "Unlimited"
-                                : list.limit}
+                                : list.limit
+                              : list.limit === false
+                                ? "Limited"
+                                : "Unlimited"
+                              }
                             </h4>
                           </div>
                         );
@@ -246,7 +263,7 @@ class Profile extends Component {
                   </div>
                   <Button
                     className={`primary-btn ${
-                      this.state.selectedPlan?.id !== "63eb32759b5e4daf6b588205"
+                      this.state.selectedPlan?.name !== "Free"
                         ? "grey-bg"
                         : ""
                     }`}
@@ -254,8 +271,8 @@ class Profile extends Component {
                       if (
                         this.state.manageUrl === "" ||
                         this.state.manageUrl === undefined ||
-                        this.state.selectedPlan?.id ===
-                          "63eb32759b5e4daf6b588205"
+                        this.state.selectedPlan?.name ===
+                          "Free"
                       ) {
                         this.upgradeModal();
                       } else {
@@ -263,7 +280,7 @@ class Profile extends Component {
                       }
                     }}
                   >
-                    {this.state.selectedPlan?.id !== "63eb32759b5e4daf6b588205"
+                    {this.state.selectedPlan?.name !== "Free"
                       ? "Manage subscription"
                       : "Upgrade"}
                   </Button>
@@ -271,18 +288,16 @@ class Profile extends Component {
               </Col>
             </Row>
           </div>
-          {
-       this.state.upgradeModal && (
-         <UpgradeModal
-           show={this.state.upgradeModal}
-           onHide={this.upgradeModal}
-           history={this.props.history}
-           isShare={localStorage.getItem("share_id")}
-           isStatic={this.state.isStatic}
-           triggerId={0}
-         />
-       )
-     }
+          {this.state.upgradeModal && (
+            <UpgradeModal
+              show={this.state.upgradeModal}
+              onHide={this.upgradeModal}
+              history={this.props.history}
+              isShare={localStorage.getItem("share_id")}
+              isStatic={this.state.isStatic}
+              triggerId={0}
+            />
+          )}
           {/* <FeedbackForm page={"Profile Page"} /> */}
         </div>
         
@@ -292,14 +307,14 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-    profileState: state.ProfileState
+const mapStateToProps = (state) => ({
+  profileState: state.ProfileState,
 });
 const mapDispatchToProps = {
-    // getPosts: fetchPosts
-}
+  // getPosts: fetchPosts
+};
 Profile.propTypes = {
-    // getPosts: PropTypes.func
+  // getPosts: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

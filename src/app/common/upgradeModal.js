@@ -30,6 +30,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import CheckoutModal from "./checkout-modal";
 import AuthModal from "./AuthModal";
+import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
 import ExportIcon from "../../assets/images/icons/upgrade-export.svg";
@@ -48,9 +49,10 @@ class UpgradeModal extends BaseReactComponent {
     const Plans = JSON.parse(localStorage.getItem("Plans"));
 
     let AllPlan = Plans?.map((plan) => {
+      let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
       return {
         // Upgrade plan
-        price: plan.prices ? plan.prices[0]?.unit_amount / 100 : 0,
+        price: price,
         price_id: plan.prices ? plan.prices[0]?.id : "",
         name: plan.name,
         id: plan.id,
@@ -93,6 +95,12 @@ class UpgradeModal extends BaseReactComponent {
             id: 6,
           },
           {
+            name: "Insights",
+            limit: plan?.insight ? true : price > 0? true :false,
+            img: insight,
+            id: 9,
+          },
+          {
             name: "Export addresses",
             limit: plan.export_address_limit,
             img: ExportIcon,
@@ -109,6 +117,78 @@ class UpgradeModal extends BaseReactComponent {
     });
 
     // console.log("AllPlan ", AllPlan);
+
+    let selectedPlan = {};
+    let PlanId = props.selectedId || "63eb32759b5e4daf6b588205";
+    Plans?.map((plan) => {
+      if (plan.id === PlanId) {
+        let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
+        selectedPlan = {
+          // Upgrade plan
+          price: plan.prices ? plan.prices[0]?.unit_amount / 100 : 0,
+          price_id: plan.prices ? plan.prices[0]?.id : "",
+          name: plan.name,
+          id: plan.id,
+          plan_reference_id: plan.plan_reference_id,
+          features: [
+            {
+              name: "Wallet addresses",
+              limit: plan.wallet_address_limit,
+              img: WalletIcon,
+              id: 1,
+            },
+            {
+              name: plan.whale_pod_limit > 1 ? "Whale pods" : "Whale pod",
+              limit: plan.whale_pod_limit,
+              img: WhalePodIcon,
+              id: 2,
+            },
+            // {
+            //   name: "Whale pod addresses",
+            //   limit: plan.whale_pod_address_limit,
+            //   img: WhalePodAddressIcon,
+            //   id: 3,
+            // },
+            {
+              name: "Notifications",
+              limit: plan.notifications_provided,
+              img: NotificationIcon,
+              id: 4,
+            },
+            {
+              name: "Notifications limit",
+              limit: plan.notifications_limit,
+              img: NotificationLimitIcon,
+              id: 5,
+            },
+            {
+              name: "DeFi details",
+              limit: plan.defi_enabled,
+              img: DefiIcon,
+              id: 6,
+            },
+            {
+              name: "Insights",
+              limit: plan?.insight ? true : price > 0? true : false ,
+              img: insight,
+              id: 9,
+            },
+            {
+              name: "Export addresses",
+              limit: plan.export_address_limit,
+              img: ExportIcon,
+              id: 7,
+            },
+            {
+              name: "Upload address csv/txt",
+              limit: plan.upload_csv,
+              img: UploadIcon,
+              id: 8,
+            },
+          ],
+        };
+      }
+    });
 
     this.state = {
       // checkout
@@ -187,7 +267,7 @@ class UpgradeModal extends BaseReactComponent {
         ],
       },
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
-      selectedPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      selectedPlan: selectedPlan || "",
 
       //
       hideAuthModal: false,
@@ -261,7 +341,12 @@ class UpgradeModal extends BaseReactComponent {
     }
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    if (this.props.selectedId) {
+      this.AddEmailModal();
+    }
+    
+  }
 
   componentDidUpdate(prevProps, prevState) {}
 
@@ -376,17 +461,33 @@ class UpgradeModal extends BaseReactComponent {
                                       }`}
                                     >
                                       <div className="label">
-                                        <Image src={list?.img} />
+                                        <Image
+                                          src={list?.img}
+                                          // style={
+                                          //   list?.id == 9
+                                          //     ? {
+                                          //         opacity: "opacity: 0.6;",
+                                          //         // filter: "invert(1)",
+                                          //       }
+                                          //     : {}
+                                          // }
+                                        />
                                         <h3>{list.name}</h3>
                                       </div>
                                       <h4>
-                                        {list.limit === false
+                                      {
+                                        list.name !== "Insights"
+                                        ? list.limit === false
                                           ? "No"
                                           : list.limit === true
                                           ? "Yes"
                                           : list.limit === -1
                                           ? "Unlimited"
-                                          : list.limit}
+                                          : list.limit
+                                        : list.limit === false
+                                          ? "Limited"
+                                          : "Unlimited"
+                                      }
                                       </h4>
                                     </div>
                                   );
@@ -444,11 +545,11 @@ class UpgradeModal extends BaseReactComponent {
                           <div
                             className={`pricing-section
                               ${
-                                this.state.selectedPlan?.id ===
-                                "63eb32769b5e4daf6b588206"
+                                this.state.selectedPlan?.name ===
+                                "Baron"
                                   ? "baron-bg"
-                                  : this.state.selectedPlan?.id ===
-                                    "63eb32769b5e4daf6b588207"
+                                  : this.state.selectedPlan?.name ===
+                                    "Sovereign"
                                   ? "soverign-bg"
                                   : ""
                               }
@@ -463,36 +564,52 @@ class UpgradeModal extends BaseReactComponent {
                             </div>
                           </div>
                           <div className="feature-list-wrapper">
-                            {this.state.selectedPlan?.features.map((list) => {
+                            {this.state.selectedPlan?.features?.map((list) => {
                               return (
                                 <div
                                   className={`feature-list ${
                                     this.props.triggerId === list?.id
-                                      ? this.state.selectedPlan?.id ===
-                                        "63eb32759b5e4daf6b588205"
+                                      ? this.state.selectedPlan?.name ===
+                                        "Free"
                                         ? "free-plan"
-                                        : this.state.selectedPlan?.id ===
-                                          "63eb32769b5e4daf6b588206"
+                                        : this.state.selectedPlan?.name ===
+                                          "Baron"
                                         ? "baron-plan"
-                                        : this.state.selectedPlan?.id ===
-                                          "63eb32769b5e4daf6b588207"
+                                        : this.state.selectedPlan?.name ===
+                                          "Soverign"
                                         ? "soverign-plan"
                                         : ""
                                       : ""
                                   }`}
                                 >
                                   <div className="label">
-                                    <Image src={list?.img} />
+                                    <Image
+                                      src={list?.img}
+                                      // style={
+                                      //   list?.id == 9
+                                      //     ? {
+                                      //         opacity: "opacity: 0.6;",
+                                      //         // filter: "invert(1)",
+                                      //       }
+                                      //     :{ }
+                                      // }
+                                    />
                                     <h3>{list.name}</h3>
                                   </div>
                                   <h4>
-                                    {list.limit === false
-                                      ? "No"
-                                      : list.limit === true
-                                      ? "Yes"
-                                      : list.limit === -1
-                                      ? "Unlimited"
-                                      : list.limit}
+                                      {
+                                        list.name !== "Insights"
+                                        ? list.limit === false
+                                          ? "No"
+                                          : list.limit === true
+                                          ? "Yes"
+                                          : list.limit === -1
+                                          ? "Unlimited"
+                                          : list.limit
+                                        : list.limit === false
+                                          ? "Limited"
+                                          : "Unlimited"
+                                      }
                                   </h4>
                                 </div>
                               );

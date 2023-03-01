@@ -7,6 +7,7 @@ import { Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
 import { deleteToken, getToken } from '../../utils/ManageToken';
 import { GetDefaultPlan } from '../common/Api';
+import UpgradeModal from '../common/upgradeModal';
 
 class Home extends Component {
   constructor(props) {
@@ -14,44 +15,70 @@ class Home extends Component {
     this.state = {
       showModal: true,
       signedIn: false,
-    }
+      upgradeModal: false,
+      isStatic: true,
+      triggerId: 0,
+      selectedId:0,
+    };
   }
 
-  componentDidMount() {
-    //  console.log("has token ", getToken());
-    if (getToken()) {
-      // console.log("has token ", getToken())
-      this.props.history.push("/home");
-    } else {
-      deleteToken();
-         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
-         if (!isRefresh) {
-           localStorage.setItem("refresh", true);
+  upgradeModal = () => {
+    this.setState(
+      {
+        upgradeModal: !this.state.upgradeModal,
+      },
+    );
+  };
 
-           window.location.reload(true);
-         }
+  componentDidMount() {
+    const searchParams = new URLSearchParams(this.props.location.search);
+    const planId = searchParams.get("plan_id");
+    console.log(planId);
+    if (planId) {
+      // console.log("plan id", planId);
+      this.setState({
+        selectedId:planId,
+      }, () => {
+        this.upgradeModal();
+      });
+    } else {
+      if (getToken()) {
+        this.props.history.push("/home");
+      } else {
+        deleteToken();
+        let isRefresh = JSON.parse(localStorage.getItem("refresh"));
+        if (!isRefresh) {
+          localStorage.setItem("refresh", true);
+          window.location.reload(true);
+        }
+      }
     }
-// if(JSON.parse(localStorage.getItem("addWallet")) || JSON.parse(localStorage.getItem("lochUser")) || localStorage.getItem("lochDummyUser")){
-    //   localStorage.removeItem("addWallet")
-    //   localStorage.removeItem("lochUser")
-    //   localStorage.removeItem("lochDummyUser")
-    // }
-     GetDefaultPlan();
- 
+
+    GetDefaultPlan();
   }
 
   render() {
     return (
       <>
-        {this.signedIn ? null :
+        {this.signedIn ? null : (
           <div>
             <Image src={Banner} className="overlay-banner" />
-            <OnBoarding {...this.props}/>
-          </div>}
-
+            <OnBoarding {...this.props} />
+          </div>
+        )}
+        {this.state.upgradeModal && (
+          <UpgradeModal
+            show={this.state.upgradeModal}
+            onHide={this.upgradeModal}
+            history={this.props.history}
+            triggerId={this.state.triggerId}
+            // isShare={localStorage.getItem("share_id")}
+            isStatic={this.state.isStatic}
+            selectedId={this.state.selectedId}
+          />
+        )}
       </>
-
-    )
+    );
   }
 }
 

@@ -37,14 +37,16 @@ class AuthModal extends BaseReactComponent {
 
       dummyUser,
       show: props.show,
-        email: "",
-        otp: "",
-        prevOtp:"",
-        isEmailNotExist: false,
-        isOptInValid: false,
-        isShowOtp: false,
+      email: "",
+      otp: "",
+      prevOtp: "",
+      isEmailNotExist: false,
+      isOptInValid: false,
+      isShowOtp: false,
       onHide: props.onHide,
       changeList: props.changeWalletList,
+      modalTitle: props.title || null,
+      modalDescription: props.description  || null,
     };
   }
 
@@ -149,7 +151,10 @@ class AuthModal extends BaseReactComponent {
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className="exit-overlay-body">
+          <div
+            className="exit-overlay-body"
+            style={{ padding: "0rem 10.5rem" }}
+          >
             <h6 className="inter-display-medium f-s-20 lh-24 ">
               {this.state.modalTitle
                 ? this.state.modalTitle
@@ -192,8 +197,9 @@ class AuthModal extends BaseReactComponent {
                         this.state.email ? "active" : ""
                       }`}
                       type="submit"
+                      style={{ padding: "1.7rem 3.1rem" }}
                     >
-                      Save
+                      Send verification
                     </Button>
                   </div>
                 </Form>

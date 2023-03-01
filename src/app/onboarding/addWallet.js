@@ -69,6 +69,7 @@ class AddWallet extends BaseReactComponent {
      });
    
     GetAllPlan();
+     
   }
 
   componentDidUpdate(prevProps, prevState) {

@@ -81,6 +81,9 @@ export const deleteCohort = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         ctx.props.apiResponse(true);
+        if (ctx.props.isEdit && ctx.props.isRedirect) {
+          ctx.props.history.push("/whale-watching");
+        }
         // console.log("delete cohort", res.data.data);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -154,8 +157,8 @@ export const getCohort = (data, ctx) => {
       if (!res.data.error) {
         // console.log("get cohort", res.data.data.user_cohort);
         let response = res.data.data?.user_cohort;
-        let sortedAddress = (response?.wallet_address_details).sort(
-          (a, b) => b.net_worth - a.net_worth
+        let sortedAddress = (response?.wallet_address_details)?.sort(
+          (a, b) => b?.net_worth - a?.net_worth
         );
 
         let sortedChains = [];
@@ -386,6 +389,20 @@ export const UpdateCohortNickname = (data,ctx) => {
     });
 };
 
+export const DeleteCohortAddress = (data, ctx) => {
+  console.log("delete")
+  //  postLoginInstance
+  //    .post("wallet/user-cohort/update-user-cohort-nickname", data)
+  //    .then((res) => {
+  //      if (!res.data.error) {
+  //        // let response = res.data.data;
+  //       //  toast.success("Nickname updated");
+  //        ctx.CheckApiResponse(true);
+  //      } else {
+  //        toast.error(res.data.message || "Something Went Wrong");
+  //      }
+  //    });
+}
 
 // Get Asset filter by  Cohort
 export const GetAssetFilter= (data,ctx) => {

@@ -183,3 +183,42 @@ export const deleteWallet = (ctx, data) => {
       console.log("deketeWallet-Api ", err)
     })
 }
+
+// update account name
+
+
+export const updateAccountName = (data, ctx) => {
+  postLoginInstance
+    .post("organisation/user/update-user-account-name", data)
+    .then((res) => {
+      if (!res.data.error) {
+         ctx.props.onHide();
+         ctx.props.makeApiCall();
+        // console.log("res wallet", res.data.data.user_wallets);
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    })
+    .catch((err) => {
+      console.log("update account name", err);
+    });
+};
+
+// delete user account
+export const deleteAccount = (data, ctx) => {
+  postLoginInstance
+    .post("organisation/user/delete-user-account", data)
+    .then((res) => {
+      // console.log(res)
+      if (!res.data.error) {
+         ctx.props.onHide();
+         ctx.props.makeApiCall();
+        // console.log("res wallet", res.data.data.user_wallets);
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    })
+    .catch((err) => {
+      console.log("update account name", err);
+    });
+};
