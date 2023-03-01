@@ -107,7 +107,10 @@ class AddWallet extends BaseReactComponent {
     let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
     if (foundIndex > -1) {
       // let prevValue = walletCopy[foundIndex].nickname;
-      // console.log(prevValue)
+      console.log(
+        walletCopy[foundIndex].nickname === "",
+        walletCopy[foundIndex].nickname 
+      );
       walletCopy[foundIndex].showAddress =
         walletCopy[foundIndex].nickname === "" ? true : false;
       walletCopy[foundIndex].showNickname =
