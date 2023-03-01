@@ -32,6 +32,7 @@ import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
+import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
 import {
 
   CreateWhalePodSave,
@@ -1132,48 +1133,57 @@ class ExitOverlay extends BaseReactComponent {
                   ) : this.props.modalType === "cohort" ? (
                     <div className="cohort-body">
                       <div
-                        className="cohort-item-wrapper"
+                        className="cohort-item-wrapper input-error-wrapper"
                         style={{ marginBottom: "0rem" }}
                       >
                         {!this.state.showWarningMsg ? (
                           <Form onValidSubmit={this.handleCohortSave}>
-                            <FormElement
-                              valueLink={this.linkState(this, "cohort_name")}
-                              label="Pod Name"
-                              required
-                              validations={[
-                                {
-                                  validate: FormValidator.isRequired,
-                                  message: "Enter your pod name",
-                                },
-                              ]}
-                              control={{
-                                type: CustomTextControl,
-                                settings: {
-                                  placeholder: "Give your pod a name",
-                                  onBlur: (onBlur) => {
-                                    // console.log("pod", this.state.cohort_name)
-                                    PodName({
-                                      session_id: getCurrentUser().id,
-                                      email_address: getCurrentUser().email,
-                                      pod_name: this.state.cohort_name,
-                                    });
+                                  <div style={ {position:"relative"}}>
+                              <FormElement
+                                valueLink={this.linkState(this, "cohort_name")}
+                                label="Pod Name"
+                                required
+                                validations={[
+                                  {
+                                    validate: FormValidator.isRequired,
+                                    message: "Enter your pod name",
                                   },
-                                },
-                              }}
-                            />
-                            {this.state.podnameError && (
-                              <p
-                                className="inter-display-regular f-s-10 lh-11 m-t-5"
-                                style={{
-                                  color: "#ea4e3c",
-                                  marginTop: "-1.5rem",
-                                  marginBottom: "2rem",
+                                ]}
+                                control={{
+                                  type: CustomTextControl,
+                                  settings: {
+                                    placeholder: "Give your pod a name",
+                                    onBlur: (onBlur) => {
+                                      // console.log("pod", this.state.cohort_name)
+                                      PodName({
+                                        session_id: getCurrentUser().id,
+                                        email_address: getCurrentUser().email,
+                                        pod_name: this.state.cohort_name,
+                                      });
+                                    },
+                                  },
                                 }}
-                              >
-                                Pod name required
-                              </p>
-                            )}
+                                classes={{
+                                  inputField: `${
+                                    this.state.podnameError && `email-error`
+                                  }`,
+                                }}
+                              />
+                              {this.state.podnameError && (
+                                <span className="error-message">
+                                  <Image
+                                    src={EmailNotFoundCross}
+                                    onClick={() => {
+                                      this.setState({ podnameError: false });
+                                    }}
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                  <p className="inter-display-medium f-s-16 lh-19">
+                                    Pod name required
+                                  </p>
+                                </span>
+                              )}
+                            </div>
 
                             <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
                               Wallets

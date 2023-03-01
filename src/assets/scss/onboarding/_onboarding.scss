@@ -452,3 +452,40 @@
         }
     }
 }
+.input-error-wrapper{
+.form-group {
+                        .email-error{
+                            border:1px solid #DA2F58 !important;
+                            box-shadow: 0px 8px 11px -6px rgba(218, 47, 88, 0.12), 0px 14px 44px -4px rgba(24, 39, 75, 0.12);
+                        }
+                        // .form-control {
+                        //     width: 59.2rem;
+
+                        //     &::placeholder {
+                        //         color: #D4D4D4;
+                        //     }
+
+                            // &:active:focus,
+                            // &:active,
+                            // &:focus,
+                            // &:focus-visible {
+                            //     outline: none;
+                            //     border-color: #19191A;
+                            // }
+                        // }
+                    }
+
+.error-message{
+    
+                        position:absolute;
+                        text-align: center;
+                       bottom: 1.2rem;
+                       right: 3.2rem;
+                        display: flex;
+                        align-items: center;
+                        p{
+                            margin-left:0.5rem;
+                            color: #DA2F58;
+                        }
+                    
+}}
