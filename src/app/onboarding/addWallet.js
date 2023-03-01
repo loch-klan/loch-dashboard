@@ -42,7 +42,8 @@ class AddWallet extends BaseReactComponent {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
-      GoToHome:false,
+      GoToHome: false,
+     
     };
     this.timeout = 0;
   }
