@@ -351,8 +351,8 @@ class Portfolio extends BaseReactComponent {
             });
           }
         });
-        // this.props.getExchangeBalance("binance", this);
-        // this.props.getExchangeBalance("coinbase", this);
+        this.props.getExchangeBalance("binance", this);
+        this.props.getExchangeBalance("coinbase", this);
         //console.log("is found", isFound);
         if (!isFound) {
           //console.log("is found if", isFound);
@@ -367,8 +367,8 @@ class Portfolio extends BaseReactComponent {
         // this.getTableData()
         this.props.settingDefaultValues();
         // when wallet address not present
-        //  this.props.getExchangeBalance("binance", this);
-        //  this.props.getExchangeBalance("coinbase", this);
+         this.props.getExchangeBalance("binance", this);
+         this.props.getExchangeBalance("coinbase", this);
         this.setState({ isLoading: false });
       }
 

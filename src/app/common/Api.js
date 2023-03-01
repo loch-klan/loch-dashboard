@@ -365,6 +365,7 @@ export const VerifyEmail = (data,ctx) => {
         localStorage.setItem("lochToken", token);
         const userId = localStorage.getItem("lochDummyUser");
         if (res.data.data.is_new_user) {
+          // console.log("new user")
           signUpProperties({
             email_address: res.data.data.user?.email,
             userId: res.data.data.user?.link,

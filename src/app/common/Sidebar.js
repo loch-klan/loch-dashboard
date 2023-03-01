@@ -496,7 +496,7 @@ function Sidebar(props) {
                           DeFi
                         </NavLink>
                       </li>
-                      {/* <li>
+                      <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
@@ -510,7 +510,7 @@ function Sidebar(props) {
                           />
                           Connect Exchanges
                         </NavLink>
-                      </li> */}
+                      </li>
 
                       <li>
                         <NavLink
