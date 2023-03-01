@@ -175,7 +175,8 @@ class ExitOverlay extends BaseReactComponent {
       email_notification: getCurrentUser().email,
       fileName: null,
       isChangeFile: false,
-      podnameError:false
+      podnameError: false,
+      total_unique_address:0,
     };
   }
 
@@ -211,6 +212,12 @@ class ExitOverlay extends BaseReactComponent {
       {
         upgradeModal: !this.state.upgradeModal,
         hidePrevModal: !this.state.upgradeModal,
+        isIndexed: false,
+        fileName: null,
+        isChangeFile: false,
+        total_unique_address: 0,
+        showWarningMsg: false,
+        uploadStatus: "Uploading",
       },
       () => {
         // this.setState({
@@ -419,6 +426,7 @@ class ExitOverlay extends BaseReactComponent {
         let displayAddress = [];
         let walletList = [];
         let isChainDetected = [];
+        let total_address = 0;
         for (let i = 0; i < this.state.addWalletList.length; i++) {
           let curr = this.state.addWalletList[i];
           // console.log(curr)
@@ -431,9 +439,10 @@ class ExitOverlay extends BaseReactComponent {
                 ? curr.displayAddress?.trim()
                 : curr.address.trim()  
             );
-              
             
-                  isChainDetected.push(curr?.coinFound);
+            
+            isChainDetected.push(curr?.coinFound);
+            total_address = total_address + 1;
             
           }
         }
@@ -460,7 +469,9 @@ class ExitOverlay extends BaseReactComponent {
             data.append("cohort_id", this.props.cohortId);
             // console.log("id", this.props.cohortId, typeof(this.props.cohortId));
           }
-
+          this.setState({
+            total_unique_address: total_address,
+          });
           if (this.state.isChangeFile) {
             data.append("cohort_id", this.state.podId);
             this.setState({
@@ -1120,7 +1131,10 @@ class ExitOverlay extends BaseReactComponent {
                     </div>
                   ) : this.props.modalType === "cohort" ? (
                     <div className="cohort-body">
-                      <div className="cohort-item-wrapper" style={{marginBottom:"0rem"}}>
+                      <div
+                        className="cohort-item-wrapper"
+                        style={{ marginBottom: "0rem" }}
+                      >
                         {!this.state.showWarningMsg ? (
                           <Form onValidSubmit={this.handleCohortSave}>
                             <FormElement
@@ -1403,7 +1417,11 @@ class ExitOverlay extends BaseReactComponent {
                               <>
                                 <div className="upload-loader"></div>
                                 <h4 className="inter-display-medium f-s-16 lh-19 grey-B0B m-t-20">
-                                  {this.state.uploadStatus}
+                                  {this.state.uploadStatus}{" "}
+                                  {this.state.total_unique_address}{" "}
+                                  {this.state.total_unique_address > 0
+                                    ? "unique addresses"
+                                    : "unique address"}
                                 </h4>
                               </>
                             )}
@@ -1507,10 +1525,12 @@ class ExitOverlay extends BaseReactComponent {
                             )}
                           </div>
                         )}
-                        {!this.state.showWarningMsg && <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-t-16">
-                          Note: the file should contain addresses or ENS' only,
-                          no titles or headers.
-                        </p>}
+                        {!this.state.showWarningMsg && (
+                          <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-t-16">
+                            Note: the file should contain addresses or ENS'
+                            only, no titles or headers.
+                          </p>
+                        )}
                       </div>
                     </div>
                   ) : (
