@@ -305,14 +305,14 @@ function Sidebar(props) {
                     </DropdownButton>
                   </div>
                 </div>
-                {selectedPlan?.name !== "Free" && (
-                  <div className={`sidebar-plan`}>
+                {/* {selectedPlan?.name !== "Free" && (
+                  <div className={`sidebar-plan`}> */}
                     {/* <Image src={BaronIcon} /> */}
-                    <h3>
+                    {/* <h3>
                       Loch <span>{selectedPlan.name}</span>
                     </h3>
                   </div>
-                )}
+                )} */}
 
                 <div
                   className={

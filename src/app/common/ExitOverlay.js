@@ -41,7 +41,7 @@ import {
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
-  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName, ExportDateSelected, signUpProperties, resetUser,
+  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName, ExportDateSelected, signUpProperties, resetUser, signInUser,
 } from "../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
@@ -561,9 +561,15 @@ class ExitOverlay extends BaseReactComponent {
       data.append("mobile", this.state.mobileNumber);
       updateUser(data, this);
     } else {
-      signUpProperties({
+      // signUpProperties({
+      //   userId: getCurrentUser().id,
+      //   email_address: this.state.email,
+      //   first_name: "",
+      //   last_name: "",
+      // });
+      signInUser({
+        email_address: this.state?.email,
         userId: getCurrentUser().id,
-        email_address: this.state.email,
         first_name: "",
         last_name: "",
       });
@@ -1537,8 +1543,8 @@ class ExitOverlay extends BaseReactComponent {
                         )}
                         {!this.state.showWarningMsg && (
                           <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-t-16">
-                            Note: The file should only contain addresses or
-                            ENS'. No titles or headers.
+                            Each row of the file should contain an address or an
+                            ENS. No title or header.
                           </p>
                         )}
                       </div>

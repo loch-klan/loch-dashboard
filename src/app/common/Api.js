@@ -364,24 +364,29 @@ export const VerifyEmail = (data,ctx) => {
          );
         localStorage.setItem("lochToken", token);
         const userId = localStorage.getItem("lochDummyUser");
-        if (res.data.data.is_new_user) {
-          // console.log("new user")
-          signUpProperties({
-            email_address: res.data.data.user?.email,
-            userId: res.data.data.user?.link,
-            first_name: res.data.data.user?.first_name,
-            last_name: res.data.data.user?.last_name,
-          });
+        // if (res.data.data.is_new_user) {
+        //   signUpProperties({
+        //     email_address: res.data.data.user?.email,
+        //     userId: res.data.data.user?.link,
+        //     first_name: res.data.data.user?.first_name,
+        //     last_name: res.data.data.user?.last_name,
+        //   });
           
-        } else {
+        // } else {
           
-          signInUser({
-            email_address: res.data.data.user?.email,
-            userId: res.data.data.user?.link,
-            first_name: res.data.data.user?.first_name,
-            last_name: res.data.data.user?.last_name,
-          });
-        }
+        //   signInUser({
+        //     email_address: res.data.data.user?.email,
+        //     userId: res.data.data.user?.link,
+        //     first_name: res.data.data.user?.first_name,
+        //     last_name: res.data.data.user?.last_name,
+        //   });
+        // }
+        signInUser({
+          email_address: res.data.data.user?.email,
+          userId: res.data.data.user?.link,
+          first_name: res.data.data.user?.first_name,
+          last_name: res.data.data.user?.last_name,
+        });
           ctx.setState(
             {
               isOptInValid: false,
