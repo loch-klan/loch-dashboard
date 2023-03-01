@@ -63,6 +63,7 @@
       }
     }
     .modal-body {
+      
       .upgrade-overlay-body {
         display: flex;
         flex-direction: column;
@@ -434,6 +435,12 @@
           display: flex;
         }
       }
+
+      .signin-link{
+        &:hover{
+          color:$grey-969;
+        }
+      }
     }
   }
 }
@@ -473,4 +480,5 @@
       margin: 1.75rem auto;
     }
   }
+
 }
