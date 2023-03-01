@@ -1138,7 +1138,7 @@ class ExitOverlay extends BaseReactComponent {
                       >
                         {!this.state.showWarningMsg ? (
                           <Form onValidSubmit={this.handleCohortSave}>
-                                  <div style={ {position:"relative"}}>
+                            <div style={{ position: "relative" }}>
                               <FormElement
                                 valueLink={this.linkState(this, "cohort_name")}
                                 label="Pod Name"
@@ -1537,8 +1537,8 @@ class ExitOverlay extends BaseReactComponent {
                         )}
                         {!this.state.showWarningMsg && (
                           <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-t-16">
-                            Note: the file should contain addresses or ENS'
-                            only, no titles or headers.
+                            Note: The file should only contain addresses or
+                            ENS'. No titles or headers.
                           </p>
                         )}
                       </div>
