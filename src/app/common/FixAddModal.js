@@ -75,6 +75,7 @@ class FixAddModal extends BaseReactComponent {
       sorts: [],
       total_addresses: 0,
       prevWalletAddress: addWalletList,
+      hidePrevModal: false,
     };
     this.timeout = 0;
   }
@@ -93,6 +94,7 @@ class FixAddModal extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
+      hidePrevModal: !this.state.upgradeModal,
     });
   };
 
@@ -850,7 +852,7 @@ class FixAddModal extends BaseReactComponent {
 
     return (
       <>
-        <Modal
+       {!this.state.hidePrevModal && <Modal
           show={this.state.show}
           className="fix-add-modal"
           onHide={this.state.onHide}
@@ -990,7 +992,7 @@ class FixAddModal extends BaseReactComponent {
               </div>
             </div>
           </Modal.Body>
-        </Modal>
+        </Modal>}
         {this.state.upgradeModal && (
           <UpgradeModal
             show={this.state.upgradeModal}
