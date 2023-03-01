@@ -593,10 +593,10 @@ class CohortPage extends BaseReactComponent {
     });
   };
 
-  deleteAddress = (address, i) => {
+  deleteAddress = (address) => {
     let data = new URLSearchParams();
     data.append("cohort_id", this.state.cohortId);
-    data.append("wallet_address", address);
+    data.append("address", address);
     DeleteCohortAddress(data, this);
   };
 
@@ -1607,13 +1607,13 @@ class CohortPage extends BaseReactComponent {
                           style={{ marginLeft: "1.5rem" }}
                           onClick={() => this.copyLink(e.wallet_address)}
                         />
-                        {/* {this.state.userId && (
+                        {this.state.userId && (
                           <Image
                             src={DeleteIcon}
                             style={{ width: "1.5rem", marginLeft: "1.5rem" }}
-                            onClick={() => this.deleteAddress(address, i)}
+                            onClick={() => this.deleteAddress(address)}
                           />
-                        )} */}
+                        )}
                         {this.state.userId && (
                           <div className="nickname-input">
                             <Form
