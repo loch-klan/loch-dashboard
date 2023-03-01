@@ -890,14 +890,14 @@ class CohortPage extends BaseReactComponent {
                 alignItems: "center",
               }}
             >
-              {/* <p
+              <p
                 onClick={this.showDust}
                 className="inter-display-medium f-s-16 lh-19 cp grey-ADA m-r-12 cohort-dust"
               >
                 {this.state.showDust
                   ? "Reveal dust (less than $1)"
                   : "Hide dust (less than $1)"}
-              </p> */}
+              </p>
               <div style={{ width: "20rem" }}>
                 <CustomDropdown
                   filtername="All chains selected"

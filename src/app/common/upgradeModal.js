@@ -12,6 +12,7 @@ import CustomTextControl from "./../../utils/form/CustomTextControl";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LochIcon from "../../assets/images/icons/loch-icon.svg";
 import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import {
   getAllCoins,
   detectCoin,
@@ -96,7 +97,7 @@ class UpgradeModal extends BaseReactComponent {
           },
           {
             name: "Insights",
-            limit: plan?.insight ? true : price > 0? true :false,
+            limit: plan?.insight ? true : price > 0 ? true : false,
             img: insight,
             id: 9,
           },
@@ -169,7 +170,7 @@ class UpgradeModal extends BaseReactComponent {
             },
             {
               name: "Insights",
-              limit: plan?.insight ? true : price > 0? true : false ,
+              limit: plan?.insight ? true : price > 0 ? true : false,
               img: insight,
               id: 9,
             },
@@ -271,6 +272,8 @@ class UpgradeModal extends BaseReactComponent {
 
       //
       hideAuthModal: false,
+      signinModal: false,
+      hideModal:false,
     };
   }
 
@@ -307,9 +310,9 @@ class UpgradeModal extends BaseReactComponent {
         hideUpgradeModal: true,
       },
       () => {
-             let data = new URLSearchParams();
-             data.append("price_id", this.state.selectedPlan?.price_id);
-             CreatePyment(data, this);
+        let data = new URLSearchParams();
+        data.append("price_id", this.state.selectedPlan?.price_id);
+        CreatePyment(data, this);
       }
     );
   };
@@ -345,7 +348,6 @@ class UpgradeModal extends BaseReactComponent {
     if (this.props.selectedId) {
       this.AddEmailModal();
     }
-    
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -368,67 +370,75 @@ class UpgradeModal extends BaseReactComponent {
     // console.log('Hey');
   };
 
+  handleSignin = () => {
+    this.setState({
+      signinModal: !this.state.signinModal,
+      hideModal:true,
+    });
+  };
+
   render() {
     return (
       <>
-        <Modal
-          show={this.state.show}
-          className="exit-overlay-form"
-          onHide={this.state.onHide}
-          size="xl"
-          dialogClassName={"upgrade"}
-          centered
-          aria-labelledby="contained-modal-title-vcenter"
-          backdropClassName="exitoverlaymodal"
-          keyboard={false}
-          // backdrop={this.props.isShare && this.props.isStatic ? "static" : true}
-          backdrop={this.props.isStatic ? "static" : true}
-        >
-          <Modal.Header>
-            <div className="UpgradeIcon">
-              <Image src={LochIcon} />
-            </div>
-            {!this.props.isStatic && (
-              <div
-                className="closebtn"
-                onClick={() => {
-                  this.state.onHide();
-                }}
-              >
-                <Image src={CloseIcon} />
+        {!this.state.signinModal && !this.state.hideModal && (
+          <Modal
+            show={this.state.show}
+            className="exit-overlay-form"
+            onHide={this.state.onHide}
+            size="xl"
+            dialogClassName={"upgrade"}
+            centered
+            aria-labelledby="contained-modal-title-vcenter"
+            backdropClassName="exitoverlaymodal"
+            keyboard={false}
+            // backdrop={this.props.isShare && this.props.isStatic ? "static" : true}
+            backdrop={this.props.isStatic ? "static" : true}
+          >
+            <Modal.Header>
+              <div className="UpgradeIcon">
+                <Image src={LochIcon} />
               </div>
-            )}
-            {(this.state.RegisterModal || this.state.CheckOutModal) && (
-              <div className="back-icon-upgrade cp" onClick={this.handleBack}>
-                <Image src={backIcon} />
-              </div>
-            )}
-            <h6 className="inter-display-medium f-s-25 lh-30 m-t-28">
-              {"Do more with Loch"}
-            </h6>
-            <p className="inter-display-medium f-s-16 lh-19 grey-969 text-center m-t-5">
-              {"Upgrade your plan"}
-            </p>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="upgrade-overlay-body">
-              {/* this.props.isSkip(); */}
-              {!this.state.hideUpgradeModal ? (
-                <div className="pricing-plan">
-                  <Row>
-                    {this.state?.planList.map((plan, i) => {
-                      return (
-                        <Col md={4}>
-                          <div className="plan-card-wrapper">
-                            <div
-                              className={`plan-card ${
-                                plan.name === this.state.userPlan.name
-                                  ? "active"
-                                  : ""
-                              }`}
-                            >
+              {!this.props.isStatic && (
+                <div
+                  className="closebtn"
+                  onClick={() => {
+                    this.state.onHide();
+                  }}
+                >
+                  <Image src={CloseIcon} />
+                </div>
+              )}
+              {(this.state.RegisterModal || this.state.CheckOutModal) && (
+                <div className="back-icon-upgrade cp" onClick={this.handleBack}>
+                  <Image src={backIcon} />
+                </div>
+              )}
+              <h6 className="inter-display-medium f-s-25 lh-30 m-t-28">
+                {"Do more with Loch"}
+              </h6>
+              <p className="inter-display-medium f-s-16 lh-19 grey-969 text-center m-t-5">
+                {"Upgrade your plan"}
+              </p>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="upgrade-overlay-body">
+                {/* this.props.isSkip(); */}
+                {!this.state.hideUpgradeModal ? (
+                  <div className="pricing-plan">
+                    <Row>
+                      {this.state?.planList.map((plan, i) => {
+                        return (
+                          <Col md={4}>
+                            <div className="plan-card-wrapper">
                               <div
-                                className={`pricing-section
+                                className={`plan-card ${
+                                  plan.name === this.state.userPlan.name
+                                    ? "active"
+                                    : ""
+                                }`}
+                              >
+                                <div
+                                  className={`pricing-section
                               ${
                                 i === 1
                                   ? "baron-bg"
@@ -437,24 +447,144 @@ class UpgradeModal extends BaseReactComponent {
                                   : ""
                               }
                               `}
-                              >
-                                <h3>{plan.name}</h3>
-                                <div className="price">
-                                  <h4>${plan.price}</h4>
-                                  {i !== 0 && <p>monthly</p>}
+                                >
+                                  <h3>{plan.name}</h3>
+                                  <div className="price">
+                                    <h4>${plan.price}</h4>
+                                    {i !== 0 && <p>monthly</p>}
+                                  </div>
+                                </div>
+                                <div className="feature-list-wrapper">
+                                  {plan?.features.map((list) => {
+                                    return (
+                                      <div
+                                        className={`feature-list ${
+                                          this.props.triggerId === list?.id
+                                            ? i === 0
+                                              ? "free-plan"
+                                              : i === 1
+                                              ? "baron-plan"
+                                              : i === 2
+                                              ? "soverign-plan"
+                                              : ""
+                                            : ""
+                                        }`}
+                                      >
+                                        <div className="label">
+                                          <Image
+                                            src={list?.img}
+                                            // style={
+                                            //   list?.id == 9
+                                            //     ? {
+                                            //         opacity: "opacity: 0.6;",
+                                            //         // filter: "invert(1)",
+                                            //       }
+                                            //     : {}
+                                            // }
+                                          />
+                                          <h3>{list.name}</h3>
+                                        </div>
+                                        <h4>
+                                          {list.name !== "Insights"
+                                            ? list.limit === false
+                                              ? "No"
+                                              : list.limit === true
+                                              ? "Yes"
+                                              : list.limit === -1
+                                              ? "Unlimited"
+                                              : list.limit
+                                            : list.limit === false
+                                            ? "Limited"
+                                            : "Unlimited"}
+                                        </h4>
+                                      </div>
+                                    );
+                                  })}
                                 </div>
                               </div>
-                              <div className="feature-list-wrapper">
-                                {plan?.features.map((list) => {
+                              <Button
+                                className={`primary-btn ${
+                                  plan.name === this.state.userPlan.name
+                                    ? "disabled"
+                                    : ""
+                                }`}
+                                style={
+                                  i === 0
+                                    ? { position: "relative", top: "2.3rem" }
+                                    : {}
+                                }
+                                onClick={() => {
+                                  if (plan.name !== this.state.userPlan.name) {
+                                    this.AddEmailModal();
+                                    this.setState({
+                                      price_id: plan.price_id,
+                                      selectedPlan: plan,
+                                    });
+                                  }
+                                }}
+                              >
+                                {plan.name === this.state.userPlan.name
+                                  ? "Current tier"
+                                  : "Upgrade"}
+                              </Button>
+                            </div>
+                          </Col>
+                        );
+                      })}
+                    </Row>
+                  </div>
+                ) : (
+                  <div className="pricing-plan">
+                    <Row>
+                      <Col
+                        md={5}
+                        style={{
+                          justifyContent: "flex-end",
+                          alignItems: "center",
+                          display: "flex",
+                          paddingRight: "1rem",
+                        }}
+                      >
+                        <div
+                          className="plan-card-wrapper"
+                          style={{ width: "85%" }}
+                        >
+                          <div className={"plan-card active"}>
+                            <div
+                              className={`pricing-section
+                              ${
+                                this.state.selectedPlan?.name === "Baron"
+                                  ? "baron-bg"
+                                  : this.state.selectedPlan?.name ===
+                                    "Sovereign"
+                                  ? "soverign-bg"
+                                  : ""
+                              }
+                              `}
+                            >
+                              <h3>{this.state.selectedPlan?.name}</h3>
+                              <div className="price">
+                                <h4>${this.state.selectedPlan?.price}</h4>
+                                {this.state.selectedPlan?.name !== "Free" && (
+                                  <p>monthly</p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="feature-list-wrapper">
+                              {this.state.selectedPlan?.features?.map(
+                                (list) => {
                                   return (
                                     <div
                                       className={`feature-list ${
                                         this.props.triggerId === list?.id
-                                          ? i === 0
+                                          ? this.state.selectedPlan?.name ===
+                                            "Free"
                                             ? "free-plan"
-                                            : i === 1
+                                            : this.state.selectedPlan?.name ===
+                                              "Baron"
                                             ? "baron-plan"
-                                            : i === 2
+                                            : this.state.selectedPlan?.name ===
+                                              "Soverign"
                                             ? "soverign-plan"
                                             : ""
                                           : ""
@@ -469,308 +599,33 @@ class UpgradeModal extends BaseReactComponent {
                                           //         opacity: "opacity: 0.6;",
                                           //         // filter: "invert(1)",
                                           //       }
-                                          //     : {}
+                                          //     :{ }
                                           // }
                                         />
                                         <h3>{list.name}</h3>
                                       </div>
                                       <h4>
-                                      {
-                                        list.name !== "Insights"
-                                        ? list.limit === false
-                                          ? "No"
-                                          : list.limit === true
-                                          ? "Yes"
-                                          : list.limit === -1
-                                          ? "Unlimited"
-                                          : list.limit
-                                        : list.limit === false
+                                        {list.name !== "Insights"
+                                          ? list.limit === false
+                                            ? "No"
+                                            : list.limit === true
+                                            ? "Yes"
+                                            : list.limit === -1
+                                            ? "Unlimited"
+                                            : list.limit
+                                          : list.limit === false
                                           ? "Limited"
-                                          : "Unlimited"
-                                      }
+                                          : "Unlimited"}
                                       </h4>
                                     </div>
                                   );
-                                })}
-                              </div>
-                            </div>
-                            <Button
-                              className={`primary-btn ${
-                                plan.name === this.state.userPlan.name
-                                  ? "disabled"
-                                  : ""
-                              }`}
-                              style={
-                                i === 0
-                                  ? { position: "relative", top: "2.3rem" }
-                                  : {}
-                              }
-                              onClick={() => {
-                                if (plan.name !== this.state.userPlan.name) {
-                                  this.AddEmailModal();
-                                  this.setState({
-                                    price_id: plan.price_id,
-                                    selectedPlan: plan,
-                                  });
                                 }
-                              }}
-                            >
-                              {plan.name === this.state.userPlan.name
-                                ? "Current tier"
-                                : "Upgrade"}
-                            </Button>
-                          </div>
-                        </Col>
-                      );
-                    })}
-                  </Row>
-                </div>
-              ) : (
-                <div className="pricing-plan">
-                  <Row>
-                    <Col
-                      md={5}
-                      style={{
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        display: "flex",
-                        paddingRight: "1rem",
-                      }}
-                    >
-                      <div
-                        className="plan-card-wrapper"
-                        style={{ width: "85%" }}
-                      >
-                        <div className={"plan-card active"}>
-                          <div
-                            className={`pricing-section
-                              ${
-                                this.state.selectedPlan?.name ===
-                                "Baron"
-                                  ? "baron-bg"
-                                  : this.state.selectedPlan?.name ===
-                                    "Sovereign"
-                                  ? "soverign-bg"
-                                  : ""
-                              }
-                              `}
-                          >
-                            <h3>{this.state.selectedPlan?.name}</h3>
-                            <div className="price">
-                              <h4>${this.state.selectedPlan?.price}</h4>
-                              {this.state.selectedPlan?.name !== "Free" && (
-                                <p>monthly</p>
                               )}
                             </div>
                           </div>
-                          <div className="feature-list-wrapper">
-                            {this.state.selectedPlan?.features?.map((list) => {
-                              return (
-                                <div
-                                  className={`feature-list ${
-                                    this.props.triggerId === list?.id
-                                      ? this.state.selectedPlan?.name ===
-                                        "Free"
-                                        ? "free-plan"
-                                        : this.state.selectedPlan?.name ===
-                                          "Baron"
-                                        ? "baron-plan"
-                                        : this.state.selectedPlan?.name ===
-                                          "Soverign"
-                                        ? "soverign-plan"
-                                        : ""
-                                      : ""
-                                  }`}
-                                >
-                                  <div className="label">
-                                    <Image
-                                      src={list?.img}
-                                      // style={
-                                      //   list?.id == 9
-                                      //     ? {
-                                      //         opacity: "opacity: 0.6;",
-                                      //         // filter: "invert(1)",
-                                      //       }
-                                      //     :{ }
-                                      // }
-                                    />
-                                    <h3>{list.name}</h3>
-                                  </div>
-                                  <h4>
-                                      {
-                                        list.name !== "Insights"
-                                        ? list.limit === false
-                                          ? "No"
-                                          : list.limit === true
-                                          ? "Yes"
-                                          : list.limit === -1
-                                          ? "Unlimited"
-                                          : list.limit
-                                        : list.limit === false
-                                          ? "Limited"
-                                          : "Unlimited"
-                                      }
-                                  </h4>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                        <Button
-                          className={`primary-btn  disabled`}
-                          style={{ cursor: "auto" }}
-                          onClick={() => {
-                            // if (plan.name !== this.state.userPlan.name) {
-                            //   this.AddEmailModal();
-                            //   this.setState({
-                            //     price_id: plan.price_id,
-                            //     selectedPlan: plan,
-                            //   });
-                            // }
-                          }}
-                        >
-                          Your choosen plan
-                        </Button>
-                      </div>
-                    </Col>
-                    <Col
-                      md={7}
-                      style={{
-                        paddingLeft: "3.5rem",
-                        paddingBottom: "10rem",
-                      }}
-                    >
-                      {this.state.RegisterModal && !this.state.isShowOtp ? (
-                        <p className="inter-display-medium f-s-16 lh-19 m-b-28 grey-969">
-                          Verify your email address to create an <br />
-                          account with Loch
-                        </p>
-                      ) : (
-                        ""
-                      )}
-                      {this.state.isShowOtp && !this.state.CheckOutModal ? (
-                        <p className="inter-display-medium f-s-16 lh-19 m-b-28 black-191">
-                          We’ve sent you a verification code to your email
-                        </p>
-                      ) : (
-                        ""
-                      )}
-                      {this.state.CheckOutModal ? (
-                        <>
-                          <Image src={CheckIcon} className="m-b-5" />
-                          <p
-                            className="inter-display-medium f-s-16 lh-19 m-b-20 black-191"
-                            style={{ opacity: "0.8" }}
-                          >
-                            Great! We’ve verified your account. <br />
-                            You’re just one step away to becoming a{" "}
-                            <span class="inter-display-bold f-s-16 lh-19">
-                              {this.state.selectedPlan?.name}!
-                            </span>
-                          </p>
-                        </>
-                      ) : (
-                        ""
-                      )}
-
-                      <div className="email-section auth-modal">
-                        {/* For Signin or Signup */}
-                        {this.state.RegisterModal && (
-                          <>
-                            {!this.state.isShowOtp ? (
-                              <Form onValidSubmit={this.handleAccountCreate}>
-                                <FormElement
-                                  valueLink={this.linkState(this, "email")}
-                                  // label="Email Info"
-                                  required
-                                  validations={[
-                                    {
-                                      validate: FormValidator.isRequired,
-                                      message: "",
-                                    },
-                                    {
-                                      validate: FormValidator.isEmail,
-                                      message: "Please enter valid email id",
-                                    },
-                                  ]}
-                                  control={{
-                                    type: CustomTextControl,
-                                    settings: {
-                                      placeholder: "Email",
-                                    },
-                                  }}
-                                />
-                                <div className="save-btn-section">
-                                  <Button
-                                    className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                                      this.state.email ? "active" : ""
-                                    }`}
-                                    type="submit"
-                                  >
-                                    Confirm
-                                  </Button>
-                                </div>
-                              </Form>
-                            ) : (
-                              <>
-                                <Form onValidSubmit={this.handleOtp}>
-                                  <FormElement
-                                    valueLink={this.linkState(this, "otp")}
-                                    // label="Email Info"
-                                    required
-                                    validations={
-                                      [
-                                        // {
-                                        //   validate: FormValidator.isRequired,
-                                        //   message: "",
-                                        // },
-                                        //   {
-                                        //     validate: FormValidator.isNum,
-                                        //     message: "Verification code can have only numbers",
-                                        //     },
-                                        // {
-                                        //     validate: () => {
-                                        //       console.log("state", this.state.isOptInValid);
-                                        //        return !this.state.isOptInValid;
-                                        //   },
-                                        //     message:"invalid verification code"
-                                        // }
-                                      ]
-                                    }
-                                    control={{
-                                      type: CustomTextControl,
-                                      settings: {
-                                        placeholder: "Enter Verification Code",
-                                      },
-                                    }}
-                                    // className={"is-valid"}
-                                  />
-                                  <div className="save-btn-section">
-                                    <Button
-                                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                                        this.state.otp ? "active" : ""
-                                      }`}
-                                      type="submit"
-                                    >
-                                      Verify
-                                    </Button>
-                                  </div>
-                                </Form>
-                                {this.state.isOptInValid && (
-                                  <p
-                                    className="inter-display-regular f-s-10 lh-11 m-t-5"
-                                    style={{ color: "#ea4e3c" }}
-                                  >
-                                    Invalid verification code
-                                  </p>
-                                )}
-                              </>
-                            )}
-                          </>
-                        )}
-                        {this.state.CheckOutModal && (
                           <Button
-                            className={`primary-btn`}
+                            className={`primary-btn  disabled`}
+                            style={{ cursor: "auto" }}
                             onClick={() => {
                               // if (plan.name !== this.state.userPlan.name) {
                               //   this.AddEmailModal();
@@ -779,72 +634,226 @@ class UpgradeModal extends BaseReactComponent {
                               //     selectedPlan: plan,
                               //   });
                               // }
-                              window.open(this.state.payment_link);
                             }}
                           >
-                            Complete payment
+                            Your choosen plan
                           </Button>
+                        </div>
+                      </Col>
+                      <Col
+                        md={7}
+                        style={{
+                          paddingLeft: "3.5rem",
+                          paddingBottom: "10rem",
+                        }}
+                      >
+                        {this.state.RegisterModal && !this.state.isShowOtp ? (
+                          <p className="inter-display-medium f-s-16 lh-19 m-b-28 grey-969">
+                            Verify your email address to create an <br />
+                            account with Loch
+                          </p>
+                        ) : (
+                          ""
                         )}
-                      </div>
-                    </Col>
-                  </Row>
-                </div>
-              )}
+                        {this.state.isShowOtp && !this.state.CheckOutModal ? (
+                          <p className="inter-display-medium f-s-16 lh-19 m-b-28 black-191">
+                            We’ve sent you a verification code to your email
+                          </p>
+                        ) : (
+                          ""
+                        )}
+                        {this.state.CheckOutModal ? (
+                          <>
+                            <Image src={CheckIcon} className="m-b-5" />
+                            <p
+                              className="inter-display-medium f-s-16 lh-19 m-b-20 black-191"
+                              style={{ opacity: "0.8" }}
+                            >
+                              Great! We’ve verified your account. <br />
+                              You’re just one step away to becoming a{" "}
+                              <span class="inter-display-bold f-s-16 lh-19">
+                                {this.state.selectedPlan?.name}!
+                              </span>
+                            </p>
+                          </>
+                        ) : (
+                          ""
+                        )}
 
-              <div className="m-b-36 footer">
-                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                  At Loch, we care intensely about your privacy and
-                  pseudonymity.
+                        <div className="email-section auth-modal">
+                          {/* For Signin or Signup */}
+                          {this.state.RegisterModal && (
+                            <>
+                              {!this.state.isShowOtp ? (
+                                <Form onValidSubmit={this.handleAccountCreate}>
+                                  <FormElement
+                                    valueLink={this.linkState(this, "email")}
+                                    // label="Email Info"
+                                    required
+                                    validations={[
+                                      {
+                                        validate: FormValidator.isRequired,
+                                        message: "",
+                                      },
+                                      {
+                                        validate: FormValidator.isEmail,
+                                        message: "Please enter valid email id",
+                                      },
+                                    ]}
+                                    control={{
+                                      type: CustomTextControl,
+                                      settings: {
+                                        placeholder: "Email",
+                                      },
+                                    }}
+                                  />
+                                  <div className="save-btn-section">
+                                    <Button
+                                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                        this.state.email ? "active" : ""
+                                      }`}
+                                      type="submit"
+                                    >
+                                      Confirm
+                                    </Button>
+                                  </div>
+                                </Form>
+                              ) : (
+                                <>
+                                  <Form onValidSubmit={this.handleOtp}>
+                                    <FormElement
+                                      valueLink={this.linkState(this, "otp")}
+                                      // label="Email Info"
+                                      required
+                                      validations={
+                                        [
+                                          // {
+                                          //   validate: FormValidator.isRequired,
+                                          //   message: "",
+                                          // },
+                                          //   {
+                                          //     validate: FormValidator.isNum,
+                                          //     message: "Verification code can have only numbers",
+                                          //     },
+                                          // {
+                                          //     validate: () => {
+                                          //       console.log("state", this.state.isOptInValid);
+                                          //        return !this.state.isOptInValid;
+                                          //   },
+                                          //     message:"invalid verification code"
+                                          // }
+                                        ]
+                                      }
+                                      control={{
+                                        type: CustomTextControl,
+                                        settings: {
+                                          placeholder:
+                                            "Enter Verification Code",
+                                        },
+                                      }}
+                                      // className={"is-valid"}
+                                    />
+                                    <div className="save-btn-section">
+                                      <Button
+                                        className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                          this.state.otp ? "active" : ""
+                                        }`}
+                                        type="submit"
+                                      >
+                                        Verify
+                                      </Button>
+                                    </div>
+                                  </Form>
+                                  {this.state.isOptInValid && (
+                                    <p
+                                      className="inter-display-regular f-s-10 lh-11 m-t-5"
+                                      style={{ color: "#ea4e3c" }}
+                                    >
+                                      Invalid verification code
+                                    </p>
+                                  )}
+                                </>
+                              )}
+                            </>
+                          )}
+                          {this.state.CheckOutModal && (
+                            <Button
+                              className={`primary-btn`}
+                              onClick={() => {
+                                // if (plan.name !== this.state.userPlan.name) {
+                                //   this.AddEmailModal();
+                                //   this.setState({
+                                //     price_id: plan.price_id,
+                                //     selectedPlan: plan,
+                                //   });
+                                // }
+                                window.open(this.state.payment_link);
+                              }}
+                            >
+                              Complete payment
+                            </Button>
+                          )}
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+                )}
+                <p className="inter-display-medium f-s-16 lh-19 grey-969 text-center m-b-16">
+                  Already have an account?{" "}
+                  <span
+                    className="black-191 cp signin-link"
+                    onClick={this.handleSignin}
+                  >
+                    Sign in instead
+                  </span>
+                  .
                 </p>
-                <CustomOverlay
-                  text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
-                  position="top"
-                  isIcon={true}
-                  IconImage={LockIcon}
-                  isInfo={true}
-                  className={"fix-width"}
-                >
-                  <Image
-                    src={InfoIcon}
-                    className="info-icon"
-                    onMouseEnter={() => {
-                      WhaleCreateAccountPrivacyHover({
-                        session_id: getCurrentUser().id,
-                        email_address: this.state.email,
-                      });
-                    }}
-                  />
-                </CustomOverlay>
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
 
-        {/* {this.state.CheckOutModal && (
-          <CheckoutModal
-            show={this.state.CheckOutModal}
-            onHide={this.checkoutModal}
-            history={this.props.history}
-            price_id={this.state.price_id}
-            selectedPlan={this.state.selectedPlan}
-          />
-        )} */}
-        {/* {this.state.RegisterModal ? (
+                <div className="m-b-36 footer">
+                  <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                    At Loch, we care intensely about your privacy and
+                    pseudonymity.
+                  </p>
+                  <CustomOverlay
+                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                    position="top"
+                    isIcon={true}
+                    IconImage={LockIcon}
+                    isInfo={true}
+                    className={"fix-width"}
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="info-icon"
+                      onMouseEnter={() => {
+                        WhaleCreateAccountPrivacyHover({
+                          session_id: getCurrentUser().id,
+                          email_address: this.state.email,
+                        });
+                      }}
+                    />
+                  </CustomOverlay>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
+        )}
+        {this.state.signinModal ? (
           <AuthModal
-            show={this.state.RegisterModal}
+            show={this.state.signinModal}
             // link="http://loch.one/a2y1jh2jsja"
-            onHide={this.AddEmailModal}
+            onHide={this.handleSignin}
             history={this.props.history}
             modalType={"create_account"}
-            // iconImage={CohortIcon}
+            iconImage={SignInIcon}
             hideSkip={true}
-            // headerTitle={"Create a Wallet cohort"}
-            // changeWalletList={this.handleChangeList}
-            // apiResponse={(e) => this.CheckApiResponse(e)}
+            title="Sign in"
+            description="Get right back into your account"
+            stopUpdate={true}
           />
         ) : (
           ""
-        )} */}
+        )}
       </>
     );
   }
