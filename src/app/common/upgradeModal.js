@@ -371,10 +371,10 @@ class UpgradeModal extends BaseReactComponent {
   };
 
   handleSignin = () => {
-    this.setState({
-      signinModal: !this.state.signinModal,
-      hideModal:true,
-    });
+    // this.setState({
+    //   signinModal: !this.state.signinModal,
+    //   hideModal:true,
+    // });
   };
 
   render() {
