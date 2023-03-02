@@ -14,8 +14,8 @@ export const getGraphData = (apidata, parentCtx) => {
   // ).length;
   
   let digit = 3;
-  //  console.log("state", parentCtx, arr, assetPrices, apidata);
-  const labels = arr ? arr?.map((e) => e?.chain?.name) : [];
+   console.log("state", apidata);
+  const labels = arr ? arr?.map((e) => e?.chain ? e?.chain?.name : e?.exchange) : [];
 
   const options = {
     responsive: true,
