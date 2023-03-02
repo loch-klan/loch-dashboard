@@ -241,7 +241,7 @@ class Cost extends Component {
       GraphData.gas_fee_overtime &&
         GraphData.gas_fee_overtime?.map((tempGraphData) => {
           if (
-            activeBadgeList.includes(tempGraphData.chain._id) ||
+            activeBadgeList.includes(tempGraphData?.chain?._id) ||
             activeBadgeList.length === 0
           ) {
             graphDataMaster.push(tempGraphData);
@@ -257,7 +257,7 @@ class Cost extends Component {
       counterPartyData &&
         counterPartyData?.map((tempGraphData) => {
           if (
-            activeBadgeList.includes(tempGraphData.chain._id) ||
+            activeBadgeList.includes(tempGraphData?.chain?._id) ||
             activeBadgeList.length === 0
           ) {
             counterPartyDataMaster.push(tempGraphData);

@@ -146,7 +146,20 @@ class Portfolio extends BaseReactComponent {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
+      lochToken: JSON.parse(localStorage.getItem("stopClick"))
     };
+  }
+
+  getToken = () => {
+    // console.log(this.state.lochToken)
+    if (!this.state.lochToken) {
+      this.setState({
+        lochToken: JSON.parse(localStorage.getItem("stopClick")),
+      });
+      setTimeout(() => {
+        this.getToken();
+      }, 1000);
+     }
   }
 
   upgradeModal = () => {
@@ -185,6 +198,7 @@ class Portfolio extends BaseReactComponent {
     });
   };
   componentDidMount() {
+    this.getToken();
     this.state.startTime = new Date() * 1;
    
      if (this.props.match.params.id) {
@@ -502,7 +516,7 @@ class Portfolio extends BaseReactComponent {
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-    // console.log("assetList", assetPriceList);
+    // console.log("assetList", this.state.lochToken);
     let tableData =
       table &&
       table.map((row) => {
@@ -1283,10 +1297,7 @@ class Portfolio extends BaseReactComponent {
                         // graphLoading={true}
                         isUpdate={this.state.isUpdate}
                         handleClick={() => {
-                          if (
-                            this.state.userWalletList &&
-                            this.state.userWalletList?.length !== 0
-                          ) {
+                          if (this.state.lochToken) {
                             this.props.history.push(
                               "/intelligence/asset-value"
                             );
@@ -1303,11 +1314,9 @@ class Portfolio extends BaseReactComponent {
                         headerTitle="Net Flows"
                         headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
-                        handleClick={() => {
-                          if (
-                            this.state.userWalletList &&
-                            this.state.userWalletList?.length !== 0
-                          ) {
+                          handleClick={() => {
+                          
+                          if (this.state.lochToken) {
                             ProfitLossEV({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
@@ -1350,10 +1359,7 @@ class Portfolio extends BaseReactComponent {
                         title="Transaction History"
                         handleClick={() => {
                           // console.log("wallet", this.state.userWalletList);
-                          if (
-                            this.state.userWalletList &&
-                            this.state.userWalletList?.length !== 0
-                          ) {
+                          if (this.state.lochToken) {
                             this.props.history.push(
                               "/intelligence/transaction-history"
                             );
@@ -1379,10 +1385,7 @@ class Portfolio extends BaseReactComponent {
                         headerSubTitle="Understand where you’ve exchanged the most value"
                         isArrow={true}
                         handleClick={() => {
-                          if (
-                            this.state.userWalletList &&
-                            this.state.userWalletList?.length !== 0
-                          ) {
+                          if (this.state.lochToken) {
                             VolumeTradeByCP({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,

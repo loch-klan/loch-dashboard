@@ -7,7 +7,8 @@ const deleteToken = () => {
   localStorage.removeItem("currency");
   localStorage.removeItem("currentPlan");
   localStorage.removeItem("share_id");
-   localStorage.removeItem("Plans");
+  localStorage.removeItem("Plans");
+  localStorage.removeItem("stopClick");
 };
 
 const getToken = () => {

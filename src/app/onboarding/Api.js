@@ -261,6 +261,8 @@ export const createAnonymousUserApi = (data, ctx, addWallet) => {
   //         symbol: "$",
   //         rate: 1,
   // }))
+
+  localStorage.setItem("stopClick", false);
       
    localStorage.setItem("lochToken", "jsk");
  
@@ -281,6 +283,8 @@ export const createAnonymousUserApi = (data, ctx, addWallet) => {
         "currentPlan",
         JSON.stringify(res.data.data.current_plan)
       );
+
+      localStorage.setItem("stopClick", true);
 
        signUpProperties({ userId: res.data.data.user.link, email_address:"", first_name:"",last_name:"" });
      

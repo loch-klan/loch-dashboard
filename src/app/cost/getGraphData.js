@@ -14,7 +14,7 @@ export const getGraphData = (apidata, parentCtx) => {
   // ).length;
   
   let digit = 3;
-   console.log("state", apidata);
+  //  console.log("state", apidata);
   const labels = arr ? arr?.map((e) => e?.chain ? e?.chain?.name : e?.exchange) : [];
 
   const options = {
@@ -55,8 +55,9 @@ export const getGraphData = (apidata, parentCtx) => {
               amountFormat(
                 (
                   ctx.dataset.totalFeesAmount[ctx.dataIndex] *
-                  assetPrices[ctx.dataset.defaultAssetCode[ctx.dataIndex]]
-                )?.toFixed(2),
+                    assetPrices[ctx.dataset.defaultAssetCode[ctx.dataIndex]] ||
+                  ctx.raw
+                )?.toFixed(2) * currency.rate,
                 "en-US",
                 "USD"
               ) +
