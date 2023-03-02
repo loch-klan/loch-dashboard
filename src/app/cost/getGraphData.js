@@ -15,7 +15,7 @@ export const getGraphData = (apidata, parentCtx) => {
   
   let digit = 3;
   //  console.log("state", parentCtx, arr, assetPrices, apidata);
-  const labels = arr ? arr?.map((e) => e.chain.name) : [];
+  const labels = arr ? arr?.map((e) => e?.chain?.name) : [];
 
   const options = {
     responsive: true,
@@ -225,9 +225,9 @@ export const getGraphData = (apidata, parentCtx) => {
     datasets: [
       {
         data: arr ? arr?.map((e) => e.total_fees * currency?.rate) : [],
-        backgroundColor: arr ? arr?.map((e) => e.chain.color + "4D") : [],
-        borderColor: arr ? arr?.map((e) => e.chain.color) : [],
-        defaultAssetCode: arr ? arr?.map((e) => e.chain.default_asset_code) : [],
+        backgroundColor: arr ? arr?.map((e) => e?.chain?.color + "4D") : [],
+        borderColor: arr ? arr?.map((e) => e.chain?.color) : [],
+        defaultAssetCode: arr ? arr?.map((e) => e.chain?.default_asset_code) : [],
         borderWidth: 2,
         borderRadius: {
           topLeft: 6,
@@ -493,7 +493,7 @@ export const getCounterGraphData = (arr, parentCtx) => {
         totalFees: arr?.map((e) => e.total_fees * currency?.rate),
         // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
         totalVolume: arr?.map((e) => e.total_volume),
-        defaultAssetCode: arr?.map((e) => e.chain.default_asset_code),
+        defaultAssetCode: arr?.map((e) => e?.chain?.default_asset_code),
       },
     ],
   };

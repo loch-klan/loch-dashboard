@@ -145,7 +145,7 @@ class LineChartSlider extends BaseReactComponent {
     assetValueData &&
       assetValueData?.map((assetData) => {
         if (
-          this.state.activeBadgeList.includes(assetData.chain._id) ||
+          this.state.activeBadgeList.includes(assetData?.chain?._id) ||
           this.state.activeBadgeList.length === 0
         ) {
           if (assetData.events && assetData.events.length > 0) {
@@ -567,45 +567,48 @@ class LineChartSlider extends BaseReactComponent {
       }
     })
 
-     SelectedSeriesData = [
-       {
-         // linkedTo: key,
-         name: "Total",
-         id: 2,
-         type: "area",
-         // type: "areaspline",
-         fillOpacity: 0.1,
-         color: "#CF1011",
-         marker: {
-           // enabled: true,
-           symbol: "circle",
-         },
-         showInLegend: true,
-         data: totalData,
-         lastValue: totalData[totalData.length - 1],
-         assetName: "Total",
-         // lastValue: Math.max(...graphData),
-       },
-       ...SelectedSeriesData,
-       {
-         // linkedTo: key,
-         name: "Other",
-         id: 1,
-         type: "area",
-         // type: "areaspline",
-         fillOpacity: 0.1,
-         color: "#16182B",
-         marker: {
-           // enabled: true,
-           symbol: "circle",
-         },
-         showInLegend: true,
-         data: otherData,
-         lastValue: otherData[otherData.length - 1],
-         assetName: "Other",
-         // lastValue: Math.max(...graphData),
-       },
-     ];
+    SelectedSeriesData = [
+     
+      ...SelectedSeriesData,
+      {
+        // linkedTo: key,
+        name: "Other",
+        id: 1,
+        type: "area",
+        // type: "areaspline",
+        fillOpacity: 0.1,
+        color: "#16182B",
+        marker: {
+          // enabled: true,
+          symbol: "circle",
+        },
+        showInLegend: true,
+        data: otherData,
+        lastValue: otherData[otherData.length - 1],
+        assetName: "Other",
+        // lastValue: Math.max(...graphData),
+      },
+    ];
+    
+    // total plot
+      // {
+      //    // linkedTo: key,
+      //    name: "Total",
+      //    id: 2,
+      //    type: "area",
+      //    // type: "areaspline",
+      //    fillOpacity: 0.1,
+      //    color: "#CF1011",
+      //    marker: {
+      //      // enabled: true,
+      //      symbol: "circle",
+      //    },
+      //    showInLegend: true,
+      //    data: totalData,
+      //    lastValue: totalData[totalData.length - 1],
+      //    assetName: "Total",
+      //    // lastValue: Math.max(...graphData),
+      //  },
 
 
     SelectedSeriesData = SelectedSeriesData.sort((a, b) => {
@@ -871,8 +874,8 @@ class LineChartSlider extends BaseReactComponent {
               y: item.y,
               color: item.series.userOptions.color,
             });
-            // net_amount += item.y;
-           if(item.series.userOptions.assetName === "Total"){ net_amount = item.y;}
+            net_amount += item.y;
+          //  if(item.series.userOptions.assetName === "Total"){ net_amount = item.y;}
           });
           tooltipData.sort((a, b) => parseFloat(b.y) - parseFloat(a.y));
           // console.log("sorted", tooltipData);
@@ -920,8 +923,8 @@ backdrop-filter: blur(15px);">
       series: SelectedSeriesData,
       plotOptions: {
         series: {
-          // stacking: "normal",
-          grouping: false,
+          stacking: "normal",
+          // grouping: false,
           cursor: "pointer",
           fillOpacity: 0,
           point: {
