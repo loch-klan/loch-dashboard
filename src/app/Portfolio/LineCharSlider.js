@@ -1,6 +1,7 @@
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
+// import Highcharts from "highcharts/highstock";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import { GraphHeader } from "../common/GraphHeader";
@@ -261,6 +262,8 @@ class LineChartSlider extends BaseReactComponent {
         name: value.assetDetails.code,
         id: key,
         type: "area",
+        // type: "areaspline",
+        fillOpacity: 0.1,
         color: value.assetDetails.color,
         marker: {
           // enabled: true,
@@ -546,10 +549,75 @@ class LineChartSlider extends BaseReactComponent {
         ? seriesData.slice(0, 4)
         : seriesData.filter((e) => topLegends.includes(e.id));
     
+    let totalData = [];
+    let otherData = [];
+
+    seriesData?.map((e) => {
+      // calculate total
+      e?.data.map((value, i) => {
+        totalData[i] = totalData[i] ? totalData[i] + value : value;
+      })
+
+      // calculate others
+      if (!topLegends.includes(e.id)) {
+        e?.data.map((value, i) => {
+          otherData[i] = otherData[i] ? otherData[i] + value : value;
+        });
+       
+      }
+    })
+
+     SelectedSeriesData = [
+       {
+         // linkedTo: key,
+         name: "Total",
+         id: 2,
+         type: "area",
+         // type: "areaspline",
+         fillOpacity: 0.1,
+         color: "#CF1011",
+         marker: {
+           // enabled: true,
+           symbol: "circle",
+         },
+         showInLegend: true,
+         data: totalData,
+         lastValue: totalData[totalData.length - 1],
+         assetName: "Total",
+         // lastValue: Math.max(...graphData),
+       },
+       ...SelectedSeriesData,
+       {
+         // linkedTo: key,
+         name: "Other",
+         id: 1,
+         type: "area",
+         // type: "areaspline",
+         fillOpacity: 0.1,
+         color: "#16182B",
+         marker: {
+           // enabled: true,
+           symbol: "circle",
+         },
+         showInLegend: true,
+         data: otherData,
+         lastValue: otherData[otherData.length - 1],
+         assetName: "Other",
+         // lastValue: Math.max(...graphData),
+       },
+     ];
+
+
+    SelectedSeriesData = SelectedSeriesData.sort((a, b) => {
+      return b.lastValue - a.lastValue;
+    });
+    console.log(SelectedSeriesData)
+
+
     
     // AllLegends = [{ label: "All", value: "All" }, ...AllLegends.sort((a, b) => (a.label > b.label ? 1 : -1))];
     
-    // console.log("all legend", AllLegends)
+    // console.log("all legend", SelectedSeriesData);
     let selectedValue = null;
 
     var UNDEFINED;
@@ -558,7 +626,8 @@ class LineChartSlider extends BaseReactComponent {
         text: null,
       },
       chart: {
-        type: "column",
+        // type: "column",
+        type: "area",
         spacingTop: this.props.hideTimeFilter ? 40 : 10,
         events: {
           click: function (event) {
@@ -711,6 +780,9 @@ class LineChartSlider extends BaseReactComponent {
         opposite: false,
         offset: this.props.hideTimeFilter ? 20 : 40,
         gridLineDashStyle: "longdash",
+        stackLabels: {
+          enabled: false,
+        },
         labels: {
           formatter: function () {
             // return Highcharts.numberFormat(this.value, -1, UNDEFINED, ",");
@@ -799,7 +871,8 @@ class LineChartSlider extends BaseReactComponent {
               y: item.y,
               color: item.series.userOptions.color,
             });
-            net_amount += item.y;
+            // net_amount += item.y;
+           if(item.series.userOptions.assetName === "Total"){ net_amount = item.y;}
           });
           tooltipData.sort((a, b) => parseFloat(b.y) - parseFloat(a.y));
           // console.log("sorted", tooltipData);
@@ -847,6 +920,8 @@ backdrop-filter: blur(15px);">
       series: SelectedSeriesData,
       plotOptions: {
         series: {
+          // stacking: "normal",
+          grouping: false,
           cursor: "pointer",
           fillOpacity: 0,
           point: {
@@ -937,6 +1012,7 @@ backdrop-filter: blur(15px);">
         },
       },
     };
+
     const minVersion = { padding: "3.2rem 3.2rem 0rem 3.2rem" }
      const minVersionSection = {
        minHeight: "51rem",
@@ -1083,6 +1159,7 @@ backdrop-filter: blur(15px);">
                 <HighchartsReact
                   highcharts={Highcharts}
                   options={options}
+                  // options={options2}
                   constructorType={"stockChart"}
                   // allowChartUpdate={true}
                   // updateArgs={[true]}
