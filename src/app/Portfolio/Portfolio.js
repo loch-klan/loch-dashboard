@@ -152,6 +152,7 @@ class Portfolio extends BaseReactComponent {
 
   getToken = () => {
     // console.log(this.state.lochToken)
+    let token = localStorage.getItem("lochToken")
     if (!this.state.lochToken) {
       this.setState({
         lochToken: JSON.parse(localStorage.getItem("stopClick")),
@@ -159,7 +160,11 @@ class Portfolio extends BaseReactComponent {
       setTimeout(() => {
         this.getToken();
       }, 1000);
-     }
+    }
+    
+    if (token !== "jsk") {
+      localStorage.setItem("stopClick", true);
+    }
   }
 
   upgradeModal = () => {
