@@ -1,382 +1,387 @@
 .welcome-card-section {
-          min-width: 82rem;   //solve overflow issue
-          overflow: hidden;   //solve overflow issue
-            margin: 5rem 0 1rem;
-            padding: 4rem 4.8rem;
-            // width: 89.6rem;
-            background-color: $secondary;
-            box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
-            border-radius: 1.2rem;
-            position: relative;
-            &.line{
-                margin-top: 0;
-            }
-// LINE CHART SLIDER START
-            &.lineChartSlider{
-                margin-top: 0;
-                padding: 4rem 0rem;
-            }
+  min-width: 82rem; //solve overflow issue
+  overflow: hidden; //solve overflow issue
+  margin: 5rem 0 1rem;
+  padding: 4rem 4.8rem;
+  // width: 89.6rem;
+  background-color: $secondary;
+  box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+    0px 1rem 1rem rgba(0, 0, 0, 0.04);
+  border-radius: 1.2rem;
+  position: relative;
+  &.line {
+    margin-top: 0;
+  }
+  // LINE CHART SLIDER START
+  &.lineChartSlider {
+    margin-top: 0;
+    padding: 4rem 0rem;
+  }
 
-            .ChartDivider{
-                height: 1px;
-                background-color: rgba(229, 229, 230, 0.5);
-                width: 100%;
-                margin-top: 1rem;
-            }
+  .ChartDivider {
+    height: 1px;
+    background-color: rgba(229, 229, 230, 0.5);
+    width: 100%;
+    margin-top: 1rem;
+  }
 
-            .SliderChartBottom{
-                padding: 0rem 4.8rem;
-                margin-top: 2rem;
+  .SliderChartBottom {
+    padding: 0rem 4.8rem;
+    margin-top: 2rem;
 
-                h4{
-                    display:flex;
-                    align-items: center;
+    h4 {
+      display: flex;
+      align-items: center;
 
-                    img {
-                        margin-right: 1rem;
-                        }
-                }
+      img {
+        margin-right: 1rem;
+      }
+    }
 
-                .InternalEventWrapper{
-                    display: flex;
-                   align-items: stretch;
-                    justify-content: space-between;
-                    margin-top: 2rem;
-                    flex-wrap: wrap;
+    .InternalEventWrapper {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      margin-top: 2rem;
+      flex-wrap: wrap;
 
-                    .GreyChip{
-                        display: flex;
-                        align-items: center;
-                        justify-content: flex-start;
-                        padding: 1.2rem;
-                        background: rgba(229, 229, 230, 0.5);
-                        border-radius: 8px;
-                        margin-bottom: 1.2rem;
-                        width: 49%;
-                        flex-wrap: nowrap;
+      .GreyChip {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 1.2rem;
+        background: rgba(229, 229, 230, 0.5);
+        border-radius: 8px;
+        margin-bottom: 1.2rem;
+        width: 49%;
+        flex-wrap: nowrap;
 
-                        h5{
-                            display:flex;
-                            align-items: center;
-                            margin-right: 1rem;
+        h5 {
+          display: flex;
+          align-items: center;
+          margin-right: 1rem;
 
-                            img{
-                            margin-right: 1rem;
-                        }
-                        }
+          img {
+            margin-right: 1rem;
+          }
+        }
+      }
+    }
+  }
+  // LINE CHART SLIDER END
+  .welcome-card {
+    margin-bottom: 2.3rem;
+    .welcome-card-upper-section {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
 
+    .welcome-section-left {
+      .welcome-title {
+        margin-bottom: 0.8rem;
+      }
 
-                    }
-                }
-            }
-// LINE CHART SLIDER END
-            .welcome-card {
+      p {
+        font-size: 1.3rem;
+        line-height: 15.6px;
+        color: $grey-969;
+      }
 
-                margin-bottom: 2.3rem;
-                .welcome-card-upper-section{
-                    display: flex;
-                    align-items: flex-start;
-                    justify-content: space-between;
-                }
+      // .welcome-btn {
+      //     button {
+      //         padding: 1.65rem 2.8rem;
+      //     }
+      //     .primary-btn{
+      //       &:hover:not([disabled]){
+      //         border-color: $secondary;
+      //         box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
+      //         color: $black-191;
+      //         background-color: $secondary;
+      //       }
+      //     }
+      //     .secondary-btn {
+      //         margin-right: 2.4rem;
+      //         &:hover{
+      //           background-color: $black-191;
+      //           color: $secondary;
+      //         }
+      //     }
+      // }
+    }
 
+    .welcome-section-right {
+      // position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
 
-                .welcome-section-left {
+      .wallet-amount {
+        font-size: 3.2rem;
+        line-height: 38px;
+        // margin-top: 1.2rem;
+        color: $black-1D2;
+      }
 
-                    .welcome-title {
-                        margin-bottom: 0.8rem;
-                    }
+      .growth-div {
+        padding: 0.85rem 1.2rem;
+        background: $green-E3F;
+        border-radius: 8px;
+        box-shadow: none;
+        img {
+          margin-right: 0.4rem;
+        }
+      }
 
-                    p {
-                        font-size: 1.3rem;
-                        line-height: 15.6px;
-                        color: $grey-969;
-                    }
+      .downfall {
+        background-color: $red-FFE;
+      }
+    }
+    .welcome-btn {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
 
-                    // .welcome-btn {
-                    //     button {
-                    //         padding: 1.65rem 2.8rem;
-                    //     }
-                    //     .primary-btn{
-                    //       &:hover:not([disabled]){
-                    //         border-color: $secondary;
-                    //         box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04), 0px 1rem 1rem rgba(0, 0, 0, 0.04);
-                    //         color: $black-191;
-                    //         background-color: $secondary;
-                    //       }
-                    //     }
-                    //     .secondary-btn {
-                    //         margin-right: 2.4rem;
-                    //         &:hover{
-                    //           background-color: $black-191;
-                    //           color: $secondary;
-                    //         }
-                    //     }
-                    // }
-                }
+      .manage-wallet {
+        border-radius: 0;
+        border-bottom-left-radius: 1.1rem;
+        background-color: $secondary;
+        color: $black-191;
+        border-right: 1px solid $white-E5E;
 
-                .welcome-section-right {
-                    // position: relative;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-end;
+        .connect-exchange-img {
+          width: 1.2rem;
+          // filter:invert(1);
 
-                    .wallet-amount {
-                        font-size: 3.2rem;
-                        line-height: 38px;
-                        // margin-top: 1.2rem;
-                        color: $black-1D2;
-                    }
-
-                    .growth-div {
-                        padding: 0.85rem 1.2rem;
-                        background: $green-E3F;
-                        border-radius: 8px;
-                        box-shadow: none;
-                        img {
-                            margin-right: 0.4rem;
-                        }
-                    }
-
-                    .downfall {
-                        background-color: $red-FFE ;
-                    }
-                }
-                .welcome-btn{
-                    position: absolute;
-                    bottom:0;
-                    left: 0;
-                    width: 100%;
-                    display: flex;
-
-                    .manage-wallet{
-                        border-radius:0;
-                        border-bottom-left-radius: 1.1rem;
-                        background-color: $secondary ;
-                        color: $black-191;
-                        border-right:1px solid $white-E5E;
-
-                      &:hover{
-                        background-color:  $black-191;
-                        color: $secondary;
-                      }
-                    }
-                    .add-wallet{
-                        border-radius:0;
-                        border-bottom-right-radius: 1.1rem;
-                        // background-color:  $black-191;
-                        // color: $secondary;
-                        background-color: $secondary;
-                        color: $black-191;
-
-                        &:hover{
-                          // background-color: $secondary ;
-                          // color: $black-191;
-                          background-color:  $black-191;
-                          color: $secondary;
-                        }
-                    }
-                    button{
-                        width: 50%;
-                        height: 5.6rem;
-                        background-color: $secondary ;
-                        border:0px solid $white-E5E;
-                        border-top:1px solid $white-E5E;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        // padding: 1px;
-                        img{
-                            margin-right: 0.8rem;
-                        }
-                        &:active:focus{
-                          box-shadow: none;
-                        }
-                        &:active{
-                          border-color: $grey-E5E;
-                        }
-
-                        &:focus{
-                            // background-color: $black-191;
-                            // color:$secondary;
-                            // border:none;
-                            box-shadow:none;
-                        }
-                    }
-                }
-            }
-
-            .line-chart-section {
-                position: relative;
-
-                .chart-y-selection{
-                    position: relative;
-                    .line-chart-dropdown-y-axis{
-                        position: absolute;
-                        left: 0rem;
-                        z-index:1;
-                        // .dropdown{
-                            // .dropdown-menu{
-                            //     width: auto;
-                            //     padding: 0.4rem;
-
-                            // }
-                            // .dropdown-toggle {
-                            //     @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
-                            //       background: $secondary;
-                            // }
-                        // }
-                    }
-                    // .dropdown .btn-primary:not(:disabled):not(.disabled):active {
-                    //     border: none;
-                    // }
-                }
-                .chart-x-selection {
-                    position: relative;
-
-                    // .x-axis-selection-date {
-                    //     position: absolute;
-                    //     right: 0rem;
-                    //     bottom: 1.3rem;
-                    //     border: none;
-                    //     outline: none;
-                    //     padding-left: 1.5rem;
-                    // }
-                    .dropdown{
-                        position: absolute;
-                        top: -1rem;
-                        right: 0rem;
-                        .dropdown-menu{
-                            width: auto;
-                            padding: 0.4rem;
-                            max-height: 20rem;
-                            overflow-y: auto;
-                        }
-                        .dropdown-toggle {
-                            @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
-                              background: $secondary;
-                              padding-left: 4.5rem;
-
-                              &:hover{
-                            color: $primary;
-                          }
-                        }
-
-                    }
-
-                    .dropdown .btn-primary:not(:disabled):not(.disabled):active {
-                        border: none;
-                    }
-
-                    .y-axis-selection-currency {
-                        position: absolute;
-                        /* top: 0rem; */
-                        z-index: 1;
-                        left: -0.7rem;
-                        // top: 1.7rem;
-                        top: 14.5rem;
-                        border: none;
-                        outline: none;
-                    }
-
-                }
-
-                .coin-badges {
-                    .dropdown {
-
-                        .dropdown-toggle,
-                        .dropdown-toggle:focus {
-                            box-shadow: -2.5rem 0rem 2.4rem 2rem $secondary !important;
-                        }
-                    }
-                }
-
-                // .highcharts-container {
-                //     svg{
-                //         .highcharts-legend {
-                //             .highcharts-legend-item{
-                //                 text{
-                //                 font-family: "inter-medium";
-                //                 font-size: 1rem;
-                //                 }
-                //             }
-                //         }
-                //     }
-                // }
-                .highcharts-scrollbar-button{
-                    display: none;
-                }
-                .highcharts-scrollbar-arrow{
-                    display: none;
-                }
-            }
+          &:hover {
+            filter: invert(1);
+          }
         }
 
-         .highcharts-data-label-box {
-            height: 3.5rem;
-            text-align: center // padding: 0.8rem 1.2rem !important;
+        &:hover {
+          background-color: $black-191;
+          color: $secondary;
+
+          .connect-exchange-img {
+            filter: invert(1);
+          }
+        }
+      }
+      .add-wallet {
+        border-radius: 0;
+        border-bottom-right-radius: 1.1rem;
+        // background-color:  $black-191;
+        // color: $secondary;
+        background-color: $secondary;
+        color: $black-191;
+
+        &:hover {
+          // background-color: $secondary ;
+          // color: $black-191;
+          background-color: $black-191;
+          color: $secondary;
+        }
+      }
+      button {
+        width: 50%;
+        height: 5.6rem;
+        background-color: $secondary;
+        border: 0px solid $white-E5E;
+        border-top: 1px solid $white-E5E;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // padding: 1px;
+        img {
+          margin-right: 0.8rem;
+        }
+        &:active:focus {
+          box-shadow: none;
+        }
+        &:active {
+          border-color: $grey-E5E;
         }
 
-        .highcharts-xaxis-labels {
-            font-family: 'Inter-Regular';
-            font-weight: 400;
-            font-size: 1.2rem ;
-            line-height: 2rem;
-            color: $grey-869;
+        &:focus {
+          // background-color: $black-191;
+          // color:$secondary;
+          // border:none;
+          box-shadow: none;
         }
+      }
+    }
+  }
 
-        .highcharts-yaxis-labels {
-            font-family: 'Inter-Regular';
-            font-weight: 400;
-            font-size: 1.2rem ;
-            line-height: 2rem;
-            color: $grey-B0B;
+  .line-chart-section {
+    position: relative;
+
+    .chart-y-selection {
+      position: relative;
+      .line-chart-dropdown-y-axis {
+        position: absolute;
+        left: 0rem;
+        z-index: 1;
+        // .dropdown{
+        // .dropdown-menu{
+        //     width: auto;
+        //     padding: 0.4rem;
+
+        // }
+        // .dropdown-toggle {
+        //     @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
+        //       background: $secondary;
+        // }
+        // }
+      }
+      // .dropdown .btn-primary:not(:disabled):not(.disabled):active {
+      //     border: none;
+      // }
+    }
+    .chart-x-selection {
+      position: relative;
+
+      // .x-axis-selection-date {
+      //     position: absolute;
+      //     right: 0rem;
+      //     bottom: 1.3rem;
+      //     border: none;
+      //     outline: none;
+      //     padding-left: 1.5rem;
+      // }
+      .dropdown {
+        position: absolute;
+        top: -1rem;
+        right: 0rem;
+        .dropdown-menu {
+          width: auto;
+          padding: 0.4rem;
+          max-height: 20rem;
+          overflow-y: auto;
         }
+        .dropdown-toggle {
+          @include font($grey-7C7, "Inter-SemiBold", 1.1rem, 600, 1.2rem);
+          background: $secondary;
+          padding-left: 4.5rem;
 
-        .highcharts-tooltip {
-
-            // box-shadow : 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-            .line-chart-tooltip{
-                display:flex;
-                flex-direction: column;
-                .header-title{
-                    text-transform: uppercase;
-                    letter-spacing: 0.125rem;
-                }
-                .line-chart-tooltip-section{
-                    display:flex;
-                    // align-items:center;
-                    flex-direction: column;
-                    justify-content: left;
-                    padding: 0.4rem 0.8rem;
-                    border-radius: 0.4rem;
-                    .inter-display-medium{
-                      display: block;
-                    }
-                }
-                .tooltip-section-yellow{
-                    background-color: $yellow-F5E;
-                    width: max-content;
-                }
-                .top-section{
-                  width: max-content;
-                    .tooltip-section-grey{
-                        background-color: #FBF6D0;
-                    }
-                    .tooltip-section-blue{
-                        background-color: #C6E4FF;
-                    }
-                }
-                .bottom-section{
-                    .tooltip-section-bottom{
-                        // background-color: $yellow-FBF;
-                        background-color: $yellow-F5E;
-                        padding:0.8rem;
-                        white-space: normal !important;
-                        word-wrap: break-word;
-                        border-radius:0.4rem;
-                        // max-width:83%;
-                        max-width: max-content;
-                    }
-                }
-            }
+          &:hover {
+            color: $primary;
+          }
         }
+      }
+
+      .dropdown .btn-primary:not(:disabled):not(.disabled):active {
+        border: none;
+      }
+
+      .y-axis-selection-currency {
+        position: absolute;
+        /* top: 0rem; */
+        z-index: 1;
+        left: -0.7rem;
+        // top: 1.7rem;
+        top: 14.5rem;
+        border: none;
+        outline: none;
+      }
+    }
+
+    .coin-badges {
+      .dropdown {
+        .dropdown-toggle,
+        .dropdown-toggle:focus {
+          box-shadow: -2.5rem 0rem 2.4rem 2rem $secondary !important;
+        }
+      }
+    }
+
+    // .highcharts-container {
+    //     svg{
+    //         .highcharts-legend {
+    //             .highcharts-legend-item{
+    //                 text{
+    //                 font-family: "inter-medium";
+    //                 font-size: 1rem;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    .highcharts-scrollbar-button {
+      display: none;
+    }
+    .highcharts-scrollbar-arrow {
+      display: none;
+    }
+  }
+}
+
+.highcharts-data-label-box {
+  height: 3.5rem;
+  text-align: center; // padding: 0.8rem 1.2rem !important;
+}
+
+.highcharts-xaxis-labels {
+  font-family: "Inter-Regular";
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: $grey-869;
+}
+
+.highcharts-yaxis-labels {
+  font-family: "Inter-Regular";
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 2rem;
+  color: $grey-B0B;
+}
+
+.highcharts-tooltip {
+  // box-shadow : 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+  .line-chart-tooltip {
+    display: flex;
+    flex-direction: column;
+    .header-title {
+      text-transform: uppercase;
+      letter-spacing: 0.125rem;
+    }
+    .line-chart-tooltip-section {
+      display: flex;
+      // align-items:center;
+      flex-direction: column;
+      justify-content: left;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.4rem;
+      .inter-display-medium {
+        display: block;
+      }
+    }
+    .tooltip-section-yellow {
+      background-color: $yellow-F5E;
+      width: max-content;
+    }
+    .top-section {
+      width: max-content;
+      .tooltip-section-grey {
+        background-color: #fbf6d0;
+      }
+      .tooltip-section-blue {
+        background-color: #c6e4ff;
+      }
+    }
+    .bottom-section {
+      .tooltip-section-bottom {
+        // background-color: $yellow-FBF;
+        background-color: $yellow-F5E;
+        padding: 0.8rem;
+        white-space: normal !important;
+        word-wrap: break-word;
+        border-radius: 0.4rem;
+        // max-width:83%;
+        max-width: max-content;
+      }
+    }
+  }
+}

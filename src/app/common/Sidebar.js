@@ -307,8 +307,8 @@ function Sidebar(props) {
                 </div>
                 {/* {selectedPlan?.name !== "Free" && (
                   <div className={`sidebar-plan`}> */}
-                    {/* <Image src={BaronIcon} /> */}
-                    {/* <h3>
+                {/* <Image src={BaronIcon} /> */}
+                {/* <h3>
                       Loch <span>{selectedPlan.name}</span>
                     </h3>
                   </div>
@@ -349,33 +349,6 @@ function Sidebar(props) {
                           Home
                         </NavLink>
                       </li>
-                      <li>
-                        <NavLink
-                          className="nav-link"
-                          to={"/whale-watching"}
-                          onClick={(e) => {
-                            if (!isWallet) {
-                              e.preventDefault();
-                            } else {
-                              MenuWhale({
-                                email_address: getCurrentUser().email,
-                                session_id: getCurrentUser().id,
-                              });
-                            }
-                          }}
-                          activeclassname="active"
-                        >
-                          <Image
-                            src={
-                              activeTab === "/whale-watching"
-                                ? ActiveCohortIcon
-                                : CohortIcon
-                            }
-                          />
-                          Whale Watching
-                        </NavLink>
-                      </li>
-
                       <li>
                         <NavLink
                           exact={true}
@@ -460,6 +433,60 @@ function Sidebar(props) {
                       </li>
                       <li>
                         <NavLink
+                          exact={true}
+                          onClick={(e) => {
+                            if (!isWallet) {
+                              e.preventDefault();
+                            } else {
+                              ProfileMenu({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                            }
+                          }}
+                          className="nav-link"
+                          to="/profile"
+                          activeclassname="active"
+                        >
+                          <Image
+                            src={
+                              activeTab === "/profile"
+                                ? ActiveProfileIcon
+                                : ProfileIcon
+                            }
+                          />
+                          Profile
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          className="nav-link"
+                          to={"/whale-watching"}
+                          onClick={(e) => {
+                            if (!isWallet) {
+                              e.preventDefault();
+                            } else {
+                              MenuWhale({
+                                email_address: getCurrentUser().email,
+                                session_id: getCurrentUser().id,
+                              });
+                            }
+                          }}
+                          activeclassname="active"
+                        >
+                          <Image
+                            src={
+                              activeTab === "/whale-watching"
+                                ? ActiveCohortIcon
+                                : CohortIcon
+                            }
+                          />
+                          Whale Watching
+                        </NavLink>
+                      </li>
+
+                      <li>
+                        <NavLink
                           className={`nav-link ${!isDefi ? "none" : ""}`}
                           to={`${!isDefi ? "#" : "/decentralized-finance"}`}
                           onClick={(e) => {
@@ -496,7 +523,7 @@ function Sidebar(props) {
                           DeFi
                         </NavLink>
                       </li>
-                      <li>
+                      {/* <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
@@ -510,35 +537,8 @@ function Sidebar(props) {
                           />
                           Connect Exchanges
                         </NavLink>
-                      </li>
+                      </li> */}
 
-                      <li>
-                        <NavLink
-                          exact={true}
-                          onClick={(e) => {
-                            if (!isWallet) {
-                              e.preventDefault();
-                            } else {
-                              ProfileMenu({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }
-                          }}
-                          className="nav-link"
-                          to="/profile"
-                          activeclassname="active"
-                        >
-                          <Image
-                            src={
-                              activeTab === "/profile"
-                                ? ActiveProfileIcon
-                                : ProfileIcon
-                            }
-                          />
-                          Profile
-                        </NavLink>
-                      </li>
                       <li>
                         <NavLink
                           exact={true}

@@ -5,6 +5,17 @@ import {Form, FormElement, FormValidator, BaseReactComponent, CustomTextControl}
 import CloseIcon from '../../assets/images/icons/dummyX.svg'
 import BinanceIcon from "../../assets/images/icons/Binance.svg";
 import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
+
+import BitstampIcon from "../../assets/images/icons/Bitstamp.jpg";
+import BybitIcon from "../../assets/images/icons/bybit.jpg";
+import GateIcon from "../../assets/images/icons/Gate.jpg";
+import GeminiIcon from "../../assets/images/icons/Gemini.jpg";
+import HuobiIcon from "../../assets/images/icons/Huobi.jpg";
+import OkxIcon from "../../assets/images/icons/okx.jpg";
+import krakanIcon from "../../assets/images/icons/krakan.svg";
+import KuCoinIcon from "../../assets/images/icons/kucoin.svg";
+import BitfinexIcon from "../../assets/images/icons/Bitfinex.png";
+
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import backIcon from "../../assets/images/icons/back-icon.svg";
@@ -40,10 +51,61 @@ class ConnectModal extends BaseReactComponent {
           name: "Coinbase",
           icon: CoinbaseIcon,
         },
+        {
+          name: "Kraken",
+          icon: krakanIcon,
+        },
+        {
+          name: "Kucoin",
+          icon: KuCoinIcon,
+        },
+        {
+          name: "OKX",
+          icon: OkxIcon,
+        },
+        {
+          name: "Bitfinex",
+          icon: BitfinexIcon,
+        },
+        {
+          name: "Bitstamp",
+          icon: BitstampIcon,
+        },
+        {
+          name: "Bybit",
+          icon: BybitIcon,
+        },
+        {
+          name: "Gemini",
+          icon: GeminiIcon,
+        },
+        {
+          name: "Huobi",
+          icon: HuobiIcon,
+        },
+        {
+          name: "Gate.io",
+          icon: GateIcon,
+        },
       ],
       selection: null,
+      apiActive: true,
+      coinBase: false,
     };
   }
+
+  handleApi = () => {
+    this.setState({
+      apiActive: true,
+      coinBase: false,
+    });
+  };
+  handleCoinbase = () => {
+    this.setState({
+      apiActive: false,
+      coinBase: true,
+    });
+  };
 
   handleSelect = (item) => {
     this.setState({ selection: item }, () => {
@@ -51,7 +113,7 @@ class ConnectModal extends BaseReactComponent {
     });
   };
   handleBack = () => {
-    this.setState({ selection: null });
+    this.setState({ selection: null, apiActive: true, coinBase: false });
   };
 
   getUserConnectExchange = () => {
@@ -241,6 +303,44 @@ class ConnectModal extends BaseReactComponent {
     );
   };
 
+  showCoinbaseAuthSteps = () => {
+    return (
+      <Slider {...this.state.settings}>
+        <div>
+          <div className="steps">
+            <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+              STEP 1
+            </h6>
+            <p className="inter-display-medium f-s-14 lh-16">
+              Click on Continue with <b>Coinbase</b>. It will lead you to your <b>Coinbase</b> account.
+            </p>
+          </div>
+        </div>
+        <div>
+          <div className="steps">
+            <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+              STEP 2
+            </h6>
+            <p className="inter-display-medium f-s-14 lh-16">
+              Login to your <b>Coinbase</b> account if you are not logged in
+              yet.
+            </p>
+          </div>
+        </div>
+        <div>
+          <div className="steps">
+            <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+              STEP 3
+            </h6>
+            <p className="inter-display-medium f-s-14 lh-16">
+              Click on the <b> Authorize</b> button.
+            </p>
+          </div>
+        </div>
+      </Slider>
+    );
+  };
+
   render() {
     const { selection } = this.state;
     return (
@@ -282,6 +382,52 @@ class ConnectModal extends BaseReactComponent {
                   Connecting to {selection.name}
                 </h6>
               </div>
+              {selection.name === "Coinbase" && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: "3rem",
+                  }}
+                >
+                  <h3
+                    className={`${
+                      this.state.apiActive
+                        ? "inter-display-semi-bold black-191"
+                        : "inter-display-medium grey-B0B"
+                    } f-s-16 lh-16 m-r-32 p-b-20 cp`}
+                    style={
+                      this.state.apiActive
+                        ? {
+                            borderBottom: "2px solid #000000",
+                          }
+                        : {}
+                    }
+                    onClick={this.handleApi}
+                  >
+                    API Sync
+                  </h3>
+                  <h3
+                    className={`${
+                      this.state.coinBase
+                        ? "inter-display-semi-bold black-191"
+                        : "inter-display-medium grey-B0B"
+                    } f-s-16 lh-16 m-r-32 p-b-20 cp`}
+                    style={
+                      this.state.coinBase
+                        ? {
+                            borderBottom: "2px solid #000000",
+                          }
+                        : {}
+                    }
+                    onClick={this.handleCoinbase}
+                  >
+                    Coinbase
+                  </h3>
+                </div>
+              )}
+              {selection.name === "Coinbase" && <hr style={{ margin: 0 }} />}
               <div className="selection-wrapper">
                 <Container>
                   <Row>
@@ -302,52 +448,56 @@ class ConnectModal extends BaseReactComponent {
                             //     this.state.connectionName !== "" ? "done" : "",
                             // }}
                           />
-                          <FormElement
-                            valueLink={this.linkState(this, "apiKey")}
-                            label="API Key"
-                            control={{
-                              type: CustomTextControl,
-                              settings: {
-                                placeholder: "Enter api key here",
-                              },
-                            }}
-                            // classes={{
-                            //   inputField:
-                            //     this.state.apiKey !== "" ? "done" : "",
-                            // }}
-                          />
-                          <FormElement
-                            valueLink={this.linkState(this, "apiSecret")}
-                            label="API Secret"
-                            control={{
-                              type: CustomTextControl,
-                              settings: {
-                                placeholder: "Enter api secret here",
-                              },
-                            }}
-                            // classes={{
-                            //   inputField:
-                            //     this.state.apiSecret !== "" ? "done" : "",
-                            // }}
-                          />
+                          {!this.state.coinBase && (
+                            <FormElement
+                              valueLink={this.linkState(this, "apiKey")}
+                              label="API Key"
+                              control={{
+                                type: CustomTextControl,
+                                settings: {
+                                  placeholder: "Enter api key here",
+                                },
+                              }}
+                              // classes={{
+                              //   inputField:
+                              //     this.state.apiKey !== "" ? "done" : "",
+                              // }}
+                            />
+                          )}
+                          {!this.state.coinBase && (
+                            <FormElement
+                              valueLink={this.linkState(this, "apiSecret")}
+                              label="API Secret"
+                              control={{
+                                type: CustomTextControl,
+                                settings: {
+                                  placeholder: "Enter api secret here",
+                                },
+                              }}
+                              // classes={{
+                              //   inputField:
+                              //     this.state.apiSecret !== "" ? "done" : "",
+                              // }}
+                            />
+                          )}
                         </Form>
                       </div>
                     </Col>
                     <Col sm={6}>
                       <div className="connect-steps">
                         <h4 className="inter-display-medium f-s-13 lh-16 grey-313 m-b-12">
-                          How to connect
+                          {this.state.coinBase ? "How to Add Your Account" : "How to connect"}
                         </h4>
                         {selection.name === "Binance"
                           ? this.showBinanceSteps()
-                          : this.showCoinbaseSteps()}
-                        <Button
-                          className="primary-btn connect-btn"
-                          onClick={this.handleConnect}
-                        >
-                          Connect
-                        </Button>
+                          : this.state.coinBase ?   this.showCoinbaseAuthSteps() : this.showCoinbaseSteps()}
                       </div>
+                      <Button
+                        className="primary-btn connect-btn"
+                        onClick={this.handleConnect}
+                      >
+                      {this.state.coinBase ? "Continue with coinbase" : "Connect"}
+                      </Button>
                     </Col>
                   </Row>
                 </Container>
@@ -365,19 +515,26 @@ class ConnectModal extends BaseReactComponent {
                 </p>
               </div>
               <div className="connect-wrapper">
-                {this.state.connectExchangesList.map((item) => {
-                  return (
-                    <div
-                      className="connect-div"
-                      onClick={() => this.handleSelect(item)}
-                    >
-                      <Image src={item.icon} />
-                      <h3 className="inter-display-medium f-s-16 lh-19 ">
-                        {item.name}
-                      </h3>
-                    </div>
-                  );
-                })}
+                <Row>
+                  {this.state.connectExchangesList.map((item) => {
+                    return (
+                      <Col md={4}>
+                        <div
+                          className="connect-div"
+                          onClick={() => this.handleSelect(item)}
+                        >
+                          <div className="img-wrapper">
+                            <Image src={item.icon} />
+                          </div>
+
+                          <h3 className="inter-display-medium f-s-16 lh-19 ">
+                            {item.name}
+                          </h3>
+                        </div>
+                      </Col>
+                    );
+                  })}
+                </Row>
               </div>
             </div>
           )}

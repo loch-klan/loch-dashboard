@@ -242,6 +242,7 @@ class Wallet extends Component {
             title="Wallets"
             subTitle="Manage all your wallets right here"
             btnText="Add wallet"
+            SecondaryBtn={true}
             handleBtn={this.handleAddModal}
             // showData={totalWalletAmt}
             // isLoading={isLoading}
@@ -253,9 +254,9 @@ class Wallet extends Component {
           />
           <div className="m-b-16 sortby-section">
             <div className="dropdown-section">
-            <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
-              Sort by
-            </span>
+              <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+                Sort by
+              </span>
               {this.state.sortBy.map((e, index) => {
                 return (
                   <span
@@ -277,28 +278,35 @@ class Wallet extends Component {
               })}
             </div>
           </div>
-          {
-            walletList.length > 0 &&
+          {walletList.length > 0 && (
             <div className="net-worth-wrapper">
-            <div className="left">
-              <Image src={netWorthIcon} className="net-worth-icon" />
-              <h3 className="inter-display-medium f-s-20 lh-24 ">Total net worth</h3>
+              <div className="left">
+                <Image src={netWorthIcon} className="net-worth-icon" />
+                <h3 className="inter-display-medium f-s-20 lh-24 ">
+                  Total net worth
+                </h3>
+              </div>
+              <div className="right">
+                <h3 className="space-grotesk-medium f-s-24 lh-29">
+                  {CurrencyType(false)}
+                  {numToCurrency(totalWalletAmt)}{" "}
+                  <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA va-m">
+                    {CurrencyType(true)}
+                  </span>
+                </h3>
+              </div>
             </div>
-            <div className="right">
-            <h3 className="space-grotesk-medium f-s-24 lh-29">{CurrencyType(false)}{numToCurrency(totalWalletAmt)} <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA va-m">{CurrencyType(true)}</span></h3>
-            </div>
-          </div>
-          }
+          )}
 
           <div className="cards">
-            {isLoading === true? (
+            {isLoading === true ? (
               <div className="loading-container">
                 <div className="animation-wrapper">
                   <Loading />
                 </div>
               </div>
             ) : walletList.length > 0 ? (
-                walletList.map((wallet, index) => {
+              walletList.map((wallet, index) => {
                 // console.log("walletlist", walletList)
                 return (
                   <WalletCard

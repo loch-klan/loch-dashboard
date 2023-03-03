@@ -11,9 +11,16 @@ import ManageWallet from "../../assets/images/icons/ManageWallet.svg"
 import ManageWalletWhite from "../../assets/images/icons/ManageWalletWhite.svg"
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg"
 import AddWalletAddressWhite from "../../assets/images/icons/AddWalletAddressWhite.svg"
+import LinkIcon from "../../assets/images/icons/link.svg";
+import LinkIconBtn from "../../assets/images/link.svg";
+// import ConnectModal from "./ConnectModal";
+import { useHistory } from "react-router-dom";
+import ConnectModal from '../common/ConnectModal'
+
 export default function WelcomeCard(props) {
     const [manageWallet, setManageWallet] = React.useState(true)
-    const [AddWallet, setAddWallet] = React.useState(true);
+  const [AddWallet, setAddWallet] = React.useState(true);
+    const [connectModal, setconnectModal] = React.useState(false);
     // const [addWallet, setAddWallet] = React.useState(true)
     // console.log(props)
     function handleAddWalletClick(){
@@ -23,6 +30,12 @@ export default function WelcomeCard(props) {
         // setManageWallet(!manageWallet);
         props.handleManage();
     }
+  
+   const history = useHistory();
+  
+  const handleConnectModal = () => {
+    setconnectModal(!connectModal);
+  };
 
     // React.useEffect(() =>{
     //     document.addEventListener("click", handleClickOutside, true)
@@ -57,7 +70,6 @@ export default function WelcomeCard(props) {
               </p>
             </div>
             <div className="welcome-section-right">
-
               {props.assetTotal !== null && !props.isLoading ? (
                 <CustomOverlay
                   position="top"
@@ -65,7 +77,9 @@ export default function WelcomeCard(props) {
                   isInfo={true}
                   isText={true}
                   text={
-                    CurrencyType(false) + amountFormat(props.assetTotal, "en-US", "USD") + CurrencyType(true)
+                    CurrencyType(false) +
+                    amountFormat(props.assetTotal, "en-US", "USD") +
+                    CurrencyType(true)
                   }
                 >
                   <h3 className="space-grotesk-medium wallet-amount">
@@ -77,8 +91,13 @@ export default function WelcomeCard(props) {
               ) : (
                 <CustomLoader loaderType="text" />
               )}
-<div className={`growth-div inter-display-medium f-s-14 lh-19 grey-313 ${difference < 0 ? "downfall" : ""}`}>
-                <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />{numToCurrency(difference) + "(" + Math.round(percent) + "%)"}
+              <div
+                className={`growth-div inter-display-medium f-s-14 lh-19 grey-313 ${
+                  difference < 0 ? "downfall" : ""
+                }`}
+              >
+                <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
+                {numToCurrency(difference) + "(" + Math.round(percent) + "%)"}
               </div>
             </div>
           </div>
@@ -87,15 +106,12 @@ export default function WelcomeCard(props) {
                         <Button className="primary-btn" onClick={props.handleAddModal}>Add wallet address</Button> */}
             <Button
               className="inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet"
-              onClick={handleManageClick}
+              onClick={handleConnectModal}
               onMouseEnter={() => setManageWallet(false)}
               onMouseLeave={() => setManageWallet(true)}
             >
-              <Image
-                // className="manage-wallet"
-                src={manageWallet === true ? ManageWallet : ManageWalletWhite}
-              />
-              Manage wallets
+              <Image className="connect-exchange-img" src={LinkIconBtn} />
+              Connect exchange
             </Button>
             <Button
               // class="add-wallet"
@@ -113,6 +129,18 @@ export default function WelcomeCard(props) {
             </Button>
           </div>
         </div>
+        {connectModal ? (
+          <ConnectModal
+            show={connectModal}
+            onHide={handleConnectModal}
+            history={history}
+            headerTitle={"Connect exchanges"}
+            modalType={"connectModal"}
+            iconImage={LinkIcon}
+          />
+        ) : (
+          ""
+        )}
       </div>
     );
 }

@@ -5,8 +5,17 @@ import { Link } from "react-router-dom";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import LinkIcon from "../../assets/images/icons/link.svg";
+import ConnectModal from "./ConnectModal";
+import { useHistory } from "react-router-dom";
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
+  const [connectModal, setconnectModal] = React.useState(false);
+   const history = useHistory();
+  
+   const handleConnectModal = () => {
+     setconnectModal(!connectModal);
+   };
 
   const breads = nav_list.map((e, key) => {
     // console.log(e , props.currentPage)
@@ -108,14 +117,24 @@ export default function PageHeader(props) {
             </span>
           )}
         </div>
-        {props.btnText && (
-          <Button
-            className={`${props.btnOutline ? "secondary-btn" : "primary-btn"}`}
-            onClick={props.handleBtn}
-          >
-            {props.btnText}
-          </Button>
-        )}
+        {(props.btnText || props.SecondaryBtn) &&<div>
+          {props.SecondaryBtn && (
+            <Button className="secondary-btn white-bg" onClick={handleConnectModal}>
+              Connect exchange
+            </Button>
+          )}
+          {props.btnText && (
+            <Button
+              className={`${
+                props.btnOutline ? "secondary-btn" : "primary-btn"
+              }`}
+              onClick={props.handleBtn}
+            >
+              {props.btnText}
+            </Button>
+          )}
+        </div>}
+
         {props.viewMore && (
           <a
             href={props.viewMoreRedirect}
@@ -126,6 +145,20 @@ export default function PageHeader(props) {
           </a>
         )}
       </div>
+
+      {connectModal ? (
+        <ConnectModal
+          show={connectModal}
+          onHide={handleConnectModal}
+          history={history}
+          headerTitle={"Connect exchanges"}
+          modalType={"connectModal"}
+          iconImage={LinkIcon}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
+
 }

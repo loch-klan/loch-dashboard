@@ -96,6 +96,17 @@
                     background-color: $secondary;
                 }
             }
+
+            .secondary-btn{
+                &.white-bg{
+                    background-color: #FFFFFF;
+                    margin-right:1.6rem;
+
+  &:hover{
+    background-color: $primary;
+  }
+                }
+            }
             .view-more{
               cursor: pointer;
               @include font(#4A4B4D, "Inter-SemiBold", 1.6rem, 600, 19px);
