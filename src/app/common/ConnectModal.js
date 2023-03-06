@@ -312,7 +312,8 @@ class ConnectModal extends BaseReactComponent {
               STEP 1
             </h6>
             <p className="inter-display-medium f-s-14 lh-16">
-              Click on Continue with <b>Coinbase</b>. It will lead you to your <b>Coinbase</b> account.
+              Click on Continue with <b>{this.state.selection.name}</b>. It will
+              lead you to your <b>{this.state.selection.name}</b> account.
             </p>
           </div>
         </div>
@@ -322,7 +323,7 @@ class ConnectModal extends BaseReactComponent {
               STEP 2
             </h6>
             <p className="inter-display-medium f-s-14 lh-16">
-              Login to your <b>Coinbase</b> account if you are not logged in
+              Login to your <b>{this.state.selection.name}</b> account if you are not logged in
               yet.
             </p>
           </div>
@@ -382,7 +383,8 @@ class ConnectModal extends BaseReactComponent {
                   Connecting to {selection.name}
                 </h6>
               </div>
-              {selection.name === "Coinbase" && (
+              {(selection.name === "Coinbase" ||
+                selection.name === "Binance") && (
                 <div
                   style={{
                     display: "flex",
@@ -390,19 +392,18 @@ class ConnectModal extends BaseReactComponent {
                     justifyContent: "center",
                     marginTop: "3rem",
                   }}
+                  className="exchange-tab"
                 >
                   <h3
                     className={`${
-                      this.state.apiActive
-                        ? "inter-display-semi-bold black-191"
-                        : "inter-display-medium grey-B0B"
-                    } f-s-16 lh-16 m-r-32 p-b-20 cp`}
+                      this.state.apiActive ? "black-191" : "grey-B0B"
+                    } inter-display-semi-bold f-s-16 lh-16 m-r-32 p-b-20 cp`}
                     style={
                       this.state.apiActive
                         ? {
-                            borderBottom: "2px solid #000000",
+                            borderBottom: "2px solid #19191A",
                           }
-                        : {}
+                        : { borderBottom: "2px solid transparent" }
                     }
                     onClick={this.handleApi}
                   >
@@ -410,24 +411,23 @@ class ConnectModal extends BaseReactComponent {
                   </h3>
                   <h3
                     className={`${
-                      this.state.coinBase
-                        ? "inter-display-semi-bold black-191"
-                        : "inter-display-medium grey-B0B"
-                    } f-s-16 lh-16 m-r-32 p-b-20 cp`}
+                      this.state.coinBase ? "black-191" : "grey-B0B"
+                    } inter-display-semi-bold f-s-16 lh-16 m-r-32 p-b-20 cp`}
                     style={
                       this.state.coinBase
                         ? {
-                            borderBottom: "2px solid #000000",
+                            borderBottom: "2px solid #19191A",
                           }
-                        : {}
+                        : { borderBottom: "2px solid transparent" }
                     }
                     onClick={this.handleCoinbase}
                   >
-                    Coinbase
+                    {selection.name}
                   </h3>
                 </div>
               )}
-              {selection.name === "Coinbase" && <hr style={{ margin: 0 }} />}
+              {(selection.name === "Coinbase" ||
+                selection.name === "Binance") && <hr style={{ margin: 0 }} />}
               <div className="selection-wrapper">
                 <Container>
                   <Row>
@@ -486,17 +486,23 @@ class ConnectModal extends BaseReactComponent {
                     <Col sm={6}>
                       <div className="connect-steps">
                         <h4 className="inter-display-medium f-s-13 lh-16 grey-313 m-b-12">
-                          {this.state.coinBase ? "How to Add Your Account" : "How to connect"}
+                          {this.state.coinBase
+                            ? "How to Add Your Account"
+                            : "How to connect"}
                         </h4>
                         {selection.name === "Binance"
                           ? this.showBinanceSteps()
-                          : this.state.coinBase ?   this.showCoinbaseAuthSteps() : this.showCoinbaseSteps()}
+                          : this.state.coinBase
+                          ? this.showCoinbaseAuthSteps()
+                          : this.showCoinbaseSteps()}
                       </div>
                       <Button
                         className="primary-btn connect-btn"
                         onClick={this.handleConnect}
                       >
-                      {this.state.coinBase ? "Continue with coinbase" : "Connect"}
+                        {this.state.coinBase
+                          ? "Continue with coinbase"
+                          : "Connect"}
                       </Button>
                     </Col>
                   </Row>
