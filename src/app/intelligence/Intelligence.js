@@ -433,11 +433,14 @@ class Intelligence extends Component {
   };
 
   handleAssetSelected = (arr)=> {
-    this.setState({
-      selectedAssets:arr
-    }, () => {
-      this.handleBadge(this.state.selectedActiveBadge, this.state.title);
-    })
+    this.setState(
+      {
+        selectedAssets: arr === "allAssets" ? [] : arr,
+      },
+      () => {
+        this.handleBadge(this.state.selectedActiveBadge, this.state.title);
+      }
+    );
   };
 
   render() {
