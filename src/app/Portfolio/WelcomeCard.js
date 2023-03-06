@@ -104,7 +104,7 @@ export default function WelcomeCard(props) {
           <div className="welcome-btn">
             {/* <Button className='secondary-btn' onClick={props.handleManage} >Manage wallets</Button>
                         <Button className="primary-btn" onClick={props.handleAddModal}>Add wallet address</Button> */}
-            {/* <Button
+            <Button
               className="inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet"
               onClick={handleConnectModal}
               onMouseEnter={() => setManageWallet(false)}
@@ -112,8 +112,8 @@ export default function WelcomeCard(props) {
             >
               <Image className="connect-exchange-img" src={LinkIconBtn} />
               Connect exchange
-            </Button> */}
-            <Button
+            </Button>
+            {/* <Button
               className="inter-display-semi-bold f-s-13 lh-16 black-191 manage-wallet"
               onClick={handleManageClick}
               onMouseEnter={() => setManageWallet(false)}
@@ -124,7 +124,7 @@ export default function WelcomeCard(props) {
                 src={manageWallet === true ? ManageWallet : ManageWalletWhite}
               />
               Manage wallets
-            </Button>
+            </Button> */}
             <Button
               // class="add-wallet"
               className="inter-display-semi-bold f-s-13 lh-16 black-191 add-wallet"
