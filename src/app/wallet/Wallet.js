@@ -242,7 +242,7 @@ class Wallet extends Component {
             title="Wallets"
             subTitle="Manage all your wallets right here"
             btnText="Add wallet"
-            // SecondaryBtn={true}
+            SecondaryBtn={true}
             handleBtn={this.handleAddModal}
             // showData={totalWalletAmt}
             // isLoading={isLoading}
