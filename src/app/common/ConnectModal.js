@@ -51,42 +51,42 @@ class ConnectModal extends BaseReactComponent {
           name: "Coinbase",
           icon: CoinbaseIcon,
         },
-        {
-          name: "Kraken",
-          icon: krakanIcon,
-        },
-        {
-          name: "Kucoin",
-          icon: KuCoinIcon,
-        },
-        {
-          name: "OKX",
-          icon: OkxIcon,
-        },
-        {
-          name: "Bitfinex",
-          icon: BitfinexIcon,
-        },
-        {
-          name: "Bitstamp",
-          icon: BitstampIcon,
-        },
-        {
-          name: "Bybit",
-          icon: BybitIcon,
-        },
-        {
-          name: "Gemini",
-          icon: GeminiIcon,
-        },
-        {
-          name: "Huobi",
-          icon: HuobiIcon,
-        },
-        {
-          name: "Gate.io",
-          icon: GateIcon,
-        },
+        // {
+        //   name: "Kraken",
+        //   icon: krakanIcon,
+        // },
+        // {
+        //   name: "Kucoin",
+        //   icon: KuCoinIcon,
+        // },
+        // {
+        //   name: "OKX",
+        //   icon: OkxIcon,
+        // },
+        // {
+        //   name: "Bitfinex",
+        //   icon: BitfinexIcon,
+        // },
+        // {
+        //   name: "Bitstamp",
+        //   icon: BitstampIcon,
+        // },
+        // {
+        //   name: "Bybit",
+        //   icon: BybitIcon,
+        // },
+        // {
+        //   name: "Gemini",
+        //   icon: GeminiIcon,
+        // },
+        // {
+        //   name: "Huobi",
+        //   icon: HuobiIcon,
+        // },
+        // {
+        //   name: "Gate.io",
+        //   icon: GateIcon,
+        // },
       ],
       selection: null,
       apiActive: true,
@@ -383,7 +383,7 @@ class ConnectModal extends BaseReactComponent {
                   Connecting to {selection.name}
                 </h6>
               </div>
-              {(selection.name === "Coinbase" ||
+              {/* {(selection.name === "Coinbase" ||
                 selection.name === "Binance") && (
                 <div
                   style={{
@@ -427,7 +427,7 @@ class ConnectModal extends BaseReactComponent {
                 </div>
               )}
               {(selection.name === "Coinbase" ||
-                selection.name === "Binance") && <hr style={{ margin: 0 }} />}
+                selection.name === "Binance") && <hr style={{ margin: 0 }} />} */}
               <div className="selection-wrapper">
                 <Container>
                   <Row>
@@ -521,26 +521,24 @@ class ConnectModal extends BaseReactComponent {
                 </p>
               </div>
               <div className="connect-wrapper">
-                <Row>
+                {/* <Row> */}
                   {this.state.connectExchangesList.map((item) => {
                     return (
-                      <Col md={4}>
-                        <div
-                          className="connect-div"
-                          onClick={() => this.handleSelect(item)}
-                        >
-                          <div className="img-wrapper">
-                            <Image src={item.icon} />
-                          </div>
-
-                          <h3 className="inter-display-medium f-s-16 lh-19 ">
-                            {item.name}
-                          </h3>
+                      <div
+                        className="connect-div"
+                        onClick={() => this.handleSelect(item)}
+                      >
+                        <div className="img-wrapper">
+                          <Image src={item.icon} />
                         </div>
-                      </Col>
+
+                        <h3 className="inter-display-medium f-s-16 lh-19 ">
+                          {item.name}
+                        </h3>
+                      </div>
                     );
                   })}
-                </Row>
+                {/* </Row> */}
               </div>
             </div>
           )}
