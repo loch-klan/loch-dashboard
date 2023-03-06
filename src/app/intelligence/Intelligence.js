@@ -15,7 +15,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment/moment";
-import { getAssetProfitLoss, getProfitAndLossApi } from "./Api";
+import { getAssetProfitLoss, getProfitAndLossApi, getTransactionAsset } from "./Api";
 import Loading from "../common/Loading";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
@@ -67,30 +67,34 @@ class Intelligence extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-      isSwitch:false,
+      isSwitch: false,
+      AssetList: [],
+      selectedAssets: [],
+      selectedOption: 0,
+      selectedActiveBadge:[],
     };
   }
-  
+
   setSwitch = () => {
     this.setState({
       isSwitch: !this.state.isSwitch,
     });
     // console.log("switch")
-  }
+  };
 
   componentDidMount() {
-     if (this.props.location.hash !== "") {
-       setTimeout(() => {
-         const id = this.props.location.hash.replace("#", "");
-         // console.log('id',id);
-         const element = document.getElementById(id);
-         if (element) {
-           element.scrollIntoView();
-         }
-       }, 0);
-     } else {
-       window.scrollTo(0, 0);
-     }
+    if (this.props.location.hash !== "") {
+      setTimeout(() => {
+        const id = this.props.location.hash.replace("#", "");
+        // console.log('id',id);
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView();
+        }
+      }, 0);
+    } else {
+      window.scrollTo(0, 0);
+    }
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", this.state.startTime);
     IntelligencePage({
@@ -102,6 +106,7 @@ class Intelligence extends Component {
     getAllInsightsApi(this);
     GetAllPlan();
     getUser();
+    this.assetList();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -109,14 +114,14 @@ class Intelligence extends Component {
 
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
-     
-        this.props.getAllCoins();
-        this.timeFilter(0);
+
+      this.props.getAllCoins();
+      this.timeFilter(0);
       getAllInsightsApi(this);
+      this.assetList();
       this.setState({
         apiResponse: false,
       });
-     
     }
   }
   componentWillUnmount() {
@@ -131,6 +136,11 @@ class Intelligence extends Component {
     });
   }
 
+  assetList = () => {
+    let data = new URLSearchParams();
+    // data.append("end_datetime", endDate);
+    getTransactionAsset(data, this);
+  };
   timeFilter = (option) => {
     // console.log("time filter", option)
     let selectedChains = [];
@@ -144,48 +154,167 @@ class Intelligence extends Component {
     this.setState({ graphValue: "" });
     const today = moment().unix();
     if (option == 0) {
-      getProfitAndLossApi(this, false, false, selectedChains);
+      getProfitAndLossApi(
+        this,
+        false,
+        false,
+        selectedChains,
+        this.state.selectedAssets
+      );
       // for asset Breakdown
-      getAssetProfitLoss(this, false, false, selectedChains);
-     
+      getAssetProfitLoss(
+        this,
+        false,
+        false,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else if (option == 1) {
       // console.log("inside 1")
       const fiveyear = moment().subtract(5, "years").unix();
-      getProfitAndLossApi(this, fiveyear, today, selectedChains);
+      getProfitAndLossApi(
+        this,
+        fiveyear,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
       // for asset Breakdown
-      getAssetProfitLoss(this, fiveyear, today, selectedChains);
+      getAssetProfitLoss(
+        this,
+        fiveyear,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else if (option == 2) {
       const fouryear = moment().subtract(4, "years").unix();
-      getProfitAndLossApi(this, fouryear, today, selectedChains);
-      getAssetProfitLoss(this, fouryear, today, selectedChains);
+      getProfitAndLossApi(
+        this,
+        fouryear,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
+      getAssetProfitLoss(
+        this,
+        fouryear,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else if (option == 3) {
       const threeyear = moment().subtract(3, "years").unix();
-      getProfitAndLossApi(this, threeyear, today, selectedChains);
-      getAssetProfitLoss(this, threeyear, today, selectedChains);
+      getProfitAndLossApi(
+        this,
+        threeyear,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
+      getAssetProfitLoss(
+        this,
+        threeyear,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else if (option == 4) {
       const twoyear = moment().subtract(2, "years").unix();
-      getProfitAndLossApi(this, twoyear, today, selectedChains);
-      getAssetProfitLoss(this, twoyear, today, selectedChains);
+      getProfitAndLossApi(
+        this,
+        twoyear,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
+      getAssetProfitLoss(
+        this,
+        twoyear,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else if (option == 5) {
       const year = moment().subtract(1, "years").unix();
-      getProfitAndLossApi(this, year, today, selectedChains);
-      getAssetProfitLoss(this, year, today, selectedChains);
+      getProfitAndLossApi(
+        this,
+        year,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
+      getAssetProfitLoss(
+        this,
+        year,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else if (option == 6) {
       const sixmonth = moment().subtract(6, "months").unix();
-      getProfitAndLossApi(this, sixmonth, today, selectedChains);
-      getAssetProfitLoss(this, sixmonth, today, selectedChains);
+      getProfitAndLossApi(
+        this,
+        sixmonth,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
+      getAssetProfitLoss(
+        this,
+        sixmonth,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else if (option == 7) {
       const month = moment().subtract(1, "month").unix();
-      getProfitAndLossApi(this, month, today, selectedChains);
-      getAssetProfitLoss(this, month, today, selectedChains);
+      getProfitAndLossApi(
+        this,
+        month,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
+      getAssetProfitLoss(
+        this,
+        month,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else if (option == 8) {
       const week = moment().subtract(1, "week").unix();
-      getProfitAndLossApi(this, week, today, selectedChains);
-      getAssetProfitLoss(this, week, today, selectedChains);
+      getProfitAndLossApi(
+        this,
+        week,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
+      getAssetProfitLoss(
+        this,
+        week,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else if (option == 9) {
       const day = moment().subtract(1, "day").unix();
-      getProfitAndLossApi(this, day, today, selectedChains);
-      getAssetProfitLoss(this, day, today, selectedChains);
+      getProfitAndLossApi(
+        this,
+        day,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
+      getAssetProfitLoss(
+        this,
+        day,
+        today,
+        selectedChains,
+        this.state.selectedAssets
+      );
     }
     this.setState({
       title: option,
@@ -193,7 +322,10 @@ class Intelligence extends Component {
   };
 
   handleBadge = (activeBadgeList, activeFooter = this.state.title) => {
-    // console.log("handle badge", activeBadgeList, activeFooter);
+    console.log("handle badge", activeBadgeList, activeFooter);
+    this.setState({
+      selectedActiveBadge:activeBadgeList
+    })
     let startDate = moment().unix();
     let endDate;
     if (activeFooter == "0") {
@@ -221,19 +353,37 @@ class Intelligence extends Component {
 
     let selectedChains = [];
     this.props.OnboardingState.coinsList?.map((item) => {
-      if (activeBadgeList.includes(item.id)) {
+      if (activeBadgeList?.includes(item.id)) {
         selectedChains.push(item.code);
       }
     });
 
     if ((activeFooter = 0)) {
-      getProfitAndLossApi(this, false, false, selectedChains);
-      getAssetProfitLoss(this, false, false, selectedChains);
+      getProfitAndLossApi(this, false, false, selectedChains, this.state.selectedAssets);
+      getAssetProfitLoss(
+        this,
+        false,
+        false,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else {
-      getProfitAndLossApi(this, startDate, endDate, selectedChains);
+      getProfitAndLossApi(
+        this,
+        startDate,
+        endDate,
+        selectedChains,
+        this.state.selectedAssets
+      );
 
       // for asset Breakdown
-       getAssetProfitLoss(this, startDate, endDate, selectedChains);
+      getAssetProfitLoss(
+        this,
+        startDate,
+        endDate,
+        selectedChains,
+        this.state.selectedAssets
+      );
     }
   };
 
@@ -282,6 +432,14 @@ class Intelligence extends Component {
     });
   };
 
+  handleAssetSelected = (arr)=> {
+    this.setState({
+      selectedAssets:arr
+    }, () => {
+      this.handleBadge(this.state.selectedActiveBadge, this.state.title);
+    })
+  };
+
   render() {
     return (
       <div className="intelligence-page-section">
@@ -290,7 +448,6 @@ class Intelligence extends Component {
             title="Intelligence"
             subTitle="Automated and personalized financial intelligence"
             btnText={"Add wallet"}
-            
             handleBtn={this.handleAddModal}
           />
           <IntelWelcomeCard history={this.props.history} />
@@ -482,6 +639,7 @@ class Intelligence extends Component {
                   // showFooter={false}
                   showFooterDropdown={false}
                   showFooter={true}
+                  showToken={true}
                   footerLabels={[
                     "Max",
                     "5 Y",
@@ -495,6 +653,7 @@ class Intelligence extends Component {
                     "1 D",
                   ]}
                   activeTitle={this.state.title}
+                  assetList={this.state.AssetList}
                   // handleSelect={(opt) => this.handleSelect(opt)}
                   showBadges={true}
                   showPercentage={this.state.graphValue[2]}
@@ -502,6 +661,7 @@ class Intelligence extends Component {
                     this.handleBadge(activeBadgeList, activeFooter)
                   }
                   ProfitLossAsset={this.state.ProfitLossAsset}
+                  handleAssetSelected={this.handleAssetSelected}
 
                   // comingSoon={true}
                 />

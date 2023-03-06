@@ -568,28 +568,30 @@ class LineChartSlider extends BaseReactComponent {
       }
     })
 
-    SelectedSeriesData = [
-     
-      ...SelectedSeriesData,
-      {
-        // linkedTo: key,
-        name: "Other",
-        id: 1,
-        type: "area",
-        // type: "areaspline",
-        fillOpacity: 0.1,
-        color: "#16182B",
-        marker: {
-          // enabled: true,
-          symbol: "circle",
-        },
-        showInLegend: true,
-        data: otherData,
-        lastValue: otherData[otherData.length - 1],
-        assetName: "Other",
-        // lastValue: Math.max(...graphData),
-      },
-    ];
+    if (otherData.length !== 0) {
+        SelectedSeriesData = [
+          ...SelectedSeriesData,
+          {
+            // linkedTo: key,
+            name: "Other",
+            id: 1,
+            type: "area",
+            // type: "areaspline",
+            fillOpacity: 0.1,
+            color: "#16182B",
+            marker: {
+              // enabled: true,
+              symbol: "circle",
+            },
+            showInLegend: true,
+            data: otherData,
+            lastValue: otherData[otherData.length - 1],
+            assetName: "Other",
+            // lastValue: Math.max(...graphData),
+          },
+        ];
+    }
+  
     
     // total plot
       // {

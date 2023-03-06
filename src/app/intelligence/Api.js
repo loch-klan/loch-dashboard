@@ -69,32 +69,41 @@ export const getFilters = (ctx) => {
         })
 }
 
-export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = false) => {
-    // console.log("inside api", startDate,endDate)
-    
-    let data = new URLSearchParams();
-     if (startDate) {
-          data.append("start_datetime", startDate);
-          data.append("end_datetime", endDate);
-     }
-     if(selectedChains && selectedChains.length > 0){
-        data.append("chains", JSON.stringify(selectedChains));
-     }
-     postLoginInstance.post("wallet/transaction/get-profit-loss", data)
-         .then((res) => {
-        //   console.log("calling get profit and loss");
-       if(!res.data.error){
-         ctx.setState({
-             GraphData: res.data.data.profit_loss,
-             netFlowLoading:false,
-             graphValue: getProfitAndLossData(res.data.data.profit_loss)
-         });
-       } else{
-         toast.error(res.data.message || "Something Went Wrong")
-       }
+export const getProfitAndLossApi = (
+  ctx,
+  startDate,
+  endDate,
+  selectedChains = false,
+  selectedAsset = false
+) => {
+  // console.log("inside api", startDate,endDate)
 
-     });
- }
+  let data = new URLSearchParams();
+  if (startDate) {
+    data.append("start_datetime", startDate);
+    data.append("end_datetime", endDate);
+  }
+  if (selectedChains && selectedChains.length > 0) {
+    data.append("chains", JSON.stringify(selectedChains));
+  }
+  if (selectedAsset && selectedAsset.length > 0) {
+    data.append("asset_ids", JSON.stringify(selectedAsset));
+  }
+  postLoginInstance
+    .post("wallet/transaction/get-profit-loss", data)
+    .then((res) => {
+      //   console.log("calling get profit and loss");
+      if (!res.data.error) {
+        ctx.setState({
+          GraphData: res.data.data.profit_loss,
+          netFlowLoading: false,
+          graphValue: getProfitAndLossData(res.data.data.profit_loss),
+        });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
 
  export const getAllInsightsApi = (ctx) =>{
   let data = new URLSearchParams();
@@ -121,7 +130,8 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
    ctx,
    startDate,
    endDate,
-   selectedChains = false
+   selectedChains = false,
+   selectedAsset = false
  ) => {
    let data = new URLSearchParams();
    if (startDate) {
@@ -131,6 +141,11 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
    if (selectedChains && selectedChains.length > 0) {
      data.append("chains", JSON.stringify(selectedChains));
    }
+if (selectedAsset && selectedAsset.length > 0) {
+  data.append("asset_ids", JSON.stringify(selectedAsset));
+}
+
+   
 
    postLoginInstance
      .post("wallet/transaction/get-asset-profit-loss", data)
@@ -141,6 +156,31 @@ export const getProfitAndLossApi = (ctx, startDate, endDate, selectedChains = fa
            ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
            //    updatedInsightList: res.data.data.insights,
            //    isLoading: false,
+         });
+       } else {
+         toast.error(res.data.message || "Something Went Wrong");
+       }
+     })
+     .catch((err) => {
+       // console.log("err ", err)
+     });
+ };
+
+ export const getTransactionAsset = (data,ctx) => {
+   postLoginInstance
+     .post("wallet/transaction/get-transaction-asset-filter")
+     .then((res) => {
+       if (!res.data.error) {
+        
+          let assetFilter = [{ value: "allAssets", label: "All assets" }];
+          res?.data?.data?.assets?.map((e) => {
+            assetFilter.push({
+              value: e._id,
+              label: e.asset.name,
+            });
+          });
+         ctx.setState({
+           AssetList: assetFilter,
          });
        } else {
          toast.error(res.data.message || "Something Went Wrong");

@@ -61,6 +61,7 @@ class BarGraphSection extends Component {
       // activeDropdown: props.activeDropdown,
       handleSelect: props.handleSelect,
       switchselected: props.isSwitch,
+      
       // stackedgraphdata: {
       //   options: info[0],
       // },
@@ -193,6 +194,8 @@ class BarGraphSection extends Component {
       });
   };
 
+ 
+
   render() {
     const {
       data,
@@ -222,6 +225,7 @@ class BarGraphSection extends Component {
       handleClick,
       isLoading,
       showSwitch,
+      showToken,
     } = this.props;
     //  console.log("bar gr state digit", digit);
     // const digit =
@@ -299,30 +303,62 @@ class BarGraphSection extends Component {
             </>
 
             {
-              <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
-                {CurrencyType()}{" "}
-              </p>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: showToken ? "1rem" : "0rem",
+                }}
+              >
+                <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
+                  {CurrencyType()}{" "}
+                </p>
+                {showToken && (
+                  <div
+                    style={{
+                      width: "100%",
+                      minWidth: "15rem",
+                      maxWidth: "18rem",
+                      zIndex: "1",
+                    }}
+                  >
+                    <CustomDropdown
+                      filtername="All assets selected"
+                      options={this.props.assetList}
+                      action={null}
+                      handleClick={this.props.handleAssetSelected}
+                      // isChain={true}
+                      LightTheme={true}
+                      placeholderName={"asset"}
+                      // selectedTokens={this.state.activeBadge}
+                    />
+                  </div>
+                )}
+              </div>
             }
-           
+
             {showPercentage ? (
               <div className="show-percentage-div ">
                 <div>
-                  {showSwitch && <Form.Check
-                    type="switch"
-                    id="custom-switch"
-                    label="Click to show breakdown"
-                    checked={this.state.switchselected}
-                    onChange={(e) => {
-                      NetflowSwitch({
-                        email_address: getCurrentUser().email,
-                        session_id: getCurrentUser().id,
-                      });
-                      this.setState({
-                        switchselected: e.target.checked,
-                      });
-                      this.props.setSwitch();
-                    }}
-                  />}
+                  {showSwitch && (
+                    <Form.Check
+                      type="switch"
+                      id="custom-switch"
+                      label="Click to show breakdown"
+                      checked={this.state.switchselected}
+                      onChange={(e) => {
+                        NetflowSwitch({
+                          email_address: getCurrentUser().email,
+                          session_id: getCurrentUser().id,
+                        });
+                        this.setState({
+                          switchselected: e.target.checked,
+                        });
+                        this.props.setSwitch();
+                      }}
+                    />
+                  )}
                 </div>
                 <div
                   className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
