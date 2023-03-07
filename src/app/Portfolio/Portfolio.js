@@ -194,6 +194,7 @@ class Portfolio extends BaseReactComponent {
       userWalletList: value,
       isUpdate: this.state.isUpdate == 0 ? 1 : 0,
       isLoading: true,
+      isLoadingInsight:true,
     });
     // if (this.props.location.state?.noLoad === undefined) {
     //   this.props.getCoinRate();
@@ -399,7 +400,7 @@ class Portfolio extends BaseReactComponent {
         // when wallet address not present
          this.props.getExchangeBalance("binance", this);
          this.props.getExchangeBalance("coinbase", this);
-        this.setState({ isLoading: false });
+        this.setState({ isLoading: false, });
       }
 
       if (prevProps.userWalletList !== this.state.userWalletList) {
@@ -409,6 +410,7 @@ class Portfolio extends BaseReactComponent {
             // isLoading: true,
             netFlowLoading: true,
             counterGraphLoading: true,
+            isLoadingInsight: true,
           });
         // this.apiCall();
         this.getTableData();
@@ -416,6 +418,7 @@ class Portfolio extends BaseReactComponent {
         getAllCounterFeeApi(this, false, false);
         getProfitAndLossApi(this, false, false, false);
         getYesterdaysBalanceApi(this);
+        getAllInsightsApi(this);
                GetAllPlan();
                getUser(this);
       }
@@ -1344,7 +1347,16 @@ class Portfolio extends BaseReactComponent {
                         <div className="insights-wrapper">
                           {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
                           {this.state.isLoading ? (
-                            <Loading />
+                            <div
+                              style={{
+                                height: "35rem",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Loading />
+                            </div>
                           ) : this.state.updatedInsightList &&
                             this.state.updatedInsightList.length > 0 ? (
                             this.state.updatedInsightList
@@ -1388,11 +1400,20 @@ class Portfolio extends BaseReactComponent {
                                 );
                               })
                           ) : (
-                            <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
-                              {
-                                "This wallet is not active enough for us to generate any useful insights here :)."
-                              }
-                            </h5>
+                            <div
+                              style={{
+                                height: "35rem",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
+                                {
+                                  "This wallet is not active enough for us to generate any useful insights here :)."
+                                }
+                              </h5>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -1503,6 +1524,25 @@ class Portfolio extends BaseReactComponent {
                 </div>
               </div> */}
               {/* <FeedbackForm page={"Home Page"} attribution={true} /> */}
+              <hr className="m-t-60" />
+              <p className="inter-display-medium f-s-13 lh-16 m-b-26 grey-ADA m-t-16 m-b-16">
+                All Content on this site is information of a general nature and
+                does not address the circumstances of any particular individual
+                or entity. Nothing in the Site constitutes professional and/or
+                financial advice, nor does any information on the Site
+                constitute a comprehensive or complete statement of the matters
+                discussed or the law relating thereto. Loch Inc is not a
+                fiduciary by virtue of any person’s use of or access to the Site
+                or Content. You alone assume the sole responsibility of
+                evaluating the merits and risks associated with the use of any
+                information or other Content on the Site before making any
+                decisions based on such information or other Content. In
+                exchange for using the Site, you agree not to hold Loch Inc, its
+                affiliates or any third party service provider liable for any
+                possible claim for damages arising from any decision you make
+                based on information or other Content made available to you
+                through the Site.
+              </p>
             </div>
           </div>
         )}
