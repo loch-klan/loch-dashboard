@@ -1378,11 +1378,11 @@ class Portfolio extends BaseReactComponent {
                           ) : this.state.updatedInsightList &&
                             this.state.updatedInsightList.length > 0 ? (
                             this.state.updatedInsightList
-                              ?.slice(0, 2)
+                              ?.slice(0, 3)
                               .map((insight, key) => {
                                 // console.log("insignt", insight);
                                 return (
-                                  <div className="insights-card" key={key}>
+                                  <div className="insights-card" key={key} style={{padding:0, boxShadow:"none"}}>
                                     <Image
                                       src={
                                         insight.insight_type ===

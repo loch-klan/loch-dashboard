@@ -610,7 +610,7 @@ class PieChart2 extends BaseReactComponent {
                 self.state.assetTotal
               )}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">${CurrencyType(
                 true
-              )}</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total Assets</span></div>`,
+              )}</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total wallet Assets</span></div>`,
               fontMetrics = this.renderer.fontMetrics(16);
             series.data?.map((e, i) => {
               e.dataLabel
@@ -1103,7 +1103,7 @@ class PieChart2 extends BaseReactComponent {
                   {this.state.userPlan?.defi_enabled && (
                     <>
                       <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                        Balance sheet
+                        DeFi balance sheet
                       </h2>
                       <div style={{}} className="balance-sheet-card">
                         <div className="balance-card-header cp">
