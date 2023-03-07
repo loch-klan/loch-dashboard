@@ -112,11 +112,22 @@ export const getProfitAndLossApi = (
   .then((res)=>{
       if (!res.data.error) {
         // console.log("insights", res.data.data.insights);
-      ctx.setState({
-        insightList: res.data.data.insights,
-        updatedInsightList: res.data.data.insights,
-        isLoading: false,
-      });
+     
+
+        if (ctx?.currentPage === "Home") {
+           ctx.setState({
+             insightList: res.data.data.insights,
+             updatedInsightList: res.data.data.insights,
+             isLoadingInsight: false,
+           });
+          
+        } else {
+           ctx.setState({
+             insightList: res.data.data.insights,
+             updatedInsightList: res.data.data.insights,
+             isLoading: false,
+           });
+        }
     } else{
       toast.error(res.data.message || "Something Went Wrong")
     }

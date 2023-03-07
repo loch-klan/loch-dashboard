@@ -20,6 +20,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import TransactionTable from "../intelligence/TransactionTable";
 import BarGraphSection from "./../common/BarGraphSection";
 import {
+  getAllInsightsApi,
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
@@ -38,10 +39,14 @@ import {
   GroupByOptions,
   GROUP_BY_DATE,
   DEFAULT_PRICE,
+  InsightType,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import moment from "moment";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
+import reduceCost from "../../assets/images/icons/reduce-cost.svg";
+import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
+import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import {
   ManageWallets,
   TransactionHistoryEView,
@@ -68,6 +73,7 @@ import PieChart2 from "./PieChart2";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
 import { toast } from "react-toastify";
+import { GraphHeader } from "../common/GraphHeader";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -146,7 +152,11 @@ class Portfolio extends BaseReactComponent {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
-      lochToken: JSON.parse(localStorage.getItem("stopClick"))
+      lochToken: JSON.parse(localStorage.getItem("stopClick")),
+
+      // insight
+      updatedInsightList: "",
+      isLoadingInsight: true,
     };
   }
 
@@ -235,11 +245,12 @@ class Portfolio extends BaseReactComponent {
       this.props.getDetailsByLinkApi(this.props.match.params.id, this);
     } else {
       this.props.getCoinRate();
-      
+     
       this.getTableData();
       this.getGraphData();
       getAllCounterFeeApi(this, false, false);
       getProfitAndLossApi(this, false, false, false);
+       getAllInsightsApi(this);
        GetAllPlan();
       getUser(this);
       
@@ -1315,40 +1326,76 @@ class Portfolio extends BaseReactComponent {
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
-                      <BarGraphSection
-                        headerTitle="Net Flows"
-                        headerSubTitle="Understand your portfolio's profitability"
-                        isArrow={true}
+                      <div
+                        className={`bar-graph-section m-b-32`}
+                        style={{ paddingBottom: "0rem" }}
+                      >
+                        <GraphHeader
+                          title={"Insights"}
+                          subtitle={"Valuable insights based on your assets"}
+                          isArrow={true}
                           handleClick={() => {
-                          
-                          if (this.state.lochToken) {
-                            ProfitLossEV({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                            this.props.history.push("/intelligence#netflow");
-                          }
-                        }}
-                        isScrollVisible={false}
-                        data={this.state.graphValue && this.state.graphValue[0]}
-                        options={
-                          this.state.graphValue && this.state.graphValue[1]
-                        }
-                        coinsList={this.props.OnboardingState.coinsList}
-                        // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
-                        marginBottom="m-b-32"
-                        showFooter={false}
-                        showBadges={false}
-                        showPercentage={
-                          this.state.graphValue && this.state.graphValue[2]
-                        }
-                        // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
-                        // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
-                        // comingSoon={true}
-                        isLoading={this.state.netFlowLoading}
-                        // isLoading={true}
-                        className={"portfolio-profit-and-loss"}
-                      />
+                            // console.log("wallet", this.state.userWalletList);
+                            if (this.state.lochToken) {
+                              this.props.history.push("/intelligence/insights");
+                            }
+                          }}
+                        />
+                        <div className="insights-wrapper">
+                          {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
+                          {this.state.isLoading ? (
+                            <Loading />
+                          ) : this.state.updatedInsightList &&
+                            this.state.updatedInsightList.length > 0 ? (
+                            this.state.updatedInsightList
+                              ?.slice(0, 2)
+                              .map((insight, key) => {
+                                // console.log("insignt", insight);
+                                return (
+                                  <div className="insights-card" key={key}>
+                                    <Image
+                                      src={
+                                        insight.insight_type ===
+                                        InsightType.COST_REDUCTION
+                                          ? reduceCost
+                                          : insight.insight_type ===
+                                            InsightType.RISK_REDUCTION
+                                          ? reduceRisk
+                                          : increaseYield
+                                      }
+                                      className="insight-icon"
+                                    />
+                                    <div className="insights-content">
+                                      <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                                        {InsightType.getText(
+                                          insight.insight_type
+                                        )}
+                                      </h5>
+                                      <p
+                                        className="inter-display-medium f-s-13 lh-16 grey-969"
+                                        dangerouslySetInnerHTML={{
+                                          __html: insight.sub_title,
+                                        }}
+                                      ></p>
+                                      <h4
+                                        className="inter-display-medium f-s-16 lh-19 grey-313"
+                                        dangerouslySetInnerHTML={{
+                                          __html: insight.title,
+                                        }}
+                                      ></h4>
+                                    </div>
+                                  </div>
+                                );
+                              })
+                          ) : (
+                            <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
+                              {
+                                "This wallet is not active enough for us to generate any useful insights here :)."
+                              }
+                            </h5>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </Col>
                 </Row>
@@ -1386,38 +1433,37 @@ class Portfolio extends BaseReactComponent {
                   <Col md={6}>
                     <div className="profit-chart">
                       <BarGraphSection
-                        headerTitle="Counterparty Volume Over Time"
-                        headerSubTitle="Understand where you’ve exchanged the most value"
+                        headerTitle="Net Flows"
+                        headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
                         handleClick={() => {
                           if (this.state.lochToken) {
-                            VolumeTradeByCP({
+                            ProfitLossEV({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                            this.props.history.push("/intelligence/costs#cp");
+                            this.props.history.push("/intelligence#netflow");
                           }
                         }}
-                        data={
-                          this.state.counterPartyValue &&
-                          this.state.counterPartyValue[0]
-                        }
-                        options={
-                          this.state.counterPartyValue &&
-                          this.state.counterPartyValue[1]
-                        }
-                        options2={
-                          this.state.counterPartyValue &&
-                          this.state.counterPartyValue[2]
-                        }
-                        digit={this.state.counterGraphDigit}
-                        isScroll={true}
                         isScrollVisible={false}
-                        comingSoon={false}
-                        isLoading={this.state.counterGraphLoading}
+                        data={this.state.graphValue && this.state.graphValue[0]}
+                        options={
+                          this.state.graphValue && this.state.graphValue[1]
+                        }
+                        coinsList={this.props.OnboardingState.coinsList}
+                        // timeFunction={(e,activeBadgeList) => this.timeFilter(e, activeBadgeList)}
+                        marginBottom="m-b-32"
+                        showFooter={false}
+                        showBadges={false}
+                        showPercentage={
+                          this.state.graphValue && this.state.graphValue[2]
+                        }
+                        // footerLabels = {["Max" , "5 Years","1 Year","6 Months","1 Week"]}
+                        // handleBadge={(activeBadgeList, activeFooter) => this.handleBadge(activeBadgeList, activeFooter)}
+                        // comingSoon={true}
+                        isLoading={this.state.netFlowLoading}
                         // isLoading={true}
                         className={"portfolio-profit-and-loss"}
-                        isCounterPartyMini={true}
                       />
                     </div>
                   </Col>

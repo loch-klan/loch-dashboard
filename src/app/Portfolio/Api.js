@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { AssetType, DEFAULT_PRICE } from "../../utils/Constant";
 import moment from "moment";
 import { getAllCounterFeeApi } from "../cost/Api";
-import { getProfitAndLossApi } from "../intelligence/Api";
+import { getAllInsightsApi, getProfitAndLossApi } from "../intelligence/Api";
 import { GetAllPlan, getUser } from "../common/Api";
 
 export const getCoinRate = () => {
@@ -258,8 +258,10 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                   ctx.getGraphData();
                   getAllCounterFeeApi(ctx, false, false);
                   getProfitAndLossApi(ctx, false, false, false);
+                   getAllInsightsApi(ctx);
                          GetAllPlan();
-                          getUser(ctx);
+                  getUser(ctx);
+                  
                 }
                 
                 
