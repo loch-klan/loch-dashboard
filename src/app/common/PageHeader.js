@@ -119,7 +119,7 @@ export default function PageHeader(props) {
         </div>
         {(props.btnText || props.SecondaryBtn) &&<div>
           {props.SecondaryBtn && (
-            <Button className="secondary-btn" onClick={handleConnectModal}>
+            <Button className="secondary-btn white-bg" onClick={handleConnectModal}>
               Connect exchange
             </Button>
           )}
