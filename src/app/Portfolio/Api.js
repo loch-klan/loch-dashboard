@@ -492,6 +492,11 @@ export const getProtocolBalanceApi = (ctx,data) => {
             DebtValues,
             YieldValues,
             BalanceSheetValue,
+          }, () => {
+            ctx.props?.getProtocolTotal && ctx.props.getProtocolTotal(
+              totalYield,
+              totalDebt
+            );
           });
         },100)
 

@@ -157,6 +157,10 @@ class Portfolio extends BaseReactComponent {
       // insight
       updatedInsightList: "",
       isLoadingInsight: true,
+
+      //
+      totalYield: 0,
+      totalDebt: 0,
     };
   }
 
@@ -531,6 +535,13 @@ class Portfolio extends BaseReactComponent {
     });
     // console.log("condition", e)
   };
+
+  getProtocolTotal = (yeild, debt) => {
+    this.setState({
+      totalYield: yeild,
+      totalDebt: debt,
+    });
+  }
 
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
@@ -1135,14 +1146,20 @@ class Portfolio extends BaseReactComponent {
                   assetTotal={
                     this.props.portfolioState &&
                     this.props.portfolioState.walletTotal
-                      ? this.props.portfolioState.walletTotal
-                      : 0
+                      ? this.props.portfolioState.walletTotal +
+                        this.state.totalYield -
+                        this.state.totalDebt
+                      : 0 + this.state.totalYield - this.state.totalDebt
                   }
                   loader={this.state.loader}
                   history={this.props.history}
                   handleAddModal={this.handleAddModal}
                   isLoading={this.state.isLoading}
-                  walletTotal={this.props.portfolioState.walletTotal}
+                  walletTotal={
+                    this.props.portfolioState.walletTotal +
+                    this.state.totalYield -
+                    this.state.totalDebt
+                  }
                   handleManage={() => {
                     this.props.history.push("/wallets");
                     ManageWallets({
@@ -1248,6 +1265,7 @@ class Portfolio extends BaseReactComponent {
                     });
                   }}
                   undetectedWallet={(e) => this.undetectedWallet(e)}
+                  getProtocolTotal={this.getProtocolTotal}
                 />
                 {this.state.userWalletList?.findIndex(
                   (w) => w.coinFound !== true

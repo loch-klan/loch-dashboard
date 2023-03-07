@@ -27,7 +27,7 @@ import arrowDown from "../../assets/images/arrow-down.svg";
 import Coin1 from "../../assets/images/Coin.svg";
 import Coin2 from "../../assets/images/Coin2.svg";
 import Coin3 from "../../assets/images/Coin3.svg";
-import { getAllProtocol, getYieldBalanceApi, getUserWallet } from "./Api";
+import { getAllProtocol, getYieldBalanceApi, getUserWallet, getProtocolBalanceApi } from "./Api";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 
 
@@ -52,21 +52,24 @@ class PieChart2 extends BaseReactComponent {
       chainList: null,
       assetPrice: null,
 
-      isYeildToggle: false,
-      isDebtToggle: false,
       allProtocols: null,
-      yieldData: [],
+      totalYield: 0,
+      totalDebt: 0,
+      cardList: [],
+      sortedList: [],
       DebtValues: [],
       YieldValues: [],
-      yeldTotal: 0,
-      debtTotal: 0,
+      BalanceSheetValue: {},
+      isYeildToggle: false,
+      isDebtToggle: false,
+      upgradeModal: false,
+      triggerId: 6,
       timeNumber: null,
       timeUnit: "",
     };
   }
 
   componentDidMount() {
-
     this.getCurrentTime();
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
       let assetData = [];
@@ -204,27 +207,31 @@ class PieChart2 extends BaseReactComponent {
       assetPrice,
     });
     // temp hide
-    // getAllProtocol(this);
+    this.getYieldBalance();
   }
+  getYieldBalance = () => {
+    console.log("wallet_address");
+    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    if (UserWallet.length !== 0) {
+      console.log("wallet_addres3s");
+      UserWallet?.map((e) => {
+        let data = new URLSearchParams();
+        data.append("wallet_address", e.address);
+        getProtocolBalanceApi(this, data);
+        // this.state.allProtocols &&
+        //   this.state.allProtocols?.map((protocol) => {
+        //     let data = new URLSearchParams();
+        //     // consolee.log("protocol_code", protocol.code,
+        //     //   "wallet_address",
+        //     //   e.address);
+        //     // data.append("protocol_code", protocol.code);
 
-  // getYieldBalance = () => {
-  //   let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
-  //   UserWallet &&
-  //     UserWallet?.map((e) => {
-  //       //  console.log("wallet_address", e.address);
-  //       this.state.allProtocols &&
-  //         this.state.allProtocols?.map((protocol) => {
-  //           let data = new URLSearchParams();
-  //           // console.log("protocol_code", protocol.code,
-  //           //   "wallet_address",
-  //           //   e.address);
-  //           data.append("protocol_code", protocol.code);
-  //           data.append("wallet_address", e.address);
-  //           getYieldBalanceApi(this, data);
-  //         });
-  //     });
-  // };
-
+        //   });
+      });
+    } else {
+      this.handleReset();
+    }
+  };
   componentDidUpdate(prevProps) {
     if (this.props.assetTotal !== prevProps.assetTotal) {
       this.setState({ assetTotal: this.props.assetTotal });
@@ -232,7 +239,6 @@ class PieChart2 extends BaseReactComponent {
     if (this.props.userWalletData !== prevProps.userWalletData) {
       // this.props.userWalletData && this.setState({ piechartisLoading: true })
 
-      
       let assetData = [];
       if (
         this.props.userWalletData &&
@@ -290,9 +296,9 @@ class PieChart2 extends BaseReactComponent {
         pieSectionDataEnabled: {},
       });
     }
-    
+
     if (this.props.chainPortfolio !== prevProps.chainPortfolio) {
-    //  console.log("inside", this.props.chainPortfolio, prevProps.chainPortfolio);
+      //  console.log("inside", this.props.chainPortfolio, prevProps.chainPortfolio);
       let chainList = [];
       // this.props.allCoinList && this.props.allCoinList.map((item) => {
       //   let isfound = false;
@@ -322,7 +328,7 @@ class PieChart2 extends BaseReactComponent {
       // });
       let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
       let uniquechains = [];
-    
+
       UserWallet &&
         UserWallet?.map((item) => {
           item.coins &&
@@ -377,11 +383,14 @@ class PieChart2 extends BaseReactComponent {
         chainList.sort((a, b) => {
           return b.total - a.total;
         });
-      this.setState({
-        chainList,
-      }, () => {
-        // console.log("state chianlist", this.state.chainList)
-      });
+      this.setState(
+        {
+          chainList,
+        },
+        () => {
+          // console.log("state chianlist", this.state.chainList)
+        }
+      );
     }
     if (this.props.assetPrice != prevProps.assetPrice) {
       // console.log("props asset price", this.props.assetPrice);
@@ -398,13 +407,17 @@ class PieChart2 extends BaseReactComponent {
     if (this.props.isUpdate !== prevProps.isUpdate) {
       this.setState({
         allProtocols: null,
-        yieldData: [],
+        totalYield: 0,
+        totalDebt: 0,
+        cardList: [],
+        sortedList: [],
         DebtValues: [],
         YieldValues: [],
-        yeldTotal: 0,
-        debtTotal: 0,
+        BalanceSheetValue: {},
         isYeildToggle: false,
         isDebtToggle: false,
+        upgradeModal: false,
+        triggerId: 6,
         isChainToggle: false,
       });
       // for balance sheet
@@ -423,8 +436,7 @@ class PieChart2 extends BaseReactComponent {
     this.setState({
       isChainToggle: !this.state.isChainToggle,
     });
-     this.props.undetectedWallet(!this.state.isChainToggle);
-    
+    this.props.undetectedWallet(!this.state.isChainToggle);
   };
 
   toggleYield = () => {
@@ -474,7 +486,7 @@ class PieChart2 extends BaseReactComponent {
     // format the time difference as a string
     if (diffInSeconds < 60) {
       // timeDiffString = Math.floor(diffInSeconds);
-       timeDiffString = 0;
+      timeDiffString = 0;
 
       unit = " just now";
     } else if (diffInMinutes < 60) {
@@ -486,26 +498,28 @@ class PieChart2 extends BaseReactComponent {
     }
 
     // console.log("timediff str", timeDiffString);
-    this.setState({
-      timeNumber: prevTime ? timeDiffString : "3",
-      timeUnit: unit,
-    }, () => {
-      setTimeout(() => {
-        this.getCurrentTime();
-      }, 300000);
-    });
-  }
+    this.setState(
+      {
+        timeNumber: prevTime ? timeDiffString : "3",
+        timeUnit: unit,
+      },
+      () => {
+        setTimeout(() => {
+          this.getCurrentTime();
+        }, 300000);
+      }
+    );
+  };
 
   RefreshButton = () => {
-
     HomeRefreshButton({
       email_address: getCurrentUser().email,
-      session_id:getCurrentUser().id
+      session_id: getCurrentUser().id,
     });
     // get the current time
     this.setState({
-      isLoading:true,
-    })
+      isLoading: true,
+    });
     let currentTime = new Date().getTime();
 
     // console.log("state", this)
@@ -529,12 +543,8 @@ class PieChart2 extends BaseReactComponent {
         });
       }
     });
-   
 
-  //  this.getCurrentTime();
-
-    
-    
+    //  this.getCurrentTime();
 
     // getUserWallet(this);
   };
@@ -812,7 +822,7 @@ class PieChart2 extends BaseReactComponent {
       uniqueList?.map((chain) => {
         // console.log("chain",chain)
         let total = 0;
-        let protocalName  = chain?.protocalName;
+        let protocalName = chain?.protocalName;
         uniqueList?.map((item) => {
           if (
             chain?.address === item.address &&
@@ -823,14 +833,12 @@ class PieChart2 extends BaseReactComponent {
         });
         let displayAddress = "";
         let nickname = "";
-        
+
         UserWallet &&
           UserWallet?.map((e) => {
-           
             if (e.address === chain?.address) {
               displayAddress = e?.displayAddress;
               nickname = e?.nickname;
-              
             }
           });
         !uniqueAddress.includes(chain?.address) &&
@@ -871,8 +879,6 @@ class PieChart2 extends BaseReactComponent {
     const { pieSectionDataEnabled, currency } = this.state;
     // console.log("chainlist", chainList);
     // console.log("uniquelist", uniqueList);
-
-    
 
     return (
       <div
@@ -929,7 +935,7 @@ class PieChart2 extends BaseReactComponent {
                       >
                         {this.state.timeNumber === null
                           ? "3"
-                          : this.state.timeNumber === 0 
+                          : this.state.timeNumber === 0
                           ? " just now"
                           : this.state.timeNumber}
                       </span>{" "}
@@ -1056,30 +1062,35 @@ class PieChart2 extends BaseReactComponent {
                     </div>
                   </div>
                   {/* Balance sheet */}
-                  {/* <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     Balance sheet
-                  </h2> */}
-                  {/* <div style={{}} className="balance-sheet-card">
+                  </h2>
+                  <div style={{}} className="balance-sheet-card">
                     <div className="balance-card-header cp">
                       <div
                         onClick={this.toggleYield}
-                        style={
-                          this.state.isYeildToggle ? { opacity: "0.5" } : {}
-                        }
+                        // style={
+                        //   this.state.isYeildToggle ? {  } : {}
+                        // }
                       >
                         <span
                           className="inter-display-semi-bold f-s-16 lh-19"
-                          style={{ color: "#636467", marginRight: "0.8rem" }}
+                          style={
+                            this.state.isYeildToggle
+                              ? { color: "#000000", marginRight: "0.8rem" }
+                              : { color: "#636467", marginRight: "0.8rem" }
+                          }
                         >
                           Yield
                         </span>
                         <span
                           className="inter-display-regular f-s-16 lh-19"
-                          style={{ color: "#B0B1B3", marginRight: "0.8rem" }}
+                          style={ this.state.isYeildToggle
+                              ? { color: "#000000", marginRight: "0.8rem" }:{ color: "#B0B1B3", marginRight: "0.8rem" }}
                         >
                           {CurrencyType(false)}
                           {this.state.YieldValues &&
-                            numToCurrency(this.state.yeldTotal)}
+                            numToCurrency(this.state.totalYield)}
                         </span>
 
                         <Image
@@ -1091,25 +1102,25 @@ class PieChart2 extends BaseReactComponent {
                           }
                         />
                       </div>
-                      <div
-                        style={
-                          this.state.isDebtToggle ? { opacity: "0.5" } : {}
-                        }
-                        onClick={this.toggleDebt}
-                      >
+                      <div onClick={this.toggleDebt}>
                         <span
                           className="inter-display-semi-bold f-s-16 lh-19"
-                          style={{ color: "#636467", marginRight: "0.8rem" }}
+                          style={
+                            this.state.isDebtToggle
+                              ? { color: "#000000", marginRight: "0.8rem" }
+                              : { color: "#636467", marginRight: "0.8rem" }
+                          }
                         >
                           Debt
                         </span>
                         <span
                           className="inter-display-regular f-s-16 lh-19"
-                          style={{ color: "#B0B1B3", marginRight: "0.8rem" }}
+                          style={ this.state.isDebtToggle
+                              ? { color: "#000000", marginRight: "0.8rem" }:{ color: "#B0B1B3", marginRight: "0.8rem" }}
                         >
                           {CurrencyType(false)}
                           {this.state.DebtValues &&
-                            numToCurrency(this.state.debtTotal)}
+                            numToCurrency(this.state.totalDebt)}
                         </span>
 
                         <Image
@@ -1124,9 +1135,9 @@ class PieChart2 extends BaseReactComponent {
                     </div>
                     {(this.state.isYeildToggle || this.state.isDebtToggle) && (
                       <div className="balance-dropdown">
-                        <div className="balance-list-content"> */}
-                  {/* For yeild */}
-                  {/* {this.state.isYeildToggle && (
+                        <div className="balance-list-content">
+                          {/* For yeild */}
+                          {this.state.isYeildToggle && (
                             <div>
                               {this.state.YieldValues &&
                                 this.state.YieldValues.map((item, i) => {
@@ -1154,10 +1165,10 @@ class PieChart2 extends BaseReactComponent {
                                   );
                                 })}
                             </div>
-                          )} */}
+                          )}
 
-                  {/* For debt */}
-                  {/* {this.state.isDebtToggle && (
+                          {/* For debt */}
+                          {this.state.isDebtToggle && (
                             <div>
                               {this.state.DebtValues &&
                                 this.state.DebtValues.map((item, i) => {
@@ -1185,11 +1196,11 @@ class PieChart2 extends BaseReactComponent {
                                   );
                                 })}
                             </div>
-                          )} */}
-                  {/* </div>
+                          )}
+                        </div>
                       </div>
-                    )} */}
-                  {/* </div> */}
+                    )}
+                  </div>
                 </div>
               </Col>
               <Col
@@ -1340,7 +1351,8 @@ class PieChart2 extends BaseReactComponent {
                                       }
                                     >
                                       <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
-                                        {data?.protocalName || data?.nickname ||
+                                        {data?.protocalName ||
+                                          data?.nickname ||
                                           data?.displayAddress ||
                                           data?.address}
                                       </span>
@@ -1397,8 +1409,7 @@ class PieChart2 extends BaseReactComponent {
                                       isInfo={true}
                                       isText={true}
                                       text={
-                                        data?.displayAddress ||
-                                        data?.address
+                                        data?.displayAddress || data?.address
                                       }
                                     >
                                       <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
