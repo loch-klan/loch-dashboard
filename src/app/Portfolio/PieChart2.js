@@ -212,7 +212,7 @@ class PieChart2 extends BaseReactComponent {
       this.getYieldBalance();
     } else {
       this.handleReset();
-      this.upgradeModal();
+      // this.upgradeModal();
     }
   }
   getYieldBalance = () => {
@@ -431,7 +431,7 @@ class PieChart2 extends BaseReactComponent {
         this.getYieldBalance();
       } else {
         this.handleReset();
-        this.upgradeModal();
+        // this.upgradeModal();
       }
     }
 
