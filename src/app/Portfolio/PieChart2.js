@@ -11,7 +11,7 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import unrecognized from "../../image/unrecognized.svg";
-import { DEFAULT_COLOR, DEFAULT_PRICE } from "../../utils/Constant";
+import { AssetType, DEFAULT_COLOR, DEFAULT_PRICE } from "../../utils/Constant";
 import { Col, Image, Row } from "react-bootstrap";
 import noDataImage from "../../image/no-data.png";
 import Loading from "../common/Loading";
@@ -66,6 +66,7 @@ class PieChart2 extends BaseReactComponent {
       triggerId: 6,
       timeNumber: null,
       timeUnit: "",
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
     };
   }
 
@@ -206,11 +207,16 @@ class PieChart2 extends BaseReactComponent {
     this.setState({
       assetPrice,
     });
-    // temp hide
-    this.getYieldBalance();
+
+    if (this.state.userPlan?.defi_enabled) {
+      this.getYieldBalance();
+    } else {
+      this.handleReset();
+      this.upgradeModal();
+    }
   }
   getYieldBalance = () => {
-    console.log("wallet_address");
+    // console.log("wallet_address");
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     if (UserWallet.length !== 0) {
       console.log("wallet_addres3s");
@@ -421,13 +427,45 @@ class PieChart2 extends BaseReactComponent {
         isChainToggle: false,
       });
       // for balance sheet
-      // getAllProtocol(this);
+      if (this.state.userPlan?.defi_enabled) {
+        this.getYieldBalance();
+      } else {
+        this.handleReset();
+        this.upgradeModal();
+      }
     }
 
     // if(!this.props.userWalletData && this.props.walletTotal === 0 && !this.props.isLoading){
     //   this.setState({piechartisLoading : this.props.isLoading === false ? false : true})
     // }
   }
+
+  // for 0 all value
+  handleReset = () => {
+    let YieldValues = [];
+    let DebtValues = [];
+    let allAssetType = [20, 30, 40, 50, 60, 70];
+    allAssetType.map((e) => {
+      if (e !== 30) {
+        YieldValues.push({
+          id: e,
+          name: AssetType.getText(e),
+          totalPrice: 0,
+        });
+      } else {
+        DebtValues.push({
+          id: 30,
+          name: AssetType.getText(30),
+          totalPrice: 0,
+        });
+      }
+    });
+
+    this.setState({
+      YieldValues,
+      DebtValues,
+    });
+  };
   setHoverData = (e) => {
     this.setState({ pieSectionDataEnabled: e });
   };
@@ -1062,145 +1100,158 @@ class PieChart2 extends BaseReactComponent {
                     </div>
                   </div>
                   {/* Balance sheet */}
-                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
-                    Balance sheet
-                  </h2>
-                  <div style={{}} className="balance-sheet-card">
-                    <div className="balance-card-header cp">
-                      <div
-                        onClick={this.toggleYield}
-                        // style={
-                        //   this.state.isYeildToggle ? {  } : {}
-                        // }
-                      >
-                        <span
-                          className="inter-display-semi-bold f-s-16 lh-19"
-                          style={
-                            this.state.isYeildToggle
-                              ? { color: "#000000", marginRight: "0.8rem" }
-                              : { color: "#636467", marginRight: "0.8rem" }
-                          }
-                        >
-                          Yield
-                        </span>
-                        <span
-                          className="inter-display-regular f-s-16 lh-19"
-                          style={ this.state.isYeildToggle
-                              ? { color: "#000000", marginRight: "0.8rem" }:{ color: "#B0B1B3", marginRight: "0.8rem" }}
-                        >
-                          {CurrencyType(false)}
-                          {this.state.YieldValues &&
-                            numToCurrency(this.state.totalYield)}
-                        </span>
-
-                        <Image
-                          src={arrowUp}
-                          style={
-                            this.state.isYeildToggle
-                              ? { transform: "rotate(180deg)" }
-                              : {}
-                          }
-                        />
-                      </div>
-                      <div onClick={this.toggleDebt}>
-                        <span
-                          className="inter-display-semi-bold f-s-16 lh-19"
-                          style={
-                            this.state.isDebtToggle
-                              ? { color: "#000000", marginRight: "0.8rem" }
-                              : { color: "#636467", marginRight: "0.8rem" }
-                          }
-                        >
-                          Debt
-                        </span>
-                        <span
-                          className="inter-display-regular f-s-16 lh-19"
-                          style={ this.state.isDebtToggle
-                              ? { color: "#000000", marginRight: "0.8rem" }:{ color: "#B0B1B3", marginRight: "0.8rem" }}
-                        >
-                          {CurrencyType(false)}
-                          {this.state.DebtValues &&
-                            numToCurrency(this.state.totalDebt)}
-                        </span>
-
-                        <Image
-                          src={arrowUp}
-                          style={
-                            this.state.isDebtToggle
-                              ? { transform: "rotate(180deg)" }
-                              : {}
-                          }
-                        />
-                      </div>
-                    </div>
-                    {(this.state.isYeildToggle || this.state.isDebtToggle) && (
-                      <div className="balance-dropdown">
-                        <div className="balance-list-content">
-                          {/* For yeild */}
-                          {this.state.isYeildToggle && (
-                            <div>
+                  {this.state.userPlan?.defi_enabled && (
+                    <>
+                      <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                        Balance sheet
+                      </h2>
+                      <div style={{}} className="balance-sheet-card">
+                        <div className="balance-card-header cp">
+                          <div
+                            onClick={this.toggleYield}
+                            // style={
+                            //   this.state.isYeildToggle ? {  } : {}
+                            // }
+                          >
+                            <span
+                              className="inter-display-semi-bold f-s-16 lh-19"
+                              style={
+                                this.state.isYeildToggle
+                                  ? { color: "#000000", marginRight: "0.8rem" }
+                                  : { color: "#636467", marginRight: "0.8rem" }
+                              }
+                            >
+                              Yield
+                            </span>
+                            <span
+                              className="inter-display-regular f-s-16 lh-19"
+                              style={
+                                this.state.isYeildToggle
+                                  ? { color: "#000000", marginRight: "0.8rem" }
+                                  : { color: "#B0B1B3", marginRight: "0.8rem" }
+                              }
+                            >
+                              {CurrencyType(false)}
                               {this.state.YieldValues &&
-                                this.state.YieldValues.map((item, i) => {
-                                  return (
-                                    <div
-                                      className="balance-sheet-list"
-                                      style={
-                                        i === this.state.YieldValues.length - 1
-                                          ? { paddingBottom: "0.3rem" }
-                                          : {}
-                                      }
-                                    >
-                                      <span className="inter-display-medium f-s-16 lh-19">
-                                        {item.name}
-                                      </span>
-                                      <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                        {CurrencyType(false)}
-                                        {amountFormat(
-                                          item.totalPrice.toFixed(2),
-                                          "en-US",
-                                          "USD"
-                                        )}
-                                      </span>
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                          )}
+                                numToCurrency(this.state.totalYield)}
+                            </span>
 
-                          {/* For debt */}
-                          {this.state.isDebtToggle && (
-                            <div>
+                            <Image
+                              src={arrowUp}
+                              style={
+                                this.state.isYeildToggle
+                                  ? { transform: "rotate(180deg)" }
+                                  : {}
+                              }
+                            />
+                          </div>
+                          <div onClick={this.toggleDebt}>
+                            <span
+                              className="inter-display-semi-bold f-s-16 lh-19"
+                              style={
+                                this.state.isDebtToggle
+                                  ? { color: "#000000", marginRight: "0.8rem" }
+                                  : { color: "#636467", marginRight: "0.8rem" }
+                              }
+                            >
+                              Debt
+                            </span>
+                            <span
+                              className="inter-display-regular f-s-16 lh-19"
+                              style={
+                                this.state.isDebtToggle
+                                  ? { color: "#000000", marginRight: "0.8rem" }
+                                  : { color: "#B0B1B3", marginRight: "0.8rem" }
+                              }
+                            >
+                              {CurrencyType(false)}
                               {this.state.DebtValues &&
-                                this.state.DebtValues.map((item, i) => {
-                                  return (
-                                    <div
-                                      className="balance-sheet-list"
-                                      style={
-                                        i === this.state.DebtValues.length - 1
-                                          ? { paddingBottom: "0.3rem" }
-                                          : {}
-                                      }
-                                    >
-                                      <span className="inter-display-medium f-s-16 lh-19">
-                                        {item.name}
-                                      </span>
-                                      <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                        {CurrencyType(false)}
-                                        {amountFormat(
-                                          item.totalPrice.toFixed(2),
-                                          "en-US",
-                                          "USD"
-                                        )}
-                                      </span>
-                                    </div>
-                                  );
-                                })}
-                            </div>
-                          )}
+                                numToCurrency(this.state.totalDebt)}
+                            </span>
+
+                            <Image
+                              src={arrowUp}
+                              style={
+                                this.state.isDebtToggle
+                                  ? { transform: "rotate(180deg)" }
+                                  : {}
+                              }
+                            />
+                          </div>
                         </div>
+                        {(this.state.isYeildToggle ||
+                          this.state.isDebtToggle) && (
+                          <div className="balance-dropdown">
+                            <div className="balance-list-content">
+                              {/* For yeild */}
+                              {this.state.isYeildToggle && (
+                                <div>
+                                  {this.state.YieldValues &&
+                                    this.state.YieldValues.map((item, i) => {
+                                      return (
+                                        <div
+                                          className="balance-sheet-list"
+                                          style={
+                                            i ===
+                                            this.state.YieldValues.length - 1
+                                              ? { paddingBottom: "0.3rem" }
+                                              : {}
+                                          }
+                                        >
+                                          <span className="inter-display-medium f-s-16 lh-19">
+                                            {item.name}
+                                          </span>
+                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                            {CurrencyType(false)}
+                                            {amountFormat(
+                                              item.totalPrice.toFixed(2),
+                                              "en-US",
+                                              "USD"
+                                            )}
+                                          </span>
+                                        </div>
+                                      );
+                                    })}
+                                </div>
+                              )}
+
+                              {/* For debt */}
+                              {this.state.isDebtToggle && (
+                                <div>
+                                  {this.state.DebtValues &&
+                                    this.state.DebtValues.map((item, i) => {
+                                      return (
+                                        <div
+                                          className="balance-sheet-list"
+                                          style={
+                                            i ===
+                                            this.state.DebtValues.length - 1
+                                              ? { paddingBottom: "0.3rem" }
+                                              : {}
+                                          }
+                                        >
+                                          <span className="inter-display-medium f-s-16 lh-19">
+                                            {item.name}
+                                          </span>
+                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                            {CurrencyType(false)}
+                                            {amountFormat(
+                                              item.totalPrice.toFixed(2),
+                                              "en-US",
+                                              "USD"
+                                            )}
+                                          </span>
+                                        </div>
+                                      );
+                                    })}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
+                    </>
+                  )}
                 </div>
               </Col>
               <Col
