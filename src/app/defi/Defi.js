@@ -218,10 +218,9 @@ class Defi extends Component {
   };
 
   getYieldBalance = () => {
-    console.log("wallet_address");
+  
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     if (UserWallet.length !== 0) {
-      console.log("wallet_addres3s");
       UserWallet?.map((e) => {
         let data = new URLSearchParams();
         data.append("wallet_address", e.address);
@@ -236,9 +235,23 @@ class Defi extends Component {
 
         //   });
       });
+      
     } else {
       this.handleReset();
     }
+    if (this.state.userPlan?.name === "Trial") {
+   setTimeout(() => {
+     this.setState(
+       {
+         isStatic: true,
+       },
+       () => {
+         this.upgradeModal();
+       }
+     );
+   }, 10000);
+}
+   
   };
   // for 0 all value
   handleReset = () => {

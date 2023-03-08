@@ -37,6 +37,8 @@ import {
 import FixAddModal from "../common/FixAddModal";
 import { info } from "./stackGrapgh";
 import { GetAllPlan, getUser } from "../common/Api";
+import { UpgradeTriggered } from "../../utils/ReusableFunctions";
+import UpgradeModal from "../common/upgradeModal";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -71,9 +73,20 @@ class Intelligence extends Component {
       AssetList: [],
       selectedAssets: [],
       selectedOption: 0,
-      selectedActiveBadge:[],
+      selectedActiveBadge: [],
+
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      upgradeModal: false,
+      isStatic: false,
+      triggerId: 0,
     };
   }
+
+  upgradeModal = () => {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
+  };
 
   setSwitch = () => {
     this.setState({
@@ -107,6 +120,20 @@ class Intelligence extends Component {
     GetAllPlan();
     getUser();
     this.assetList();
+
+    let obj = UpgradeTriggered();
+
+    if (obj.trigger) {
+      this.setState(
+        {
+          triggerId: obj.id,
+          isStatic: true,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -324,8 +351,8 @@ class Intelligence extends Component {
   handleBadge = (activeBadgeList, activeFooter = this.state.title) => {
     console.log("handle badge", activeBadgeList, activeFooter);
     this.setState({
-      selectedActiveBadge:activeBadgeList
-    })
+      selectedActiveBadge: activeBadgeList,
+    });
     let startDate = moment().unix();
     let endDate;
     if (activeFooter == "0") {
@@ -359,7 +386,13 @@ class Intelligence extends Component {
     });
 
     if ((activeFooter = 0)) {
-      getProfitAndLossApi(this, false, false, selectedChains, this.state.selectedAssets);
+      getProfitAndLossApi(
+        this,
+        false,
+        false,
+        selectedChains,
+        this.state.selectedAssets
+      );
       getAssetProfitLoss(
         this,
         false,
@@ -432,7 +465,7 @@ class Intelligence extends Component {
     });
   };
 
-  handleAssetSelected = (arr)=> {
+  handleAssetSelected = (arr) => {
     this.setState(
       {
         selectedAssets: arr === "allAssets" ? [] : arr,
@@ -447,6 +480,16 @@ class Intelligence extends Component {
     return (
       <div className="intelligence-page-section">
         <div className="intelligence-section page">
+          {this.state.upgradeModal && (
+            <UpgradeModal
+              show={this.state.upgradeModal}
+              onHide={this.upgradeModal}
+              history={this.props.history}
+              isShare={localStorage.getItem("share_id")}
+              isStatic={this.state.isStatic}
+              triggerId={this.state.triggerId}
+            />
+          )}
           <PageHeader
             title="Intelligence"
             subTitle="Automated and personalized financial intelligence"

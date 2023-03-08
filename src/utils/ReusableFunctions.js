@@ -198,8 +198,44 @@ export const UpgradeTriggered = () => {
   let id = 0;
   let trigger = false;
 
-   let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+  let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+  console.log("wal", walletAddress.length, userPlan?.wallet_address_limit);
 
-  if (walletAddress?.length > userPlan?.wallet_address_limit) {
+  if (
+    walletAddress?.length > userPlan?.wallet_address_limit &&
+    userPlan?.wallet_address_limit
+   !== -1) {
+    id = 1;
+    trigger = true;
+  } else if (userPlan?.whale_pod_limit && false) {
+    id = 2;
+    trigger = true;
   }
+  // else if (userPlan?.notifications_provided) {
+  //   id = 1;
+  //   trigger = true;
+  // }
+  // else if (userPlan?.notifications_limit) {
+  //   id = 1;
+  //   trigger = true;
+  // }
+  // else if (userPlan?.defi_enabled) {
+  //   id = 1;
+  //   trigger = true;
+  // }
+  // else if (userPlan?.insight) {
+  //   id = 1;
+  //   trigger = true;
+  // }
+  // else if (userPlan?.export_address_limit) {
+  //   id = 1;
+  //   trigger = true;
+  // }
+  // else if (userPlan?.upload_csv) {
+  //   id = 1;
+  //   trigger = true;
+  // }
+
+  return {id,trigger}
+  
 }

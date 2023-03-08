@@ -68,7 +68,7 @@ import { getAssetGraphDataApi } from "./Api";
 import { getAllCounterFeeApi } from "../cost/Api";
 import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
-import { CurrencyType } from "../../utils/ReusableFunctions";
+import { CurrencyType, UpgradeTriggered } from "../../utils/ReusableFunctions";
 import PieChart2 from "./PieChart2";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
@@ -178,6 +178,16 @@ class Portfolio extends BaseReactComponent {
     
     if (token !== "jsk") {
       localStorage.setItem("stopClick", true);
+      let obj = UpgradeTriggered();
+  
+      if (obj.trigger) {
+        this.setState({
+          triggerId: obj.id,
+          isStatic: true,
+        }, () => {
+          this.upgradeModal();
+        })
+      }
     }
   }
 
