@@ -90,8 +90,8 @@ class ConnectModal extends BaseReactComponent {
         // },
       ],
       selection: null,
-      apiActive: true,
-      coinBase: false,
+      apiActive: false,
+      coinBase: true,
       AuthUrl: "",
       popup:false,
     };
@@ -126,8 +126,8 @@ class ConnectModal extends BaseReactComponent {
   handleBack = () => {
     this.setState({
       selection: null,
-      apiActive: true,
-      coinBase: false,
+      apiActive: false,
+      coinBase: true,
       connectionName: "",
       apiKey: "",
       apiSecret: "",
@@ -501,21 +501,6 @@ class ConnectModal extends BaseReactComponent {
                 >
                   <h3
                     className={`${
-                      this.state.apiActive ? "black-191" : "grey-B0B"
-                    } inter-display-semi-bold f-s-16 lh-16 m-r-32 p-b-20 cp`}
-                    style={
-                      this.state.apiActive
-                        ? {
-                            borderBottom: "2px solid #19191A",
-                          }
-                        : { borderBottom: "2px solid transparent" }
-                    }
-                    onClick={this.handleApi}
-                  >
-                    API Sync
-                  </h3>
-                  <h3
-                    className={`${
                       this.state.coinBase ? "black-191" : "grey-B0B"
                     } inter-display-semi-bold f-s-16 lh-16 m-r-32 p-b-20 cp`}
                     style={
@@ -528,6 +513,21 @@ class ConnectModal extends BaseReactComponent {
                     onClick={this.handleCoinbase}
                   >
                     {selection.name}
+                  </h3>
+                  <h3
+                    className={`${
+                      this.state.apiActive ? "black-191" : "grey-B0B"
+                    } inter-display-semi-bold f-s-16 lh-16 m-r-32 p-b-20 cp`}
+                    style={
+                      this.state.apiActive
+                        ? {
+                            borderBottom: "2px solid #19191A",
+                          }
+                        : { borderBottom: "2px solid transparent" }
+                    }
+                    onClick={this.handleApi}
+                  >
+                    API Sync
                   </h3>
                 </div>
               )}
@@ -552,7 +552,8 @@ class ConnectModal extends BaseReactComponent {
                             //     this.state.connectionName !== "" ? "done" : "",
                             // }}
                           />
-                          {!this.state.coinBase && (
+                          {(!this.state.coinBase ||
+                            this.state.selection.name !== "Coinbase") && (
                             <FormElement
                               valueLink={this.linkState(this, "apiKey")}
                               label="API Key"
@@ -568,7 +569,8 @@ class ConnectModal extends BaseReactComponent {
                               // }}
                             />
                           )}
-                          {!this.state.coinBase && (
+                          {(!this.state.coinBase ||
+                            this.state.selection.name !== "Coinbase") && (
                             <FormElement
                               valueLink={this.linkState(this, "apiSecret")}
                               label="API Secret"
@@ -600,15 +602,30 @@ class ConnectModal extends BaseReactComponent {
                           ? this.showCoinbaseAuthSteps()
                           : this.showCoinbaseSteps()}
                       </div>
-                      <Button
-                        className="primary-btn connect-btn"
-                        onClick={this.handleConnect}
-                      >
-                        {this.state.coinBase
-                          ? "Continue with coinbase"
-                          : "Connect"}
-                      </Button>
+                      {(!this.state.coinBase ||
+                        this.state.selection.name !== "Coinbase") && (
+                        <Button
+                          className="primary-btn connect-btn"
+                          onClick={this.handleConnect}
+                        >
+                          Connect
+                        </Button>
+                      )}
                     </Col>
+                    {this.state.coinBase &&
+                      this.state.selection.name === "Coinbase" && (
+                        <Col
+                          md={12}
+                          style={{ textAlign: "center", marginTop: "5rem" }}
+                        >
+                          <Button
+                            className="primary-btn"
+                            onClick={this.handleConnect}
+                          >
+                            Continue with Coinbase
+                          </Button>
+                        </Col>
+                      )}
                   </Row>
                 </Container>
               </div>
