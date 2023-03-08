@@ -136,66 +136,105 @@ class ConnectModal extends BaseReactComponent {
   };
 
   componentDidUpdate() {
-    if (this.state.popup) {
+    // console.log("dejkfe",this.state.selection)
+    // if (this.state.popup) {
       
       // var win = window.open(
       //   "http://localhost:3000/success?code=3ffd0d652b7e060511b206b596fbb80c04e62e7a80bc1a59fe46ae3382d5ac48",
       //   "test",
       //   "width=600,height=600,left=400,top=100"
       // );
-       var win = window.open(
-         this.state.AuthUrl,
-         "test",
-         "width=600,height=600,left=400,top=100"
-       );
+      // //  var win = window.open(
+      // //    this.state.AuthUrl,
+      // //    "test",
+      // //    "width=600,height=600,left=400,top=100"
+      // //  );
 
       
-      var timer = setInterval(function () {
-          //  console.log("win", win.location.href, win.location.search);
-         const searchParams = new URLSearchParams(win.location.search);
-         const code = searchParams.get("code");
-         console.log(code);
-        if (code) {
-          // run api
-          let data = new URLSearchParams();
-          data.append("exchange", this.state?.selection?.name?.toLowerCase());
-          data.append("access_code", code);
-           data.append("account_name", this.state?.connectionName);
-          updateAccessToken(data,this);
+      // var timer = setInterval(function () {
+      //     //  console.log("win", win.location.href, win.location.search);
+      //    const searchParams = new URLSearchParams(win.location.search);
+      //    const code = searchParams.get("code");
+      //    console.log(code);
+      //   if (code) {
+      //     // run api
+      //     let data = new URLSearchParams();
+      //     data.append("exchange", this.state?.selection?.name?.toLowerCase());
+      //     data.append("access_code", code);
+      //      data.append("account_name", this.state?.connectionName);
+      //     updateAccessToken(data,this);
 
-         setTimeout(() => {
-           win.close();
-           clearInterval(timer);
-         }, 500);
-        }
-      }, 1000);
+      //    setTimeout(() => {
+      //      win.close();
+      //      clearInterval(timer);
+      //    }, 500);
+      //   }
+      // }, 1000);
     
-    }
+    // }
   }
 
   handleConnect = () => {
     // console.log("Hey");
+    let exchangename = this.state?.selection?.name?.toLowerCase();
+      let cname = this.state?.connectionName;
     if (this.state.coinBase) {
-        this.setState({
-          popup: true,
-        });
+        // this.setState({
+        //   popup: true,
+        // });
+          // var win = window.open(
+          //   "http://localhost:3000/success?code=3ffd0d652b7e060511b206b596fbb80c04e62e7a80bc1a59fe46ae3382d5ac48",
+          //   "test",
+          //   "width=600,height=600,left=400,top=100"
+          // );
+           var win = window.open(
+             this.state.AuthUrl,
+             "test",
+             "width=600,height=600,left=400,top=100"
+           );
+
+          var timer = setInterval(function () {
+            //  console.log("win", win.location.href, win.location.search);
+            const searchParams = new URLSearchParams(win.location.search);
+            const code = searchParams.get("code");
+            console.log(code, exchangename,cname);
+            if (code) {
+              // run api
+              let data = new URLSearchParams();
+              data.append(
+                "exchange",
+                exchangename
+              );
+              data.append("access_code", code);
+              data.append("account_name", cname);
+              updateAccessToken(data, this);
+
+              setTimeout(() => {
+                win.close();
+                clearInterval(timer);
+              }, 500);
+            }
+          }, 1000);
+    
+    } else {
+       if (
+         this.state.apiKey &&
+         this.state.connectionName &&
+         this.state.apiSecret
+       ) {
+         let data = new URLSearchParams();
+
+         data.append("exchange", this.state.selection.name.toLowerCase());
+         data.append("account_name", this.state.connectionName);
+         data.append("api_secret", this.state.apiSecret);
+         data.append("api_key", this.state.apiKey);
+
+         addUpdateAccount(data, this);
+       }
     }
   
 
-    if (
-      this.state.apiKey &&
-      this.state.connectionName &&
-      this.state.apiSecret
-    ) {
-      let data = new URLSearchParams();
-
-      data.append("exchange", this.state.selection.name.toLowerCase());
-      data.append("account_name", this.state.connectionName);
-      data.append("api_secret", this.state.apiSecret);
-      data.append("api_key", this.state.apiKey);
-
-      addUpdateAccount(data, this);
-    }
+   
   };
 
   showBinanceSteps = () => {
