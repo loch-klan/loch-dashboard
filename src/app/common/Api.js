@@ -759,6 +759,8 @@ export const updateAccessToken = (data, ctx) => {
         // ctx.setState({
         //   AuthUrl: res?.data?.data?.url,
         // });
+        ctx.onHide();
+        toast.success("Account connected")
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }

@@ -124,7 +124,14 @@ class ConnectModal extends BaseReactComponent {
     GetAuthUrl(data,this);
   }
   handleBack = () => {
-    this.setState({ selection: null, apiActive: true, coinBase: false });
+    this.setState({
+      selection: null,
+      apiActive: true,
+      coinBase: false,
+      connectionName: "",
+      apiKey: "",
+      apiSecret: "",
+    });
   };
 
   getUserConnectExchange = () => {
