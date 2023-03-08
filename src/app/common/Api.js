@@ -761,7 +761,10 @@ export const updateAccessToken = (data, ctx, name) => {
         //   AuthUrl: res?.data?.data?.url,
         // });
         ctx.state.onHide();
-        toast.success(`${name} exchange connected`);
+        toast.success(`${name} connected to loch`);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
