@@ -22,6 +22,7 @@ import backIcon from "../../assets/images/icons/back-icon.svg";
 import Slider from 'react-slick';
 import { addUpdateAccount, getUserAccount } from '../cost/Api';
 import {getExchangeBalance } from "../Portfolio/Api";
+import { GetAuthUrl } from './Api';
 
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
@@ -91,6 +92,8 @@ class ConnectModal extends BaseReactComponent {
       selection: null,
       apiActive: true,
       coinBase: false,
+      AuthUrl: "",
+      popup:false,
     };
   }
 
@@ -109,9 +112,17 @@ class ConnectModal extends BaseReactComponent {
 
   handleSelect = (item) => {
     this.setState({ selection: item }, () => {
+      this.getUrl();
       this.getUserConnectExchange();
+
     });
   };
+
+  getUrl = () => {
+     let data = new URLSearchParams();
+     data.append("exchange", this.state.selection.name.toLowerCase());
+    GetAuthUrl(data,this);
+  }
   handleBack = () => {
     this.setState({ selection: null, apiActive: true, coinBase: false });
   };
@@ -124,8 +135,52 @@ class ConnectModal extends BaseReactComponent {
     getUserAccount(data, this);
   };
 
+  componentDidUpdate() {
+    if (this.state.popup) {
+      
+      // var win = window.open(
+      //   "http://localhost:3000/success?code=7f6c5d7fe61c59eab65813b8e209153879fbfd1452737a9dfbb1c0f0593decf2",
+      //   "test",
+      //   "width=600,height=600,left=400,top=100"
+      // );
+       var win = window.open(
+         this.state.AuthUrl,
+         "test",
+         "width=600,height=600,left=400,top=100"
+       );
+
+      // win.addEventListener("pagehide", function () {
+      //   setTimeout(function () {
+      //     var currentUrl = win.location.href;
+      //     console.log("Popup window closed. Current URL: " + currentUrl);
+      //   }, 100);
+      // });
+
+      // console.log("win out",win.location, win.location.href, win.location.pathname);
+      
+      var timer = setInterval(function () {
+          //  console.log("win", win.location.href, win.location.search);
+         const searchParams = new URLSearchParams(win.location.search);
+         const code = searchParams.get("code");
+         console.log(code);
+        if (code) {
+          // run api
+
+          win.close();
+          clearInterval(timer);
+        }
+      }, 1000);
+    
+    }
+  }
+
   handleConnect = () => {
     // console.log("Hey");
+    
+    this.setState({
+      popup:true
+    })
+
     if (
       this.state.apiKey &&
       this.state.connectionName &&
@@ -307,6 +362,7 @@ class ConnectModal extends BaseReactComponent {
     return (
       <Slider {...this.state.settings}>
         <div>
+       
           <div className="steps">
             <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
               STEP 1
@@ -323,8 +379,8 @@ class ConnectModal extends BaseReactComponent {
               STEP 2
             </h6>
             <p className="inter-display-medium f-s-14 lh-16">
-              Login to your <b>{this.state.selection.name}</b> account if you are not logged in
-              yet.
+              Login to your <b>{this.state.selection.name}</b> account if you
+              are not logged in yet.
             </p>
           </div>
         </div>
@@ -522,22 +578,22 @@ class ConnectModal extends BaseReactComponent {
               </div>
               <div className="connect-wrapper">
                 {/* <Row> */}
-                  {this.state.connectExchangesList.map((item) => {
-                    return (
-                      <div
-                        className="connect-div"
-                        onClick={() => this.handleSelect(item)}
-                      >
-                        <div className="img-wrapper">
-                          <Image src={item.icon} />
-                        </div>
-
-                        <h3 className="inter-display-medium f-s-16 lh-19 ">
-                          {item.name}
-                        </h3>
+                {this.state.connectExchangesList.map((item) => {
+                  return (
+                    <div
+                      className="connect-div"
+                      onClick={() => this.handleSelect(item)}
+                    >
+                      <div className="img-wrapper">
+                        <Image src={item.icon} />
                       </div>
-                    );
-                  })}
+
+                      <h3 className="inter-display-medium f-s-16 lh-19 ">
+                        {item.name}
+                      </h3>
+                    </div>
+                  );
+                })}
                 {/* </Row> */}
               </div>
             </div>

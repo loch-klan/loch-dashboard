@@ -733,3 +733,19 @@ export const getUser = (ctx = null) => {
     }
   });
 };
+
+
+
+export const GetAuthUrl = (data,ctx) => {
+  postLoginInstance.post("organisation/user/get-authorize-url",data).then((res) => {
+    if (!res.data.error) {
+
+      ctx.setState({
+        AuthUrl: res?.data?.data?.url
+      })
+     
+    } else {
+      toast.error(res.data.message || "Something Went Wrong");
+    }
+  });
+};
