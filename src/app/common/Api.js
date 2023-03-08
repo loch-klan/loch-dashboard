@@ -751,7 +751,7 @@ export const GetAuthUrl = (data,ctx) => {
 };
 
 
-export const updateAccessToken = (data, ctx) => {
+export const updateAccessToken = (data, ctx, name) => {
   postLoginInstance
     .post("organisation/user/update-access-token", data)
     .then((res) => {
@@ -760,7 +760,7 @@ export const updateAccessToken = (data, ctx) => {
         //   AuthUrl: res?.data?.data?.url,
         // });
         ctx.onHide();
-        toast.success("Account connected")
+        toast.success(`${name} exchange connected`);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
