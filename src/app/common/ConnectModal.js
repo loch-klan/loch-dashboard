@@ -184,7 +184,8 @@ class ConnectModal extends BaseReactComponent {
   handleConnect = () => {
     // console.log("Hey");
     let exchangename = this.state?.selection?.name?.toLowerCase();
-      let cname = this.state?.connectionName;
+    let cname = this.state?.connectionName;
+    let parentState = this;
     if (this.state.coinBase) {
         // this.setState({
         //   popup: true,
@@ -214,14 +215,16 @@ class ConnectModal extends BaseReactComponent {
               );
               data.append("access_code", code);
               data.append("account_name", cname);
-              updateAccessToken(data, this,exchangename);
+              updateAccessToken(data, parentState,exchangename);
                 win.close();
-                clearInterval(timer);
+              clearInterval(timer);
+             
               // setTimeout(() => {
                 
               // }, 500);
             }
           }, 1000);
+      
     
     } else {
        if (
