@@ -182,8 +182,7 @@ class Profile extends Component {
                     <div
                       className={`pricing-section
                               ${
-                                this.state.selectedPlan?.name ===
-                                "Baron"
+                                this.state.selectedPlan?.name === "Baron"
                                   ? "baron-bg"
                                   : this.state.selectedPlan?.name ===
                                     "Sovereign"
@@ -242,19 +241,17 @@ class Profile extends Component {
                               <h3>{list.name}</h3>
                             </div>
                             <h4>
-                              {
-                              list.name !== "Insights"
-                              ? list.limit === false
-                                ? "No"
-                                : list.limit === true
-                                ? "Yes"
-                                : list.limit === -1
-                                ? "Unlimited"
-                                : list.limit
-                              : list.limit === false
+                              {list.name !== "Insights"
+                                ? list.limit === false
+                                  ? "No"
+                                  : list.limit === true
+                                  ? "Yes"
+                                  : list.limit === -1
+                                  ? "Unlimited"
+                                  : list.limit
+                                : list.limit === false
                                 ? "Limited"
-                                : "Unlimited"
-                              }
+                                : "Unlimited"}
                             </h4>
                           </div>
                         );
@@ -263,9 +260,7 @@ class Profile extends Component {
                   </div>
                   <Button
                     className={`primary-btn ${
-                      this.state.selectedPlan?.name !== "Free"
-                        ? "grey-bg"
-                        : ""
+                      this.state.selectedPlan?.name !== "Free" ? "grey-bg" : ""
                     }`}
                     onClick={() => {
                       if (
@@ -280,7 +275,8 @@ class Profile extends Component {
                       }
                     }}
                   >
-                    {this.state.selectedPlan?.name !== "Free"
+                    {this.state.selectedPlan?.name !== "Free" ||
+                    this.state.selectedPlan?.name !== "Trial"
                       ? "Manage subscription"
                       : "Upgrade"}
                   </Button>
@@ -300,7 +296,6 @@ class Profile extends Component {
           )}
           {/* <FeedbackForm page={"Profile Page"} /> */}
         </div>
-        
       </div>
     );
      
