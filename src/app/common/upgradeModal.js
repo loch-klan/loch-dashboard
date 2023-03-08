@@ -58,6 +58,7 @@ class UpgradeModal extends BaseReactComponent {
         name: plan.name,
         id: plan.id,
         plan_reference_id: plan.plan_reference_id,
+        trial_day:plan.trial_days,
         features: [
           {
             name: "Wallet addresses",
@@ -426,19 +427,21 @@ class UpgradeModal extends BaseReactComponent {
                 {!this.state.hideUpgradeModal ? (
                   <div className="pricing-plan">
                     <Row>
-                      {this.state?.planList.map((plan, i) => {
-                        return (
-                          <Col md={4}>
-                            <div className="plan-card-wrapper">
-                              <div
-                                className={`plan-card ${
-                                  plan.name === this.state.userPlan.name
-                                    ? "active"
-                                    : ""
-                                }`}
-                              >
+                      {this.state?.planList
+                        .filter((e) => e.name !== "Trial")
+                        .map((plan, i) => {
+                          return (
+                            <Col md={4}>
+                              <div className="plan-card-wrapper">
                                 <div
-                                  className={`pricing-section
+                                  className={`plan-card ${
+                                    plan.name === this.state.userPlan.name
+                                      ? "active"
+                                      : ""
+                                  }`}
+                                >
+                                  <div
+                                    className={`pricing-section
                               ${
                                 i === 1
                                   ? "baron-bg"
@@ -447,90 +450,148 @@ class UpgradeModal extends BaseReactComponent {
                                   : ""
                               }
                               `}
-                                >
-                                  <h3>{plan.name}</h3>
-                                  <div className="price">
-                                    <h4>${plan.price}</h4>
-                                    {i !== 0 && <p>monthly</p>}
+                                  >
+                                    <h3>{plan.name}</h3>
+                                    <div className="price">
+                                      <h4>${plan.price}</h4>
+                                      {i !== 0 && <p>monthly</p>}
+                                    </div>
+                                  </div>
+                                  <div className="feature-list-wrapper">
+                                    {plan?.features.map((list) => {
+                                      return (
+                                        <div
+                                          className={`feature-list ${
+                                            this.props.triggerId === list?.id
+                                              ? i === 0
+                                                ? "free-plan"
+                                                : i === 1
+                                                ? "baron-plan"
+                                                : i === 2
+                                                ? "soverign-plan"
+                                                : ""
+                                              : ""
+                                          }`}
+                                        >
+                                          <div className="label">
+                                            <Image
+                                              src={list?.img}
+                                              // style={
+                                              //   list?.id == 9
+                                              //     ? {
+                                              //         opacity: "opacity: 0.6;",
+                                              //         // filter: "invert(1)",
+                                              //       }
+                                              //     : {}
+                                              // }
+                                            />
+                                            <h3>{list.name}</h3>
+                                          </div>
+                                          <h4>
+                                            {list.name !== "Insights"
+                                              ? list.limit === false
+                                                ? "No"
+                                                : list.limit === true
+                                                ? "Yes"
+                                                : list.limit === -1
+                                                ? "Unlimited"
+                                                : list.limit
+                                              : list.limit === false
+                                              ? "Limited"
+                                              : "Unlimited"}
+                                          </h4>
+                                        </div>
+                                      );
+                                    })}
                                   </div>
                                 </div>
-                                <div className="feature-list-wrapper">
-                                  {plan?.features.map((list) => {
-                                    return (
-                                      <div
-                                        className={`feature-list ${
-                                          this.props.triggerId === list?.id
-                                            ? i === 0
-                                              ? "free-plan"
-                                              : i === 1
-                                              ? "baron-plan"
-                                              : i === 2
-                                              ? "soverign-plan"
-                                              : ""
-                                            : ""
-                                        }`}
-                                      >
-                                        <div className="label">
-                                          <Image
-                                            src={list?.img}
-                                            // style={
-                                            //   list?.id == 9
-                                            //     ? {
-                                            //         opacity: "opacity: 0.6;",
-                                            //         // filter: "invert(1)",
-                                            //       }
-                                            //     : {}
-                                            // }
-                                          />
-                                          <h3>{list.name}</h3>
-                                        </div>
-                                        <h4>
-                                          {list.name !== "Insights"
-                                            ? list.limit === false
-                                              ? "No"
-                                              : list.limit === true
-                                              ? "Yes"
-                                              : list.limit === -1
-                                              ? "Unlimited"
-                                              : list.limit
-                                            : list.limit === false
-                                            ? "Limited"
-                                            : "Unlimited"}
-                                        </h4>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                              <Button
-                                className={`primary-btn ${
-                                  plan.name === this.state.userPlan.name
-                                    ? "disabled"
-                                    : ""
-                                }`}
-                                style={
-                                  i === 0
-                                    ? { position: "relative", top: "2.3rem" }
-                                    : {}
-                                }
-                                onClick={() => {
-                                  if (plan.name !== this.state.userPlan.name) {
-                                    this.AddEmailModal();
-                                    this.setState({
-                                      price_id: plan.price_id,
-                                      selectedPlan: plan,
-                                    });
+                                <Button
+                                  className={`primary-btn ${
+                                    plan.name === this.state.userPlan.name
+                                      ? "disabled"
+                                      : ""
+                                  }`}
+                                  style={
+                                    i === 0
+                                      ? { position: "relative", top: "2.3rem" }
+                                      : {}
                                   }
-                                }}
-                              >
-                                {plan.name === this.state.userPlan.name
-                                  ? "Current tier"
-                                  : "Upgrade"}
-                              </Button>
-                            </div>
-                          </Col>
-                        );
-                      })}
+                                  onClick={() => {
+                                    if (
+                                      plan.name !== this.state.userPlan.name
+                                    ) {
+                                      this.AddEmailModal();
+                                      this.setState({
+                                        price_id: plan.price_id,
+                                        selectedPlan: plan,
+                                      });
+                                    }
+                                  }}
+                                >
+                                  {plan.name === this.state.userPlan.name
+                                    ? "Current tier"
+                                    : "Upgrade"}
+                                </Button>
+                              </div>
+                            </Col>
+                          );
+                        })}
+                      {!this.state.userPlan.subscription &&
+                        this.state?.planList
+                          .filter((e) => e.name === "Trial")
+                          .map((plan, i) => {
+                            return (
+                              <Col md={12} className="m-t-16">
+                                <div
+                                  className="plan-card-wrapper"
+                                  //  style={{
+                                  //    display: "flex",
+                                  //    alignItems: "center",
+                                  //    justifyContent: "space-between",
+                                  //  }}
+                                >
+                                  <div
+                                    className={`plan-card`}
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "space-between",
+                                      padding: "1.5rem",
+                                    }}
+                                  >
+                                    <div>
+                                      <h3 className="inter-display-medium f-s-16 lh-25">
+                                        Want to try before subscribing?
+                                      </h3>
+                                      <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                                        Try the unlimited Sovereign plan for{" "}
+                                        {plan.trial_day}{" "}
+                                        {plan.trial_day > 1 ? "days" : "day"}{" "}
+                                        for ${plan.price} .
+                                      </h5>
+                                    </div>
+                                    <Button
+                                      className={`primary-btn ${
+                                        plan.name === this.state.userPlan.name
+                                          ? "disabled"
+                                          : ""
+                                      }`}
+                                      style={{ width: "auto", margin: 0 }}
+                                      onClick={() => {
+                                        this.AddEmailModal();
+                                        this.setState({
+                                          price_id: plan.price_id,
+                                          selectedPlan: plan,
+                                        });
+                                      }}
+                                    >
+                                      Trial
+                                    </Button>
+                                  </div>
+                                </div>
+                              </Col>
+                            );
+                          })}
                     </Row>
                   </div>
                 ) : (
@@ -556,7 +617,8 @@ class UpgradeModal extends BaseReactComponent {
                                 this.state.selectedPlan?.name === "Baron"
                                   ? "baron-bg"
                                   : this.state.selectedPlan?.name ===
-                                    "Sovereign"
+                                      "Sovereign" ||
+                                    this.state.selectedPlan?.name === "Trial"
                                   ? "soverign-bg"
                                   : ""
                               }
@@ -584,7 +646,9 @@ class UpgradeModal extends BaseReactComponent {
                                               "Baron"
                                             ? "baron-plan"
                                             : this.state.selectedPlan?.name ===
-                                              "Soverign"
+                                                "Soverign" ||
+                                              this.state.selectedPlan?.name ===
+                                                "Trial"
                                             ? "soverign-plan"
                                             : ""
                                           : ""

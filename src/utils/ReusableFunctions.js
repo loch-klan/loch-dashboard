@@ -192,3 +192,7 @@ export const CurrencyType = (code = "both") => {
     return currency?.symbol
   }
 }
+
+export const UpgradeTriggered = () => {
+
+}
