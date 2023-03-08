@@ -486,8 +486,7 @@ class ConnectModal extends BaseReactComponent {
                   Connecting to {selection.name}
                 </h6>
               </div>
-              {(selection.name === "Coinbase" ||
-                selection.name === "Binance") && (
+              {selection.name === "Coinbase" && (
                 <div
                   style={{
                     display: "flex",
@@ -529,8 +528,7 @@ class ConnectModal extends BaseReactComponent {
                   </h3>
                 </div>
               )}
-              {(selection.name === "Coinbase" ||
-                selection.name === "Binance") && <hr style={{ margin: 0 }} />}
+              {selection.name === "Coinbase" && <hr style={{ margin: 0 }} />}
               <div className="selection-wrapper">
                 <Container>
                   <Row>
