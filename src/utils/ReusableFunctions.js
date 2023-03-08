@@ -194,5 +194,12 @@ export const CurrencyType = (code = "both") => {
 }
 
 export const UpgradeTriggered = () => {
+  let userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+  let id = 0;
+  let trigger = false;
 
+   let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
+
+  if (walletAddress?.length > userPlan?.wallet_address_limit) {
+  }
 }

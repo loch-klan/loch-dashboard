@@ -271,8 +271,8 @@ class Profile extends Component {
                       if (
                         this.state.manageUrl === "" ||
                         this.state.manageUrl === undefined ||
-                        this.state.selectedPlan?.name ===
-                          "Free"
+                        this.state.selectedPlan?.name === "Free" ||
+                        this.state.selectedPlan?.name === "Trial"
                       ) {
                         this.upgradeModal();
                       } else {
