@@ -205,7 +205,7 @@ class ConnectModal extends BaseReactComponent {
             //  console.log("win", win.location.href, win.location.search);
             const searchParams = new URLSearchParams(win.location.search);
             const code = searchParams.get("code");
-            console.log(code, exchangename,cname);
+            // console.log(code, exchangename,cname);
             if (code) {
               // run api
               let data = new URLSearchParams();
