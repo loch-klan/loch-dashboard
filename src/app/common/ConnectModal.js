@@ -176,10 +176,12 @@ class ConnectModal extends BaseReactComponent {
 
   handleConnect = () => {
     // console.log("Hey");
-    
-    this.setState({
-      popup:true
-    })
+    if (this.state.coinBase) {
+        this.setState({
+          popup: true,
+        });
+    }
+  
 
     if (
       this.state.apiKey &&
