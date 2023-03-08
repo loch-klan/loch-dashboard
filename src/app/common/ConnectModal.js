@@ -215,7 +215,7 @@ class ConnectModal extends BaseReactComponent {
               );
               data.append("access_code", code);
               data.append("account_name", cname);
-              updateAccessToken(data, parentState,exchangename);
+              updateAccessToken(data, parentState, parentState.state?.selection?.name);
                 win.close();
               clearInterval(timer);
              

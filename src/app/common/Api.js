@@ -752,7 +752,7 @@ export const GetAuthUrl = (data,ctx) => {
 
 
 export const updateAccessToken = (data, ctx, name) => {
-  // console.log("this",ctx)
+  // console.log("this",name)
   postLoginInstance
     .post("organisation/user/update-access-token", data)
     .then((res) => {
