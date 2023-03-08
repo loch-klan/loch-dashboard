@@ -749,3 +749,18 @@ export const GetAuthUrl = (data,ctx) => {
     }
   });
 };
+
+
+export const updateAccessToken = (data, ctx) => {
+  postLoginInstance
+    .post("organisation/user/update-access-token", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // ctx.setState({
+        //   AuthUrl: res?.data?.data?.url,
+        // });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};

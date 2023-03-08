@@ -22,7 +22,7 @@ import backIcon from "../../assets/images/icons/back-icon.svg";
 import Slider from 'react-slick';
 import { addUpdateAccount, getUserAccount } from '../cost/Api';
 import {getExchangeBalance } from "../Portfolio/Api";
-import { GetAuthUrl } from './Api';
+import { GetAuthUrl, updateAccessToken } from './Api';
 
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
@@ -139,7 +139,7 @@ class ConnectModal extends BaseReactComponent {
     if (this.state.popup) {
       
       // var win = window.open(
-      //   "http://localhost:3000/success?code=7f6c5d7fe61c59eab65813b8e209153879fbfd1452737a9dfbb1c0f0593decf2",
+      //   "http://localhost:3000/success?code=3ffd0d652b7e060511b206b596fbb80c04e62e7a80bc1a59fe46ae3382d5ac48",
       //   "test",
       //   "width=600,height=600,left=400,top=100"
       // );
@@ -149,14 +149,6 @@ class ConnectModal extends BaseReactComponent {
          "width=600,height=600,left=400,top=100"
        );
 
-      // win.addEventListener("pagehide", function () {
-      //   setTimeout(function () {
-      //     var currentUrl = win.location.href;
-      //     console.log("Popup window closed. Current URL: " + currentUrl);
-      //   }, 100);
-      // });
-
-      // console.log("win out",win.location, win.location.href, win.location.pathname);
       
       var timer = setInterval(function () {
           //  console.log("win", win.location.href, win.location.search);
@@ -165,9 +157,16 @@ class ConnectModal extends BaseReactComponent {
          console.log(code);
         if (code) {
           // run api
+          let data = new URLSearchParams();
+          data.append("exchange", this.state?.selection?.name?.toLowerCase());
+          data.append("access_code", code);
+           data.append("account_name", this.state?.connectionName);
+          updateAccessToken(data,this);
 
-          win.close();
-          clearInterval(timer);
+         setTimeout(() => {
+           win.close();
+           clearInterval(timer);
+         }, 500);
         }
       }, 1000);
     
