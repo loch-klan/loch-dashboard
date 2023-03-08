@@ -78,6 +78,10 @@ class Defi extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
+    }, () => {
+      if (!this.state.upgradeModal) {
+        this.props.history.push("/home");
+      };
     });
   };
   toggleYield = () => {
@@ -95,14 +99,19 @@ class Defi extends Component {
   };
 
   componentDidMount() {
-    if (this.state.userPlan?.defi_enabled) {
-      this.props.getAllCoins();
-      // getAllProtocol(this);
-      this.getYieldBalance();
-    } else {
-      this.handleReset();
-      this.upgradeModal();
-    }
+    // if (this.state.userPlan?.defi_enabled) {
+    //   this.props.getAllCoins();
+    //   // getAllProtocol(this);
+    //   this.getYieldBalance();
+    // } else {
+    //   this.handleReset();
+    //   this.upgradeModal();
+    // }
+    
+       this.props.getAllCoins();
+       // getAllProtocol(this);
+       this.getYieldBalance();
+    
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -239,7 +248,7 @@ class Defi extends Component {
     } else {
       this.handleReset();
     }
-    if (this.state.userPlan?.name === "Trial") {
+    if (this.state.userPlan?.name === "Free") {
    setTimeout(() => {
      this.setState(
        {
@@ -247,6 +256,7 @@ class Defi extends Component {
        },
        () => {
          this.upgradeModal();
+          localStorage.setItem("defi_access", false);
        }
      );
    }, 10000);
@@ -344,7 +354,7 @@ class Defi extends Component {
               onHide={this.upgradeModal}
               history={this.props.history}
               isShare={localStorage.getItem("share_id")}
-              isStatic={true}
+              // isStatic={true}
               triggerId={this.state.triggerId}
             />
           )}

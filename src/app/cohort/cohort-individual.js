@@ -42,6 +42,7 @@ import {
   CurrencyType,
   loadingAnimation,
   numToCurrency,
+  UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
 import CoinChip from "../wallet/CoinChip";
 import Coin from "../../assets/images/coin-ava.svg";
@@ -140,6 +141,7 @@ class CohortPage extends BaseReactComponent {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       triggerId: 0,
       showDust: false,
+      isStatic:false
     };
   }
 
@@ -268,6 +270,20 @@ class CohortPage extends BaseReactComponent {
     setTimeout(() => {
       this.AddEmailModal();
     }, 2000);
+
+    let obj = UpgradeTriggered();
+
+    if (obj.trigger) {
+      this.setState(
+        {
+          triggerId: obj.id,
+          isStatic: true,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+    }
   }
 
   componentWillUnmount() {

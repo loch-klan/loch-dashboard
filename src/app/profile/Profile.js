@@ -260,7 +260,10 @@ class Profile extends Component {
                   </div>
                   <Button
                     className={`primary-btn ${
-                      this.state.selectedPlan?.name !== "Free" ? "grey-bg" : ""
+                      this.state.selectedPlan?.name !== "Free" &&
+                      this.state.selectedPlan?.name !== "Trial"
+                        ? "grey-bg"
+                        : ""
                     }`}
                     onClick={() => {
                       if (
@@ -275,7 +278,7 @@ class Profile extends Component {
                       }
                     }}
                   >
-                    {this.state.selectedPlan?.name !== "Free" ||
+                    {this.state.selectedPlan?.name !== "Free" &&
                     this.state.selectedPlan?.name !== "Trial"
                       ? "Manage subscription"
                       : "Upgrade"}

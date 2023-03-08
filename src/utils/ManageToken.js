@@ -9,6 +9,7 @@ const deleteToken = () => {
   localStorage.removeItem("share_id");
   localStorage.removeItem("Plans");
   localStorage.removeItem("stopClick");
+  localStorage.removeItem("defi_access");
 };
 
 const getToken = () => {

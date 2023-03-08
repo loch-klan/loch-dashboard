@@ -199,7 +199,7 @@ export const UpgradeTriggered = () => {
   let trigger = false;
 
   let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
-  console.log("wal", walletAddress.length, userPlan?.wallet_address_limit);
+  // console.log("wal", walletAddress.length, userPlan?.wallet_address_limit);
 
   if (
     walletAddress?.length > userPlan?.wallet_address_limit &&

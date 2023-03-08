@@ -90,8 +90,8 @@ function Sidebar(props) {
 
   let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
   let triggerId = 6;
-  let isDefi = userPlan?.defi_enabled;
-
+  let defi_access = JSON.parse(localStorage.getItem("defi_access"));
+  let isDefi = (userPlan?.defi_enabled || defi_access);
   let selectedPlan = {};
   const Plans = JSON.parse(localStorage.getItem("Plans"));
   Plans?.map((plan) => {

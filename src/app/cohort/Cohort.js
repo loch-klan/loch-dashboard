@@ -35,7 +35,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import { CurrencyType, numToCurrency, UpgradeTriggered } from "../../utils/ReusableFunctions";
 import Coin from "../../assets/images/coin-ava.svg";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
@@ -101,6 +101,20 @@ class Cohort extends Component {
     this.makeApiCall();
     GetAllPlan();
     getUser();
+
+    let obj = UpgradeTriggered();
+
+    if (obj.trigger) {
+      this.setState(
+        {
+          triggerId: obj.id,
+          isStatic: true,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+    }
     
   }
 

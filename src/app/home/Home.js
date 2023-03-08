@@ -33,7 +33,7 @@ class Home extends Component {
   componentDidMount() {
     const searchParams = new URLSearchParams(this.props.location.search);
     const planId = searchParams.get("plan_id");
-    console.log(planId);
+    // console.log(planId);
     if (planId) {
       // console.log("plan id", planId);
       this.setState({
@@ -46,6 +46,7 @@ class Home extends Component {
         this.props.history.push("/home");
       } else {
         deleteToken();
+           localStorage.setItem("defi_access", true);
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
         if (!isRefresh) {
           localStorage.setItem("refresh", true);

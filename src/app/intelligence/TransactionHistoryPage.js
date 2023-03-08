@@ -14,7 +14,7 @@ import { FormElement, Form, CustomTextControl, BaseReactComponent } from "../../
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
-import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
+import { CurrencyType, noExponents, UpgradeTriggered } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { TransactionHistoryAddress, TransactionHistoryPageView } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
@@ -27,6 +27,7 @@ import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
 import { GetAllPlan, getUser } from "../common/Api";
+import UpgradeModal from "../common/upgradeModal";
 
 
 
@@ -101,7 +102,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           up: false,
         },
       ],
-      showDust:false,
+      showDust: false,
       // add new wallet
       // userWalletList: localStorage.getItem("addWallet")
       //   ? JSON.parse(localStorage.getItem("addWallet"))
@@ -109,9 +110,21 @@ class TransactionHistoryPage extends BaseReactComponent {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
+
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      upgradeModal: false,
+      isStatic: false,
+      triggerId: 0,
     };
     this.delayTimer = 0;
   }
+
+  upgradeModal = () => {
+    this.setState({
+      upgradeModal: !this.state.upgradeModal,
+    });
+  };
+
   componentDidMount() {
     TransactionHistoryPageView({
       session_id: getCurrentUser().id,
@@ -126,6 +139,20 @@ class TransactionHistoryPage extends BaseReactComponent {
     // this.props.getCoinRate();
     GetAllPlan();
     getUser();
+
+    let obj = UpgradeTriggered();
+
+    if (obj.trigger) {
+      this.setState(
+        {
+          triggerId: obj.id,
+          isStatic: true,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+    }
   }
 
   callApi = (page = START_INDEX) => {
@@ -174,7 +201,6 @@ class TransactionHistoryPage extends BaseReactComponent {
       this.callApi(this.state.currentPage || START_INDEX);
       getFilters(this);
     }
-    
   }
 
   // For add new address
@@ -208,7 +234,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   addCondition = (key, value) => {
     console.log("key, value", key, value, this.state.condition);
     let index = this.state.condition.findIndex((e) => e.key === key);
-    console.log('index',index);
+    console.log("index", index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -219,15 +245,17 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allMethod" &&
       value !== "allYear"
     ) {
-      console.log("first if", index)
+      console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
       value === "allYear"
     ) {
-       console.log("second if", index);
-     if(index !== -1) {arr.splice(index, 1)};
+      console.log("second if", index);
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
     } else {
       console.log("else", index);
       let obj = {};
@@ -362,8 +390,8 @@ class TransactionHistoryPage extends BaseReactComponent {
         this.addCondition(SEARCH_BY_NOT_DUST, this.state.showDust);
       }
     );
-    
-  }
+  };
+  
   render() {
     // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
@@ -386,7 +414,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               walletFromData = {
                 wallet_metaData: wallet.wallet_metadata,
                 displayAddress: wallet.displayAddress,
-                nickname: wallet?.nickname
+                nickname: wallet?.nickname,
               };
             }
             if (
@@ -733,16 +761,17 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  (rowData.to.metaData?.nickname ? rowData.to.metaData?.nickname +
-                      ": " : "") +
-                      (rowData.to.wallet_metaData?.text
-                        ? rowData.to.wallet_metaData?.text + ": "
-                        : "") +
-                      (rowData.to.metaData?.displayAddress &&
-                      rowData.to.metaData?.displayAddress !== rowData.to.address
-                        ? rowData.to.metaData?.displayAddress + ": "
-                        : "") +
-                      rowData.to.address
+                  (rowData.to.metaData?.nickname
+                    ? rowData.to.metaData?.nickname + ": "
+                    : "") +
+                  (rowData.to.wallet_metaData?.text
+                    ? rowData.to.wallet_metaData?.text + ": "
+                    : "") +
+                  (rowData.to.metaData?.displayAddress &&
+                  rowData.to.metaData?.displayAddress !== rowData.to.address
+                    ? rowData.to.metaData?.displayAddress + ": "
+                    : "") +
+                  rowData.to.address
                   // rowData.to.wallet_metaData?.text
                   //   ? rowData.to.wallet_metaData?.text +
                   //     ": " +
@@ -1180,7 +1209,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                 text={rowData.method}
               >
                 <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                  
                   {rowData.method}
                 </div>
               </CustomOverlay>
@@ -1205,6 +1233,16 @@ class TransactionHistoryPage extends BaseReactComponent {
               history={this.props.history}
               changeWalletList={this.handleChangeList}
               apiResponse={(e) => this.CheckApiResponse(e)}
+            />
+          )}
+          {this.state.upgradeModal && (
+            <UpgradeModal
+              show={this.state.upgradeModal}
+              onHide={this.upgradeModal}
+              history={this.props.history}
+              isShare={localStorage.getItem("share_id")}
+              isStatic={this.state.isStatic}
+              triggerId={this.state.triggerId}
             />
           )}
           <PageHeader
