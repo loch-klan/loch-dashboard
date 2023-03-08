@@ -759,7 +759,7 @@ export const updateAccessToken = (data, ctx, name) => {
         // ctx.setState({
         //   AuthUrl: res?.data?.data?.url,
         // });
-        ctx.onHide();
+        ctx.state.onHide();
         toast.success(`${name} exchange connected`);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
