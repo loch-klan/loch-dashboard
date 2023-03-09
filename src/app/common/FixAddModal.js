@@ -42,7 +42,7 @@ class FixAddModal extends BaseReactComponent {
               wallet_metadata: {},
               nickname: "",
               showAddress: true,
-              showNickname: true,
+            showNickname: true,
             },
           ];
     // console.log("addWalletList", addWalletList);
@@ -215,7 +215,7 @@ class FixAddModal extends BaseReactComponent {
 
     data.address === newAddress[i].address &&
       newAddress[i].coins.push(...newCoinList);
-    //new code added
+    // new code added
     // if (data.id === newAddress[i].id) {
     //   newAddress[i].address = data.address;
     // }
@@ -223,15 +223,7 @@ class FixAddModal extends BaseReactComponent {
     newAddress[i].coinFound =
       newAddress[i].coins &&
       newAddress[i].coins.some((e) => e.chain_detected === true);
-    // console.log(
-    //   "newAddress",
-    //   newAddress,
-    //   data.id,
-    //   newAddress[i].id,
-    //   data.address === newAddress[i].address,
-    //   data.address,
-    //   newAddress[i].address
-    // );
+    newAddress[i].apiAddress = data.apiaddress;
     if (this.state.modalType === "addwallet") {
       this.setState({
         addWalletList: newAddress,
@@ -332,10 +324,7 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleAddWallet = () => {
-    console.log(
-      "add wallet list",
-      this.state.total_addresses , this.state.userPlan.wallet_address_limit
-    );
+    console.log("add wallet list", this.state.addWalletList);
      if (
        this.state.total_addresses + this.state.addWalletList?.length > this.state.userPlan.wallet_address_limit &&
        this.state.userPlan.wallet_address_limit !== -1
@@ -361,20 +350,21 @@ class FixAddModal extends BaseReactComponent {
            let walletList = [];
            for (let i = 0; i < this.state.addWalletList.length; i++) {
              let curr = this.state.addWalletList[i];
-             // console.log(
-             //   "current address",
-             //   curr.address.trim(),
-             //   "display",
-             //   curr.displayAddress,
-             //   "arr",
-             //   arr,
+            //  console.log(
+            //    "current address",
+            //    curr.address.trim(),
+            //    "display",
+            //    curr.displayAddress,
+            //    "arr",
+            //    arr,
 
-             // );
-             if (!arr.includes(curr.address.trim()) && curr.address) {
+            //  );
+             if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
                walletList.push(curr);
                arr.push(curr.address.trim());
                nicknameArr[curr.address.trim()] = curr.nickname;
                arr.push(curr.displayAddress?.trim());
+               arr.push(curr.apiAddress?.trim());
                addressList.push(curr.address.trim());
              }
            }

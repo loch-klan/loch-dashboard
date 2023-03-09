@@ -416,7 +416,7 @@ class ExitOverlay extends BaseReactComponent {
   };
 
   handleCohortSave = () => {
-    // console.log("save",  this.state.addWalletList)
+    // console.log("tet")
     if (this.state.addWalletList) {
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -551,7 +551,7 @@ class ExitOverlay extends BaseReactComponent {
     });
   };
   handleSave = () => {
-    // console.log("create email", this.state.email);
+ 
     if (this.props.modalType === "create_account") {
       // for chort signup and signin
       const data = new URLSearchParams();
@@ -1150,10 +1150,10 @@ class ExitOverlay extends BaseReactComponent {
                                 label="Pod Name"
                                 required
                                 validations={[
-                                  {
-                                    validate: FormValidator.isRequired,
-                                    message: "Enter your pod name",
-                                  },
+                                  // {
+                                  //   validate: FormValidator.isRequired,
+                                  //   message: "Enter your pod name",
+                                  // },
                                 ]}
                                 control={{
                                   type: CustomTextControl,

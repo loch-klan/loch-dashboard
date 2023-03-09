@@ -222,7 +222,8 @@ class PieChart2 extends BaseReactComponent {
  getYieldBalance = () => {
 
    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
-       console.log("wallet_address", UserWallet);
+  //  console.log("wallet_address", UserWallet);
+   
     if (UserWallet?.length !== 0) {
       // console.log("wallet_addres3s");
       UserWallet?.map((e) => {
@@ -233,6 +234,19 @@ class PieChart2 extends BaseReactComponent {
     } else {
       this.handleReset();
     }
+   if (!UserWallet) {
+    //  console.log("null")
+     this.setState(
+       {
+         loadGetYieldBalance: true,
+       },
+       () => {
+         setTimeout(() => {
+          this.getYieldBalance();
+         }, 1000);
+       }
+     );
+   }
   };
   componentDidUpdate(prevProps) {
     

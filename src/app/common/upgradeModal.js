@@ -628,7 +628,7 @@ class UpgradeModal extends BaseReactComponent {
                               <div className="price">
                                 <h4>${this.state.selectedPlan?.price}</h4>
                                 {this.state.selectedPlan?.name !== "Free" && (
-                                  <p>monthly</p>
+                                  <p>{this.state.selectedPlan?.name === "Trial" ?"1 day": "monthly"}</p>
                                 )}
                               </div>
                             </div>

@@ -77,9 +77,9 @@ export const detectCoin = (wallet, ctx = null, isCohort= false) => {
              });
           }
           
-          // wallet.address = res.data.data.wallet_address;
+         
           if (!isCohort) {
-
+      // wallet.address = res.data.data.wallet_address;
             dispatch({
               type: WALLET_LIST,
               payload: {
@@ -87,7 +87,7 @@ export const detectCoin = (wallet, ctx = null, isCohort= false) => {
                 coinCode: wallet.coinCode,
                 coinSymbol: wallet.coinSymbol,
                 coinName: wallet.coinName,
-                // address: res.data.data.wallet_address,
+                apiaddress: res.data.data.wallet_address,
                 address: wallet.address,
                 chain_detected: res.data.data.chain_detected,
                 coinColor: wallet.coinColor,
@@ -100,6 +100,7 @@ export const detectCoin = (wallet, ctx = null, isCohort= false) => {
             ctx.handleSetCoin({
               ...wallet,
               chain_detected: res.data.data.chain_detected,
+              apiaddress: res.data.data.wallet_address,
             });
           }
         }
