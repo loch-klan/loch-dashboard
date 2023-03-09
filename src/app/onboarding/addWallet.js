@@ -321,14 +321,24 @@ class AddWallet extends BaseReactComponent {
     let walletAddress = [];
     let addWallet = this.state.walletInput;
     let finalArr = [];
-    let nicknameArr = {};
+
+  //  console.log("cjeb", addWallet);
+     let addressList = [];
+  
+     let nicknameArr = {};
+   
     for (let i = 0; i < addWallet.length; i++) {
       let curr = addWallet[i];
-      if (!walletAddress.includes(curr.address.trim()) && curr.address.trim()) {
+      if (!walletAddress.includes(curr.apiAddress.trim()) && curr.address.trim()) {
         finalArr.push(curr);
         walletAddress.push(curr.address.trim());
+        walletAddress.push(curr.displayAddress?.trim());
+        walletAddress.push(curr.apiAddress?.trim());
         let address = curr.address.trim();
         nicknameArr[address] = curr.nickname;
+        addressList.push(curr.address.trim());
+
+      
       }
     }
 
@@ -339,10 +349,10 @@ class AddWallet extends BaseReactComponent {
       };
     });
 
-    // console.log("final array", finalArr, nicknameArr);
+    // console.log("final array", addressList);
 
     const data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify(walletAddress));
+    data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
     // data.append("link", );
     createAnonymousUserApi(data, this, finalArr);

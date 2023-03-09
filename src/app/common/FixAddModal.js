@@ -257,7 +257,7 @@ class FixAddModal extends BaseReactComponent {
     });
   }
   addAddress = () => {
-    console.log(this.state.addWalletList.length, this.state.total_addresses);
+    // console.log(this.state.addWalletList.length, this.state.total_addresses);
     let total =
       this.state.addWalletList.length +
       this.state.total_addresses +
@@ -325,9 +325,18 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleAddWallet = () => {
-    console.log("add wallet list", this.state.addWalletList);
+    // console.log(
+    //   "add wallet list",
+    //   this.state.total_addresses + this.state.addWalletList?.length >
+    //     this.state.userPlan.wallet_address_limit,
+    //   this.state.total_addresses , this.state.addWalletList?.length ,
+    //     this.state.userPlan.wallet_address_limit
+    // );
      if (
-       this.state.total_addresses + this.state.addWalletList?.length > this.state.userPlan.wallet_address_limit &&
+      (this.state.total_addresses +
+         this.state.addWalletList?.length -
+         this.state.prevWalletAddress) >
+         this.state.userPlan.wallet_address_limit &&
        this.state.userPlan.wallet_address_limit !== -1
      ) {
        this.setState(
@@ -351,15 +360,15 @@ class FixAddModal extends BaseReactComponent {
            let walletList = [];
            for (let i = 0; i < this.state.addWalletList.length; i++) {
              let curr = this.state.addWalletList[i];
-            //  console.log(
-            //    "current address",
-            //    curr.address.trim(),
-            //    "display",
-            //    curr.displayAddress,
-            //    "arr",
-            //    arr,
+             //  console.log(
+             //    "current address",
+             //    curr.address.trim(),
+             //    "display",
+             //    curr.displayAddress,
+             //    "arr",
+             //    arr,
 
-            //  );
+             //  );
              if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
                walletList.push(curr);
                arr.push(curr.address.trim());
