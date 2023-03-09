@@ -241,6 +241,8 @@ class AddWallet extends BaseReactComponent {
       (e) => e.chain_detected === true
     );
 
+     newAddress[i].apiAddress = data?.apiaddress;
+
     this.setState({
       walletInput: newAddress,
     });

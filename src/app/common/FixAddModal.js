@@ -31,6 +31,7 @@ class FixAddModal extends BaseReactComponent {
               ...e,
               showAddress: e.nickname === "" ? true : false,
               showNickname: e.nickname === "" ? false : true,
+              apiAddress: e.address,
             };
           })
         : [
