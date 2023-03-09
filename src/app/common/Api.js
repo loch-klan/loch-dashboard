@@ -188,15 +188,21 @@ export const getDetectedChainsApi = (ctx) =>{
         display_address: res.data.data.chains[chain].display_address,
         chains: res.data.data.chains[chain].chains
       }))
-      // console.log('xyz',xyz);
+      // console.log("addwallet", xyz, res.data.data.chains);
       addWallet?.map((wallet)=>{
         let userWallet = null;
         let coinFound = false;
         xyz.map((item)=>{
-          if(item.address === wallet.address || item.display_address === wallet.address){
-            userWallet = item
+          if (
+            item.address === wallet.address ||
+            item.address === wallet.address.toLowerCase() ||
+            item.display_address === wallet.address
+          ) {
+            userWallet = item;
           }
         })
+
+        // console.log("chain", userWallet);
 
         let chainsDetected = chainList.map((chain)=>{
           let dummyChain = {...chain}
