@@ -360,10 +360,11 @@ export const getProtocolBalanceApi = (ctx,data) => {
         let currency = JSON.parse(localStorage.getItem("currency"));
 
         let cardList = ctx.state.cardList || [];
-        let totalYield = ctx.state.totalYield || 0;
-        let totalDebt = ctx.state.totalDebt || 0;
+        let totalYield = ctx.state.totalYield;
+        let totalDebt = ctx.state.totalDebt;
+        
         let BalanceSheetValue = ctx.state.BalanceSheetValue || {};
-
+// console.log("Yeild before", BalanceSheetValue, cardList);
         let userWallets = res.data.data.user_wallet;
 
         userWallets?.map((item) => {
@@ -450,8 +451,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
                 : DebtValues.push(BalanceSheetValue[key]);
             });
         // console.log(BalanceSheetValue);
-        // console.log(YieldValues);
-        // console.log(DebtValues);
+        
       let  allAssetType = [20,30,40,50,60,70];
          allAssetType.map((e) => {
               let isfound = false;
@@ -481,23 +481,33 @@ export const getProtocolBalanceApi = (ctx,data) => {
         YieldValues = YieldValues.sort((a, b) => b.totalPrice - a.totalPrice);
         DebtValues = DebtValues.sort((a, b) => b.totalPrice - a.totalPrice);
 
-       
+      
 
+        let totalY = 0;
+        YieldValues.map(e => totalY = totalY + e.totalPrice);
+       
+         let totalD = 0;
+         DebtValues.map((e) => (totalD = totalD + e.totalPrice));
+  // console.log("Yeild", totalY, "debt", totalD);
+       
         setTimeout(() => {
-          ctx.setState({
-            totalYield,
-            totalDebt,
-            cardList,
-            sortedList: sorted,
-            DebtValues,
-            YieldValues,
-            BalanceSheetValue,
-          }, () => {
-            ctx.props?.getProtocolTotal && ctx.props.getProtocolTotal(
-              totalYield,
-              totalDebt
-            );
-          });
+          ctx.setState(
+            {
+              // totalYield,
+              // totalDebt,
+              totalYield:totalY,
+              totalDebt:totalD,
+              cardList,
+              sortedList: sorted,
+              DebtValues,
+              YieldValues,
+              BalanceSheetValue,
+            },
+            () => {
+              ctx.props?.getProtocolTotal &&
+                ctx.props.getProtocolTotal(totalY, totalD);
+            }
+          );
         },100)
 
       } else {

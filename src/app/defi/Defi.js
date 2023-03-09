@@ -119,39 +119,51 @@ class Defi extends Component {
 
     if (this.state.apiResponse) {
       // console.log("update");
-
-      this.props.getAllCoins();
-      this.setState(
-        {
-          allProtocols: null,
-          totalYield: 0,
-          totalDebt: 0,
-          cardList: [],
-          sortedList: [],
-          yieldData: [],
-          DebtValues: [],
-          YieldValues: [],
-          yeldTotal: 0,
-          debtTotal: 0,
-          isYeildToggle: false,
-          isDebtToggle: false,
-          isChainToggle: false,
-          apiResponse: false,
-        },
-        () => {
-          //  getAllProtocol(this);
-          this.getYieldBalance();
-          // this.setState({
-          //   // apiResponse: false,
-          // });
-        }
-      );
+        
+        this.setState(
+          {
+            totalYield: 0,
+            totalDebt: 0,
+            cardList: [],
+            sortedList: [],
+            DebtValues: [],
+            YieldValues: [],
+            BalanceSheetValue: {},
+            isYeildToggle: false,
+            isDebtToggle: false,
+            apiResponse:false,
+          },
+          () => {
+            //  getAllProtocol(this);
+            this.getYieldBalance();
+          }
+        );
     }
 
-    if (this.props.isUpdate !== prevProps.isUpdate) {
-      // for balance sheet
-      //  getAllProtocol(this);
-    }
+    // if (this.state.isUpdate !== prevState.isUpdate) {
+    //   // for balance sheet
+    //   //  getAllProtocol(this);
+    //   this.setState(
+    //     {
+    //       allProtocols: null,
+    //       totalYield: 0,
+    //       totalDebt: 0,
+    //       cardList: [],
+    //       sortedList: [],
+    //       yieldData: [],
+    //       DebtValues: [],
+    //       YieldValues: [],
+    //       isYeildToggle: false,
+    //       isDebtToggle: false,
+    //       isChainToggle: false,
+          
+    //     },
+    //     () => {
+          
+    //     }
+    //   );
+      
+    // }
   }
   sortArray = (key, order) => {
     let array = this.state?.cardList; //all data
@@ -416,14 +428,14 @@ class Defi extends Component {
                         }
                       />
                     </div>
-                    {this.state.YieldValues.length !== 0 &&
+                    {this.state.YieldValues?.length !== 0 &&
                       this.state.isYeildToggle &&
-                      this.state.YieldValues.map((item, i) => {
+                      this.state.YieldValues?.map((item, i) => {
                         return (
                           <div
                             className="balance-sheet-list"
                             style={
-                              i === this.state.YieldValues.length - 1
+                              i === this.state.YieldValues?.length - 1
                                 ? { paddingBottom: "0.3rem" }
                                 : {}
                             }
@@ -483,14 +495,14 @@ class Defi extends Component {
                       />
                     </div>
 
-                    {this.state.DebtValues.length !== 0 &&
+                    {this.state.DebtValues?.length !== 0 &&
                       this.state.isDebtToggle &&
-                      this.state.DebtValues.map((item, i) => {
+                      this.state.DebtValues?.map((item, i) => {
                         return (
                           <div
                             className="balance-sheet-list"
                             style={
-                              i === this.state.DebtValues.length - 1
+                              i === this.state.DebtValues?.length - 1
                                 ? { paddingBottom: "0.3rem" }
                                 : {}
                             }

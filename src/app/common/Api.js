@@ -201,7 +201,7 @@ export const getDetectedChainsApi = (ctx) =>{
         let chainsDetected = chainList.map((chain)=>{
           let dummyChain = {...chain}
           let isDetected = false;
-          userWallet.chains.map((userChain)=>{
+          userWallet?.chains?.map((userChain)=>{
             if(userChain.code === dummyChain.coinCode){
               isDetected = true;
               coinFound = true;

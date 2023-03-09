@@ -217,7 +217,7 @@ class PieChart2 extends BaseReactComponent {
     // }
     this.getYieldBalance();
   }
-  getYieldBalance = () => {
+ getYieldBalance = () => {
     // console.log("wallet_address");
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     if (UserWallet?.length !== 0) {
@@ -225,16 +225,7 @@ class PieChart2 extends BaseReactComponent {
       UserWallet?.map((e) => {
         let data = new URLSearchParams();
         data.append("wallet_address", e.address);
-        getProtocolBalanceApi(this, data);
-        // this.state.allProtocols &&
-        //   this.state.allProtocols?.map((protocol) => {
-        //     let data = new URLSearchParams();
-        //     // consolee.log("protocol_code", protocol.code,
-        //     //   "wallet_address",
-        //     //   e.address);
-        //     // data.append("protocol_code", protocol.code);
-
-        //   });
+       getProtocolBalanceApi(this, data);
       });
     } else {
       this.handleReset();
@@ -427,9 +418,11 @@ class PieChart2 extends BaseReactComponent {
         upgradeModal: false,
         triggerId: 6,
         isChainToggle: false,
+      }, () => {
+        // for balance sheet
+        this.getYieldBalance();
       });
-      // for balance sheet
-      this.getYieldBalance();
+    
       // if (this.state.userPlan?.defi_enabled) {
       //   this.getYieldBalance();
       // } else {
