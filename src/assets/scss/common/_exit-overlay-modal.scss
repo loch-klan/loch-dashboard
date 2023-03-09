@@ -478,6 +478,10 @@
                     width: 2rem;
                     height: 2rem;
                   }
+
+                  &:hover{
+                    background-color: rgba(229, 229, 230, 0.2);
+                  }
                 }
 
                 input {
@@ -541,6 +545,10 @@
               // padding: 0rem 6.2rem 0rem 7rem;
               .grey-btn {
                 width: 100%;
+
+              &:hover{
+                background-color: rgba(229, 229, 230, 0.3);
+            }
               }
             }
 

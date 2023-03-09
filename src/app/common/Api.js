@@ -725,10 +725,15 @@ export const getUser = (ctx = null) => {
 
       if (ctx?.props.location.search === "?status=success") {
         toast.success(
-          <div style={{
-            width: "38rem"
-          }}>
-            Congratulations! You’re officially a{" "}{res.data.data.current_plan.name}.
+          <div
+            style={{
+              width: "38rem",
+            }}
+          >
+            {res.data.data.current_plan.name === "Trial"
+              ? `Congratulations you’re a sovereign for a day!`
+              : `Congratulations! You’re
+            officially a ${res.data.data.current_plan.name}.`}
           </div>
         );
         ctx.props.history.replace("/home");

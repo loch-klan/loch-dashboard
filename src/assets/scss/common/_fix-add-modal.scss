@@ -133,6 +133,10 @@
                 width: 2rem;
                 height: 2rem;
               }
+
+               &:hover{
+                background-color: rgba(229, 229, 230, 0.2);
+            }
             }
             // input {
             //     border: none;

@@ -118,6 +118,7 @@ class PieChart2 extends BaseReactComponent {
             count: this.props.userWalletData[i].totalCount,
           });
         }
+       
       }
       this.setState({
         chartData: this.props.userWalletData,
@@ -215,11 +216,13 @@ class PieChart2 extends BaseReactComponent {
     //   this.handleReset();
     //   // this.upgradeModal();
     // }
+    console.log("mount")
     this.getYieldBalance();
   }
  getYieldBalance = () => {
-    // console.log("wallet_address");
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+
+   let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+       console.log("wallet_address", UserWallet);
     if (UserWallet?.length !== 0) {
       // console.log("wallet_addres3s");
       UserWallet?.map((e) => {
@@ -232,6 +235,7 @@ class PieChart2 extends BaseReactComponent {
     }
   };
   componentDidUpdate(prevProps) {
+    
     if (this.props.assetTotal !== prevProps.assetTotal) {
       this.setState({ assetTotal: this.props.assetTotal });
     }
@@ -283,6 +287,11 @@ class PieChart2 extends BaseReactComponent {
             count: this.props.userWalletData[i].totalCount,
           });
         }
+
+        //  console.log("updae");
+
+         // balance load
+        
       }
       this.setState({
         chartData: this.props.userWalletData,
