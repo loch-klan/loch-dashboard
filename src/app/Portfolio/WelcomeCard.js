@@ -37,20 +37,7 @@ export default function WelcomeCard(props) {
     setconnectModal(!connectModal);
   };
 
-    // React.useEffect(() =>{
-    //     document.addEventListener("click", handleClickOutside, true)
-    // },[])
-    // const refOne = useRef(null)
-    // const handleClickOutside = (e) =>{
-    // if(!refOne.current?.contains(e.target)){
-    //     // console.log("Clicked outside ...");
-    //     props.handleToggleAddWallet();
-    //     // setAddWallet(true);
-    // }
-    // // else{
-    // //     console.log("Clicked inside ...");
-    // // }
-    // }
+
 
     let difference = (props.assetTotal && props.yesterdayBalance) ? props.assetTotal - props.yesterdayBalance : 0;
     let percent = props.assetTotal && ((difference/props.assetTotal)*100).toFixed(2);

@@ -26,10 +26,10 @@ export const getAllWalletListApi = (data,ctx) => {
               })
             })
           })
-          dispatch(getAllWalletList(walletdata))
+          dispatch(getAllWalletList({ walletdata, totalWalletAmt }));
           ctx.setState({
             isLoading:false,
-            totalWalletAmt,
+            // totalWalletAmt,
           })
         } else {
           toast.error(res.data.message || "Something Went Wrong")
@@ -42,6 +42,7 @@ export const getAllWalletListApi = (data,ctx) => {
 }
 
 export const getAllWalletApi = (ctx) => {
+  // console.log("hjgdhj")
   const data = new URLSearchParams();
   postLoginInstance.post("wallet/user-wallet/get-all-wallets", data)
     .then((res) => {
@@ -83,27 +84,27 @@ export const getAllWalletApi = (ctx) => {
 export const updateWalletApi = (ctx, data) => {
   postLoginInstance.post("wallet/user-wallet/update-wallet", data)
     .then((res) => {
-      // console.log(res)
+      // console.log("update wallet",res)
       if (!res.data.error) {
         let walletAddress = ctx.state.walletAddress;
         let displayAddress = ctx.state.displayAddress;
         // let nickname = ctx.state.walletNickname;
         let addWallet = JSON.parse(localStorage.getItem("addWallet"));
         addWallet = addWallet.map((wallet)=>{
-          // console.log('wallet.address',wallet);
+          
           // console.log('walletAddress',walletAddress);
           if(wallet.address === walletAddress || wallet.address === displayAddress){
             let metaData = null;
             let newAddress = null;
             let displayAddress = null;
             let nickname = null;
+          
             res.data.data.user_wallets.map((item)=>{ if(item.address===walletAddress) {
               return(
                 metaData = item.wallet,
                 newAddress = item.address,
                 displayAddress = item.display_address,
-                nickname = item.nickname
-              )
+                nickname = item.nickname)
 
             } })
             // console.log('metaData',metaData);
@@ -112,9 +113,11 @@ export const updateWalletApi = (ctx, data) => {
               address: newAddress,
               displayAddress: displayAddress,
               wallet_metadata: metaData,
-              nickname: nickname
+              nickname: nickname,
+              apiAddress: newAddress
             })
-          } else{
+          } else {
+            
             return ({...wallet})
           }
         })

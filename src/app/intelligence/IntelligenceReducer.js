@@ -1,25 +1,76 @@
 import { API_LIMIT } from "../../utils/Constant";
-import { ALL_TRANSACTION_HISTORY } from "./ActionTypes";
+import { ALL_TRANSACTION_HISTORY, COUNTER_PARTY_VOLUME, GAS_FEES, INSIGHT_DATA, NETFLOW_GRAPH, PORTFOLIO_ASSET, TRANSACTION_FILTER } from "./ActionTypes";
 const INITIAL_STATE = {
-    table: [],
-    currentPage: 1,
-    totalCount: null,
-    totalPage: null,
-    assetPriceList: [],
+  table: [],
+  currentPage: 1,
+  totalCount: null,
+  totalPage: null,
+  assetPriceList: [],
+  updatedInsightList: "",
+
+  // get all netflow api response
+  GraphData: [],
+  // all netflowh data
+  graphValue: null,
+
+  // get all asset value
+  ProfitLossAsset:[],
+
+  // filters
+  assetFilter: [],
+  yearFilter: [],
+  methodFilter: [],
+
+  // counter party
+  counterPartyData: [],
+  counterPartyValue: null,
+
+  // gas fees
+  GraphfeeData: [],
+  graphfeeValue: null,
 };
 const IntelligenceReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case ALL_TRANSACTION_HISTORY:
+      case ALL_TRANSACTION_HISTORY:
+        return {
+          ...state,
+          table: action.payload.results,
+          assetPriceList: action.payload.objects.asset_prices,
+          totalCount: action.payload.total_count,
+          totalPage: Math.ceil(action.payload.total_count / API_LIMIT),
+          currentPage: action.currentPage,
+        };
+      case INSIGHT_DATA:
+        return {
+          ...state,
+          updatedInsightList: action.payload.updatedInsightList,
+        };
+      case NETFLOW_GRAPH:
+        return {
+          ...state,
+          GraphData: action.payload.GraphData,
+          graphValue: action.payload.graphValue,
+        };
+      case PORTFOLIO_ASSET: return { ...state, ProfitLossAsset: action.payload.ProfitLossAsset }; 
+        case TRANSACTION_FILTER:
             return {
               ...state,
-              table : action.payload.results,
-              assetPriceList : action.payload.objects.asset_prices,
-              totalCount: action.payload.total_count,
-              totalPage: Math.ceil(action.payload.total_count / API_LIMIT),
-              currentPage: action.currentPage
+              assetFilter: action.payload.assetFilter,
+              yearFilter: action.payload.yearFilter,
+              methodFilter: action.payload.methodFilter,
             };
-        default:
-            return state
+        case COUNTER_PARTY_VOLUME: return {
+          ...state,
+          counterPartyData: action.payload.counterPartyData,
+          counterPartyValue: action.payload.counterPartyValue,
+        };
+        case GAS_FEES: return {
+          ...state,
+          GraphfeeData: action.payload.GraphfeeData,
+          graphfeeValue: action.payload.graphfeeValue,
+        };
+      default:
+        return state;
     }
 };
 export default IntelligenceReducer

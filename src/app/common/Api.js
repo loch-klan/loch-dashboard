@@ -182,6 +182,8 @@ export const getDetectedChainsApi = (ctx) =>{
         })
       // console.log('chainList',chainList);
       let addWallet = JSON.parse(localStorage.getItem("addWallet"));
+
+      addWallet = addWallet?.map(e => ({...e, apiAddress: e.address}))
       // console.log('addWallet',addWallet);
       let xyz = Object.keys(res.data.data.chains).map((chain)=>({
         address: chain,
@@ -219,7 +221,7 @@ export const getDetectedChainsApi = (ctx) =>{
         wallet.coinFound = coinFound
       wallet.coins = chainsDetected
       })
-      // console.log('addWallet',addWallet);
+    
       ctx.setState({
         addWalletList:
           addWallet.length > 0
@@ -232,7 +234,8 @@ export const getDetectedChainsApi = (ctx) =>{
                   displayAddress: "",
                   wallet_metadata: {},
                   showAddress: true,
-                  showNickname: true,
+                showNickname: true,
+                   apiAddress: ""
                 },
               ],
       });
@@ -476,6 +479,8 @@ export const VerifyEmail = (data,ctx) => {
                     apiResponse?.user?.user_wallets[i]?.nickname !== ""
                       ? true
                       : false;
+                  obj["apiAddress"] =
+                    apiResponse?.user?.user_wallets[i]?.address;
 
                   addWallet.push(obj);
                 }
@@ -579,6 +584,9 @@ export const VerifyEmail = (data,ctx) => {
                           apiResponse.user?.user_wallets[i]?.nickname !== ""
                             ? true
                             : false;
+                        obj["apiAddress"] =
+                          apiResponse.user?.user_wallets[i]?.address;
+                        
                         newAddWallet.push(obj);
                       }
 

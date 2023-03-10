@@ -58,9 +58,9 @@ class TransactionHistoryPage extends BaseReactComponent {
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
       currentPage: page ? parseInt(page, 10) : START_INDEX,
-      assetFilter: [],
-      yearFilter: [],
-      methodFilter: [],
+      // assetFilter: [],
+      // yearFilter: [],
+      // methodFilter: [],
       delayTimer: 0,
       condition: cond ? cond : [],
       tableLoading: true,
@@ -134,7 +134,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       search: `?p=${this.state.currentPage}`,
     });
     this.callApi(this.state.currentPage || START_INDEX);
-    getFilters(this);
+    this.props.getFilters(this);
     this.props.getAllCoins();
     // this.props.getCoinRate();
     GetAllPlan();
@@ -199,7 +199,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       });
 
       this.callApi(this.state.currentPage || START_INDEX);
-      getFilters(this);
+      this.props.getFilters(this);
     }
   }
 
@@ -1263,7 +1263,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 <Col md={3}>
                   <CustomDropdown
                     filtername="All years"
-                    options={this.state.yearFilter}
+                    options={this.props.intelligenceState.yearFilter}
                     action={SEARCH_BY_TIMESTAMP_IN}
                     handleClick={(key, value) => this.addCondition(key, value)}
                   />
@@ -1271,7 +1271,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 <Col md={3}>
                   <CustomDropdown
                     filtername="All assets"
-                    options={this.state.assetFilter}
+                    options={this.props.intelligenceState.assetFilter}
                     action={SEARCH_BY_ASSETS_IN}
                     handleClick={(key, value) => this.addCondition(key, value)}
                   />
@@ -1279,7 +1279,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 <Col md={3}>
                   <CustomDropdown
                     filtername="All methods"
-                    options={this.state.methodFilter}
+                    options={this.props.intelligenceState.methodFilter}
                     action={SEARCH_BY_METHOD_IN}
                     handleClick={(key, value) => this.addCondition(key, value)}
                   />

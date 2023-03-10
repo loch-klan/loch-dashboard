@@ -20,7 +20,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import {getCounterGraphData, getGraphData} from "./getGraphData";
-import { getAllFeeApi, getAllCounterFeeApi } from "./Api";
+import { getAllFeeApi, getAllCounterFeeApi, updateCounterParty, updateFeeGraph } from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
@@ -43,12 +43,16 @@ class Cost extends Component {
         options2: info[2],
       },
       startTime: "",
-      GraphData: [],
-      graphValue: null,
+      // gas fees
+      // GraphfeeData: [],
+      // graphfeeValue: null,
+
       counterGraphLoading: true,
       gasFeesGraphLoading: true,
-      counterPartyData: [],
-      counterPartyValue: null,
+
+      // counter party
+      // counterPartyData: [],
+      // counterPartyValue: null,
       currentPage: "Cost",
       connectModal: false,
       counterGraphDigit: 3,
@@ -91,19 +95,20 @@ class Cost extends Component {
     getUser();
   }
 
+ 
+
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
-     
-        this.props.getAllCoins();
-        this.getBlockchainFee(0);
+
+      this.props.getAllCoins();
+      this.getBlockchainFee(0);
       this.getCounterPartyFee(0);
       this.setState({
-        apiResponse:false
-      })
-      
+        apiResponse: false,
+      });
     }
   }
 
@@ -136,34 +141,34 @@ class Cost extends Component {
     let handleSelected = "";
     // console.log("headle click");
     if (option == 0) {
-      getAllFeeApi(this, false, false);
+      this.props.getAllFeeApi(this, false, false);
       // console.log(option, "All");
       handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
-      getAllFeeApi(this, fiveyear, today);
+      this.props.getAllFeeApi(this, fiveyear, today);
       // console.log(fiveyear, today, "5 years");
       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
-      getAllFeeApi(this, year, today);
+      this.props.getAllFeeApi(this, year, today);
       // console.log(year, today, "1 year");
       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
-      getAllFeeApi(this, sixmonth, today);
+      this.props.getAllFeeApi(this, sixmonth, today);
       // console.log(sixmonth, today, "6 months");
       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
-      getAllFeeApi(this, month, today);
+      this.props.getAllFeeApi(this, month, today);
       // console.log(month, today, "1 month");
       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
-      getAllFeeApi(this, week, today);
+      this.props.getAllFeeApi(this, week, today);
       // console.log(week, today, "week");
       handleSelected = "Week";
     }
@@ -180,34 +185,34 @@ class Cost extends Component {
     let handleSelected = "";
     // console.log("headle click");
     if (option == 0) {
-      getAllCounterFeeApi(this, false, false);
+      this.props.getAllCounterFeeApi(this, false, false);
       // console.log(option, "All");
       handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").unix();
 
-      getAllCounterFeeApi(this, fiveyear, today);
+      this.props.getAllCounterFeeApi(this, fiveyear, today);
       // console.log(fiveyear, today, "5 years");
       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").unix();
-      getAllCounterFeeApi(this, year, today);
+      this.props.getAllCounterFeeApi(this, year, today);
       // console.log(year, today, "1 year");
       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").unix();
 
-      getAllCounterFeeApi(this, sixmonth, today);
+      this.props.getAllCounterFeeApi(this, sixmonth, today);
       // console.log(sixmonth, today, "6 months");
       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").unix();
-      getAllCounterFeeApi(this, month, today);
+      this.props.getAllCounterFeeApi(this, month, today);
       // console.log(month, today, "1 month");
       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").unix();
-      getAllCounterFeeApi(this, week, today);
+      this.props.getAllCounterFeeApi(this, week, today);
       // console.log(week, today, "week");
       handleSelected = "Week";
     }
@@ -231,15 +236,20 @@ class Cost extends Component {
       email_address: getCurrentUser().email,
       time_spent: TimeSpent,
     });
+
+    // get all data on page leave
+    console.log("data");
+    this.getBlockchainFee(0);
+    this.getCounterPartyFee(0);
   }
 
   handleBadge = (activeBadgeList, type) => {
-    const { GraphData, counterPartyData } = this.state;
+    const { GraphfeeData, counterPartyData } = this.props.intelligenceState;
     let graphDataMaster = [];
     let counterPartyDataMaster = [];
     if (type === 1) {
-      GraphData.gas_fee_overtime &&
-        GraphData.gas_fee_overtime?.map((tempGraphData) => {
+      GraphfeeData.gas_fee_overtime &&
+        GraphfeeData.gas_fee_overtime?.map((tempGraphData) => {
           if (
             activeBadgeList.includes(tempGraphData?.chain?._id) ||
             activeBadgeList.length === 0
@@ -248,11 +258,12 @@ class Cost extends Component {
           }
         });
       let gas_fee_overtime = graphDataMaster;
-      let asset_prices = GraphData.asset_prices;
+      let asset_prices = GraphfeeData.asset_prices;
       let graphDataObj = { asset_prices, gas_fee_overtime };
-      this.setState({
-        graphValue: getGraphData(graphDataObj, this),
-      });
+      // this.setState({
+      //   graphfeeValue: getGraphData(graphDataObj, this),
+      // });
+      this.props.updateFeeGraph(GraphfeeData, getGraphData(graphDataObj, this));
     } else {
       counterPartyData &&
         counterPartyData?.map((tempGraphData) => {
@@ -263,14 +274,18 @@ class Cost extends Component {
             counterPartyDataMaster.push(tempGraphData);
           }
         });
-      this.setState({
-        counterPartyValue: getCounterGraphData(counterPartyDataMaster, this),
-      });
+      // this.setState({
+      //   counterPartyValue: getCounterGraphData(counterPartyDataMaster, this),
+      // });
+      this.props.updateCounterParty(
+        counterPartyData,
+        getCounterGraphData(counterPartyDataMaster, this)
+      );
     }
   };
-  handleConnectModal = ()=>{
-    this.setState({connectModal: !this.state.connectModal})
-  }
+  handleConnectModal = () => {
+    this.setState({ connectModal: !this.state.connectModal });
+  };
 
   render() {
     // console.log("counter", this.state.counterGraphDigit);
@@ -414,7 +429,7 @@ class Cost extends Component {
 
     return (
       <div className="cost-page-section">
-         {this.state.connectModal ? (
+        {this.state.connectModal ? (
           <ConnectModal
             show={this.state.connectModal}
             onHide={this.handleConnectModal}
@@ -460,9 +475,18 @@ class Cost extends Component {
             <BarGraphSection
               headerTitle="Blockchain Fees over Time"
               headerSubTitle="Understand your gas costs"
-              data={this.state.graphValue && this.state.graphValue[0]}
-              options={this.state.graphValue && this.state.graphValue[1]}
-              options2={this.state.graphValue && this.state.graphValue[2]}
+              data={
+                this.props.intelligenceState.graphfeeValue &&
+                this.props.intelligenceState.graphfeeValue[0]
+              }
+              options={
+                this.props.intelligenceState.graphfeeValue &&
+                this.props.intelligenceState.graphfeeValue[1]
+              }
+              options2={
+                this.props.intelligenceState.graphfeeValue &&
+                this.props.intelligenceState.graphfeeValue[2]
+              }
               digit={this.state.GraphDigit}
               coinsList={this.props.OnboardingState.coinsList}
               timeFunction={(e) => {
@@ -503,13 +527,16 @@ class Cost extends Component {
               headerTitle="Counterparty Volume Over Time"
               headerSubTitle="Understand where you’ve exchanged the most value"
               data={
-                this.state.counterPartyValue && this.state.counterPartyValue[0]
+                this.props.intelligenceState.counterPartyValue &&
+                this.props.intelligenceState.counterPartyValue[0]
               }
               options={
-                this.state.counterPartyValue && this.state.counterPartyValue[1]
+                this.props.intelligenceState.counterPartyValue &&
+                this.props.intelligenceState.counterPartyValue[1]
               }
               options2={
-                this.state.counterPartyValue && this.state.counterPartyValue[2]
+                this.props.intelligenceState.counterPartyValue &&
+                this.props.intelligenceState.counterPartyValue[2]
               }
               digit={this.state.counterGraphDigit}
               coinsList={this.props.OnboardingState.coinsList}
@@ -557,9 +584,17 @@ class Cost extends Component {
 }
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  intelligenceState: state.IntelligenceState,
 });
 const mapDispatchToProps = {
   getAllCoins,
+  getAllFeeApi,
+  getAllCounterFeeApi,
+
+  // update counter party
+  updateCounterParty,
+  // update fee
+  updateFeeGraph,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cost);

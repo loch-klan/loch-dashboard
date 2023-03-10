@@ -116,7 +116,7 @@ class Intelligence extends Component {
     });
     this.props.getAllCoins();
     this.timeFilter(0);
-    getAllInsightsApi(this);
+    this.props.getAllInsightsApi(this);
     GetAllPlan();
     getUser();
     this.assetList();
@@ -144,7 +144,7 @@ class Intelligence extends Component {
 
       this.props.getAllCoins();
       this.timeFilter(0);
-      getAllInsightsApi(this);
+      this.props.getAllInsightsApi(this);
       this.assetList();
       this.setState({
         apiResponse: false,
@@ -161,6 +161,8 @@ class Intelligence extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+
+     this.timeFilter(0);
   }
 
   assetList = () => {
@@ -181,7 +183,7 @@ class Intelligence extends Component {
     this.setState({ graphValue: "" });
     const today = moment().unix();
     if (option == 0) {
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         false,
         false,
@@ -189,7 +191,7 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
       // for asset Breakdown
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         false,
         false,
@@ -199,7 +201,7 @@ class Intelligence extends Component {
     } else if (option == 1) {
       // console.log("inside 1")
       const fiveyear = moment().subtract(5, "years").unix();
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         fiveyear,
         today,
@@ -207,7 +209,7 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
       // for asset Breakdown
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         fiveyear,
         today,
@@ -216,14 +218,14 @@ class Intelligence extends Component {
       );
     } else if (option == 2) {
       const fouryear = moment().subtract(4, "years").unix();
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         fouryear,
         today,
         selectedChains,
         this.state.selectedAssets
       );
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         fouryear,
         today,
@@ -232,14 +234,14 @@ class Intelligence extends Component {
       );
     } else if (option == 3) {
       const threeyear = moment().subtract(3, "years").unix();
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         threeyear,
         today,
         selectedChains,
         this.state.selectedAssets
       );
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         threeyear,
         today,
@@ -248,14 +250,14 @@ class Intelligence extends Component {
       );
     } else if (option == 4) {
       const twoyear = moment().subtract(2, "years").unix();
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         twoyear,
         today,
         selectedChains,
         this.state.selectedAssets
       );
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         twoyear,
         today,
@@ -264,14 +266,14 @@ class Intelligence extends Component {
       );
     } else if (option == 5) {
       const year = moment().subtract(1, "years").unix();
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         year,
         today,
         selectedChains,
         this.state.selectedAssets
       );
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         year,
         today,
@@ -280,14 +282,14 @@ class Intelligence extends Component {
       );
     } else if (option == 6) {
       const sixmonth = moment().subtract(6, "months").unix();
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         sixmonth,
         today,
         selectedChains,
         this.state.selectedAssets
       );
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         sixmonth,
         today,
@@ -296,14 +298,14 @@ class Intelligence extends Component {
       );
     } else if (option == 7) {
       const month = moment().subtract(1, "month").unix();
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         month,
         today,
         selectedChains,
         this.state.selectedAssets
       );
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         month,
         today,
@@ -312,14 +314,14 @@ class Intelligence extends Component {
       );
     } else if (option == 8) {
       const week = moment().subtract(1, "week").unix();
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         week,
         today,
         selectedChains,
         this.state.selectedAssets
       );
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         week,
         today,
@@ -328,14 +330,14 @@ class Intelligence extends Component {
       );
     } else if (option == 9) {
       const day = moment().subtract(1, "day").unix();
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         day,
         today,
         selectedChains,
         this.state.selectedAssets
       );
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         day,
         today,
@@ -386,22 +388,22 @@ class Intelligence extends Component {
     });
 
     if ((activeFooter = 0)) {
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         false,
         false,
         selectedChains,
         this.state.selectedAssets
       );
-      getAssetProfitLoss(
-        this,
-        false,
-        false,
-        selectedChains,
-        this.state.selectedAssets
-      );
+     this.props.getAssetProfitLoss(
+       this,
+       false,
+       false,
+       selectedChains,
+       this.state.selectedAssets
+     );
     } else {
-      getProfitAndLossApi(
+      this.props.getProfitAndLossApi(
         this,
         startDate,
         endDate,
@@ -410,7 +412,7 @@ class Intelligence extends Component {
       );
 
       // for asset Breakdown
-      getAssetProfitLoss(
+      this.props.getAssetProfitLoss(
         this,
         startDate,
         endDate,
@@ -515,9 +517,9 @@ class Intelligence extends Component {
                 {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
                 {this.state.isLoading ? (
                   <Loading />
-                ) : this.state.updatedInsightList &&
-                  this.state.updatedInsightList.length > 0 ? (
-                  this.state.updatedInsightList
+                ) : this.props.intelligenceState.updatedInsightList &&
+                  this.props.intelligenceState.updatedInsightList.length > 0 ? (
+                  this.props.intelligenceState.updatedInsightList
                     ?.slice(0, 2)
                     .map((insight, key) => {
                       // console.log("insignt", insight);
@@ -669,11 +671,11 @@ class Intelligence extends Component {
             {/* Netflow Info End */}
 
             <div style={{ position: "relative", minWidth: "85rem" }}>
-              {this.state.graphValue ? (
+              {this.props.intelligenceState.graphValue ? (
                 <BarGraphSection
                   isScrollVisible={false}
-                  data={this.state.graphValue[0]}
-                  options={this.state.graphValue[1]}
+                  data={this.props.intelligenceState.graphValue[0]}
+                  options={this.props.intelligenceState.graphValue[1]}
                   coinsList={this.props.OnboardingState.coinsList}
                   timeFunction={(e, activeBadgeList) =>
                     this.timeFilter(e, activeBadgeList)
@@ -702,11 +704,11 @@ class Intelligence extends Component {
                   assetList={this.state.AssetList}
                   // handleSelect={(opt) => this.handleSelect(opt)}
                   showBadges={true}
-                  showPercentage={this.state.graphValue[2]}
+                  showPercentage={this.props.intelligenceState.graphValue[2]}
                   handleBadge={(activeBadgeList, activeFooter) =>
                     this.handleBadge(activeBadgeList, activeFooter)
                   }
-                  ProfitLossAsset={this.state.ProfitLossAsset}
+                  ProfitLossAsset={this.props.intelligenceState.ProfitLossAsset}
                   handleAssetSelected={this.handleAssetSelected}
 
                   // comingSoon={true}
@@ -789,6 +791,9 @@ const mapDispatchToProps = {
   getCoinRate,
   getUserWallet,
   settingDefaultValues,
+  getAllInsightsApi,
+  getProfitAndLossApi,
+  getAssetProfitLoss,
 };
 
 // const mapDispatchToProps = {

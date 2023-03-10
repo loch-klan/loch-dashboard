@@ -43,7 +43,8 @@ class FixAddModal extends BaseReactComponent {
               wallet_metadata: {},
               nickname: "",
               showAddress: true,
-            showNickname: true,
+              showNickname: true,
+              apiAddress:"",
             },
           ];
     // console.log("addWalletList", addWalletList);
@@ -224,7 +225,8 @@ class FixAddModal extends BaseReactComponent {
     newAddress[i].coinFound =
       newAddress[i].coins &&
       newAddress[i].coins.some((e) => e.chain_detected === true);
-    newAddress[i].apiAddress = data.apiaddress;
+    newAddress[i].apiAddress = data?.apiaddress;
+   
     if (this.state.modalType === "addwallet") {
       this.setState({
         addWalletList: newAddress,
@@ -245,7 +247,11 @@ class FixAddModal extends BaseReactComponent {
     JSON.parse(localStorage.getItem("addWallet"))?.map((e) => {
       // console.log("e fix wallet", e);
       if (e.coinFound !== true) {
-        fixWallet.push({ ...e, id: `wallet${fixWallet.length + 1}` });
+        fixWallet.push({
+          ...e,
+          id: `wallet${fixWallet.length + 1}`,
+          apiAddress:e?.address,
+        });
       }
     });
 
@@ -276,6 +282,7 @@ class FixAddModal extends BaseReactComponent {
         showAddress: true,
         showNickname: true,
         wallet_metadata: {},
+        apiAddress:"",
       });
       this.setState({
         addWalletList: this.state.addWalletList,
@@ -303,6 +310,7 @@ class FixAddModal extends BaseReactComponent {
     this.state.addWalletList.splice(index, 1);
     this.state.addWalletList?.map((w, i) => {
       w.id = `wallet${i + 1}`;
+      w.apiAddress= w.address;
     });
 
     this.setState({
@@ -360,22 +368,21 @@ class FixAddModal extends BaseReactComponent {
            let walletList = [];
            for (let i = 0; i < this.state.addWalletList.length; i++) {
              let curr = this.state.addWalletList[i];
-             //  console.log(
-             //    "current address",
-             //    curr.address.trim(),
-             //    "display",
-             //    curr.displayAddress,
-             //    "arr",
-             //    arr,
+              console.log(
+                "current address",
+                curr,
+                "arr",
+                arr,
 
-             //  );
+              );
              if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
                walletList.push(curr);
                arr.push(curr.address.trim());
                nicknameArr[curr.address.trim()] = curr.nickname;
                arr.push(curr.displayAddress?.trim());
                arr.push(curr.apiAddress?.trim());
-               addressList.push(curr.address.trim());
+               addressList.push(curr.address?.trim());
+               console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
              }
            }
 
@@ -385,7 +392,7 @@ class FixAddModal extends BaseReactComponent {
              w.id = `wallet${i + 1}`;
            });
            localStorage.setItem("addWallet", JSON.stringify(addWallet));
-
+           console.log("wdjbw", addressList);
            this.state.onHide();
            const data = new URLSearchParams();
            // data.append("wallet_addresses", JSON.stringify(arr));

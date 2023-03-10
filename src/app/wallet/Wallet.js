@@ -150,6 +150,7 @@ class Wallet extends Component {
     // this.makeApiCall()
   };
   handleFunction = (badge) => {
+     this.setState({ isLoading: true });
     let newArr = [...this.state.activeBadge];
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
       let index = newArr.findIndex((x) => x.name === badge.name);
@@ -217,8 +218,8 @@ class Wallet extends Component {
   };
 
   render() {
-    const { walletList } = this.props.walletState;
-    const {currency, totalWalletAmt, isLoading} = this.state;
+    const { walletList,totalWalletAmt } = this.props.walletState;
+    const {currency, isLoading} = this.state;
     return (
       <div className="wallet-page-section">
         {/* <Sidebar ownerName="" /> */}

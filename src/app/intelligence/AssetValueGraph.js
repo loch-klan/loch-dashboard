@@ -10,7 +10,11 @@ import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import graphImage from "../../assets/images/volume-traded-graph.png";
 import LineChartSlider from "../Portfolio/LineCharSlider";
 import { GroupByOptions, GROUP_BY_MONTH, GROUP_BY_YEAR } from "../../utils/Constant";
-import { getAssetGraphDataApi, getCoinRate } from "../Portfolio/Api";
+import {
+  getAssetGraphDataApi,
+  getCoinRate,
+  getExternalEventsApi,
+} from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
 import { AssetValuePage } from "../../utils/AnalyticsFunctions";
@@ -26,7 +30,7 @@ class AssetValueGraph extends Component {
     super(props);
     this.state = {
       graphLoading: true,
-      externalEvents: [],
+      // externalEvents: [],
       userWalletList: JSON.parse(localStorage.getItem("addWallet")),
       // add new wallet
 
@@ -61,6 +65,11 @@ class AssetValueGraph extends Component {
         apiResponse:false
       })
     }
+  }
+
+  componentWillUnmount() {
+    // reset to month graph on page leave
+    this.getGraphData();
   }
 
   // For add new address
@@ -98,7 +107,7 @@ class AssetValueGraph extends Component {
     let data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("group_criteria", groupByValue);
-    getAssetGraphDataApi(data, this);
+    this.props.getAssetGraphDataApi(data, this);
   };
 
   handleGroupBy = (value) => {
@@ -138,10 +147,12 @@ class AssetValueGraph extends Component {
           <div className="graph-container" style={{ marginBottom: "5rem" }}>
             <LineChartSlider
               assetValueData={
-                this.state.assetValueData && this.state.assetValueData
+                this.props.portfolioState.assetValueData &&
+                this.props.portfolioState.assetValueData
               }
               externalEvents={
-                this.state.externalEvents && this.state.externalEvents
+                this.props.portfolioState.externalEvents &&
+                this.props.portfolioState.externalEvents
               }
               coinLists={this.props.OnboardingState.coinsLists}
               isScrollVisible={false}
@@ -158,13 +169,14 @@ class AssetValueGraph extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-    OnboardingState: state.OnboardingState,
-
+  OnboardingState: state.OnboardingState,
+  portfolioState: state.PortfolioState,
 });
 
 const mapDispatchToProps = {
   getAllCoins,
   getAssetGraphDataApi,
+  getExternalEventsApi,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetValueGraph);

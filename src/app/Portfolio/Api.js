@@ -1,5 +1,5 @@
 import { postLoginInstance, preLoginInstance } from "../../utils";
-import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES } from "./ActionTypes";
+import { COIN_RATE_LIST, USER_WALLET_LIST, DEFAULT_VALUES, YESTERDAY_BALANCE, ASSET_VALUE_GRAPH, EXTERNAL_EVENTS } from "./ActionTypes";
 import { toast } from "react-toastify";
 import { AssetType, DEFAULT_PRICE } from "../../utils/Constant";
 import moment from "moment";
@@ -257,8 +257,8 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                   ctx.getTableData();
                   ctx.getGraphData();
                   getAllCounterFeeApi(ctx, false, false);
-                  getProfitAndLossApi(ctx, false, false, false);
-                   getAllInsightsApi(ctx);
+                  ctx.props.getProfitAndLossApi(ctx, false, false, false);
+                   ctx.props.getAllInsightsApi(ctx);
                          GetAllPlan();
                   getUser(ctx);
                   
@@ -276,36 +276,48 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
 };
 
 export const getAssetGraphDataApi = (data, ctx) => {
-  // postLoginInstance
-  //   .post("wallet/user-wallet/get-all-asset-value-graph", data)
-  postLoginInstance
-    .post("wallet/user-wallet/get-asset-value-graph", data).then((res) => {
-      // console.log("all data", res);
-      
-      if (!res.data.error) {
-        ctx.setState({
-          assetValueData: res.data.data.asset_value_data,
-          graphLoading: false,
-        });
-        getExternalEventsApi(ctx);
-        
-      } else {
-        toast.error(res.data.message || "Something Went Wrong");
-      }
-    })
-    .catch((err) => {
-      console.log("Catch", err);
-    });
+  return async function (dispatch, getState) {
+     postLoginInstance
+       .post("wallet/user-wallet/get-asset-value-graph", data)
+       .then((res) => {
+         // console.log("all data", res);
+         if (!res.data.error) {
+           dispatch({
+             type: ASSET_VALUE_GRAPH,
+             payload: {
+               assetValueData: res.data.data.asset_value_data,
+             },
+           });
+           ctx.setState({
+            //  assetValueData: res.data.data.asset_value_data,
+             graphLoading: false,
+           });
+           ctx.props.getExternalEventsApi(ctx);
+         } else {
+           toast.error(res.data.message || "Something Went Wrong");
+         }
+       })
+       .catch((err) => {
+         console.log("Catch", err);
+       });
+  }
+ 
 }
 
 export const getExternalEventsApi = (ctx) => {
-  postLoginInstance
-    .post("common/master/get-all-events")
+  return async function (dispatch, getState) {
+    postLoginInstance.post("common/master/get-all-events")
     .then((res) => {
       // console.log("res", res);
       if (!res.data.error) {
+        dispatch({
+          type: EXTERNAL_EVENTS,
+          payload: {
+            externalEvents: res.data.data.events,
+          },
+        });
         ctx.setState({
-          externalEvents: res.data.data.events,
+          // externalEvents: res.data.data.events,
         });
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -313,24 +325,35 @@ export const getExternalEventsApi = (ctx) => {
     })
     .catch((err) => {
       console.log("Catch", err);
-    });
+    });}
+  
 };
 
-export const getYesterdaysBalanceApi = (ctx) =>{
-  postLoginInstance.post("wallet/user-wallet/get-yesterday-portfolio-balance")
-  .then((res)=>{
-    if (!res.data.error) {
-      let currency= JSON.parse(localStorage.getItem('currency'));
-      ctx.setState({
-        yesterdayBalance: res.data.data.balance * currency?.rate ,
+export const getYesterdaysBalanceApi = (ctx) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/get-yesterday-portfolio-balance")
+      .then((res) => {
+        if (!res.data.error) {
+          let currency = JSON.parse(localStorage.getItem("currency"));
+          let balance = res.data.data.balance * currency?.rate;
+           dispatch({
+             type: YESTERDAY_BALANCE,
+             payload: {balance},
+           });
+          
+          // ctx.setState({
+          //    yesterdayBalance: res.data.data.balance * currency?.rate,
+          // });
+        } else {
+          toast.error(res.data.message || "Something Went Wrong");
+        }
+      })
+      .catch((err) => {
+        console.log("Catch", err);
       });
-    } else {
-      toast.error(res.data.message || "Something Went Wrong");
-    }
-  })
-  .catch((err) => {
-    console.log("Catch", err);
-  });
+   }
+  
 }
 
 export const getAllProtocol = (ctx) => {

@@ -25,8 +25,9 @@ class InsightsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      insightList: "",
+      // insightList: "",
       isLoading: true,
+      updatedInsightList: this.props.intelligenceState.updatedInsightList,
       selected: "",
       insightFilter: [
         {
@@ -73,7 +74,7 @@ class InsightsPage extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    getAllInsightsApi(this);
+    this.props.getAllInsightsApi(this);
     GetAllPlan();
     getUser();
   }
@@ -81,14 +82,22 @@ class InsightsPage extends Component {
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
-    if (prevState.apiResponse != this.state.apiResponse) {
-      //  console.log("update");
-
-      getAllInsightsApi(this);
+    if (
+      prevProps.intelligenceState.updatedInsightList !==
+      this.props.intelligenceState.updatedInsightList
+    ) {
       this.setState({
-        apiResponse: false,
+        updatedInsightList: this.props.intelligenceState.updatedInsightList,
       });
     }
+      if (this.state.apiResponse) {
+        //  console.log("update");
+
+        this.props.getAllInsightsApi(this);
+        this.setState({
+          apiResponse: false,
+        });
+      }
   }
 
   // For add new address
@@ -115,7 +124,7 @@ class InsightsPage extends Component {
   };
   handleSelect = (value) => {
     // console.log("value",value)
-    let insightList = this.state.insightList;
+    let insightList = this.props.intelligenceState.updatedInsightList;
     insightList = insightList.filter((item) =>
       value === 1 ? item : item.insight_type === value
     );
@@ -264,7 +273,7 @@ class InsightsPage extends Component {
           </div>
           {/* Upgrade Insight section */}
           {this.state.userPlan.name === "Free" && (
-            <div className="Insight-upgrade-wrapper">
+            <div className="Insight-upgrade-wrapper m-t-16">
               <div className="Insight-upgrade">
                 <Image src={GradientImg} />
                 <h3 className="inter-display-medium f-s-25 lh-30 m-b-5 text-center">
@@ -320,10 +329,12 @@ class InsightsPage extends Component {
 }
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  intelligenceState: state.IntelligenceState,
 });
 
 const mapDispatchToProps = {
   getAllCoins,
+  getAllInsightsApi,
 };
 
 
