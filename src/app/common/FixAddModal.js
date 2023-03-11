@@ -12,7 +12,7 @@ import CloseBtn from "../../assets/images/icons/CloseBtn.svg"
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
 import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding//Api";
-import { getDetectedChainsApi, updateUserWalletApi } from './Api';
+import { getDetectedChainsApi, updateUserWalletApi, updateWalletListFlag } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
 import { AddWalletAddress, AddWalletAddressNickname, AddWalletAddressPodName, AnonymityWalletConnection, DoneFixingConnection } from '../../utils/AnalyticsFunctions';
@@ -368,13 +368,13 @@ class FixAddModal extends BaseReactComponent {
            let walletList = [];
            for (let i = 0; i < this.state.addWalletList.length; i++) {
              let curr = this.state.addWalletList[i];
-              console.log(
-                "current address",
-                curr,
-                "arr",
-                arr,
+              // console.log(
+              //   "current address",
+              //   curr,
+              //   "arr",
+              //   arr,
 
-              );
+              // );
              if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
                walletList.push(curr);
                arr.push(curr.address.trim());
@@ -382,7 +382,7 @@ class FixAddModal extends BaseReactComponent {
                arr.push(curr.displayAddress?.trim());
                arr.push(curr.apiAddress?.trim());
                addressList.push(curr.address?.trim());
-               console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
+              //  console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
              }
            }
 
@@ -1025,6 +1025,7 @@ const mapDispatchToProps = {
   updateWalletApi,
   getAllWalletApi,
   getAllParentChains,
+  updateWalletListFlag,
 };
 FixAddModal.propTypes = {
 };

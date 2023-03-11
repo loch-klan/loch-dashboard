@@ -1,18 +1,15 @@
-import { receivedPosts } from "./HomeAction";
+
 import { preLoginInstance } from "../../utils";
+import { GET_DEFI_DATA } from "./ActionTypes";
 
-const fetchPosts = (cityName) => {
-    return function (dispatch, getState) {
-        // dispatch(requestPosts());
-        console.log('====================================');
-        console.log('clicked', getState());
-        console.log('====================================');
-        return preLoginInstance.get(`weather?q=${cityName},uk&APPID=${process.env.REACT_APP_WEATHER_API}/`)
-            .then(res => {
-                console.log('res', res);
-                dispatch(receivedPosts(res.data));
-            });
-    };
+// update defi data
+export const updateDefiData = (data) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: GET_DEFI_DATA,
+      payload: {
+        ...data
+      }
+    })
+  }
 }
-
-export default fetchPosts;

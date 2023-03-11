@@ -1,18 +1,20 @@
-import { RECEIVE_POSTS } from "./ActionTypes";
+import { GET_DEFI_DATA } from "./ActionTypes";
 const INITIAL_STATE = {
-    otpReceived: false,
-    otpCode: '',
-    otpVerified: false,
-    countryCode: '+91',
-    userObj: null,
-    cnbcActive: false
+  totalYield: 0,
+  totalDebt: 0,
+  cardList: [],
+  sortedList: [],
+  DebtValues: [],
+  YieldValues: [],
+  BalanceSheetValue: {},
 };
 const DefiReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case RECEIVE_POSTS:
-            return { ...state, json: action.json };
-        default:
-            return state
+      case GET_DEFI_DATA:
+        // console.log("dt",action.payload)
+        return { ...state,...action.payload};
+      default:
+        return state;
     }
 };
 export default DefiReducer

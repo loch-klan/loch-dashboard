@@ -26,6 +26,7 @@ import FeedbackForm from "../common/FeedbackForm";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import NetflowImg from "../../assets/images/icons/netflow.svg";
 import NetflowClose from "../../assets/images/icons/netflow-close.svg";
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 
 // Add new Wallet
 import {
@@ -54,7 +55,7 @@ class Intelligence extends Component {
 
       startTime: "",
       updatedInsightList: "",
-      isLoading: true,
+      isLoading: false,
       // profit loss asset data
       ProfitLossAsset: [],
       // title: "Max",
@@ -116,7 +117,7 @@ class Intelligence extends Component {
     });
     this.props.getAllCoins();
     this.timeFilter(0);
-    this.props.getAllInsightsApi(this);
+    // this.props.getAllInsightsApi(this);
     GetAllPlan();
     getUser();
     this.assetList();
@@ -142,13 +143,25 @@ class Intelligence extends Component {
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
 
-      this.props.getAllCoins();
-      this.timeFilter(0);
-      this.props.getAllInsightsApi(this);
-      this.assetList();
+      // this.props.getAllCoins();
+      // this.timeFilter(0);
+      // this.props.getAllInsightsApi(this);
+      // this.assetList();
       this.setState({
         apiResponse: false,
       });
+    }
+
+    if (!this.props.commonState.intelligence) {
+      this.props.updateWalletListFlag("intelligence", true);
+       this.props.getAllCoins();
+       this.timeFilter(0);
+      this.assetList();
+    }
+
+    if (!this.props.commonState.insight) {
+      this.props.updateWalletListFlag("insight", true);
+       this.props.getAllInsightsApi(this);
     }
   }
   componentWillUnmount() {
@@ -162,7 +175,7 @@ class Intelligence extends Component {
       email_address: getCurrentUser().email,
     });
 
-     this.timeFilter(0);
+    //  this.timeFilter(0);
   }
 
   assetList = () => {
@@ -453,6 +466,9 @@ class Intelligence extends Component {
       apiResponse: value,
     });
     // console.log("api respinse", value);
+    // wallet updated set all falg to default
+    // this.props.updateWalletListFlag("home", false);
+    this.props.setPageFlagDefault();
   };
 
   RightClose = () => {
@@ -504,8 +520,9 @@ class Intelligence extends Component {
               title="Insights"
               showImg={insight}
               viewMore={true}
-              viewMoreRedirect={"/intelligence/insights"}
+              // viewMoreRedirect={"/intelligence/insights"}
               handleClick={() => {
+                this.props.history.push("/intelligence/insights");
                 InsightsViewMore({
                   session_id: getCurrentUser().id,
                   email_address: getCurrentUser().email,
@@ -784,6 +801,7 @@ const mapStateToProps = (state) => ({
 
   // add wallet
   portfolioState: state.PortfolioState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
@@ -794,6 +812,8 @@ const mapDispatchToProps = {
   getAllInsightsApi,
   getProfitAndLossApi,
   getAssetProfitLoss,
+  updateWalletListFlag,
+  setPageFlagDefault,
 };
 
 // const mapDispatchToProps = {

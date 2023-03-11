@@ -136,13 +136,14 @@ export default function PageHeader(props) {
         </div>}
 
         {props.viewMore && (
-          <a
-            href={props.viewMoreRedirect}
+          <h3
+            // href={props.viewMoreRedirect}
             className="view-more"
             onClick={props.handleClick}
+            
           >
             View More
-          </a>
+          </h3>
         )}
       </div>
 

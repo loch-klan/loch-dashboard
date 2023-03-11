@@ -20,13 +20,15 @@ import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+
 
 class InsightsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       // insightList: "",
-      isLoading: true,
+      isLoading: false,
       updatedInsightList: this.props.intelligenceState.updatedInsightList,
       selected: "",
       insightFilter: [
@@ -74,14 +76,16 @@ class InsightsPage extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    this.props.getAllInsightsApi(this);
+    // this.props.getAllInsightsApi(this);
     GetAllPlan();
     getUser();
+    this.setState({})
   }
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
+    // used for filter
     if (
       prevProps.intelligenceState.updatedInsightList !==
       this.props.intelligenceState.updatedInsightList
@@ -90,14 +94,25 @@ class InsightsPage extends Component {
         updatedInsightList: this.props.intelligenceState.updatedInsightList,
       });
     }
-      if (this.state.apiResponse) {
-        //  console.log("update");
 
-        this.props.getAllInsightsApi(this);
-        this.setState({
-          apiResponse: false,
-        });
-      }
+    if (!this.props.commonState.insight) {
+      this.props.updateWalletListFlag("insight", true);
+      this.setState({
+        isLoading:true
+      })
+       this.props.getAllInsightsApi(this);
+     }
+
+      // if (this.state.apiResponse) {
+      //   //  console.log("update");
+
+      //   this.props.getAllInsightsApi(this);
+      //   this.setState({
+      //     apiResponse: false,
+      //   });
+      // }
+    
+    
   }
 
   // For add new address
@@ -120,12 +135,15 @@ class InsightsPage extends Component {
     this.setState({
       apiResponse: value,
     });
+    // wallet updated set all falg to default
+    // this.props.updateWalletListFlag("home", false);
+    this.props.setPageFlagDefault();
     // console.log("api respinse", value);
   };
   handleSelect = (value) => {
     // console.log("value",value)
     let insightList = this.props.intelligenceState.updatedInsightList;
-    insightList = insightList.filter((item) =>
+    insightList = insightList?.filter((item) =>
       value === 1 ? item : item.insight_type === value
     );
     this.setState({
@@ -330,11 +348,14 @@ class InsightsPage extends Component {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
+  commonState: state.CommonState,
 });
 
 const mapDispatchToProps = {
   getAllCoins,
   getAllInsightsApi,
+  updateWalletListFlag,
+  setPageFlagDefault,
 };
 
 

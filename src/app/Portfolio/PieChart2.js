@@ -29,7 +29,8 @@ import Coin2 from "../../assets/images/Coin2.svg";
 import Coin3 from "../../assets/images/Coin3.svg";
 import { getAllProtocol, getYieldBalanceApi, getUserWallet, getProtocolBalanceApi } from "./Api";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
-
+import {  updateWalletListFlag } from "../common/Api";
+import { updateDefiData } from "../defi/Api";
 
 class PieChart2 extends BaseReactComponent {
   constructor(props) {
@@ -38,28 +39,28 @@ class PieChart2 extends BaseReactComponent {
       pieSectionDataEnabled: {},
       selectedSection: {},
       assetTotal: props.assetTotal,
-      loader: props.loader,
       walletTotal: props.walletTotal,
       chartData: [],
-      assetData: [],
+      assetData: null,
       chartOptions: [],
       valueChanged: false,
       flag: false,
-      isLoading: false,
-      piechartisLoading: true,
+      isLoading: props.isLoading,
+    
       currency: JSON.parse(localStorage.getItem("currency")),
       isChainToggle: false,
       chainList: null,
       assetPrice: null,
 
-      allProtocols: null,
-      totalYield: 0,
-      totalDebt: 0,
-      cardList: [],
-      sortedList: [],
-      DebtValues: [],
-      YieldValues: [],
-      BalanceSheetValue: {},
+      // allProtocols: null,
+      // totalYield: 0,
+      // totalDebt: 0,
+      // cardList: [],
+      // sortedList: [],
+      // DebtValues: [],
+      // YieldValues: [],
+      // BalanceSheetValue: {},
+
       isYeildToggle: false,
       isDebtToggle: false,
       upgradeModal: false,
@@ -72,142 +73,147 @@ class PieChart2 extends BaseReactComponent {
 
   componentDidMount() {
     this.getCurrentTime();
-    if (this.props.userWalletData && this.props.userWalletData.length > 0) {
-      let assetData = [];
-      if (
-        this.props.userWalletData &&
-        this.props.userWalletData.length > 0 &&
-        this.props.assetTotal > 0
-      ) {
-        for (let i = 0; i < this.props.userWalletData.length; i++) {
-          let z =
-            (parseFloat(this.props.userWalletData[i].assetValue) /
-              parseFloat(this.props.assetTotal)) *
-            100.0;
-          assetData.push({
-            assetType: this.props.userWalletData[i].assetType,
-            assetId: this.props.userWalletData[i].assetId,
-            name: this.props.userWalletData[i].assetName,
-            y: z,
-            usd: numToCurrency(this.props.userWalletData[i].assetValue),
-            assetValue: parseFloat(this.props.userWalletData[i].assetValue),
-            // borderColor: borderColors[i % 5],
-            borderColor: this.props.userWalletData[i].color
-              ? this.props.userWalletData[i].color
-              : DEFAULT_COLOR,
-            borderWidth: 2,
-            color: this.props.userWalletData[i].color
-              ? lightenDarkenColor(
-                  this.props.userWalletData[i].color.slice(1),
-                  0.2
-                )
-              : DEFAULT_COLOR,
-            originalColor: this.props.userWalletData[i].color
-              ? lightenDarkenColor(
-                  this.props.userWalletData[i].color.slice(1),
-                  0.2
-                )
-              : DEFAULT_COLOR,
-            // color: colors[i % 5],
-            // originalColor: colors[i % 5],
-            assetSymbol: this.props.userWalletData[i].assetSymbol,
-            assetCode: this.props.userWalletData[i].assetCode.toLocaleString(
-              undefined,
-              { maximumFractionDigits: 2 }
-            ),
-            count: this.props.userWalletData[i].totalCount,
-          });
-        }
+    // if (this.props.userWalletData && this.props.userWalletData.length > 0) {
+    //   let assetData = [];
+    //    this.setState({
+    //      isLoading: true,
+    //    });
+    //   if (
+    //     this.props.userWalletData &&
+    //     this.props.userWalletData.length > 0 &&
+    //     this.props.assetTotal > 0
+    //   ) {
+    //     for (let i = 0; i < this.props.userWalletData.length; i++) {
+    //       let z =
+    //         (parseFloat(this.props.userWalletData[i].assetValue) /
+    //           parseFloat(this.props.assetTotal)) *
+    //         100.0;
+    //       assetData.push({
+    //         assetType: this.props.userWalletData[i].assetType,
+    //         assetId: this.props.userWalletData[i].assetId,
+    //         name: this.props.userWalletData[i].assetName,
+    //         y: z,
+    //         usd: numToCurrency(this.props.userWalletData[i].assetValue),
+    //         assetValue: parseFloat(this.props.userWalletData[i].assetValue),
+    //         // borderColor: borderColors[i % 5],
+    //         borderColor: this.props.userWalletData[i].color
+    //           ? this.props.userWalletData[i].color
+    //           : DEFAULT_COLOR,
+    //         borderWidth: 2,
+    //         color: this.props.userWalletData[i].color
+    //           ? lightenDarkenColor(
+    //               this.props.userWalletData[i].color.slice(1),
+    //               0.2
+    //             )
+    //           : DEFAULT_COLOR,
+    //         originalColor: this.props.userWalletData[i].color
+    //           ? lightenDarkenColor(
+    //               this.props.userWalletData[i].color.slice(1),
+    //               0.2
+    //             )
+    //           : DEFAULT_COLOR,
+    //         // color: colors[i % 5],
+    //         // originalColor: colors[i % 5],
+    //         assetSymbol: this.props.userWalletData[i].assetSymbol,
+    //         assetCode: this.props.userWalletData[i].assetCode.toLocaleString(
+    //           undefined,
+    //           { maximumFractionDigits: 2 }
+    //         ),
+    //         count: this.props.userWalletData[i].totalCount,
+    //       });
+    //     }
        
-      }
-      this.setState({
-        chartData: this.props.userWalletData,
-        assetData:
-          assetData && assetData.length > 0
-            ? assetData.sort((a, b) => b.assetValue - a.assetValue)
-            : [],
-        chartOptions: {},
-        pieSectionDataEnabled: {},
-      });
-    } else {
-      this.setState({ piechartisLoading: this.props.isLoading });
-    }
-    // console.log("pie", this.props.chainPortfolio)
-
-    // console.log("pie", this.props.allCoinList);
-    let chainList = [];
-
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let uniquechains = [];
-    // console.log("user wallet",UserWallet)
-    UserWallet &&
-      UserWallet?.map((item) => {
-        item.coins &&
-          item.coins?.map((coin, i) => {
-            let isfound = false;
-            this.props.chainPortfolio &&
-              this.props.chainPortfolio?.map((chain) => {
-                if (
-                  coin?.coinName === chain?.name &&
-                  !uniquechains.includes(chain?.name)
-                ) {
-                  isfound = true;
-                  uniquechains.push(coin?.coinName);
-                  chainList.push({
-                    name: chain?.name,
-                    symbol: chain?.symbol,
-                    total: chain?.total,
-                    id: chain?.id,
-                    color: chain?.color,
-                  });
-                }
-              });
-            if (
-              !isfound &&
-              coin?.chain_detected &&
-              !uniquechains.includes(coin?.coinName)
-            ) {
-              chainList.push({
-                name: coin?.coinName,
-                symbol: coin?.coinSymbol,
-                total: 0.0,
-                id: i,
-                color: coin?.coinColor,
-              });
-            }
-          });
-      });
-    // console.log("coinlist", chainList)
-    // this.props.chainPortfolio &&
-    //   this.props.chainPortfolio.map((chain) => {
-    //     chainList.push({
-    //       name: chain.name,
-    //       symbol: chain.symbol,
-    //       total: chain.total,
-    //       id: chain.id,
-    //       color: chain.color,
-    //     });
+    //   }
+    //   this.setState({
+    //     chartData: this.props.userWalletData,
+    //     assetData:
+    //       assetData && assetData.length > 0
+    //         ? assetData.sort((a, b) => b.assetValue - a.assetValue)
+    //         : [],
+    //     chartOptions: {},
+    //     pieSectionDataEnabled: {},
+       
     //   });
+    // } else {
+     
+    // }
+    // // console.log("pie", this.props.chainPortfolio)
 
-    chainList =
-      chainList &&
-      chainList.sort((a, b) => {
-        return b.total - a.total;
-      });
-    this.setState({
-      chainList,
-    });
+    // // console.log("pie", this.props.allCoinList);
+    // let chainList = [];
 
-    // console.log("props asset price", this.props.assetPrice);
-    let assetPrice =
-      this.props.assetPrice &&
-      this.props.assetPrice?.reduce((obj, element) => {
-        obj[element.id] = element;
-        return obj;
-      }, {});
-    this.setState({
-      assetPrice,
-    });
+    // let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    // let uniquechains = [];
+    // // console.log("user wallet",UserWallet)
+    // UserWallet &&
+    //   UserWallet?.map((item) => {
+    //     item.coins &&
+    //       item.coins?.map((coin, i) => {
+    //         let isfound = false;
+    //         this.props.chainPortfolio &&
+    //           this.props.chainPortfolio?.map((chain) => {
+    //             if (
+    //               coin?.coinName === chain?.name &&
+    //               !uniquechains.includes(chain?.name)
+    //             ) {
+    //               isfound = true;
+    //               uniquechains.push(coin?.coinName);
+    //               chainList.push({
+    //                 name: chain?.name,
+    //                 symbol: chain?.symbol,
+    //                 total: chain?.total,
+    //                 id: chain?.id,
+    //                 color: chain?.color,
+    //               });
+    //             }
+    //           });
+    //         if (
+    //           !isfound &&
+    //           coin?.chain_detected &&
+    //           !uniquechains.includes(coin?.coinName)
+    //         ) {
+    //           chainList.push({
+    //             name: coin?.coinName,
+    //             symbol: coin?.coinSymbol,
+    //             total: 0.0,
+    //             id: i,
+    //             color: coin?.coinColor,
+    //           });
+    //         }
+    //       });
+    //   });
+    // // console.log("coinlist", chainList)
+    // // this.props.chainPortfolio &&
+    // //   this.props.chainPortfolio.map((chain) => {
+    // //     chainList.push({
+    // //       name: chain.name,
+    // //       symbol: chain.symbol,
+    // //       total: chain.total,
+    // //       id: chain.id,
+    // //       color: chain.color,
+    // //     });
+    // //   });
+
+    // chainList =
+    //   chainList &&
+    //   chainList.sort((a, b) => {
+    //     return b.total - a.total;
+    //   });
+    // this.setState({
+    //   chainList,
+    // });
+
+    // // console.log("props asset price", this.props.assetPrice);
+    // let assetPrice =
+    //   this.props.assetPrice &&
+    //   this.props.assetPrice?.reduce((obj, element) => {
+    //     obj[element.id] = element;
+    //     return obj;
+    //   }, {});
+    // this.setState({
+    //   assetPrice,
+    //   isLoading: false,
+    // });
 
     // before logic
     // if (this.state.userPlan?.defi_enabled) {
@@ -216,8 +222,8 @@ class PieChart2 extends BaseReactComponent {
     //   this.handleReset();
     //   // this.upgradeModal();
     // }
-    console.log("mount")
-    this.getYieldBalance();
+    // console.log("mount")
+    // this.getYieldBalance();
   }
  getYieldBalance = () => {
 
@@ -229,7 +235,7 @@ class PieChart2 extends BaseReactComponent {
       UserWallet?.map((e) => {
         let data = new URLSearchParams();
         data.append("wallet_address", e.address);
-       getProtocolBalanceApi(this, data);
+       this.props.getProtocolBalanceApi(this, data);
       });
     } else {
       this.handleReset();
@@ -257,6 +263,9 @@ class PieChart2 extends BaseReactComponent {
       // this.props.userWalletData && this.setState({ piechartisLoading: true })
 
       let assetData = [];
+      this.setState({
+        isLoading: true,
+      });
       if (
         this.props.userWalletData &&
         this.props.userWalletData.length > 0 &&
@@ -309,13 +318,14 @@ class PieChart2 extends BaseReactComponent {
       }
       this.setState({
         chartData: this.props.userWalletData,
-        piechartisLoading: this.props.isLoading === false ? false : true,
+
         assetData:
-          assetData && assetData.length > 0
-            ? assetData.sort((a, b) => b.assetValue - a.assetValue)
+          assetData && assetData?.length > 0
+            ? assetData?.sort((a, b) => b.assetValue - a.assetValue)
             : [],
         chartOptions: {},
         pieSectionDataEnabled: {},
+        isLoading: false,
       });
     }
 
@@ -426,26 +436,34 @@ class PieChart2 extends BaseReactComponent {
       });
     }
 
-    if (this.props.isUpdate !== prevProps.isUpdate) {
-      this.setState({
-        allProtocols: null,
-        totalYield: 0,
-        totalDebt: 0,
-        cardList: [],
-        sortedList: [],
-        DebtValues: [],
-        YieldValues: [],
-        BalanceSheetValue: {},
-        isYeildToggle: false,
-        isDebtToggle: false,
-        upgradeModal: false,
-        triggerId: 6,
-        isChainToggle: false,
-      }, () => {
-        // for balance sheet
-        this.getYieldBalance();
-      });
-    
+    if (!this.props.commonState.defi) {
+      
+       this.props.updateDefiData({
+         totalYield: 0,
+         totalDebt: 0,
+         cardList: [],
+         sortedList: [],
+         DebtValues: [],
+         YieldValues: [],
+         BalanceSheetValue: {},
+       });
+
+       // set defi page to true
+       this.props.updateWalletListFlag("defi", true);
+       this.setState(
+         {
+           isYeildToggle: false,
+           isDebtToggle: false,
+           upgradeModal: false,
+           triggerId: 6,
+           isChainToggle: false,
+         },
+         () => {
+           //  getAllProtocol(this);
+           this.getYieldBalance();
+         }
+       );
+
       // if (this.state.userPlan?.defi_enabled) {
       //   this.getYieldBalance();
       // } else {
@@ -480,10 +498,12 @@ class PieChart2 extends BaseReactComponent {
       }
     });
 
-    this.setState({
-      YieldValues,
-      DebtValues,
-    });
+    // this.setState({
+    //   YieldValues,
+    //   DebtValues,
+    // });
+    // update data
+    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues });
   };
   setHoverData = (e) => {
     this.setState({ pieSectionDataEnabled: e });
@@ -862,8 +882,8 @@ class PieChart2 extends BaseReactComponent {
             },
           },
           data:
-            self.state.assetData && self.state.assetData.length > 0
-              ? self.state.assetData
+            self.state?.assetData && self.state?.assetData?.length > 0
+              ? self?.state?.assetData
               : [],
         },
       ],
@@ -950,8 +970,7 @@ class PieChart2 extends BaseReactComponent {
         <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
           Overview
         </h1>
-        {Object.keys(this.state.assetData).length > 0 &&
-        !this.state.isLoading ? (
+        {this.state?.assetData  && !this.state.isLoading ? (
           <>
             <Row style={{ width: "100%" }}>
               <Col
@@ -1153,8 +1172,8 @@ class PieChart2 extends BaseReactComponent {
                             }
                           >
                             {CurrencyType(false)}
-                            {this.state.YieldValues &&
-                              numToCurrency(this.state.totalYield)}
+                            {this.props.defiState.YieldValues &&
+                              numToCurrency(this.props.defiState.totalYield)}
                           </span>
 
                           <Image
@@ -1186,8 +1205,8 @@ class PieChart2 extends BaseReactComponent {
                             }
                           >
                             {CurrencyType(false)}
-                            {this.state.DebtValues &&
-                              numToCurrency(this.state.totalDebt)}
+                            {this.props.defiState.DebtValues &&
+                              numToCurrency(this.props.defiState.totalDebt)}
                           </span>
 
                           <Image
@@ -1207,63 +1226,72 @@ class PieChart2 extends BaseReactComponent {
                             {/* For yeild */}
                             {this.state.isYeildToggle && (
                               <div>
-                                {this.state.YieldValues &&
-                                  this.state.YieldValues.map((item, i) => {
-                                    return (
-                                      <div
-                                        className="balance-sheet-list"
-                                        style={
-                                          i ===
-                                          this.state.YieldValues.length - 1
-                                            ? { paddingBottom: "0.3rem" }
-                                            : {}
-                                        }
-                                      >
-                                        <span className="inter-display-medium f-s-16 lh-19">
-                                          {item.name}
-                                        </span>
-                                        <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                          {CurrencyType(false)}
-                                          {amountFormat(
-                                            item.totalPrice.toFixed(2),
-                                            "en-US",
-                                            "USD"
-                                          )}
-                                        </span>
-                                      </div>
-                                    );
-                                  })}
+                                {this.props.defiState.YieldValues &&
+                                  this.props.defiState.YieldValues.map(
+                                    (item, i) => {
+                                      return (
+                                        <div
+                                          className="balance-sheet-list"
+                                          style={
+                                            i ===
+                                            this.props.defiState.YieldValues
+                                              .length -
+                                              1
+                                              ? { paddingBottom: "0.3rem" }
+                                              : {}
+                                          }
+                                        >
+                                          <span className="inter-display-medium f-s-16 lh-19">
+                                            {item.name}
+                                          </span>
+                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                            {CurrencyType(false)}
+                                            {amountFormat(
+                                              item.totalPrice.toFixed(2),
+                                              "en-US",
+                                              "USD"
+                                            )}
+                                          </span>
+                                        </div>
+                                      );
+                                    }
+                                  )}
                               </div>
                             )}
 
                             {/* For debt */}
                             {this.state.isDebtToggle && (
                               <div>
-                                {this.state.DebtValues &&
-                                  this.state.DebtValues.map((item, i) => {
-                                    return (
-                                      <div
-                                        className="balance-sheet-list"
-                                        style={
-                                          i === this.state.DebtValues.length - 1
-                                            ? { paddingBottom: "0.3rem" }
-                                            : {}
-                                        }
-                                      >
-                                        <span className="inter-display-medium f-s-16 lh-19">
-                                          {item.name}
-                                        </span>
-                                        <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                          {CurrencyType(false)}
-                                          {amountFormat(
-                                            item.totalPrice.toFixed(2),
-                                            "en-US",
-                                            "USD"
-                                          )}
-                                        </span>
-                                      </div>
-                                    );
-                                  })}
+                                {this.props.defiState.DebtValues &&
+                                  this.props.defiState.DebtValues.map(
+                                    (item, i) => {
+                                      return (
+                                        <div
+                                          className="balance-sheet-list"
+                                          style={
+                                            i ===
+                                            this.props.defiState.DebtValues
+                                              .length -
+                                              1
+                                              ? { paddingBottom: "0.3rem" }
+                                              : {}
+                                          }
+                                        >
+                                          <span className="inter-display-medium f-s-16 lh-19">
+                                            {item.name}
+                                          </span>
+                                          <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                            {CurrencyType(false)}
+                                            {amountFormat(
+                                              item.totalPrice.toFixed(2),
+                                              "en-US",
+                                              "USD"
+                                            )}
+                                          </span>
+                                        </div>
+                                      );
+                                    }
+                                  )}
                               </div>
                             )}
                           </div>
@@ -1529,10 +1557,10 @@ class PieChart2 extends BaseReactComponent {
             </Row>
           </>
         ) : //  this.state.piechartisLoading === true && this.state.assetData === null
-        this.props.isLoading || this.state.isLoading ? (
+        this.state.isLoading || !this.state?.assetData ? (
           <Loading />
-        ) : this.props.walletTotal === 0 ||
-          this.state.assetData.length === 0 ? (
+        ) : 
+          (this.state.assetData?.length === 0 && !this.state.isLoading) ? (
           <div className="no-data-piechart">
             <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
               {CurrencyType(false)} 0.00
@@ -1552,10 +1580,15 @@ class PieChart2 extends BaseReactComponent {
 
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
+  defiState: state.DefiState,
+  commonState: state.CommonState,
 });
 
 const mapDispatchToProps = {
   getUserWallet,
-  
+  // page flag
+  updateWalletListFlag,
+  updateDefiData,
+  getProtocolBalanceApi,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PieChart2);

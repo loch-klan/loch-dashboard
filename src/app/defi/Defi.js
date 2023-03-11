@@ -15,6 +15,9 @@ import {
   getYieldBalanceApi,
 } from "../Portfolio/Api";
 import {
+  updateDefiData,
+} from "./Api";
+import {
   amountFormat,
   CurrencyType,
   numToCurrency,
@@ -34,6 +37,7 @@ import Coin2 from "../../assets/images/icons/temp-coin1.svg";
 import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
 import { AssetType } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 
 class Defi extends Component {
   constructor(props) {
@@ -62,13 +66,14 @@ class Defi extends Component {
       // defi
 
       // new
-      totalYield: 0,
-      totalDebt: 0,
-      cardList: [],
-      sortedList: [],
-      DebtValues: [],
-      YieldValues: [],
-      BalanceSheetValue: {},
+      // totalYield: 0,
+      // totalDebt: 0,
+      // cardList: [],
+      // sortedList: [],
+      // DebtValues: [],
+      // YieldValues: [],
+      // BalanceSheetValue: {},
+
       isYeildToggle: false,
       isDebtToggle: false,
       upgradeModal: false,
@@ -108,65 +113,46 @@ class Defi extends Component {
     //   this.upgradeModal();
     // }
     
-       this.props.getAllCoins();
-       // getAllProtocol(this);
-       this.getYieldBalance();
+    this.props.getAllCoins();
+    this.setState({})
+   
+    // comment api
+      //  this.getYieldBalance();
     
   }
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
-
-    if (this.state.apiResponse) {
-      // console.log("update");
-        
-        this.setState(
-          {
-            totalYield: 0,
-            totalDebt: 0,
-            cardList: [],
-            sortedList: [],
-            DebtValues: [],
-            YieldValues: [],
-            BalanceSheetValue: {},
-            isYeildToggle: false,
-            isDebtToggle: false,
-            apiResponse:false,
-          },
-          () => {
-            //  getAllProtocol(this);
-            this.getYieldBalance();
-          }
-        );
+    if (!this.props.commonState.defi) {
+       this.props.updateDefiData({
+         totalYield: 0,
+         totalDebt: 0,
+         cardList: [],
+         sortedList: [],
+         DebtValues: [],
+         YieldValues: [],
+         BalanceSheetValue: {},
+       });
+      
+      // set defi page to true
+      this.props.updateWalletListFlag("defi",true);
+         this.setState(
+           {
+             isYeildToggle: false,
+             isDebtToggle: false,
+             apiResponse: false,
+           },
+           () => {
+             //  getAllProtocol(this);
+             this.getYieldBalance();
+           }
+         );
     }
 
-    // if (this.state.isUpdate !== prevState.isUpdate) {
-    //   // for balance sheet
-    //   //  getAllProtocol(this);
-    //   this.setState(
-    //     {
-    //       allProtocols: null,
-    //       totalYield: 0,
-    //       totalDebt: 0,
-    //       cardList: [],
-    //       sortedList: [],
-    //       yieldData: [],
-    //       DebtValues: [],
-    //       YieldValues: [],
-    //       isYeildToggle: false,
-    //       isDebtToggle: false,
-    //       isChainToggle: false,
-          
-    //     },
-    //     () => {
-          
-    //     }
-    //   );
-      
-    // }
+
   }
   sortArray = (key, order) => {
-    let array = this.state?.cardList; //all data
+    let array = this.props.defiState?.cardList; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -190,9 +176,11 @@ class Defi extends Component {
       }
     });
 
-    this.setState({
-      sortedList,
-    });
+    // this.setState({
+    //   sortedList,
+    // });
+    // update fun
+     this.props.updateDefiData({ sortedList });
   };
 
   handleSort = (e) => {
@@ -239,22 +227,13 @@ class Defi extends Component {
   };
 
   getYieldBalance = () => {
-  
+  console.log("call")
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     if (UserWallet.length !== 0) {
       UserWallet?.map((e) => {
         let data = new URLSearchParams();
         data.append("wallet_address", e.address);
-        getProtocolBalanceApi(this, data);
-        // this.state.allProtocols &&
-        //   this.state.allProtocols?.map((protocol) => {
-        //     let data = new URLSearchParams();
-        //     // consolee.log("protocol_code", protocol.code,
-        //     //   "wallet_address",
-        //     //   e.address);
-        //     // data.append("protocol_code", protocol.code);
-
-        //   });
+        this.props.getProtocolBalanceApi(this, data);
       });
       
     } else {
@@ -296,11 +275,13 @@ class Defi extends Component {
       }
     });
 
-    this.setState({
-      sortedList: "",
-      YieldValues,
-      DebtValues,
-    });
+    // this.setState({
+    //   sortedList: "",
+    //   YieldValues,
+    //   DebtValues,
+    // });
+    // update data
+    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues });
   };
   // For add new address
   handleAddModal = () => {
@@ -321,6 +302,8 @@ class Defi extends Component {
     this.setState({
       apiResponse: value,
     });
+    
+  this.props.setPageFlagDefault()
   };
 
   render() {
@@ -412,9 +395,9 @@ class Defi extends Component {
                           style={{ marginRight: "0.8rem" }}
                         >
                           {CurrencyType(false)}
-                          {this.state.totalYield &&
+                          {this.props.defiState.totalYield &&
                             numToCurrency(
-                              this.state.totalYield *
+                              this.props.defiState.totalYield *
                                 (this.state.currency?.rate || 1)
                             )}
                         </span>
@@ -428,14 +411,14 @@ class Defi extends Component {
                         }
                       />
                     </div>
-                    {this.state.YieldValues?.length !== 0 &&
+                    {this.props.defiState.YieldValues?.length !== 0 &&
                       this.state.isYeildToggle &&
-                      this.state.YieldValues?.map((item, i) => {
+                      this.props.defiState.YieldValues?.map((item, i) => {
                         return (
                           <div
                             className="balance-sheet-list"
                             style={
-                              i === this.state.YieldValues?.length - 1
+                              i === this.props.defiState.YieldValues?.length - 1
                                 ? { paddingBottom: "0.3rem" }
                                 : {}
                             }
@@ -478,9 +461,9 @@ class Defi extends Component {
                           style={{ marginRight: "0.8rem" }}
                         >
                           {CurrencyType(false)}
-                          {this.state.totalDebt &&
+                          {this.props.defiState.totalDebt &&
                             numToCurrency(
-                              this.state.totalDebt *
+                              this.props.defiState.totalDebt *
                                 (this.state.currency?.rate || 1)
                             )}
                         </span>
@@ -495,14 +478,14 @@ class Defi extends Component {
                       />
                     </div>
 
-                    {this.state.DebtValues?.length !== 0 &&
+                    {this.props.defiState.DebtValues?.length !== 0 &&
                       this.state.isDebtToggle &&
-                      this.state.DebtValues?.map((item, i) => {
+                      this.props.defiState.DebtValues?.map((item, i) => {
                         return (
                           <div
                             className="balance-sheet-list"
                             style={
-                              i === this.state.DebtValues?.length - 1
+                              i === this.props.defiState.DebtValues?.length - 1
                                 ? { paddingBottom: "0.3rem" }
                                 : {}
                             }
@@ -561,9 +544,9 @@ class Defi extends Component {
 
           {/* start card */}
 
-          {this.state?.sortedList?.length !== 0 &&
-          this.state?.sortedList !== "" ? (
-            this.state?.sortedList?.map((card, index) => {
+          {this.props.defiState?.sortedList?.length !== 0 &&
+          this.props.defiState?.sortedList !== "" ? (
+            this.props.defiState?.sortedList?.map((card, index) => {
               let tableRows = card?.row.sort((a, b) => b.usdValue - a.usdValue);
 
               return (
@@ -751,7 +734,7 @@ class Defi extends Component {
                 </div>
               );
             })
-          ) : this.state?.sortedList !== "" ? (
+          ) : this.props.defiState?.sortedList !== "" ? (
             // <Col md={12}>
             <div className="defi animation-wrapper">
               <Loading />
@@ -775,10 +758,18 @@ class Defi extends Component {
 
 const mapStateToProps = (state) => ({
   defiState: state.DefiState,
+  commonState: state.CommonState,
+  
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
   getAllCoins,
+  getProtocolBalanceApi,
+  updateDefiData,
+
+  // page flag
+  updateWalletListFlag,
+  setPageFlagDefault,
 };
 Defi.propTypes = {
   // getPosts: PropTypes.func

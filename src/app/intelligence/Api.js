@@ -143,8 +143,9 @@ export const getAllInsightsApi = (ctx) => {
                updatedInsightList: res.data.data.insights,
              },
            });
-
-           if (ctx?.currentPage === "Home") {
+ 
+           if (ctx?.state.currentPage === "Home") {
+            
              ctx.setState({
               //  insightList: res.data.data.insights,
               //  updatedInsightList: res.data.data.insights,

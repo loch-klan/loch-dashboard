@@ -1,3 +1,2 @@
-const RECEIVE_POSTS = 'RECEIVE_POSTS';
-
-export { RECEIVE_POSTS}
+export const GET_ALL_COHORT = "GET_ALL_COHORT";
+export const UPDATE_COHORT = "UPDATE_COHORT";

@@ -25,11 +25,14 @@ import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
 
 
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+
+
 class AssetValueGraph extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      graphLoading: true,
+      graphLoading: false,
       // externalEvents: [],
       userWalletList: JSON.parse(localStorage.getItem("addWallet")),
       // add new wallet
@@ -50,7 +53,8 @@ class AssetValueGraph extends Component {
     // console.log('this.state',this.state);
     //    this.props.getCoinRate();
     this.props.getAllCoins();
-    this.getGraphData();
+    // this.getGraphData();
+    this.setState({})
     GetAllPlan();
     getUser();
   }
@@ -59,12 +63,17 @@ class AssetValueGraph extends Component {
 
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
-      this.props.getAllCoins();
-      this.getGraphData();
+     
       this.setState({
         apiResponse:false
       })
     }
+
+     if (!this.props.commonState.asset_value) {
+       this.props.updateWalletListFlag("asset_value", true);
+       this.props.getAllCoins();
+       this.getGraphData();
+     }
   }
 
   componentWillUnmount() {
@@ -96,10 +105,11 @@ class AssetValueGraph extends Component {
       apiResponse: value
     });
     // console.log("api respinse", value)
+    this.props.setPageFlagDefault();
   }
 
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
-    this.setState({ graphLoading: true });
+   this.setState({ graphLoading: true });
     let addressList = [];
     // console.log("wallet addres", this.state.userWalletList);
     this.state.userWalletList?.map((wallet) => addressList.push(wallet.address));
@@ -171,12 +181,15 @@ class AssetValueGraph extends Component {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
+  commonState: state.CommonState,
 });
 
 const mapDispatchToProps = {
   getAllCoins,
   getAssetGraphDataApi,
   getExternalEventsApi,
+  updateWalletListFlag,
+  setPageFlagDefault,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetValueGraph);

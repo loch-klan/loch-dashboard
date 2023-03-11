@@ -4,6 +4,7 @@ import { preLoginInstance } from "../../utils";
 import { signInUser, signUpProperties, WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import postLoginInstance from './../../utils/PostLoginAxios';
+import { SET_DEFAULT_VALUE, WALLET_LIST_UPDATED } from "./ActionTypes";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance.post('common/test/temp-login', data)
@@ -132,6 +133,8 @@ export const updateUserWalletApi = (data,ctx) =>{
         pathname: ctx.props.pathName,
         state: {addWallet: JSON.parse(localStorage.getItem("addWallet"))}
       });
+
+      
 
      
     } else{
@@ -788,4 +791,29 @@ export const updateAccessToken = (data, ctx, name) => {
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
+};
+
+
+// api page flage
+
+export const updateWalletListFlag = (page, status) => {
+  let payload = {}
+  payload[page] = status;
+  return function (dispatch, getState) {
+    dispatch({
+      type: WALLET_LIST_UPDATED,
+      payload: {...payload},
+    });
+  }
+};
+
+
+// set app flags to false
+
+export const setPageFlagDefault = () => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: SET_DEFAULT_VALUE,
+    });
+  }
 };

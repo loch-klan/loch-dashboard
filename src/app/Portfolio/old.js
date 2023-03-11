@@ -25,8 +25,6 @@ import {
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
-
-import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import {
   SEARCH_BY_WALLET_ADDRESS_IN,
   Method,
@@ -78,7 +76,6 @@ import { GetAllPlan, getUser } from "../common/Api";
 import { toast } from "react-toastify";
 import { GraphHeader } from "../common/GraphHeader";
 
-
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -106,17 +103,16 @@ class Portfolio extends BaseReactComponent {
       addModal: false,
 
       // networth total loader
-      isLoading: false,
-      isLoadingNet:false,
+      isLoading: true,
 
       // transaction history table
-      tableLoading: false,
+      tableLoading: true,
 
       // asset value laoder
-      graphLoading: false,
+      graphLoading: true,
 
       // not used any where but update on api
-      barGraphLoading: false,
+      barGraphLoading: true,
 
       // not used any where
       toggleAddWallet: true,
@@ -168,7 +164,7 @@ class Portfolio extends BaseReactComponent {
       externalEvents: [],
 
       // netflow loader
-      netFlowLoading: false,
+      netFlowLoading: true,
 
       // when go btn clicked run all api
       isUpdate: 0,
@@ -208,9 +204,11 @@ class Portfolio extends BaseReactComponent {
 
       // insight
       updatedInsightList: "",
-      isLoadingInsight: false,
+      isLoadingInsight: true,
 
-     
+      // yeild and deb total
+      totalYield: 0,
+      totalDebt: 0,
     };
   }
 
@@ -264,6 +262,8 @@ class Portfolio extends BaseReactComponent {
     this.setState({
       userWalletList: value,
       isUpdate: this.state.isUpdate == 0 ? 1 : 0,
+      isLoading: true,
+      isLoadingInsight: true,
     });
   };
 
@@ -284,7 +284,6 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidMount() {
-   
     // get token to check if wallet address loaded on not
     this.getToken();
     this.state.startTime = new Date() * 1;
@@ -308,36 +307,29 @@ class Portfolio extends BaseReactComponent {
 
   componentDidUpdate(prevProps, prevState) {
     // Wallet update response when press go
-    // if (this.state.apiResponse) {
-    //   if (this.props.location.state?.noLoad === undefined) {
-    //     this.props.getCoinRate();
-    //     this.setState({
-    //       apiResponse: false,
-    //     });
-    //   }
-    // }
+    if (this.state.apiResponse) {
+      if (this.props.location.state?.noLoad === undefined) {
+        this.props.getCoinRate();
+        this.setState({
+          apiResponse: false,
+        });
+      }
+    }
 
     // Typical usage (don't forget to compare props):
     // Check if the coin rate api values are changed
-    if (!this.props.commonState.home && this.state.lochToken) {
-      this.props.updateWalletListFlag("home", true);
-        this.setState({
-          isLoadingInsight: true,
-          netFlowLoading: true,
-          isLoading: true,
-          isLoadingNet: true,
-          graphLoading: true,
-          tableLoading: true,
-        });
-      
-      // console.log("inside coin rate list");
+    if (
+      this.props.portfolioState.coinRateList !==
+      prevProps.portfolioState.coinRateList
+    ) {
+      console.log("inside coin rate list");
       // if wallet address change
       if (
         this.state &&
         this.state.userWalletList &&
         this.state.userWalletList?.length > 0
       ) {
-        // console.log("inside if");
+        console.log("inside if");
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
 
@@ -360,6 +352,9 @@ class Portfolio extends BaseReactComponent {
           if (i === this.state.userWalletList?.length - 1) {
             // run this api if itws value 0
             this.props.getYesterdaysBalanceApi(this);
+            this.setState({
+              loader: false,
+            });
           }
         });
 
@@ -369,19 +364,12 @@ class Portfolio extends BaseReactComponent {
 
         if (!isFound) {
           this.setState({
-            // overview loader and net worth loader
-            // isLoading: false,
-            isLoadingNet:false,
+            loader: false,
+            isLoading: false,
           });
         }
-        this.setState({
-          // overview loader and net worth loader
-          // isLoading: false,
-          isLoadingNet: false,
-        });
-         
       } else {
-        // console.log("inside else");
+        console.log("inside else");
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
 
@@ -390,43 +378,37 @@ class Portfolio extends BaseReactComponent {
         this.props.getExchangeBalance("coinbase", this);
 
         // net worth total loader
-        this.setState({
-          // isLoading: false
-          isLoadingNet:false,
-        });
+        this.setState({ isLoading: false });
       }
 
-    
+      if (prevProps.userWalletList !== this.state.userWalletList) {
+        console.log("inside diff userWalletlist");
+        this.state.userWalletList?.length > 0 &&
+          this.setState({
+            netFlowLoading: true,
+            isLoadingInsight: true,
+          });
 
-      // run this when table value is []
-      this.getTableData();
+        // run this when table value is []
+        this.getTableData();
 
-      // asset value run when its value null
-      this.getGraphData();
+        // asset value run when its value null
+        this.getGraphData();
 
-      // - remove form home
-      // getAllCounterFeeApi(this, false, false);
+        // - remove form home
+        // getAllCounterFeeApi(this, false, false);
 
-      // run when graphValue == null and  GraphData: [],
-      // add loader
-      this.props.getProfitAndLossApi(this, false, false, false);
+        // run when graphValue == null and  GraphData: [],
+        this.props.getProfitAndLossApi(this, false, false, false);
 
-      // run this api if itws value 0
-      this.props.getYesterdaysBalanceApi(this);
+        // run this api if itws value 0
+        this.props.getYesterdaysBalanceApi(this);
 
-      // run when updatedInsightList === ""
-      this.props.getAllInsightsApi(this);
-      GetAllPlan();
-      getUser(this);
-
-      // if (prevProps.userWalletList !== this.state.userWalletList) {
-      //   // console.log("inside diff userWalletlist");
-      //   this.state.userWalletList?.length > 0 &&
-      //     this.setState({
-      //       netFlowLoading: true,
-      //       isLoadingInsight: true,
-      //     });
-      // }
+        // run when updatedInsightList === ""
+        this.props.getAllInsightsApi(this);
+        GetAllPlan();
+        getUser(this);
+      }
     } else if (prevState.sort !== this.state.sort) {
       // sort table
       this.getTableData();
@@ -458,26 +440,26 @@ class Portfolio extends BaseReactComponent {
       // update wallet
       this.props.getCoinRate();
 
-      // // transaction history
-      // this.getTableData();
+      // transaction history
+      this.getTableData();
 
-      // // asset value chart
-      // this.getGraphData();
+      // asset value chart
+      this.getGraphData();
 
-      // // counter free chart api - remove form home
-      // // getAllCounterFeeApi(this, false, false);
+      // counter free chart api - remove form home
+      // getAllCounterFeeApi(this, false, false);
 
-      // // netflow api
-      // this.props.getProfitAndLossApi(this, false, false, false);
+      // netflow api
+      this.props.getProfitAndLossApi(this, false, false, false);
 
-      // // Insight api
-      // this.props.getAllInsightsApi(this);
+      // Insight api
+      this.props.getAllInsightsApi(this);
 
-      // // get all upgrade plans
-      // GetAllPlan();
+      // get all upgrade plans
+      GetAllPlan();
 
-      // // get users current plan
-      // getUser(this);
+      // get users current plan
+      getUser(this);
     }
   };
 
@@ -545,10 +527,6 @@ class Portfolio extends BaseReactComponent {
         apiResponse: value,
       });
     }
-
-    // wallet updated set all falg to default
-    // this.props.updateWalletListFlag("home", false);
-    this.props.setPageFlagDefault();
   };
 
   // sort transaction history api
@@ -619,7 +597,14 @@ class Portfolio extends BaseReactComponent {
       showBtn: e,
     });
   };
-  
+
+  // get yeild and debt total from piechart component
+  getProtocolTotal = (yeild, debt) => {
+    this.setState({
+      totalYield: yeild,
+      totalDebt: debt,
+    });
+  };
 
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
@@ -1243,18 +1228,16 @@ class Portfolio extends BaseReactComponent {
                     this.props.portfolioState &&
                     this.props.portfolioState.walletTotal
                       ? this.props.portfolioState.walletTotal +
-                        this.props.defiState.totalYield -
-                        this.props.defiState.totalDebt
-                      : 0 +
-                        this.props.defiState.totalYield -
-                        this.props.defiState.totalDebt
+                        this.state.totalYield -
+                        this.state.totalDebt
+                      : 0 + this.state.totalYield - this.state.totalDebt
                   }
                   // history
                   history={this.props.history}
                   // add wallet address modal
                   handleAddModal={this.handleAddModal}
                   // net worth total
-                  isLoading={this.state.isLoadingNet}
+                  // isLoading={this.state.isLoading}
 
                   // walletTotal={
                   //   this.props.portfolioState.walletTotal +
@@ -1310,6 +1293,7 @@ class Portfolio extends BaseReactComponent {
                       ? Object.values(this.state.assetPrice)
                       : null
                   }
+                  // loader={this.state.loader}
                   isLoading={this.state.isLoading}
                   isUpdate={this.state.isUpdate}
                   walletTotal={this.props.portfolioState.walletTotal}
@@ -1404,7 +1388,7 @@ class Portfolio extends BaseReactComponent {
                         />
                         <div className="insights-wrapper">
                           {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
-                          {this.state.isLoadingInsight ? (
+                          {this.state.isLoading ? (
                             <div
                               style={{
                                 height: "35rem",
@@ -1635,8 +1619,6 @@ const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
-  commonState: state.CommonState,
-  defiState: state.DefiState,
 });
 const mapDispatchToProps = {
   getCoinRate,
@@ -1651,8 +1633,6 @@ const mapDispatchToProps = {
   getYesterdaysBalanceApi,
   getExternalEventsApi,
   getAllInsightsApi,
-  updateWalletListFlag,
-  setPageFlagDefault,
 };
 Portfolio.propTypes = {};
 

@@ -1,16 +1,23 @@
-import { RECEIVE_POSTS } from "./ActionTypes";
+import { GET_ALL_COHORT, RECEIVE_POSTS, UPDATE_COHORT } from "./ActionTypes";
 const INITIAL_STATE = {
-    otpReceived: false,
-    otpCode: '',
-    otpVerified: false,
-    countryCode: '+91',
-    userObj: null,
-    cnbcActive: false
+  cardList: [],
+  sortedList: [],
+  total_addresses:0,
 };
 const CohortReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case RECEIVE_POSTS:
-            return { ...state, json: action.json };
+        case GET_ALL_COHORT:
+            return {
+              ...state,
+              cardList: action.payload.cardList,
+              sortedList: action.payload.sortedList,
+              total_addresses: action.payload.total_addresses,
+            };
+        case UPDATE_COHORT:
+            return {
+              ...state,
+              sortedList: action.payload.sortedList,
+            };
         default:
             return state
     }

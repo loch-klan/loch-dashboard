@@ -1,2 +1,1 @@
-const RECEIVE_POSTS = 'RECEIVE_POSTS';
-export { RECEIVE_POSTS}
+export const GET_DEFI_DATA = "GET_DEFI_DATA";

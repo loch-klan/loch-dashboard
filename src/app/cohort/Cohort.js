@@ -43,7 +43,7 @@ import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
 import CoinChip from "../wallet/CoinChip";
 import ExitOverlay from "../common/ExitOverlay";
-import { searchCohort } from "./Api";
+import { searchCohort, updateCohort } from "./Api";
 import moment from "moment";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import UpgradeModal from "../common/upgradeModal";
@@ -71,6 +71,7 @@ class Cohort extends Component {
       // sortByDate: false,
       // sortByName: false,
       apiResponse: false,
+
       cardList: [],
       isEditModal: false,
       createOn: "",
@@ -158,7 +159,8 @@ class Cohort extends Component {
     //   this.state.cardList?.length
     // );
     if (
-      this.state.total_addresses >= this.state.userPlan.wallet_address_limit &&
+      this.props.cohortState?.total_addresses >=
+        this.state.userPlan.wallet_address_limit &&
       this.state.userPlan.wallet_address_limit !== -1
     ) {
       this.setState(
@@ -171,7 +173,8 @@ class Cohort extends Component {
       );
     } else {
       if (
-        this.state.cardList?.length <= this.state.userPlan?.whale_pod_limit ||
+        this.props.cohortState.cardList?.length <=
+          this.state.userPlan?.whale_pod_limit ||
         this.state.userPlan?.whale_pod_limit === -1
       ) {
         this.setState({
@@ -223,7 +226,7 @@ class Cohort extends Component {
   // };
 
   handleEdit = (i, images) => {
-    let walletList = this.state?.sortedList;
+    let walletList = this.props.cohortState?.sortedList;
     this.setState({
       isEditModal: !this.state.isEditModal,
       createOn: walletList[i]?.created_on,
@@ -237,9 +240,11 @@ class Cohort extends Component {
   handleChangeList = (value) => {
     this.setState({
       isLoading: true,
-      cardList: [],
-      sortedList: [],
+      // cardList: [],
+      // sortedList: [],
     });
+
+    this.props.updateCohort([]);
 // if (!this.state.skip) {
 //   this.AddEmailModal();
 // }
@@ -254,12 +259,12 @@ class Cohort extends Component {
     data.append("limit", 50);
     // data.append("limit", API_LIMIT)
     data.append("sorts", JSON.stringify(this.state.sorts));
-    searchCohort(data, this);
+    this.props.searchCohort(data, this);
     // console.log(data);
   };
 
   sortArray = (key, order) => {
-    let array = this.state?.cardList; //all data
+    let array = this.props.cohortState?.cardList; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -283,9 +288,10 @@ class Cohort extends Component {
       }
     });
 
-    this.setState({
-      sortedList,
-    });
+    // this.setState({
+    //   sortedList,
+    // });
+    this.props.updateCohort(sortedList);
   };
 
   handleSort = (e) => {
@@ -374,7 +380,7 @@ class Cohort extends Component {
     }
 
     // console.log("active badge id", activeBadgeIds);
-    let allList = this.state?.cardList; //all data
+    let allList = this.props.cohortState?.cardList; //all data
     let sortedList = [];
     let uniqueitems = [];
 
@@ -393,14 +399,22 @@ class Cohort extends Component {
         });
       });
 
-    this.setState({
-      sortedList:
-        activeBadgeIds.length === 0
-          ? allList
-          : sortedList.length === 0
-          ? ""
-          : sortedList,
-    });
+    // this.setState({
+    //   sortedList:
+    //     activeBadgeIds.length === 0
+    //       ? allList
+    //       : sortedList.length === 0
+    //       ? ""
+    //       : sortedList,
+    // });
+    console.log("kjejhfe",allList ,sortedList, activeBadgeIds)
+    let value =
+      activeBadgeIds.length === 0
+        ? allList
+        : sortedList.length === 0
+        ? ""
+        : sortedList;
+     this.props.updateCohort(value);
   };
 
   // sortByAmount = ()
@@ -431,7 +445,7 @@ class Cohort extends Component {
             headerTitle={"Create a whale pod"}
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
-            total_addresses={this.state.total_addresses}
+            total_addresses={this.props.cohortState?.total_addresses}
           />
         ) : this.state.RegisterModal ? (
           <ExitOverlay
@@ -466,7 +480,7 @@ class Cohort extends Component {
             addedon={moment(this.state?.createOn).format("MM/DD/YY")}
             cohortId={this.state.editcohortId}
             chainImages={this.state?.chainImages}
-            total_addresses={this.state.total_addresses}
+            total_addresses={this.props.cohortState?.total_addresses}
             totalEditAddress={this.state.editWalletAddressList?.length}
           />
         ) : (
@@ -515,9 +529,9 @@ class Cohort extends Component {
           </div>
           {/* card  */}
           <Row style={{ minWidth: "91rem" }}>
-            {this.state?.sortedList?.length !== 0 &&
-            this.state?.sortedList !== "" ? (
-              this.state?.sortedList?.map((item, i) => {
+            {this.props.cohortState?.sortedList?.length !== 0 &&
+            this.props.cohortState?.sortedList !== "" ? (
+              this.props.cohortState?.sortedList?.map((item, i) => {
                 let sortedAddress = (item?.wallet_address_details).sort(
                   (a, b) => b.net_worth - a.net_worth
                 );
@@ -539,11 +553,10 @@ class Cohort extends Component {
                   >
                     <PodCard
                       item={item}
-                      total_addresses={this.state.total_addresses}
+                      total_addresses={this.props.cohortState?.total_addresses}
                       index={i}
                       handleEdit={this.handleEdit}
                       history={this.props.history}
-                  
                     />
                   </Col>
                 );
@@ -565,13 +578,13 @@ class Cohort extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  walletState: state.WalletState,
+  cohortState: state.CohortState,
   OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
   getAllCoins,
-  getAllWalletListApi,
-  getAllWalletApi,
+  searchCohort,
+  updateCohort,
 };
 Cohort.propTypes = {
   // getPosts: PropTypes.func

@@ -6,6 +6,7 @@ import moment from "moment";
 import { getAllCounterFeeApi } from "../cost/Api";
 import { getAllInsightsApi, getProfitAndLossApi } from "../intelligence/Api";
 import { GetAllPlan, getUser } from "../common/Api";
+import { GET_DEFI_DATA } from "../defi/ActionTypes";
 
 export const getCoinRate = () => {
   
@@ -376,168 +377,181 @@ export const getAllProtocol = (ctx) => {
 }
 
 export const getProtocolBalanceApi = (ctx,data) => {
-  postLoginInstance
-    .post("wallet/user-wallet/get-protocol-balance", data)
-    .then((res) => {
-      if (!res.data.error) {
-        let currency = JSON.parse(localStorage.getItem("currency"));
+  return function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/get-protocol-balance", data)
+      .then((res) => {
+        if (!res.data.error) {
+          let currency = JSON.parse(localStorage.getItem("currency"));
 
-        let cardList = ctx.state.cardList || [];
-        let totalYield = ctx.state.totalYield;
-        let totalDebt = ctx.state.totalDebt;
-        
-        let BalanceSheetValue = ctx.state.BalanceSheetValue || {};
-// console.log("Yeild before", BalanceSheetValue, cardList);
-        let userWallets = res.data.data.user_wallet;
+          let cardList = ctx.props.defiState.cardList || [];
+          let totalYield = ctx.props.defiState.totalYield;
+          let totalDebt = ctx.props.defiState.totalDebt;
 
-        userWallets?.map((item) => {
-          let totalUsd = 0;
-          let yeild_total = 0;
-          let debt_total = 0;
+          let BalanceSheetValue = ctx.props.defiState.BalanceSheetValue || {};
+          // console.log("Yeild before", BalanceSheetValue, cardList);
+          let userWallets = res.data.data.user_wallet;
 
-          let tableRow = [];
-          if (item.assets?.length !== 0) {
-            item?.assets.map((asset) => {
-              let assetSymbol = [];
-              let userAssetSymbol = [];
-              let balance = [];
-              asset?.tokens?.map((token) => {
-                balance.push({
-                  value: token.value,
-                  code: token.code,
-                });
-                if (!userAssetSymbol.includes(token.code)) {
-                  assetSymbol.push({
-                    symbol: token.symbol,
+          userWallets?.map((item) => {
+            let totalUsd = 0;
+            let yeild_total = 0;
+            let debt_total = 0;
+
+            let tableRow = [];
+            if (item.assets?.length !== 0) {
+              item?.assets.map((asset) => {
+                let assetSymbol = [];
+                let userAssetSymbol = [];
+                let balance = [];
+                asset?.tokens?.map((token) => {
+                  balance.push({
+                    value: token.value,
                     code: token.code,
                   });
-                  userAssetSymbol.push(token.code);
-                }
-              });
-              let typename = AssetType.getText(asset.product_type);
-              let type = asset.product_type;
-              let usdValue = asset.balance_usd;
-              let type_text = "";
-
-              if (type !== 30) {
-                yeild_total = yeild_total + usdValue;
-                type_text = "Yield";
-              } else {
-                debt_total = debt_total + usdValue;
-                 type_text = "Debt";
-              }
-
-              if (BalanceSheetValue[type] === undefined) {
-                BalanceSheetValue[type] = {
-                  name: typename,
-                  totalPrice: usdValue,
-                  id: type,
-                   type_text: type_text
-                };
-              } else {
-                BalanceSheetValue[type].totalPrice =
-                  BalanceSheetValue[type]?.totalPrice + usdValue;
-              }
-
-              tableRow.push({
-                assets: assetSymbol,
-                type_name: typename,
-                type: type,
-                usdValue: usdValue,
-                balance: balance,
-              });
-            });
-
-            
-            // card total
-            totalUsd = yeild_total - debt_total;
-
-            // balance sheet totals
-            totalYield = totalYield + yeild_total;
-            totalDebt = totalDebt + debt_total;
-            cardList.push({
-              name: item.name,
-              address: item.address,
-              symbol: item.symbol,
-              totalUsd: totalUsd,
-              row: tableRow,
-            });
-          }
-        });
-
-        let YieldValues = [];
-            let DebtValues = [];
-
-            Object.keys(BalanceSheetValue).map((key) => {
-              BalanceSheetValue[key].type_text === "Yield"
-                ? YieldValues.push(BalanceSheetValue[key])
-                : DebtValues.push(BalanceSheetValue[key]);
-            });
-        // console.log(BalanceSheetValue);
-        
-      let  allAssetType = [20,30,40,50,60,70];
-         allAssetType.map((e) => {
-              let isfound = false;
-              YieldValues &&
-                YieldValues.map((item) => {
-                  if (item.id === e) {
-                    isfound = true;
+                  if (!userAssetSymbol.includes(token.code)) {
+                    assetSymbol.push({
+                      symbol: token.symbol,
+                      code: token.code,
+                    });
+                    userAssetSymbol.push(token.code);
                   }
                 });
+                let typename = AssetType.getText(asset.product_type);
+                let type = asset.product_type;
+                let usdValue = asset.balance_usd;
+                let type_text = "";
 
-              if (!isfound && e !== 30) {
-                YieldValues.push({
-                  id: e,
-                  name: AssetType.getText(e),
-                  totalPrice: 0,
+                if (type !== 30) {
+                  yeild_total = yeild_total + usdValue;
+                  type_text = "Yield";
+                } else {
+                  debt_total = debt_total + usdValue;
+                  type_text = "Debt";
+                }
+
+                if (BalanceSheetValue[type] === undefined) {
+                  BalanceSheetValue[type] = {
+                    name: typename,
+                    totalPrice: usdValue,
+                    id: type,
+                    type_text: type_text,
+                  };
+                } else {
+                  BalanceSheetValue[type].totalPrice =
+                    BalanceSheetValue[type]?.totalPrice + usdValue;
+                }
+
+                tableRow.push({
+                  assets: assetSymbol,
+                  type_name: typename,
+                  type: type,
+                  usdValue: usdValue,
+                  balance: balance,
                 });
-              }
-            });
-            if (DebtValues.length === 0) {
-              DebtValues.push({
-                id: 30,
-                name: AssetType.getText(30),
+              });
+
+              // card total
+              totalUsd = yeild_total - debt_total;
+
+              // balance sheet totals
+              totalYield = totalYield + yeild_total;
+              totalDebt = totalDebt + debt_total;
+              cardList.push({
+                name: item.name,
+                address: item.address,
+                symbol: item.symbol,
+                totalUsd: totalUsd,
+                row: tableRow,
+              });
+            }
+          });
+
+          let YieldValues = [];
+          let DebtValues = [];
+
+          Object.keys(BalanceSheetValue).map((key) => {
+            BalanceSheetValue[key].type_text === "Yield"
+              ? YieldValues.push(BalanceSheetValue[key])
+              : DebtValues.push(BalanceSheetValue[key]);
+          });
+          // console.log(BalanceSheetValue);
+
+          let allAssetType = [20, 30, 40, 50, 60, 70];
+          allAssetType.map((e) => {
+            let isfound = false;
+            YieldValues &&
+              YieldValues.map((item) => {
+                if (item.id === e) {
+                  isfound = true;
+                }
+              });
+
+            if (!isfound && e !== 30) {
+              YieldValues.push({
+                id: e,
+                name: AssetType.getText(e),
                 totalPrice: 0,
               });
             }
-        let sorted = cardList?.length === 0 ? "" : cardList.sort((a, b) => b.totalUsd - a.totalUsd);
-        YieldValues = YieldValues.sort((a, b) => b.totalPrice - a.totalPrice);
-        DebtValues = DebtValues.sort((a, b) => b.totalPrice - a.totalPrice);
+          });
+          if (DebtValues.length === 0) {
+            DebtValues.push({
+              id: 30,
+              name: AssetType.getText(30),
+              totalPrice: 0,
+            });
+          }
+          let sorted =
+            cardList?.length === 0
+              ? ""
+              : cardList.sort((a, b) => b.totalUsd - a.totalUsd);
+          YieldValues = YieldValues.sort((a, b) => b.totalPrice - a.totalPrice);
+          DebtValues = DebtValues.sort((a, b) => b.totalPrice - a.totalPrice);
 
-      
+          let totalY = 0;
+          YieldValues.map((e) => (totalY = totalY + e.totalPrice));
 
-        let totalY = 0;
-        YieldValues.map(e => totalY = totalY + e.totalPrice);
-       
-         let totalD = 0;
-         DebtValues.map((e) => (totalD = totalD + e.totalPrice));
-  // console.log("Yeild", totalY, "debt", totalD);
-       
-        setTimeout(() => {
-          ctx.setState(
-            {
-              // totalYield,
-              // totalDebt,
-              totalYield:totalY,
-              totalDebt:totalD,
-              cardList,
-              sortedList: sorted,
-              DebtValues,
-              YieldValues,
-              BalanceSheetValue,
-            },
-            () => {
-              ctx.props?.getProtocolTotal &&
-                ctx.props.getProtocolTotal(totalY, totalD);
-            }
-          );
-        },100)
+          let totalD = 0;
+          DebtValues.map((e) => (totalD = totalD + e.totalPrice));
+          // console.log("Yeild", totalY, "debt", totalD);
 
-      } else {
-        toast.error(res.data.message || "Something Went Wrong");
-      }
-    })
-    .catch((err) => {
-      console.log("Catch", err);
-    });
+          setTimeout(() => {
+            dispatch({
+              type:GET_DEFI_DATA,
+              payload: {
+                totalYield: totalY,
+                totalDebt: totalD,
+                cardList,
+                sortedList: sorted,
+                DebtValues,
+                YieldValues,
+                BalanceSheetValue,
+              },
+            });
+            // ctx.setState(
+            //   {
+            //     // totalYield,
+            //     // totalDebt,
+            //     totalYield: totalY,
+            //     totalDebt: totalD,
+            //     cardList,
+            //     sortedList: sorted,
+            //     DebtValues,
+            //     YieldValues,
+            //     BalanceSheetValue,
+            //   },
+            //   () => {
+            //     ctx.props?.getProtocolTotal &&
+            //       ctx.props.getProtocolTotal(totalY, totalD);
+            //   }
+            // );
+          }, 100);
+        } else {
+          toast.error(res.data.message || "Something Went Wrong");
+        }
+      })
+      .catch((err) => {
+        console.log("Catch", err);
+      });
+  }
 };

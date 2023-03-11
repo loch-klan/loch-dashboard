@@ -201,7 +201,16 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
     case EXTERNAL_EVENTS: return { ...state, externalEvents: action.payload.externalEvents };
 
     case DEFAULT_VALUES:
-      return { ...state, chainWallet: [], walletTotal: 0, chainPortfolio: {} };
+      return {
+        ...state,
+        chainWallet: [],
+        walletTotal: 0,
+        chainPortfolio: {},
+        yesterdayBalance: 0,
+        assetPrice: null,
+        assetValueData: null,
+        externalEvents: [],
+      };
     default:
       return state;
   }
