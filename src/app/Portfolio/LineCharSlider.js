@@ -1054,6 +1054,8 @@ backdrop-filter: blur(15px);">
                 isArrow={true}
                 isAnalytics="Asset Value"
                 handleClick={this.props.handleClick}
+                loader={true}
+                loaderText="Don't worry we're still loading all your data"
               />
             )}
 
@@ -1134,6 +1136,14 @@ backdrop-filter: blur(15px);">
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
+                  {true && (
+                    <h5
+                      className="inter-display-medium f-s-13 lh-15 grey-ADA"
+                      style={{ position: "absolute", right: "0px",top: !this.props.hideTimeFilter ? "-27px" : "-5px",zIndex: 1 }}
+                    >
+                      Don't worry we're still loading all your data
+                    </h5>
+                  )}
                   {!this.props.hideTimeFilter && (
                     <>
                       <span
