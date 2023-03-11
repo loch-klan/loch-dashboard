@@ -83,7 +83,7 @@ export const getUserWallet = (wallet, ctx, isRefresh) => {
             
                 if(ctx){
                   ctx.setState({
-                    isLoading: false,
+                    // isLoading: false,
                     assetPrice: {...ctx.state.assetPrice, ...res.data?.data.asset_prices},
                   });
                 }
@@ -126,7 +126,7 @@ export const getExchangeBalance = (exchangeName, ctx) => {
        });
        if (ctx) {
          ctx.setState({
-           isLoading: false,
+          //  isLoading: false,
            assetPrice: {
              ...ctx.state.assetPrice,
              ...res.data?.data.asset_prices,
@@ -232,7 +232,7 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                 localStorage.setItem("addWallet", JSON.stringify(addWallet))
                 // sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
                 ctx.setState({
-                  isLoading: false,
+                  // isLoading: false,
                   userWalletList:addWallet
                 })
                 

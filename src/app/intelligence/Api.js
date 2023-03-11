@@ -152,6 +152,7 @@ export const getAllInsightsApi = (ctx) => {
                isLoadingInsight: false,
              });
            } else {
+             console.log("else insight")
              ctx.setState({
               //  insightList: res.data.data.insights,
               //  updatedInsightList: res.data.data.insights,

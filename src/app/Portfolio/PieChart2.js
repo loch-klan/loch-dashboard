@@ -15,21 +15,29 @@ import { AssetType, DEFAULT_COLOR, DEFAULT_PRICE } from "../../utils/Constant";
 import { Col, Image, Row } from "react-bootstrap";
 import noDataImage from "../../image/no-data.png";
 import Loading from "../common/Loading";
-import { HomeRefreshButton, PiechartChainName } from "../../utils/AnalyticsFunctions";
+import {
+  HomeRefreshButton,
+  PiechartChainName,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import ManageWallet from "../../assets/images/icons/ManageWallet.svg";
 import ManageWalletWhite from "../../assets/images/icons/ManageWalletWhite.svg";
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 import AddWalletAddressWhite from "../../assets/images/icons/AddWalletAddressWhite.svg";
-import arrowUp from "../../assets/images/arrow-up.svg"
+import arrowUp from "../../assets/images/arrow-up.svg";
 import arrowDown from "../../assets/images/arrow-down.svg";
 import Coin1 from "../../assets/images/Coin.svg";
 import Coin2 from "../../assets/images/Coin2.svg";
 import Coin3 from "../../assets/images/Coin3.svg";
-import { getAllProtocol, getYieldBalanceApi, getUserWallet, getProtocolBalanceApi } from "./Api";
+import {
+  getAllProtocol,
+  getYieldBalanceApi,
+  getUserWallet,
+  getProtocolBalanceApi,
+} from "./Api";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
-import {  updateWalletListFlag } from "../common/Api";
+import { updateWalletListFlag } from "../common/Api";
 import { updateDefiData } from "../defi/Api";
 
 class PieChart2 extends BaseReactComponent {
@@ -46,7 +54,7 @@ class PieChart2 extends BaseReactComponent {
       valueChanged: false,
       flag: false,
       isLoading: props.isLoading,
-    
+
       currency: JSON.parse(localStorage.getItem("currency")),
       isChainToggle: false,
       chainList: null,
@@ -73,147 +81,147 @@ class PieChart2 extends BaseReactComponent {
 
   componentDidMount() {
     this.getCurrentTime();
-    // if (this.props.userWalletData && this.props.userWalletData.length > 0) {
-    //   let assetData = [];
-    //    this.setState({
-    //      isLoading: true,
-    //    });
-    //   if (
-    //     this.props.userWalletData &&
-    //     this.props.userWalletData.length > 0 &&
-    //     this.props.assetTotal > 0
-    //   ) {
-    //     for (let i = 0; i < this.props.userWalletData.length; i++) {
-    //       let z =
-    //         (parseFloat(this.props.userWalletData[i].assetValue) /
-    //           parseFloat(this.props.assetTotal)) *
-    //         100.0;
-    //       assetData.push({
-    //         assetType: this.props.userWalletData[i].assetType,
-    //         assetId: this.props.userWalletData[i].assetId,
-    //         name: this.props.userWalletData[i].assetName,
-    //         y: z,
-    //         usd: numToCurrency(this.props.userWalletData[i].assetValue),
-    //         assetValue: parseFloat(this.props.userWalletData[i].assetValue),
-    //         // borderColor: borderColors[i % 5],
-    //         borderColor: this.props.userWalletData[i].color
-    //           ? this.props.userWalletData[i].color
-    //           : DEFAULT_COLOR,
-    //         borderWidth: 2,
-    //         color: this.props.userWalletData[i].color
-    //           ? lightenDarkenColor(
-    //               this.props.userWalletData[i].color.slice(1),
-    //               0.2
-    //             )
-    //           : DEFAULT_COLOR,
-    //         originalColor: this.props.userWalletData[i].color
-    //           ? lightenDarkenColor(
-    //               this.props.userWalletData[i].color.slice(1),
-    //               0.2
-    //             )
-    //           : DEFAULT_COLOR,
-    //         // color: colors[i % 5],
-    //         // originalColor: colors[i % 5],
-    //         assetSymbol: this.props.userWalletData[i].assetSymbol,
-    //         assetCode: this.props.userWalletData[i].assetCode.toLocaleString(
-    //           undefined,
-    //           { maximumFractionDigits: 2 }
-    //         ),
-    //         count: this.props.userWalletData[i].totalCount,
-    //       });
-    //     }
-       
-    //   }
-    //   this.setState({
-    //     chartData: this.props.userWalletData,
-    //     assetData:
-    //       assetData && assetData.length > 0
-    //         ? assetData.sort((a, b) => b.assetValue - a.assetValue)
-    //         : [],
-    //     chartOptions: {},
-    //     pieSectionDataEnabled: {},
-       
+    if (this.props.userWalletData && this.props.userWalletData.length > 0) {
+      let assetData = [];
+       this.setState({
+         isLoading: true,
+       });
+      if (
+        this.props.userWalletData &&
+        this.props.userWalletData.length > 0 &&
+        this.props.assetTotal > 0
+      ) {
+        for (let i = 0; i < this.props.userWalletData.length; i++) {
+          let z =
+            (parseFloat(this.props.userWalletData[i].assetValue) /
+              parseFloat(this.props.assetTotal)) *
+            100.0;
+          assetData.push({
+            assetType: this.props.userWalletData[i].assetType,
+            assetId: this.props.userWalletData[i].assetId,
+            name: this.props.userWalletData[i].assetName,
+            y: z,
+            usd: numToCurrency(this.props.userWalletData[i].assetValue),
+            assetValue: parseFloat(this.props.userWalletData[i].assetValue),
+            // borderColor: borderColors[i % 5],
+            borderColor: this.props.userWalletData[i].color
+              ? this.props.userWalletData[i].color
+              : DEFAULT_COLOR,
+            borderWidth: 2,
+            color: this.props.userWalletData[i].color
+              ? lightenDarkenColor(
+                  this.props.userWalletData[i].color.slice(1),
+                  0.2
+                )
+              : DEFAULT_COLOR,
+            originalColor: this.props.userWalletData[i].color
+              ? lightenDarkenColor(
+                  this.props.userWalletData[i].color.slice(1),
+                  0.2
+                )
+              : DEFAULT_COLOR,
+            // color: colors[i % 5],
+            // originalColor: colors[i % 5],
+            assetSymbol: this.props.userWalletData[i].assetSymbol,
+            assetCode: this.props.userWalletData[i].assetCode.toLocaleString(
+              undefined,
+              { maximumFractionDigits: 2 }
+            ),
+            count: this.props.userWalletData[i].totalCount,
+          });
+        }
+
+      }
+      this.setState({
+        chartData: this.props.userWalletData,
+        assetData:
+          assetData && assetData.length > 0
+            ? assetData.sort((a, b) => b.assetValue - a.assetValue)
+            : [],
+        chartOptions: {},
+        pieSectionDataEnabled: {},
+
+      });
+    } else {
+
+    }
+    // console.log("pie", this.props.chainPortfolio)
+
+    // console.log("pie", this.props.allCoinList);
+    let chainList = [];
+
+    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let uniquechains = [];
+    // console.log("user wallet",UserWallet)
+    UserWallet &&
+      UserWallet?.map((item) => {
+        item.coins &&
+          item.coins?.map((coin, i) => {
+            let isfound = false;
+            this.props.chainPortfolio &&
+              this.props.chainPortfolio?.map((chain) => {
+                if (
+                  coin?.coinName === chain?.name &&
+                  !uniquechains.includes(chain?.name)
+                ) {
+                  isfound = true;
+                  uniquechains.push(coin?.coinName);
+                  chainList.push({
+                    name: chain?.name,
+                    symbol: chain?.symbol,
+                    total: chain?.total,
+                    id: chain?.id,
+                    color: chain?.color,
+                  });
+                }
+              });
+            if (
+              !isfound &&
+              coin?.chain_detected &&
+              !uniquechains.includes(coin?.coinName)
+            ) {
+              chainList.push({
+                name: coin?.coinName,
+                symbol: coin?.coinSymbol,
+                total: 0.0,
+                id: i,
+                color: coin?.coinColor,
+              });
+            }
+          });
+      });
+    // console.log("coinlist", chainList)
+    // this.props.chainPortfolio &&
+    //   this.props.chainPortfolio.map((chain) => {
+    //     chainList.push({
+    //       name: chain.name,
+    //       symbol: chain.symbol,
+    //       total: chain.total,
+    //       id: chain.id,
+    //       color: chain.color,
+    //     });
     //   });
-    // } else {
-     
-    // }
-    // // console.log("pie", this.props.chainPortfolio)
 
-    // // console.log("pie", this.props.allCoinList);
-    // let chainList = [];
+    chainList =
+      chainList &&
+      chainList.sort((a, b) => {
+        return b.total - a.total;
+      });
+    this.setState({
+      chainList,
+    });
 
-    // let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
-    // let uniquechains = [];
-    // // console.log("user wallet",UserWallet)
-    // UserWallet &&
-    //   UserWallet?.map((item) => {
-    //     item.coins &&
-    //       item.coins?.map((coin, i) => {
-    //         let isfound = false;
-    //         this.props.chainPortfolio &&
-    //           this.props.chainPortfolio?.map((chain) => {
-    //             if (
-    //               coin?.coinName === chain?.name &&
-    //               !uniquechains.includes(chain?.name)
-    //             ) {
-    //               isfound = true;
-    //               uniquechains.push(coin?.coinName);
-    //               chainList.push({
-    //                 name: chain?.name,
-    //                 symbol: chain?.symbol,
-    //                 total: chain?.total,
-    //                 id: chain?.id,
-    //                 color: chain?.color,
-    //               });
-    //             }
-    //           });
-    //         if (
-    //           !isfound &&
-    //           coin?.chain_detected &&
-    //           !uniquechains.includes(coin?.coinName)
-    //         ) {
-    //           chainList.push({
-    //             name: coin?.coinName,
-    //             symbol: coin?.coinSymbol,
-    //             total: 0.0,
-    //             id: i,
-    //             color: coin?.coinColor,
-    //           });
-    //         }
-    //       });
-    //   });
-    // // console.log("coinlist", chainList)
-    // // this.props.chainPortfolio &&
-    // //   this.props.chainPortfolio.map((chain) => {
-    // //     chainList.push({
-    // //       name: chain.name,
-    // //       symbol: chain.symbol,
-    // //       total: chain.total,
-    // //       id: chain.id,
-    // //       color: chain.color,
-    // //     });
-    // //   });
-
-    // chainList =
-    //   chainList &&
-    //   chainList.sort((a, b) => {
-    //     return b.total - a.total;
-    //   });
-    // this.setState({
-    //   chainList,
-    // });
-
-    // // console.log("props asset price", this.props.assetPrice);
-    // let assetPrice =
-    //   this.props.assetPrice &&
-    //   this.props.assetPrice?.reduce((obj, element) => {
-    //     obj[element.id] = element;
-    //     return obj;
-    //   }, {});
-    // this.setState({
-    //   assetPrice,
-    //   isLoading: false,
-    // });
+    // console.log("props asset price", this.props.assetPrice);
+    let assetPrice =
+      this.props.assetPrice &&
+      this.props.assetPrice?.reduce((obj, element) => {
+        obj[element.id] = element;
+        return obj;
+      }, {});
+    this.setState({
+      assetPrice,
+      isLoading: false,
+    });
 
     // before logic
     // if (this.state.userPlan?.defi_enabled) {
@@ -225,37 +233,35 @@ class PieChart2 extends BaseReactComponent {
     // console.log("mount")
     // this.getYieldBalance();
   }
- getYieldBalance = () => {
+  getYieldBalance = () => {
+    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    //  console.log("wallet_address", UserWallet);
 
-   let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
-  //  console.log("wallet_address", UserWallet);
-   
     if (UserWallet?.length !== 0) {
       // console.log("wallet_addres3s");
       UserWallet?.map((e) => {
         let data = new URLSearchParams();
         data.append("wallet_address", e.address);
-       this.props.getProtocolBalanceApi(this, data);
+        this.props.getProtocolBalanceApi(this, data);
       });
     } else {
       this.handleReset();
     }
-   if (!UserWallet) {
-    //  console.log("null")
-     this.setState(
-       {
-         loadGetYieldBalance: true,
-       },
-       () => {
-         setTimeout(() => {
-          this.getYieldBalance();
-         }, 1000);
-       }
-     );
-   }
+    if (!UserWallet) {
+      //  console.log("null")
+      this.setState(
+        {
+          loadGetYieldBalance: true,
+        },
+        () => {
+          setTimeout(() => {
+            this.getYieldBalance();
+          }, 1000);
+        }
+      );
+    }
   };
   componentDidUpdate(prevProps) {
-    
     if (this.props.assetTotal !== prevProps.assetTotal) {
       this.setState({ assetTotal: this.props.assetTotal });
     }
@@ -313,8 +319,7 @@ class PieChart2 extends BaseReactComponent {
 
         //  console.log("updae");
 
-         // balance load
-        
+        // balance load
       }
       this.setState({
         chartData: this.props.userWalletData,
@@ -437,32 +442,31 @@ class PieChart2 extends BaseReactComponent {
     }
 
     if (!this.props.commonState.defi) {
-      
-       this.props.updateDefiData({
-         totalYield: 0,
-         totalDebt: 0,
-         cardList: [],
-         sortedList: [],
-         DebtValues: [],
-         YieldValues: [],
-         BalanceSheetValue: {},
-       });
+      this.props.updateDefiData({
+        totalYield: 0,
+        totalDebt: 0,
+        cardList: [],
+        sortedList: [],
+        DebtValues: [],
+        YieldValues: [],
+        BalanceSheetValue: {},
+      });
 
-       // set defi page to true
-       this.props.updateWalletListFlag("defi", true);
-       this.setState(
-         {
-           isYeildToggle: false,
-           isDebtToggle: false,
-           upgradeModal: false,
-           triggerId: 6,
-           isChainToggle: false,
-         },
-         () => {
-           //  getAllProtocol(this);
-           this.getYieldBalance();
-         }
-       );
+      // set defi page to true
+      this.props.updateWalletListFlag("defi", true);
+      this.setState(
+        {
+          isYeildToggle: false,
+          isDebtToggle: false,
+          upgradeModal: false,
+          triggerId: 6,
+          isChainToggle: false,
+        },
+        () => {
+          //  getAllProtocol(this);
+          this.getYieldBalance();
+        }
+      );
 
       // if (this.state.userPlan?.defi_enabled) {
       //   this.getYieldBalance();
@@ -970,7 +974,7 @@ class PieChart2 extends BaseReactComponent {
         <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
           Overview
         </h1>
-        {this.state?.assetData  && !this.state.isLoading ? (
+        {this.state?.assetData && !this.state.isLoading ? (
           <>
             <Row style={{ width: "100%" }}>
               <Col
@@ -1559,8 +1563,7 @@ class PieChart2 extends BaseReactComponent {
         ) : //  this.state.piechartisLoading === true && this.state.assetData === null
         this.state.isLoading || !this.state?.assetData ? (
           <Loading />
-        ) : 
-          (this.state.assetData?.length === 0 && !this.state.isLoading) ? (
+        ) : this.state.assetData?.length === 0 && !this.state.isLoading ? (
           <div className="no-data-piechart">
             <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
               {CurrencyType(false)} 0.00

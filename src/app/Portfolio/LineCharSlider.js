@@ -617,7 +617,7 @@ class LineChartSlider extends BaseReactComponent {
     SelectedSeriesData = SelectedSeriesData.sort((a, b) => {
       return b.lastValue - a.lastValue;
     });
-    // console.log(SelectedSeriesData)
+    // console.log(seriesData)
 
 
     

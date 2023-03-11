@@ -407,7 +407,7 @@ class Cohort extends Component {
     //       ? ""
     //       : sortedList,
     // });
-    console.log("kjejhfe",allList ,sortedList, activeBadgeIds)
+    // console.log("kjejhfe",allList ,sortedList, activeBadgeIds)
     let value =
       activeBadgeIds.length === 0
         ? allList
@@ -561,7 +561,7 @@ class Cohort extends Component {
                   </Col>
                 );
               })
-            ) : this.state?.sortedList !== "" ? (
+            ) : this.props.cohortState?.sortedList !== "" ? (
               <Col md={12}>
                 <div className="animation-wrapper">
                   <Loading />

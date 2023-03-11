@@ -264,6 +264,12 @@ class Portfolio extends BaseReactComponent {
     this.setState({
       userWalletList: value,
       isUpdate: this.state.isUpdate == 0 ? 1 : 0,
+      isLoadingInsight: true,
+      netFlowLoading: true,
+      isLoading: true,
+      isLoadingNet: true,
+      graphLoading: true,
+      tableLoading: true,
     });
   };
 
@@ -453,7 +459,7 @@ class Portfolio extends BaseReactComponent {
       this.props.getDetailsByLinkApi(this.props.match.params.id, this);
     } else {
       // run all api
-      console.log("run all api");
+      // console.log("run all api");
 
       // update wallet
       this.props.getCoinRate();
