@@ -49,7 +49,7 @@ class PieChart2 extends BaseReactComponent {
       assetTotal: props.assetTotal,
       walletTotal: props.walletTotal,
       chartData: [],
-      assetData: null,
+      assetData: [],
       chartOptions: [],
       valueChanged: false,
       flag: false,
@@ -76,6 +76,10 @@ class PieChart2 extends BaseReactComponent {
       timeNumber: null,
       timeUnit: "",
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+
+      // refresh
+      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      isStopLoading:false,
     };
   }
 
@@ -83,9 +87,6 @@ class PieChart2 extends BaseReactComponent {
     this.getCurrentTime();
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
       let assetData = [];
-       this.setState({
-         isLoading: true,
-       });
       if (
         this.props.userWalletData &&
         this.props.userWalletData.length > 0 &&
@@ -269,9 +270,7 @@ class PieChart2 extends BaseReactComponent {
       // this.props.userWalletData && this.setState({ piechartisLoading: true })
 
       let assetData = [];
-      this.setState({
-        isLoading: true,
-      });
+ 
       if (
         this.props.userWalletData &&
         this.props.userWalletData.length > 0 &&
@@ -330,7 +329,6 @@ class PieChart2 extends BaseReactComponent {
             : [],
         chartOptions: {},
         pieSectionDataEnabled: {},
-        isLoading: false,
       });
     }
 
@@ -479,6 +477,16 @@ class PieChart2 extends BaseReactComponent {
     // if(!this.props.userWalletData && this.props.walletTotal === 0 && !this.props.isLoading){
     //   this.setState({piechartisLoading : this.props.isLoading === false ? false : true})
     // }
+
+    // stop loader after refresh btn clicked
+    if (this.state.isStopLoading) {
+      
+      this.props.setLoader(false);
+
+      this.setState({
+       isStopLoading:false
+      })
+    }
   }
 
   // for 0 all value
@@ -598,9 +606,7 @@ class PieChart2 extends BaseReactComponent {
       session_id: getCurrentUser().id,
     });
     // get the current time
-    this.setState({
-      isLoading: true,
-    });
+  this.props.setLoader(true);
     let currentTime = new Date().getTime();
 
     // console.log("state", this)
@@ -611,7 +617,8 @@ class PieChart2 extends BaseReactComponent {
     // console.log("Refresh clicked");
     // localStorage.setItem("refreshApiTime", currentTime);
     let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
-    userWalletList?.map((wallet, i) => {
+  
+         userWalletList?.map((wallet, i) => {
       if (wallet.coinFound) {
         wallet.coins?.map((coin) => {
           if (coin.chain_detected) {
@@ -619,11 +626,13 @@ class PieChart2 extends BaseReactComponent {
               address: wallet.address,
               coinCode: coin.coinCode,
             };
-            this.props.getUserWallet(userCoinWallet, this, true);
+            this.props.getUserWallet(userCoinWallet, this, true,i);
           }
         });
       }
-    });
+    })
+    
+ 
 
     //  this.getCurrentTime();
 
@@ -974,7 +983,7 @@ class PieChart2 extends BaseReactComponent {
         <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
           Overview
         </h1>
-        {this.state?.assetData && !this.state.isLoading ? (
+        {this.state?.assetData.length !== 0 && !this.props.isLoading ? (
           <>
             <Row style={{ width: "100%" }}>
               <Col
@@ -1561,9 +1570,9 @@ class PieChart2 extends BaseReactComponent {
             </Row>
           </>
         ) : //  this.state.piechartisLoading === true && this.state.assetData === null
-        this.state.isLoading || !this.state?.assetData ? (
+        this.props.isLoading ? (
           <Loading />
-        ) : this.state.assetData?.length === 0 && !this.state.isLoading ? (
+        ) :   (
           <div className="no-data-piechart">
             <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
               {CurrencyType(false)} 0.00
@@ -1575,7 +1584,7 @@ class PieChart2 extends BaseReactComponent {
               Total Assets
             </h3>
           </div>
-        ) : null}
+        ) }
       </div>
     );
   }

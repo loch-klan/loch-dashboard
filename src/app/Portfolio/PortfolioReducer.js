@@ -6,6 +6,9 @@ import {
   YESTERDAY_BALANCE,
   ASSET_VALUE_GRAPH,
   EXTERNAL_EVENTS,
+  ASSET_VALUE_GRAPH_MONTH,
+  ASSET_VALUE_GRAPH_YEAR,
+  ASSET_VALUE_GRAPH_DAY,
 
 } from "./ActionTypes";
 const INITIAL_STATE = {
@@ -21,7 +24,10 @@ const INITIAL_STATE = {
   assetPrice: null,
 
   // asset value chart
-  assetValueData:null,
+  assetValueData: null,
+  assetValueYear: null,
+  assetValueMonth: null,
+  assetValueDay:null,
   // external events data it set after asset value chart api response get
   externalEvents: [],
 };
@@ -192,13 +198,20 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         walletTotal: updateWalletTotal,
         chainWallet: { ...updatedChainWallet },
         chainPortfolio: { ...chainPortfolio },
-        assetPrice: {...state.assetPrice,...action.payload.assetPrice},
+        assetPrice: { ...state.assetPrice, ...action.payload.assetPrice },
       };
     case YESTERDAY_BALANCE:
       return { ...state, yesterdayBalance: action.payload.balance };
     case ASSET_VALUE_GRAPH:
-      return { ...state, assetValueData: action.payload.assetValueData };
-    case EXTERNAL_EVENTS: return { ...state, externalEvents: action.payload.externalEvents };
+      return { ...state, assetValueData: action.payload };
+    case ASSET_VALUE_GRAPH_MONTH:
+      return { ...state, assetValueMonth: action.payload };
+    case ASSET_VALUE_GRAPH_YEAR:
+      return { ...state, assetValueYear: action.payload };
+    case ASSET_VALUE_GRAPH_DAY:
+      return { ...state, assetValueDay: action.payload };
+    case EXTERNAL_EVENTS:
+      return { ...state, externalEvents: action.payload.externalEvents };
 
     case DEFAULT_VALUES:
       return {
@@ -210,6 +223,9 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         assetPrice: null,
         assetValueData: null,
         externalEvents: [],
+        assetValueYear: null,
+        assetValueMonth: null,
+        assetValueDay: null,
       };
     default:
       return state;

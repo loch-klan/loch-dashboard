@@ -30,7 +30,7 @@ export const getCoinRate = () => {
     };
 };
 
-export const getUserWallet = (wallet, ctx, isRefresh) => {
+export const getUserWallet = (wallet, ctx, isRefresh, index) => {
   
   return function (dispatch, getState) {
       
@@ -87,6 +87,14 @@ export const getUserWallet = (wallet, ctx, isRefresh) => {
                     assetPrice: {...ctx.state.assetPrice, ...res.data?.data.asset_prices},
                   });
                 }
+              if (ctx.state.userWalletList.length - 1 === index) {
+                ctx.setState({
+                  isLoading: false,
+                  isLoadingNet: false,
+                  isStopLoading:true
+                });
+              }
+              
             })
             .catch((err) => {
                 console.log("Catch", err);
@@ -276,7 +284,7 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
         }
 };
 
-export const getAssetGraphDataApi = (data, ctx) => {
+export const getAssetGraphDataApi = (data, ctx, ActionType) => {
   return async function (dispatch, getState) {
      postLoginInstance
        .post("wallet/user-wallet/get-asset-value-graph", data)
@@ -284,13 +292,11 @@ export const getAssetGraphDataApi = (data, ctx) => {
          // console.log("all data", res);
          if (!res.data.error) {
            dispatch({
-             type: ASSET_VALUE_GRAPH,
-             payload: {
-               assetValueData: res.data.data.asset_value_data,
-             },
+             type: ActionType,
+             payload: res.data.data.asset_value_data,
            });
            ctx.setState({
-            //  assetValueData: res.data.data.asset_value_data,
+             assetValueData: res.data.data.asset_value_data,
              graphLoading: false,
            });
            ctx.props.getExternalEventsApi(ctx);

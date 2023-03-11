@@ -9,7 +9,7 @@ import { Image } from "react-bootstrap";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import graphImage from "../../assets/images/volume-traded-graph.png";
 import LineChartSlider from "../Portfolio/LineCharSlider";
-import { GroupByOptions, GROUP_BY_MONTH, GROUP_BY_YEAR } from "../../utils/Constant";
+import { GroupByOptions, GROUP_BY_DATE, GROUP_BY_MONTH, GROUP_BY_YEAR } from "../../utils/Constant";
 import {
   getAssetGraphDataApi,
   getCoinRate,
@@ -26,6 +26,7 @@ import { GetAllPlan, getUser } from "../common/Api";
 
 
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH, ASSET_VALUE_GRAPH_YEAR } from "../Portfolio/ActionTypes";
 
 
 class AssetValueGraph extends Component {
@@ -39,7 +40,10 @@ class AssetValueGraph extends Component {
 
       addModal: false,
       isUpdate: 0,
-       apiResponse:false
+      apiResponse: false,
+
+      // assevalue data for all filters
+      assetValueData:null,
     };
   }
 
@@ -57,6 +61,9 @@ class AssetValueGraph extends Component {
     this.setState({})
     GetAllPlan();
     getUser();
+    this.setState({
+      assetValueData: this.props.portfolioState.assetValueMonth,
+    });
   }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
@@ -71,14 +78,19 @@ class AssetValueGraph extends Component {
 
      if (!this.props.commonState.asset_value) {
        this.props.updateWalletListFlag("asset_value", true);
+       this.props.portfolioState.assetValueMonth = null;
+       this.props.portfolioState.assetValueYear = null;
+        this.props.portfolioState.assetValueDay = null;
        this.props.getAllCoins();
-       this.getGraphData();
+       if (!this.props.portfolioState.assetValueMonth) {
+         this.getGraphData();
+       }
      }
   }
 
   componentWillUnmount() {
     // reset to month graph on page leave
-    this.getGraphData();
+    // this.getGraphData();
   }
 
   // For add new address
@@ -109,15 +121,52 @@ class AssetValueGraph extends Component {
   }
 
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
-   this.setState({ graphLoading: true });
-    let addressList = [];
-    // console.log("wallet addres", this.state.userWalletList);
-    this.state.userWalletList?.map((wallet) => addressList.push(wallet.address));
-    // console.log("addressList", this.state.userWalletList);
-    let data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify(addressList));
-    data.append("group_criteria", groupByValue);
-    this.props.getAssetGraphDataApi(data, this);
+
+    let ActionType = ASSET_VALUE_GRAPH_MONTH;
+    let runApi = true;
+    if (groupByValue === GROUP_BY_MONTH) {
+      ActionType = ASSET_VALUE_GRAPH_MONTH;
+      if (this.props.portfolioState.assetValueMonth) {
+        runApi = false;
+        this.setState({
+          assetValueData: this.props.portfolioState.assetValueMonth,
+        });
+      } 
+      
+    } else if (groupByValue === GROUP_BY_YEAR) {
+      ActionType = ASSET_VALUE_GRAPH_YEAR;
+      if (this.props.portfolioState.assetValueYear) {
+        runApi = false;
+         this.setState({
+           assetValueData: this.props.portfolioState.assetValueYear,
+         });
+      } 
+       
+    } else if (groupByValue === GROUP_BY_DATE) {
+      ActionType = ASSET_VALUE_GRAPH_DAY;
+      if (this.props.portfolioState.assetValueDay) {
+        runApi = false;
+         this.setState({
+           assetValueData: this.props.portfolioState.assetValueDay,
+         });
+      } 
+     
+    }
+
+    if (runApi) {
+      this.setState({ graphLoading: true });
+      let addressList = [];
+      // console.log("wallet addres", this.state.userWalletList);
+      this.state.userWalletList?.map((wallet) =>
+        addressList.push(wallet.address)
+      );
+      // console.log("addressList", this.state.userWalletList);
+      let data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(addressList));
+      data.append("group_criteria", groupByValue);
+      this.props.getAssetGraphDataApi(data, this,ActionType);
+    }
+   
   };
 
   handleGroupBy = (value) => {
@@ -157,8 +206,8 @@ class AssetValueGraph extends Component {
           <div className="graph-container" style={{ marginBottom: "5rem" }}>
             <LineChartSlider
               assetValueData={
-                this.props.portfolioState.assetValueData &&
-                this.props.portfolioState.assetValueData
+                this.state.assetValueData &&
+                this.state.assetValueData
               }
               externalEvents={
                 this.props.portfolioState.externalEvents &&

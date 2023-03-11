@@ -77,6 +77,7 @@ import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
 import { toast } from "react-toastify";
 import { GraphHeader } from "../common/GraphHeader";
+import { ASSET_VALUE_GRAPH_MONTH } from "./ActionTypes";
 
 
 class Portfolio extends BaseReactComponent {
@@ -358,7 +359,7 @@ class Portfolio extends BaseReactComponent {
                   address: wallet.address,
                   coinCode: coin.coinCode,
                 };
-                this.props.getUserWallet(userCoinWallet, this);
+                this.props.getUserWallet(userCoinWallet, this, false,i);
               }
             });
           }
@@ -366,6 +367,12 @@ class Portfolio extends BaseReactComponent {
           if (i === this.state.userWalletList?.length - 1) {
             // run this api if itws value 0
             this.props.getYesterdaysBalanceApi(this);
+
+            this.setState({
+              // overview loader and net worth loader
+              // isLoading: false,
+              // isLoadingNet: false,
+            });
           }
         });
 
@@ -377,14 +384,11 @@ class Portfolio extends BaseReactComponent {
           this.setState({
             // overview loader and net worth loader
             // isLoading: false,
-            isLoadingNet:false,
+            // isLoadingNet: false,
+          
           });
         }
-        this.setState({
-          // overview loader and net worth loader
-          // isLoading: false,
-          isLoadingNet: false,
-        });
+     
          
       } else {
         // console.log("inside else");
@@ -397,7 +401,7 @@ class Portfolio extends BaseReactComponent {
 
         // net worth total loader
         this.setState({
-          // isLoading: false
+          isLoading: false,
           isLoadingNet:false,
         });
       }
@@ -408,7 +412,16 @@ class Portfolio extends BaseReactComponent {
       this.getTableData();
 
       // asset value run when its value null
-      this.getGraphData();
+      // if (!this.props.portfolioState.assetValueMonth) {
+      //    this.getGraphData();
+      // } else {
+      //   this.setState({
+      //     graphLoading:false,
+      //   })
+      // }
+
+       this.getGraphData();
+     
 
       // - remove form home
       // getAllCounterFeeApi(this, false, false);
@@ -449,6 +462,15 @@ class Portfolio extends BaseReactComponent {
         this.apiCall();
       }
     }
+  }
+
+  // get refresh btn
+  setLoader = (value) => {
+    console.log("stop")
+    this.setState({
+      isLoading: value,
+      isLoadingNet:value,
+    })
   }
 
   apiCall = () => {
@@ -500,25 +522,27 @@ class Portfolio extends BaseReactComponent {
   // asset value chart api call
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
     //console.log("calling graph");
-    this.setState({ graphLoading: true });
-    let addressList = [];
-    this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
-    let data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify(addressList));
-    data.append("group_criteria", groupByValue);
-    this.props.getAssetGraphDataApi(data, this);
-    this.state.isTimeOut &&
-      setTimeout(() => {
-        this.setState(
-          {
-            isTimeOut: false,
-          },
-          () => {
-            this.props.getAssetGraphDataApi(data, this);
-            // //console.log("api called", this);
-          }
-        );
-      }, 10000);
+    let ActionType = ASSET_VALUE_GRAPH_MONTH;
+      this.setState({ graphLoading: true });
+      let addressList = [];
+      this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
+      let data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(addressList));
+      data.append("group_criteria", groupByValue);
+      this.props.getAssetGraphDataApi(data, this,ActionType);
+      this.state.isTimeOut &&
+        setTimeout(() => {
+          this.setState(
+            {
+              isTimeOut: false,
+            },
+            () => {
+              this.props.getAssetGraphDataApi(data, this,ActionType);
+              // //console.log("api called", this);
+            }
+          );
+        }, 10000);
+    
   };
 
   // filter asset value chart
@@ -1261,7 +1285,6 @@ class Portfolio extends BaseReactComponent {
                   handleAddModal={this.handleAddModal}
                   // net worth total
                   isLoading={this.state.isLoadingNet}
-
                   // walletTotal={
                   //   this.props.portfolioState.walletTotal +
                   //   this.state.totalYield -
@@ -1281,6 +1304,7 @@ class Portfolio extends BaseReactComponent {
 
               <div className="portfolio-section" style={{ minWidth: "85rem" }}>
                 <PieChart2
+                  setLoader={this.setLoader}
                   userWalletData={
                     this.props.portfolioState &&
                     this.props.portfolioState.chainWallet &&
@@ -1367,8 +1391,8 @@ class Portfolio extends BaseReactComponent {
                     >
                       <LineChartSlider
                         assetValueData={
-                          this.props.portfolioState.assetValueData &&
-                          this.props.portfolioState.assetValueData
+                          this.props.portfolioState.assetValueMonth &&
+                          this.props.portfolioState.assetValueMonth
                         }
                         externalEvents={
                           this.state.externalEvents && this.state.externalEvents
