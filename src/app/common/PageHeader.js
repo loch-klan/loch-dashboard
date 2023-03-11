@@ -117,30 +117,34 @@ export default function PageHeader(props) {
             </span>
           )}
         </div>
-        {(props.btnText || props.SecondaryBtn) &&<div>
-          {props.SecondaryBtn && (
-            <Button className="secondary-btn white-bg" onClick={handleConnectModal}>
-              Connect exchange
-            </Button>
-          )}
-          {props.btnText && (
-            <Button
-              className={`${
-                props.btnOutline ? "secondary-btn" : "primary-btn"
-              }`}
-              onClick={props.handleBtn}
-            >
-              {props.btnText}
-            </Button>
-          )}
-        </div>}
+        {(props.btnText || props.SecondaryBtn) && (
+          <div>
+            {props.SecondaryBtn && (
+              <Button
+                className="secondary-btn white-bg"
+                onClick={handleConnectModal}
+              >
+                Connect exchange
+              </Button>
+            )}
+            {props.btnText && (
+              <Button
+                className={`${
+                  props.btnOutline ? "secondary-btn" : "primary-btn"
+                }`}
+                onClick={props.handleBtn}
+              >
+                {props.btnText}
+              </Button>
+            )}
+          </div>
+        )}
 
         {props.viewMore && (
           <h3
             // href={props.viewMoreRedirect}
             className="view-more"
             onClick={props.handleClick}
-            
           >
             View More
           </h3>
@@ -155,6 +159,7 @@ export default function PageHeader(props) {
           headerTitle={"Connect exchanges"}
           modalType={"connectModal"}
           iconImage={LinkIcon}
+          handleUpdate={this.handleUpdate}
         />
       ) : (
         ""

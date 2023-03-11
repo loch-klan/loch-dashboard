@@ -11,7 +11,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
-import { GetAllPlan, getUser } from "../common/Api";
+import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import { Button, Col, Image, Row } from "react-bootstrap";
 
 // Upgrade
@@ -145,6 +145,8 @@ class Profile extends Component {
       userWalletList: value,
       isUpdate: this.state.isUpdate === 0 ? 1 : 0,
     });
+
+      this.props.setPageFlagDefault();
   };
 
   render() {
@@ -310,6 +312,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
+setPageFlagDefault
 };
 Profile.propTypes = {
   // getPosts: PropTypes.func

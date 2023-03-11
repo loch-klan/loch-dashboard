@@ -26,7 +26,7 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, getUser } from "../common/Api";
+import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 
 
@@ -224,6 +224,8 @@ class TransactionHistoryPage extends BaseReactComponent {
     this.setState({
       apiResponse: value,
     });
+
+     this.props.setPageFlagDefault();
     // console.log("api respinse", value);
   };
 
@@ -1355,6 +1357,7 @@ const mapDispatchToProps = {
   // getCoinRate,
   getAllCoins,
   getFilters,
+  setPageFlagDefault
 };
 
 TransactionHistoryPage.propTypes = {};

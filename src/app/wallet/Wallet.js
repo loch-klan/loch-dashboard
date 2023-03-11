@@ -22,7 +22,7 @@ import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWalle
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
-import { GetAllPlan, getUser } from "../common/Api";
+import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 
 class Wallet extends Component {
   constructor(props) {
@@ -215,6 +215,7 @@ class Wallet extends Component {
     // console.log("YES API")
     this.setState({isLoading: true})
     this.makeApiCall();
+    this.props.setPageFlagDefault();
   };
 
   render() {
@@ -245,6 +246,7 @@ class Wallet extends Component {
             btnText="Add wallet"
             SecondaryBtn={true}
             handleBtn={this.handleAddModal}
+            handleUpdate={this.handleUpdateWallet}
             // showData={totalWalletAmt}
             // isLoading={isLoading}
           />
@@ -351,6 +353,7 @@ const mapDispatchToProps = {
   getAllCoins,
   getAllWalletListApi,
   getAllWalletApi,
+  setPageFlagDefault,
   // getCoinRate,
 };
 Wallet.propTypes = {

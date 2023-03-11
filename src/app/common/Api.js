@@ -784,9 +784,10 @@ export const updateAccessToken = (data, ctx, name) => {
         // });
         ctx.state.onHide();
         toast.success(`${name} connected to loch`);
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
+        ctx.props?.handleUpdate && ctx.props.handleUpdate();
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }

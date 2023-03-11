@@ -30,7 +30,7 @@ import ConnectModal from "../common/ConnectModal";import FixAddModal from "../co
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { GetAllPlan, getUser } from "../common/Api";
+import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 
 
 class Cost extends Component {
@@ -134,6 +134,7 @@ class Cost extends Component {
       apiResponse: value,
     });
     // console.log("api respinse", value);
+      this.props.setPageFlagDefault();
   };
 
   getBlockchainFee(option) {
@@ -595,6 +596,7 @@ const mapDispatchToProps = {
   updateCounterParty,
   // update fee
   updateFeeGraph,
+  setPageFlagDefault
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cost);
