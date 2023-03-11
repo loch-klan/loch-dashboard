@@ -36,7 +36,16 @@ export const GraphHeader = (props) => {
             {props.subtitle}
           </p>
         </div>
-       
+
+        {/* {props.loader && (
+          <h5
+            className="inter-display-medium f-s-10 lh-12"
+          
+          >
+            Don't worry we're still loading all your data
+          </h5>
+        )} */}
+
         {props.isConnect && (
           <Button className="grey-btn" onClick={props.handleExchange}>
             {" "}

@@ -1054,8 +1054,8 @@ backdrop-filter: blur(15px);">
                 isArrow={true}
                 isAnalytics="Asset Value"
                 handleClick={this.props.handleClick}
-                loader={true}
-                loaderText="Don't worry we're still loading all your data"
+                // loader={true}
+                // loaderText="Don't worry we're still loading all your data"
               />
             )}
 
@@ -1138,8 +1138,8 @@ backdrop-filter: blur(15px);">
                   </span>
                   {true && (
                     <h5
-                      className="inter-display-medium f-s-13 lh-15 grey-ADA"
-                      style={{ position: "absolute", right: "0px",top: !this.props.hideTimeFilter ? "-27px" : "-5px",zIndex: 1 }}
+                      className="inter-display-medium f-s-10 lh-14"
+                      style={{ position: "absolute", right: "0px",top: !this.props.hideTimeFilter ? "-27px" : "-2px",zIndex: 1 }}
                     >
                       Don't worry we're still loading all your data
                     </h5>
