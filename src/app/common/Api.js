@@ -238,6 +238,7 @@ export const getDetectedChainsApi = (ctx) =>{
                   wallet_metadata: {},
                   showAddress: true,
                 showNickname: true,
+                nickname:"",
                    apiAddress: ""
                 },
               ],

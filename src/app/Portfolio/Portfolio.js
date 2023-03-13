@@ -238,12 +238,20 @@ class Portfolio extends BaseReactComponent {
           {
             triggerId: obj.id,
             isStatic: true,
+            isLoading: false,
+            isLoadingNet:false
           },
           () => {
             this.upgradeModal();
           }
         );
       }
+    } else {
+      this.setState(
+          {
+            isLoading: true,
+            isLoadingNet:true
+          })
     }
   };
 

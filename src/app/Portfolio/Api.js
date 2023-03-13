@@ -88,11 +88,13 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
                   });
                 }
               if (ctx.state.userWalletList.length - 1 === index) {
-                ctx.setState({
-                  isLoading: false,
-                  isLoadingNet: false,
-                  isStopLoading:true
-                });
+                setTimeout(() => {
+                  ctx.setState({
+                    isLoading: false,
+                    isLoadingNet: false,
+                    isStopLoading: true,
+                  });
+                }, 2000);
               }
               
             })
