@@ -61,7 +61,7 @@ class AssetValueGraph extends Component {
     //    this.props.getCoinRate();
     this.props.getAllCoins();
     // this.getGraphData();
-    this.setState({})
+    this.setState({});
     GetAllPlan();
     getUser();
     this.setState({
@@ -73,23 +73,23 @@ class AssetValueGraph extends Component {
 
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
-     
+
       this.setState({
-        apiResponse:false
-      })
+        apiResponse: false,
+      });
     }
 
     if (!this.props.commonState.asset_value) {
-       console.log("up")
-       this.props.updateWalletListFlag("asset_value", true);
-       this.props.portfolioState.assetValueMonth = null;
-       this.props.portfolioState.assetValueYear = null;
-        this.props.portfolioState.assetValueDay = null;
-       this.props.getAllCoins();
-       if (!this.props.portfolioState.assetValueMonth) {
-         this.getGraphData();
-       }
-     }
+      //  console.log("up")
+      this.props.updateWalletListFlag("asset_value", true);
+      this.props.portfolioState.assetValueMonth = null;
+      this.props.portfolioState.assetValueYear = null;
+      this.props.portfolioState.assetValueDay = null;
+      this.props.getAllCoins();
+      if (!this.props.portfolioState.assetValueDay) {
+        this.getGraphData();
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -107,7 +107,7 @@ class AssetValueGraph extends Component {
   handleChangeList = (value) => {
     this.setState({
       // for add wallet
-     userWalletList: value,
+      userWalletList: value,
       isUpdate: this.state.isUpdate === 0 ? 1 : 0,
       // for page
       // graphLoading: true,
@@ -118,16 +118,16 @@ class AssetValueGraph extends Component {
 
   CheckApiResponse = (value) => {
     this.setState({
-      apiResponse: value
+      apiResponse: value,
     });
     // console.log("api respinse", value)
     this.props.setPageFlagDefault();
-  }
+  };
 
-  getGraphData = (groupByValue = GROUP_BY_MONTH) => {
+  getGraphData = (groupByValue = GROUP_BY_DATE) => {
     // console.log("data a", this.props);
-   
-    let ActionType = ASSET_VALUE_GRAPH_MONTH;
+
+    let ActionType = ASSET_VALUE_GRAPH_DAY;
     let runApi = false;
     if (groupByValue === GROUP_BY_MONTH) {
       ActionType = ASSET_VALUE_GRAPH_MONTH;
@@ -139,9 +139,7 @@ class AssetValueGraph extends Component {
         // console.log("months");
       } else {
         runApi = true;
-      } 
-       
-      
+      }
     } else if (groupByValue === GROUP_BY_YEAR) {
       ActionType = ASSET_VALUE_GRAPH_YEAR;
       if (this.props.portfolioState.assetValueYear) {
@@ -152,22 +150,18 @@ class AssetValueGraph extends Component {
         // console.log("year");
       } else {
         runApi = true;
-      } 
-      
-       
+      }
     } else if (groupByValue === GROUP_BY_DATE) {
       ActionType = ASSET_VALUE_GRAPH_DAY;
       if (this.props.portfolioState.assetValueDay) {
         runApi = false;
-         this.setState({
-           assetValueData: this.props.portfolioState.assetValueDay,
-         });
+        this.setState({
+          assetValueData: this.props.portfolioState.assetValueDay,
+        });
         //  console.log("data");
       } else {
-          runApi = true;
-      } 
-    
-     
+        runApi = true;
+      }
     } else {
       runApi = true;
       // console.log("api");
@@ -193,7 +187,6 @@ class AssetValueGraph extends Component {
       //   }, 10000);
       // }
     }
-   
   };
 
   handleGroupBy = (value) => {

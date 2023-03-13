@@ -239,6 +239,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         assetValueYear: null,
         assetValueMonth: null,
         assetValueDay: null,
+        assetValueDataLoaded: false,
       };
     default:
       return state;

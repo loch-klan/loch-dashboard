@@ -77,7 +77,7 @@ import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
 import { toast } from "react-toastify";
 import { GraphHeader } from "../common/GraphHeader";
-import { ASSET_VALUE_GRAPH_MONTH } from "./ActionTypes";
+import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH } from "./ActionTypes";
 
 
 class Portfolio extends BaseReactComponent {
@@ -292,7 +292,6 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidMount() {
-   
     // get token to check if wallet address loaded on not
     this.getToken();
     this.state.startTime = new Date() * 1;
@@ -329,15 +328,15 @@ class Portfolio extends BaseReactComponent {
     // Check if the coin rate api values are changed
     if (!this.props.commonState.home && this.state.lochToken) {
       this.props.updateWalletListFlag("home", true);
-        this.setState({
-          isLoadingInsight: true,
-          netFlowLoading: true,
-          isLoading: true,
-          isLoadingNet: true,
-          graphLoading: true,
-          tableLoading: true,
-        });
-      
+      this.setState({
+        isLoadingInsight: true,
+        netFlowLoading: true,
+        isLoading: true,
+        isLoadingNet: true,
+        graphLoading: true,
+        tableLoading: true,
+      });
+
       // console.log("inside coin rate list");
       // if wallet address change
       if (
@@ -360,7 +359,7 @@ class Portfolio extends BaseReactComponent {
                   address: wallet.address,
                   coinCode: coin.coinCode,
                 };
-                this.props.getUserWallet(userCoinWallet, this, false,i);
+                this.props.getUserWallet(userCoinWallet, this, false, i);
               }
             });
           }
@@ -386,11 +385,8 @@ class Portfolio extends BaseReactComponent {
             // overview loader and net worth loader
             // isLoading: false,
             // isLoadingNet: false,
-          
           });
         }
-     
-         
       } else {
         // console.log("inside else");
         // Resetting the user wallet list, total and chain wallet
@@ -403,11 +399,9 @@ class Portfolio extends BaseReactComponent {
         // net worth total loader
         this.setState({
           isLoading: false,
-          isLoadingNet:false,
+          isLoadingNet: false,
         });
       }
-
-    
 
       // run this when table value is []
       this.getTableData();
@@ -421,8 +415,7 @@ class Portfolio extends BaseReactComponent {
       //   })
       // }
 
-       this.getGraphData();
-     
+      this.getGraphData();
 
       // - remove form home
       // getAllCounterFeeApi(this, false, false);
@@ -467,12 +460,12 @@ class Portfolio extends BaseReactComponent {
 
   // get refresh btn
   setLoader = (value) => {
-    console.log("stop")
+    console.log("stop");
     this.setState({
       isLoading: value,
-      isLoadingNet:value,
-    })
-  }
+      isLoadingNet: value,
+    });
+  };
 
   apiCall = () => {
     //console.log("APPCALL");
@@ -521,27 +514,24 @@ class Portfolio extends BaseReactComponent {
   }
 
   // asset value chart api call
-  getGraphData = (groupByValue = GROUP_BY_MONTH) => {
+  getGraphData = (groupByValue = GROUP_BY_DATE) => {
     //console.log("calling graph");
-    let ActionType = ASSET_VALUE_GRAPH_MONTH;
+    let ActionType = ASSET_VALUE_GRAPH_DAY;
     this.setState({ graphLoading: true }, () => {
-       let addressList = [];
-       this.state.userWalletList.map((wallet) =>
-         addressList.push(wallet.address)
-       );
-       let data = new URLSearchParams();
-       data.append("wallet_addresses", JSON.stringify(addressList));
-       data.append("group_criteria", groupByValue);
-       this.props.getAssetGraphDataApi(data, this, ActionType);
+      let addressList = [];
+      this.state.userWalletList.map((wallet) =>
+        addressList.push(wallet.address)
+      );
+      let data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(addressList));
+      data.append("group_criteria", groupByValue);
+      this.props.getAssetGraphDataApi(data, this, ActionType);
       //  if (this.state.assetValueDataLoaded) {
       //    setTimeout(() => {
       //      this.props.getAssetGraphDataApi(data, this, ActionType);
       //    }, 10000);
       //  }
     });
-     
-        
-    
   };
 
   // filter asset value chart
@@ -648,7 +638,6 @@ class Portfolio extends BaseReactComponent {
       showBtn: e,
     });
   };
-  
 
   render() {
     const { table, assetPriceList } = this.props.intelligenceState;
@@ -1390,8 +1379,8 @@ class Portfolio extends BaseReactComponent {
                     >
                       <LineChartSlider
                         assetValueData={
-                          this.props.portfolioState.assetValueMonth &&
-                          this.props.portfolioState.assetValueMonth
+                          this.props.portfolioState.assetValueDay &&
+                          this.props.portfolioState.assetValueDay
                         }
                         externalEvents={
                           this.state.externalEvents && this.state.externalEvents
@@ -1411,7 +1400,9 @@ class Portfolio extends BaseReactComponent {
                         }}
                         hideTimeFilter={true}
                         hideChainFilter={true}
-                        dataLoaded={this.props.portfolioState.assetValueDataLoaded}
+                        dataLoaded={
+                          this.props.portfolioState.assetValueDataLoaded
+                        }
                       />
                     </div>
                   </Col>

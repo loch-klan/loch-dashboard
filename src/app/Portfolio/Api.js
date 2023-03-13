@@ -262,14 +262,15 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                 } else {
 
                  
-                  ctx.props.getCoinRate();
-                  ctx.getTableData();
-                  ctx.getGraphData();
-                  getAllCounterFeeApi(ctx, false, false);
-                  ctx.props.getProfitAndLossApi(ctx, false, false, false);
-                   ctx.props.getAllInsightsApi(ctx);
-                         GetAllPlan();
-                  getUser(ctx);
+                  // ctx.props.getCoinRate();
+                  // ctx.getTableData();
+                  // ctx.getGraphData();
+                  // getAllCounterFeeApi(ctx, false, false);
+                  // ctx.props.getProfitAndLossApi(ctx, false, false, false);
+                  //  ctx.props.getAllInsightsApi(ctx);
+                  //        GetAllPlan();
+                  // getUser(ctx);
+                  ctx.props.settingDefaultValues();
                   
                 }
                 

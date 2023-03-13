@@ -42,13 +42,14 @@ class LineChartSlider extends BaseReactComponent {
       assetValueData: props.assetValueData,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
-      title: "Month",
+      title: "Day",
       titleY: CurrencyType(),
       selectedEvents: [],
       selectedValue: null,
       legends: [],
-      steps: this.props.hideTimeFilter ? 3 : 1,
+      steps: this.props.hideTimeFilter ? 6 : 1,
       plotLineHide: 0,
+      rangeSelected: 1,
     };
   }
 
@@ -56,15 +57,16 @@ class LineChartSlider extends BaseReactComponent {
     if (prevProps.isUpdate !== this.props.isUpdate) {
       // console.log("Something update");
       this.setState({
-        title: "Month",
+        title: "Day",
         selectedEvents: [],
-        steps: this.props.hideTimeFilter ? 3 : 1,
+        steps: this.props.hideTimeFilter ? 6 : 1,
+        rangeSelected: 1,
       });
     }
   }
 
   handleFunction = (badge) => {
-    console.log("badge", badge)
+    // console.log("badge", badge)
 
     if (badge?.[0].name === "All") {
         this.setState({
@@ -97,7 +99,7 @@ class LineChartSlider extends BaseReactComponent {
   handleSelect = (opt) => {
     // console.log("opt", opt.target.id);
     //  let t = opt.split(" ")[1];
-    let t = "Month"
+    let t = "Day"
     if (opt.target.id == 0) {
       t = "Year";
     } else if (opt.target.id == 1) {
@@ -105,12 +107,13 @@ class LineChartSlider extends BaseReactComponent {
     } else if (opt.target.id == 2) {
       t = "Day";
     } else {
-       t = "Month";
+       t = "Day";
     }
       this.setState({
         title: t,
         selectedEvents: [],
-        steps: this.props.hideTimeFilter ? 3 : 1,
+        steps: this.props.hideTimeFilter ? 6 : 1,
+        rangeSelected: 1,
       });
     this.props.handleGroupBy(t);
   };
@@ -176,8 +179,30 @@ class LineChartSlider extends BaseReactComponent {
                   moment(assetData.timestamp).format("MMMM YYYY") ===
                     currentDate
                 ? data.count
-                : data.max_count;
-            // console.log("data", data.count, data.max_count, dataCount, currentDate);
+                  : data.max_count;
+            
+            // if (
+            //   (this.state.title === "Year" &&
+            //     moment(assetData.timestamp).format("YYYY") === currentDate) ||
+            //   (this.state.title === "Month" &&
+            //     moment(assetData.timestamp).format("MMMM YYYY") === currentDate)
+            // ) {
+            //    console.log(
+            //      "data count api",
+            //      data.count,
+            //      "data max count",
+            //      data.max_count,
+            //      "data count",
+            //      dataCount,
+            //      "current date",
+            //      currentDate,
+            //      "date",
+            //      this.state.title === "Year"
+            //        ? moment(assetData.timestamp).format("YYYY")
+            //        : moment(assetData.timestamp).format("MMMM YYYY")
+            //    );
+            // }
+           
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
                 assetMaster[data.asset.id][assetData.timestamp] =
@@ -684,7 +709,7 @@ class LineChartSlider extends BaseReactComponent {
       },
       rangeSelector: {
         enabled: false,
-        selected: 1,
+        selected: parent.state.rangeSelected,
       },
       scrollbar: {
         enabled: true,
@@ -893,7 +918,7 @@ class LineChartSlider extends BaseReactComponent {
               color: item.series.userOptions.color,
             });
             net_amount += item.y;
-          //  if(item.series.userOptions.assetName === "Total"){ net_amount = item.y;}
+            //  if(item.series.userOptions.assetName === "Total"){ net_amount = item.y;}
           });
           tooltipData.sort((a, b) => parseFloat(b.y) - parseFloat(a.y));
           // console.log("sorted", tooltipData);
