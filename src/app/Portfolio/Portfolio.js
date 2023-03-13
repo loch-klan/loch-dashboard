@@ -471,7 +471,7 @@ class Portfolio extends BaseReactComponent {
 
   // get refresh btn
   setLoader = (value) => {
-    console.log("stop");
+    // console.log("stop");
     this.setState({
       isLoading: value,
       isLoadingNet: value,
