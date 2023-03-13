@@ -141,6 +141,11 @@ class LineChartSlider extends BaseReactComponent {
     let timestampList = [];
     let assetMaster = {};
     let internalEvents = [];
+
+    let currentDate =
+      this.state.title === "Year"
+        ? moment().format("YYYY")
+        : moment().format("MMMM YYYY");
    
 
     assetValueData &&
@@ -162,16 +167,26 @@ class LineChartSlider extends BaseReactComponent {
           }
 
           assetData.assets?.map((data) => {
-            // console.log("data", data);
+            
+            let dataCount =
+              this.state.title === "Year" &&
+              moment(assetData.timestamp).format("YYYY") === currentDate
+                ? data.count
+                : this.state.title === "Month" &&
+                  moment(assetData.timestamp).format("MMMM YYYY") ===
+                    currentDate
+                ? data.count
+                : data.max_count;
+            // console.log("data", data.count, data.max_count, dataCount, currentDate);
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.max_count) *
+                  new Number(dataCount) *
                     (data.asset_price * (this.state.currency?.rate || 1)) +
                   assetMaster[data.asset.id][assetData.timestamp];
               } else {
                 assetMaster[data.asset.id][assetData.timestamp] =
-                  new Number(data.max_count) *
+                  new Number(dataCount) *
                   (data.asset_price * (this.state.currency?.rate || 1));
               }
             } else {
@@ -181,11 +196,11 @@ class LineChartSlider extends BaseReactComponent {
                   ? data.asset_price * (this.state.currency?.rate || 1)
                   : 0,
                 count:
-                  new Number(data.max_count) *
+                  new Number(dataCount) *
                   (data.asset_price * (this.state.currency?.rate || 1)),
               };
               assetMaster[data.asset.id][assetData.timestamp] =
-                new Number(data.max_count) *
+                new Number(dataCount) *
                 (data.asset_price * (this.state.currency?.rate || 1));
             }
           });

@@ -79,7 +79,8 @@ class AssetValueGraph extends Component {
       })
     }
 
-     if (!this.props.commonState.asset_value) {
+    if (!this.props.commonState.asset_value) {
+       console.log("up")
        this.props.updateWalletListFlag("asset_value", true);
        this.props.portfolioState.assetValueMonth = null;
        this.props.portfolioState.assetValueYear = null;
@@ -124,27 +125,35 @@ class AssetValueGraph extends Component {
   }
 
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
-
+    // console.log("data a", this.props);
+   
     let ActionType = ASSET_VALUE_GRAPH_MONTH;
     let runApi = false;
     if (groupByValue === GROUP_BY_MONTH) {
       ActionType = ASSET_VALUE_GRAPH_MONTH;
       if (this.props.portfolioState.assetValueMonth) {
-       
         runApi = false;
         this.setState({
           assetValueData: this.props.portfolioState.assetValueMonth,
         });
+        // console.log("months");
+      } else {
+        runApi = true;
       } 
+       
       
     } else if (groupByValue === GROUP_BY_YEAR) {
       ActionType = ASSET_VALUE_GRAPH_YEAR;
       if (this.props.portfolioState.assetValueYear) {
         runApi = false;
-         this.setState({
-           assetValueData: this.props.portfolioState.assetValueYear,
-         });
+        this.setState({
+          assetValueData: this.props.portfolioState.assetValueYear,
+        });
+        // console.log("year");
+      } else {
+        runApi = true;
       } 
+      
        
     } else if (groupByValue === GROUP_BY_DATE) {
       ActionType = ASSET_VALUE_GRAPH_DAY;
@@ -153,14 +162,19 @@ class AssetValueGraph extends Component {
          this.setState({
            assetValueData: this.props.portfolioState.assetValueDay,
          });
+        //  console.log("data");
+      } else {
+          runApi = true;
       } 
+    
      
     } else {
       runApi = true;
+      // console.log("api");
     }
 
     if (runApi) {
-       console.log("months");
+      //  console.log("api");
       this.setState({ graphLoading: true });
       let addressList = [];
       // console.log("wallet addres", this.state.userWalletList);
