@@ -392,7 +392,7 @@ class FixAddModal extends BaseReactComponent {
              w.id = `wallet${i + 1}`;
            });
            localStorage.setItem("addWallet", JSON.stringify(addWallet));
-           console.log("wdjbw", addressList);
+ 
            this.state.onHide();
            const data = new URLSearchParams();
            // data.append("wallet_addresses", JSON.stringify(arr));

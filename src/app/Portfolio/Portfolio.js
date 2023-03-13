@@ -284,6 +284,7 @@ class Portfolio extends BaseReactComponent {
       graphLoading: true,
       tableLoading: true,
     });
+    // console.log("load")
   };
 
   // undetected modal
