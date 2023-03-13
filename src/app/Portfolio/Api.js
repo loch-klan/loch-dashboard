@@ -294,7 +294,10 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
          if (!res.data.error) {
            dispatch({
              type: ActionType,
-             payload: res.data.data.asset_value_data,
+             payload: {
+               data: res.data.data.asset_value_data,
+               loader: !res.data.data.data_loaded,
+             },
            });
            ctx.setState({
              assetValueData: res.data.data.asset_value_data,

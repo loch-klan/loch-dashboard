@@ -28,7 +28,7 @@ const INITIAL_STATE = {
   assetValueYear: null,
   assetValueMonth: null,
   assetValueDay: null,
-  // assetValueDataLoaded: false,
+  assetValueDataLoaded: false,
   // external events data it set after asset value chart api response get
   externalEvents: [],
 };
@@ -204,13 +204,25 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
     case YESTERDAY_BALANCE:
       return { ...state, yesterdayBalance: action.payload.balance };
     case ASSET_VALUE_GRAPH:
-      return { ...state, assetValueData: action.payload };
+      return {
+        ...state,
+        assetValueData: action.payload.data,
+        assetValueDataLoaded: action.payload.loader,
+      };
     case ASSET_VALUE_GRAPH_MONTH:
-      return { ...state, assetValueMonth: action.payload };
+      return { ...state, assetValueMonth: action.payload.data, assetValueDataLoaded:action.payload.loader };
     case ASSET_VALUE_GRAPH_YEAR:
-      return { ...state, assetValueYear: action.payload };
+      return {
+        ...state,
+        assetValueYear: action.payload.data,
+        assetValueDataLoaded: action.payload.loader,
+      };
     case ASSET_VALUE_GRAPH_DAY:
-      return { ...state, assetValueDay: action.payload };
+      return {
+        ...state,
+        assetValueDay: action.payload.data,
+        assetValueDataLoaded: action.payload.loader,
+      };
     case EXTERNAL_EVENTS:
       return { ...state, externalEvents: action.payload.externalEvents };
 

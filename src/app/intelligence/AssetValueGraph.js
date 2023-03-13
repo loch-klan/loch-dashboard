@@ -126,10 +126,11 @@ class AssetValueGraph extends Component {
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
 
     let ActionType = ASSET_VALUE_GRAPH_MONTH;
-    let runApi = true;
+    let runApi = false;
     if (groupByValue === GROUP_BY_MONTH) {
       ActionType = ASSET_VALUE_GRAPH_MONTH;
       if (this.props.portfolioState.assetValueMonth) {
+       
         runApi = false;
         this.setState({
           assetValueData: this.props.portfolioState.assetValueMonth,
@@ -154,10 +155,13 @@ class AssetValueGraph extends Component {
          });
       } 
      
+    } else {
+      runApi = true;
     }
 
     if (runApi) {
-      this.setState({ graphLoading: true, assetValueDataLoaded:true });
+       console.log("months");
+      this.setState({ graphLoading: true });
       let addressList = [];
       // console.log("wallet addres", this.state.userWalletList);
       this.state.userWalletList?.map((wallet) =>
@@ -215,8 +219,7 @@ class AssetValueGraph extends Component {
           <div className="graph-container" style={{ marginBottom: "5rem" }}>
             <LineChartSlider
               assetValueData={
-                this.state.assetValueData &&
-                this.state.assetValueData
+                this.state.assetValueData && this.state.assetValueData
               }
               externalEvents={
                 this.props.portfolioState.externalEvents &&
@@ -228,7 +231,7 @@ class AssetValueGraph extends Component {
               graphLoading={this.state.graphLoading}
               isUpdate={this.state.isUpdate}
               isPage={true}
-              dataLoaded={this.state.assetValueDataLoaded}
+              dataLoaded={this.props.portfolioState.assetValueDataLoaded}
             />
           </div>
           {/* <FeedbackForm page={"Asset Value Graph Page"} /> */}

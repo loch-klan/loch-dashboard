@@ -524,7 +524,7 @@ class Portfolio extends BaseReactComponent {
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
     //console.log("calling graph");
     let ActionType = ASSET_VALUE_GRAPH_MONTH;
-    this.setState({ graphLoading: true, assetValueDataLoaded: true }, () => {
+    this.setState({ graphLoading: true }, () => {
        let addressList = [];
        this.state.userWalletList.map((wallet) =>
          addressList.push(wallet.address)
@@ -1411,7 +1411,7 @@ class Portfolio extends BaseReactComponent {
                         }}
                         hideTimeFilter={true}
                         hideChainFilter={true}
-                        dataLoaded={this.state.assetValueDataLoaded}
+                        dataLoaded={this.props.portfolioState.assetValueDataLoaded}
                       />
                     </div>
                   </Col>
