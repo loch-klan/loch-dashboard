@@ -265,7 +265,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet) => {
 
   localStorage.setItem("stopClick", false);
       
-   localStorage.setItem("lochToken", "jsk");
+  localStorage.setItem("lochToken", "jsk");
  
   {
     !ctx.state.id &&

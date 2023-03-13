@@ -87,14 +87,14 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
                     assetPrice: {...ctx.state.assetPrice, ...res.data?.data.asset_prices},
                   });
                 }
-              if (ctx.state.userWalletList.length - 1 === index) {
+              if (ctx.state.userWalletList?.length - 1 === index) {
                 setTimeout(() => {
                   ctx.setState({
                     isLoading: false,
                     isLoadingNet: false,
                     isStopLoading: true,
                   });
-                }, 2000);
+                }, (ctx.state.userWalletList?.length || 1) * 1500);
               }
               
             })

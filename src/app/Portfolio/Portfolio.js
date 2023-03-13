@@ -247,11 +247,14 @@ class Portfolio extends BaseReactComponent {
         );
       }
     } else {
-      this.setState(
-          {
-            isLoading: true,
-            isLoadingNet:true
-          })
+      this.setState({
+        isLoadingInsight: true,
+        netFlowLoading: true,
+        isLoading: true,
+        isLoadingNet: true,
+        graphLoading: true,
+        tableLoading: true,
+      });
     }
   };
 
