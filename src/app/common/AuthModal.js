@@ -17,7 +17,7 @@ import {
 } from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import {fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
+import {fixWalletApi, SendOtp, setPageFlagDefault, VerifyEmail } from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
@@ -53,6 +53,7 @@ class AuthModal extends BaseReactComponent {
   componentDidMount() {
     // this.props.getAllCoins();
     // this.props.getAllParentChains();
+     
   }
     
     componentDidUpdate(prevProps, prevState) {
@@ -309,6 +310,7 @@ const mapDispatchToProps = {
   getAllCoins,
   detectCoin,
   getAllParentChains,
+  setPageFlagDefault
 };
 
 AuthModal.propTypes = {};

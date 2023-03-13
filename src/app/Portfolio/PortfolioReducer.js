@@ -27,7 +27,8 @@ const INITIAL_STATE = {
   assetValueData: null,
   assetValueYear: null,
   assetValueMonth: null,
-  assetValueDay:null,
+  assetValueDay: null,
+  // assetValueDataLoaded: false,
   // external events data it set after asset value chart api response get
   externalEvents: [],
 };

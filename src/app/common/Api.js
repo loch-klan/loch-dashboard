@@ -376,6 +376,9 @@ export const VerifyEmail = (data,ctx) => {
          );
         localStorage.setItem("lochToken", token);
         const userId = localStorage.getItem("lochDummyUser");
+
+        // reset redux
+          ctx.props.setPageFlagDefault && ctx.props.setPageFlagDefault();
         // if (res.data.data.is_new_user) {
         //   signUpProperties({
         //     email_address: res.data.data.user?.email,

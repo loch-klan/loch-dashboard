@@ -108,7 +108,7 @@ class Portfolio extends BaseReactComponent {
 
       // networth total loader
       isLoading: false,
-      isLoadingNet:false,
+      isLoadingNet: false,
 
       // transaction history table
       tableLoading: false,
@@ -211,7 +211,8 @@ class Portfolio extends BaseReactComponent {
       updatedInsightList: "",
       isLoadingInsight: false,
 
-     
+      // Asset value data loaded
+      assetValueDataLoaded: false,
     };
   }
 
@@ -523,25 +524,23 @@ class Portfolio extends BaseReactComponent {
   getGraphData = (groupByValue = GROUP_BY_MONTH) => {
     //console.log("calling graph");
     let ActionType = ASSET_VALUE_GRAPH_MONTH;
-      this.setState({ graphLoading: true });
-      let addressList = [];
-      this.state.userWalletList.map((wallet) => addressList.push(wallet.address));
-      let data = new URLSearchParams();
-      data.append("wallet_addresses", JSON.stringify(addressList));
-      data.append("group_criteria", groupByValue);
-      this.props.getAssetGraphDataApi(data, this,ActionType);
-      this.state.isTimeOut &&
-        setTimeout(() => {
-          this.setState(
-            {
-              isTimeOut: false,
-            },
-            () => {
-              this.props.getAssetGraphDataApi(data, this,ActionType);
-              // //console.log("api called", this);
-            }
-          );
-        }, 10000);
+    this.setState({ graphLoading: true, assetValueDataLoaded: true }, () => {
+       let addressList = [];
+       this.state.userWalletList.map((wallet) =>
+         addressList.push(wallet.address)
+       );
+       let data = new URLSearchParams();
+       data.append("wallet_addresses", JSON.stringify(addressList));
+       data.append("group_criteria", groupByValue);
+       this.props.getAssetGraphDataApi(data, this, ActionType);
+      //  if (this.state.assetValueDataLoaded) {
+      //    setTimeout(() => {
+      //      this.props.getAssetGraphDataApi(data, this, ActionType);
+      //    }, 10000);
+      //  }
+    });
+     
+        
     
   };
 
@@ -1412,6 +1411,7 @@ class Portfolio extends BaseReactComponent {
                         }}
                         hideTimeFilter={true}
                         hideChainFilter={true}
+                        dataLoaded={this.state.assetValueDataLoaded}
                       />
                     </div>
                   </Col>

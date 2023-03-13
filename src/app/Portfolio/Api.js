@@ -285,6 +285,7 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
 };
 
 export const getAssetGraphDataApi = (data, ctx, ActionType) => {
+  // console.log("before",data, ctx, ActionType);
   return async function (dispatch, getState) {
      postLoginInstance
        .post("wallet/user-wallet/get-asset-value-graph", data)
@@ -298,8 +299,17 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
            ctx.setState({
              assetValueData: res.data.data.asset_value_data,
              graphLoading: false,
+             assetValueDataLoaded: !res.data.data.data_loaded,
            });
            ctx.props.getExternalEventsApi(ctx);
+
+          //  run this function until data loaded
+           if (!res.data.data.data_loaded) {
+            //  console.log(data, ctx, ActionType, ctx.state?.currentPage);
+               setTimeout(() => {
+                 ctx.props.getAssetGraphDataApi(data, ctx, ActionType);
+               }, 15000);
+           }
          } else {
            toast.error(res.data.message || "Something Went Wrong");
          }

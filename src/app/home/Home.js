@@ -6,7 +6,7 @@ import "../../assets/scss/onboarding/_onboarding.scss";
 import { Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
 import { deleteToken, getToken } from '../../utils/ManageToken';
-import { GetDefaultPlan } from '../common/Api';
+import { GetDefaultPlan, setPageFlagDefault } from '../common/Api';
 import UpgradeModal from '../common/upgradeModal';
 
 class Home extends Component {
@@ -45,6 +45,7 @@ class Home extends Component {
       if (getToken()) {
         this.props.history.push("/home");
       } else {
+          this.props.setPageFlagDefault();
         deleteToken();
            localStorage.setItem("defi_access", true);
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
@@ -88,6 +89,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
+  setPageFlagDefault
 }
 Home.propTypes = {
   // getPosts: PropTypes.func

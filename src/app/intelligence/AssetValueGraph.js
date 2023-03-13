@@ -42,8 +42,11 @@ class AssetValueGraph extends Component {
       isUpdate: 0,
       apiResponse: false,
 
-      // assevalue data for all filters
-      assetValueData:null,
+      // asset value data for all filters
+      assetValueData: null,
+
+      // asset value loader
+      assetValueDataLoaded: false,
     };
   }
 
@@ -154,7 +157,7 @@ class AssetValueGraph extends Component {
     }
 
     if (runApi) {
-      this.setState({ graphLoading: true });
+      this.setState({ graphLoading: true, assetValueDataLoaded:true });
       let addressList = [];
       // console.log("wallet addres", this.state.userWalletList);
       this.state.userWalletList?.map((wallet) =>
@@ -164,7 +167,13 @@ class AssetValueGraph extends Component {
       let data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
       data.append("group_criteria", groupByValue);
-      this.props.getAssetGraphDataApi(data, this,ActionType);
+      this.props.getAssetGraphDataApi(data, this, ActionType);
+
+      // if (this.state.assetValueDataLoaded) {
+      //   setTimeout(() => {
+      //     this.props.getAssetGraphDataApi(data, this, ActionType);
+      //   }, 10000);
+      // }
     }
    
   };
@@ -219,6 +228,7 @@ class AssetValueGraph extends Component {
               graphLoading={this.state.graphLoading}
               isUpdate={this.state.isUpdate}
               isPage={true}
+              dataLoaded={this.state.assetValueDataLoaded}
             />
           </div>
           {/* <FeedbackForm page={"Asset Value Graph Page"} /> */}

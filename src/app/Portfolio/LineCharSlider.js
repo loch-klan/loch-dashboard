@@ -1136,7 +1136,7 @@ backdrop-filter: blur(15px);">
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
-                  {true && (
+                  {this.props.dataLoaded && (
                     <h5
                       className="inter-display-medium f-s-10 lh-14"
                       style={{ position: "absolute", right: "0px",top: !this.props.hideTimeFilter ? "-27px" : "-2px",zIndex: 1 }}
