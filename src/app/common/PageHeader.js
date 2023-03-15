@@ -159,7 +159,7 @@ export default function PageHeader(props) {
           headerTitle={"Connect exchanges"}
           modalType={"connectModal"}
           iconImage={LinkIcon}
-          handleUpdate={this.handleUpdate}
+          handleUpdate={props.handleUpdate}
         />
       ) : (
         ""
