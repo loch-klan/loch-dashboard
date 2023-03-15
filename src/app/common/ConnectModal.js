@@ -22,7 +22,7 @@ import backIcon from "../../assets/images/icons/back-icon.svg";
 import Slider from 'react-slick';
 import { addUpdateAccount, getUserAccount } from '../cost/Api';
 import {getExchangeBalance } from "../Portfolio/Api";
-import { GetAuthUrl, updateAccessToken } from './Api';
+import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from './Api';
 
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
@@ -672,7 +672,8 @@ class ConnectModal extends BaseReactComponent {
 const mapStateToProps = state => ({
 });
 const mapDispatchToProps = {
-  getExchangeBalance
+  getExchangeBalance,
+  setPageFlagDefault,
 };
 ConnectModal.propTypes = {
 };

@@ -788,10 +788,10 @@ export const updateAccessToken = (data, ctx, name) => {
         // });
         ctx.state.onHide();
         toast.success(`${name} connected to loch`);
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1000);
-        ctx.props?.handleUpdate && ctx.props.handleUpdate();
+        setTimeout(() => {
+          ctx.props.setPageFlagDefault();
+          ctx.props?.handleUpdate && ctx.props.handleUpdate();
+        }, 1000);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }

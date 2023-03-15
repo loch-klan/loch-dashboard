@@ -215,7 +215,7 @@ class Wallet extends Component {
     // console.log("YES API")
     this.setState({isLoading: true})
     this.makeApiCall();
-    this.props.setPageFlagDefault();
+    // this.props.setPageFlagDefault();
   };
 
   render() {

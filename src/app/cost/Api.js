@@ -127,7 +127,11 @@ export const addUpdateAccount = (data,ctx) => {
         toast.success(ctx.state.selection.name + " connected to loch");
         ctx.state.onHide();
         // window.location.reload();
-        ctx.props?.handleUpdate && ctx.props.handleUpdate();
+        setTimeout(() => {
+          ctx.props.setPageFlagDefault();
+           ctx.props?.handleUpdate && ctx.props.handleUpdate();
+        }, 1000);
+       
         
       } else {
         toast.error(res.data.message || "Something Went Wrong");
