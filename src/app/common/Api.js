@@ -4,7 +4,7 @@ import { preLoginInstance } from "../../utils";
 import { signInUser, signUpProperties, WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import postLoginInstance from './../../utils/PostLoginAxios';
-import { SET_DEFAULT_VALUE, WALLET_LIST_UPDATED } from "./ActionTypes";
+import { PAGE_POPUP, SET_DEFAULT_VALUE, WALLET_LIST_UPDATED } from "./ActionTypes";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance.post('common/test/temp-login', data)
@@ -791,6 +791,7 @@ export const updateAccessToken = (data, ctx, name) => {
         setTimeout(() => {
           ctx.props.setPageFlagDefault();
           ctx.props?.handleUpdate && ctx.props.handleUpdate();
+          ctx.props.openPopup();
         }, 1000);
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -822,3 +823,13 @@ export const setPageFlagDefault = () => {
     });
   }
 };
+
+// export const PopupState = () => {
+//   return function (dispatch, getState) {
+//     console.log("ds")
+//     dispatch({
+//       type: PAGE_POPUP,
+//       payload:false
+//     });
+//   }
+// }

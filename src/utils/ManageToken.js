@@ -10,6 +10,7 @@ const deleteToken = () => {
   localStorage.removeItem("Plans");
   localStorage.removeItem("stopClick");
   localStorage.removeItem("defi_access");
+  localStorage.removeItem("isPopup");
 };
 
 const getToken = () => {

@@ -186,61 +186,60 @@ class ConnectModal extends BaseReactComponent {
     let exchangename = this.state?.selection?.name?.toLowerCase();
     let cname = this.state?.connectionName;
     let parentState = this;
-    if (this.state.coinBase) {
-        // this.setState({
-        //   popup: true,
-        // });
-          // var win = window.open(
-          //   "http://localhost:3000/success?code=3ffd0d652b7e060511b206b596fbb80c04e62e7a80bc1a59fe46ae3382d5ac48",
-          //   "test",
-          //   "width=600,height=600,left=400,top=100"
-          // );
-           var win = window.open(
-             this.state.AuthUrl,
-             "test",
-             "width=600,height=600,left=400,top=100"
-           );
+    if (this.state.coinBase && this.state?.selection?.name === "Coinbase") {
+      // this.setState({
+      //   popup: true,
+      // });
+      // var win = window.open(
+      //   "http://localhost:3000/success?code=3ffd0d652b7e060511b206b596fbb80c04e62e7a80bc1a59fe46ae3382d5ac48",
+      //   "test",
+      //   "width=600,height=600,left=400,top=100"
+      // );
+      var win = window.open(
+        this.state.AuthUrl,
+        "test",
+        "width=600,height=600,left=400,top=100"
+      );
 
-          var timer = setInterval(function () {
-            //  console.log("win", win.location.href, win.location.search);
-            const searchParams = new URLSearchParams(win.location.search);
-            const code = searchParams.get("code");
-            // console.log(code, exchangename,cname);
-            if (code) {
-              // run api
-              let data = new URLSearchParams();
-              data.append(
-                "exchange",
-                exchangename
-              );
-              data.append("access_code", code);
-              data.append("account_name", cname);
-              updateAccessToken(data, parentState, parentState.state?.selection?.name);
-                win.close();
-              clearInterval(timer);
-             
-              // setTimeout(() => {
-                
-              // }, 500);
-            }
-          }, 1000);
-      
-    
+      var timer = setInterval(function () {
+        //  console.log("win", win.location.href, win.location.search);
+        const searchParams = new URLSearchParams(win.location.search);
+        const code = searchParams.get("code");
+        // console.log(code, exchangename,cname);
+        if (code) {
+          // run api
+          let data = new URLSearchParams();
+          data.append("exchange", exchangename);
+          data.append("access_code", code);
+          data.append("account_name", cname);
+          updateAccessToken(
+            data,
+            parentState,
+            parentState.state?.selection?.name
+          );
+          win.close();
+          clearInterval(timer);
+
+          // setTimeout(() => {
+
+          // }, 500);
+        }
+      }, 1000);
     } else {
-       if (
-         this.state.apiKey &&
-         this.state.connectionName &&
-         this.state.apiSecret
-       ) {
-         let data = new URLSearchParams();
+      if (
+        this.state.apiKey &&
+        this.state.connectionName &&
+        this.state.apiSecret
+      ) {
+        let data = new URLSearchParams();
 
-         data.append("exchange", this.state.selection.name.toLowerCase());
-         data.append("account_name", this.state.connectionName);
-         data.append("api_secret", this.state.apiSecret);
-         data.append("api_key", this.state.apiKey);
+        data.append("exchange", this.state.selection.name.toLowerCase());
+        data.append("account_name", this.state.connectionName);
+        data.append("api_secret", this.state.apiSecret);
+        data.append("api_key", this.state.apiKey);
 
-         addUpdateAccount(data, this);
-       }
+        addUpdateAccount(data, this);
+      }
     }
   
 

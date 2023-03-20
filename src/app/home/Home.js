@@ -47,7 +47,8 @@ class Home extends Component {
       } else {
           this.props.setPageFlagDefault();
         deleteToken();
-           localStorage.setItem("defi_access", true);
+        localStorage.setItem("defi_access", true);
+         localStorage.setItem("isPopup", true);
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
         if (!isRefresh) {
           localStorage.setItem("refresh", true);

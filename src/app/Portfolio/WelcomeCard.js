@@ -16,6 +16,7 @@ import LinkIconBtn from "../../assets/images/link.svg";
 // import ConnectModal from "./ConnectModal";
 import { useHistory } from "react-router-dom";
 import ConnectModal from '../common/ConnectModal'
+import AuthModal from '../common/AuthModal'
 
 export default function WelcomeCard(props) {
     const [manageWallet, setManageWallet] = React.useState(true)
@@ -36,7 +37,10 @@ export default function WelcomeCard(props) {
   const handleConnectModal = () => {
     setconnectModal(!connectModal);
   };
-
+  const [popupModal, setpopupModal] = React.useState(false);
+  const handlePopup = () => {
+     setpopupModal(!popupModal);
+  }
 
 
     let difference = (props.assetTotal && props.yesterdayBalance) ? props.assetTotal - props.yesterdayBalance : 0;
@@ -136,6 +140,23 @@ export default function WelcomeCard(props) {
             headerTitle={"Connect exchanges"}
             modalType={"connectModal"}
             iconImage={LinkIcon}
+            openPopup={handlePopup}
+          />
+        ) : (
+          ""
+        )}
+
+        {popupModal ? (
+          <AuthModal
+            show={popupModal}
+            onHide={handlePopup}
+            history={history}
+            modalType={"create_account"}
+            iconImage={LinkIcon}
+            hideSkip={true}
+            title="Don’t lose your data"
+            description="Don’t let your hard work go to waste. Add your email so you can analyze your CeFi and DeFi portfolio together"
+            stopUpdate={true}
           />
         ) : (
           ""

@@ -57,13 +57,13 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
-import { getAllCurrencyApi, getAllCurrencyRatesApi, setCurrencyApi } from './Api'
+import { getAllCurrencyApi, getAllCurrencyRatesApi, PopupState, setCurrencyApi } from './Api'
 import { setCurrencyReducer } from './CommonAction'
 import FeedbackModal from './FeedbackModal'
 import UpgradeModal from './upgradeModal'
 import ConnectModal from './ConnectModal'
 import AuthModal from './AuthModal';
-
+import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg"
 
 
 function Sidebar(props) {
@@ -87,7 +87,7 @@ function Sidebar(props) {
   const [Upgrade, setUpgradeModal] = React.useState(false);
   const [connectModal, setconnectModal] = React.useState(false);
   const [isWallet, setWallet] = React.useState(JSON.parse(localStorage.getItem("addWallet")) ? true:false);
-
+  const [signinPopup, setSigninPopup] = React.useState(false);
   let userPlan = JSON.parse(localStorage.getItem("currentPlan")) || "Free";
   let triggerId = 6;
   let defi_access = JSON.parse(localStorage.getItem("defi_access"));
@@ -184,6 +184,9 @@ function Sidebar(props) {
     //    email_address: getCurrentUser().email,
     //  });
    };
+  const handleSiginPopup = () => {
+    setSigninPopup(!signinPopup);
+  }
     const handleShare=()=>{
       const user = JSON.parse(localStorage.getItem('lochUser'));
         let userWallet = JSON.parse(localStorage.getItem("addWallet"));
@@ -223,6 +226,19 @@ function Sidebar(props) {
        !currencyRates && getAllCurrencyRatesApi();
      }, 1000);
    }, []); // <-- Have to pass in [] here!
+  
+  // Timer for Sigin popup
+  React.useEffect(() => {
+    let isPopup = JSON.parse(localStorage.getItem("isPopup"));
+    setTimeout(() => {
+      if (!lochUser) {
+        isPopup && handleSiginPopup();
+        localStorage.setItem("isPopup", false);
+      }
+      
+     }, 15000);
+    
+  }, []);
 
     const handleFunction=(currency)=>{
       let currencyRates = JSON.parse(localStorage.getItem('currencyRates'))
@@ -675,14 +691,14 @@ function Sidebar(props) {
                         Leave
                       </Button>
                     </span>
-                    {!lochUser &&
+                    {!lochUser && (
                       <span
                         onMouseOver={(e) =>
                           (e.currentTarget.children[0].src = SharePortfolioIcon)
                         }
                         onMouseLeave={(e) =>
-                        (e.currentTarget.children[0].src =
-                          SharePortfolioIconWhite)
+                          (e.currentTarget.children[0].src =
+                            SharePortfolioIconWhite)
                         }
                         onClick={handleShareModal}
                         style={{ marginRight: "1rem" }}
@@ -692,7 +708,7 @@ function Sidebar(props) {
                           Share
                         </Button>
                       </span>
-                    }
+                    )}
                   </li>
                 </ul>
 
@@ -840,6 +856,23 @@ function Sidebar(props) {
               hideSkip={true}
               title="Sign in"
               description="Get right back into your account"
+              stopUpdate={true}
+            />
+          ) : (
+            ""
+          )}
+
+          {/* after 15 sec open this */}
+          {signinPopup ? (
+            <AuthModal
+              show={signinPopup}
+              onHide={handleSiginPopup}
+              history={history}
+              modalType={"create_account"}
+              iconImage={SignInPopupIcon}
+              hideSkip={true}
+              title="Don’t lose your data"
+              description="Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
               stopUpdate={true}
             />
           ) : (
