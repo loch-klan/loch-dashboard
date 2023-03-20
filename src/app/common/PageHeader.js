@@ -186,6 +186,7 @@ export default function PageHeader(props) {
           title="Don’t lose your data"
           description="Don’t let your hard work go to waste. Add your email so you can analyze your CeFi and DeFi portfolio together"
           stopUpdate={true}
+          tracking="Wallet connect exchange"
         />
       ) : (
         ""

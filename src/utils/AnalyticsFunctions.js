@@ -2247,3 +2247,19 @@ export const TimeSpentWhalePodPage = ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:time spent on onboarding");
 };
+
+//8. Landing Page Conversion:time spent on onboarding
+export const SigninModalTrack = ({
+  session_id,
+  email_address,
+  from
+}) => {
+  const event_name = "Sign in Popup";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "from": from,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};

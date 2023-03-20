@@ -127,6 +127,8 @@ function Sidebar(props) {
     }
 
   };
+
+  
   
     const handleLeave = () => {
       const isDummy = localStorage.getItem("lochDummyUser");
@@ -857,6 +859,7 @@ function Sidebar(props) {
               title="Sign in"
               description="Get right back into your account"
               stopUpdate={true}
+              tracking="Sign in button"
             />
           ) : (
             ""
@@ -874,6 +877,7 @@ function Sidebar(props) {
               title="Don’t lose your data"
               description="Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
               stopUpdate={true}
+              tracking={history.location.pathname.substring(1)}
             />
           ) : (
             ""

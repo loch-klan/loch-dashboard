@@ -698,6 +698,7 @@ class CohortPage extends BaseReactComponent {
             iconImage={CohortIcon}
             isSkip={() => this.handleSkip()}
             hideSkip={this.state.showBtn ? true : false}
+            tracking="Whale watching"
             // headerTitle={"Create a Wallet cohort"}
             // changeWalletList={this.handleChangeList}
             // apiResponse={(e) => this.CheckApiResponse(e)}

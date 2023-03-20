@@ -236,7 +236,6 @@ class CheckoutModal extends BaseReactComponent {
                           // this.handleExportNow()
                           //  payment_link;
                           window.open(this.state.payment_link);
-
                         }}
                       >
                         Pay now
@@ -285,6 +284,7 @@ class CheckoutModal extends BaseReactComponent {
             // iconImage={CohortIcon}
 
             hideSkip={false}
+            tracking="Whale watching"
             // headerTitle={"Create a Wallet cohort"}
             // changeWalletList={this.handleChangeList}
             // apiResponse={(e) => this.CheckApiResponse(e)}

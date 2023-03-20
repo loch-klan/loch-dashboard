@@ -1,8 +1,9 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
-import { signInUser, signUpProperties, WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
+import { SigninModalTrack, signInUser, signUpProperties, WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
 import postLoginInstance from './../../utils/PostLoginAxios';
 import { PAGE_POPUP, SET_DEFAULT_VALUE, WALLET_LIST_UPDATED } from "./ActionTypes";
 
@@ -402,6 +403,12 @@ export const VerifyEmail = (data,ctx) => {
           userId: res.data.data.user?.link,
           first_name: res.data.data.user?.first_name,
           last_name: res.data.data.user?.last_name,
+        });
+        // signin popup
+        SigninModalTrack({
+          session_id: getCurrentUser().id,
+          email_address: res.data.data.user?.email,
+          from: ctx.props.tracking,
         });
           ctx.setState(
             {
