@@ -170,7 +170,7 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
           .then((res) => {
               if(!res.data.error){
                 // console.log('getState',getState().OnboardingState.coinsList);
-                console.log('res',res);
+                // console.log('res',res);
                 const allChains = res.data.data.chains;
                 //   .map((chain) => {
                 //   return {
