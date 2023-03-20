@@ -21,6 +21,7 @@ import { GetAllPlan, getUser } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import InsightImg from "../../assets/images/icons/insight-msg.svg";
 
 
 class InsightsPage extends Component {
@@ -280,11 +281,60 @@ class InsightsPage extends Component {
                 })
               ) : (
                 this.state.userPlan.name !== "Free" && (
-                  <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
-                    {
-                      "This wallet is not active enough for us to generate any useful insights here :)."
-                    }
-                  </h5>
+                  <>
+                    <div
+                      style={{
+                        // height:
+                        //   this.props.intelligenceState.updatedInsightList
+                        //     ?.length === 0
+                        //     ? "35rem"
+                        //     : this.props.intelligenceState.updatedInsightList
+                        //         ?.length === 1
+                        //     ? "25rem"
+                        //     : "16rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                            position: "relative",
+                        marginTop:"5rem"
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          width: "16rem",
+                          height: "16rem",
+                          background:
+                            "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",
+                          filter: "blur(50px)",
+                          borderRadius: "10rem",
+                          zIndex: 0,
+                        }}
+                      ></div>
+                      <Image
+                        src={InsightImg}
+                        style={{ position: "relative" }}
+                      />
+                      <h5
+                        className="inter-display-medium f-s-16 lh-19 grey-313 text-center"
+                        style={{
+                          marginBottom: "1rem",
+                          width: "90%",
+                          marginTop: "1.2rem",
+                          position: "relative",
+                        }}
+                      >
+                        Add all your wallets and exchanges to gain more insights
+                      </h5>
+                      <p
+                        className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"
+                        style={{ position: "relative" }}
+                      >
+                        Insights increase with your usage
+                      </p>
+                    </div>
+                  </>
                 )
               )}
             </div>
