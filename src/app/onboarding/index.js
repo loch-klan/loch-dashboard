@@ -125,6 +125,7 @@ class OnBoarding extends Component {
                 <AddWallet
                   {...this.props}
                   switchSignIn={this.switchSignIn}
+                  hideModal={this.props.hideModal}
                   // showSignText={this.state.showSign}
                   // handleShowSignText={this.handleShowSignText}
                 />

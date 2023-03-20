@@ -14,7 +14,7 @@ class Home extends Component {
     super(props);
     this.state = {
       showModal: true,
-      signedIn: false,
+      signedIn: true,
       upgradeModal: false,
       isStatic: true,
       triggerId: 0,
@@ -60,15 +60,23 @@ class Home extends Component {
     GetDefaultPlan();
   }
 
+  hideModal = (value) => {
+    this.setState({
+      signedIn: value,
+    });
+
+    
+  }
+
   render() {
     return (
       <>
-        {this.signedIn ? null : (
+        
           <div>
             <Image src={Banner} className="overlay-banner" />
-            <OnBoarding {...this.props} />
+            <OnBoarding {...this.props} hideModal={this.hideModal} />
           </div>
-        )}
+        
         {this.state.upgradeModal && (
           <UpgradeModal
             show={this.state.upgradeModal}

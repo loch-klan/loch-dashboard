@@ -43,6 +43,7 @@ class AddWallet extends BaseReactComponent {
       isStatic: false,
       triggerId: 0,
       GoToHome: false,
+      
      
     };
     this.timeout = 0;
@@ -53,10 +54,14 @@ class AddWallet extends BaseReactComponent {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
     }, () => {
+      let value = this.state.upgradeModal ? false : true;
+      this.props.hideModal(value);
+      // console.log("eejbhf")
       const userDetails = JSON.parse(localStorage.getItem("lochUser"));
       if (userDetails) {
         this.props.history.push("/home")
       }
+
     });
 
     
