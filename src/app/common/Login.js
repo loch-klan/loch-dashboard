@@ -88,14 +88,17 @@ class Login extends BaseReactComponent {
     let addWallet = JSON.parse(localStorage.getItem("addWallet"));
     // console.log('Heyyyy',addWallet);
     let walletAddress = [];
+     let AddressList = [];
     for (let i = 0; i < addWallet.length; i++) {
       let curr = addWallet[i];
       if (!walletAddress.includes(curr.address) && curr.address) {
         walletAddress.push(curr.address);
+        AddressList.push(curr.displayAddress || curr.address);
       }
     }
+  
     const data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify(walletAddress));
+    data.append("wallet_addresses", JSON.stringify(AddressList));
     data.append("link", this.state.id);
     createAnonymousUserApi(data, this, addWallet);
   };

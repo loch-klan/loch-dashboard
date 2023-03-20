@@ -213,6 +213,9 @@ class Portfolio extends BaseReactComponent {
 
       // Asset value data loaded
       assetValueDataLoaded: false,
+
+      // set false when get portfolio by link api run 1 time
+      portfolioLink: true,
     };
   }
 
@@ -485,35 +488,35 @@ class Portfolio extends BaseReactComponent {
     this.props.getAllCoins();
     if (this.props.match.params.id) {
       // if share link call this app
-      // localStorage.removeItem("lochToken");
-    //  console.log(
-    //    "wall",
-    //    this.props.match.params.id,
-    //    Object.values(this.state?.userWalletList[0])
-    //  );
-
-     this.props.getDetailsByLinkApi(this.props.match.params.id, this);
-      // if (
-      //   !Object.values(this.state?.userWalletList[0]).includes(this.props.match.params.id)
-      // ) {
-      //   deleteToken();
-      //   this.props.history.push({
-      //     pathname: "/",
-      //     state: {
-      //       from: { pathname: this.props.match.url },
-      //       params: {
-      //         id: this.props.match.params.id,
-      //       },
-      //     },
-      //   });
-      // } else {
-      //   this.props.getDetailsByLinkApi(this.props.match.params.id, this);
-      // }
-        // console.log("in api call")
+      if (this.state.portfolioLink) {
+        if (
+          !Object.values(this.state?.userWalletList[0]).includes(
+            this.props.match.params.id
+          )
+        ) {
+          deleteToken();
+          this.props.history.push({
+            pathname: "/",
+            state: {
+              from: { pathname: this.props.match.url },
+              params: {
+                id: this.props.match.params.id,
+              },
+            },
+          });
+        } else {
+          this.props.getDetailsByLinkApi(this.props.match.params.id, this);
+          this.setState({
+            portfolioLink:false
+          })
+        }
+      }
+        
+      
        
     } else {
       // run all api
-      // console.log("run all api");
+     
 
       // update wallet
       this.props.getCoinRate();
