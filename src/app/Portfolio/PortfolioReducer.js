@@ -46,6 +46,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
       let chainPortfolio = state.chainPortfolio || {};
       let currencyRate = state.currency?.rate || 1;
 
+     
       if (
         action.payload &&
         action.payload.userWalletList &&
@@ -186,9 +187,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 : action.payload.userWalletList.assets[i].count *
                   DEFAULT_PRICE);
           }
-          // console.log(
-          //   "updated wallet total",action.payload
-          // );
+         
           updateWalletTotal = updateWalletTotal + currentPrice;
         }
       }

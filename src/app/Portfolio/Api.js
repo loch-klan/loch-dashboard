@@ -162,13 +162,15 @@ export const settingDefaultValues = (wallet) => {
 export const getDetailsByLinkApi = (link,ctx=null) => {
   const data = new URLSearchParams();
   data.append("token", link);
+
+  
   
   return async function (dispatch, getState) {
   preLoginInstance.post("organisation/user/get-portfolio-by-link", data)
           .then((res) => {
               if(!res.data.error){
                 // console.log('getState',getState().OnboardingState.coinsList);
-                // console.log('res',res);
+                console.log('res',res);
                 const allChains = res.data.data.chains;
                 //   .map((chain) => {
                 //   return {
@@ -272,7 +274,7 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                   //  ctx.props.getAllInsightsApi(ctx);
                   //        GetAllPlan();
                   // getUser(ctx);
-                  ctx.props.settingDefaultValues();
+                  ctx.props.setPageFlagDefault();
                   
                 }
                 

@@ -30,7 +30,7 @@ class Login extends BaseReactComponent {
   }
 
   componentDidMount() {
-    // console.log('this.props',this.props);
+    // console.log("this.props", this.props.location);
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     // deleteToken();
 
@@ -47,8 +47,10 @@ class Login extends BaseReactComponent {
     );
 
     if (this.state.link) {
+      // console.log("login in")
       this.props.getAllCoins(this.handleShareLinkUser);
     } else {
+      // console.log("welcome")
       this.props.history.push("/welcome");
     }
   }
@@ -77,6 +79,8 @@ class Login extends BaseReactComponent {
   };
 
   handleShareLinkUser = () => {
+    // console.log("handle share");
+    // console.log("this",this.state.id)
     this.props.getDetailsByLinkApi(this.state.id, this);
   };
 

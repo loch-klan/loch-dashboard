@@ -67,6 +67,13 @@ class ExitOverlay extends BaseReactComponent {
     // console.log("props add", props?.walletaddress);
 
     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress ||
+          userWallet[0].address
+        : dummyUser;
+   
     this.state = {
       // create account for cohort
       firstName: userDetails?.first_name || "",
@@ -76,7 +83,7 @@ class ExitOverlay extends BaseReactComponent {
 
       dummyUser,
       show: props.show,
-      sharelink: `${BASE_URL_S3}home/${dummyUser}`,
+      sharelink: `${BASE_URL_S3}home/${slink}`,
       isactive: false,
       email: "",
       dropdowntitle: "View and edit",
@@ -177,7 +184,7 @@ class ExitOverlay extends BaseReactComponent {
       fileName: null,
       isChangeFile: false,
       podnameError: false,
-      total_unique_address:0,
+      total_unique_address: 0,
     };
   }
 

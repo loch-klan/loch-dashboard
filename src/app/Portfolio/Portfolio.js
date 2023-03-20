@@ -66,7 +66,7 @@ import {
   ProfitLossEV,
   HomePage,
 } from "../../utils/AnalyticsFunctions.js";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
 import { getAllCounterFeeApi } from "../cost/Api";
 import Loading from "../common/Loading";
@@ -460,6 +460,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       // if share link
       if (this.props.location.state?.addWallet != undefined) {
+        // console.log("sha")
         localStorage.setItem(
           "addWallet",
           JSON.stringify(this.props.location.state?.addWallet)
@@ -484,7 +485,32 @@ class Portfolio extends BaseReactComponent {
     this.props.getAllCoins();
     if (this.props.match.params.id) {
       // if share link call this app
-      this.props.getDetailsByLinkApi(this.props.match.params.id, this);
+      // localStorage.removeItem("lochToken");
+    //  console.log(
+    //    "wall",
+    //    this.props.match.params.id,
+    //    Object.values(this.state?.userWalletList[0])
+    //  );
+
+     this.props.getDetailsByLinkApi(this.props.match.params.id, this);
+      // if (
+      //   !Object.values(this.state?.userWalletList[0]).includes(this.props.match.params.id)
+      // ) {
+      //   deleteToken();
+      //   this.props.history.push({
+      //     pathname: "/",
+      //     state: {
+      //       from: { pathname: this.props.match.url },
+      //       params: {
+      //         id: this.props.match.params.id,
+      //       },
+      //     },
+      //   });
+      // } else {
+      //   this.props.getDetailsByLinkApi(this.props.match.params.id, this);
+      // }
+        // console.log("in api call")
+       
     } else {
       // run all api
       // console.log("run all api");

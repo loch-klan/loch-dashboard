@@ -185,8 +185,13 @@ function Sidebar(props) {
     //  });
    };
     const handleShare=()=>{
-        const user= JSON.parse(localStorage.getItem('lochUser'));
-      const link= `${BASE_URL_S3}home/${user.link}`
+      const user = JSON.parse(localStorage.getItem('lochUser'));
+        let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+        let slink =
+          userWallet?.length === 1
+            ? userWallet[0].displayAddress || userWallet[0].address
+            : user.link;
+      const link = `${BASE_URL_S3}home/${slink}`;
       navigator.clipboard.writeText(link);
       toast.success("Share link has been copied");
     }
@@ -655,7 +660,7 @@ function Sidebar(props) {
                   </li>
                 )} */}
 
-                  <li>
+                  <li style={{ justifyContent: "space-between" }}>
                     <span
                       onClick={handleLeave}
                       onMouseOver={(e) =>
@@ -670,6 +675,24 @@ function Sidebar(props) {
                         Leave
                       </Button>
                     </span>
+                    {!lochUser &&
+                      <span
+                        onMouseOver={(e) =>
+                          (e.currentTarget.children[0].src = SharePortfolioIcon)
+                        }
+                        onMouseLeave={(e) =>
+                        (e.currentTarget.children[0].src =
+                          SharePortfolioIconWhite)
+                        }
+                        onClick={handleShareModal}
+                        style={{ marginRight: "1rem" }}
+                      >
+                        <Image src={SharePortfolioIconWhite} />
+                        <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                          Share
+                        </Button>
+                      </span>
+                    }
                   </li>
                 </ul>
 
