@@ -378,6 +378,14 @@ class UpgradeModal extends BaseReactComponent {
     });
   };
 
+  handleSigninBackbtn = () => {
+    //  console.log("handle signin back");
+    this.setState({
+      signinModal: !this.state.signinModal,
+      hideModal: false,
+    });
+  }
+
   render() {
     return (
       <>
@@ -910,7 +918,7 @@ class UpgradeModal extends BaseReactComponent {
           <AuthModal
             show={this.state.signinModal}
             // link="http://loch.one/a2y1jh2jsja"
-            onHide={this.handleSignin}
+            onHide={this.props?.signinBack ? this.handleSigninBackbtn : this.handleSignin}
             history={this.props.history}
             modalType={"create_account"}
             iconImage={SignInIcon}
@@ -919,6 +927,7 @@ class UpgradeModal extends BaseReactComponent {
             description="Get right back into your account"
             stopUpdate={true}
             tracking="Upgrade popup"
+            signinBack={this.props?.signinBack ? this.handleSigninBackbtn : false}
           />
         ) : (
           ""

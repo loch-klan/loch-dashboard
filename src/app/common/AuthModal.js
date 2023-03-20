@@ -99,7 +99,8 @@ class AuthModal extends BaseReactComponent {
         VerifyEmail(data,this);
     }
 
-    handleBack = () => {
+  handleBack = () => {
+      // console.log("handle back")
         this.setState({
           email: "",
           otp: "",
@@ -128,8 +129,13 @@ class AuthModal extends BaseReactComponent {
         backdropClassName="exitoverlaymodal"
       >
         <Modal.Header>
-          {this.state.isShowOtp ? (
-            <div className="signin-header back-icon" onClick={this.handleBack}>
+          {this.state.isShowOtp || this.props.signinBack ? (
+            <div
+              className="signin-header back-icon"
+              onClick={
+                this.state.isShowOtp ? this.handleBack : this.props.signinBack
+              }
+            >
               <Image className="cp" src={backIcon} />
             </div>
           ) : null}

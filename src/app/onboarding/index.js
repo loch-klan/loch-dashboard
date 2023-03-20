@@ -16,31 +16,57 @@ import {
   PrivacyMessage, TimeSpentOnboarding
 } from "../../utils/AnalyticsFunctions.js";
 import { GetAllPlan } from '../common/Api';
+import UpgradeModal from '../common/upgradeModal';
 // export { default as OnboardingReducer } from "./OnboardingReducer";
 class OnBoarding extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            showModal: true,
-            signInReq: false,
-            isVerificationRequired: false,
-            isVerified: false,
-          currentActiveModal: "signIn",
-            startTime: "",
-            // showSignText  :false
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModal: true,
+      signInReq: false,
+      isVerificationRequired: false,
+      isVerified: false,
+      currentActiveModal: "signIn",
+      startTime: "",
+      // showSignText  :false
+
+      // Upgrade
+      upgradeModal: false,
+      isStatic: false,
+      triggerId: 1,
+      showPrevModal:true
+    };
+  }
+
+  upgradeModal = () => {
+    this.setState(
+      {
+        upgradeModal: !this.state.upgradeModal,
+      },
+      () => {
+        let value = this.state.upgradeModal ? false : true;
+        this.setState({
+          showPrevModal: value,
+        });
+        // this.props.hideModal(value);
+        // console.log("eejbhf")
+        const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+        if (userDetails) {
+          this.props.history.push("/home");
         }
-    }
+      }
+    );
+  };
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", (this.state.startTime / 1000));
-      // let date = moment();
-      // let currentDate = date.format("D/MM/YYYY");
-      // // "17/06/2022"
-   
-   
+    // let date = moment();
+    // let currentDate = date.format("D/MM/YYYY");
+    // // "17/06/2022"
+
     OnboardingPage({});
-    }
+  }
 
   componentWillUnmount() {
     let endTime = new Date() * 1;
@@ -50,88 +76,88 @@ class OnBoarding extends Component {
     TimeSpentOnboarding({ time_spent: TimeSpent });
     localStorage.setItem("refresh", false);
   }
-    onClose = () => {
-        this.setState({ showModal: false })
-    }
+  onClose = () => {
+    this.setState({ showModal: false });
+  };
 
-    handleStateChange=(value)=>{
-        if(value === "verifyCode"){
-            this.setState({
-                currentActiveModal:value
-            })
-        }
-        else{
-            this.setState({
-                currentActiveModal:"signIn"
-            })
-        }
+  handleStateChange = (value) => {
+    if (value === "verifyCode") {
+      this.setState({
+        currentActiveModal: value,
+      });
+    } else {
+      this.setState({
+        currentActiveModal: "signIn",
+      });
     }
-    switchSignIn = (e) => {
-        // console.log("active modalin indexx",this.state.currentActiveModal)
-        // console.log("verification req indexx",this.state.isVerificationRequired)
-        if (this.state.currentActiveModal === "verifyCode") {
-            this.setState({
-                // isVerificationRequired:false,
-                signInReq:true,
-                currentActiveModal:"signIn"
-            })
-        } else {
-            this.setState({
-                signInReq: !this.state.signInReq,
-            })
-        }
-        // if(this.state.showSignText){
-        //     this.handleShowSignText(false)
-        // }
+  };
+  switchSignIn = (e) => {
+    // console.log("active modalin indexx",this.state.currentActiveModal)
+    // console.log("verification req indexx",this.state.isVerificationRequired)
+    if (this.state.currentActiveModal === "verifyCode") {
+      this.setState({
+        // isVerificationRequired:false,
+        signInReq: true,
+        currentActiveModal: "signIn",
+      });
+    } else {
+      this.setState({
+        signInReq: !this.state.signInReq,
+      });
     }
-    // handleShowSignText = (val)=>{
-    //     console.log("HELLO",val)
-    //     this.setState({
-    //         showSignText:val
-    //     })
+    // if(this.state.showSignText){
+    //     this.handleShowSignText(false)
     // }
+  };
+  // handleShowSignText = (val)=>{
+  //     console.log("HELLO",val)
+  //     this.setState({
+  //         showSignText:val
+  //     })
+  // }
 
-    privacymessage = ()=> {
-        PrivacyMessage({  });
-        // console.log("on hover privacy msg");
-    }
-    render() {
-
-        return (
-          <>
-            <OnboardingModal
-              show={this.state.showModal}
-              showImage={true}
-              onHide={this.onClose}
-              title={this.state.signInReq ? "Sign in" : "Welcome to Loch"}
-              subTitle={
-                this.state.signInReq
-                  ? "Get right back into your account"
-                  : "Add any ENS or wallet address(es) to get started"
-              }
-              icon={this.state.signInReq ? SignInIcon : WalletIcon}
-              isSignInActive={this.state.signInReq}
-              handleBack={this.switchSignIn}
-            >
-              {this.state.signInReq ? (
-                <SignIn
-                  isVerificationRequired={this.state.isVerificationRequired}
-                  history={this.props.history}
-                  activemodal={this.state.currentActiveModal}
-                  signInReq={this.state.signInReq}
-                  handleStateChange={this.handleStateChange}
-                />
-              ) : (
-                <AddWallet
-                  {...this.props}
-                  switchSignIn={this.switchSignIn}
-                  hideModal={this.props.hideModal}
-                  // showSignText={this.state.showSign}
-                  // handleShowSignText={this.handleShowSignText}
-                />
-              )}
-              <div className="ob-modal-body-info">
-                {/* {
+  privacymessage = () => {
+    PrivacyMessage({});
+    // console.log("on hover privacy msg");
+  };
+  render() {
+    return (
+      <>
+        {this.state.showPrevModal && (
+          <OnboardingModal
+            show={this.state.showModal}
+            showImage={true}
+            onHide={this.onClose}
+            title={this.state.signInReq ? "Sign in" : "Welcome to Loch"}
+            subTitle={
+              this.state.signInReq
+                ? "Get right back into your account"
+                : "Add any ENS or wallet address(es) to get started"
+            }
+            icon={this.state.signInReq ? SignInIcon : WalletIcon}
+            isSignInActive={this.state.signInReq}
+            handleBack={this.switchSignIn}
+          >
+            {this.state.signInReq ? (
+              <SignIn
+                isVerificationRequired={this.state.isVerificationRequired}
+                history={this.props.history}
+                activemodal={this.state.currentActiveModal}
+                signInReq={this.state.signInReq}
+                handleStateChange={this.handleStateChange}
+              />
+            ) : (
+              <AddWallet
+                {...this.props}
+                switchSignIn={this.switchSignIn}
+                hideModal={this.props.hideModal}
+                upgradeModal={this.upgradeModal}
+                // showSignText={this.state.showSign}
+                // handleShowSignText={this.handleShowSignText}
+              />
+            )}
+            <div className="ob-modal-body-info">
+              {/* {
                         this.state.signInReq ?
                          null
                          :
@@ -143,29 +169,40 @@ class OnBoarding extends Component {
                             :
                             ""
                           } */}
-                <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
-                  At Loch, we care intensely about your privacy and
-                  pseudonymity.
-                  <CustomOverlay
-                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
-                    position="top"
-                    isIcon={true}
-                    IconImage={LockIcon}
-                    isInfo={true}
-                    className={"fix-width"}
-                  >
-                    <Image
-                      src={InfoIcon}
-                      className="info-icon"
-                      onMouseEnter={this.privacymessage}
-                    />
-                  </CustomOverlay>
-                </p>
-              </div>
-            </OnboardingModal>
-          </>
-        );
-    }
+              <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
+                At Loch, we care intensely about your privacy and pseudonymity.
+                <CustomOverlay
+                  text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                  position="top"
+                  isIcon={true}
+                  IconImage={LockIcon}
+                  isInfo={true}
+                  className={"fix-width"}
+                >
+                  <Image
+                    src={InfoIcon}
+                    className="info-icon"
+                    onMouseEnter={this.privacymessage}
+                  />
+                </CustomOverlay>
+              </p>
+            </div>
+          </OnboardingModal>
+        )}
+        {this.state.upgradeModal && (
+          <UpgradeModal
+            show={this.state.upgradeModal}
+            onHide={this.upgradeModal}
+            history={this.props.history}
+            triggerId={this.state.triggerId}
+            signinBack={true}
+            // isShare={localStorage.getItem("share_id")}
+            // isStatic={this.state.isStatic}
+          />
+        )}
+      </>
+    );
+  }
 }
 
 const mapStateToProps = state => ({

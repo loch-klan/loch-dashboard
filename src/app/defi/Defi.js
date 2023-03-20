@@ -147,6 +147,21 @@ class Defi extends Component {
              this.getYieldBalance();
            }
          );
+    } else {
+        let defi_access = JSON.parse(localStorage.getItem("defi_access"));
+       if (this.state.userPlan?.name === "Free" && defi_access) {
+         setTimeout(() => {
+           this.setState(
+             {
+               isStatic: true,
+             },
+             () => {
+               this.upgradeModal();
+               localStorage.setItem("defi_access", false);
+             }
+           );
+         }, 10000);
+       }
     }
 
 
@@ -227,7 +242,7 @@ class Defi extends Component {
   };
 
   getYieldBalance = () => {
-  console.log("call")
+  
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     if (UserWallet.length !== 0) {
       UserWallet?.map((e) => {
@@ -240,6 +255,7 @@ class Defi extends Component {
       this.handleReset();
     }
     if (this.state.userPlan?.name === "Free") {
+    
    setTimeout(() => {
      this.setState(
        {

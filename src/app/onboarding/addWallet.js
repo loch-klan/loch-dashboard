@@ -49,23 +49,23 @@ class AddWallet extends BaseReactComponent {
     this.timeout = 0;
   }
 
-  upgradeModal = () => {
+  // upgradeModal = () => {
 
-    this.setState({
-      upgradeModal: !this.state.upgradeModal,
-    }, () => {
-      let value = this.state.upgradeModal ? false : true;
-      this.props.hideModal(value);
-      // console.log("eejbhf")
-      const userDetails = JSON.parse(localStorage.getItem("lochUser"));
-      if (userDetails) {
-        this.props.history.push("/home")
-      }
+  //   this.setState({
+  //     upgradeModal: !this.state.upgradeModal,
+  //   }, () => {
+  //     let value = this.state.upgradeModal ? false : true;
+  //     this.props.hideModal(value);
+  //     // console.log("eejbhf")
+  //     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+  //     if (userDetails) {
+  //       this.props.history.push("/home")
+  //     }
 
-    });
+  //   });
 
     
-  };
+  // };
 
   componentDidMount() {
     this.props.getAllCoins();
@@ -75,6 +75,7 @@ class AddWallet extends BaseReactComponent {
      });
    
     GetAllPlan();
+    
      
   }
 
@@ -278,7 +279,7 @@ class AddWallet extends BaseReactComponent {
            triggerId: 1,
          },
          () => {
-           this.upgradeModal();
+           this.props.upgradeModal();
          }
        );
      
@@ -610,7 +611,7 @@ class AddWallet extends BaseReactComponent {
             ""
           )}
         </Form>
-        {this.state.upgradeModal && (
+        {/* {this.state.upgradeModal && (
           <UpgradeModal
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
@@ -619,7 +620,7 @@ class AddWallet extends BaseReactComponent {
             // isShare={localStorage.getItem("share_id")}
             // isStatic={this.state.isStatic}
           />
-        )}
+        )} */}
       </>
     );
   }
