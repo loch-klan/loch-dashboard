@@ -31,6 +31,8 @@ import ConnectModal from "../common/ConnectModal";import FixAddModal from "../co
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 
 class Cost extends Component {
@@ -356,9 +358,21 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
             return (
-              <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                {rowData.AverageCostPrice}
-              </div>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.AverageCostPrice === 0
+                    ? "N/A"
+                    : CurrencyType(false) + rowData.AverageCostPrice.toFixed(2)}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
+                  {rowData.AverageCostPrice === 0
+                    ? "N/A"
+                    : CurrencyType(false) + rowData.AverageCostPrice.toFixed(2)}
+                </div>
+              </CustomOverlay>
             );
           }
         },
@@ -372,9 +386,17 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
             return (
-              <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                {rowData.CurrentPrice}
-              </div>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={CurrencyType(false) + rowData.CurrentPrice.toFixed(2)}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
+                  {CurrencyType(false) + rowData.CurrentPrice.toFixed(2)}
+                </div>
+              </CustomOverlay>
             );
           }
         },
@@ -387,7 +409,22 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
-            return rowData.Amount;
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(noExponents(rowData.Amount)).toLocaleString(
+                  "en-US"
+                )}
+              >
+                <span>
+                  {Number(noExponents(rowData.Amount)).toLocaleString("en-US")}
+                </span>
+              </CustomOverlay>
+            );
+            
           }
         },
       },
@@ -399,19 +436,49 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
-            return rowData.CostBasis;
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.CostBasis === 0
+                    ? "N/A"
+                    : CurrencyType(false) + rowData.CostBasis.toFixed(2)
+                }
+              >
+                <span>
+                  {rowData.CostBasis === 0
+                    ? "N/A"
+                    : CurrencyType(false) + rowData.CostBasis.toFixed(2)}
+                </span>
+              </CustomOverlay>
+            );
           }
         },
       },
       {
-        labelName: "CurrentValue",
+        labelName: "Current Value",
         dataKey: "CurrentValue",
         // coumnWidth: 140,
         coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
-            return rowData.CurrentValue;
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={CurrencyType(false) + rowData.CurrentValue.toFixed(2)}
+              >
+                <span>
+                  {CurrencyType(false) + rowData.CurrentValue.toFixed(2)}
+                </span>
+              </CustomOverlay>
+            );
           }
         },
       },
@@ -431,7 +498,7 @@ class Cost extends Component {
               >
                 <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
                 <div className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.GainLoss+"%"}
+                  {rowData.GainLoss.toFixed(2)+"%"}
                 </div>
               </div>
             );
