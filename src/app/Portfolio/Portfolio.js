@@ -683,7 +683,7 @@ class Portfolio extends BaseReactComponent {
   };
 
   render() {
-    const { table, assetPriceList } = this.props.intelligenceState;
+    const { table_home, assetPriceList_home } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
     // console.log("reducer state",this.props.portfolioState)
 
@@ -702,8 +702,8 @@ class Portfolio extends BaseReactComponent {
 
     // transaction history calculations
     let tableData =
-      table &&
-      table.map((row) => {
+      table_home &&
+      table_home.map((row) => {
         let walletFromData = null;
         let walletToData = null;
 
@@ -1207,7 +1207,7 @@ class Portfolio extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "usdValue") {
-            let chain = Object.entries(assetPriceList);
+            let chain = Object.entries(assetPriceList_home);
             let value;
             chain.find((chain) => {
               // if (chain[0] === rowData.usdValueToday.id) {
@@ -1278,7 +1278,6 @@ class Portfolio extends BaseReactComponent {
       //   },
       // },
     ];
-    // //console.log("table data", tableData)
     return (
       <div>
         {this.state.loader ? (
@@ -1613,7 +1612,7 @@ class Portfolio extends BaseReactComponent {
                           }
                         }}
                         subTitle="Sort, filter, and dissect all your transactions from one place"
-                        tableData={tableData}
+                        tableData={tableData.slice(0,6)}
                         columnList={columnList}
                         headerHeight={60}
                         isLoading={this.state.tableLoading}

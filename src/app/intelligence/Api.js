@@ -5,15 +5,23 @@ import { getProfitAndLossData} from "./getProfitAndLossData";
 import { CurrencyType } from "../../utils/ReusableFunctions";
 import { getProfitLossAsset } from "./stackGrapgh";
 
-import { INSIGHT_DATA, NETFLOW_GRAPH, PORTFOLIO_ASSET, TRANSACTION_FILTER } from "./ActionTypes";
+import { ALL_TRANSACTION_HISTORY_HOME, INSIGHT_DATA, NETFLOW_GRAPH, PORTFOLIO_ASSET, TRANSACTION_FILTER } from "./ActionTypes";
 
 export const searchTransactionApi = (data , ctx, page = 0) => {
     return function (dispatch, getState) {
         postLoginInstance.post("wallet/transaction/search-transaction", data)
             .then((res) => {
                 // console.log(page)
-                if (!res.data.error) {
-                    dispatch(getAllTransactionHistory(res.data.data, page))
+              if (!res.data.error) {
+                if (ctx.state.currentPage === "Home") {
+                  dispatch({
+                    type: ALL_TRANSACTION_HISTORY_HOME,
+                    payload: res.data.data,
+                  });
+                } else {
+                    dispatch(getAllTransactionHistory(res.data.data, page));
+                }
+                
                     if(ctx){
                         ctx.setState({
                             tableLoading: false,
