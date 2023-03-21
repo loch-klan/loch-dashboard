@@ -238,8 +238,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 2
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Click on <b>API Management</b> from your Profile icon
-                      dropdown menu on the top right
+                      Click on your <b>name</b> at top right corner
                     </p>
                   </div>
                 </div>
@@ -249,9 +248,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 3
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      In <b>Give the API Key a Label</b> field type in what you
-                      want to call it, ex. <b>Loch Kraken</b>, then click{" "}
-                      <b>Create</b>
+                      Select <b>API</b> from the <b>Security</b> dropdown and
+                      click on <b>Add key</b> button
                     </p>
                   </div>
                 </div>
@@ -261,8 +259,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 4
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Input your <b>Google Authentication Code</b> (2FA) for
-                      Kraken
+                      Give permission to <b>Query Funds</b>, <b> Query Open Orders & Trades</b> and <b>Query Closed Orders & Trades</b> and click <b>Generate Key</b> button
                     </p>
                   </div>
                 </div>
@@ -272,8 +269,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 5
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Open your verification email Kraken sent you and click{" "}
-                      <b>Confirm new API key</b>
+                      Below the message <b>Success: Created API key</b> you will
+                      see your API and Private Keys
                     </p>
                   </div>
                 </div>
@@ -283,11 +280,17 @@ class ConnectModal extends BaseReactComponent {
                       STEP 6
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      You can either scan the <b>QR code</b> with the{" "}
-                      <b>Loch</b> app by tapping <b>Scan QR Code</b> below and
-                      pointing the camera at the <b>QR code</b> on the screen,
-                      or manually copy/paste your <b>API</b> and{" "}
-                      <b>Secret Keys</b> into the app
+                      Please note, that in security settings <b>two-factor authentication for API keys</b> must be set to <b>No</b> method in order to be able to sync to Loch
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  <div className="steps">
+                    <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                      STEP 7
+                    </h6>
+                    <p className="inter-display-medium f-s-14 lh-16">
+                      Copy/paste your <b>API Key</b> and <b>API Secret (Private)</b> into Loch app or scan the QR code with the Loch app by tapping the camera app below and pointing it at the <b>QR code</b> on the screen
                     </p>
                   </div>
                 </div>
@@ -307,7 +310,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 1
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Login to your <b>Kucoin</b> account on your computer
+                      Login to your <b>KuCoin</b> account on your computer
                     </p>
                   </div>
                 </div>
@@ -317,8 +320,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 2
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Click on <b>API Management</b> from your Profile icon
-                      dropdown menu on the top right
+                      Hover your profile icon on top right and select <b>Api Management</b>
                     </p>
                   </div>
                 </div>
@@ -328,9 +330,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 3
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      In <b>Give the API Key a Label</b> field type in what you
-                      want to call it, ex. <b>Loch Kucoin</b>, then click{" "}
-                      <b>Create</b>
+                      Click on <b>Create API</b>
                     </p>
                   </div>
                 </div>
@@ -340,8 +340,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 4
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Input your <b>Google Authentication Code</b> (2FA) for
-                      Kucoin
+                      Fill in <b>API Name</b> (ex. Loch Kucoin) and <b>API Passphrase</b> (the API Passphrase will be used to verify the API allocation, please record and backup it on
+                      paper or mobile terminal). Click <b>Confirm</b>
                     </p>
                   </div>
                 </div>
@@ -351,8 +351,9 @@ class ConnectModal extends BaseReactComponent {
                       STEP 5
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Open your verification email Kucoin sent you and click{" "}
-                      <b>Confirm new API key</b>
+                      Go through <b>Security Verification</b> by inputting your
+                      <b>Trade Password</b>, <b>Email Verification Code</b> and
+                      <b>Google Verification Code</b>
                     </p>
                   </div>
                 </div>
@@ -362,11 +363,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 6
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      You can either scan the <b>QR code</b> with the{" "}
-                      <b>Loch</b> app by tapping <b>Scan QR Code</b> below and
-                      pointing the camera at the <b>QR code</b> on the screen,
-                      or manually copy/paste your <b>API</b> and{" "}
-                      <b>Secret Keys</b> into the app
+                      Now copy/paste your <b>API Key</b>, <b>API Secret</b> and
+                      <b>API Passphrase</b> into Loch app
                     </p>
                   </div>
                 </div>
@@ -412,8 +410,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 2
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Click on <b>API Management</b> from your Profile icon
-                      dropdown menu on the top right
+                      Select <b>API Settings</b> from <b>My Account</b> dropdown
+                      list on top right
                     </p>
                   </div>
                 </div>
@@ -423,9 +421,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 3
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      In <b>Give the API Key a Label</b> field type in what you
-                      want to call it, ex. <b>Loch Gemini</b>, then click{" "}
-                      <b>Create</b>
+                      Click on “<b>Create A New Account API Key</b>” and input
+                      the code sent to you by SMS
                     </p>
                   </div>
                 </div>
@@ -435,8 +432,9 @@ class ConnectModal extends BaseReactComponent {
                       STEP 4
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Input your <b>Google Authentication Code</b> (2FA) for
-                      Gemini
+                      Name your <b>API</b> with any name you’d like (ex. Loch
+                      Gemini), mark access to <b>Auditor</b> and store your
+                      <b>Secret Key</b> in a safe place
                     </p>
                   </div>
                 </div>
@@ -446,25 +444,12 @@ class ConnectModal extends BaseReactComponent {
                       STEP 5
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Open your verification email Gemini sent you and click{" "}
-                      <b>Confirm new API key</b>
+                      Copy/paste your <b>API Key</b> and <b>API Secret</b> into
+                      <b>Loch</b> app and click <b>Submit</b>
                     </p>
                   </div>
                 </div>
-                <div>
-                  <div className="steps">
-                    <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                      STEP 6
-                    </h6>
-                    <p className="inter-display-medium f-s-14 lh-16">
-                      You can either scan the <b>QR code</b> with the{" "}
-                      <b>Loch</b> app by tapping <b>Scan QR Code</b> below and
-                      pointing the camera at the <b>QR code</b> on the screen,
-                      or manually copy/paste your <b>API</b> and{" "}
-                      <b>Secret Keys</b> into the app
-                    </p>
-                  </div>
-                </div>
+              
               </Slider>
             );
           },
