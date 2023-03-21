@@ -18,7 +18,9 @@ class Home extends Component {
       upgradeModal: false,
       isStatic: true,
       triggerId: 0,
-      selectedId:0,
+      selectedId: 0,
+
+      showPrevModal: true,
     };
   }
 
@@ -26,7 +28,12 @@ class Home extends Component {
     this.setState(
       {
         upgradeModal: !this.state.upgradeModal,
-      },
+      }, () => {
+         let value = this.state.upgradeModal ? false : true;
+         this.setState({
+           showPrevModal: value,
+         });
+      }
     );
   };
 
@@ -61,22 +68,19 @@ class Home extends Component {
   }
 
   hideModal = (value) => {
-    this.setState({
-      signedIn: value,
-    });
-
     
   }
 
   render() {
     return (
       <>
-        
+        {this.state.showPrevModal && (
           <div>
             <Image src={Banner} className="overlay-banner" />
             <OnBoarding {...this.props} hideModal={this.hideModal} />
           </div>
-        
+        )}
+
         {this.state.upgradeModal && (
           <UpgradeModal
             show={this.state.upgradeModal}
@@ -86,6 +90,7 @@ class Home extends Component {
             // isShare={localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             selectedId={this.state.selectedId}
+            signinBack={true}
           />
         )}
       </>

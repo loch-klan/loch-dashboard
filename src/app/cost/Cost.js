@@ -357,7 +357,7 @@ class Cost extends Component {
           if (dataKey === "AverageCostPrice") {
             return (
               <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                {rowData.AverageCostPrice}
+                {rowData.AverageCostPrice.toFixed(4)}
               </div>
             );
           }
@@ -373,7 +373,7 @@ class Cost extends Component {
           if (dataKey === "CurrentPrice") {
             return (
               <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                {rowData.CurrentPrice}
+                {rowData.CurrentPrice.toFixed(2)}
               </div>
             );
           }
@@ -404,7 +404,7 @@ class Cost extends Component {
         },
       },
       {
-        labelName: "CurrentValue",
+        labelName: "Current Value",
         dataKey: "CurrentValue",
         // coumnWidth: 140,
         coumnWidth: 0.2,
@@ -431,7 +431,7 @@ class Cost extends Component {
               >
                 <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
                 <div className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.GainLoss+"%"}
+                  {rowData.GainLoss.toFixed(2)+"%"}
                 </div>
               </div>
             );
