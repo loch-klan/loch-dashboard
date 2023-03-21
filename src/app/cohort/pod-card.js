@@ -179,7 +179,7 @@ class PodCard extends Component {
                 isInfo={true}
                 isText={true}
                 text={popupmsg}
-                className={"fix-width text-start"}
+                className={"pod-width"}
               >
                 <Image
                   src={InfoIcon}

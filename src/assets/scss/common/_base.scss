@@ -1536,6 +1536,13 @@ form {
     }
   }
 
+  &.pod-width {
+    .tooltip-inner {
+      width: 29rem;
+      text-align: start;
+    }
+  }
+
   &.text-start{
     text-align: start;
   }
