@@ -1,5 +1,5 @@
 import { API_LIMIT } from "../../utils/Constant";
-import { ALL_TRANSACTION_HISTORY, AVERAGE_COST_BASIS, COUNTER_PARTY_VOLUME, GAS_FEES, INSIGHT_DATA, NETFLOW_GRAPH, PORTFOLIO_ASSET, TRANSACTION_FILTER } from "./ActionTypes";
+import { ALL_TRANSACTION_HISTORY, ALL_TRANSACTION_HISTORY_HOME, AVERAGE_COST_BASIS, COUNTER_PARTY_VOLUME, GAS_FEES, INSIGHT_DATA, NETFLOW_GRAPH, PORTFOLIO_ASSET, TRANSACTION_FILTER } from "./ActionTypes";
 const INITIAL_STATE = {
   table: [],
   currentPage: 1,
@@ -8,13 +8,17 @@ const INITIAL_STATE = {
   assetPriceList: [],
   updatedInsightList: "",
 
+  // for home
+  table_home: [],
+  assetPriceList_home: [],
+
   // get all netflow api response
   GraphData: [],
   // all netflowh data
   graphValue: null,
 
   // get all asset value
-  ProfitLossAsset:[],
+  ProfitLossAsset: [],
 
   // filters
   assetFilter: [],
@@ -30,7 +34,7 @@ const INITIAL_STATE = {
   graphfeeValue: null,
 
   // average cost basis
-  Average_cost_basis:[],
+  Average_cost_basis: [],
 };
 const IntelligenceReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -43,6 +47,12 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
           totalPage: Math.ceil(action.payload.total_count / API_LIMIT),
           currentPage: action.currentPage,
         };
+      case ALL_TRANSACTION_HISTORY_HOME:
+        return {
+          ...state,
+          table_home: action.payload.results,
+          assetPriceList_home: action.payload.objects.asset_prices,
+        };
       case INSIGHT_DATA:
         return {
           ...state,
@@ -54,28 +64,32 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
           GraphData: action.payload.GraphData,
           graphValue: action.payload.graphValue,
         };
-      case PORTFOLIO_ASSET: return { ...state, ProfitLossAsset: action.payload.ProfitLossAsset }; 
-        case TRANSACTION_FILTER:
-            return {
-              ...state,
-              assetFilter: action.payload.assetFilter,
-              yearFilter: action.payload.yearFilter,
-              methodFilter: action.payload.methodFilter,
-            };
-        case COUNTER_PARTY_VOLUME: return {
+      case PORTFOLIO_ASSET:
+        return { ...state, ProfitLossAsset: action.payload.ProfitLossAsset };
+      case TRANSACTION_FILTER:
+        return {
+          ...state,
+          assetFilter: action.payload.assetFilter,
+          yearFilter: action.payload.yearFilter,
+          methodFilter: action.payload.methodFilter,
+        };
+      case COUNTER_PARTY_VOLUME:
+        return {
           ...state,
           counterPartyData: action.payload.counterPartyData,
           counterPartyValue: action.payload.counterPartyValue,
         };
-        case GAS_FEES: return {
+      case GAS_FEES:
+        return {
           ...state,
           GraphfeeData: action.payload.GraphfeeData,
           graphfeeValue: action.payload.graphfeeValue,
-      };
-      case AVERAGE_COST_BASIS: return {
-        ...state,
-        Average_cost_basis: action.payload.Average_cost_basis,
-      };
+        };
+      case AVERAGE_COST_BASIS:
+        return {
+          ...state,
+          Average_cost_basis: action.payload.Average_cost_basis,
+        };
       default:
         return state;
     }
