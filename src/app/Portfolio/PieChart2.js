@@ -907,7 +907,7 @@ class PieChart2 extends BaseReactComponent {
     let uniqueAddress = [];
     let uniqueList =
       this.state.selectedSection[0] && this.state.selectedSection[0]?.chain;
-
+  
     uniqueList &&
       uniqueList?.map((chain) => {
         // console.log("chain",chain)
