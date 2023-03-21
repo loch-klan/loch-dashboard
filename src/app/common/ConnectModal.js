@@ -76,10 +76,10 @@ class ConnectModal extends BaseReactComponent {
         //   name: "Bybit",
         //   icon: BybitIcon,
         // },
-        // {
-        //   name: "Gemini",
-        //   icon: GeminiIcon,
-        // },
+        {
+          name: "Gemini",
+          icon: GeminiIcon,
+        },
         // {
         //   name: "Huobi",
         //   icon: HuobiIcon,
@@ -186,15 +186,8 @@ class ConnectModal extends BaseReactComponent {
     let exchangename = this.state?.selection?.name?.toLowerCase();
     let cname = this.state?.connectionName;
     let parentState = this;
-    if (this.state.coinBase && this.state?.selection?.name === "Coinbase") {
-      // this.setState({
-      //   popup: true,
-      // });
-      // var win = window.open(
-      //   "http://localhost:3000/success?code=3ffd0d652b7e060511b206b596fbb80c04e62e7a80bc1a59fe46ae3382d5ac48",
-      //   "test",
-      //   "width=600,height=600,left=400,top=100"
-      // );
+    if (this.state.coinBase && this.state.AuthUrl !== "") {
+
       var win = window.open(
         this.state.AuthUrl,
         "test",
@@ -220,9 +213,6 @@ class ConnectModal extends BaseReactComponent {
           win.close();
           clearInterval(timer);
 
-          // setTimeout(() => {
-
-          // }, 500);
         }
       }, 1000);
     } else {
@@ -488,7 +478,7 @@ class ConnectModal extends BaseReactComponent {
                   Connecting to {selection.name}
                 </h6>
               </div>
-              {selection.name === "Coinbase" && (
+              {this.state.AuthUrl !== "" && (
                 <div
                   style={{
                     display: "flex",
@@ -530,7 +520,7 @@ class ConnectModal extends BaseReactComponent {
                   </h3>
                 </div>
               )}
-              {selection.name === "Coinbase" && <hr style={{ margin: 0 }} />}
+              {this.state.AuthUrl !== "" && <hr style={{ margin: 0 }} />}
               <div className="selection-wrapper">
                 <Container>
                   <Row>
@@ -552,7 +542,7 @@ class ConnectModal extends BaseReactComponent {
                             // }}
                           />
                           {(!this.state.coinBase ||
-                            this.state.selection.name !== "Coinbase") && (
+                            this.state.AuthUrl === "") && (
                             <FormElement
                               valueLink={this.linkState(this, "apiKey")}
                               label="API Key"
@@ -569,7 +559,7 @@ class ConnectModal extends BaseReactComponent {
                             />
                           )}
                           {(!this.state.coinBase ||
-                            this.state.selection.name !== "Coinbase") && (
+                            this.state.AuthUrl === "") && (
                             <FormElement
                               valueLink={this.linkState(this, "apiSecret")}
                               label="API Secret"
@@ -601,8 +591,7 @@ class ConnectModal extends BaseReactComponent {
                           ? this.showCoinbaseAuthSteps()
                           : this.showCoinbaseSteps()}
                       </div>
-                      {(!this.state.coinBase ||
-                        this.state.selection.name !== "Coinbase") && (
+                      {(!this.state.coinBase || this.state.AuthUrl === "") && (
                         <Button
                           className="primary-btn connect-btn"
                           onClick={this.handleConnect}
@@ -611,20 +600,19 @@ class ConnectModal extends BaseReactComponent {
                         </Button>
                       )}
                     </Col>
-                    {this.state.coinBase &&
-                      this.state.selection.name === "Coinbase" && (
-                        <Col
-                          md={12}
-                          style={{ textAlign: "center", marginTop: "5rem" }}
+                    {this.state.coinBase && this.state.AuthUrl !== "" && (
+                      <Col
+                        md={12}
+                        style={{ textAlign: "center", marginTop: "5rem" }}
+                      >
+                        <Button
+                          className="primary-btn"
+                          onClick={this.handleConnect}
                         >
-                          <Button
-                            className="primary-btn"
-                            onClick={this.handleConnect}
-                          >
-                            Continue with Coinbase
-                          </Button>
-                        </Col>
-                      )}
+                          Continue with {selection.name}
+                        </Button>
+                      </Col>
+                    )}
                   </Row>
                 </Container>
               </div>
@@ -642,7 +630,7 @@ class ConnectModal extends BaseReactComponent {
               </div>
               <div className="connect-wrapper">
                 {/* <Row> */}
-                {this.state.connectExchangesList.map((item) => {
+                {/* {this.state.connectExchangesList.map((item) => {
                   return (
                     <div
                       className="connect-div"
@@ -657,7 +645,28 @@ class ConnectModal extends BaseReactComponent {
                       </h3>
                     </div>
                   );
-                })}
+                })} */}
+
+                <Row>
+                  {this.state.connectExchangesList.map((item) => {
+                    return (
+                      <Col md={4}>
+                        <div
+                          className="connect-div"
+                          onClick={() => this.handleSelect(item)}
+                        >
+                          <div className="img-wrapper">
+                            <Image src={item.icon} />
+                          </div>
+
+                          <h3 className="inter-display-medium f-s-16 lh-19 ">
+                            {item.name}
+                          </h3>
+                        </div>
+                      </Col>
+                    );
+                  })}
+                </Row>
                 {/* </Row> */}
               </div>
             </div>
