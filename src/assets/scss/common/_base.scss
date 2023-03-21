@@ -1536,6 +1536,10 @@ form {
     }
   }
 
+  &.text-start{
+    text-align: start;
+  }
+
   &.wallet-tooltip {
     .tooltip-inner {
       padding: 0.8rem 1.2rem;
