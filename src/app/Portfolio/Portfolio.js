@@ -12,6 +12,7 @@ import {
   getYesterdaysBalanceApi,
   settingDefaultValues,
   getExternalEventsApi,
+  getExchangeBalances,
 } from "./Api";
 import { Button, Image, Row, Col } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -392,8 +393,9 @@ class Portfolio extends BaseReactComponent {
         });
 
         // connect exchange api
-        this.props.getExchangeBalance("binance", this);
-        this.props.getExchangeBalance("coinbase", this);
+        // this.props.getExchangeBalance("binance", this);
+        // this.props.getExchangeBalance("coinbase", this);
+        this.props.getExchangeBalances(this);
 
         if (!isFound) {
           this.setState({
@@ -408,9 +410,9 @@ class Portfolio extends BaseReactComponent {
         this.props.settingDefaultValues();
 
         // when wallet address not present run connect exchnage api
-        this.props.getExchangeBalance("binance", this);
-        this.props.getExchangeBalance("coinbase", this);
-
+        // this.props.getExchangeBalance("binance", this);
+        // this.props.getExchangeBalance("coinbase", this);
+  this.props.getExchangeBalances(this);
         // net worth total loader
         this.setState({
           isLoading: false,
@@ -1753,6 +1755,7 @@ const mapDispatchToProps = {
   getDetailsByLinkApi,
   getProfitAndLossApi,
   getExchangeBalance,
+  getExchangeBalances,
   getYesterdaysBalanceApi,
   getExternalEventsApi,
   getAllInsightsApi,
