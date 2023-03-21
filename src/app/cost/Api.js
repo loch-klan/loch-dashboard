@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
-import { COUNTER_PARTY_VOLUME, GAS_FEES } from "../intelligence/ActionTypes";
+import { AVERAGE_COST_BASIS, COUNTER_PARTY_VOLUME, GAS_FEES } from "../intelligence/ActionTypes";
 import {getGraphData, getCounterGraphData} from "./getGraphData";
 
 export const getAllFeeApi = (ctx, startDate, endDate) => {
@@ -162,4 +162,171 @@ export const getUserAccount = (data,ctx) => {
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
+};
+
+
+export const getAvgCostBasis = (ctx) => {
+  return async function (dispatch, getState) {
+
+    postLoginInstance
+      .post("wallet/user-wallet/get-average-cost-basis")
+      .then((res) => {
+        if (!res.data.error) {
+          let ApiResponse = res?.data.data?.assets;
+          // let ApiResponse = [
+          //   {
+          //     asset: {
+          //       asset_type: 10,
+          //       code: "MKR",
+          //       color: "#1aab9b",
+          //       decimals: 18,
+          //       exchange_account_id: "0e1b1e62-5bf2-5448-8b03-724f05dec9bc",
+          //       id: "632cc3507113e1f4bb330970",
+          //       name: "Maker",
+          //       symbol:
+          //         "https://assets.coingecko.com/coins/images/1364/large/Mark_Maker.png?1585191826",
+          //       token_address: "",
+          //     },
+          //     average_price: 671.16,
+          //     count: 9.06e-6,
+          //     current_price: 671.16,
+          //   },
+          //   {
+          //     asset: {
+          //       asset_type: 10,
+          //       code: "USDC",
+          //       color: "#2775ca",
+          //       decimals: 6,
+          //       exchange_account_id: "c32b4bea-88d6-5468-9cee-636e43b58a02",
+          //       id: "632cc3507113e1f4bb33096b",
+          //       name: "USD Coin",
+          //       symbol:
+          //         "https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png?1547042389",
+          //       token_address: "",
+          //     },
+          //     average_price: 1.004,
+          //     count: 0.066067,
+          //     current_price: 1.004,
+          //   },
+          //   {
+          //     asset: {
+          //       asset_type: 10,
+          //       code: "MATIC",
+          //       color: "#8247e5",
+          //       decimals: 18,
+          //       exchange_account_id: "fffc45ed-e0ec-5f77-b981-77b16906e1c9",
+          //       id: "632cc34f7113e1f4bb33038f",
+          //       name: "Polygon",
+          //       symbol:
+          //         "https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png?1624446912",
+          //       token_address: "",
+          //     },
+          //     average_price: 1.12,
+          //     count: 136.69593109,
+          //     current_price: 1.12,
+          //   },
+          //   {
+          //     asset: {
+          //       asset_type: 10,
+          //       code: "AVAX",
+          //       color: "#e84142",
+          //       decimals: 18,
+          //       exchange_account_id: "5ee02f4f-9443-5e1a-b2c0-c5bad08b76db",
+          //       id: "632cc34f7113e1f4bb330582",
+          //       name: "Avalanche",
+          //       symbol:
+          //         "https://assets.coingecko.com/coins/images/12559/large/Avalanche_Circle_RedWhite_Trans.png?1670992574",
+          //       token_address: "",
+          //     },
+          //     average_price: 16.8,
+          //     count: 0.000845,
+          //     current_price: 16.8,
+          //   },
+          //   {
+          //     asset: {
+          //       asset_type: 10,
+          //       code: "SOL",
+          //       color: "#00FFA3",
+          //       decimals: 0,
+          //       exchange_account_id: "a3a92dce-816f-5109-8eee-d1a4b03340a9",
+          //       id: "632cc34e7113e1f4bb32ffa6",
+          //       name: "Solana",
+          //       symbol:
+          //         "https://assets.coingecko.com/coins/images/4128/large/solana.png?1640133422",
+          //       token_address: "",
+          //     },
+          //     average_price: 22.55,
+          //     count: 29.063327136,
+          //     current_price: 22.55,
+          //   },
+          //   {
+          //     asset: {
+          //       asset_type: 10,
+          //       code: "ETH",
+          //       color: "#62688f",
+          //       decimals: 18,
+          //       exchange_account_id: "ede55050-46ff-5310-87d1-6587600a9862",
+          //       id: "632cc34e7113e1f4bb32fdb2",
+          //       name: "Ethereum",
+          //       symbol:
+          //         "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+          //       token_address: "",
+          //     },
+          //     average_price: 1754.14,
+          //     count: 0.00137182,
+          //     current_price: 1754.14,
+          //   },
+          //   {
+          //     asset: {
+          //       asset_type: 10,
+          //       code: "BTC",
+          //       color: "#f7931a",
+          //       decimals: 0,
+          //       exchange_account_id: "06b5114e-b540-5220-a098-c792440fbfc6",
+          //       id: "632cc3507113e1f4bb33096a",
+          //       name: "Bitcoin",
+          //       symbol:
+          //         "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+          //       token_address: "",
+          //     },
+          //     average_price: 27925.0,
+          //     count: 0.000184,
+          //     current_price: 27925,
+          //   },
+          // ];
+
+          let AssetsList = [];
+          ApiResponse?.map(item => {
+            AssetsList.push({
+              Asset: item.asset.symbol,
+              AssetCode: item.asset.code,
+              AssetName: item.asset.name,
+              AverageCostPrice: item.average_price,
+              CurrentPrice: item.current_price,
+              Amount: item.count,
+              CostBasis: item.count * item.average_price,
+              CurrentValue: item.count * item.current_price,
+              GainLoss: 
+                  ((item.count * item.current_price -
+                    item.count * item.average_price) /
+                    (item.count * item.average_price)) *
+                  100,
+            });
+          });
+
+          // console.log("Asset",AssetsList)
+          dispatch({
+            type: AVERAGE_COST_BASIS,
+            payload: {
+              Average_cost_basis: AssetsList,
+            },
+          });
+          ctx.setState({
+            AvgCostLoading: false,
+          });
+        } else {
+          toast.error(res.data.message || "Something Went Wrong");
+        }
+      });
+  };
 };

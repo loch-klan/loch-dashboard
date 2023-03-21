@@ -20,7 +20,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import {getCounterGraphData, getGraphData} from "./getGraphData";
-import { getAllFeeApi, getAllCounterFeeApi, updateCounterParty, updateFeeGraph } from "./Api";
+import { getAllFeeApi, getAllCounterFeeApi, updateCounterParty, updateFeeGraph, getAvgCostBasis } from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
@@ -49,6 +49,8 @@ class Cost extends Component {
 
       counterGraphLoading: true,
       gasFeesGraphLoading: true,
+
+      AvgCostLoading:true,
 
       // counter party
       // counterPartyData: [],
@@ -91,8 +93,10 @@ class Cost extends Component {
     this.props.getAllCoins();
     this.getBlockchainFee(0);
     this.getCounterPartyFee(0);
+     this.props.getAvgCostBasis(this);
     GetAllPlan();
     getUser();
+   
   }
 
  
@@ -106,6 +110,7 @@ class Cost extends Component {
       this.props.getAllCoins();
       this.getBlockchainFee(0);
       this.getCounterPartyFee(0);
+       this.props.getAvgCostBasis(this);
       this.setState({
         apiResponse: false,
       });
@@ -291,36 +296,38 @@ class Cost extends Component {
   render() {
     // console.log("counter", this.state.counterGraphDigit);
     // console.log("fes", this.state.GraphDigit);
-    const tableData = [
-      {
-        Asset: Ethereum,
-        AverageCostPrice: "$800.00",
-        CurrentPrice: "$1,390.00",
-        Amount: 3.97,
-        CostBasis: 1.75,
-        CurrentValue: "$5,514.00",
-        GainLoss: {
-          status: "gain",
-          symbol: GainIcon,
-          // "42.45%",
-          value: "42.45%",
-        },
-      },
-      {
-        Asset: Ethereum,
-        AverageCostPrice: "$25,000.00",
-        CurrentPrice: "$21,080.00",
-        Amount: 3.97,
-        CostBasis: 2.56,
-        CurrentValue: "$22,280.50",
-        GainLoss: {
-          status: "loss",
-          symbol: LossIcon,
-          // "-18.45%"
-          value: "-18.45%",
-        },
-      },
-    ];
+
+    let tableData = this.props.intelligenceState.Average_cost_basis;
+    // const tableData = [
+    //   {
+    //     Asset: Ethereum,
+    //     AverageCostPrice: "$800.00",
+    //     CurrentPrice: "$1,390.00",
+    //     Amount: 3.97,
+    //     CostBasis: 1.75,
+    //     CurrentValue: "$5,514.00",
+    //     GainLoss: {
+    //       status: "gain",
+    //       symbol: GainIcon,
+    //       // "42.45%",
+    //       value: "42.45%",
+    //     },
+    //   },
+    //   {
+    //     Asset: Ethereum,
+    //     AverageCostPrice: "$25,000.00",
+    //     CurrentPrice: "$21,080.00",
+    //     Amount: 3.97,
+    //     CostBasis: 2.56,
+    //     CurrentValue: "$22,280.50",
+    //     GainLoss: {
+    //       status: "loss",
+    //       symbol: LossIcon,
+    //       // "-18.45%"
+    //       value: "-18.45%",
+    //     },
+    //   },
+    // ];
 
     const columnData = [
       {
@@ -331,7 +338,12 @@ class Cost extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
-            return <CoinChip coin_img_src={rowData.Asset} coin_code="ETH" />;
+            return (
+              <CoinChip
+                coin_img_src={rowData.Asset}
+                coin_code={rowData.AssetCode}
+              />
+            );
           }
         },
       },
@@ -414,12 +426,12 @@ class Cost extends Component {
             return (
               <div
                 className={`gainLoss ${
-                  rowData.GainLoss.status === "loss" ? "loss" : "gain"
+                  rowData.GainLoss < 0 ? "loss" : "gain"
                 }`}
               >
-                <Image src={rowData.GainLoss.symbol} />
+                <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
                 <div className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.GainLoss.value}
+                  {rowData.GainLoss+"%"}
                 </div>
               </div>
             );
@@ -559,19 +571,20 @@ class Cost extends Component {
           </div>
           <div className="m-b-40 cost-table-section">
             <div style={{ position: "relative" }}>
-              <div className="coming-soon-div">
+              {/* <div className="coming-soon-div">
                 <Image src={ExportIconWhite} className="coming-soon-img" />
                 <p className="inter-display-regular f-s-13 lh-16 black-191">
                   This feature is coming soon.
                 </p>
-              </div>
+              </div> */}
               <TransactionTable
                 title="Average Cost Basis"
                 subTitle="Understand your average entry price"
                 tableData={tableData}
                 columnList={columnData}
                 headerHeight={64}
-                comingSoon={true}
+                comingSoon={false}
+                isLoading={this.state.AvgCostLoading}
                 // isConnect={true}
                 // handleExchange={this.handleConnectModal}
               />
@@ -591,6 +604,9 @@ const mapDispatchToProps = {
   getAllCoins,
   getAllFeeApi,
   getAllCounterFeeApi,
+
+  // avg cost
+getAvgCostBasis,
 
   // update counter party
   updateCounterParty,
