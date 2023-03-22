@@ -282,7 +282,9 @@ class UpgradeModal extends BaseReactComponent {
       // meta mask
       MetamaskExist: false,
       MetaAddress: "",
-      btnloader:false,
+      balance: 0,
+      btnloader: false,
+      transactionReceipt: null,
     };
   }
 
@@ -360,18 +362,18 @@ class UpgradeModal extends BaseReactComponent {
 
     if (window.ethereum) {
       // Do something
-       this.setState({
-         MetamaskExist: true,
-       });
+      this.setState({
+        MetamaskExist: true,
+      });
     } else {
       // alert("install metamask extension!!");
       this.setState({
-        MetamaskExist:false
+        MetamaskExist: false
       })
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate(prevProps, prevState) { }
 
   handleBack = () => {
     this.setState({
@@ -406,36 +408,92 @@ class UpgradeModal extends BaseReactComponent {
     });
   };
 
-  conectWallet = async () => {
+  connectMetamask = async () => {
     if (window.ethereum) {
-     
-      await window.ethereum.request({ method: "eth_requestAccounts" }).then((res) => {
-        // Return the address of the wallet
-        console.log("address",res[0]);
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+        const balance = ethers.utils.formatEther(await provider.getBalance(address));
+
+       
+        // console.log(
+        //   "plan price",
+        //   this.state.selectedPlan?.price,
+        //   "Eth rate",
+        //   ethRateList.rates.ETH,
+        //   "user balace",
+        //   balance,
+        //   "USD to Eth",
+        //   ethRateList.rates.ETH * this.state.selectedPlan?.price
+        // );
         this.setState({
-          MetaAddress: res[0],
+          MetaAddress: address,
+          balance: balance,
+          signer: signer,
+          provider: provider,
           btnloader: true,
-        });
-      });
-
-     await window.ethereum
-        .request({
-          method: "eth_getBalance",
-          params: [this.state.MetaAddress, "latest"],
         })
-        .then((balance) => {
-          // Return string value to convert it into int balance
-          console.log("Balace",balance);
 
-          // Yarn add ethers for using ethers utils or
-          // npm install ethers
-          console.log("Balance format",ethers.utils.formatEther(balance));
-          // Format the string into main latest balance
-        });
+        // call sigin Api after signin call checkoutModal
+        this.setState(
+          {
+            RegisterModal: false,
+            btnloader: false,
+          },
+          () => {
+            this.checkoutModal();
+          }
+        );
+      } catch (error) {
+        console.error(error);
+      }
     } else {
-      // alert("install metamask extension!!");
+      console.error('Please install MetaMask!');
     }
-  } 
+  }
+
+  // Metamask transaction
+  handleTransaction = async () => {
+  try {
+    // Prompt the user to connect their Metamask wallet
+    if (this.state.MetaAddress !== "") {
+      // already connected
+
+      // eth rate
+      let ethRateList = JSON.parse(localStorage.getItem("currencyRates"));
+      
+      // usd to eth
+      let ethPrice = ethRateList.rates.ETH * this.state.selectedPlan?.price;
+      console.log("trans")
+      // Set the transaction options (e.g. recipient address and transaction amount)
+      const txOptions = {
+        to: "0xb316a003B7b763Dc40Ca6C82F341B58052e46BFD", // recipient address
+        // value: ethers.utils.parseEther(`${ethPrice}`),
+        value: ethers.utils.parseEther(`0.0001`),
+      };
+
+      // Send the transaction
+      const tx = await this.state.signer.sendTransaction(txOptions);
+
+      // Wait for the transaction to be confirmed
+      const receipt = await tx.wait();
+
+      // Log the transaction receipt
+      console.log(receipt);
+      this.setState({
+        transactionReceipt: receipt
+      })
+    } else {
+      // connect metamask
+      this.connectMetamask();
+      
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   render() {
     return (
@@ -858,7 +916,7 @@ class UpgradeModal extends BaseReactComponent {
                                   <Button
                                     className={`primary-btn m-t-16`}
                                     style={{ width: "100%" }}
-                                    onClick={this.conectWallet}
+                                    onClick={this.connectMetamask}
                                   >
                                     {this.state.btnloader
                                       ? loadingAnimation()
@@ -924,21 +982,30 @@ class UpgradeModal extends BaseReactComponent {
                             </>
                           )}
                           {this.state.CheckOutModal && (
-                            <Button
-                              className={`primary-btn`}
-                              onClick={() => {
-                                // if (plan.name !== this.state.userPlan.name) {
-                                //   this.AddEmailModal();
-                                //   this.setState({
-                                //     price_id: plan.price_id,
-                                //     selectedPlan: plan,
-                                //   });
-                                // }
-                                window.open(this.state.payment_link);
-                              }}
-                            >
-                              Complete payment
-                            </Button>
+                            <>
+                              <Button
+                                className={`primary-btn`}
+                                onClick={() => {
+                                  // if (plan.name !== this.state.userPlan.name) {
+                                  //   this.AddEmailModal();
+                                  //   this.setState({
+                                  //     price_id: plan.price_id,
+                                  //     selectedPlan: plan,
+                                  //   });
+                                  // }
+                                  window.open(this.state.payment_link);
+                                }}
+                              >
+                                Complete payment
+                              </Button>
+
+                              <Button
+                                onClick={this.handleTransaction}
+                                className={`primary-btn`}
+                                >
+                                  Pay with crypto
+                              </Button>
+                            </>
                           )}
                         </div>
                       </Col>
