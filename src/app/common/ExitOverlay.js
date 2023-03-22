@@ -118,10 +118,12 @@ class ExitOverlay extends BaseReactComponent {
           apiurl: "wallet/transaction/export-counter-party-volume-traded",
           fileName: "counterparty-costs-export",
         },
-        // {
-        //   name: "Average Cost Basis",
-        //   value: 40,
-        // },
+        {
+          name: "Average Cost Basis",
+          value: 40,
+          apiurl: "wallet/user-wallet/export-average-cost-basis",
+          fileName: "average-cost-basis-export",
+        },
         // {
         //   name: "Portfolio Performance",
         //   value: 50,
