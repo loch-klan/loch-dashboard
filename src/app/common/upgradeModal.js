@@ -42,6 +42,7 @@ import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
 import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
 import { ethers } from "ethers";
+import { loadingAnimation } from "../../utils/ReusableFunctions";
 
 
 class UpgradeModal extends BaseReactComponent {
@@ -281,6 +282,7 @@ class UpgradeModal extends BaseReactComponent {
       // meta mask
       MetamaskExist: false,
       MetaAddress: "",
+      btnloader:false,
     };
   }
 
@@ -412,7 +414,8 @@ class UpgradeModal extends BaseReactComponent {
         console.log("address",res[0]);
         this.setState({
           MetaAddress: res[0],
-        })
+          btnloader: true,
+        });
       });
 
      await window.ethereum
@@ -857,7 +860,9 @@ class UpgradeModal extends BaseReactComponent {
                                     style={{ width: "100%" }}
                                     onClick={this.conectWallet}
                                   >
-                                    {this.state.MetamaskExist ? "Connect Metamask" : "Install metamask extension"}
+                                    {this.state.btnloader
+                                      ? loadingAnimation()
+                                      : "Connect metamask"}
                                   </Button>
                                 </>
                               ) : (
