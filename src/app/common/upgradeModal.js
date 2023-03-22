@@ -41,6 +41,8 @@ import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
 import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
+import { ethers } from "ethers";
+
 
 class UpgradeModal extends BaseReactComponent {
   constructor(props) {
@@ -58,7 +60,7 @@ class UpgradeModal extends BaseReactComponent {
         name: plan.name,
         id: plan.id,
         plan_reference_id: plan.plan_reference_id,
-        trial_day:plan.trial_days,
+        trial_day: plan.trial_days,
         features: [
           {
             name: "Wallet addresses",
@@ -274,7 +276,11 @@ class UpgradeModal extends BaseReactComponent {
       //
       hideAuthModal: false,
       signinModal: false,
-      hideModal:false,
+      hideModal: false,
+
+      // meta mask
+      MetamaskExist: false,
+      MetaAddress: "",
     };
   }
 
@@ -349,6 +355,18 @@ class UpgradeModal extends BaseReactComponent {
     if (this.props.selectedId) {
       this.AddEmailModal();
     }
+
+    if (window.ethereum) {
+      // Do something
+       this.setState({
+         MetamaskExist: true,
+       });
+    } else {
+      // alert("install metamask extension!!");
+      this.setState({
+        MetamaskExist:false
+      })
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -374,7 +392,7 @@ class UpgradeModal extends BaseReactComponent {
   handleSignin = () => {
     this.setState({
       signinModal: !this.state.signinModal,
-      hideModal:true,
+      hideModal: true,
     });
   };
 
@@ -384,7 +402,37 @@ class UpgradeModal extends BaseReactComponent {
       signinModal: !this.state.signinModal,
       hideModal: false,
     });
-  }
+  };
+
+  conectWallet = async () => {
+    if (window.ethereum) {
+     
+      await window.ethereum.request({ method: "eth_requestAccounts" }).then((res) => {
+        // Return the address of the wallet
+        console.log("address",res[0]);
+        this.setState({
+          MetaAddress: res[0],
+        })
+      });
+
+     await window.ethereum
+        .request({
+          method: "eth_getBalance",
+          params: [this.state.MetaAddress, "latest"],
+        })
+        .then((balance) => {
+          // Return string value to convert it into int balance
+          console.log("Balace",balance);
+
+          // Yarn add ethers for using ethers utils or
+          // npm install ethers
+          console.log("Balance format",ethers.utils.formatEther(balance));
+          // Format the string into main latest balance
+        });
+    } else {
+      // alert("install metamask extension!!");
+    }
+  } 
 
   render() {
     return (
@@ -756,44 +804,62 @@ class UpgradeModal extends BaseReactComponent {
                           ""
                         )}
 
-                        <div className="email-section auth-modal">
+                        <div
+                          className="email-section auth-modal"
+                          style={{ paddingRight: "3rem" }}
+                        >
                           {/* For Signin or Signup */}
                           {this.state.RegisterModal && (
                             <>
                               {!this.state.isShowOtp ? (
-                                <Form onValidSubmit={this.handleAccountCreate}>
-                                  <FormElement
-                                    valueLink={this.linkState(this, "email")}
-                                    // label="Email Info"
-                                    required
-                                    validations={[
-                                      {
-                                        validate: FormValidator.isRequired,
-                                        message: "",
-                                      },
-                                      {
-                                        validate: FormValidator.isEmail,
-                                        message: "Please enter valid email id",
-                                      },
-                                    ]}
-                                    control={{
-                                      type: CustomTextControl,
-                                      settings: {
-                                        placeholder: "Email",
-                                      },
-                                    }}
-                                  />
-                                  <div className="save-btn-section">
-                                    <Button
-                                      className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                                        this.state.email ? "active" : ""
-                                      }`}
-                                      type="submit"
-                                    >
-                                      Confirm
-                                    </Button>
-                                  </div>
-                                </Form>
+                                <>
+                                  <Form
+                                    onValidSubmit={this.handleAccountCreate}
+                                  >
+                                    <FormElement
+                                      valueLink={this.linkState(this, "email")}
+                                      // label="Email Info"
+                                      required
+                                      validations={[
+                                        {
+                                          validate: FormValidator.isRequired,
+                                          message: "",
+                                        },
+                                        {
+                                          validate: FormValidator.isEmail,
+                                          message:
+                                            "Please enter valid email id",
+                                        },
+                                      ]}
+                                      control={{
+                                        type: CustomTextControl,
+                                        settings: {
+                                          placeholder: "Email",
+                                        },
+                                      }}
+                                    />
+                                    <div className="save-btn-section">
+                                      <Button
+                                        className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                          this.state.email ? "active" : ""
+                                        }`}
+                                        type="submit"
+                                      >
+                                        Confirm
+                                      </Button>
+                                    </div>
+                                  </Form>
+                                  <p className="text-center inter-display-medium f-s-13 m-t-16 grey-969">
+                                    or
+                                  </p>
+                                  <Button
+                                    className={`primary-btn m-t-16`}
+                                    style={{ width: "100%" }}
+                                    onClick={this.conectWallet}
+                                  >
+                                    {this.state.MetamaskExist ? "Connect Metamask" : "Install metamask extension"}
+                                  </Button>
+                                </>
                               ) : (
                                 <>
                                   <Form onValidSubmit={this.handleOtp}>
@@ -918,7 +984,11 @@ class UpgradeModal extends BaseReactComponent {
           <AuthModal
             show={this.state.signinModal}
             // link="http://loch.one/a2y1jh2jsja"
-            onHide={this.props?.signinBack ? this.handleSigninBackbtn : this.handleSignin}
+            onHide={
+              this.props?.signinBack
+                ? this.handleSigninBackbtn
+                : this.handleSignin
+            }
             history={this.props.history}
             modalType={"create_account"}
             iconImage={SignInIcon}
@@ -927,7 +997,9 @@ class UpgradeModal extends BaseReactComponent {
             description="Get right back into your account"
             stopUpdate={true}
             tracking="Upgrade popup"
-            signinBack={this.props?.signinBack ? this.handleSigninBackbtn : false}
+            signinBack={
+              this.props?.signinBack ? this.handleSigninBackbtn : false
+            }
           />
         ) : (
           ""
