@@ -56,7 +56,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 1
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Login to your <b>Binance</b> account on your computer
+                      Log in to your <b>Binance</b> account on your computer
                     </p>
                   </div>
                 </div>
@@ -135,7 +135,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 1
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Login to your <b>Coinbase</b> account
+                      Log in to your <b>Coinbase</b> account
                     </p>
                   </div>
                 </div>
@@ -228,7 +228,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 1
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Login to your <b>Kraken</b> account on your computer
+                      Log in to your <b>Kraken</b> account on your computer
                     </p>
                   </div>
                 </div>
@@ -238,7 +238,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 2
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Click on your <b>name</b> at top right corner
+                      Click on your <b>name</b> on the top rightof the screen
                     </p>
                   </div>
                 </div>
@@ -248,8 +248,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 3
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Select <b>API</b> from the <b>Security</b> dropdown and
-                      click on <b>Add key</b> button
+                      Select <b>API</b> from the Security dropdown menu, then
+                      click on the <b>Add key</b> button
                     </p>
                   </div>
                 </div>
@@ -259,7 +259,10 @@ class ConnectModal extends BaseReactComponent {
                       STEP 4
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Give permission to <b>Query Funds</b>, <b> Query Open Orders & Trades</b> and <b>Query Closed Orders & Trades</b> and click <b>Generate Key</b> button
+                      Grant permission to <b>Query Funds</b>,{" "}
+                      <b> Query Open Orders & Trades</b> and{" "}
+                      <b>Query Closed Orders & Trades</b> then click on the{" "}
+                      <b>Generate Key</b> button
                     </p>
                   </div>
                 </div>
@@ -269,8 +272,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 5
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Below the message <b>Success: Created API key</b> you will
-                      see your API and Private Keys
+                      Your <b>API</b> and <b>Private Keys</b> will appear below
+                      the message Success: Created API key.
                     </p>
                   </div>
                 </div>
@@ -280,17 +283,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 6
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Please note, that in security settings <b>two-factor authentication for API keys</b> must be set to <b>No</b> method in order to be able to sync to Loch
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div className="steps">
-                    <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                      STEP 7
-                    </h6>
-                    <p className="inter-display-medium f-s-14 lh-16">
-                      Copy/paste your <b>API Key</b> and <b>API Secret (Private)</b> into Loch app or scan the QR code with the Loch app by tapping the camera app below and pointing it at the <b>QR code</b> on the screen
+                      Copy and paste your API Key and API Secret (Private) into
+                      the Loch website and click <b>Connect</b>
                     </p>
                   </div>
                 </div>
@@ -310,7 +304,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 1
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Login to your <b>KuCoin</b> account on your computer
+                      Log in to your <b>KuCoin</b> account on your computer
                     </p>
                   </div>
                 </div>
@@ -320,7 +314,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 2
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Hover your profile icon on top right and select <b>Api Management</b>
+                      Hover over your profile icon on the top right of the
+                      screen and select <b>Api Management</b>
                     </p>
                   </div>
                 </div>
@@ -330,7 +325,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 3
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Click on <b>Create API</b>
+                      Click <b>Create API</b>
                     </p>
                   </div>
                 </div>
@@ -340,8 +335,11 @@ class ConnectModal extends BaseReactComponent {
                       STEP 4
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Fill in <b>API Name</b> (ex. Loch Kucoin) and <b>API Passphrase</b> (the API Passphrase will be used to verify the API allocation, please record and backup it on
-                      paper or mobile terminal). Click <b>Confirm</b>
+                      Fill in <b>API Name</b> (e.g. Loch Kucoin) and{" "}
+                      <b>API Passphrase</b> (the API Passphrase will be used to
+                      verify the API allocation, so make sure to record and
+                      backup it on paper or mobile terminal). Then click{" "}
+                      <b>Confirm</b>
                     </p>
                   </div>
                 </div>
@@ -351,9 +349,9 @@ class ConnectModal extends BaseReactComponent {
                       STEP 5
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Go through <b>Security Verification</b> by inputting your
-                      <b>Trade Password</b>, <b>Email Verification Code</b> and
-                      <b>Google Verification Code</b>
+                      Go through Security Verification by entering your Trade
+                      Password, Email Verification Code, and Google Verification
+                      Code
                     </p>
                   </div>
                 </div>
@@ -363,8 +361,9 @@ class ConnectModal extends BaseReactComponent {
                       STEP 6
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Now copy/paste your <b>API Key</b>, <b>API Secret</b> and
-                      <b>API Passphrase</b> into Loch app
+                      Copy and paste your <b>API Key</b>, <b>API Secret</b>, and
+                      <b>API Passphrase</b> into the Loch website and click
+                      <b>Connect</b>
                     </p>
                   </div>
                 </div>
@@ -400,7 +399,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 1
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Login to your <b>Gemini</b> account on your computer
+                      Log in to your <b>Gemini</b> account on your computer
                     </p>
                   </div>
                 </div>
@@ -410,8 +409,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 2
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Select <b>API Settings</b> from <b>My Account</b> dropdown
-                      list on top right
+                      Select <b>API Settings</b> from the My Account dropdown on
+                      the top right of the screen
                     </p>
                   </div>
                 </div>
@@ -421,8 +420,8 @@ class ConnectModal extends BaseReactComponent {
                       STEP 3
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Click on “<b>Create A New Account API Key</b>” and input
-                      the code sent to you by SMS
+                      Click on <b>Create A New Account API Key</b> and enter the
+                      code sent to you by SMS
                     </p>
                   </div>
                 </div>
@@ -432,9 +431,9 @@ class ConnectModal extends BaseReactComponent {
                       STEP 4
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Name your <b>API</b> with any name you’d like (ex. Loch
-                      Gemini), mark access to <b>Auditor</b> and store your
-                      <b>Secret Key</b> in a safe place
+                      Name your API with any name you'd like (e.g. Loch Gemini),
+                      grant access to the Auditor, and store your Secret Key in
+                      a safe place
                     </p>
                   </div>
                 </div>
@@ -444,12 +443,11 @@ class ConnectModal extends BaseReactComponent {
                       STEP 5
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Copy/paste your <b>API Key</b> and <b>API Secret</b> into
-                      <b>Loch</b> app and click <b>Submit</b>
+                      Copy and paste your API Key and API Secret into the Loch
+                      app, then click <b>Connect</b>
                     </p>
                   </div>
                 </div>
-              
               </Slider>
             );
           },
@@ -622,7 +620,7 @@ class ConnectModal extends BaseReactComponent {
             </h6>
             <p className="inter-display-medium f-s-14 lh-16">
               Click on Continue with <b>{this.state.selection.name}</b>. It will
-              lead you to your <b>{this.state.selection.name}</b> account.
+              lead you to your <b>{this.state.selection.name}</b> account
             </p>
           </div>
         </div>
@@ -632,8 +630,8 @@ class ConnectModal extends BaseReactComponent {
               STEP 2
             </h6>
             <p className="inter-display-medium f-s-14 lh-16">
-              Login to your <b>{this.state.selection.name}</b> account if you
-              are not logged in yet.
+              Log in to your <b>{this.state.selection.name}</b> account if you
+              are not logged in yet
             </p>
           </div>
         </div>
@@ -643,7 +641,7 @@ class ConnectModal extends BaseReactComponent {
               STEP 3
             </h6>
             <p className="inter-display-medium f-s-14 lh-16">
-              Click on the <b> Authorize</b> button.
+              Click on the <b> Authorize</b> button
             </p>
           </div>
         </div>
