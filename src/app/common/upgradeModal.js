@@ -45,6 +45,8 @@ import { ethers } from "ethers";
 import { loadingAnimation } from "../../utils/ReusableFunctions";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { async } from "q";
 
 
 
@@ -289,7 +291,13 @@ class UpgradeModal extends BaseReactComponent {
       balance: 0,
       btnloader: false,
       transactionReceipt: null,
-      payLoader:false
+      payLoader: false,
+      selectedToken: null,
+      showToken: false,
+      tokensList: [{id:1,name: "ETH", price: null},{id:2,name: "USDT", price: null},{id:3,name: "USDC", price: null}],
+      ethPrice: null,
+      usdtConversion:null,
+      usdcConversion:null,
     };
   }
 
@@ -378,6 +386,10 @@ class UpgradeModal extends BaseReactComponent {
       });
     }
 
+   
+
+
+ 
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -393,6 +405,7 @@ class UpgradeModal extends BaseReactComponent {
       otp: "",
       isShowOtp: false,
       isEmailNotExist: false,
+      showToken:false
     });
   };
 
@@ -404,7 +417,7 @@ class UpgradeModal extends BaseReactComponent {
     this.setState({
       signinModal: !this.state.signinModal,
       hideModal: true,
-      isLochUser:JSON.parse(localStorage.getItem("lochUser"))
+      isLochUser: JSON.parse(localStorage.getItem("lochUser")),
     });
   };
 
@@ -446,7 +459,9 @@ class UpgradeModal extends BaseReactComponent {
         });
 
         // call sigin Api after signin call checkoutModal
-        if (isSignin) { this.SigninWallet(); } else {
+        if (isSignin) {
+          this.SigninWallet();
+        } else {
           this.handleTransaction();
         }
       } catch (error) {
@@ -458,52 +473,160 @@ class UpgradeModal extends BaseReactComponent {
     }
   };
 
+  // get USDT and USDC amount
+  getExchangeRates = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.coinbase.com/v2/exchange-rates?currency=USD"
+      );
+      return response.data.data.rates;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  getAmount = async () => {
+
+    const exchangeRates = await this.getExchangeRates();
+    // eth rate
+    let ethRateList = JSON.parse(localStorage.getItem("currencyRates"));
+
+    // usd to eth
+    let ethPrice = ethRateList.rates.ETH * this.state.selectedPlan?.price;
+
+
+    // Convert USD to USDT
+    const usdtRate = exchangeRates["USDT"];
+    const usdtConversion = this.state.selectedPlan?.price / usdtRate;
+
+    // Convert USD to USDC
+    const usdcRate = exchangeRates["USDC"];
+    const usdcConversion = this.state.selectedPlan?.price / usdcRate;
+    // console.log(
+    //   "usdt",
+    //   usdtConversion,
+    //   usdtRate,
+    //   "usdc",
+    //   usdcConversion,this.state.selectedPlan?.price,
+    //   usdcRate, "eth", ethPrice
+    // );
+    let tokens = [
+      { id: 1, name: "ETH", price: ethPrice },
+      { id: 2, name: "USDT", price: usdtConversion },
+      { id: 3, name: "USDC", price: usdcConversion },
+    ];
+    console.log("tok", tokens)
+    this.setState({
+      tokensList: tokens,
+    });
+  }
+
+ 
   // Metamask transaction
   handleTransaction = async () => {
     try {
-     
       this.setState({
-        payLoader:true,
+        payLoader: true,
       });
       // Prompt the user to connect their Metamask wallet
       if (this.state.MetaAddress !== "") {
         // already connected
-        // eth rate
-        let ethRateList = JSON.parse(localStorage.getItem("currencyRates"));
 
-        // usd to eth
-        let ethPrice = ethRateList.rates.ETH * this.state.selectedPlan?.price;
-      
-        // Set the transaction options (e.g. recipient address and transaction amount)
-        const txOptions = {
-          to: "0xb316a003B7b763Dc40Ca6C82F341B58052e46BFD", // recipient address
-          // value: ethers.utils.parseEther(`${ethPrice}`),
-          value: ethers.utils.parseEther(`0.0001`),
-        };
+        if (
+          !this.state.selectedToken.price
+        ) {
+          // if selected token null again call function
+          await this.getAmount();
+        }
+       
+        let contractAddress, contractABI, txOptions,tx,receipt,amount;
+        
+            switch (this.state.selectedToken.name) {
+              case "ETH":
+                // Set the transaction options (e.g. recipient address and transaction amount)
+                console.log(
+                  this.state.selectedToken.name,
+                  this.state.selectedToken.price);
+                txOptions = {
+                  to: "0xb316a003B7b763Dc40Ca6C82F341B58052e46BFD", // recipient address - lochpj.eth
+                  value: ethers.utils.parseEther(`${this.state.selectedToken.price}`),
+                  // value: ethers.utils.parseEther(`0.0001`),
+                };
 
-        // Send the transaction
-        const tx = await this.state.signer.sendTransaction(txOptions);
+                // Send the transaction
+                tx = await this.state.signer.sendTransaction(txOptions);
+                // Wait for the transaction to be confirmed
+                receipt = await tx.wait();
+                break;
+              case "USDT":
+                 console.log(
+                   this.state.selectedToken.name,
+                   this.state.selectedToken.price
+                 );
+                contractAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+                contractABI = [
+                  "function transfer(address to, uint256 value) returns (bool)",
+                ];
+                const usdtContract = new ethers.Contract(
+                  contractAddress,
+                  contractABI,
+                  this.state.signer
+                );
+                
+                amount = ethers.utils.parseUnits(
+                  this.state.selectedToken.price.toString(),
+                  6
+                ); 
+                tx = await usdtContract.transfer(contractAddress, amount);
+                receipt = await tx.wait();
+                break;
+              case "USDC":
+                console.log(
+                  this.state.selectedToken.name,
+                  this.state.selectedToken.price
+                );
+                contractAddress = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; 
+                contractABI = [
+                  "function transfer(address to, uint256 value) returns (bool)",
+                ];
+                const usdcContract = new ethers.Contract(
+                  contractAddress,
+                  contractABI,
+                  this.state.signer
+                );
+                
+                amount = ethers.utils.parseUnits(
+                  this.state.selectedToken.price.toString(),
+                  6
+                ); 
+                tx = await usdcContract.transfer(contractAddress, amount);
+                receipt = await tx.wait();
+                break;
+              default:
+                throw new Error(
+                  `Unsupported token: ${this.state.selectedToken}`
+                );
+            }
 
-        // Wait for the transaction to be confirmed
-        const receipt = await tx.wait();
+
 
         // Log the transaction receipt
-        // console.log(receipt);
+        console.log(receipt);
         this.setState({
           transactionReceipt: receipt.transactionHash,
         });
-
         this.TransactionUpdate();
+
       } else {
         // connect metamask
         this.connectMetamask(false);
       }
     } catch (error) {
       console.error(error.code);
-        this.setState({
-          payLoader: false,
-        });
-      
+      this.setState({
+        payLoader: false,
+      });
+
       if (error.code == "ACTION_REJECTED") {
         toast.error("Transaction rejected");
       } else if (error.code == "INSUFFICIENT_FUNDS") {
@@ -535,17 +658,17 @@ class UpgradeModal extends BaseReactComponent {
     this.setState({
       payLoader: false,
     });
-    
+
     getUser(this, true);
     // if its form welcome page then redirect to Home page
-  setTimeout(() => {
+    setTimeout(() => {
       if (this.props.from === "home") {
         this.props.history.push("/home");
       } else {
         this.state.onHide();
       }
-  }, 1000);
-  }
+    }, 1000);
+  };
 
   // Signin wit wallet
   SigninWallet = () => {
@@ -557,22 +680,19 @@ class UpgradeModal extends BaseReactComponent {
       localStorage.setItem("deviceId", deviceId);
     }
 
- 
-
     let data = new URLSearchParams();
     data.append("device_id", deviceId);
     data.append("wallet_address", this.state.MetaAddress);
-      // console.log(
-      //   "transa",
-      //   deviceId,
-      //   this.state.MetaAddress
-      // );
+    // console.log(
+    //   "transa",
+    //   deviceId,
+    //   this.state.MetaAddress
+    // );
     SigninWallet(data, this, this.gotoCheckout);
   };
 
   // update crypto address
   TransactionUpdate = () => {
-
     let data = new URLSearchParams();
     data.append("plan_id", this.state.selectedPlan?.id);
     data.append("transaction_hash", this.state.transactionReceipt);
@@ -583,6 +703,12 @@ class UpgradeModal extends BaseReactComponent {
     // );
     UpdateCryptoPayment(data, this, this.closeUpgradeModal);
   };
+
+  ShowTokens = () => {
+    this.setState({
+      showToken:true
+    })
+  }
 
   render() {
     return (
@@ -727,10 +853,15 @@ class UpgradeModal extends BaseReactComponent {
                                       plan.name !== this.state.userPlan.name
                                     ) {
                                       this.AddEmailModal();
-                                      this.setState({
-                                        price_id: plan.price_id,
-                                        selectedPlan: plan,
-                                      });
+                                      this.setState(
+                                        {
+                                          price_id: plan.price_id,
+                                          selectedPlan: plan,
+                                        },
+                                        () => {
+                                          this.getAmount();
+                                        }
+                                      );
                                     }
                                   }}
                                 >
@@ -1010,11 +1141,10 @@ class UpgradeModal extends BaseReactComponent {
                                       width: "100%",
                                       padding: "1.4rem 4rem",
                                     }}
-                                      onClick={() => {
-                                        if (this.state.btnloader) {
-                                        
-                                        }else{
-                                          this.connectMetamask()
+                                    onClick={() => {
+                                      if (this.state.btnloader) {
+                                      } else {
+                                        this.connectMetamask();
                                       }
                                     }}
                                   >
@@ -1103,7 +1233,7 @@ class UpgradeModal extends BaseReactComponent {
                                 onClick={() => {
                                   if (this.state.payLoader) {
                                   } else {
-                                    this.handleTransaction();
+                                    this.ShowTokens();
                                   }
                                 }}
                                 className={`secondary-btn m-l-10 ${
@@ -1123,6 +1253,40 @@ class UpgradeModal extends BaseReactComponent {
                                   ? loadingAnimation()
                                   : "Pay with Crypto"}
                               </Button>
+
+                              {!this.state.payLoader &&
+                                this.state.showToken && (
+                                  <>
+                                    <p className="inter-display-medium f-s-13 lh-15 m-b-10 m-t-16 black-191">
+                                      Please select token to make payment
+                                    </p>
+                                    <div style={{ display: "flex" }}>
+                                      {this.state.tokensList.map((token) => {
+                                        return (
+                                          <div
+                                            className="inter-display-medium f-s-13 lh-15 m-r-8 black-191 amountType"
+                                            onClick={() => {
+                                              this.setState(
+                                                {
+                                                  selectedToken: token,
+                                                },
+                                                () => {
+                                                  if (this.state.payLoader) {
+                                                  } else {
+                                                    this.handleTransaction();
+                                                  }
+                                                }
+                                              );
+                                            }}
+                                          >
+                                            {token.price.toFixed(3) + " " +
+                                              token.name}
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </>
+                                )}
                             </>
                           )}
                         </div>
@@ -1130,16 +1294,18 @@ class UpgradeModal extends BaseReactComponent {
                     </Row>
                   </div>
                 )}
-               {!this.state.isLochUser && <p className="inter-display-medium f-s-16 lh-19 grey-969 text-center m-b-16">
-                  Already have an account?{" "}
-                  <span
-                    className="black-191 cp signin-link"
-                    onClick={this.handleSignin}
-                  >
-                    Sign in instead
-                  </span>
-                  .
-                </p>}
+                {!this.state.isLochUser && (
+                  <p className="inter-display-medium f-s-16 lh-19 grey-969 text-center m-b-16">
+                    Already have an account?{" "}
+                    <span
+                      className="black-191 cp signin-link"
+                      onClick={this.handleSignin}
+                    >
+                      Sign in instead
+                    </span>
+                    .
+                  </p>
+                )}
 
                 <div className="m-b-36 footer">
                   <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
