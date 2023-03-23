@@ -43,6 +43,7 @@ class ConnectModal extends BaseReactComponent {
       connectionName: "",
       apiKey: "",
       apiSecret: "",
+      api_passphrase: null,
       connectExchangesList: [
         {
           name: "Binance",
@@ -361,9 +362,7 @@ class ConnectModal extends BaseReactComponent {
                       STEP 6
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Copy and paste your <b>API Key</b>, <b>API Secret</b>, and
-                      <b>API Passphrase</b> into the Loch website and click
-                      <b>Connect</b>
+                      Copy and paste your <b>API Key</b>, <b>API Secret</b>, and <b>API Passphrase</b> into the Loch website and click <b>Connect</b>
                     </p>
                   </div>
                 </div>
@@ -600,6 +599,10 @@ class ConnectModal extends BaseReactComponent {
         data.append("api_secret", this.state.apiSecret);
         data.append("api_key", this.state.apiKey);
 
+        if (this.state.selection.name.toLowerCase() === "kucoin") {
+          data.append("api_passphrase", this.state.api_passphrase);
+        }
+
         addUpdateAccount(data, this);
       }
     }
@@ -787,6 +790,27 @@ class ConnectModal extends BaseReactComponent {
                               // }}
                             />
                           )}
+                          {(!this.state.coinBase ||
+                            this.state.AuthUrl === "") &&
+                            selection.name === "Kucoin" && (
+                              <FormElement
+                                valueLink={this.linkState(
+                                  this,
+                                  "api_passphrase"
+                                )}
+                                label="API Passphrase"
+                                control={{
+                                  type: CustomTextControl,
+                                  settings: {
+                                    placeholder: "Enter api passphrase here",
+                                  },
+                                }}
+                                // classes={{
+                                //   inputField:
+                                //     this.state.apiSecret !== "" ? "done" : "",
+                                // }}
+                              />
+                            )}
                         </Form>
                       </div>
                     </Col>
@@ -798,12 +822,16 @@ class ConnectModal extends BaseReactComponent {
                             : "How to connect"}
                         </h4>
                         {this.state.coinBase && this.state.AuthUrl !== ""
-                          ? this.showCoinbaseAuthSteps() : selection.slider()}
+                          ? this.showCoinbaseAuthSteps()
+                          : selection.slider()}
                       </div>
                       {(!this.state.coinBase || this.state.AuthUrl === "") && (
                         <Button
                           className="primary-btn connect-btn"
                           onClick={this.handleConnect}
+                          style={(!this.state.coinBase ||
+                            this.state.AuthUrl === "") &&
+                            selection.name === "Kucoin" ?{marginTop: "8.5rem"}:{}}
                         >
                           Connect
                         </Button>
