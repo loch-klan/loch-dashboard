@@ -289,6 +289,7 @@ function Sidebar(props) {
   
   const upgradeModal = () => {
     setUpgradeModal(!Upgrade);
+    userPlan = JSON.parse(localStorage.getItem("currentPlan"));
   };
   
   const handleConnectModal = () => {

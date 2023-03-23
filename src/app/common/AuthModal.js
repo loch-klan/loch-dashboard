@@ -17,12 +17,16 @@ import {
 } from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import {fixWalletApi, SendOtp, setPageFlagDefault, VerifyEmail } from "./Api.js";
+import {fixWalletApi, SendOtp, setPageFlagDefault, SigninWallet, VerifyEmail } from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { WhaleCreateAccountEmailSaved, WhaleCreateAccountPrivacyHover } from "../../utils/AnalyticsFunctions";
+import { loadingAnimation } from "../../utils/ReusableFunctions";
+import { ethers } from "ethers";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 
 class AuthModal extends BaseReactComponent {
   constructor(props) {
@@ -46,73 +50,136 @@ class AuthModal extends BaseReactComponent {
       onHide: props.onHide,
       changeList: props.changeWalletList,
       modalTitle: props.title || null,
-      modalDescription: props.description  || null,
+      modalDescription: props.description || null,
+
+      // metamask
+      MetamaskExist: false,
+      MetaAddress: "",
+      balance: 0,
+      btnloader: false,
     };
   }
 
   componentDidMount() {
     // this.props.getAllCoins();
     // this.props.getAllParentChains();
-     
   }
-    
-    componentDidUpdate(prevProps, prevState) {
-        // console.log("prev", prevState.otp, this.state.otp);
-        // if (prevState.otp !== this.state.otp) {
-        //     console.log("in update")
-        //     this.setState({
-        //         isOptInValid:false,
-        //     })
-        // }
-        // if (this.state.isOptInValid) {
-        //     setTimeout(() => {
-        //       this.setState({
-        //         isOptInValid: false,
-        //       });
-        //     }, 5000);
-        // }
-    }
+
+  componentDidUpdate(prevProps, prevState) {
+    // console.log("prev", prevState.otp, this.state.otp);
+    // if (prevState.otp !== this.state.otp) {
+    //     console.log("in update")
+    //     this.setState({
+    //         isOptInValid:false,
+    //     })
+    // }
+    // if (this.state.isOptInValid) {
+    //     setTimeout(() => {
+    //       this.setState({
+    //         isOptInValid: false,
+    //       });
+    //     }, 5000);
+    // }
+  }
 
   handleAccountCreate = () => {
     //   console.log("create email", this.state.email);
-         let data = new URLSearchParams();
-         data.append("email", this.state.email);
+    let data = new URLSearchParams();
+    data.append("email", this.state.email);
     SendOtp(data, this);
-    
+
     WhaleCreateAccountEmailSaved({
       session_id: getCurrentUser().id,
       email_address: this.state.email,
     });
-      
-    //   check email valid or not if valid set email exist to true then this will change copy of signin and if invalid then show copy for signup 
-    
+
+    //   check email valid or not if valid set email exist to true then this will change copy of signin and if invalid then show copy for signup
   };
-    
-    handleOtp = () => {
-        this.setState({
-            isOptInValid: false,
-        })
-        // console.log("enter otp", this.state.otp, typeof this.state.otp);
-        let data = new URLSearchParams();
-        data.append("email", this.state.email);
-         data.append("otp_token", this.state.otp);
-        VerifyEmail(data,this);
-    }
+
+  handleOtp = () => {
+    this.setState({
+      isOptInValid: false,
+    });
+    // console.log("enter otp", this.state.otp, typeof this.state.otp);
+    let data = new URLSearchParams();
+    data.append("email", this.state.email);
+    data.append("otp_token", this.state.otp);
+    VerifyEmail(data, this);
+  };
 
   handleBack = () => {
-      // console.log("handle back")
-        this.setState({
-          email: "",
-          otp: "",
-          isShowOtp: false,
-          modalTitle: null,
-          modalDescription: null,
-          isEmailNotExist: false,
-        });
-    }
+    // console.log("handle back")
+    this.setState({
+      email: "",
+      otp: "",
+      isShowOtp: false,
+      modalTitle: null,
+      modalDescription: null,
+      isEmailNotExist: false,
+    });
+  };
 
   submit = () => {
     // console.log('Hey');
+  };
+
+  //
+
+  connectMetamask = async (isSignin = true) => {
+    if (window.ethereum) {
+      try {
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+        const balance = ethers.utils.formatEther(
+          await provider.getBalance(address)
+        );
+
+        // console.log(
+        //   "plan price",
+        //   this.state.selectedPlan?.price,
+        //   "Eth rate",
+        //   ethRateList.rates.ETH,
+        //   "user balace",
+        //   balance,
+        //   "USD to Eth",
+        //   ethRateList.rates.ETH * this.state.selectedPlan?.price
+        // );
+        this.setState({
+          MetaAddress: address,
+          balance: balance,
+          signer: signer,
+          provider: provider,
+          btnloader: true,
+        });
+
+        // call sigin Api after signin call checkoutModal
+        this.SigninWallet();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.error("Please install MetaMask!");
+      toast.error("Please install Metamask extension");
+    }
+  };
+
+  // Signin wit wallet
+  SigninWallet = () => {
+    // get device id
+    const deviceId = localStorage.getItem("deviceId") || uuidv4();
+
+    if (!localStorage.getItem("deviceId")) {
+      // console.log("no device id");
+      localStorage.setItem("deviceId", deviceId);
+    }
+
+    let data = new URLSearchParams();
+    data.append("device_id", deviceId);
+    data.append("wallet_address", this.state.MetaAddress);
+
+    SigninWallet(data, this);
   };
 
   render() {
@@ -265,6 +332,28 @@ class AuthModal extends BaseReactComponent {
                   )}
                 </>
               )}
+            </div>
+            <div>
+              <p className="text-center inter-display-medium f-s-13 grey-969">
+                or
+              </p>
+              <Button
+                className={`primary-btn m-t-16 m-b-16 ${
+                  this.state.btnloader ? "disabled" : ""
+                }`}
+                style={{
+                  width: "100%",
+                  padding: "1.4rem 4rem",
+                }}
+                onClick={() => {
+                  if (this.state.btnloader) {
+                  } else {
+                    this.connectMetamask();
+                  }
+                }}
+              >
+                {this.state.btnloader ? loadingAnimation() : "Connect metamask"}
+              </Button>
             </div>
             {!this.props.hideSkip && (
               <p

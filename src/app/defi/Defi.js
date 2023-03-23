@@ -81,13 +81,17 @@ class Defi extends Component {
     };
   }
   upgradeModal = () => {
-    this.setState({
-      upgradeModal: !this.state.upgradeModal,
-    }, () => {
-      if (!this.state.upgradeModal) {
-        this.props.history.push("/home");
-      };
-    });
+    this.setState(
+      {
+        upgradeModal: !this.state.upgradeModal,
+        userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      },
+      () => {
+        if (!this.state.upgradeModal) {
+          this.props.history.push("/home");
+        }
+      }
+    );
   };
   toggleYield = () => {
     this.setState({
@@ -367,6 +371,7 @@ class Defi extends Component {
               isShare={localStorage.getItem("share_id")}
               // isStatic={true}
               triggerId={this.state.triggerId}
+              
             />
           )}
           <PageHeader

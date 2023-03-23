@@ -86,6 +86,7 @@ class Intelligence extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
   };
 

@@ -20,7 +20,7 @@ import {
 } from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { CreatePyment, fixWalletApi, SendOtp, VerifyEmail } from "./Api.js";
+import { CreatePyment, fixWalletApi, getUser, SendOtp, SigninWallet, UpdateCryptoPayment, VerifyEmail } from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Back-icon-upgrade.svg";
@@ -43,6 +43,9 @@ import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
 import { ethers } from "ethers";
 import { loadingAnimation } from "../../utils/ReusableFunctions";
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
+
 
 
 class UpgradeModal extends BaseReactComponent {
@@ -216,6 +219,7 @@ class UpgradeModal extends BaseReactComponent {
       isEmailNotExist: false,
       isOptInValid: false,
       isShowOtp: false,
+      isLochUser: userDetails,
 
       dummyUser,
       show: props.show,
@@ -285,6 +289,7 @@ class UpgradeModal extends BaseReactComponent {
       balance: 0,
       btnloader: false,
       transactionReceipt: null,
+      payLoader:false
     };
   }
 
@@ -360,6 +365,7 @@ class UpgradeModal extends BaseReactComponent {
       this.AddEmailModal();
     }
 
+    // this for change button name
     if (window.ethereum) {
       // Do something
       this.setState({
@@ -368,12 +374,13 @@ class UpgradeModal extends BaseReactComponent {
     } else {
       // alert("install metamask extension!!");
       this.setState({
-        MetamaskExist: false
-      })
+        MetamaskExist: false,
+      });
     }
+
   }
 
-  componentDidUpdate(prevProps, prevState) { }
+  componentDidUpdate(prevProps, prevState) {}
 
   handleBack = () => {
     this.setState({
@@ -397,6 +404,7 @@ class UpgradeModal extends BaseReactComponent {
     this.setState({
       signinModal: !this.state.signinModal,
       hideModal: true,
+      isLochUser:JSON.parse(localStorage.getItem("lochUser"))
     });
   };
 
@@ -408,16 +416,17 @@ class UpgradeModal extends BaseReactComponent {
     });
   };
 
-  connectMetamask = async () => {
+  connectMetamask = async (isSignin = true) => {
     if (window.ethereum) {
       try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        await window.ethereum.request({ method: "eth_requestAccounts" });
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const address = await signer.getAddress();
-        const balance = ethers.utils.formatEther(await provider.getBalance(address));
+        const balance = ethers.utils.formatEther(
+          await provider.getBalance(address)
+        );
 
-       
         // console.log(
         //   "plan price",
         //   this.state.selectedPlan?.price,
@@ -434,66 +443,146 @@ class UpgradeModal extends BaseReactComponent {
           signer: signer,
           provider: provider,
           btnloader: true,
-        })
+        });
 
         // call sigin Api after signin call checkoutModal
-        this.setState(
-          {
-            RegisterModal: false,
-            btnloader: false,
-          },
-          () => {
-            this.checkoutModal();
-          }
-        );
+        if (isSignin) { this.SigninWallet(); } else {
+          this.handleTransaction();
+        }
       } catch (error) {
         console.error(error);
       }
     } else {
-      console.error('Please install MetaMask!');
+      console.error("Please install MetaMask!");
+      toast.error("Please install Metamask extension");
     }
-  }
+  };
 
   // Metamask transaction
   handleTransaction = async () => {
-  try {
-    // Prompt the user to connect their Metamask wallet
-    if (this.state.MetaAddress !== "") {
-      // already connected
-
-      // eth rate
-      let ethRateList = JSON.parse(localStorage.getItem("currencyRates"));
-      
-      // usd to eth
-      let ethPrice = ethRateList.rates.ETH * this.state.selectedPlan?.price;
-      console.log("trans")
-      // Set the transaction options (e.g. recipient address and transaction amount)
-      const txOptions = {
-        to: "0xb316a003B7b763Dc40Ca6C82F341B58052e46BFD", // recipient address
-        // value: ethers.utils.parseEther(`${ethPrice}`),
-        value: ethers.utils.parseEther(`0.0001`),
-      };
-
-      // Send the transaction
-      const tx = await this.state.signer.sendTransaction(txOptions);
-
-      // Wait for the transaction to be confirmed
-      const receipt = await tx.wait();
-
-      // Log the transaction receipt
-      console.log(receipt);
+    try {
+     
       this.setState({
-        transactionReceipt: receipt
-      })
-    } else {
-      // connect metamask
-      this.connectMetamask();
+        payLoader:true,
+      });
+      // Prompt the user to connect their Metamask wallet
+      if (this.state.MetaAddress !== "") {
+        // already connected
+        // eth rate
+        let ethRateList = JSON.parse(localStorage.getItem("currencyRates"));
+
+        // usd to eth
+        let ethPrice = ethRateList.rates.ETH * this.state.selectedPlan?.price;
       
+        // Set the transaction options (e.g. recipient address and transaction amount)
+        const txOptions = {
+          to: "0xb316a003B7b763Dc40Ca6C82F341B58052e46BFD", // recipient address
+          // value: ethers.utils.parseEther(`${ethPrice}`),
+          value: ethers.utils.parseEther(`0.0001`),
+        };
+
+        // Send the transaction
+        const tx = await this.state.signer.sendTransaction(txOptions);
+
+        // Wait for the transaction to be confirmed
+        const receipt = await tx.wait();
+
+        // Log the transaction receipt
+        // console.log(receipt);
+        this.setState({
+          transactionReceipt: receipt.transactionHash,
+        });
+
+        this.TransactionUpdate();
+      } else {
+        // connect metamask
+        this.connectMetamask(false);
+      }
+    } catch (error) {
+      console.error(error.code);
+        this.setState({
+          payLoader: false,
+        });
+      
+      if (error.code == "ACTION_REJECTED") {
+        toast.error("Transaction rejected");
+      } else if (error.code == "INSUFFICIENT_FUNDS") {
+        toast.error("Insufficient funds in your wallet");
+      } else if (error.code == "NETWORK_ERROR") {
+        this.connectMetamask(false);
+      }
     }
-  } catch (error) {
-    console.error(error);
+  };
+
+  // goto Checkout section after sigin
+  gotoCheckout = () => {
+    // console.log("checkout");
+    this.setState(
+      {
+        RegisterModal: false,
+        btnloader: false,
+        isLochUser: JSON.parse(localStorage.getItem("lochUser")),
+      },
+      () => {
+        this.checkoutModal();
+      }
+    );
+  };
+
+  // closeUpgradeModal
+  closeUpgradeModal = () => {
+    // console.log("close upgrade modal");
+    this.setState({
+      payLoader: false,
+    });
+    
+    getUser(this, true);
+    // if its form welcome page then redirect to Home page
+  setTimeout(() => {
+      if (this.props.from === "home") {
+        this.props.history.push("/home");
+      } else {
+        this.state.onHide();
+      }
+  }, 1000);
   }
-};
+
+  // Signin wit wallet
+  SigninWallet = () => {
+    // get device id
+    const deviceId = localStorage.getItem("deviceId") || uuidv4();
+
+    if (!localStorage.getItem("deviceId")) {
+      // console.log("no device id");
+      localStorage.setItem("deviceId", deviceId);
+    }
+
+ 
+
+    let data = new URLSearchParams();
+    data.append("device_id", deviceId);
+    data.append("wallet_address", this.state.MetaAddress);
+      // console.log(
+      //   "transa",
+      //   deviceId,
+      //   this.state.MetaAddress
+      // );
+    SigninWallet(data, this, this.gotoCheckout);
+  };
+
+  // update crypto address
+  TransactionUpdate = () => {
+
+    let data = new URLSearchParams();
+    data.append("plan_id", this.state.selectedPlan?.id);
+    data.append("transaction_hash", this.state.transactionReceipt);
+    // console.log(
+    //   "transa",
+    //   this.state.selectedPlan?.id,
+    //   this.state.transactionReceipt
+    // );
+    UpdateCryptoPayment(data, this, this.closeUpgradeModal);
+  };
 
   render() {
     return (
@@ -653,7 +742,7 @@ class UpgradeModal extends BaseReactComponent {
                             </Col>
                           );
                         })}
-                      {!this.state.userPlan.subscription &&
+                      {!this.state?.userPlan?.subscription &&
                         this.state?.planList
                           .filter((e) => e.name === "Trial")
                           .map((plan, i) => {
@@ -914,9 +1003,20 @@ class UpgradeModal extends BaseReactComponent {
                                     or
                                   </p>
                                   <Button
-                                    className={`primary-btn m-t-16`}
-                                    style={{ width: "100%" }}
-                                    onClick={this.connectMetamask}
+                                    className={`primary-btn m-t-16 ${
+                                      this.state.btnloader ? "disabled" : ""
+                                    }`}
+                                    style={{
+                                      width: "100%",
+                                      padding: "1.4rem 4rem",
+                                    }}
+                                      onClick={() => {
+                                        if (this.state.btnloader) {
+                                        
+                                        }else{
+                                          this.connectMetamask()
+                                      }
+                                    }}
                                   >
                                     {this.state.btnloader
                                       ? loadingAnimation()
@@ -1000,10 +1100,28 @@ class UpgradeModal extends BaseReactComponent {
                               </Button>
 
                               <Button
-                                onClick={this.handleTransaction}
-                                className={`primary-btn`}
-                                >
-                                  Pay with crypto
+                                onClick={() => {
+                                  if (this.state.payLoader) {
+                                  } else {
+                                    this.handleTransaction();
+                                  }
+                                }}
+                                className={`secondary-btn m-l-10 ${
+                                  this.state.payLoader ? "disabled" : ""
+                                }`}
+                                style={
+                                  this.state.payLoader
+                                    ? {
+                                        padding: "1.3rem 4rem",
+                                        minWidth: "20.5rem",
+                                        // cursor: "not-allowed",
+                                      }
+                                    : {}
+                                }
+                              >
+                                {this.state.payLoader
+                                  ? loadingAnimation()
+                                  : "Pay with Crypto"}
                               </Button>
                             </>
                           )}
@@ -1012,7 +1130,7 @@ class UpgradeModal extends BaseReactComponent {
                     </Row>
                   </div>
                 )}
-                <p className="inter-display-medium f-s-16 lh-19 grey-969 text-center m-b-16">
+               {!this.state.isLochUser && <p className="inter-display-medium f-s-16 lh-19 grey-969 text-center m-b-16">
                   Already have an account?{" "}
                   <span
                     className="black-191 cp signin-link"
@@ -1021,7 +1139,7 @@ class UpgradeModal extends BaseReactComponent {
                     Sign in instead
                   </span>
                   .
-                </p>
+                </p>}
 
                 <div className="m-b-36 footer">
                   <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">

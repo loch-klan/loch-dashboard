@@ -122,6 +122,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
   };
 

@@ -97,6 +97,7 @@ class FixAddModal extends BaseReactComponent {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
       hidePrevModal: !this.state.upgradeModal,
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
   };
 

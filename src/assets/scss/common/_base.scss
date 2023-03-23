@@ -1198,6 +1198,12 @@ form {
   }
 }
 
+.btn-primary.disabled {
+              color: #fff;
+              background-color: $black-191 !important;
+              border-color: $black-191 !important;
+}
+
 .secondary-btn {
   @include font($black-191, "Inter-SemiBold", 1.6rem, 600, normal);
   border-radius: 8px;

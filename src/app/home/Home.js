@@ -6,7 +6,7 @@ import "../../assets/scss/onboarding/_onboarding.scss";
 import { Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
 import { deleteToken, getToken } from '../../utils/ManageToken';
-import { GetDefaultPlan, setPageFlagDefault } from '../common/Api';
+import { getAllCurrencyRatesApi, GetDefaultPlan, setPageFlagDefault } from '../common/Api';
 import UpgradeModal from '../common/upgradeModal';
 
 class Home extends Component {
@@ -28,11 +28,12 @@ class Home extends Component {
     this.setState(
       {
         upgradeModal: !this.state.upgradeModal,
-      }, () => {
-         let value = this.state.upgradeModal ? false : true;
-         this.setState({
-           showPrevModal: value,
-         });
+      },
+      () => {
+        let value = this.state.upgradeModal ? false : true;
+        this.setState({
+          showPrevModal: value,
+        });
       }
     );
   };
@@ -40,6 +41,11 @@ class Home extends Component {
   componentDidMount() {
     const searchParams = new URLSearchParams(this.props.location.search);
     const planId = searchParams.get("plan_id");
+let currencyRates = JSON.parse(localStorage.getItem("currencyRates"));
+    if (!currencyRates) {
+      getAllCurrencyRatesApi();
+    }
+    
     // console.log(planId);
     if (planId) {
       // console.log("plan id", planId);
@@ -65,6 +71,7 @@ class Home extends Component {
     }
 
     GetDefaultPlan();
+   
   }
 
   hideModal = (value) => {
@@ -91,6 +98,7 @@ class Home extends Component {
             isStatic={this.state.isStatic}
             selectedId={this.state.selectedId}
             signinBack={true}
+            form="home"
           />
         )}
       </>

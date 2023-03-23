@@ -228,6 +228,7 @@ class ExitOverlay extends BaseReactComponent {
         total_unique_address: 0,
         showWarningMsg: false,
         uploadStatus: "Uploading",
+        userPlan: JSON.parse(localStorage.getItem("currentPlan")),
       },
       () => {
         // this.setState({
