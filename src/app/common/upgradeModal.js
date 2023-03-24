@@ -46,8 +46,8 @@ import { loadingAnimation } from "../../utils/ReusableFunctions";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { async } from "q";
-
+import USDT_ABI from "./USDT_ABI.json";
+import USDC_ABI from "./USDC_ABI.json";
 
 
 class UpgradeModal extends BaseReactComponent {
@@ -439,7 +439,6 @@ class UpgradeModal extends BaseReactComponent {
         const balance = ethers.utils.formatEther(
           await provider.getBalance(address)
         );
-
         // console.log(
         //   "plan price",
         //   this.state.selectedPlan?.price,
@@ -539,18 +538,31 @@ class UpgradeModal extends BaseReactComponent {
           await this.getAmount();
         }
        
-        let contractAddress, contractABI, txOptions,tx,receipt,amount;
+        let contractAddress,
+          contractABI,
+          txOptions,
+          tx,
+          receipt,
+          amount,
+          gasLimit,
+          gasPrice,
+          usdcContract,
+          usdtContract;
+        let RecipientAddress = "0xb316a003B7b763Dc40Ca6C82F341B58052e46BFD";
+         let testing = false; 
         
             switch (this.state.selectedToken.name) {
               case "ETH":
                 // Set the transaction options (e.g. recipient address and transaction amount)
                 console.log(
                   this.state.selectedToken.name,
-                  this.state.selectedToken.price);
+                  this.state.selectedToken.price
+                );
                 txOptions = {
-                  to: "0xb316a003B7b763Dc40Ca6C82F341B58052e46BFD", // recipient address - lochpj.eth
-                  value: ethers.utils.parseEther(`${this.state.selectedToken.price}`),
-                  // value: ethers.utils.parseEther(`0.0001`),
+                  to: RecipientAddress, // recipient address - lochpj.eth
+                  value: testing ? ethers.utils.parseEther(`0.0001`) : ethers.utils.parseEther(
+                    `${this.state.selectedToken.price}`
+                  ),
                 };
 
                 // Send the transaction
@@ -559,47 +571,129 @@ class UpgradeModal extends BaseReactComponent {
                 receipt = await tx.wait();
                 break;
               case "USDT":
-                 console.log(
-                   this.state.selectedToken.name,
-                   this.state.selectedToken.price
-                 );
-                contractAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
-                contractABI = [
-                  "function transfer(address to, uint256 value) returns (bool)",
-                ];
-                const usdtContract = new ethers.Contract(
-                  contractAddress,
-                  contractABI,
-                  this.state.signer
+                console.log(
+                  this.state.selectedToken.name,
+                  this.state.selectedToken.price,
+                  ethers.utils.parseUnits(
+                    this.state.selectedToken.price.toString()
+                  )
+                  //  USDT_ABI
                 );
+                 
                 
-                amount = ethers.utils.parseUnits(
-                  this.state.selectedToken.price.toString(),
-                  6
-                ); 
-                tx = await usdtContract.transfer(contractAddress, amount);
+                 gasPrice = await this.state.provider.getGasPrice();
+
+                if (testing) {
+                  // for testing
+                  console.log("test2");
+                  contractAddress =
+                    "0x7c87561b129f46998fc9Afb53F98b7fdaB68696f";
+
+                   usdtContract = new ethers.Contract(
+                     contractAddress,
+                     USDT_ABI,
+                     this.state.signer
+                   );
+
+                  // Hard code for testing
+                  gasLimit = await usdtContract.estimateGas.transfer(
+                    RecipientAddress,
+                    ethers.utils.parseUnits("0", 6)
+                  );
+                  amount = ethers.utils.parseUnits("0", 6);
+                } else {
+                  // for mainnet
+                  contractAddress =
+                    "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+
+
+ usdtContract = new ethers.Contract(
+   contractAddress,
+   USDT_ABI,
+   this.state.signer
+ );
+                  // for mainnet
+                  gasLimit = await usdtContract.estimateGas.transfer(
+                    RecipientAddress,
+                    ethers.utils.parseUnits(
+                      this.state.selectedToken.price.toString(),
+                      6
+                    )
+                  );
+                 
+                  amount = ethers.utils.parseUnits(
+                    this.state.selectedToken.price.toString(),
+                    6
+                  );
+                }
+
+
+               
+                tx = await usdtContract.transfer(RecipientAddress, amount, {
+                  gasLimit,
+                  gasPrice,
+                });
                 receipt = await tx.wait();
                 break;
               case "USDC":
                 console.log(
                   this.state.selectedToken.name,
-                  this.state.selectedToken.price
+                  this.state.selectedToken.price,USDC_ABI
                 );
-                contractAddress = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; 
-                contractABI = [
-                  "function transfer(address to, uint256 value) returns (bool)",
-                ];
-                const usdcContract = new ethers.Contract(
-                  contractAddress,
-                  contractABI,
-                  this.state.signer
-                );
+
                 
-                amount = ethers.utils.parseUnits(
-                  this.state.selectedToken.price.toString(),
-                  6
-                ); 
-                tx = await usdcContract.transfer(contractAddress, amount);
+                
+                 gasPrice = await this.state.provider.getGasPrice(); 
+
+               
+                if (testing) {
+                  // if true show testing
+                  // for testing
+                  contractAddress =
+                    "0x9e2e85a927285A97902336Cb23F9De94d5Af0aF5";
+ usdcContract = new ethers.Contract(
+   contractAddress,
+   USDT_ABI,
+   this.state.signer
+ );
+                  // for test
+                   gasLimit = await usdcContract.estimateGas.transfer(
+                     RecipientAddress,
+                     ethers.utils.parseUnits("0", 6)
+                   );
+
+                  amount = ethers.utils.parseUnits("0", 6);
+                } else {
+                  // Mainnet
+                  contractAddress =
+                    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+
+                   usdcContract = new ethers.Contract(
+                     contractAddress,
+                     USDT_ABI,
+                     this.state.signer
+                   );
+                  // for mainnet
+                  gasLimit = await usdcContract.estimateGas.transfer(
+                    RecipientAddress,
+                    ethers.utils.parseUnits(
+                      this.state.selectedToken.price.toString(),
+                      6
+                    )
+                  );
+
+                  amount = ethers.utils.parseUnits(
+                    this.state.selectedToken.price.toString(),
+                    6
+                  );
+                }
+
+                        
+                tx = await usdcContract.transfer(RecipientAddress, amount, {
+                    gasLimit,
+                    gasPrice,
+                  });
+                //  console.log("test3");
                 receipt = await tx.wait();
                 break;
               default:
@@ -629,7 +723,10 @@ class UpgradeModal extends BaseReactComponent {
 
       if (error.code == "ACTION_REJECTED") {
         toast.error("Transaction rejected");
-      } else if (error.code == "INSUFFICIENT_FUNDS") {
+      } else if (
+        error.code == "INSUFFICIENT_FUNDS" ||
+        error.code == "UNPREDICTABLE_GAS_LIMIT"
+      ) {
         toast.error("Insufficient funds in your wallet");
       } else if (error.code == "NETWORK_ERROR") {
         this.connectMetamask(false);
@@ -1226,7 +1323,7 @@ class UpgradeModal extends BaseReactComponent {
                                   window.open(this.state.payment_link);
                                 }}
                               >
-                                Complete payment
+                                Pay with card
                               </Button>
 
                               <Button
