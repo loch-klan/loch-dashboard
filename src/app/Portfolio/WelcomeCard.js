@@ -39,7 +39,10 @@ export default function WelcomeCard(props) {
   };
   const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
-     setpopupModal(!popupModal);
+     let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+     if (!lochUser) {
+       setpopupModal(!popupModal);
+     }
   }
 
 
