@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Modal, Image, Button } from 'react-bootstrap';
 import CloseIcon from '../../assets/images/icons/dummyX.svg'
 import SharePortfolioIcon from '../../assets/images/icons/SharePortfolioIcon.svg'
@@ -25,6 +25,14 @@ function SharePortfolio(props) {
 || userWallet[0].address : lochUser.link;
     let shareLink =
       BASE_URL_S3 + "home/" + slink;
+  
+   useEffect(() => {
+     localStorage.setItem("isPopupActive", true);
+
+     return () => {
+       localStorage.setItem("isPopupActive", false);
+     };
+   }, []);
   return (
     <div>
         <Modal

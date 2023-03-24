@@ -61,8 +61,16 @@ class AuthModal extends BaseReactComponent {
   }
 
   componentDidMount() {
+
+    // set popup active
+    localStorage.setItem("isPopupActive", true);
     // this.props.getAllCoins();
     // this.props.getAllParentChains();
+  }
+
+  componentWillUnmount() {
+     // set popup active
+    localStorage.setItem("isPopupActive", false);
   }
 
   componentDidUpdate(prevProps, prevState) {

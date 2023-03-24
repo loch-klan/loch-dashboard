@@ -231,16 +231,31 @@ function Sidebar(props) {
   
   // Timer for Sigin popup
   React.useEffect(() => {
-    let isPopup = JSON.parse(localStorage.getItem("isPopup"));
-    setTimeout(() => {
-      if (!lochUser) {
-        isPopup && handleSiginPopup();
-        localStorage.setItem("isPopup", false);
-      }
-      
-     }, 15000);
+    SiginModal();
     
   }, []);
+
+  // function to call popup timer
+  const SiginModal = () => {
+    let isPopup = JSON.parse(localStorage.getItem("isPopup"));
+    
+    setTimeout(() => {
+      // if isPopupActive = true then do not open this popup bcoz any other popup still open
+       let isPopupActive = JSON.parse(localStorage.getItem("isPopupActive"));
+      if (!isPopupActive) {
+        console.log("inactive popup");
+        if (!lochUser) {
+          isPopup && handleSiginPopup();
+          localStorage.setItem("isPopup", false);
+        }
+      } else {
+        //  if popup active then run same function
+        console.log("active popup");
+        SiginModal();
+      }
+     
+    }, 15000);
+  }
 
     const handleFunction=(currency)=>{
       let currencyRates = JSON.parse(localStorage.getItem('currencyRates'))

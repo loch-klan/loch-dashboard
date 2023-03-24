@@ -29,7 +29,14 @@ class EditWalletModal extends BaseReactComponent {
   }
 
   componentDidMount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", true);
     getAllWalletApi(this);
+  }
+
+  componentWillUnmount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", false);
   }
 
   onValidSubmit = () => {
@@ -63,7 +70,7 @@ class EditWalletModal extends BaseReactComponent {
 
     if (this.state.walletNickname !== this.state.prevNickname) {
       this.setState({
-        prevTag: this.state.walletTag
+        prevTag: this.state.walletTag,
       });
       AddNameTag({
         session_id: getCurrentUser().id,
@@ -103,7 +110,7 @@ class EditWalletModal extends BaseReactComponent {
   };
 
   getDays = (dateString) => {
-    console.log("date",dateString)
+    console.log("date", dateString);
     // const date = new Date();
     // let day = date.getDate();
     // let month = date.getMonth() + 1;
@@ -134,8 +141,6 @@ class EditWalletModal extends BaseReactComponent {
           </div>
         </div>
       );
-
-      
     });
     const { walletMetaData, walletNameList, walletName } = this.state;
     const { show, handleClose, onHide } = this.props;
@@ -196,9 +201,11 @@ class EditWalletModal extends BaseReactComponent {
               />
               <p className="inter-display-regular f-s-13 lh-16 m-b-16 subtitle">{`added ${this.getDays(
                 this.state.createdOn
-              ).toFixed(0)} ${this.getDays(this.state.createdOn).toFixed(
-                0
-              ) > 1 ? "days" : "day"} ago`}</p>
+              ).toFixed(0)} ${
+                this.getDays(this.state.createdOn).toFixed(0) > 1
+                  ? "days"
+                  : "day"
+              } ago`}</p>
               <div className="m-b-32 coinchips">{chips}</div>
               <div className="edit-form">
                 <FormElement

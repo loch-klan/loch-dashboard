@@ -362,7 +362,9 @@ class ConnectModal extends BaseReactComponent {
                       STEP 6
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Copy and paste your <b>API Key</b>, <b>API Secret</b>, and <b>API Passphrase</b> into the Loch website and click <b>Connect</b>
+                      Copy and paste your <b>API Key</b>, <b>API Secret</b>, and{" "}
+                      <b>API Passphrase</b> into the Loch website and click{" "}
+                      <b>Connect</b>
                     </p>
                   </div>
                 </div>
@@ -468,6 +470,17 @@ class ConnectModal extends BaseReactComponent {
     };
   }
 
+  componentDidMount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", true);
+  
+  }
+
+  componentWillUnmount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", false);
+  }
+
   handleApi = () => {
     this.setState({
       apiActive: true,
@@ -485,15 +498,14 @@ class ConnectModal extends BaseReactComponent {
     this.setState({ selection: item }, () => {
       this.getUrl();
       this.getUserConnectExchange();
-
     });
   };
 
   getUrl = () => {
-     let data = new URLSearchParams();
-     data.append("exchange", this.state.selection.name.toLowerCase());
-    GetAuthUrl(data,this);
-  }
+    let data = new URLSearchParams();
+    data.append("exchange", this.state.selection.name.toLowerCase());
+    GetAuthUrl(data, this);
+  };
   handleBack = () => {
     this.setState({
       selection: null,
@@ -516,39 +528,34 @@ class ConnectModal extends BaseReactComponent {
   componentDidUpdate() {
     // console.log("dejkfe",this.state.selection)
     // if (this.state.popup) {
-      
-      // var win = window.open(
-      //   "http://localhost:3000/success?code=3ffd0d652b7e060511b206b596fbb80c04e62e7a80bc1a59fe46ae3382d5ac48",
-      //   "test",
-      //   "width=600,height=600,left=400,top=100"
-      // );
-      // //  var win = window.open(
-      // //    this.state.AuthUrl,
-      // //    "test",
-      // //    "width=600,height=600,left=400,top=100"
-      // //  );
-
-      
-      // var timer = setInterval(function () {
-      //     //  console.log("win", win.location.href, win.location.search);
-      //    const searchParams = new URLSearchParams(win.location.search);
-      //    const code = searchParams.get("code");
-      //    console.log(code);
-      //   if (code) {
-      //     // run api
-      //     let data = new URLSearchParams();
-      //     data.append("exchange", this.state?.selection?.name?.toLowerCase());
-      //     data.append("access_code", code);
-      //      data.append("account_name", this.state?.connectionName);
-      //     updateAccessToken(data,this);
-
-      //    setTimeout(() => {
-      //      win.close();
-      //      clearInterval(timer);
-      //    }, 500);
-      //   }
-      // }, 1000);
-    
+    // var win = window.open(
+    //   "http://localhost:3000/success?code=3ffd0d652b7e060511b206b596fbb80c04e62e7a80bc1a59fe46ae3382d5ac48",
+    //   "test",
+    //   "width=600,height=600,left=400,top=100"
+    // );
+    // //  var win = window.open(
+    // //    this.state.AuthUrl,
+    // //    "test",
+    // //    "width=600,height=600,left=400,top=100"
+    // //  );
+    // var timer = setInterval(function () {
+    //     //  console.log("win", win.location.href, win.location.search);
+    //    const searchParams = new URLSearchParams(win.location.search);
+    //    const code = searchParams.get("code");
+    //    console.log(code);
+    //   if (code) {
+    //     // run api
+    //     let data = new URLSearchParams();
+    //     data.append("exchange", this.state?.selection?.name?.toLowerCase());
+    //     data.append("access_code", code);
+    //      data.append("account_name", this.state?.connectionName);
+    //     updateAccessToken(data,this);
+    //    setTimeout(() => {
+    //      win.close();
+    //      clearInterval(timer);
+    //    }, 500);
+    //   }
+    // }, 1000);
     // }
   }
 
@@ -558,7 +565,6 @@ class ConnectModal extends BaseReactComponent {
     let cname = this.state?.connectionName;
     let parentState = this;
     if (this.state.coinBase && this.state.AuthUrl !== "") {
-
       var win = window.open(
         this.state.AuthUrl,
         "test",
@@ -583,7 +589,6 @@ class ConnectModal extends BaseReactComponent {
           );
           win.close();
           clearInterval(timer);
-
         }
       }, 1000);
     } else {
@@ -606,17 +611,12 @@ class ConnectModal extends BaseReactComponent {
         addUpdateAccount(data, this);
       }
     }
-  
-
-   
   };
-
 
   showCoinbaseAuthSteps = () => {
     return (
       <Slider {...this.state.settings}>
         <div>
-       
           <div className="steps">
             <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
               STEP 1
@@ -829,9 +829,13 @@ class ConnectModal extends BaseReactComponent {
                         <Button
                           className="primary-btn connect-btn"
                           onClick={this.handleConnect}
-                          style={(!this.state.coinBase ||
-                            this.state.AuthUrl === "") &&
-                            selection.name === "Kucoin" ?{marginTop: "8.5rem"}:{}}
+                          style={
+                            (!this.state.coinBase ||
+                              this.state.AuthUrl === "") &&
+                            selection.name === "Kucoin"
+                              ? { marginTop: "8.5rem" }
+                              : {}
+                          }
                         >
                           Connect
                         </Button>

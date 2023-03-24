@@ -70,10 +70,9 @@ class ExitOverlay extends BaseReactComponent {
     let userWallet = JSON.parse(localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
-        ? userWallet[0].displayAddress ||
-          userWallet[0].address
+        ? userWallet[0].displayAddress || userWallet[0].address
         : dummyUser;
-   
+
     this.state = {
       // create account for cohort
       firstName: userDetails?.first_name || "",
@@ -191,32 +190,35 @@ class ExitOverlay extends BaseReactComponent {
   }
 
   EmailNotification = () => {
-    this.setState({
-      // isIndexed: true,
-      emailAdded: true,
-    }, () => {
+    this.setState(
+      {
+        // isIndexed: true,
+        emailAdded: true,
+      },
+      () => {
         const data = new URLSearchParams();
         data.append("cohort_id", this.state.podId);
         notificationSend(data, this);
-    });
+      }
+    );
   };
 
   getPodStatusFunction = () => {
-      const data = new URLSearchParams();
-      data.append("cohort_id", this.state.podId);
-      getPodStatus(data,this);
-      setTimeout(() => {
-        if (!this.state.isIndexed && !this.state.emailAdded) {
-          this.getPodStatusFunction();
-        }
-      }, 2000);    
+    const data = new URLSearchParams();
+    data.append("cohort_id", this.state.podId);
+    getPodStatus(data, this);
+    setTimeout(() => {
+      if (!this.state.isIndexed && !this.state.emailAdded) {
+        this.getPodStatusFunction();
+      }
+    }, 2000);
   };
 
   handleDone = () => {
     this.props.apiResponse(true);
-     this.state.onHide();
-     this.state.changeList && this.state.changeList();
-  }
+    this.state.onHide();
+    this.state.changeList && this.state.changeList();
+  };
   upgradeModal = () => {
     this.setState(
       {
@@ -241,8 +243,15 @@ class ExitOverlay extends BaseReactComponent {
   pasteInput = React.createRef();
 
   componentDidMount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", true);
     this.props.getAllCoins();
     this.props.getAllParentChains();
+  }
+
+  componentWillUnmount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", false);
   }
 
   onDataSelected = () => {
@@ -448,18 +457,15 @@ class ExitOverlay extends BaseReactComponent {
             addressList.push(
               curr.displayAddress !== ""
                 ? curr.displayAddress?.trim()
-                : curr.address.trim()  
+                : curr.address.trim()
             );
-            
-            
+
             isChainDetected.push(curr?.coinFound);
             total_address = total_address + 1;
-            
           }
         }
         let chain_detechted =
-          isChainDetected.includes(undefined) ||
-          isChainDetected.includes(false)
+          isChainDetected.includes(undefined) || isChainDetected.includes(false)
             ? false
             : true;
         console.log("address list", chain_detechted, isChainDetected);
@@ -473,7 +479,7 @@ class ExitOverlay extends BaseReactComponent {
           // this.state.onHide();
           const data = new URLSearchParams();
           data.append("name", this.state.cohort_name);
-           data.append("chain_detected", chain_detechted);
+          data.append("chain_detected", chain_detechted);
           data.append("wallet_addresses", JSON.stringify(addressList));
 
           if (this.props.isEdit && this.props.cohortId) {
@@ -494,10 +500,9 @@ class ExitOverlay extends BaseReactComponent {
           // hide if upload click
           if (!this.state.showWarningMsg) {
             this.state.onHide();
-             this.state.changeList && this.state.changeList(walletList);
+            this.state.changeList && this.state.changeList(walletList);
           }
           // console.log("address", walletList);
-         
 
           const address = walletList?.map((e) =>
             e.displayAddress ? e.displayAddress : e.address
@@ -561,7 +566,6 @@ class ExitOverlay extends BaseReactComponent {
     });
   };
   handleSave = () => {
- 
     if (this.props.modalType === "create_account") {
       // for chort signup and signin
       const data = new URLSearchParams();
@@ -597,8 +601,6 @@ class ExitOverlay extends BaseReactComponent {
           session_id: getCurrentUser().id,
           email_address: this.state.email,
         });
-         
-      
       }
     }
   };
@@ -607,8 +609,6 @@ class ExitOverlay extends BaseReactComponent {
 
     this.setState({ show: false, showRedirection: true });
     this.props.handleRedirection();
-      
-        
   };
   handleSelect = (e) => {
     // console.log(e);
@@ -690,8 +690,8 @@ class ExitOverlay extends BaseReactComponent {
   handleUpload = () => {
     if (this.state.cohort_name != "") {
       this.setState({
-        podnameError:false,
-      })
+        podnameError: false,
+      });
       if (this.state.userPlan?.upload_csv) {
         this.fileInputRef.current.click();
       } else {
@@ -706,8 +706,8 @@ class ExitOverlay extends BaseReactComponent {
       }
     } else {
       this.setState({
-        podnameError:true,
-      })
+        podnameError: true,
+      });
     }
     // console.log("upload click");
   };
@@ -717,32 +717,31 @@ class ExitOverlay extends BaseReactComponent {
     const name = event.target.files[0]?.name;
 
     // console.log(name)
-    
+
     if (this.state.showWarningMsg) {
-        this.setState({
-          addWalletList: [
-            {
-              id: `wallet1`,
-              address: "",
-              coins: [],
-              displayAddress: "",
-              wallet_metadata: {},
-            },
-          ],
-          uploadStatus: "Uploading",
-          emailAdded: false,
-          isIndexed: false,
-          isChangeFile: true,
-          fileName: name,
-        });
+      this.setState({
+        addWalletList: [
+          {
+            id: `wallet1`,
+            address: "",
+            coins: [],
+            displayAddress: "",
+            wallet_metadata: {},
+          },
+        ],
+        uploadStatus: "Uploading",
+        emailAdded: false,
+        isIndexed: false,
+        isChangeFile: true,
+        fileName: name,
+      });
     } else {
       this.setState({
         fileName: name,
       });
-      }
+    }
 
     if (file.type === "text/csv" || file.type === "text/plain") {
-      
       Papa.parse(file, {
         complete: (results) => {
           this.setState({
@@ -758,7 +757,6 @@ class ExitOverlay extends BaseReactComponent {
             });
           let uploadedAddress = [];
           results?.data?.map((e, i) => {
-            
             uploadedAddress.push(e[0]);
             addressList.push({
               id: `wallet${prevAddressList?.length + (i + 1)}`,
@@ -790,16 +788,13 @@ class ExitOverlay extends BaseReactComponent {
             this.setState(
               {
                 addWalletList: [...prevAddressList, ...addressList],
-                
               },
               () => {
-           
-                // call api to store pod 
+                // call api to store pod
                 // this.state.addWalletList?.map((e) =>
                 //   this.getCoinBasedOnWalletAddress(e.id, e.address)
                 // );
                 this.handleCohortSave();
-
               }
             );
           } else {
@@ -1159,12 +1154,14 @@ class ExitOverlay extends BaseReactComponent {
                                 valueLink={this.linkState(this, "cohort_name")}
                                 label="Pod Name"
                                 required
-                                validations={[
-                                  // {
-                                  //   validate: FormValidator.isRequired,
-                                  //   message: "Enter your pod name",
-                                  // },
-                                ]}
+                                validations={
+                                  [
+                                    // {
+                                    //   validate: FormValidator.isRequired,
+                                    //   message: "Enter your pod name",
+                                    // },
+                                  ]
+                                }
                                 control={{
                                   type: CustomTextControl,
                                   settings: {

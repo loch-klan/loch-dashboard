@@ -5,42 +5,59 @@ import { Modal, Image, Button } from 'react-bootstrap';
 import { resetUser } from '../../utils/AnalyticsFunctions';
 
 class ConfirmLeaveModal extends BaseReactComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: props.show,
+      handleClose: props.handleClose,
+    };
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            show :props.show,
-            handleClose:props.handleClose
-        }
-    }
+  componentDidMount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", true);
+    
+  }
 
-    render() {
+  componentWillUnmount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", false);
+  }
 
-        return (
-            <Modal
-                show={this.state.show}
-                className="confirm-leave-modal"
-                // backdrop="static"
-                onHide={this.state.handleClose}
-                centered
-                backdropClassName="confirmLeaveModal"
-            >
-
-                <Modal.Body>
-                    <div className="leave-modal-body">
-                        <p className="inter-display-medium f-s-20 lh-24 m-b-30 black-000">Are you sure you want to leave ? </p>
-                        <div className='leave-modal-btn-section'>
-                            <Button className="secondary-btn m-r-24" onClick={() => {
-                                resetUser();
-                                this.props.history.push("/welcome");
-                            }}>Yes</Button>
-                            <Button className='primary-btn' onClick={this.state.handleClose}>No</Button>
-                        </div>
-                    </div>
-                </Modal.Body>
-            </Modal >
-        )
-    }
+  render() {
+    return (
+      <Modal
+        show={this.state.show}
+        className="confirm-leave-modal"
+        // backdrop="static"
+        onHide={this.state.handleClose}
+        centered
+        backdropClassName="confirmLeaveModal"
+      >
+        <Modal.Body>
+          <div className="leave-modal-body">
+            <p className="inter-display-medium f-s-20 lh-24 m-b-30 black-000">
+              Are you sure you want to leave ?{" "}
+            </p>
+            <div className="leave-modal-btn-section">
+              <Button
+                className="secondary-btn m-r-24"
+                onClick={() => {
+                  resetUser();
+                  this.props.history.push("/welcome");
+                }}
+              >
+                Yes
+              </Button>
+              <Button className="primary-btn" onClick={this.state.handleClose}>
+                No
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    );
+  }
 }
 
 const mapStateToProps = state => ({

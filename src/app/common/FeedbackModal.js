@@ -22,6 +22,16 @@ class FeedbackModal extends BaseReactComponent {
     };
   }
 
+  componentDidMount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", true);
+  }
+
+  componentWillUnmount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", false);
+  }
+
   starClicked = (number) => {
     this.setState({
       starSelected: number,
@@ -29,18 +39,21 @@ class FeedbackModal extends BaseReactComponent {
   };
   handleSubmit = () => {
     // console.log("values", this.state.page, this.state.starSelected, this.state.feedback)g
-    if (this.state.page !== "Select Section" && this.starSelected != 0 && this.state.feedback != "") {
-       let data = new URLSearchParams();
-       data.append("page", this.state.page);
-       data.append("rating", this.state.starSelected);
-       data.append("feedback", this.state.feedback);
-       sendFeedbackApi(data, this);
+    if (
+      this.state.page !== "Select Section" &&
+      this.starSelected != 0 &&
+      this.state.feedback != ""
+    ) {
+      let data = new URLSearchParams();
+      data.append("page", this.state.page);
+      data.append("rating", this.state.starSelected);
+      data.append("feedback", this.state.feedback);
+      sendFeedbackApi(data, this);
     }
-   
   };
 
   handleDropdown = (e) => {
-   const second = e?.split(" ")[2] != "undefined" ? e.split(" ")[2] : "";
+    const second = e?.split(" ")[2] != "undefined" ? e.split(" ")[2] : "";
     const title = e.split(" ")[1] + " " + second;
     // console.log(e, "title",title);
     this.setState({
@@ -227,7 +240,8 @@ class FeedbackModal extends BaseReactComponent {
                     type: CustomTextControl,
 
                     settings: {
-                      placeholder: "Please enter any feedback or requests here.",
+                      placeholder:
+                        "Please enter any feedback or requests here.",
                       as: "textarea",
                       rows: 4,
                     },

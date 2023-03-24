@@ -33,25 +33,30 @@ class EditWalletExchange extends BaseReactComponent {
     this.state = {
       walletNickname: props.nickname ? props.nickname : "",
       prevNickname: props.nickname ? props.nickname : "",
-      walletMetaData:props.walletMetaData ? props.walletMetaData : "",
+      walletMetaData: props.walletMetaData ? props.walletMetaData : "",
     };
   }
 
   componentDidMount() {
-   
+    // set popup active
+    localStorage.setItem("isPopupActive", true);
   }
 
-    onValidSubmit = () => {
-      console.log(
-        "abd",
-        this.state.walletMetaData?.name,
-        this.state.walletNickname
-      );
+  componentWillUnmount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", false);
+  }
+
+  onValidSubmit = () => {
+    console.log(
+      "abd",
+      this.state.walletMetaData?.name,
+      this.state.walletNickname
+    );
     let data = new URLSearchParams();
     data.append("exchange", this.state.walletMetaData?.name);
     data.append("account_name", this.state.walletNickname);
-    updateAccountName(data,this);
-
+    updateAccountName(data, this);
 
     // EditSpecificWallet({
     //   session_id: getCurrentUser().id,
@@ -85,7 +90,7 @@ class EditWalletExchange extends BaseReactComponent {
     // const walletType = this.state.walletNameList.find(
     //   (e) => e.id === this.state.walletName
     // );
-    
+
     // DeleteWallet({
     //   session_id: getCurrentUser().id,
     //   email_address: getCurrentUser().email,
@@ -98,25 +103,22 @@ class EditWalletExchange extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("exchange", this.state.walletMetaData?.name);
     data.append("account_name", this.state.walletNickname);
-    deleteAccount(data,this);
-
+    deleteAccount(data, this);
   };
 
-    
-     toTitleCase = (str)=> {
-      return str
-        .toLowerCase()
-        .split(" ")
-        .map(function (val) {
-          return val.slice(0, 1).toUpperCase() + val.slice(1);
-        })
-        .join(" ");
-    }
+  toTitleCase = (str) => {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(function (val) {
+        return val.slice(0, 1).toUpperCase() + val.slice(1);
+      })
+      .join(" ");
+  };
   render() {
-    
     const { walletMetaData, walletNickname } = this.state;
     const { show, handleClose, onHide } = this.props;
-   
+
     return (
       <Modal
         show={show}
@@ -131,14 +133,17 @@ class EditWalletExchange extends BaseReactComponent {
       >
         <Modal.Header
           style={{
-            backgroundColor:walletMetaData?.color || "#0d0d0d",
+            backgroundColor: walletMetaData?.color || "#0d0d0d",
           }}
         >
           <Image
             src={walletMetaData?.symbol || unrecognizedIcon}
             className="walletIcon"
           />
-          <h3 className="inter-display-medium f-s-16 m-t-5" style={{color:"#ffffff"}}>
+          <h3
+            className="inter-display-medium f-s-16 m-t-5"
+            style={{ color: "#ffffff" }}
+          >
             {this.toTitleCase(walletMetaData.name)}
           </h3>
           <div className="closebtn" onClick={onHide}>

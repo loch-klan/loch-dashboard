@@ -44,7 +44,7 @@ class FixAddModal extends BaseReactComponent {
               nickname: "",
               showAddress: true,
               showNickname: true,
-              apiAddress:"",
+              apiAddress: "",
             },
           ];
     // console.log("addWalletList", addWalletList);
@@ -81,7 +81,7 @@ class FixAddModal extends BaseReactComponent {
     };
     this.timeout = 0;
   }
-// for get cohort details
+  // for get cohort details
   makeApiCall = (cond) => {
     let data = new URLSearchParams();
     data.append("start", this.state.start);
@@ -227,7 +227,7 @@ class FixAddModal extends BaseReactComponent {
       newAddress[i].coins &&
       newAddress[i].coins.some((e) => e.chain_detected === true);
     newAddress[i].apiAddress = data?.apiaddress;
-   
+
     if (this.state.modalType === "addwallet") {
       this.setState({
         addWalletList: newAddress,
@@ -239,6 +239,9 @@ class FixAddModal extends BaseReactComponent {
     }
   };
   componentDidMount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", true);
+
     this.props.getAllCoins();
     this.props.getAllParentChains();
     //  this.makeApiCall();
@@ -251,18 +254,22 @@ class FixAddModal extends BaseReactComponent {
         fixWallet.push({
           ...e,
           id: `wallet${fixWallet.length + 1}`,
-          apiAddress:e?.address,
+          apiAddress: e?.address,
         });
       }
     });
-
-   
 
     // console.log('fixWallet',fixWallet);
     this.setState({
       fixWalletAddress: fixWallet,
     });
   }
+
+  componentWillUnmount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", false);
+  }
+
   addAddress = () => {
     // console.log(this.state.addWalletList.length, this.state.total_addresses);
     let total =
@@ -283,7 +290,7 @@ class FixAddModal extends BaseReactComponent {
         showAddress: true,
         showNickname: true,
         wallet_metadata: {},
-        apiAddress:"",
+        apiAddress: "",
       });
       this.setState({
         addWalletList: this.state.addWalletList,
@@ -311,7 +318,7 @@ class FixAddModal extends BaseReactComponent {
     this.state.addWalletList.splice(index, 1);
     this.state.addWalletList?.map((w, i) => {
       w.id = `wallet${i + 1}`;
-      w.apiAddress= w.address;
+      w.apiAddress = w.address;
     });
 
     this.setState({
@@ -341,115 +348,114 @@ class FixAddModal extends BaseReactComponent {
     //   this.state.total_addresses , this.state.addWalletList?.length ,
     //     this.state.userPlan.wallet_address_limit
     // );
-     if (
-      (this.state.total_addresses +
-         this.state.addWalletList?.length -
-         this.state.prevWalletAddress) >
-         this.state.userPlan.wallet_address_limit &&
-       this.state.userPlan.wallet_address_limit !== -1
-     ) {
-       this.setState(
-         {
-           triggerId: 1,
-         },
-         () => {
-           this.upgradeModal();
-         }
-       );
-     } else {
-       if (this.state.addWalletList) {
-         if (this.timeout) {
-           clearTimeout(this.timeout);
-         }
-         this.timeout = setTimeout(() => {
-           let arr = [];
-           let addressList = [];
-           let displayAddress = [];
-           let nicknameArr = {};
-           let walletList = [];
-           for (let i = 0; i < this.state.addWalletList.length; i++) {
-             let curr = this.state.addWalletList[i];
-              // console.log(
-              //   "current address",
-              //   curr,
-              //   "arr",
-              //   arr,
+    if (
+      this.state.total_addresses +
+        this.state.addWalletList?.length -
+        this.state.prevWalletAddress >
+        this.state.userPlan.wallet_address_limit &&
+      this.state.userPlan.wallet_address_limit !== -1
+    ) {
+      this.setState(
+        {
+          triggerId: 1,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+    } else {
+      if (this.state.addWalletList) {
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout(() => {
+          let arr = [];
+          let addressList = [];
+          let displayAddress = [];
+          let nicknameArr = {};
+          let walletList = [];
+          for (let i = 0; i < this.state.addWalletList.length; i++) {
+            let curr = this.state.addWalletList[i];
+            // console.log(
+            //   "current address",
+            //   curr,
+            //   "arr",
+            //   arr,
 
-              // );
-             if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
-               walletList.push(curr);
-               arr.push(curr.address.trim());
-               nicknameArr[curr.address.trim()] = curr.nickname;
-               arr.push(curr.displayAddress?.trim());
-               arr.push(curr.apiAddress?.trim());
-               addressList.push(curr.address?.trim());
+            // );
+            if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+              walletList.push(curr);
+              arr.push(curr.address.trim());
+              nicknameArr[curr.address.trim()] = curr.nickname;
+              arr.push(curr.displayAddress?.trim());
+              arr.push(curr.apiAddress?.trim());
+              addressList.push(curr.address?.trim());
               //  console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
-             }
-           }
+            }
+          }
 
-           let addWallet = walletList;
+          let addWallet = walletList;
 
-           addWallet?.map((w, i) => {
-             w.id = `wallet${i + 1}`;
-           });
-           localStorage.setItem("addWallet", JSON.stringify(addWallet));
- 
-           this.state.onHide();
-           const data = new URLSearchParams();
-           // data.append("wallet_addresses", JSON.stringify(arr));
-           data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
-           data.append("wallet_addresses", JSON.stringify(addressList));
+          addWallet?.map((w, i) => {
+            w.id = `wallet${i + 1}`;
+          });
+          localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
-           updateUserWalletApi(data, this);
-           // this.state.changeList && this.state.changeList(walletList);
-           // if (this.props.handleUpdateWallet) {
-           //     this.props.handleUpdateWallet()
-           // }
-           // console.log("fix",this.state.addWalletList);
-           const address = this.state.addWalletList?.map((e) => e.address);
-           // console.log("address", address);
-           const addressDeleted = this.state.deletedAddress;
-           // console.log("Deteted address", addressDeleted);
-           const unrecog_address = this.state.addWalletList
-             ?.filter((e) => !e.coinFound)
-             ?.map((e) => e.address);
-           // console.log("Unreq address", unrecog_address);
-           const recog_address = this.state.addWalletList
-             ?.filter((e) => e.coinFound)
-             ?.map((e) => e.address);
-           // console.log("req address", recog_address);
+          this.state.onHide();
+          const data = new URLSearchParams();
+          // data.append("wallet_addresses", JSON.stringify(arr));
+          data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+          data.append("wallet_addresses", JSON.stringify(addressList));
 
-           const blockchainDetected = [];
-           const nicknames = [];
-           this.state.addWalletList
-             ?.filter((e) => e.coinFound)
-             ?.map((obj) => {
-               let coinName = obj.coins
-                 ?.filter((e) => e.chain_detected)
-                 ?.map((name) => name.coinName);
-               let address = obj.address;
-               let nickname = obj.nickname;
-               blockchainDetected.push({ address: address, names: coinName });
-               nicknames.push({ address: address, nickname: nickname });
-             });
+          updateUserWalletApi(data, this);
+          // this.state.changeList && this.state.changeList(walletList);
+          // if (this.props.handleUpdateWallet) {
+          //     this.props.handleUpdateWallet()
+          // }
+          // console.log("fix",this.state.addWalletList);
+          const address = this.state.addWalletList?.map((e) => e.address);
+          // console.log("address", address);
+          const addressDeleted = this.state.deletedAddress;
+          // console.log("Deteted address", addressDeleted);
+          const unrecog_address = this.state.addWalletList
+            ?.filter((e) => !e.coinFound)
+            ?.map((e) => e.address);
+          // console.log("Unreq address", unrecog_address);
+          const recog_address = this.state.addWalletList
+            ?.filter((e) => e.coinFound)
+            ?.map((e) => e.address);
+          // console.log("req address", recog_address);
 
-           // console.log("blockchain detected", blockchainDetected);
-           AddWalletAddress({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-             addresses_added: address,
-             ENS_added: address,
-             addresses_deleted: addressDeleted,
-             ENS_deleted: addressDeleted,
-             unrecognized_addresses: unrecog_address,
-             recognized_addresses: recog_address,
-             blockchains_detected: blockchainDetected,
-             nicknames: nicknames,
-           });
-         }, 100);
-       }
-     }
-    
+          const blockchainDetected = [];
+          const nicknames = [];
+          this.state.addWalletList
+            ?.filter((e) => e.coinFound)
+            ?.map((obj) => {
+              let coinName = obj.coins
+                ?.filter((e) => e.chain_detected)
+                ?.map((name) => name.coinName);
+              let address = obj.address;
+              let nickname = obj.nickname;
+              blockchainDetected.push({ address: address, names: coinName });
+              nicknames.push({ address: address, nickname: nickname });
+            });
+
+          // console.log("blockchain detected", blockchainDetected);
+          AddWalletAddress({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            addresses_added: address,
+            ENS_added: address,
+            addresses_deleted: addressDeleted,
+            ENS_deleted: addressDeleted,
+            unrecognized_addresses: unrecog_address,
+            recognized_addresses: recog_address,
+            blockchains_detected: blockchainDetected,
+            nicknames: nicknames,
+          });
+        }, 100);
+      }
+    }
   };
 
   handleFixWalletChange = (e) => {
@@ -860,147 +866,153 @@ class FixAddModal extends BaseReactComponent {
 
     return (
       <>
-       {!this.state.hidePrevModal && <Modal
-          show={this.state.show}
-          className="fix-add-modal"
-          onHide={this.state.onHide}
-          size="lg"
-          dialogClassName={"fix-add-modal"}
-          centered
-          aria-labelledby="contained-modal-title-vcenter"
-          backdropClassName="fixaddmodal"
-        >
-          <Modal.Header
-            style={{
-              padding: `${
-                this.state.modalType === "fixwallet" ? "2.8rem " : ""
-              }`,
-            }}
-            className={this.state.modalType === "addwallet" ? "add-wallet" : ""}
+        {!this.state.hidePrevModal && (
+          <Modal
+            show={this.state.show}
+            className="fix-add-modal"
+            onHide={this.state.onHide}
+            size="lg"
+            dialogClassName={"fix-add-modal"}
+            centered
+            aria-labelledby="contained-modal-title-vcenter"
+            backdropClassName="fixaddmodal"
           >
-            {this.state.modalType === "addwallet" && (
-              <div>
-                <Image src={Banner} className="banner-img" />
-                <div className="wallet-header">
-                  <Image src={this.state.modalIcon} className="m-b-20" />
-                  <h4 className="inter-display-medium f-s-25 lh-31 white m-b-4">
-                    {this.state.title}
-                  </h4>
-                  <p
-                    className={"inter-display-medium f-s-13 lh-16 white op-8 "}
-                  >
-                    {this.state.subtitle}
-                  </p>
-                </div>
-              </div>
-            )}
-            <div className="closebtn" onClick={this.state.onHide}>
-              <Image
-                src={
-                  this.state.modalType === "fixwallet" ? CloseIcon : CloseBtn
-                }
-              />
-            </div>
-          </Modal.Header>
-          <Modal.Body>
-            <div
-              className={`fix-add-modal-body ${
-                this.state.modalType === "addwallet" ? "m-t-30" : "fix-wallet"
-              }`}
+            <Modal.Header
+              style={{
+                padding: `${
+                  this.state.modalType === "fixwallet" ? "2.8rem " : ""
+                }`,
+              }}
+              className={
+                this.state.modalType === "addwallet" ? "add-wallet" : ""
+              }
             >
-              {this.state.modalType === "fixwallet" && (
-                <div className="fix-wallet-title">
-                  <h6 className="inter-display-medium f-s-20 lh-24 ">
-                    {this.state.title}
-                  </h6>
-                  <p
-                    className={`inter-display-medium f-s-16 lh-19 grey-7C7 ${
-                      this.modalIcon ? "m-b-52" : "m-b-77"
-                    }`}
-                  >
-                    {this.state.subtitle}
-                  </p>
+              {this.state.modalType === "addwallet" && (
+                <div>
+                  <Image src={Banner} className="banner-img" />
+                  <div className="wallet-header">
+                    <Image src={this.state.modalIcon} className="m-b-20" />
+                    <h4 className="inter-display-medium f-s-25 lh-31 white m-b-4">
+                      {this.state.title}
+                    </h4>
+                    <p
+                      className={
+                        "inter-display-medium f-s-13 lh-16 white op-8 "
+                      }
+                    >
+                      {this.state.subtitle}
+                    </p>
+                  </div>
                 </div>
               )}
-
-              {this.state.modalType === "fixwallet" && (
-                <div className="fix-modal-input">{inputs}</div>
-              )}
-              {this.state.modalType === "addwallet" && (
-                <div className="add-modal-inputs">{wallets}</div>
-              )}
-
-              {this.state.addWalletList.length >= 0 &&
-                this.state.modalType === "addwallet" && (
-                  <div className="m-b-32 add-wallet-btn">
-                    <Button className="grey-btn" onClick={this.addAddress}>
-                      <Image src={PlusIcon} /> Add another
-                    </Button>
+              <div className="closebtn" onClick={this.state.onHide}>
+                <Image
+                  src={
+                    this.state.modalType === "fixwallet" ? CloseIcon : CloseBtn
+                  }
+                />
+              </div>
+            </Modal.Header>
+            <Modal.Body>
+              <div
+                className={`fix-add-modal-body ${
+                  this.state.modalType === "addwallet" ? "m-t-30" : "fix-wallet"
+                }`}
+              >
+                {this.state.modalType === "fixwallet" && (
+                  <div className="fix-wallet-title">
+                    <h6 className="inter-display-medium f-s-20 lh-24 ">
+                      {this.state.title}
+                    </h6>
+                    <p
+                      className={`inter-display-medium f-s-16 lh-19 grey-7C7 ${
+                        this.modalIcon ? "m-b-52" : "m-b-77"
+                      }`}
+                    >
+                      {this.state.subtitle}
+                    </p>
                   </div>
                 )}
 
-              {/* input field for add wallet */}
-              <div className="btn-section">
-                <Button
-                  className={`primary-btn ${
-                    this.state.btnStatus ? "activebtn" : ""
-                  } ${
-                    this.state.modalType === "fixwallet"
-                      ? "fix-btn"
-                      : this.state.modalType === "addwallet" &&
-                        !this.isDisabled()
-                      ? "add-btn activebtn"
-                      : "add-btn"
-                  }`}
-                  disabled={
-                    this.state.modalType === "addwallet"
-                      ? this.isDisabled()
-                      : this.isFixDisabled()
-                  }
-                  onClick={
-                    this.state.modalType === "addwallet"
-                      ? this.handleAddWallet
-                      : this.handleFixWallet
-                  }
-                >
-                  {/* {this.state.btnText} */}
-                  {this.state.modalType === "addwallet"
-                    ? this.isDisabled()
-                      ? loadingAnimation()
-                      : this.state.btnText
-                    : this.isFixDisabled()
-                    ? loadingAnimation()
-                    : this.state.btnText}
-                </Button>
-              </div>
-              <div className="m-b-26 footer">
-                <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                  At Loch, we care intensely about your privacy and
-                  pseudonymity.
-                  <CustomOverlay
-                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
-                    position="top"
-                    isIcon={true}
-                    IconImage={LockIcon}
-                    isInfo={true}
-                    className={"fix-width"}
+                {this.state.modalType === "fixwallet" && (
+                  <div className="fix-modal-input">{inputs}</div>
+                )}
+                {this.state.modalType === "addwallet" && (
+                  <div className="add-modal-inputs">{wallets}</div>
+                )}
+
+                {this.state.addWalletList.length >= 0 &&
+                  this.state.modalType === "addwallet" && (
+                    <div className="m-b-32 add-wallet-btn">
+                      <Button className="grey-btn" onClick={this.addAddress}>
+                        <Image src={PlusIcon} /> Add another
+                      </Button>
+                    </div>
+                  )}
+
+                {/* input field for add wallet */}
+                <div className="btn-section">
+                  <Button
+                    className={`primary-btn ${
+                      this.state.btnStatus ? "activebtn" : ""
+                    } ${
+                      this.state.modalType === "fixwallet"
+                        ? "fix-btn"
+                        : this.state.modalType === "addwallet" &&
+                          !this.isDisabled()
+                        ? "add-btn activebtn"
+                        : "add-btn"
+                    }`}
+                    disabled={
+                      this.state.modalType === "addwallet"
+                        ? this.isDisabled()
+                        : this.isFixDisabled()
+                    }
+                    onClick={
+                      this.state.modalType === "addwallet"
+                        ? this.handleAddWallet
+                        : this.handleFixWallet
+                    }
                   >
-                    <Image
-                      src={InfoIcon}
-                      className="info-icon"
-                      onMouseEnter={() => {
-                        AnonymityWalletConnection({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
-                    />
-                  </CustomOverlay>
-                </p>
+                    {/* {this.state.btnText} */}
+                    {this.state.modalType === "addwallet"
+                      ? this.isDisabled()
+                        ? loadingAnimation()
+                        : this.state.btnText
+                      : this.isFixDisabled()
+                      ? loadingAnimation()
+                      : this.state.btnText}
+                  </Button>
+                </div>
+                <div className="m-b-26 footer">
+                  <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                    At Loch, we care intensely about your privacy and
+                    pseudonymity.
+                    <CustomOverlay
+                      text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                      position="top"
+                      isIcon={true}
+                      IconImage={LockIcon}
+                      isInfo={true}
+                      className={"fix-width"}
+                    >
+                      <Image
+                        src={InfoIcon}
+                        className="info-icon"
+                        onMouseEnter={() => {
+                          AnonymityWalletConnection({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        }}
+                      />
+                    </CustomOverlay>
+                  </p>
+                </div>
               </div>
-            </div>
-          </Modal.Body>
-        </Modal>}
+            </Modal.Body>
+          </Modal>
+        )}
         {this.state.upgradeModal && (
           <UpgradeModal
             show={this.state.upgradeModal}
