@@ -26,6 +26,7 @@ import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
 import { ManageLink } from "./Api";
 import UpgradeModal from "../common/upgradeModal";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
+import moment from "moment";
 
 class Profile extends Component {
   constructor(props) {
@@ -43,6 +44,7 @@ class Profile extends Component {
           name: plan.name,
           id: plan.id,
           plan_reference_id: plan.plan_reference_id,
+          plan_valid: userPlan?.subscription?.valid_till,
           features: [
             {
               name: "Wallet addresses",
@@ -194,8 +196,20 @@ class Profile extends Component {
                               }
                               `}
                     >
-                      <h4>Your current plan</h4>
-                      <h3>{this.state.selectedPlan?.name}</h3>
+                      <div>
+                        <h4>Your current plan</h4>
+                        <h3>{this.state.selectedPlan?.name}</h3>
+                      </div>
+                      {this.state.selectedPlan?.name !== "Free" && (
+                        <div className="price">
+                          <h4>Next renewal date</h4>
+                          <p>
+                            {moment(this.state.selectedPlan?.plan_valid).format(
+                              "MMM DD, YYYY"
+                            )}
+                          </p>
+                        </div>
+                      )}
                     </div>
                     <div
                       style={{

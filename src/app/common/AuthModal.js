@@ -136,16 +136,6 @@ class AuthModal extends BaseReactComponent {
           await provider.getBalance(address)
         );
 
-        // console.log(
-        //   "plan price",
-        //   this.state.selectedPlan?.price,
-        //   "Eth rate",
-        //   ethRateList.rates.ETH,
-        //   "user balace",
-        //   balance,
-        //   "USD to Eth",
-        //   ethRateList.rates.ETH * this.state.selectedPlan?.price
-        // );
         this.setState({
           MetaAddress: address,
           balance: balance,
@@ -168,12 +158,16 @@ class AuthModal extends BaseReactComponent {
   // Signin wit wallet
   SigninWallet = () => {
     // get device id
-    const deviceId = localStorage.getItem("deviceId") || uuidv4();
+     const deviceId = localStorage.getItem("deviceId") || uuidv4();
 
-    if (!localStorage.getItem("deviceId")) {
-      // console.log("no device id");
-      localStorage.setItem("deviceId", deviceId);
-    }
+     if (!localStorage.getItem("deviceId")) {
+       // console.log("no device id");
+       localStorage.setItem("deviceId", deviceId);
+     }
+
+     if (!localStorage.getItem("connectWalletAddress")) {
+       localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
+     }
 
     let data = new URLSearchParams();
     data.append("device_id", deviceId);

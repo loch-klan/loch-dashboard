@@ -350,6 +350,7 @@ class UpgradeModal extends BaseReactComponent {
         {
           RegisterModal: false,
           email: islochUser?.email || "",
+          isLochUser: JSON.parse(localStorage.getItem("lochUser")),
         },
         () => {
           this.checkoutModal();
@@ -386,6 +387,11 @@ class UpgradeModal extends BaseReactComponent {
       });
     }
 
+    if (!this.state.isLochUser) {
+      this.setState({
+        isLochUser: JSON.parse(localStorage.getItem("lochUser")),
+      });
+    }
    
 
 
@@ -585,7 +591,7 @@ class UpgradeModal extends BaseReactComponent {
 
                 if (testing) {
                   // for testing
-                  console.log("test2");
+               
                   contractAddress =
                     "0x7c87561b129f46998fc9Afb53F98b7fdaB68696f";
 
@@ -716,7 +722,7 @@ class UpgradeModal extends BaseReactComponent {
         this.connectMetamask(false);
       }
     } catch (error) {
-      console.error(error.code);
+      console.error("error",error.code);
       this.setState({
         payLoader: false,
       });
@@ -725,7 +731,8 @@ class UpgradeModal extends BaseReactComponent {
         toast.error("Transaction rejected");
       } else if (
         error.code == "INSUFFICIENT_FUNDS" ||
-        error.code == "UNPREDICTABLE_GAS_LIMIT"
+        error.code == "UNPREDICTABLE_GAS_LIMIT" ||
+        error.code == -32000
       ) {
         toast.error("Insufficient funds in your wallet");
       } else if (error.code == "NETWORK_ERROR") {
@@ -770,12 +777,16 @@ class UpgradeModal extends BaseReactComponent {
   // Signin wit wallet
   SigninWallet = () => {
     // get device id
-    const deviceId = localStorage.getItem("deviceId") || uuidv4();
+     const deviceId = localStorage.getItem("deviceId") || uuidv4();
 
-    if (!localStorage.getItem("deviceId")) {
-      // console.log("no device id");
-      localStorage.setItem("deviceId", deviceId);
-    }
+     if (!localStorage.getItem("deviceId")) {
+       // console.log("no device id");
+       localStorage.setItem("deviceId", deviceId);
+     }
+
+     if (!localStorage.getItem("connectWalletAddress")) {
+       localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
+     }
 
     let data = new URLSearchParams();
     data.append("device_id", deviceId);

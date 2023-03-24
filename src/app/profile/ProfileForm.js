@@ -16,6 +16,11 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import UpgradeModal from "../common/upgradeModal";
+import { loadingAnimation } from "../../utils/ReusableFunctions";
+import { SigninWallet } from "../common/Api";
+import { ethers } from "ethers";
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
 
 class ProfileForm extends BaseReactComponent {
   constructor(props) {
@@ -33,11 +38,79 @@ class ProfileForm extends BaseReactComponent {
       prevmobileNumber: userDetails?.mobile || "",
       manageUrl: "",
       upgradeModal: false,
+
+      // metamask
+      MetamaskExist: false,
+      MetaAddress: "",
+      balance: 0,
+      btnloader: false,
     };
     // this.onClose = this.onClose.bind(this);
   }
+
+  connectMetamask = async (isSignin = true) => {
+    if (window.ethereum) {
+      try {
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+        const balance = ethers.utils.formatEther(
+          await provider.getBalance(address)
+        );
+
+        this.setState({
+          MetaAddress: address,
+          balance: balance,
+          signer: signer,
+          provider: provider,
+          btnloader: true,
+        });
+
+        if (!localStorage.getItem("lochUser")) {
+          // call sigin Api after signin call checkoutModal
+          this.SigninWallet();
+        }
+      
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.error("Please install MetaMask!");
+      toast.error("Please install Metamask extension");
+    }
+  };
+
+  // Signin wit wallet
+  SigninWallet = () => {
+    // get device id
+      const deviceId = localStorage.getItem("deviceId") || uuidv4();
+
+      if (!localStorage.getItem("deviceId")) {
+        // console.log("no device id");
+        localStorage.setItem("deviceId", deviceId);
+      }
+
+      if (!localStorage.getItem("connectWalletAddress")) {
+        localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
+      }
+
+    let data = new URLSearchParams();
+    data.append("device_id", deviceId);
+    data.append("wallet_address", this.state.MetaAddress);
+
+    SigninWallet(data, this);
+  };
+
   componentDidMount() {
     ManageLink(this);
+
+    // check metamask already connected or not
+     if (localStorage.getItem("connectWalletAddress")) {
+       this.setState({
+         MetaAddress: localStorage.getItem("connectWalletAddress"),
+       });
+     }
   }
 
   upgradeModal = () => {
@@ -216,21 +289,30 @@ class ProfileForm extends BaseReactComponent {
               >
                 Save changes
               </Button>
-
-              {/* <Button
-                className="secondary-btn m-l-10"
-                onClick={() => {
-                  if (this.state.manageUrl === "" || this.state.manageUrl === undefined) {
-                    this.upgradeModal();
-                  } else {
-                    window.open(this.state.manageUrl);
-                  }
-                }}
-              >
-                Manage subscriptions
-              </Button> */}
             </div>
           </Form>
+          {this.state.MetaAddress !== "" ? (
+            <p className="inter-display-semi-bold f-s-13 lh-15 m-t-16">
+              {this.state.MetaAddress} connected
+            </p>
+          ) : (
+            <Button
+              className={`primary-btn m-t-16 ${
+                this.state.btnloader ? "disabled" : ""
+              }`}
+              style={{
+                padding: "1.4rem 4rem",
+              }}
+              onClick={() => {
+                if (this.state.btnloader) {
+                } else {
+                  this.connectMetamask();
+                }
+              }}
+            >
+              {this.state.btnloader ? loadingAnimation() : "Connect wallet"}
+            </Button>
+          )}
           {this.state.upgradeModal && (
             <UpgradeModal
               show={this.state.upgradeModal}
