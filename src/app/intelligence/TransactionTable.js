@@ -17,7 +17,7 @@ function TransactionTable(props) {
           <GraphHeader
             title={props.title}
             subtitle={props.subTitle}
-            isArrow={true}
+            isArrow={props.isArrow}
             handleClick={props.handleClick}
             isAnalytics="Transaction Table"
             isConnect={props.isConnect}

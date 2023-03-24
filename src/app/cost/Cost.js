@@ -545,6 +545,28 @@ class Cost extends Component {
             showpath={true}
             currentPage={"costs"}
           />
+          <div className="m-b-40 cost-table-section">
+            <div style={{ position: "relative" }}>
+              {/* <div className="coming-soon-div">
+                <Image src={ExportIconWhite} className="coming-soon-img" />
+                <p className="inter-display-regular f-s-13 lh-16 black-191">
+                  This feature is coming soon.
+                </p>
+              </div> */}
+              <TransactionTable
+                title="Average Cost Basis"
+                subTitle="Understand your average entry price"
+                tableData={tableData}
+                columnList={columnData}
+                headerHeight={64}
+                comingSoon={false}
+                isArrow={false}
+                isLoading={this.state.AvgCostLoading}
+                // isConnect={true}
+                // handleExchange={this.handleConnectModal}
+              />
+            </div>
+          </div>
           <div
             style={{
               position: "relative",
@@ -636,27 +658,7 @@ class Cost extends Component {
               // comingSoon={true}
             />
           </div>
-          <div className="m-b-40 cost-table-section">
-            <div style={{ position: "relative" }}>
-              {/* <div className="coming-soon-div">
-                <Image src={ExportIconWhite} className="coming-soon-img" />
-                <p className="inter-display-regular f-s-13 lh-16 black-191">
-                  This feature is coming soon.
-                </p>
-              </div> */}
-              <TransactionTable
-                title="Average Cost Basis"
-                subTitle="Understand your average entry price"
-                tableData={tableData}
-                columnList={columnData}
-                headerHeight={64}
-                comingSoon={false}
-                isLoading={this.state.AvgCostLoading}
-                // isConnect={true}
-                // handleExchange={this.handleConnectModal}
-              />
-            </div>
-          </div>
+
           {/* <FeedbackForm page={"Cost Page"} /> */}
         </div>
       </div>
