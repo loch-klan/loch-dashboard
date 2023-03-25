@@ -251,8 +251,9 @@ class OnBoarding extends Component {
             headerTitle={"Connect exchanges"}
             modalType={"connectModal"}
             iconImage={LinkIcon}
-            from="home"
-            walletCount={this.state?.walletAddress?.length}
+            ishome={true}
+            walletAddress={this.state?.walletAddress}
+            exchanges={this.state.exchanges}
             handleBackConnect={this.handleBackConnect}
           />
         )}
