@@ -100,6 +100,31 @@
                 padding: 0 9.4rem;
             }
 
+            .ob-connect-exchange{
+                display: block;
+                width: 64.7rem;
+                margin: auto;
+                position: relative;
+                margin: 1.2rem 5.4rem 6.8rem 2.4rem;
+                padding: 0 1.7rem 0 5.6rem;
+
+                .connect-exchange-btn{
+                  background: rgba(229, 229, 230, 0.5);
+                  border-radius: 8px;
+                  padding: 8px;
+                  position: absolute;
+                  right: 0;
+                  cursor: pointer;
+
+                  &:hover{
+ box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+                    0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                  background-color: #ffffff;
+                  }
+                }
+
+            }
+
             .ob-modal-body-1,
             .ob-modal-body-2 {
 

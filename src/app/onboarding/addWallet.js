@@ -19,15 +19,17 @@ import {
 import { getCurrentUser } from '../../utils/ManageToken';
 import UpgradeModal from '../common/upgradeModal';
 import { GetAllPlan, GetDefaultPlan } from '../common/Api';
+import LinkIconBtn from "../../assets/images/link.svg";
 
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
+    console.log("walletAddress", props.walletAddress);
     this.state = {
       showModal: true,
       signIn: false,
       addButtonVisible: false,
-      walletInput: [
+      walletInput: props.walletAddress ? props.walletAddress : [
         {
           id: "wallet1",
           address: "",
@@ -43,6 +45,7 @@ class AddWallet extends BaseReactComponent {
       isStatic: false,
       triggerId: 0,
       GoToHome: false,
+      connectExchange: true,
       
      
     };
@@ -68,6 +71,24 @@ class AddWallet extends BaseReactComponent {
   // };
 
   componentDidMount() {
+    if (this.props.exchanges) {
+
+      let text = "";
+     
+      Promise.all( this.props.exchanges
+        ?.filter((e) => e.isActive)
+        .map((e) => (text = text == "" ? text + e.name : text + ", " + e.name))).then(() => {
+           this.setState({
+             connectText:
+               text == "" ? "Connect exchanges" : text + " connected",
+           });
+        })
+     
+    } else {
+      this.setState({
+        connectText: "Connect exchanges",
+      });
+    }
     this.props.getAllCoins();
     this.props.getAllParentChains();
      this.setState({
@@ -570,6 +591,25 @@ class AddWallet extends BaseReactComponent {
               </Button>
             </div>
           ) : null}
+
+          {this.state.connectExchange && (
+            <div className="ob-connect-exchange">
+              <div
+                className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
+                onClick={()=> {this.props.connectWallet(this.state.walletInput)}}
+              >
+                <Image
+                  src={LinkIconBtn}
+                  style={{
+                    width: "1.2rem",
+                    marginRight: "4px",
+                    marginBottom: "1px",
+                  }}
+                />
+                {this.state.connectText}
+              </div>
+            </div>
+          )}
 
           <div className="ob-modal-body-btn">
             {/* <CustomButton

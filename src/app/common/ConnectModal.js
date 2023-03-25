@@ -48,6 +48,7 @@ class ConnectModal extends BaseReactComponent {
         {
           name: "Binance",
           icon: BinanceIcon,
+          isActive: true,
           slider: () => {
             return (
               <Slider {...this.state.settings}>
@@ -127,6 +128,7 @@ class ConnectModal extends BaseReactComponent {
         {
           name: "Coinbase",
           icon: CoinbaseIcon,
+          isActive: true,
           slider: () => {
             return (
               <Slider {...this.state.settings}>
@@ -220,6 +222,7 @@ class ConnectModal extends BaseReactComponent {
         {
           name: "Kraken",
           icon: krakanIcon,
+          isActive: false,
           slider: () => {
             return (
               <Slider {...this.state.settings}>
@@ -296,6 +299,7 @@ class ConnectModal extends BaseReactComponent {
         {
           name: "Kucoin",
           icon: KuCoinIcon,
+          isActive: false,
           slider: () => {
             return (
               <Slider {...this.state.settings}>
@@ -362,7 +366,9 @@ class ConnectModal extends BaseReactComponent {
                       STEP 6
                     </h6>
                     <p className="inter-display-medium f-s-14 lh-16">
-                      Copy and paste your <b>API Key</b>, <b>API Secret</b>, and <b>API Passphrase</b> into the Loch website and click <b>Connect</b>
+                      Copy and paste your <b>API Key</b>, <b>API Secret</b>, and{" "}
+                      <b>API Passphrase</b> into the Loch website and click{" "}
+                      <b>Connect</b>
                     </p>
                   </div>
                 </div>
@@ -373,22 +379,27 @@ class ConnectModal extends BaseReactComponent {
         // {
         //   name: "OKX",
         //   icon: OkxIcon,
+        //  isActive:false,
         // },
         // {
         //   name: "Bitfinex",
         //   icon: BitfinexIcon,
+        //  isActive:false,
         // },
         // {
         //   name: "Bitstamp",
         //   icon: BitstampIcon,
+        //  isActive:false,
         // },
         // {
         //   name: "Bybit",
         //   icon: BybitIcon,
+        //  isActive:false,
         // },
         {
           name: "Gemini",
           icon: GeminiIcon,
+          isActive: false,
           slider: () => {
             return (
               <Slider {...this.state.settings}>
@@ -454,10 +465,12 @@ class ConnectModal extends BaseReactComponent {
         // {
         //   name: "Huobi",
         //   icon: HuobiIcon,
+        //  isActive:false,
         // },
         // {
         //   name: "Gate.io",
         //   icon: GateIcon,
+        //  isActive:false,
         // },
       ],
       selection: null,
@@ -482,9 +495,16 @@ class ConnectModal extends BaseReactComponent {
   };
 
   handleSelect = (item) => {
-    this.setState({ selection: item }, () => {
-      this.getUrl();
+
+    this.setState(
+      {
+        selection: item
+      }
+      , () => {
+      if (this.props.from !== "home") {
+        this.getUrl();
       this.getUserConnectExchange();
+     }
 
     });
   };
@@ -667,11 +687,17 @@ class ConnectModal extends BaseReactComponent {
         backdropClassName="exitoverlaymodal"
       >
         <Modal.Header>
-          {selection && (
+          {selection || this.props.from === "home" && (
             <Image
               className="back-icon cp"
               src={backIcon}
-              onClick={this.handleBack}
+              onClick={() => {
+                if (this.props.from === "home") {
+                  this.props.handleBackConnect(this.state.connectExchangesList);
+                } else
+                {
+                  this.handleBack();
+             } }}
             />
           )}
           {selection ? (
@@ -681,7 +707,12 @@ class ConnectModal extends BaseReactComponent {
               <Image src={this.props.iconImage} />
             </div>
           )}
-          <div className="closebtn" onClick={this.state.onHide}>
+          <div className="closebtn" onClick={() => {
+            if (this.props.from === "home") {
+              this.state.onHide();
+            }
+            else{this.state.onHide()};
+          }}>
             <Image src={CloseIcon} />
           </div>
         </Modal.Header>
