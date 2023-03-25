@@ -501,7 +501,7 @@ class ConnectModal extends BaseReactComponent {
         selection: item
       }
       , () => {
-      if (this.props.from !== "home") {
+      if (this.props?.from !== "home") {
         this.getUrl();
       this.getUserConnectExchange();
      }
@@ -687,12 +687,12 @@ class ConnectModal extends BaseReactComponent {
         backdropClassName="exitoverlaymodal"
       >
         <Modal.Header>
-          {selection || this.props.from === "home" && (
+          {selection || this.props?.from === "home" && (
             <Image
               className="back-icon cp"
               src={backIcon}
               onClick={() => {
-                if (this.props.from === "home") {
+                if (this.props?.from === "home") {
                   this.props.handleBackConnect(this.state.connectExchangesList);
                 } else
                 {
@@ -708,7 +708,7 @@ class ConnectModal extends BaseReactComponent {
             </div>
           )}
           <div className="closebtn" onClick={() => {
-            if (this.props.from === "home") {
+            if (this.props?.from === "home") {
               this.state.onHide();
             }
             else{this.state.onHide()};
