@@ -241,7 +241,8 @@ function Sidebar(props) {
     
     setTimeout(() => {
       // if isPopupActive = true then do not open this popup bcoz any other popup still open
-       let isPopupActive = JSON.parse(localStorage.getItem("isPopupActive"));
+      let isPopupActive = JSON.parse(localStorage.getItem("isPopupActive"));
+      lochUser = JSON.parse(localStorage.getItem("lochUser"));
       if (!isPopupActive) {
         console.log("inactive popup");
         if (!lochUser) {

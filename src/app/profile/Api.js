@@ -21,14 +21,31 @@ export const updateUser = (data,ctx) =>{
           ctx.props.isSkip();
           // ctx.state.onHide();
         } else {
-          toast.success(
-            <div className="custom-toast-msg">
-              <div>Profile updated</div>
-              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-                You’ve sucessfully updated your profile
+          if (ctx.state.modalType === "Email") {
+            toast.success(
+              <div className="custom-toast-msg">
+                <div>Email updated</div>
+                <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                  You’ve sucessfully updated your profile
+                </div>
               </div>
-            </div>
-          );
+            );
+            ctx.state.onHide(true);
+            
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          } else {
+            toast.success(
+              <div className="custom-toast-msg">
+                <div>Profile updated</div>
+                <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                  You’ve sucessfully updated your profile
+                </div>
+              </div>
+            );
+          }
+          
         }
        
       } else{

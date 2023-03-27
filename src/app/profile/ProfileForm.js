@@ -68,7 +68,7 @@ class ProfileForm extends BaseReactComponent {
         });
 
         if (!localStorage.getItem("lochUser")) {
-          // call sigin Api after signin call checkoutModal
+
           this.SigninWallet();
         }
       

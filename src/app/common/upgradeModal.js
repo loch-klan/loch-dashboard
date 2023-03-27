@@ -48,6 +48,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import USDT_ABI from "./USDT_ABI.json";
 import USDC_ABI from "./USDC_ABI.json";
+import AskEmailModal from "./AskEmailModal";
 
 
 class UpgradeModal extends BaseReactComponent {
@@ -302,6 +303,9 @@ class UpgradeModal extends BaseReactComponent {
       ethPrice: null,
       usdtConversion: null,
       usdcConversion: null,
+
+      // Ask eamil after crypto payment
+      emailModal: false,
     };
   }
 
@@ -434,6 +438,20 @@ class UpgradeModal extends BaseReactComponent {
     });
   };
 
+  handleAskEmail = (emailUpdated = false) => {
+    let user = JSON.parse(localStorage.getItem("lochUser"));
+    // console.log("user",user)
+    if (!user?.email || emailUpdated) {
+      // console.log("user", user?.email);
+      this.setState({
+        emailModal: !this.state.emailModal,
+        hideModal: true,
+        isLochUser: user,
+      });
+    }
+    
+  };
+
   handleSigninBackbtn = () => {
     //  console.log("handle signin back");
     this.setState({
@@ -525,7 +543,7 @@ class UpgradeModal extends BaseReactComponent {
       { id: 2, name: "USDT", price: usdtConversion },
       { id: 3, name: "USDC", price: usdcConversion },
     ];
-    console.log("tok", tokens);
+    // console.log("tok", tokens);
     this.setState({
       tokensList: tokens,
     });
@@ -562,10 +580,10 @@ class UpgradeModal extends BaseReactComponent {
         switch (this.state.selectedToken.name) {
           case "ETH":
             // Set the transaction options (e.g. recipient address and transaction amount)
-            console.log(
-              this.state.selectedToken.name,
-              this.state.selectedToken.price
-            );
+            // console.log(
+            //   this.state.selectedToken.name,
+            //   this.state.selectedToken.price
+            // );
             txOptions = {
               to: RecipientAddress, // recipient address - lochpj.eth
               value: testing
@@ -579,12 +597,12 @@ class UpgradeModal extends BaseReactComponent {
             receipt = await tx.wait();
             break;
           case "USDT":
-            console.log(
-              this.state.selectedToken.name,
-              this.state.selectedToken.price,
-              ethers.utils.parseUnits(this.state.selectedToken.price.toString())
-              //  USDT_ABI
-            );
+            // console.log(
+            //   this.state.selectedToken.name,
+            //   this.state.selectedToken.price,
+            //   ethers.utils.parseUnits(this.state.selectedToken.price.toString())
+            //   //  USDT_ABI
+            // );
 
             gasPrice = await this.state.provider.getGasPrice();
 
@@ -636,11 +654,11 @@ class UpgradeModal extends BaseReactComponent {
             receipt = await tx.wait();
             break;
           case "USDC":
-            console.log(
-              this.state.selectedToken.name,
-              this.state.selectedToken.price,
-              USDC_ABI
-            );
+            // console.log(
+            //   this.state.selectedToken.name,
+            //   this.state.selectedToken.price,
+            //   USDC_ABI
+            // );
 
             gasPrice = await this.state.provider.getGasPrice();
 
@@ -750,10 +768,12 @@ class UpgradeModal extends BaseReactComponent {
     getUser(this, true);
     // if its form welcome page then redirect to Home page
     setTimeout(() => {
+      // console.log("text", this.props.from, this.props.from === "home");
       if (this.props.from === "home") {
         this.props.history.push("/home");
       } else {
-        this.state.onHide();
+        this.handleAskEmail(); 
+        // this.state.onHide();
       }
     }, 1000);
   };
@@ -1452,6 +1472,13 @@ class UpgradeModal extends BaseReactComponent {
           />
         ) : (
           ""
+        )}
+        {this.state.emailModal && (
+          <AskEmailModal
+            show={this.state.emailModal}
+            onHide={this.handleAskEmail}
+            history={this.props.history}
+          />
         )}
       </>
     );
