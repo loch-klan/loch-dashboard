@@ -11,6 +11,7 @@ const deleteToken = () => {
   localStorage.removeItem("stopClick");
   localStorage.removeItem("defi_access");
   localStorage.removeItem("isPopup");
+  localStorage.removeItem("stop_redirect");
 };
 
 const getToken = () => {
