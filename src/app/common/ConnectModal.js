@@ -391,30 +391,268 @@ class ConnectModal extends BaseReactComponent {
                 );
               },
             },
-            // {
-            //   name: "OKX",
-            //   icon: OkxIcon,
-            //  isActive:false,
-            //  isOAuth:false,
-            // },
+            {
+              name: "OKX",
+              icon: OkxIcon,
+              isActive: false,
+              isOAuth: false,
+              slider: () => {
+                return (
+                  <Slider {...this.state.settings}>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 1
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Log in to your <b>OKX</b> account on your computer
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 2
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Hover over the <b>profile</b> icon on the top right of
+                          the screen and select <b>API</b> from the dropdown
+                          menu
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 3
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Select <b>+Create V5 API Key</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 4
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Select API Trading as your <b>Purpose</b>. Enter an <b>API Name</b> like “OKX - Loch” and enter a <b>passphrase</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 5
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Only grant <b>Read</b> permissions and click{" "}
+                          <b>Confirm</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 6
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          After completing Two-factor authentication, copy and
+                          paste your <b>API Key</b>, <b>API Secret</b>, and <b>Passphrase</b> into the Loch website and click <b>Connect</b>
+                        </p>
+                      </div>
+                    </div>
+                  </Slider>
+                );
+              },
+            },
             // {
             //   name: "Bitfinex",
             //   icon: BitfinexIcon,
             //  isActive:false,
             //  isOAuth:false,
             // },
-            // {
-            //   name: "Bitstamp",
-            //   icon: BitstampIcon,
-            //  isActive:false,
-            //  isOAuth:false,
-            // },
-            // {
-            //   name: "Bybit",
-            //   icon: BybitIcon,
-            //  isActive:false,
-            //  isOAuth:false,
-            // },
+            {
+              name: "Bitstamp",
+              icon: BitstampIcon,
+              isActive: false,
+              isOAuth: false,
+              slider: () => {
+                return (
+                  <Slider {...this.state.settings}>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 1
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Log in to your <b>Bitstamp</b> account on your
+                          computer
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 2
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Hover over the <b>profile</b> icon on the top right of
+                          the screen and select <b>Settings</b> from the
+                          dropdown menu
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 3
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Click <b>API access</b> under Account settings on the
+                          left
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 4
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Click <b>Create new API key</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 5
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Only grant{" "}
+                          <b>Read main account and balance transactions</b>
+                          and click <b>Create new API key</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 6
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          After completing two-factor authentication, click <b>Activate API key</b> and click{" "}
+                          <b>Activate API Key</b> on the confirmation email
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 7
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Copy and paste your <b>API Key</b>, <b>API Secret</b>{" "}
+                          into the Loch website and click <b>Connect</b>
+                        </p>
+                      </div>
+                    </div>
+                  </Slider>
+                );
+              },
+            },
+            {
+              name: "Bybit",
+              icon: BybitIcon,
+              isActive: false,
+              isOAuth: false,
+              slider: () => {
+                return (
+                  <Slider {...this.state.settings}>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 1
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Log in to your <b>Bybit</b> account on your computer
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 2
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Hover over the <b>profile</b> icon on the top right of
+                          the screen and select <b>API</b> from the dropdown
+                          menu
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 3
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Click <b>Create New Key</b> and select <b>System-generated API key</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 4
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Set up <b>Two-Factor Authentication</b> if you haven’t
+                          already
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 5
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Select API Transaction as your <b>Purpose</b>. Enter
+                          an <b>API Name</b> like “Bybit - Loch” and grant <b>Read-Only</b> API Key permissions
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 6
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Select <b>No IP restriction</b>, click the check mark
+                          for all <b>Read</b> permissions, and select{" "}
+                          <b>Submit</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 7
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          After completing two-factor authentication, Copy and
+                          paste your <b>API Key</b> and <b>API Secret</b> into
+                          the Loch website and click <b>Connect</b>
+                        </p>
+                      </div>
+                    </div>
+                  </Slider>
+                );
+              },
+            },
             {
               name: "Gemini",
               icon: GeminiIcon,
@@ -482,12 +720,83 @@ class ConnectModal extends BaseReactComponent {
                 );
               },
             },
-            // {
-            //   name: "Huobi",
-            //   icon: HuobiIcon,
-            //  isActive:false,
-            //  isOAuth:false,
-            // },
+            {
+              name: "Huobi",
+              icon: HuobiIcon,
+              isActive: false,
+              isOAuth: false,
+              slider: () => {
+                return (
+                  <Slider {...this.state.settings}>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 1
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Log in to your <b>Huobi</b> account on your computer
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 2
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Hover over the <b>profile</b> icon on the top right of
+                          the screen and select <b>API Management</b> from the
+                          dropdown menu
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 3
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Enter <b>Notes</b> like “Huobi - Loch”, select <b>read-only</b>, and click <b>Create</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 4
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Carefully read the Risk Reminder, select the check
+                          marks, and click <b>I understand</b>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 5
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Enter the verification code from your email
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="steps">
+                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                          STEP 6
+                        </h6>
+                        <p className="inter-display-medium f-s-14 lh-16">
+                          Copy and paste your <b>API (Access) Key</b> and{" "}
+                          <b>Secret Key</b> into the Loch website and click{" "}
+                          <b>Connect</b>
+                        </p>
+                      </div>
+                    </div>
+                  </Slider>
+                );
+              },
+            },
             // {
             //   name: "Gate.io",
             //   icon: GateIcon,
@@ -534,7 +843,7 @@ class ConnectModal extends BaseReactComponent {
 
   // only for home page
   handleUpdateList = () => {
-    console.log("update exchange status")
+    // console.log("update exchange status")
     let name = this.state.selection?.name;
     this.setState((prevState) => {
       const connectExchangesList = prevState.connectExchangesList.map(
@@ -634,7 +943,7 @@ class ConnectModal extends BaseReactComponent {
     // }
      const islochUser = localStorage.getItem("lochDummyUser");
     if (!islochUser && this.props.ishome) {
-      console.log("user not found create user then connect exchnage");
+      // console.log("user not found create user then connect exchnage");
       if (
         (this.state.apiKey &&
           this.state.connectionName &&
@@ -647,12 +956,12 @@ class ConnectModal extends BaseReactComponent {
       
     } else {
     
-       console.log("user found connect exchnage");
+      //  console.log("user found connect exchnage");
        let exchangename = this.state?.selection?.name?.toLowerCase();
        let cname = this.state?.connectionName;
        let parentState = this;
       if (this.state.coinBase && this.state?.selection.isOAuth) {
-         console.log("auth url", this.state.AuthUrl)
+        //  console.log("auth url", this.state.AuthUrl)
          var win = window.open(
            this.state.AuthUrl,
            "test",
@@ -752,7 +1061,7 @@ class ConnectModal extends BaseReactComponent {
     this.setState({
       isLoadingbtn: true
     })
-    console.log("on submit clicked")
+    // console.log("on submit clicked")
     let walletAddress = [];
     let addWallet = this.props?.walletAddress;
     let finalArr = [];
@@ -792,10 +1101,10 @@ class ConnectModal extends BaseReactComponent {
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
     // data.append("link", );
     if (isConnect) {
-      console.log("create user and go to home");
+      // console.log("create user and go to home");
       createAnonymousUserApi(data, this, finalArr, null);
     } else {
-      console.log("create user and connect exhcnage");
+      // console.log("create user and connect exhcnage");
         createAnonymousUserApi(data, this, finalArr, this.handleConnect);
     }
     
@@ -840,11 +1149,11 @@ class ConnectModal extends BaseReactComponent {
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) { 
       // already login go to ho page
-       console.log("user found go to home");
+      //  console.log("user found go to home");
       this.props.history.push("/home")
     }
     else {
-       console.log("user not found create user then go to home");
+      //  console.log("user not found create user then go to home");
       this.onValidSubmit(true);
     }
   };
