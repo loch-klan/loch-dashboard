@@ -25,7 +25,13 @@ import {getExchangeBalance } from "../Portfolio/Api";
 import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from './Api';
 import CustomButton from "../../utils/form/CustomButton";
 import WalletIconBtn from "../../assets/images/icons/wallet_icon.svg";
-
+import { LPC_Go } from '../../utils/AnalyticsFunctions';
+import {
+  getAllCoins,
+  detectCoin,
+  createAnonymousUserApi,
+  getAllParentChains,
+} from "../onboarding/Api";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -52,7 +58,8 @@ class ConnectModal extends BaseReactComponent {
             {
               name: "Binance",
               icon: BinanceIcon,
-              isActive: true,
+              isActive: false,
+              isOAuth: false,
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -132,7 +139,8 @@ class ConnectModal extends BaseReactComponent {
             {
               name: "Coinbase",
               icon: CoinbaseIcon,
-              isActive: true,
+              isActive: false,
+              isOAuth: true,
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -227,6 +235,7 @@ class ConnectModal extends BaseReactComponent {
               name: "Kraken",
               icon: krakanIcon,
               isActive: false,
+              isOAuth: false,
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -305,6 +314,7 @@ class ConnectModal extends BaseReactComponent {
               name: "Kucoin",
               icon: KuCoinIcon,
               isActive: false,
+              isOAuth: false,
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -385,26 +395,31 @@ class ConnectModal extends BaseReactComponent {
             //   name: "OKX",
             //   icon: OkxIcon,
             //  isActive:false,
+            //  isOAuth:false,
             // },
             // {
             //   name: "Bitfinex",
             //   icon: BitfinexIcon,
             //  isActive:false,
+            //  isOAuth:false,
             // },
             // {
             //   name: "Bitstamp",
             //   icon: BitstampIcon,
             //  isActive:false,
+            //  isOAuth:false,
             // },
             // {
             //   name: "Bybit",
             //   icon: BybitIcon,
             //  isActive:false,
+            //  isOAuth:false,
             // },
             {
               name: "Gemini",
               icon: GeminiIcon,
               isActive: false,
+              isOAuth: true,
               slider: () => {
                 return (
                   <Slider {...this.state.settings}>
@@ -471,11 +486,13 @@ class ConnectModal extends BaseReactComponent {
             //   name: "Huobi",
             //   icon: HuobiIcon,
             //  isActive:false,
+            //  isOAuth:false,
             // },
             // {
             //   name: "Gate.io",
             //   icon: GateIcon,
             //  isActive:false,
+            //  isOAuth:false,
             // },
           ],
       selection: null,
@@ -506,7 +523,8 @@ class ConnectModal extends BaseReactComponent {
         selection: item,
       },
       () => {
-        if (!this.props?.ishome) {
+        const islochUser = localStorage.getItem("lochUser") || localStorage.getItem("lochDummyUser");
+       if(islochUser){
           this.getUrl();
           this.getUserConnectExchange();
         }
@@ -516,6 +534,7 @@ class ConnectModal extends BaseReactComponent {
 
   // only for home page
   handleUpdateList = () => {
+    console.log("update exchange status")
     let name = this.state.selection?.name;
     this.setState((prevState) => {
       const connectExchangesList = prevState.connectExchangesList.map(
@@ -605,56 +624,88 @@ class ConnectModal extends BaseReactComponent {
 
   handleConnect = () => {
     // console.log("Hey");
-    let exchangename = this.state?.selection?.name?.toLowerCase();
-    let cname = this.state?.connectionName;
-    let parentState = this;
-    if (this.state.coinBase && this.state.AuthUrl !== "") {
-      var win = window.open(
-        this.state.AuthUrl,
-        "test",
-        "width=600,height=600,left=400,top=100"
-      );
-
-      var timer = setInterval(function () {
-        //  console.log("win", win.location.href, win.location.search);
-        const searchParams = new URLSearchParams(win.location.search);
-        const code = searchParams.get("code");
-        // console.log(code, exchangename,cname);
-        if (code) {
-          // run api
-          let data = new URLSearchParams();
-          data.append("exchange", exchangename);
-          data.append("access_code", code);
-          data.append("account_name", cname);
-          updateAccessToken(
-            data,
-            parentState,
-            parentState.state?.selection?.name
-          );
-          win.close();
-          clearInterval(timer);
-        }
-      }, 1000);
-    } else {
+    // if (this.state.AuthUrl === "") {
+    //    const islochUser =
+    //      localStorage.getItem("lochUser") ||
+    //      localStorage.getItem("lochDummyUser");
+    //    if (islochUser) {
+    //      this.getUrl();
+    //    }
+    // }
+     const islochUser = localStorage.getItem("lochDummyUser");
+    if (!islochUser && this.props.ishome) {
+      console.log("user not found create user then connect exchnage");
       if (
-        this.state.apiKey &&
-        this.state.connectionName &&
-        this.state.apiSecret
+        (this.state.apiKey &&
+          this.state.connectionName &&
+          this.state.apiSecret) ||
+        (this.state.coinBase)
       ) {
-        let data = new URLSearchParams();
+        this.onValidSubmit(false);
+      } 
+       
+      
+    } else {
+    
+       console.log("user found connect exchnage");
+       let exchangename = this.state?.selection?.name?.toLowerCase();
+       let cname = this.state?.connectionName;
+       let parentState = this;
+      if (this.state.coinBase && this.state?.selection.isOAuth) {
+         console.log("auth url", this.state.AuthUrl)
+         var win = window.open(
+           this.state.AuthUrl,
+           "test",
+           "width=600,height=600,left=400,top=100"
+         );
 
-        data.append("exchange", this.state.selection.name.toLowerCase());
-        data.append("account_name", this.state.connectionName);
-        data.append("api_secret", this.state.apiSecret);
-        data.append("api_key", this.state.apiKey);
+         var timer = setInterval(function () {
+           //  console.log("win", win.location.href, win.location.search);
+           const searchParams = new URLSearchParams(win.location.search);
+           const code = searchParams.get("code");
+          
+           if (code) {
+             // run api
+             let data = new URLSearchParams();
+             data.append("exchange", exchangename);
+             data.append("access_code", code);
+             data.append("account_name", cname);
+             updateAccessToken(
+               data,
+               parentState,
+               parentState.state?.selection?.name
+             );
+             win.close();
+             clearInterval(timer);
 
-        if (this.state.selection.name.toLowerCase() === "kucoin") {
-          data.append("api_passphrase", this.state.api_passphrase);
-        }
+           }
+         }, 1000);
+       } else {
+         if (
+           this.state.apiKey &&
+           this.state.connectionName &&
+           this.state.apiSecret
+         ) {
+             this.setState({
+               isLoadingbtn: true,
+             });
+           let data = new URLSearchParams();
 
-        addUpdateAccount(data, this);
-      }
+           data.append("exchange", this.state.selection.name.toLowerCase());
+           data.append("account_name", this.state.connectionName);
+           data.append("api_secret", this.state.apiSecret);
+           data.append("api_key", this.state.apiKey);
+
+           if (this.state.selection.name.toLowerCase() === "kucoin") {
+             data.append("api_passphrase", this.state.api_passphrase);
+           }
+
+           addUpdateAccount(data, this);
+         }
+       }
     }
+
+   
   };
 
   showCoinbaseAuthSteps = () => {
@@ -694,6 +745,108 @@ class ConnectModal extends BaseReactComponent {
         </div>
       </Slider>
     );
+  };
+
+  // call create user
+  onValidSubmit = (isConnect) => {
+    this.setState({
+      isLoadingbtn: true
+    })
+    console.log("on submit clicked")
+    let walletAddress = [];
+    let addWallet = this.props?.walletAddress;
+    let finalArr = [];
+
+    //  console.log("cjeb", addWallet);
+    let addressList = [];
+
+    let nicknameArr = {};
+
+    for (let i = 0; i < addWallet.length; i++) {
+      let curr = addWallet[i];
+      if (
+        !walletAddress.includes(curr?.apiAddress?.trim()) &&
+        curr.address.trim()
+      ) {
+        finalArr.push(curr);
+        walletAddress.push(curr?.address?.trim());
+        walletAddress.push(curr?.displayAddress?.trim());
+        walletAddress.push(curr?.apiAddress?.trim());
+        let address = curr?.address?.trim();
+        nicknameArr[address] = curr?.nickname;
+        addressList.push(curr?.address?.trim());
+      }
+    }
+
+    finalArr = finalArr?.map((item, index) => {
+      return {
+        ...item,
+        id: `wallet${index + 1}`,
+      };
+    });
+
+    // console.log("final array", addressList);
+
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    // data.append("link", );
+    if (isConnect) {
+      console.log("create user and go to home");
+      createAnonymousUserApi(data, this, finalArr, null);
+    } else {
+      console.log("create user and connect exhcnage");
+        createAnonymousUserApi(data, this, finalArr, this.handleConnect);
+    }
+    
+    // console.log(finalArr);
+
+    const address = finalArr?.map((e) => e.address);
+    // console.log("address", address);
+
+    const unrecog_address = finalArr
+      .filter((e) => !e.coinFound)
+      .map((e) => e.address);
+    // console.log("Unreq address", unrecog_address);
+
+    const blockchainDetected = [];
+    const nicknames = [];
+    finalArr
+      .filter((e) => e.coinFound)
+      .map((obj) => {
+        let coinName = obj.coins
+          .filter((e) => e.chain_detected)
+          .map((name) => name.coinName);
+        let address = obj.address;
+        let nickname = obj.nickname;
+        blockchainDetected.push({ address: address, names: coinName });
+        nicknames.push({ address: address, nickname: nickname });
+      });
+
+    // console.log("blockchain detected", blockchainDetected);
+
+    LPC_Go({
+      addresses: address,
+      ENS: address,
+      chains_detected_against_them: blockchainDetected,
+      unrecognized_addresses: unrecog_address,
+      unrecognized_ENS: unrecog_address,
+      nicknames: nicknames,
+    });
+  };
+
+  handleGo = () => {
+    
+    const islochUser = localStorage.getItem("lochDummyUser");
+    if (islochUser) { 
+      // already login go to ho page
+       console.log("user found go to home");
+      this.props.history.push("/home")
+    }
+    else {
+       console.log("user not found create user then go to home");
+      this.onValidSubmit(true);
+    }
   };
 
   render() {
@@ -748,7 +901,7 @@ class ConnectModal extends BaseReactComponent {
                   Connecting to {selection.name}
                 </h6>
               </div>
-              {this.state.AuthUrl !== "" && (
+              {this.state?.selection.isOAuth && (
                 <div
                   style={{
                     display: "flex",
@@ -790,7 +943,7 @@ class ConnectModal extends BaseReactComponent {
                   </h3>
                 </div>
               )}
-              {this.state.AuthUrl !== "" && <hr style={{ margin: 0 }} />}
+              {this.state?.selection.isOAuth && <hr style={{ margin: 0 }} />}
               <div className="selection-wrapper">
                 <Container>
                   <Row>
@@ -812,7 +965,7 @@ class ConnectModal extends BaseReactComponent {
                             // }}
                           />
                           {(!this.state.coinBase ||
-                            this.state.AuthUrl === "") && (
+                            !this.state?.selection.isOAuth) && (
                             <FormElement
                               valueLink={this.linkState(this, "apiKey")}
                               label="API Key"
@@ -829,7 +982,7 @@ class ConnectModal extends BaseReactComponent {
                             />
                           )}
                           {(!this.state.coinBase ||
-                            this.state.AuthUrl === "") && (
+                            !this.state?.selection.isOAuth) && (
                             <FormElement
                               valueLink={this.linkState(this, "apiSecret")}
                               label="API Secret"
@@ -846,7 +999,7 @@ class ConnectModal extends BaseReactComponent {
                             />
                           )}
                           {(!this.state.coinBase ||
-                            this.state.AuthUrl === "") &&
+                            !this.state?.selection.isOAuth) &&
                             selection.name === "Kucoin" && (
                               <FormElement
                                 valueLink={this.linkState(
@@ -876,37 +1029,55 @@ class ConnectModal extends BaseReactComponent {
                             ? "How to Add Your Account"
                             : "How to connect"}
                         </h4>
-                        {this.state.coinBase && this.state.AuthUrl !== ""
+                        {this.state.coinBase && this.state?.selection.isOAuth
                           ? this.showCoinbaseAuthSteps()
                           : selection.slider()}
                       </div>
-                      {(!this.state.coinBase || this.state.AuthUrl === "") && (
-                        <Button
-                          className="primary-btn connect-btn"
-                          onClick={this.handleConnect}
-                          style={
-                            (!this.state.coinBase ||
-                              this.state.AuthUrl === "") &&
-                            selection.name === "Kucoin"
-                              ? { marginTop: "8.5rem" }
-                              : {}
-                          }
-                        >
-                          Connect
-                        </Button>
+                      {(!this.state.coinBase ||
+                        !this.state?.selection.isOAuth) && (
+                        // <Button
+                        //   className="primary-btn connect-btn"
+                        //   onClick={this.handleConnect}
+                        //   style={
+                        //     (!this.state.coinBase ||
+                        //       !this.state?.selection.isOAuth) &&
+                        //     selection.name === "Kucoin"
+                        //       ? { marginTop: "8.5rem" }
+                        //       : {}
+                        //   }
+                        // >
+                        //   Connect
+                        // </Button>
+                        <CustomButton
+                          className={`primary-btn connect-btn ${(!this.state.coinBase ||
+                              !this.state?.selection.isOAuth) &&
+                            selection.name === "Kucoin" ? "m-t-8" : ""}
+                            `}
+                          isLoading={this.state.isLoadingbtn}
+                          isDisabled={this.state.isLoadingbtn}
+                          buttonText={`Connect`}
+                          handleClick={this.handleConnect}
+                        />
                       )}
                     </Col>
-                    {this.state.coinBase && this.state.AuthUrl !== "" && (
+                    {this.state.coinBase && this.state?.selection.isOAuth && (
                       <Col
                         md={12}
                         style={{ textAlign: "center", marginTop: "5rem" }}
                       >
-                        <Button
+                        {/* <Button
                           className="primary-btn"
                           onClick={this.handleConnect}
                         >
                           Continue with {selection.name}
-                        </Button>
+                        </Button> */}
+                        <CustomButton
+                          className="primary-btn go-btn"
+                          isLoading={this.state.isLoadingbtn}
+                          isDisabled={this.state.isLoadingbtn}
+                          buttonText={`Continue with ${selection.name}`}
+                          handleClick={this.handleConnect}
+                        />
                       </Col>
                     )}
                   </Row>
@@ -1000,9 +1171,10 @@ class ConnectModal extends BaseReactComponent {
                       <CustomButton
                         className="primary-btn go-btn"
                         type="submit"
-                        isLoading={false}
-                        isDisabled={false}
+                        isLoading={this.state.isLoadingbtn}
+                        isDisabled={this.state.isLoadingbtn}
                         buttonText="Go"
+                        handleClick={this.handleGo}
                       />
                     </div>
                   </>
@@ -1016,9 +1188,13 @@ class ConnectModal extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
+  getAllCoins,
+  detectCoin,
+  getAllParentChains,
   getExchangeBalance,
   setPageFlagDefault,
 };

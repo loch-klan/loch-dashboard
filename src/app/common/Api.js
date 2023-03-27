@@ -793,13 +793,28 @@ export const updateAccessToken = (data, ctx, name) => {
         // ctx.setState({
         //   AuthUrl: res?.data?.data?.url,
         // });
-        ctx.state.onHide();
-        toast.success(`${name} connected to loch`);
-        setTimeout(() => {
-          ctx.props.setPageFlagDefault();
-          ctx.props?.handleUpdate && ctx.props.handleUpdate();
-          ctx.props.openPopup();
-        }, 1000);
+          ctx.setState({
+            isLoadingbtn: false,
+          });
+        if (ctx.props.ishome) {
+            toast.success(`${name} connected to loch`);
+           ctx.handleUpdateList();
+           setTimeout(() => {
+            //  ctx.props.handleBackConnect(ctx.state.connectExchangesList);
+             ctx.handleBack();
+            //  toast.success(`${name} connected to loch`);
+           }, 200);
+         } else {
+          toast.success(`${name} connected to loch`);
+           ctx.state.onHide();
+           // window.location.reload();
+           setTimeout(() => {
+             ctx.props.setPageFlagDefault();
+             ctx.props?.handleUpdate && ctx.props.handleUpdate();
+             ctx.props.openPopup();
+           }, 1000);
+         }
+
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }

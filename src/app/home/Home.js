@@ -40,7 +40,7 @@ class Home extends Component {
   componentDidMount() {
     const searchParams = new URLSearchParams(this.props.location.search);
     const planId = searchParams.get("plan_id");
-    // console.log(planId);
+    console.log("test mount home.js");
     if (planId) {
       // console.log("plan id", planId);
       this.setState({
@@ -50,10 +50,19 @@ class Home extends Component {
       });
     } else {
       if (getToken()) {
-        this.props.history.push("/home");
+        console.log("move to home");
+        let isStopRedirect = localStorage.getItem("stop_redirect");
+        if (isStopRedirect) {
+            this.props.setPageFlagDefault();
+            deleteToken();
+        } else {
+          this.props.history.push("/home");
+        }
+        
       } else {
           this.props.setPageFlagDefault();
         deleteToken();
+        console.log("inside else after derlete token")
         localStorage.setItem("defi_access", true);
          localStorage.setItem("isPopup", true);
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
