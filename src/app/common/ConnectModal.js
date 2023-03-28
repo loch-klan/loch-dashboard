@@ -1076,7 +1076,7 @@ class ConnectModal extends BaseReactComponent {
            data.append("api_secret", this.state.apiSecret);
            data.append("api_key", this.state.apiKey);
 
-           if (this.state.selection.name.toLowerCase() === "kucoin") {
+           if (this.state.selection.name.toLowerCase() === "kucoin" || this.state.selection.name.toLowerCase() === "okx") {
              data.append("api_passphrase", this.state.api_passphrase);
            }
 
@@ -1380,7 +1380,7 @@ class ConnectModal extends BaseReactComponent {
                           )}
                           {(!this.state.coinBase ||
                             !this.state?.selection.isOAuth) &&
-                            selection.name === "Kucoin" && (
+                            (selection.name === "Kucoin" || selection.name === "OKX") && (
                               <FormElement
                                 valueLink={this.linkState(
                                   this,
@@ -1431,7 +1431,7 @@ class ConnectModal extends BaseReactComponent {
                         <CustomButton
                           className={`primary-btn connect-btn ${(!this.state.coinBase ||
                               !this.state?.selection.isOAuth) &&
-                            selection.name === "Kucoin" ? "m-t-8" : ""}
+                            (selection.name === "Kucoin" || selection.name === "OKX" ) ? "m-t-8" : ""}
                             `}
                           isLoading={this.state.isLoadingbtn}
                           isDisabled={this.state.isLoadingbtn}
