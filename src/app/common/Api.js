@@ -1,7 +1,7 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
-import { SigninModalTrack, signInUser, signUpProperties, WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
+import { Home_CE_OAuthCompleted, LP_CE_OAuthCompleted, SigninModalTrack, signInUser, signUpProperties, Wallet_CE_OAuthCompleted, WhaleCreateAccountEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import postLoginInstance from './../../utils/PostLoginAxios';
@@ -810,6 +810,25 @@ export const updateAccessToken = (data, ctx, name) => {
         // ctx.setState({
         //   AuthUrl: res?.data?.data?.url,
         // });
+           if (ctx.props.tracking === "home page") {
+             Home_CE_OAuthCompleted({
+               session_id: getCurrentUser().id,
+               email_address: getCurrentUser().email,
+               exchange_name: name,
+             });
+           } else if (ctx.props.tracking === "landing page") {
+             LP_CE_OAuthCompleted({
+               session_id: getCurrentUser().id,
+               email_address: getCurrentUser().email,
+               exchange_name: name,
+             });
+           } else if (ctx.props.tracking === "wallet page") {
+             Wallet_CE_OAuthCompleted({
+               session_id: getCurrentUser().id,
+               email_address: getCurrentUser().email,
+               exchange_name: name,
+             });
+           }
           ctx.setState({
             isLoadingbtn: false,
           });

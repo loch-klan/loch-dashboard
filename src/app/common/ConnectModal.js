@@ -25,7 +25,8 @@ import {getExchangeBalance } from "../Portfolio/Api";
 import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from './Api';
 import CustomButton from "../../utils/form/CustomButton";
 import WalletIconBtn from "../../assets/images/icons/wallet_icon.svg";
-import { LPC_Go } from '../../utils/AnalyticsFunctions';
+import { HomeConnectExchangeSelected, Home_CE_ApiSyncAttmepted, Home_CE_OAuthAttempted, LPConnectExchangeSelected, LP_CE_ApiSyncAttmepted, LP_CE_OAuthAttempted, WalletConnectExchangeSelected, Wallet_CE_ApiSyncAttmepted, Wallet_CE_OAuthAttempted } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 import {
   getAllCoins,
   detectCoin,
@@ -834,6 +835,25 @@ class ConnectModal extends BaseReactComponent {
   };
 
   handleSelect = (item) => {
+    if (this.props.tracking === "home page") {
+      HomeConnectExchangeSelected({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        exchange_name: item.name,
+      });
+    } else if (this.props.tracking === "landing page") {
+      LPConnectExchangeSelected({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        exchange_name: item.name,
+      });
+    } else if (this.props.tracking === "wallet page") {
+      WalletConnectExchangeSelected({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        exchange_name: item.name,
+      });
+    } 
     this.setState(
       {
         selection: item,
@@ -965,6 +985,27 @@ class ConnectModal extends BaseReactComponent {
        
       
     } else {
+
+      // Auth Attempted
+      if (this.props.tracking === "home page") {
+        Home_CE_OAuthAttempted({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          exchange_name: this.state.selection?.name,
+        });
+      } else if (this.props.tracking === "landing page") {
+        LP_CE_OAuthAttempted({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          exchange_name: this.state.selection?.name,
+        });
+      } else if (this.props.tracking === "wallet page") {
+        Wallet_CE_OAuthAttempted({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          exchange_name: this.state.selection?.name,
+        });
+      } 
     
       //  console.log("user found connect exchnage");
        let exchangename = this.state?.selection?.name?.toLowerCase();
@@ -999,7 +1040,27 @@ class ConnectModal extends BaseReactComponent {
 
            }
          }, 1000);
-       } else {
+      } else {
+        // Api sync attempted
+        if (this.props.tracking === "home page") {
+          Home_CE_ApiSyncAttmepted({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            exchange_name: this.state.selection?.name,
+          });
+        } else if (this.props.tracking === "landing page") {
+          LP_CE_ApiSyncAttmepted({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            exchange_name: this.state.selection?.name,
+          });
+        } else if (this.props.tracking === "wallet page") {
+          Wallet_CE_ApiSyncAttmepted({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            exchange_name: this.state.selection?.name,
+          });
+        } 
          if (
            this.state.apiKey &&
            this.state.connectionName &&

@@ -356,6 +356,9 @@ export const AssetValueTimePeriod = ({
   //console.log("Home:asset value chart time period");
 };
 
+
+
+
 //17. Home:portfolio performance asset filter
 export const PortfolioAssetFilter = ({
   session_id,
@@ -1563,7 +1566,7 @@ export const HomeCounterPartyHover = ({ session_id, email_address, counterparty_
 
 //97.Intelligence:insights: all insights
 export const AllInsights = ({ session_id, email_address}) => {
-  const event_name = "Intelligence:insights: all insights";
+  const event_name = "Insights: all insights";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address
@@ -1575,7 +1578,7 @@ export const AllInsights = ({ session_id, email_address}) => {
 
 //97.Intelligence:insights: reduce cost
 export const InsightsReduceCost = ({ session_id, email_address}) => {
-  const event_name = "Intelligence:insights: reduce cost";
+  const event_name = "Insights: reduce cost";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address
@@ -1587,7 +1590,7 @@ export const InsightsReduceCost = ({ session_id, email_address}) => {
 
 //97.Intelligence:insights: increase yield
 export const InsightsIncreaseYield = ({ session_id, email_address}) => {
-  const event_name = "Intelligence:insights: increase yield";
+  const event_name = "Insights: increase yield";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address
@@ -1600,7 +1603,7 @@ export const InsightsIncreaseYield = ({ session_id, email_address}) => {
 
 //97.Intelligence:insights: reduce risk
 export const InsightsReduceRisk = ({ session_id, email_address}) => {
-  const event_name = "Intelligence:insights: reduce risk";
+  const event_name = "Insights: reduce risk";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address
@@ -1609,13 +1612,13 @@ export const InsightsReduceRisk = ({ session_id, email_address}) => {
   //console.log("Intelligence:insights: reduce risk");
 }
 
-//14. Intelligent:asset value chart crypto asset filter
+//14. Intelligent:asset value chart chain filter
 export const IntlAssetValueFilter = ({
   session_id,
   email_address,
   filter_clicked,
 }) => {
-  const event_name = "Intelligence:asset value chart crypto asset filter";
+  const event_name = "Intelligence:asset value chart chain filter";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -2677,3 +2680,644 @@ export const SigninMenuEmailVerified = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+
+//  Menu: Currency drop down
+
+export const MenuCurrencyDropdown = ({ session_id, email_address, currency }) => {
+  const event_name = "Menu: Currency drop down";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "fiat currency": currency,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+//  Menu: Currency drop down
+
+export const MenuCurrencyDropdownSelected = ({
+  session_id,
+  email_address,
+  currency,
+  prev_currency,
+}) => {
+  const event_name = "Menu: Currency drop down: currency selected";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "prevoius selected": prev_currency,
+    "fiat currency": currency,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+
+// Intelligence:netflows: explainer1 closed
+
+export const netflowExplainer1 = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Intelligence:netflows: explainer1 closed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Intelligence:netflows: explainer1 closed
+
+export const netflowExplainer2 = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Intelligence:netflows: explainer2 closed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Intelligence:netflows: time filter
+
+export const netflowTimeFilter = ({
+  session_id,
+  email_address,
+  selected
+}) => {
+  const event_name = "Intelligence:netflows: time filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time filter selected": selected
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Intelligence:netflows: chain filter
+
+export const netflowChainFilter = ({
+  session_id,
+  email_address,
+  selected
+}) => {
+  const event_name = "Intelligence:netflows: chain filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "chain selected": selected,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Intelligence:netflows: assets filter
+
+export const netflowAssetFilter = ({
+  session_id,
+  email_address,
+  selected
+}) => {
+  const event_name = "Intelligence:netflows: assets filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset selected": selected,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Intelligence:netflows: inflows hover
+
+export const netflowInflowHover = ({
+  session_id,
+  email_address,
+  hovered
+}) => {
+  const event_name = "Intelligence:netflows: inflows hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "inflows hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Intelligence:netflows: outflows hover
+
+export const netflowOutflowHover = ({
+  session_id,
+  email_address,
+  hovered
+}) => {
+  const event_name = "Intelligence:netflows: outflows hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "outflows hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Intelligence:netflows: net hover
+export const netflowNetHover = ({
+  session_id,
+  email_address,
+  hovered
+}) => {
+  const event_name = "Intelligence:netflows: net hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "net hovered": hovered,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: add wallet
+export const TransactionHistoryAddWallet = ({
+  session_id,
+  email_address,
+  addresses_added,
+  ENS_added,
+  addresses_deleted,
+  ENS_deleted,
+  unrecognized_addresses,
+  recognized_addresses,
+  blockchains_detected,
+  nicknames
+
+}) => {
+  const event_name = "Transaction History: add wallet";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "addresses added": addresses_added,
+    "ENS added": ENS_added,
+    "addresses deleted":
+      addresses_deleted.length == 0 ? ["None"] : addresses_deleted,
+    "ENS deleted": ENS_deleted.length == 0 ? ["None"] : ENS_deleted,
+    "unrecognized addresses":
+      unrecognized_addresses.length == 0 ? ["None"] : unrecognized_addresses,
+    "recognized addresses": recognized_addresses,
+    "blockchains detected": blockchains_detected,
+    nicknames: nicknames,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+
+// Transaction History: search
+export const TransactionHistorySearch = ({
+  session_id,
+  email_address,
+  searched
+}) => {
+  const event_name = "Transaction History: search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "searched": searched,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: years filter
+export const TransactionHistoryYearFilter = ({
+  session_id,
+  email_address,
+  year_filter
+}) => {
+  const event_name = "Transaction History: years filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "year selected": year_filter,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: assets filter
+export const TransactionHistoryAssetFilter = ({
+  session_id,
+  email_address,
+  asset_filter
+}) => {
+  const event_name = "Transaction History: assets filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset selected": asset_filter,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: methods filter
+export const TransactionHistoryMethodFilter = ({
+  session_id,
+  email_address,
+  method_filter
+}) => {
+  const event_name = "Transaction History: methods filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "method selected": method_filter,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Transaction History: sort date
+export const TransactionHistorySortDate = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Transaction History: sort date";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: sort from
+export const TransactionHistorySortFrom = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Transaction History: sort from";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Transaction History: sort to
+export const TransactionHistorySortTo = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Transaction History: sort to";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: sort asset
+export const TransactionHistorySortAsset = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Transaction History: sort asset";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Transaction History: sort amount
+export const TransactionHistorySortAmount = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Transaction History: sort amount";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: sort usd amount
+
+export const TransactionHistorySortUSDAmount = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Transaction History: sort usd amount";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: sort usd fee
+
+export const TransactionHistorySortUSDFee = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Transaction History: sort usd fee";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: sort method
+
+export const TransactionHistorySortMethod = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Transaction History: sort method";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: hide dust
+
+export const TransactionHistoryHideDust = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Transaction History: hide dust";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Transaction History: page next
+
+export const TransactionHistoryPageNext = ({
+  session_id,
+  email_address,
+  page_no
+}) => {
+  const event_name = "Transaction History: page next";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page no": page_no
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: page back
+
+export const TransactionHistoryPageBack = ({
+  session_id,
+  email_address,
+  page_no
+}) => {
+  const event_name = "Transaction History: page back";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page no": page_no
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Transaction History: page search
+export const TransactionHistoryPageSearch = ({
+  session_id,
+  email_address,
+  page_search
+}) => {
+  const event_name = "Transaction History: page search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page search": page_search
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+// Asset Value: explainer hover
+export const AssetValueExplainer = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Asset Value: explainer hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Asset Value: explainer hover
+export const AssetValueExpl = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Asset Value: click to see transactions";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+
+//14. Intelligent:asset value chart asset filter
+export const IntlAssetValueAssetFilter = ({
+  session_id,
+  email_address,
+  filter_clicked,
+}) => {
+  const event_name = "Asset Value: asset filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset selected": filter_clicked,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. Asset Value: x axis manipulation
+export const IntlAssetValueNavigator = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Asset Value: x axis manipulation";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. General pop up
+export const GeneralPopup = ({
+  session_id,
+  from,
+}) => {
+  const event_name = "General pop up";
+  const eventProperties = {
+    "session id": session_id,
+    "from": from,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. General pop up: email added
+export const GeneralPopupEmailAdded = ({ session_id, from, email_added }) => {
+  const event_name = "General pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    from: from,
+    "email added": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14.General pop up: email verified
+export const GeneralPopupEmailVerified = ({ session_id, from, email_added }) => {
+  const event_name = "General pop up: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    from: from,
+    "email address": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14.Whale pods pop up
+export const WhalePopup = ({
+  session_id,
+  from,
+}) => {
+  const event_name = "Whale pods pop up";
+  const eventProperties = {
+    "session id": session_id,
+    "from": from,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. Whale pods pop up: email added
+export const WhalePopupEmailAdded = ({ session_id, from, email_added }) => {
+  const event_name = "Whale pods pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    from: from,
+    "email added": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. Whale pods pop up: email verified
+export const WhalePopupEmailVerified = ({ session_id, from, email_added }) => {
+  const event_name = "Whale pods pop up: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    from: from,
+    "email address": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14.Whale pods pop up
+export const ConnectExPopup = ({ session_id, from }) => {
+  const event_name = "Exchange connected pop up";
+  const eventProperties = {
+    "session id": session_id,
+    from: from,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. Whale pods pop up: email added
+export const ConnectExPopupEmailAdded = ({ session_id, from, email_added }) => {
+  const event_name = "Exchange connected pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    from: from,
+    "email added": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. Whale pods pop up: email verified
+export const ConnectExEmailVerified = ({ session_id, from, email_added }) => {
+  const event_name = "Exchange connected pop up: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    from: from,
+    "email address": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+

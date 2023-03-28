@@ -17,6 +17,8 @@ import LinkIconBtn from "../../assets/images/link.svg";
 import { useHistory } from "react-router-dom";
 import ConnectModal from '../common/ConnectModal'
 import AuthModal from '../common/AuthModal'
+import { HomeConnectExchange } from '../../utils/AnalyticsFunctions'
+import { getCurrentUser } from '../../utils/ManageToken'
 
 export default function WelcomeCard(props) {
     const [manageWallet, setManageWallet] = React.useState(true)
@@ -35,7 +37,17 @@ export default function WelcomeCard(props) {
    const history = useHistory();
   
   const handleConnectModal = () => {
+   
     setconnectModal(!connectModal);
+
+     setTimeout(() => {
+       if (connectModal) {
+          HomeConnectExchange({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+       }
+     }, 200);
   };
   const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
@@ -144,6 +156,7 @@ export default function WelcomeCard(props) {
             modalType={"connectModal"}
             iconImage={LinkIcon}
             openPopup={handlePopup}
+            tracking="home page"
           />
         ) : (
           ""

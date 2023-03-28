@@ -13,12 +13,14 @@ import { Image } from "react-bootstrap";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import {
+  LPConnectExchange,
   OnboardingPage,
   PrivacyMessage, TimeSpentOnboarding
 } from "../../utils/AnalyticsFunctions.js";
 import { GetAllPlan } from '../common/Api';
 import UpgradeModal from '../common/upgradeModal';
 import ConnectModal from '../common/ConnectModal';
+import { getCurrentUser } from '../../utils/ManageToken';
 // export { default as OnboardingReducer } from "./OnboardingReducer";
 class OnBoarding extends Component {
   constructor(props) {
@@ -66,16 +68,22 @@ class OnBoarding extends Component {
   };
 
   handleConnectModal = (address = this.state.walletAddress) => {
-    console.log("test", address)
+    // console.log("test", address)
     this.setState({
       connectExchangeModal: !this.state.connectExchangeModal,
       walletAddress: address
     }, () => {
+      if (this.state.connectExchangeModal) {
+         LPConnectExchange({
+           session_id: getCurrentUser().id,
+           email_address: getCurrentUser().email,
+         });
+      }
       let value = this.state.connectExchangeModal ? false : true;
       this.setState({
         showPrevModal: value,
       });
-      console.log("test 2")
+      // console.log("test 2")
     });
   }
 
@@ -256,6 +264,7 @@ class OnBoarding extends Component {
             modalType={"connectModal"}
             iconImage={LinkIcon}
             ishome={true}
+            tracking="landing page"
             walletAddress={this.state?.walletAddress}
             exchanges={this.state.exchanges}
             handleBackConnect={this.handleBackConnect}

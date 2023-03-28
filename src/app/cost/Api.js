@@ -1,5 +1,7 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
+import { Home_CE_ApiSyncCompleted, LP_CE_ApiSyncCompleted, Wallet_CE_ApiSyncCompleted } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 import { AVERAGE_COST_BASIS, COUNTER_PARTY_VOLUME, GAS_FEES } from "../intelligence/ActionTypes";
 import {getGraphData, getCounterGraphData} from "./getGraphData";
 
@@ -121,38 +123,51 @@ export const addUpdateAccount = (data,ctx) => {
     .post("organisation/user/add-update-user-account", data)
     .then((res) => {
       if (!res.data.error) {
-
         //  ctx.props.getExchangeBalance("binance", ctx);
         // ctx.props.getExchangeBalance("coinbase", ctx);
-        
-          ctx.setState({
-            isLoadingbtn: false,
+        // Api sync attempted
+        if (ctx.props.tracking === "home page") {
+          Home_CE_ApiSyncCompleted({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            exchange_name: ctx.state.selection.name,
           });
+        } else if (ctx.props.tracking === "landing page") {
+          LP_CE_ApiSyncCompleted({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            exchange_name: ctx.state.selection.name,
+          });
+        } else if (ctx.props.tracking === "wallet page") {
+          Wallet_CE_ApiSyncCompleted({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            exchange_name: ctx.state.selection.name,
+          });
+        }
+
+        ctx.setState({
+          isLoadingbtn: false,
+        });
         if (ctx.props.ishome) {
-           toast.success(ctx.state.selection.name + " connected to loch");
+          toast.success(ctx.state.selection.name + " connected to loch");
           ctx.handleUpdateList();
-          
+
           setTimeout(() => {
             // ctx.props.handleBackConnect(ctx.state.connectExchangesList);
             ctx.handleBack();
-           
           }, 200);
-          
-          
         } else {
           toast.success(ctx.state.selection.name + " connected to loch");
-           ctx.state.onHide();
-           // window.location.reload();
-           setTimeout(() => {
-             ctx.props.setPageFlagDefault();
-             ctx.props?.handleUpdate && ctx.props.handleUpdate();
+          ctx.state.onHide();
+          // window.location.reload();
+          setTimeout(() => {
+            ctx.props.setPageFlagDefault();
+            ctx.props?.handleUpdate && ctx.props.handleUpdate();
 
-             ctx.props.openPopup();
-           }, 1000);
+            ctx.props.openPopup();
+          }, 1000);
         }
-         
-       
-        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }

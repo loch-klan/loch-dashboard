@@ -10,6 +10,8 @@ import ConnectModal from "./ConnectModal";
 import { useHistory } from "react-router-dom";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import AuthModal from "./AuthModal";
+import { WalletConnectExchange } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
@@ -23,8 +25,18 @@ export default function PageHeader(props) {
    };
 
   
-   const handleConnectModal = () => {
-     setconnectModal(!connectModal);
+  const handleConnectModal = () => {
+    
+    setconnectModal(!connectModal);
+    setTimeout(() => {
+      if (connectModal) {
+        WalletConnectExchange({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+      }
+    }, 200);
+     
    };
 
   const breads = nav_list.map((e, key) => {
@@ -171,6 +183,7 @@ export default function PageHeader(props) {
           iconImage={LinkIcon}
           handleUpdate={props.handleUpdate}
           openPopup={handlePopup}
+          tracking="wallet page"
         />
       ) : (
         ""
