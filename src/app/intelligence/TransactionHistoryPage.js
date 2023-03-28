@@ -16,7 +16,7 @@ import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import { CurrencyType, noExponents, UpgradeTriggered } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { TransactionHistoryAddress, TransactionHistoryPageView } from "../../utils/AnalyticsFunctions";
+import { TransactionHistoryAddress, TransactionHistoryAssetFilter, TransactionHistoryHideDust, TransactionHistoryMethodFilter, TransactionHistoryPageView, TransactionHistorySearch, TransactionHistorySortAmount, TransactionHistorySortAsset, TransactionHistorySortDate, TransactionHistorySortFrom, TransactionHistorySortMethod, TransactionHistorySortTo, TransactionHistorySortUSDAmount, TransactionHistorySortUSDFee, TransactionHistoryYearFilter } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
@@ -235,7 +235,40 @@ class TransactionHistoryPage extends BaseReactComponent {
   };
 
   addCondition = (key, value) => {
-    console.log("key, value", key, value, this.state.condition);
+    console.log("key, value", key, value);
+    if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      TransactionHistoryYearFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        year_filter:value == "allYear" ? "All years" : value
+      });
+    } else if (key === "SEARCH_BY_ASSETS_IN") {
+      console.log("tes", this.props.intelligenceState.assetFilter);
+      let assets = [];
+      Promise.all(
+       value != "allAssets" && this.props.intelligenceState?.assetFilter?.map((e) => {
+          if (value?.includes(e.id)) {
+            assets.push(e.label);
+          }
+        })
+      ).then(
+        () => {
+          console.log("asset arr", assets)
+          TransactionHistoryAssetFilter({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            asset_filter: value == "allAssets" ? "All assets" : assets,
+          });
+}
+      );
+      
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      TransactionHistoryMethodFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        method_filter: value == "allMethod" ? "All method" : value,
+      });
+    }
     let index = this.state.condition.findIndex((e) => e.key === key);
     console.log("index", index);
     let arr = [...this.state.condition];
@@ -248,19 +281,19 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allMethod" &&
       value !== "allYear"
     ) {
-      console.log("first if", index);
+      // console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
       value === "allYear"
     ) {
-      console.log("second if", index);
+      // console.log("second if", index);
       if (index !== -1) {
         arr.splice(index, 1);
       }
     } else {
-      console.log("else", index);
+      // console.log("else", index);
       let obj = {};
       obj = {
         key: key,
@@ -285,6 +318,11 @@ class TransactionHistoryPage extends BaseReactComponent {
     clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
       this.addCondition(SEARCH_BY_TEXT, this.state.search);
+      TransactionHistorySearch({
+        session_id: getCurrentUser().id,
+        email: getCurrentUser().email,
+        searched:this.state.search
+      });
       // this.callApi(this.state.currentPage || START_INDEX, condition)
     }, 1000);
   };
@@ -301,6 +339,11 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+
+          TransactionHistorySortDate({
+            session_id: getCurrentUser().id,
+            email_address:getCurrentUser().email
+          });
         } else if (val === "from") {
           obj = [
             {
@@ -308,6 +351,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+          TransactionHistorySortFrom({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "to") {
           obj = [
             {
@@ -315,6 +362,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+          TransactionHistorySortTo({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "asset") {
           obj = [
             {
@@ -322,6 +373,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+          TransactionHistorySortAsset({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "amount") {
           obj = [
             {
@@ -329,6 +384,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+          TransactionHistorySortAmount({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "usdThen") {
           obj = [
             {
@@ -336,6 +395,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+          TransactionHistorySortUSDAmount({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "usdTransaction") {
           obj = [
             {
@@ -343,6 +406,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+          TransactionHistorySortUSDFee({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "method") {
           obj = [
             {
@@ -350,6 +417,12 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+          TransactionHistorySortMethod({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+
+         
         }
         el.up = !el.up;
       } else {
@@ -390,6 +463,10 @@ class TransactionHistoryPage extends BaseReactComponent {
         showDust: !this.state.showDust,
       },
       () => {
+         TransactionHistoryHideDust({
+           session_id: getCurrentUser().id,
+           email_address: getCurrentUser().email,
+         });
         this.addCondition(SEARCH_BY_NOT_DUST, this.state.showDust);
       }
     );

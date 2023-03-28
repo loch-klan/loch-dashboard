@@ -259,12 +259,21 @@ function Sidebar(props) {
       if (!isPopupActive) {
         console.log("inactive popup", isPopupActive);
         if (!lochUser) {
-          GeneralPopup({
-            session_id: getCurrentUser().id,
-            from: history.location.pathname.substring(1),
-          });
-          isPopup && handleSiginPopup();
-          localStorage.setItem("isPopup", false);
+          // GeneralPopup({
+          //   session_id: getCurrentUser().id,
+          //   from: history.location.pathname.substring(1),
+          // });
+          // isPopup && handleSiginPopup();
+          // localStorage.setItem("isPopup", false);
+          if (isPopup) {
+            handleSiginPopup();
+            localStorage.setItem("isPopup", false);
+             GeneralPopup({
+               session_id: getCurrentUser().id,
+               from: history.location.pathname.substring(1),
+             });
+          };
+          
         }
       } else {
         //  if popup active then run same function

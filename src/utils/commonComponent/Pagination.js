@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Image } from "react-bootstrap";
 import pagePrev from '../../assets/images/page-prev.svg';
 import pageNext from '../../assets/images/page-next.svg';
+import { TransactionHistoryPageBack, TransactionHistoryPageNext } from '../AnalyticsFunctions';
+import { getCurrentUser } from '../ManageToken';
 
 const Pagination = props => {
 
@@ -43,7 +45,12 @@ const Pagination = props => {
 
   const onLeftClick = (props) => {
     var pageNo = document.getElementById("pageNo")
-
+//  TransactionHistoryPageBack({
+//    session_id: getCurrentUser().id,
+//    email_address: getCurrentUser().email,
+//    page_no: pageNo,
+//  });
+    console.log("back", pageNo)
     if (props.noUrl) {
       props.loadData(props.page - 1);
     } else {
@@ -60,7 +67,12 @@ const Pagination = props => {
 
   const onNextClick = (props) => {
     var pageNo = document.getElementById("pageNo")
-
+    // TransactionHistoryPageNext({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    //   page_no: pageNo,
+    // });
+      console.log("next", pageNo);
     if (props.noUrl) {
       props.loadData(props.page + 1);
     } else {

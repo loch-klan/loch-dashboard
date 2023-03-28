@@ -10,7 +10,7 @@ import ConnectModal from "./ConnectModal";
 import { useHistory } from "react-router-dom";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import AuthModal from "./AuthModal";
-import { ConnectExPopup, WalletConnectExchange } from "../../utils/AnalyticsFunctions";
+import { AssetValueExplainer, ConnectExPopup, WalletConnectExchange } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 export default function PageHeader(props) {
@@ -131,7 +131,12 @@ export default function PageHeader(props) {
                       src={InfoIcon}
                       className="info-icon"
                       style={{ width: "1.6rem", marginTop: "-3px" }}
-                      // onMouseEnter={this.privacymessage}
+                      onMouseEnter={() => {
+                        AssetValueExplainer({
+                          session_id: getCurrentUser().id,
+                          email_address:getCurrentUser().email
+                        });
+                      }}
                     />
                   </CustomOverlay>
                 ) : (

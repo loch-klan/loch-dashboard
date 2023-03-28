@@ -2849,7 +2849,7 @@ export const netflowNetHover = ({
 };
 
 
-// Transaction History: add wallet
+// Transaction History: add wallet - done
 export const TransactionHistoryAddWallet = ({
   session_id,
   email_address,
@@ -2884,7 +2884,7 @@ export const TransactionHistoryAddWallet = ({
 
 
 
-// Transaction History: search
+// Transaction History: search - done
 export const TransactionHistorySearch = ({
   session_id,
   email_address,
@@ -2901,7 +2901,7 @@ export const TransactionHistorySearch = ({
 };
 
 
-// Transaction History: years filter
+// Transaction History: years filter - done
 export const TransactionHistoryYearFilter = ({
   session_id,
   email_address,
@@ -2918,7 +2918,7 @@ export const TransactionHistoryYearFilter = ({
 };
 
 
-// Transaction History: assets filter
+// Transaction History: assets filter - done
 export const TransactionHistoryAssetFilter = ({
   session_id,
   email_address,
@@ -2935,7 +2935,7 @@ export const TransactionHistoryAssetFilter = ({
 };
 
 
-// Transaction History: methods filter
+// Transaction History: methods filter - done
 export const TransactionHistoryMethodFilter = ({
   session_id,
   email_address,
@@ -2951,7 +2951,7 @@ export const TransactionHistoryMethodFilter = ({
   //console.log("Menu:intelligence menu");
 };
 
-// Transaction History: sort date
+// Transaction History: sort date - done
 export const TransactionHistorySortDate = ({
   session_id,
   email_address
@@ -2966,7 +2966,7 @@ export const TransactionHistorySortDate = ({
 };
 
 
-// Transaction History: sort from
+// Transaction History: sort from - done
 export const TransactionHistorySortFrom = ({
   session_id,
   email_address
@@ -2980,7 +2980,7 @@ export const TransactionHistorySortFrom = ({
   //console.log("Menu:intelligence menu");
 };
 
-// Transaction History: sort to
+// Transaction History: sort to - done
 export const TransactionHistorySortTo = ({
   session_id,
   email_address
@@ -2995,7 +2995,7 @@ export const TransactionHistorySortTo = ({
 };
 
 
-// Transaction History: sort asset
+// Transaction History: sort asset - done
 export const TransactionHistorySortAsset = ({
   session_id,
   email_address
@@ -3009,7 +3009,7 @@ export const TransactionHistorySortAsset = ({
   //console.log("Menu:intelligence menu");
 };
 
-// Transaction History: sort amount
+// Transaction History: sort amount - done
 export const TransactionHistorySortAmount = ({
   session_id,
   email_address
@@ -3024,7 +3024,7 @@ export const TransactionHistorySortAmount = ({
 };
 
 
-// Transaction History: sort usd amount
+// Transaction History: sort usd amount - done
 
 export const TransactionHistorySortUSDAmount = ({
   session_id,
@@ -3040,7 +3040,7 @@ export const TransactionHistorySortUSDAmount = ({
 };
 
 
-// Transaction History: sort usd fee
+// Transaction History: sort usd fee - done
 
 export const TransactionHistorySortUSDFee = ({
   session_id,
@@ -3056,7 +3056,7 @@ export const TransactionHistorySortUSDFee = ({
 };
 
 
-// Transaction History: sort method
+// Transaction History: sort method - done
 
 export const TransactionHistorySortMethod = ({
   session_id,
@@ -3072,7 +3072,7 @@ export const TransactionHistorySortMethod = ({
 };
 
 
-// Transaction History: hide dust
+// Transaction History: hide dust - done
 
 export const TransactionHistoryHideDust = ({
   session_id,
@@ -3098,7 +3098,7 @@ export const TransactionHistoryPageNext = ({
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "page no": page_no
+    "page number": page_no
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3116,7 +3116,7 @@ export const TransactionHistoryPageBack = ({
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "page no": page_no
+    "page number": page_no
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3140,7 +3140,7 @@ export const TransactionHistoryPageSearch = ({
 };
 
 
-// Asset Value: explainer hover
+// Asset Value: explainer hover - done
 export const AssetValueExplainer = ({
   session_id,
   email_address,
@@ -3154,22 +3154,8 @@ export const AssetValueExplainer = ({
   //console.log("Menu:intelligence menu");
 };
 
-// Asset Value: explainer hover
-export const AssetValueExpl = ({
-  session_id,
-  email_address,
-}) => {
-  const event_name = "Asset Value: click to see transactions";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:intelligence menu");
-};
 
-
-//14. Intelligent:asset value chart asset filter
+//14. Intelligent:asset value chart asset filter - done
 export const IntlAssetValueAssetFilter = ({
   session_id,
   email_address,
@@ -3186,12 +3172,55 @@ export const IntlAssetValueAssetFilter = ({
 };
 
 
-//14. Asset Value: x axis manipulation
+//14. Asset Value: x axis manipulation - done
 export const IntlAssetValueNavigator = ({
   session_id,
   email_address,
 }) => {
   const event_name = "Asset Value: x axis manipulation";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. Asset Value: day
+export const IntlAssetValueDay = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Asset Value: day";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+//14. Asset Value: Year
+export const IntlAssetValueYear = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Asset Value: year";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+//14. Asset Value: Month
+export const IntlAssetValueMonth = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Asset Value: month";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,

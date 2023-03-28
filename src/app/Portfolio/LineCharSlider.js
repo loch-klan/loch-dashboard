@@ -14,9 +14,14 @@ import {
   AssetValueFilter,
   AssetValueHover,
   AssetValueInternalEvent,
+  IntlAssetValueAssetFilter,
+  IntlAssetValueDay,
   IntlAssetValueFilter,
   IntlAssetValueHover,
   IntlAssetValueInternalEvent,
+  IntlAssetValueMonth,
+  IntlAssetValueNavigator,
+  IntlAssetValueYear,
   TitleAssetValueHover,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -88,12 +93,12 @@ class LineChartSlider extends BaseReactComponent {
       ? IntlAssetValueFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          filter_clicked: badge.name,
+          filter_clicked: badge?.map((item) => item?.name),
         })
       : AssetValueFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          filter_clicked: badge.name,
+          filter_clicked: badge?.map((item) => item?.name),
         });
   };
   handleSelect = (opt) => {
@@ -102,10 +107,22 @@ class LineChartSlider extends BaseReactComponent {
     let t = "Day"
     if (opt.target.id == 0) {
       t = "Year";
+      IntlAssetValueYear({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (opt.target.id == 1) {
       t = "Month";
+      IntlAssetValueMonth({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (opt.target.id == 2) {
       t = "Day";
+      IntlAssetValueDay({
+        session_id: getCurrentUser().id,
+        email_address:getCurrentUser().email
+      });
     } else {
        t = "Day";
     }
@@ -120,7 +137,13 @@ class LineChartSlider extends BaseReactComponent {
 
   DropdownData = (arr) => {
     // console.log("dropdown arr", arr);
-    this.setState({ legends: arr, selectedEvents: [] });
+    this.setState({ legends: arr, selectedEvents: [] }, () => {
+      IntlAssetValueAssetFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        filter_clicked:arr
+      });
+    });
   };
 
   copyContent = (text) => {
@@ -727,6 +750,8 @@ class LineChartSlider extends BaseReactComponent {
       xAxis: {
         events: {
           setExtremes(e) {
+
+            
             let diff = Math.round(e.max - e.min);
 
             if (parent.props.hideTimeFilter) {
@@ -736,10 +761,18 @@ class LineChartSlider extends BaseReactComponent {
                 parent.setState({
                   plotLineHide: 1,
                 });
+                IntlAssetValueNavigator({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                });
               } else {
                 if (diff < 9 && parent.state.plotLineHide !== 0) {
                   parent.setState({
                     plotLineHide: 0,
+                  });
+                  IntlAssetValueNavigator({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
                   });
                 }
               }
@@ -748,11 +781,19 @@ class LineChartSlider extends BaseReactComponent {
                 parent.setState({
                   steps: 1,
                 });
+                IntlAssetValueNavigator({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                });
               } else if (diff > 11 && diff <= 20 && parent.state.steps !== 2) {
                 // console.log("middle");
                 parent.setState({
                   steps: 2,
                   plotLineHide: 2,
+                });
+                IntlAssetValueNavigator({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
                 });
               } else {
                 // if (diff >= 13 && parent.state.plotLineHide !== 3) {
@@ -764,6 +805,10 @@ class LineChartSlider extends BaseReactComponent {
                   // console.log("greater than 20");
                   parent.setState({
                     steps: 3,
+                  });
+                  IntlAssetValueNavigator({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
                   });
                 }
               }
