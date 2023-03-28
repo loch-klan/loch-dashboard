@@ -813,11 +813,7 @@ class ConnectModal extends BaseReactComponent {
     };
   }
 
-  componentDidMount() {
-    // set popup active
-    localStorage.setItem("isPopupActive", true);
-  
-  }
+ 
 
   componentWillUnmount() {
     // set popup active
@@ -894,6 +890,9 @@ class ConnectModal extends BaseReactComponent {
   };
 
   componentDidMount() {
+    // set popup active
+    localStorage.setItem("isPopupActive", true);
+    
     if (this.props.ishome) {
       let count = 0;
       this.props?.walletAddress?.map((e) => {

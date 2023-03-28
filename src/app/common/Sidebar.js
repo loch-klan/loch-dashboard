@@ -244,7 +244,7 @@ function Sidebar(props) {
       let isPopupActive = JSON.parse(localStorage.getItem("isPopupActive"));
       lochUser = JSON.parse(localStorage.getItem("lochUser"));
       if (!isPopupActive) {
-        console.log("inactive popup");
+        console.log("inactive popup", isPopupActive);
         if (!lochUser) {
           isPopup && handleSiginPopup();
           localStorage.setItem("isPopup", false);
