@@ -1,7 +1,7 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
-import { ConnectExEmailVerified, GeneralPopupEmailVerified, Home_CE_OAuthCompleted, LP_CE_OAuthCompleted, SigninModalTrack, signInUser, signUpProperties, Wallet_CE_OAuthCompleted, WhaleCreateAccountEmailVerified, WhalePopupEmailVerified } from "../../utils/AnalyticsFunctions";
+import { ConnectExEmailVerified, GeneralPopupEmailVerified, Home_CE_OAuthCompleted, LP_CE_OAuthCompleted, SigninMenuEmailVerified, SigninModalTrack, signInUser, signUpProperties, Wallet_CE_OAuthCompleted, WhaleCreateAccountEmailVerified, WhalePopupEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import postLoginInstance from './../../utils/PostLoginAxios';
@@ -129,11 +129,15 @@ export const updateUserWalletApi = (data,ctx) =>{
         ctx.props.handleUpdateWallet()
         
       }
-      // console.log("in if", JSON.parse(localStorage.getItem("addWallet")));
-      ctx.props.history.push({
-        pathname: ctx.props.pathName,
-        state: {addWallet: JSON.parse(localStorage.getItem("addWallet"))}
-      });
+      if (ctx.state.pageName == "Landing Page") {
+        ctx.props.history.push("/home")
+      } else {
+         ctx.props.history.push({
+           pathname: ctx.props.pathName,
+           state: { addWallet: JSON.parse(localStorage.getItem("addWallet")) },
+         });
+      }
+     
 
       
 
@@ -421,7 +425,7 @@ export const VerifyEmail = (data,ctx) => {
 
         // Analytics
         if (ctx.props.tracking === "Sign in button") {
-          SigninMenuEmailAdded({
+          SigninMenuEmailVerified({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
           });

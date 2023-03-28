@@ -30,6 +30,7 @@ class AddWallet extends BaseReactComponent {
       showModal: true,
       signIn: false,
       addButtonVisible: false,
+      pageName: "Landing Page",
       walletInput: props.walletAddress
         ? props.walletAddress
         : [
@@ -49,6 +50,7 @@ class AddWallet extends BaseReactComponent {
       triggerId: 0,
       GoToHome: false,
       connectExchange: true,
+      deletedAddress: [],
     };
     this.timeout = 0;
   }
@@ -71,6 +73,11 @@ class AddWallet extends BaseReactComponent {
   // };
 
   componentDidMount() {
+    this.setState({
+      addButtonVisible: this.state.walletInput.some((wallet) =>
+        wallet.address ? true : false
+      ),
+    });
     if (this.props.exchanges) {
       let text = "";
 
@@ -338,6 +345,7 @@ class AddWallet extends BaseReactComponent {
   };
 
   onValidSubmit = () => {
+    console.log("onvald")
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) {
       this.updateWallet();
@@ -462,7 +470,7 @@ class AddWallet extends BaseReactComponent {
       });
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
-      this.state.onHide();
+      // this.state?.onHide();
       const data = new URLSearchParams();
       // data.append("wallet_addresses", JSON.stringify(arr));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -474,22 +482,22 @@ class AddWallet extends BaseReactComponent {
       //     this.props.handleUpdateWallet()
       // }
       // console.log("fix",this.state.addWalletList);
-      const address = this.state.addWalletList?.map((e) => e.address);
+      const address = this.state.walletInput?.map((e) => e.address);
       // console.log("address", address);
       const addressDeleted = this.state.deletedAddress;
       // console.log("Deteted address", addressDeleted);
-      const unrecog_address = this.state.addWalletList
+      const unrecog_address = this.state.walletInput
         ?.filter((e) => !e.coinFound)
         ?.map((e) => e.address);
       // console.log("Unreq address", unrecog_address);
-      const recog_address = this.state.addWalletList
+      const recog_address = this.state.walletInput
         ?.filter((e) => e.coinFound)
         ?.map((e) => e.address);
       // console.log("req address", recog_address);
 
       const blockchainDetected = [];
       const nicknames = [];
-      this.state.addWalletList
+      this.state.walletInput
         ?.filter((e) => e.coinFound)
         ?.map((obj) => {
           let coinName = obj.coins

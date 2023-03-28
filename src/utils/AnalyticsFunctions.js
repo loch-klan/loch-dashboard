@@ -3305,7 +3305,7 @@ export const ConnectExPopupEmailAdded = ({ session_id, email_address,from }) => 
 
 
 //14. Whale pods pop up: email verified - done
-export const ConnectExEmailVerified = ({ session_id, from, email_address,from }) => {
+export const ConnectExEmailVerified = ({ session_id, email_address,from }) => {
   const event_name = "Exchange connected pop up: email verified";
   const eventProperties = {
     "session id": session_id,

@@ -57,6 +57,7 @@ import {
   DeFiMenu,
   FeedbackMenu,
   GeneralPopup,
+  SigninMenu,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
