@@ -361,6 +361,7 @@ class Defi extends Component {
               history={this.props.history}
               changeWalletList={this.handleChangeList}
               apiResponse={(e) => this.CheckApiResponse(e)}
+              from="defi"
             />
           )}
           {this.state.upgradeModal && (
@@ -371,7 +372,6 @@ class Defi extends Component {
               isShare={localStorage.getItem("share_id")}
               // isStatic={true}
               triggerId={this.state.triggerId}
-              
             />
           )}
           <PageHeader

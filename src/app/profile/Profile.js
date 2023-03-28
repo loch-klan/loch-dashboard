@@ -168,6 +168,7 @@ class Profile extends Component {
               btnText="Go"
               history={this.props.history}
               changeWalletList={this.handleChangeList}
+              from="profile"
             />
           )}
           <PageHeader

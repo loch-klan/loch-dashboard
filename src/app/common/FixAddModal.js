@@ -15,7 +15,7 @@ import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding//Api"
 import { getDetectedChainsApi, updateUserWalletApi, updateWalletListFlag } from './Api';
 import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
 import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
-import { AddWalletAddress, AddWalletAddressNickname, AddWalletAddressPodName, AnonymityWalletConnection, DoneFixingConnection } from '../../utils/AnalyticsFunctions';
+import { AddWalletAddress, AddWalletAddressNickname, AddWalletAddressPodName, AnonymityWalletConnection, DoneFixingConnection, TransactionHistoryAddWallet } from '../../utils/AnalyticsFunctions';
 import { getCurrentUser } from '../../utils/ManageToken';
 import { Plans } from '../../utils/Constant';
 import UpgradeModal from './upgradeModal';
@@ -441,18 +441,85 @@ class FixAddModal extends BaseReactComponent {
             });
 
           // console.log("blockchain detected", blockchainDetected);
-          AddWalletAddress({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            addresses_added: address,
-            ENS_added: address,
-            addresses_deleted: addressDeleted,
-            ENS_deleted: addressDeleted,
-            unrecognized_addresses: unrecog_address,
-            recognized_addresses: recog_address,
-            blockchains_detected: blockchainDetected,
-            nicknames: nicknames,
-          });
+          if (this.props.from === "home") {
+            AddWalletAddress({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              addresses_added: address,
+              ENS_added: address,
+              addresses_deleted: addressDeleted,
+              ENS_deleted: addressDeleted,
+              unrecognized_addresses: unrecog_address,
+              recognized_addresses: recog_address,
+              blockchains_detected: blockchainDetected,
+              nicknames: nicknames,
+            });
+          } else if (this.props.from === "transaction history") {
+            TransactionHistoryAddWallet({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              addresses_added: address,
+              ENS_added: address,
+              addresses_deleted: addressDeleted,
+              ENS_deleted: addressDeleted,
+              unrecognized_addresses: unrecog_address,
+              recognized_addresses: recog_address,
+              blockchains_detected: blockchainDetected,
+              nicknames: nicknames,
+            });
+          } else if (this.props.from === "cost") {
+            // TransactionHistoryAddWallet({
+            //   session_id: getCurrentUser().id,
+            //   email_address: getCurrentUser().email,
+            //   addresses_added: address,
+            //   ENS_added: address,
+            //   addresses_deleted: addressDeleted,
+            //   ENS_deleted: addressDeleted,
+            //   unrecognized_addresses: unrecog_address,
+            //   recognized_addresses: recog_address,
+            //   blockchains_detected: blockchainDetected,
+            //   nicknames: nicknames,
+            // });
+          } else if (this.props.from === "defi") {
+            // TransactionHistoryAddWallet({
+            //   session_id: getCurrentUser().id,
+            //   email_address: getCurrentUser().email,
+            //   addresses_added: address,
+            //   ENS_added: address,
+            //   addresses_deleted: addressDeleted,
+            //   ENS_deleted: addressDeleted,
+            //   unrecognized_addresses: unrecog_address,
+            //   recognized_addresses: recog_address,
+            //   blockchains_detected: blockchainDetected,
+            //   nicknames: nicknames,
+            // });
+          } else if (this.props.from === "asset value") {
+            // TransactionHistoryAddWallet({
+            //   session_id: getCurrentUser().id,
+            //   email_address: getCurrentUser().email,
+            //   addresses_added: address,
+            //   ENS_added: address,
+            //   addresses_deleted: addressDeleted,
+            //   ENS_deleted: addressDeleted,
+            //   unrecognized_addresses: unrecog_address,
+            //   recognized_addresses: recog_address,
+            //   blockchains_detected: blockchainDetected,
+            //   nicknames: nicknames,
+            // });
+
+            // from="cost"
+            // from = "defi";
+            // from = "asset value";
+            // from = "insights";
+            // from = "intelligence";
+            // from = "transaction history";
+            // from = "home";
+            // from = "profile";
+            // from = "wallet";
+          }
+          
+
+          
         }, 100);
       }
     }

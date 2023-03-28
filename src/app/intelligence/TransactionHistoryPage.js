@@ -1236,6 +1236,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               history={this.props.history}
               changeWalletList={this.handleChangeList}
               apiResponse={(e) => this.CheckApiResponse(e)}
+              from="transaction history"
             />
           )}
           {this.state.upgradeModal && (

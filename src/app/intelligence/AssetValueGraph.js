@@ -211,6 +211,7 @@ class AssetValueGraph extends Component {
               history={this.props.history}
               changeWalletList={this.handleChangeList}
               apiResponse={(e) => this.CheckApiResponse(e)}
+              from="asset value"
             />
           )}
           <PageHeader

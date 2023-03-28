@@ -2680,20 +2680,20 @@ export const SigninMenuEmailVerified = ({ session_id, email_address }) => {
   //console.log("Menu:intelligence menu");
 };
 
-//  Menu: Currency drop down
+//  Menu: Currency drop down - done
 
 export const MenuCurrencyDropdown = ({ session_id, email_address, currency }) => {
   const event_name = "Menu: Currency drop down";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "fiat currency": currency,
+    "current fiat currency": currency,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:intelligence menu");
+  // console.log("Menu: Currency drop down");
 };
 
-//  Menu: Currency drop down
+//  Menu: Currency drop down selected - done
 
 export const MenuCurrencyDropdownSelected = ({
   session_id,
@@ -2705,16 +2705,16 @@ export const MenuCurrencyDropdownSelected = ({
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "prevoius selected": prev_currency,
-    "fiat currency": currency,
+    "prevoius currency": prev_currency,
+    "current fiat currency": currency,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:intelligence menu");
+  // console.log("Menu: Currency drop down: currency selected");
 };
 
 
 
-// Intelligence:netflows: explainer1 closed
+// Intelligence:netflows: explainer1 closed - done
 
 export const netflowExplainer1 = ({
   session_id,
@@ -2729,7 +2729,7 @@ export const netflowExplainer1 = ({
   //console.log("Menu:intelligence menu");
 };
 
-// Intelligence:netflows: explainer1 closed
+// Intelligence:netflows: explainer1 closed - done
 
 export const netflowExplainer2 = ({
   session_id,
@@ -2745,7 +2745,7 @@ export const netflowExplainer2 = ({
 };
 
 
-// Intelligence:netflows: time filter
+// Intelligence:netflows: time filter - done
 
 export const netflowTimeFilter = ({
   session_id,
@@ -2762,7 +2762,7 @@ export const netflowTimeFilter = ({
   //console.log("Menu:intelligence menu");
 };
 
-// Intelligence:netflows: chain filter
+// Intelligence:netflows: chain filter - done
 
 export const netflowChainFilter = ({
   session_id,
@@ -2779,7 +2779,7 @@ export const netflowChainFilter = ({
   //console.log("Menu:intelligence menu");
 };
 
-// Intelligence:netflows: assets filter
+// Intelligence:netflows: assets filter - done
 
 export const netflowAssetFilter = ({
   session_id,
@@ -2797,7 +2797,7 @@ export const netflowAssetFilter = ({
 };
 
 
-// Intelligence:netflows: inflows hover
+// Intelligence:netflows: inflows hover - done
 
 export const netflowInflowHover = ({
   session_id,
@@ -2814,7 +2814,7 @@ export const netflowInflowHover = ({
   //console.log("Menu:intelligence menu");
 };
 
-// Intelligence:netflows: outflows hover
+// Intelligence:netflows: outflows hover - done
 
 export const netflowOutflowHover = ({
   session_id,
@@ -2832,7 +2832,7 @@ export const netflowOutflowHover = ({
 };
 
 
-// Intelligence:netflows: net hover
+// Intelligence:netflows: net hover - done
 export const netflowNetHover = ({
   session_id,
   email_address,

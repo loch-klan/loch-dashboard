@@ -198,6 +198,7 @@ class InsightsPage extends Component {
               history={this.props.history}
               changeWalletList={this.handleChangeList}
               apiResponse={(e) => this.CheckApiResponse(e)}
+              from="insights"
             />
           )}
 
@@ -297,8 +298,8 @@ class InsightsPage extends Component {
                         alignItems: "center",
                         justifyContent: "center",
                         flexDirection: "column",
-                            position: "relative",
-                        marginTop:"5rem"
+                        position: "relative",
+                        marginTop: "5rem",
                       }}
                     >
                       <div

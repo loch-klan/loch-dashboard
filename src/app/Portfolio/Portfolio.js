@@ -310,6 +310,8 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidMount() {
+    // reset redirect stop
+     localStorage.setItem("stop_redirect", false);
     // get token to check if wallet address loaded on not
     this.getToken();
     this.state.startTime = new Date() * 1;
@@ -1720,6 +1722,7 @@ class Portfolio extends BaseReactComponent {
             modalType="fixwallet"
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
+            from="home"
           />
         )}
         {this.state.addModal && (
@@ -1735,6 +1738,7 @@ class Portfolio extends BaseReactComponent {
             history={this.props.history}
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
+            from="home"
           />
         )}
 

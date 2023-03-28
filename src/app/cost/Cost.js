@@ -535,6 +535,7 @@ class Cost extends Component {
               history={this.props.history}
               changeWalletList={this.handleChangeList}
               apiResponse={(e) => this.CheckApiResponse(e)}
+              from="cost"
             />
           )}
           <PageHeader

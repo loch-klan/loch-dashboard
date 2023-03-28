@@ -58,6 +58,8 @@ import {
   FeedbackMenu,
   GeneralPopup,
   SigninMenu,
+  MenuCurrencyDropdown,
+  MenuCurrencyDropdownSelected,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
@@ -284,9 +286,18 @@ function Sidebar(props) {
           }
         }
       }
-      setCurrency(currency);
-      localStorage.setItem('currency',JSON.stringify(currency));
-      window.location.reload();
+      MenuCurrencyDropdownSelected({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        prev_currency: selectedCurrency.symbol + " " + selectedCurrency.code,
+        currency: currency.symbol + " " + currency.code,
+      });
+      setTimeout(() => {
+         setCurrency(currency);
+         localStorage.setItem("currency", JSON.stringify(currency));
+         window.location.reload();
+      }, 200);
+     
     }
     const quotes = [
         "Sic Parvis Magna | Thus, great things from small things come.",
@@ -344,6 +355,16 @@ function Sidebar(props) {
                         selectedCurrency &&
                         selectedCurrency.symbol + " " + selectedCurrency.code
                       }
+                      onClick={() => {
+                        MenuCurrencyDropdown({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          currency:
+                            selectedCurrency.symbol +
+                            " " +
+                            selectedCurrency.code,
+                        });
+                      }}
                     >
                       {currencyList?.map((currency, key) => {
                         return (

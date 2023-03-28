@@ -120,7 +120,7 @@ export const getProfitAndLossApi = (
              type: NETFLOW_GRAPH,
              payload: {
                GraphData: res.data.data.profit_loss,
-               graphValue: getProfitAndLossData(res.data.data.profit_loss),
+               graphValue: getProfitAndLossData(res.data.data.profit_loss,ctx),
              },
            });
            ctx.setState({

@@ -237,6 +237,7 @@ class Wallet extends Component {
             history={this.props.history}
             handleUpdateWallet={this.handleUpdateWallet}
             pathName="/wallets"
+            from="wallet"
           />
         )}
         <div className="wallet-section page">
