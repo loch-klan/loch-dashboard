@@ -11,12 +11,14 @@ import SignIn from "./signIn";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { Image } from "react-bootstrap";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import LinkIcon from "../../assets/images/icons/link.svg";
 import {
   OnboardingPage,
   PrivacyMessage, TimeSpentOnboarding
 } from "../../utils/AnalyticsFunctions.js";
 import { GetAllPlan } from '../common/Api';
 import UpgradeModal from '../common/upgradeModal';
+import ConnectModal from '../common/ConnectModal';
 // export { default as OnboardingReducer } from "./OnboardingReducer";
 class OnBoarding extends Component {
   constructor(props) {
@@ -34,7 +36,12 @@ class OnBoarding extends Component {
       upgradeModal: false,
       isStatic: false,
       triggerId: 1,
-      showPrevModal:true
+      showPrevModal: true,
+
+      // connect exchange
+      connectExchangeModal: false,
+      walletAddress: null,
+      exchanges: null,
     };
   }
 
@@ -58,6 +65,38 @@ class OnBoarding extends Component {
     );
   };
 
+  handleConnectModal = (address = this.state.walletAddress) => {
+    console.log("test", address)
+    this.setState({
+      connectExchangeModal: !this.state.connectExchangeModal,
+      walletAddress: address
+    }, () => {
+      let value = this.state.connectExchangeModal ? false : true;
+      this.setState({
+        showPrevModal: value,
+      });
+      console.log("test 2")
+    });
+  }
+
+  handleBackConnect = (exchanges = this.state.exchanges) => {
+    console.log("backed clicked in index.js")
+    this.setState(
+      {
+        connectExchangeModal: !this.state.connectExchangeModal,
+        walletAddress: this.state.walletAddress,
+        exchanges: exchanges
+      },
+      () => {
+        let value = this.state.connectExchangeModal ? false : true;
+        this.setState({
+          showPrevModal: value,
+        });
+        
+      }
+    );
+  }
+
   componentDidMount() {
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", (this.state.startTime / 1000));
@@ -66,6 +105,8 @@ class OnBoarding extends Component {
     // // "17/06/2022"
 
     OnboardingPage({});
+
+      console.log("test mount index.js");
   }
 
   componentWillUnmount() {
@@ -152,6 +193,10 @@ class OnBoarding extends Component {
                 switchSignIn={this.switchSignIn}
                 hideModal={this.props.hideModal}
                 upgradeModal={this.upgradeModal}
+                walletAddress={this.state.walletAddress}
+                connectWallet={this.handleConnectModal}
+                exchanges={this.state.exchanges}
+
                 // showSignText={this.state.showSign}
                 // handleShowSignText={this.handleShowSignText}
               />
@@ -199,6 +244,21 @@ class OnBoarding extends Component {
             from="home"
             // isShare={localStorage.getItem("share_id")}
             // isStatic={this.state.isStatic}
+          />
+        )}
+
+        {this.state.connectExchangeModal && (
+          <ConnectModal
+            show={this.state.connectExchangeModal}
+            onHide={this.handleConnectModal}
+            history={this.props.history}
+            headerTitle={"Connect exchanges"}
+            modalType={"connectModal"}
+            iconImage={LinkIcon}
+            ishome={true}
+            walletAddress={this.state?.walletAddress}
+            exchanges={this.state.exchanges}
+            handleBackConnect={this.handleBackConnect}
           />
         )}
       </>

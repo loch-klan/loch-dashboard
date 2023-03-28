@@ -253,7 +253,7 @@ export const verifyUser = (ctx, info) => {
     })
 }
 
-export const createAnonymousUserApi = (data, ctx, addWallet) => {
+export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null) => {
   // localStorage.setItem('currency',JSON.stringify({
   //         active: true,
   //         code: "USD",
@@ -266,17 +266,19 @@ export const createAnonymousUserApi = (data, ctx, addWallet) => {
   localStorage.setItem("stopClick", false);
       
   localStorage.setItem("lochToken", "jsk");
- 
-  {
-    !ctx.state.id &&
-    ctx.props.history.push({
-      pathname: ctx.state.id ? ctx.state.link : '/home',
+  console.log("api run", ctx.state);
+  if(!ctx.props.ishome){
+    !ctx.state?.id &&
+    ctx.props?.history.push({
+      pathname: ctx.state?.id ? ctx.state?.link : '/home',
       // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
       state: {noLoad: true}
     })
   }
+
   postLoginInstance.post('organisation/user/create-user',data)
-  .then(res=>{
+    .then(res => {
+    console.log("insode create user function")
     if(!res.data.error){
       localStorage.setItem("lochDummyUser", res.data.data.user.link)
       localStorage.setItem("lochToken", res.data.data.token)
@@ -337,10 +339,24 @@ export const createAnonymousUserApi = (data, ctx, addWallet) => {
          JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
        );
       // console.log("wallet", addWallet);
-      ctx.props.history.replace({
-        pathname: ctx.state.id ? ctx.state.link : '/home',
-        state: {addWallet: ctx.state.id ? addWallet : newAddWallet, noLoad: false}
-      })
+      if (userFunction) {
+        console.log("user function found");
+        ctx.getUrl();
+         localStorage.setItem("stop_redirect", true);
+        setTimeout(() => {
+           userFunction();
+        }, 100);
+       
+        
+      } else {
+         console.log("user function not found");
+        ctx.props.history.replace({
+          pathname: ctx.state?.id ? ctx.state?.link : "/home",
+          state: {
+            addWallet: ctx.state?.id ? addWallet : newAddWallet,
+            noLoad: false,
+          },
+        });}
   }else{
       toast.error(res.data.message || "Something Went Wrong")
   }

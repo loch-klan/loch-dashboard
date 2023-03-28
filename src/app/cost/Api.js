@@ -124,15 +124,33 @@ export const addUpdateAccount = (data,ctx) => {
 
         //  ctx.props.getExchangeBalance("binance", ctx);
         // ctx.props.getExchangeBalance("coinbase", ctx);
-        toast.success(ctx.state.selection.name + " connected to loch");
-        ctx.state.onHide();
-        // window.location.reload();
-        setTimeout(() => {
-          ctx.props.setPageFlagDefault();
-          ctx.props?.handleUpdate && ctx.props.handleUpdate();
+        
+          ctx.setState({
+            isLoadingbtn: false,
+          });
+        if (ctx.props.ishome) {
+           toast.success(ctx.state.selection.name + " connected to loch");
+          ctx.handleUpdateList();
           
-          ctx.props.openPopup();
-        }, 1000);
+          setTimeout(() => {
+            // ctx.props.handleBackConnect(ctx.state.connectExchangesList);
+            ctx.handleBack();
+           
+          }, 200);
+          
+          
+        } else {
+          toast.success(ctx.state.selection.name + " connected to loch");
+           ctx.state.onHide();
+           // window.location.reload();
+           setTimeout(() => {
+             ctx.props.setPageFlagDefault();
+             ctx.props?.handleUpdate && ctx.props.handleUpdate();
+
+             ctx.props.openPopup();
+           }, 1000);
+        }
+         
        
         
       } else {

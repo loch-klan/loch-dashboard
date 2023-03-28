@@ -15,36 +15,40 @@ import {
   LPC_Go,
   LandingPagePodName,
   LandingPageNickname,
+  AddWalletAddress,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from '../../utils/ManageToken';
 import UpgradeModal from '../common/upgradeModal';
-import { GetAllPlan, GetDefaultPlan } from '../common/Api';
+import { GetAllPlan, GetDefaultPlan, updateUserWalletApi } from '../common/Api';
+import LinkIconBtn from "../../assets/images/link.svg";
 
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
+    console.log("walletAddress", props.walletAddress);
     this.state = {
       showModal: true,
       signIn: false,
       addButtonVisible: false,
-      walletInput: [
-        {
-          id: "wallet1",
-          address: "",
-          coins: [],
-          nickname: "",
-          showAddress: true,
-          showNickname: true,
-        },
-      ],
+      walletInput: props.walletAddress
+        ? props.walletAddress
+        : [
+            {
+              id: "wallet1",
+              address: "",
+              coins: [],
+              nickname: "",
+              showAddress: true,
+              showNickname: true,
+            },
+          ],
       loading: false,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
       GoToHome: false,
-      
-     
+      connectExchange: true,
     };
     this.timeout = 0;
   }
@@ -64,28 +68,41 @@ class AddWallet extends BaseReactComponent {
 
   //   });
 
-    
   // };
 
   componentDidMount() {
+    if (this.props.exchanges) {
+      let text = "";
+
+      Promise.all(
+        this.props.exchanges
+          ?.filter((e) => e.isActive)
+          .map(
+            (e) => (text = text == "" ? text + e.name : text + ", " + e.name)
+          )
+      ).then(() => {
+        this.setState({
+          connectText: text == "" ? "Connect exchanges" : text + " connected",
+        });
+      });
+    } else {
+      this.setState({
+        connectText: "Connect exchanges",
+      });
+    }
     this.props.getAllCoins();
     this.props.getAllParentChains();
-     this.setState({
-       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
-     });
-   
+    this.setState({
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+    });
+
     GetAllPlan();
-    
-     
   }
 
   componentDidUpdate(prevProps, prevState) {
-  
     if (this.state.userPlan === null) {
-
       this.state.userPlan = JSON.parse(localStorage.getItem("currentPlan"));
-    
-   }
+    }
   }
 
   nicknameOnChain = (e) => {
@@ -114,7 +131,7 @@ class AddWallet extends BaseReactComponent {
     let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
     if (foundIndex > -1) {
       // let prevValue = walletCopy[foundIndex].nickname;
-     
+
       walletCopy[foundIndex].showAddress =
         walletCopy[foundIndex].nickname === "" ? true : false;
       walletCopy[foundIndex].showNickname =
@@ -247,7 +264,7 @@ class AddWallet extends BaseReactComponent {
       (e) => e.chain_detected === true
     );
 
-     newAddress[i].apiAddress = data?.apiaddress;
+    newAddress[i].apiAddress = data?.apiaddress;
 
     this.setState({
       walletInput: newAddress,
@@ -255,36 +272,33 @@ class AddWallet extends BaseReactComponent {
   };
 
   addInputField = () => {
-
     if (
       this.state.walletInput.length + 1 <=
         this.state.userPlan?.wallet_address_limit ||
       this.state.userPlan?.wallet_address_limit === -1
     ) {
-        this.state.walletInput.push({
-          id: `wallet${this.state.walletInput.length + 1}`,
-          address: "",
-          coins: [],
-          nickname: "",
-          showAddress: true,
-          showNickname: true,
-        });
-        this.setState({
-          walletInput: this.state.walletInput,
-        });
-        AddTextbox({});
+      this.state.walletInput.push({
+        id: `wallet${this.state.walletInput.length + 1}`,
+        address: "",
+        coins: [],
+        nickname: "",
+        showAddress: true,
+        showNickname: true,
+      });
+      this.setState({
+        walletInput: this.state.walletInput,
+      });
+      AddTextbox({});
     } else {
-       this.setState(
-         {
-           triggerId: 1,
-         },
-         () => {
-           this.props.upgradeModal();
-         }
-       );
-     
+      this.setState(
+        {
+          triggerId: 1,
+        },
+        () => {
+          this.props.upgradeModal();
+        }
+      );
     }
-    
   };
 
   deleteInputField = (index, wallet) => {
@@ -324,78 +338,183 @@ class AddWallet extends BaseReactComponent {
   };
 
   onValidSubmit = () => {
-    let walletAddress = [];
-    let addWallet = this.state.walletInput;
-    let finalArr = [];
+    const islochUser = localStorage.getItem("lochDummyUser");
+    if (islochUser) {
+      this.updateWallet();
+    } else {
+      let walletAddress = [];
+      let addWallet = this.state.walletInput;
+      let finalArr = [];
 
-  //  console.log("cjeb", addWallet);
-     let addressList = [];
-  
-     let nicknameArr = {};
-   
-    for (let i = 0; i < addWallet.length; i++) {
-      let curr = addWallet[i];
-      if (!walletAddress.includes(curr.apiAddress.trim()) && curr.address.trim()) {
-        finalArr.push(curr);
-        walletAddress.push(curr.address.trim());
-        walletAddress.push(curr.displayAddress?.trim());
-        walletAddress.push(curr.apiAddress?.trim());
-        let address = curr.address.trim();
-        nicknameArr[address] = curr.nickname;
-        addressList.push(curr.address.trim());
+      //  console.log("cjeb", addWallet);
+      let addressList = [];
 
-      
+      let nicknameArr = {};
+
+      for (let i = 0; i < addWallet.length; i++) {
+        let curr = addWallet[i];
+        if (
+          !walletAddress.includes(curr.apiAddress.trim()) &&
+          curr.address.trim()
+        ) {
+          finalArr.push(curr);
+          walletAddress.push(curr.address.trim());
+          walletAddress.push(curr.displayAddress?.trim());
+          walletAddress.push(curr.apiAddress?.trim());
+          let address = curr.address.trim();
+          nicknameArr[address] = curr.nickname;
+          addressList.push(curr.address.trim());
+        }
       }
-    }
 
-    finalArr = finalArr?.map((item, index) => {
-      return {
-        ...item,
-        id: `wallet${index + 1}`,
-      };
-    });
-
-    // console.log("final array", addressList);
-
-    const data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify(addressList));
-    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
-    // data.append("link", );
-    createAnonymousUserApi(data, this, finalArr);
-    // console.log(finalArr);
-
-    const address = finalArr?.map((e) => e.address);
-    // console.log("address", address);
-
-    const unrecog_address = finalArr
-      .filter((e) => !e.coinFound)
-      .map((e) => e.address);
-    // console.log("Unreq address", unrecog_address);
-
-    const blockchainDetected = [];
-    const nicknames = [];
-    finalArr
-      .filter((e) => e.coinFound)
-      .map((obj) => {
-        let coinName = obj.coins
-          .filter((e) => e.chain_detected)
-          .map((name) => name.coinName);
-        let address = obj.address;
-        let nickname = obj.nickname;
-        blockchainDetected.push({ address: address, names: coinName });
-        nicknames.push({ address: address, nickname: nickname });
+      finalArr = finalArr?.map((item, index) => {
+        return {
+          ...item,
+          id: `wallet${index + 1}`,
+        };
       });
 
-    // console.log("blockchain detected", blockchainDetected);
+      // console.log("final array", addressList);
 
-    LPC_Go({
-      addresses: address,
-      ENS: address,
-      chains_detected_against_them: blockchainDetected,
-      unrecognized_addresses: unrecog_address,
-      unrecognized_ENS: unrecog_address,
-      nicknames: nicknames,
-    });
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(addressList));
+      data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+      // data.append("link", );
+      createAnonymousUserApi(data, this, finalArr, null);
+      // console.log(finalArr);
+
+      const address = finalArr?.map((e) => e.address);
+      // console.log("address", address);
+
+      const unrecog_address = finalArr
+        .filter((e) => !e.coinFound)
+        .map((e) => e.address);
+      // console.log("Unreq address", unrecog_address);
+
+      const blockchainDetected = [];
+      const nicknames = [];
+      finalArr
+        .filter((e) => e.coinFound)
+        .map((obj) => {
+          let coinName = obj.coins
+            .filter((e) => e.chain_detected)
+            .map((name) => name.coinName);
+          let address = obj.address;
+          let nickname = obj.nickname;
+          blockchainDetected.push({ address: address, names: coinName });
+          nicknames.push({ address: address, nickname: nickname });
+        });
+
+      // console.log("blockchain detected", blockchainDetected);
+
+      LPC_Go({
+        addresses: address,
+        ENS: address,
+        chains_detected_against_them: blockchainDetected,
+        unrecognized_addresses: unrecog_address,
+        unrecognized_ENS: unrecog_address,
+        nicknames: nicknames,
+      });
+    }
+  };
+
+  updateWallet = () => {
+    // console.log(
+    //   "add wallet list",
+    //   this.state.total_addresses + this.state.addWalletList?.length >
+    //     this.state.userPlan.wallet_address_limit,
+    //   this.state.total_addresses , this.state.addWalletList?.length ,
+    //     this.state.userPlan.wallet_address_limit
+    // );
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      let arr = [];
+      let addressList = [];
+      let displayAddress = [];
+      let nicknameArr = {};
+      let walletList = [];
+      for (let i = 0; i < this.state.walletInput.length; i++) {
+        let curr = this.state.walletInput[i];
+        // console.log(
+        //   "current address",
+        //   curr,
+        //   "arr",
+        //   arr,
+
+        // );
+        if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+          walletList.push(curr);
+          arr.push(curr.address.trim());
+          nicknameArr[curr.address.trim()] = curr.nickname;
+          arr.push(curr.displayAddress?.trim());
+          arr.push(curr.apiAddress?.trim());
+          addressList.push(curr.address?.trim());
+          //  console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
+        }
+      }
+
+      let addWallet = walletList;
+
+      addWallet?.map((w, i) => {
+        w.id = `wallet${i + 1}`;
+      });
+      localStorage.setItem("addWallet", JSON.stringify(addWallet));
+
+      this.state.onHide();
+      const data = new URLSearchParams();
+      // data.append("wallet_addresses", JSON.stringify(arr));
+      data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+      data.append("wallet_addresses", JSON.stringify(addressList));
+
+      updateUserWalletApi(data, this);
+      // this.state.changeList && this.state.changeList(walletList);
+      // if (this.props.handleUpdateWallet) {
+      //     this.props.handleUpdateWallet()
+      // }
+      // console.log("fix",this.state.addWalletList);
+      const address = this.state.addWalletList?.map((e) => e.address);
+      // console.log("address", address);
+      const addressDeleted = this.state.deletedAddress;
+      // console.log("Deteted address", addressDeleted);
+      const unrecog_address = this.state.addWalletList
+        ?.filter((e) => !e.coinFound)
+        ?.map((e) => e.address);
+      // console.log("Unreq address", unrecog_address);
+      const recog_address = this.state.addWalletList
+        ?.filter((e) => e.coinFound)
+        ?.map((e) => e.address);
+      // console.log("req address", recog_address);
+
+      const blockchainDetected = [];
+      const nicknames = [];
+      this.state.addWalletList
+        ?.filter((e) => e.coinFound)
+        ?.map((obj) => {
+          let coinName = obj.coins
+            ?.filter((e) => e.chain_detected)
+            ?.map((name) => name.coinName);
+          let address = obj.address;
+          let nickname = obj.nickname;
+          blockchainDetected.push({ address: address, names: coinName });
+          nicknames.push({ address: address, nickname: nickname });
+        });
+
+      // console.log("blockchain detected", blockchainDetected);
+      AddWalletAddress({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        addresses_added: address,
+        ENS_added: address,
+        addresses_deleted: addressDeleted,
+        ENS_deleted: addressDeleted,
+        unrecognized_addresses: unrecog_address,
+        recognized_addresses: recog_address,
+        blockchains_detected: blockchainDetected,
+        nicknames: nicknames,
+      });
+    }, 100);
   };
   handleSignText = () => {
     this.props.switchSignIn();
@@ -570,6 +689,27 @@ class AddWallet extends BaseReactComponent {
               </Button>
             </div>
           ) : null}
+
+          {this.state.connectExchange && (
+            <div className="ob-connect-exchange">
+              <div
+                className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
+                onClick={() => {
+                  this.props.connectWallet(this.state.walletInput);
+                }}
+              >
+                <Image
+                  src={LinkIconBtn}
+                  style={{
+                    width: "1.2rem",
+                    marginRight: "4px",
+                    marginBottom: "1px",
+                  }}
+                />
+                {this.state.connectText}
+              </div>
+            </div>
+          )}
 
           <div className="ob-modal-body-btn">
             {/* <CustomButton

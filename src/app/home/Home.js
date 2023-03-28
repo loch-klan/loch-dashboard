@@ -46,7 +46,7 @@ let currencyRates = JSON.parse(localStorage.getItem("currencyRates"));
       getAllCurrencyRatesApi();
     }
     
-    // console.log(planId);
+    console.log("test mount home.js");
     if (planId) {
       // console.log("plan id", planId);
       this.setState({
@@ -56,10 +56,19 @@ let currencyRates = JSON.parse(localStorage.getItem("currencyRates"));
       });
     } else {
       if (getToken()) {
-        this.props.history.push("/home");
+        console.log("move to home");
+        let isStopRedirect = localStorage.getItem("stop_redirect");
+        if (isStopRedirect) {
+            this.props.setPageFlagDefault();
+            deleteToken();
+        } else {
+          this.props.history.push("/home");
+        }
+        
       } else {
           this.props.setPageFlagDefault();
         deleteToken();
+        console.log("inside else after derlete token")
         localStorage.setItem("defi_access", true);
          localStorage.setItem("isPopup", true);
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
