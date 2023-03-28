@@ -66,6 +66,7 @@ import {
   TransactionHistoryMethod,
   ProfitLossEV,
   HomePage,
+  HomeInsightsExpand,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
@@ -1462,6 +1463,10 @@ class Portfolio extends BaseReactComponent {
                           handleClick={() => {
                             // console.log("wallet", this.state.userWalletList);
                             if (this.state.lochToken) {
+                              HomeInsightsExpand({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
                               this.props.history.push("/intelligence/insights");
                             }
                           }}

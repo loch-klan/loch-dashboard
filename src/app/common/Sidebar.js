@@ -54,6 +54,9 @@ import {
   MenuShare,
   MenuWhale,
   resetUser,
+  DeFiMenu,
+  FeedbackMenu,
+  GeneralPopup,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
@@ -168,6 +171,10 @@ function Sidebar(props) {
   const handleFeedback = () => {
     setFeedbackModal(!showFeedbackModal);
     console.log("clicked modal")
+    FeedbackMenu({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
     const handleShareModal = ()=>{
         setShareModal(!shareModal);
@@ -185,6 +192,9 @@ function Sidebar(props) {
     //    session_id: getCurrentUser().id,
     //    email_address: getCurrentUser().email,
     //  });
+     SigninMenu({
+       session_id: getCurrentUser().id,
+     });
    };
   const handleSiginPopup = () => {
     setSigninPopup(!signinPopup);
@@ -246,6 +256,10 @@ function Sidebar(props) {
       if (!isPopupActive) {
         console.log("inactive popup", isPopupActive);
         if (!lochUser) {
+          GeneralPopup({
+            session_id: getCurrentUser().id,
+            from: history.location.pathname.substring(1),
+          });
           isPopup && handleSiginPopup();
           localStorage.setItem("isPopup", false);
         }
@@ -530,10 +544,11 @@ function Sidebar(props) {
                           className={`nav-link ${!isDefi ? "none" : ""}`}
                           to={`${!isDefi ? "#" : "/decentralized-finance"}`}
                           onClick={(e) => {
-                            // CostsMenu({
-                            //   session_id: getCurrentUser().id,
-                            //   email_address: getCurrentUser().email,
-                            // })
+                            
+                            DeFiMenu({
+                              session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                            });
                             if (!isDefi) {
                               upgradeModal();
                             }
@@ -894,6 +909,7 @@ function Sidebar(props) {
               title="Don’t lose your data"
               description="Don’t let your hard work go to waste. Add your email or connect your wallet so you can analyze your portfolio with superpowers"
               stopUpdate={true}
+              popupType="general_popup"
               tracking={history.location.pathname.substring(1)}
             />
           ) : (

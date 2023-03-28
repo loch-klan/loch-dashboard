@@ -16,6 +16,8 @@ import { Col, Image, Row } from "react-bootstrap";
 import noDataImage from "../../image/no-data.png";
 import Loading from "../common/Loading";
 import {
+  HomeDefiDebt,
+  HomeDefiYield,
   HomeRefreshButton,
   PiechartChainName,
 } from "../../utils/AnalyticsFunctions";
@@ -533,12 +535,21 @@ class PieChart2 extends BaseReactComponent {
       isYeildToggle: !this.state.isYeildToggle,
       isDebtToggle: false,
     });
+     HomeDefiDebt({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
   };
 
   toggleDebt = () => {
     this.setState({
       isDebtToggle: !this.state.isDebtToggle,
       isYeildToggle: false,
+    });
+
+    HomeDefiYield({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
     });
   };
   handleAddWalletClick = () => {

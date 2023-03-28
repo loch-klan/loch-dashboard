@@ -22,7 +22,7 @@ import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { WhaleCreateAccountEmailSaved, WhaleCreateAccountPrivacyHover } from "../../utils/AnalyticsFunctions";
+import { ConnectExPopupEmailAdded, GeneralPopupEmailAdded, SigninMenuEmailAdded, WhaleCreateAccountEmailSaved, WhaleCreateAccountPrivacyHover, WhalePopup, WhalePopupEmailAdded } from "../../utils/AnalyticsFunctions";
 import { loadingAnimation } from "../../utils/ReusableFunctions";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
@@ -96,10 +96,41 @@ class AuthModal extends BaseReactComponent {
     data.append("email", this.state.email);
     SendOtp(data, this);
 
-    WhaleCreateAccountEmailSaved({
-      session_id: getCurrentUser().id,
-      email_address: this.state.email,
-    });
+    if (this.props.tracking === "Sign in button") {
+      SigninMenuEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+      });
+    } else if (this.props.tracking === "Whale watching") {
+      WhalePopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+      });
+    } else if (this.props.tracking === "Wallet connect exchange") {
+      ConnectExPopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+        from: this.props.tracking,
+      });
+    } else if (this.props.tracking === "Home connect exchange") {
+     ConnectExPopupEmailAdded({
+       session_id: getCurrentUser().id,
+       email_address: this.state.email,
+       from: this.props.tracking,
+     });
+    }
+
+    if (this.props?.popupType === "general_popup") {
+      GeneralPopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_added: this.state.email,
+        from:this.props?.tracking
+      });
+    }
+    // WhaleCreateAccountEmailSaved({
+    //   session_id: getCurrentUser().id,
+    //   email_address: this.state.email,
+    // });
 
     //   check email valid or not if valid set email exist to true then this will change copy of signin and if invalid then show copy for signup
   };

@@ -2581,7 +2581,7 @@ export const Wallet_CE_OAuthCompleted = ({
 };
 
 
-// Home Page: insights expanded
+// Home Page: insights expanded - done
 export const HomeInsightsExpand = ({
   session_id,
   email_address,
@@ -2597,7 +2597,7 @@ export const HomeInsightsExpand = ({
 };
 
 
-// Home Page: insights expanded
+// Home Page: insights expanded  - done
 export const HomeDefiYield = ({
   session_id,
   email_address,
@@ -2612,7 +2612,7 @@ export const HomeDefiYield = ({
 };
 
 
-// Home Page: DeFi balance sheet: Debt expanded
+// Home Page: DeFi balance sheet: Debt expanded - done
 export const HomeDefiDebt = ({
   session_id,
   email_address,
@@ -2626,7 +2626,7 @@ export const HomeDefiDebt = ({
   ////console.log("Landing Page Conversion:time spent on onboarding");
 };
 
-// Menu: DeFi
+// Menu: DeFi - done
 export const DeFiMenu = ({ session_id, email_address }) => {
   const event_name = "Menu: DeFi";
   const eventProperties = {
@@ -2637,7 +2637,7 @@ export const DeFiMenu = ({ session_id, email_address }) => {
   //console.log("Menu:intelligence menu");
 };
 
-//  Menu: Feedback
+//  Menu: Feedback - done
 export const FeedbackMenu = ({ session_id, email_address }) => {
   const event_name = "Menu: Feedback";
   const eventProperties = {
@@ -2648,18 +2648,17 @@ export const FeedbackMenu = ({ session_id, email_address }) => {
   //console.log("Menu:intelligence menu");
 };
 
-//  Menu: Menu signin
+//  Menu: Menu signin - done
 export const SigninMenu = ({ session_id, email_address }) => {
   const event_name = "Menu: Sign in";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
 
-//  Menu: Sign in: email added
+//  Menu: Sign in: email added - done
 export const SigninMenuEmailAdded = ({ session_id, email_address }) => {
   const event_name = "Menu: Sign in: email added";
   const eventProperties = {
@@ -2670,7 +2669,7 @@ export const SigninMenuEmailAdded = ({ session_id, email_address }) => {
   //console.log("Menu:intelligence menu");
 };
 
-//  Menu: Sign in: email verified
+//  Menu: Sign in: email verified - done
 export const SigninMenuEmailVerified = ({ session_id, email_address }) => {
   const event_name = "Menu: Sign in: email verified";
   const eventProperties = {
@@ -3202,7 +3201,7 @@ export const IntlAssetValueNavigator = ({
 };
 
 
-//14. General pop up
+//14. General pop up - done
 export const GeneralPopup = ({
   session_id,
   from,
@@ -3217,7 +3216,7 @@ export const GeneralPopup = ({
 };
 
 
-//14. General pop up: email added
+//14. General pop up: email added - done
 export const GeneralPopupEmailAdded = ({ session_id, from, email_added }) => {
   const event_name = "General pop up: email added";
   const eventProperties = {
@@ -3230,7 +3229,7 @@ export const GeneralPopupEmailAdded = ({ session_id, from, email_added }) => {
 };
 
 
-//14.General pop up: email verified
+//14.General pop up: email verified - done
 export const GeneralPopupEmailVerified = ({ session_id, from, email_added }) => {
   const event_name = "General pop up: email verified";
   const eventProperties = {
@@ -3243,79 +3242,75 @@ export const GeneralPopupEmailVerified = ({ session_id, from, email_added }) => 
 };
 
 
-//14.Whale pods pop up
+//14.Whale pods pop up - done
 export const WhalePopup = ({
   session_id,
-  from,
 }) => {
   const event_name = "Whale pods pop up";
   const eventProperties = {
     "session id": session_id,
-    "from": from,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
 
-//14. Whale pods pop up: email added
-export const WhalePopupEmailAdded = ({ session_id, from, email_added }) => {
+//14. Whale pods pop up: email added - done
+export const WhalePopupEmailAdded = ({ session_id, email_address }) => {
   const event_name = "Whale pods pop up: email added";
   const eventProperties = {
     "session id": session_id,
-    from: from,
-    "email added": email_added,
+    "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
 
-//14. Whale pods pop up: email verified
-export const WhalePopupEmailVerified = ({ session_id, from, email_added }) => {
+//14. Whale pods pop up: email verified - done
+export const WhalePopupEmailVerified = ({ session_id, email_address }) => {
   const event_name = "Whale pods pop up: email verified";
   const eventProperties = {
     "session id": session_id,
-    from: from,
-    "email address": email_added,
+    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
 
-//14.Whale pods pop up
+//14.Whale pods pop up - done
 export const ConnectExPopup = ({ session_id, from }) => {
   const event_name = "Exchange connected pop up";
   const eventProperties = {
     "session id": session_id,
-    from: from,
+    "from": from
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
 
-//14. Whale pods pop up: email added
-export const ConnectExPopupEmailAdded = ({ session_id, from, email_added }) => {
+//14. Whale pods pop up: email added - done
+export const ConnectExPopupEmailAdded = ({ session_id, email_address,from }) => {
   const event_name = "Exchange connected pop up: email added";
   const eventProperties = {
     "session id": session_id,
-    from: from,
-    "email added": email_added,
+    "email added": email_address,
+    "from":from
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
 
-//14. Whale pods pop up: email verified
-export const ConnectExEmailVerified = ({ session_id, from, email_added }) => {
+//14. Whale pods pop up: email verified - done
+export const ConnectExEmailVerified = ({ session_id, from, email_address,from }) => {
   const event_name = "Exchange connected pop up: email verified";
   const eventProperties = {
     "session id": session_id,
-    from: from,
-    "email address": email_added,
+    "email address": email_address,
+    "from": from
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");

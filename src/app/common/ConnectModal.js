@@ -25,7 +25,7 @@ import {getExchangeBalance } from "../Portfolio/Api";
 import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from './Api';
 import CustomButton from "../../utils/form/CustomButton";
 import WalletIconBtn from "../../assets/images/icons/wallet_icon.svg";
-import { HomeConnectExchangeSelected, Home_CE_ApiSyncAttmepted, Home_CE_OAuthAttempted, LPConnectExchangeSelected, LP_CE_ApiSyncAttmepted, LP_CE_OAuthAttempted, WalletConnectExchangeSelected, Wallet_CE_ApiSyncAttmepted, Wallet_CE_OAuthAttempted } from "../../utils/AnalyticsFunctions";
+import { HomeConnectExchangeSelected, Home_CE_ApiSyncAttmepted, Home_CE_OAuthAttempted, LPConnectExchangeSelected, LPC_Go, LP_CE_ApiSyncAttmepted, LP_CE_OAuthAttempted, WalletConnectExchangeSelected, Wallet_CE_ApiSyncAttmepted, Wallet_CE_OAuthAttempted } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   getAllCoins,

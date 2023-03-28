@@ -17,7 +17,7 @@ import LinkIconBtn from "../../assets/images/link.svg";
 import { useHistory } from "react-router-dom";
 import ConnectModal from '../common/ConnectModal'
 import AuthModal from '../common/AuthModal'
-import { HomeConnectExchange } from '../../utils/AnalyticsFunctions'
+import { ConnectExPopup, HomeConnectExchange } from '../../utils/AnalyticsFunctions'
 import { getCurrentUser } from '../../utils/ManageToken'
 
 export default function WelcomeCard(props) {
@@ -54,6 +54,15 @@ export default function WelcomeCard(props) {
      let lochUser = JSON.parse(localStorage.getItem("lochUser"));
      if (!lochUser) {
        setpopupModal(!popupModal);
+       setTimeout(() => {
+         if (popupModal) {
+           ConnectExPopup({
+             session_id: getCurrentUser().id,
+             email_address: getCurrentUser().email,
+             from: "Home connect exchange",
+           });
+         }
+       }, 200);
      }
   }
 

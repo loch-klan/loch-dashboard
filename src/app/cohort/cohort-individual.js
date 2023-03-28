@@ -80,6 +80,7 @@ import {
   WhaleCreateAccountModal,
   WhaleCreateAccountSkip,
   WhaleExpandedPodFilter,
+  WhalePopup,
 } from "../../utils/AnalyticsFunctions";
 import { connect } from "react-redux";
 import CustomDropdown from "../../utils/form/CustomDropdown";
@@ -224,6 +225,15 @@ class CohortPage extends BaseReactComponent {
         // showBtn: false,
         // updateEmail: false,
       });
+
+      setTimeout(() => {
+        if (this.state.RegisterModal) {
+           WhalePopup({
+             session_id: getCurrentUser().id,
+           });
+        }
+         
+      }, 200);
     }
     if (this.state.RegisterModal) {
       WhaleCreateAccountModal({
