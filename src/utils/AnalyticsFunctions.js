@@ -2263,3 +2263,417 @@ export const SigninModalTrack = ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:time spent on onboarding");
 };
+// Start from here
+// -------- Home connect exchange -----------
+//8. Landing Page Conversion: connect exchange 
+export const HomeConnectExchange = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Home Page: connect exchange";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+//8. Landing Page Conversion: connect exchanges: connect exchange
+export const HomeConnectExchangeSelected = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Home Page: connect exchanges: connect exchange";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+//Landing Page Conversion: connect exchanges: connect exchange: API sync attempted
+export const Home_CE_ApiSyncAttmepted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Home Page: connect exchanges: connect exchange: API sync attempted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+//Landing Page Conversion: connect exchanges: connect exchange: API sync completed
+export const Home_CE_ApiSyncCompleted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Home Page: connect exchanges: connect exchange: API sync completed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+//Landing Page Conversion: connect exchanges: connect exchange: oAuth attempted
+export const Home_CE_OAuthAttempted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Home Page: connect exchanges: connect exchange: oAuth attempted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+//Landing Page Conversion: connect exchanges: connect exchange: oAuth attempted
+export const Home_CE_OAuthCompleted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Home Page: connect exchanges: connect exchange: oAuth completed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+
+// -------- LP connect exchange -----------
+//8. Landing Page Conversion: connect exchange 
+export const LPConnectExchange = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Landing Page Conversion: connect exchange";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+//8. Landing Page Conversion: connect exchanges: connect exchange
+export const LPConnectExchangeSelected = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Landing Page Conversion: connect exchanges: connect exchange";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+//Landing Page Conversion: connect exchanges: connect exchange: API sync attempted
+export const LP_CE_ApiSyncAttmepted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Landing Page Conversion: connect exchanges: connect exchange: API sync attempted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+//Landing Page Conversion: connect exchanges: connect exchange: API sync completed
+export const LP_CE_ApiSyncCompleted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Landing Page Conversion: connect exchanges: connect exchange: API sync completed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+//Landing Page Conversion: connect exchanges: connect exchange: oAuth attempted
+export const LP_CE_OAuthAttempted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Landing Page Conversion: connect exchanges: connect exchange: oAuth attempted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+//Landing Page Conversion: connect exchanges: connect exchange: oAuth attempted
+export const LP_CE_OAuthCompleted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Landing Page Conversion: connect exchanges: connect exchange: oAuth completed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+
+
+// -------- Wallet Page connect exchange -----------
+//8. Landing Page Conversion: connect exchange 
+export const WalletConnectExchange = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Wallets: connect exchange";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+//8. Landing Page Conversion: connect exchanges: connect exchange
+export const WalletConnectExchangeSelected = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name = "Wallets: connect exchanges: connect exchange";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+//Landing Page Conversion: connect exchanges: connect exchange: API sync attempted
+export const Wallet_CE_ApiSyncAttmepted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Wallets: connect exchanges: connect exchange: API sync attempted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+//Landing Page Conversion: connect exchanges: connect exchange: API sync completed
+export const Wallet_CE_ApiSyncCompleted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Wallets: connect exchanges: connect exchange: API sync completed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+//Landing Page Conversion: connect exchanges: connect exchange: oAuth attempted
+export const Wallet_CE_OAuthAttempted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Wallets: connect exchanges: connect exchange: oAuth attempted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+//Landing Page Conversion: connect exchanges: connect exchange: oAuth attempted
+export const Wallet_CE_OAuthCompleted = ({
+  session_id,
+  email_address,
+  exchange_name,
+}) => {
+  const event_name =
+    "Wallets: connect exchanges: connect exchange: oAuth completed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "exchange name": exchange_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+// Home Page: insights expanded
+export const HomeInsightsExpand = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name =
+    "Home Page: insights expanded";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+// Home Page: insights expanded
+export const HomeDefiYield = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Home Page: DeFi balance sheet: Yield expanded";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+
+// Home Page: DeFi balance sheet: Debt expanded
+export const HomeDefiDebt = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Home Page: DeFi balance sheet: Debt expanded";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
+// Menu: DeFi
+export const DeFiMenu = ({ session_id, email_address }) => {
+  const event_name = "Menu: DeFi";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+//  Menu: Feedback
+export const FeedbackMenu = ({ session_id, email_address }) => {
+  const event_name = "Menu: Feedback";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+//  Menu: Menu signin
+export const SigninMenu = ({ session_id, email_address }) => {
+  const event_name = "Menu: Sign in";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+//  Menu: Sign in: email added
+export const SigninMenuEmailAdded = ({ session_id, email_address }) => {
+  const event_name = "Menu: Sign in: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+//  Menu: Sign in: email verified
+export const SigninMenuEmailVerified = ({ session_id, email_address }) => {
+  const event_name = "Menu: Sign in: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
