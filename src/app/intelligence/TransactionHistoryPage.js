@@ -245,13 +245,18 @@ class TransactionHistoryPage extends BaseReactComponent {
     } else if (key === "SEARCH_BY_ASSETS_IN") {
       console.log("tes", this.props.intelligenceState.assetFilter);
       let assets = [];
-      Promise.all(
-       value != "allAssets" && this.props.intelligenceState?.assetFilter?.map((e) => {
-          if (value?.includes(e.id)) {
-            assets.push(e.label);
-          }
-        })
-      ).then(
+      Promise.all([
+  () => {
+    if (value !== "allAssets") {
+      console.log("test");
+      this.props.intelligenceState?.assetFilter?.map((e) => {
+        if (value?.includes(e.value)) {
+          assets.push(e.label);
+        }
+      });
+    }
+  }
+]).then(
         () => {
           console.log("asset arr", assets)
           TransactionHistoryAssetFilter({
