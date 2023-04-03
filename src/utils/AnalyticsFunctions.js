@@ -3345,3 +3345,12 @@ export const ConnectExEmailVerified = ({ session_id, email_address,from }) => {
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
+// email added for discount
+export const EmailAddedDiscount = ({ email_address}) => {
+  const event_name = "Landing Page Conversion: Discount Email added";
+  const eventProperties = {
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};

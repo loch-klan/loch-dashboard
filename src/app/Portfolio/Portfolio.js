@@ -311,7 +311,10 @@ class Portfolio extends BaseReactComponent {
 
   componentDidMount() {
     // reset redirect stop
-     localStorage.setItem("stop_redirect", false);
+    localStorage.setItem("stop_redirect", false);
+    
+    // reset discount modal
+     localStorage.setItem("discountEmail", false);
     // get token to check if wallet address loaded on not
     this.getToken();
     this.state.startTime = new Date() * 1;

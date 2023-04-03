@@ -44,6 +44,9 @@ class OnBoarding extends Component {
       connectExchangeModal: false,
       walletAddress: null,
       exchanges: null,
+
+      // showEmailPopup
+      showEmailPopup: true,
     };
   }
 
@@ -172,6 +175,7 @@ class OnBoarding extends Component {
   render() {
     return (
       <>
+      
         {this.state.showPrevModal && (
           <OnboardingModal
             show={this.state.showModal}
