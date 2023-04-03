@@ -147,25 +147,23 @@ class Home extends BaseReactComponent {
                         valueLink={this.linkState(this, "email")}
                         // label="Email Info"
                         required
-                        validations={
-                          [
-                            {
-                              validate: FormValidator.isRequired,
-                              message: "",
-                            },
-                            //   {
-                            //     validate: FormValidator.isNum,
-                            //     message: "Verification code can have only numbers",
-                            //     },
-                            // {
-                            //     validate: () => {
-                            //       console.log("state", this.state.isOptInValid);
-                            //        return !this.state.isOptInValid;
-                            //   },
-                            //     message:"invalid verification code"
-                            // }
-                          ]
-                        }
+                        validations={[
+                          {
+                            validate: FormValidator.isRequired,
+                            message: "",
+                          },
+                          //   {
+                          //     validate: FormValidator.isNum,
+                          //     message: "Verification code can have only numbers",
+                          //     },
+                          // {
+                          //     validate: () => {
+                          //       console.log("state", this.state.isOptInValid);
+                          //        return !this.state.isOptInValid;
+                          //   },
+                          //     message:"invalid verification code"
+                          // }
+                        ]}
                         control={{
                           type: CustomTextControl,
                           settings: {
@@ -182,7 +180,10 @@ class Home extends BaseReactComponent {
                       </Button>
                     </Form>
 
-                    <h3 className="inter-display-medium f-s-14 lh-16 m-t-20">
+                    <h3
+                      className="inter-display-medium f-s-14 lh-16 m-t-20"
+                      onClick={this.handleSkip}
+                    >
                       No thanks, just let me enter
                     </h3>
                   </>
