@@ -45,7 +45,7 @@ class LineChartSlider extends BaseReactComponent {
 
   componentDidUpdate(prevProps) {
     if (prevProps.isUpdate !== this.props.isUpdate) {
-      console.log("Something update");
+      // console.log("Something update");
       this.setState({
         title: "Year",
         selectedEvents: [],
@@ -110,7 +110,7 @@ class LineChartSlider extends BaseReactComponent {
   };
 
   DropdownData = (arr) => {
-    console.log("dropdown arr", arr);
+    // console.log("dropdown arr", arr);
   };
 
   render() {
@@ -478,7 +478,7 @@ class LineChartSlider extends BaseReactComponent {
                   selectedValue: selectedValue,
                 });
               } else {
-                console.log("reset");
+                // console.log("reset");
                 parent.setState({
                   selectedEvents: [],
                   selectedValue: null,
@@ -703,13 +703,13 @@ class LineChartSlider extends BaseReactComponent {
                       email_address: getCurrentUser().email,
                       no_of_events: noOfInternalEvent,
                     });
-                    console.log("inside event click");
+                    // console.log("inside event click");
                     parent.setState({
                       selectedEvents: selectedEvents,
                       selectedValue: selectedValue,
                     });
                   } else {
-                    console.log("reset");
+                    // console.log("reset");
                     parent.setState({
                       selectedEvents: [],
                       selectedValue: null,

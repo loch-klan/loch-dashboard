@@ -714,7 +714,7 @@ class UpgradeModal extends BaseReactComponent {
         }
 
         // Log the transaction receipt
-        console.log(receipt);
+        // console.log(receipt);
         this.setState({
           transactionReceipt: receipt.transactionHash,
         });

@@ -322,14 +322,14 @@ class Portfolio extends BaseReactComponent {
       this.props.portfolioState.coinRateList !==
       prevProps.portfolioState.coinRateList
     ) {
-      console.log("inside coin rate list");
+      // console.log("inside coin rate list");
       // if wallet address change
       if (
         this.state &&
         this.state.userWalletList &&
         this.state.userWalletList?.length > 0
       ) {
-        console.log("inside if");
+        // console.log("inside if");
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
 
@@ -369,7 +369,7 @@ class Portfolio extends BaseReactComponent {
           });
         }
       } else {
-        console.log("inside else");
+        // console.log("inside else");
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
 
@@ -382,7 +382,7 @@ class Portfolio extends BaseReactComponent {
       }
 
       if (prevProps.userWalletList !== this.state.userWalletList) {
-        console.log("inside diff userWalletlist");
+        // console.log("inside diff userWalletlist");
         this.state.userWalletList?.length > 0 &&
           this.setState({
             netFlowLoading: true,
@@ -435,7 +435,7 @@ class Portfolio extends BaseReactComponent {
       this.props.getDetailsByLinkApi(this.props.match.params.id, this);
     } else {
       // run all api
-      console.log("run all api");
+      // console.log("run all api");
 
       // update wallet
       this.props.getCoinRate();

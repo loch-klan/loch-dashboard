@@ -468,7 +468,7 @@ class ExitOverlay extends BaseReactComponent {
           isChainDetected.includes(undefined) || isChainDetected.includes(false)
             ? false
             : true;
-        console.log("address list", chain_detechted, isChainDetected);
+        // console.log("address list", chain_detechted, isChainDetected);
         let addWallet = walletList;
         if (addressList.length !== 0) {
           addWallet?.map((w, i) => {
@@ -812,7 +812,7 @@ class ExitOverlay extends BaseReactComponent {
         },
       });
     } else {
-      console.log("Invalid file type. Only CSV and text files are allowed.");
+      // console.log("Invalid file type. Only CSV and text files are allowed.");
     }
     event.target.value = "";
   };

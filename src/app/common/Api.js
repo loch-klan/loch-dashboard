@@ -791,7 +791,7 @@ export const getUser = (ctx = null, showToast = false) => {
         "currentPlan",
         JSON.stringify(res.data.data.current_plan)
       );
-        console.log(ctx,showToast)
+        // console.log(ctx,showToast)
       if (ctx?.props?.location?.search === "?status=success" || showToast === true) {
         
         toast.success(

@@ -7,7 +7,7 @@ import { amountFormat, CurrencyType, noExponents, numToCurrency } from "../../ut
 export const getGraphData = (apidata, parentCtx) => {
   let arr = apidata?.gas_fee_overtime;
   let assetPrices = apidata?.asset_prices;
-  console.log(apidata);
+  // console.log(apidata);
   let currency = JSON.parse(localStorage.getItem('currency'));
   // const digit = numToCurrency(
   //   Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))

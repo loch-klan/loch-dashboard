@@ -235,7 +235,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   };
 
   addCondition = (key, value) => {
-    console.log("key, value", key, value);
+    // console.log("key, value", key, value);
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       TransactionHistoryYearFilter({
         session_id: getCurrentUser().id,
@@ -243,12 +243,12 @@ class TransactionHistoryPage extends BaseReactComponent {
         year_filter:value == "allYear" ? "All years" : value
       });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
-      console.log("tes", this.props.intelligenceState.assetFilter);
+      // console.log("tes", this.props.intelligenceState.assetFilter);
       let assets = [];
       Promise.all([
   () => {
     if (value !== "allAssets") {
-      console.log("test");
+      // console.log("test");
       this.props.intelligenceState?.assetFilter?.map((e) => {
         if (value?.includes(e.value)) {
           assets.push(e.label);
@@ -258,7 +258,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   }
 ]).then(
         () => {
-          console.log("asset arr", assets)
+          // console.log("asset arr", assets)
           TransactionHistoryAssetFilter({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
@@ -275,7 +275,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       });
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
-    console.log("index", index);
+    // console.log("index", index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT

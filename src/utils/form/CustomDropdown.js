@@ -267,7 +267,7 @@ class CustomDropdown extends Component {
           this.state.options?.length - 1 === this.getSelected().selected?.length
         ) {
           this.selectedAll(true);
-          console.log("in");
+          // console.log("in");
         }
       });
     }

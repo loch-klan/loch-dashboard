@@ -98,7 +98,7 @@ class CustomTable extends BaseReactComponent {
                         onChangeCallback: (onBlur) => {
                           onBlur(this.state.pageSize);
                           handlePageSize(this.state.pageSize);
-                          console.log("Hello world!");
+                          // console.log("Hello world!");
                         },
                       },
                     }}

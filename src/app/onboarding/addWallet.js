@@ -25,7 +25,7 @@ import LinkIconBtn from "../../assets/images/link.svg";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
-    console.log("walletAddress", props.walletAddress);
+    // console.log("walletAddress", props.walletAddress);
     this.state = {
       showModal: true,
       signIn: false,
@@ -345,7 +345,7 @@ class AddWallet extends BaseReactComponent {
   };
 
   onValidSubmit = () => {
-    console.log("onvald")
+    // console.log("onvald")
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) {
       this.updateWallet();

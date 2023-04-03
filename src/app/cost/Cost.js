@@ -246,7 +246,7 @@ class Cost extends Component {
     });
 
     // get all data on page leave
-    console.log("data");
+    // console.log("data");
     this.getBlockchainFee(0);
     this.getCounterPartyFee(0);
   }

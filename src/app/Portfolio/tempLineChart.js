@@ -319,7 +319,7 @@ class LineChartSlider extends BaseReactComponent {
           let current = moment(item.timestamp).format("DD/MM/YYYY");
           // console.log("current", current, value);
           if (current === value) {
-            console.log("item", item);
+            // console.log("item", item);
             // selectedEvents.push(item);
             item.event.map((a) => {
               let e_usd = a.asset.value * a.asset_price;
@@ -350,7 +350,7 @@ class LineChartSlider extends BaseReactComponent {
                   e_address.substr(e_address.length - 3, e_address.length) +
                   '"';
               }
-              console.log("a", a);
+              
               selectedEvents.push({
                 usd: e_usd,
                 assetValue: e_assetValue,
@@ -747,7 +747,7 @@ class LineChartSlider extends BaseReactComponent {
                   <div className="InternalEventWrapper">
                     {this.state.selectedEvents.length > 0 &&
                       this.state.selectedEvents.map((event, i) => {
-                        console.log("first event", event);
+                        // console.log("first event", event);
 
                         let count =
                           Math.trunc(event.assetValue).toString().length > 6

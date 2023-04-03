@@ -48,11 +48,7 @@ class EditWalletExchange extends BaseReactComponent {
   }
 
   onValidSubmit = () => {
-    console.log(
-      "abd",
-      this.state.walletMetaData?.name,
-      this.state.walletNickname
-    );
+    
     let data = new URLSearchParams();
     data.append("exchange", this.state.walletMetaData?.name);
     data.append("account_name", this.state.walletNickname);

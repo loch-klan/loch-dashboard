@@ -153,7 +153,7 @@ function Sidebar(props) {
   
   const handleCohort = () => {
     setCohort(!cohort);
-    console.log("cohort")
+    // console.log("cohort")
   }
 
     const handleApiModal = ()=>{
@@ -173,7 +173,7 @@ function Sidebar(props) {
     }
   const handleFeedback = () => {
     setFeedbackModal(!showFeedbackModal);
-    console.log("clicked modal")
+    // console.log("clicked modal")
     FeedbackMenu({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -257,7 +257,7 @@ function Sidebar(props) {
       let isPopupActive = JSON.parse(localStorage.getItem("isPopupActive"));
       lochUser = JSON.parse(localStorage.getItem("lochUser"));
       if (!isPopupActive) {
-        console.log("inactive popup", isPopupActive);
+        // console.log("inactive popup", isPopupActive);
         if (!lochUser) {
           // GeneralPopup({
           //   session_id: getCurrentUser().id,
@@ -277,7 +277,7 @@ function Sidebar(props) {
         }
       } else {
         //  if popup active then run same function
-        console.log("active popup");
+        // console.log("active popup");
         SiginModal();
       }
      

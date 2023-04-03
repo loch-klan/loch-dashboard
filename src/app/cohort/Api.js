@@ -167,7 +167,7 @@ export const searchCohort = (data,ctx) => {
 
 // update cohort detail
 export const updateCohort = (sortedList) => {
-  console.log(sortedList)
+  // console.log(sortedList)
   return async function (dispatch, getState) {
     dispatch({
       type: UPDATE_COHORT,

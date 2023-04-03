@@ -50,7 +50,7 @@ const Pagination = props => {
 //    email_address: getCurrentUser().email,
 //    page_no: pageNo,
 //  });
-    console.log("back", pageNo)
+    // console.log("back", pageNo)
     if (props.noUrl) {
       props.loadData(props.page - 1);
     } else {
@@ -72,7 +72,7 @@ const Pagination = props => {
     //   email_address: getCurrentUser().email,
     //   page_no: pageNo,
     // });
-      console.log("next", pageNo);
+      // console.log("next", pageNo);
     if (props.noUrl) {
       props.loadData(props.page + 1);
     } else {

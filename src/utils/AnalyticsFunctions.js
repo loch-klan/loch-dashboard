@@ -63,7 +63,7 @@ export const signUpProperties = ({ email_address, userId, first_name, last_name 
 export const resetUser = () => {
   Mixpanel.reset();
   deleteToken();
-  console.log("reset");
+  // console.log("reset");
 }
 
 //use this to call function

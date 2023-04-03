@@ -88,7 +88,7 @@ class OnBoarding extends Component {
   }
 
   handleBackConnect = (exchanges = this.state.exchanges) => {
-    console.log("backed clicked in index.js")
+    // console.log("backed clicked in index.js")
     this.setState(
       {
         connectExchangeModal: !this.state.connectExchangeModal,
@@ -114,7 +114,7 @@ class OnBoarding extends Component {
 
     OnboardingPage({});
 
-      console.log("test mount index.js");
+      // console.log("test mount index.js");
   }
 
   componentWillUnmount() {

@@ -110,7 +110,7 @@ class EditWalletModal extends BaseReactComponent {
   };
 
   getDays = (dateString) => {
-    console.log("date", dateString);
+    // console.log("date", dateString);
     // const date = new Date();
     // let day = date.getDate();
     // let month = date.getMonth() + 1;
