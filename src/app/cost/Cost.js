@@ -11,6 +11,7 @@ import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { Image } from "react-bootstrap";
 import CoinChip from "../wallet/CoinChip";
 import TransactionTable from "../intelligence/TransactionTable";
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import {
   TimeSpentCosts,
   FeesTimePeriodFilter,
@@ -20,7 +21,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import {getCounterGraphData, getGraphData} from "./getGraphData";
-import { getAllFeeApi, getAllCounterFeeApi, updateCounterParty, updateFeeGraph, getAvgCostBasis } from "./Api";
+import { getAllFeeApi, getAllCounterFeeApi, updateCounterParty, updateFeeGraph, getAvgCostBasis, updateAverageCostBasis, ResetAverageCostBasis } from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
 import graphImage from '../../assets/images/gas-fees-graph.png'
@@ -52,7 +53,7 @@ class Cost extends Component {
       counterGraphLoading: true,
       gasFeesGraphLoading: true,
 
-      AvgCostLoading:true,
+      AvgCostLoading: true,
 
       // counter party
       // counterPartyData: [],
@@ -69,6 +70,17 @@ class Cost extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
+
+      // sort
+      sortBy: [
+        { title: "Asset", down: true },
+        { title: "Average cost price", down: true },
+        { title: "Current price", down: true },
+        { title: "Amount", down: true },
+        { title: "Cost basis", down: true },
+        { title: "Current value", down: true },
+        { title: "Gain loss", down: true },
+      ],
     };
   }
 
@@ -95,13 +107,10 @@ class Cost extends Component {
     this.props.getAllCoins();
     this.getBlockchainFee(0);
     this.getCounterPartyFee(0);
-     this.props.getAvgCostBasis(this);
+    this.props.getAvgCostBasis(this);
     GetAllPlan();
     getUser();
-   
   }
-
- 
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
@@ -112,7 +121,7 @@ class Cost extends Component {
       this.props.getAllCoins();
       this.getBlockchainFee(0);
       this.getCounterPartyFee(0);
-       this.props.getAvgCostBasis(this);
+      this.props.getAvgCostBasis(this);
       this.setState({
         apiResponse: false,
       });
@@ -141,7 +150,7 @@ class Cost extends Component {
       apiResponse: value,
     });
     // console.log("api respinse", value);
-      this.props.setPageFlagDefault();
+    this.props.setPageFlagDefault();
   };
 
   getBlockchainFee(option) {
@@ -247,8 +256,10 @@ class Cost extends Component {
 
     // get all data on page leave
     // console.log("data");
-    this.getBlockchainFee(0);
-    this.getCounterPartyFee(0);
+    // this.getBlockchainFee(0);
+    // this.getCounterPartyFee(0);
+    this.props.ResetAverageCostBasis();
+    // updateAverageCostBasis,
   }
 
   handleBadge = (activeBadgeList, type) => {
@@ -295,6 +306,86 @@ class Cost extends Component {
     this.setState({ connectModal: !this.state.connectModal });
   };
 
+  sortArray = (key, order) => {
+    let array = this.props.intelligenceState?.Average_cost_basis; //all data
+    let sortedList = array.sort((a, b) => {
+      let valueA = a[key];
+      let valueB = b[key];
+      if (key === "AssetCode") {
+        valueA = valueA.toLowerCase();
+        valueB = valueB.toLowerCase();
+        return order
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
+      } else {
+        valueA = parseFloat(valueA);
+        valueB = parseFloat(valueB);
+      }
+      if (order) {
+        return valueA - valueB;
+      } else {
+        return valueB - valueA;
+      }
+    });
+
+    // this.setState({
+    //   sortedList,
+    // });
+    this.props.updateAverageCostBasis(sortedList);
+  };
+  // sort
+  handleSort = (e) => {
+    // down == true means ascending and down == false means descending
+    let isDown = true;
+    let sort = [...this.state.sortBy];
+    sort.map((el) => {
+      if (el.title === e.title) {
+        el.down = !el.down;
+        isDown = el.down;
+      } else {
+        el.down = true;
+      }
+    });
+
+    if (e.title === "Asset") {
+      this.sortArray("AssetCode", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+      console.log("asset")
+    } else if (e.title === "Average cost price") {
+      this.sortArray("AverageCostPrice", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+    } else if (e.title === "Current price") {
+      this.sortArray("CurrentPrice", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+    } else if (e.title === "Amount") {
+      this.sortArray("Amount", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+    } else if (e.title === "Cost basis") {
+      this.sortArray("CostBasis", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+    } else if (e.title === "Current value") {
+      this.sortArray("CurrentValue", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+    } else if (e.title === "Gain loss") {
+      this.sortArray("GainLoss", isDown);
+      this.setState({
+        sortBy: sort,
+      });
+    }
+  };
+
   render() {
     // console.log("counter", this.state.counterGraphDigit);
     // console.log("fes", this.state.GraphDigit);
@@ -333,7 +424,21 @@ class Cost extends Component {
 
     const columnData = [
       {
-        labelName: "Asset",
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Asset"
+            onClick={() => this.handleSort(this.state.sortBy[0])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Asset
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[0].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
         dataKey: "Asset",
         // coumnWidth: 118,
         coumnWidth: 0.2,
@@ -350,7 +455,21 @@ class Cost extends Component {
         },
       },
       {
-        labelName: "Average Cost Price",
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Average Cost Price"
+            onClick={() => this.handleSort(this.state.sortBy[1])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Average Cost Price
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
         dataKey: "AverageCostPrice",
         // coumnWidth: 153,
         coumnWidth: 0.2,
@@ -363,9 +482,11 @@ class Cost extends Component {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={rowData.AverageCostPrice === 0
+                text={
+                  rowData.AverageCostPrice === 0
                     ? "N/A"
-                    : CurrencyType(false) + rowData.AverageCostPrice.toFixed(2)}
+                    : CurrencyType(false) + rowData.AverageCostPrice.toFixed(2)
+                }
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
                   {rowData.AverageCostPrice === 0
@@ -378,7 +499,21 @@ class Cost extends Component {
         },
       },
       {
-        labelName: "Current Price",
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Current Price"
+            onClick={() => this.handleSort(this.state.sortBy[2])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Current Price
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
         dataKey: "CurrentPrice",
         // coumnWidth: 128,
         coumnWidth: 0.2,
@@ -402,7 +537,21 @@ class Cost extends Component {
         },
       },
       {
-        labelName: "Amount",
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Amount"
+            onClick={() => this.handleSort(this.state.sortBy[3])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Amount
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
         dataKey: "Amount",
         // coumnWidth: 108,
         coumnWidth: 0.2,
@@ -424,12 +573,25 @@ class Cost extends Component {
                 </span>
               </CustomOverlay>
             );
-            
           }
         },
       },
       {
-        labelName: "Cost Basis",
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Cost Basis"
+            onClick={() => this.handleSort(this.state.sortBy[4])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Cost Basis
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
         dataKey: "CostBasis",
         // coumnWidth: 100,
         coumnWidth: 0.2,
@@ -459,7 +621,21 @@ class Cost extends Component {
         },
       },
       {
-        labelName: "Current Value",
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Current Value"
+            onClick={() => this.handleSort(this.state.sortBy[5])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Current Value
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
         dataKey: "CurrentValue",
         // coumnWidth: 140,
         coumnWidth: 0.2,
@@ -483,7 +659,21 @@ class Cost extends Component {
         },
       },
       {
-        labelName: "% Gain / Loss",
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Gain loss"
+            onClick={() => this.handleSort(this.state.sortBy[6])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              % Gain / Loss
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
         coumnWidth: 0.25,
@@ -492,13 +682,11 @@ class Cost extends Component {
           if (dataKey === "GainLoss") {
             return (
               <div
-                className={`gainLoss ${
-                  rowData.GainLoss < 0 ? "loss" : "gain"
-                }`}
+                className={`gainLoss ${rowData.GainLoss < 0 ? "loss" : "gain"}`}
               >
                 <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
                 <div className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.GainLoss.toFixed(2)+"%"}
+                  {rowData.GainLoss.toFixed(2) + "%"}
                 </div>
               </div>
             );
@@ -676,13 +864,17 @@ const mapDispatchToProps = {
   getAllCounterFeeApi,
 
   // avg cost
-getAvgCostBasis,
+  getAvgCostBasis,
 
   // update counter party
   updateCounterParty,
   // update fee
   updateFeeGraph,
-  setPageFlagDefault
+  setPageFlagDefault,
+
+  // average cost
+  ResetAverageCostBasis,
+  updateAverageCostBasis,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cost);

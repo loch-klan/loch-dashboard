@@ -1,5 +1,5 @@
 import { API_LIMIT } from "../../utils/Constant";
-import { ALL_TRANSACTION_HISTORY, ALL_TRANSACTION_HISTORY_HOME, AVERAGE_COST_BASIS, COUNTER_PARTY_VOLUME, GAS_FEES, INSIGHT_DATA, NETFLOW_GRAPH, PORTFOLIO_ASSET, TRANSACTION_FILTER } from "./ActionTypes";
+import { ALL_TRANSACTION_HISTORY, ALL_TRANSACTION_HISTORY_HOME, AVERAGE_COST_BASIS, AVERAGE_COST_RESET, AVERAGE_COST_SORT, COUNTER_PARTY_VOLUME, GAS_FEES, INSIGHT_DATA, NETFLOW_GRAPH, PORTFOLIO_ASSET, TRANSACTION_FILTER } from "./ActionTypes";
 const INITIAL_STATE = {
   table: [],
   currentPage: 1,
@@ -35,6 +35,7 @@ const INITIAL_STATE = {
 
   // average cost basis
   Average_cost_basis: [],
+  Average_cost_basis_all:[]
 };
 const IntelligenceReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -89,7 +90,10 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
         return {
           ...state,
           Average_cost_basis: action.payload.Average_cost_basis,
+          Average_cost_basis_all: action.payload.Average_cost_basis,
         };
+      case AVERAGE_COST_RESET: return { ...state, Average_cost_basis: state.Average_cost_basis_all };
+      case AVERAGE_COST_SORT: return {...state, Average_cost_basis: action.payload}
       default:
         return state;
     }

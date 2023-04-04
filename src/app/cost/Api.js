@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
 import { Home_CE_ApiSyncCompleted, LP_CE_ApiSyncCompleted, Wallet_CE_ApiSyncCompleted } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { AVERAGE_COST_BASIS, COUNTER_PARTY_VOLUME, GAS_FEES } from "../intelligence/ActionTypes";
+import { AVERAGE_COST_BASIS, AVERAGE_COST_RESET, AVERAGE_COST_SORT, COUNTER_PARTY_VOLUME, GAS_FEES } from "../intelligence/ActionTypes";
 import {getGraphData, getCounterGraphData} from "./getGraphData";
 
 export const getAllFeeApi = (ctx, startDate, endDate) => {
@@ -366,5 +366,26 @@ export const getAvgCostBasis = (ctx) => {
           toast.error(res.data.message || "Something Went Wrong");
         }
       });
+  };
+};
+
+// sort average cost basis
+
+export const updateAverageCostBasis = (data) => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: AVERAGE_COST_SORT,
+      payload: data
+    });
+  };
+};
+
+// reset average cost basis
+
+export const ResetAverageCostBasis = () => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: AVERAGE_COST_RESET
+    });
   };
 };
