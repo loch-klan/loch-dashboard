@@ -366,7 +366,7 @@ class AuthModal extends BaseReactComponent {
                 </>
               )}
             </div>
-            <div>
+            {/* <div>
               <p className="text-center inter-display-medium f-s-13 grey-969">
                 or
               </p>
@@ -387,7 +387,7 @@ class AuthModal extends BaseReactComponent {
               >
                 {this.state.btnloader ? loadingAnimation() : "Connect metamask"}
               </Button>
-            </div>
+            </div> */}
             {!this.props.hideSkip && (
               <p
                 className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-b-10 skip-link"
