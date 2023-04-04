@@ -291,7 +291,7 @@ class ProfileForm extends BaseReactComponent {
               </Button>
             </div>
           </Form>
-          {this.state.MetaAddress !== "" ? (
+          {/* {this.state.MetaAddress !== "" ? (
             <p className="inter-display-semi-bold f-s-13 lh-15 m-t-16">
               {this.state.MetaAddress} connected
             </p>
@@ -312,7 +312,7 @@ class ProfileForm extends BaseReactComponent {
             >
               {this.state.btnloader ? loadingAnimation() : "Connect wallet"}
             </Button>
-          )}
+          )} */}
           {this.state.upgradeModal && (
             <UpgradeModal
               show={this.state.upgradeModal}
