@@ -53,9 +53,9 @@ import {
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import moment from "moment";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
-import reduceCost from "../../assets/images/icons/reduce-cost.svg";
-import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
-import increaseYield from "../../assets/images/icons/increase-yield.svg";
+import reduceCost from "../../assets/images/icons/reduce-cost-img.svg";
+import reduceRisk from "../../assets/images/icons/reduce-risk-img.svg";
+import increaseYield from "../../assets/images/icons/increase-yield-img.svg";
 import {
   ManageWallets,
   TransactionHistoryEView,
