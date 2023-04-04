@@ -1770,7 +1770,10 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
 
               <div
                 className="portfolio-section"
-                style={{ minWidth: "85rem", marginTop: "9rem" }}
+                  style={{
+                    minWidth: "85rem",
+                    // marginTop: "9rem"
+                  }}
               >
                 <PieChart2
                   setLoader={this.setLoader}

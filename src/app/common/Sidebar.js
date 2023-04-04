@@ -349,15 +349,12 @@ function Sidebar(props) {
     
       return (
         <div className="sidebar-section">
-          <Container className={`${
-                    activeTab === "/home" ? "no-padding" : ""
-                  }`}>
+          <Container
+          >
             <div className="sidebar">
               <div style={{ width: "100%" }}>
                 <div
-                  className={`logo ${
-                    activeTab === "/home" ? "home-topbar" : ""
-                  }`}
+                  className={`logo`}
                 >
                   <div>
                     <Image src={logo} />

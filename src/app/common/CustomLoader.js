@@ -5,8 +5,8 @@ const CustomLoader = (props) => (
   <ContentLoader
     speed={3}
     width={props.loaderType === "pie" ? 600 : 135}
-    // height={props.loaderType === 'pie' ? 600 : 59}
-    height={props.loaderType === "pie" ? 600 : 40}
+    height={props.loaderType === 'pie' ? 600 : 59}
+    // height={props.loaderType === "pie" ? 600 : 40}
     viewBox="0"
     backgroundColor="#e8e8e8"
     foregroundColor="#cfcfcf"
