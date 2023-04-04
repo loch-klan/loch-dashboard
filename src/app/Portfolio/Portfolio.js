@@ -99,15 +99,15 @@ class Portfolio extends BaseReactComponent {
       // );
     }
 
-     const settings = {
-       dots: false,
-       infinite: false,
-       speed: 500,
-       slidesToShow: 1.5,
-       slidesToScroll: 1,
-       nextArrow: <Image src={nextIcon} />,
-       prevArrow: <Image src={prevIcon} />,
-     };
+    const settings = {
+      dots: false,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 1.5,
+      slidesToScroll: 1,
+      nextArrow: <Image src={nextIcon} />,
+      prevArrow: <Image src={prevIcon} />,
+    };
 
     this.state = {
       settings,
@@ -261,7 +261,7 @@ class Portfolio extends BaseReactComponent {
             triggerId: obj.id,
             isStatic: true,
             isLoading: false,
-            isLoadingNet:false
+            isLoadingNet: false,
           },
           () => {
             this.upgradeModal();
@@ -329,9 +329,9 @@ class Portfolio extends BaseReactComponent {
   componentDidMount() {
     // reset redirect stop
     localStorage.setItem("stop_redirect", false);
-    
+
     // reset discount modal
-     localStorage.setItem("discountEmail", false);
+    localStorage.setItem("discountEmail", false);
     // get token to check if wallet address loaded on not
     this.getToken();
     this.state.startTime = new Date() * 1;
@@ -436,7 +436,7 @@ class Portfolio extends BaseReactComponent {
         // when wallet address not present run connect exchnage api
         // this.props.getExchangeBalance("binance", this);
         // this.props.getExchangeBalance("coinbase", this);
-  this.props.getExchangeBalances(this);
+        this.props.getExchangeBalances(this);
         // net worth total loader
         this.setState({
           isLoading: false,
@@ -533,16 +533,12 @@ class Portfolio extends BaseReactComponent {
         } else {
           this.props.getDetailsByLinkApi(this.props.match.params.id, this);
           this.setState({
-            portfolioLink:false
-          })
+            portfolioLink: false,
+          });
         }
       }
-        
-      
-       
     } else {
       // run all api
-     
 
       // update wallet
       this.props.getCoinRate();
@@ -706,6 +702,11 @@ class Portfolio extends BaseReactComponent {
     });
   };
 
+  // click add wallet address btn
+  simulateButtonClick = ()=> {
+    const buttonElement = document.querySelector("#address-button");
+    buttonElement.click();
+  }
   render() {
     const { table_home, assetPriceList_home } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
@@ -1578,7 +1579,10 @@ class Portfolio extends BaseReactComponent {
                                       exchanges to gain more insights
                                     </h5>
                                   </div>
-                                  <div className="row-insight-arrow cp">
+                                  <div
+                                    className="row-insight-arrow cp"
+                                    onClick={this.simulateButtonClick}
+                                  >
                                     <h6 className="inter-display-medium f-s-13 lh-15 m-r-5">
                                       Add more
                                     </h6>

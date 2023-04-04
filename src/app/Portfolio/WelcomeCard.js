@@ -22,6 +22,7 @@ import { getCurrentUser } from '../../utils/ManageToken'
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 
 export default function WelcomeCard(props) {
+   const buttonRef = useRef(null);
     const [manageWallet, setManageWallet] = React.useState(true)
   const [AddWallet, setAddWallet] = React.useState(true);
   const [connectModal, setconnectModal] = React.useState(false);
@@ -204,13 +205,18 @@ export default function WelcomeCard(props) {
           <div className="row-div">
             <div
               className="topbar-btn"
-              style={{ marginRight: "1.7rem", marginLeft:"11rem" }}
+              style={{ marginRight: "1.7rem", marginLeft: "11rem" }}
               onClick={handleConnectModal}
             >
               <Image className="connect-exchange-img" src={LinkIconBtn} />
               Connect exchange
             </div>
-            <div className="topbar-btn" onClick={handleAddWalletClick}>
+            <div
+              className="topbar-btn"
+              onClick={handleAddWalletClick}
+              ref={buttonRef}
+              id="address-button"
+            >
               <Image src={AddWalletAddress} />
               Add wallet address
             </div>
@@ -246,16 +252,18 @@ export default function WelcomeCard(props) {
             ) : (
               <CustomLoader loaderType="text" />
             )}
-            {!lochUser && <span
-              onClick={handleSigninModal}
-              style={{ marginLeft: "3.4rem" }}
-              className="signin"
-            >
-              <Image src={SignInIcon} />
-              <Button className="inter-display-medium f-s-16 lh-19 navbar-button">
-                Sign in
-              </Button>
-            </span>}
+            {!lochUser && (
+              <span
+                onClick={handleSigninModal}
+                style={{ marginLeft: "3.4rem" }}
+                className="signin"
+              >
+                <Image src={SignInIcon} />
+                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">
+                  Sign in
+                </Button>
+              </span>
+            )}
           </div>
         </div>
         {connectModal ? (
