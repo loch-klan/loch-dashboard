@@ -18,7 +18,7 @@ export const createCohort = (data,ctx) => {
           },
           () => {
             if (ctx.state.showWarningMsg) {
-              // console.log("in")
+              
               ctx.getPodStatusFunction();
             }
           }
