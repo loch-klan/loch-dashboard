@@ -178,14 +178,16 @@ export const getExchangeBalances = (ctx) => {
              payload: {
                address: item.protocol.name,
                userWalletList: item,
-               assetPrice: i === 0 ? res.data?.data.asset_prices: {},
+               assetPrice: res.data?.data.asset_prices,
+                // assetPrice: i === 0 ? res.data?.data.asset_prices: {},
              },
            });
          }, 200);
        })
         if (ctx) {
           ctx.setState({
-            //  isLoading: false,
+            isLoading: false,
+            isLoadingNet: false,
             assetPrice: {
               ...ctx.state.assetPrice,
               ...res.data?.data.asset_prices,

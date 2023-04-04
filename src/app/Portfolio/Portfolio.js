@@ -438,10 +438,10 @@ class Portfolio extends BaseReactComponent {
         // this.props.getExchangeBalance("coinbase", this);
         this.props.getExchangeBalances(this);
         // net worth total loader
-        this.setState({
-          isLoading: false,
-          isLoadingNet: false,
-        });
+        // this.setState({
+        //   isLoading: false,
+        //   isLoadingNet: false,
+        // });
       }
 
       // run this when table value is []

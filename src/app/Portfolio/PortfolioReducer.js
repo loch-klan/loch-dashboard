@@ -192,6 +192,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
           updateWalletTotal = updateWalletTotal + currentPrice;
         }
       }
+      
       // userWalletList: updateWalletList,
       // return { ...state, walletTotal: updateWalletTotal, chainWallet: { ...updatedChainWallet }, chainPortfolio: {...chainPortfolio}, coinRateList: {...state.coinRateList, ...action.payload.assetPrice} };
       return {
