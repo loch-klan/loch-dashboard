@@ -489,7 +489,7 @@ class Portfolio extends BaseReactComponent {
 
       // run when graphValue == null and  GraphData: [],
       // add loader
-      this.props.getProfitAndLossApi(this, false, false, false);
+      // this.props.getProfitAndLossApi(this, false, false, false);
 
       // run this api if itws value 0
       this.props.getYesterdaysBalanceApi(this);
@@ -1438,15 +1438,38 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.2,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
             return (
-              <CoinChip
-                coin_img_src={rowData.Asset}
-                coin_code={rowData.AssetCode}
-              />
+              // <CoinChip
+              //   coin_img_src={rowData.Asset}
+              //   coin_code={rowData.AssetCode}
+              // />
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.AssetCode}
+              >
+                <Image
+                  src={rowData.Asset}
+                  className="history-table-icon"
+                  onMouseEnter={() => {
+                    // //console.log("address", rowData.from.metaData);
+                    // TransactionHistoryAddress({
+                    //   session_id: getCurrentUser().id,
+                    //   email_address: getCurrentUser().email,
+                    //   address_hovered: rowData.from.address,
+                    //   display_name: rowData.from.wallet_metaData?.text
+                    //     ? rowData.from.wallet_metaData?.text
+                    //     : rowData.from.metaData?.displayAddress,
+                    // });
+                  }}
+                />
+              </CustomOverlay>
             );
           }
         },
@@ -1469,7 +1492,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
         ),
         dataKey: "AverageCostPrice",
         // coumnWidth: 153,
-        coumnWidth: 0.3,
+        coumnWidth: 0.38,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -1551,7 +1574,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
         ),
         dataKey: "Amount",
         // coumnWidth: 108,
-        coumnWidth: 0.2,
+        coumnWidth: 0.16,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -1673,7 +1696,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
         ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
-        coumnWidth: 0.28,
+        coumnWidth: 0.35,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
