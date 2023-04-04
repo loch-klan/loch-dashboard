@@ -1761,6 +1761,7 @@ form {
 
         .history-table-header-col {
           display: flex;
+          user-select: none;
           .rotateUp {
             transform: rotate(180deg);
             margin-left: 1rem;
