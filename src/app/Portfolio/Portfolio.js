@@ -4,6 +4,11 @@ import { connect } from "react-redux";
 import WelcomeCard from "./WelcomeCard";
 import PieChart from "./PieChart";
 import LineChartSlider from "./LineCharSlider";
+import prevIcon from "../../assets/images/icons/prev-arrow.svg";
+import nextIcon from "../../assets/images/icons/next-arrow.svg";
+import LightBulb from "../../assets/images/icons/lightbulb.svg";
+import ArrowRight from "../../assets/images/icons/arrow-right.svg"
+
 import {
   getCoinRate,
   getDetailsByLinkApi,
@@ -81,6 +86,7 @@ import { toast } from "react-toastify";
 import { GraphHeader } from "../common/GraphHeader";
 import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH } from "./ActionTypes";
 import InsightImg from "../../assets/images/icons/insight-msg.svg"
+import Slider from "react-slick";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -93,7 +99,18 @@ class Portfolio extends BaseReactComponent {
       // );
     }
 
+     const settings = {
+       dots: false,
+       infinite: false,
+       speed: 500,
+       slidesToShow: 1.5,
+       slidesToScroll: 1,
+       nextArrow: <Image src={nextIcon} />,
+       prevArrow: <Image src={prevIcon} />,
+     };
+
     this.state = {
+      settings,
       id: props.match.params?.id,
       userWalletList: localStorage.getItem("addWallet")
         ? JSON.parse(localStorage.getItem("addWallet"))
@@ -1339,7 +1356,10 @@ class Portfolio extends BaseReactComponent {
                 />
               </div>
 
-              <div className="portfolio-section" style={{ minWidth: "85rem" }}>
+              <div
+                className="portfolio-section"
+                style={{ minWidth: "85rem", marginTop: "9rem" }}
+              >
                 <PieChart2
                   setLoader={this.setLoader}
                   userWalletData={
@@ -1459,7 +1479,7 @@ class Portfolio extends BaseReactComponent {
                     <div className="profit-chart">
                       <div
                         className={`bar-graph-section m-b-32`}
-                        style={{ paddingBottom: "0rem" }}
+                        style={{ paddingBottom: "0rem", position: "relative" }}
                       >
                         <GraphHeader
                           title={"Insights"}
@@ -1491,112 +1511,81 @@ class Portfolio extends BaseReactComponent {
                             </div>
                           ) : (
                             <>
-                              {this.props.intelligenceState
-                                .updatedInsightList &&
-                                this.props.intelligenceState.updatedInsightList
-                                  .length > 0 &&
-                                this.props.intelligenceState.updatedInsightList
-                                  ?.slice(0, 3)
-                                  .map((insight, key) => {
-                                    // console.log("insignt", insight);
-                                    return (
-                                      <div
-                                        className="insights-card"
-                                        key={key}
-                                        style={{
-                                          padding: 0,
-                                          boxShadow: "none",
-                                        }}
-                                      >
-                                        <Image
-                                          src={
-                                            insight.insight_type ===
-                                            InsightType.COST_REDUCTION
-                                              ? reduceCost
-                                              : insight.insight_type ===
-                                                InsightType.RISK_REDUCTION
-                                              ? reduceRisk
-                                              : increaseYield
-                                          }
-                                          className="insight-icon"
-                                        />
-                                        <div className="insights-content">
-                                          <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                                            {InsightType.getText(
-                                              insight.insight_type
-                                            )}
-                                          </h5>
-                                          <p
-                                            className="inter-display-medium f-s-13 lh-16 grey-969"
-                                            dangerouslySetInnerHTML={{
-                                              __html: insight.sub_title,
-                                            }}
-                                          ></p>
-                                          <h4
-                                            className="inter-display-medium f-s-16 lh-19 grey-313"
-                                            dangerouslySetInnerHTML={{
-                                              __html: insight.title,
-                                            }}
-                                          ></h4>
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                              {this.props.intelligenceState.updatedInsightList
-                                .length < 3 && (
-                                <div
-                                  style={{
-                                    height:
-                                      this.props.intelligenceState
-                                        .updatedInsightList?.length === 0
-                                        ? "35rem"
-                                        : this.props.intelligenceState
-                                            .updatedInsightList?.length === 1
-                                        ? "25rem"
-                                        : "16rem",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexDirection: "column",
-                                    position: "relative",
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      position: "absolute",
-                                      width: "16rem",
-                                      height: "16rem",
-                                      background:
-                                        "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",
-                                      filter: "blur(50px)",
-                                      borderRadius: "10rem",
-                                      zIndex: 0,
-                                    }}
-                                  ></div>
-                                  <Image
-                                    src={InsightImg}
-                                    style={{ position: "relative" }}
-                                  />
-                                  <h5
-                                    className="inter-display-medium f-s-16 lh-19 grey-313 text-center"
-                                    style={{
-                                      marginBottom: "1rem",
-                                      width: "90%",
-                                      marginTop: "1.2rem",
-                                      position: "relative",
-                                    }}
-                                  >
-                                    Add all your wallets and exchanges to gain
-                                    more insights.
-                                  </h5>
-                                  <p
-                                    className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"
-                                    style={{ position: "relative" }}
-                                  >
-                                    Insights increase with your usage
-                                  </p>
+                              <div className="insight-slider">
+                                {this.props.intelligenceState
+                                  .updatedInsightList &&
+                                  this.props.intelligenceState
+                                    .updatedInsightList.length > 0 && (
+                                    <Slider {...this.state.settings}>
+                                      {this.props.intelligenceState.updatedInsightList
+                                        ?.slice(0, 3)
+                                        .map((insight, key) => {
+                                          // console.log("insignt", insight);
+                                          return (
+                                            <div>
+                                              <div className="steps">
+                                                <div className="top-section">
+                                                  <Image
+                                                    src={
+                                                      insight.insight_type ===
+                                                      InsightType.COST_REDUCTION
+                                                        ? reduceCost
+                                                        : insight.insight_type ===
+                                                          InsightType.RISK_REDUCTION
+                                                        ? reduceRisk
+                                                        : increaseYield
+                                                    }
+                                                    className="insight-icon"
+                                                  />
+                                                  <div className="insight-title">
+                                                    <h5 className="inter-display-medium f-s-16 lh-19">
+                                                      {InsightType.getSmallText(
+                                                        insight.insight_type
+                                                      )}
+                                                    </h5>
+                                                    <h6 className="inter-display-semi-bold f-s-10 lh-12">
+                                                      INSIGHT
+                                                    </h6>
+                                                  </div>
+                                                </div>
+
+                                                <div className="content-section">
+                                                  <p
+                                                    className="inter-display-medium f-s-13 lh-16 grey-969"
+                                                    dangerouslySetInnerHTML={{
+                                                      __html: insight.sub_title,
+                                                    }}
+                                                  ></p>
+                                                  <h4
+                                                    className="inter-display-medium f-s-16 lh-19 grey-313 m-t-12"
+                                                    dangerouslySetInnerHTML={{
+                                                      __html: insight.title,
+                                                    }}
+                                                  ></h4>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        })}
+                                    </Slider>
+                                  )}
+
+                                <div className="bottom-msg">
+                                  <div className="row-insight op">
+                                    <Image src={LightBulb} />
+                                    <h5 className="inter-display-medium f-s-13 lh-15 m-l-12">
+                                      Add all your wallets and <br />
+                                      exchanges to gain more insights
+                                    </h5>
+                                  </div>
+                                  <div className="row-insight-arrow cp">
+                                    <h6 className="inter-display-medium f-s-13 lh-15 m-r-5">
+                                      Add more
+                                    </h6>
+                                    <Image src={ArrowRight} />
+                                  </div>
                                 </div>
-                              )}
+                              </div>
                             </>
                           )}
                         </div>

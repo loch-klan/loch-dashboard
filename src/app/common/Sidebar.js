@@ -349,10 +349,16 @@ function Sidebar(props) {
     
       return (
         <div className="sidebar-section">
-          <Container>
+          <Container className={`${
+                    activeTab === "/home" ? "no-padding" : ""
+                  }`}>
             <div className="sidebar">
               <div style={{ width: "100%" }}>
-                <div className="logo">
+                <div
+                  className={`logo ${
+                    activeTab === "/home" ? "home-topbar" : ""
+                  }`}
+                >
                   <div>
                     <Image src={logo} />
                     <span className="loch-text">Loch</span>
@@ -575,10 +581,9 @@ function Sidebar(props) {
                           className={`nav-link ${!isDefi ? "none" : ""}`}
                           to={`${!isDefi ? "#" : "/decentralized-finance"}`}
                           onClick={(e) => {
-                            
                             DeFiMenu({
                               session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
+                              email_address: getCurrentUser().email,
                             });
                             if (!isDefi) {
                               upgradeModal();

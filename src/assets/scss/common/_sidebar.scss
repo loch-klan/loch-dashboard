@@ -9,6 +9,15 @@
       width: 27.2rem;
         padding-left: 2.4rem;
         padding-right: 2.4rem;
+
+        &.no-padding{
+          padding: 0;
+
+          // when Home page add padding on sidebar-body
+          .sidebar-body{
+            padding: 0rem 2.4rem;
+          }
+        }
     }
     .sidebar {
         display: flex;
@@ -35,6 +44,15 @@
             .loch-text{
               @include font($black-191, "Inter-Medium", 2.4rem, 500, 24px);
               vertical-align: middle;
+            }
+
+            &.home-topbar{
+              background: #FFFFFF;
+               box-shadow: -6px 4px 10px rgba(0, 0, 0, 0.04), -6px 1px 1px rgba(0, 0, 0, 0.04);
+              padding: 2rem 3.2rem;
+              margin: 0 0 2rem;
+              z-index: 5;
+              position: relative;
             }
         }
         .currency-wrapper{
