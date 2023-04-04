@@ -149,15 +149,20 @@ export const getAllInsightsApi = (ctx) => {
              type: INSIGHT_DATA,
              payload: {
                updatedInsightList: res.data.data.insights,
+               
              },
            });
  
            if (ctx?.state.currentPage === "Home") {
             
              ctx.setState({
-              //  insightList: res.data.data.insights,
-              //  updatedInsightList: res.data.data.insights,
+               //  insightList: res.data.data.insights,
+               //  updatedInsightList: res.data.data.insights,
                isLoadingInsight: false,
+               settings: {
+                 ...ctx.state.settings,
+                 slidesToShow: res.data.data.insights?.length === 1 ? 1 : 1.5,
+               },
              });
            } else {
             //  console.log("else insight")

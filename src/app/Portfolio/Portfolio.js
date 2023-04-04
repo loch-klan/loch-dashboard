@@ -276,6 +276,7 @@ class Portfolio extends BaseReactComponent {
         isLoadingNet: true,
         graphLoading: true,
         tableLoading: true,
+        
       });
     }
   };
@@ -327,6 +328,15 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidMount() {
+    this.setState({
+      settings: {
+        ...this.state.settings,
+        slidesToShow:
+          this.props.intelligenceState.updatedInsightList?.length === 1
+            ? 1
+            : 1.5,
+      },
+    });
     // reset redirect stop
     localStorage.setItem("stop_redirect", false);
 
