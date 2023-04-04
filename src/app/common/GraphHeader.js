@@ -59,7 +59,7 @@ export const GraphHeader = (props) => {
             Don't worry we're still loading all your data
           </h5>
         )} */}
-        <div className="show-percentage-cost-basis">
+        {props.ishideDust || props.isGainLoss && <div className="show-percentage-cost-basis">
           {props.ishideDust && (
             <div className="inter-display-medium f-s-15 lh-15 cp grey-ADA dust-style m-r-12" onClick={toggleDust}>
               {showDust
@@ -79,14 +79,14 @@ export const GraphHeader = (props) => {
                 style={{ position: "relative", top: "-2px" }}
               />
               {props.totalPercentage + "%"}{" "}
-              {props.totalPercentage === 0
+              {props.totalPercentage == 0.00
                 ? "No Change"
                 : props.totalPercentage > 0
                 ? "Increase"
                 : "Decrease"}
             </div>
           )}
-        </div>
+        </div>}
 
         {props.isConnect && (
           <Button className="grey-btn" onClick={props.handleExchange}>

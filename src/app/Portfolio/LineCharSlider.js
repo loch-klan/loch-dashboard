@@ -1214,14 +1214,14 @@ backdrop-filter: blur(15px);">
                   className="chart-y-selection"
                   style={
                     this.props.hideTimeFilter
-                      ? { width: "100%", marginTop: "3.5rem" }
+                      ? { width: "100%", marginTop: "0.5rem" }
                       : { width: "100%" }
                   }
                 >
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
-                  {this.props.dataLoaded && (
+                  {this.props.dataLoaded  && (
                     <h5
                       className="inter-display-medium f-s-10 lh-14"
                       style={{ position: "absolute", right: "0px",top: !this.props.hideTimeFilter ? "-27px" : "-2px",zIndex: 1 }}

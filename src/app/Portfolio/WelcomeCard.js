@@ -252,7 +252,7 @@ export default function WelcomeCard(props) {
             ) : (
               <CustomLoader loaderType="text" />
             )}
-            {!lochUser && (
+            {/* {!lochUser && (
               <span
                 onClick={handleSigninModal}
                 style={{ marginLeft: "3.4rem" }}
@@ -263,7 +263,7 @@ export default function WelcomeCard(props) {
                   Sign in
                 </Button>
               </span>
-            )}
+            )} */}
           </div>
         </div>
         {connectModal ? (
