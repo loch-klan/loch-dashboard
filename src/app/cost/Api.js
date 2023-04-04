@@ -330,10 +330,15 @@ export const getAvgCostBasis = (ctx) => {
           // ];
 
           let AssetsList = [];
+          let totalCostBasis = 0;
+          let totalCurrentValue = 0;
           ApiResponse?.map(item => {
             let costBasis = item.count * item.average_price * (currency?.rate || 1);
-            let current_price =
+            let current_price = 
               item.count * item.current_price * (currency?.rate || 1);
+            
+            totalCostBasis = totalCostBasis + costBasis;
+            totalCurrentValue = totalCurrentValue + current_price;
             AssetsList.push({
               Asset: item.asset.symbol,
               AssetCode: item.asset.code,
@@ -346,17 +351,22 @@ export const getAvgCostBasis = (ctx) => {
               GainLoss:
                 costBasis == 0
                   ? 0
-                  : ((current_price * (currency?.rate || 1) - costBasis) /
+                  : ((current_price - costBasis) /
                       costBasis) *
                     100,
             });
           });
+
+          let totalPercentage = totalCostBasis === 0 ? 0 : (
+            ((totalCurrentValue - totalCostBasis) / totalCostBasis)* 100
+          ).toFixed(2);
 
           // console.log("Asset",AssetsList)
           dispatch({
             type: AVERAGE_COST_BASIS,
             payload: {
               Average_cost_basis: AssetsList,
+              totalPercentage: totalPercentage
             },
           });
           ctx.setState({

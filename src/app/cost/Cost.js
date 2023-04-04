@@ -386,6 +386,19 @@ class Cost extends Component {
     }
   };
 
+  handleDust = (ishide) => {
+    if (!ishide) {
+       let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+         (e) => e.CurrentValue >= 1
+       ); //all data
+       this.props.updateAverageCostBasis(array);
+    } else {
+      this.props.ResetAverageCostBasis()
+    }
+   
+    
+  }
+
   render() {
     // console.log("counter", this.state.counterGraphDigit);
     // console.log("fes", this.state.GraphDigit);
@@ -751,7 +764,10 @@ class Cost extends Component {
                 comingSoon={false}
                 isArrow={false}
                 isLoading={this.state.AvgCostLoading}
-                // isConnect={true}
+                isGainLoss={true}
+                ishideDust={true}
+                totalPercentage={this.props.intelligenceState.totalPercentage}
+                handleDust={this.handleDust}
                 // handleExchange={this.handleConnectModal}
               />
             </div>

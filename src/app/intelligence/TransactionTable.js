@@ -20,7 +20,10 @@ function TransactionTable(props) {
             isArrow={props.isArrow}
             handleClick={props.handleClick}
             isAnalytics="Transaction Table"
-            isConnect={props.isConnect}
+            isGainLoss={props.isGainLoss}
+            ishideDust={props.ishideDust}
+            handleDust={props.handleDust}
+            totalPercentage={props.totalPercentage}
             handleExchange={props.handleExchange}
           />
         ) : (

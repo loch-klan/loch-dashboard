@@ -2053,3 +2053,28 @@ textarea {
                 }
 
             }
+
+
+.show-percentage-cost-basis {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .content {
+           padding: 0.8rem 1rem 0.6rem;
+            border-radius: 0.8rem;
+            display: flex;
+        }
+
+        .inc {
+            background-color: $green-E3F;
+        }
+        .dec{
+          background-color: #FFE0D9;
+        }
+
+        .dust-style{
+           &:hover{
+        color:$primary;
+    }
+        }
+    }

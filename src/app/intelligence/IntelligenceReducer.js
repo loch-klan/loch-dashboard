@@ -35,7 +35,8 @@ const INITIAL_STATE = {
 
   // average cost basis
   Average_cost_basis: [],
-  Average_cost_basis_all:[]
+  Average_cost_basis_all: [],
+  totalPercentage:0,
 };
 const IntelligenceReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
@@ -91,6 +92,7 @@ const IntelligenceReducer = (state = INITIAL_STATE, action) => {
           ...state,
           Average_cost_basis: action.payload.Average_cost_basis,
           Average_cost_basis_all: action.payload.Average_cost_basis,
+          totalPercentage: action.payload.totalPercentage,
         };
       case AVERAGE_COST_RESET: return { ...state, Average_cost_basis: state.Average_cost_basis_all };
       case AVERAGE_COST_SORT: return {...state, Average_cost_basis: action.payload}
