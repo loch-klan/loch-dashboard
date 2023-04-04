@@ -139,7 +139,7 @@ class Home extends BaseReactComponent {
               <div className="content-section">
                 {!this.state.emailAdded ? (
                   <>
-                    <h1 className="inter-display-medium f-s-26 lh-30 grey-B0B m-b-26">
+                    <h1 className="inter-display-medium f-s-39 lh-46 grey-B0B m-b-26">
                       Get exclusive discounts to Loch
                     </h1>
                     <Form onValidSubmit={this.handleSave}>
@@ -152,10 +152,10 @@ class Home extends BaseReactComponent {
                             validate: FormValidator.isRequired,
                             message: "",
                           },
-                          //   {
-                          //     validate: FormValidator.isNum,
-                          //     message: "Verification code can have only numbers",
-                          //     },
+                            {
+                              validate: FormValidator.isEmail,
+                              message: "Enter valid email",
+                              },
                           // {
                           //     validate: () => {
                           //       console.log("state", this.state.isOptInValid);
@@ -181,7 +181,7 @@ class Home extends BaseReactComponent {
                     </Form>
 
                     <h3
-                      className="inter-display-medium f-s-14 lh-16 m-t-20"
+                      className="inter-display-medium f-s-16 lh-19 m-t-40"
                       onClick={this.handleSkip}
                     >
                       No thanks, just let me enter
