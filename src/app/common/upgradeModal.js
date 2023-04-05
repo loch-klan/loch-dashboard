@@ -1000,32 +1000,32 @@ class UpgradeModal extends BaseReactComponent {
                                   //  }}
                                 >
                                   <div
-                                    // className={`plan-card`}
+                                    className={`plan-card`}
                                     style={{
                                       display: "flex",
                                       alignItems: "center",
-                                      justifyContent: "center",
+                                      justifyContent: "space-between",
                                       padding: "1.5rem",
                                     }}
                                   >
                                     <div>
-                                      <h3 className="inter-display-medium f-s-16 lh-25 text-center">
+                                      {/* <h3 className="inter-display-medium f-s-16 lh-25 text-center">
                                         Not sure about paying the full amount?
                                         No worries, you can unsubscribe at
                                         anytime.<br/> We also offer a 5 day money
                                         back guarantee.
-                                      </h3>
-                                      {/* <h3 className="inter-display-medium f-s-16 lh-25">
-                                        Want to try before subscribing?
                                       </h3> */}
-                                      {/* <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                                      <h3 className="inter-display-medium f-s-16 lh-25">
+                                        Want to try before subscribing?
+                                      </h3>
+                                      <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
                                         Try the unlimited Sovereign plan for{" "}
                                         {plan.trial_day}{" "}
                                         {plan.trial_day > 1 ? "days" : "day"}{" "}
-                                        for ${plan.price} .
-                                      </h5> */}
+                                        for ${plan.price}
+                                      </h5>
                                     </div>
-                                    {/* <Button
+                                    <Button
                                       className={`primary-btn ${
                                         plan.name === this.state.userPlan.name
                                           ? "disabled"
@@ -1041,7 +1041,7 @@ class UpgradeModal extends BaseReactComponent {
                                       }}
                                     >
                                       Trial
-                                    </Button> */}
+                                    </Button>
                                   </div>
                                 </div>
                               </Col>

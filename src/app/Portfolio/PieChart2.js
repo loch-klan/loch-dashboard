@@ -336,7 +336,7 @@ class PieChart2 extends BaseReactComponent {
         pieSectionDataEnabled: {},
       });
     }
-
+// console.log("inside", this.props.chainPortfolio, prevProps.chainPortfolio);
     if (
       this.props.chainPortfolio !== prevProps.chainPortfolio ||
       this.props.chainPortfolio?.length !== prevProps.chainPortfolio?.length
