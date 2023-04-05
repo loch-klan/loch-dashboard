@@ -171,11 +171,12 @@ export const getExchangeBalances = (ctx,isRefresh = false) => {
           res.data.data.user_wallets
             ? res.data.data.user_wallets
             : [];
-        // localStorage.setItem(
-        //   "refreshApiTime",
-        //   moment(res.data?.data.user_wallet?.modified_on).valueOf()
-        // );
-        // isRefresh && ctx.getCurrentTime();
+        
+        localStorage.setItem(
+          "refreshApiTime",
+          moment(res.data?.data.user_wallet?.modified_on).valueOf()
+        );
+        isRefresh && ctx.getCurrentTime();
      
         userWalletList?.map((item,i) => {
          setTimeout(() => {
