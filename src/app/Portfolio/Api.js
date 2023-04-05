@@ -152,12 +152,18 @@ export const getExchangeBalance = (exchangeName, ctx) => {
 };
 
 
-export const getExchangeBalances = (ctx) => {
+export const getExchangeBalances = (ctx,isRefresh = false) => {
   return function (dispatch, getState) {
- 
+  let data = new URLSearchParams();
+  if (!isRefresh) {
+    data.append("update_balance", false);
+  } else {
+    //  console.log("On Refresh Api Called", wallet);
+    data.append("update_balance", true);
+  }
 
     postLoginInstance
-      .post("wallet/user-wallet/get-exchange-balances")
+      .post("wallet/user-wallet/get-exchange-balances",data)
       .then((res) => {
         let userWalletList =
           res.data &&

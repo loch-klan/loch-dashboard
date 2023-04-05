@@ -445,7 +445,7 @@ class Portfolio extends BaseReactComponent {
         // connect exchange api
         // this.props.getExchangeBalance("binance", this);
         // this.props.getExchangeBalance("coinbase", this);
-        this.props.getExchangeBalances(this);
+        this.props.getExchangeBalances(this,false);
 
         if (!isFound) {
           this.setState({
@@ -462,7 +462,7 @@ class Portfolio extends BaseReactComponent {
         // when wallet address not present run connect exchnage api
         // this.props.getExchangeBalance("binance", this);
         // this.props.getExchangeBalance("coinbase", this);
-        this.props.getExchangeBalances(this);
+        this.props.getExchangeBalances(this,false);
         // net worth total loader
         // this.setState({
         //   isLoading: false,
@@ -2214,7 +2214,7 @@ const mapDispatchToProps = {
   getAssetGraphDataApi,
   getDetailsByLinkApi,
   getProfitAndLossApi,
-  getExchangeBalance,
+  // getExchangeBalance,
   getExchangeBalances,
   getYesterdaysBalanceApi,
   getExternalEventsApi,

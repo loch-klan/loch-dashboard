@@ -37,6 +37,7 @@ import {
   getYieldBalanceApi,
   getUserWallet,
   getProtocolBalanceApi,
+  getExchangeBalances,
 } from "./Api";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import { updateWalletListFlag } from "../common/Api";
@@ -650,7 +651,9 @@ class PieChart2 extends BaseReactComponent {
           }
         });
       }
-    })
+         })
+    
+      this.props.getExchangeBalances(this, true);
     
  
 
@@ -1622,5 +1625,7 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   updateDefiData,
   getProtocolBalanceApi,
+
+  getExchangeBalances,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PieChart2);

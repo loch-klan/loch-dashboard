@@ -146,8 +146,10 @@ export const searchCohort = (data,ctx) => {
           dispatch({
             type: GET_ALL_COHORT,
             payload: {
-              cardList: res.data.data?.user_cohorts.results,
-              sortedList: res.data.data?.user_cohorts.results,
+              cardList: res.data.data?.user_cohorts.results.sort(
+                (a, b) => a.total_net_worth - b.total_net_worth)
+              ,
+              sortedList: res.data.data?.user_cohorts.results.sort((a, b) => a.total_net_worth - b.total_net_worth),
               total_addresses,
             },
           });

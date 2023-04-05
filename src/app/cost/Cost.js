@@ -747,7 +747,7 @@ class Cost extends Component {
             showpath={true}
             currentPage={"costs"}
           />
-          <div className="m-b-40 cost-table-section">
+          <div className="m-b-43 cost-table-section">
             <div style={{ position: "relative" }}>
               {/* <div className="coming-soon-div">
                 <Image src={ExportIconWhite} className="coming-soon-img" />
@@ -775,7 +775,7 @@ class Cost extends Component {
           <div
             style={{
               position: "relative",
-              minHeight: "68rem",
+              minHeight: "66.5rem",
               minWidth: "85rem",
             }}
           >
@@ -799,7 +799,7 @@ class Cost extends Component {
               timeFunction={(e) => {
                 this.getBlockchainFee(e);
               }}
-              marginBottom="m-b-32"
+              marginBottom="m-b-30"
               showFooter={true}
               showBadges={true}
               isScrollVisible={false}
@@ -819,7 +819,7 @@ class Cost extends Component {
             id="cp"
             style={{
               position: "relative",
-              minHeight: "68rem",
+              minHeight: "66.5rem",
               minWidth: "85rem",
             }}
           >
@@ -848,7 +848,7 @@ class Cost extends Component {
               digit={this.state.counterGraphDigit}
               coinsList={this.props.OnboardingState.coinsList}
               timeFunction={(e) => this.getCounterPartyFee(e)}
-              marginBottom="m-b-32"
+              marginBottom="m-b-30"
               showFooter={true}
               showBadges={true}
               isScrollVisible={false}
