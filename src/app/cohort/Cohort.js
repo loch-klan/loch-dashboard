@@ -157,8 +157,11 @@ class Cohort extends Component {
      
     // console.log(
     //   this.state.userPlan?.whale_pod_limit,
-    //   this.state.cardList?.length
+    //   this.props.cohortState?.total_addresses,
+    //   this.props.cohortState.cardList?.length
     // );
+    const cohortCards = this.props.cohortState.cardList?.filter(e => e.user_id);
+    // console.log("cohort",cohortCards )
     if (
       this.props.cohortState?.total_addresses >=
         this.state.userPlan.wallet_address_limit &&
@@ -174,8 +177,7 @@ class Cohort extends Component {
       );
     } else {
       if (
-        this.props.cohortState.cardList?.length <=
-          this.state.userPlan?.whale_pod_limit ||
+        cohortCards?.length < this.state.userPlan?.whale_pod_limit ||
         this.state.userPlan?.whale_pod_limit === -1
       ) {
         this.setState({

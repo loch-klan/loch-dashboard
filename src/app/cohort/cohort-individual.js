@@ -1633,7 +1633,7 @@ class CohortPage extends BaseReactComponent {
                         <Image
                           src={CopyClipboardIcon}
                           style={{ marginLeft: "1.5rem" }}
-                          onClick={() => this.copyLink(e.wallet_address)}
+                          onClick={() => this.copyLink(address)}
                         />
                         {this.state.userId && (
                           <Image

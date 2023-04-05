@@ -94,7 +94,7 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
                     isLoadingNet: false,
                     isStopLoading: true,
                   });
-                }, (ctx.state.userWalletList?.length || 1) * 1500);
+                }, (ctx.state.userWalletList?.length || 1) * 600);
               }
               
             })

@@ -146,7 +146,9 @@ class PieChart2 extends BaseReactComponent {
 
       });
     } else {
+      // this.setState({
 
+      // })
     }
     // console.log("pie", this.props.chainPortfolio)
 
