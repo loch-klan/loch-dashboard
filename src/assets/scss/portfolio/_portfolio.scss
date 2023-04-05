@@ -767,7 +767,7 @@ height: 100%;
 
 
                 .top-section{
-                    background-color: #19191A;
+                    background-color: rgba(229, 229, 230, 0.5);
                     display: flex;
                     align-items: center;
                     border-top-right-radius: 1.2rem;
@@ -775,7 +775,7 @@ height: 100%;
                      padding: 1.6rem;
 
                      img{
-                        filter: invert(1);
+                        // filter: invert(1);
                         width: 4rem;
                         height:  4rem;
                      }
@@ -785,12 +785,12 @@ height: 100%;
                         margin-left: 1.2rem;
 
                         h5{
-                            color:#fff;
+                            // color:#fff;
                             text-transform: capitalize;
                         }
 
                         h6{
-                            color:#E5E5E680;
+                            // color:#E5E5E680;
                         }
                     }
 
