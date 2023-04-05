@@ -94,7 +94,7 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
                     isLoadingNet: false,
                     isStopLoading: true,
                   });
-                }, (ctx.state.userWalletList?.length || 1) * 600);
+                }, (ctx.state.userWalletList?.length || 1) * 1500);
               }
               
             })
@@ -194,6 +194,7 @@ export const getExchangeBalances = (ctx,isRefresh = false) => {
           ctx.setState({
             isLoading: false,
             isLoadingNet: false,
+            isStopLoading: true,
             assetPrice: {
               ...ctx.state.assetPrice,
               ...res.data?.data.asset_prices,
@@ -608,23 +609,9 @@ export const getProtocolBalanceApi = (ctx,data) => {
                 BalanceSheetValue,
               },
             });
-            // ctx.setState(
-            //   {
-            //     // totalYield,
-            //     // totalDebt,
-            //     totalYield: totalY,
-            //     totalDebt: totalD,
-            //     cardList,
-            //     sortedList: sorted,
-            //     DebtValues,
-            //     YieldValues,
-            //     BalanceSheetValue,
-            //   },
-            //   () => {
-            //     ctx.props?.getProtocolTotal &&
-            //       ctx.props.getProtocolTotal(totalY, totalD);
-            //   }
-            // );
+            ctx.setState({
+              defiLoader: false,
+            });
           }, 100);
         } else {
           toast.error(res.data.message || "Something Went Wrong");
