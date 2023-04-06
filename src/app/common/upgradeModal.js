@@ -1011,10 +1011,8 @@ class UpgradeModal extends BaseReactComponent {
                                     <div>
                                       <h3 className="inter-display-medium f-s-16 lh-25 text-center">
                                         Not sure about paying the full amount?
-                                        No worries, you can unsubscribe at
-                                        anytime.
-                                        <br /> We also offer a 5 day money back
-                                        guarantee.
+                                        Don't worry. The first 5 days are free.
+                                        You can also unsubscribe at anytime.
                                       </h3>
                                       {/* <h3 className="inter-display-medium f-s-16 lh-25">
                                         Want to try before subscribing?
@@ -1273,9 +1271,9 @@ class UpgradeModal extends BaseReactComponent {
                                   </Button>
 
                                   <h3 className="inter-display-medium f-s-16 lh-25 m-t-20">
-                                    Not sure about paying the full amount? No
-                                    worries, you can unsubscribe at anytime. We also offer a 5 day money back
-                                    guarantee.
+                                    Not sure about paying the full amount? Don't
+                                    worry. The first 5 days are free. You can
+                                    also unsubscribe at anytime.
                                   </h3>
                                 </>
                               ) : (
