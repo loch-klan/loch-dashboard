@@ -2,6 +2,136 @@
     display: flex;
     .profile-section{
         margin-top: 5rem;
+
+
+      .profile-plan-wrapper{
+         background-image: url("../../../image/profile-update.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+     border-radius: 1.2rem;
+    // transform: scale(1.03);
+        width: 100%;
+    // height: 30rem;
+    position: relative;
+    overflow: hidden;
+     margin-bottom: 2.7rem;
+     padding: 5.7rem 3.2rem 2.1rem;
+     
+   
+        .plan-price-wrapper{
+          display: flex;
+          align-items: stretch;
+          justify-content: space-between;
+          margin-top: 2rem;
+
+          .plan-name{
+            background: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12), 0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+            border-radius: 8px;
+            padding: 1.6rem;
+            width: 35%;
+            
+
+            .plan-top{
+              display: flex;
+                justify-content: space-between;
+                align-items: start;
+
+                 h3 {
+                  @include font($primary, "Inter-Medium", 2.5rem, 500, normal);
+                  margin-bottom: 1.9rem;
+                }
+                 h4 {
+                    @include font($black-191, "Inter-Medium", 1.3rem, 500, normal);
+                    opacity: 0.5;
+                  }
+            }
+
+            button{
+              width: 100%;
+            }
+
+            
+          }
+
+          .plan-details{
+            width: 61%;
+            display: flex;
+          
+            .list{
+              width: 50%;
+              .feature-list {
+                margin: 0.8rem 0.6rem;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  flex-wrap: wrap;
+                  padding: 0.7rem;
+                  background: rgba(255, 255, 255, 0.7);
+border: 1px solid rgba(255, 255, 255, 0.5);
+backdrop-filter: blur(5px);
+/* Note: backdrop-filter has minimal browser support */
+
+border-radius: 8px;
+
+                  .label {
+                    display: flex;
+                    align-items: center;
+                    img {
+                      width: 1.3rem;
+                      margin-right: 1rem;
+                      filter: brightness(0);
+                    }
+                    h3 {
+                      @include font(
+                        $black-191,
+                        "Inter-Medium",
+                        1.3rem,
+                        500,
+                        normal
+                      );
+                      margin-right: 0.5rem;
+                      white-space: nowrap;  
+                      overflow: hidden;
+                      text-overflow: ellipsis; 
+                    }
+                  }
+
+                  h4 {
+                    @include font(
+                      $black-191,
+                      "Inter-Medium",
+                      1.3rem,
+                      500,
+                      normal
+                    );
+                  }
+                }
+
+                .feature-list:first-child{
+                  margin: 0rem 0.6rem 0.8rem;
+                }
+                  .feature-list:last-child{
+                  margin: 0.8rem 0.6rem 0rem;
+                }
+            }
+            
+          }
+        }
+    //     .bg-container{
+    //       background-image: url("../../../image/profile-update.png");
+    //     width: 100%;
+    // height:100%;
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-size: contain;
+    //  border-radius: 1.2rem;
+
+    // transform: scale(1.03);
+    //     }
+      }
     .profile-form-section {
          background-color: $secondary;
             padding: 3.2rem;
@@ -9,6 +139,8 @@
             border-radius: 1.6rem;
         margin-bottom: 4rem;
         width:100%;
+
+
         .profile-form {
 
            

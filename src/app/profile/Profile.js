@@ -177,6 +177,119 @@ class Profile extends Component {
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
           />
+          <div className="profile-plan-wrapper">
+            <h4 className="inter-display-semi-bold f-s-25 lh-30 secondary">
+              Do more with Loch
+            </h4>
+            <div className="plan-price-wrapper">
+              <div className="plan-name">
+                <div className="plan-top">
+                  <div>
+                    <h4>Your current plan</h4>
+                    <h3>{this.state.selectedPlan?.name}</h3>
+                  </div>
+                  {this.state.selectedPlan?.name !== "Free" && (
+                    <div className="price">
+                      <h4>Next renewal date</h4>
+                      <p>
+                        {moment(this.state.selectedPlan?.plan_valid).format(
+                          "MMM DD, YYYY"
+                        )}
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <Button
+                  className={`primary-btn ${
+                    this.state.selectedPlan?.name !== "Free" &&
+                    this.state.selectedPlan?.name !== "Trial"
+                      ? "grey-bg"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    if (
+                      this.state.manageUrl === "" ||
+                      this.state.manageUrl === undefined ||
+                      this.state.selectedPlan?.name === "Free" ||
+                      this.state.selectedPlan?.name === "Trial"
+                    ) {
+                      this.upgradeModal();
+                    } else {
+                      window.open(this.state.manageUrl);
+                    }
+                  }}
+                >
+                  {this.state.selectedPlan?.name !== "Free" &&
+                  this.state.selectedPlan?.name !== "Trial"
+                    ? "Manage subscription"
+                    : "Upgrade"}
+                </Button>
+              </div>
+              <div className="plan-details">
+                <div className="list">
+                  {this.state.selectedPlan?.features
+                    ?.slice(0, 4)
+                    ?.map((list) => {
+                      return (
+                        <div className={`feature-list`}>
+                          <div className="label">
+                            <Image
+                              src={list?.img}
+                              // style={list?.id == 9 ? { opacity: "0.6" } : {}}
+                            />
+                            <h3>{list.name}</h3>
+                          </div>
+                          <h4>
+                            {list.name !== "Insights"
+                              ? list.limit === false
+                                ? "No"
+                                : list.limit === true
+                                ? "Yes"
+                                : list.limit === -1
+                                ? "Unlimited"
+                                : list.limit
+                              : list.limit === false
+                              ? "Limited"
+                              : "Unlimited"}
+                          </h4>
+                        </div>
+                      );
+                    })}
+                </div>
+                <div className="list">
+                  {this.state.selectedPlan?.features
+                    ?.slice(4, this.state.selectedPlan?.features?.length)
+                    ?.map((list) => {
+                      return (
+                        <div className={`feature-list`}>
+                          <div className="label">
+                            <Image
+                              src={list?.img}
+                              // style={list?.id == 9 ? { opacity: "0.6" } : {}}
+                            />
+                            <h3>{list.name}</h3>
+                          </div>
+                          <h4>
+                            {list.name !== "Insights"
+                              ? list.limit === false
+                                ? "No"
+                                : list.limit === true
+                                ? "Yes"
+                                : list.limit === -1
+                                ? "Unlimited"
+                                : list.limit
+                              : list.limit === false
+                              ? "Limited"
+                              : "Unlimited"}
+                          </h4>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+            {/* <div className="bg-container"></div> */}
+          </div>
           <div className="profile-form-section">
             <Row>
               <Col md={7}>
