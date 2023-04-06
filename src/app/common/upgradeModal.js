@@ -1330,6 +1330,11 @@ class UpgradeModal extends BaseReactComponent {
                                       Invalid verification code
                                     </p>
                                   )}
+                                  <h3 className="inter-display-medium f-s-16 lh-25 m-t-28">
+                                    Not sure about paying the full amount? Don't
+                                    worry. The first 5 days are free. You can
+                                    also unsubscribe at anytime.
+                                  </h3>
                                 </>
                               )}
                             </>

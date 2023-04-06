@@ -560,7 +560,8 @@ class Cohort extends Component {
           <Row style={{ minWidth: "91rem" }}>
             {this.props.cohortState?.sortedList?.length !== 0 &&
             this.props.cohortState?.sortedList !== "" ? (
-              this.sortbyUserid()?.map((item, i) => {
+              // this.sortbyUserid()?.map((item, i) => {
+              this.props.cohortState?.sortedList?.map((item, i) => {
                 let sortedAddress = (item?.wallet_address_details).sort(
                   (a, b) => b.net_worth - a.net_worth
                 );
