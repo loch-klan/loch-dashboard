@@ -735,7 +735,7 @@ class CohortPage extends BaseReactComponent {
               Added ${moment(this.state?.createOn).format("MM/DD/YY")}`}
             showpath={true}
             currentPage={nav_list[2]}
-            btnText={PageName !== "Loch Whale Template" ? "Edit" : false}
+            btnText={this.state.userId ? "Edit" : false}
             history={this.props.history}
             btnOutline={true}
             handleBtn={this.handleCohort}
