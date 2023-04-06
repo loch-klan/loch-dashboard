@@ -1170,9 +1170,9 @@ class PieChart2 extends BaseReactComponent {
                           transform: "rotate(180deg)",
                         }}
                       />
-                      {this.props.chainLoader && <div style={{ marginTop: "-6px", marginRight: "1rem" }}>
+                      {/* {this.props.chainLoader && <div style={{ marginTop: "-6px", marginRight: "1rem" }}>
                         {loadingAnimation()}
-                      </div>}
+                      </div>} */}
                     </div>
                   </div>
                   <div
