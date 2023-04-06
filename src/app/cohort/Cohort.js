@@ -259,7 +259,7 @@ class Cohort extends Component {
     let data = new URLSearchParams();
     data.append("start", this.state.start);
     data.append("conditions", JSON.stringify(cond ? cond : []));
-    data.append("limit", 50);
+    data.append("limit", -1);
     // data.append("limit", API_LIMIT)
     data.append("sorts", JSON.stringify(this.state.sorts));
     this.props.searchCohort(data, this);
@@ -422,6 +422,32 @@ class Cohort extends Component {
 
   // sortByAmount = ()
 
+  sortbyUserid = () => {
+    const sortedData = this.props.cohortState?.sortedList.sort((a, b) => {
+      // Compare the user_id property of each object
+      const userA = a.user_id !== null;
+      const userB = b.user_id !== null;
+
+      // If both objects have a user_id, sort them by the user_id value
+      if (userA && userB) {
+        return a.user_id.localeCompare(b.user_id);
+      }
+
+      // If only one of the objects has a user_id, put it first
+      if (userA) {
+        return -1;
+      }
+      if (userB) {
+        return 1;
+      }
+
+      // If neither object has a user_id, maintain their original order
+      return a.id - b.id;
+    });
+
+    return sortedData;
+  }
+
   render() {
     return (
       <div className="cohort-page-section">
@@ -534,7 +560,7 @@ class Cohort extends Component {
           <Row style={{ minWidth: "91rem" }}>
             {this.props.cohortState?.sortedList?.length !== 0 &&
             this.props.cohortState?.sortedList !== "" ? (
-              this.props.cohortState?.sortedList?.map((item, i) => {
+              this.sortbyUserid()?.map((item, i) => {
                 let sortedAddress = (item?.wallet_address_details).sort(
                   (a, b) => b.net_worth - a.net_worth
                 );

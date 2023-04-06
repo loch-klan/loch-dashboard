@@ -43,6 +43,7 @@ export const getAllParentChains = () => {
                   type: PARENT_COINS_LIST,
                   payload: coinsList
               });
+           
           })
           .catch((err) => {
               // console.log("Catch", err);

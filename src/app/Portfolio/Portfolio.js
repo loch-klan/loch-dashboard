@@ -23,7 +23,7 @@ import {
 import { Button, Image, Row, Col } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
-import { getAllCoins } from "../onboarding/Api.js";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import TransactionTable from "../intelligence/TransactionTable";
 import BarGraphSection from "./../common/BarGraphSection";
@@ -33,7 +33,7 @@ import {
   searchTransactionApi,
 } from "../intelligence/Api.js";
 
-import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import { getDetectedChainsApi, setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import {
   SEARCH_BY_WALLET_ADDRESS_IN,
   Method,
@@ -89,6 +89,7 @@ import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH } from "./ActionTypes";
 import InsightImg from "../../assets/images/icons/insight-msg.svg"
 import Slider from "react-slick";
 import CoinChip from "../wallet/CoinChip";
+import { getAllWalletApi } from "../wallet/Api";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -248,7 +249,10 @@ class Portfolio extends BaseReactComponent {
         { title: "Current value", down: true },
         { title: "Gain loss", down: true },
       ],
-      AvgCostLoading:false,
+      AvgCostLoading: false,
+
+      chainLoader: false,
+      totalChainDetechted: 0,
     };
   }
 
@@ -290,7 +294,8 @@ class Portfolio extends BaseReactComponent {
         isLoadingNet: true,
         graphLoading: true,
         tableLoading: true,
-        AvgCostLoading:true,
+        AvgCostLoading: true,
+        chainLoader:true,
       });
     }
   };
@@ -322,6 +327,7 @@ class Portfolio extends BaseReactComponent {
       graphLoading: true,
       tableLoading: true,
       AvgCostLoading: true,
+      chainLoader:true,
     });
     // console.log("load")
   };
@@ -401,6 +407,7 @@ class Portfolio extends BaseReactComponent {
         graphLoading: true,
         tableLoading: true,
         AvgCostLoading: true,
+        chainLoader:true,
       });
 
       // console.log("inside coin rate list");
@@ -462,7 +469,10 @@ class Portfolio extends BaseReactComponent {
         // when wallet address not present run connect exchnage api
         // this.props.getExchangeBalance("binance", this);
         // this.props.getExchangeBalance("coinbase", this);
-        this.props.getExchangeBalances(this,false);
+        this.props.getExchangeBalances(this, false);
+
+        // run this api if itws value 0
+        this.props.getYesterdaysBalanceApi(this);
         // net worth total loader
         // this.setState({
         //   isLoading: false,
@@ -491,13 +501,21 @@ class Portfolio extends BaseReactComponent {
       // add loader
       // this.props.getProfitAndLossApi(this, false, false, false);
 
-      // run this api if itws value 0
-      this.props.getYesterdaysBalanceApi(this);
+     
 
       // run when updatedInsightList === ""
       this.props.getAllInsightsApi(this);
 
       this.props.getAvgCostBasis(this);
+      // for chain detect
+      setTimeout(() => {
+        this.props.getAllCoins();
+        this.props.getAllParentChains();
+        getDetectedChainsApi(this);
+      }, 1000);
+       
+     
+      
       GetAllPlan();
       getUser(this);
 
@@ -1770,13 +1788,15 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
 
               <div
                 className="portfolio-section"
-                  style={{
-                    minWidth: "85rem",
-                    // marginTop: "9rem"
-                  }}
+                style={{
+                  minWidth: "85rem",
+                  // marginTop: "9rem"
+                }}
               >
                 <PieChart2
                   setLoader={this.setLoader}
+                    chainLoader={this.state.chainLoader}
+                    totalChainDetechted={this.state.totalChainDetechted}
                   userWalletData={
                     this.props.portfolioState &&
                     this.props.portfolioState.chainWallet &&
@@ -2210,6 +2230,7 @@ const mapDispatchToProps = {
   getUserWallet,
   settingDefaultValues,
   getAllCoins,
+  getAllParentChains,
   searchTransactionApi,
   getAssetGraphDataApi,
   getDetailsByLinkApi,

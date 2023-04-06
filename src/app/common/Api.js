@@ -190,7 +190,7 @@ export const getDetectedChainsApi = (ctx) =>{
         })
       // console.log('chainList',chainList);
       let addWallet = JSON.parse(localStorage.getItem("addWallet"));
-
+  let totalChainDetechted = 0;
       addWallet = addWallet?.map(e => ({...e, apiAddress: e.address}))
       // console.log('addWallet',addWallet);
       let xyz = Object.keys(res.data.data.chains).map((chain)=>({
@@ -213,7 +213,7 @@ export const getDetectedChainsApi = (ctx) =>{
         })
 
         // console.log("chain", userWallet);
-
+      
         let chainsDetected = chainList.map((chain)=>{
           let dummyChain = {...chain}
           let isDetected = false;
@@ -221,6 +221,7 @@ export const getDetectedChainsApi = (ctx) =>{
             if(userChain.code === dummyChain.coinCode){
               isDetected = true;
               coinFound = true;
+              totalChainDetechted = totalChainDetechted + 1;
             }
           })
           dummyChain.chain_detected = isDetected;
@@ -242,13 +243,15 @@ export const getDetectedChainsApi = (ctx) =>{
                   displayAddress: "",
                   wallet_metadata: {},
                   showAddress: true,
-                showNickname: true,
-                nickname:"",
-                   apiAddress: ""
+                  showNickname: true,
+                  nickname: "",
+                  apiAddress: "",
                 },
               ],
+        chainLoader: false,
+        totalChainDetechted: totalChainDetechted,
       });
-      addWallet && addWallet.length > 0 && localStorage.setItem('addWallet',JSON.stringify(addWallet))
+      addWallet && addWallet.length > 0 && localStorage.setItem('addWallet', JSON.stringify(addWallet))
     } else{
       toast.error(res.data.message || "Something went wrong");
     }

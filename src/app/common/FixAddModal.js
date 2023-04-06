@@ -268,6 +268,11 @@ class FixAddModal extends BaseReactComponent {
   componentWillUnmount() {
     // set popup active
     localStorage.setItem("isPopupActive", false);
+      this.props.getAllCoins();
+      this.props.getAllParentChains();
+      // //  this.makeApiCall();
+      // getAllWalletApi(this);
+      getDetectedChainsApi(this);
   }
 
   addAddress = () => {

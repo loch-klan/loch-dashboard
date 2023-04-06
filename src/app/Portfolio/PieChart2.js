@@ -84,7 +84,9 @@ class PieChart2 extends BaseReactComponent {
 
       // refresh
       userWalletList: JSON.parse(localStorage.getItem("addWallet")),
-      isStopLoading:false,
+      isStopLoading: false,
+      
+      chainLoader:false,
     };
   }
 
@@ -156,6 +158,9 @@ class PieChart2 extends BaseReactComponent {
     // console.log("pie", this.props.chainPortfolio)
 
     // console.log("pie", this.props.allCoinList);
+    this.setState({
+      chainLoader: true,
+    });
     let chainList = [];
 
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
@@ -217,6 +222,13 @@ class PieChart2 extends BaseReactComponent {
       });
     this.setState({
       chainList,
+      
+    }, () => {
+      setTimeout(() => {
+        this.setState({
+          chainLoader: false,
+        });
+      }, 500);
     });
 
     // console.log("props asset price", this.props.assetPrice);
@@ -257,6 +269,9 @@ class PieChart2 extends BaseReactComponent {
       });
     } else {
       this.handleReset();
+        this.setState({
+          defiLoader: false,
+        });
     }
     if (!UserWallet) {
       //  console.log("null")
@@ -271,6 +286,7 @@ class PieChart2 extends BaseReactComponent {
         }
       );
     }
+    // console.log("data", this.props.chainPortfolio);
   };
   componentDidUpdate(prevProps) {
     if (this.props.assetTotal !== prevProps.assetTotal) {
@@ -344,13 +360,16 @@ class PieChart2 extends BaseReactComponent {
 // console.log("inside", this.props.chainPortfolio, prevProps.chainPortfolio);
     if (
       this.props.chainPortfolio !== prevProps.chainPortfolio ||
-      this.props.chainPortfolio?.length !== prevProps.chainPortfolio?.length
+      this.props.chainPortfolio?.length !== prevProps.chainPortfolio?.length 
     ) {
       // console.log(
       //   "inside",
       //   this.props.chainPortfolio,
-      //   prevProps.chainPortfolio
+      //   prevProps.chainPortfolio,
+      //   this.props.chainLoader,
+      //   this.props.totalChainDetechted
       // );
+
       let chainList = [];
       // this.props.allCoinList && this.props.allCoinList.map((item) => {
       //   let isfound = false;
@@ -440,6 +459,11 @@ class PieChart2 extends BaseReactComponent {
           chainList,
         },
         () => {
+          setTimeout(() => {
+            this.setState({
+              chainLoader: false,
+            });
+          }, 1000);
           // console.log("state chianlist", this.state.chainList)
         }
       );
@@ -1128,11 +1152,11 @@ class PieChart2 extends BaseReactComponent {
                       <span
                         className="inter-display-medium f-s-16 lh-19 grey-233"
                         style={{
-                          marginLeft: "1.2rem",
+                          marginLeft: this.state.chainList?.length === 0 ? 0 : "1.2rem",
                         }}
                       >
                         {this.state.chainList &&
-                        this.state.chainList?.length === 1
+                        this.state.chainList?.length <= 1
                           ? this.state.chainList?.length + " Chain"
                           : this.state.chainList?.length + " Chains"}
                       </span>
@@ -1146,9 +1170,9 @@ class PieChart2 extends BaseReactComponent {
                           transform: "rotate(180deg)",
                         }}
                       />
-                      {/* <div style={{ marginTop: "-6px", marginRight: "1rem" }}>
+                      {this.props.chainLoader && <div style={{ marginTop: "-6px", marginRight: "1rem" }}>
                         {loadingAnimation()}
-                      </div> */}
+                      </div>}
                     </div>
                   </div>
                   <div
