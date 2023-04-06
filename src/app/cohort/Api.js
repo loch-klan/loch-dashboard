@@ -148,9 +148,9 @@ export const searchCohort = (data,ctx) => {
             type: GET_ALL_COHORT,
             payload: {
               cardList: res.data.data?.user_cohorts.results.sort(
-                (a, b) => a.total_net_worth - b.total_net_worth)
+                (a, b) => b.total_net_worth - a.total_net_worth)
               ,
-              sortedList: res.data.data?.user_cohorts.results.sort((a, b) => a.total_net_worth - b.total_net_worth),
+              sortedList: res.data.data?.user_cohorts.results.sort((a, b) => b.total_net_worth - a.total_net_worth),
               total_addresses,
             },
           });
