@@ -295,7 +295,7 @@ class Profile extends Component {
               <Col md={7}>
                 <ProfileForm />
               </Col>
-              <Col md={5} style={{ paddingLeft: "4rem" }}>
+              {/* <Col md={5} style={{ paddingLeft: "4rem" }}>
                 <div className="plan-card-wrapper">
                   <div className={"plan-card active"}>
                     <div
@@ -415,7 +415,7 @@ class Profile extends Component {
                       : "Upgrade"}
                   </Button>
                 </div>
-              </Col>
+              </Col> */}
             </Row>
           </div>
           {this.state.upgradeModal && (
