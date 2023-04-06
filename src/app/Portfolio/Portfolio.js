@@ -561,12 +561,16 @@ class Portfolio extends BaseReactComponent {
     if (this.props.match.params.id) {
       // if share link call this app
       if (this.state.portfolioLink) {
+        console.log("ekl3he",!Object.values(this.state?.userWalletList[0]).includes(
+            this.props.match.params.id), Object.values(this.state?.userWalletList[0]),
+            this.props.match.params.id)
         if (
           !Object.values(this.state?.userWalletList[0]).includes(
             this.props.match.params.id
           )
         ) {
           deleteToken();
+          // console.log("delete")
           this.props.history.push({
             pathname: "/",
             state: {
@@ -577,6 +581,7 @@ class Portfolio extends BaseReactComponent {
             },
           });
         } else {
+          
           this.props.getDetailsByLinkApi(this.props.match.params.id, this);
           this.setState({
             portfolioLink: false,

@@ -90,6 +90,10 @@ function Sidebar(props) {
   const [showFeedbackModal, setFeedbackModal] = React.useState(false);
     const [selectedCurrency, setCurrency] = React.useState(JSON.parse(localStorage.getItem('currency')));
   let lochUser = JSON.parse(localStorage.getItem('lochUser'));
+  if (lochUser) {
+    // if loch user remove share id to prevent opening upgrade modal
+     localStorage.removeItem("share_id");
+  }
   const [Upgrade, setUpgradeModal] = React.useState(false);
   const [connectModal, setconnectModal] = React.useState(false);
   const [isWallet, setWallet] = React.useState(JSON.parse(localStorage.getItem("addWallet")) ? true:false);

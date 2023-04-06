@@ -103,9 +103,10 @@ export const searchCohort = (data,ctx) => {
           // console.log("search cohort", res.data.data?.user_cohorts.results);
           let isShare = localStorage.getItem("share_id");
           let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
-          let isLimitExceed =
-            res.data.data?.user_cohorts.results?.length >
-            ctx.state.userPlan?.whale_pod_limit + 1;
+           const cohortCards = res.data.data?.user_cohorts.results?.filter(
+             (e) => e.user_id
+           );
+          let isLimitExceed = ctx.state.userPlan?.whale_pod_limit == -1 ? false : cohortCards?.length > ctx.state.userPlan?.whale_pod_limit;
 
           let isWhaleAddressLimitExceed = false;
 
