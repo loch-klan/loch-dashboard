@@ -473,6 +473,7 @@ export const CopyCohort = (data, ctx) => {
   postLoginInstance
     .post("wallet/user-cohort/copy-user-cohort", data)
     .then((res) => {
+      // console.log("test")
       if (!res.data.error) {
         console.log("res", res.data.data)
         ctx.props.history.push({
@@ -487,6 +488,7 @@ export const CopyCohort = (data, ctx) => {
         
       } else {
         toast.error(res.data.message || "Something Went Wrong");
+         ctx.props.history.push(`/whale-watching`);
       }
     });
 };

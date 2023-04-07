@@ -66,15 +66,19 @@ class CohortSharePage extends Component {
   }
 
   componentDidMount() {
-    console.log("mount clog", this.props);
+    console.log(
+      "mount clog",
+      this.props.match.params.podName,
+      this.props.match.params.userId
+    );
     if (
       this.props.match.params &&
       this.props.match.params.podName &&
       this.props.match.params.userId
     ) {
-      console.log("found search");
+    //   console.log("found search");
       if (getToken()) {
-        console.log("token found");
+        // console.log("token found");
         const data = new URLSearchParams();
         data.append("slug", this.props.match.params.podName);
         data.append("user_id", this.props.match.params.userId);

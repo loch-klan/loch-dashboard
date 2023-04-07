@@ -582,8 +582,8 @@ class Cohort extends Component {
                       }
                     });
                   });
-                if(item.name === "test")
-                  console.log("sort", sortedChains)
+                // if(item.name === "test")
+                //   console.log("sort", sortedChains)
                 return (
                   <Col
                     md={4}
