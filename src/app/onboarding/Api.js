@@ -230,7 +230,7 @@ export const verifyUser = (ctx, info) => {
           });
           UserSignedinCorrectly({
             email_address: res.data.data.user.email,
-            session_id: res.data.data.user.id,
+            session_id: res.data.data.user?.link,
           });
         }
         else {
@@ -269,12 +269,14 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
   localStorage.setItem("lochToken", "jsk");
  
   if(!ctx.props.ishome){
-    !ctx.state?.id &&
-    ctx.props?.history.push({
-      pathname: ctx.state?.id ? ctx.state?.link : '/home',
-      // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
-      state: {noLoad: true}
-    })
+    if (!ctx.state?.podName) {
+      !ctx.state?.id &&
+        ctx.props?.history.push({
+          pathname: ctx.state?.id ? ctx.state?.link : "/home",
+          // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
+          state: { noLoad: true },
+        });
+    }
   }
 
   postLoginInstance.post('organisation/user/create-user',data)
@@ -334,11 +336,18 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
           apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
         newAddWallet.push(obj);
       }
-
-       localStorage.setItem(
-         "addWallet",
-         JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
-       );
+      if (ctx.state.podName) {
+        localStorage.setItem(
+          "addWallet",
+          JSON.stringify(newAddWallet)
+        );
+      }
+        else{
+          localStorage.setItem(
+            "addWallet",
+            JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
+          );
+        }
       // console.log("wallet", addWallet);
       if (userFunction) {
         // console.log("user function found");
@@ -351,13 +360,22 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
         
       } else {
         //  console.log("user function not found");
-        ctx.props.history.replace({
-          pathname: ctx.state?.id ? ctx.state?.link : "/home",
-          state: {
-            addWallet: ctx.state?.id ? addWallet : newAddWallet,
-            noLoad: false,
-          },
-        });}
+        if (ctx.state?.podName) {
+           console.log("podname login redirect to link", ctx.state?.link);
+          ctx.props?.history.push({
+            pathname: ctx.state?.link,
+          });
+        } else {
+          ctx.props.history.replace({
+            pathname: ctx.state?.id ? ctx.state?.link : "/home",
+            state: {
+              addWallet: ctx.state?.id ? addWallet : newAddWallet,
+              noLoad: false,
+            },
+          });
+        }
+          
+      }
   }else{
       toast.error(res.data.message || "Something Went Wrong")
   }

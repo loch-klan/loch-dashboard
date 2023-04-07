@@ -25,12 +25,13 @@ class Login extends BaseReactComponent {
       link: props.location?.state?.from?.pathname || "",
       id: props.location?.state?.params?.id || "",
       password: "",
+      podName: props.location?.state?.params?.podName,
       forgotPassword: false,
     };
   }
 
   componentDidMount() {
-    // console.log("this.props", this.props.location);
+    console.log("this.props", this.props.location);
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     // deleteToken();
 
@@ -46,9 +47,13 @@ class Login extends BaseReactComponent {
       })
     );
 
-    if (this.state.link) {
+    if (this.state.link && !this.state.podName) {
       // console.log("login in")
       this.props.getAllCoins(this.handleShareLinkUser);
+    } else if (this.state.link && this.state.podName) {
+      // console.log("cohort name", this.state.cohortName);
+       this.props.getAllCoins(this.handleResponse);
+       
     } else {
       // console.log("welcome")
       this.props.history.push("/welcome");
@@ -85,22 +90,31 @@ class Login extends BaseReactComponent {
   };
 
   handleResponse = () => {
-    let addWallet = JSON.parse(localStorage.getItem("addWallet"));
-    // console.log('Heyyyy',addWallet);
-    let walletAddress = [];
-     let AddressList = [];
-    for (let i = 0; i < addWallet.length; i++) {
-      let curr = addWallet[i];
-      if (!walletAddress.includes(curr.address) && curr.address) {
-        walletAddress.push(curr.address);
-        AddressList.push(curr.displayAddress || curr.address);
-      }
+    if (this.state.podName) {
+      console.log("podname login create user")
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify([]));
+      // data.append("link", this.state.id);
+      createAnonymousUserApi(data, this, [], null);
+    } else {
+       let addWallet = JSON.parse(localStorage.getItem("addWallet"));
+       // console.log('Heyyyy',addWallet);
+       let walletAddress = [];
+       let AddressList = [];
+       for (let i = 0; i < addWallet.length; i++) {
+         let curr = addWallet[i];
+         if (!walletAddress.includes(curr.address) && curr.address) {
+           walletAddress.push(curr.address);
+           AddressList.push(curr.displayAddress || curr.address);
+         }
+       }
+
+       const data = new URLSearchParams();
+       data.append("wallet_addresses", JSON.stringify(AddressList));
+       data.append("link", this.state.id);
+       createAnonymousUserApi(data, this, addWallet, null);
     }
-  
-    const data = new URLSearchParams();
-    data.append("wallet_addresses", JSON.stringify(AddressList));
-    data.append("link", this.state.id);
-    createAnonymousUserApi(data, this, addWallet,null);
+   
   };
 
   render() {

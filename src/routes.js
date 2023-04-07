@@ -15,6 +15,7 @@ import InsightsPage from "./app/intelligence/InsightsPage";
 import AssetValueGraph from "./app/intelligence/AssetValueGraph";
 import Cohort from "./app/cohort/Cohort";
 import CohortPage from "./app/cohort/cohort-individual";
+import CohortSharePage from "./app/cohort/cohortShare";
 import Defi from "./app/defi/Defi";
 const routes = [
   {
@@ -100,6 +101,12 @@ const routes = [
     name: "Whale Watching Page",
     type: PrivateRoute,
     component: CohortPage,
+  },
+  {
+    path: "/whale-watching/:userId/:podName",
+    name: "Whale Watching Share",
+    type: PrivateRoute,
+    component: CohortSharePage,
   },
   {
     path: "/decentralized-finance",

@@ -221,6 +221,7 @@ export const getCohort = (data, ctx) => {
             userId: response?.user_id,
             cohortName: response?.name,
             cohortSlug: response?.slug,
+            chainImages: sortedChains,
             ...nicknames,
           });
           
@@ -460,6 +461,30 @@ export const GetAssetFilter= (data,ctx) => {
           ctx.setState({
             AssetFilterList: assetFilter,
           });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+// Copy cohort
+export const CopyCohort = (data, ctx) => {
+ 
+  postLoginInstance
+    .post("wallet/user-cohort/copy-user-cohort", data)
+    .then((res) => {
+      if (!res.data.error) {
+        console.log("res", res.data.data)
+        ctx.props.history.push({
+          pathname: `/whale-watching/${res.data.data.cohort.slug}`,
+          state: {
+            id: res.data.data.cohort.id,
+            // cohortWalletList: item?.wallet_address_details,
+            // chainImages: sortedChains,
+            // total_addresses: total_addresses,
+          },
+        });
+        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }

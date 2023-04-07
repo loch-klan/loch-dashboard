@@ -156,7 +156,7 @@ export default function PageHeader(props) {
             </span>
           )}
         </div>
-        {(props.btnText || props.SecondaryBtn) && (
+        {(props.btnText || props.SecondaryBtn || props.ShareBtn) && (
           <div>
             {props.SecondaryBtn && (
               <Button
@@ -167,12 +167,21 @@ export default function PageHeader(props) {
               </Button>
             )}
             {props.ShareBtn && (
-              <Button
-                className="secondary-btn white-bg"
-                onClick={props.handleShare}
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={"Click to copy link"}
               >
-                Share
-              </Button>
+                <Button
+                  className="secondary-btn white-bg"
+                  style={!props.btnText ? {marginRight: "0rem"}:{}}
+                  onClick={props.handleShare}
+                >
+                  Share
+                </Button>
+              </CustomOverlay>
             )}
             {props.btnText && (
               <Button

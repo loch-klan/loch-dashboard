@@ -106,11 +106,12 @@ class CohortPage extends BaseReactComponent {
       dayNotification: false,
       showBtn: false,
       isEmailValid: false,
-      cohortId: props?.location?.state.id,
+      cohortId: props?.location?.state?.id,
       cohortName: "",
       cohortSlug: "",
       cohortWalletAddress: props?.location?.state?.cohortWalletList,
-      chainImages: props?.location?.state?.chainImages,
+      // chainImages: props?.location?.state?.chainImages,
+      chainImages:[],
       total_addresses: props?.location?.state?.total_addresses,
       walletAddresses: [],
       totalNetWorth: 0,
@@ -270,6 +271,7 @@ class CohortPage extends BaseReactComponent {
     });
   };
   componentDidMount() {
+    // console.log("test")
     this.state.startTime = new Date() * 1;
     this.getCohortDetail();
     this.getAssetData(0);
@@ -631,7 +633,13 @@ class CohortPage extends BaseReactComponent {
     
     let userId = getCurrentUser().id;
      let shareLink =
-       BASE_URL_S3 + "whale-watching/" + userId + "/" + this.state.cohortName;
+       BASE_URL_S3 +
+       "whale-watching/" +
+       userId +
+       "/" +
+       this.props.match.params.cohortName;
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied")
     
     console.log("share pod", shareLink);
   }
@@ -644,7 +652,7 @@ class CohortPage extends BaseReactComponent {
         .toLowerCase()
         .split(" ")
         .map(function (val) {
-          return val.slice(0, 1).toUpperCase() + val.slice(1);
+          return val?.slice(0, 1)?.toUpperCase() + val?.slice(1);
         })
         .join(" ");
     }
@@ -746,11 +754,11 @@ class CohortPage extends BaseReactComponent {
             currentPage={nav_list[2]}
             btnText={this.state.userId ? "Edit" : false}
             history={this.props.history}
-            btnOutline={true}
+            btnOutline={false}
             handleBtn={this.handleCohort}
-            // ShareBtn={true}
-            // handleShare={this.handleShare}
-            multipleImg={this.state?.chainImages.slice(0, 4)}
+            ShareBtn={true}
+            handleShare={this.handleShare}
+            multipleImg={this.state?.chainImages?.slice(0, 4)}
           />
 
           <Row className="m-t-40 m-b-40">

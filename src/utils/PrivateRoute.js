@@ -4,21 +4,26 @@ import Sidebar from '../app/common/Sidebar';
 import { getToken } from "./ManageToken";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
+  
   <Route
     {...rest}
     render={props => {
       // ON EVERY ROUTE GET PARAMS FROM URL AND SET TO LOCAL STORAGE.
       // console.log('props',props);
+   
+      
       return requireAuth() ? (
         // key ADDED TO MAKE EVERY ROUTE WITH DIFFERENT PARAMS ID UNIQUE AND CALL DID MOUNT
         // WHEN PARAM ID CHANGES.
         <div className="main-section">
-          {props.location.pathname !== "/welcome" ? (
+          {props.location.pathname !== "/welcome" &&
+          !props.match.params.podName ? (
             <Sidebar ownerName={""} {...props} />
           ) : null}
           <div
             className={`main-section-right ${
-              props.location.pathname !== "/welcome"
+              props.location.pathname !== "/welcome" &&
+              !props.match.params.podName
                 ? "m-l-27"
                 : ""
             }`}
