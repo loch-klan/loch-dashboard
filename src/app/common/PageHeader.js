@@ -134,7 +134,7 @@ export default function PageHeader(props) {
                       onMouseEnter={() => {
                         AssetValueExplainer({
                           session_id: getCurrentUser().id,
-                          email_address:getCurrentUser().email
+                          email_address: getCurrentUser().email,
                         });
                       }}
                     />
@@ -164,6 +164,14 @@ export default function PageHeader(props) {
                 onClick={handleConnectModal}
               >
                 Connect exchange
+              </Button>
+            )}
+            {props.ShareBtn && (
+              <Button
+                className="secondary-btn white-bg"
+                onClick={props.handleShare}
+              >
+                Share
               </Button>
             )}
             {props.btnText && (

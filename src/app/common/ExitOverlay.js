@@ -71,7 +71,7 @@ class ExitOverlay extends BaseReactComponent {
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
-        : dummyUser;
+        : getCurrentUser().id;
 
     this.state = {
       // create account for cohort

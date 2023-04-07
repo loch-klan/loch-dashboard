@@ -19,7 +19,7 @@ import {
   UpdateCohortNickname,
 } from "./Api";
 import { getAllCoins } from "../onboarding/Api.js";
-import { AmountType, DormantType, InsightType } from "../../utils/Constant";
+import { AmountType, BASE_URL_S3, DormantType, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
@@ -627,6 +627,15 @@ class CohortPage extends BaseReactComponent {
     DeleteCohortAddress(data, this);
   };
 
+  handleShare = () => {
+    
+    let userId = getCurrentUser().id;
+     let shareLink =
+       BASE_URL_S3 + "whale-watching/" + userId + "/" + this.state.cohortName;
+    
+    console.log("share pod", shareLink);
+  }
+
   render() {
     const nav_list = window.location.pathname.split("/");
     let PageName = nav_list[2].replace(/-/g, " ");
@@ -739,6 +748,8 @@ class CohortPage extends BaseReactComponent {
             history={this.props.history}
             btnOutline={true}
             handleBtn={this.handleCohort}
+            // ShareBtn={true}
+            // handleShare={this.handleShare}
             multipleImg={this.state?.chainImages.slice(0, 4)}
           />
 

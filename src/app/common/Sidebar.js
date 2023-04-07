@@ -212,7 +212,7 @@ function Sidebar(props) {
         let slink =
           userWallet?.length === 1
             ? userWallet[0].displayAddress || userWallet[0].address
-            : user.link;
+            : getCurrentUser().id;
       const link = `${BASE_URL_S3}home/${slink}`;
       navigator.clipboard.writeText(link);
       toast.success("Share link has been copied");
