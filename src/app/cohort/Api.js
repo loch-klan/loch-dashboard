@@ -154,6 +154,11 @@ export const searchCohort = (data,ctx) => {
               total_addresses,
             },
           });
+
+
+          if (ctx.state.pageName === "share") {
+            ctx.handleCohort();
+          }
           ctx.setState({
             // cardList: res.data.data?.user_cohorts.results,
             // sortedList: res.data.data?.user_cohorts.results,

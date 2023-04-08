@@ -61,7 +61,8 @@ class CohortSharePage extends Component {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
-      total_addresses: 0,
+        total_addresses: 0,
+      pageName:"share"
     };
   }
 
@@ -76,25 +77,87 @@ class CohortSharePage extends Component {
       this.props.match.params.podName &&
       this.props.match.params.userId
     ) {
-    //   console.log("found search");
+      //   console.log("found search");
       if (getToken()) {
         // console.log("token found");
-        const data = new URLSearchParams();
-        data.append("slug", this.props.match.params.podName);
-        data.append("user_id", this.props.match.params.userId);
-        CopyCohort(data, this);
+        this.makeApiCall();
       } else {
         // create user then run api
         console.log("token create");
       }
     }
-
   }
+
+  makeApiCall = () => {
+    let data = new URLSearchParams();
+    data.append("start", 0);
+    data.append("conditions", JSON.stringify([]));
+    data.append("limit", -1);
+    // data.append("limit", API_LIMIT)
+    data.append("sorts", JSON.stringify([]));
+    this.props.searchCohort(data, this);
+    // console.log(data);
+// console.log("tetghn")
+     
+     
+  
+  };
+
+  handleCohort = () => {
+    // console.log("cohort click");
+   console.log(
+     this.props.cohortState?.total_addresses,
+     this.state.userPlan.wallet_address_limit
+   );
+    const cohortCards = this.props.cohortState.cardList?.filter(
+      (e) => e.user_id
+    );
+    // console.log("cohort",cohortCards )
+    if (
+      this.props.cohortState?.total_addresses >=
+        this.state.userPlan.wallet_address_limit &&
+      this.state.userPlan.wallet_address_limit !== -1
+    ) {
+        console.log("address pass")
+      this.setState(
+        {
+          triggerId: 1,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+    } else {
+      if (
+        cohortCards?.length < this.state.userPlan?.whale_pod_limit ||
+        this.state.userPlan?.whale_pod_limit === -1
+      ) {
+            console.log("pod pass");
+          const dataCopy = new URLSearchParams();
+          dataCopy.append("slug", this.props.match.params.podName);
+          dataCopy.append("user_id", this.props.match.params.userId);
+          CopyCohort(dataCopy, this);
+
+        // CreateWhalePod({
+        //   session_id: getCurrentUser().id,
+        //   email_address: getCurrentUser().email,
+        // });
+      } else {
+        this.setState(
+          {
+            triggerId: 2,
+          },
+          () => {
+            this.upgradeModal();
+          }
+        );
+      }
+    }
+  };
 
   componentWillUnmount() {
     // let endTime = new Date() * 1;
     // let TimeSpent = (endTime - this.state.startTime) / 1000;
-
     // TimeSpentWhalePod({
     //   session_id: getCurrentUser().id,
     //   email_address: getCurrentUser().email,
@@ -102,17 +165,21 @@ class CohortSharePage extends Component {
     // });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-   
-  }
+  componentDidUpdate(prevProps, prevState) {}
 
   upgradeModal = () => {
-    this.setState({
-      upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
-    });
+    this.setState(
+      {
+        upgradeModal: !this.state.upgradeModal,
+        userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      },
+      () => {
+        if (!this.state.upgradeModal) {
+          this.props.history.push("/whale-watching");
+        }
+      }
+    );
   };
- 
 
   render() {
     return (
@@ -122,10 +189,20 @@ class CohortSharePage extends Component {
           alignItems: "center",
           justifyContent: "center",
           height: "100vh",
-                width: "100vw",
-          zIndex:999
+          width: "100vw",
+          zIndex: 999,
         }}
       >
+        {this.state.upgradeModal && (
+          <UpgradeModal
+            show={this.state.upgradeModal}
+            onHide={this.upgradeModal}
+            history={this.props.history}
+            isShare={localStorage.getItem("share_id")}
+            isStatic={this.state.isStatic}
+            triggerId={this.state.triggerId}
+          />
+        )}
         <Loading />
       </div>
     );
@@ -133,13 +210,15 @@ class CohortSharePage extends Component {
 }
 
 const mapStateToProps = (state) => ({
- 
+  cohortState: state.CohortState,
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
-
+  searchCohort,
 };
 CohortSharePage.propTypes = {
   // getPosts: PropTypes.func
+  
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CohortSharePage);
