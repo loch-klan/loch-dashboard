@@ -56,7 +56,7 @@ class Login extends BaseReactComponent {
        this.props.getAllCoins(this.handleResponse);
        
     } else {
-      console.log("welcome")
+      // console.log("welcome")
       this.props.history.push("/welcome");
     }
   }
