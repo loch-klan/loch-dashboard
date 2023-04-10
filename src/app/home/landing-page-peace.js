@@ -29,6 +29,7 @@ import {
 import DefiIcon from "../../assets/images/icons/lp-defi.svg";
 
 import CohortImg from "../../assets/images/cohort-img.svg";
+import InsightVideo from "../../assets/videos/defi-insights.mov"
 
 class LPPeace extends BaseReactComponent {
   constructor(props) {
@@ -37,10 +38,12 @@ class LPPeace extends BaseReactComponent {
       emailAdded: false,
       startTime: 0,
     };
+      this.videoRef = React.createRef();
   }
 
   componentDidMount() {
-    this.state.startTime = new Date() * 1;
+      this.state.startTime = new Date() * 1;
+        this.videoRef.current.play();
   }
 
   componentWillUnmount() {
@@ -74,7 +77,14 @@ class LPPeace extends BaseReactComponent {
           <div className="discount-row black">
             <div className="gradient-section">
               <Image src={LochIcon} className="img-loch" />
-              <div className="content-wrap">
+              <div className="content-wrap text-center">
+                <video
+                  ref={this.videoRef}
+                  src={InsightVideo}
+                  autoPlay
+                  muted
+                  loop
+                />
                 <div className="top-section">
                   <div className="content-wrapper">
                     <Image src={DefiIcon} />

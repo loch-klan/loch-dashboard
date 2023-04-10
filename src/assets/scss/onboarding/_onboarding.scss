@@ -547,12 +547,21 @@
 .content-wrap{
     width: 100%;
 
+    video{
+        width: 65vh;
+        border: 1.5px solid rgba(255, 255, 255, 0.68);
+box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+border-radius: 12px;
+
+    }
+
       .top-section {
         display: flex;
         align-items: flex-start;
 
         .content-wrapper {
           width: 50%;
+          text-align: start;
 
           &.right{
             text-align: right;
@@ -635,7 +644,7 @@ width: 50%;
               flex-direction: row;
               justify-content: flex-start;
               position: relative;
-              animation: MarqueeCard 20s linear infinite;
+              animation: MarqueeCard 25s linear infinite;
               
 
               .marquee-item {
