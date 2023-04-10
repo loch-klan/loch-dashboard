@@ -156,7 +156,7 @@ class PodCard extends Component {
               if (PodType.INFLUENCER === item.cohort_type) {
                 let isAccess = JSON.parse(localStorage.getItem("whalepodview"));
               
-                if (isAccess) {
+                if (isAccess || this.state.userPlan.influencer_pod_limit == -1) {
                   // if true
                   localStorage.setItem("whalepodview", false);
                   WhaleExpandedPod({
