@@ -26,6 +26,7 @@ import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Back-icon-upgrade.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
+  UpgradeSignInPopup,
   WhaleCreateAccountEmailSaved,
   WhaleCreateAccountPrivacyHover,
 } from "../../utils/AnalyticsFunctions";
@@ -306,6 +307,8 @@ class UpgradeModal extends BaseReactComponent {
 
       // Ask eamil after crypto payment
       emailModal: false,
+
+      tracking:"Create or sign in from Upgrade pop up"
     };
   }
 
@@ -435,7 +438,13 @@ class UpgradeModal extends BaseReactComponent {
       signinModal: !this.state.signinModal,
       hideModal: true,
       isLochUser: JSON.parse(localStorage.getItem("lochUser")),
+    }, () => {
+      if (this.state.signinModal)
+        UpgradeSignInPopup({
+          session_id: getCurrentUser().id,
+        });
     });
+    
   };
 
   handleAskEmail = (emailUpdated = false) => {
@@ -458,6 +467,7 @@ class UpgradeModal extends BaseReactComponent {
       signinModal: !this.state.signinModal,
       hideModal: false,
     });
+   
   };
 
   connectMetamask = async (isSignin = true) => {
@@ -1481,7 +1491,7 @@ class UpgradeModal extends BaseReactComponent {
             title="Sign in"
             description="Get right back into your account"
             stopUpdate={true}
-            tracking="Upgrade popup"
+            tracking="Upgrade sign in popup"
             signinBack={
               this.props?.signinBack ? this.handleSigninBackbtn : false
             }

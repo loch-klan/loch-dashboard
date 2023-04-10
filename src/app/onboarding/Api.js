@@ -221,6 +221,7 @@ export const verifyUser = (ctx, info) => {
             userId: res.data.data.user?.link,
             first_name: res.data.data.user?.first_name,
             last_name: res.data.data.user?.last_name,
+            track:"Landing page sign in"
           });
           // console.log("addWallet", addWallet);
           localStorage.setItem("addWallet", JSON.stringify(addWallet));

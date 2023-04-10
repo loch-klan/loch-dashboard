@@ -581,11 +581,13 @@ class ExitOverlay extends BaseReactComponent {
       //   first_name: "",
       //   last_name: "",
       // });
+      // when leave
       signInUser({
         email_address: this.state?.email,
         userId: getCurrentUser().id,
         first_name: "",
         last_name: "",
+        track:"leaving"
       });
       let email_arr = [];
       let data = JSON.parse(localStorage.getItem("addWallet"));

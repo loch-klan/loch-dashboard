@@ -29,36 +29,53 @@ export const initAmplitude = () => {
 export const sendAmplitudeData = (eventType, eventProperties) => {
   // amplitude.getInstance().logEvent(eventType, eventProperties);
   let baseToken = localStorage.getItem("baseToken");
-  let newEventProperties= {...eventProperties, "access_code": baseToken}
+  let newEventProperties = { ...eventProperties, "access_code": baseToken, "email address": "" }
+  delete newEventProperties["email address"];
   Mixpanel.track(eventType, newEventProperties);
 };
 
 
-export const signInUser = ({ email_address, userId, first_name, last_name }) => {
+export const signInUser = ({
+  email_address,
+  userId,
+  first_name,
+  last_name,
+  track,
+  mobile,
+}) => {
   // console.log(userId);
   // Mixpanel.people.set_once(properties);
-//  console.log(email_address, userId, first_name, last_name);
+  //  console.log(email_address, userId, first_name, last_name);
   Mixpanel.alias(userId);
   Mixpanel.identify(userId);
   Mixpanel.people.set({
     $email: email_address,
     $first_name: first_name,
     $last_name: last_name,
-     $user_id:userId
+    $user_id: userId,
+    $email_came_from: track,
+    $mobile: mobile,
   });
 };
 
-export const signUpProperties = ({ email_address, userId, first_name, last_name }) => {
+export const signUpProperties = ({
+  email_address,
+  userId,
+  first_name,
+  last_name,
+  // track,
+}) => {
   //  console.log(email_address, userId, first_name, last_name);
   Mixpanel.alias(userId);
   Mixpanel.identify(userId);
-   Mixpanel.people.set_once({
-     $email: email_address,
-     $first_name: first_name,
-     $last_name: last_name,
-     $user_id:userId
-   });
-}
+  Mixpanel.people.set_once({
+    $email: email_address,
+    $first_name: first_name,
+    $last_name: last_name,
+    $user_id: userId,
+    $email_came_from: "",
+  });
+};
 
 export const resetUser = () => {
   Mixpanel.reset();
@@ -3363,6 +3380,41 @@ export const ConnectExPopupEmailAdded = ({ session_id, email_address,from }) => 
 //14. Whale pods pop up: email verified - done
 export const ConnectExEmailVerified = ({ session_id, email_address,from }) => {
   const event_name = "Exchange connected pop up: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "from": from
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+export const UpgradeSignInPopup = ({ session_id, from }) => {
+  const event_name = "Upgrade sign in pop up";
+  const eventProperties = {
+    "session id": session_id,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. Whale pods pop up: email added - done
+export const UpgradeSignInPopupEmailAdded = ({ session_id, email_address,from }) => {
+  const event_name = "Upgrade sign in pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    "from":from
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+//14. Whale pods pop up: email verified - done
+export const UpgradeSignInEmailVerified = ({ session_id, email_address,from }) => {
+  const event_name = "Upgrade sign in pop up: email verified";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,

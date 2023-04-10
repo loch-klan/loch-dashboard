@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import postLoginInstance from './../../utils/PostLoginAxios';
+import { signInUser } from "../../utils/AnalyticsFunctions";
 export const updateUser = (data,ctx) =>{
     postLoginInstance.post("organisation/user/update-user",data)
     .then((res)=>{
@@ -30,12 +31,24 @@ export const updateUser = (data,ctx) =>{
                 </div>
               </div>
             );
+            signInUser({
+              email_address: ctx.state.email,
+              track:"Email added after metamask connect"
+            });
             ctx.state.onHide(true);
             
             setTimeout(() => {
               window.location.reload();
             }, 500);
           } else {
+            signInUser({
+              email_address: ctx.state.email,
+              userId: ctx.state.link,
+              first_name: ctx.state.firstName,
+              last_name: ctx.state.lastName,
+              mobile: ctx.state.mobileNumber,
+              track: "Profile page",
+            });
             toast.success(
               <div className="custom-toast-msg">
                 <div>Profile updated</div>

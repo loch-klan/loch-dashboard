@@ -1,7 +1,7 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
-import { ConnectExEmailVerified, GeneralPopupEmailVerified, Home_CE_OAuthCompleted, LP_CE_OAuthCompleted, SigninMenuEmailVerified, SigninModalTrack, signInUser, signUpProperties, Wallet_CE_OAuthCompleted, WhaleCreateAccountEmailVerified, WhalePopupEmailVerified } from "../../utils/AnalyticsFunctions";
+import { ConnectExEmailVerified, GeneralPopupEmailVerified, Home_CE_OAuthCompleted, LP_CE_OAuthCompleted, SigninMenuEmailVerified, SigninModalTrack, signInUser, signUpProperties, UpgradeSignInPopupEmailAdded, Wallet_CE_OAuthCompleted, WhaleCreateAccountEmailVerified, WhalePopupEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import postLoginInstance from './../../utils/PostLoginAxios';
@@ -413,52 +413,70 @@ export const VerifyEmail = (data,ctx) => {
         //     last_name: res.data.data.user?.last_name,
         //   });
         // }
-        signInUser({
-          email_address: res.data.data.user?.email,
-          userId: res.data.data.user?.link,
-          first_name: res.data.data.user?.first_name,
-          last_name: res.data.data.user?.last_name,
-        });
-        // signin popup
-        SigninModalTrack({
-          session_id: getCurrentUser().id,
-          email_address: res.data.data.user?.email,
-          from: ctx.props.tracking,
-        });
+       
+
+        // signin popup general
+        // SigninModalTrack({
+        //   session_id: getCurrentUser().id,
+        //   email_address: res.data.data.user?.email,
+        //   from: ctx.props.tracking,
+        // });
 
         // Analytics
+         let track = ctx.props.tracking;
         if (ctx.props.tracking === "Sign in button") {
           SigninMenuEmailVerified({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
           });
+           
         } else if (ctx.props.tracking === "Whale watching") {
           WhalePopupEmailVerified({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
           });
+          
         } else if (ctx.props.tracking === "Wallet connect exchange") {
           ConnectExEmailVerified({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
             from: ctx.props.tracking,
           });
+           
         } else if (ctx.props.tracking === "Home connect exchange") {
           ConnectExEmailVerified({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
             from: ctx.props.tracking,
           });
-        }
-
-        if (ctx.props?.popupType === "general_popup"){
-          // 
-          GeneralPopupEmailVerified({
+          
+        } else if ((ctx.props.tracking = "Upgrade sign in popup")) {
+          UpgradeSignInPopupEmailAdded({
             session_id: getCurrentUser().id,
-            email_added: res.data.data.user?.email,
-            from: ctx.props?.tracking,
+            email_address: res.data.data.user?.email,
+            from: ctx.props.tracking,
           });
         }
+          if (ctx.props?.popupType === "general_popup") {
+            //
+            GeneralPopupEmailVerified({
+              session_id: getCurrentUser().id,
+              email_added: res.data.data.user?.email,
+              from: ctx.props?.tracking,
+            });
+            track = "generic pop up";
+          }
+        
+        if (ctx?.state?.tracking === "Create or sign in from Upgrade pop up") {
+          track = ctx?.state?.tracking;
+        }
+          signInUser({
+            email_address: res.data.data.user?.email,
+            userId: res.data.data.user?.link,
+            first_name: res.data.data.user?.first_name,
+            last_name: res.data.data.user?.last_name,
+            track: track,
+          });
           ctx.setState(
             {
               isOptInValid: false,
@@ -556,6 +574,7 @@ export const VerifyEmail = (data,ctx) => {
                 }, 1000);
               } else {
                 if (userId) {
+                  // for whale watach it will overwirte data
                   let userdata = new URLSearchParams();
                   userdata.append("old_user_id", userId);
                   UpdateUserDetails(userdata, ctx);
@@ -661,6 +680,7 @@ export const VerifyEmail = (data,ctx) => {
                   }
 
                   if (ctx.AddEmailModal) {
+                    // for upgrade
                     ctx.AddEmailModal();
                   } else {
                     ctx.state.onHide();
@@ -715,7 +735,7 @@ export const UpdateUserDetails = (data,ctx) => {
         localStorage.setItem("lochUser", JSON.stringify(obj));
         // toast.success(" Your wallets and pods has been saved");
         if (ctx.AddEmailModal) {
-
+// for upgrade
           ctx.AddEmailModal()
         } else {
         
@@ -986,6 +1006,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
            userId: res.data.data.user?.link,
            first_name: res.data.data.user?.first_name,
            last_name: res.data.data.user?.last_name,
+           track:"metamask wallet"
          });
          // signin popup
          SigninModalTrack({
