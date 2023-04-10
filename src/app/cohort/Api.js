@@ -227,6 +227,7 @@ export const getCohort = (data, ctx) => {
             cohortName: response?.name,
             cohortSlug: response?.slug,
             chainImages: sortedChains,
+            cohortType: response?.cohort_type,
             ...nicknames,
           });
           

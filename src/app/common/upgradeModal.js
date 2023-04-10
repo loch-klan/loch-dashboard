@@ -81,12 +81,15 @@ class UpgradeModal extends BaseReactComponent {
             img: WhalePodIcon,
             id: 2,
           },
-          // {
-          //   name: "Whale pod addresses",
-          //   limit: plan.whale_pod_address_limit,
-          //   img: WhalePodAddressIcon,
-          //   id: 3,
-          // },
+          {
+            name:
+              plan.name === "Free"
+                ? "Influencer whale pod"
+                : "Influencer whale pods",
+            limit: plan.name === "Free" ? 1 : -1,
+            img: WhalePodAddressIcon,
+            id: 3,
+          },
           {
             name: "Notifications",
             limit: plan.notifications_provided,
@@ -154,12 +157,15 @@ class UpgradeModal extends BaseReactComponent {
               img: WhalePodIcon,
               id: 2,
             },
-            // {
-            //   name: "Whale pod addresses",
-            //   limit: plan.whale_pod_address_limit,
-            //   img: WhalePodAddressIcon,
-            //   id: 3,
-            // },
+            {
+              name:
+                plan.name === "Free"
+                  ? "Influencer whale pod"
+                  : "Influencer whale pods",
+              limit: plan.name === "Free" ? 1 : -1,
+              img: WhalePodAddressIcon,
+              id: 3,
+            },
             {
               name: "Notifications",
               limit: plan.notifications_provided,
