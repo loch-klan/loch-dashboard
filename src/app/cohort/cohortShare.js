@@ -67,11 +67,11 @@ class CohortSharePage extends Component {
   }
 
   componentDidMount() {
-    console.log(
-      "mount clog",
-      this.props.match.params.podName,
-      this.props.match.params.userId
-    );
+    // console.log(
+    //   "mount clog",
+    //   this.props.match.params.podName,
+    //   this.props.match.params.userId
+    // );
     if (
       this.props.match.params &&
       this.props.match.params.podName &&
@@ -83,7 +83,7 @@ class CohortSharePage extends Component {
         this.makeApiCall();
       } else {
         // create user then run api
-        console.log("token create");
+        // console.log("token create");
       }
     }
   }
@@ -118,7 +118,7 @@ class CohortSharePage extends Component {
         this.state.userPlan.wallet_address_limit &&
       this.state.userPlan.wallet_address_limit !== -1
     ) {
-        console.log("address pass")
+        // console.log("address pass")
       this.setState(
         {
           triggerId: 1,
@@ -132,7 +132,7 @@ class CohortSharePage extends Component {
         cohortCards?.length < this.state.userPlan?.whale_pod_limit ||
         this.state.userPlan?.whale_pod_limit === -1
       ) {
-            console.log("pod pass");
+            // console.log("pod pass");
           const dataCopy = new URLSearchParams();
           dataCopy.append("slug", this.props.match.params.podName);
           dataCopy.append("user_id", this.props.match.params.userId);

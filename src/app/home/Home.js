@@ -14,7 +14,7 @@ import FormValidator from "./../../utils/form/FormValidator";
 import CustomTextControl from "./../../utils/form/CustomTextControl";
 import LochIcon from "../../assets/images/icons/loch-icon-white.svg";
 import Form from "../../utils/form/Form";
-import { EmailAddedDiscount } from '../../utils/AnalyticsFunctions';
+import { DiscountEmailPage, DiscountEmailSkip, EmailAddedDiscount, TimeSpentDiscountEmail, TimeSpentOnboarding } from '../../utils/AnalyticsFunctions';
 
 class Home extends BaseReactComponent {
   constructor(props) {
@@ -31,6 +31,7 @@ class Home extends BaseReactComponent {
 
       showEmailPopup: true,
       emailAdded: false,
+      startTime: 0,
     };
   }
 
@@ -49,6 +50,8 @@ class Home extends BaseReactComponent {
   };
 
   componentDidMount() {
+    this.state.startTime = new Date() * 1;
+    DiscountEmailPage();
     let isEmailadded = JSON.parse(localStorage.getItem("discountEmail"));
     // console.log("is",isEmailadded)
     if (isEmailadded) {
@@ -104,6 +107,15 @@ class Home extends BaseReactComponent {
     GetDefaultPlan();
   }
 
+
+  componentWillUnmount() {
+     let endTime = new Date() * 1;
+     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    //  console.log("page Leave", endTime/1000);
+    //  console.log("Time Spent", TimeSpent);
+    TimeSpentDiscountEmail({ time_spent: TimeSpent });
+  }
+
   hideModal = (value) => {};
   handleSave = () => {
 
@@ -122,6 +134,7 @@ class Home extends BaseReactComponent {
     
   }
   handleSkip = () => {
+    DiscountEmailSkip();
     this.setState({
       showEmailPopup: false,
     });

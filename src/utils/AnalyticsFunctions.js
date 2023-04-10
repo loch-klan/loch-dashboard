@@ -184,6 +184,23 @@ export const TimeSpentOnboarding = ({
   ////console.log("Landing Page Conversion:time spent on onboarding");
 };
 
+
+//8. Landing Page Conversion:time spent on onboarding
+export const TimeSpentDiscountEmail = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Landing Page Conversion:time spent on discount email";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent onboarding": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+
 //4. Landing Page Conversion: nickname
 export const LandingPageNickname = ({ session_id, email_address, nickname, address }) => {
   const event_name = "Landing Page Conversion: nickname";
@@ -1785,7 +1802,17 @@ export const OnboardingPage = () => {
   
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Pageview Onboarding");
+  console.log("Pageview Onboarding");
+};
+
+// Page View: Onboarding
+export const DiscountEmailPage = () => {
+  const event_name = "Page View: Discount email";
+  const eventProperties = {
+  
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  // console.log("Pageview Onboarding");
 };
 
 
@@ -3350,6 +3377,17 @@ export const EmailAddedDiscount = ({ email_address}) => {
   const event_name = "Landing Page Conversion: Discount Email added";
   const eventProperties = {
     "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for discount
+export const DiscountEmailSkip = () => {
+  const event_name =
+    "Landing Page Conversion: Discount: no thanks just let me enter";
+  const eventProperties = {
+    // "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
