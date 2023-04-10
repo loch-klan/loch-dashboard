@@ -561,9 +561,9 @@ class Portfolio extends BaseReactComponent {
     if (this.props.match.params.id) {
       // if share link call this app
       if (this.state.portfolioLink) {
-        console.log("ekl3he",!Object.values(this.state?.userWalletList[0]).includes(
-            this.props.match.params.id), Object.values(this.state?.userWalletList[0]),
-            this.props.match.params.id)
+        // console.log("ekl3he",!Object.values(this.state?.userWalletList[0]).includes(
+        //     this.props.match.params.id), Object.values(this.state?.userWalletList[0]),
+        //     this.props.match.params.id)
         if (
           !Object.values(this.state?.userWalletList[0]).includes(
             this.props.match.params.id

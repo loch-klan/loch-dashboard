@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
-import { AmountType, DormantType } from "../../utils/Constant";
+import { AmountType, DormantType, PodType } from "../../utils/Constant";
 import { GET_ALL_COHORT, UPDATE_COHORT } from "./ActionTypes";
 
 export const createCohort = (data,ctx) => {
@@ -481,17 +481,46 @@ export const CopyCohort = (data, ctx) => {
     .then((res) => {
       // console.log("test")
       if (!res.data.error) {
-        console.log("res", res.data.data)
-        ctx.props.history.push({
-          pathname: `/whale-watching/${res.data.data.cohort.slug}`,
-          state: {
-            id: res.data.data.cohort.id,
-            // cohortWalletList: item?.wallet_address_details,
-            // chainImages: sortedChains,
-            // total_addresses: total_addresses,
-          },
-        });
+        // console.log("res", res.data.data)
+        if (PodType.INFLUENCER === res.data.data.cohort.cohort_type) {
+          let isAccess = JSON.parse(localStorage.getItem("whalepodview"));
+
+          if (isAccess || ctx.state.userPlan.influencer_pod_limit == -1) {
+            // if true
+            localStorage.setItem("whalepodview", false);
+             ctx.props.history.push({
+               pathname: `/whale-watching/${res.data.data.cohort.slug}`,
+               state: {
+                 id: res.data.data.cohort.id,
+                 // cohortWalletList: item?.wallet_address_details,
+                 // chainImages: sortedChains,
+                 // total_addresses: total_addresses,
+               },
+             });
+          } else {
+            ctx.setState(
+              {
+                triggerId: 3,
+              },
+              () => {
+                ctx.upgradeModal();
+              }
+            );
+          }
+        }
+        else {
+              ctx.props.history.push({
+                pathname: `/whale-watching/${res.data.data.cohort.slug}`,
+                state: {
+                  id: res.data.data.cohort.id,
+                  // cohortWalletList: item?.wallet_address_details,
+                  // chainImages: sortedChains,
+                  // total_addresses: total_addresses,
+                },
+              });
         
+        }
+    
       } else {
         toast.error(res.data.message || "Something Went Wrong");
          ctx.props.history.push(`/whale-watching`);

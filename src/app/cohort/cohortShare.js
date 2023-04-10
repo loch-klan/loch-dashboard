@@ -105,10 +105,10 @@ class CohortSharePage extends Component {
 
   handleCohort = () => {
     // console.log("cohort click");
-   console.log(
-     this.props.cohortState?.total_addresses,
-     this.state.userPlan.wallet_address_limit
-   );
+  //  console.log(
+  //    this.props.cohortState?.total_addresses,
+  //    this.state.userPlan.wallet_address_limit
+  //  );
     const cohortCards = this.props.cohortState.cardList?.filter(
       (e) => e.user_id
     );
