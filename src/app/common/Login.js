@@ -46,6 +46,7 @@ class Login extends BaseReactComponent {
         rate: 1,
       })
     );
+  
 
     if (this.state.link && !this.state.podName) {
       // console.log("login in")
@@ -55,7 +56,7 @@ class Login extends BaseReactComponent {
        this.props.getAllCoins(this.handleResponse);
        
     } else {
-      // console.log("welcome")
+      console.log("welcome")
       this.props.history.push("/welcome");
     }
   }
