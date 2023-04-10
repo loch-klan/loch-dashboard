@@ -118,7 +118,7 @@ class AuthModal extends BaseReactComponent {
         email_address: this.state.email,
         from: this.props.tracking,
       });
-    } else if ((ctx.props.tracking = "Upgrade sign in popup")) {
+    } else if (this.props.tracking = "Upgrade sign in popup") {
       UpgradeSignInEmailVerified({
         session_id: getCurrentUser().id,
         email_address: this.state.email,
