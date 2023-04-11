@@ -487,7 +487,7 @@ export const CopyCohort = (data, ctx) => {
             id: res.data.data.cohort.id,
             // cohortWalletList: item?.wallet_address_details,
             // chainImages: sortedChains,
-            // total_addresses: total_addresses,
+            total_addresses: ctx.props.cohortState?.total_addresses,
           },
         });
         
