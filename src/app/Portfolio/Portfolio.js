@@ -1800,8 +1800,8 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
               >
                 <PieChart2
                   setLoader={this.setLoader}
-                    chainLoader={this.state.chainLoader}
-                    totalChainDetechted={this.state.totalChainDetechted}
+                  chainLoader={this.state.chainLoader}
+                  totalChainDetechted={this.state.totalChainDetechted}
                   userWalletData={
                     this.props.portfolioState &&
                     this.props.portfolioState.chainWallet &&
@@ -1832,9 +1832,9 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                       : 0
                   }
                   assetPrice={
-                    this.state.assetPrice &&
-                    Object.keys(this.state.assetPrice).length > 0
-                      ? Object.values(this.state.assetPrice)
+                    this.props.portfolioState.assetPrice &&
+                    Object.keys(this.props.portfolioState.assetPrice).length > 0
+                      ? Object.values(this.props.portfolioState.assetPrice)
                       : null
                   }
                   isLoading={this.state.isLoading}

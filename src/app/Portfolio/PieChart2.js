@@ -233,8 +233,8 @@ class PieChart2 extends BaseReactComponent {
 
     // console.log("props asset price", this.props.assetPrice);
     let assetPrice =
-      this.props.assetPrice &&
-      this.props.assetPrice?.reduce((obj, element) => {
+      this.props?.assetPrice &&
+      this.props?.assetPrice?.reduce((obj, element) => {
         obj[element.id] = element;
         return obj;
       }, {});
@@ -470,7 +470,7 @@ class PieChart2 extends BaseReactComponent {
     }
     if (this.props.assetPrice != prevProps.assetPrice) {
       // console.log("props asset price", this.props.assetPrice);
-      let assetPrice = this.props.assetPrice.reduce((obj, element) => {
+      let assetPrice = this.props.assetPrice?.reduce((obj, element) => {
         obj[element.id] = element;
         return obj;
       }, {});
@@ -660,9 +660,12 @@ class PieChart2 extends BaseReactComponent {
     let currentTime = new Date().getTime();
 
     // console.log("state", this)
-
+    // reset all data
     this.props.portfolioState.walletTotal = 0;
     this.props.portfolioState.chainPortfolio = {};
+    this.props.portfolioState.assetPrice = {};
+    this.props.portfolioState.chainWallet = [];
+    this.props.portfolioState.yesterdayBalance = 0;
 
     // console.log("Refresh clicked");
     // localStorage.setItem("refreshApiTime", currentTime);
