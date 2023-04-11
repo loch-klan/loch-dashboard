@@ -31,11 +31,24 @@ import DefiIcon from "../../assets/images/icons/lp-defi.svg";
 
 import CohortImg from "../../assets/images/cohort-img.svg";
 import InsightVideo from "../../assets/videos/defi-insights.mov"
+import Slider from "react-slick";
+import prevIcon from "../../assets/images/icons/prev-arrow.svg";
+import nextIcon from "../../assets/images/icons/next-arrow.svg";
 
 class LPPeace extends BaseReactComponent {
   constructor(props) {
+    const settings = {
+      dots: false,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1.4,
+      slidesToScroll: 1,
+      nextArrow: <Image src={nextIcon} />,
+      prevArrow: <Image src={prevIcon} />,
+    };
     super(props);
     this.state = {
+      settings,
       emailAdded: false,
       startTime: 0,
     };
@@ -108,7 +121,75 @@ class LPPeace extends BaseReactComponent {
                   <hr />
 
                   <div className="testimonials">
-                    <div className="marquee-holder">
+                    <Slider {...this.state.settings}>
+                      <div>
+                        <div
+                          className="review-card"
+                          style={{ width: "53rem", marginRight: "2rem" }}
+                        >
+                          <div className="heading">
+                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                              Philippe H
+                            </h5>
+                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                              ex JP Morgan Trading
+                            </h5>
+                          </div>
+                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                            “Loch is really well designed. My workflow is super
+                            simple now. I can focus on what matters, which is
+                            generating returns.”
+                            <br />
+                            <br />
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          className="review-card"
+                          style={{ width: "53rem", marginRight: "2rem" }}
+                        >
+                          <div className="heading">
+                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                              Anthony O
+                            </h5>
+                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                              Hedge Fund Investor Peak Life Capital
+                            </h5>
+                          </div>
+                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                            “Loch provides an absurd amount of detail on my
+                            wallet addresses. It's super easy to use and I can't
+                            imagine why no one has built something like this
+                            yet. Loch is a winning product. “
+                          </p>
+                        </div>
+                      </div>
+
+                      <div>
+                        {" "}
+                        <div
+                          className="review-card"
+                          style={{ width: "53rem", marginRight: "2rem" }}
+                        >
+                          <div className="heading">
+                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                              Pranav N
+                            </h5>
+                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                              Crypto Fund Manager
+                            </h5>
+                          </div>
+                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                            “Loch provides hedge fund level intelligence for the
+                            average trader. Totally worth it.”
+                            <br />
+                            <br />
+                          </p>
+                        </div>
+                      </div>
+                    </Slider>
+                    {/* <div className="marquee-holder">
                       <div className="card-wrapper">
                         <div
                           className="review-card"
@@ -225,7 +306,7 @@ class LPPeace extends BaseReactComponent {
                           </p>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

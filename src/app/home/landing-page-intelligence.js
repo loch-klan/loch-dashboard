@@ -31,11 +31,24 @@ import {
 import InsightIcon from "../../assets/images/icons/lp-insight.svg";
 
 import OverviewImg from "../../assets/images/lp-overview.svg";
+import Slider from "react-slick";
+import prevIcon from "../../assets/images/icons/prev-arrow.svg";
+import nextIcon from "../../assets/images/icons/next-arrow.svg";
 
 class LPIntelligence extends BaseReactComponent {
   constructor(props) {
+    const settings = {
+      dots: false,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1.4,
+      slidesToScroll: 1,
+      nextArrow: <Image src={nextIcon} />,
+      prevArrow: <Image src={prevIcon} />,
+    };
     super(props);
     this.state = {
+      settings,
       emailAdded: false,
       startTime: 0,
     };
@@ -99,7 +112,79 @@ class LPIntelligence extends BaseReactComponent {
                   <hr />
 
                   <div className="testimonials">
-                    <div className="marquee-holder">
+                    <Slider {...this.state.settings}>
+                      <div>
+                        {" "}
+                        <div
+                          className="review-card"
+                          style={{ width: "53rem", marginRight: "2rem" }}
+                        >
+                          <div className="heading">
+                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                              Dillon L
+                            </h5>
+                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                              Crypto Protocol Founder
+                            </h5>
+                          </div>
+                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                            “Loch has allowed me to condense my portfolio
+                            management into one singular app. Great UI and
+                            onboarding.”
+                            <br />
+                            <br />
+                          </p>
+                        </div>
+                      </div>
+
+                      <div>
+                        {" "}
+                        <div
+                          className="review-card"
+                          style={{ width: "53rem", marginRight: "2rem" }}
+                        >
+                          <div className="heading">
+                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                              Chris B
+                            </h5>
+                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                              Crypto Protocol Founder
+                            </h5>
+                          </div>
+                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                            “The onboarding is really fast and simple. I was
+                            able to get started in literally 5 seconds. I like
+                            that I can see my asset distribution across multiple
+                            wallets. No one else supports that.”
+                          </p>
+                        </div>
+                      </div>
+
+                      <div>
+                        {" "}
+                        <div
+                          className="review-card"
+                          style={{ width: "53rem", marginRight: "2rem" }}
+                        >
+                          <div className="heading">
+                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                              Jain N
+                            </h5>
+                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                              Founder of Navana Tech
+                            </h5>
+                          </div>
+                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                            “This is sick. I have multiple wallets and managing
+                            my entire portfolio is painful. Loch makes it super
+                            simple.”
+                            <br />
+                            <br />
+                          </p>
+                        </div>
+                      </div>
+                    </Slider>
+                    {/* <div className="marquee-holder">
                       <div className="card-wrapper">
                         <div
                           className="review-card"
@@ -218,7 +303,7 @@ class LPIntelligence extends BaseReactComponent {
                           </p>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
