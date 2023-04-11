@@ -29,7 +29,10 @@ export const initAmplitude = () => {
 export const sendAmplitudeData = (eventType, eventProperties) => {
   // amplitude.getInstance().logEvent(eventType, eventProperties);
   let baseToken = localStorage.getItem("baseToken");
-  let newEventProperties = { ...eventProperties, "access_code": baseToken, "email address": "" }
+  let newEventProperties = {
+    ...eventProperties, "access_code": baseToken,
+    "email address": ""
+  }
   delete newEventProperties["email address"];
   Mixpanel.track(eventType, newEventProperties);
 };
@@ -144,7 +147,7 @@ export const EmailAddressAdded = ({ session_id, email_address }) => {
   const event_name = "Landing Page Conversion:email address added";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
+    "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:email address added");
@@ -155,7 +158,7 @@ export const EmailAddressVerified = ({ session_id, email_address }) => {
   const event_name = "Landing Page Conversion:email address verified";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
+    "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:email address verified");
@@ -167,7 +170,7 @@ export const UserSignedinCorrectly = ({ session_id, email_address }) => {
     "Landing Page Conversion:returning user signed in correctly";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
+    "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:returning user signed in correctly");
@@ -179,7 +182,7 @@ export const UserWrongCode = ({ session_id, email_address }) => {
     "Landing Page Conversion:returning user wrong verification code";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
+    "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:returning user wrong verification code");
@@ -719,7 +722,7 @@ export const LeaveEmailAdded = ({ session_id, email_address }) => {
   const event_name = "Menu:leave: email added";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
+    "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:leave: email added");
@@ -1434,7 +1437,7 @@ export const EmailNotFound = ({ session_id, email_address}) => {
   const event_name = "Landing Page Conversion:email not found";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address
+    "email added": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:Email Not found");
@@ -1445,7 +1448,7 @@ export const InvalidEmail = ({ email_address}) => {
   const event_name = "Landing Page Conversion:invalid email";
   const eventProperties = {
 
-    "email address": email_address
+    "email added": email_address
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Landing Page Conversion:Invalid Email");
@@ -2304,7 +2307,7 @@ export const SigninModalTrack = ({
   const event_name = "Sign in Popup";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
+    "email added": email_address,
     "from": from,
   };
   sendAmplitudeData(event_name, eventProperties);
@@ -3308,7 +3311,7 @@ export const GeneralPopupEmailVerified = ({ session_id, from, email_added }) => 
   const eventProperties = {
     "session id": session_id,
     from: from,
-    "email address": email_added,
+    "email added": email_added,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
@@ -3345,7 +3348,7 @@ export const WhalePopupEmailVerified = ({ session_id, email_address }) => {
   const event_name = "Whale pods pop up: email verified";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
+    "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
@@ -3382,7 +3385,7 @@ export const ConnectExEmailVerified = ({ session_id, email_address,from }) => {
   const event_name = "Exchange connected pop up: email verified";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
+    "email added": email_address,
     "from": from
   };
   sendAmplitudeData(event_name, eventProperties);
@@ -3417,7 +3420,7 @@ export const UpgradeSignInEmailVerified = ({ session_id, email_address,from }) =
   const event_name = "Upgrade sign in pop up: email verified";
   const eventProperties = {
     "session id": session_id,
-    "email address": email_address,
+    "email added": email_address,
     "from": from
   };
   sendAmplitudeData(event_name, eventProperties);
@@ -3439,7 +3442,7 @@ export const DiscountEmailSkip = () => {
   const event_name =
     "Landing Page Conversion: Discount: no thanks just let me enter";
   const eventProperties = {
-    // "email address": email_address,
+    // "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
