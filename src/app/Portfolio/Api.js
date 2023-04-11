@@ -308,8 +308,9 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                 
                 // ctx.handleResponse && ctx.handleResponse();
                 // console.log("add",addWallet.length)
-                let userPlan = JSON.parse(localStorage.getItem("currentPlan")); 
-                if (addWallet.length > userPlan.wallet_address_limit && userPlan.wallet_address_limit != -1) {
+                let userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+                 
+                if (addWallet.length > userPlan?.wallet_address_limit && userPlan?.wallet_address_limit != -1) {
                   ctx.setState({
                     isStatic: true,
                   }, () => {

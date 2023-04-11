@@ -13,7 +13,7 @@ export const loginApi = (ctx, data) => {
       // console.log('res',res);
       if (!res.data.error) {
         // console.log('res', res.data.data.token);
-        // console.log('ctx',ctx.props.history);
+        console.log('ctx');
         localStorage.setItem('currency',JSON.stringify({
           active: true,
           code: "USD",
