@@ -3477,3 +3477,34 @@ export const LPIntelligenceTrack = ({ email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
+
+
+// email added for discount
+export const LPWhaleTrackPageView = () => {
+  const event_name = "Page View: Landing Page: whale";
+  const eventProperties = {
+    // "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for discount
+export const LPPeaceOfMindPageView = () => {
+  const event_name = "Page View: Landing Page: Peace of mind";
+  const eventProperties = {
+    // "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for discount
+export const LPIntelligenceTrackPageView = () => {
+  const event_name = "Page View: Landing Page: Intelligence";
+  const eventProperties = {
+    // "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};

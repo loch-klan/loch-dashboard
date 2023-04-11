@@ -24,6 +24,7 @@ import {
   DiscountEmailSkip,
   EmailAddedDiscount,
   LPIntelligenceTrack,
+  LPIntelligenceTrackPageView,
   LPWhale,
   TimeSpentDiscountEmail,
   TimeSpentOnboarding,
@@ -43,6 +44,7 @@ class LPIntelligence extends BaseReactComponent {
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
+    LPIntelligenceTrackPageView();
   }
 
   componentWillUnmount() {
@@ -266,12 +268,12 @@ class LPIntelligence extends BaseReactComponent {
                       Get started
                     </Button>
                   </Form>
-                  <h3
+                  <h4
                     className="inter-display-medium f-s-15 lh-19 m-t-40 text-center"
                     // onClick={this.handleSkip}
                   >
                     You’ll receive an email with an invite link to join.
-                  </h3>
+                  </h4>
                 </>
               ) : (
                 <>
