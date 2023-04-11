@@ -145,7 +145,10 @@ class LPWhale extends BaseReactComponent {
                     </p>
                   </div>
                 </div>
-                <div className="bottom-section" style={{marginTop:"-2.5rem"}}>
+                <div
+                  className="bottom-section"
+                  style={{ marginTop: "-2.5rem" }}
+                >
                   <h3 className="inter-display-medium f-s-22 lh-27 grey-F2F text-right">
                     Testimonials
                   </h3>
@@ -170,7 +173,7 @@ class LPWhale extends BaseReactComponent {
                             “Love how Loch integrates portfolio analytics and
                             whale watching into one unified app.”
                             <br />
-                          <br />
+                            <br />
                           </p>
                         </div>
                       </div>
@@ -391,7 +394,7 @@ class LPWhale extends BaseReactComponent {
                     className="inter-display-medium f-s-15 lh-19 m-t-40 text-center"
                     // onClick={this.handleSkip}
                   >
-                    You’ll receive an email with an invite link to join.
+                    You’ll receive an email with an invitation link to join.
                   </h3>
                 </>
               ) : (
