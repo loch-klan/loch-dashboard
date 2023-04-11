@@ -3428,7 +3428,7 @@ export const UpgradeSignInEmailVerified = ({ session_id, email_address,from }) =
 export const EmailAddedDiscount = ({ email_address}) => {
   const event_name = "Landing Page Conversion: Discount Email added";
   const eventProperties = {
-    "email address": email_address,
+    "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
@@ -3440,6 +3440,36 @@ export const DiscountEmailSkip = () => {
     "Landing Page Conversion: Discount: no thanks just let me enter";
   const eventProperties = {
     // "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for discount
+export const LPWhaleTrack = ({ email_address }) => {
+  const event_name = "Landing Page: whale";
+  const eventProperties = {
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for discount
+export const LPPeaceOfMind = ({ email_address}) => {
+  const event_name = "Landing Page: Peace of mind";
+  const eventProperties = {
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for discount
+export const LPIntelligenceTrack = ({ email_address }) => {
+  const event_name = "Landing Page: Intelligence";
+  const eventProperties = {
+    "email added": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");

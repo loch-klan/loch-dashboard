@@ -22,6 +22,7 @@ import {
   DiscountEmailPage,
   DiscountEmailSkip,
   EmailAddedDiscount,
+  LPWhaleTrack,
   TimeSpentDiscountEmail,
   TimeSpentOnboarding,
 } from "../../utils/AnalyticsFunctions";
@@ -60,7 +61,7 @@ class LPWhale extends BaseReactComponent {
       emailAdded: true,
     });
 
-    // EmailAddedDiscount({ email_address: this.state.email });
+    LPWhaleTrack({ email_address: this.state.email });
 
     setTimeout(() => {
      this.props.history.push("/welcome");
