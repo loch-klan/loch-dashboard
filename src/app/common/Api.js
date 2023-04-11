@@ -1037,14 +1037,14 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
            userId: res.data.data.user?.link,
            first_name: res.data.data.user?.first_name,
            last_name: res.data.data.user?.last_name,
-           track:"metamask wallet"
+          //  track:"metamask wallet"
          });
          // signin popup
-         SigninModalTrack({
-           session_id: getCurrentUser().id,
-           email_address: res.data.data.user?.email,
-           from: ctx.props.tracking,
-         });
+        //  SigninModalTrack({
+        //    session_id: getCurrentUser().id,
+        //    email_address: res.data.data.user?.email,
+        //    from: ctx.props.tracking,
+        //  });
          if (ctx.props.stopUpdate) {
            localStorage.removeItem("lochDummyUser");
            let obj = JSON.parse(localStorage.getItem("lochUser"));
