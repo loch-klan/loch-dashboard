@@ -96,6 +96,7 @@ class Home extends BaseReactComponent {
         // console.log("inside else after derlete token")
         localStorage.setItem("defi_access", true);
         localStorage.setItem("isPopup", true);
+        localStorage.setItem("whalepodview", true);
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
         if (!isRefresh) {
           localStorage.setItem("refresh", true);

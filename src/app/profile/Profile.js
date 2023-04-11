@@ -21,7 +21,7 @@ import NotificationLimitIcon from "../../assets/images/icons/upgrade-notificatio
 import NotificationIcon from "../../assets/images/icons/upgrade-notifications.svg";
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
-// import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
+import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
 import { ManageLink } from "./Api";
 import UpgradeModal from "../common/upgradeModal";
@@ -58,12 +58,15 @@ class Profile extends Component {
               img: WhalePodIcon,
               id: 2,
             },
-            // {
-            //   name: "Whale pod addresses",
-            //   limit: plan.whale_pod_address_limit,
-            //   img: WhalePodAddressIcon,
-            //   id: 3,
-            // },
+            {
+              name:
+                plan.name === "Free"
+                  ? "Influencer whale pod"
+                  : "Influencer whale pods",
+              limit: plan.name === "Free" ? 1 : -1,
+              img: WhalePodAddressIcon,
+              id: 3,
+            },
             {
               name: "Notifications",
               limit: plan.notifications_provided,
@@ -228,7 +231,7 @@ class Profile extends Component {
               <div className="plan-details">
                 <div className="list">
                   {this.state.selectedPlan?.features
-                    ?.slice(0, 4)
+                    ?.slice(0, 5)
                     ?.map((list) => {
                       return (
                         <div className={`feature-list`}>
@@ -258,7 +261,7 @@ class Profile extends Component {
                 </div>
                 <div className="list">
                   {this.state.selectedPlan?.features
-                    ?.slice(4, this.state.selectedPlan?.features?.length)
+                    ?.slice(5, this.state.selectedPlan?.features?.length)
                     ?.map((list) => {
                       return (
                         <div className={`feature-list`}>

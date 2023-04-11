@@ -19,7 +19,7 @@ import {
   UpdateCohortNickname,
 } from "./Api";
 import { getAllCoins } from "../onboarding/Api.js";
-import { AmountType, BASE_URL_S3, DormantType, InsightType } from "../../utils/Constant";
+import { AmountType, BASE_URL_S3, DormantType, InsightType, PodType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
@@ -111,7 +111,7 @@ class CohortPage extends BaseReactComponent {
       cohortSlug: "",
       cohortWalletAddress: props?.location?.state?.cohortWalletList,
       // chainImages: props?.location?.state?.chainImages,
-      chainImages:[],
+      chainImages: [],
       total_addresses: props?.location?.state?.total_addresses,
       walletAddresses: [],
       totalNetWorth: 0,
@@ -143,7 +143,8 @@ class CohortPage extends BaseReactComponent {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       triggerId: 0,
       showDust: false,
-      isStatic:false
+      isStatic: false,
+      cohortType: PodType.MANUAL,
     };
   }
 
@@ -271,8 +272,10 @@ class CohortPage extends BaseReactComponent {
     });
   };
   componentDidMount() {
+
     // console.log("test")
     this.state.startTime = new Date() * 1;
+   
     this.getCohortDetail();
     this.getAssetData(0);
     this.getNotificationApi();

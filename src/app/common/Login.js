@@ -31,9 +31,12 @@ class Login extends BaseReactComponent {
   }
 
   componentDidMount() {
-    console.log("this.props", this.props.location);
+    // console.log("this.props", this.props.location);
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     // deleteToken();
+    localStorage.setItem("defi_access", true);
+    localStorage.setItem("isPopup", true);
+    localStorage.setItem("whalepodview", true);
 
     localStorage.setItem(
       "currency",

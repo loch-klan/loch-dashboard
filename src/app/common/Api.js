@@ -387,10 +387,18 @@ export const VerifyEmail = (data,ctx) => {
         let isOptValid = res.data.data.otp_verified;
         let token = res.data.data.token;
       
-         localStorage.setItem(
-           "currentPlan",
-           JSON.stringify(res.data.data?.current_plan)
-         );
+        //  localStorage.setItem(
+        //    "currentPlan",
+        //    JSON.stringify(res.data.data?.current_plan)
+        //  );
+        localStorage.setItem(
+          "currentPlan",
+          JSON.stringify({
+            ...res.data.data?.current_plan,
+            influencer_pod_limit:
+              res.data.data?.current_plan.name === "Free" ? 1 : -1,
+          })
+        );
         localStorage.setItem("lochToken", token);
         const userId = localStorage.getItem("lochDummyUser");
 
@@ -775,7 +783,14 @@ export const GetDefaultPlan = () => {
       if (!res.data.error) {
         // Analytics
 
-        localStorage.setItem("currentPlan", JSON.stringify(res.data.data.plan));
+        localStorage.setItem(
+          "currentPlan",
+          JSON.stringify({
+            ...res.data.data.plan,
+            influencer_pod_limit: res.data.data.plan.name === "Free" ? 1 : -1,
+          })
+        );
+       
         // toast.success(" Your wallets and pods has been saved");
       }
     })
@@ -810,9 +825,17 @@ export const getUser = (ctx = null, showToast = false) => {
   
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
+      // localStorage.setItem(
+      //   "currentPlan",
+      //   JSON.stringify(res.data.data.current_plan)
+      // );
       localStorage.setItem(
         "currentPlan",
-        JSON.stringify(res.data.data.current_plan)
+        JSON.stringify({
+          ...res.data.data.current_plan,
+          influencer_pod_limit:
+            res.data.data.current_plan.name === "Free" ? 1 : -1,
+        })
       );
         // console.log(ctx,showToast)
       if (ctx?.props?.location?.search === "?status=success" || showToast === true) {
@@ -975,10 +998,18 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
     .then((res) => {
       if (!res.data.error) {
   let token = res.data.data.token;
-         localStorage.setItem(
-           "currentPlan",
-           JSON.stringify(res.data.data?.current_plan)
-         );
+        //  localStorage.setItem(
+        //    "currentPlan",
+        //    JSON.stringify(res.data.data?.current_plan)
+        //  );
+        localStorage.setItem(
+          "currentPlan",
+          JSON.stringify({
+            ...res.data.data?.current_plan,
+            influencer_pod_limit:
+              res.data.data?.current_plan.name === "Free" ? 1 : -1,
+          })
+        );
          localStorage.setItem("lochToken", token);
          const userId = localStorage.getItem("lochDummyUser");
 
