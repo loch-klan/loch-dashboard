@@ -109,6 +109,8 @@ class PodCard extends Component {
           }
         });
       });
+    
+    // console.log(item)
 
     // let cardType = item.user_id
     //   ? "MANUALLY CREATED"
@@ -156,9 +158,9 @@ class PodCard extends Component {
               if (PodType.INFLUENCER === item.cohort_type) {
                 let isAccess = JSON.parse(localStorage.getItem("whalepodview"));
               
-                if (isAccess || this.state.userPlan.influencer_pod_limit == -1) {
+                if (isAccess.access || isAccess.id == item.id || this.state.userPlan.influencer_pod_limit == -1) {
                   // if true
-                  localStorage.setItem("whalepodview", false);
+                  localStorage.setItem("whalepodview", JSON.stringify({access:false, id:item.id}));
                   WhaleExpandedPod({
                     email_address: getCurrentUser().email,
                     session_id: getCurrentUser().id,
