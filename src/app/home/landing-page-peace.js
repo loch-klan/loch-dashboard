@@ -102,9 +102,8 @@ class LPPeace extends BaseReactComponent {
                 <div className="top-section">
                   <div className="content-wrapper">
                     <Image src={DefiIcon} />
-                    <h3 className="inter-display-medium f-s-28 lh-34 grey-F2F m-b-16">
-                      Peace of mind and <br />
-                      assurance
+                    <h3 className="inter-display-medium f-s-25 lh-28 grey-F2F m-b-10">
+                      Peace of mind and assurance
                     </h3>
                     <p className="inter-display-medium f-s-13 lh-16 grey-F2F">
                       Peace of mind and assurance <br />
@@ -115,7 +114,7 @@ class LPPeace extends BaseReactComponent {
                 </div>
 
                 <div className="bottom-section">
-                  <h3 className="inter-display-medium f-s-22 lh-27 grey-F2F m-b-16 text-right">
+                  <h3 className="inter-display-medium f-s-22 lh-27 grey-F2F text-right">
                     Testimonials
                   </h3>
                   <hr />
@@ -128,14 +127,14 @@ class LPPeace extends BaseReactComponent {
                           style={{ width: "53rem", marginRight: "2rem" }}
                         >
                           <div className="heading">
-                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                            <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
                               Philippe H
                             </h5>
-                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                            <h5 className="inter-display-medium f-s-12 lh-15 grey-969">
                               ex JP Morgan Trading
                             </h5>
                           </div>
-                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                          <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
                             “Loch is really well designed. My workflow is super
                             simple now. I can focus on what matters, which is
                             generating returns.”
@@ -150,14 +149,14 @@ class LPPeace extends BaseReactComponent {
                           style={{ width: "53rem", marginRight: "2rem" }}
                         >
                           <div className="heading">
-                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                            <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
                               Anthony O
                             </h5>
-                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                            <h5 className="inter-display-medium f-s-12 lh-15 grey-969">
                               Hedge Fund Investor Peak Life Capital
                             </h5>
                           </div>
-                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                          <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
                             “Loch provides an absurd amount of detail on my
                             wallet addresses. It's super easy to use and I can't
                             imagine why no one has built something like this
@@ -167,20 +166,19 @@ class LPPeace extends BaseReactComponent {
                       </div>
 
                       <div>
-                        {" "}
                         <div
                           className="review-card"
                           style={{ width: "53rem", marginRight: "2rem" }}
                         >
                           <div className="heading">
-                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                            <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
                               Pranav N
                             </h5>
-                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                            <h5 className="inter-display-medium f-s-12 lh-15 grey-969">
                               Crypto Fund Manager
                             </h5>
                           </div>
-                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                          <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
                             “Loch provides hedge fund level intelligence for the
                             average trader. Totally worth it.”
                             <br />

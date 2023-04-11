@@ -41,8 +41,9 @@ class LPIntelligence extends BaseReactComponent {
       dots: false,
       infinite: true,
       speed: 500,
-      slidesToShow: 1.4,
+      slidesToShow: 1.65,
       slidesToScroll: 1,
+      centerMode:false,
       nextArrow: <Image src={nextIcon} />,
       prevArrow: <Image src={prevIcon} />,
     };
@@ -93,9 +94,8 @@ class LPIntelligence extends BaseReactComponent {
                     style={{ width: "100%", paddingRight: "5rem" }}
                   >
                     <Image src={InsightIcon} />
-                    <h3 className="inter-display-medium f-s-28 lh-34 grey-F2F m-b-16 text-center">
-                      Receive real time <br />
-                      intelligence
+                    <h3 className="inter-display-medium f-s-25 lh-28 grey-F2F m-b-10 text-center">
+                      Receive real time intelligence
                     </h3>
                     <p className="inter-display-medium f-s-13 lh-16 grey-F2F text-center">
                       Loch algorithmically generates insights to mitigate
@@ -117,17 +117,17 @@ class LPIntelligence extends BaseReactComponent {
                         {" "}
                         <div
                           className="review-card"
-                          style={{ width: "53rem", marginRight: "2rem" }}
+                          style={{ width: "45rem", marginRight: "2rem" }}
                         >
                           <div className="heading">
-                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                            <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
                               Dillon L
                             </h5>
-                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                            <h5 className="inter-display-medium f-s-12 lh-15 grey-969">
                               Crypto Protocol Founder
                             </h5>
                           </div>
-                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                          <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
                             “Loch has allowed me to condense my portfolio
                             management into one singular app. Great UI and
                             onboarding.”
@@ -141,17 +141,17 @@ class LPIntelligence extends BaseReactComponent {
                         {" "}
                         <div
                           className="review-card"
-                          style={{ width: "53rem", marginRight: "2rem" }}
+                          style={{ width: "45rem", marginRight: "2rem" }}
                         >
                           <div className="heading">
-                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                            <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
                               Chris B
                             </h5>
-                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                            <h5 className="inter-display-medium f-s-12 lh-15 grey-969">
                               Crypto Protocol Founder
                             </h5>
                           </div>
-                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                          <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
                             “The onboarding is really fast and simple. I was
                             able to get started in literally 5 seconds. I like
                             that I can see my asset distribution across multiple
@@ -164,17 +164,17 @@ class LPIntelligence extends BaseReactComponent {
                         {" "}
                         <div
                           className="review-card"
-                          style={{ width: "53rem", marginRight: "2rem" }}
+                          style={{ width: "45rem", marginRight: "2rem" }}
                         >
                           <div className="heading">
-                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                            <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
                               Jain N
                             </h5>
-                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                            <h5 className="inter-display-medium f-s-12 lh-15 grey-969">
                               Founder of Navana Tech
                             </h5>
                           </div>
-                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                          <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
                             “This is sick. I have multiple wallets and managing
                             my entire portfolio is painful. Loch makes it super
                             simple.”

@@ -91,7 +91,7 @@ class LPWhale extends BaseReactComponent {
                 <div className="top-section">
                   <div className="content-wrapper">
                     <Image src={BellIcon} />
-                    <h3 className="inter-display-medium f-s-28 lh-34 grey-F2F m-b-16">
+                    <h3 className="inter-display-medium f-s-25 lh-28 grey-F2F m-b-10">
                       Get notified when a highly correlated whale makes a move
                     </h3>
                     <p className="inter-display-medium f-s-13 lh-16 grey-F2F">
@@ -135,7 +135,7 @@ class LPWhale extends BaseReactComponent {
                   </div>
                   <div className="content-wrapper right">
                     <Image src={EyeIcon} />
-                    <h3 className="inter-display-medium f-s-28 lh-34 grey-F2F m-b-16">
+                    <h3 className="inter-display-medium f-s-25 lh-28 grey-F2F m-b-10">
                       Watch what the <br />
                       whales are doing
                     </h3>
@@ -145,8 +145,8 @@ class LPWhale extends BaseReactComponent {
                     </p>
                   </div>
                 </div>
-                <div className="bottom-section">
-                  <h3 className="inter-display-medium f-s-22 lh-27 grey-F2F m-b-16 text-right">
+                <div className="bottom-section" style={{marginTop:"-2.5rem"}}>
+                  <h3 className="inter-display-medium f-s-22 lh-27 grey-F2F text-right">
                     Testimonials
                   </h3>
                   <hr />
@@ -159,14 +159,14 @@ class LPWhale extends BaseReactComponent {
                           style={{ width: "47.5rem", marginRight: "2rem" }}
                         >
                           <div className="heading">
-                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                            <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
                               Jack F
                             </h5>
-                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                            <h5 className="inter-display-medium f-s-12 lh-15 grey-969">
                               Ex Blackrock PM
                             </h5>
                           </div>
-                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                          <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
                             “Love how Loch integrates portfolio analytics and
                             whale watching into one unified app.”
                             <br />
@@ -181,14 +181,14 @@ class LPWhale extends BaseReactComponent {
                           style={{ width: "47.5rem", marginRight: "2rem" }}
                         >
                           <div className="heading">
-                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                            <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
                               Yash P
                             </h5>
-                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                            <h5 className="inter-display-medium f-s-12 lh-15 grey-969">
                               Research, 3poch Crypto Hedge Fund
                             </h5>
                           </div>
-                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                          <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
                             “I use Loch everyday now. I don't think I could
                             analyze crypto whale trends markets without it. I'm
                             addicted!”
@@ -204,14 +204,14 @@ class LPWhale extends BaseReactComponent {
                           style={{ width: "47.5rem", marginRight: "2rem" }}
                         >
                           <div className="heading">
-                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                            <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
                               Shiv S
                             </h5>
-                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                            <h5 className="inter-display-medium f-s-12 lh-15 grey-969">
                               Co-Founder Magik Labs
                             </h5>
                           </div>
-                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                          <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
                             “Managing my own portfolio is helpful and well
                             designed. What’s really interesting is watching the
                             whales though. No one else has made whale tracking
