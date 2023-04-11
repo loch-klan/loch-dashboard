@@ -33,12 +33,24 @@ import NotificationImage from "../../assets/images/notification-whale.svg";
 
 import NotificationDormantImage from "../../assets/images/notification-dormant.svg";
 import CohortImg from "../../assets/images/cohort-img.svg";
-
+import Slider from "react-slick";
+import prevIcon from "../../assets/images/icons/prev-arrow.svg";
+import nextIcon from "../../assets/images/icons/next-arrow.svg";
 
 class LPWhale extends BaseReactComponent {
   constructor(props) {
     super(props);
+    const settings = {
+      dots: false,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1.55,
+      slidesToScroll: 1,
+      nextArrow: <Image src={nextIcon} />,
+      prevArrow: <Image src={prevIcon} />,
+    };
     this.state = {
+      settings,
       emailAdded: false,
       startTime: 0,
     };
@@ -140,7 +152,75 @@ class LPWhale extends BaseReactComponent {
                   <hr />
 
                   <div className="testimonials">
-                    <div className="marquee-holder">
+                    <Slider {...this.state.settings}>
+                      <div>
+                        <div
+                          className="review-card"
+                          style={{ width: "47.5rem", marginRight: "2rem" }}
+                        >
+                          <div className="heading">
+                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                              Jack F
+                            </h5>
+                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                              Ex Blackrock PM
+                            </h5>
+                          </div>
+                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                            “Love how Loch integrates portfolio analytics and
+                            whale watching into one unified app.”
+                            <br />
+                          <br />
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        {" "}
+                        <div
+                          className="review-card"
+                          style={{ width: "47.5rem", marginRight: "2rem" }}
+                        >
+                          <div className="heading">
+                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                              Yash P
+                            </h5>
+                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                              Research, 3poch Crypto Hedge Fund
+                            </h5>
+                          </div>
+                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                            “I use Loch everyday now. I don't think I could
+                            analyze crypto whale trends markets without it. I'm
+                            addicted!”
+                            <br />
+                            <br />
+                          </p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div
+                          className="review-card"
+                          style={{ width: "47.5rem", marginRight: "2rem" }}
+                        >
+                          <div className="heading">
+                            <h5 className="inter-display-semi-bold f-s-16 lh-19 black-191 m-r-5">
+                              Shiv S
+                            </h5>
+                            <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
+                              Co-Founder Magik Labs
+                            </h5>
+                          </div>
+                          <p className="inter-display-medium f-s-16 lh-19 black-1D2 m-t-20">
+                            “Managing my own portfolio is helpful and well
+                            designed. What’s really interesting is watching the
+                            whales though. No one else has made whale tracking
+                            so simple.”
+                          </p>
+                        </div>
+                      </div>
+                    </Slider>
+                    {/* <div className="marquee-holder">
                       <div className="card-wrapper">
                         <div
                           className="review-card"
@@ -258,7 +338,7 @@ class LPWhale extends BaseReactComponent {
                           </p>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
