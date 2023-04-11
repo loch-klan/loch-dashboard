@@ -9,7 +9,7 @@ import {
   FormValidator,
 } from "../../utils/form";
 import { deleteToken } from "../../utils/ManageToken";
-import { loginApi } from "./Api";
+import { GetDefaultPlan, loginApi } from "./Api";
 // import { loginApi } from './Api';
 import logo from "../../image/Loch.svg";
 import beta from "../../image/BetaIcon.svg";
@@ -31,7 +31,7 @@ class Login extends BaseReactComponent {
   }
 
   componentDidMount() {
-    console.log("this.props", this.props.location);
+    // console.log("this.props", this.props.location);
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     // deleteToken();
 
@@ -46,6 +46,12 @@ class Login extends BaseReactComponent {
         rate: 1,
       })
     );
+
+     let userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+     if (!userPlan) {
+       GetDefaultPlan();
+     }
+   
 
     if (this.state.link && !this.state.podName) {
       // console.log("login in")

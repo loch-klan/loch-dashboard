@@ -33,7 +33,7 @@ import {
   searchTransactionApi,
 } from "../intelligence/Api.js";
 
-import { getDetectedChainsApi, setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import { GetDefaultPlan, getDetectedChainsApi, setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import {
   SEARCH_BY_WALLET_ADDRESS_IN,
   Method,
@@ -581,7 +581,7 @@ class Portfolio extends BaseReactComponent {
             },
           });
         } else {
-          
+           GetDefaultPlan();
           this.props.getDetailsByLinkApi(this.props.match.params.id, this);
           this.setState({
             portfolioLink: false,
