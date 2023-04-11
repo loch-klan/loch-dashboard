@@ -23,6 +23,7 @@ import {
   DiscountEmailPage,
   DiscountEmailSkip,
   EmailAddedDiscount,
+  LPPeaceOfMind,
   TimeSpentDiscountEmail,
   TimeSpentOnboarding,
 } from "../../utils/AnalyticsFunctions";
@@ -59,7 +60,7 @@ class LPPeace extends BaseReactComponent {
       emailAdded: true,
     });
 
-    // EmailAddedDiscount({ email_address: this.state.email });
+    LPPeaceOfMind({ email_address: this.state.email });
 
     setTimeout(() => {
     //   this.setState({

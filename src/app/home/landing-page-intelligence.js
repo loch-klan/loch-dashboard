@@ -23,6 +23,8 @@ import {
   DiscountEmailPage,
   DiscountEmailSkip,
   EmailAddedDiscount,
+  LPIntelligenceTrack,
+  LPWhale,
   TimeSpentDiscountEmail,
   TimeSpentOnboarding,
 } from "../../utils/AnalyticsFunctions";
@@ -56,7 +58,7 @@ class LPIntelligence extends BaseReactComponent {
       emailAdded: true,
     });
 
-    // EmailAddedDiscount({ email_address: this.state.email });
+    LPIntelligenceTrack({ email_address: this.state.email });
 
     setTimeout(() => {
      this.props.history.push("/welcome");
