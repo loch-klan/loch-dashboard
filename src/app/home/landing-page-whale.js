@@ -349,7 +349,7 @@ class LPWhale extends BaseReactComponent {
             <div className="content-section shadow">
               {!this.state.emailAdded ? (
                 <>
-                  <h1 className="inter-display-medium f-s-39 lh-46 grey-B0B m-b-26">
+                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
                     Sign up for exclusive access.
                   </h1>
                   <Form onValidSubmit={this.handleSave}>
@@ -390,12 +390,12 @@ class LPWhale extends BaseReactComponent {
                     </Button>
                   </Form>
 
-                  <h3
-                    className="inter-display-medium f-s-15 lh-19 m-t-40 text-center"
+                  <h4
+                    className="inter-display-medium f-s-13 lh-15 m-t-40 text-center"
                     // onClick={this.handleSkip}
                   >
                     You’ll receive an email with an invitation link to join.
-                  </h3>
+                  </h4>
                 </>
               ) : (
                 <>

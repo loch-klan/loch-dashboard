@@ -106,7 +106,6 @@ class LPPeace extends BaseReactComponent {
                       Peace of mind and assurance
                     </h3>
                     <p className="inter-display-medium f-s-13 lh-16 grey-F2F">
-                      Peace of mind and assurance <br />
                       Loch informs you about token unlocks, risky assets, ponzi
                       schemes, and other degen things you may be exposed to.
                     </p>
@@ -312,7 +311,7 @@ class LPPeace extends BaseReactComponent {
             <div className="content-section shadow">
               {!this.state.emailAdded ? (
                 <>
-                  <h1 className="inter-display-medium f-s-39 lh-46 grey-B0B m-b-26">
+                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
                     Sign up for exclusive access.
                   </h1>
                   <Form onValidSubmit={this.handleSave}>
@@ -352,12 +351,12 @@ class LPPeace extends BaseReactComponent {
                       Get started
                     </Button>
                   </Form>
-                  <h3
-                    className="inter-display-medium f-s-15 lh-19 m-t-40 text-center"
+                  <h4
+                    className="inter-display-medium f-s-13 lh-15 m-t-40 text-center"
                     // onClick={this.handleSkip}
                   >
                     You’ll receive an email with an invitation link to join.
-                  </h3>
+                  </h4>
                 </>
               ) : (
                 <>
