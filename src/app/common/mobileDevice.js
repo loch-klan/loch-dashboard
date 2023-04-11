@@ -20,7 +20,9 @@ import Loading from "./Loading";
 
 import DesktopImg from '../../assets/images/icons/desktop.svg'
 import LochIcon from "../../assets/images/icons/grey-loch.svg";
+import BackIcon from "../../assets/images/icons/back-icon.svg";
 import { MobileEmail, MobileEmailPageView } from "../../utils/AnalyticsFunctions";
+import { toast } from "react-toastify";
 
 class MobileDevice extends BaseReactComponent {
   constructor(props) {
@@ -40,6 +42,7 @@ class MobileDevice extends BaseReactComponent {
   
 
     MobileEmail({ email_address: this.state.email });
+    toast.success("Email added to our mailing list");
 
     // setTimeout(() => {
     //   this.props.history.push("/welcome");
@@ -57,9 +60,24 @@ class MobileDevice extends BaseReactComponent {
           width: "100vw",
           padding: "0 5%",
           flexDirection: "column",
+          position: "relative",
         }}
         className="MobileComingSoon"
       >
+        <Image
+          src={BackIcon}
+          style={{
+            position: "absolute",
+            top: "2rem",
+            left: "2rem",
+            width: "3rem",
+          }}
+          
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = "https://loch.one/";
+          }}
+        />
         <Image src={LochIcon} style={{ position: "relative", top: "-8rem" }} />
         <div
           style={{

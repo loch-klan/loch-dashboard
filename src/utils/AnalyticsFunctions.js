@@ -3514,7 +3514,7 @@ export const LPIntelligenceTrackPageView = () => {
 
 // email added for mopbile device 
 export const MobileEmail = ({ email_address }) => {
-  const event_name = "Mobile coming soon page";
+  const event_name = "Mobile coming soon page: email added";
   const eventProperties = {
     "email added": email_address,
   };
