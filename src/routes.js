@@ -17,6 +17,9 @@ import Cohort from "./app/cohort/Cohort";
 import CohortPage from "./app/cohort/cohort-individual";
 import CohortSharePage from "./app/cohort/cohortShare";
 import Defi from "./app/defi/Defi";
+import LPWhale from "./app/home/landing-page-whale";
+import LPIntelligence from "./app/home/landing-page-intelligence";
+import LPPeace from "./app/home/landing-page-peace";
 const routes = [
   {
     path: "/",
@@ -119,6 +122,24 @@ const routes = [
     name: "Verify Email",
     type: Route,
     component: VerifyEmail,
+  },
+  {
+    path: "/landing-page-whale",
+    name: "Landing Page 1",
+    type: Route,
+    component: LPWhale,
+  },
+  {
+    path: "/landing-page-peace-of-mind",
+    name: "Landing Page 2",
+    type: Route,
+    component: LPPeace,
+  },
+  {
+    path: "/landing-page-intelligence",
+    name: "Landing Page 3",
+    type: Route,
+    component: LPIntelligence,
   },
   {
     path: "/sandbox",

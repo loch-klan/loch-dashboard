@@ -29,7 +29,7 @@ class Home extends BaseReactComponent {
 
       showPrevModal: true,
 
-      showEmailPopup: true,
+      showEmailPopup: false,
       emailAdded: false,
       startTime: 0,
     };
