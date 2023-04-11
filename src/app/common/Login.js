@@ -36,7 +36,11 @@ class Login extends BaseReactComponent {
     // deleteToken();
     localStorage.setItem("defi_access", true);
     localStorage.setItem("isPopup", true);
-    localStorage.setItem("whalepodview", true);
+    // localStorage.setItem("whalepodview", true);
+    localStorage.setItem(
+      "whalepodview",
+      JSON.stringify({ access: true, id: "" })
+    );
 
     localStorage.setItem(
       "currency",
