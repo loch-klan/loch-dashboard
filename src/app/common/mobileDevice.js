@@ -20,16 +20,31 @@ import Loading from "./Loading";
 
 import DesktopImg from '../../assets/images/icons/desktop.svg'
 import LochIcon from "../../assets/images/icons/grey-loch.svg";
+import { MobileEmail, MobileEmailPageView } from "../../utils/AnalyticsFunctions";
 
 class MobileDevice extends BaseReactComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      email:""
+    };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    MobileEmailPageView();
+  }
 
   componentWillUnmount() {}
+
+  handleSave = () => {
+  
+
+    MobileEmail({ email_address: this.state.email });
+
+    // setTimeout(() => {
+    //   this.props.history.push("/welcome");
+    // }, 2000);
+  };
 
   render() {
     return (
@@ -43,8 +58,9 @@ class MobileDevice extends BaseReactComponent {
           padding: "0 5%",
           flexDirection: "column",
         }}
+        className="MobileComingSoon"
       >
-        <Image src={LochIcon} style={{position:"relative", top:"-8rem"}} />
+        <Image src={LochIcon} style={{ position: "relative", top: "-8rem" }} />
         <div
           style={{
             background: "#FFFFFF",
@@ -66,11 +82,49 @@ class MobileDevice extends BaseReactComponent {
             mobile just yet.
           </h3>
           <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-t-8">
-            Come back on your desktop, laptop or <br />
-            tablet for the best Loch experience.
+            Come back on your desktop, laptop or tablet for the best Loch
+            experience.
           </h4>
         </div>
-        <Button
+        <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-t-20">
+          Add your email so you can be the first to know when we’ve launched
+          mobile for Loch.
+        </h4>
+        <Form onValidSubmit={this.handleSave}>
+          <FormElement
+            valueLink={this.linkState(this, "email")}
+            // label="Email Info"
+            required
+            validations={[
+              {
+                validate: FormValidator.isRequired,
+                message: "",
+              },
+              {
+                validate: FormValidator.isEmail,
+                message: "Enter valid email",
+              },
+              // {
+              //     validate: () => {
+              //       console.log("state", this.state.isOptInValid);
+              //        return !this.state.isOptInValid;
+              //   },
+              //     message:"invalid verification code"
+              // }
+            ]}
+            control={{
+              type: CustomTextControl,
+              settings: {
+                placeholder: "Your email address",
+              },
+            }}
+            // className={"is-valid"}
+          />
+          <Button className={`btn primary-btn w-100`} type="submit">
+            Get started
+          </Button>
+        </Form>
+        {/* <Button
           className="btn primary-btn m-t-30 w-100"
           onClick={(e) => {
             e.preventDefault();
@@ -78,7 +132,7 @@ class MobileDevice extends BaseReactComponent {
           }}
         >
           Go home
-        </Button>
+        </Button> */}
       </div>
     );
   }

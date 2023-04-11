@@ -3448,6 +3448,7 @@ export const DiscountEmailSkip = () => {
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
+
 // email added for discount
 export const LPWhaleTrack = ({ email_address }) => {
   const event_name = "Landing Page: whale";
@@ -3502,6 +3503,28 @@ export const LPPeaceOfMindPageView = () => {
 // email added for discount
 export const LPIntelligenceTrackPageView = () => {
   const event_name = "Page View: Landing Page: Intelligence";
+  const eventProperties = {
+    // "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+
+// email added for mopbile device 
+export const MobileEmail = ({ email_address }) => {
+  const event_name = "Mobile coming soon page";
+  const eventProperties = {
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for mopbile device 
+export const MobileEmailPageView = () => {
+  const event_name = "Page View :Mobile coming soon";
   const eventProperties = {
     // "email added": email_address,
   };

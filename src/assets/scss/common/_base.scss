@@ -2082,3 +2082,36 @@ textarea {
     }
         }
     }
+
+
+    .MobileComingSoon{
+ form {
+        width: 100%;
+         margin-top: 2rem;
+
+        .form-group {
+          // margin-bottom: 2.6rem;
+          .form-control {
+            border: 0.1rem solid #d4d4d4;
+          }
+          .form-control:hover {
+            border: 0.1rem solid #19191a;
+          }
+          .is-valid {
+            box-shadow: none;
+          }
+
+          input {
+            font-size: 1.6rem;
+          }
+
+          ::placeholder {
+            font-size: 1.6rem;
+          }
+        }
+
+        button {
+          width: 100%;
+        }
+      }
+    }
