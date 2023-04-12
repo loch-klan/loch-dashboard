@@ -34,6 +34,7 @@ import InsightVideo from "../../assets/videos/defi-insights.mov"
 import Slider from "react-slick";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
+import logo from "../../image/Loch.svg";
 
 class LPPeace extends BaseReactComponent {
   constructor(props) {
@@ -311,6 +312,7 @@ class LPPeace extends BaseReactComponent {
             <div className="content-section shadow">
               {!this.state.emailAdded ? (
                 <>
+                  <Image src={logo} className="logo"/>
                   <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
                     Sign up for exclusive access.
                   </h1>

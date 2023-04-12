@@ -34,7 +34,7 @@ import OverviewImg from "../../assets/images/lp-overview.svg";
 import Slider from "react-slick";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
-
+import logo from "../../image/Loch.svg";
 class LPIntelligence extends BaseReactComponent {
   constructor(props) {
     const settings = {
@@ -43,7 +43,7 @@ class LPIntelligence extends BaseReactComponent {
       speed: 500,
       slidesToShow: 1.65,
       slidesToScroll: 1,
-      centerMode:false,
+      centerMode: false,
       nextArrow: <Image src={nextIcon} />,
       prevArrow: <Image src={prevIcon} />,
     };
@@ -311,6 +311,7 @@ class LPIntelligence extends BaseReactComponent {
             <div className="content-section shadow">
               {!this.state.emailAdded ? (
                 <>
+                  <Image src={logo} className="logo" />
                   <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
                     Sign up for exclusive access.
                   </h1>
