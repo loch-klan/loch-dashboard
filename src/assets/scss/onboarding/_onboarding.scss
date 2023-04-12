@@ -540,7 +540,7 @@
         #2f15d0 64.58%,
         rgba(0, 0, 0, 0) 100%
       );
-      padding: 5rem 0rem 2rem 5rem;
+      padding: 2rem 5rem;
       display: flex;
       align-items: center;
     //   justify-content: center;
@@ -548,10 +548,11 @@
     width: 100%;
 
     video{
-        width: 80vh;
+        width: 85vh;
         border: 1.5px solid rgba(255, 255, 255, 0.68);
 box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
 border-radius: 12px;
+margin-bottom:1rem;
 
     }
 
@@ -565,7 +566,7 @@ border-radius: 12px;
 
           &.right{
             text-align: right;
-            padding-right:5rem ;
+            // padding-right:5rem ;
           }
 
           img {
@@ -596,10 +597,10 @@ width: 50%;
       }
 
       .bottom-section{
-        padding-right: 5rem;
+        // padding-right: 5rem;
         // overflow: hidden;
         hr{
-            margin: 1.5rem 0rem 3.5rem;
+            margin: 1.5rem 0rem 2.5rem;
             background:rgba(229, 229, 230, 0.5);
             height: 0.1rem;
         }
@@ -682,21 +683,22 @@ width: 50%;
           }
 
       .cohort-img{
-         width: 48vh;
+         width: 53vh;
          margin-bottom: 2rem;
-          padding-right: 5rem;
+          // padding-right: 5rem;
       }
 
       .overview-img{
         width: 72vh;
         margin-bottom: 3.2rem;
-            padding-right: 5rem;
+            // padding-right: 5rem;
 
       }
 
       .testimonials{
         width: 100%;
-        margin-left: 7rem;
+            margin-left: 9.5rem;
+    padding-right: 9.5rem;
           // overflow: hidden;
           // position: relative;
         // background-color: #2f15d0;
