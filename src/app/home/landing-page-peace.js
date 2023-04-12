@@ -9,6 +9,7 @@ import { Button, Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
 import { deleteToken, getToken } from "../../utils/ManageToken";
 import {
+  CreateUserLandingPage,
   getAllCurrencyRatesApi,
   GetDefaultPlan,
   setPageFlagDefault,
@@ -77,7 +78,11 @@ class LPPeace extends BaseReactComponent {
     });
 
     LPPeaceOfMind({ email_address: this.state.email });
-this.trackTwitterConversion(this.state.email);
+ let data = new URLSearchParams();
+ data.append("email", this.state.email);
+ data.append("signed_up_from", "landing-page-peace-of-mind");
+    CreateUserLandingPage(data, this, null);
+    this.trackTwitterConversion(this.state.email);
     setTimeout(() => {
       //   this.setState({
       //     showEmailPopup: false,
@@ -115,14 +120,18 @@ this.trackTwitterConversion(this.state.email);
                   loop
                 />
                 <div className="top-section">
-                  <div className="content-wrapper">
+                  <div
+                    className="content-wrapper text-center"
+                    style={{ width: "100%", paddingRight: "5rem" }}
+                  >
                     <Image src={DefiIcon} />
                     <h3 className="inter-display-medium f-s-25 lh-28 grey-F2F m-b-10">
                       Peace of mind and assurance
                     </h3>
                     <p className="inter-display-medium f-s-13 lh-16 grey-F2F">
                       Loch informs you about token unlocks, risky assets, ponzi
-                      schemes, and other degen things you may be exposed to.
+                      schemes, <br />
+                      and other degen things you may be exposed to.
                     </p>
                   </div>
                 </div>
@@ -140,7 +149,8 @@ this.trackTwitterConversion(this.state.email);
                           className="review-card"
                           style={{
                             // width: "53rem",
-                            marginRight: "2rem"
+                            marginRight: "2rem",
+                            height: "11rem",
                           }}
                         >
                           <div className="heading">
@@ -165,7 +175,8 @@ this.trackTwitterConversion(this.state.email);
                           className="review-card"
                           style={{
                             // width: "53rem",
-                            marginRight: "2rem"
+                            marginRight: "2rem",
+                            height: "11rem",
                           }}
                         >
                           <div className="heading">
@@ -190,7 +201,8 @@ this.trackTwitterConversion(this.state.email);
                           className="review-card"
                           style={{
                             // width: "53rem",
-                            marginRight: "0.5rem"
+                            marginRight: "0.5rem",
+                            height: "11rem",
                           }}
                         >
                           <div className="heading">
@@ -336,7 +348,7 @@ this.trackTwitterConversion(this.state.email);
               {!this.state.emailAdded ? (
                 <>
                   <Image src={logo} className="logo" />
-                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
+                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26 text-center">
                     Sign up for exclusive access.
                   </h1>
                   <Form onValidSubmit={this.handleSave}>

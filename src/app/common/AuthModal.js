@@ -118,7 +118,7 @@ class AuthModal extends BaseReactComponent {
         email_address: this.state.email,
         from: this.props.tracking,
       });
-    } else if (this.props.tracking = "Upgrade sign in popup") {
+    } else if (this.props.tracking === "Upgrade sign in popup") {
       UpgradeSignInEmailVerified({
         session_id: getCurrentUser().id,
         email_address: this.state.email,
@@ -151,6 +151,12 @@ class AuthModal extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("email", this.state.email);
     data.append("otp_token", this.state.otp);
+    data.append(
+      "signed_up_from",
+      this.props?.popupType === "general_popup"
+        ? "generic pop up"
+        : this.props.tracking
+    );
     VerifyEmail(data, this);
   };
 

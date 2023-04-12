@@ -8,6 +8,7 @@ import { Button, Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
 import { deleteToken, getToken } from "../../utils/ManageToken";
 import {
+  CreateUserLandingPage,
   getAllCurrencyRatesApi,
   GetDefaultPlan,
   setPageFlagDefault,
@@ -87,7 +88,10 @@ class LPWhale extends BaseReactComponent {
     // End Twitter conversion tracking event code
    this.trackTwitterConversion(this.state.email);
     LPWhaleTrack({ email_address: this.state.email });
-
+ let data = new URLSearchParams();
+    data.append("email", this.state.email);
+    data.append("signed_up_from", "landing-page-whale");
+    CreateUserLandingPage(data,this, null);
     setTimeout(() => {
       this.props.history.push("/welcome");
     }, 2000);
@@ -189,7 +193,8 @@ class LPWhale extends BaseReactComponent {
                           style={{
                             // width:
                             //   "47.5rem",
-                            marginRight: "2rem"
+                            marginRight: "2rem",
+                            height: "9rem",
                           }}
                         >
                           <div className="heading">
@@ -214,7 +219,8 @@ class LPWhale extends BaseReactComponent {
                           className="review-card"
                           style={{
                             // width: "47.5rem",
-                            marginRight: "2rem"
+                            marginRight: "2rem",
+                            height: "9rem",
                           }}
                         >
                           <div className="heading">
@@ -240,7 +246,8 @@ class LPWhale extends BaseReactComponent {
                           className="review-card"
                           style={{
                             // width: "47.5rem",
-                            marginRight: "0.5rem"
+                            marginRight: "0.5rem",
+                            height: "9rem",
                           }}
                         >
                           <div className="heading">
@@ -268,7 +275,7 @@ class LPWhale extends BaseReactComponent {
               {!this.state.emailAdded ? (
                 <>
                   <Image src={logo} className="logo" />
-                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
+                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26 text-center">
                     Sign up for exclusive access.
                   </h1>
                   <Form onValidSubmit={this.handleSave}>

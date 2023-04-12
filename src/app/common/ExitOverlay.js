@@ -597,6 +597,7 @@ class ExitOverlay extends BaseReactComponent {
         });
         const url = new URLSearchParams();
         url.append("email", this.state.email);
+        url.append("signed_up_from", "leaving");
         // url.append("wallet_addresses", JSON.stringify(email_arr));
         fixWalletApi(this, url);
         LeaveEmailAdded({
