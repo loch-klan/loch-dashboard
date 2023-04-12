@@ -93,7 +93,7 @@ class Home extends BaseReactComponent {
       } else {
         this.props.setPageFlagDefault();
         deleteToken();
-        // console.log("inside else after derlete token")
+        console.log("inside else after derlete token")
         localStorage.setItem("defi_access", true);
         localStorage.setItem("isPopup", true);
         // localStorage.setItem("whalepodview", true);

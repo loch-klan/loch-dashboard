@@ -126,7 +126,7 @@ class OnBoarding extends Component {
     // console.log("page Leave", endTime/1000);
     // console.log("Time Spent", TimeSpent);
     TimeSpentOnboarding({ time_spent: TimeSpent });
-    localStorage.setItem("refresh", false);
+    // localStorage.setItem("refresh", false);
   }
   onClose = () => {
     this.setState({ showModal: false });
