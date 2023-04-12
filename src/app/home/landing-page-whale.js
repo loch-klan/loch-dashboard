@@ -131,17 +131,23 @@ class LPWhale extends BaseReactComponent {
                   </div>
                 </div> */}
                 <Image src={CohortImg} className="cohort-img" />
-                <div className="content-wrapper tex-center">
-                  <Image src={EyeIcon} />
-                  <h3 className="inter-display-medium f-s-25 lh-28 grey-F2F m-b-10 text-center">
-                    🔎 🐋 Track your favorite crypto whales’ trades in real-time
-                  </h3>
-                  <p className="inter-display-medium f-s-13 lh-16 grey-F2F text-center">
-                    Loch allows you to follow specific wallets and track their
-                    trades in real-time across all chains. <br />
-                    Get notified when relevant whales become active or
-                    <br /> start making big trades.
-                  </p>
+                <div className="top-section">
+                  <div
+                    className="content-wrapper text-center"
+                    style={{ width: "100%", paddingRight: "5rem" }}
+                  >
+                    <Image src={EyeIcon} />
+                    <h3 className="inter-display-medium f-s-25 lh-28 grey-F2F m-b-10 text-center">
+                      🔎 🐋 Track your favorite crypto whales’ trades in
+                      real-time
+                    </h3>
+                    <p className="inter-display-medium f-s-13 lh-16 grey-F2F text-center">
+                      Loch allows you to follow specific wallets and track their
+                      trades in <br />
+                      real-time across all chains. Get notified when relevant
+                      whales become <br /> active or start making big trades.
+                    </p>
+                  </div>
                 </div>
                 <div
                   className="bottom-section"
