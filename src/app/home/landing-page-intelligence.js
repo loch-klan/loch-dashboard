@@ -9,6 +9,7 @@ import { Button, Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
 import { deleteToken, getToken } from "../../utils/ManageToken";
 import {
+  CreateUserLandingPage,
   getAllCurrencyRatesApi,
   GetDefaultPlan,
   setPageFlagDefault,
@@ -75,7 +76,10 @@ class LPIntelligence extends BaseReactComponent {
     });
 
     LPIntelligenceTrack({ email_address: this.state.email });
-
+ let data = new URLSearchParams();
+ data.append("email", this.state.email);
+ data.append("signed_up_from", "landing-page-intelligence");
+ CreateUserLandingPage(data, this, null);
     setTimeout(() => {
      this.props.history.push("/welcome");
     }, 2000);

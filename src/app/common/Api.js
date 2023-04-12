@@ -1237,3 +1237,16 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
       }
     });
 };
+
+
+// Update crypto payment
+export const CreateUserLandingPage = (data, ctx) => {
+
+  postLoginInstance.post("organisation/user/signup", data).then((res) => {
+    if (!res.data.error) {
+      // userFunction();
+    } else {
+      toast.error(res.data.message || "Something Went Wrong");
+    }
+  });
+};

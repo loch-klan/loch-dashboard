@@ -9,6 +9,7 @@ import { Button, Image } from "react-bootstrap";
 import Banner from "../../assets/images/Overlay.png";
 import { deleteToken, getToken } from "../../utils/ManageToken";
 import {
+  CreateUserLandingPage,
   getAllCurrencyRatesApi,
   GetDefaultPlan,
   setPageFlagDefault,
@@ -77,7 +78,10 @@ class LPPeace extends BaseReactComponent {
     });
 
     LPPeaceOfMind({ email_address: this.state.email });
-
+ let data = new URLSearchParams();
+ data.append("email", this.state.email);
+ data.append("signed_up_from", "landing-page-peace-of-mind");
+ CreateUserLandingPage(data, this, null);
     setTimeout(() => {
     //   this.setState({
     //     showEmailPopup: false,

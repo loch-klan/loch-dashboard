@@ -1718,6 +1718,7 @@ class ExitOverlay extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                         });
                         resetUser();
+                        localStorage.setItem("refresh", false);
                         this.props.history.push("/welcome");
                       }}
                       style={{ marginLeft: "4rem" }}
