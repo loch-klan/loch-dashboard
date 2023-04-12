@@ -31,7 +31,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import InsightIcon from "../../assets/images/icons/lp-insight.svg";
 
-import OverviewImg from "../../assets/images/lp-overview.svg";
+import OverviewImg from "../../assets/images/overview.png";
 import Slider from "react-slick";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";

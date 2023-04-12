@@ -33,7 +33,7 @@ import EmailImage from "../../assets/images/email-whale.svg";
 import NotificationImage from "../../assets/images/notification-whale.svg";
 
 import NotificationDormantImage from "../../assets/images/notification-dormant.svg";
-import CohortImg from "../../assets/images/cohort-img.svg";
+import CohortImg from "../../assets/images/cohort.png";
 import Slider from "react-slick";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
