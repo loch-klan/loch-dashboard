@@ -182,6 +182,7 @@ class ProfileForm extends BaseReactComponent {
     data.append("last_name", this.state.lastName);
     data.append("email", this.state.email);
     data.append("mobile", this.state.mobileNumber);
+    data.append("signed_up_from", "Profile page");
     updateUser(data, this);
   };
   render() {

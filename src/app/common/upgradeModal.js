@@ -341,6 +341,7 @@ class UpgradeModal extends BaseReactComponent {
     let data = new URLSearchParams();
     data.append("email", this.state.email);
     data.append("otp_token", this.state.otp);
+    data.append("signed_up_from", this.state.tracking);
     VerifyEmail(data, this);
   };
 
