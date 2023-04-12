@@ -44,6 +44,7 @@ class ConfirmLeaveModal extends BaseReactComponent {
                 className="secondary-btn m-r-24"
                 onClick={() => {
                   resetUser();
+                  localStorage.setItem("refresh", false);
                   this.props.history.push("/welcome");
                 }}
               >
