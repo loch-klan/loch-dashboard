@@ -35,6 +35,7 @@ import InsightVideo from "../../assets/videos/defi-insights.mov"
 import Slider from "react-slick";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
+import logo from "../../image/Loch.svg";
 
 class LPPeace extends BaseReactComponent {
   constructor(props) {
@@ -108,7 +109,6 @@ class LPPeace extends BaseReactComponent {
                       Peace of mind and assurance
                     </h3>
                     <p className="inter-display-medium f-s-13 lh-16 grey-F2F">
-                      Peace of mind and assurance <br />
                       Loch informs you about token unlocks, risky assets, ponzi
                       schemes, and other degen things you may be exposed to.
                     </p>
@@ -314,7 +314,8 @@ class LPPeace extends BaseReactComponent {
             <div className="content-section shadow">
               {!this.state.emailAdded ? (
                 <>
-                  <h1 className="inter-display-medium f-s-39 lh-46 grey-B0B m-b-26">
+                  <Image src={logo} className="logo"/>
+                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
                     Sign up for exclusive access.
                   </h1>
                   <Form onValidSubmit={this.handleSave}>
@@ -355,10 +356,10 @@ class LPPeace extends BaseReactComponent {
                     </Button>
                   </Form>
                   <h4
-                    className="inter-display-medium f-s-15 lh-19 m-t-40 text-center"
+                    className="inter-display-medium f-s-13 lh-15 m-t-40 text-center"
                     // onClick={this.handleSkip}
                   >
-                    You’ll receive an email with an invite link to join.
+                    You’ll receive an email with an invitation link to join.
                   </h4>
                 </>
               ) : (

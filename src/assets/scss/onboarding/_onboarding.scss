@@ -682,7 +682,8 @@ width: 50%;
           }
 
       .cohort-img{
-         width: 40vh;
+         width: 48vh;
+         margin-bottom: 2rem;
       }
 
       .overview-img{
@@ -766,12 +767,24 @@ text-align: start;
           0px 14px 64px -4px rgba(24, 39, 75, 0.12);
       }
 
+      .logo{
+        width: 5.5rem;
+        margin-bottom: 7rem;
+        align-self: center;
+      }
+
       h3 {
         cursor: pointer;
         align-self: center;
         &:hover {
           color: #b0b0b0;
         }
+      }
+
+       h4 {
+       
+        align-self: center;
+        
       }
 
       form {

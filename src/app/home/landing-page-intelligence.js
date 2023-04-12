@@ -35,7 +35,7 @@ import OverviewImg from "../../assets/images/lp-overview.svg";
 import Slider from "react-slick";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
-
+import logo from "../../image/Loch.svg";
 class LPIntelligence extends BaseReactComponent {
   constructor(props) {
     const settings = {
@@ -44,7 +44,7 @@ class LPIntelligence extends BaseReactComponent {
       speed: 500,
       slidesToShow: 1.65,
       slidesToScroll: 1,
-      centerMode:false,
+      centerMode: false,
       nextArrow: <Image src={nextIcon} />,
       prevArrow: <Image src={prevIcon} />,
     };
@@ -313,7 +313,8 @@ class LPIntelligence extends BaseReactComponent {
             <div className="content-section shadow">
               {!this.state.emailAdded ? (
                 <>
-                  <h1 className="inter-display-medium f-s-39 lh-46 grey-B0B m-b-26">
+                  <Image src={logo} className="logo" />
+                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
                     Sign up for exclusive access.
                   </h1>
                   <Form onValidSubmit={this.handleSave}>
@@ -354,10 +355,10 @@ class LPIntelligence extends BaseReactComponent {
                     </Button>
                   </Form>
                   <h4
-                    className="inter-display-medium f-s-15 lh-19 m-t-40 text-center"
+                    className="inter-display-medium f-s-13 lh-15 m-t-40 text-center"
                     // onClick={this.handleSkip}
                   >
-                    You’ll receive an email with an invite link to join.
+                    You’ll receive an email with an invitation link to join.
                   </h4>
                 </>
               ) : (
