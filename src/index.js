@@ -48,6 +48,7 @@ initAmplitude();
 
 // test({ session_id: "session id", chains: ["value1", "value2", "value3"] });
 
+
 /* ReactDOM.render(
   <React.StrictMode>
     <App />

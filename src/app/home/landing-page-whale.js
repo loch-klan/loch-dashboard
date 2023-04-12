@@ -39,6 +39,7 @@ import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import logo from "../../image/Loch.svg";
 
+
 class LPWhale extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -76,13 +77,31 @@ class LPWhale extends BaseReactComponent {
       emailAdded: true,
     });
 
+    // Twitter conversion tracking event code
+    // Insert Twitter Event ID
+    // twq("event", "tw-oekqq-oekro", {
+    //   email_address: this.state.email, // use this to pass a user’s email address
+    // });
+    // End Twitter conversion tracking event code
+   this.trackTwitterConversion(this.state.email);
     LPWhaleTrack({ email_address: this.state.email });
 
-    setTimeout(() => {
-     this.props.history.push("/welcome");
-    }, 2000);
+    // setTimeout(() => {
+    //   this.props.history.push("/welcome");
+    // }, 2000);
   };
 
+  trackTwitterConversion = (email) => {
+    // console.log("e",email)
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.innerHTML = ` console.log("twq is defined:", typeof twq !== "undefined");
+    twq('event', 'tw-oekqq-oekro', {
+      email_address: '${email}'
+    });`;
+
+    document.body.appendChild(script);
+  };
   render() {
     return (
       <>
