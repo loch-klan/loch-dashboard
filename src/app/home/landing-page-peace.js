@@ -41,9 +41,9 @@ class LPPeace extends BaseReactComponent {
   constructor(props) {
     const settings = {
       dots: false,
-      infinite: true,
+      infinite: false,
       speed: 500,
-      slidesToShow: 1.4,
+      slidesToShow: 1.3,
       slidesToScroll: 1,
       nextArrow: <Image src={nextIcon} />,
       prevArrow: <Image src={prevIcon} />,
@@ -138,7 +138,10 @@ this.trackTwitterConversion(this.state.email);
                       <div>
                         <div
                           className="review-card"
-                          style={{ width: "53rem", marginRight: "2rem" }}
+                          style={{
+                            // width: "53rem",
+                            marginRight: "2rem"
+                          }}
                         >
                           <div className="heading">
                             <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
@@ -160,7 +163,10 @@ this.trackTwitterConversion(this.state.email);
                       <div>
                         <div
                           className="review-card"
-                          style={{ width: "53rem", marginRight: "2rem" }}
+                          style={{
+                            // width: "53rem",
+                            marginRight: "2rem"
+                          }}
                         >
                           <div className="heading">
                             <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
@@ -182,7 +188,10 @@ this.trackTwitterConversion(this.state.email);
                       <div>
                         <div
                           className="review-card"
-                          style={{ width: "53rem", marginRight: "2rem" }}
+                          style={{
+                            // width: "53rem",
+                            marginRight: "0.5rem"
+                          }}
                         >
                           <div className="heading">
                             <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">

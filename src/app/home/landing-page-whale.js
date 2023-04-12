@@ -33,7 +33,7 @@ import EmailImage from "../../assets/images/email-whale.svg";
 import NotificationImage from "../../assets/images/notification-whale.svg";
 
 import NotificationDormantImage from "../../assets/images/notification-dormant.svg";
-import CohortImg from "../../assets/images/cohort-img.svg";
+import CohortImg from "../../assets/images/cohort.png";
 import Slider from "react-slick";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
@@ -45,10 +45,12 @@ class LPWhale extends BaseReactComponent {
     super(props);
     const settings = {
       dots: false,
-      infinite: true,
+      infinite: false,
       speed: 500,
-      slidesToShow: 1.55,
+      slidesToShow: 1.3,
       slidesToScroll: 1,
+      variableHeight: true,
+      // adaptiveHeight:true,
       nextArrow: <Image src={nextIcon} />,
       prevArrow: <Image src={prevIcon} />,
     };
@@ -184,7 +186,11 @@ class LPWhale extends BaseReactComponent {
                       <div>
                         <div
                           className="review-card"
-                          style={{ width: "47.5rem", marginRight: "2rem" }}
+                          style={{
+                            // width:
+                            //   "47.5rem",
+                            marginRight: "2rem"
+                          }}
                         >
                           <div className="heading">
                             <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
@@ -206,7 +212,10 @@ class LPWhale extends BaseReactComponent {
                         {" "}
                         <div
                           className="review-card"
-                          style={{ width: "47.5rem", marginRight: "2rem" }}
+                          style={{
+                            // width: "47.5rem",
+                            marginRight: "2rem"
+                          }}
                         >
                           <div className="heading">
                             <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
@@ -229,7 +238,10 @@ class LPWhale extends BaseReactComponent {
                       <div>
                         <div
                           className="review-card"
-                          style={{ width: "47.5rem", marginRight: "2rem" }}
+                          style={{
+                            // width: "47.5rem",
+                            marginRight: "0.5rem"
+                          }}
                         >
                           <div className="heading">
                             <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
