@@ -40,9 +40,9 @@ class LPIntelligence extends BaseReactComponent {
   constructor(props) {
     const settings = {
       dots: false,
-      infinite: true,
+      infinite: false,
       speed: 500,
-      slidesToShow: 1.65,
+      slidesToShow: 1.2,
       slidesToScroll: 1,
       centerMode: false,
       nextArrow: <Image src={nextIcon} />,
@@ -119,7 +119,10 @@ class LPIntelligence extends BaseReactComponent {
                         {" "}
                         <div
                           className="review-card"
-                          style={{ width: "45rem", marginRight: "2rem" }}
+                          style={{
+                            // width: "45rem",
+                            marginRight: "2rem"
+                          }}
                         >
                           <div className="heading">
                             <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
@@ -130,9 +133,7 @@ class LPIntelligence extends BaseReactComponent {
                             </h5>
                           </div>
                           <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
-                            “Loch has allowed me to condense my portfolio
-                            management into one singular app. Great UI and
-                            onboarding.”
+                            “Loch has allowed me to condense my portfolio management into one singular app. Great UI and onboarding.”
                             <br />
                             <br />
                           </p>
@@ -143,7 +144,10 @@ class LPIntelligence extends BaseReactComponent {
                         {" "}
                         <div
                           className="review-card"
-                          style={{ width: "45rem", marginRight: "2rem" }}
+                          style={{
+                            // width: "45rem",
+                            marginRight: "2rem"
+                          }}
                         >
                           <div className="heading">
                             <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
@@ -154,10 +158,7 @@ class LPIntelligence extends BaseReactComponent {
                             </h5>
                           </div>
                           <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
-                            “The onboarding is really fast and simple. I was
-                            able to get started in literally 5 seconds. I like
-                            that I can see my asset distribution across multiple
-                            wallets. No one else supports that.”
+                            “The onboarding is really fast and simple. I was able to get started in literally 5 seconds. I like that I can see my asset distribution across multiple wallets. No one else supports that.”
                           </p>
                         </div>
                       </div>
@@ -166,7 +167,10 @@ class LPIntelligence extends BaseReactComponent {
                         {" "}
                         <div
                           className="review-card"
-                          style={{ width: "45rem", marginRight: "2rem" }}
+                          style={{
+                            // width: "45rem",
+                            marginRight: "0.5rem"
+                          }}
                         >
                           <div className="heading">
                             <h5 className="inter-display-semi-bold f-s-13 lh-16 black-191 m-r-5">
