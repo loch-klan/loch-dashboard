@@ -125,7 +125,8 @@ class LPIntelligence extends BaseReactComponent {
                           className="review-card"
                           style={{
                             // width: "45rem",
-                            marginRight: "2rem"
+                            marginRight: "2rem",
+                            height: "11rem",
                           }}
                         >
                           <div className="heading">
@@ -137,7 +138,9 @@ class LPIntelligence extends BaseReactComponent {
                             </h5>
                           </div>
                           <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
-                            “Loch has allowed me to condense my portfolio management into one singular app. Great UI and onboarding.”
+                            “Loch has allowed me to condense my portfolio
+                            management into one singular app. Great UI and
+                            onboarding.”
                             <br />
                             <br />
                           </p>
@@ -150,7 +153,8 @@ class LPIntelligence extends BaseReactComponent {
                           className="review-card"
                           style={{
                             // width: "45rem",
-                            marginRight: "2rem"
+                            marginRight: "2rem",
+                            height: "11rem",
                           }}
                         >
                           <div className="heading">
@@ -162,18 +166,22 @@ class LPIntelligence extends BaseReactComponent {
                             </h5>
                           </div>
                           <p className="inter-display-medium f-s-13 lh-16 black-1D2 m-t-12">
-                            “The onboarding is really fast and simple. I was able to get started in literally 5 seconds. I like that I can see my asset distribution across multiple wallets. No one else supports that.”
+                            “The onboarding is really fast and simple. I was
+                            able to get started in literally 5 seconds. I like
+                            that I can see my asset distribution across multiple
+                            wallets. No one else supports that.”
                           </p>
                         </div>
                       </div>
 
                       <div>
-                        {" "}
+                    
                         <div
                           className="review-card"
                           style={{
                             // width: "45rem",
-                            marginRight: "0.5rem"
+                            marginRight: "0.5rem",
+                            height: "11rem",
                           }}
                         >
                           <div className="heading">
@@ -322,7 +330,7 @@ class LPIntelligence extends BaseReactComponent {
               {!this.state.emailAdded ? (
                 <>
                   <Image src={logo} className="logo" />
-                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
+                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26 text-center">
                     Sign up for exclusive access.
                   </h1>
                   <Form onValidSubmit={this.handleSave}>

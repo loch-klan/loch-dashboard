@@ -458,7 +458,7 @@ export const VerifyEmail = (data,ctx) => {
             from: ctx.props.tracking,
           });
           
-        } else if ((ctx.props.tracking = "Upgrade sign in popup")) {
+        } else if ((ctx.props.tracking === "Upgrade sign in popup")) {
           UpgradeSignInPopupEmailAdded({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
@@ -574,7 +574,7 @@ export const VerifyEmail = (data,ctx) => {
                   addWallet.push(obj);
                 }
                 localStorage.setItem("addWallet", JSON.stringify(addWallet));
-
+                //  console.log("only sign");
                 setTimeout(() => {
                   ctx.state.onHide();
                   // console.log("reload")
@@ -582,11 +582,14 @@ export const VerifyEmail = (data,ctx) => {
                 }, 1000);
               } else {
                 if (userId) {
+                  // if dummy user 
                   // for whale watach it will overwirte data
+                  //  console.log("only whale watch for both new and old");
                   let userdata = new URLSearchParams();
                   userdata.append("old_user_id", userId);
                   UpdateUserDetails(userdata, ctx);
                 } else {
+                  // console.log("welcome upgrade signin")
                   let obj = JSON.parse(localStorage.getItem("lochUser"));
                   obj = {
                     ...obj,
@@ -746,7 +749,7 @@ export const UpdateUserDetails = (data,ctx) => {
 // for upgrade
           ctx.AddEmailModal()
         } else {
-        
+        // for whale watch
            ctx.state.onHide();
         };
        

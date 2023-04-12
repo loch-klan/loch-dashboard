@@ -174,7 +174,8 @@ class LPWhale extends BaseReactComponent {
                           style={{
                             // width:
                             //   "47.5rem",
-                            marginRight: "2rem"
+                            marginRight: "2rem",
+                            height: "9rem",
                           }}
                         >
                           <div className="heading">
@@ -199,7 +200,8 @@ class LPWhale extends BaseReactComponent {
                           className="review-card"
                           style={{
                             // width: "47.5rem",
-                            marginRight: "2rem"
+                            marginRight: "2rem",
+                            height: "9rem",
                           }}
                         >
                           <div className="heading">
@@ -225,7 +227,8 @@ class LPWhale extends BaseReactComponent {
                           className="review-card"
                           style={{
                             // width: "47.5rem",
-                            marginRight: "0.5rem"
+                            marginRight: "0.5rem",
+                            height: "9rem",
                           }}
                         >
                           <div className="heading">
@@ -253,7 +256,7 @@ class LPWhale extends BaseReactComponent {
               {!this.state.emailAdded ? (
                 <>
                   <Image src={logo} className="logo" />
-                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
+                  <h1 className="inter-display-medium f-s-39 lh-46 m-b-26 text-center">
                     Sign up for exclusive access.
                   </h1>
                   <Form onValidSubmit={this.handleSave}>
