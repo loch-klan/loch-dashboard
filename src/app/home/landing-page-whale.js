@@ -86,9 +86,9 @@ class LPWhale extends BaseReactComponent {
    this.trackTwitterConversion(this.state.email);
     LPWhaleTrack({ email_address: this.state.email });
 
-    // setTimeout(() => {
-    //   this.props.history.push("/welcome");
-    // }, 2000);
+    setTimeout(() => {
+      this.props.history.push("/welcome");
+    }, 2000);
   };
 
   trackTwitterConversion = (email) => {

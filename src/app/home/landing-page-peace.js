@@ -54,13 +54,13 @@ class LPPeace extends BaseReactComponent {
       emailAdded: false,
       startTime: 0,
     };
-      this.videoRef = React.createRef();
+    this.videoRef = React.createRef();
   }
 
   componentDidMount() {
-      this.state.startTime = new Date() * 1;
+    this.state.startTime = new Date() * 1;
     this.videoRef.current.play();
-    LPPeaceOfMindPageView(); 
+    LPPeaceOfMindPageView();
   }
 
   componentWillUnmount() {
@@ -77,14 +77,26 @@ class LPPeace extends BaseReactComponent {
     });
 
     LPPeaceOfMind({ email_address: this.state.email });
-
+this.trackTwitterConversion(this.state.email);
     setTimeout(() => {
-    //   this.setState({
-    //     showEmailPopup: false,
-    //   });
-    //   localStorage.setItem("discountEmail", true);
-        this.props.history.push("/welcome")
+      //   this.setState({
+      //     showEmailPopup: false,
+      //   });
+      //   localStorage.setItem("discountEmail", true);
+      this.props.history.push("/welcome");
     }, 2000);
+  };
+
+  trackTwitterConversion = (email) => {
+    // console.log("e",email)
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.innerHTML = ` console.log("twq is defined:", typeof twq !== "undefined");
+    twq('event', 'tw-oekqq-oeksm', {
+      email_address: '${email}'
+    });`;
+
+    document.body.appendChild(script);
   };
 
   render() {
@@ -314,7 +326,7 @@ class LPPeace extends BaseReactComponent {
             <div className="content-section shadow">
               {!this.state.emailAdded ? (
                 <>
-                  <Image src={logo} className="logo"/>
+                  <Image src={logo} className="logo" />
                   <h1 className="inter-display-medium f-s-39 lh-46 m-b-26">
                     Sign up for exclusive access.
                   </h1>

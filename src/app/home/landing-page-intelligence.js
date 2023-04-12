@@ -73,12 +73,23 @@ class LPIntelligence extends BaseReactComponent {
     this.setState({
       emailAdded: true,
     });
-
+    this.trackTwitterConversion(this.state.email);
     LPIntelligenceTrack({ email_address: this.state.email });
 
     setTimeout(() => {
-     this.props.history.push("/welcome");
+      this.props.history.push("/welcome");
     }, 2000);
+  };
+  trackTwitterConversion = (email) => {
+    // console.log("e",email)
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.innerHTML = ` console.log("twq is defined:", typeof twq !== "undefined");
+    twq('event', 'tw-oekqq-oeksp', {
+      email_address: '${email}'
+    });`;
+
+    document.body.appendChild(script);
   };
 
   render() {
