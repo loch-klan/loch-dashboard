@@ -68,7 +68,14 @@ class PodCard extends Component {
   timeoutId;
 
   componentDidMount() {
-    this.getPodStatusFunction();
+    if (!this.props.item.indexed) {
+       this.getPodStatusFunction();
+    } else {
+      this.setState({
+        isIndexed:true
+      });
+    }
+   
   }
 
   componentWillUnmount() {
@@ -149,27 +156,27 @@ class PodCard extends Component {
             WhaleHoverPod({
               email_address: getCurrentUser().email,
               session_id: getCurrentUser().id,
-              pod_name: item.name,
+              pod_name: item?.name,
             });
           }}
           onClick={() => {
             if (this.state.isIndexed) {
             
-              if (PodType.INFLUENCER === item.cohort_type) {
+              if (PodType.INFLUENCER === item?.cohort_type) {
                 let isAccess = JSON.parse(localStorage.getItem("whalepodview"));
               
-                if (isAccess.access || isAccess.id == item.id || this.state.userPlan.influencer_pod_limit == -1) {
+                if (isAccess?.access || isAccess?.id == item?.id || this.state.userPlan?.influencer_pod_limit == -1) {
                   // if true
                   localStorage.setItem("whalepodview", JSON.stringify({access:false, id:item.id}));
                   WhaleExpandedPod({
                     email_address: getCurrentUser().email,
                     session_id: getCurrentUser().id,
-                    pod_name: item.name,
+                    pod_name: item?.name,
                   });
                   this.props.history.push({
-                    pathname: `/whale-watching/${item.slug}`,
+                    pathname: `/whale-watching/${item?.slug}`,
                     state: {
-                      id: item.id,
+                      id: item?.id,
                       cohortWalletList: item?.wallet_address_details,
                       chainImages: sortedChains,
                       total_addresses: total_addresses,
@@ -183,12 +190,12 @@ class PodCard extends Component {
                 WhaleExpandedPod({
                   email_address: getCurrentUser().email,
                   session_id: getCurrentUser().id,
-                  pod_name: item.name,
+                  pod_name: item?.name,
                 });
                 this.props.history.push({
-                  pathname: `/whale-watching/${item.slug}`,
+                  pathname: `/whale-watching/${item?.slug}`,
                   state: {
-                    id: item.id,
+                    id: item?.id,
                     cohortWalletList: item?.wallet_address_details,
                     chainImages: sortedChains,
                     total_addresses: total_addresses,
@@ -213,13 +220,13 @@ class PodCard extends Component {
             }}
           >
             <h4 className="inter-display-semi-bold f-s-10 l-h-12 black-191">
-              {PodType.getText(item.cohort_type).name}
+              {PodType.getText(item?.cohort_type)?.name}
               <CustomOverlay
                 position="top"
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={PodType.getText(item.cohort_type).description}
+                text={PodType.getText(item?.cohort_type)?.description}
                 className={"pod-width"}
               >
                 <Image
@@ -354,7 +361,7 @@ class PodCard extends Component {
                 <h4 className="inter-display-medium f-s-16 l-h-19 grey-7C7">
                   {/* {CurrencyType(false)} */}
                   {numToCurrency(
-                    item.total_net_worth * this.state.currency?.rate
+                    item?.total_net_worth * this.state.currency?.rate
                   )}{" "}
                   <span className="f-s-10 grey-CAC">{CurrencyType(true)}</span>
                 </h4>
@@ -372,7 +379,7 @@ class PodCard extends Component {
               )}
             </div>
             {/* edit icon */}
-            {item.user_id && this.state.isIndexed && (
+            {item?.user_id && this.state.isIndexed && (
               <Image
                 src={EditIcon}
                 className="cp editIcon"

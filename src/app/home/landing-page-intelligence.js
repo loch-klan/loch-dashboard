@@ -60,6 +60,16 @@ class LPIntelligence extends BaseReactComponent {
   componentDidMount() {
     this.state.startTime = new Date() * 1;
     LPIntelligenceTrackPageView();
+
+    // reset all token
+     deleteToken();
+    
+     localStorage.setItem("defi_access", true);
+     localStorage.setItem("isPopup", true);
+     localStorage.setItem(
+       "whalepodview",
+       JSON.stringify({ access: true, id: "" })
+     );
   }
 
   componentWillUnmount() {
@@ -82,7 +92,7 @@ class LPIntelligence extends BaseReactComponent {
  CreateUserLandingPage(data, this, null);
     setTimeout(() => {
       this.props.history.push("/welcome");
-    }, 2000);
+    }, 5000);
   };
   trackTwitterConversion = (email) => {
     // console.log("e",email)
@@ -187,7 +197,6 @@ class LPIntelligence extends BaseReactComponent {
                       </div>
 
                       <div>
-                    
                         <div
                           className="review-card"
                           style={{
@@ -391,13 +400,13 @@ class LPIntelligence extends BaseReactComponent {
                 </>
               ) : (
                 <>
-                  <h1 className="inter-display-medium f-s-26 lh-30 m-b-26">
+                  <h1 className="inter-display-medium f-s-26 lh-30 m-b-26 lp-success-msg">
                     Great! <br />
-                    You’ll hear from us very soon!
+                    Please check your email for a verification link.
                   </h1>
                   <div className="upload-loader"></div>
                   <h2 className="inter-display-semi-bold f-s-14 lh-16 m-t-20 grey-B0B">
-                    Directing you to Loch
+                    Now directing you to Loch.
                   </h2>
                 </>
               )}
