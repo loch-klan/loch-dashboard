@@ -383,7 +383,7 @@ class Portfolio extends BaseReactComponent {
       this.apiCall();
     }
 
-    if (this.props.location.state.isVerified) {
+    if (this.props.location?.state?.isVerified) {
       setTimeout(() => {
         this.simulateButtonClick();
       }, 1000);

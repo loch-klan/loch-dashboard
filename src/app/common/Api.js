@@ -158,6 +158,26 @@ export const verifyEmailApi = (ctx, data) =>{
     if(!res.data.error){
     
       localStorage.setItem("lochToken", res.data?.data?.token);
+      localStorage.setItem("addWallet", JSON.stringify([]))
+       localStorage.setItem("stopClick", true);
+      localStorage.setItem("currentPlan", JSON.stringify(res.data?.data?.current_plan));
+       let obj = JSON.parse(localStorage.getItem("lochUser"));
+       obj = {
+         ...obj,
+         first_name: res.data.data.user?.first_name,
+         last_name: res.data.data.user?.last_name,
+         email: res.data.data.user?.email,
+         mobile: res.data.data.user?.mobile,
+         link: res.data.data.user?.link,
+       };
+
+       localStorage.setItem("lochUser", JSON.stringify(obj));
+       signUpProperties({
+         userId: res?.data?.data?.user?.link,
+         email_address: res?.data?.data?.user?.email,
+         first_name: res?.data?.data?.user?.first_name,
+         last_name: res?.data?.data?.user?.last_name,
+       });
       ctx.setState({ error: false });
       setTimeout(() => {
        
