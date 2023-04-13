@@ -59,6 +59,7 @@ class LPWhale extends BaseReactComponent {
       settings,
       emailAdded: false,
       startTime: 0,
+      is_new_user: true,
     };
   }
 
@@ -86,25 +87,18 @@ class LPWhale extends BaseReactComponent {
   }
 
   handleSave = () => {
-    this.setState({
-      emailAdded: true,
-    });
-
-    // Twitter conversion tracking event code
-    // Insert Twitter Event ID
-    // twq("event", "tw-oekqq-oekro", {
-    //   email_address: this.state.email, // use this to pass a user’s email address
+    // this.setState({
+    //   emailAdded: true,
     // });
-    // End Twitter conversion tracking event code
    this.trackTwitterConversion(this.state.email);
     LPWhaleTrack({ email_address: this.state.email });
  let data = new URLSearchParams();
     data.append("email", this.state.email);
     data.append("signed_up_from", "landing-page-whale");
     CreateUserLandingPage(data,this, null);
-    setTimeout(() => {
-      this.props.history.push("/welcome");
-    }, 5000);
+    // setTimeout(() => {
+    //   this.props.history.push("/welcome");
+    // }, 5000);
   };
 
   trackTwitterConversion = (email) => {
@@ -335,13 +329,26 @@ class LPWhale extends BaseReactComponent {
                 </>
               ) : (
                 <>
-                  <h1 className="inter-display-medium f-s-26 lh-30 m-b-26 lp-success-msg">
-                    Great! <br />
-                    Please check your email for a verification link.
-                  </h1>
+                  {this.state.is_new_user ? (
+                    <>
+                      <h1 className="inter-display-medium f-s-26 lh-30 lp-success-msg">
+                        Great!
+                      </h1>
+                      <h1 className="inter-display-medium f-s-26 lh-30 m-b-26 lp-success-msg">
+                        Please check your email for a verification link.
+                      </h1>
+                    </>
+                  ) : (
+                    <h1 className="inter-display-medium f-s-26 lh-30 m-b-26 lp-success-msg">
+                      It looks like you already have an account associated with
+                      this email.
+                    </h1>
+                  )}
                   <div className="upload-loader"></div>
                   <h2 className="inter-display-semi-bold f-s-14 lh-16 m-t-20 grey-B0B">
-                    Now directing you to Loch.
+                    {this.state.is_new_user
+                      ? "Now directing you to Loch."
+                      : "Directing you to Loch, where you can sign in."}
                   </h2>
                 </>
               )}

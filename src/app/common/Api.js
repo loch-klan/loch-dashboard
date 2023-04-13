@@ -1248,6 +1248,15 @@ export const CreateUserLandingPage = (data, ctx) => {
   postLoginInstance.post("organisation/user/signup", data).then((res) => {
     if (!res.data.error) {
       // userFunction();
+       ctx.setState({
+         emailAdded: true,
+         is_new_user: res.data.data.is_new_user,
+       });
+      
+      setTimeout(() => {
+      ctx.props.history.push("/welcome");
+    }, 5000);
+  
     } else {
       toast.error(res.data.message || "Something Went Wrong");
     }
