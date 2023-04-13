@@ -160,18 +160,29 @@ export const verifyEmailApi = (ctx, data) =>{
       localStorage.setItem("lochToken", res.data?.data?.token);
       localStorage.setItem("addWallet", JSON.stringify([]))
        localStorage.setItem("stopClick", true);
-      localStorage.setItem("currentPlan", JSON.stringify(res.data?.data?.current_plan));
-       let obj = JSON.parse(localStorage.getItem("lochUser"));
-       obj = {
-         ...obj,
+      localStorage.setItem(
+        "currentPlan",
+        JSON.stringify(res.data?.data?.current_plan || {})
+      );
+      //  let obj = JSON.parse(localStorage.getItem("lochUser"));
+       let obj = {
          first_name: res.data.data.user?.first_name,
          last_name: res.data.data.user?.last_name,
          email: res.data.data.user?.email,
          mobile: res.data.data.user?.mobile,
          link: res.data.data.user?.link,
        };
+      
+      localStorage.setItem("lochUser", JSON.stringify(obj));
 
-       localStorage.setItem("lochUser", JSON.stringify(obj));
+       localStorage.setItem("defi_access", true);
+        localStorage.setItem("isPopup", true);
+        // localStorage.setItem("whalepodview", true);
+        localStorage.setItem(
+          "whalepodview",
+          JSON.stringify({ access: true, id: "" }))
+
+       
        signUpProperties({
          userId: res?.data?.data?.user?.link,
          email_address: res?.data?.data?.user?.email,
@@ -871,28 +882,40 @@ export const getUser = (ctx = null, showToast = false) => {
             res.data.data.current_plan.name === "Free" ? 1 : -1,
         })
       );
-        // console.log(ctx,showToast)
-      if (ctx?.props?.location?.search === "?status=success" || showToast === true) {
-        
-        toast.success(
-          <div
-            style={{
-              width: "38rem",
-            }}
-          >
-            {res.data.data.current_plan.name === "Trial"
-              ? `Congratulations you’re a sovereign for a day!`
-              : `Congratulations! You’re
-            officially a ${res.data.data.current_plan.name}.`}
-          </div>
-        );
-        if (showToast) {
-          
-        }else
-        {
-           ctx.props.history.replace("/home");
-       }
+
+      if (ctx?.props?.location?.state?.isVerified) {
+        let obj = {
+          first_name: res.data.data.user?.first_name,
+          last_name: res.data.data.user?.last_name,
+          email: res.data.data.user?.email,
+          mobile: res.data.data.user?.mobile,
+          link: res.data.data.user?.link,
+        };
+
+        localStorage.setItem("lochUser", JSON.stringify(obj));
       }
+        if (
+          ctx?.props?.location?.search === "?status=success" ||
+          showToast === true
+        ) {
+          // console.log(ctx,showToast)
+          toast.success(
+            <div
+              style={{
+                width: "38rem",
+              }}
+            >
+              {res.data.data.current_plan.name === "Trial"
+                ? `Congratulations you’re a sovereign for a day!`
+                : `Congratulations! You’re
+            officially a ${res.data.data.current_plan.name}.`}
+            </div>
+          );
+          if (showToast) {
+          } else {
+            ctx.props.history.replace("/home");
+          }
+        }
     } else {
       toast.error(res.data.message || "Something Went Wrong");
     }
