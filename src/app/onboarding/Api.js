@@ -277,6 +277,8 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
           // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
           state: { noLoad: true },
         });
+      
+      console.log("not");
     }
   }
 
@@ -367,6 +369,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
             pathname: ctx.state?.link,
           });
         } else {
+          console.log("replace")
           ctx.props.history.replace({
             pathname: ctx.state?.id ? ctx.state?.link : "/home",
             state: {

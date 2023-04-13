@@ -560,34 +560,63 @@ class Portfolio extends BaseReactComponent {
     this.props.getAllCoins();
     if (this.props.match.params.id) {
       // if share link call this app
-      if (this.state.portfolioLink) {
-        // console.log("ekl3he",!Object.values(this.state?.userWalletList[0]).includes(
-        //     this.props.match.params.id), Object.values(this.state?.userWalletList[0]),
-        //     this.props.match.params.id)
-        if (
-          !Object.values(this.state?.userWalletList[0]).includes(
-            this.props.match.params.id
-          )
-        ) {
-          deleteToken();
-          // console.log("delete")
-          this.props.history.push({
-            pathname: "/",
-            state: {
-              from: { pathname: this.props.match.url },
-              params: {
-                id: this.props.match.params.id,
-              },
+      // if (this.state.portfolioLink) {
+      //   console.log("ekl3he",!Object.values(this.state?.userWalletList[0]).includes(
+      //       this.props.match.params.id), Object.values(this.state?.userWalletList[0]),
+      //       this.props.match.params.id)
+      //   if (
+      //     !Object.values(this.state?.userWalletList[0]).includes(
+      //       this.props.match.params.id
+      //     )
+      //   ) {
+      //     // if not found address or id
+      //     // eg: vitalik.eth, 0x02w92w.. and user id not found in userWalletlist so we will delete token even if there is not token their (now browser)
+      //     deleteToken();
+      //     // console.log("delete")
+      //     this.props.history.push({
+      //       pathname: "/",
+      //       state: {
+      //         from: { pathname: this.props.match.url },
+      //         params: {
+      //           id: this.props.match.params.id,
+      //         },
+      //       },
+      //     });
+      //   } else {
+      //     // not found eg: vitalik.eth, 0x02w92w..
+      //     //  GetDefaultPlan();
+      //     this.props.getDetailsByLinkApi(this.props.match.params.id, this);
+      //     this.setState({
+      //       portfolioLink: false,
+      //     });
+      //     console.log("else pr")
+      //   }
+      // }
+      // if its true means we ahve store share data and remove token else remove token and call share api
+      let gotShareProtfolio = JSON.parse(
+        localStorage.getItem("gotShareProtfolio")
+      );
+      // localStorage.setItem(
+      //   "addWallet",
+      //   JSON.stringify(this.props.location.state?.addWallet)
+      // );
+      if (!gotShareProtfolio) {
+        deleteToken();
+        // console.log("delete")
+         localStorage.setItem("gotShareProtfolio",true);
+        this.props.history.push({
+          pathname: "/",
+          state: {
+            from: { pathname: this.props.match.url },
+            params: {
+              id: this.props.match.params.id,
             },
-          });
-        } else {
-          //  GetDefaultPlan();
-          this.props.getDetailsByLinkApi(this.props.match.params.id, this);
-          this.setState({
-            portfolioLink: false,
-          });
-        }
+          },
+        });
+      } else {
+         localStorage.setItem("gotShareProtfolio", false);
       }
+       
     } else {
       // run all api
 

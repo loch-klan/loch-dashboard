@@ -14,6 +14,7 @@ const deleteToken = () => {
   localStorage.removeItem("isPopup");
   localStorage.removeItem("stop_redirect");
   localStorage.removeItem("connectWalletAddress");
+  localStorage.removeItem("gotShareProtfolio");
 };
 
 const getToken = () => {
