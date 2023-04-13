@@ -94,7 +94,7 @@ class LPIntelligence extends BaseReactComponent {
     });`;
 
     document.body.appendChild(script);
-    console.log("event")
+    // console.log("event")
   };
 
   render() {
