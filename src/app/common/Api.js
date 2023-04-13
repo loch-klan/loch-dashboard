@@ -13,7 +13,7 @@ export const loginApi = (ctx, data) => {
       // console.log('res',res);
       if (!res.data.error) {
         // console.log('res', res.data.data.token);
-        console.log('ctx');
+        // console.log('ctx');
         localStorage.setItem('currency',JSON.stringify({
           active: true,
           code: "USD",
@@ -55,7 +55,7 @@ export const fixWalletApi = (ctx,info) =>{
         }
       })
       .catch((err)=>{
-        console.log("fixwallet",err)
+        // console.log("fixwallet",err)
       })
 }
 
@@ -147,7 +147,7 @@ export const updateUserWalletApi = (data,ctx) =>{
     }
   })
   .catch((err)=>{
-    console.log("fixwallet",err)
+    // console.log("fixwallet",err)
   })
 }
 
@@ -204,7 +204,7 @@ export const verifyEmailApi = (ctx, data) =>{
     }
   })
   .catch((err)=>{
-    console.log("fixwallet",err)
+    // console.log("fixwallet",err)
   })
 }
 

@@ -365,9 +365,7 @@ class PieChart2 extends BaseReactComponent {
       // console.log(
       //   "inside",
       //   this.props.chainPortfolio,
-      //   prevProps.chainPortfolio,
-      //   this.props.chainLoader,
-      //   this.props.totalChainDetechted
+      //   prevProps.chainPortfolio
       // );
 
       let chainList = [];
@@ -427,6 +425,7 @@ class PieChart2 extends BaseReactComponent {
                 coin?.chain_detected &&
                 !uniquechains.includes(coin?.coinName)
               ) {
+                uniquechains.push(coin?.coinName);
                 chainList.push({
                   name: coin?.coinName,
                   symbol: coin?.coinSymbol,
@@ -437,7 +436,7 @@ class PieChart2 extends BaseReactComponent {
               }
             });
         });
-      // console.log("coinlist", chainList)
+      // console.log("coinlist", chainList, uniquechains)
       // this.props.chainPortfolio &&
       //   this.props.chainPortfolio.map((chain) => {
       //     chainList.push({

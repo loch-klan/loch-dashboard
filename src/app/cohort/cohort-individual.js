@@ -644,7 +644,7 @@ class CohortPage extends BaseReactComponent {
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied")
     
-    console.log("share pod", shareLink);
+    // console.log("share pod", shareLink);
   }
 
   render() {

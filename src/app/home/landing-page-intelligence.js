@@ -94,8 +94,7 @@ class LPIntelligence extends BaseReactComponent {
     // console.log("e",email)
     const script = document.createElement("script");
     script.type = "text/javascript";
-    script.innerHTML = ` console.log("twq is defined:", typeof twq !== "undefined");
-    twq('event', 'tw-oekqq-oeksp', {
+    script.innerHTML = `twq('event', 'tw-oekqq-oeksp', {
       email_address: '${email}'
     });`;
 

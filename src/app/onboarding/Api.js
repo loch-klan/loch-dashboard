@@ -277,8 +277,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
           // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
           state: { noLoad: true },
         });
-      
-      console.log("not");
+     
     }
   }
 
@@ -364,12 +363,12 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
       } else {
         //  console.log("user function not found");
         if (ctx.state?.podName) {
-           console.log("podname login redirect to link", ctx.state?.link);
+          //  console.log("podname login redirect to link", ctx.state?.link);
           ctx.props?.history.push({
             pathname: ctx.state?.link,
           });
         } else {
-          console.log("replace")
+          // console.log("replace")
           ctx.props.history.replace({
             pathname: ctx.state?.id ? ctx.state?.link : "/home",
             state: {

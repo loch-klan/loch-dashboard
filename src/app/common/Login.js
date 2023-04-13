@@ -62,7 +62,7 @@ class Login extends BaseReactComponent {
    
 
     if (this.state.link && !this.state.podName) {
-      console.log("login in")
+      // console.log("login in")
       this.props.getAllCoins(this.handleShareLinkUser);
     } else if (this.state.link && this.state.podName) {
       // console.log("cohort name", this.state.cohortName);
@@ -105,7 +105,7 @@ class Login extends BaseReactComponent {
 
   handleResponse = () => {
     if (this.state.podName) {
-      console.log("podname login create user")
+      // console.log("podname login create user")
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify([]));
       // data.append("link", this.state.id);

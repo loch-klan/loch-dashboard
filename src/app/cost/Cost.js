@@ -352,7 +352,7 @@ class Cost extends Component {
       this.setState({
         sortBy: sort,
       });
-      console.log("asset")
+      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
