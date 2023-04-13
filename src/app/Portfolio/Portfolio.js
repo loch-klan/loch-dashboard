@@ -382,6 +382,12 @@ class Portfolio extends BaseReactComponent {
       // call api if no share link
       this.apiCall();
     }
+
+    if (this.props.location.state.isVerified) {
+      setTimeout(() => {
+        this.simulateButtonClick();
+      }, 1000);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {

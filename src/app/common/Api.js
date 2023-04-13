@@ -156,7 +156,18 @@ export const verifyEmailApi = (ctx, data) =>{
   .post("organisation/user/verify-email", data)
   .then((res)=>{
     if(!res.data.error){
-      ctx.setState({error: false});
+    
+      localStorage.setItem("lochToken", res.data?.data?.token);
+      ctx.setState({ error: false });
+      setTimeout(() => {
+       
+        ctx.props.history.push({
+          pathname: "/home",
+          state: {
+            isVerified:true,
+          },
+        });
+      }, 3000);
     } else{
       ctx.setState({error: true});
     }
@@ -233,11 +244,11 @@ export const getDetectedChainsApi = (ctx) =>{
     
       ctx.setState({
         addWalletList:
-          addWallet.length > 0
+          addWallet?.length > 0
             ? addWallet
             : [
                 {
-                  id: `wallet${addWallet.length + 1}`,
+                  id: `wallet${(addWallet?.length || 0 )+ 1}`,
                   address: "",
                   coins: [],
                   displayAddress: "",
