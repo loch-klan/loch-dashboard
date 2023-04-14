@@ -294,7 +294,7 @@ class PieChart2 extends BaseReactComponent {
     }
     if (this.props.userWalletData !== prevProps.userWalletData) {
       // this.props.userWalletData && this.setState({ piechartisLoading: true })
-
+// console.log("asset", this.props.userWalletData);
       let assetData = [];
  
       if (
@@ -999,6 +999,9 @@ class PieChart2 extends BaseReactComponent {
           });
         !uniqueAddress.includes(chain?.address) &&
           uniqueAddress.push(chain?.address);
+        
+        // !uniqueAddress.includes(protocalName) &&
+        //   uniqueAddress.push(protocalName);
       });
 
     // chainList =
