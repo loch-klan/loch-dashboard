@@ -560,6 +560,7 @@ class Intelligence extends Component {
               isShare={localStorage.getItem("share_id")}
               isStatic={this.state.isStatic}
               triggerId={this.state.triggerId}
+              pname="intelligence"
             />
           )}
           <PageHeader

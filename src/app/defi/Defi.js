@@ -372,6 +372,7 @@ class Defi extends Component {
               isShare={localStorage.getItem("share_id")}
               // isStatic={true}
               triggerId={this.state.triggerId}
+              pname="defi"
             />
           )}
           <PageHeader

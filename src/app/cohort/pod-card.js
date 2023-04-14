@@ -161,13 +161,19 @@ class PodCard extends Component {
           }}
           onClick={() => {
             if (this.state.isIndexed) {
-            
               if (PodType.INFLUENCER === item?.cohort_type) {
                 let isAccess = JSON.parse(localStorage.getItem("whalepodview"));
-              
-                if (isAccess?.access || isAccess?.id == item?.id || this.state.userPlan?.influencer_pod_limit == -1) {
+
+                if (
+                  isAccess?.access ||
+                  isAccess?.id == item?.id ||
+                  this.state.userPlan?.influencer_pod_limit == -1
+                ) {
                   // if true
-                  localStorage.setItem("whalepodview", JSON.stringify({access:false, id:item.id}));
+                  localStorage.setItem(
+                    "whalepodview",
+                    JSON.stringify({ access: false, id: item.id })
+                  );
                   WhaleExpandedPod({
                     email_address: getCurrentUser().email,
                     session_id: getCurrentUser().id,
@@ -458,6 +464,7 @@ class PodCard extends Component {
             isShare={localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
+            pname="pod-card"
           />
         )}
       </>

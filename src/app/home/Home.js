@@ -170,10 +170,10 @@ class Home extends BaseReactComponent {
                             validate: FormValidator.isRequired,
                             message: "",
                           },
-                            {
-                              validate: FormValidator.isEmail,
-                              message: "Enter valid email",
-                              },
+                          {
+                            validate: FormValidator.isEmail,
+                            message: "Enter valid email",
+                          },
                           // {
                           //     validate: () => {
                           //       console.log("state", this.state.isOptInValid);
@@ -243,6 +243,7 @@ class Home extends BaseReactComponent {
             selectedId={this.state.selectedId}
             signinBack={true}
             form="home"
+            pname="home.js"
           />
         )}
       </>

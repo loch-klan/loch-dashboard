@@ -175,7 +175,6 @@ class OnBoarding extends Component {
   render() {
     return (
       <>
-      
         {this.state.showPrevModal && (
           <OnboardingModal
             show={this.state.showModal}
@@ -254,6 +253,7 @@ class OnBoarding extends Component {
             triggerId={this.state.triggerId}
             signinBack={true}
             from="home"
+            pname="index.js"
             // isShare={localStorage.getItem("share_id")}
             // isStatic={this.state.isStatic}
           />

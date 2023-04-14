@@ -163,7 +163,7 @@ class ExitOverlay extends BaseReactComponent {
       isCohort: true,
       cohort_name: props.isEdit && props?.headerTitle ? props?.headerTitle : "",
       changeList: props.changeWalletList,
-      userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
+      userPlan: JSON.parse(localStorage.getItem("currentPlan")),
       upgradeModal: false,
       isStatic: false,
       hidePrevModal: false,
@@ -1770,6 +1770,7 @@ class ExitOverlay extends BaseReactComponent {
             isShare={localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
+            pname="ExitOverly"
           />
         )}
       </>

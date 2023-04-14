@@ -1093,6 +1093,7 @@ class FixAddModal extends BaseReactComponent {
             isShare={localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
+            pname="fixAddModal"
           />
         )}
       </>

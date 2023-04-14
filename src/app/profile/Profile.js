@@ -429,6 +429,7 @@ class Profile extends Component {
               isShare={localStorage.getItem("share_id")}
               isStatic={this.state.isStatic}
               triggerId={0}
+              pname="profile"
             />
           )}
           {/* <FeedbackForm page={"Profile Page"} /> */}

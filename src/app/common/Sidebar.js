@@ -353,13 +353,10 @@ function Sidebar(props) {
     
       return (
         <div className="sidebar-section">
-          <Container
-          >
+          <Container>
             <div className="sidebar">
               <div style={{ width: "100%" }}>
-                <div
-                  className={`logo`}
-                >
+                <div className={`logo`}>
                   <div>
                     <Image src={logo} />
                     <span className="loch-text">Loch</span>
@@ -874,6 +871,7 @@ function Sidebar(props) {
               isShare={localStorage.getItem("share_id")}
               // isStatic={isStatic}
               triggerId={triggerId}
+              pname="sidebar"
             />
           ) : (
             ""

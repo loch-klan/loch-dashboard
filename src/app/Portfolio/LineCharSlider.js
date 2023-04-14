@@ -162,6 +162,7 @@ class LineChartSlider extends BaseReactComponent {
 
   render() {
     const { assetValueData, externalEvents } = this.props;
+    // console.log("test")
     const parent = this;
     let series = {};
     let timestampList = [];

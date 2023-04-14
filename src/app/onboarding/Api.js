@@ -158,6 +158,10 @@ export const verifyUser = (ctx, info) => {
         if(!res.data.error){
           localStorage.setItem("lochUser", JSON.stringify(res.data.data.user));
           localStorage.setItem("lochToken", res.data.data.token);
+          localStorage.setItem(
+            "currentPlan",
+            JSON.stringify(res.data.data?.current_plan)
+          );
 
           const allChains = ctx.props.OnboardingState.coinsList;
           let addWallet = [];

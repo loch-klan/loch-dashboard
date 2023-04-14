@@ -363,8 +363,7 @@ class Portfolio extends BaseReactComponent {
 
     // reset discount modal
     localStorage.setItem("discountEmail", false);
-    // get token to check if wallet address loaded on not
-    this.getToken();
+
     this.state.startTime = new Date() * 1;
 
     // if share link store share id to show upgrade modal
@@ -388,6 +387,8 @@ class Portfolio extends BaseReactComponent {
         this.simulateButtonClick();
       }, 1000);
     }
+    // get token to check if wallet address loaded on not
+    this.getToken();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -2251,6 +2252,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
             isShare={localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
+            pname="portfolio"
           />
         )}
       </div>
