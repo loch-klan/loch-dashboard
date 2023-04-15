@@ -1865,7 +1865,7 @@ class CohortPage extends BaseReactComponent {
               src={DefiIcon}
               style={{ marginRight: "1.2rem", filter: "brightness(0.5)" }}
             />{" "}
-            Balance sheet
+            DeFi balance sheet
           </h2>
           <div style={{}} className="balance-sheet-card">
             <div className="balance-dropdown">
