@@ -23,8 +23,10 @@ import {
   DiscountEmailPage,
   DiscountEmailSkip,
   EmailAddedDiscount,
+  EmailAddedWhale,
   LPWhaleTrack,
   LPWhaleTrackPageView,
+  TextboxWhale,
   TimeSpentDiscountEmail,
   TimeSpentOnboarding,
 } from "../../utils/AnalyticsFunctions";
@@ -68,14 +70,14 @@ class LPWhale extends BaseReactComponent {
     LPWhaleTrackPageView();
 
     // reset all token
-     deleteToken();
-    
-     localStorage.setItem("defi_access", true);
-     localStorage.setItem("isPopup", true);
-     localStorage.setItem(
-       "whalepodview",
-       JSON.stringify({ access: true, id: "" })
-     );
+    deleteToken();
+
+    localStorage.setItem("defi_access", true);
+    localStorage.setItem("isPopup", true);
+    localStorage.setItem(
+      "whalepodview",
+      JSON.stringify({ access: true, id: "" })
+    );
   }
 
   componentWillUnmount() {
@@ -90,12 +92,12 @@ class LPWhale extends BaseReactComponent {
     // this.setState({
     //   emailAdded: true,
     // });
-   this.trackTwitterConversion(this.state.email);
+    this.trackTwitterConversion(this.state.email);
     LPWhaleTrack({ email_address: this.state.email });
- let data = new URLSearchParams();
+    let data = new URLSearchParams();
     data.append("email", this.state.email);
     data.append("signed_up_from", "landing-page-whale");
-    CreateUserLandingPage(data,this, null);
+    CreateUserLandingPage(data, this, null);
     // setTimeout(() => {
     //   this.props.history.push("/welcome");
     // }, 5000);
@@ -110,6 +112,15 @@ class LPWhale extends BaseReactComponent {
     });`;
 
     document.body.appendChild(script);
+  };
+
+  Emailadded = () => {
+    if (this.state.email) {
+      // console.log("email", this.state.email);
+      EmailAddedWhale({ email_address: this.state.email });
+    }
+    TextboxWhale(); 
+   
   };
   render() {
     return (
@@ -307,6 +318,9 @@ class LPWhale extends BaseReactComponent {
                         type: CustomTextControl,
                         settings: {
                           placeholder: "Your email address",
+                          onBlur: (onBlur) => {
+                            this.Emailadded();
+                          },
                         },
                       }}
                       // className={"is-valid"}

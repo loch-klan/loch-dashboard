@@ -24,8 +24,10 @@ import {
   DiscountEmailPage,
   DiscountEmailSkip,
   EmailAddedDiscount,
+  EmailAddedPeace,
   LPPeaceOfMind,
   LPPeaceOfMindPageView,
+  TextboxPeace,
   TimeSpentDiscountEmail,
   TimeSpentOnboarding,
 } from "../../utils/AnalyticsFunctions";
@@ -65,14 +67,14 @@ class LPPeace extends BaseReactComponent {
     LPPeaceOfMindPageView();
 
     // reset all token
-     deleteToken();
-    
-     localStorage.setItem("defi_access", true);
-     localStorage.setItem("isPopup", true);
-     localStorage.setItem(
-       "whalepodview",
-       JSON.stringify({ access: true, id: "" })
-     );
+    deleteToken();
+
+    localStorage.setItem("defi_access", true);
+    localStorage.setItem("isPopup", true);
+    localStorage.setItem(
+      "whalepodview",
+      JSON.stringify({ access: true, id: "" })
+    );
   }
 
   componentWillUnmount() {
@@ -90,11 +92,11 @@ class LPPeace extends BaseReactComponent {
 
     LPPeaceOfMind({ email_address: this.state.email });
     this.trackTwitterConversion(this.state.email);
- let data = new URLSearchParams();
- data.append("email", this.state.email);
- data.append("signed_up_from", "landing-page-peace-of-mind");
+    let data = new URLSearchParams();
+    data.append("email", this.state.email);
+    data.append("signed_up_from", "landing-page-peace-of-mind");
     CreateUserLandingPage(data, this, null);
-    
+
     // setTimeout(() => {
     //   //   this.setState({
     //   //     showEmailPopup: false,
@@ -113,6 +115,16 @@ class LPPeace extends BaseReactComponent {
     });`;
 
     document.body.appendChild(script);
+  };
+
+  Emailadded = () => {
+   
+    if (this.state.email) {
+      // console.log("email", this.state.email)
+      EmailAddedPeace({ email_address: this.state.email });
+    }
+
+    TextboxPeace();
   };
 
   render() {
@@ -356,7 +368,7 @@ class LPPeace extends BaseReactComponent {
               </div>
             </div>
             <div className="content-section shadow">
-              {!this.state.emailAdded  ? (
+              {!this.state.emailAdded ? (
                 <>
                   <Image src={logo} className="logo" />
                   <h1 className="inter-display-medium f-s-39 lh-46 m-b-26 text-center">
@@ -388,8 +400,15 @@ class LPPeace extends BaseReactComponent {
                         type: CustomTextControl,
                         settings: {
                           placeholder: "Your email address",
+                          onBlur: (onBlur) => {
+                            this.Emailadded();
+
+                          },       
                         },
                       }}
+                      // onClick={() => {
+                      //   console.log("tet")
+                      // }}
                       // className={"is-valid"}
                     />
                     <Button

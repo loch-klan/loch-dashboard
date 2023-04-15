@@ -3531,3 +3531,64 @@ export const MobileEmailPageView = () => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
+
+// email added for mopbile device 
+export const EmailAddedWhale = ({email_address}) => {
+  const event_name = "Landing Page: Whale: Email added";
+  const eventProperties = {
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for mopbile device 
+export const EmailAddedInt = ({email_address}) => {
+  const event_name = "Landing Page: Intelligence: Email added";
+  const eventProperties = {
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for mopbile device 
+export const EmailAddedPeace = ({email_address}) => {
+  const event_name = "Landing Page: Peace of mind: Email added";
+  const eventProperties = {
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+
+// email added for mopbile device 
+export const TextboxWhale = () => {
+  const event_name = "Landing Page: Whale: Textbox clicked";
+  const eventProperties = {
+    // "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for mopbile device 
+export const TextboxInt = () => {
+  const event_name = "Landing Page: Intelligence: Textbox clicked";
+  const eventProperties = {
+    // "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+
+// email added for mopbile device 
+export const TextboxPeace = () => {
+  const event_name = "Landing Page: Peace of mind: Textbox clicked";
+  const eventProperties = {
+    // "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
