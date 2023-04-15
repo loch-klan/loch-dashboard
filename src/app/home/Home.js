@@ -51,7 +51,7 @@ class Home extends BaseReactComponent {
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-    DiscountEmailPage();
+    // DiscountEmailPage();
     let isEmailadded = JSON.parse(localStorage.getItem("discountEmail"));
     // console.log("is",isEmailadded)
     if (isEmailadded) {
