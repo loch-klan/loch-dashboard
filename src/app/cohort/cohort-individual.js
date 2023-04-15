@@ -1863,7 +1863,7 @@ class CohortPage extends BaseReactComponent {
           >
             <Image
               src={DefiIcon}
-              style={{ marginRight: "1.2rem", filter: "brightness(0.5)" }}
+              style={{ marginRight: "1.2rem", filter: "brightness(0)" }}
             />{" "}
             DeFi balance sheet
           </h2>
