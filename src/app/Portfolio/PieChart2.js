@@ -91,7 +91,8 @@ class PieChart2 extends BaseReactComponent {
   }
 
   componentDidMount() {
-    console.log("data update")
+    // for temp
+    // console.log("data update")
     this.getCurrentTime();
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
       let assetData = [];
@@ -307,7 +308,8 @@ class PieChart2 extends BaseReactComponent {
         this.props.userWalletData.length > 0 &&
         this.props.assetTotal > 0
       ) {
-        console.log("asset", btc[0]?.assetValue);
+        // for temp
+        // console.log("asset", btc[0]?.assetValue);
      
         for (let i = 0; i < this.props.userWalletData.length; i++) {
           let z =
@@ -701,7 +703,8 @@ class PieChart2 extends BaseReactComponent {
   };
 
   render() {
-    console.log("render");
+    // for temp
+    // console.log("render");
     //  console.log("asset price props", this.props.assetPrice);
     let self = this;
     let chartOptions = {
@@ -793,7 +796,8 @@ class PieChart2 extends BaseReactComponent {
             padding: 12,
             allowOverlap: true,
             formatter: function () {
-              console.log("formatter", this)
+              // for temp
+              // console.log("formatter", this)
               return `<span class="f-s-16" style="color:${
                 this.point.borderColor
               }; z-index: 10;">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${
@@ -886,7 +890,8 @@ class PieChart2 extends BaseReactComponent {
               },
               mouseOver: function () {
                 var currentData = this;
-                console.log("move hover", this?.usd);
+                // for temp
+                // console.log("move hover", this?.usd);
                 this.graphic.attr({
                   fill: this.options.borderColor,
                   // opacity: 1,
