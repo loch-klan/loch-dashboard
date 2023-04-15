@@ -47,6 +47,7 @@ class AssetValueGraph extends Component {
 
       // asset value loader
       assetValueDataLoaded: false,
+      tab:"day"
     };
   }
 
@@ -65,8 +66,10 @@ class AssetValueGraph extends Component {
     GetAllPlan();
     getUser();
     this.setState({
-      assetValueData: this.props.portfolioState.assetValueMonth,
+      // assetValueData: this.props.portfolioState.assetValueMonth,
+      tab:"day",
     });
+    
   }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
@@ -134,33 +137,48 @@ class AssetValueGraph extends Component {
       if (this.props.portfolioState.assetValueMonth) {
         runApi = false;
         this.setState({
-          assetValueData: this.props.portfolioState.assetValueMonth,
+          // assetValueData: this.props.portfolioState.assetValueMonth,
+          tab:"month"
         });
         // console.log("months");
       } else {
         runApi = true;
+         this.setState({
+           // assetValueData: this.props.portfolioState.assetValueMonth,
+           tab: "month",
+         });
       }
     } else if (groupByValue === GROUP_BY_YEAR) {
       ActionType = ASSET_VALUE_GRAPH_YEAR;
       if (this.props.portfolioState.assetValueYear) {
         runApi = false;
         this.setState({
-          assetValueData: this.props.portfolioState.assetValueYear,
+          // assetValueData: this.props.portfolioState.assetValueYear,
+          tab: "year",
         });
         // console.log("year");
       } else {
         runApi = true;
+         this.setState({
+           // assetValueData: this.props.portfolioState.assetValueMonth,
+           tab: "year",
+         });
       }
     } else if (groupByValue === GROUP_BY_DATE) {
       ActionType = ASSET_VALUE_GRAPH_DAY;
       if (this.props.portfolioState.assetValueDay) {
         runApi = false;
         this.setState({
-          assetValueData: this.props.portfolioState.assetValueDay,
+          // assetValueData: this.props.portfolioState.assetValueDay,
+          tab: "day",
         });
         //  console.log("data");
       } else {
         runApi = true;
+        this.setState({
+          // assetValueData: this.props.portfolioState.assetValueDay,
+          tab: "day",
+        });
       }
     } else {
       runApi = true;
@@ -227,7 +245,16 @@ class AssetValueGraph extends Component {
           <div className="graph-container" style={{ marginBottom: "5rem" }}>
             <LineChartSlider
               assetValueData={
-                this.state.assetValueData && this.state.assetValueData
+                this.state.tab === "day"
+                  ? this.props.portfolioState.assetValueDay &&
+                    this.props.portfolioState.assetValueDay
+                  : this.state.tab === "month"
+                  ? this.props.portfolioState.assetValueMonth &&
+                    this.props.portfolioState.assetValueMonth
+                  : this.state.tab === "year"
+                  ? this.props.portfolioState.assetValueYear &&
+                    this.props.portfolioState.assetValueYear
+                  : []
               }
               externalEvents={
                 this.props.portfolioState.externalEvents &&

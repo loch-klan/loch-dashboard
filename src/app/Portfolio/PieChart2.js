@@ -968,11 +968,20 @@ class PieChart2 extends BaseReactComponent {
         let total = 0;
         let protocalName = chain?.protocalName;
         uniqueList?.map((item) => {
+          // console.log("item", item.address, item.protocalName)
           if (
             chain?.address === item.address &&
-            !uniqueAddress.includes(chain?.address)
+            !uniqueAddress.includes(chain?.address) && !chain?.protocalName
           ) {
             total += item.assetCount;
+          } else {
+            if (
+              chain?.protocalName &&
+              chain?.protocalName === item.protocalName &&
+              !uniqueAddress.includes(chain?.protocalName)
+            ) {
+              total += item.assetCount;
+            }
           }
         });
         let displayAddress = "";
@@ -985,7 +994,21 @@ class PieChart2 extends BaseReactComponent {
               nickname = e?.nickname;
             }
           });
-        !uniqueAddress.includes(chain?.address) &&
+        !uniqueAddress.includes(chain?.address) && !chain?.protocalName &&
+          chainList.push({
+            address: chain?.address,
+            assetCount: chain.assetCount,
+            chainCode: chain?.chainCode,
+            chainName: chain?.chainName,
+            chainSymbol: chain?.chainSymbol,
+            totalAssetCount: total,
+            displayAddress: displayAddress,
+            nickname: nickname,
+            protocalName: protocalName,
+          });
+        
+        !uniqueAddress.includes(chain?.protocalName) &&
+          chain?.protocalName &&
           chainList.push({
             address: chain?.address,
             assetCount: chain.assetCount,
@@ -1000,8 +1023,8 @@ class PieChart2 extends BaseReactComponent {
         !uniqueAddress.includes(chain?.address) &&
           uniqueAddress.push(chain?.address);
         
-        // !uniqueAddress.includes(protocalName) &&
-        //   uniqueAddress.push(protocalName);
+        !uniqueAddress.includes(protocalName) &&
+          uniqueAddress.push(protocalName);
       });
 
     // chainList =

@@ -365,7 +365,7 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
              },
            });
            ctx.setState({
-             assetValueData: res.data.data.asset_value_data,
+            //  assetValueData: res.data.data.asset_value_data,
              graphLoading: false,
              assetValueDataLoaded: !res.data.data.data_loaded,
            });
