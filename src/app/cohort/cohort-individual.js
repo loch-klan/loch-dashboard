@@ -950,6 +950,190 @@ class CohortPage extends BaseReactComponent {
           </Row>
 
           {/* Net worth end */}
+          <h2
+            className="m-t-40 m-b-20 inter-display-medium f-s-20 l-h-24 black-191"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "start",
+            }}
+          >
+            <Image
+              src={DefiIcon}
+              style={{ marginRight: "1.2rem", filter: "brightness(0)" }}
+            />{" "}
+            DeFi balance sheet
+          </h2>
+          <div style={{}} className="balance-sheet-card">
+            <div className="balance-dropdown">
+              <div
+                className="balance-list-content"
+                style={this.state.DefiLoader ? { marginBottom: "2.5rem" } : {}}
+              >
+                {/* For yeild */}
+                <Row>
+                  {!this.state.DefiLoader ? (
+                    <>
+                      <Col md={6}>
+                        <div
+                          className="balance-sheet-title"
+                          onClick={this.toggleYield}
+                          style={
+                            // !this.state.isYeildToggle || !this.state.isDebtToggle
+                            //   ? { marginBottom: "0.5rem" }
+                            //   : { marginBottom: "0.5rem" }
+                            { marginBottom: "0.5rem" }
+                          }
+                        >
+                          <div>
+                            <span
+                              className="inter-display-semi-bold f-s-16 lh-19"
+                              style={{
+                                color: "#636467",
+                                marginRight: "0.8rem",
+                              }}
+                            >
+                              Yield
+                            </span>
+                            <span
+                              className="inter-display-medium f-s-16 lh-19"
+                              style={{ marginRight: "0.8rem" }}
+                            >
+                              {CurrencyType(false)}
+                              {this.state.totalYield &&
+                                numToCurrency(
+                                  this.state.totalYield *
+                                    (this.state.currency?.rate || 1)
+                                )}
+                            </span>
+                          </div>
+                          <Image
+                            src={arrowUp}
+                            style={
+                              this.state.isYeildToggle
+                                ? { transform: "rotate(180deg)" }
+                                : {}
+                            }
+                          />
+                        </div>
+                        {this.state.YieldValues?.length !== 0 &&
+                          this.state.isYeildToggle &&
+                          this.state.YieldValues?.sort(
+                            (a, b) => b.totalPrice - a.totalPrice
+                          )?.map((item, i) => {
+                            return (
+                              <div
+                                className="balance-sheet-list"
+                                style={
+                                  i === this.state.YieldValues?.length - 1
+                                    ? { paddingBottom: "0.3rem" }
+                                    : {}
+                                }
+                              >
+                                <span className="inter-display-medium f-s-16 lh-19">
+                                  {item.name}
+                                </span>
+                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                  {CurrencyType(false)}
+                                  {amountFormat(
+                                    item.totalPrice.toFixed(2) *
+                                      (this.state.currency?.rate || 1),
+                                    "en-US",
+                                    "USD"
+                                  )}
+                                </span>
+                              </div>
+                            );
+                          })}
+                      </Col>
+                      <Col md={6}>
+                        <div
+                          className="balance-sheet-title"
+                          onClick={this.toggleDebt}
+                          style={
+                            // !this.state.isYeildToggle || !this.state.isDebtToggle
+                            //   ? { marginBottom: "0.5rem" }
+                            //   : { marginBottom: "0.5rem" }
+                            { marginBottom: "0.5rem" }
+                          }
+                        >
+                          <div>
+                            <span
+                              className="inter-display-semi-bold f-s-16 lh-19"
+                              style={{
+                                color: "#636467",
+                                marginRight: "0.8rem",
+                              }}
+                            >
+                              Debt
+                            </span>
+                            <span
+                              className="inter-display-medium f-s-16 lh-19"
+                              style={{ marginRight: "0.8rem" }}
+                            >
+                              {CurrencyType(false)}
+                              {this.state.totalDebt &&
+                                numToCurrency(
+                                  this.state.totalDebt *
+                                    (this.state.currency?.rate || 1)
+                                )}
+                            </span>
+                          </div>
+                          <Image
+                            src={arrowUp}
+                            style={
+                              this.state.isDebtToggle
+                                ? { transform: "rotate(180deg)" }
+                                : {}
+                            }
+                          />
+                        </div>
+
+                        {this.state.DebtValues &&
+                          this.state.DebtValues?.length !== 0 &&
+                          this.state.isDebtToggle &&
+                          this.state.DebtValues.sort(
+                            (a, b) => b.totalPrice - a.totalPrice
+                          )?.map((item, i) => {
+                            return (
+                              <div
+                                className="balance-sheet-list"
+                                style={
+                                  i === this.state.DebtValues?.length - 1
+                                    ? { paddingBottom: "0.3rem" }
+                                    : {}
+                                }
+                              >
+                                <span className="inter-display-medium f-s-16 lh-19">
+                                  {item.name}
+                                </span>
+                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                  {CurrencyType(false)}
+                                  {amountFormat(
+                                    item.totalPrice.toFixed(2) *
+                                      (this.state.currency?.rate || 1),
+                                    "en-US",
+                                    "USD"
+                                  )}
+                                </span>
+                              </div>
+                            );
+                          })}
+                      </Col>
+                    </>
+                  ) : (
+                    <Col md={12}>
+                      <div className="">
+                        <Loading />
+                      </div>
+                    </Col>
+                  )}
+                </Row>
+
+                {/* For debt */}
+              </div>
+            </div>
+          </div>
 
           <div
             style={{
@@ -957,6 +1141,7 @@ class CohortPage extends BaseReactComponent {
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "2rem",
+              marginTop:"4rem"
             }}
           >
             <h2
@@ -1853,187 +2038,6 @@ class CohortPage extends BaseReactComponent {
           {/* <h2 className="inter-display-medium f-s-20 lh-24 m-t-40">
             Balance sheet
           </h2> */}
-          <h2
-            className="m-t-40 m-b-20 inter-display-medium f-s-20 l-h-24 black-191"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "start",
-            }}
-          >
-            <Image
-              src={DefiIcon}
-              style={{ marginRight: "1.2rem", filter: "brightness(0)" }}
-            />{" "}
-            DeFi balance sheet
-          </h2>
-          <div style={{}} className="balance-sheet-card">
-            <div className="balance-dropdown">
-              <div className="balance-list-content" style={this.state.DefiLoader ? {marginBottom:"2.5rem"}:{}}>
-                {/* For yeild */}
-                <Row>
-                  {!this.state.DefiLoader ? (
-                    <>
-                      <Col md={6}>
-                        <div
-                          className="balance-sheet-title"
-                          onClick={this.toggleYield}
-                          style={
-                            // !this.state.isYeildToggle || !this.state.isDebtToggle
-                            //   ? { marginBottom: "0.5rem" }
-                            //   : { marginBottom: "0.5rem" }
-                            { marginBottom: "0.5rem" }
-                          }
-                        >
-                          <div>
-                            <span
-                              className="inter-display-semi-bold f-s-16 lh-19"
-                              style={{
-                                color: "#636467",
-                                marginRight: "0.8rem",
-                              }}
-                            >
-                              Yield
-                            </span>
-                            <span
-                              className="inter-display-medium f-s-16 lh-19"
-                              style={{ marginRight: "0.8rem" }}
-                            >
-                              {CurrencyType(false)}
-                              {this.state.totalYield &&
-                                numToCurrency(
-                                  this.state.totalYield *
-                                    (this.state.currency?.rate || 1)
-                                )}
-                            </span>
-                          </div>
-                          <Image
-                            src={arrowUp}
-                            style={
-                              this.state.isYeildToggle
-                                ? { transform: "rotate(180deg)" }
-                                : {}
-                            }
-                          />
-                        </div>
-                        {this.state.YieldValues?.length !== 0 &&
-                          this.state.isYeildToggle &&
-                          this.state.YieldValues?.sort(
-                            (a, b) => b.totalPrice - a.totalPrice
-                          )?.map((item, i) => {
-                            return (
-                              <div
-                                className="balance-sheet-list"
-                                style={
-                                  i === this.state.YieldValues?.length - 1
-                                    ? { paddingBottom: "0.3rem" }
-                                    : {}
-                                }
-                              >
-                                <span className="inter-display-medium f-s-16 lh-19">
-                                  {item.name}
-                                </span>
-                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {amountFormat(
-                                    item.totalPrice.toFixed(2) *
-                                      (this.state.currency?.rate || 1),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </div>
-                            );
-                          })}
-                      </Col>
-                      <Col md={6}>
-                        <div
-                          className="balance-sheet-title"
-                          onClick={this.toggleDebt}
-                          style={
-                            // !this.state.isYeildToggle || !this.state.isDebtToggle
-                            //   ? { marginBottom: "0.5rem" }
-                            //   : { marginBottom: "0.5rem" }
-                            { marginBottom: "0.5rem" }
-                          }
-                        >
-                          <div>
-                            <span
-                              className="inter-display-semi-bold f-s-16 lh-19"
-                              style={{
-                                color: "#636467",
-                                marginRight: "0.8rem",
-                              }}
-                            >
-                              Debt
-                            </span>
-                            <span
-                              className="inter-display-medium f-s-16 lh-19"
-                              style={{ marginRight: "0.8rem" }}
-                            >
-                              {CurrencyType(false)}
-                              {this.state.totalDebt &&
-                                numToCurrency(
-                                  this.state.totalDebt *
-                                    (this.state.currency?.rate || 1)
-                                )}
-                            </span>
-                          </div>
-                          <Image
-                            src={arrowUp}
-                            style={
-                              this.state.isDebtToggle
-                                ? { transform: "rotate(180deg)" }
-                                : {}
-                            }
-                          />
-                        </div>
-
-                        {this.state.DebtValues &&
-                          this.state.DebtValues?.length !== 0 &&
-                          this.state.isDebtToggle &&
-                          this.state.DebtValues.sort(
-                            (a, b) => b.totalPrice - a.totalPrice
-                          )?.map((item, i) => {
-                            return (
-                              <div
-                                className="balance-sheet-list"
-                                style={
-                                  i === this.state.DebtValues?.length - 1
-                                    ? { paddingBottom: "0.3rem" }
-                                    : {}
-                                }
-                              >
-                                <span className="inter-display-medium f-s-16 lh-19">
-                                  {item.name}
-                                </span>
-                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {amountFormat(
-                                    item.totalPrice.toFixed(2) *
-                                      (this.state.currency?.rate || 1),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </div>
-                            );
-                          })}
-                      </Col>
-                    </>
-                  ) : (
-                    <Col md={12}>
-                      <div className="">
-                        <Loading />
-                      </div>
-                    </Col>
-                  )}
-                </Row>
-
-                {/* For debt */}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     );
