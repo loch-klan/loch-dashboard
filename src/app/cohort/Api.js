@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
-import { AmountType, DormantType, PodType } from "../../utils/Constant";
+import { AmountType, AssetType, DormantType, PodType } from "../../utils/Constant";
 import { GET_ALL_COHORT, UPDATE_COHORT } from "./ActionTypes";
 
 export const createCohort = (data,ctx) => {
@@ -218,6 +218,7 @@ export const getCohort = (data, ctx) => {
             walletAddresses: response?.wallet_address_details,
             totalNetWorth: response?.total_net_worth,
             createOn: response?.created_on,
+            addressList:response?.wallet_addresses,
             // frequentlyPurchasedAsset: response.frequently_purchased_asset,
             // frequentlySoldAsset: response.frequently_sold_asset,
             largestHoldingChain: response?.largest_holding_asset?.asset,
@@ -230,10 +231,75 @@ export const getCohort = (data, ctx) => {
             cohortType: response?.cohort_type,
             ...nicknames,
           });
+
+          // call get defi api after getting address
+          ctx.getDefiDetail();
           
         } else {
           ctx.props.history.push("/whale-watching");
         }
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
+};
+
+// get defi detail for cohort
+export const getDefiCohort = (data, ctx) => {
+
+  postLoginInstance
+    .post("wallet/user-wallet/get-defi-balance-sheet", data)
+    .then((res) => {
+      if (!res.data.error) {
+        let YieldValues = [];
+        let DebtValues = [];
+        let response = res?.data?.data?.balance_sheet;
+        let totalYield = 0;
+        let totalDebt = 0
+
+         let allAssetType = [20, 30, 40, 50, 60, 70];
+        allAssetType.map((e) => { 
+          if (e != 30) {
+            if (response[e]) {
+              YieldValues.push({
+                id: e,
+                name: AssetType.getText(e),
+                totalPrice: response[e],
+              });
+              totalYield = totalYield + response[e]; 
+            } else {
+              YieldValues.push({
+                id: e,
+                name: AssetType.getText(e),
+                totalPrice: 0,
+              });
+            }
+              
+          } else {
+            if (response[e]) {
+              DebtValues.push({
+                id: e,
+                name: AssetType.getText(e),
+                totalPrice: response[e],
+              });
+               totalDebt = totalDebt + response[e]; 
+            } else {
+              DebtValues.push({
+                id: e,
+                name: AssetType.getText(e),
+                totalPrice: 0,
+              });
+            }
+          }
+        })
+        // console.log("get-frequently-sold-asset", res.data.data);
+                ctx.setState({
+                  YieldValues,
+                  totalYield,
+                  totalDebt,
+                  DebtValues,
+                  DefiLoader: false,
+                });
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
