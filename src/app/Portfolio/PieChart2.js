@@ -85,17 +85,19 @@ class PieChart2 extends BaseReactComponent {
       // refresh
       userWalletList: JSON.parse(localStorage.getItem("addWallet")),
       isStopLoading: false,
-      
-      chainLoader:false,
+
+      chainLoader: false,
+      chartUpdate:true
     };
   }
 
   componentDidMount() {
     // for temp
-    // console.log("data update")
+   
     this.getCurrentTime();
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
       let assetData = [];
+      
       if (
         this.props.userWalletData &&
         this.props.userWalletData.length > 0 &&
@@ -153,11 +155,11 @@ class PieChart2 extends BaseReactComponent {
 
       });
     } else {
-      this.setState({
+      // this.setState({
 
-      })
+      // })
     }
-    // console.log("pie", this.props.chainPortfolio)
+    // console.log("assetData mount", this.state.assetData)
 
     // console.log("pie", this.props.allCoinList);
     this.setState({
@@ -293,13 +295,14 @@ class PieChart2 extends BaseReactComponent {
   componentDidUpdate(prevProps) {
     if (this.props.assetTotal !== prevProps.assetTotal) {
       this.setState({ assetTotal: this.props.assetTotal });
-    }
-    if (this.props.userWalletData !== prevProps.userWalletData) {
+    // }
+    // if (this.props.userWalletData !== prevProps.userWalletData) {
       // this.props.userWalletData && this.setState({ piechartisLoading: true })
       // if (this.props.userWalletData?.assetCode == "BTC") {
        
       // }
-      let btc = this.props?.userWalletData?.filter((e) => e.assetCode === "BTC");
+      // console.log("did update")
+      // let btc = this.props?.userWalletData?.filter((e) => e.assetCode === "BTC");
           
       let assetData = [];
  
@@ -351,6 +354,8 @@ class PieChart2 extends BaseReactComponent {
           });
         }
 
+          // console.log("assetData didupdate", this.state.assetData);
+
         //  console.log("updae");
 
         // balance load
@@ -364,8 +369,11 @@ class PieChart2 extends BaseReactComponent {
             : [],
         chartOptions: {},
         pieSectionDataEnabled: {},
+        chartUpdate: true,
       });
     }
+
+      
 // console.log("inside", this.props.chainPortfolio, prevProps.chainPortfolio);
     if (
       this.props.chainPortfolio !== prevProps.chainPortfolio ||
@@ -703,8 +711,7 @@ class PieChart2 extends BaseReactComponent {
   };
 
   render() {
-    // for temp
-    // console.log("render");
+ 
     //  console.log("asset price props", this.props.assetPrice);
     let self = this;
     let chartOptions = {
@@ -716,6 +723,7 @@ class PieChart2 extends BaseReactComponent {
         width: 350,
         events: {
           render: function () {
+          
             var series = this.series[0],
               seriesCenter = series.center,
               x = seriesCenter[0] + this.plotLeft,
@@ -796,8 +804,7 @@ class PieChart2 extends BaseReactComponent {
             padding: 12,
             allowOverlap: true,
             formatter: function () {
-              // for temp
-              // console.log("formatter", this)
+              
               return `<span class="f-s-16" style="color:${
                 this.point.borderColor
               }; z-index: 10;">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${
@@ -890,8 +897,10 @@ class PieChart2 extends BaseReactComponent {
               },
               mouseOver: function () {
                 var currentData = this;
-                // for temp
-                // console.log("move hover", this?.usd);
+                
+                self.setState({
+                  chartUpdate:false,
+                });
                 this.graphic.attr({
                   fill: this.options.borderColor,
                   // opacity: 1,
@@ -899,7 +908,9 @@ class PieChart2 extends BaseReactComponent {
                   zIndex: 10,
                 });
                 this.series.data?.map((data, i) => {
+                  
                   if (currentData.assetCode !== data.assetCode) {
+                    
                     data.dataLabel
                       .css({
                         // opacity: 0,
@@ -908,6 +919,7 @@ class PieChart2 extends BaseReactComponent {
                       })
                       .add();
                   } else {
+                    // console.log("mouse hover else", data)
                     data.dataLabel
                       .css({
                         // opacity: 1,
@@ -968,6 +980,7 @@ class PieChart2 extends BaseReactComponent {
         },
       ],
     };
+    
     // console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     let chainList = [];
@@ -1092,10 +1105,11 @@ class PieChart2 extends BaseReactComponent {
                   <HighchartsReact
                     highcharts={Highcharts}
                     options={chartOptions}
-                    updateArgs={[true]}
+                    updateArgs={[this.state.chartUpdate]}
                     oneToOne={true}
-                    allowChartUpdate={true}
+                    allowChartUpdate={this.state.chartUpdate}
                     containerProps={{ className: "custom-highchart" }}
+                    immutable={true}
                   />
                 </div> //  this.state.piechartisLoading === true && this.state.assetData === null
               ) : this.props.isLoading ? (
@@ -1193,7 +1207,8 @@ class PieChart2 extends BaseReactComponent {
                       <span
                         className="inter-display-medium f-s-16 lh-19 grey-233"
                         style={{
-                          marginLeft: this.state.chainList?.length === 0 ? 0 : "1.2rem",
+                          marginLeft:
+                            this.state.chainList?.length === 0 ? 0 : "1.2rem",
                         }}
                       >
                         {this.state.chainList &&
@@ -1211,9 +1226,11 @@ class PieChart2 extends BaseReactComponent {
                           transform: "rotate(180deg)",
                         }}
                       />
-                      {this.props.chainLoader && <div style={{ marginTop: "-6px", marginRight: "1rem" }}>
-                        {loadingAnimation()}
-                      </div>}
+                      {this.props.chainLoader && (
+                        <div style={{ marginTop: "-6px", marginRight: "1rem" }}>
+                          {loadingAnimation()}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div
