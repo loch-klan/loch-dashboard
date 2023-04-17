@@ -208,6 +208,60 @@ export const verifyEmailApi = (ctx, data) =>{
   })
 }
 
+export const sendWhopCode = (ctx, data) => {
+  preLoginInstance
+    .post("commerce/payment/create_user_whop", data)
+    .then((res) => {
+      if (!res.data.error) {
+        localStorage.setItem("lochToken", res.data?.data?.token);
+        localStorage.setItem("addWallet", JSON.stringify([]));
+        localStorage.setItem("stopClick", true);
+        localStorage.setItem(
+          "currentPlan",
+          JSON.stringify(res.data?.data?.current_plan || {})
+        );
+        //  let obj = JSON.parse(localStorage.getItem("lochUser"));
+        let obj = {
+          first_name: res.data.data.user?.first_name,
+          last_name: res.data.data.user?.last_name,
+          email: res.data.data.user?.email,
+          mobile: res.data.data.user?.mobile,
+          link: res.data.data.user?.link,
+        };
+        localStorage.setItem("lochUser", JSON.stringify(obj));
+        localStorage.setItem("defi_access", true);
+        localStorage.setItem("isPopup", true);
+        // localStorage.setItem("whalepodview", true);
+        localStorage.setItem(
+          "whalepodview",
+          JSON.stringify({ access: true, id: "" })
+        );
+        signUpProperties({
+          userId: res?.data?.data?.user?.link,
+          email_address: res?.data?.data?.user?.email,
+          first_name: res?.data?.data?.user?.first_name,
+          last_name: res?.data?.data?.user?.last_name,
+        });
+        ctx.setState({ error: false, msg:"Redirecting you to Loch" });
+        setTimeout(() => {
+          ctx.props.history.push({
+            pathname: "/home",
+            state: {
+              isVerified: true,
+            },
+          });
+        }, 3000);
+      } else {
+        ctx.setState({ error: true });
+      }
+    })
+    .catch((err) => {
+      // console.log("fixwallet",err)
+    });
+};
+
+
+
 export const getDetectedChainsApi = (ctx) =>{
   postLoginInstance.post("wallet/user-wallet/get-detected-chains")
   .then((res)=>{
