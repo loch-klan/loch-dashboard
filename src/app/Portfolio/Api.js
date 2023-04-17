@@ -314,7 +314,9 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                   ctx.setState({
                     isStatic: true,
                   }, () => {
-                      ctx.upgradeModal && ctx.upgradeModal();
+                     setTimeout(() => {
+                       ctx.upgradeModal && ctx.upgradeModal();
+                     }, 5000);
                   })
                   
                 }
