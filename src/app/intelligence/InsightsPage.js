@@ -5,7 +5,7 @@ import reduceCost from '../../assets/images/icons/reduce-cost.svg'
 import reduceRisk from '../../assets/images/icons/reduce-risk.svg'
 import increaseYield from '../../assets/images/icons/increase-yield.svg'
 import { getAllInsightsApi } from "./Api";
-import { InsightType } from "../../utils/Constant";
+import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import { AllInsights, InsightPage, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -22,6 +22,7 @@ import UpgradeModal from "../common/upgradeModal";
 
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import InsightImg from "../../assets/images/icons/insight-msg.svg";
+import { toast } from "react-toastify";
 
 
 class InsightsPage extends Component {
@@ -81,7 +82,7 @@ class InsightsPage extends Component {
     // this.props.getAllInsightsApi(this);
     GetAllPlan();
     getUser();
-    this.setState({})
+    this.setState({});
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -100,21 +101,19 @@ class InsightsPage extends Component {
     if (!this.props.commonState.insight) {
       this.props.updateWalletListFlag("insight", true);
       this.setState({
-        isLoading:true
-      })
-       this.props.getAllInsightsApi(this);
-     }
+        isLoading: true,
+      });
+      this.props.getAllInsightsApi(this);
+    }
 
-      // if (this.state.apiResponse) {
-      //   //  console.log("update");
+    // if (this.state.apiResponse) {
+    //   //  console.log("update");
 
-      //   this.props.getAllInsightsApi(this);
-      //   this.setState({
-      //     apiResponse: false,
-      //   });
-      // }
-    
-    
+    //   this.props.getAllInsightsApi(this);
+    //   this.setState({
+    //     apiResponse: false,
+    //   });
+    // }
   }
 
   // For add new address
@@ -181,6 +180,22 @@ class InsightsPage extends Component {
     }
   };
 
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink =
+      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/insights";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    // console.log("share pod", shareLink);
+  };
+
   render() {
     return (
       <div className="insights-section">
@@ -221,6 +236,8 @@ class InsightsPage extends Component {
             currentPage={"insights"}
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
+            ShareBtn={true}
+            handleShare={this.handleShare}
             // history={this.props.history}
           />
           <div style={{ position: "relative" }}>

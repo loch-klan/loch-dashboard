@@ -9,7 +9,7 @@ import { Image } from "react-bootstrap";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import graphImage from "../../assets/images/volume-traded-graph.png";
 import LineChartSlider from "../Portfolio/LineCharSlider";
-import { GroupByOptions, GROUP_BY_DATE, GROUP_BY_MONTH, GROUP_BY_YEAR } from "../../utils/Constant";
+import { GroupByOptions, GROUP_BY_DATE, GROUP_BY_MONTH, GROUP_BY_YEAR, BASE_URL_S3 } from "../../utils/Constant";
 import {
   getAssetGraphDataApi,
   getCoinRate,
@@ -27,6 +27,7 @@ import { GetAllPlan, getUser } from "../common/Api";
 
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH, ASSET_VALUE_GRAPH_YEAR } from "../Portfolio/ActionTypes";
+import { toast } from "react-toastify";
 
 
 class AssetValueGraph extends Component {
@@ -47,7 +48,7 @@ class AssetValueGraph extends Component {
 
       // asset value loader
       assetValueDataLoaded: false,
-      tab:"day"
+      tab: "day",
     };
   }
 
@@ -67,9 +68,8 @@ class AssetValueGraph extends Component {
     getUser();
     this.setState({
       // assetValueData: this.props.portfolioState.assetValueMonth,
-      tab:"day",
+      tab: "day",
     });
-    
   }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
@@ -138,15 +138,15 @@ class AssetValueGraph extends Component {
         runApi = false;
         this.setState({
           // assetValueData: this.props.portfolioState.assetValueMonth,
-          tab:"month"
+          tab: "month",
         });
         // console.log("months");
       } else {
         runApi = true;
-         this.setState({
-           // assetValueData: this.props.portfolioState.assetValueMonth,
-           tab: "month",
-         });
+        this.setState({
+          // assetValueData: this.props.portfolioState.assetValueMonth,
+          tab: "month",
+        });
       }
     } else if (groupByValue === GROUP_BY_YEAR) {
       ActionType = ASSET_VALUE_GRAPH_YEAR;
@@ -159,10 +159,10 @@ class AssetValueGraph extends Component {
         // console.log("year");
       } else {
         runApi = true;
-         this.setState({
-           // assetValueData: this.props.portfolioState.assetValueMonth,
-           tab: "year",
-         });
+        this.setState({
+          // assetValueData: this.props.portfolioState.assetValueMonth,
+          tab: "year",
+        });
       }
     } else if (groupByValue === GROUP_BY_DATE) {
       ActionType = ASSET_VALUE_GRAPH_DAY;
@@ -212,6 +212,22 @@ class AssetValueGraph extends Component {
     this.getGraphData(groupByValue);
   };
 
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink =
+      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/asset-value";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    // console.log("share pod", shareLink);
+  };
+
   render() {
     return (
       <div className="volume-traded-section">
@@ -241,6 +257,8 @@ class AssetValueGraph extends Component {
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
             hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
+            ShareBtn={true}
+            handleShare={this.handleShare}
           />
           <div className="graph-container" style={{ marginBottom: "5rem" }}>
             <LineChartSlider

@@ -6,7 +6,7 @@ import TransactionTable from "./TransactionTable";
 import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD, DEFAULT_PRICE, SEARCH_BY_NOT_DUST } from "../../utils/Constant";
+import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD, DEFAULT_PRICE, SEARCH_BY_NOT_DUST, BASE_URL_S3 } from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
@@ -226,7 +226,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       apiResponse: value,
     });
 
-     this.props.setPageFlagDefault();
+    this.props.setPageFlagDefault();
     // console.log("api respinse", value);
   };
 
@@ -240,33 +240,30 @@ class TransactionHistoryPage extends BaseReactComponent {
       TransactionHistoryYearFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        year_filter:value == "allYear" ? "All years" : value
+        year_filter: value == "allYear" ? "All years" : value,
       });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
       // console.log("tes", this.props.intelligenceState.assetFilter);
       let assets = [];
       Promise.all([
-  () => {
-    if (value !== "allAssets") {
-      // console.log("test");
-      this.props.intelligenceState?.assetFilter?.map((e) => {
-        if (value?.includes(e.value)) {
-          assets.push(e.label);
-        }
-      });
-    }
-  }
-]).then(
         () => {
-          // console.log("asset arr", assets)
-          TransactionHistoryAssetFilter({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            asset_filter: value == "allAssets" ? "All assets" : assets,
-          });
-}
-      );
-      
+          if (value !== "allAssets") {
+            // console.log("test");
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+        },
+      ]).then(() => {
+        // console.log("asset arr", assets)
+        TransactionHistoryAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value == "allAssets" ? "All assets" : assets,
+        });
+      });
     } else if (key === "SEARCH_BY_METHOD_IN") {
       TransactionHistoryMethodFilter({
         session_id: getCurrentUser().id,
@@ -326,7 +323,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       TransactionHistorySearch({
         session_id: getCurrentUser().id,
         email: getCurrentUser().email,
-        searched:this.state.search
+        searched: this.state.search,
       });
       // this.callApi(this.state.currentPage || START_INDEX, condition)
     }, 1000);
@@ -347,7 +344,7 @@ class TransactionHistoryPage extends BaseReactComponent {
 
           TransactionHistorySortDate({
             session_id: getCurrentUser().id,
-            email_address:getCurrentUser().email
+            email_address: getCurrentUser().email,
           });
         } else if (val === "from") {
           obj = [
@@ -426,8 +423,6 @@ class TransactionHistoryPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
-
-         
         }
         el.up = !el.up;
       } else {
@@ -468,15 +463,34 @@ class TransactionHistoryPage extends BaseReactComponent {
         showDust: !this.state.showDust,
       },
       () => {
-         TransactionHistoryHideDust({
-           session_id: getCurrentUser().id,
-           email_address: getCurrentUser().email,
-         });
+        TransactionHistoryHideDust({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
         this.addCondition(SEARCH_BY_NOT_DUST, this.state.showDust);
       }
     );
   };
-  
+
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink =
+      BASE_URL_S3 +
+      "home/" +
+      slink +
+      "?redirect=intelligence/transaction-history";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    // console.log("share pod", shareLink);
+  };
+
   render() {
     // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
@@ -1342,6 +1356,8 @@ class TransactionHistoryPage extends BaseReactComponent {
             history={this.props.history}
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
+            ShareBtn={true}
+            handleShare={this.handleShare}
           />
 
           <div className="fillter_tabs_section">

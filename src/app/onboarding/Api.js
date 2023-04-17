@@ -279,7 +279,7 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
         ctx.props?.history.push({
           pathname: ctx.state?.id ? ctx.state?.link : "/home",
           // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
-          state: { noLoad: true },
+          state: { noLoad: true, redirectPath: ctx.state?.redirectPath, hash: ctx?.state?.hash },
         });
      
     }
@@ -378,6 +378,8 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
             state: {
               addWallet: ctx.state?.id ? addWallet : newAddWallet,
               noLoad: false,
+              redirectPath: ctx.state?.redirectPath,
+              hash: ctx?.state?.hash,
             },
           });
         }

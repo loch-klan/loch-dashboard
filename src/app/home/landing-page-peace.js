@@ -86,6 +86,7 @@ class LPPeace extends BaseReactComponent {
   }
 
   handleSave = () => {
+    // console.log("email added", this.state.email)
     this.setState({
       emailAdded: true,
     });

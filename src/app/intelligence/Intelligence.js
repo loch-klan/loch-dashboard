@@ -26,7 +26,7 @@ import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import { getAllInsightsApi } from "./Api";
-import { InsightType } from "../../utils/Constant";
+import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import FeedbackForm from "../common/FeedbackForm";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import NetflowImg from "../../assets/images/icons/netflow.svg";
@@ -45,6 +45,7 @@ import { info } from "./stackGrapgh";
 import { GetAllPlan, getUser } from "../common/Api";
 import { UpgradeTriggered } from "../../utils/ReusableFunctions";
 import UpgradeModal from "../common/upgradeModal";
+import { toast } from "react-toastify";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -160,14 +161,14 @@ class Intelligence extends Component {
 
     if (!this.props.commonState.intelligence) {
       this.props.updateWalletListFlag("intelligence", true);
-       this.props.getAllCoins();
-       this.timeFilter(0);
+      this.props.getAllCoins();
+      this.timeFilter(0);
       this.assetList();
     }
 
     if (!this.props.commonState.insight) {
       this.props.updateWalletListFlag("insight", true);
-       this.props.getAllInsightsApi(this);
+      this.props.getAllInsightsApi(this);
     }
   }
   componentWillUnmount() {
@@ -199,7 +200,7 @@ class Intelligence extends Component {
     //     }
     //   })
     // }
-      let handleSelected = "All"; 
+    let handleSelected = "All";
     this.setState({ graphValue: "" });
     const today = moment().unix();
     if (option == 0) {
@@ -218,7 +219,7 @@ class Intelligence extends Component {
         selectedChains,
         this.state.selectedAssets
       );
-      handleSelected = "All"; 
+      handleSelected = "All";
     } else if (option == 1) {
       // console.log("inside 1")
       const fiveyear = moment().subtract(5, "years").unix();
@@ -237,9 +238,9 @@ class Intelligence extends Component {
         selectedChains,
         this.state.selectedAssets
       );
-      handleSelected = "5 years"; 
+      handleSelected = "5 years";
     } else if (option == 2) {
-       handleSelected = "4 years"; 
+      handleSelected = "4 years";
       const fouryear = moment().subtract(4, "years").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -256,7 +257,7 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
     } else if (option == 3) {
-       handleSelected = "3 years"; 
+      handleSelected = "3 years";
       const threeyear = moment().subtract(3, "years").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -273,7 +274,7 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
     } else if (option == 4) {
-       handleSelected = "2 years"; 
+      handleSelected = "2 years";
       const twoyear = moment().subtract(2, "years").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -290,7 +291,7 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
     } else if (option == 5) {
-       handleSelected = "1 year"; 
+      handleSelected = "1 year";
       const year = moment().subtract(1, "years").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -307,7 +308,7 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
     } else if (option == 6) {
-       handleSelected = "6 months"; 
+      handleSelected = "6 months";
       const sixmonth = moment().subtract(6, "months").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -324,7 +325,7 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
     } else if (option == 7) {
-       handleSelected = "1 month"; 
+      handleSelected = "1 month";
       const month = moment().subtract(1, "month").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -341,7 +342,7 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
     } else if (option == 8) {
-       handleSelected = "1 week"; 
+      handleSelected = "1 week";
       const week = moment().subtract(1, "week").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -358,7 +359,7 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
     } else if (option == 9) {
-       handleSelected = "1 day"; 
+      handleSelected = "1 day";
       const day = moment().subtract(1, "day").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -387,7 +388,7 @@ class Intelligence extends Component {
 
   handleBadge = (activeBadgeList, activeFooter = this.state.title) => {
     // console.log("handle badge", activeBadgeList, activeFooter);
-   
+
     this.setState({
       selectedActiveBadge: activeBadgeList,
     });
@@ -396,34 +397,24 @@ class Intelligence extends Component {
     if (activeFooter == "0") {
       startDate = "";
       endDate = "";
-    
     } else if (activeFooter == "1") {
       endDate = moment().subtract(5, "years").unix();
-      
     } else if (activeFooter == "2") {
       endDate = moment().subtract(4, "years").unix();
-       
     } else if (activeFooter == "3") {
       endDate = moment().subtract(3, "years").unix();
-      
     } else if (activeFooter == "4") {
       endDate = moment().subtract(2, "years").unix();
-         
     } else if (activeFooter == "5") {
       endDate = moment().subtract(1, "years").unix();
-        
     } else if (activeFooter == "6") {
       endDate = moment().subtract(6, "months").unix();
-        
     } else if (activeFooter == "7") {
       endDate = moment().subtract(1, "month").unix();
-       
     } else if (activeFooter == "8") {
       endDate = moment().subtract(1, "week").unix();
-       
     } else if (activeFooter == "9") {
       endDate = moment().subtract(1, "day").unix();
-       
     }
 
     let selectedChains = [];
@@ -441,13 +432,13 @@ class Intelligence extends Component {
         selectedChains,
         this.state.selectedAssets
       );
-     this.props.getAssetProfitLoss(
-       this,
-       false,
-       false,
-       selectedChains,
-       this.state.selectedAssets
-     );
+      this.props.getAssetProfitLoss(
+        this,
+        false,
+        false,
+        selectedChains,
+        this.state.selectedAssets
+      );
     } else {
       this.props.getProfitAndLossApi(
         this,
@@ -472,7 +463,6 @@ class Intelligence extends Component {
       email_address: getCurrentUser().email,
       selected: selectedChains,
     });
-
   };
 
   handleSelect = (opt) => {
@@ -515,10 +505,10 @@ class Intelligence extends Component {
     this.setState({
       RightShow: false,
     });
-     netflowExplainer2({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
+    netflowExplainer2({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   LeftClose = () => {
@@ -527,7 +517,7 @@ class Intelligence extends Component {
     });
 
     netflowExplainer1({
-      session_id : getCurrentUser().id,
+      session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
   };
@@ -542,10 +532,26 @@ class Intelligence extends Component {
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           selected: arr === "allAssets" ? "All assets" : arr,
-        }); 
+        });
         this.handleBadge(this.state.selectedActiveBadge, this.state.title);
       }
     );
+  };
+
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink =
+      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence#netflow";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    // console.log("share pod", shareLink);
   };
 
   render() {
@@ -568,6 +574,8 @@ class Intelligence extends Component {
             subTitle="Automated and personalized financial intelligence"
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
+            ShareBtn={true}
+            handleShare={this.handleShare}
           />
           <IntelWelcomeCard history={this.props.history} />
           <div className="insights-image m-b-60">

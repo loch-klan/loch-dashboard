@@ -34,6 +34,8 @@ import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { BASE_URL_S3 } from "../../utils/Constant";
+import { toast } from "react-toastify";
 
 
 class Cost extends Component {
@@ -388,16 +390,30 @@ class Cost extends Component {
 
   handleDust = (ishide) => {
     if (!ishide) {
-       let array = this.props.intelligenceState?.Average_cost_basis?.filter(
-         (e) => e.CurrentValue >= 1
-       ); //all data
-       this.props.updateAverageCostBasis(array);
+      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+        (e) => e.CurrentValue >= 1
+      ); //all data
+      this.props.updateAverageCostBasis(array);
     } else {
-      this.props.ResetAverageCostBasis()
+      this.props.ResetAverageCostBasis();
     }
-   
-    
-  }
+  };
+
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink =
+      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/costs";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    // console.log("share pod", shareLink);
+  };
 
   render() {
     // console.log("counter", this.state.counterGraphDigit);
@@ -746,6 +762,8 @@ class Cost extends Component {
             handleBtn={this.handleAddModal}
             showpath={true}
             currentPage={"costs"}
+            ShareBtn={true}
+            handleShare={this.handleShare}
           />
           <div className="m-b-43 cost-table-section">
             <div style={{ position: "relative" }}>

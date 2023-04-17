@@ -387,7 +387,7 @@ class Portfolio extends BaseReactComponent {
         this.simulateButtonClick();
       }, 1000);
     }
-    // get token to check if wallet address loaded on not
+    // get token to check if wallet address not loaded
     this.getToken();
   }
 
@@ -609,19 +609,46 @@ class Portfolio extends BaseReactComponent {
       // );
       if (!gotShareProtfolio) {
         deleteToken();
-        // console.log("delete")
+
+        const searchParams = new URLSearchParams(this.props.location.search);
+        const redirectPath = searchParams.get("redirect");
+        //  console.log("portfolio before", this.props?.location);
+        // console.log("path",redirectPath)
          localStorage.setItem("gotShareProtfolio",true);
         this.props.history.push({
           pathname: "/",
           state: {
-            from: { pathname: this.props.match.url },
+            from: {
+              pathname: this.props.match.url,
+            },
             params: {
               id: this.props.match.params.id,
+              redirectPath: redirectPath,
+              hash: this.props?.location?.hash
             },
           },
         });
       } else {
-         localStorage.setItem("gotShareProtfolio", false);
+        localStorage.setItem("gotShareProtfolio", false);
+        // console.log(
+        //   "portfolio",
+        //   this.props?.location?.state?.redirectPath,
+        //   this.props.location
+        // );
+
+        if (this.props.location?.state?.hash) {
+          this.props.history.push(
+            "/" +
+              this.props?.location?.state?.redirectPath +
+              this.props.location?.state?.hash
+          );
+        }else{
+this.props.history.push(
+  "/" +
+    this.props?.location?.state?.redirectPath
+);
+        }
+          
       }
        
     } else {
