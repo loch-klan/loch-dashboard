@@ -246,9 +246,9 @@ export const sendWhopCode = (ctx, data) => {
         setTimeout(() => {
           ctx.props.history.push({
             pathname: "/home",
-            state: {
-              isVerified: true,
-            },
+            // state: {
+            //   isVerified: true,
+            // },
           });
         }, 3000);
       } else {
