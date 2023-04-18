@@ -25,7 +25,7 @@ class Login extends BaseReactComponent {
       link: props.location?.state?.from?.pathname || "",
       id: props.location?.state?.params?.id || "",
       redirectPath: props.location?.state?.params?.redirectPath || "",
-      hash: this.props?.location?.state?.params?.hash || "",
+      hash: props?.location?.state?.params?.hash || "",
       password: "",
       podName: props.location?.state?.params?.podName,
       forgotPassword: false,
@@ -33,7 +33,7 @@ class Login extends BaseReactComponent {
   }
 
   componentDidMount() {
-    // console.log("this.props", this.props);
+    console.log("this.props", this.props);
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     // deleteToken();
     localStorage.setItem("defi_access", true);

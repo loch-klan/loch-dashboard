@@ -612,8 +612,8 @@ class Portfolio extends BaseReactComponent {
 
         const searchParams = new URLSearchParams(this.props.location.search);
         const redirectPath = searchParams.get("redirect");
-        //  console.log("portfolio before", this.props?.location);
-        // console.log("path",redirectPath)
+         console.log("portfolio before", this.props);
+        console.log("path",redirectPath)
          localStorage.setItem("gotShareProtfolio",true);
         this.props.history.push({
           pathname: "/",
@@ -630,11 +630,11 @@ class Portfolio extends BaseReactComponent {
         });
       } else {
         localStorage.setItem("gotShareProtfolio", false);
-        // console.log(
-        //   "portfolio",
-        //   this.props?.location?.state?.redirectPath,
-        //   this.props.location
-        // );
+        console.log(
+          "portfolio",
+          this.props?.location?.state?.redirectPath,
+          this.props.location
+        );
 
         if (this.props.location?.state?.hash) {
           this.props.history.push(

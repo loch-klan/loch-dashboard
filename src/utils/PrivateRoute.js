@@ -10,8 +10,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     render={props => {
       // ON EVERY ROUTE GET PARAMS FROM URL AND SET TO LOCAL STORAGE.
       // console.log('props',props);
-   
-      
+   const searchParams = new URLSearchParams(props.location.search);
+   const redirectPath = searchParams.get("redirect");
+        console.log("path in", redirectPath);
       return requireAuth() ? (
         // key ADDED TO MAKE EVERY ROUTE WITH DIFFERENT PARAMS ID UNIQUE AND CALL DID MOUNT
         // WHEN PARAM ID CHANGES.
@@ -37,7 +38,14 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         <Redirect
           to={{
             pathname: "/",
-            state: { from: props.location, params: props.match.params },
+            state: {
+              from: props.location,
+              params: {
+                ...props.match.params,
+                redirectPath: redirectPath || "",
+                hash: props?.location?.hash || "",
+              },
+            },
           }}
         />
       );
