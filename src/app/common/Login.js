@@ -24,8 +24,8 @@ class Login extends BaseReactComponent {
     this.state = {
       link: props.location?.state?.from?.pathname || "",
       id: props.location?.state?.params?.id || "",
-      redirectPath: props.location?.state?.params?.redirectPath || "",
-      hash: props?.location?.state?.params?.hash || "",
+      redirectPath: "",
+      hash:"",
       password: "",
       podName: props.location?.state?.params?.podName,
       forgotPassword: false,
@@ -40,6 +40,15 @@ class Login extends BaseReactComponent {
 
   componentDidMount() {
     console.log("this.props", this.props);
+    let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
+
+    if (!this.state.hash && !this.state.redirectPath && !redirect) {
+      this.setState({
+        redirectPath: this.props.location?.state?.params?.redirectPath || "",
+        hash: this.props?.location?.state?.params?.hash || "",
+      });
+      console.log("test");
+    }
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     // deleteToken();
     localStorage.setItem("defi_access", true);
