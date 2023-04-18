@@ -636,8 +636,8 @@ class Portfolio extends BaseReactComponent {
             },
             params: {
               id: this.props.match.params.id,
-              // redirectPath: redirectPath,
-              // hash: this.props?.location?.hash
+              redirectPath: redirectPath,
+              hash: this.props?.location?.hash
             },
           },
         });
