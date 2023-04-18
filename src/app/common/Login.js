@@ -30,6 +30,12 @@ class Login extends BaseReactComponent {
       podName: props.location?.state?.params?.podName,
       forgotPassword: false,
     };
+
+    console.log(
+      "bd",
+      props.location?.state?.params?.redirectPath,
+      props?.location?.state?.params?.hash
+    );
   }
 
   componentDidMount() {
