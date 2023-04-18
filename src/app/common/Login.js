@@ -33,8 +33,8 @@ class Login extends BaseReactComponent {
       //   props.location?.state?.page === "route"
       //     ? redirect.hash
       //     : props?.location?.state?.params?.hash || "",
-      redirectPath: redirect.path || "",
-      hash: redirect.hash || "",
+      redirectPath: redirect?.path || "",
+      hash: redirect?.hash || "",
       password: "",
       podName: props.location?.state?.params?.podName,
       forgotPassword: false,
