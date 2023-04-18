@@ -12,7 +12,16 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       // console.log('props',props);
    const searchParams = new URLSearchParams(props.location.search);
    const redirectPath = searchParams.get("redirect");
-        console.log("path in", redirectPath);
+
+       let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
+      //  console.log("redirect", redirect);
+       if (!redirect && redirectPath) {
+localStorage.setItem(
+  "ShareRedirect",
+  JSON.stringify({ path: redirectPath, hash: props?.location?.hash })
+);
+        
+       }
       return requireAuth() ? (
         // key ADDED TO MAKE EVERY ROUTE WITH DIFFERENT PARAMS ID UNIQUE AND CALL DID MOUNT
         // WHEN PARAM ID CHANGES.
@@ -40,11 +49,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
             pathname: "/",
             state: {
               from: props.location,
-              params: {
-                ...props.match.params,
-                redirectPath: redirectPath || "",
-                hash: props?.location?.hash || "",
-              },
+              params: props.match.params,
+              page:"route"
             },
           }}
         />

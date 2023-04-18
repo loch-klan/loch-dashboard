@@ -364,6 +364,7 @@ class Portfolio extends BaseReactComponent {
     // reset discount modal
     localStorage.setItem("discountEmail", false);
 
+ 
     this.state.startTime = new Date() * 1;
 
     // if share link store share id to show upgrade modal
@@ -612,9 +613,21 @@ class Portfolio extends BaseReactComponent {
 
         const searchParams = new URLSearchParams(this.props.location.search);
         const redirectPath = searchParams.get("redirect");
-         console.log("portfolio before", this.props);
-        console.log("path",redirectPath)
-         localStorage.setItem("gotShareProtfolio",true);
+        //  console.log("portfolio before", this.props);
+        // console.log("path",redirectPath)
+        localStorage.setItem("gotShareProtfolio", true);
+        
+         let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
+         //  console.log("redirect", redirect);
+         if (!redirect && redirectPath) {
+           localStorage.setItem(
+             "ShareRedirect",
+             JSON.stringify({
+               path: redirectPath,
+               hash: this.props?.location?.hash,
+             })
+           );
+         }
         this.props.history.push({
           pathname: "/",
           state: {
@@ -623,18 +636,15 @@ class Portfolio extends BaseReactComponent {
             },
             params: {
               id: this.props.match.params.id,
-              redirectPath: redirectPath,
-              hash: this.props?.location?.hash
+              // redirectPath: redirectPath,
+              // hash: this.props?.location?.hash
             },
           },
         });
       } else {
         localStorage.setItem("gotShareProtfolio", false);
-        console.log(
-          "portfolio",
-          this.props?.location?.state?.redirectPath,
-          this.props.location
-        );
+        // remove redirect urls
+        localStorage.removeItem("ShareRedirect");
 
         if (this.props.location?.state?.hash) {
           this.props.history.push(
@@ -642,13 +652,11 @@ class Portfolio extends BaseReactComponent {
               this.props?.location?.state?.redirectPath +
               this.props.location?.state?.hash
           );
-        }else{
-this.props.history.push(
-  "/" +
-    this.props?.location?.state?.redirectPath
-);
+        } else {
+          this.props.history.push(
+            "/" + this.props?.location?.state?.redirectPath
+          );
         }
-          
       }
        
     } else {
