@@ -210,7 +210,7 @@ export const verifyEmailApi = (ctx, data) =>{
 
 export const sendWhopCode = (ctx, data) => {
   preLoginInstance
-    .post("commerce/payment/create_user_whop", data)
+    .post("commerce/payment/create-user-whop", data)
     .then((res) => {
       if (!res.data.error) {
         localStorage.setItem("lochToken", res.data?.data?.token);
