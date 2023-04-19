@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { BaseReactComponent, CustomTextControl, Form, FormElement, FormSubmitButton, FormValidator } from '../../utils/form';
 import { deleteToken } from '../../utils/ManageToken';
 import { sendWhopCode, verifyEmailApi } from './Api';
+import { getAllCoins, getAllParentChains } from '../onboarding/Api';
 // import { loginApi } from './Api';
 
 class WhopLoader extends BaseReactComponent {
@@ -24,6 +25,9 @@ class WhopLoader extends BaseReactComponent {
   componentDidMount() {
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     deleteToken();
+    this.props.getAllCoins();
+    this.props.getAllParentChains();
+    
     const data = new URLSearchParams();
     data.append('code', this.state.code);
     sendWhopCode(this, data);
@@ -52,11 +56,13 @@ class WhopLoader extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
-
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
-}
+  getAllCoins,
+  getAllParentChains,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(WhopLoader);
