@@ -21,19 +21,36 @@ import Loading from "./Loading";
 class Login extends BaseReactComponent {
   constructor(props) {
     super(props);
+    let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
     this.state = {
       link: props.location?.state?.from?.pathname || "",
       id: props.location?.state?.params?.id || "",
-      redirectPath: props.location?.state?.params?.redirectPath || "",
-      hash: this.props?.location?.state?.params?.hash || "",
+      // redirectPath:
+      //   props.location?.state?.page === "route"
+      //     ? redirect.path
+      //     : props.location?.state?.params?.redirectPath || "",
+      // hash:
+      //   props.location?.state?.page === "route"
+      //     ? redirect.hash
+      //     : props?.location?.state?.params?.hash || "",
+      redirectPath: redirect?.path || "",
+      hash: redirect?.hash || "",
       password: "",
       podName: props.location?.state?.params?.podName,
       forgotPassword: false,
     };
+ 
   }
 
   componentDidMount() {
-    // console.log("this.props", this.props);
+    
+    // if (!this.state.hash && !this.state.redirectPath && !redirect) {
+    //   this.setState({
+    //     redirectPath: this.props.location?.state?.params?.redirectPath || "",
+    //     hash: this.props?.location?.state?.params?.hash || "",
+    //   });
+    //   console.log("test");
+    // }
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     // deleteToken();
     localStorage.setItem("defi_access", true);
