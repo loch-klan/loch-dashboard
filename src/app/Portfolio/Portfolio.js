@@ -2145,7 +2145,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                   </Col>
                   <Col md={6}>
                     <div
-                      className="m-r-16 section-table"
+                      className="section-table"
                       style={{
                         paddingBottom: "1.6rem",
                         height: "51rem",
