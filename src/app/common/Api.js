@@ -214,7 +214,8 @@ export const sendWhopCode = (ctx, data) => {
     .then((res) => {
       if (!res.data.error) {
         localStorage.setItem("lochToken", res.data?.data?.token);
-        localStorage.setItem("addWallet", JSON.stringify([]));
+        let walletAddress = res.data?.data?.user?.user_wallets || [];
+        localStorage.setItem("addWallet", JSON.stringify(walletAddress));
         localStorage.setItem("stopClick", true);
         localStorage.setItem(
           "currentPlan",
