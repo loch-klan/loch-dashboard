@@ -488,8 +488,8 @@ class Portfolio extends BaseReactComponent {
         // });
       }
 
-      // run this when table value is []
-      this.getTableData();
+      // run this when table value is [] - remove table
+      // this.getTableData();
 
       // asset value run when its value null
       // if (!this.props.portfolioState.assetValueMonth) {
