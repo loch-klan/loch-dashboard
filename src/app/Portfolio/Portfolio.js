@@ -507,7 +507,7 @@ class Portfolio extends BaseReactComponent {
 
       // run when graphValue == null and  GraphData: [],
       // add loader
-      // this.props.getProfitAndLossApi(this, false, false, false);
+      this.props.getProfitAndLossApi(this, false, false, false);
 
      
 
@@ -1988,6 +1988,78 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
+                      <BarGraphSection
+                        headerTitle="Net Flows"
+                        headerSubTitle="Understand your portfolio's profitability"
+                        isArrow={true}
+                        handleClick={() => {
+                          if (this.state.lochToken) {
+                            ProfitLossEV({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                            this.props.history.push("/intelligence#netflow");
+                          }
+                        }}
+                        isScrollVisible={false}
+                        data={
+                          this.props.intelligenceState.graphValue &&
+                          this.props.intelligenceState.graphValue[0]
+                        }
+                        options={
+                          this.props.intelligenceState.graphValue &&
+                          this.props.intelligenceState.graphValue[1]
+                        }
+                        coinsList={this.props.OnboardingState.coinsList}
+                        marginBottom="m-b-32"
+                        showFooter={false}
+                        showBadges={false}
+                        showPercentage={
+                          this.props.intelligenceState.graphValue &&
+                          this.props.intelligenceState.graphValue[2]
+                        }
+                        isLoading={this.state.netFlowLoading}
+                        className={"portfolio-profit-and-loss"}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+              <div className="m-b-22 graph-table-section">
+                <Row>
+                  <Col md={6}>
+                    {/* <div
+                      className="m-r-16 section-table"
+                      style={{
+                        paddingBottom: "1.6rem",
+                        height: "51rem",
+                        minHeight: "51rem",
+                        marginBottom: 0,
+                      }}
+                    >
+                      <TransactionTable
+                        title="Transaction History"
+                        handleClick={() => {
+                          // console.log("wallet", this.state.userWalletList);
+                          if (this.state.lochToken) {
+                            this.props.history.push(
+                              "/intelligence/transaction-history"
+                            );
+                            TransactionHistoryEView({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          }
+                        }}
+                        subTitle="Sort, filter, and dissect all your transactions from one place"
+                        tableData={tableData.slice(0, 6)}
+                        columnList={columnList}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.state.tableLoading}
+                      />
+                    </div> */}
+                    <div className="m-r-16 profit-chart">
                       <div
                         className={`bar-graph-section m-b-32`}
                         style={{ paddingBottom: "0rem", position: "relative" }}
@@ -2106,46 +2178,9 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                       </div>
                     </div>
                   </Col>
-                </Row>
-              </div>
-              <div className="m-b-22 graph-table-section">
-                <Row>
                   <Col md={6}>
                     <div
-                      className="m-r-16 section-table"
-                      style={{
-                        paddingBottom: "1.6rem",
-                        height: "51rem",
-                        minHeight: "51rem",
-                        marginBottom: 0,
-                      }}
-                    >
-                      <TransactionTable
-                        title="Transaction History"
-                        handleClick={() => {
-                          // console.log("wallet", this.state.userWalletList);
-                          if (this.state.lochToken) {
-                            this.props.history.push(
-                              "/intelligence/transaction-history"
-                            );
-                            TransactionHistoryEView({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          }
-                        }}
-                        subTitle="Sort, filter, and dissect all your transactions from one place"
-                        tableData={tableData.slice(0, 6)}
-                        columnList={columnList}
-                        headerHeight={60}
-                        isArrow={true}
-                        isLoading={this.state.tableLoading}
-                      />
-                    </div>
-                  </Col>
-                  <Col md={6}>
-                    <div
-                      className="m-r-16 section-table"
+                      className="section-table"
                       style={{
                         paddingBottom: "1.6rem",
                         height: "51rem",
