@@ -695,7 +695,7 @@ class LineChartSlider extends BaseReactComponent {
     
     // AllLegends = [{ label: "All", value: "All" }, ...AllLegends.sort((a, b) => (a.label > b.label ? 1 : -1))];
     
-    console.log("all legend", SelectedSeriesData);
+    // console.log("all legend", SelectedSeriesData);
     let selectedValue = null;
 
     var UNDEFINED;
