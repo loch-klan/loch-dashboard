@@ -70,6 +70,8 @@ import UpgradeModal from './upgradeModal'
 import ConnectModal from './ConnectModal'
 import AuthModal from './AuthModal';
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg"
+import IsMobileComponent from './isMobile';
+import IsMobile from './isMobile';
 
 
 function Sidebar(props) {
@@ -350,98 +352,102 @@ function Sidebar(props) {
   const handleConnectModal = () => {
       setconnectModal(!connectModal);
   };
-    
+    const isMobile = IsMobile();
+  console.log("isMobile", isMobile);
       return (
-        <div className="sidebar-section">
-          <Container>
-            <div className="sidebar">
-              <div style={{ width: "100%" }}>
-                <div className={`logo`}>
-                  <div>
-                    <Image src={logo} />
-                    <span className="loch-text">Loch</span>
+        <div className={` ${isMobile ? "" : "sidebar-section"}`}>
+          {isMobile ? (
+            <>mobile</>
+          ) : (
+            <Container>
+              <div className="sidebar">
+                <div style={{ width: "100%" }}>
+                  <div className={`logo`}>
+                    <div>
+                      <Image src={logo} />
+                      <span className="loch-text">Loch</span>
+                    </div>
+                    <div className="currency-wrapper">
+                      <DropdownButton
+                        id="currency-dropdown"
+                        title={
+                          selectedCurrency &&
+                          selectedCurrency.symbol + " " + selectedCurrency.code
+                        }
+                        onClick={() => {
+                          MenuCurrencyDropdown({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            currency:
+                              selectedCurrency.symbol +
+                              " " +
+                              selectedCurrency.code,
+                          });
+                        }}
+                      >
+                        {currencyList?.map((currency, key) => {
+                          return (
+                            <Dropdown.Item
+                              key={key}
+                              onClick={() => handleFunction(currency)}
+                            >
+                              {" "}
+                              <span>{currency.symbol}</span>{" "}
+                              <span>{currency.code}</span>
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </DropdownButton>
+                    </div>
                   </div>
-                  <div className="currency-wrapper">
-                    <DropdownButton
-                      id="currency-dropdown"
-                      title={
-                        selectedCurrency &&
-                        selectedCurrency.symbol + " " + selectedCurrency.code
-                      }
-                      onClick={() => {
-                        MenuCurrencyDropdown({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          currency:
-                            selectedCurrency.symbol +
-                            " " +
-                            selectedCurrency.code,
-                        });
-                      }}
-                    >
-                      {currencyList?.map((currency, key) => {
-                        return (
-                          <Dropdown.Item
-                            key={key}
-                            onClick={() => handleFunction(currency)}
-                          >
-                            {" "}
-                            <span>{currency.symbol}</span>{" "}
-                            <span>{currency.code}</span>
-                          </Dropdown.Item>
-                        );
-                      })}
-                    </DropdownButton>
-                  </div>
-                </div>
-                {/* {selectedPlan?.name !== "Free" && (
+                  {/* {selectedPlan?.name !== "Free" && (
                   <div className={`sidebar-plan`}> */}
-                {/* <Image src={BaronIcon} /> */}
-                {/* <h3>
+                  {/* <Image src={BaronIcon} /> */}
+                  {/* <h3>
                       Loch <span>{selectedPlan.name}</span>
                     </h3>
                   </div>
                 )} */}
 
-                <div
-                  className={
-                    props.ownerName ? "sidebar-body" : "sidebar-body nowallet"
-                  }
-                >
-                  <nav>
-                    <ul>
-                      <li>
-                        <NavLink
-                          exact={true}
-                          className="nav-link"
-                          to={activeTab === "/home" ? "#" : "/home"}
-                          onClick={(e) => {
-                            // console.log("user",getCurrentUser())
-                            if (!isWallet) {
-                              e.preventDefault();
-                            } else {
-                              HomeMenu({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }
-                          }}
-                          activeclassname="active"
-                        >
-                          <Image
-                            src={
-                              activeTab === "/home"
-                                ? ActiveHomeIcon
-                                : InActiveHomeIcon
-                            }
-                          />
-                          Home
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          exact={true}
-                          className={`nav-link
+                  <div
+                    className={
+                      props.ownerName ? "sidebar-body" : "sidebar-body nowallet"
+                    }
+                  >
+                    <nav>
+                      <ul>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            className="nav-link"
+                            to={activeTab === "/home" ? "#" : "/home"}
+                            onClick={(e) => {
+                              // console.log("user",getCurrentUser())
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                HomeMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/home"
+                                  ? ActiveHomeIcon
+                                  : InActiveHomeIcon
+                              }
+                            />
+                            Home
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            className={`nav-link
                         ${
                           activeTab === "/intelligence/transaction-history"
                             ? "active"
@@ -456,163 +462,165 @@ function Sidebar(props) {
                         ${
                           activeTab === "/intelligence/insights" ? "active" : ""
                         } ${
-                            activeTab === "/intelligence/asset-value"
-                              ? "active"
-                              : ""
-                          } ${
-                            activeTab === "/intelligence/costs" ? "active" : ""
-                          }
+                              activeTab === "/intelligence/asset-value"
+                                ? "active"
+                                : ""
+                            } ${
+                              activeTab === "/intelligence/costs"
+                                ? "active"
+                                : ""
+                            }
                         `}
-                          to="/intelligence"
-                          activeclassname="active"
-                          onClick={(e) => {
-                            if (!isWallet) {
-                              e.preventDefault();
-                            } else {
-                              IntelligenceMenu({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }
-                          }}
-                        >
-                          <Image
-                            src={
-                              [
-                                "/intelligence/transaction-history",
-                                "/intelligence",
-                                "/intelligence/volume-traded-by-counterparty",
-                                "/intelligence/insights",
-                                "/intelligence/costs",
-                                "/intelligence/asset-value",
-                              ].includes(activeTab)
-                                ? ActiveIntelligenceIcon
-                                : IntelligenceIcon
-                            }
-                          />
-                          Intelligence
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          exact={true}
-                          onClick={(e) => {
-                            if (!isWallet) {
-                              e.preventDefault();
-                            } else {
-                              WalletsMenu({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }
-                          }}
-                          className="nav-link"
-                          to="/wallets"
-                          activeclassname="active"
-                        >
-                          <Image
-                            src={
-                              activeTab === "/wallets"
-                                ? ActiveWalletIcon
-                                : NavWalletIcon
-                            }
-                          />
-                          Wallets
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          exact={true}
-                          onClick={(e) => {
-                            if (!isWallet) {
-                              e.preventDefault();
-                            } else {
-                              ProfileMenu({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                            }
-                          }}
-                          className="nav-link"
-                          to="/profile"
-                          activeclassname="active"
-                        >
-                          <Image
-                            src={
-                              activeTab === "/profile"
-                                ? ActiveProfileIcon
-                                : ProfileIcon
-                            }
-                          />
-                          Profile
-                        </NavLink>
-                      </li>
-                      <li>
-                        <NavLink
-                          className="nav-link"
-                          to={"/whale-watching"}
-                          onClick={(e) => {
-                            if (!isWallet) {
-                              e.preventDefault();
-                            } else {
-                              MenuWhale({
-                                email_address: getCurrentUser().email,
-                                session_id: getCurrentUser().id,
-                              });
-                            }
-                          }}
-                          activeclassname="active"
-                        >
-                          <Image
-                            src={
-                              activeTab === "/whale-watching"
-                                ? ActiveCohortIcon
-                                : CohortIcon
-                            }
-                          />
-                          Whale Watching
-                        </NavLink>
-                      </li>
+                            to="/intelligence"
+                            activeclassname="active"
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                IntelligenceMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                          >
+                            <Image
+                              src={
+                                [
+                                  "/intelligence/transaction-history",
+                                  "/intelligence",
+                                  "/intelligence/volume-traded-by-counterparty",
+                                  "/intelligence/insights",
+                                  "/intelligence/costs",
+                                  "/intelligence/asset-value",
+                                ].includes(activeTab)
+                                  ? ActiveIntelligenceIcon
+                                  : IntelligenceIcon
+                              }
+                            />
+                            Intelligence
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                WalletsMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/wallets"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/wallets"
+                                  ? ActiveWalletIcon
+                                  : NavWalletIcon
+                              }
+                            />
+                            Wallets
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/profile"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/profile"
+                                  ? ActiveProfileIcon
+                                  : ProfileIcon
+                              }
+                            />
+                            Profile
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            className="nav-link"
+                            to={"/whale-watching"}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                MenuWhale({
+                                  email_address: getCurrentUser().email,
+                                  session_id: getCurrentUser().id,
+                                });
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/whale-watching"
+                                  ? ActiveCohortIcon
+                                  : CohortIcon
+                              }
+                            />
+                            Whale Watching
+                          </NavLink>
+                        </li>
 
-                      <li>
-                        <NavLink
-                          className={`nav-link ${!isDefi ? "none" : ""}`}
-                          to={`${!isDefi ? "#" : "/decentralized-finance"}`}
-                          onClick={(e) => {
-                            DeFiMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                            if (!isDefi) {
-                              upgradeModal();
-                            }
-                            if (!isWallet) {
-                              e.preventDefault();
-                            }
-                          }}
-                          activeclassname={`${!isDefi ? "none" : "active"}`}
-                          // className="nav-link none"
-                          // to="#"
-                          // activeclassname="none"
-                        >
-                          <Image
-                            src={
-                              activeTab === "/decentralized-finance"
-                                ? DefiIcon
-                                : DefiIcon
-                            }
-                            style={
-                              activeTab === "/decentralized-finance"
-                                ? {
-                                    filter: "brightness(0)",
-                                  }
-                                : {}
-                            }
-                          />
-                          DeFi
-                        </NavLink>
-                      </li>
-                      {/* <li>
+                        <li>
+                          <NavLink
+                            className={`nav-link ${!isDefi ? "none" : ""}`}
+                            to={`${!isDefi ? "#" : "/decentralized-finance"}`}
+                            onClick={(e) => {
+                              DeFiMenu({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                              if (!isDefi) {
+                                upgradeModal();
+                              }
+                              if (!isWallet) {
+                                e.preventDefault();
+                              }
+                            }}
+                            activeclassname={`${!isDefi ? "none" : "active"}`}
+                            // className="nav-link none"
+                            // to="#"
+                            // activeclassname="none"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/decentralized-finance"
+                                  ? DefiIcon
+                                  : DefiIcon
+                              }
+                              style={
+                                activeTab === "/decentralized-finance"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            DeFi
+                          </NavLink>
+                        </li>
+                        {/* <li>
                         <NavLink
                           exact={true}
                           onClick={handleConnectModal}
@@ -628,22 +636,22 @@ function Sidebar(props) {
                         </NavLink>
                       </li> */}
 
-                      <li>
-                        <NavLink
-                          exact={true}
-                          onClick={handleFeedback}
-                          className="nav-link none"
-                          to="#"
-                          activeclassname="none"
-                        >
-                          <Image src={ActiveFeedbackIcon} />
-                          Feedback
-                        </NavLink>
-                      </li>
-                    </ul>
-                  </nav>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={handleFeedback}
+                            className="nav-link none"
+                            to="#"
+                            activeclassname="none"
+                          >
+                            <Image src={ActiveFeedbackIcon} />
+                            Feedback
+                          </NavLink>
+                        </li>
+                      </ul>
+                    </nav>
 
-                  {/* {props.ownerName &&
+                    {/* {props.ownerName &&
                         <div className="nav-addwallet">
                             <Image fluid src={bgImg} />
                             <div className='wallet-info-para'>
@@ -653,63 +661,64 @@ function Sidebar(props) {
                                 <Button className='addwallet-btn'>Add wallet</Button>
                             </div>
                         </div> } */}
+                  </div>
                 </div>
-              </div>
-              <div className="sidebar-footer">
-                <ul>
-                  <li style={{ justifyContent: "space-between" }}>
-                    <span
-                      onMouseOver={(e) =>
-                        (e.currentTarget.children[0].src = ExportIconWhite)
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.children[0].src = ExportIcon)
-                      }
-                      onClick={handleExportModal}
-                    >
-                      <Image src={ExportIcon} />
-                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                        Export
-                      </Button>
-                    </span>
-                    {lochUser ? (
+                <div className="sidebar-footer">
+                  <ul>
+                    <li style={{ justifyContent: "space-between" }}>
                       <span
                         onMouseOver={(e) =>
-                          (e.currentTarget.children[0].src = SharePortfolioIcon)
+                          (e.currentTarget.children[0].src = ExportIconWhite)
                         }
                         onMouseLeave={(e) =>
-                          (e.currentTarget.children[0].src =
-                            SharePortfolioIconWhite)
+                          (e.currentTarget.children[0].src = ExportIcon)
                         }
-                        onClick={handleShareModal}
-                        style={{ marginRight: "1rem" }}
+                        onClick={handleExportModal}
                       >
-                        <Image src={SharePortfolioIconWhite} />
+                        <Image src={ExportIcon} />
                         <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                          Share
+                          Export
                         </Button>
                       </span>
-                    ) : (
-                      <span
-                        // onMouseOver={(e) =>
-                        //   (e.currentTarget.children[0].src = SharePortfolioIcon)
-                        // }
-                        // onMouseLeave={(e) =>
-                        //   (e.currentTarget.children[0].src =
-                        //     SharePortfolioIconWhite)
-                        // }
-                        onClick={handleSigninModal}
-                        style={{ marginRight: "1rem" }}
-                        className="signin"
-                      >
-                        <Image src={SignInIcon} />
-                        <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                          Sign in
-                        </Button>
-                      </span>
-                    )}
-                  </li>
-                  {/* <li>
+                      {lochUser ? (
+                        <span
+                          onMouseOver={(e) =>
+                            (e.currentTarget.children[0].src =
+                              SharePortfolioIcon)
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.children[0].src =
+                              SharePortfolioIconWhite)
+                          }
+                          onClick={handleShareModal}
+                          style={{ marginRight: "1rem" }}
+                        >
+                          <Image src={SharePortfolioIconWhite} />
+                          <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                            Share
+                          </Button>
+                        </span>
+                      ) : (
+                        <span
+                          // onMouseOver={(e) =>
+                          //   (e.currentTarget.children[0].src = SharePortfolioIcon)
+                          // }
+                          // onMouseLeave={(e) =>
+                          //   (e.currentTarget.children[0].src =
+                          //     SharePortfolioIconWhite)
+                          // }
+                          onClick={handleSigninModal}
+                          style={{ marginRight: "1rem" }}
+                          className="signin"
+                        >
+                          <Image src={SignInIcon} />
+                          <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                            Sign in
+                          </Button>
+                        </span>
+                      )}
+                    </li>
+                    {/* <li>
                     <span
                       onMouseOver={(e) =>
                         (e.currentTarget.children[0].src = ApiBlackIcon)
@@ -725,7 +734,7 @@ function Sidebar(props) {
                       </Button>
                     </span>
                   </li> */}
-                  {/* {JSON.parse(localStorage.getItem("lochUser")) && (
+                    {/* {JSON.parse(localStorage.getItem("lochUser")) && (
                   <li
                     onMouseOver={(e) =>
                       (e.currentTarget.children[0].src = ShareProfileDarkIcon)
@@ -744,64 +753,65 @@ function Sidebar(props) {
                   </li>
                 )} */}
 
-                  <li style={{ justifyContent: "space-between" }}>
-                    <span
-                      onClick={handleLeave}
-                      onMouseOver={(e) =>
-                        (e.currentTarget.children[0].src = LeaveBlackIcon)
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.children[0].src = LeaveIcon)
-                      }
-                    >
-                      <Image src={LeaveIcon} />
-                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                        Leave
-                      </Button>
-                    </span>
-                    {!lochUser && (
+                    <li style={{ justifyContent: "space-between" }}>
                       <span
+                        onClick={handleLeave}
                         onMouseOver={(e) =>
-                          (e.currentTarget.children[0].src = SharePortfolioIcon)
+                          (e.currentTarget.children[0].src = LeaveBlackIcon)
                         }
                         onMouseLeave={(e) =>
-                          (e.currentTarget.children[0].src =
-                            SharePortfolioIconWhite)
+                          (e.currentTarget.children[0].src = LeaveIcon)
                         }
-                        onClick={handleShareModal}
-                        style={{ marginRight: "1rem" }}
                       >
-                        <Image src={SharePortfolioIconWhite} />
+                        <Image src={LeaveIcon} />
                         <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                          Share
+                          Leave
                         </Button>
                       </span>
-                    )}
-                  </li>
-                </ul>
+                      {!lochUser && (
+                        <span
+                          onMouseOver={(e) =>
+                            (e.currentTarget.children[0].src =
+                              SharePortfolioIcon)
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.children[0].src =
+                              SharePortfolioIconWhite)
+                          }
+                          onClick={handleShareModal}
+                          style={{ marginRight: "1rem" }}
+                        >
+                          <Image src={SharePortfolioIconWhite} />
+                          <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                            Share
+                          </Button>
+                        </span>
+                      )}
+                    </li>
+                  </ul>
 
-                <div
-                  className="m-b-12 footer-divOne"
-                  style={{ fontStyle: "italic" }}
-                >
-                  {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
+                  <div
+                    className="m-b-12 footer-divOne"
+                    style={{ fontStyle: "italic" }}
+                  >
+                    {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{ fontStyle: "italic" }}>"Sic Parvis Magna</p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from </p>
                             <p className='inter-display-medium f-s-15 grey-CAC lh-19'>small things come."</p> */}
-                  <p className="inter-display-medium f-s-15 grey-CAC lh-19">
-                    {quotes[currentIndex]}
-                  </p>
-                </div>
-                <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo m-b-40">
-                  {authors[currentIndex]}
-                </div>
+                    <p className="inter-display-medium f-s-15 grey-CAC lh-19">
+                      {quotes[currentIndex]}
+                    </p>
+                  </div>
+                  <div className="inter-display-semi-bold f-s-15 grey-B0B lh-19 footer-divTwo m-b-40">
+                    {authors[currentIndex]}
+                  </div>
 
-                {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
+                  {/* <p className='inter-display-medium f-s-15 grey-CAC lh-19' style={{fontStyle: "italic"}}>Sic Parvis Magna <span style={{fontStyle: "normal"}}>|</span>  </p>
                         <p className='inter-display-medium f-s-15 grey-CAC lh-19'>Thus, great things from small things come.</p>
                         <p className='inter-display-semi-bold f-s-15 grey-B0B lh-19'>Sir Francis Drake</p> */}
+                </div>
               </div>
-            </div>
-          </Container>
-
+            </Container>
+          )}
           {connectModal ? (
             <ConnectModal
               show={connectModal}

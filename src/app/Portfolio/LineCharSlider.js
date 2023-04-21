@@ -172,7 +172,9 @@ class LineChartSlider extends BaseReactComponent {
     let currentDate =
       this.state.title === "Year"
         ? moment().format("YYYY")
-        : moment().format("MMMM YYYY");
+        : this.state.title === "Month"
+        ? moment().format("MMMM YYYY")
+        : moment().format("DD/MM/YYYY");
    
 
     assetValueData &&
@@ -205,27 +207,33 @@ class LineChartSlider extends BaseReactComponent {
                 ? data.count
                   : data.max_count;
             
-            // if (
-            //   (this.state.title === "Year" &&
-            //     moment(assetData.timestamp).format("YYYY") === currentDate) ||
-            //   (this.state.title === "Month" &&
-            //     moment(assetData.timestamp).format("MMMM YYYY") === currentDate)
-            // ) {
-            //    console.log(
-            //      "data count api",
-            //      data.count,
-            //      "data max count",
-            //      data.max_count,
-            //      "data count",
-            //      dataCount,
-            //      "current date",
-            //      currentDate,
-            //      "date",
-            //      this.state.title === "Year"
-            //        ? moment(assetData.timestamp).format("YYYY")
-            //        : moment(assetData.timestamp).format("MMMM YYYY")
-            //    );
-            // }
+        //     if (
+        //       (this.state.title === "Year" &&
+        //         moment(assetData.timestamp).format("YYYY") === currentDate) ||
+        //       (this.state.title === "Month" &&
+        //         moment(assetData.timestamp).format("MMMM YYYY") ===
+        //           currentDate) ||
+        //       (this.state.title === "Day" &&
+        //         moment(assetData.timestamp).format("DD/MM/YYYY") ===
+        //           currentDate)
+        //     ) {
+        //       console.log(
+        //         "data count api",
+        //         data.count,
+        //         "data max count",
+        //         data.max_count,
+        //         "data count",
+        //         dataCount,
+        //         "current date",
+        //         currentDate,
+        //         "date",
+        //         this.state.title === "Year"
+        //           ? moment(assetData.timestamp).format("YYYY")
+        //           :this.state.title === "Month"
+        // ? moment().format("MMMM YYYY")
+        // : moment().format("DD/MM/YYYY")
+        //       );
+        //     }
            
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {

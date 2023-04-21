@@ -20,6 +20,7 @@ import Defi from "./app/defi/Defi";
 import LPWhale from "./app/home/landing-page-whale";
 import LPIntelligence from "./app/home/landing-page-intelligence";
 import LPPeace from "./app/home/landing-page-peace";
+import WhopLoader from "./app/common/WhopAccount"
 const routes = [
   {
     path: "/",
@@ -122,6 +123,12 @@ const routes = [
     name: "Verify Email",
     type: Route,
     component: VerifyEmail,
+  },
+  {
+    path: "/callback/whop",
+    name: "Whop loader",
+    type: Route,
+    component: WhopLoader,
   },
   {
     path: "/landing-page-whale",

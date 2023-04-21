@@ -26,7 +26,7 @@ function App() {
 
 
 
-  return isMobile ? (
+  return isMobile && false ? (
     <MobileDevice />
   ) : (
     <div>
