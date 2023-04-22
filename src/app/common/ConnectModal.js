@@ -1231,6 +1231,7 @@ class ConnectModal extends BaseReactComponent {
 
   render() {
     const { selection } = this.state;
+    const isMobile = JSON.parse(localStorage.getItem("isMobile"));
     return (
       <Modal
         show={this.state.show}
@@ -1239,7 +1240,7 @@ class ConnectModal extends BaseReactComponent {
         onHide={this.state.onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal connect-exchange"}
-        centered
+        centered={isMobile ? false :true}
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
       >
@@ -1380,7 +1381,8 @@ class ConnectModal extends BaseReactComponent {
                           )}
                           {(!this.state.coinBase ||
                             !this.state?.selection.isOAuth) &&
-                            (selection.name === "Kucoin" || selection.name === "OKX") && (
+                            (selection.name === "Kucoin" ||
+                              selection.name === "OKX") && (
                               <FormElement
                                 valueLink={this.linkState(
                                   this,
@@ -1429,9 +1431,14 @@ class ConnectModal extends BaseReactComponent {
                         //   Connect
                         // </Button>
                         <CustomButton
-                          className={`primary-btn connect-btn ${(!this.state.coinBase ||
+                          className={`primary-btn connect-btn ${
+                            (!this.state.coinBase ||
                               !this.state?.selection.isOAuth) &&
-                            (selection.name === "Kucoin" || selection.name === "OKX" ) ? "m-t-8" : ""}
+                            (selection.name === "Kucoin" ||
+                              selection.name === "OKX")
+                              ? "m-t-8"
+                              : ""
+                          }
                             `}
                           isLoading={this.state.isLoadingbtn}
                           isDisabled={this.state.isLoadingbtn}

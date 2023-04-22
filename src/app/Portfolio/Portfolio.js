@@ -103,12 +103,12 @@ class Portfolio extends BaseReactComponent {
       //   JSON.stringify(props.location.state?.addWallet)
       // );
     }
-
+ const isMobile = JSON.parse(localStorage.getItem("isMobile"));
     const settings = {
       dots: false,
       infinite: false,
       speed: 500,
-      slidesToShow: 1.5,
+      slidesToShow: isMobile ? 1.2:1.5,
       slidesToScroll: 1,
       nextArrow: <Image src={nextIcon} />,
       prevArrow: <Image src={prevIcon} />,
@@ -502,8 +502,10 @@ class Portfolio extends BaseReactComponent {
       //   })
       // }
 
-      this.getGraphData();
-
+      // hide if mobile
+      const isMobile = JSON.parse(localStorage.getItem("isMobile"));
+      if (!isMobile) {this.getGraphData();
+}
       // - remove form home
       // getAllCounterFeeApi(this, false, false);
 
@@ -919,8 +921,8 @@ class Portfolio extends BaseReactComponent {
   render() {
     const { table_home, assetPriceList_home } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-    const isMobile = new IsMobileClass().render();
-    console.log("isMobile claa", isMobile)
+    const isMobile = JSON.parse(localStorage.getItem("isMobile"));
+    
     // console.log("reducer state",this.props.portfolioState)
 
     //     console.log("reducer state", this.state);
@@ -1820,7 +1822,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
           <div className="portfolio-page-section">
             <div
               className="portfolio-container page"
-                style={isMobile ? {}:{ overflow: "visible" }}
+              style={isMobile ? {} : { overflow: "visible" }}
             >
               <div className="portfolio-section">
                 {/* welcome card */}
@@ -1869,7 +1871,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
               <div
                 className="portfolio-section"
                 style={{
-                  minWidth: isMobile ? "100%":"85rem",
+                  minWidth: isMobile ? "100%" : "85rem",
                   // marginTop: "9rem"
                 }}
               >
@@ -1956,42 +1958,48 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
 
               <div className="m-b-22 graph-table-section">
                 <Row>
-                  <Col md={6}>
-                    <div
-                      className="m-r-16 section-table"
-                      // style={{ paddingBottom: "1.15rem" }}
-                    >
-                      <LineChartSlider
-                        assetValueData={
-                          this.props.portfolioState.assetValueDay &&
-                          this.props.portfolioState.assetValueDay
-                        }
-                        externalEvents={
-                          this.state.externalEvents && this.state.externalEvents
-                        }
-                        coinLists={this.props.OnboardingState.coinsLists}
-                        isScrollVisible={false}
-                        handleGroupBy={(value) => this.handleGroupBy(value)}
-                        graphLoading={this.state.graphLoading}
-                        // graphLoading={true}
-                        isUpdate={this.state.isUpdate}
-                        handleClick={() => {
-                          if (this.state.lochToken) {
-                            this.props.history.push(
-                              "/intelligence/asset-value"
-                            );
+                  {!isMobile && (
+                    <Col md={6}>
+                      <div
+                        className="m-r-16 section-table"
+                        // style={{ paddingBottom: "1.15rem" }}
+                      >
+                        <LineChartSlider
+                          assetValueData={
+                            this.props.portfolioState.assetValueDay &&
+                            this.props.portfolioState.assetValueDay
                           }
-                        }}
-                        hideTimeFilter={true}
-                        hideChainFilter={true}
-                        dataLoaded={
-                          this.props.portfolioState.assetValueDataLoaded
-                        }
-                      />
-                    </div>
-                  </Col>
-                  <Col md={6}>
-                    <div className="profit-chart">
+                          externalEvents={
+                            this.state.externalEvents &&
+                            this.state.externalEvents
+                          }
+                          coinLists={this.props.OnboardingState.coinsLists}
+                          isScrollVisible={false}
+                          handleGroupBy={(value) => this.handleGroupBy(value)}
+                          graphLoading={this.state.graphLoading}
+                          // graphLoading={true}
+                          isUpdate={this.state.isUpdate}
+                          handleClick={() => {
+                            if (this.state.lochToken) {
+                              this.props.history.push(
+                                "/intelligence/asset-value"
+                              );
+                            }
+                          }}
+                          hideTimeFilter={true}
+                          hideChainFilter={true}
+                          dataLoaded={
+                            this.props.portfolioState.assetValueDataLoaded
+                          }
+                        />
+                      </div>
+                    </Col>
+                  )}
+                  <Col md={6} sm={12}>
+                    <div
+                      className="profit-chart"
+                      style={isMobile ? { marginBottom: "1rem" } : {}}
+                    >
                       <BarGraphSection
                         headerTitle="Net Flows"
                         headerSubTitle="Understand your portfolio's profitability"
@@ -2031,7 +2039,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
               </div>
               <div className="m-b-22 graph-table-section">
                 <Row>
-                  <Col md={6}>
+                  <Col md={6} sm={12}>
                     {/* <div
                       className="m-r-16 section-table"
                       style={{
@@ -2063,9 +2071,13 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                         isLoading={this.state.tableLoading}
                       />
                     </div> */}
-                    <div className="m-r-16 profit-chart">
+                    <div
+                      className={`${
+                        isMobile ? "" : "m-r-16"
+                      } profit-chart m-b-32`}
+                    >
                       <div
-                        className={`bar-graph-section m-b-32`}
+                        className={`bar-graph-section`}
                         style={{ paddingBottom: "0rem", position: "relative" }}
                       >
                         <GraphHeader
@@ -2165,15 +2177,17 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                                       exchanges to gain more insights
                                     </h5>
                                   </div>
-                                  <div
-                                    className="row-insight-arrow cp"
-                                    onClick={this.simulateButtonClick}
-                                  >
-                                    <h6 className="inter-display-medium f-s-13 lh-15 m-r-5">
-                                      Add more
-                                    </h6>
-                                    <Image src={ArrowRight} />
-                                  </div>
+                                  {!isMobile && (
+                                    <div
+                                      className="row-insight-arrow cp"
+                                      onClick={this.simulateButtonClick}
+                                    >
+                                      <h6 className="inter-display-medium f-s-13 lh-15 m-r-5">
+                                        Add more
+                                      </h6>
+                                      <Image src={ArrowRight} />
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </>
@@ -2182,7 +2196,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                       </div>
                     </div>
                   </Col>
-                  <Col md={6}>
+                  <Col md={6} sm={12}>
                     <div
                       className="section-table"
                       style={{
@@ -2254,7 +2268,10 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
               </div>
 
               <hr className="m-t-60" />
-              <p className="inter-display-medium f-s-13 lh-16 m-b-26 grey-ADA m-t-16 m-b-16">
+              <p
+                className="inter-display-medium f-s-13 lh-16 m-b-26 grey-ADA m-t-16 m-b-16"
+                style={isMobile ? { marginBottom: "9rem" } : {}}
+              >
                 The content made available on this web page and our mobile
                 applications ("Platform") is for informational purposes only.
                 You should not construe any such information or other material

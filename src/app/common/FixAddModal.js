@@ -730,6 +730,7 @@ class FixAddModal extends BaseReactComponent {
   };
 
   render() {
+     const isMobile = JSON.parse(localStorage.getItem("isMobile"));
     let walletDropDownList = [];
     this.state.walletNameList?.map((wallet) => {
       walletDropDownList.push({ name: wallet.name, id: wallet.id });
@@ -764,11 +765,11 @@ class FixAddModal extends BaseReactComponent {
                     name={`wallet${index + 1}`}
                     autoFocus
                     onChange={(e) => this.handleFixWalletChange(e)}
-                    style={getPadding(
+                    style={isMobile ? getPadding(
                       `fix-input-${index}`,
                       elem,
                       this.props.OnboardingState
-                    )}
+                    ):{}}
                     onFocus={(e) => {
                       // console.log(e);
                       this.FocusInInputFixWallet(e);
@@ -935,6 +936,7 @@ class FixAddModal extends BaseReactComponent {
         </div>
       );
     });
+    
 
     return (
       <>
@@ -945,7 +947,7 @@ class FixAddModal extends BaseReactComponent {
             onHide={this.state.onHide}
             size="lg"
             dialogClassName={"fix-add-modal"}
-            centered
+            centered={isMobile ? false : true}
             aria-labelledby="contained-modal-title-vcenter"
             backdropClassName="fixaddmodal"
           >
@@ -1012,50 +1014,117 @@ class FixAddModal extends BaseReactComponent {
                 {this.state.modalType === "addwallet" && (
                   <div className="add-modal-inputs">{wallets}</div>
                 )}
+                {isMobile ? (
+                  <>
+                    <div
+                      className="btn-section"
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginTop: "2rem",
+                        padding:"0rem 2rem"
+                      }}
+                    >
+                      {this.state.addWalletList.length >= 0 &&
+                        this.state.modalType === "addwallet" && (
+                          // <div className="m-b-32 add-wallet-btn">
 
-                {this.state.addWalletList.length >= 0 &&
-                  this.state.modalType === "addwallet" && (
-                    <div className="m-b-32 add-wallet-btn">
-                      <Button className="grey-btn" onClick={this.addAddress}>
-                        <Image src={PlusIcon} /> Add another
+                          // </div>
+                          <Button
+                          className="grey-btn"
+                          style={{    padding: "2rem 0rem",
+    width: "50%",
+    marginRight: "1rem",
+}}
+                            onClick={this.addAddress}
+                          >
+                            <Image src={PlusIcon} /> Add another
+                          </Button>
+                        )}
+                      <Button
+                        className={`primary-btn ${
+                          this.state.btnStatus ? "activebtn" : ""
+                        } ${
+                          this.state.modalType === "fixwallet"
+                            ? "fix-btn"
+                            : this.state.modalType === "addwallet" &&
+                              !this.isDisabled()
+                            ? "add-btn activebtn"
+                            : "add-btn"
+                        }`}
+                        disabled={
+                          this.state.modalType === "addwallet"
+                            ? this.isDisabled()
+                            : this.isFixDisabled()
+                        }
+                        onClick={
+                          this.state.modalType === "addwallet"
+                            ? this.handleAddWallet
+                            : this.handleFixWallet
+                        }
+                      >
+                        {/* {this.state.btnText} */}
+                        {this.state.modalType === "addwallet"
+                          ? this.isDisabled()
+                            ? loadingAnimation()
+                            : this.state.btnText
+                          : this.isFixDisabled()
+                          ? loadingAnimation()
+                          : this.state.btnText}
                       </Button>
                     </div>
-                  )}
+                  </>
+                ) : (
+                  <>
+                    {this.state.addWalletList.length >= 0 &&
+                      this.state.modalType === "addwallet" && (
+                        <div className="m-b-32 add-wallet-btn">
+                          <Button
+                            className="grey-btn"
+                            onClick={this.addAddress}
+                          >
+                            <Image src={PlusIcon} /> Add another
+                          </Button>
+                        </div>
+                      )}
 
-                {/* input field for add wallet */}
-                <div className="btn-section">
-                  <Button
-                    className={`primary-btn ${
-                      this.state.btnStatus ? "activebtn" : ""
-                    } ${
-                      this.state.modalType === "fixwallet"
-                        ? "fix-btn"
-                        : this.state.modalType === "addwallet" &&
-                          !this.isDisabled()
-                        ? "add-btn activebtn"
-                        : "add-btn"
-                    }`}
-                    disabled={
-                      this.state.modalType === "addwallet"
-                        ? this.isDisabled()
-                        : this.isFixDisabled()
-                    }
-                    onClick={
-                      this.state.modalType === "addwallet"
-                        ? this.handleAddWallet
-                        : this.handleFixWallet
-                    }
-                  >
-                    {/* {this.state.btnText} */}
-                    {this.state.modalType === "addwallet"
-                      ? this.isDisabled()
-                        ? loadingAnimation()
-                        : this.state.btnText
-                      : this.isFixDisabled()
-                      ? loadingAnimation()
-                      : this.state.btnText}
-                  </Button>
-                </div>
+                    {/* input field for add wallet */}
+                    <div className="btn-section">
+                      <Button
+                        className={`primary-btn ${
+                          this.state.btnStatus ? "activebtn" : ""
+                        } ${
+                          this.state.modalType === "fixwallet"
+                            ? "fix-btn"
+                            : this.state.modalType === "addwallet" &&
+                              !this.isDisabled()
+                            ? "add-btn activebtn"
+                            : "add-btn"
+                        }`}
+                        disabled={
+                          this.state.modalType === "addwallet"
+                            ? this.isDisabled()
+                            : this.isFixDisabled()
+                        }
+                        onClick={
+                          this.state.modalType === "addwallet"
+                            ? this.handleAddWallet
+                            : this.handleFixWallet
+                        }
+                      >
+                        {/* {this.state.btnText} */}
+                        {this.state.modalType === "addwallet"
+                          ? this.isDisabled()
+                            ? loadingAnimation()
+                            : this.state.btnText
+                          : this.isFixDisabled()
+                          ? loadingAnimation()
+                          : this.state.btnText}
+                      </Button>
+                    </div>
+                  </>
+                )}
                 <div className="m-b-26 footer">
                   <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
                     At Loch, we care intensely about your privacy and

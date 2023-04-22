@@ -6,9 +6,11 @@ function IsMobile() {
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 480px)");
     setIsMobile(mediaQuery.matches);
+     localStorage.setItem("isMobile", mediaQuery.matches);
 
     function handleResize() {
       setIsMobile(mediaQuery.matches);
+      localStorage.setItem("isMobile", mediaQuery.matches);
     }
 
     window.addEventListener("resize", handleResize);

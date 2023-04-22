@@ -1,7 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
+import { BaseReactComponent } from "../../utils/form";
 
-class IsMobileClass extends Component {
+class IsMobileClass extends React.Component {
   constructor(props) {
+    console.log("constructio");
     super(props);
 
     this.state = {
@@ -20,6 +22,8 @@ class IsMobileClass extends Component {
   }
 
   componentWillUnmount() {
+    console.log("resize event fired will"); // <-- add this linen
+
     window.removeEventListener("resize", this.handleResize);
   }
 
@@ -32,6 +36,7 @@ class IsMobileClass extends Component {
   };
 
   render() {
+    console.log("IsMobile rendered");
     return this.state.isMobile;
   }
 }

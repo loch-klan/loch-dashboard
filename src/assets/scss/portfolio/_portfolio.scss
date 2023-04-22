@@ -48,6 +48,82 @@
       }
     }
 
+    .welcome-card-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        
+        width: 100%;
+        
+              flex-direction: column;
+              align-items: center;
+
+                .welcome-section-number {
+      // position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .wallet-amount {
+        font-size: 3.2rem;
+        line-height: 38px;
+        // margin-top: 1.2rem;
+        color: $black-1D2;
+       
+      }
+
+      .growth-div {
+        padding: 0.85rem 1.2rem;
+        background: $green-E3F;
+        border-radius: 8px;
+        box-shadow: none;
+        margin-top:2rem;
+         margin-bottom:1.2rem;
+        img {
+          margin-right: 0.4rem;
+        }
+      }
+
+      .downfall {
+        background-color: $red-FFE;
+      }
+    }
+
+        .row-div{
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        }
+
+        .topbar-btn {
+          background: rgba(229, 229, 230, 0.5);
+          border-radius: 8px;
+          padding: 1.2rem 1.5rem;
+          color: $black-191;
+          font-weight: 600;
+          font-size: 1.3rem;
+          line-height: 1.5rem;
+          cursor: pointer;
+
+          img {
+            margin-right: 0.5rem;
+            width: 1.2rem;
+            margin-bottom: 2.5px;
+          }
+
+          &:hover {
+            background-color: $black-191;
+            color: $secondary;
+
+            img{
+ filter: invert(1);
+            }
+
+           
+          }
+        }}
+
     .welcome-card-section-topbar {
       position: fixed;
       top: 0;
@@ -894,6 +970,26 @@ height: 100%;
   box-shadow: 0px 6.17911px 18.5373px rgba(109, 109, 109, 0.15);
   border-radius: 0.8rem;
 
+  // scroll bar
+  .scroll-chainlist{
+ &::-webkit-scrollbar {
+          width: 0.4rem;
+          height: 0.4rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          border-radius: 0.8rem;
+          background-color: $scrollBar-thumb;
+        }
+
+        &::-webkit-scrollbar-track {
+          background-color: rgba(229, 229, 230, 0.5);
+          // background-color: $grey-E5E;
+          border-radius: 0.8rem;
+        }
+  }
+ 
+
   .coin-hover-display-text {
     display: flex;
     align-items: center;
@@ -1108,6 +1204,13 @@ height: 100%;
       width: 100%;
       z-index: 2;
 
+      &.mobileChainList{
+        position: relative;
+      top: 2rem;
+      box-shadow: none;
+      padding: 0rem 0rem 1.6rem;
+      }
+
       .chain-content {
         max-height: 25rem;
         overflow-y: scroll;
@@ -1187,6 +1290,13 @@ height: 100%;
       padding: 1.6rem 2rem;
       width: 100%;
       z-index: 1;
+
+      &.mobileBalanceDropdown{
+        position: relative;
+    top: 2rem;
+    left: 0;
+    padding: 0rem 0rem 2rem;
+      }
 
       .balance-list-content {
         max-height: 15rem;

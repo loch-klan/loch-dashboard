@@ -3,6 +3,8 @@ import { Image, Container, Button, DropdownButton, Dropdown } from 'react-bootst
 import { NavLink } from 'react-router-dom'
 // import logo from '../../image/logo.png'
 import logo from '../../image/Loch.svg'
+
+import menu from "../../assets/images/icons/menu.svg";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ActiveHomeIcon from '../../image/HomeIcon.svg'
 import InActiveHomeIcon from '../../assets/images/icons/InactiveHomeIcon.svg'
@@ -353,11 +355,242 @@ function Sidebar(props) {
       setconnectModal(!connectModal);
   };
     const isMobile = IsMobile();
-  console.log("isMobile", isMobile);
+  // console.log("isMobile", isMobile);
       return (
         <div className={` ${isMobile ? "" : "sidebar-section"}`}>
           {isMobile ? (
-            <>mobile</>
+            <>
+              <div
+                style={{
+                  padding: "1.5rem 2rem",
+                  position: "fixed",
+                  top: 0,
+                  width: "100%",
+                  zIndex: 100,
+                  background: "#fff",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div
+                  className="currency-wrapper"
+                  style={{ width: "34%", textAlign: "left" }}
+                >
+                  <DropdownButton
+                    id="currency-dropdown"
+                    title={
+                      selectedCurrency &&
+                      selectedCurrency.symbol + " " + selectedCurrency.code
+                    }
+                    onClick={() => {
+                      MenuCurrencyDropdown({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        currency:
+                          selectedCurrency.symbol + " " + selectedCurrency.code,
+                      });
+                    }}
+                  >
+                    {currencyList?.map((currency, key) => {
+                      return (
+                        <Dropdown.Item
+                          key={key}
+                          onClick={() => handleFunction(currency)}
+                        >
+                          <span>{currency.symbol}</span>{" "}
+                          <span>{currency.code}</span>
+                        </Dropdown.Item>
+                      );
+                    })}
+                  </DropdownButton>
+                </div>
+                <div style={{ width: "34%", textAlign: "center" }}>
+                  <Image src={logo} style={{ width: "4rem" }} />
+                </div>
+
+                <div style={{ width: "33%", textAlign: "right" }}>
+                  <Image src={menu} style={{ width: "3rem" }} />
+                </div>
+              </div>
+              <div
+                style={{
+                  // height: "4rem",
+                  padding: "1.5rem 0rem",
+                  position: "fixed",
+                  bottom: 0,
+                  width: "100%",
+                  zIndex: 100,
+                  background: "#fff",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItem: "end",
+                  borderTop: "1px solid rgba(229, 229, 230, 0.5)",
+                  boxShadow:
+                    "0px -4px 10px rgba(0, 0, 0, 0.04), 0px -1px 1px rgba(0, 0, 0, 0.04)",
+                }}
+              >
+                <div
+                  style={{ width: "25%", height: "100%", textAlign: "center" }}
+                  onClick={(e) => {
+                    // console.log("user",getCurrentUser())
+                    if (!isWallet) {
+                      e.preventDefault();
+                    } else {
+                      HomeMenu({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                      });
+                       history.push("/home");
+                    }
+                  }}
+                >
+                  <Image
+                    src={
+                      activeTab === "/home" ? ActiveHomeIcon : InActiveHomeIcon
+                    }
+                  />
+                  <h5
+                    className="Inter-dispplay-semi-bold m-t-5 f-s-10"
+                    style={activeTab !== "/home" ? { color: "#B0B1B3" } : {}}
+                  >
+                    Home
+                  </h5>
+                </div>
+                <div
+                  style={{ width: "25%", height: "100%", textAlign: "center" }}
+                  onClick={(e) => {
+                    if (!isWallet) {
+                      e.preventDefault();
+                    } else {
+                      IntelligenceMenu({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                      });
+                      history.push("/intelligence");
+                    }
+                  }}
+                >
+                  <Image
+                    src={
+                      [
+                        "/intelligence/transaction-history",
+                        "/intelligence",
+                        "/intelligence/volume-traded-by-counterparty",
+                        "/intelligence/insights",
+                        "/intelligence/costs",
+                        "/intelligence/asset-value",
+                      ].includes(activeTab)
+                        ? ActiveIntelligenceIcon
+                        : IntelligenceIcon
+                    }
+                  />
+                  <h5
+                    className="Inter-dispplay-semi-bold m-t-5 f-s-10"
+                    style={
+                      ![
+                        "/intelligence/transaction-history",
+                        "/intelligence",
+                        "/intelligence/volume-traded-by-counterparty",
+                        "/intelligence/insights",
+                        "/intelligence/costs",
+                        "/intelligence/asset-value",
+                      ].includes(activeTab)
+                        ? { color: "#B0B1B3" }
+                        : {}
+                    }
+                  >
+                    Intelligence
+                  </h5>
+                </div>
+                <div
+                  style={{ width: "25%", height: "100%", textAlign: "center" }}
+                  onClick={(e) => {
+                    if (!isWallet) {
+                      e.preventDefault();
+                    } else {
+                      WalletsMenu({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                      });
+                       history.push("/wallets");
+                    }
+                  }}
+                >
+                  <Image
+                    src={
+                      activeTab === "/wallets"
+                        ? ActiveWalletIcon
+                        : NavWalletIcon
+                    }
+                  />
+                  <h5
+                    className="Inter-dispplay-semi-bold m-t-5 f-s-10"
+                    style={activeTab !== "/wallets" ? { color: "#B0B1B3" } : {}}
+                  >
+                    Wallet
+                  </h5>
+                </div>
+                <div
+                  style={{ width: "25%", height: "100%", textAlign: "center" }}
+                  onClick={(e) => {
+                    if (!isWallet) {
+                      e.preventDefault();
+                    } else {
+                      MenuWhale({
+                        email_address: getCurrentUser().email,
+                        session_id: getCurrentUser().id,
+                      });
+                      history.push("/whale-watching");
+                    }
+                  }}
+                >
+                  <Image
+                    src={
+                      activeTab === "/whale-watching"
+                        ? ActiveCohortIcon
+                        : CohortIcon
+                    }
+                  />
+                  <h5
+                    className="Inter-dispplay-semi-bold m-t-5 f-s-10"
+                    style={
+                      activeTab !== "/whale-watching"
+                        ? { color: "#B0B1B3" }
+                        : {}
+                    }
+                  >
+                    Whales
+                  </h5>
+                </div>
+                <div
+                  style={{ width: "25%", height: "100%", textAlign: "center" }}
+                  onClick={(e) => {
+                    if (!isWallet) {
+                      e.preventDefault();
+                    } else {
+                      ProfileMenu({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                      });
+                      history.push("/profile");
+                    }
+                  }}
+                >
+                  <Image
+                    src={
+                      activeTab === "/profile" ? ActiveProfileIcon : ProfileIcon
+                    }
+                  />
+                  <h5
+                    className="Inter-dispplay-semi-bold m-t-5 f-s-10"
+                    style={activeTab !== "/profile" ? { color: "#B0B1B3" } : {}}
+                  >
+                    Profile
+                  </h5>
+                </div>
+              </div>
+            </>
           ) : (
             <Container>
               <div className="sidebar">

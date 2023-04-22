@@ -712,6 +712,7 @@ class PieChart2 extends BaseReactComponent {
 
   render() {
  
+      const isMobile = JSON.parse(localStorage.getItem("isMobile"));
     //  console.log("asset price props", this.props.assetPrice);
     let self = this;
     let chartOptions = {
@@ -1081,12 +1082,19 @@ class PieChart2 extends BaseReactComponent {
         className={`portfolio-over-container ${
           Object.keys(pieSectionDataEnabled).length > 0 ? "p-b-20" : "p-b-20"
         }`}
-        style={{
-          overflow: "visible",
-        }}
+        style={
+          isMobile
+            ? { minWidth: "100%", overflow: "hidden", paddingBottom: "0rem" }
+            : {
+                overflow: "visible",
+              }
+        }
       >
         {/* // <div className={`portfolio-over-container m-b-32`} > */}
-        <h1 className="inter-display-medium f-s-25 lh-30 overview-heading">
+        <h1
+          className="inter-display-medium f-s-25 lh-30 overview-heading"
+          style={isMobile ? { textAlign: "center", fontSize: "2rem" } : {}}
+        >
           Overview
         </h1>
         <>
@@ -1129,42 +1137,324 @@ class PieChart2 extends BaseReactComponent {
                   </h3>
                 </div>
               )}
+
+              {isMobile && (
+                <Col
+                  md={chainList.length > 1 ? 12 : 7}
+                  style={
+                    chainList.length > 1
+                      ? { padding: 0, marginBottom: "4.5rem" }
+                      : {
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flexDirection: "column",
+                          padding: 0,
+                          flexWrap: "wrap",
+                          marginBottom:
+                            pieSectionDataEnabled &&
+                            Object.keys(pieSectionDataEnabled).length
+                              ? "4.5rem"
+                              : "1.5rem",
+                        }
+                  }
+                >
+                  {pieSectionDataEnabled &&
+                  Object.keys(pieSectionDataEnabled).length > 0 ? (
+                    <div
+                      className="coin-hover-display"
+                      style={{ width: "100%", flexDirection: "column" }}
+                    >
+                      <div
+                        className="coin-hover-display-text"
+                        style={{
+                          // marginRight: "5.5rem",
+                          width: "100%",
+                          paddingBottom: "2rem",
+                        }}
+                      >
+                        <div className="coin-hover-display-text-icon">
+                          <Image
+                            className="coin-hover-display-icon"
+                            style={{ height: "4.8rem", width: "4.8rem" }}
+                            src={
+                              pieSectionDataEnabled &&
+                              Object.keys(pieSectionDataEnabled).length > 0
+                                ? pieSectionDataEnabled.assetSymbol ||
+                                  unrecognized
+                                : null
+                            }
+                          />
+                        </div>
+                        {pieSectionDataEnabled &&
+                          Object.keys(pieSectionDataEnabled).length > 0 && (
+                            <div className="coin-hover-display-text1">
+                              <div className="coin-hover-display-text1-upper">
+                                <span className="inter-display-medium f-s-18 l-h-21 black-000 coin-hover-display-text1-upper-coin">
+                                  {pieSectionDataEnabled &&
+                                  Object.keys(pieSectionDataEnabled).length > 0
+                                    ? pieSectionDataEnabled.name
+                                    : null}
+                                </span>
+                                <span
+                                  className="inter-display-medium f-s-20 l-h-23 yellow-F4A coin-hover-display-text1-upper-percent"
+                                  style={{
+                                    color:
+                                      pieSectionDataEnabled.borderColor ==
+                                      "#ffffff"
+                                        ? "#19191A"
+                                        : pieSectionDataEnabled.borderColor,
+                                  }}
+                                >
+                                  {pieSectionDataEnabled &&
+                                  Object.keys(pieSectionDataEnabled).length > 0
+                                    ? pieSectionDataEnabled.y?.toFixed(2)
+                                    : 0}
+                                  %
+                                </span>
+
+                                {pieSectionDataEnabled.assetType === 20 && (
+                                  <span className="inter-display-medium f-s-15 l-h-19 black-191 m-l-10">
+                                    "Staked"
+                                  </span>
+                                )}
+                              </div>
+                              <div className="coin-hover-display-text1-lower">
+                                <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount">
+                                  {pieSectionDataEnabled &&
+                                  Object.keys(pieSectionDataEnabled).length > 0
+                                    ? numToCurrency(pieSectionDataEnabled.count)
+                                    : null}
+                                </span>
+                                <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode">
+                                  {pieSectionDataEnabled &&
+                                  Object.keys(pieSectionDataEnabled).length > 0
+                                    ? pieSectionDataEnabled.assetCode
+                                    : null}
+                                </span>
+                                <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue">
+                                  {CurrencyType(false)}
+                                  {pieSectionDataEnabled &&
+                                  Object.keys(pieSectionDataEnabled).length > 0
+                                    ? pieSectionDataEnabled.usd
+                                    : null}
+                                </span>
+                                <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency">
+                                  {CurrencyType(true)}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-start",
+                          alignItem: "center",
+                          width: "100%",
+                          flexDirection: "column",
+                          maxHeight: "15.5rem",
+                            overflowX: "auto",
+                          paddingRight: chainList.slice(0, 3).length > 2 ?"1.5rem": 0
+                          }}
+                          className="scroll-chainlist"
+                      >
+                        {chainList &&
+                          chainList.slice(0, 3).map((data, index) => {
+                            // console.log(data);
+                            let isQuote =
+                              this.state.assetPrice &&
+                              this.state.assetPrice[
+                                this.state.selectedSection[0].assetId
+                              ].quote;
+                            if (index < 2) {
+                              return (
+                                <>
+                                  <div
+                                    style={{
+                                      width: "100%",
+                                      height: "1px",
+                                      backgroundColor: "#E5E5E6",
+                                      flexShrink: 0,
+                                    }}
+                                  ></div>
+                                  <div
+                                    className="coin-hover-display-text2"
+                                    style={{ padding: "1.5rem 1rem" }}
+                                  >
+                                    <div className="coin-hover-display-text2-upper">
+                                      <CustomOverlay
+                                        position="top"
+                                        className={"coin-hover-tooltip"}
+                                        isIcon={false}
+                                        isInfo={true}
+                                        isText={true}
+                                        text={
+                                          data?.displayAddress || data?.address
+                                        }
+                                      >
+                                        <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
+                                          {data?.protocalName ||
+                                            data?.nickname ||
+                                            data?.displayAddress ||
+                                            data?.address}
+                                        </span>
+                                      </CustomOverlay>
+                                      <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
+                                        {(
+                                          (100 * data.totalAssetCount) /
+                                          pieSectionDataEnabled.count
+                                        ).toFixed(2) + "%"}
+                                      </span>
+                                    </div>
+                                    <div className="coin-hover-display-text2-lower">
+                                      <div>
+                                        {" "}
+                                        <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
+                                          {numToCurrency(data.totalAssetCount)}
+                                        </span>
+                                        <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
+                                          {pieSectionDataEnabled.assetCode}
+                                        </span>
+                                      </div>
+
+                                      <div>
+                                        <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
+                                          {isQuote == null
+                                            ? DEFAULT_PRICE
+                                            : numToCurrency(
+                                                data.totalAssetCount *
+                                                  isQuote?.USD.price *
+                                                  currency?.rate
+                                              )}
+                                        </span>
+
+                                        <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
+                                          {CurrencyType(true)}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </>
+                              );
+                            } else {
+                              return (
+                                <>
+                                  <div
+                                    style={{
+                                      width: "100%",
+                                      height: "1px",
+                                      backgroundColor: "#E5E5E6",
+                                      flexShrink: 0,
+                                    }}
+                                  ></div>
+                                  <div className="coin-hover-display-text2">
+                                    <div className="coin-hover-display-text2-upper">
+                                      <CustomOverlay
+                                        position="top"
+                                        className={"coin-hover-tooltip"}
+                                        isIcon={false}
+                                        isInfo={true}
+                                        isText={true}
+                                        text={
+                                          data?.displayAddress || data?.address
+                                        }
+                                      >
+                                        <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
+                                          Other
+                                        </span>
+                                      </CustomOverlay>
+                                      <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
+                                        {(
+                                          (100 * totalCount) /
+                                          pieSectionDataEnabled.count
+                                        ).toFixed(2) + "%"}
+                                      </span>
+                                    </div>
+                                    <div className="coin-hover-display-text2-lower">
+                                      <div>
+                                        <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
+                                          {numToCurrency(totalCount)}
+                                        </span>
+
+                                        <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
+                                          {pieSectionDataEnabled.assetCode}
+                                        </span>
+                                      </div>
+
+                                      <div>
+                                        {" "}
+                                        <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
+                                          {numToCurrency(
+                                            totalCount *
+                                              this.props.portfolioState
+                                                .coinRateList[
+                                                this.state.selectedSection[0]
+                                                  .assetId
+                                              ].quote?.USD.price *
+                                              currency?.rate
+                                          ) || DEFAULT_PRICE}
+                                        </span>
+                                        <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
+                                          {CurrencyType(true)}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </>
+                              );
+                            }
+                          })}
+                      </div>
+                    </div>
+                  ) : null}
+                </Col>
+              )}
             </Col>
             <Col md={5} style={{ marginTop: "-2rem", padding: 0, zIndex: 1 }}>
               <div>
                 {/* Chains */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "end",
-                  }}
-                >
-                  <h2
-                    className="inter-display-regular f-s-13 lh-15 grey-969 cp refresh-btn"
-                    onClick={this.RefreshButton}
+                {!isMobile ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "end",
+                    }}
                   >
-                    <Image src={refreshIcon} />
-                    Updated{" "}
-                    <span
-                      style={{ margin: "0px 3px" }}
-                      className="inter-display-bold f-s-13 lh-15 grey-969"
+                    <h2
+                      className="inter-display-regular f-s-13 lh-15 grey-969 cp refresh-btn"
+                      onClick={this.RefreshButton}
                     >
-                      {this.state.timeNumber === null
-                        ? "3"
-                        : this.state.timeNumber === 0
-                        ? " just now"
-                        : this.state.timeNumber}
-                    </span>{" "}
-                    {" " + this.state.timeUnit !== "" &&
-                    this.state.timeNumber !== 0
-                      ? this.state.timeUnit
-                      : this.state.timeNumber == 0
-                      ? ""
-                      : "hours ago"}
+                      <Image src={refreshIcon} />
+                      Updated{" "}
+                      <span
+                        style={{ margin: "0px 3px" }}
+                        className="inter-display-bold f-s-13 lh-15 grey-969"
+                      >
+                        {this.state.timeNumber === null
+                          ? "3"
+                          : this.state.timeNumber === 0
+                          ? " just now"
+                          : this.state.timeNumber}
+                      </span>{" "}
+                      {" " + this.state.timeUnit !== "" &&
+                      this.state.timeNumber !== 0
+                        ? this.state.timeUnit
+                        : this.state.timeNumber == 0
+                        ? ""
+                        : "hours ago"}
+                    </h2>
+                  </div>
+                ) : (
+                  <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
+                    Chains
                   </h2>
-                </div>
-                <div className="chain-card">
+                )}
+                <div
+                  className="chain-card"
+                  style={isMobile ? { overflow: "hidden" } : {}}
+                >
                   <div
                     style={{
                       display: "flex",
@@ -1234,9 +1524,15 @@ class PieChart2 extends BaseReactComponent {
                     </div>
                   </div>
                   <div
-                    className="chain-list"
+                    className={`chain-list ${
+                      isMobile ? "mobileChainList" : ""
+                    }`}
                     style={{
-                      display: `${this.state.isChainToggle ? "block" : "none"}`,
+                      ...{
+                        display: `${
+                          this.state.isChainToggle ? "block" : "none"
+                        }`,
+                      },
                     }}
                   >
                     <div className="chain-content">
@@ -1292,7 +1588,10 @@ class PieChart2 extends BaseReactComponent {
                   <h2 className="inter-display-semi-bold f-s-16 lh-19 grey-313">
                     DeFi balance sheet
                   </h2>
-                  <div style={{}} className="balance-sheet-card">
+                  <div
+                    style={isMobile ? { overflow: "hidden" } : {}}
+                    className="balance-sheet-card"
+                  >
                     <div className="balance-card-header cp">
                       <div
                         onClick={this.toggleYield}
@@ -1375,7 +1674,11 @@ class PieChart2 extends BaseReactComponent {
                       </div>
                     </div>
                     {(this.state.isYeildToggle || this.state.isDebtToggle) && (
-                      <div className="balance-dropdown">
+                      <div
+                        className={`balance-dropdown ${
+                          isMobile ? "mobileBalanceDropdown" : ""
+                        }`}
+                      >
                         <div className="balance-list-content">
                           {/* For yeild */}
                           {this.state.isYeildToggle && (
@@ -1455,251 +1758,263 @@ class PieChart2 extends BaseReactComponent {
                 </>
               </div>
             </Col>
-            <Col
-              md={chainList.length > 1 ? 12 : 7}
-              style={
-                chainList.length > 1
-                  ? { padding: 0 }
-                  : {
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexDirection: "column",
-                      padding: 0,
-                      flexWrap: "wrap",
-                    }
-              }
-            >
-              {pieSectionDataEnabled &&
-              Object.keys(pieSectionDataEnabled).length > 0 ? (
-                <div
-                  className="coin-hover-display"
-                  style={chainList.length > 1 ? { width: "100%" } : {}}
-                >
-                  <div
-                    className="coin-hover-display-text"
-                    style={
-                      {
-                        // marginRight: "5.5rem",
+            {!isMobile && (
+              <Col
+                md={chainList.length > 1 ? 12 : 7}
+                style={
+                  chainList.length > 1
+                    ? { padding: 0 }
+                    : {
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        padding: 0,
+                        flexWrap: "wrap",
                       }
-                    }
-                  >
-                    <div className="coin-hover-display-text-icon">
-                      <Image
-                        className="coin-hover-display-icon"
-                        src={
-                          pieSectionDataEnabled &&
-                          Object.keys(pieSectionDataEnabled).length > 0
-                            ? pieSectionDataEnabled.assetSymbol || unrecognized
-                            : null
-                        }
-                      />
-                    </div>
-                    {pieSectionDataEnabled &&
-                      Object.keys(pieSectionDataEnabled).length > 0 && (
-                        <div className="coin-hover-display-text1">
-                          <div className="coin-hover-display-text1-upper">
-                            <span className="inter-display-medium f-s-18 l-h-21 black-000 coin-hover-display-text1-upper-coin">
-                              {pieSectionDataEnabled &&
-                              Object.keys(pieSectionDataEnabled).length > 0
-                                ? pieSectionDataEnabled.name
-                                : null}
-                            </span>
-                            <span
-                              className="inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent"
-                              style={{
-                                color:
-                                  pieSectionDataEnabled.borderColor == "#ffffff"
-                                    ? "#19191A"
-                                    : pieSectionDataEnabled.borderColor,
-                              }}
-                            >
-                              {pieSectionDataEnabled &&
-                              Object.keys(pieSectionDataEnabled).length > 0
-                                ? pieSectionDataEnabled.y?.toFixed(2)
-                                : 0}
-                              %
-                            </span>
-
-                            {pieSectionDataEnabled.assetType === 20 && (
-                              <span className="inter-display-medium f-s-15 l-h-19 black-191 m-l-10">
-                                "Staked"
-                              </span>
-                            )}
-                          </div>
-                          <div className="coin-hover-display-text1-lower">
-                            <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount">
-                              {pieSectionDataEnabled &&
-                              Object.keys(pieSectionDataEnabled).length > 0
-                                ? numToCurrency(pieSectionDataEnabled.count)
-                                : null}
-                            </span>
-                            <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode">
-                              {pieSectionDataEnabled &&
-                              Object.keys(pieSectionDataEnabled).length > 0
-                                ? pieSectionDataEnabled.assetCode
-                                : null}
-                            </span>
-                            <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue">
-                              {CurrencyType(false)}
-                              {pieSectionDataEnabled &&
-                              Object.keys(pieSectionDataEnabled).length > 0
-                                ? pieSectionDataEnabled.usd
-                                : null}
-                            </span>
-                            <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency">
-                              {CurrencyType(true)}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                  </div>
+                }
+              >
+                {pieSectionDataEnabled &&
+                Object.keys(pieSectionDataEnabled).length > 0 ? (
                   <div
-                    style={
-                      chainList.length > 1
-                        ? {
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "space-evenly",
-                            alignItem: "center",
-                          }
-                        : {
-                            display: "flex",
-                            justifyContent: "space-evenly",
-                            alignItem: "center",
-                          }
-                    }
+                    className="coin-hover-display"
+                    style={chainList.length > 1 ? { width: "100%" } : {}}
                   >
-                    {chainList &&
-                      chainList.slice(0, 3).map((data, index) => {
-                        // console.log(data);
-                        let isQuote =
-                          this.state.assetPrice &&
-                          this.state.assetPrice[
-                            this.state.selectedSection[0].assetId
-                          ].quote;
-                        if (index < 2) {
-                          return (
-                            <>
-                              <div
-                                style={{
-                                  width: "1px",
-                                  height: "6.8rem",
-                                  backgroundColor: "#E5E5E6",
-                                }}
-                              ></div>
-                              <div className="coin-hover-display-text2">
-                                <div className="coin-hover-display-text2-upper">
-                                  <CustomOverlay
-                                    position="top"
-                                    className={"coin-hover-tooltip"}
-                                    isIcon={false}
-                                    isInfo={true}
-                                    isText={true}
-                                    text={data?.displayAddress || data?.address}
-                                  >
-                                    <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
-                                      {data?.protocalName ||
-                                        data?.nickname ||
-                                        data?.displayAddress ||
-                                        data?.address}
-                                    </span>
-                                  </CustomOverlay>
-                                  <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
-                                    {(
-                                      (100 * data.totalAssetCount) /
-                                      pieSectionDataEnabled.count
-                                    ).toFixed(2) + "%"}
-                                  </span>
-                                </div>
-                                <div className="coin-hover-display-text2-lower">
-                                  <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
-                                    {numToCurrency(data.totalAssetCount)}
-                                  </span>
-
-                                  <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
-                                    {pieSectionDataEnabled.assetCode}
-                                  </span>
-
-                                  <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
-                                    {isQuote == null
-                                      ? DEFAULT_PRICE
-                                      : numToCurrency(
-                                          data.totalAssetCount *
-                                            isQuote?.USD.price *
-                                            currency?.rate
-                                        )}
-                                  </span>
-
-                                  <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
-                                    {CurrencyType(true)}
-                                  </span>
-                                </div>
-                              </div>
-                            </>
-                          );
-                        } else {
-                          return (
-                            <>
-                              <div
-                                style={{
-                                  width: "1px",
-                                  height: "6.8rem",
-                                  backgroundColor: "#E5E5E6",
-                                }}
-                              ></div>
-                              <div className="coin-hover-display-text2">
-                                <div className="coin-hover-display-text2-upper">
-                                  <CustomOverlay
-                                    position="top"
-                                    className={"coin-hover-tooltip"}
-                                    isIcon={false}
-                                    isInfo={true}
-                                    isText={true}
-                                    text={data?.displayAddress || data?.address}
-                                  >
-                                    <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
-                                      Other
-                                    </span>
-                                  </CustomOverlay>
-                                  <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
-                                    {(
-                                      (100 * totalCount) /
-                                      pieSectionDataEnabled.count
-                                    ).toFixed(2) + "%"}
-                                  </span>
-                                </div>
-                                <div className="coin-hover-display-text2-lower">
-                                  <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
-                                    {numToCurrency(totalCount)}
-                                  </span>
-
-                                  <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
-                                    {pieSectionDataEnabled.assetCode}
-                                  </span>
-
-                                  <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
-                                    {numToCurrency(
-                                      totalCount *
-                                        this.props.portfolioState.coinRateList[
-                                          this.state.selectedSection[0].assetId
-                                        ].quote?.USD.price *
-                                        currency?.rate
-                                    ) || DEFAULT_PRICE}
-                                  </span>
-                                  <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
-                                    {CurrencyType(true)}
-                                  </span>
-                                </div>
-                              </div>
-                            </>
-                          );
+                    <div
+                      className="coin-hover-display-text"
+                      style={
+                        {
+                          // marginRight: "5.5rem",
                         }
-                      })}
+                      }
+                    >
+                      <div className="coin-hover-display-text-icon">
+                        <Image
+                          className="coin-hover-display-icon"
+                          src={
+                            pieSectionDataEnabled &&
+                            Object.keys(pieSectionDataEnabled).length > 0
+                              ? pieSectionDataEnabled.assetSymbol ||
+                                unrecognized
+                              : null
+                          }
+                        />
+                      </div>
+                      {pieSectionDataEnabled &&
+                        Object.keys(pieSectionDataEnabled).length > 0 && (
+                          <div className="coin-hover-display-text1">
+                            <div className="coin-hover-display-text1-upper">
+                              <span className="inter-display-medium f-s-18 l-h-21 black-000 coin-hover-display-text1-upper-coin">
+                                {pieSectionDataEnabled &&
+                                Object.keys(pieSectionDataEnabled).length > 0
+                                  ? pieSectionDataEnabled.name
+                                  : null}
+                              </span>
+                              <span
+                                className="inter-display-medium f-s-18 l-h-21 yellow-F4A coin-hover-display-text1-upper-percent"
+                                style={{
+                                  color:
+                                    pieSectionDataEnabled.borderColor ==
+                                    "#ffffff"
+                                      ? "#19191A"
+                                      : pieSectionDataEnabled.borderColor,
+                                }}
+                              >
+                                {pieSectionDataEnabled &&
+                                Object.keys(pieSectionDataEnabled).length > 0
+                                  ? pieSectionDataEnabled.y?.toFixed(2)
+                                  : 0}
+                                %
+                              </span>
+
+                              {pieSectionDataEnabled.assetType === 20 && (
+                                <span className="inter-display-medium f-s-15 l-h-19 black-191 m-l-10">
+                                  "Staked"
+                                </span>
+                              )}
+                            </div>
+                            <div className="coin-hover-display-text1-lower">
+                              <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coincount">
+                                {pieSectionDataEnabled &&
+                                Object.keys(pieSectionDataEnabled).length > 0
+                                  ? numToCurrency(pieSectionDataEnabled.count)
+                                  : null}
+                              </span>
+                              <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincode">
+                                {pieSectionDataEnabled &&
+                                Object.keys(pieSectionDataEnabled).length > 0
+                                  ? pieSectionDataEnabled.assetCode
+                                  : null}
+                              </span>
+                              <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text1-lower-coinrevenue">
+                                {CurrencyType(false)}
+                                {pieSectionDataEnabled &&
+                                Object.keys(pieSectionDataEnabled).length > 0
+                                  ? pieSectionDataEnabled.usd
+                                  : null}
+                              </span>
+                              <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text1-lower-coincurrency">
+                                {CurrencyType(true)}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                    </div>
+                    <div
+                      style={
+                        chainList.length > 1
+                          ? {
+                              width: "100%",
+                              display: "flex",
+                              justifyContent: "space-evenly",
+                              alignItem: "center",
+                            }
+                          : {
+                              display: "flex",
+                              justifyContent: "space-evenly",
+                              alignItem: "center",
+                            }
+                      }
+                    >
+                      {chainList &&
+                        chainList.slice(0, 3).map((data, index) => {
+                          // console.log(data);
+                          let isQuote =
+                            this.state.assetPrice &&
+                            this.state.assetPrice[
+                              this.state.selectedSection[0].assetId
+                            ].quote;
+                          if (index < 2) {
+                            return (
+                              <>
+                                <div
+                                  style={{
+                                    width: "1px",
+                                    height: "6.8rem",
+                                    backgroundColor: "#E5E5E6",
+                                    // flexShrink: 0,
+                                  }}
+                                ></div>
+                                <div className="coin-hover-display-text2">
+                                  <div className="coin-hover-display-text2-upper">
+                                    <CustomOverlay
+                                      position="top"
+                                      className={"coin-hover-tooltip"}
+                                      isIcon={false}
+                                      isInfo={true}
+                                      isText={true}
+                                      text={
+                                        data?.displayAddress || data?.address
+                                      }
+                                    >
+                                      <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
+                                        {data?.protocalName ||
+                                          data?.nickname ||
+                                          data?.displayAddress ||
+                                          data?.address}
+                                      </span>
+                                    </CustomOverlay>
+                                    <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
+                                      {(
+                                        (100 * data.totalAssetCount) /
+                                        pieSectionDataEnabled.count
+                                      ).toFixed(2) + "%"}
+                                    </span>
+                                  </div>
+                                  <div className="coin-hover-display-text2-lower">
+                                    <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
+                                      {numToCurrency(data.totalAssetCount)}
+                                    </span>
+
+                                    <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
+                                      {pieSectionDataEnabled.assetCode}
+                                    </span>
+
+                                    <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
+                                      {isQuote == null
+                                        ? DEFAULT_PRICE
+                                        : numToCurrency(
+                                            data.totalAssetCount *
+                                              isQuote?.USD.price *
+                                              currency?.rate
+                                          )}
+                                    </span>
+
+                                    <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
+                                      {CurrencyType(true)}
+                                    </span>
+                                  </div>
+                                </div>
+                              </>
+                            );
+                          } else {
+                            return (
+                              <>
+                                <div
+                                  style={{
+                                    width: "1px",
+                                    height: "6.8rem",
+                                    backgroundColor: "#E5E5E6",
+                                    // flexShrink: 0,
+                                  }}
+                                ></div>
+                                <div className="coin-hover-display-text2">
+                                  <div className="coin-hover-display-text2-upper">
+                                    <CustomOverlay
+                                      position="top"
+                                      className={"coin-hover-tooltip"}
+                                      isIcon={false}
+                                      isInfo={true}
+                                      isText={true}
+                                      text={
+                                        data?.displayAddress || data?.address
+                                      }
+                                    >
+                                      <span className="inter-display-regular f-s-15 l-h-19 grey-969 coin-hover-display-text2-upper-coin">
+                                        Other
+                                      </span>
+                                    </CustomOverlay>
+                                    <span className="inter-display-medium f-s-15 l-h-19 grey-ADA coin-hover-display-text2-upper-percent">
+                                      {(
+                                        (100 * totalCount) /
+                                        pieSectionDataEnabled.count
+                                      ).toFixed(2) + "%"}
+                                    </span>
+                                  </div>
+                                  <div className="coin-hover-display-text2-lower">
+                                    <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coincount">
+                                      {numToCurrency(totalCount)}
+                                    </span>
+
+                                    <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincode">
+                                      {pieSectionDataEnabled.assetCode}
+                                    </span>
+
+                                    <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
+                                      {numToCurrency(
+                                        totalCount *
+                                          this.props.portfolioState
+                                            .coinRateList[
+                                            this.state.selectedSection[0]
+                                              .assetId
+                                          ].quote?.USD.price *
+                                          currency?.rate
+                                      ) || DEFAULT_PRICE}
+                                    </span>
+                                    <span className="inter-display-semi-bold f-s-10 l-h-12 grey-ADA coin-hover-display-text2-upper-coincurrency">
+                                      {CurrencyType(true)}
+                                    </span>
+                                  </div>
+                                </div>
+                              </>
+                            );
+                          }
+                        })}
+                    </div>
                   </div>
-                </div>
-              ) : null}
-            </Col>
+                ) : null}
+              </Col>
+            )}
           </Row>
         </>
       </div>
