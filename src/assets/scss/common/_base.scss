@@ -2228,6 +2228,49 @@ width: 100% !important;
     width: 50% !important;
 }
 
+// welcome page
+.onboarding-modal .modal-content .modal-body .ob-modal-body-1, .onboarding-modal .modal-content .modal-body .ob-modal-body-2 {
+    width: 100% !important;
+    margin: 0rem !important;
+    padding: 0rem 2rem !important;
+}
+
+.onboarding-modal .modal-content .modal-body .ob-modal-body-1 .ob-modal-body-text, .onboarding-modal .modal-content .modal-body .ob-modal-body-2 .ob-modal-body-text {
+    width: 100% !important;
+    padding: 0 !important}
+
+
+.onboarding-modal .modal-content .modal-body .ob-modal-body-1 .ob-wallet-input-wrapper, .onboarding-modal .modal-content .modal-body .ob-modal-body-2 .ob-wallet-input-wrapper {
+   
+    width: 100% !important;
+    height: 8rem !important;
+
+}
+
+
+.onboarding-modal .modal-content .modal-body .ob-modal-body-1 .ob-modal-body-del, .onboarding-modal .modal-content .modal-body .ob-modal-body-2 .ob-modal-body-del {
+    left: auto !important;
+    border-radius: 0.8rem;
+    width: 3.8rem;
+    position: absolute;
+    right: 0rem !important;
+    top: auto !important;
+    bottom: 0.5rem !important;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+
+.onboarding-modal .modal-content .modal-body .ob-modal-body-1 .chip-wrapper, .onboarding-modal .modal-content .modal-body .ob-modal-body-2 .chip-wrapper {
+    top: auto !important;
+    right: 4rem !important;
+    bottom: 1rem !important;
+}
+
+onboarding-modal .modal-content .modal-body .ob-modal-body-1 .grey-btn, .onboarding-modal .modal-content .modal-body .ob-modal-body-2 .grey-btn {
+    width: 100% !important;
+    
+}
+
 
 
 

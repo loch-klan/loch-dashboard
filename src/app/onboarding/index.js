@@ -173,13 +173,14 @@ class OnBoarding extends Component {
     // console.log("on hover privacy msg");
   };
   render() {
-    return (
+        return (
       <>
         {this.state.showPrevModal && (
           <OnboardingModal
             show={this.state.showModal}
             showImage={true}
             onHide={this.onClose}
+            
             title={this.state.signInReq ? "Sign in" : "Welcome to Loch"}
             subTitle={
               this.state.signInReq
