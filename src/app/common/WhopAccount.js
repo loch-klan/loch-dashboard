@@ -47,9 +47,9 @@ class WhopLoader extends BaseReactComponent {
           <br />
           {/* <Button className='primary-btn' onClick={()=>this.props.history.push('/welcome')}>Home</Button> */}
           <div className="upload-loader"></div>
-          <h2 className="inter-display-semi-bold f-s-14 lh-16 m-t-20 grey-B0B">
+          {/* <h2 className="inter-display-semi-bold f-s-14 lh-16 m-t-20 grey-B0B">
            {this.state.msg}
-          </h2>
+          </h2> */}
         </div>
       </div>
     );
