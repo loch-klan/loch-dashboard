@@ -30,44 +30,54 @@ export default function WalletCard(props) {
   }
     const chips = props?.wallet_coins?.map((coin, index) => {
         return (
-            <CustomOverlay
-                position="top"
-                // isIcon={true}
-                isIcon={false}
-                isInfo={true}
-                key={index}
-                isText={true}
-                isName={coin?.chain?.name}
-                colorCode={coin?.chain?.color}
-                text={ (coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0) + "%  " + amountFormat(coin.value.toFixed(2),'en-US','USD') + CurrencyType(true)}
-                className="wallet-tooltip"
+          <CustomOverlay
+            position="top"
+            // isIcon={true}
+            isIcon={false}
+            isInfo={true}
+            key={index}
+            isText={true}
+            isName={coin?.chain?.name}
+            colorCode={coin?.chain?.color}
+            text={
+              (coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0) +
+              "%  " +
+              CurrencyType(false) +
+              numToCurrency(coin.value)
+            }
+            className="wallet-tooltip"
+          >
+            <div
+              onMouseEnter={() => {
+                AnalyzeAssetValue({
+                  // coin.chain.name
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                  wallet_address: props.wallet_account_number,
+                  chain_name: coin.chain.name,
+                  percent_value:
+                    (coin.chain.percentage
+                      ? coin.chain.percentage.toFixed(2)
+                      : 0) +
+                    "%  " +
+                    CurrencyType(false) +
+                    numToCurrency(coin.value),
+                });
+              }}
             >
-                <div onMouseEnter={() => {
-
-                    AnalyzeAssetValue({
-                      // coin.chain.name
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      wallet_address: props.wallet_account_number,
-                      chain_name: coin.chain.name,
-                      percent_value: (coin.chain.percentage
-                        ? coin.chain.percentage.toFixed(2)
-                        : 0) +
-                          "%  " +
-                          amountFormat(coin.value.toFixed(2), "en-US", "USD") +
-                          CurrencyType(true),
-                    });
-                }}>
-                    <CoinChip
-                        colorCode={coin.chain.color}
-                        key={index}
-                        coin_img_src={coin.chain.symbol}
-                        coin_percent={(coin.chain.percentage ? coin.chain.percentage.toFixed(2) : 0) + "%"}
-                    />
-                </div>
-            </CustomOverlay>
-
-        )
+              <CoinChip
+                colorCode={coin.chain.color}
+                key={index}
+                coin_img_src={coin.chain.symbol}
+                coin_percent={
+                  (coin.chain.percentage
+                    ? coin.chain.percentage.toFixed(2)
+                    : 0) + "%"
+                }
+              />
+            </div>
+          </CustomOverlay>
+        );
     })
     const copyContent = (text) => {
         // const text = props.display_address ? props.display_address : props.wallet_account_number
