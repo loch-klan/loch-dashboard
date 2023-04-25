@@ -392,7 +392,23 @@
             margin-bottom: 2.6rem;
             text-align: start;
 
-          
+          .upload-btn{
+
+            img{
+               margin-right:1rem;
+             position:relative;
+              bottom:2px;
+               filter:brightness(0);
+            }
+
+            &:hover{
+              img{
+              
+               filter:brightness(100);
+            }
+            }
+           
+          }
             .paste-text {
               position: absolute;
               text-align: center;
