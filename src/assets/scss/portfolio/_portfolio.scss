@@ -55,7 +55,7 @@
       right: 0;
       background-color: #ffffff;
       width: 100%;
-      padding: 2rem 4rem;
+      padding: 4rem 4rem;
       z-index: 4;
       box-shadow: 6px 4px 10px rgba(0, 0, 0, 0.04),
         6px 1px 1px rgba(0, 0, 0, 0.04);
@@ -65,7 +65,8 @@
         align-items: center;
         justify-content: space-between;
         height: 100%;
-        width: 80%;
+        width: calc(100% - 26rem);
+        position: relative;
 
         .row-div{
         display: flex;

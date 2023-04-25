@@ -1866,7 +1866,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  // marginTop: "9rem"
+                  marginTop: "9rem"
                 }}
               >
                 <PieChart2
