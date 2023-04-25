@@ -1443,7 +1443,7 @@ class FixAddModal extends BaseReactComponent {
                             <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
                               {this.state.isIndexed
                                 ? "Great! Indexing is completed and your addresses has been added."
-                                : "It takes some time to index the addresses, we will let you know when it’s done"}
+                                : "It takes some time to index the addresses, we will let you know when it’s done."}
                             </h4>
                           </div>
                         )}
