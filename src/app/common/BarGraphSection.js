@@ -287,6 +287,7 @@ class BarGraphSection extends Component {
                       minWidth: "18rem",
                       maxWidth: "20rem",
                       marginLeft: "1rem",
+                      zIndex:4
                     }}
                   >
                     <CustomDropdown
@@ -320,7 +321,7 @@ class BarGraphSection extends Component {
                       width: "100%",
                       minWidth: "15rem",
                       maxWidth: "18rem",
-                      zIndex: "1",
+                      zIndex: "2",
                     }}
                   >
                     <CustomDropdown
