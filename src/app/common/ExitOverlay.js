@@ -56,7 +56,7 @@ import { createCohort, deleteCohort, getPodStatus, notificationSend } from '../c
 import Papa from "papaparse";
 import { updateUser } from '../profile/Api';
 import UpgradeModal from './upgradeModal';
-
+import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -1350,12 +1350,13 @@ class ExitOverlay extends BaseReactComponent {
                                 style={{ display: "none" }}
                               />
                               <Button
-                                className={`secondary-btn ${
+                                className={`secondary-btn upload-btn ${
                                   this.state.email ? "active" : ""
                                 }`}
                                 type="button"
                                 onClick={this.handleUpload}
-                              >
+                                    >
+                                      <Image src={UploadIcon} />
                                 Upload CSV / Text file
                               </Button>
                               <div>

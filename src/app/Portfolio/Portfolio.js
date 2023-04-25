@@ -1928,7 +1928,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                   undetectedWallet={(e) => this.undetectedWallet(e)}
                   getProtocolTotal={this.getProtocolTotal}
                 />
-                {this.state.userWalletList?.findIndex(
+                {/* {this.state.userWalletList?.findIndex(
                   (w) => w.coinFound !== true
                 ) > -1 && this.state.userWalletList[0]?.address !== "" ? (
                   <div
@@ -1953,7 +1953,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                   </div>
                 ) : (
                   ""
-                )}
+                )} */}
               </div>
 
               <div className="m-b-22 graph-table-section">

@@ -287,6 +287,7 @@ class BarGraphSection extends Component {
                       minWidth: "18rem",
                       maxWidth: "20rem",
                       marginLeft: "1rem",
+                      zIndex:4
                     }}
                   >
                     <CustomDropdown
@@ -320,7 +321,7 @@ class BarGraphSection extends Component {
                       width: "100%",
                       minWidth: "15rem",
                       maxWidth: "18rem",
-                      zIndex: "1",
+                      zIndex: "2",
                     }}
                   >
                     <CustomDropdown
@@ -339,9 +340,25 @@ class BarGraphSection extends Component {
             }
 
             {showPercentage ? (
-              <div className="show-percentage-div ">
-                <div>
-                  {showSwitch && (
+              <div
+                className="show-percentage-div"
+                style={showSwitch ? { marginBottom: "2rem" } : {justifyContent:"flex-end", visibility:"hidden"}}
+              >
+                <div
+                  className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
+                    showPercentage.status === "Increase"
+                      ? "inc"
+                      : showPercentage.status === "No Change"
+                      ? "inc"
+                      : "dec"
+                  }`}
+                >
+                  <Image src={showPercentage.icon} className="m-r-4" />
+                  {showPercentage.percent}% {showPercentage.status}
+                </div>
+
+                {showSwitch && (
+                  <div>
                     <Form.Check
                       type="switch"
                       id="custom-switch"
@@ -358,20 +375,8 @@ class BarGraphSection extends Component {
                         this.props.setSwitch();
                       }}
                     />
-                  )}
-                </div>
-                <div
-                  className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
-                    showPercentage.status === "Increase"
-                      ? "inc"
-                      : showPercentage.status === "No Change"
-                      ? "inc"
-                      : "dec"
-                  }`}
-                >
-                  <Image src={showPercentage.icon} className="m-r-4" />
-                  {showPercentage.percent}% {showPercentage.status}
-                </div>
+                  </div>
+                )}
               </div>
             ) : (
               ""
