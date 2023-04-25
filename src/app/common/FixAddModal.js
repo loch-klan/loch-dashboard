@@ -1450,7 +1450,7 @@ class FixAddModal extends BaseReactComponent {
                       </div>
                       {(this.state.emailAdded || this.state.isIndexed) && (
                         <Button
-                          className="btn primary-btn m-t-20"
+                          className="btn primary-btn m-t-12 m-b-20"
                           onClick={this.handleDone}
                         >
                           Done
