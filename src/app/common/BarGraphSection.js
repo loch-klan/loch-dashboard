@@ -341,7 +341,7 @@ class BarGraphSection extends Component {
             {showPercentage ? (
               <div
                 className="show-percentage-div"
-                style={showSwitch ? { marginBottom: "2rem" } : {justifyContent:"flex-end"}}
+                style={showSwitch ? { marginBottom: "2rem" } : {justifyContent:"flex-end", visibility:"hidden"}}
               >
                 <div
                   className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
