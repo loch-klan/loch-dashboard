@@ -339,7 +339,19 @@ class BarGraphSection extends Component {
             }
 
             {showPercentage ? (
-              <div className="show-percentage-div ">
+              <div className="show-percentage-div" style={showSwitch ? {marginBottom:"2rem"}:{}}>
+                <div
+                  className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
+                    showPercentage.status === "Increase"
+                      ? "inc"
+                      : showPercentage.status === "No Change"
+                      ? "inc"
+                      : "dec"
+                  }`}
+                >
+                  <Image src={showPercentage.icon} className="m-r-4" />
+                  {showPercentage.percent}% {showPercentage.status}
+                </div>
                 <div>
                   {showSwitch && (
                     <Form.Check
@@ -359,18 +371,6 @@ class BarGraphSection extends Component {
                       }}
                     />
                   )}
-                </div>
-                <div
-                  className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
-                    showPercentage.status === "Increase"
-                      ? "inc"
-                      : showPercentage.status === "No Change"
-                      ? "inc"
-                      : "dec"
-                  }`}
-                >
-                  <Image src={showPercentage.icon} className="m-r-4" />
-                  {showPercentage.percent}% {showPercentage.status}
                 </div>
               </div>
             ) : (
