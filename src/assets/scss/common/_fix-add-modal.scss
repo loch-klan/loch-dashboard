@@ -59,6 +59,107 @@
           }
         }
 
+         // Upload csv
+
+          .form-wrapper {
+              background: rgba(229, 229, 230, 0.5);
+              border-radius: 12px;
+              position: relative;
+              padding: 2.5rem;
+              text-align: center;
+
+              img {
+                position: absolute;
+                top: -1rem;
+                right: 3rem;
+                filter: brightness(0.5);
+              }
+              .email-section {
+                form {
+                  display: flex;
+                  align-items: start;
+
+                  .form-group {
+                    margin-right: 2rem;
+                    margin-bottom: 0;
+
+                    .has-error {
+                      text-align: left;
+                    }
+                    .form-control {
+                      padding: 1.8rem 2rem 1.8rem 2rem;
+                      height: 5.5rem;
+                      width: 30rem;
+                      margin-bottom: 0;
+                    }
+
+                    .is-valid {
+                      border: 0.1rem solid $black-191;
+                      border-radius: 0.8rem;
+                      box-shadow: 0rem 0.8rem 2.2rem -0.6rem rgba(24, 39, 75, 0.12),
+                        0rem 1.4rem 6.4rem -0.4rem rgba(24, 39, 75, 0.12);
+                      // padding: 2.7rem 10.1rem 2.7rem 2.8rem;
+                      padding-right: 2rem !important;
+                    }
+
+                    .is-invalid {
+                      padding-right: 2rem !important;
+                    }
+                  }
+
+                  .save-btn-section {
+                    margin: 0;
+                    .save-btn {
+                      padding: 1.7rem 5.1rem;
+                      background-color: $grey-B0B;
+                      border-radius: 0.8rem;
+                      border: 1px solid $grey-B0B;
+                    }
+
+                    .active {
+                      background-color: $primary;
+                      border: 1px solid $black-191;
+                      &:hover {
+                        border-color: $secondary;
+                        box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+                          0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                        color: $black-191;
+                        background-color: $secondary;
+                      }
+                    }
+
+                    .save-btn:focus {
+                      box-shadow: none;
+                    }
+                  }
+                }
+              }
+            }
+            .upload-loader {
+              margin-top: 3.2rem;
+              height: 4px;
+              border-radius: 2px;
+              width: 50%;
+              //  background: linear-gradient(90deg, #E5E5E6 9.79%, #5ADDA6 27.38%, #E5E5E6 51.06%);
+              animation: 1.5s linear infinite loader;
+              background: linear-gradient(
+                to right,
+                #e5e5e6 0%,
+                #5adda6 8%,
+                #e5e5e6 16%
+              );
+              background-size: 200%;
+
+              @keyframes loader {
+                0% {
+                  background-position: 100%;
+                }
+                100% {
+                  background-position: -100%;
+                }
+              }
+            }
+
         .fix-modal-input {
           display: flex;
           flex-direction: column;
@@ -278,7 +379,19 @@
           padding: 0rem 7rem 0rem 8rem;
               margin-top: 1.5rem;
 
-          
+          .upload-scv-btn{
+            background: rgba(229, 229, 230, 0.5);
+                  border-radius: 8px;
+                  padding: 8px;
+                  width: max-content;
+                  cursor: pointer;
+
+                  &:hover{
+ box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+                    0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                  background-color: #ffffff;
+                  }
+          }
         
           .grey-btn {
             width: 100%;

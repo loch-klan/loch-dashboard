@@ -1,5 +1,5 @@
 import React from 'react'
-import { BaseReactComponent } from '../../utils/form';
+import { BaseReactComponent, CustomTextControl, Form, FormElement, FormValidator } from '../../utils/form';
 import { connect } from 'react-redux';
 import { Modal, Image, Button } from 'react-bootstrap';
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
@@ -20,6 +20,12 @@ import { getCurrentUser } from '../../utils/ManageToken';
 import { Plans } from '../../utils/Constant';
 import UpgradeModal from './upgradeModal';
 import { searchCohort } from '../cohort/Api';
+import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
+import FileIcon from "../../assets/images/icons/file-text.svg";
+import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
+import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
+import ClockIcon from "../../assets/images/icons/clock-icon.svg";
+import Papa from "papaparse";
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -78,9 +84,190 @@ class FixAddModal extends BaseReactComponent {
       total_addresses: 0,
       prevWalletAddress: addWalletList,
       hidePrevModal: false,
+
+      // upload csv/txt
+      showWarningMsg: false,
+      uploadStatus: "Uploading",
+      // set pod id when we get response after creating new pod and,
+      // call getStatus api until isLoaded true
+      podId: null,
+      // if this true then show email message and done btn and stop call getStatus api
+      emailAdded: false,
+
+      // set false if email added or get Status
+      isIndexed: false,
+      email_notification: getCurrentUser().email,
+      fileName: null,
+      isChangeFile: false,
+      total_unique_address: 0,
     };
     this.timeout = 0;
   }
+
+  // upload csv
+  fileInputRef = React.createRef();
+  pasteInput = React.createRef();
+
+  EmailNotification = () => {
+    // send notification for that user
+    this.setState(
+      {
+        // isIndexed: true,
+        emailAdded: true,
+      },
+      () => {
+        // const data = new URLSearchParams();
+        // data.append("cohort_id", this.state.podId);
+        // notificationSend(data, this);
+      }
+    );
+  };
+
+  getPodStatusFunction = () => {
+    // get current status of address
+    // const data = new URLSearchParams();
+    // data.append("user_id", getCurrentUser().id);
+    // getPodStatus(data, this);
+    // setTimeout(() => {
+    //   if (!this.state.isIndexed && !this.state.emailAdded) {
+    //     this.getPodStatusFunction();
+    //   }
+    // }, 2000);
+  };
+
+  handleUpload = () => {
+    if (this.state.userPlan?.upload_csv) {
+      this.fileInputRef.current.click();
+    } else {
+      this.setState(
+        {
+          triggerId: 8,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+    }
+    // console.log("upload click");
+  };
+
+  handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    const name = event.target.files[0]?.name;
+
+    // console.log(name)
+
+    if (this.state.showWarningMsg) {
+      this.setState({
+        addWalletList: [
+          {
+            id: `wallet1`,
+            address: "",
+            coins: [],
+            displayAddress: "",
+            wallet_metadata: {},
+            nickname: "",
+            showAddress: true,
+            showNickname: true,
+            apiAddress: "",
+          },
+        ],
+        uploadStatus: "Uploading",
+        emailAdded: false,
+        isIndexed: false,
+        isChangeFile: true,
+        fileName: name,
+      });
+    } else {
+      this.setState({
+        fileName: name,
+      });
+    }
+
+    if (file.type === "text/csv" || file.type === "text/plain") {
+      Papa.parse(file, {
+        complete: (results) => {
+          this.setState({
+            showWarningMsg: true,
+          });
+          let addressList = [];
+          let prevAddressList = [];
+          this.state?.addWalletList &&
+            this.state?.addWalletList.map((e) => {
+              if (e.address !== "" || e.displayAddress != "") {
+                prevAddressList.push(e);
+              }
+            });
+          let uploadedAddress = [];
+          results?.data?.map((e, i) => {
+            uploadedAddress.push(e[0]);
+            addressList.push({
+              id: `wallet${prevAddressList?.length + (i + 1)}`,
+              address: e[0],
+              coins: [],
+              displayAddress: e[0],
+              wallet_metadata: {},
+              nickname: "",
+              showAddress: true,
+              showNickname: true,
+              apiAddress: e[0],
+            });
+          });
+
+          let total_address =
+            prevAddressList?.length +
+            addressList?.length +
+            this.state.total_addresses -
+            this.state.prevWalletAddress?.lenght;
+
+          if (
+            total_address <= this.state.userPlan?.whale_pod_address_limit ||
+            this.state.userPlan?.whale_pod_address_limit === -1
+          ) {
+            // WhalePodUploadFile({
+            //   session_id: getCurrentUser().id,
+            //   email_address: getCurrentUser().email,
+            //   addresses: uploadedAddress,
+            // });
+
+            this.setState(
+              {
+                addWalletList: [...prevAddressList, ...addressList],
+              },
+              () => {
+                // call api to store pod
+                // this.state.addWalletList?.map((e) =>
+                //   this.getCoinBasedOnWalletAddress(e.id, e.address)
+                // );
+                this.handleAddWallet();
+              }
+            );
+          } else {
+            this.setState(
+              {
+                triggerId: 1,
+              },
+              () => {
+                this.upgradeModal();
+              }
+            );
+          }
+
+          // console.log(results.data, addressList, prevAddressList);
+        },
+      });
+    } else {
+      // console.log("Invalid file type. Only CSV and text files are allowed.");
+    }
+    event.target.value = "";
+  };
+
+  handleDone = () => {
+    // this.props.apiResponse(true);
+    this.state.onHide();
+    // this.state.changeList && this.state.changeList();
+  };
+
   // for get cohort details
   makeApiCall = (cond) => {
     let data = new URLSearchParams();
@@ -98,6 +285,13 @@ class FixAddModal extends BaseReactComponent {
       upgradeModal: !this.state.upgradeModal,
       hidePrevModal: !this.state.upgradeModal,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
+      // reset all
+      isIndexed: false,
+      fileName: null,
+      isChangeFile: false,
+      total_unique_address: 0,
+      showWarningMsg: false,
+      uploadStatus: "Uploading",
     });
   };
 
@@ -268,11 +462,11 @@ class FixAddModal extends BaseReactComponent {
   componentWillUnmount() {
     // set popup active
     localStorage.setItem("isPopupActive", false);
-      this.props.getAllCoins();
-      this.props.getAllParentChains();
-      // //  this.makeApiCall();
-      // getAllWalletApi(this);
-      getDetectedChainsApi(this);
+    this.props.getAllCoins();
+    this.props.getAllParentChains();
+    // //  this.makeApiCall();
+    // getAllWalletApi(this);
+    getDetectedChainsApi(this);
   }
 
   addAddress = () => {
@@ -378,6 +572,9 @@ class FixAddModal extends BaseReactComponent {
           let addressList = [];
           let displayAddress = [];
           let nicknameArr = {};
+          // if change not detected then we will detect on backend
+          let isChainDetected = [];
+          let total_address = 0;
           let walletList = [];
           for (let i = 0; i < this.state.addWalletList.length; i++) {
             let curr = this.state.addWalletList[i];
@@ -396,8 +593,16 @@ class FixAddModal extends BaseReactComponent {
               arr.push(curr.apiAddress?.trim());
               addressList.push(curr.address?.trim());
               //  console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
+              isChainDetected.push(curr?.coinFound);
+              total_address = total_address + 1;
             }
           }
+
+          let chain_detechted =
+            isChainDetected.includes(undefined) ||
+            isChainDetected.includes(false)
+              ? false
+              : true;
 
           let addWallet = walletList;
 
@@ -406,13 +611,32 @@ class FixAddModal extends BaseReactComponent {
           });
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
-          this.state.onHide();
+       
           const data = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
           data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
           data.append("wallet_addresses", JSON.stringify(addressList));
+          // data.append("chain_detected", chain_detechted);
+
+          // if its upload then we pass user id
+          if (this.state.isChangeFile) {
+            data.append("user_id", getCurrentUser().id);
+            this.setState({
+              isChangeFile: false,
+            });
+          }
 
           updateUserWalletApi(data, this);
+
+          // message for user
+          this.setState({
+            total_unique_address: total_address,
+          });
+
+          if (!this.state.showWarningMsg) {
+            this.state.onHide();
+            // this.state.changeList && this.state.changeList(walletList);
+          }
           // this.state.changeList && this.state.changeList(walletList);
           // if (this.props.handleUpdateWallet) {
           //     this.props.handleUpdateWallet()
@@ -511,7 +735,6 @@ class FixAddModal extends BaseReactComponent {
             //   blockchains_detected: blockchainDetected,
             //   nicknames: nicknames,
             // });
-
             // from="cost"
             // from = "defi";
             // from = "asset value";
@@ -522,9 +745,6 @@ class FixAddModal extends BaseReactComponent {
             // from = "profile";
             // from = "wallet";
           }
-          
-
-          
         }, 100);
       }
     }
@@ -1005,57 +1225,240 @@ class FixAddModal extends BaseReactComponent {
                     </p>
                   </div>
                 )}
+                {!this.state.showWarningMsg ? (
+                  <>
+                    {this.state.modalType === "fixwallet" && (
+                      <div className="fix-modal-input">{inputs}</div>
+                    )}
+                    {this.state.modalType === "addwallet" && (
+                      <div className="add-modal-inputs">{wallets}</div>
+                    )}
 
-                {this.state.modalType === "fixwallet" && (
-                  <div className="fix-modal-input">{inputs}</div>
-                )}
-                {this.state.modalType === "addwallet" && (
-                  <div className="add-modal-inputs">{wallets}</div>
-                )}
+                    {this.state.addWalletList.length >= 0 &&
+                      this.state.modalType === "addwallet" && (
+                        <div className="add-wallet-btn">
+                          <Button
+                            className="grey-btn m-b-16"
+                            onClick={this.addAddress}
+                          >
+                            <Image src={PlusIcon} /> Add another
+                          </Button>
 
-                {this.state.addWalletList.length >= 0 &&
-                  this.state.modalType === "addwallet" && (
-                    <div className="m-b-32 add-wallet-btn">
-                      <Button className="grey-btn" onClick={this.addAddress}>
-                        <Image src={PlusIcon} /> Add another
+                          {this.state.modalType === "addwallet" && (
+                            <div style={{}} className="m-b-32">
+                              <div
+                                className="inter-display-semi-bold f-s-13 lh-16 black-191 upload-scv-btn"
+                                onClick={this.handleUpload}
+                              >
+                                <input
+                                  type="file"
+                                  ref={this.fileInputRef}
+                                  onChange={this.handleFileSelect}
+                                  style={{ display: "none" }}
+                                />
+                                <Image
+                                  src={UploadIcon}
+                                  style={{
+                                    width: "1.2rem",
+                                    marginRight: "4px",
+                                    marginBottom: "1px",
+                                    filter: "brightness(0)",
+                                  }}
+                                />
+                                Upload CSV / Text file
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                    {/* input field for add wallet */}
+                    <div className="btn-section">
+                      <Button
+                        className={`primary-btn ${
+                          this.state.btnStatus ? "activebtn" : ""
+                        } ${
+                          this.state.modalType === "fixwallet"
+                            ? "fix-btn"
+                            : this.state.modalType === "addwallet" &&
+                              !this.isDisabled()
+                            ? "add-btn activebtn"
+                            : "add-btn"
+                        }`}
+                        disabled={
+                          this.state.modalType === "addwallet"
+                            ? this.isDisabled()
+                            : this.isFixDisabled()
+                        }
+                        onClick={
+                          this.state.modalType === "addwallet"
+                            ? this.handleAddWallet
+                            : this.handleFixWallet
+                        }
+                      >
+                        {/* {this.state.btnText} */}
+                        {this.state.modalType === "addwallet"
+                          ? this.isDisabled()
+                            ? loadingAnimation()
+                            : this.state.btnText
+                          : this.isFixDisabled()
+                          ? loadingAnimation()
+                          : this.state.btnText}
                       </Button>
                     </div>
-                  )}
-
-                {/* input field for add wallet */}
-                <div className="btn-section">
-                  <Button
-                    className={`primary-btn ${
-                      this.state.btnStatus ? "activebtn" : ""
-                    } ${
-                      this.state.modalType === "fixwallet"
-                        ? "fix-btn"
-                        : this.state.modalType === "addwallet" &&
-                          !this.isDisabled()
-                        ? "add-btn activebtn"
-                        : "add-btn"
-                    }`}
-                    disabled={
-                      this.state.modalType === "addwallet"
-                        ? this.isDisabled()
-                        : this.isFixDisabled()
-                    }
-                    onClick={
-                      this.state.modalType === "addwallet"
-                        ? this.handleAddWallet
-                        : this.handleFixWallet
-                    }
+                  </>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
                   >
-                    {/* {this.state.btnText} */}
-                    {this.state.modalType === "addwallet"
-                      ? this.isDisabled()
-                        ? loadingAnimation()
-                        : this.state.btnText
-                      : this.isFixDisabled()
-                      ? loadingAnimation()
-                      : this.state.btnText}
-                  </Button>
-                </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          background: "#E5E5E680",
+                          marginRight: "2rem",
+                          borderRadius: "1.2rem",
+                          padding: "1.1rem 1.6rem",
+                        }}
+                      >
+                        <Image src={FileIcon} style={{ marginRight: "1rem" }} />
+                        <h4 className="inter-display-medium f-s-13 lh-15 grey-7C7">
+                          {this.state.fileName}
+                        </h4>
+                      </div>
+                      <input
+                        type="file"
+                        ref={this.fileInputRef}
+                        onChange={this.handleFileSelect}
+                        style={{ display: "none" }}
+                      />
+                      <Button
+                        className={`secondary-btn`}
+                        type="button"
+                        style={{
+                          paddingLeft: "1.8rem",
+                          paddingRight: "1.8rem",
+                        }}
+                        onClick={() => {
+                          this.handleUpload();
+                        }}
+                      >
+                        Change file
+                      </Button>
+                    </div>
+                    {/* Loader */}
+                    {!this.state.isIndexed && (
+                      <>
+                        <div className="upload-loader"></div>
+                        <h4 className="inter-display-medium f-s-16 lh-19 grey-B0B m-t-20">
+                          {this.state.uploadStatus}{" "}
+                          {this.state.total_unique_address}{" "}
+                          {this.state.total_unique_address > 0
+                            ? "unique addresses"
+                            : "unique address"}
+                        </h4>
+                      </>
+                    )}
+                    {/* Form */}
+                    <>
+                      <div className="form-wrapper m-t-20" style={{margin: "2rem 10rem"}}>
+                        {/* <Image src={FileIcon} /> */}
+                        {!this.state.emailAdded && !this.state.isIndexed && (
+                          <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
+                            Don’t wait around if you don’t want to! We can
+                            notify you when the indexing is complete.
+                          </h4>
+                        )}
+                        {!this.state.emailAdded && !this.state.isIndexed && (
+                          <div className="email-section">
+                            <Form onValidSubmit={this.EmailNotification}>
+                              <FormElement
+                                valueLink={this.linkState(
+                                  this,
+                                  "email_notification"
+                                )}
+                                // label="Email Info"
+                                required
+                                validations={[
+                                  {
+                                    validate: FormValidator.isRequired,
+                                    message: "",
+                                  },
+                                  {
+                                    validate: FormValidator.isEmail,
+                                    message: "Please enter valid email id",
+                                  },
+                                ]}
+                                control={{
+                                  type: CustomTextControl,
+                                  settings: {
+                                    placeholder: "Enter your email address",
+                                  },
+                                }}
+                              />
+                              <div className="save-btn-section">
+                                <Button
+                                  className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                    this.state.email_notification
+                                      ? "active"
+                                      : ""
+                                  }`}
+                                  type="submit"
+                                >
+                                  Confirm
+                                </Button>
+                              </div>
+                            </Form>
+                          </div>
+                        )}
+                        {/* After email messgae */}
+                        {(this.state.emailAdded || this.state.isIndexed) && (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              textAlign: "start",
+                            }}
+                          >
+                            <Image
+                              src={this.state.isIndexed ? CheckIcon : ClockIcon}
+                              style={{
+                                marginRight: "1rem",
+                                position: "static",
+                                width: "3rem",
+                              }}
+                            />
+                            <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
+                              {this.state.isIndexed
+                                ? "Great! Indexing is completed and your addresses has been added."
+                                : "It takes some time to index the addresses, we will let you know when it’s done"}
+                            </h4>
+                          </div>
+                        )}
+                      </div>
+                      {(this.state.emailAdded || this.state.isIndexed) && (
+                        <Button
+                          className="btn primary-btn m-t-20"
+                          onClick={this.handleDone}
+                        >
+                          Done
+                        </Button>
+                      )}
+                    </>
+                  </div>
+                )}
                 <div className="m-b-26 footer">
                   <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
                     At Loch, we care intensely about your privacy and
