@@ -514,13 +514,19 @@ class Cost extends Component {
                 text={
                   rowData.AverageCostPrice === 0
                     ? "N/A"
-                    : CurrencyType(false) + rowData.AverageCostPrice.toFixed(2)
+                    : CurrencyType(false) +
+                      Number(
+                        noExponents(rowData.AverageCostPrice.toFixed(2))
+                      ).toLocaleString("en-US")
                 }
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
                   {rowData.AverageCostPrice === 0
                     ? "N/A"
-                    : CurrencyType(false) + rowData.AverageCostPrice.toFixed(2)}
+                    : CurrencyType(false) +
+                      Number(
+                        noExponents(rowData.AverageCostPrice.toFixed(2))
+                      ).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
             );
@@ -555,10 +561,18 @@ class Cost extends Component {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={CurrencyType(false) + rowData.CurrentPrice.toFixed(2)}
+                text={
+                  CurrencyType(false) +
+                  Number(
+                    noExponents(rowData.CurrentPrice.toFixed(2))
+                  ).toLocaleString("en-US")
+                }
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                  {CurrencyType(false) + rowData.CurrentPrice.toFixed(2)}
+                  {CurrencyType(false) +
+                    Number(
+                      noExponents(rowData.CurrentPrice.toFixed(2))
+                    ).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
             );
@@ -636,13 +650,19 @@ class Cost extends Component {
                 text={
                   rowData.CostBasis === 0
                     ? "N/A"
-                    : CurrencyType(false) + rowData.CostBasis.toFixed(2)
+                    : CurrencyType(false) +
+                      Number(
+                        noExponents(rowData.CostBasis.toFixed(2))
+                      ).toLocaleString("en-US")
                 }
               >
                 <span>
                   {rowData.CostBasis === 0
                     ? "N/A"
-                    : CurrencyType(false) + rowData.CostBasis.toFixed(2)}
+                    : CurrencyType(false) +
+                      Number(
+                        noExponents(rowData.CostBasis.toFixed(2))
+                      ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
@@ -677,10 +697,18 @@ class Cost extends Component {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={CurrencyType(false) + rowData.CurrentValue.toFixed(2)}
+                text={
+                  CurrencyType(false) +
+                  Number(
+                    noExponents(rowData.CurrentValue.toFixed(2))
+                  ).toLocaleString("en-US")
+                }
               >
                 <span>
-                  {CurrencyType(false) + rowData.CurrentValue.toFixed(2)}
+                  {CurrencyType(false) +
+                    Number(
+                      noExponents(rowData.CurrentValue.toFixed(2))
+                    ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
