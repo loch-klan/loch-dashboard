@@ -163,6 +163,7 @@ export const searchCohort = (data,ctx) => {
             // cardList: res.data.data?.user_cohorts.results,
             // sortedList: res.data.data?.user_cohorts.results,
             // total_addresses,
+           
           });
         } else {
           toast.error(res.data.message || "Something Went Wrong");
