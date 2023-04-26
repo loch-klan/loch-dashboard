@@ -180,7 +180,7 @@ class Profile extends Component {
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
           />
-          <div className="profile-plan-wrapper">
+          {/* <div className="profile-plan-wrapper">
             <h4 className="inter-display-semi-bold f-s-25 lh-30 secondary">
               Do more with Loch
             </h4>
@@ -238,7 +238,6 @@ class Profile extends Component {
                           <div className="label">
                             <Image
                               src={list?.img}
-                              // style={list?.id == 9 ? { opacity: "0.6" } : {}}
                             />
                             <h3>{list.name}</h3>
                           </div>
@@ -268,7 +267,7 @@ class Profile extends Component {
                           <div className="label">
                             <Image
                               src={list?.img}
-                              // style={list?.id == 9 ? { opacity: "0.6" } : {}}
+                             
                             />
                             <h3>{list.name}</h3>
                           </div>
@@ -291,8 +290,8 @@ class Profile extends Component {
                 </div>
               </div>
             </div>
-            {/* <div className="bg-container"></div> */}
-          </div>
+           
+          </div> */}
           <div className="profile-form-section">
             <Row>
               <Col md={7}>
