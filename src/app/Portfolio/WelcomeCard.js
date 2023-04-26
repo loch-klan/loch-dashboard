@@ -207,6 +207,7 @@ export default function WelcomeCard(props) {
           <div
             className="row-div"
             style={{
+              width: "calc(60% - 3rem)",
               // position: "absolute",
               // left: "calc(50% - 13rem)",
               // transform: "translateX(-50%)",
@@ -217,6 +218,9 @@ export default function WelcomeCard(props) {
               style={{
                 marginRight: "1.7rem",
                 // marginLeft: "11rem"
+                width: "46%",
+                display: "flex",
+                justifyContent: "center",
               }}
               onClick={handleConnectModal}
             >
@@ -225,6 +229,11 @@ export default function WelcomeCard(props) {
             </div>
             <div
               className="topbar-btn"
+              style={{
+                width: "46%",
+                display: "flex",
+                justifyContent: "center",
+              }}
               onClick={handleAddWalletClick}
               ref={buttonRef}
               id="address-button"
@@ -235,12 +244,14 @@ export default function WelcomeCard(props) {
           </div>
           <div
             className="row-div"
-            style={{
-              // position: "absolute",
-              // // left: "50%",
-              // // transform: "translateX(-50%)",
-              // right: 0,
-            }}
+            style={
+              {
+                // position: "absolute",
+                // // left: "50%",
+                // // transform: "translateX(-50%)",
+                // right: 0,
+              }
+            }
           >
             <div
               className={`growth-div inter-display-medium f-s-13 lh-15 grey-313 ${
@@ -251,7 +262,7 @@ export default function WelcomeCard(props) {
               <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
               {numToCurrency(difference) + "(" + Math.round(percent) + "%)"}
             </div>
-            {props.assetTotal !== null && !props.isLoading ? (
+            {props.assetTotal !== null && !props.isLoading  ? (
               <CustomOverlay
                 position="bottom"
                 isIcon={false}
@@ -270,18 +281,21 @@ export default function WelcomeCard(props) {
                 </h3>
               </CustomOverlay>
             ) : (
-              <div style={{position:"relative", top:"0.6rem"}}>
+              <div style={{ position: "relative", top: "0.6rem" }}>
                 <CustomLoader loaderType="text" />
               </div>
             )}
             {!lochUser && (
               <span
                 onClick={handleSigninModal}
-                style={{ marginLeft: "1.6rem" }}
+                style={{ marginLeft: "3.4rem" }}
                 className="signin"
               >
                 <Image src={SignInIcon} />
-                <Button className="inter-display-medium f-s-16 lh-19 navbar-button">
+                <Button className="inter-display-medium f-s-16 lh-19 navbar-button" style={{
+    paddingTop: "0rem",
+    paddingBottom: "0rem"
+}}>
                   Sign in
                 </Button>
               </span>
