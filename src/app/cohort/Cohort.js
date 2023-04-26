@@ -8,6 +8,7 @@ import { getAllWalletListApi, getAllWalletApi } from "../wallet/Api";
 import { getAllCoins } from "../onboarding/Api.js";
 import EditIcon from "../../assets/images/EditIcon.svg";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
+
 import {
   SEARCH_BY_CHAIN_IN,
   SORT_BY_NAME,
@@ -87,6 +88,8 @@ class Cohort extends Component {
       isStatic: false,
       triggerId: 0,
       total_addresses: 0,
+      search: "",
+      sortedItem:[],
     };
   }
 
@@ -99,7 +102,7 @@ class Cohort extends Component {
     //     // create user then run api
     //   }
     // }
-    
+
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", this.state.startTime / 1000);
     // WalletsPage({
@@ -111,6 +114,7 @@ class Cohort extends Component {
     this.makeApiCall();
     GetAllPlan();
     getUser();
+   
 
     let obj = UpgradeTriggered();
 
@@ -125,20 +129,18 @@ class Cohort extends Component {
         }
       );
     }
-    
   }
 
   componentWillUnmount() {
     let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; 
+    let TimeSpent = (endTime - this.state.startTime) / 1000;
 
-     TimeSpentWhalePod({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-       time_spent: TimeSpent,
-     });
+    TimeSpentWhalePod({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      time_spent: TimeSpent,
+    });
   }
-
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.apiResponse) {
@@ -150,26 +152,26 @@ class Cohort extends Component {
     }
   }
 
-    upgradeModal = () => {
+  upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
   };
 
-
-
   handleCohort = () => {
     // console.log("cohort click");
     // const isDummy = localStorage.getItem("lochDummyUser");
     // const islochUser = JSON.parse(localStorage.getItem("lochUser"));
-     
+
     // console.log(
     //   this.state.userPlan?.whale_pod_limit,
     //   this.props.cohortState?.total_addresses,
     //   this.props.cohortState.cardList?.length
     // );
-    const cohortCards = this.props.cohortState.cardList?.filter(e => e.user_id);
+    const cohortCards = this.props.cohortState.cardList?.filter(
+      (e) => e.user_id
+    );
     // console.log("cohort",cohortCards )
     if (
       this.props.cohortState?.total_addresses >=
@@ -215,7 +217,7 @@ class Cohort extends Component {
   //   // console.log("handle emailc close");
   //   this.setState({
   //     RegisterModal: !this.state.RegisterModal,
-      
+
   //   });
   // };
 
@@ -257,10 +259,10 @@ class Cohort extends Component {
     });
 
     this.props.updateCohort([]);
-// if (!this.state.skip) {
-//   this.AddEmailModal();
-// }
-    
+    // if (!this.state.skip) {
+    //   this.AddEmailModal();
+    // }
+
     // this.makeApiCall();
   };
 
@@ -355,7 +357,7 @@ class Cohort extends Component {
     WhaleFilterByChain({
       email_address: getCurrentUser().email,
       session_id: getCurrentUser().id,
-      chain_name:badge.name
+      chain_name: badge.name,
     });
 
     let newArr = [...this.state.activeBadge];
@@ -426,7 +428,7 @@ class Cohort extends Component {
         : sortedList.length === 0
         ? ""
         : sortedList;
-     this.props.updateCohort(value);
+    this.props.updateCohort(value);
   };
 
   // sortByAmount = ()
@@ -455,7 +457,47 @@ class Cohort extends Component {
     });
 
     return sortedData;
-  }
+  };
+
+  handleSearch = (event) => {
+    // console.log(
+    //   "search",
+    //   event.target.value,
+    //   this.props.cohortState?.sortedList
+    // );
+    this.setState({ search: event.target.value });
+let filteredItems =[];
+  
+      if (!event.target.value) {
+        // console.log("show")
+        this.props.updateCohort(this.props.cohortState?.cardList);
+         this.setState({
+           searchNotFound: false,
+         });
+      } else {
+         filteredItems = this.props?.cohortState?.sortedList?.filter((item) =>
+          item.name.toLowerCase().includes(event.target.value.toLowerCase())
+        );
+
+
+        this.props.updateCohort(filteredItems);
+        if (filteredItems.length === 0) {
+          this.setState({
+            searchNotFound: true,
+          });
+          // console.log("show true");
+        } else {
+          this.setState({
+            searchNotFound: false,
+          });
+          // console.log("show false");
+        }
+      }
+    
+      
+    
+   
+  };
 
   render() {
     return (
@@ -532,6 +574,7 @@ class Cohort extends Component {
             subTitle="Track all your whale pods here"
             btnText="Create a pod"
             handleBtn={this.handleCohort}
+            handleSearch={this.handleSearch}
             // showData={totalWalletAmt}
             // isLoading={isLoading}
           />
@@ -567,7 +610,7 @@ class Cohort extends Component {
             </div>
           </div>
           {/* card  */}
-          <Row style={{ minWidth: "91rem" }}>
+          {!this.state.searchNotFound ? <Row style={{ minWidth: "91rem" }}>
             {this.props.cohortState?.sortedList?.length !== 0 &&
             this.props.cohortState?.sortedList !== "" ? (
               this.sortbyUserid()?.map((item, i) => {
@@ -610,7 +653,7 @@ class Cohort extends Component {
             ) : (
               ""
             )}
-          </Row>
+          </Row> :""}
         </div>
       </div>
     );
