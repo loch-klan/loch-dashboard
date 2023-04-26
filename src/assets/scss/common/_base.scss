@@ -2115,3 +2115,12 @@ textarea {
         }
       }
     }
+
+    .social-media-icon{
+       width: 2rem;
+                      cursor: pointer;
+                      filter:brightness(1.5);
+      &:hover{
+        filter:brightness(1)
+      }
+    }

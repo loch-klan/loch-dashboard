@@ -10,6 +10,7 @@ import LightBulb from "../../assets/images/icons/lightbulb.svg";
 import ArrowRight from "../../assets/images/icons/arrow-right.svg"
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
+
 import {
   getCoinRate,
   getDetailsByLinkApi,
@@ -90,6 +91,7 @@ import InsightImg from "../../assets/images/icons/insight-msg.svg"
 import Slider from "react-slick";
 import CoinChip from "../wallet/CoinChip";
 import { getAllWalletApi } from "../wallet/Api";
+import Footer from "../common/footer";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -1599,13 +1601,19 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 text={
                   rowData.AverageCostPrice === 0
                     ? "N/A"
-                    : CurrencyType(false) + rowData.AverageCostPrice.toFixed(2)
+                    : CurrencyType(false) +
+                      Number(
+                        noExponents(rowData.AverageCostPrice.toFixed(2))
+                      ).toLocaleString("en-US")
                 }
               >
                 <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
                   {rowData.AverageCostPrice === 0
                     ? "N/A"
-                    : CurrencyType(false) + rowData.AverageCostPrice.toFixed(2)}
+                    : CurrencyType(false) +
+                      Number(
+                        noExponents(rowData.AverageCostPrice.toFixed(2))
+                      ).toLocaleString("en-US")}
                 </div>
               </CustomOverlay>
             );
@@ -2249,34 +2257,9 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 </Row>
               </div>
 
-              <hr className="m-t-60" />
-              <p className="inter-display-medium f-s-13 lh-16 m-b-26 grey-ADA m-t-16 m-b-16">
-                The content made available on this web page and our mobile
-                applications ("Platform") is for informational purposes only.
-                You should not construe any such information or other material
-                as financial advice in any way. All information provided on the
-                Platform is provided on an as is and available basis, based on
-                the data provided by the end user on the Platform. Nothing
-                contained on our Platform constitutes a solicitation,
-                recommendation, endorsement, or offer by us or any third-party
-                service provider to buy or sell any securities or other
-                financial instruments in this or in any other jurisdiction in
-                which such solicitation or offer would be unlawful under the
-                securities laws of such jurisdiction. All content on this
-                Platform is information of a general nature and does not address
-                the circumstances of any particular individual or entity.
-                Nothing in the Platform constitutes financial advice, nor does
-                any information on the Platform constitute a comprehensive or
-                complete statement of the matters discussed or the law relating
-                thereto. You alone assume the sole responsibility of evaluating
-                the merits and risks associated with the use of any information
-                or other content on the platform before making any decisions
-                based on such information. In exchange for using the Platform,
-                you agree not to hold us, our affiliates, or any third-party
-                service provider liable for any possible claim for damages
-                arising from any decision you make based on information or other
-                content made available to you through the Platform.
-              </p>
+            
+                {/* footer  */}
+                <Footer />
             </div>
           </div>
         )}
