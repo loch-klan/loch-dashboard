@@ -207,9 +207,9 @@ export default function WelcomeCard(props) {
           <div
             className="row-div"
             style={{
-              position: "absolute",
-              left: "calc(50% - 13rem)",
-              transform: "translateX(-50%)",
+              // position: "absolute",
+              // left: "calc(50% - 13rem)",
+              // transform: "translateX(-50%)",
             }}
           >
             <div
@@ -236,10 +236,10 @@ export default function WelcomeCard(props) {
           <div
             className="row-div"
             style={{
-              position: "absolute",
-              // left: "50%",
-              // transform: "translateX(-50%)",
-              right: 0,
+              // position: "absolute",
+              // // left: "50%",
+              // // transform: "translateX(-50%)",
+              // right: 0,
             }}
           >
             <div
@@ -277,7 +277,7 @@ export default function WelcomeCard(props) {
             {!lochUser && (
               <span
                 onClick={handleSigninModal}
-                style={{ marginLeft: "3.4rem" }}
+                style={{ marginLeft: "1.6rem" }}
                 className="signin"
               >
                 <Image src={SignInIcon} />
