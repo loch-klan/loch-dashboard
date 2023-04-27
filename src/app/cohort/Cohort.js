@@ -8,6 +8,7 @@ import { getAllWalletListApi, getAllWalletApi } from "../wallet/Api";
 import { getAllCoins } from "../onboarding/Api.js";
 import EditIcon from "../../assets/images/EditIcon.svg";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
+import SearchIcon from "../../assets/images/icons/search-icon.svg";
 
 import {
   SEARCH_BY_CHAIN_IN,
@@ -608,52 +609,67 @@ let filteredItems =[];
                 );
               })}
             </div>
+            <div className="page-search-wrapper">
+              <Image src={SearchIcon} />
+              <input
+                type="text"
+                placeholder="Search"
+                onChange={this.handleSearch}
+                className="page-search-input"
+              />
+            </div>
           </div>
           {/* card  */}
-          {!this.state.searchNotFound ? <Row style={{ minWidth: "91rem" }}>
-            {this.props.cohortState?.sortedList?.length !== 0 &&
-            this.props.cohortState?.sortedList !== "" ? (
-              this.sortbyUserid()?.map((item, i) => {
-                let sortedAddress = (item?.wallet_address_details).sort(
-                  (a, b) => b.net_worth - a.net_worth
-                );
-                let sortedChains = [];
-                sortedAddress &&
-                  sortedAddress?.map((e) => {
-                    e.chains?.map((chain) => {
-                      if (!sortedChains.includes(chain?.symbol)) {
-                        sortedChains.push(chain?.symbol);
-                      }
+          {!this.state.searchNotFound ? (
+            <Row style={{ minWidth: "91rem" }}>
+              {this.props.cohortState?.sortedList?.length !== 0 &&
+              this.props.cohortState?.sortedList !== "" ? (
+                this.sortbyUserid()?.map((item, i) => {
+                  let sortedAddress = (item?.wallet_address_details).sort(
+                    (a, b) => b.net_worth - a.net_worth
+                  );
+                  let sortedChains = [];
+                  sortedAddress &&
+                    sortedAddress?.map((e) => {
+                      e.chains?.map((chain) => {
+                        if (!sortedChains.includes(chain?.symbol)) {
+                          sortedChains.push(chain?.symbol);
+                        }
+                      });
                     });
-                  });
-                // if(item.name === "test")
-                //   console.log("sort", sortedChains)
-                return (
-                  <Col
-                    md={4}
-                    style={{ padding: "10px", marginBottom: "1rem" }}
-                    key={item.id}
-                  >
-                    <PodCard
-                      item={item}
-                      total_addresses={this.props.cohortState?.total_addresses}
-                      index={i}
-                      handleEdit={this.handleEdit}
-                      history={this.props.history}
-                    />
-                  </Col>
-                );
-              })
-            ) : this.props.cohortState?.sortedList !== "" ? (
-              <Col md={12}>
-                <div className="animation-wrapper">
-                  <Loading />
-                </div>
-              </Col>
-            ) : (
-              ""
-            )}
-          </Row> :""}
+                  // if(item.name === "test")
+                  //   console.log("sort", sortedChains)
+                  return (
+                    <Col
+                      md={4}
+                      style={{ padding: "10px", marginBottom: "1rem" }}
+                      key={item.id}
+                    >
+                      <PodCard
+                        item={item}
+                        total_addresses={
+                          this.props.cohortState?.total_addresses
+                        }
+                        index={i}
+                        handleEdit={this.handleEdit}
+                        history={this.props.history}
+                      />
+                    </Col>
+                  );
+                })
+              ) : this.props.cohortState?.sortedList !== "" ? (
+                <Col md={12}>
+                  <div className="animation-wrapper">
+                    <Loading />
+                  </div>
+                </Col>
+              ) : (
+                ""
+              )}
+            </Row>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     );
