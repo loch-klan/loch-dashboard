@@ -12,7 +12,7 @@ import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import AuthModal from "./AuthModal";
 import { AssetValueExplainer, ConnectExPopup, WalletConnectExchange } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import SearchIcon from "../../assets/images/icons/dropdown-search.svg";
+import SearchIcon from "../../assets/images/icons/search-icon.svg";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
@@ -161,22 +161,9 @@ export default function PageHeader(props) {
 
         {(props.btnText ||
           props.SecondaryBtn ||
-          props.ShareBtn ||
-          props?.handleSearch) && (
-          <div style={props?.handleSearch ? {
-            display:"flex", alignItems:"center", justifyContent:"flex-end",width:"45rem"
-          }:{}}>
-            {props?.handleSearch && (
-              <div className="page-search-wrapper">
-                <Image src={SearchIcon} />
-                <input
-                  type="text"
-                  placeholder="Search pods"
-                  onChange={props?.handleSearch}
-                  className="page-search-input"
-                />
-              </div>
-            )}
+          props.ShareBtn) && (
+          <div>
+           
             {props.SecondaryBtn && (
               <Button
                 className="secondary-btn white-bg"
