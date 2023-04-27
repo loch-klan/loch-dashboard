@@ -676,7 +676,7 @@ function Sidebar(props) {
                         Export
                       </Button>
                     </span>
-                    {lochUser ? (
+                    {lochUser || activeTab === "/home" ? (
                       <span
                         onMouseOver={(e) =>
                           (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -763,7 +763,7 @@ function Sidebar(props) {
                         Leave
                       </Button>
                     </span>
-                    {!lochUser && (
+                    {!lochUser && activeTab !== "/home" && (
                       <span
                         onMouseOver={(e) =>
                           (e.currentTarget.children[0].src = SharePortfolioIcon)
