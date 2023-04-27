@@ -255,7 +255,7 @@ export default function WelcomeCard(props) {
               // // left: "50%",
               // // transform: "translateX(-50%)",
               // right: 0,
-              marginRight:"3.2rem"
+              marginRight:!lochUser ? "3.2rem" :"0rem"
             }
           }
         >
