@@ -2116,6 +2116,63 @@ textarea {
       }
     }
 
+    .social-media-icon{
+       width: 2rem;
+                      cursor: pointer;
+                      filter:brightness(1.5);
+      &:hover{
+        filter:brightness(1)
+      }
+    }
+
+     .page-search-wrapper {
+    padding: 0.4rem 0.4rem 0.1rem;
+    // margin-right: 1.6rem;
+    position: relative;
+    width: 25rem;
+
+    .page-search-input {
+      background: #ffffff;
+      width: 100%;
+      height: 4rem;
+      border: none;
+      outline: none;
+      @include font($black-191, "Inter-Medium", 1.6rem, 500, 1.9rem);
+      //   box-shadow: 0px 8px 22px -6px rgba(24, 39, 75, 0.12), 0px 14px 64px -4px rgba(24, 39, 75, 0.12);
+      border-radius: 8px;
+      padding: 1rem 1rem 1rem 4rem;
+      border: 0.1rem solid #d4d4d4;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+
+      &:hover {
+        border: 0.1rem solid #8e8e8e;
+      }
+
+      ::placeholder {
+        // color: $grey-B0B;
+        @include font("#FDFDFD", "Inter-Medium", 1.6rem, 500, 1.9rem);
+        opacity: 0.3;
+      }
+
+      &:focus,
+      :active,
+      :focus-visible {
+         border: 0.1rem solid #8e8e8e;
+        outline: none;
+      }
+
+     
+    }
+    img {
+      position: absolute;
+      top: 53%;
+      transform: translateY(-50%);
+      left: 1.5rem;
+    //   filter: opacity(0.5);
+    }
+  }
+
     @media (max-width: 480px) {
   .page {
     padding: 6.5rem 1.5rem 1rem;
