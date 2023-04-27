@@ -161,22 +161,9 @@ export default function PageHeader(props) {
 
         {(props.btnText ||
           props.SecondaryBtn ||
-          props.ShareBtn ||
-          props?.handleSearch) && (
-          <div style={props?.handleSearch ? {
-            display:"flex", alignItems:"center", justifyContent:"flex-end",width:"45rem"
-          }:{}}>
-            {props?.handleSearch && (
-              <div className="page-search-wrapper">
-                <Image src={SearchIcon} />
-                <input
-                  type="text"
-                  placeholder="Search"
-                  onChange={props?.handleSearch}
-                  className="page-search-input"
-                />
-              </div>
-            )}
+          props.ShareBtn) && (
+          <div>
+           
             {props.SecondaryBtn && (
               <Button
                 className="secondary-btn white-bg"

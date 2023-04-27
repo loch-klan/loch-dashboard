@@ -1161,25 +1161,8 @@ class CohortPage extends BaseReactComponent {
                 alignItems: "center",
               }}
             >
-              <p
-                onClick={this.showDust}
-                className="inter-display-medium f-s-16 lh-19 cp grey-ADA m-r-12 cohort-dust"
-              >
-                {this.state.showDust
-                  ? "Reveal dust (less than $1)"
-                  : "Hide dust (less than $1)"}
-              </p>
-              <div style={{ width: "20rem" }}>
-                <CustomDropdown
-                  filtername="All chains selected"
-                  options={this.props.OnboardingState.coinsList}
-                  action={null}
-                  handleClick={this.handleFunctionChain}
-                  isChain={true}
-                  // selectedTokens={this.state.activeBadge}
-                />
-              </div>
-              <div style={{ width: "20rem", marginLeft: "1rem" }}>
+              {" "}
+              <div style={{ width: "20rem", marginRight: "1.2rem" }}>
                 <CustomDropdown
                   filtername="All assets selected"
                   options={this.state.AssetFilterList}
@@ -1191,6 +1174,24 @@ class CohortPage extends BaseReactComponent {
                   // selectedTokens={this.state.activeBadge}
                 />
               </div>
+              <div style={{ width: "20rem" }}>
+                <CustomDropdown
+                  filtername="All chains selected"
+                  options={this.props.OnboardingState.coinsList}
+                  action={null}
+                  handleClick={this.handleFunctionChain}
+                  isChain={true}
+                  // selectedTokens={this.state.activeBadge}
+                />
+              </div>
+              <p
+                onClick={this.showDust}
+                className="inter-display-medium f-s-16 lh-19 cp grey-ADA m-l-12 cohort-dust"
+              >
+                {this.state.showDust
+                  ? "Reveal dust (less than $1)"
+                  : "Hide dust (less than $1)"}
+              </p>
             </div>
           </div>
 
@@ -1778,34 +1779,34 @@ class CohortPage extends BaseReactComponent {
           {/* notification end */}
 
           {/* Address Start */}
-         {this.state.userId && <>
-            
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <h2
-                className="m-t-40 m-b-20 inter-display-medium f-s-20 l-h-24 black-191"
+          {this.state.userId && (
+            <>
+              <div
                 style={{
                   display: "flex",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  justifyContent: "start",
                 }}
               >
-                <Image src={GlobeIcon} style={{ marginRight: "1.2rem" }} />{" "}
-                Addresses{" "}
-                <span
-                  style={{ marginLeft: "0.8rem" }}
-                  className="inter-display-medium f-s-13 l-h-16 grey-7C7"
+                <h2
+                  className="m-t-40 m-b-20 inter-display-medium f-s-20 l-h-24 black-191"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "start",
+                  }}
                 >
-                  {this.state.walletAddresses?.length} addresses
-                </span>
-              </h2>
+                  <Image src={GlobeIcon} style={{ marginRight: "1.2rem" }} />{" "}
+                  Addresses{" "}
+                  <span
+                    style={{ marginLeft: "0.8rem" }}
+                    className="inter-display-medium f-s-13 l-h-16 grey-7C7"
+                  >
+                    {this.state.walletAddresses?.length} addresses
+                  </span>
+                </h2>
 
-              {/* <h2
+                {/* <h2
               className="m-t-40 m-b-20 inter-display-semi-bold f-s-13 lh-16 black-191 cp"
               style={{
                 display: "flex",
@@ -1819,123 +1820,127 @@ class CohortPage extends BaseReactComponent {
                 style={{ marginLeft: "1rem", width: "0.55rem" }}
               />
             </h2> */}
-            </div>
-            <div
-              style={{
-                background: "#FFFFFF",
-                boxShadow:
-                  "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                borderRadius: "16px",
-                padding: "2.1rem 2.4rem",
-                marginBottom: "1rem",
-              }}
-            >
-              {/* Address */}
+              </div>
               <div
-                className="cohort-address-wrapper"
-                style={
-                  this.state.walletAddresses.length < 10
-                    ? { overflowY: "visible" }
-                    : {}
-                }
+                style={{
+                  background: "#FFFFFF",
+                  boxShadow:
+                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                  borderRadius: "16px",
+                  padding: "2.1rem 2.4rem",
+                  marginBottom: "1rem",
+                }}
               >
-                {/* Address list */}
-                {this.state.walletAddresses &&
-                  this.state.walletAddresses?.map((e, i) => {
-                    let address =
-                      e?.display_address && e?.display_address != ""
-                        ? e?.display_address
-                        : e?.wallet_address;
-                    return (
-                      <div
-                        style={
-                          i === this.state.walletAddresses.length - 1
-                            ? {
-                                marginBottom: "0rem",
-                                paddingBottom: "0rem",
-                                border: "none",
-                                marginRight: `${
-                                  this.state.walletAddresses.length < 10
-                                    ? "0rem"
-                                    : "1rem"
-                                }`,
-                              }
-                            : {
-                                marginRight: `${
-                                  this.state.walletAddresses.length < 10
-                                    ? "0rem"
-                                    : "1rem"
-                                }`,
-                              }
-                        }
-                        className="address-list"
-                      >
-                        <div style={{}} className="address-left">
-                          <h4 className="inter-display-medium f-s-13 l-h-16 grey-636">
-                            {address}
-                          </h4>
-                          <Image
-                            src={CopyClipboardIcon}
-                            style={{ marginLeft: "1.5rem" }}
-                            onClick={() => this.copyLink(address)}
-                          />
-                          {this.state.userId && (
+                {/* Address */}
+                <div
+                  className="cohort-address-wrapper"
+                  style={
+                    this.state.walletAddresses.length < 10
+                      ? { overflowY: "visible" }
+                      : {}
+                  }
+                >
+                  {/* Address list */}
+                  {this.state.walletAddresses &&
+                    this.state.walletAddresses?.map((e, i) => {
+                      let address =
+                        e?.display_address && e?.display_address != ""
+                          ? e?.display_address
+                          : e?.wallet_address;
+                      return (
+                        <div
+                          style={
+                            i === this.state.walletAddresses.length - 1
+                              ? {
+                                  marginBottom: "0rem",
+                                  paddingBottom: "0rem",
+                                  border: "none",
+                                  marginRight: `${
+                                    this.state.walletAddresses.length < 10
+                                      ? "0rem"
+                                      : "1rem"
+                                  }`,
+                                }
+                              : {
+                                  marginRight: `${
+                                    this.state.walletAddresses.length < 10
+                                      ? "0rem"
+                                      : "1rem"
+                                  }`,
+                                }
+                          }
+                          className="address-list"
+                        >
+                          <div style={{}} className="address-left">
+                            <h4 className="inter-display-medium f-s-13 l-h-16 grey-636">
+                              {address}
+                            </h4>
                             <Image
-                              src={DeleteIcon}
-                              style={{ width: "1.5rem", marginLeft: "1.5rem" }}
-                              onClick={() => this.deleteAddress(address)}
+                              src={CopyClipboardIcon}
+                              style={{ marginLeft: "1.5rem" }}
+                              onClick={() => this.copyLink(address)}
                             />
-                          )}
-                          {this.state.userId && (
-                            <div className="nickname-input">
-                              <Form
-                                onValidSubmit={() => {
-                                  this.onSubmitNickname(address, i);
+                            {this.state.userId && (
+                              <Image
+                                src={DeleteIcon}
+                                style={{
+                                  width: "1.5rem",
+                                  marginLeft: "1.5rem",
                                 }}
-                              >
-                                <FormElement
-                                  valueLink={this.linkState(
-                                    this,
-                                    `nickname-${i + 1}`
-                                  )}
-                                  required
-                                  control={{
-                                    type: CustomTextControl,
-                                    settings: {
-                                      placeholder: "Nickname",
-                                    },
+                                onClick={() => this.deleteAddress(address)}
+                              />
+                            )}
+                            {this.state.userId && (
+                              <div className="nickname-input">
+                                <Form
+                                  onValidSubmit={() => {
+                                    this.onSubmitNickname(address, i);
                                   }}
-                                  // classes={{
-                                  //   inputField:
-                                  //     this.state[`nickname-${i + 1}`] !== ""
-                                  //       ? "done"
-                                  //       : "",
-                                  // }}
-                                />
-                              </Form>
-                            </div>
-                          )}
+                                >
+                                  <FormElement
+                                    valueLink={this.linkState(
+                                      this,
+                                      `nickname-${i + 1}`
+                                    )}
+                                    required
+                                    control={{
+                                      type: CustomTextControl,
+                                      settings: {
+                                        placeholder: "Nickname",
+                                      },
+                                    }}
+                                    // classes={{
+                                    //   inputField:
+                                    //     this.state[`nickname-${i + 1}`] !== ""
+                                    //       ? "done"
+                                    //       : "",
+                                    // }}
+                                  />
+                                </Form>
+                              </div>
+                            )}
 
-                          {/* <Image
+                            {/* <Image
                         src={EditIcon}
                         style={{ marginLeft: "1.2rem" }}
                         onClick={this.handleShow}
                       /> */}
+                          </div>
+                          <h4 className="inter-display-medium f-s-16 lh-19">
+                            {CurrencyType(false)}
+                            {numToCurrency(e.net_worth)}{" "}
+                            <span className="f-s-10 grey-ADA">
+                              {" "}
+                              {CurrencyType(true)}
+                            </span>
+                          </h4>
                         </div>
-                        <h4 className="inter-display-medium f-s-16 lh-19">
-                          {CurrencyType(false)}
-                          {numToCurrency(e.net_worth)}{" "}
-                          <span className="f-s-10 grey-ADA">
-                            {" "}
-                            {CurrencyType(true)}
-                          </span>
-                        </h4>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                </div>
               </div>
-            </div>
-          </>}
+            </>
+          )}
           {/* Address End  */}
 
           {/* Recommandation Start */}
