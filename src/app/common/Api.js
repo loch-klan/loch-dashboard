@@ -194,14 +194,14 @@ export const verifyEmailApi = (ctx, data) =>{
         "currentPlan",
         JSON.stringify({
           ...plan,
-          influencer_pod_limit:
-            res.data.data?.current_plan.name === "Free" ? 1 : -1,
+          influencer_pod_limit: -1,
         })
       );
       // actual
       // localStorage.setItem(
       //   "currentPlan",
-      //   JSON.stringify(res.data?.data?.current_plan || {})
+      //   JSON.stringify({...res.data?.data?.current_plan,influencer_pod_limit:
+            // res.data.data?.current_plan.name === "Free" ? 1 : -1,} || {})
       // );
       //  let obj = JSON.parse(localStorage.getItem("lochUser"));
       let obj = {
@@ -356,13 +356,13 @@ export const sendWhopCode = (ctx, data) => {
           "currentPlan",
           JSON.stringify({
             ...plan,
-            influencer_pod_limit:
-              res.data.data?.current_plan.name === "Free" ? 1 : -1,
+            influencer_pod_limit:-1,
           })
         );
         // localStorage.setItem(
         //   "currentPlan",
-        //   JSON.stringify(res.data?.data?.current_plan || {})
+        //   JSON.stringify({...res.data?.data?.current_plan,influencer_pod_limit:
+              // res.data.data?.current_plan.name === "Free" ? 1 : -1} || {})
         // );
         //  let obj = JSON.parse(localStorage.getItem("lochUser"));
         let obj = {
@@ -666,8 +666,7 @@ export const VerifyEmail = (data,ctx) => {
           "currentPlan",
           JSON.stringify({
             ...plan,
-            influencer_pod_limit:
-              res.data.data?.current_plan.name === "Free" ? 1 : -1,
+            influencer_pod_limit: -1,
           })
         );
         // localStorage.setItem(
@@ -1088,8 +1087,7 @@ export const GetDefaultPlan = () => {
           "currentPlan",
           JSON.stringify({
             ...plan,
-            influencer_pod_limit:
-              res.data.data?.plan.name === "Free" ? 1 : -1,
+            influencer_pod_limit: -1,
           })
         );
 
@@ -1171,8 +1169,7 @@ export const getUser = (ctx = null, showToast = false) => {
         "currentPlan",
         JSON.stringify({
           ...plan,
-          influencer_pod_limit:
-            res.data.data?.current_plan.name === "Free" ? 1 : -1,
+          influencer_pod_limit: -1,
         })
       );
       // localStorage.setItem(
@@ -1392,8 +1389,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
           "currentPlan",
           JSON.stringify({
             ...plan,
-            influencer_pod_limit:
-              res.data.data?.current_plan.name === "Free" ? 1 : -1,
+            influencer_pod_limit: -1,
           })
         );
 

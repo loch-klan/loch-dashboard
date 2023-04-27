@@ -193,13 +193,13 @@ export const verifyUser = (ctx, info) => {
             "currentPlan",
             JSON.stringify({
               ...plan,
-              influencer_pod_limit:
-                res.data.data?.current_plan.name === "Free" ? 1 : -1,
+              influencer_pod_limit: -1,
             })
           );
           // localStorage.setItem(
           //   "currentPlan",
-          //   JSON.stringify(res.data.data?.current_plan)
+          //   JSON.stringify({...res.data.data?.current_plan,influencer_pod_limit:
+                // res.data.data?.current_plan.name === "Free" ? 1 : -1,})
           // );
 
           const allChains = ctx.props.OnboardingState.coinsList;
@@ -370,13 +370,13 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
         "currentPlan",
         JSON.stringify({
           ...plan,
-          influencer_pod_limit:
-            res.data.data?.current_plan.name === "Free" ? 1 : -1,
+          influencer_pod_limit: -1,
         })
       );
       // localStorage.setItem(
       //   "currentPlan",
-      //   JSON.stringify(res.data.data.current_plan)
+      //   JSON.stringify({...res.data.data.current_plan,influencer_pod_limit:
+            // res.data.data?.current_plan.name === "Free" ? 1 : -1,})
       // );
 
       localStorage.setItem("stopClick", true);
