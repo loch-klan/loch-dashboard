@@ -12,7 +12,7 @@ import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import AuthModal from "./AuthModal";
 import { AssetValueExplainer, ConnectExPopup, WalletConnectExchange } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import SearchIcon from "../../assets/images/icons/dropdown-search.svg";
+import SearchIcon from "../../assets/images/icons/search-icon.svg";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
@@ -171,7 +171,7 @@ export default function PageHeader(props) {
                 <Image src={SearchIcon} />
                 <input
                   type="text"
-                  placeholder="Search pods"
+                  placeholder="Search"
                   onChange={props?.handleSearch}
                   className="page-search-input"
                 />
