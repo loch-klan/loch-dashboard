@@ -112,72 +112,7 @@ class CustomTable extends BaseReactComponent {
               )}
             </div>
             {tableData && tableData.length > 0 ? (
-              isStickyHead ? (
-                <ScrollSync>
-                  {({
-                    clientHeight,
-                    clientWidth,
-                    onScroll,
-                    scrollHeight,
-                    scrollLeft,
-                    scrollTop,
-                    scrollWidth,
-                  }) => (
-                    <AutoSizer disableHeight>
-                      {({ width }) => (
-                        <Table
-                          width={width}
-                          height={60 * (tableData.length + 1) - 10}
-                          // height={100}
-                          headerHeight={headerHeight ? headerHeight : 80}
-                          rowHeight={60}
-                          rowCount={tableData.length}
-                          rowGetter={({ index }) => tableData[index]}
-                          className={`custom-table ${className}`}
-                          // scrollTop={scrollTop}
-                          // isScrolling={isScrolling}
-                        >
-                          <Column
-                            // key={key}
-                            // width={i.coumnWidth}
-                            width={width * columnList[0].coumnWidth}
-                            className={columnList[0].className}
-                            label={columnList[0].labelName}
-                            dataKey={columnList[0].dataKey}
-                            cellRenderer={({ rowData }) => {
-                              return columnList[0].cell(
-                                rowData,
-                                columnList[0].dataKey
-                              );
-                            }}
-                          />
-                          {columnList &&
-                            columnList.length > 0 &&
-                            columnList
-                              .slice(1, columnList.length)
-                              .map((item, key) => {
-                                return (
-                                  // <div>
-                                  <Column
-                                    key={key}
-                                    // width={item.coumnWidth}
-                                    width={width * item.coumnWidth}
-                                    className={item.className}
-                                    label={item.labelName}
-                                    dataKey={item.dataKey}
-                                    cellRenderer={({ rowData }) => {
-                                      return item.cell(rowData, item.dataKey);
-                                    }}
-                                  />
-                                  // </div>
-                                );
-                              })}
-                        </Table>
-                      )}
-                    </AutoSizer>
-                  )}
-                </ScrollSync>
-              ) : (
+              
                 <AutoSizer disableHeight>
                   {({ width }) => (
                     <Table
@@ -209,7 +144,7 @@ class CustomTable extends BaseReactComponent {
                     </Table>
                   )}
                 </AutoSizer>
-              )
+              
             ) : (
               <div className="not-found-wrapper">
                 {/* <Image src={notFoundImage} /> */}

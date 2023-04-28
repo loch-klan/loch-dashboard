@@ -34,7 +34,7 @@ function CustomOverlay({ text, position, isIcon, children, IconImage, isInfo = n
     return (
         <OverlayTrigger
             placement={position}
-            delay={{ show: 250, hide: 400 }}
+            delay={{ show: 250, hide: 100 }}
             overlay={renderTooltip}>
             {children}
         </OverlayTrigger>

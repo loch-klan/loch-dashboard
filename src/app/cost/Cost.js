@@ -816,6 +816,7 @@ class Cost extends Component {
                 handleDust={this.handleDust}
                 // handleExchange={this.handleConnectModal}
                 isStickyHead={true}
+                className="cost-basis-table"
               />
             </div>
           </div>
