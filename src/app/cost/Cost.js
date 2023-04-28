@@ -815,6 +815,7 @@ class Cost extends Component {
                 totalPercentage={this.props.intelligenceState.totalPercentage}
                 handleDust={this.handleDust}
                 // handleExchange={this.handleConnectModal}
+                isStickyHead={true}
               />
             </div>
           </div>
