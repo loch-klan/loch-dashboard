@@ -78,26 +78,39 @@ export default function IntelWelcomeCard(props) {
       },
     ];
 
-    const cards = cardData?.map((card, key) => {
+  const cards = cardData?.map((card, key) => {
+           const isMobile = JSON.parse(localStorage.getItem("isMobile"));
+
         return (
-            <div className='info' key={key} onClick={() => {
-                props.history.push(card.path);
-                card.analyticEvent()
-            }}>
-                <div className = {`icon ${card.background}`}>
-                    <Image src={card.icon} />
-                </div>
-                <div className='info-detail'>
-                    <div className='inter-display-medium f-s-16 lh-19 m-b-4 info-title'>
-                        {card.title}
-                    </div>
-                    <div className='viewmore'>
-                        <h4 className="inter-display-semi-bold f-s-13 lh-16 black-191">View more</h4>
-                        <Image src={ArrowRight} />
-                    </div>
-                </div>
+          <div
+            className="info"
+            key={key}
+            onClick={() => {
+              props.history.push(card.path);
+              card.analyticEvent();
+            }}
+            style={isMobile ? { flexDirection: "column", width:"50%", alignItems:"center", justifyContent:"center" } : {}}
+          >
+            <div className={`icon ${card.background}`} style={isMobile ? {
+              margin:0
+            } : {}}>
+              <Image src={card.icon} />
             </div>
-        )
+            <div className="info-detail">
+              <div className="inter-display-medium f-s-16 lh-19 m-b-4 info-title" style={isMobile ? {textAlign:"center", marginTop:"1.1rem"}:{}}>
+                {card.title}
+              </div>
+              {!isMobile && (
+                <div className="viewmore">
+                  <h4 className="inter-display-semi-bold f-s-13 lh-16 black-191">
+                    View more
+                  </h4>
+                  <Image src={ArrowRight} />
+                </div>
+              )}
+            </div>
+          </div>
+        );
     })
 
     return (
