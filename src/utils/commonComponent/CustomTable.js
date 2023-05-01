@@ -1,5 +1,11 @@
 import React from "react";
-import { AutoSizer, Table, Column } from "react-virtualized";
+import {
+  AutoSizer,
+  Table,
+  Column,
+  ScrollSync
+
+} from "react-virtualized";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 // import notFoundDefault from "../../assets/images/empty-table.png";
@@ -45,18 +51,17 @@ class CustomTable extends BaseReactComponent {
       pagePrev,
       pageNext,
       isLoading,
+      isStickyHead 
     } = this.props;
     return (
       <div className="table-wrapper">
-        {
-        isLoading === true
-        ?
-            <div className="transaction-table-loading-wrapper">
-              <div className="animation-wrapper">
-                <Loading />
-              </div>
+        {isLoading === true ? (
+          <div className="transaction-table-loading-wrapper">
+            <div className="animation-wrapper">
+              <Loading />
             </div>
-           : (
+          </div>
+        ) : (
           <>
             <div className="header-navigation">
               {istopPagination &&
@@ -107,37 +112,39 @@ class CustomTable extends BaseReactComponent {
               )}
             </div>
             {tableData && tableData.length > 0 ? (
-              <AutoSizer disableHeight>
-                {({ width }) => (
-                  <Table
-                    width={width}
-                    height={60 * (tableData.length + 1) - 10}
-                    headerHeight={headerHeight ? headerHeight : 80}
-                    rowHeight={60}
-                    rowCount={tableData.length}
-                    rowGetter={({ index }) => tableData[index]}
-                    className={`custom-table ${className}`}
-                  >
-                    {columnList &&
-                      columnList.length > 0 &&
-                      columnList.map((item, key) => {
-                        return (
-                          <Column
-                            key={key}
-                            // width={item.coumnWidth}
-                            width={width * item.coumnWidth}
-                            className={item.className}
-                            label={item.labelName}
-                            dataKey={item.dataKey}
-                            cellRenderer={({ rowData }) => {
-                              return item.cell(rowData, item.dataKey);
-                            }}
-                          />
-                        );
-                      })}
-                  </Table>
-                )}
-              </AutoSizer>
+              
+                <AutoSizer disableHeight>
+                  {({ width }) => (
+                    <Table
+                      width={width}
+                      height={60 * (tableData.length + 1) - 10}
+                      headerHeight={headerHeight ? headerHeight : 80}
+                      rowHeight={60}
+                      rowCount={tableData.length}
+                      rowGetter={({ index }) => tableData[index]}
+                      className={`custom-table ${className}`}
+                    >
+                      {columnList &&
+                        columnList.length > 0 &&
+                        columnList.map((item, key) => {
+                          return (
+                            <Column
+                              key={key}
+                              // width={item.coumnWidth}
+                              width={width * item.coumnWidth}
+                              className={item.className}
+                              label={item.labelName}
+                              dataKey={item.dataKey}
+                              cellRenderer={({ rowData }) => {
+                                return item.cell(rowData, item.dataKey);
+                              }}
+                            />
+                          );
+                        })}
+                    </Table>
+                  )}
+                </AutoSizer>
+              
             ) : (
               <div className="not-found-wrapper">
                 {/* <Image src={notFoundImage} /> */}
@@ -157,19 +164,18 @@ class CustomTable extends BaseReactComponent {
                 )}
               </div>
             )}
-            </>
+          </>
         )}
-            {tableData && tableData.length >= 1 && totalPage > 1 && (
-              <Pagination
-                history={history}
-                location={location}
-                page={currentPage + 1}
-                pageCount={totalPage}
-                pagePrev={pagePrev}
-                pageNext={pageNext}
-              />
-            )}
-
+        {tableData && tableData.length >= 1 && totalPage > 1 && (
+          <Pagination
+            history={history}
+            location={location}
+            page={currentPage + 1}
+            pageCount={totalPage}
+            pagePrev={pagePrev}
+            pageNext={pageNext}
+          />
+        )}
       </div>
     );
   }
