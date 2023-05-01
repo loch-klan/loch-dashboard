@@ -156,6 +156,7 @@ class Profile extends Component {
   };
 
   render() {
+     const isMobile = JSON.parse(localStorage.getItem("isMobile"));
     return (
       <div className="profile-page-section">
         <div className="profile-section page">
@@ -180,12 +181,15 @@ class Profile extends Component {
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
           />
-          <div className="profile-plan-wrapper">
-            <h4 className="inter-display-semi-bold f-s-25 lh-30 secondary">
+          <div className="profile-plan-wrapper" style={isMobile ? {padding:"3.2rem 0rem 0rem", backgroundPosition:"top", backgroundSize:"contain"}:{}}>
+            <h4 className="inter-display-semi-bold f-s-25 lh-30 secondary" style={isMobile ? {padding:"0rem 2rem"}:{}}>
               Do more with Loch
             </h4>
-            <div className="plan-price-wrapper">
-              <div className="plan-name">
+            <div className="plan-price-wrapper" style={isMobile ? {marginTop:"3.2rem"}:{}}>
+              <div
+                className="plan-name"
+                style={isMobile ? { width: "100%", borderRadius: 0 } : {}}
+              >
                 <div className="plan-top">
                   <div>
                     <h4>Your current plan</h4>
@@ -228,72 +232,77 @@ class Profile extends Component {
                     : "Upgrade"}
                 </Button>
               </div>
-              <div className="plan-details">
-                <div className="list">
-                  {this.state.selectedPlan?.features
-                    ?.slice(0, 5)
-                    ?.map((list) => {
-                      return (
-                        <div className={`feature-list`}>
-                          <div className="label">
-                            <Image
-                              src={list?.img}
-                              // style={list?.id == 9 ? { opacity: "0.6" } : {}}
-                            />
-                            <h3>{list.name}</h3>
+              {!isMobile && (
+                <div className="plan-details">
+                  <div className="list">
+                    {this.state.selectedPlan?.features
+                      ?.slice(0, 5)
+                      ?.map((list) => {
+                        return (
+                          <div className={`feature-list`}>
+                            <div className="label">
+                              <Image
+                                src={list?.img}
+                                // style={list?.id == 9 ? { opacity: "0.6" } : {}}
+                              />
+                              <h3>{list.name}</h3>
+                            </div>
+                            <h4>
+                              {list.name !== "Insights"
+                                ? list.limit === false
+                                  ? "No"
+                                  : list.limit === true
+                                  ? "Yes"
+                                  : list.limit === -1
+                                  ? "Unlimited"
+                                  : list.limit
+                                : list.limit === false
+                                ? "Limited"
+                                : "Unlimited"}
+                            </h4>
                           </div>
-                          <h4>
-                            {list.name !== "Insights"
-                              ? list.limit === false
-                                ? "No"
-                                : list.limit === true
-                                ? "Yes"
-                                : list.limit === -1
-                                ? "Unlimited"
-                                : list.limit
-                              : list.limit === false
-                              ? "Limited"
-                              : "Unlimited"}
-                          </h4>
-                        </div>
-                      );
-                    })}
-                </div>
-                <div className="list">
-                  {this.state.selectedPlan?.features
-                    ?.slice(5, this.state.selectedPlan?.features?.length)
-                    ?.map((list) => {
-                      return (
-                        <div className={`feature-list`}>
-                          <div className="label">
-                            <Image
-                              src={list?.img}
-                              // style={list?.id == 9 ? { opacity: "0.6" } : {}}
-                            />
-                            <h3>{list.name}</h3>
+                        );
+                      })}
+                  </div>
+                  <div className="list">
+                    {this.state.selectedPlan?.features
+                      ?.slice(5, this.state.selectedPlan?.features?.length)
+                      ?.map((list) => {
+                        return (
+                          <div className={`feature-list`}>
+                            <div className="label">
+                              <Image
+                                src={list?.img}
+                                // style={list?.id == 9 ? { opacity: "0.6" } : {}}
+                              />
+                              <h3>{list.name}</h3>
+                            </div>
+                            <h4>
+                              {list.name !== "Insights"
+                                ? list.limit === false
+                                  ? "No"
+                                  : list.limit === true
+                                  ? "Yes"
+                                  : list.limit === -1
+                                  ? "Unlimited"
+                                  : list.limit
+                                : list.limit === false
+                                ? "Limited"
+                                : "Unlimited"}
+                            </h4>
                           </div>
-                          <h4>
-                            {list.name !== "Insights"
-                              ? list.limit === false
-                                ? "No"
-                                : list.limit === true
-                                ? "Yes"
-                                : list.limit === -1
-                                ? "Unlimited"
-                                : list.limit
-                              : list.limit === false
-                              ? "Limited"
-                              : "Unlimited"}
-                          </h4>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             {/* <div className="bg-container"></div> */}
           </div>
-          <div className="profile-form-section">
+          <div
+            className="profile-form-section"
+            style={isMobile ? { marginBottom: "10rem" } : {}}
+          >
             <Row>
               <Col md={7}>
                 <ProfileForm />
