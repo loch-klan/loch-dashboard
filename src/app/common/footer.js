@@ -7,6 +7,7 @@ import { Image } from 'react-bootstrap';
 
 class Footer extends Component {
   render() {
+     const isMobile = JSON.parse(localStorage.getItem("isMobile"));
     return (
       <>
         <hr className="m-t-60" />
@@ -77,7 +78,7 @@ class Footer extends Component {
             />
           </div>
         </div>
-        <p className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA">
+        <p className="inter-display-medium f-s-13 lh-16 m-b-40 grey-ADA" style={isMobile ?{marginBottom:"10rem"}:{}}>
           The content made available on this web page and our mobile
           applications ("Platform") is for informational purposes only. You
           should not construe any such information or other material as
