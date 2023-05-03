@@ -16,7 +16,7 @@ const INITIAL_STATE = {
   chainWallet: [],
   walletTotal: 0,
   currency: JSON.parse(localStorage.getItem("currency")),
- 
+
   // yesterday balance
   yesterdayBalance: 0,
 
@@ -31,6 +31,9 @@ const INITIAL_STATE = {
   assetValueDataLoaded: false,
   // external events data it set after asset value chart api response get
   externalEvents: [],
+
+  // centralizedExchanges
+  centralizedExchanges:0,
 };
 const PortfolioReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -41,13 +44,20 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
       // };
       return { ...state, coinRateList: action.payload };
     case USER_WALLET_LIST:
-      // console.log("action.payload", action.payload)
+      console.log("action.payload", action.payload);
       let updateWalletTotal = state.walletTotal || 0;
       let updatedChainWallet = state.chainWallet || [];
       let chainPortfolio = state.chainPortfolio || {};
       let currencyRate = state.currency?.rate || 1;
+      let CentralizedExchanges = state.centralizedExchanges || 0;
 
+      // calculating CentralizedExchanges,
      
+      if (action.payload.userWalletList?.protocol) {
+
+        CentralizedExchanges =
+          CentralizedExchanges + action.payload.userWalletList?.total_amount;
+      }
       if (
         action.payload &&
         action.payload.userWalletList &&
@@ -188,11 +198,11 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
                 : action.payload.userWalletList.assets[i].count *
                   DEFAULT_PRICE);
           }
-         
+
           updateWalletTotal = updateWalletTotal + currentPrice;
         }
       }
-      
+
       // userWalletList: updateWalletList,
       // return { ...state, walletTotal: updateWalletTotal, chainWallet: { ...updatedChainWallet }, chainPortfolio: {...chainPortfolio}, coinRateList: {...state.coinRateList, ...action.payload.assetPrice} };
       return {
@@ -201,6 +211,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         chainWallet: { ...updatedChainWallet },
         chainPortfolio: { ...chainPortfolio },
         assetPrice: { ...state.assetPrice, ...action.payload.assetPrice },
+        centralizedExchanges: CentralizedExchanges * currencyRate,
       };
     case YESTERDAY_BALANCE:
       return { ...state, yesterdayBalance: action.payload.balance };
@@ -211,7 +222,11 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         assetValueDataLoaded: action.payload.loader,
       };
     case ASSET_VALUE_GRAPH_MONTH:
-      return { ...state, assetValueMonth: action.payload.data, assetValueDataLoaded:action.payload.loader };
+      return {
+        ...state,
+        assetValueMonth: action.payload.data,
+        assetValueDataLoaded: action.payload.loader,
+      };
     case ASSET_VALUE_GRAPH_YEAR:
       return {
         ...state,
@@ -241,6 +256,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
         assetValueMonth: null,
         assetValueDay: null,
         assetValueDataLoaded: false,
+        centralizedExchanges: 0,
       };
     default:
       return state;

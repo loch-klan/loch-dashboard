@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import CustomLoader from "../common/CustomLoader";
+import LinkIcon from "../../assets/images/link.svg";
 import {
   amountFormat,
   CurrencyType,
@@ -1213,8 +1214,8 @@ class PieChart2 extends BaseReactComponent {
                       >
                         {this.state.chainList &&
                         this.state.chainList?.length <= 1
-                          ? this.state.chainList?.length + " Chain"
-                          : this.state.chainList?.length + " Chains"}
+                          ? (this.state.chainList?.length + 1) + " Network"
+                          : (this.state.chainList?.length + 1) + " Networks"}
                       </span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -1247,11 +1248,7 @@ class PieChart2 extends BaseReactComponent {
                               className="chain-list-item"
                               key={i}
                               style={{
-                                paddingBottom: `${
-                                  i === this.state.chainList.length - 1
-                                    ? "0rem"
-                                    : "1rem"
-                                }`,
+                                paddingBottom: "1rem",
                               }}
                             >
                               <span className="inter-display-medium f-s-16 lh-19">
@@ -1281,6 +1278,41 @@ class PieChart2 extends BaseReactComponent {
                             </div>
                           );
                         })}
+                      <div
+                        className="chain-list-item"
+                        // key={this.state.chainList.length + 1}
+                        style={{
+                          paddingBottom: "0rem",
+                        }}
+                      >
+                        <span className="inter-display-medium f-s-16 lh-19">
+                          <Image
+                            src={LinkIcon}
+                            style={{
+                              width: "2.6rem",
+                              height: "2.6rem",
+                              padding:"0.55rem",
+                              borderRadius: "6px",
+                              objectFit: "cover",
+                              border: `1px solid ${lightenDarkenColor(
+                                "#000000",
+                                -0.15
+                              )}`,
+                            }}
+                          />
+                          Centralized Exchanges
+                        </span>
+                        <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
+                          {CurrencyType(false)}
+                          {amountFormat(
+                            this.props.portfolioState?.centralizedExchanges.toFixed(
+                              2
+                            ),
+                            "en-US",
+                            "USD"
+                          )}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
