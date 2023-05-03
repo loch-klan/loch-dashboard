@@ -1770,10 +1770,18 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={CurrencyType(false) + rowData.CurrentValue.toFixed(2)}
+                text={
+                  CurrencyType(false) +
+                  Number(
+                    noExponents(rowData.CurrentValue.toFixed(2))
+                  ).toLocaleString("en-US")
+                }
               >
                 <span>
-                  {CurrencyType(false) + rowData.CurrentValue.toFixed(2)}
+                  {CurrencyType(false) +
+                    Number(
+                      noExponents(rowData.CurrentValue.toFixed(2))
+                    ).toLocaleString("en-US")}
                 </span>
               </CustomOverlay>
             );
