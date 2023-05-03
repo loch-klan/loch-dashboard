@@ -353,10 +353,14 @@ function Sidebar(props) {
     
       return (
         <div className="sidebar-section">
-          <Container>
+          <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}>
             <div className="sidebar">
               <div style={{ width: "100%" }}>
-                <div className={`logo`}>
+                <div
+                  className={`logo ${
+                    activeTab === "/home" ? "home-topbar" : ""
+                  }`}
+                >
                   <div>
                     <Image src={logo} />
                     <span className="loch-text">Loch</span>
@@ -672,7 +676,7 @@ function Sidebar(props) {
                         Export
                       </Button>
                     </span>
-                    {lochUser ? (
+                    {lochUser || activeTab === "/home" ? (
                       <span
                         onMouseOver={(e) =>
                           (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -759,7 +763,7 @@ function Sidebar(props) {
                         Leave
                       </Button>
                     </span>
-                    {!lochUser && (
+                    {!lochUser && activeTab !== "/home" && (
                       <span
                         onMouseOver={(e) =>
                           (e.currentTarget.children[0].src = SharePortfolioIcon)

@@ -1658,46 +1658,46 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
       //     }
       //   },
       // },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="Amount"
-            onClick={() => this.handleSort(this.state.sortBy[3])}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Amount
-            </span>
-            <Image
-              src={sortByIcon}
-              className={this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "Amount",
-        // coumnWidth: 108,
-        coumnWidth: 0.16,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "Amount") {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={Number(noExponents(rowData.Amount)).toLocaleString(
-                  "en-US"
-                )}
-              >
-                <span>
-                  {Number(noExponents(rowData.Amount)).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
+      // {
+      //   labelName: (
+      //     <div
+      //       className="cp history-table-header-col"
+      //       id="Amount"
+      //       onClick={() => this.handleSort(this.state.sortBy[3])}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         Amount
+      //       </span>
+      //       <Image
+      //         src={sortByIcon}
+      //         className={this.state.sortBy[3].down ? "rotateDown" : "rotateUp"}
+      //       />
+      //     </div>
+      //   ),
+      //   dataKey: "Amount",
+      //   // coumnWidth: 108,
+      //   coumnWidth: 0.16,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "Amount") {
+      //       return (
+      //         <CustomOverlay
+      //           position="top"
+      //           isIcon={false}
+      //           isInfo={true}
+      //           isText={true}
+      //           text={Number(noExponents(rowData.Amount)).toLocaleString(
+      //             "en-US"
+      //           )}
+      //         >
+      //           <span>
+      //             {Number(noExponents(rowData.Amount)).toLocaleString("en-US")}
+      //           </span>
+      //         </CustomOverlay>
+      //       );
+      //     }
+      //   },
+      // },
       // {
       //   labelName: (
       //     <div
@@ -1742,44 +1742,52 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
       //     }
       //   },
       // },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Current Value"
-      //       onClick={() => this.handleSort(this.state.sortBy[5])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Current Value
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "CurrentValue",
-      //   // coumnWidth: 140,
-      //   coumnWidth: 0.2,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "CurrentValue") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={CurrencyType(false) + rowData.CurrentValue.toFixed(2)}
-      //         >
-      //           <span>
-      //             {CurrencyType(false) + rowData.CurrentValue.toFixed(2)}
-      //           </span>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Current Value"
+            onClick={() => this.handleSort(this.state.sortBy[5])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Current Value
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "CurrentValue",
+        // coumnWidth: 140,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "CurrentValue") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  CurrencyType(false) +
+                  Number(
+                    noExponents(rowData.CurrentValue.toFixed(2))
+                  ).toLocaleString("en-US")
+                }
+              >
+                <span>
+                  {CurrencyType(false) +
+                    Number(
+                      noExponents(rowData.CurrentValue.toFixed(2))
+                    ).toLocaleString("en-US")}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
       {
         labelName: (
           <div
@@ -1874,7 +1882,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  // marginTop: "9rem"
+                  marginTop: "9rem"
                 }}
               >
                 <PieChart2

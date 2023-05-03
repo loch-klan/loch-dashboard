@@ -158,10 +158,49 @@ export const verifyUser = (ctx, info) => {
         if(!res.data.error){
           localStorage.setItem("lochUser", JSON.stringify(res.data.data.user));
           localStorage.setItem("lochToken", res.data.data.token);
+          // free pricing
+          let plan = {
+            defi_enabled: true,
+            export_address_limit: -1,
+            id: "63eb32769b5e4daf6b588207",
+            is_default: false,
+            is_trial: false,
+            name: "Sovereign",
+            notifications_limit: -1,
+            notifications_provided: true,
+            plan_reference_id: "prod_NM0aQTO38msDkq",
+            subscription: {
+              active: true,
+              created_on: "2023-04-06 06:41:11.302000+00:00",
+              id: "642e69878cc994b64ca49272",
+              modified_on: "2023-04-06 06:41:11.302000+00:00",
+              plan_id: "63eb32769b5e4daf6b588207",
+              plan_reference_id: "prod_NM0aQTO38msDkq",
+              subscription_reference_id: "",
+              trial_subscription: false,
+              user_id: "63f89011251cc82aeebfcae5",
+              valid_till: "2023-05-06 00:00:00+00:00",
+            },
+            trial_days: 30,
+            upload_csv: true,
+            wallet_address_limit: -1,
+            whale_pod_address_limit: -1,
+            whale_pod_limit: -1,
+            influencer_pod_limit: -1,
+          };
+          // free pricing
           localStorage.setItem(
             "currentPlan",
-            JSON.stringify(res.data.data?.current_plan)
+            JSON.stringify({
+              ...plan,
+              influencer_pod_limit: -1,
+            })
           );
+          // localStorage.setItem(
+          //   "currentPlan",
+          //   JSON.stringify({...res.data.data?.current_plan,influencer_pod_limit:
+                // res.data.data?.current_plan.name === "Free" ? 1 : -1,})
+          // );
 
           const allChains = ctx.props.OnboardingState.coinsList;
           let addWallet = [];
@@ -204,28 +243,32 @@ export const verifyUser = (ctx, info) => {
             let chainLength =
               apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
                 ?.chains?.length ||
-              apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address.toLowerCase()]
-                ?.chains?.length;
-            
+              apiResponse.wallets[
+                apiResponse?.user?.user_wallets[i]?.address.toLowerCase()
+              ]?.chains?.length;
+
             obj["coinFound"] = chainLength > 0 ? true : false;
-          
+
             obj["nickname"] = apiResponse?.user?.user_wallets[i]?.nickname;
-            obj["showAddress"] = apiResponse?.user?.user_wallets[i]?.nickname === "" ? true
-                        : false;
-            obj["showNickname"] = apiResponse?.user?.user_wallets[i]?.nickname !== ""
-                        ? true
-                        : false;
-            
+            obj["showAddress"] =
+              apiResponse?.user?.user_wallets[i]?.nickname === ""
+                ? true
+                : false;
+            obj["showNickname"] =
+              apiResponse?.user?.user_wallets[i]?.nickname !== ""
+                ? true
+                : false;
+
             addWallet.push(obj);
           }
-        
+
           // Mixpanel function
           signInUser({
             email_address: res.data.data.user?.email,
             userId: res.data.data.user?.link,
             first_name: res.data.data.user?.first_name,
             last_name: res.data.data.user?.last_name,
-            track:"Landing page sign in"
+            track: "Landing page sign in",
           });
           // console.log("addWallet", addWallet);
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
@@ -289,81 +332,126 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
     .then(res => {
     // console.log("inside create user function")
     if(!res.data.error){
-      localStorage.setItem("lochDummyUser", res.data.data.user.link)
-      localStorage.setItem("lochToken", res.data.data.token)
+      localStorage.setItem("lochDummyUser", res.data.data.user.link);
+      localStorage.setItem("lochToken", res.data.data.token);
+
+      // free pricing
+      let plan = {
+        defi_enabled: true,
+        export_address_limit: -1,
+        id: "63eb32769b5e4daf6b588207",
+        is_default: false,
+        is_trial: false,
+        name: "Sovereign",
+        notifications_limit: -1,
+        notifications_provided: true,
+        plan_reference_id: "prod_NM0aQTO38msDkq",
+        subscription: {
+          active: true,
+          created_on: "2023-04-06 06:41:11.302000+00:00",
+          id: "642e69878cc994b64ca49272",
+          modified_on: "2023-04-06 06:41:11.302000+00:00",
+          plan_id: "63eb32769b5e4daf6b588207",
+          plan_reference_id: "prod_NM0aQTO38msDkq",
+          subscription_reference_id: "",
+          trial_subscription: false,
+          user_id: "63f89011251cc82aeebfcae5",
+          valid_till: "2023-05-06 00:00:00+00:00",
+        },
+        trial_days: 30,
+        upload_csv: true,
+        wallet_address_limit: -1,
+        whale_pod_address_limit: -1,
+        whale_pod_limit: -1,
+        influencer_pod_limit: -1,
+      };
+      // free pricing
       localStorage.setItem(
         "currentPlan",
-        JSON.stringify(res.data.data.current_plan)
+        JSON.stringify({
+          ...plan,
+          influencer_pod_limit: -1,
+        })
       );
+      // localStorage.setItem(
+      //   "currentPlan",
+      //   JSON.stringify({...res.data.data.current_plan,influencer_pod_limit:
+            // res.data.data?.current_plan.name === "Free" ? 1 : -1,})
+      // );
 
       localStorage.setItem("stopClick", true);
 
-       signUpProperties({ userId: res.data.data.user.link, email_address:"", first_name:"",last_name:"" });
-     
-      const allChains = ctx.props.OnboardingState.coinsList
-      
+      signUpProperties({
+        userId: res.data.data.user.link,
+        email_address: "",
+        first_name: "",
+        last_name: "",
+      });
+
+      const allChains = ctx.props.OnboardingState.coinsList;
+
       let newAddWallet = [];
       const apiResponse = res.data.data;
       // console.log("res ", apiResponse)
-      for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
+      for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
         let obj = {}; // <----- new Object
-        obj['address'] = apiResponse.user.user_wallets[i].address;
-              obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
-        const chainsDetected = apiResponse.wallets[
-            apiResponse.user.user_wallets[i].address
-          ]?.chains || apiResponse.wallets[
+        obj["address"] = apiResponse.user.user_wallets[i].address;
+        obj["displayAddress"] =
+          apiResponse.user.user_wallets[i]?.display_address;
+        const chainsDetected =
+          apiResponse.wallets[apiResponse.user.user_wallets[i].address]
+            ?.chains ||
+          apiResponse.wallets[
             apiResponse.user.user_wallets[i].address.toLowerCase()
           ]?.chains;
 
-              obj['coins'] = allChains?.map((chain)=>{
-                let coinDetected = false;
-                chainsDetected?.map((item)=>{
-                  if(item.id === chain.id){
-                    coinDetected = true;
-                  }
-                })
-                return ({coinCode: chain.code,
-                    coinSymbol: chain.symbol,
-                    coinName: chain.name,
-                    chain_detected: coinDetected,
-                  coinColor: chain.color})
-              });
-              obj['wallet_metadata']= apiResponse.user?.user_wallets[i]?.wallet;
-        obj['id'] = `wallet${i + 1}`;
+        obj["coins"] = allChains?.map((chain) => {
+          let coinDetected = false;
+          chainsDetected?.map((item) => {
+            if (item.id === chain.id) {
+              coinDetected = true;
+            }
+          });
+          return {
+            coinCode: chain.code,
+            coinSymbol: chain.symbol,
+            coinName: chain.name,
+            chain_detected: coinDetected,
+            coinColor: chain.color,
+          };
+        });
+        obj["wallet_metadata"] = apiResponse.user?.user_wallets[i]?.wallet;
+        obj["id"] = `wallet${i + 1}`;
         let chainLength =
           apiResponse.wallets[apiResponse.user?.user_wallets[i]?.address]
             ?.chains?.length ||
-          apiResponse.wallets[apiResponse.user?.user_wallets[i]?.address.toLowerCase()]
-            ?.chains?.length; 
+          apiResponse.wallets[
+            apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+          ]?.chains?.length;
         obj["coinFound"] = chainLength > 0 ? true : false;
-        obj['nickname'] = apiResponse.user.user_wallets[i]?.nickname;
-        obj["showAddress"] = apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
+        obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
+        obj["showAddress"] =
+          apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
         obj["showNickname"] =
           apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
         newAddWallet.push(obj);
       }
       if (ctx.state.podName) {
+        localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+      } else {
         localStorage.setItem(
           "addWallet",
-          JSON.stringify(newAddWallet)
+          JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
         );
       }
-        else{
-          localStorage.setItem(
-            "addWallet",
-            JSON.stringify(ctx.state.id ? addWallet : newAddWallet)
-          );
-        }
       // console.log("wallet", addWallet);
       if (userFunction) {
         // console.log("user function found");
         ctx.getUrl();
-         localStorage.setItem("stop_redirect", true);
+        localStorage.setItem("stop_redirect", true);
         setTimeout(() => {
-           userFunction();
+          userFunction();
         }, 100);
-       
-        
       } else {
         //  console.log("user function not found");
         if (ctx.state?.podName) {
@@ -383,9 +471,8 @@ export const createAnonymousUserApi = (data, ctx, addWallet,userFunction = null)
             },
           });
         }
-          
       }
-  }else{
+    }else{
       toast.error(res.data.message || "Something Went Wrong")
   }
   })

@@ -215,7 +215,8 @@ export const deleteAccount = (data, ctx) => {
       // console.log(res)
       if (!res.data.error) {
          ctx.props.onHide();
-         ctx.props.makeApiCall();
+        ctx.props.makeApiCall();
+        
         // console.log("res wallet", res.data.data.user_wallets);
       } else {
         toast.error(res.data.message || "Something Went Wrong");

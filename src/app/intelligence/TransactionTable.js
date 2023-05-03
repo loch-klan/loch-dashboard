@@ -44,8 +44,13 @@ function TransactionTable(props) {
           pageNext={
             props.page === props.totalPage - 1 ? ActiveNextBtn : ActiveNextBtn
           }
-          message={props.title === "Average cost basis" ? "No average cost basis found": "No transactions found"}
+          message={
+            props.title === "Average cost basis"
+              ? "No average cost basis found"
+              : "No transactions found"
+          }
           isLoading={props.isLoading}
+          // isStickyHead={props?.isStickyHead}
         />
       </div>
     );

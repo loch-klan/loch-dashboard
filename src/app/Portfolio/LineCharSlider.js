@@ -549,7 +549,7 @@ class LineChartSlider extends BaseReactComponent {
             });
           }
         });
-
+// console.log("all eve", selectedEvents)
       selectedEvents =
         selectedEvents &&
         selectedEvents.sort((a, b) => {
@@ -1122,6 +1122,8 @@ backdrop-filter: blur(15px);">
        padding: 0,
        boxShadow: "none",
      };
+    
+    // console.log("selected event",this.state.selectedEvents)
     return (
       <div
         className="welcome-card-section lineChartSlider"
@@ -1230,10 +1232,15 @@ backdrop-filter: blur(15px);">
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
-                  {this.props.dataLoaded  && (
+                  {this.props.dataLoaded && (
                     <h5
                       className="inter-display-medium f-s-10 lh-14"
-                      style={{ position: "absolute", right: "0px",top: !this.props.hideTimeFilter ? "-27px" : "-2px",zIndex: 1 }}
+                      style={{
+                        position: "absolute",
+                        right: "0px",
+                        top: !this.props.hideTimeFilter ? "-27px" : "-2px",
+                        zIndex: 1,
+                      }}
                     >
                       Don't worry we're still loading all your data
                     </h5>
@@ -1327,73 +1334,158 @@ backdrop-filter: blur(15px);">
                 </h4>
 
                 <div className="InternalEventWrapper">
-                  {this.state.selectedEvents?.length > 0 &&
-                    this.state.selectedEvents?.map((event, i) => {
-                      // console.log("first event", event);
+                  <div
+                    className="EventColumn"
+                    style={this.props.hideTimeFilter ? { width: "100%" } : {}}
+                  >
+                    {this.state.selectedEvents?.length > 0 &&
+                      this.state.selectedEvents
+                        ?.filter((e) => e.text === "from")
+                        .map((event, i) => {
+                          // console.log("first event", event);
 
-                      let count =
-                        Math.trunc(event.assetValue).toString().length > 6
-                          ? 0
-                          : 6 - Math.trunc(event.assetValue).toString().length;
-                      return (
-                        <>
-                          <div
-                            className="GreyChip"
-                            key={i}
-                            style={{
-                              width: `${
-                                this.state.selectedEvents.length === 1 ||
-                                this.props.hideTimeFilter
-                                  ? "100%"
-                                  : ""
-                              }`,
-                            }}
-                          >
-                            <h5 className="inter-display-bold f-s-13 lh-16 black-191">
-                              <Image src={DoubleArrow} />
-                              {event.text === "from" ? "Received" : "Sent"}
-                            </h5>
-
-                            <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
-                              <span>
-                                {event.assetValue.toFixed(count)}{" "}
-                                {event.assetCode}
-                                {` or `}
-                                <span className="inter-display-semi-bold">
-                                  {CurrencyType(false)}
-                                  {numToCurrency(event.usd)}
-                                </span>
-                                {event.text === "from"
-                                  ? " received from "
-                                  : " sent to "}
-                              </span>
-                              <CustomOverlay
-                                position="top"
-                                // className={"coin-hover-tooltip"}
-                                isIcon={false}
-                                isInfo={true}
-                                isText={true}
-                                text={event.tooltip}
+                          let count =
+                            Math.trunc(event.assetValue).toString().length > 6
+                              ? 0
+                              : 6 -
+                                Math.trunc(event.assetValue).toString().length;
+                          return (
+                            <>
+                              <div
+                                className="GreyChip"
+                                key={i}
+                                // style={{
+                                //   width: `${
+                                //     this.state.selectedEvents.length === 1 ||
+                                //     this.props.hideTimeFilter
+                                //       ? "100%"
+                                //       : ""
+                                //   }`,
+                                // }}
                               >
-                                <span style={{ cursor: "pointer" }}>
-                                  {this.state.selectedEvents.length === 1 &&
-                                  !this.props.hideTimeFilter
-                                    ? event.fulladdress
-                                    : event.address}
-                                  <Image
-                                    src={CopyClipboardIcon}
-                                    onClick={() =>
-                                      this.copyContent(event.fulladdress)
-                                    }
-                                    className="m-l-10 m-r-12 cp copy-icon"
-                                  />
-                                </span>
-                              </CustomOverlay>
-                            </p>
-                          </div>
-                        </>
-                      );
-                    })}
+                                <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                                  <Image src={DoubleArrow} />
+                                  {event.text === "from" ? "Received" : "Sent"}
+                                </h5>
+
+                                <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                                  <span>
+                                    {event.assetValue.toFixed(count)}{" "}
+                                    {event.assetCode}
+                                    {` or `}
+                                    <span className="inter-display-semi-bold">
+                                      {CurrencyType(false)}
+                                      {numToCurrency(event.usd)}
+                                    </span>
+                                    {event.text === "from"
+                                      ? " received from "
+                                      : " sent to "}
+                                  </span>
+                                  <CustomOverlay
+                                    position="top"
+                                    // className={"coin-hover-tooltip"}
+                                    isIcon={false}
+                                    isInfo={true}
+                                    isText={true}
+                                    text={event.tooltip}
+                                  >
+                                    <span style={{ cursor: "pointer" }}>
+                                      {/* {this.state.selectedEvents.length === 1 &&
+                                      !this.props.hideTimeFilter
+                                        ? event.fulladdress
+                                        : event.address} */}
+                                      {event.address}
+                                      <Image
+                                        src={CopyClipboardIcon}
+                                        onClick={() =>
+                                          this.copyContent(event.fulladdress)
+                                        }
+                                        className="m-l-10 m-r-12 cp copy-icon"
+                                      />
+                                    </span>
+                                  </CustomOverlay>
+                                </p>
+                              </div>
+                            </>
+                          );
+                        })}
+                  </div>
+                  <div
+                    className="EventColumn"
+                    style={this.props.hideTimeFilter ? { width: "100%" } : {}}
+                  >
+                    {this.state.selectedEvents?.length > 0 &&
+                      this.state.selectedEvents
+                        ?.filter((e) => e.text === "to")
+                        .map((event, i) => {
+                          // console.log("first event", event);
+
+                          let count =
+                            Math.trunc(event.assetValue).toString().length > 6
+                              ? 0
+                              : 6 -
+                                Math.trunc(event.assetValue).toString().length;
+                          return (
+                            <>
+                              <div
+                                className="GreyChip"
+                                key={i}
+                                // style={{
+                                //   width: `${
+                                //     this.state.selectedEvents.length === 1 ||
+                                //     this.props.hideTimeFilter
+                                //       ? "100%"
+                                //       : ""
+                                //   }`,
+                                // }}
+                              >
+                                <h5 className="inter-display-bold f-s-13 lh-16 black-191">
+                                  <Image src={DoubleArrow} />
+                                  {event.text === "from" ? "Received" : "Sent"}
+                                </h5>
+
+                                <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
+                                  <span>
+                                    {event.assetValue.toFixed(count)}{" "}
+                                    {event.assetCode}
+                                    {` or `}
+                                    <span className="inter-display-semi-bold">
+                                      {CurrencyType(false)}
+                                      {numToCurrency(event.usd)}
+                                    </span>
+                                    {event.text === "from"
+                                      ? " received from "
+                                      : " sent to "}
+                                  </span>
+                                  <CustomOverlay
+                                    position="top"
+                                    // className={"coin-hover-tooltip"}
+                                    isIcon={false}
+                                    isInfo={true}
+                                    isText={true}
+                                    text={event.tooltip}
+                                  >
+                                    <span style={{ cursor: "pointer" }}>
+                                      {/* {this.state.selectedEvents.length === 1 &&
+                                      !this.props.hideTimeFilter
+                                        ? event.fulladdress
+                                        : event.address} */}
+                                      {event.address}
+                                      <Image
+                                        src={CopyClipboardIcon}
+                                        onClick={() =>
+                                          this.copyContent(event.fulladdress)
+                                        }
+                                        className="m-l-10 m-r-12 cp copy-icon"
+                                      />
+                                    </span>
+                                  </CustomOverlay>
+                                </p>
+                              </div>
+                            </>
+                          );
+                        })}
+                  </div>
                 </div>
               </div>
             </>

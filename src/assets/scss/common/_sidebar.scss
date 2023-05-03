@@ -84,6 +84,7 @@
                 height: 22rem;
                 overflow-y: auto;
                 background: $secondary;
+                    left: -9px !important;
                 .dropdown-item{
                   display: flex;
                   justify-content: space-between;
