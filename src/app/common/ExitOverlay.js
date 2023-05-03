@@ -61,8 +61,7 @@ class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
     const dummyUser = localStorage.getItem("lochDummyUser");
-    let startDate = new Date();
-    startDate.setFullYear(startDate.getFullYear() - 1);
+    let startDate = moment().subtract(1, "month").toDate();
 
     // console.log("props add", props?.walletaddress);
 
