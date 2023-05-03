@@ -22,6 +22,12 @@ import UpgradeModal from '../common/upgradeModal';
 import { GetAllPlan, GetDefaultPlan, updateUserWalletApi } from '../common/Api';
 import LinkIconBtn from "../../assets/images/link.svg";
 
+// upload csv
+import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
+import FileIcon from "../../assets/images/icons/file-text.svg";
+import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
+import ClockIcon from "../../assets/images/icons/clock-icon.svg";
+import Papa from "papaparse";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -51,9 +57,218 @@ class AddWallet extends BaseReactComponent {
       GoToHome: false,
       connectExchange: true,
       deletedAddress: [],
+
+      // upload csv/txt
+      showWarningMsg: false,
+      uploadStatus: "Uploading",
+      // set pod id when we get response after creating new pod and,
+      // call getStatus api until isLoaded true
+      podId: null,
+      // if this true then show email message and done btn and stop call getStatus api
+      emailAdded: false,
+
+      // set false if email added or get Status
+      isIndexed: false,
+      email_notification: getCurrentUser().email,
+      fileName: null,
+      isChangeFile: false,
+      total_unique_address: 0,
     };
     this.timeout = 0;
   }
+
+  // upload csv
+  fileInputRef = React.createRef();
+  pasteInput = React.createRef();
+
+  EmailNotification = () => {
+    // send notification for that user
+    this.setState(
+      {
+        // isIndexed: true,
+        emailAdded: true,
+      },
+      () => {
+        // const data = new URLSearchParams();
+        // data.append("cohort_id", this.state.podId);
+        // notificationSend(data, this);
+      }
+    );
+  };
+
+  getPodStatusFunction = () => {
+    // get current status of address
+    // const data = new URLSearchParams();
+    // data.append("user_id", getCurrentUser().id);
+    // getPodStatus(data, this);
+    // setTimeout(() => {
+    //   if (!this.state.isIndexed && !this.state.emailAdded) {
+    //     this.getPodStatusFunction();
+    //   }
+    // }, 2000);
+  };
+
+  handleUpload = () => {
+    console.log("test", this.state.userPlan?.upload_csv);
+    if (this.state.userPlan?.upload_csv) {
+      this.fileInputRef.current.click();
+    } else {
+      console.log("test2");
+      this.setState(
+        {
+          triggerId: 8,
+        },
+        () => {
+          this.upgradeModal();
+        }
+      );
+    }
+    // console.log("upload click");
+  };
+
+  handleFileSelect = (event) => {
+    console.log("con");
+    const file = event.target.files[0];
+    const name = event.target.files[0]?.name;
+
+    // console.log(name)
+
+    if (this.state.showWarningMsg) {
+      this.setState({
+        walletInput: [
+          {
+            id: `wallet1`,
+            address: "",
+            coins: [],
+            displayAddress: "",
+            wallet_metadata: {},
+            nickname: "",
+            showAddress: true,
+            showNickname: true,
+            apiAddress: "",
+          },
+        ],
+        uploadStatus: "Uploading",
+        emailAdded: false,
+        isIndexed: false,
+        isChangeFile: true,
+        fileName: name,
+      });
+    } else {
+      this.setState({
+        fileName: name,
+      });
+    }
+
+    if (file.type === "text/csv" || file.type === "text/plain") {
+      Papa.parse(file, {
+        complete: (results) => {
+          this.setState({
+            showWarningMsg: true,
+          });
+          let addressList = [];
+          let prevAddressList = [];
+          this.state?.walletInput &&
+            this.state?.walletInput?.map((e) => {
+              if (e.address !== "" || e.displayAddress != "") {
+                prevAddressList.push(e);
+              }
+            });
+          let uploadedAddress = [];
+          results?.data?.map((e, i) => {
+            uploadedAddress.push(e[0]);
+            addressList.push({
+              id: `wallet${prevAddressList?.length + (i + 1)}`,
+              address: e[0],
+              coins: [],
+              displayAddress: e[0],
+              wallet_metadata: {},
+              nickname: "",
+              showAddress: true,
+              showNickname: true,
+              apiAddress: e[0],
+            });
+          });
+
+          // check
+          let total_address =
+            prevAddressList?.length +
+            addressList?.length + 1
+
+          if (
+            total_address <= this.state.userPlan?.whale_pod_address_limit ||
+            this.state.userPlan?.whale_pod_address_limit === -1
+          ) {
+            // WhalePodUploadFile({
+            //   session_id: getCurrentUser().id,
+            //   email_address: getCurrentUser().email,
+            //   addresses: uploadedAddress,
+            // });
+
+             let arr = [];
+             let total_address = 0;
+            this.setState(
+              {
+                walletInput: [...prevAddressList, ...addressList],
+              },
+              () => {
+                // call api to store pod
+                // this.state.addWalletList?.map((e) =>
+                //   this.getCoinBasedOnWalletAddress(e.id, e.address)
+                // );
+                // this.handleAddWallet();
+                
+                 for (let i = 0; i < this.state.walletInput.length; i++) {
+                   let curr = this.state.walletInput[i];
+                   if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+                     arr.push(curr.address.trim());
+                     arr.push(curr.displayAddress?.trim());
+                     arr.push(curr.apiAddress?.trim());
+                     total_address = total_address + 1;
+                   }
+                 }
+                
+                
+              }, () => {
+                this.setState({
+                  total_unique_address: total_address,
+                });
+              }
+            );
+          } else {
+            this.setState(
+              {
+                triggerId: 1,
+              },
+              () => {
+                this.upgradeModal();
+              }
+            );
+          }
+
+          // console.log(results.data, addressList, prevAddressList);
+        },
+      });
+    } else {
+      // console.log("Invalid file type. Only CSV and text files are allowed.");
+    }
+    event.target.value = "";
+  };
+
+  handleDone = () => {
+    
+    // this.state.onHide();
+
+    this.setState({
+      uploadStatus: "Uploading",
+      emailAdded: false,
+      isIndexed: false,
+      isChangeFile: true,
+      showWarningMsg: false,
+    });
+
+    
+  };
 
   // upgradeModal = () => {
 
@@ -358,7 +573,9 @@ class AddWallet extends BaseReactComponent {
       let addressList = [];
 
       let nicknameArr = {};
-
+      // if change not detected then we will detect on backend
+      let isChainDetected = [];
+      let total_address = 0;
       for (let i = 0; i < addWallet.length; i++) {
         let curr = addWallet[i];
         if (
@@ -372,8 +589,16 @@ class AddWallet extends BaseReactComponent {
           let address = curr.address.trim();
           nicknameArr[address] = curr.nickname;
           addressList.push(curr.address.trim());
+
+          isChainDetected.push(curr?.coinFound);
+          total_address = total_address + 1;
         }
       }
+
+      let chain_detechted =
+        isChainDetected.includes(undefined) || isChainDetected.includes(false)
+          ? false
+          : true;
 
       finalArr = finalArr?.map((item, index) => {
         return {
@@ -382,6 +607,7 @@ class AddWallet extends BaseReactComponent {
         };
       });
 
+      
       // console.log("final array", addressList);
 
       const data = new URLSearchParams();
@@ -390,6 +616,8 @@ class AddWallet extends BaseReactComponent {
       // data.append("link", );
       createAnonymousUserApi(data, this, finalArr, null);
       // console.log(finalArr);
+     
+
 
       const address = finalArr?.map((e) => e.address);
       // console.log("address", address);
@@ -443,6 +671,10 @@ class AddWallet extends BaseReactComponent {
       let displayAddress = [];
       let nicknameArr = {};
       let walletList = [];
+
+      // if change not detected then we will detect on backend
+      let isChainDetected = [];
+      let total_address = 0;
       for (let i = 0; i < this.state.walletInput.length; i++) {
         let curr = this.state.walletInput[i];
         // console.log(
@@ -460,6 +692,8 @@ class AddWallet extends BaseReactComponent {
           arr.push(curr.apiAddress?.trim());
           addressList.push(curr.address?.trim());
           //  console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
+          isChainDetected.push(curr?.coinFound);
+          total_address = total_address + 1;
         }
       }
 
@@ -470,6 +704,13 @@ class AddWallet extends BaseReactComponent {
       });
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
+      let chain_detechted =
+        isChainDetected.includes(undefined) || isChainDetected.includes(false)
+          ? false
+          : true;
+
+      
+
       // this.state?.onHide();
       const data = new URLSearchParams();
       // data.append("wallet_addresses", JSON.stringify(arr));
@@ -477,6 +718,13 @@ class AddWallet extends BaseReactComponent {
       data.append("wallet_addresses", JSON.stringify(addressList));
 
       updateUserWalletApi(data, this);
+
+     
+
+      // if (!this.state.showWarningMsg) {
+      //   this.state.onHide();
+      //   // this.state.changeList && this.state.changeList(walletList);
+      // }
       // this.state.changeList && this.state.changeList(walletList);
       // if (this.props.handleUpdateWallet) {
       //     this.props.handleUpdateWallet()

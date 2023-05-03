@@ -136,9 +136,11 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleUpload = () => {
+    console.log("test", this.state.userPlan?.upload_csv);
     if (this.state.userPlan?.upload_csv) {
       this.fileInputRef.current.click();
     } else {
+      console.log("test2")
       this.setState(
         {
           triggerId: 8,
@@ -152,6 +154,7 @@ class FixAddModal extends BaseReactComponent {
   };
 
   handleFileSelect = (event) => {
+    console.log("con")
     const file = event.target.files[0];
     const name = event.target.files[0]?.name;
 
