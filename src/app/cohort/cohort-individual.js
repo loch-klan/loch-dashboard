@@ -993,7 +993,7 @@ class CohortPage extends BaseReactComponent {
                                 marginRight: "0.8rem",
                               }}
                             >
-                              Yield
+                              Credit
                             </span>
                             <span
                               className="inter-display-medium f-s-16 lh-19"

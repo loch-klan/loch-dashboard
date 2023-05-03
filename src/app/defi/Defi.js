@@ -410,7 +410,7 @@ class Defi extends Component {
                           className="inter-display-semi-bold f-s-16 lh-19"
                           style={{ color: "#636467", marginRight: "0.8rem" }}
                         >
-                          Yield
+                          Credit
                         </span>
                         <span
                           className="inter-display-medium f-s-16 lh-19"

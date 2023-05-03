@@ -1308,7 +1308,7 @@ class PieChart2 extends BaseReactComponent {
                               : { color: "#636467", marginRight: "0.8rem" }
                           }
                         >
-                          Yield
+                          Credit
                         </span>
                         <span
                           className="inter-display-regular f-s-16 lh-19"
