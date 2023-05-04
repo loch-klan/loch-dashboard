@@ -57,6 +57,7 @@ import Papa from "papaparse";
 import { updateUser } from '../profile/Api';
 import UpgradeModal from './upgradeModal';
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
+import { Form as FormB } from "react-bootstrap";
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -185,6 +186,7 @@ class ExitOverlay extends BaseReactComponent {
       isChangeFile: false,
       podnameError: false,
       total_unique_address: 0,
+      switchselected: false,
     };
   }
 
@@ -1126,6 +1128,31 @@ class ExitOverlay extends BaseReactComponent {
                         })}
                         {/* <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span> */}
                       </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: "1rem",
+                        }}
+                        className="export-switch"
+                      >
+                        <FormB.Check
+                          type="switch"
+                          id="custom-switch-dust"
+                          label={
+                            this.state.switchselected
+                              ? "Remove dust"
+                              : "Keep dust"
+                          }
+                          checked={this.state.switchselected}
+                          onChange={(e) => {
+                            this.setState({
+                              switchselected: e.target.checked,
+                            });
+                          }}
+                        />
+                      </div>
                       {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
                       {/* <div onClick={()=>this.handleExportNow()} > */}
                       {this.state.loadingExportFile === true ? (
@@ -1354,8 +1381,8 @@ class ExitOverlay extends BaseReactComponent {
                                 }`}
                                 type="button"
                                 onClick={this.handleUpload}
-                                    >
-                                      <Image src={UploadIcon} />
+                              >
+                                <Image src={UploadIcon} />
                                 Upload CSV / Text file
                               </Button>
                               <div>

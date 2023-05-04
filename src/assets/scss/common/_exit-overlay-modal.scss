@@ -354,6 +354,7 @@
               }
             }
           }
+          
           .loading-export {
             height: 5.3rem;
             img {
@@ -379,6 +380,25 @@
               color: $black-191;
               background-color: $secondary;
             }
+          }
+
+          .export-switch{
+            .custom-switch {
+  padding-left: 1.2rem;
+  user-select: none;
+  width: max-content;
+  // transform: scale(1.45) translateX(2.6rem);
+  transform: scale(1.45);
+  cursor: pointer;
+
+  // input {
+  //   cursor: pointer;
+  // }
+
+  // label {
+  //   @include font($primary, "Inter-Medium", 0.9rem, 500, 15px);
+  // }
+}
           }
         }
       }
