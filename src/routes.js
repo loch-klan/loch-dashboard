@@ -95,19 +95,19 @@ const routes = [
     component: Wallet,
   },
   {
-    path: "/whale-watching",
-    name: "Whale Watching",
+    path: "/whale-watch",
+    name: "Whale Watch",
     type: PrivateRoute,
     component: Cohort,
   },
   {
-    path: "/whale-watching/:cohortName",
+    path: "/whale-watch/:cohortName",
     name: "Whale Watching Page",
     type: PrivateRoute,
     component: CohortPage,
   },
   {
-    path: "/whale-watching/:userId/:podName",
+    path: "/whale-watch/:userId/:podName",
     name: "Whale Watching Share",
     type: PrivateRoute,
     component: CohortSharePage,

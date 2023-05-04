@@ -180,7 +180,7 @@ class PodCard extends Component {
                     pod_name: item?.name,
                   });
                   this.props.history.push({
-                    pathname: `/whale-watching/${item?.slug}`,
+                    pathname: `/whale-watch/${item?.slug}`,
                     state: {
                       id: item?.id,
                       cohortWalletList: item?.wallet_address_details,
@@ -199,7 +199,7 @@ class PodCard extends Component {
                   pod_name: item?.name,
                 });
                 this.props.history.push({
-                  pathname: `/whale-watching/${item?.slug}`,
+                  pathname: `/whale-watch/${item?.slug}`,
                   state: {
                     id: item?.id,
                     cohortWalletList: item?.wallet_address_details,

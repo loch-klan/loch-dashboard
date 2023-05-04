@@ -83,7 +83,7 @@ export const deleteCohort = (data, ctx) => {
       if (!res.data.error) {
         ctx.props.apiResponse(true);
         if (ctx.props.isEdit && ctx.props.isRedirect) {
-          ctx.props.history.push("/whale-watching");
+          ctx.props.history.push("/whale-watch");
         }
         // console.log("delete cohort", res.data.data);
       } else {
@@ -237,7 +237,7 @@ export const getCohort = (data, ctx) => {
           ctx.getDefiDetail();
           
         } else {
-          ctx.props.history.push("/whale-watching");
+          ctx.props.history.push("/whale-watch");
         }
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -563,7 +563,7 @@ export const CopyCohort = (data, ctx) => {
               JSON.stringify({ access: false, id: res.data.data.cohort.id })
             );
             ctx.props.history.push({
-              pathname: `/whale-watching/${res.data.data.cohort.slug}`,
+              pathname: `/whale-watch/${res.data.data.cohort.slug}`,
               state: {
                 id: res.data.data.cohort.id,
                 // cohortWalletList: item?.wallet_address_details,
@@ -584,7 +584,7 @@ export const CopyCohort = (data, ctx) => {
         }
         else {
               ctx.props.history.push({
-                pathname: `/whale-watching/${res.data.data.cohort.slug}`,
+                pathname: `/whale-watch/${res.data.data.cohort.slug}`,
                 state: {
                   id: res.data.data.cohort.id,
                   // cohortWalletList: item?.wallet_address_details,
@@ -597,7 +597,7 @@ export const CopyCohort = (data, ctx) => {
     
       } else {
         toast.error(res.data.message || "Something Went Wrong");
-         ctx.props.history.push(`/whale-watching`);
+         ctx.props.history.push(`/whale-watch`);
       }
     });
 };
