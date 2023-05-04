@@ -672,7 +672,7 @@ class CohortPage extends BaseReactComponent {
     let userId = getCurrentUser().id;
     let shareLink =
       BASE_URL_S3 +
-      "whale-watching/" +
+      "whale-watch/" +
       userId +
       "/" +
       this.props.match.params.cohortName;

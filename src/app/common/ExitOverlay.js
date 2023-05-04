@@ -1142,8 +1142,8 @@ class ExitOverlay extends BaseReactComponent {
                           id="custom-switch-dust"
                           label={
                             this.state.switchselected
-                              ? "Remove dust"
-                              : "Keep dust"
+                              ? "keep dust"
+                              : "remove dust"
                           }
                           checked={this.state.switchselected}
                           onChange={(e) => {
