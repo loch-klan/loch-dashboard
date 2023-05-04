@@ -175,7 +175,7 @@ class CohortSharePage extends Component {
       },
       () => {
         if (!this.state.upgradeModal) {
-          this.props.history.push("/whale-watching");
+          this.props.history.push("/whale-watch");
         }
       }
     );

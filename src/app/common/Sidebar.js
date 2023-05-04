@@ -554,7 +554,7 @@ function Sidebar(props) {
                       <li>
                         <NavLink
                           className="nav-link"
-                          to={"/whale-watching"}
+                          to={"/whale-watch"}
                           onClick={(e) => {
                             if (!isWallet) {
                               e.preventDefault();
@@ -569,12 +569,12 @@ function Sidebar(props) {
                         >
                           <Image
                             src={
-                              activeTab === "/whale-watching"
+                              activeTab === "/whale-watch"
                                 ? ActiveCohortIcon
                                 : CohortIcon
                             }
                           />
-                          Whale Watching
+                          Whale Watch
                         </NavLink>
                       </li>
 
