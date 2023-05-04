@@ -4,6 +4,7 @@ import CoinBadges from './CoinBadges';
 import { BarGraphFooter } from './BarGraphFooter';
 import { connect } from "react-redux";
 import { Form, Image } from 'react-bootstrap'
+import GraphLogo from "../../assets/images/graph-logo.svg";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -24,17 +25,22 @@ import { info } from '../intelligence/stackGrapgh';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HC_rounded from "highcharts-rounded-corners";
+import ChartjsPluginWatermark from "chartjs-plugin-watermark";
+
 HC_rounded(Highcharts);
 // import { BarGraphSection } from './BarGraphSection';
 
 ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartjsPluginWatermark
 );
+
+
 
 class BarGraphSection extends Component {
   constructor(props) {

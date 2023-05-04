@@ -735,7 +735,25 @@ class LineChartSlider extends BaseReactComponent {
               });
             }
           },
-       
+          load: function () {
+            // Get the renderer
+            const renderer = this.renderer;
+
+            const chartWidth = this.chartWidth;
+            const chartHeight = this.chartHeight;
+            const imageWidth = 104; // Set the width of the image
+            const imageHeight = 39; // Set the height of the image
+            const x = (chartWidth - imageWidth) / 2;
+            const y = (chartHeight - imageHeight) / 2.5;
+
+            // Add a text element for the watermark
+            renderer
+              .image(GraphLogo, x, y, imageWidth, imageHeight)
+              .attr({
+                zIndex: 99, // Set the zIndex so it appears above the chart
+              })
+              .add();
+          },
         },
 
         zoomType: "x",
