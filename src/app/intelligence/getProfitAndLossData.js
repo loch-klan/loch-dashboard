@@ -4,7 +4,7 @@ import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
 import { netflowInflowHover, netflowNetHover, netflowOutflowHover, ProfitLossHover } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { useHistory } from "react-router-dom";
-
+import GraphLogo from "../../assets/images/graph-logo.svg";
 export const getProfitAndLossData = (arr, parentctx) => {
   // console.log("array", arr);
 
@@ -17,6 +17,10 @@ export const getProfitAndLossData = (arr, parentctx) => {
   //   outflows * currency.rate, inflows * currency.rate,
   //   Math.abs(outflows * currency.rate - inflows * currency.rate)
   // );
+
+  let GraphLogoImage = new Image();
+  GraphLogoImage.src = GraphLogo;
+
   const labels = ["Inflows", "Outflows", "Net"];
   const profitOrLossData = {
     profit: {
@@ -102,18 +106,20 @@ export const getProfitAndLossData = (arr, parentctx) => {
           label: (ctx) => {
             let label =
               ctx.label + ": " + CurrencyType(false) + numToCurrency(ctx.raw);
-           
+
             // console.log(
             //   "net",
             //   ctx.label,
             //   parentctx.props.history.location.pathname.substring(1)
             // );
-            if (parentctx.props.history.location.pathname.substring(1) === "home") {
-               ProfitLossHover({
-                 session_id: getCurrentUser().id,
-                 email_address: getCurrentUser().email,
-                 hover_value: CurrencyType(false) + numToCurrency(ctx.raw),
-               });
+            if (
+              parentctx.props.history.location.pathname.substring(1) === "home"
+            ) {
+              ProfitLossHover({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+                hover_value: CurrencyType(false) + numToCurrency(ctx.raw),
+              });
             } else {
               if (ctx.label === "Net") {
                 netflowNetHover({
@@ -135,7 +141,7 @@ export const getProfitAndLossData = (arr, parentctx) => {
                 });
               }
             }
-              
+
             return [label];
           },
           labelColor: function (context) {
@@ -148,6 +154,22 @@ export const getProfitAndLossData = (arr, parentctx) => {
           },
         },
       },
+    },
+    watermark: {
+      image: GraphLogoImage,
+
+      x: 0,
+      y: 30,
+
+      width: 104,
+      height: 39,
+
+      opacity: 1,
+
+      alignX: "middle",
+      alignY: "middle",
+
+      position: "back",
     },
     scales: {
       y: {

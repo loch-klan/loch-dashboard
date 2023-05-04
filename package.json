@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "chart.js": "^3.9.1",
+    "chartjs-plugin-watermark": "^2.0.2",
     "date-fns": "^2.27.0",
     "ethers": "^5.7.2",
     "highcharts": "^10.2.1",

@@ -9,6 +9,8 @@ import CoinBadges from "./../common/CoinBadges";
 import DropDown from "../common/DropDown";
 import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
 import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
+
+import GraphLogo from "../../assets/images/graph-logo.svg";
 import { GroupByOptions, Months } from "../../utils/Constant";
 import {
   AssetValueFilter,
@@ -733,7 +735,27 @@ class LineChartSlider extends BaseReactComponent {
               });
             }
           },
+          load: function () {
+            // Get the renderer
+            const renderer = this.renderer;
+
+            const chartWidth = this.chartWidth;
+            const chartHeight = this.chartHeight;
+            const imageWidth = 104; // Set the width of the image
+            const imageHeight = 39; // Set the height of the image
+            const x = (chartWidth - imageWidth) / 2;
+            const y = (chartHeight - imageHeight) / 2.5;
+
+            // Add a text element for the watermark
+            renderer
+              .image(GraphLogo, x, y, imageWidth, imageHeight)
+              .attr({
+                zIndex: 99, // Set the zIndex so it appears above the chart
+              })
+              .add();
+          },
         },
+
         zoomType: "x",
       },
       credits: {
@@ -759,8 +781,6 @@ class LineChartSlider extends BaseReactComponent {
       xAxis: {
         events: {
           setExtremes(e) {
-
-            
             let diff = Math.round(e.max - e.min);
 
             if (parent.props.hideTimeFilter) {

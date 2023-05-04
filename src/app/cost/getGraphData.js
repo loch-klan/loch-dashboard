@@ -3,6 +3,7 @@ import { CounterpartyFeesSpecificBar, FeesSpecificBar, HomeCounterPartyHover } f
 import { DEFAULT_PRICE } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { amountFormat, CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
+import GraphLogo from "../../assets/images/graph-logo.svg";
 
 export const getGraphData = (apidata, parentCtx) => {
   let arr = apidata?.gas_fee_overtime;
@@ -16,7 +17,8 @@ export const getGraphData = (apidata, parentCtx) => {
   let digit = 3;
   //  console.log("state", apidata);
   const labels = arr ? arr?.map((e) => e?.chain ? e?.chain?.name : e?.exchange) : [];
-
+  let GraphLogoImage = new Image();
+  GraphLogoImage.src = GraphLogo;
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -31,21 +33,21 @@ export const getGraphData = (apidata, parentCtx) => {
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: '#ffffff',
+        backgroundColor: "#ffffff",
         // fontColor: '#000000',
         intersect: false,
-        color: '#000000',
+        color: "#000000",
         padding: 12,
         borderWidth: 1,
-        borderColor: '#E5E7EB',
+        borderColor: "#E5E7EB",
         // boxPadding: 5,
         bodyFont: {
-          family: 'Inter-Medium',
+          family: "Inter-Medium",
           size: 13,
         },
         bodySpacing: 8,
         callbacks: {
-          title: function () { }, //REMOVE TITLE
+          title: function () {}, //REMOVE TITLE
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
@@ -65,8 +67,12 @@ export const getGraphData = (apidata, parentCtx) => {
               CurrencyType(false) +
               numToCurrency(ctx.raw) +
               ")";
-              ;
-            let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalVolume[ctx.dataIndex] * currency.rate);
+            let label1 =
+              "Volume: " +
+              CurrencyType(false) +
+              numToCurrency(
+                ctx.dataset.totalVolume[ctx.dataIndex] * currency.rate
+              );
             FeesSpecificBar({
               session_id: getCurrentUser().id,
               email_address: getCurrentUser().email,
@@ -80,10 +86,26 @@ export const getGraphData = (apidata, parentCtx) => {
             };
           },
           labelTextColor: function (context) {
-            return '#19191A';
-          }
+            return "#19191A";
+          },
         },
       },
+    },
+    watermark: {
+      image: GraphLogoImage,
+
+      x: 0,
+      y: 30,
+
+      width: 104,
+      height: 39,
+
+      opacity: 1,
+
+      alignX: "middle",
+      alignY: "middle",
+
+      position: "back",
     },
     scales: {
       y: {
@@ -109,21 +131,19 @@ export const getGraphData = (apidata, parentCtx) => {
             // console.log('value',value);
             // console.log('index',index);
             // console.log('ticks',ticks);
-            let val = Number(noExponents(value).toLocaleString('en-US'))
+            let val = Number(noExponents(value).toLocaleString("en-US"));
             if (
               digit <
               CurrencyType(false).length + numToCurrency(val).length
             ) {
-              digit =
-                CurrencyType(false).length + numToCurrency(val).length;
+              digit = CurrencyType(false).length + numToCurrency(val).length;
               parentCtx.setState({
                 GraphDigit: digit,
               });
             }
 
-
             return CurrencyType(false) + numToCurrency(val);
-          }
+          },
         },
         grid: {
           drawBorder: false,
@@ -270,7 +290,8 @@ export const getCounterGraphData = (arr, parentCtx) => {
   let digit = 3;
 
   const labels = arr?.map((e) => e._id);
-
+let GraphLogoImage = new Image();
+GraphLogoImage.src = GraphLogo;
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -279,32 +300,39 @@ export const getCounterGraphData = (arr, parentCtx) => {
         top: 15,
       },
     },
+
     plugins: {
       legend: {
         display: false,
       },
       tooltip: {
         displayColors: false,
-        backgroundColor: '#ffffff',
+        backgroundColor: "#ffffff",
         // fontColor: '#000000',
         intersect: false,
-        color: '#000000',
+        color: "#000000",
         padding: 12,
         borderWidth: 1,
-        borderColor: '#E5E7EB',
+        borderColor: "#E5E7EB",
         // boxPadding: 5,
         bodyFont: {
-          family: 'Inter-Medium',
+          family: "Inter-Medium",
           size: 13,
         },
         bodySpacing: 8,
         callbacks: {
-          title: function() {}, //REMOVE TITLE
+          title: function () {}, //REMOVE TITLE
           label: (ctx) => {
             // console.log('ctx',ctx);
             let label00 = ctx.label;
-              let label0 = "Fees: " + CurrencyType(false) + numToCurrency(ctx.dataset.totalFees[ctx.dataIndex]);
-            let label1 = "Volume: " + CurrencyType(false) + numToCurrency(ctx.raw * currency.rate);
+            let label0 =
+              "Fees: " +
+              CurrencyType(false) +
+              numToCurrency(ctx.dataset.totalFees[ctx.dataIndex]);
+            let label1 =
+              "Volume: " +
+              CurrencyType(false) +
+              numToCurrency(ctx.raw * currency.rate);
             parentCtx.state.currentPage === "Home"
               ? HomeCounterPartyHover({
                   session_id: getCurrentUser().id,
@@ -316,18 +344,34 @@ export const getCounterGraphData = (arr, parentCtx) => {
                   email_address: getCurrentUser().email,
                   counterparty_selected: [label00, label1, label0],
                 });
-              return [label00, label1, label0];
+            return [label00, label1, label0];
           },
-          labelColor: function(context) {
+          labelColor: function (context) {
             return {
-                padding: 10,
+              padding: 10,
             };
-        },
-          labelTextColor: function(context) {
-            return '#19191A';
-        }
+          },
+          labelTextColor: function (context) {
+            return "#19191A";
+          },
         },
       },
+    },
+    watermark: {
+      image: GraphLogoImage,
+
+      x: 0,
+      y: 30,
+
+      width: 104,
+      height: 39,
+
+      opacity: 1,
+
+      alignX: "middle",
+      alignY: "middle",
+
+      position: "back",
     },
     scales: {
       y: {
@@ -349,21 +393,20 @@ export const getCounterGraphData = (arr, parentCtx) => {
           family: "Inter-Medium",
           weight: 400,
           color: "#B0B1B3",
-          callback: function(value, index, ticks) {
-            let val = Number(noExponents(value).toLocaleString('en-US'))
-               if (
-                 digit <
-                 CurrencyType(false).length + numToCurrency(val).length
-               ) {
-                 digit = CurrencyType(false).length + numToCurrency(val).length;
-                 parentCtx.setState({
-                   counterGraphDigit: digit
-                 })
-               }
-
+          callback: function (value, index, ticks) {
+            let val = Number(noExponents(value).toLocaleString("en-US"));
+            if (
+              digit <
+              CurrencyType(false).length + numToCurrency(val).length
+            ) {
+              digit = CurrencyType(false).length + numToCurrency(val).length;
+              parentCtx.setState({
+                counterGraphDigit: digit,
+              });
+            }
 
             return CurrencyType(false) + numToCurrency(val);
-          }
+          },
         },
         grid: {
           drawBorder: false,
@@ -383,9 +426,9 @@ export const getCounterGraphData = (arr, parentCtx) => {
           minRotation: 0,
           autoSkip: false,
           // Truncate x axis labels to solve overlapping issue
-          callback: function(value, index, ticks) {
+          callback: function (value, index, ticks) {
             return this.getLabelForValue(value)?.substr(0, 15) || "Other";
-          }
+          },
         },
         grid: {
           display: false,
