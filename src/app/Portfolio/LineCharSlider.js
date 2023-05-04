@@ -9,6 +9,8 @@ import CoinBadges from "./../common/CoinBadges";
 import DropDown from "../common/DropDown";
 import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
 import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
+
+import GraphLogo from "../../assets/images/graph-logo.svg";
 import { GroupByOptions, Months } from "../../utils/Constant";
 import {
   AssetValueFilter,
@@ -733,7 +735,9 @@ class LineChartSlider extends BaseReactComponent {
               });
             }
           },
+       
         },
+
         zoomType: "x",
       },
       credits: {
@@ -759,8 +763,6 @@ class LineChartSlider extends BaseReactComponent {
       xAxis: {
         events: {
           setExtremes(e) {
-
-            
             let diff = Math.round(e.max - e.min);
 
             if (parent.props.hideTimeFilter) {
