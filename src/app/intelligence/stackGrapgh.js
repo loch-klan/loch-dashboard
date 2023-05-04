@@ -1,4 +1,5 @@
 import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
+import GraphLogo from "../../assets/images/graph-logo.svg";
 
 const labels = [
   "Inflow",
@@ -68,6 +69,27 @@ const options = {
   chart: {
     type: "column",
     spacingBottom: 35,
+    events: {
+      load: function () {
+        // Get the renderer
+        const renderer = this.renderer;
+
+        const chartWidth = this.chartWidth;
+        const chartHeight = this.chartHeight;
+        const imageWidth = 104; // Set the width of the image
+        const imageHeight = 39; // Set the height of the image
+        const x = (chartWidth - imageWidth) / 2;
+        const y = (chartHeight - imageHeight) / 2.5;
+
+        // Add a text element for the watermark
+        renderer
+          .image(GraphLogo, x, y, imageWidth, imageHeight)
+          .attr({
+            zIndex: 1, // Set the zIndex so it appears above the chart
+          })
+          .add();
+      },
+    },
   },
 
   credits: {
@@ -151,7 +173,11 @@ const options = {
             y: item.y,
             color: item?.point?.borderColor,
           });
-        } else if (item.key !== "Other" && item.key !== "Net" && item.key !== "Fees") {
+        } else if (
+          item.key !== "Other" &&
+          item.key !== "Net" &&
+          item.key !== "Fees"
+        ) {
           tooltipData.push({
             name: item.key,
             x: item.x,
