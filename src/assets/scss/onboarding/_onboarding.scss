@@ -19,6 +19,10 @@
       border-top-right-radius: 1.3rem;
       border-top-left-radius: 1.3rem;
       background-position: center;
+
+
+   
+
       .ob-modal-title-icon {
         width: 6rem;
       }
@@ -57,6 +61,82 @@
     .modal-body {
       padding: 4rem 0 3.6rem;
       text-align: center;
+
+         // uploaad csv
+        .form-wrapper {
+              background: rgba(229, 229, 230, 0.5);
+              border-radius: 12px;
+              position: relative;
+              padding: 2.5rem;
+              text-align: center;
+
+              img {
+                position: absolute;
+                top: -1rem;
+                right: 3rem;
+                filter: brightness(0.5);
+              }
+              .email-section {
+                form {
+                  display: flex;
+                  align-items: start;
+
+                  .form-group {
+                    margin-right: 2rem;
+                    margin-bottom: 0;
+
+                    .has-error {
+                      text-align: left;
+                    }
+                    .form-control {
+                      padding: 1.8rem 2rem 1.8rem 2rem;
+                      height: 5.5rem;
+                      width: 30rem;
+                      margin-bottom: 0;
+                    }
+
+                    .is-valid {
+                      border: 0.1rem solid #19191A;
+                      border-radius: 0.8rem;
+                      box-shadow: 0rem 0.8rem 2.2rem -0.6rem rgba(24, 39, 75, 0.12),
+                        0rem 1.4rem 6.4rem -0.4rem rgba(24, 39, 75, 0.12);
+                      // padding: 2.7rem 10.1rem 2.7rem 2.8rem;
+                      padding-right: 2rem !important;
+                    }
+
+                    .is-invalid {
+                      padding-right: 2rem !important;
+                    }
+                  }
+
+                  .save-btn-section {
+                    margin: 0;
+                    .save-btn {
+                      padding: 1.7rem 5.1rem;
+                      background-color: #B0B1B3;
+                      border-radius: 0.8rem;
+                      border: 1px solid #B0B1B3;
+                    }
+
+                    .active {
+                      background-color: #19191A;
+                      border: 1px solid #19191A;
+                      &:hover {
+                        border-color: #ffffff;
+                        box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+                          0px 1rem 1rem rgba(0, 0, 0, 0.04);
+                        color: #19191A;
+                        background-color: #ffffff;
+                      }
+                    }
+
+                    .save-btn:focus {
+                      box-shadow: none;
+                    }
+                  }
+                }
+              }
+            }
 
       .ob-modal-body-1 {
         overflow-y: auto;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {BaseReactComponent, Form} from "../../utils/form";
+import {BaseReactComponent, CustomTextControl, Form, FormElement, FormValidator} from "../../utils/form";
 import { connect } from "react-redux";
 import { Button, Image } from "react-bootstrap";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
@@ -109,11 +109,11 @@ class AddWallet extends BaseReactComponent {
   };
 
   handleUpload = () => {
-    console.log("test", this.state.userPlan?.upload_csv);
+    // console.log("test", this.state.userPlan?.upload_csv);
     if (this.state.userPlan?.upload_csv) {
       this.fileInputRef.current.click();
     } else {
-      console.log("test2");
+      // console.log("test2");
       this.setState(
         {
           triggerId: 8,
@@ -127,7 +127,7 @@ class AddWallet extends BaseReactComponent {
   };
 
   handleFileSelect = (event) => {
-    console.log("con");
+    // console.log("con");
     const file = event.target.files[0];
     const name = event.target.files[0]?.name;
 
@@ -170,7 +170,8 @@ class AddWallet extends BaseReactComponent {
           let prevAddressList = [];
           this.state?.walletInput &&
             this.state?.walletInput?.map((e) => {
-              if (e.address !== "" || e.displayAddress != "") {
+             
+              if (e.address !== "") {
                 prevAddressList.push(e);
               }
             });
@@ -190,6 +191,8 @@ class AddWallet extends BaseReactComponent {
             });
           });
 
+          // console.log("state", this.state.walletInput, prevAddressList, addressList);
+
           // check
           let total_address =
             prevAddressList?.length +
@@ -204,35 +207,49 @@ class AddWallet extends BaseReactComponent {
             //   email_address: getCurrentUser().email,
             //   addresses: uploadedAddress,
             // });
-
+     
              let arr = [];
              let total_address = 0;
             this.setState(
               {
                 walletInput: [...prevAddressList, ...addressList],
               },
+
+              
               () => {
                 // call api to store pod
-                // this.state.addWalletList?.map((e) =>
-                //   this.getCoinBasedOnWalletAddress(e.id, e.address)
-                // );
+                this.state.walletInput?.slice(0,10).map((e) =>
+                  this.getCoinBasedOnWalletAddress(e.id, e.address)
+                );
+
+                
                 // this.handleAddWallet();
-                
-                 for (let i = 0; i < this.state.walletInput.length; i++) {
-                   let curr = this.state.walletInput[i];
-                   if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
-                     arr.push(curr.address.trim());
-                     arr.push(curr.displayAddress?.trim());
-                     arr.push(curr.apiAddress?.trim());
-                     total_address = total_address + 1;
-                   }
+               
+               const promises = [];
+               for (let i = 0; i < this.state.walletInput.length; i++) {
+                 let curr = this.state.walletInput[i];
+                 if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+                   arr.push(curr.address.trim());
+                   arr.push(curr.displayAddress?.trim());
+                   arr.push(curr.apiAddress?.trim());
+                   total_address = total_address + 1;
                  }
+                 promises.push(Promise.resolve());
+               }
+
+               Promise.all(promises).then(() => {
+               
+                 this.setState({
+                   total_unique_address: total_address,
+                   addButtonVisible: this.state.walletInput.some((wallet) =>
+                     wallet.address ? true : false
+                   ),
+                 });
+               });
+                
+                 
                 
                 
-              }, () => {
-                this.setState({
-                  total_unique_address: total_address,
-                });
               }
             );
           } else {
@@ -787,188 +804,216 @@ class AddWallet extends BaseReactComponent {
   render() {
     return (
       <>
-        <Form
-          onValidSubmit={
-            this.state.addButtonVisible
-              ? this.onValidSubmit
-              : this.handleSignText
-          }
-        >
-          <div className="ob-modal-body-wrapper">
-            <div className="ob-modal-body-1">
-              {this.state.walletInput?.map((c, index) => {
-                // console.log(c);
-                return (
-                  <div
-                    className={`ob-wallet-input-wrapper ${
-                      this.state.walletInput[index].address ? "is-valid" : null
-                    }`}
-                    style={
-                      index == this.state.walletInput.length - 1
-                        ? { marginBottom: 0 }
-                        : {}
-                    }
-                    key={index}
-                    id={`add-wallet-${index}`}
-                    // onFocus={(e) => {
-                    //   console.log(e);
-                    //   this.FocusInInput(`wallet${index + 1}`);
-                    // }}
-                    // onBlur={(e) => {
-                    //   console.log(e);
-                    //   this.FocusOutInput(`wallet${index + 1}`);
-                    // }}
-                  >
-                    <>
-                      {this.state.walletInput.length > 1 ? (
-                        <Image
-                          key={index}
-                          className={`ob-modal-body-del`}
-                          // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
-                          src={DeleteIcon}
-                          onClick={() => this.deleteInputField(index, c)}
-                        />
-                      ) : null}
-                      {c.showAddress && (
-                        <input
-                          autoFocus
-                          name={`wallet${index + 1}`}
-                          value={c.address || ""}
-                          className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text`}
-                          placeholder="Paste any wallet address or ENS here"
-                          title={c.address || ""}
-                          // style={{paddingRight: divWidth}}
-                          style={getPadding(
-                            `add-wallet-${index}`,
-                            c,
-                            this.props.OnboardingState
-                          )}
-                          // onKeyUp={(e) => this.setState({ loading: true })}
-                          onChange={(e) => this.handleOnChange(e)}
-                          // tabIndex={index}
-                          onKeyDown={this.handleTabPress}
-                          onFocus={(e) => {
-                            // console.log(e);
-                            this.FocusInInput(e);
-                          }}
-                          // onBlur={(e) => {
-                          //   // console.log(e);
-                          //   // this.FocusOutInput(e);
-                          // }}
-                        />
-                      )}
-                      {c.coinFound && c.showNickname && (
-                        <input
-                          name={`wallet${index + 1}`}
-                          value={c.nickname || ""}
-                          className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text`}
-                          placeholder="Enter nickname"
-                          title={c.nickname || ""}
-                          // style={{paddingRight: divWidth}}
-                          style={getPadding(
-                            `add-wallet-nickname-${index}`,
-                            c,
-                            this.props.OnboardingState
-                          )}
-                          // onKeyUp={(e) => this.setState({ loading: true })}
-                          onChange={(e) => {
-                            this.nicknameOnChain(e);
-                            // console.log(e.target)
-                          }}
-                          onBlur={(e) => {
-                            // console.log(e);
-                            // this.FocusOutInput(e);
-                            LandingPageNickname({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                              nickname: e.target?.value,
-                              address: c.address,
-                            });
-                          }}
-                          // autoFocus
-                          onFocus={(e) => {
-                            // console.log(e);
-                            this.FocusInInput(e);
-                          }}
-                        />
-                      )}
-                      {this.state.walletInput?.map((e, i) => {
-                        if (
-                          this.state.walletInput[index].address &&
-                          e.id === `wallet${index + 1}`
-                        ) {
-                          // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                          if (e.coinFound && e.coins.length > 0) {
-                            return (
-                              <CustomChip
-                                coins={e.coins.filter((c) => c.chain_detected)}
-                                key={i}
-                                isLoaded={true}
-                              ></CustomChip>
-                            );
-                          } else {
-                            if (
-                              e.coins.length ===
-                              this.props.OnboardingState.coinsList.length
-                            ) {
+        {!this.state.showWarningMsg ? (
+          <Form
+            onValidSubmit={
+              this.state.addButtonVisible
+                ? this.onValidSubmit
+                : this.handleSignText
+            }
+          >
+            <div className="ob-modal-body-wrapper">
+              <div className="ob-modal-body-1">
+                {this.state.walletInput?.map((c, index) => {
+                  // console.log(c);
+                  return (
+                    <div
+                      className={`ob-wallet-input-wrapper ${
+                        this.state.walletInput[index].address
+                          ? "is-valid"
+                          : null
+                      }`}
+                      style={
+                        index == this.state.walletInput.length - 1
+                          ? { marginBottom: 0 }
+                          : {}
+                      }
+                      key={index}
+                      id={`add-wallet-${index}`}
+                      // onFocus={(e) => {
+                      //   console.log(e);
+                      //   this.FocusInInput(`wallet${index + 1}`);
+                      // }}
+                      // onBlur={(e) => {
+                      //   console.log(e);
+                      //   this.FocusOutInput(`wallet${index + 1}`);
+                      // }}
+                    >
+                      <>
+                        {this.state.walletInput.length > 1 ? (
+                          <Image
+                            key={index}
+                            className={`ob-modal-body-del`}
+                            // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
+                            src={DeleteIcon}
+                            onClick={() => this.deleteInputField(index, c)}
+                          />
+                        ) : null}
+                        {c.showAddress && (
+                          <input
+                            autoFocus
+                            name={`wallet${index + 1}`}
+                            value={c.address || ""}
+                            className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text`}
+                            placeholder="Paste any wallet address or ENS here"
+                            title={c.address || ""}
+                            // style={{paddingRight: divWidth}}
+                            style={getPadding(
+                              `add-wallet-${index}`,
+                              c,
+                              this.props.OnboardingState
+                            )}
+                            // onKeyUp={(e) => this.setState({ loading: true })}
+                            onChange={(e) => this.handleOnChange(e)}
+                            // tabIndex={index}
+                            onKeyDown={this.handleTabPress}
+                            onFocus={(e) => {
+                              // console.log(e);
+                              this.FocusInInput(e);
+                            }}
+                            // onBlur={(e) => {
+                            //   // console.log(e);
+                            //   // this.FocusOutInput(e);
+                            // }}
+                          />
+                        )}
+                        {c.coinFound && c.showNickname && (
+                          <input
+                            name={`wallet${index + 1}`}
+                            value={c.nickname || ""}
+                            className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text`}
+                            placeholder="Enter nickname"
+                            title={c.nickname || ""}
+                            // style={{paddingRight: divWidth}}
+                            style={getPadding(
+                              `add-wallet-nickname-${index}`,
+                              c,
+                              this.props.OnboardingState
+                            )}
+                            // onKeyUp={(e) => this.setState({ loading: true })}
+                            onChange={(e) => {
+                              this.nicknameOnChain(e);
+                              // console.log(e.target)
+                            }}
+                            onBlur={(e) => {
+                              // console.log(e);
+                              // this.FocusOutInput(e);
+                              LandingPageNickname({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                                nickname: e.target?.value,
+                                address: c.address,
+                              });
+                            }}
+                            // autoFocus
+                            onFocus={(e) => {
+                              // console.log(e);
+                              this.FocusInInput(e);
+                            }}
+                          />
+                        )}
+                        {this.state.walletInput?.map((e, i) => {
+                          if (
+                            this.state.walletInput[index].address &&
+                            e.id === `wallet${index + 1}`
+                          ) {
+                            // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                            if (e.coinFound && e.coins.length > 0) {
                               return (
                                 <CustomChip
-                                  coins={null}
+                                  coins={e.coins.filter(
+                                    (c) => c.chain_detected
+                                  )}
                                   key={i}
                                   isLoaded={true}
                                 ></CustomChip>
                               );
                             } else {
-                              return (
-                                <CustomChip
-                                  coins={null}
-                                  key={i}
-                                  isLoaded={false}
-                                ></CustomChip>
-                              );
+                              if (
+                                e.coins.length ===
+                                this.props.OnboardingState.coinsList.length
+                              ) {
+                                return (
+                                  <CustomChip
+                                    coins={null}
+                                    key={i}
+                                    isLoaded={true}
+                                  ></CustomChip>
+                                );
+                              } else {
+                                return (
+                                  <CustomChip
+                                    coins={null}
+                                    key={i}
+                                    isLoaded={false}
+                                  ></CustomChip>
+                                );
+                              }
                             }
+                          } else {
+                            return "";
                           }
-                        } else {
-                          return "";
-                        }
-                      })}
-                    </>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          {this.state.addButtonVisible ? (
-            <div className="ob-modal-body-2">
-              <Button className="grey-btn" onClick={this.addInputField}>
-                <Image src={PlusIcon} /> Add another
-              </Button>
-            </div>
-          ) : null}
-
-          {this.state.connectExchange && (
-            <div className="ob-connect-exchange">
-              <div
-                className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
-                onClick={() => {
-                  this.props.connectWallet(this.state.walletInput);
-                }}
-              >
-                <Image
-                  src={LinkIconBtn}
-                  style={{
-                    width: "1.2rem",
-                    marginRight: "4px",
-                    marginBottom: "1px",
-                  }}
-                />
-                {this.state.connectText}
+                        })}
+                      </>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          )}
+            {this.state.addButtonVisible ? (
+              <div className="ob-modal-body-2">
+                <Button className="grey-btn" onClick={this.addInputField}>
+                  <Image src={PlusIcon} /> Add another
+                </Button>
+              </div>
+            ) : null}
 
-          <div className="ob-modal-body-btn">
-            {/* <CustomButton
+            {this.state.connectExchange && (
+              <div className="ob-connect-exchange">
+                {/* upload */}
+                <div
+                  className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
+                  style={{left:"5.6rem",right:"auto"}}
+                  onClick={this.handleUpload}
+                >
+                  <input
+                    type="file"
+                    ref={this.fileInputRef}
+                    onChange={this.handleFileSelect}
+                    style={{ display: "none" }}
+                  />
+                  <Image
+                    src={UploadIcon}
+                    style={{
+                      width: "1.2rem",
+                      marginRight: "4px",
+                      marginBottom: "1px",
+                      filter: "brightness(0)",
+                    }}
+                  />
+                  Upload CSV / Text file
+                </div>
+                <div
+                  className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
+                  onClick={() => {
+                    this.props.connectWallet(this.state.walletInput);
+                  }}
+                >
+                  <Image
+                    src={LinkIconBtn}
+                    style={{
+                      width: "1.2rem",
+                      marginRight: "4px",
+                      marginBottom: "1px",
+                    }}
+                  />
+                  {this.state.connectText}
+                </div>
+              </div>
+            )}
+
+            <div className="ob-modal-body-btn">
+              {/* <CustomButton
                   className="secondary-btn m-r-15 preview"
                   buttonText="Preview demo instead"
                   onClick={() => {
@@ -976,37 +1021,186 @@ class AddWallet extends BaseReactComponent {
                     console.log("Preview");
                   }}
                 /> */}
-            <CustomButton
-              className="primary-btn go-btn"
-              type="submit"
-              isLoading={
-                this.state.addButtonVisible ? this.isDisabled() : false
-              }
-              isDisabled={
-                this.state.addButtonVisible ? this.isDisabled() : false
-              }
-              buttonText={
-                this.state.addButtonVisible ? "Go" : "Sign in instead"
-              }
-            />
-          </div>
-
-          {this.state.addButtonVisible ? (
-            <div className="m-b-30 m-t-30 addWallet-signIn-div">
-              <span className="inter-display-medium f-s-13 m-r-8 lh-16 grey-ADA">
-                Already have an account?
-              </span>
-              <span
-                className="inter-display-bold f-s-13 lh-16 black-191 cp"
-                onClick={this.handleSignText}
-              >
-                Sign In
-              </span>
+              <CustomButton
+                className="primary-btn go-btn"
+                type="submit"
+                isLoading={
+                  this.state.addButtonVisible ? this.isDisabled() : false
+                }
+                isDisabled={
+                  this.state.addButtonVisible ? this.isDisabled() : false
+                }
+                buttonText={
+                  this.state.addButtonVisible ? "Go" : "Sign in instead"
+                }
+              />
             </div>
-          ) : (
-            ""
-          )}
-        </Form>
+
+            {this.state.addButtonVisible ? (
+              <div className="m-b-30 m-t-30 addWallet-signIn-div">
+                <span className="inter-display-medium f-s-13 m-r-8 lh-16 grey-ADA">
+                  Already have an account?
+                </span>
+                <span
+                  className="inter-display-bold f-s-13 lh-16 black-191 cp"
+                  onClick={this.handleSignText}
+                >
+                  Sign In
+                </span>
+              </div>
+            ) : (
+              ""
+            )}
+          </Form>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  background: "#E5E5E680",
+                  marginRight: "2rem",
+                  borderRadius: "1.2rem",
+                  padding: "1.1rem 1.6rem",
+                }}
+              >
+                <Image src={FileIcon} style={{ marginRight: "1rem" }} />
+                <h4 className="inter-display-medium f-s-13 lh-15 grey-7C7">
+                  {this.state.fileName}
+                </h4>
+              </div>
+              <input
+                type="file"
+                ref={this.fileInputRef}
+                onChange={this.handleFileSelect}
+                style={{ display: "none" }}
+              />
+              <Button
+                className={`secondary-btn`}
+                type="button"
+                style={{
+                  paddingLeft: "1.8rem",
+                  paddingRight: "1.8rem",
+                }}
+                onClick={() => {
+                  this.handleUpload();
+                }}
+              >
+                Change file
+              </Button>
+            </div>
+            {/* Loader */}
+            {!this.state.isIndexed && (
+              <>
+                <div className="upload-loader"></div>
+                <h4 className="inter-display-medium f-s-16 lh-19 grey-B0B m-t-20">
+                  {this.state.uploadStatus} {this.state.total_unique_address}{" "}
+                  {this.state.total_unique_address > 0
+                    ? "unique addresses"
+                    : "unique address"}
+                </h4>
+              </>
+            )}
+            {/* Form */}
+            <>
+              <div
+                className="form-wrapper m-t-20"
+                style={{ margin: "2rem 10rem" }}
+              >
+                {/* <Image src={FileIcon} /> */}
+                {!this.state.emailAdded && !this.state.isIndexed && (
+                  <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
+                    Don’t wait around if you don’t want to! We can notify you
+                    when the indexing is complete.
+                  </h4>
+                )}
+                {!this.state.emailAdded && !this.state.isIndexed && (
+                  <div className="email-section">
+                    <Form onValidSubmit={this.EmailNotification}>
+                      <FormElement
+                        valueLink={this.linkState(this, "email_notification")}
+                        // label="Email Info"
+                        required
+                        validations={[
+                          {
+                            validate: FormValidator.isRequired,
+                            message: "",
+                          },
+                          {
+                            validate: FormValidator.isEmail,
+                            message: "Please enter valid email id",
+                          },
+                        ]}
+                        control={{
+                          type: CustomTextControl,
+                          settings: {
+                            placeholder: "Enter your email address",
+                          },
+                        }}
+                      />
+                      <div className="save-btn-section">
+                        <Button
+                          className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                            this.state.email_notification ? "active" : ""
+                          }`}
+                          type="submit"
+                        >
+                          Confirm
+                        </Button>
+                      </div>
+                    </Form>
+                  </div>
+                )}
+                {/* After email messgae */}
+                {(this.state.emailAdded || this.state.isIndexed) && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      textAlign: "start",
+                    }}
+                  >
+                    <Image
+                      src={this.state.isIndexed ? CheckIcon : ClockIcon}
+                      style={{
+                        marginRight: "1rem",
+                        position: "static",
+                        width: "3rem",
+                      }}
+                    />
+                    <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
+                      {this.state.isIndexed
+                        ? "Great! Indexing is completed and your addresses has been added."
+                        : "It takes some time to index the addresses, we will let you know when it’s done."}
+                    </h4>
+                  </div>
+                )}
+              </div>
+              {(this.state.emailAdded || this.state.isIndexed) && (
+                <Button
+                  className="btn primary-btn m-t-12 m-b-20"
+                  onClick={this.handleDone}
+                >
+                  Done
+                </Button>
+              )}
+            </>
+          </div>
+        )}
         {/* {this.state.upgradeModal && (
           <UpgradeModal
             show={this.state.upgradeModal}
