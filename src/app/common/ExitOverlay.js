@@ -1128,7 +1128,7 @@ class ExitOverlay extends BaseReactComponent {
                         })}
                         {/* <span className={`inter-display-medium f-s-16 lh-19 grey-636 export-item active`}>Transaction history</span> */}
                       </div>
-                      <div
+                      {/* <div
                         style={{
                           display: "flex",
                           alignItems: "center",
@@ -1152,7 +1152,7 @@ class ExitOverlay extends BaseReactComponent {
                             });
                           }}
                         />
-                      </div>
+                      </div> */}
                       {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
                       {/* <div onClick={()=>this.handleExportNow()} > */}
                       {this.state.loadingExportFile === true ? (

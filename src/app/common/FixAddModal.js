@@ -1241,13 +1241,13 @@ class FixAddModal extends BaseReactComponent {
                       this.state.modalType === "addwallet" && (
                         <div className="add-wallet-btn">
                           <Button
-                            className="grey-btn m-b-16"
+                            className="grey-btn m-b-32"
                             onClick={this.addAddress}
                           >
                             <Image src={PlusIcon} /> Add another
                           </Button>
 
-                          {this.state.modalType === "addwallet" && (
+                          {/* {this.state.modalType === "addwallet" && (
                             <div style={{}} className="m-b-32">
                               <div
                                 className="inter-display-semi-bold f-s-13 lh-16 black-191 upload-scv-btn"
@@ -1271,7 +1271,7 @@ class FixAddModal extends BaseReactComponent {
                                 Upload CSV / Text file
                               </div>
                             </div>
-                          )}
+                          )} */}
                         </div>
                       )}
 
@@ -1376,7 +1376,10 @@ class FixAddModal extends BaseReactComponent {
                     )}
                     {/* Form */}
                     <>
-                      <div className="form-wrapper m-t-20" style={{margin: "2rem 10rem"}}>
+                      <div
+                        className="form-wrapper m-t-20"
+                        style={{ margin: "2rem 10rem" }}
+                      >
                         {/* <Image src={FileIcon} /> */}
                         {!this.state.emailAdded && !this.state.isIndexed && (
                           <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">

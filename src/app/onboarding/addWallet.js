@@ -590,9 +590,7 @@ class AddWallet extends BaseReactComponent {
       let addressList = [];
 
       let nicknameArr = {};
-      // if change not detected then we will detect on backend
-      let isChainDetected = [];
-      let total_address = 0;
+
       for (let i = 0; i < addWallet.length; i++) {
         let curr = addWallet[i];
         if (
@@ -607,15 +605,9 @@ class AddWallet extends BaseReactComponent {
           nicknameArr[address] = curr.nickname;
           addressList.push(curr.address.trim());
 
-          isChainDetected.push(curr?.coinFound);
-          total_address = total_address + 1;
         }
       }
 
-      let chain_detechted =
-        isChainDetected.includes(undefined) || isChainDetected.includes(false)
-          ? false
-          : true;
 
       finalArr = finalArr?.map((item, index) => {
         return {
@@ -689,9 +681,6 @@ class AddWallet extends BaseReactComponent {
       let nicknameArr = {};
       let walletList = [];
 
-      // if change not detected then we will detect on backend
-      let isChainDetected = [];
-      let total_address = 0;
       for (let i = 0; i < this.state.walletInput.length; i++) {
         let curr = this.state.walletInput[i];
         // console.log(
@@ -709,8 +698,7 @@ class AddWallet extends BaseReactComponent {
           arr.push(curr.apiAddress?.trim());
           addressList.push(curr.address?.trim());
           //  console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
-          isChainDetected.push(curr?.coinFound);
-          total_address = total_address + 1;
+          
         }
       }
 
@@ -720,13 +708,6 @@ class AddWallet extends BaseReactComponent {
         w.id = `wallet${i + 1}`;
       });
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
-
-      let chain_detechted =
-        isChainDetected.includes(undefined) || isChainDetected.includes(false)
-          ? false
-          : true;
-
-      
 
       // this.state?.onHide();
       const data = new URLSearchParams();
@@ -971,7 +952,7 @@ class AddWallet extends BaseReactComponent {
             {this.state.connectExchange && (
               <div className="ob-connect-exchange">
                 {/* upload */}
-                <div
+                {/* <div
                   className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
                   style={{left:"5.6rem",right:"auto"}}
                   onClick={this.handleUpload}
@@ -992,7 +973,7 @@ class AddWallet extends BaseReactComponent {
                     }}
                   />
                   Upload CSV / Text file
-                </div>
+                </div> */}
                 <div
                   className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
                   onClick={() => {
