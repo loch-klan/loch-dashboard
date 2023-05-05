@@ -750,7 +750,7 @@ class LineChartSlider extends BaseReactComponent {
             renderer
               .image(GraphLogo, x, y, imageWidth, imageHeight)
               .attr({
-                zIndex: 99, // Set the zIndex so it appears above the chart
+                zIndex: 0, // Set the zIndex so it appears above the chart
               })
               .add();
           },
@@ -1390,7 +1390,11 @@ backdrop-filter: blur(15px);">
 
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {event.assetValue.toFixed(count)}{" "}
+                                    {Number(
+                                      noExponents(
+                                        event.assetValue.toFixed(count)
+                                      )
+                                    ).toLocaleString("en-US")}{" "}
                                     {event.assetCode}
                                     {` or `}
                                     <span className="inter-display-semi-bold">
@@ -1466,7 +1470,11 @@ backdrop-filter: blur(15px);">
 
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {event.assetValue.toFixed(count)}{" "}
+                                    {Number(
+                                      noExponents(
+                                        event.assetValue.toFixed(count)
+                                      )
+                                    ).toLocaleString("en-US")}{" "}
                                     {event.assetCode}
                                     {` or `}
                                     <span className="inter-display-semi-bold">
