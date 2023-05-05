@@ -2041,7 +2041,8 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                           this.props.intelligenceState.graphValue[2]
                         }
                         isLoading={this.state.netFlowLoading}
-                        className={"portfolio-profit-and-loss"}
+                          className={"portfolio-profit-and-loss"}
+                          isMinichart={true}
                       />
                     </div>
                   </Col>

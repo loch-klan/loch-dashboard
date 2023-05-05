@@ -232,6 +232,7 @@ class BarGraphSection extends Component {
       isLoading,
       showSwitch,
       showToken,
+      isMinichart,
     } = this.props;
     //  console.log("bar gr state digit", digit);
     // const digit =
@@ -293,7 +294,7 @@ class BarGraphSection extends Component {
                       minWidth: "18rem",
                       maxWidth: "20rem",
                       marginLeft: "1rem",
-                      zIndex:4
+                      zIndex: 4,
                     }}
                   >
                     <CustomDropdown
@@ -315,7 +316,7 @@ class BarGraphSection extends Component {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  marginBottom: showToken ? "1rem" : "0rem",
+                  marginBottom: showToken || isMinichart ? "1rem" : "0rem",
                 }}
               >
                 <p className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 p-t-10 p-b-20 custom-label">
@@ -348,7 +349,15 @@ class BarGraphSection extends Component {
             {showPercentage ? (
               <div
                 className="show-percentage-div"
-                style={showSwitch ? { marginBottom: "2rem" } : {justifyContent:"flex-end", visibility:"hidden"}}
+                style={
+                  showSwitch
+                    ? { marginBottom: "2rem" }
+                    : {
+                        justifyContent: "flex-end",
+                        visibility: "hidden",
+                        display: "none",
+                      }
+                }
               >
                 <div
                   className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
