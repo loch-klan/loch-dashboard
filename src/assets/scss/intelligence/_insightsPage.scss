@@ -65,12 +65,25 @@
         margin-right: 1.6rem;
       }
       .insights-content{
-        .title-chip{
+       .chips-wrapper{
+        display:flex;
+        align-items: center;
+
+         .title-chip{
           width: max-content;
           padding: 4px 8px;
           border-radius: 8px;
           background-color: $grey-F2F;
         }
+        .risk-chip{
+          width: max-content;
+          padding: 4px 8px;
+          border-radius: 8px;
+          background-color:  $black-191;
+          margin-left: 0.8rem;
+          color: #FFFFFF;
+        }
+       }
         p{
           margin: 8px 0;
         }
