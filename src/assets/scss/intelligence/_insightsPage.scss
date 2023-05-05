@@ -66,7 +66,7 @@
 
                 .btn-primary:not(:disabled):not(.disabled):active {
                     background-color: #E5E5E6 !important;
-                    border: none !important;
+                    border: 0.1rem solid transparent !important;
                     color: $black-191;
                     padding: 1.2rem 1.6rem;
                     border-radius: 0.8rem;
@@ -154,6 +154,7 @@
           background-color:  $black-191;
           margin-left: 0.8rem;
           color: #FFFFFF;
+          text-transform: uppercase;
         }
        }
         p{
