@@ -27,6 +27,7 @@ import { ManageLink } from "./Api";
 import UpgradeModal from "../common/upgradeModal";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import moment from "moment";
+import Wallet from "../wallet/Wallet";
 
 class Profile extends Component {
   constructor(props) {
@@ -145,6 +146,14 @@ class Profile extends Component {
     });
   };
 
+  handleUpdateWallet = () => {
+    // window.location.reload()
+    this.setState({
+     
+      isUpdate: this.state.isUpdate === 0 ? 1 : 0,
+    });
+  };
+
   handleChangeList = (value) => {
     this.setState({
       // for add wallet
@@ -152,35 +161,39 @@ class Profile extends Component {
       isUpdate: this.state.isUpdate === 0 ? 1 : 0,
     });
 
-      this.props.setPageFlagDefault();
+    this.props.setPageFlagDefault();
   };
 
   render() {
     return (
-      <div className="profile-page-section">
-        <div className="profile-section page">
-          {this.state.addModal && (
-            <FixAddModal
-              show={this.state.addModal}
-              onHide={this.handleAddModal}
-              modalIcon={AddWalletModalIcon}
-              title="Add wallet address"
-              subtitle="Add more wallet address here"
-              modalType="addwallet"
-              btnStatus={false}
-              btnText="Go"
-              history={this.props.history}
-              changeWalletList={this.handleChangeList}
-              from="profile"
+      <>
+        <div className="profile-page-section">
+          <div className="profile-section page">
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
+                history={this.props.history}
+                changeWalletList={this.handleChangeList}
+                from="profile"
+              />
+            )}
+            <PageHeader
+              title="Profile"
+              subTitle="Manage your profile here"
+              btnText={"Add wallet"}
+              handleBtn={this.handleAddModal}
+              // connect exchange btn
+              SecondaryBtn={true}
+              handleUpdate={this.handleUpdateWallet}
             />
-          )}
-          <PageHeader
-            title="Profile"
-            subTitle="Manage your profile here"
-            btnText={"Add wallet"}
-            handleBtn={this.handleAddModal}
-          />
-          {/* <div className="profile-plan-wrapper">
+            {/* <div className="profile-plan-wrapper">
             <h4 className="inter-display-semi-bold f-s-25 lh-30 secondary">
               Do more with Loch
             </h4>
@@ -292,12 +305,15 @@ class Profile extends Component {
             </div>
            
           </div> */}
-          <div className="profile-form-section">
-            <Row>
-              <Col md={7}>
-                <ProfileForm />
-              </Col>
-              {/* <Col md={5} style={{ paddingLeft: "4rem" }}>
+            <div
+              className="profile-form-section"
+              style={{ marginBottom: "1rem" }}
+            >
+              <Row>
+                <Col md={12}>
+                  <ProfileForm />
+                </Col>
+                {/* <Col md={5} style={{ paddingLeft: "4rem" }}>
                 <div className="plan-card-wrapper">
                   <div className={"plan-card active"}>
                     <div
@@ -418,24 +434,27 @@ class Profile extends Component {
                   </Button>
                 </div>
               </Col> */}
-            </Row>
+              </Row>
+            </div>
+
+            {this.state.upgradeModal && (
+              <UpgradeModal
+                show={this.state.upgradeModal}
+                onHide={this.upgradeModal}
+                history={this.props.history}
+                isShare={localStorage.getItem("share_id")}
+                isStatic={this.state.isStatic}
+                triggerId={0}
+                pname="profile"
+              />
+            )}
+            {/* <FeedbackForm page={"Profile Page"} /> */}
           </div>
-          {this.state.upgradeModal && (
-            <UpgradeModal
-              show={this.state.upgradeModal}
-              onHide={this.upgradeModal}
-              history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
-              isStatic={this.state.isStatic}
-              triggerId={0}
-              pname="profile"
-            />
-          )}
-          {/* <FeedbackForm page={"Profile Page"} /> */}
         </div>
-      </div>
+        {/* wallet page component */}
+        <Wallet hidePageHeader={true} isUpdate={this.state.isUpdate} />
+      </>
     );
-     
   }
 }
 

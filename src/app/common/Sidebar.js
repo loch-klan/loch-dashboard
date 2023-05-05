@@ -497,7 +497,7 @@ function Sidebar(props) {
                           Intelligence
                         </NavLink>
                       </li>
-                      <li>
+                      {/* <li>
                         <NavLink
                           exact={true}
                           onClick={(e) => {
@@ -523,7 +523,7 @@ function Sidebar(props) {
                           />
                           Wallets
                         </NavLink>
-                      </li>
+                      </li> */}
                       <li>
                         <NavLink
                           exact={true}

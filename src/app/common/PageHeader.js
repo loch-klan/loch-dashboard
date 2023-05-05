@@ -221,7 +221,7 @@ export default function PageHeader(props) {
           headerTitle={"Connect exchanges"}
           modalType={"connectModal"}
           iconImage={LinkIcon}
-          handleUpdate={props.handleUpdate}
+          handleUpdate={props?.handleUpdate}
           openPopup={handlePopup}
           tracking="wallet page"
         />

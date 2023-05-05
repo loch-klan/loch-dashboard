@@ -28,7 +28,7 @@ class Wallet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(localStorage.getItem('currency')),
+      currency: JSON.parse(localStorage.getItem("currency")),
       walletList: [],
       start: 0,
       sorts: [],
@@ -47,6 +47,7 @@ class Wallet extends Component {
       ],
       startTime: "",
       totalWalletAmt: 0,
+      conditions:[],
     };
     // this.sortby = [{title:"Amount",down:true}, {title:"Date added",down:true},{title:"Name", down:true}];
   }
@@ -77,7 +78,8 @@ class Wallet extends Component {
     });
   }
 
-  makeApiCall = (cond) => {
+  makeApiCall = (cond = this.state.conditions) => {
+    
     let data = new URLSearchParams();
     data.append("start", this.state.start);
     data.append("conditions", JSON.stringify(cond ? cond : []));
@@ -200,9 +202,16 @@ class Wallet extends Component {
       } else {
         condition = [];
       }
+      this.setState({
+        conditions:condition
+      })
       this.makeApiCall(condition);
     } else if (prevState.sorts !== this.state.sorts) {
       this.makeApiCall();
+    }
+
+    if (this.props.isUpdate !== prevProps.isUpdate) {
+      this.handleUpdateWallet();
     }
   }
   handleAddModal = () => {
@@ -215,7 +224,7 @@ class Wallet extends Component {
     // console.log("YES API")
     this.setState({isLoading: true})
     this.makeApiCall();
-    // this.props.setPageFlagDefault();
+    this.props.setPageFlagDefault();
   };
 
   render() {
@@ -240,12 +249,19 @@ class Wallet extends Component {
             from="wallet"
           />
         )}
-        <div className="wallet-section page">
+        <div
+          className="wallet-section page"
+          style={
+            this.props.hidePageHeader
+              ? { marginTop: "4rem", marginBottom: "4rem" }
+              : {}
+          }
+        >
           <PageHeader
             title="Wallets"
             subTitle="Manage all your wallets right here"
-            btnText="Add wallet"
-            SecondaryBtn={true}
+            btnText={this.props.hidePageHeader ? false : "Add wallet"}
+            SecondaryBtn={this.props.hidePageHeader ? false : true}
             handleBtn={this.handleAddModal}
             handleUpdate={this.handleUpdateWallet}
             // showData={totalWalletAmt}
