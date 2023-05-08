@@ -153,6 +153,11 @@ function Sidebar(props) {
        localStorage.setItem("isSubmenu", false);
        setSubmenu(false);
      }
+
+     if (activeTab === "/intelligence") {
+       localStorage.setItem("isSubmenu", true);
+       setSubmenu(true);
+     }
    }, []);
   
    React.useEffect(() => {
