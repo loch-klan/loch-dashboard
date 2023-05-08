@@ -24,6 +24,8 @@ import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
+import DropDown from "../common/DropDown";
+import { lte } from "lodash";
 
 
 class InsightsPage extends Component {
@@ -65,6 +67,8 @@ class InsightsPage extends Component {
       upgradeModal: false,
       isStatic: false,
       triggerId: 9,
+
+      riskType: "Risk type",
     };
   }
 
@@ -197,6 +201,26 @@ class InsightsPage extends Component {
     // console.log("share pod", shareLink);
   };
 
+  handleInsights = (e) => {
+    let title = e.split(" ")[1];
+    if (e.split(" ")[2] !== undefined) {
+    
+      title = title + " " + e.split(" ")[2];
+    }
+    if (e.split(" ")[3] !== "undefined")
+    
+    {
+         
+      title = title + " " + e.split(" ")[3];
+      }
+      console.log("title", title);
+    this.setState(
+      {
+        riskType: title,
+  
+      },)
+  };
+
   render() {
     return (
       <div className="insights-section">
@@ -262,6 +286,37 @@ class InsightsPage extends Component {
                 })}
               </div>
             }
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom:"2rem"
+              }}
+            >
+              <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
+                This week
+              </h2>
+
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <DropDown
+                  class="cohort-dropdown"
+                  list={[
+                    "All risk type",
+                    "Token Float Risk",
+                    "Borrower Risk",
+                    "Unlock Risk",
+                    "Lender Risk",
+                    "Market Cap Risk",
+                    "Staking Risk",
+                    "Discoverability Risk",
+                  ]}
+                  onSelect={this.handleInsights}
+                  title={this.state.riskType}
+                  activetab={this.state.riskType}
+                />
+              </div>
+            </div>
             <div className="insights-wrapper">
               {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
               {this.state.isLoading ? (
@@ -283,9 +338,15 @@ class InsightsPage extends Component {
                         className="insight-icon"
                       />
                       <div className="insights-content">
-                        <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                          {InsightType.getText(insight.insight_type)}
-                        </h5>
+                        <div className="chips-wrapper">
+                          <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                            {InsightType.getText(insight.insight_type)}
+                          </h5>
+                          {insight.insight_type ===
+                              InsightType.RISK_REDUCTION && <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
+                            {InsightType.getText(insight.insight_type)}
+                          </h5>}
+                        </div>
                         <p
                           className="inter-display-medium f-s-13 lh-16 grey-969"
                           dangerouslySetInnerHTML={{

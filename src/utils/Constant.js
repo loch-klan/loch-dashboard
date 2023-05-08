@@ -201,11 +201,23 @@ export const InsightType = {
     20: "Reduce Risk",
     30: "Increase Yield",
   },
+  _presentableRiskType: {
+    10: "Token Float Risk",
+    20: "Borrower Risk",
+    30: "Unlock Risk",
+    40: "Lender Risk",
+    50: "Market Cap Risk",
+    60: "Staking Risk",
+    70: "Discoverability Risk",
+  },
   getText: function (value) {
     return this._presentable[value];
   },
   getSmallText: function (value) {
     return this._presentableSmall[value];
+  },
+  getRiskType: function (value) {
+    return this._presentableRiskType[value];
   },
 };
 
@@ -296,7 +308,7 @@ export const DormantType = {
   },
 };
 
-
+// not used now
 export const Plans = {
   //-1 for unlimited
   _presentable: {

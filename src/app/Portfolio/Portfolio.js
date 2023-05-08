@@ -351,6 +351,7 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidMount() {
+    
     this.setState({
       settings: {
         ...this.state.settings,
@@ -2149,9 +2150,29 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                                                         insight.insight_type
                                                       )}
                                                     </h5>
-                                                    <h6 className="inter-display-semi-bold f-s-10 lh-12">
-                                                      INSIGHT
-                                                    </h6>
+                                                    {insight.insight_type ===
+                                                    InsightType.RISK_REDUCTION ? (
+                                                      <h6
+                                                        className="inter-display-bold f-s-10 lh-12"
+                                                        style={{
+                                                          color: "#ffffff",
+                                                          background: "#19191A",
+                                                          borderRadius:
+                                                            "0.8rem",
+                                                          padding:
+                                                            "0.4rem 0.8rem",
+                                                          width: "fit-content",
+                                                          textTransform: "uppercase",
+                                                          marginTop:"0.4rem"
+                                                        }}
+                                                      >
+                                                        Unlock Risk
+                                                      </h6>
+                                                    ) : (
+                                                      <h6 className="inter-display-semi-bold f-s-10 lh-12 m-t-04">
+                                                        INSIGHT
+                                                      </h6>
+                                                    )}
                                                   </div>
                                                 </div>
 

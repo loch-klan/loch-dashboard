@@ -43,6 +43,7 @@ class Defi extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // store current currency
       currency: JSON.parse(localStorage.getItem("currency")),
       sortBy: [
         { title: "Amount", down: true },

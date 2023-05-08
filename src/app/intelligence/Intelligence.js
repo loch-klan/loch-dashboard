@@ -171,6 +171,26 @@ class Intelligence extends Component {
       this.props.updateWalletListFlag("insight", true);
       this.props.getAllInsightsApi(this);
     }
+
+    
+    if (
+     
+      this.props?.location?.pathname + this.props?.location?.hash ===
+        "/intelligence#netflow"
+    ) {
+     if (this.props.location.hash !== "") {
+       setTimeout(() => {
+         const id = this.props.location.hash.replace("#", "");
+         // console.log('id',id);
+         const element = document.getElementById(id);
+         if (element) {
+           element.scrollIntoView();
+         }
+       }, 0);
+     } else {
+       window.scrollTo(0, 0);
+     }
+    }
   }
   componentWillUnmount() {
     let endTime = new Date() * 1;
@@ -184,6 +204,7 @@ class Intelligence extends Component {
     });
 
     //  this.timeFilter(0);
+   
   }
 
   assetList = () => {

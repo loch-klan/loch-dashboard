@@ -198,7 +198,7 @@ class ProfileForm extends BaseReactComponent {
           <Form onValidSubmit={this.onValidSubmit}>
             <div className="m-b-13">
               <Row>
-                <Col md={6} className="p-r-0">
+                <Col md={3} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "firstName")}
                     label="First Name"
@@ -215,7 +215,7 @@ class ProfileForm extends BaseReactComponent {
                     }
                   />
                 </Col>
-                <Col md={6}>
+                <Col md={3} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "lastName")}
                     label="Last Name"
@@ -232,9 +232,43 @@ class ProfileForm extends BaseReactComponent {
                     }
                   />
                 </Col>
+                <Col md={3} className="p-r-0">
+                  <FormElement
+                    valueLink={this.linkState(this, "email")}
+                    label="Email"
+                    control={{
+                      type: CustomTextControl,
+                      settings: {
+                        placeholder: "john@loch.one",
+                      },
+                    }}
+                    classes={
+                      {
+                        // inputField: this.state.email !== "" ? "done" : "",
+                      }
+                    }
+                  />
+                </Col>
+                <Col md={3}>
+                  <FormElement
+                    valueLink={this.linkState(this, "mobileNumber")}
+                    label="Mobile Number"
+                    control={{
+                      type: CustomTextControl,
+                      settings: {
+                        placeholder: "(217) 331 - 1312",
+                      },
+                    }}
+                    classes={
+                      {
+                        // inputField: this.state.mobileNumber !== "" ? "done" : "",
+                      }
+                    }
+                  />
+                </Col>
               </Row>
             </div>
-            <div className="m-b-13">
+            {/* <div className="m-b-13">
               <Row>
                 <Col md={12}>
                   <FormElement
@@ -254,8 +288,8 @@ class ProfileForm extends BaseReactComponent {
                   />
                 </Col>
               </Row>
-            </div>
-            <div className="m-b-13">
+            </div> */}
+            {/* <div className="m-b-13">
               <Row>
                 <Col md={8}>
                   <FormElement
@@ -275,7 +309,7 @@ class ProfileForm extends BaseReactComponent {
                   />
                 </Col>
               </Row>
-            </div>
+            </div> */}
 
             <div>
               <Button
