@@ -286,7 +286,7 @@ class InsightsPage extends Component {
                 })}
               </div>
             }
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -316,7 +316,7 @@ class InsightsPage extends Component {
                   activetab={this.state.riskType}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="insights-wrapper">
               {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
               {this.state.isLoading ? (
@@ -342,10 +342,10 @@ class InsightsPage extends Component {
                           <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
                             {InsightType.getText(insight.insight_type)}
                           </h5>
-                          {insight.insight_type ===
+                          {/* {insight.insight_type ===
                               InsightType.RISK_REDUCTION && <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
                             {InsightType.getText(insight.insight_type)}
-                          </h5>}
+                          </h5>} */}
                         </div>
                         <p
                           className="inter-display-medium f-s-13 lh-16 grey-969"

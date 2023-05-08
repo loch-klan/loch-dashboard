@@ -2151,7 +2151,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                                                       )}
                                                     </h5>
                                                     {insight.insight_type ===
-                                                    InsightType.RISK_REDUCTION ? (
+                                                    InsightType.RISK_REDUCTION && false ? (
                                                       <h6
                                                         className="inter-display-bold f-s-10 lh-12"
                                                         style={{
