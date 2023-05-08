@@ -44,7 +44,7 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
       // };
       return { ...state, coinRateList: action.payload };
     case USER_WALLET_LIST:
-      console.log("action.payload", action.payload);
+      // console.log("action.payload", action.payload);
       let updateWalletTotal = state.walletTotal || 0;
       let updatedChainWallet = state.chainWallet || [];
       let chainPortfolio = state.chainPortfolio || {};

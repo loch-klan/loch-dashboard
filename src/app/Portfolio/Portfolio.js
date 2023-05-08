@@ -351,6 +351,7 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidMount() {
+    
     this.setState({
       settings: {
         ...this.state.settings,

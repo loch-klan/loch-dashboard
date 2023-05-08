@@ -101,6 +101,7 @@ class Home extends BaseReactComponent {
           "whalepodview",
           JSON.stringify({ access: true, id: "" })
         );
+        localStorage.setItem("isSubmenu", false);
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
         if (!isRefresh) {
           localStorage.setItem("refresh", true);

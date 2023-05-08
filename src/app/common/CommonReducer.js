@@ -8,7 +8,8 @@ const INITIAL_STATE = {
   asset_value: false,
   insight: false,
   defi: false,
-  defi_home:false,
+  defi_home: false,
+  
 };
 
 const CommonReducer = (state = INITIAL_STATE, action) => {
