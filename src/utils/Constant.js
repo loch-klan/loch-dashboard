@@ -206,6 +206,7 @@ export const InsightType = {
     50: "Market Cap Risk",
     60: "Staking Risk",
     70: "Discoverability Risk",
+    80: "Concentration Risk",
   },
   _presentableRiskTypeNumber: {
     "All Risk Type": 0,
@@ -216,6 +217,7 @@ export const InsightType = {
     "Market Cap Risk": 50,
     "Staking Risk": 60,
     "Discoverability Risk": 70,
+    "Concentration Risk":80,
   },
   getText: function (value) {
     return this._presentable[value];

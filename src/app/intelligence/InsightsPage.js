@@ -324,7 +324,7 @@ class InsightsPage extends Component {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginBottom:"2rem"
+                marginBottom: "2rem",
               }}
             >
               <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
@@ -343,6 +343,7 @@ class InsightsPage extends Component {
                     "Market Cap Risk",
                     "Staking Risk",
                     "Discoverability Risk",
+                    "Concentration Risk",
                   ]}
                   onSelect={this.handleInsights}
                   title={this.state.riskType}
@@ -375,7 +376,7 @@ class InsightsPage extends Component {
                           <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
                             {InsightType.getText(insight.insight_type)}
                           </h5>
-                          {insight?.sub_type  && (
+                          {insight?.sub_type && (
                             <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
                               {InsightType.getRiskType(insight.sub_type)}
                             </h5>
