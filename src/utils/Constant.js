@@ -1,63 +1,63 @@
-export const API_LIMIT = 10
-export const MAX_LIMIT = 1000
-export const START_INDEX = 0
-export const GOOGLE_API_KEY = ""
+export const API_LIMIT = 10;
+export const MAX_LIMIT = 1000;
+export const START_INDEX = 0;
+export const GOOGLE_API_KEY = "";
 // export const API_URL = "https://sapi-float.ebikego.com/api/"
 export const API_BASE_URL = process.env.REACT_APP_API_BASEURL;
 // export const MEDIA_URL = "https://d1r1yzhyzim0p1.cloudfront.net/"
-export const DEFAULT_PRICE = 0
-export const DEFAULT_COLOR = "#2c2c2c"
+export const DEFAULT_PRICE = 0;
+export const DEFAULT_COLOR = "#2c2c2c";
 // export const BASE_URL_S3 = "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
 export const BASE_URL_S3 = process.env.REACT_APP_BASE_URL_S3;
 
-export const SEARCH_IN_ID = 'SEARCH_IN_ID'
-export const SEARCH_BY_ACTIVE = 'SEARCH_BY_ACTIVE'
-export const SEARCH_BY_CHAIN_IN = 'SEARCH_BY_CHAIN_IN'
-export const SEARCH_BY_WALLET_ADDRESS = 'SEARCH_BY_WALLET_ADDRESS'
-export const SEARCH_BY_WALLET_ADDRESS_IN = 'SEARCH_BY_WALLET_ADDRESS_IN'
-export const SEARCH_BY_TEXT = 'SEARCH_BY_TEXT'
+export const SEARCH_IN_ID = "SEARCH_IN_ID";
+export const SEARCH_BY_ACTIVE = "SEARCH_BY_ACTIVE";
+export const SEARCH_BY_CHAIN_IN = "SEARCH_BY_CHAIN_IN";
+export const SEARCH_BY_WALLET_ADDRESS = "SEARCH_BY_WALLET_ADDRESS";
+export const SEARCH_BY_WALLET_ADDRESS_IN = "SEARCH_BY_WALLET_ADDRESS_IN";
+export const SEARCH_BY_TEXT = "SEARCH_BY_TEXT";
 export const SEARCH_BY_NOT_DUST = "SEARCH_BY_NOT_DUST";
-export const SORT_BY_PORTFOLIO_AMOUNT = 'SORT_BY_PORTFOLIO_AMOUNT'
-export const SORT_BY_CREATED_ON = 'SORT_BY_CREATED_ON'
-export const SORT_BY_NAME = 'SORT_BY_NAME'
-export const SEARCH_BY_ASSETS_IN = 'SEARCH_BY_ASSETS_IN'
-export const SEARCH_BY_METHOD_IN = 'SEARCH_BY_METHOD_IN'
-export const SEARCH_BY_TIMESTAMP_IN = 'SEARCH_BY_TIMESTAMP_IN'
-export const SORT_BY_TIMESTAMP = 'SORT_BY_TIMESTAMP'
-export const SORT_BY_FROM_WALLET = 'SORT_BY_FROM_WALLET'
-export const SORT_BY_TO_WALLET = 'SORT_BY_TO_WALLET'
-export const SORT_BY_ASSET = 'SORT_BY_ASSET'
-export const SORT_BY_AMOUNT = 'SORT_BY_AMOUNT'
-export const SORT_BY_USD_VALUE_THEN = 'SORT_BY_USD_VALUE_THEN'
-export const SORT_BY_TRANSACTION_FEE = 'SORT_BY_TRANSACTION_FEE'
-export const SORT_BY_METHOD = 'SORT_BY_METHOD'
+export const SORT_BY_PORTFOLIO_AMOUNT = "SORT_BY_PORTFOLIO_AMOUNT";
+export const SORT_BY_CREATED_ON = "SORT_BY_CREATED_ON";
+export const SORT_BY_NAME = "SORT_BY_NAME";
+export const SEARCH_BY_ASSETS_IN = "SEARCH_BY_ASSETS_IN";
+export const SEARCH_BY_METHOD_IN = "SEARCH_BY_METHOD_IN";
+export const SEARCH_BY_TIMESTAMP_IN = "SEARCH_BY_TIMESTAMP_IN";
+export const SORT_BY_TIMESTAMP = "SORT_BY_TIMESTAMP";
+export const SORT_BY_FROM_WALLET = "SORT_BY_FROM_WALLET";
+export const SORT_BY_TO_WALLET = "SORT_BY_TO_WALLET";
+export const SORT_BY_ASSET = "SORT_BY_ASSET";
+export const SORT_BY_AMOUNT = "SORT_BY_AMOUNT";
+export const SORT_BY_USD_VALUE_THEN = "SORT_BY_USD_VALUE_THEN";
+export const SORT_BY_TRANSACTION_FEE = "SORT_BY_TRANSACTION_FEE";
+export const SORT_BY_METHOD = "SORT_BY_METHOD";
 // LINE GRAPH
-export const GROUP_BY_MONTH = 'GROUP_BY_MONTH'
-export const GROUP_BY_YEAR = 'GROUP_BY_YEAR'
-export const GROUP_BY_DATE = 'GROUP_BY_DATE'
-export const GROUP_BY_WEEK = 'GROUP_BY_WEEK'
+export const GROUP_BY_MONTH = "GROUP_BY_MONTH";
+export const GROUP_BY_YEAR = "GROUP_BY_YEAR";
+export const GROUP_BY_DATE = "GROUP_BY_DATE";
+export const GROUP_BY_WEEK = "GROUP_BY_WEEK";
 
 export const GroupByOptions = {
-  GROUP_BY_MONTH: 'GROUP_BY_MONTH',
-  GROUP_BY_YEAR: 'GROUP_BY_YEAR',
-  GROUP_BY_DATE: 'GROUP_BY_DATE',
-  GROUP_BY_WEEK: 'GROUP_BY_WEEK',
-  _presentable:{
-    GROUP_BY_MONTH: 'Month',
-    GROUP_BY_YEAR: 'Year',
-    GROUP_BY_DATE: 'Date',
-    GROUP_BY_WEEK: 'Week',
+  GROUP_BY_MONTH: "GROUP_BY_MONTH",
+  GROUP_BY_YEAR: "GROUP_BY_YEAR",
+  GROUP_BY_DATE: "GROUP_BY_DATE",
+  GROUP_BY_WEEK: "GROUP_BY_WEEK",
+  _presentable: {
+    GROUP_BY_MONTH: "Month",
+    GROUP_BY_YEAR: "Year",
+    GROUP_BY_DATE: "Date",
+    GROUP_BY_WEEK: "Week",
   },
-  getGroupBy : function(value){
-    if(value === 'Week') return GROUP_BY_WEEK
-    if(value === 'Day') return GROUP_BY_DATE
-    if(value === 'Month') return GROUP_BY_MONTH
-    if(value === 'Year') return GROUP_BY_YEAR
+  getGroupBy: function (value) {
+    if (value === "Week") return GROUP_BY_WEEK;
+    if (value === "Day") return GROUP_BY_DATE;
+    if (value === "Month") return GROUP_BY_MONTH;
+    if (value === "Year") return GROUP_BY_YEAR;
   },
-  getText : function(value){
-    return this._presentable[value]
-  }
-}
+  getText: function (value) {
+    return this._presentable[value];
+  },
+};
 
 export const Gender = {
   MALE: 10,
@@ -66,14 +66,14 @@ export const Gender = {
   presentable: {
     10: "Male",
     20: "Female",
-    30: "Other"
-  }
-}
+    30: "Other",
+  },
+};
 
 export const GenderOptions = Object.keys(Gender.presentable).map((gender) => ({
   label: Gender.presentable[gender],
-  value: gender
-}))
+  value: gender,
+}));
 
 export const UserType = {
   ADMIN: 10,
@@ -82,9 +82,9 @@ export const UserType = {
   presentable: {
     10: "Admin",
     20: "Customer",
-    30: "Server"
-  }
-}
+    30: "Server",
+  },
+};
 
 export const Days = {
   SUNDAY: 1,
@@ -101,14 +101,14 @@ export const Days = {
     4: "Wednesday",
     5: "Thursday",
     6: "Friday",
-    7: "Saturday"
-  }
-}
+    7: "Saturday",
+  },
+};
 
 export const DayOptions = Object.keys(Days.presentable).map((day) => ({
   label: Days.presentable[day],
-  value: day
-}))
+  value: day,
+}));
 
 export const Method = {
   BURN: 10,
@@ -123,28 +123,26 @@ export const Method = {
   },
   // opt:["Burn","Transfer","Mint","Commit"],
   opt: [
-    {value : "allMethod" , label : "All Method"},
+    { value: "allMethod", label: "All Method" },
     { value: 10, label: "Burn" },
     { value: 20, label: "Transfer" },
     { value: 30, label: "Mint" },
-    { value: 40, label: "Commit" }
+    { value: 40, label: "Commit" },
   ],
-  getText : function(value){
-    return this.presentable[value]
-  }
-}
+  getText: function (value) {
+    return this.presentable[value];
+  },
+};
 
 export const MethodOptions = Object.keys(Method.presentable).map((day) => ({
-  label:Method.presentable[day],
-  value: day
-}))
+  label: Method.presentable[day],
+  value: day,
+}));
 
 export const YesNoOptions = [
   { label: "Yes", value: "true" },
-  { label: "No", value: "false" }
-]
-
-
+  { label: "No", value: "false" },
+];
 
 export const Months = {
   JANUARY: 1,
@@ -171,18 +169,17 @@ export const Months = {
     9: "September",
     10: "October",
     11: "November",
-    12: "December"
+    12: "December",
   },
-  getText : function(value){
-    return this._presentable[value]
-  }
-}
+  getText: function (value) {
+    return this._presentable[value];
+  },
+};
 
 export const MonthOptions = Object.keys(Months._presentable).map((month) => ({
   label: Months._presentable[month],
-  value: month
-}))
-
+  value: month,
+}));
 
 export const InsightType = {
   ALL_INSIGHTS: 1,
@@ -210,6 +207,16 @@ export const InsightType = {
     60: "Staking Risk",
     70: "Discoverability Risk",
   },
+  _presentableRiskTypeNumber: {
+    "All Risk Type": 0,
+    "Token Float Risk": 10,
+    "Borrower Risk": 20,
+    "Unlock Risk": 30,
+    "Lender Risk": 40,
+    "Market Cap Risk": 50,
+    "Staking Risk": 60,
+    "Discoverability Risk": 70,
+  },
   getText: function (value) {
     return this._presentable[value];
   },
@@ -219,12 +226,15 @@ export const InsightType = {
   getRiskType: function (value) {
     return this._presentableRiskType[value];
   },
+  getRiskNumber: function (value) {
+    return this._presentableRiskTypeNumber[value];
+  },
 };
 
 export const FeedbackType = {
   POSITIVE: 10,
   NEGATIVE: 20,
-}
+};
 // for balance sheet
 export const AssetType = {
   REGULAR: 10,
@@ -287,13 +297,9 @@ export const AmountType = {
   },
 };
 
-
 // for Dormant Type
 export const DormantType = {
-  _numbers:{30: ">30 days",
-  60: "60 days",
-  90: "90 days",
-  180: "180 days",},
+  _numbers: { 30: ">30 days", 60: "60 days", 90: "90 days", 180: "180 days" },
   _presentable: {
     ">30 days": 30,
     "60 days": 60,
@@ -354,7 +360,6 @@ export const Plans = {
     return this._presentable[value];
   },
 };
-
 
 // whale pod
 // for balance sheet

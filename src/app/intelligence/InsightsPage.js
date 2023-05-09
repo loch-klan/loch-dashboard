@@ -155,6 +155,7 @@ class InsightsPage extends Component {
     this.setState({
       selectedFilter: value,
       updatedInsightList: insightList,
+      riskType: "Risk type",
     });
 
     if (value === 1) {
@@ -218,7 +219,39 @@ class InsightsPage extends Component {
       {
         riskType: title,
   
-      },)
+      }, () => {
+        
+        let riskType = InsightType.getRiskNumber(this.state.riskType);
+        let insightList = this.props.intelligenceState.updatedInsightList;
+        
+        if (riskType !== 0) {
+          insightList =
+          this.state.selectedFilter === 1
+            ? insightList?.filter(
+              (item) =>
+                item.sub_type === riskType
+            )
+            : insightList?.filter(
+              (item) =>
+                item.sub_type === riskType &&
+                item.insight_type === this.state.selectedFilter
+            );
+        } else {
+          if (this.state.selectedFilter !== 1) {
+            insightList = insightList?.filter(
+              (item) =>
+                item.insight_type === this.state.selectedFilter
+            );
+          }
+        }
+        
+            this.setState({
+              updatedInsightList: insightList,
+            });
+        
+        
+
+      })
   };
 
   render() {
@@ -302,7 +335,7 @@ class InsightsPage extends Component {
                 <DropDown
                   class="cohort-dropdown"
                   list={[
-                    "All risk type",
+                    "All Risk Type",
                     "Token Float Risk",
                     "Borrower Risk",
                     "Unlock Risk",
@@ -342,10 +375,11 @@ class InsightsPage extends Component {
                           <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
                             {InsightType.getText(insight.insight_type)}
                           </h5>
-                          {insight.insight_type ===
-                              InsightType.RISK_REDUCTION && <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
-                            {InsightType.getText(insight.insight_type)}
-                          </h5>}
+                          {insight?.sub_type  && (
+                            <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
+                              {InsightType.getRiskType(insight.sub_type)}
+                            </h5>
+                          )}
                         </div>
                         <p
                           className="inter-display-medium f-s-13 lh-16 grey-969"

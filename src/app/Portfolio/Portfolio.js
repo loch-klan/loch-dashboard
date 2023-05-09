@@ -2150,8 +2150,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                                                         insight.insight_type
                                                       )}
                                                     </h5>
-                                                    {insight.insight_type ===
-                                                    InsightType.RISK_REDUCTION ? (
+                                                    {insight?.sub_type ? (
                                                       <h6
                                                         className="inter-display-bold f-s-10 lh-12"
                                                         style={{
@@ -2162,11 +2161,14 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                                                           padding:
                                                             "0.4rem 0.8rem",
                                                           width: "fit-content",
-                                                          textTransform: "uppercase",
-                                                          marginTop:"0.4rem"
+                                                          textTransform:
+                                                            "uppercase",
+                                                          marginTop: "0.4rem",
                                                         }}
                                                       >
-                                                        Unlock Risk
+                                                        {InsightType.getRiskType(
+                                                          insight.sub_type
+                                                        )}
                                                       </h6>
                                                     ) : (
                                                       <h6 className="inter-display-semi-bold f-s-10 lh-12 m-t-04">
