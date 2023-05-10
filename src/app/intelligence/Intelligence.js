@@ -640,9 +640,16 @@ class Intelligence extends Component {
                             className="insight-icon"
                           />
                           <div className="insights-content">
-                            <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                              {InsightType.getText(insight.insight_type)}
-                            </h5>
+                            <div className="chips-wrapper">
+                              <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                                {InsightType.getText(insight.insight_type)}
+                              </h5>
+                              {insight?.sub_type && (
+                                <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
+                                  {InsightType.getRiskType(insight.sub_type)}
+                                </h5>
+                              )}
+                            </div>
                             <p
                               className="inter-display-medium f-s-13 lh-16 grey-969"
                               dangerouslySetInnerHTML={{
