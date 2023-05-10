@@ -5,15 +5,49 @@ import { lightenDarkenColor } from '../../utils/ReusableFunctions'
 export default function CoinChip(props) {
 
   return (
-    <div className="coin-chip">
+    <div
+      className="coin-chip"
+      style={props?.chainImg ? { position: "relative" } : {}}
+    >
       <Image
         src={props.coin_img_src}
-        style={{
-          border: `1px solid ${lightenDarkenColor(props.colorCode, -0.15)} `,
-          margin: `${props.type === "cohort" ? "-1px" : "0"}`,
-          
-        }}
+        style={
+          props?.chainImg
+            ? {
+                border: `1px solid ${lightenDarkenColor(
+                  props.colorCode,
+                  -0.15
+                )} `,
+                margin: `${props.type === "cohort" ? "-1px" : "0"}`,
+              borderRadius: "50%",
+              width: "2rem",
+                height:"2rem"
+              }
+            : {
+                border: `1px solid ${lightenDarkenColor(
+                  props.colorCode,
+                  -0.15
+                )} `,
+                margin: `${props.type === "cohort" ? "-1px" : "0"}`,
+              }
+        }
       />
+      {props?.chainImg && (
+        <Image
+          src={props.coin_img_src}
+          style={{
+            border: `1px solid ${lightenDarkenColor(props.colorCode, -0.15)} `,
+            margin: `${props.type === "cohort" ? "-1px" : "0"}`,
+            borderRadius: "50%",
+            width: "1rem",
+            height: "1rem",
+            position: "absolute",
+            top: "0rem",
+            left: "1.3rem",
+          }}
+          className='chain-img'
+        />
+      )}
       <div className="inter-display-medium f-s-13 lh-14 coin-percent">
         {props.coin_percent
           ? props.coin_percent
