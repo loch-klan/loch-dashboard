@@ -68,7 +68,7 @@ class InsightsPage extends Component {
       isStatic: false,
       triggerId: 9,
 
-      riskType: "Risk type",
+      riskType: "All risks",
     };
   }
 
@@ -155,7 +155,7 @@ class InsightsPage extends Component {
     this.setState({
       selectedFilter: value,
       updatedInsightList: insightList,
-      riskType: "Risk type",
+      riskType: "All risks",
     });
 
     if (value === 1) {
@@ -335,7 +335,7 @@ class InsightsPage extends Component {
                 <DropDown
                   class="cohort-dropdown"
                   list={[
-                    "All Risk Type",
+                    "All risks",
                     "Token Float Risk",
                     "Borrower Risk",
                     "Unlock Risk",
