@@ -21,6 +21,7 @@ import LPWhale from "./app/home/landing-page-whale";
 import LPIntelligence from "./app/home/landing-page-intelligence";
 import LPPeace from "./app/home/landing-page-peace";
 import WhopLoader from "./app/common/WhopAccount"
+import TopAccount from "./app/discover/topAccount";
 const routes = [
   {
     path: "/",
@@ -111,6 +112,12 @@ const routes = [
     name: "Whale Watching Share",
     type: PrivateRoute,
     component: CohortSharePage,
+  },
+  {
+    path: "/top-accounts",
+    name: "Top accounts",
+    type: PrivateRoute,
+    component: TopAccount,
   },
   {
     path: "/decentralized-finance",

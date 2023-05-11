@@ -412,7 +412,7 @@ class CustomDropdown extends Component {
         className={`custom-dropdown cp ${
           this.props.isLineChart || this.props.isChain || this.props.LightTheme
             ? "lineChart"
-            : ""
+            : this.props.isTopaccount ? "top-account-dropdown" :""
         }`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}

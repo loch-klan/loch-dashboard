@@ -381,7 +381,7 @@ class Defi extends Component {
             subTitle="Decipher all your DeFi data from one place"
             btnText={"Add wallet"}
             handleBtn={this.handleAddModal}
-            showpath={true}
+            // showpath={true}
             currentPage={"decentralized-finance"}
             // showData={totalWalletAmt}
             // isLoading={isLoading}

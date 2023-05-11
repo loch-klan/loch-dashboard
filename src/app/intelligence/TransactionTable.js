@@ -47,6 +47,8 @@ function TransactionTable(props) {
           message={
             props.title === "Average cost basis"
               ? "No average cost basis found"
+              : props?.message
+              ? props?.message
               : "No transactions found"
           }
           isLoading={props.isLoading}
