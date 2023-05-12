@@ -96,7 +96,7 @@ class TopAccountPage extends BaseReactComponent {
       table: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
       walletList,
-      currentPage: page ? parseInt(page, 10) : START_INDEX,
+      currentPage: page ? parseInt(page, 25) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
       // methodFilter: [],
@@ -180,13 +180,73 @@ class TopAccountPage extends BaseReactComponent {
     getTopAccounts(data, this);
   };
 
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate(prevProps, prevState) {
+     const prevParams = new URLSearchParams(prevProps.location.search);
+     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
+
+     const params = new URLSearchParams(this.props.location.search);
+     const page = parseInt(params.get("p") || START_INDEX, 10);
+
+     if (
+       prevPage !== page ||
+       prevState.condition !== this.state.condition ||
+       prevState.sort !== this.state.sort
+     ) {
+       this.callApi(page);
+     }
+  }
 
   onValidSubmit = () => {
     // console.log("Sbmit")
   };
 
-  addCondition = (key, value) => {};
+  addCondition = (key, value) => {
+    console.log("test", key, value)
+     let index = this.state.condition.findIndex((e) => e.key === key);
+     // console.log("index", index);
+     let arr = [...this.state.condition];
+     let search_index = this.state.condition.findIndex(
+       (e) => e.key === SEARCH_BY_TEXT
+     );
+     if (
+       index !== -1 &&
+       value !== "allchain" &&
+       value !== "AllNetworth" &&
+       value !== "Allasset"
+     ) {
+       // console.log("first if", index);
+       arr[index].value = value;
+     } else if (
+       value === "allchain" ||
+       value === "AllNetworth" ||
+       value === "Allasset"
+     ) {
+       // console.log("second if", index);
+       if (index !== -1) {
+         arr.splice(index, 1);
+       }
+     } else {
+       // console.log("else", index);
+       let obj = {};
+       obj = {
+         key: key,
+         value: value,
+       };
+       arr.push(obj);
+     }
+     if (search_index !== -1) {
+       if (value === "" && key === SEARCH_BY_TEXT) {
+         arr.splice(search_index, 1);
+       }
+     }
+     // On Filter start from page 0
+     this.props.history.replace({
+       search: `?p=${START_INDEX}`,
+     });
+     this.setState({
+       condition: arr,
+     });
+  };
   onChangeMethod = () => {};
   handleSort = (val) => {
     console.log(val);
@@ -707,7 +767,7 @@ class TopAccountPage extends BaseReactComponent {
                       ...[{ value: "allchain", label: "All chains" }],
                       ...chainList,
                     ]}
-                    action={SEARCH_BY_ASSETS_IN}
+                    action={"SEARCH_BY_CHAIN_IN"}
                     handleClick={(key, value) => this.addCondition(key, value)}
                     isTopaccount={true}
                   />
@@ -717,23 +777,28 @@ class TopAccountPage extends BaseReactComponent {
                     filtername="Net worth"
                     options={[
                       { value: "AllNetworth", label: "All net worth" },
-                      { value: "less1m", label: "less 1m" },
-                      { value: "1m10m", label: "1m-10m" },
-                      { value: "10m100m", label: "10m-100m" },
-                      { value: "100m1b", label: "100m-1b" },
-                      { value: "more1b", label: "more than 1b" },
+                      { value: "0-1", label: "less 1m" },
+                      { value: "1-10", label: "1m-10m" },
+                      { value: "10-100", label: "10m-100m" },
+                      { value: "100-1000", label: "100m-1b" },
+                      { value: "1000+", label: "more than 1b" },
                     ]}
-                    action={SEARCH_BY_METHOD_IN}
-                    handleClick={(key, value) => this.addCondition(key, value)}
+                    action={"SEARCH_BY_AMOUNT"}
+                    handleClick={(key, value) => {
+                      // this.addCondition(key, value);
+                      console.log(key,value)
+                    }}
                     isTopaccount={true}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
                   <CustomDropdown
                     filtername="Assets"
-                    options={[...[
-                      { value: "Allasset", label: "All assets" }], ...assetList]}
-                    action={SEARCH_BY_METHOD_IN}
+                    options={[
+                      ...[{ value: "Allasset", label: "All assets" }],
+                      ...assetList,
+                    ]}
+                    action={"SEARCH_BY_ASSETS_IN"}
                     handleClick={(key, value) => this.addCondition(key, value)}
                     isTopaccount={true}
                   />
@@ -766,7 +831,7 @@ class TopAccountPage extends BaseReactComponent {
             </Form>
           </div>
           <div className="transaction-history-table">
-            {this.state.tableLoading && false ? (
+            {this.state.tableLoading  ? (
               <Loading />
             ) : (
               <>
@@ -774,10 +839,10 @@ class TopAccountPage extends BaseReactComponent {
                   tableData={tableData}
                   columnList={columnList}
                   message={"No top accounts found"}
-                  totalPage={this.state.totalPage}
+                  // totalPage={this.state.totalPage}
                   history={this.props.history}
                   location={this.props.location}
-                  page={this.state.currentPage}
+                  // page={this.state.currentPage}
                   tableLoading={this.state.tableLoading}
                 />
                 {/* <div className="ShowDust">

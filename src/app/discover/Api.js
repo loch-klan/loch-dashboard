@@ -51,6 +51,7 @@ export const getTopAccounts = (data,ctx) => {
 
         ctx.setState({
           accountList: tableData,
+          tableLoading: false,
         });
 
       
