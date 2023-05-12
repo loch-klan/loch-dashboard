@@ -33,6 +33,7 @@ import {
   SORT_BY_NETFLOWS,
   SORT_BY_LARGEST_BOUGHT,
   SORT_BY_LARGEST_SOLD,
+  SORT_BY_TAG_NAME,
 } from "../../utils/Constant";
 import { searchTransactionApi, getFilters, getTransactionAsset } from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
@@ -76,16 +77,8 @@ class TopAccountPage extends BaseReactComponent {
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-    const walletList = JSON.parse(localStorage.getItem("addWallet"));
-    const address = walletList?.map((wallet) => {
-      return wallet.address;
-    });
-    const cond = [
-      {
-        key: SEARCH_BY_WALLET_ADDRESS_IN,
-        value: address,
-      },
-    ];
+   
+
     this.state = {
       currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
@@ -95,8 +88,7 @@ class TopAccountPage extends BaseReactComponent {
       methodsDropdown: Method.opt,
       table: [],
       sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
-      walletList,
-      currentPage: page ? parseInt(page, 25) : START_INDEX,
+      currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
       // methodFilter: [],
@@ -124,6 +116,10 @@ class TopAccountPage extends BaseReactComponent {
           title: "largestsold",
           up: false,
         },
+        {
+          title: "tagName",
+          up:false
+        },
       ],
       showDust: false,
       // add new wallet
@@ -139,9 +135,9 @@ class TopAccountPage extends BaseReactComponent {
       isStatic: false,
       triggerId: 0,
       accountList: [],
-      totalPage: 10,
+      totalPage: 0,
       timeFIlter: "Time",
-      AssetList:[],
+      AssetList: [],
     };
     this.delayTimer = 0;
   }
@@ -173,7 +169,7 @@ class TopAccountPage extends BaseReactComponent {
   callApi = (page = START_INDEX) => {
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
-    data.append("start", 0);
+    data.append("start", page * API_LIMIT);
     data.append("conditions", JSON.stringify(this.state.condition));
     data.append("limit", API_LIMIT);
     data.append("sorts", JSON.stringify(this.state.sort));
@@ -193,6 +189,9 @@ class TopAccountPage extends BaseReactComponent {
        prevState.sort !== this.state.sort
      ) {
        this.callApi(page);
+       this.setState({
+         currentPage: page,
+       });
      }
   }
 
@@ -289,6 +288,13 @@ class TopAccountPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+        } else if (val === "tagName") {
+          obj = [
+            {
+              key: SORT_BY_TAG_NAME,
+              value: !el.up,
+            },
+          ];
         }
         el.up = !el.up;
       } else {
@@ -297,7 +303,7 @@ class TopAccountPage extends BaseReactComponent {
     });
 
     this.setState({
-      sort: obj,
+      // sort: obj,
       tableSortOpt: sort,
     });
   };
@@ -421,6 +427,44 @@ class TopAccountPage extends BaseReactComponent {
               //   </div>
               // </CustomOverlay>
               this.TruncateText(rowData.account)
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="tagName"
+            onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Name Tag
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "tagName",
+        // coumnWidth: 153,
+        coumnWidth: 0.5,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "tagName") {
+            return (
+              rowData.tagName ? <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.tagName}
+              >
+                <span>{rowData.tagName}</span>
+              </CustomOverlay>: "-"
             );
           }
         },
@@ -776,7 +820,7 @@ class TopAccountPage extends BaseReactComponent {
                   <CustomDropdown
                     filtername="Net worth"
                     options={[
-                      { value: "AllNetworth", label: "All net worth" },
+                      { value: "AllNetworth", label: "All" },
                       { value: "0-1", label: "less 1m" },
                       { value: "1-10", label: "1m-10m" },
                       { value: "10-100", label: "10m-100m" },
@@ -838,11 +882,11 @@ class TopAccountPage extends BaseReactComponent {
                 <TransactionTable
                   tableData={tableData}
                   columnList={columnList}
-                  message={"No top accounts found"}
-                  // totalPage={this.state.totalPage}
+                  message={"No accounts found"}
+                  totalPage={this.state.totalPage}
                   history={this.props.history}
                   location={this.props.location}
-                  // page={this.state.currentPage}
+                  page={this.state.currentPage}
                   tableLoading={this.state.tableLoading}
                 />
                 {/* <div className="ShowDust">

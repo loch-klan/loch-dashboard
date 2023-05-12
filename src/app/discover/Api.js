@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
+import { API_LIMIT } from "../../utils/Constant";
 
 
 export const getTopAccounts = (data,ctx) => {
@@ -9,9 +10,10 @@ export const getTopAccounts = (data,ctx) => {
     .post("wallet/user-wallet/get-top-accounts",data)
     .then((res) => {
       if (!res.data.error) {
-        let tableData = res?.data?.data?.map((e) => ({
+        let tableData = res?.data?.data?.accounts?.map((e) => ({
           account: e?.address,
           networth: e?.net_worth,
+          tagName: e?.name,
           // netflows: 37344,
           // largestBought: [
           //   {
@@ -52,6 +54,7 @@ export const getTopAccounts = (data,ctx) => {
         ctx.setState({
           accountList: tableData,
           tableLoading: false,
+          totalPage:  Math.ceil(res.data.data.total_count / API_LIMIT)
         });
 
       

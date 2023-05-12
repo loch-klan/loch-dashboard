@@ -43,6 +43,7 @@ export const SORT_BY_LARGEST_BOUGHT = "SORT_BY_LARGEST_BOUGHT";
 export const SORT_BY_NETFLOWS = "SORT_BY_NETFLOWS";
 export const SORT_BY_NETWORTH = "SORT_BY_NETWORTH";
 export const SORT_BY_ACCOUNT = "SORT_BY_ACCOUNT";
+export const SORT_BY_TAG_NAME = "SORT_BY_TAG_NAME";
 
 export const GroupByOptions = {
   GROUP_BY_MONTH: "GROUP_BY_MONTH",
