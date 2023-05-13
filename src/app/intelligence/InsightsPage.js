@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import { Button, Image } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
-import reduceCost from '../../assets/images/icons/reduce-cost.svg'
-import reduceRisk from '../../assets/images/icons/reduce-risk.svg'
-import increaseYield from '../../assets/images/icons/increase-yield.svg'
+import reduceCost from "../../assets/images/icons/reduce-cost.svg";
+import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
+import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import { getAllInsightsApi } from "./Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
-import { AllInsights, InsightPage, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk } from "../../utils/AnalyticsFunctions";
+import {
+  AllInsights,
+  InsightPage,
+  InsightsIncreaseYield,
+  InsightsReduceCost,
+  InsightsReduceRisk,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 
@@ -26,7 +32,6 @@ import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import DropDown from "../common/DropDown";
 import { lte } from "lodash";
-
 
 class InsightsPage extends Component {
   constructor(props) {
@@ -68,7 +73,7 @@ class InsightsPage extends Component {
       isStatic: false,
       triggerId: 9,
 
-      riskType: "Risk type",
+      riskType: "All risks",
     };
   }
 
@@ -155,7 +160,7 @@ class InsightsPage extends Component {
     this.setState({
       selectedFilter: value,
       updatedInsightList: insightList,
-      riskType: "Risk type",
+      riskType: "All risks",
     });
 
     if (value === 1) {
@@ -205,53 +210,42 @@ class InsightsPage extends Component {
   handleInsights = (e) => {
     let title = e.split(" ")[1];
     if (e.split(" ")[2] !== undefined) {
-    
       title = title + " " + e.split(" ")[2];
     }
-    if (e.split(" ")[3] !== "undefined")
-    
-    {
-         
+    if (e.split(" ")[3] !== "undefined") {
       title = title + " " + e.split(" ")[3];
-      }
-      console.log("title", title);
+    }
+    console.log("title", title);
     this.setState(
       {
         riskType: title,
-  
-      }, () => {
-        
+      },
+      () => {
         let riskType = InsightType.getRiskNumber(this.state.riskType);
         let insightList = this.props.intelligenceState.updatedInsightList;
-        
+
         if (riskType !== 0) {
           insightList =
-          this.state.selectedFilter === 1
-            ? insightList?.filter(
-              (item) =>
-                item.sub_type === riskType
-            )
-            : insightList?.filter(
-              (item) =>
-                item.sub_type === riskType &&
-                item.insight_type === this.state.selectedFilter
-            );
+            this.state.selectedFilter === 1
+              ? insightList?.filter((item) => item.sub_type === riskType)
+              : insightList?.filter(
+                  (item) =>
+                    item.sub_type === riskType &&
+                    item.insight_type === this.state.selectedFilter
+                );
         } else {
           if (this.state.selectedFilter !== 1) {
             insightList = insightList?.filter(
-              (item) =>
-                item.insight_type === this.state.selectedFilter
+              (item) => item.insight_type === this.state.selectedFilter
             );
           }
         }
-        
-            this.setState({
-              updatedInsightList: insightList,
-            });
-        
-        
 
-      })
+        this.setState({
+          updatedInsightList: insightList,
+        });
+      }
+    );
   };
 
   render() {
@@ -335,7 +329,7 @@ class InsightsPage extends Component {
                 <DropDown
                   class="cohort-dropdown"
                   list={[
-                    "All Risk Type",
+                    "All risks",
                     "Token Float Risk",
                     "Borrower Risk",
                     "Unlock Risk",
@@ -499,5 +493,4 @@ const mapDispatchToProps = {
   setPageFlagDefault,
 };
 
-
-export default connect(mapStateToProps,mapDispatchToProps)(InsightsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(InsightsPage);
