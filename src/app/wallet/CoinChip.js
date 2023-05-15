@@ -7,12 +7,12 @@ export default function CoinChip(props) {
   return (
     <div
       className="coin-chip"
-      style={props?.chainImg ? { position: "relative" } : {}}
+      style={props?.chain ? { position: "relative" } : {}}
     >
       <Image
         src={props.coin_img_src}
         style={
-          props?.chainImg
+          props?.chain
             ? {
                 border: `1px solid ${lightenDarkenColor(
                   props.colorCode,
@@ -32,7 +32,7 @@ export default function CoinChip(props) {
               }
         }
       />
-      {props?.chainImg && (
+      {props?.chain && (
         <Image
           src={props?.chain?.symbol}
           style={{

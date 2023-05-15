@@ -1551,21 +1551,41 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 isText={true}
                 text={rowData.AssetCode}
               >
-                <Image
-                  src={rowData.Asset}
-                  className="history-table-icon"
-                  onMouseEnter={() => {
-                    // //console.log("address", rowData.from.metaData);
-                    // TransactionHistoryAddress({
-                    //   session_id: getCurrentUser().id,
-                    //   email_address: getCurrentUser().email,
-                    //   address_hovered: rowData.from.address,
-                    //   display_name: rowData.from.wallet_metaData?.text
-                    //     ? rowData.from.wallet_metaData?.text
-                    //     : rowData.from.metaData?.displayAddress,
-                    // });
-                  }}
-                />
+                <div style={{display:"flex", justifyContent:"center"}}>
+                  <div style={{ position: "relative", width:"fit-content" }}>
+                    <Image
+                      src={rowData.Asset}
+                      className="history-table-icon"
+                      style={{width:"2rem", height:"2rem"}}
+                      onMouseEnter={() => {
+                        // //console.log("address", rowData.from.metaData);
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
+                      }}
+                    />
+                    {rowData.chain && (
+                      <Image
+                        src={rowData.chain.symbol}
+                        style={{
+                          width: "1rem",
+                          height: "1rem",
+                          border: "1px solid #ffffff",
+                          borderRadius: "50%",
+                          position: "absolute",
+                          top: "-1px",
+                          right: "-3px",
+                        }}
+                        className="chain-img"
+                      />
+                    )}
+                  </div>
+                </div>
               </CustomOverlay>
             );
           }
