@@ -22,6 +22,7 @@ import LPIntelligence from "./app/home/landing-page-intelligence";
 import LPPeace from "./app/home/landing-page-peace";
 import WhopLoader from "./app/common/WhopAccount"
 import TopAccount from "./app/discover/topAccount";
+import twitterInfluencer from "./app/discover/twitterInfluencer";
 const routes = [
   {
     path: "/",
@@ -118,6 +119,12 @@ const routes = [
     name: "Top accounts",
     type: PrivateRoute,
     component: TopAccount,
+  },
+  {
+    path: "/twitter-influencers",
+    name: "Twitter Influencers",
+    type: PrivateRoute,
+    component: twitterInfluencer,
   },
   {
     path: "/decentralized-finance",

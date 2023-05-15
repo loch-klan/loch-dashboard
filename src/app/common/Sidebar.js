@@ -592,12 +592,12 @@ function Sidebar(props) {
                         activeclassname="active"
                       >
                         <Image
-                              src={
-                                activeTab === "/home"
-                                  ? ActiveHomeIcon
-                                  : InActiveHomeIcon
-                              }
-                            />
+                          src={
+                            activeTab === "/home"
+                              ? ActiveHomeIcon
+                              : InActiveHomeIcon
+                          }
+                        />
                         Home
                       </NavLink>
                     </li>
@@ -638,19 +638,19 @@ function Sidebar(props) {
                         }}
                       >
                         <Image
-                              src={
-                                [
-                                  "/intelligence/transaction-history",
-                                  "/intelligence",
-                                  "/intelligence/volume-traded-by-counterparty",
-                                  "/intelligence/insights",
-                                  "/intelligence/costs",
-                                  "/intelligence/asset-value",
-                                ].includes(activeTab)
-                                  ? ActiveIntelligenceIcon
-                                  : IntelligenceIcon
-                              }
-                            />
+                          src={
+                            [
+                              "/intelligence/transaction-history",
+                              "/intelligence",
+                              "/intelligence/volume-traded-by-counterparty",
+                              "/intelligence/insights",
+                              "/intelligence/costs",
+                              "/intelligence/asset-value",
+                            ].includes(activeTab)
+                              ? ActiveIntelligenceIcon
+                              : IntelligenceIcon
+                          }
+                        />
                         Intelligence
                         <Image
                           src={arrowUp}
@@ -779,19 +779,19 @@ function Sidebar(props) {
                         // activeclassname="none"
                       >
                         <Image
-                              src={
-                                activeTab === "/decentralized-finance"
-                                  ? DefiIcon
-                                  : DefiIcon
-                              }
-                              style={
-                                activeTab === "/decentralized-finance"
-                                  ? {
-                                      filter: "brightness(0)",
-                                    }
-                                  : {}
-                              }
-                            />
+                          src={
+                            activeTab === "/decentralized-finance"
+                              ? DefiIcon
+                              : DefiIcon
+                          }
+                          style={
+                            activeTab === "/decentralized-finance"
+                              ? {
+                                  filter: "brightness(0)",
+                                }
+                              : {}
+                          }
+                        />
                         DeFi
                       </NavLink>
                     </li>
@@ -813,12 +813,12 @@ function Sidebar(props) {
                         activeclassname="active"
                       >
                         <Image
-                              src={
-                                activeTab === "/profile"
-                                  ? ActiveProfileIcon
-                                  : ProfileIcon
-                              }
-                            />
+                          src={
+                            activeTab === "/profile"
+                              ? ActiveProfileIcon
+                              : ProfileIcon
+                          }
+                        />
                         Profile
                       </NavLink>
                     </li>
@@ -905,6 +905,35 @@ function Sidebar(props) {
                               }
                             /> */}
                             Top accounts
+                          </NavLink>
+                        </li>
+
+                        <li className="sub-menu">
+                          <NavLink
+                            className={`nav-link`}
+                            to="/twitter-influencers"
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            {/* <Image
+                              src={
+                                activeTab === "/top-accounts"
+                                  ? DefiIcon
+                                  : DefiIcon
+                              }
+                              style={
+                                activeTab === "/top-accounts"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            /> */}
+                            Twitter Influencers
                           </NavLink>
                         </li>
                       </>
