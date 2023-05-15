@@ -19,9 +19,9 @@ export default function CoinChip(props) {
                   -0.15
                 )} `,
                 margin: `${props.type === "cohort" ? "-1px" : "0"}`,
-              borderRadius: "50%",
-              width: "2rem",
-                height:"2rem"
+                borderRadius: "50%",
+                width: "2rem",
+                height: "2rem",
               }
             : {
                 border: `1px solid ${lightenDarkenColor(
@@ -34,9 +34,12 @@ export default function CoinChip(props) {
       />
       {props?.chainImg && (
         <Image
-          src={props.coin_img_src}
+          src={props?.chain?.symbol}
           style={{
-            border: `1px solid ${lightenDarkenColor(props.colorCode, -0.15)} `,
+            border: `1px solid ${lightenDarkenColor(
+              props?.chain?.color,
+              -0.15
+            )} `,
             margin: `${props.type === "cohort" ? "-1px" : "0"}`,
             borderRadius: "50%",
             width: "1rem",
@@ -45,7 +48,7 @@ export default function CoinChip(props) {
             top: "0rem",
             left: "1.3rem",
           }}
-          className='chain-img'
+          className="chain-img"
         />
       )}
       <div className="inter-display-medium f-s-13 lh-14 coin-percent">
