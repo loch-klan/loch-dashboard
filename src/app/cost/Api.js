@@ -340,6 +340,12 @@ export const getAvgCostBasis = (ctx) => {
             totalCostBasis = totalCostBasis + costBasis;
             totalCurrentValue = totalCurrentValue + current_price;
             AssetsList.push({
+              chain: {
+                name: item?.chain?.name,
+                code: item?.chain?.code,
+                color: item?.chain?.color,
+                symbol:item?.chain?.symbol
+              },
               Asset: item.asset.symbol,
               AssetCode: item.asset.code,
               AssetName: item.asset.name,
@@ -351,9 +357,7 @@ export const getAvgCostBasis = (ctx) => {
               GainLoss:
                 costBasis == 0
                   ? 0
-                  : ((current_price - costBasis) /
-                      costBasis) *
-                    100,
+                  : ((current_price - costBasis) / costBasis) * 100,
             });
           });
 
