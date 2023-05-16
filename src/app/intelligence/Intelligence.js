@@ -47,6 +47,7 @@ import { UpgradeTriggered } from "../../utils/ReusableFunctions";
 import UpgradeModal from "../common/upgradeModal";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 class Intelligence extends Component {
   constructor(props) {
@@ -578,287 +579,311 @@ class Intelligence extends Component {
 
   render() {
     return (
-      <div className="intelligence-page-section">
-        <div className="intelligence-section page">
-          {this.state.upgradeModal && (
-            <UpgradeModal
-              show={this.state.upgradeModal}
-              onHide={this.upgradeModal}
-              history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
-              isStatic={this.state.isStatic}
-              triggerId={this.state.triggerId}
-              pname="intelligence"
-            />
-          )}
-          <PageHeader
-            title="Intelligence"
-            subTitle="Automated and personalized financial intelligence"
-            btnText={"Add wallet"}
-            handleBtn={this.handleAddModal}
-            ShareBtn={true}
-            handleShare={this.handleShare}
-          />
-          <IntelWelcomeCard history={this.props.history} />
-          <div className="insights-image m-b-60">
-            <PageHeader
-              title="Insights"
-              showImg={insight}
-              viewMore={true}
-              // viewMoreRedirect={"/intelligence/insights"}
-              handleClick={() => {
-                this.props.history.push("/intelligence/insights");
-                InsightsViewMore({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                });
-              }}
-            />
-            <div style={{ position: "relative" }}>
-              <div className="insights-wrapper">
-                {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
-                {this.state.isLoading ? (
-                  <Loading />
-                ) : this.props.intelligenceState.updatedInsightList &&
-                  this.props.intelligenceState.updatedInsightList.length > 0 ? (
-                  this.props.intelligenceState.updatedInsightList
-                    ?.slice(0, 2)
-                    .map((insight, key) => {
-                      // console.log("insignt", insight);
-                      return (
-                        <div className="insights-card" key={key}>
-                          <Image
-                            src={
-                              insight.insight_type ===
-                              InsightType.COST_REDUCTION
-                                ? reduceCost
-                                : insight.insight_type ===
-                                  InsightType.RISK_REDUCTION
-                                ? reduceRisk
-                                : increaseYield
-                            }
-                            className="insight-icon"
-                          />
-                          <div className="insights-content">
-                            <div className="chips-wrapper">
-                              <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                                {InsightType.getText(insight.insight_type)}
-                              </h5>
-                              {insight?.sub_type && (
-                                <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
-                                  {InsightType.getRiskType(insight.sub_type)}
-                                </h5>
-                              )}
-                            </div>
-                            <p
-                              className="inter-display-medium f-s-13 lh-16 grey-969"
-                              dangerouslySetInnerHTML={{
-                                __html: insight.sub_title,
-                              }}
-                            ></p>
-                            <h4
-                              className="inter-display-medium f-s-16 lh-19 grey-313"
-                              dangerouslySetInnerHTML={{
-                                __html: insight.title,
-                              }}
-                            ></h4>
-                          </div>
-                        </div>
-                      );
-                    })
-                ) : (
-                  <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
-                    {
-                      "This wallet is not active enough for us to generate any useful insights here :)."
-                    }
-                  </h5>
-                )}
-              </div>
+      <>
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
+          >
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+              />
             </div>
-          </div>
-          <div className="portfolio-bar-graph" id="netflow">
-            <PageHeader title="Net Flows" showImg={eyeIcon} />
-            {/* Netflow Info Start */}
-
-            <Row
-              style={
-                this.state.RightShow || this.state.LeftShow
-                  ? { marginBottom: "2.6rem" }
-                  : {}
-              }
-            >
-              {/* 1st */}
-              {this.state.LeftShow && (
-                <Col md={5} style={{ paddingRight: "10px" }} sm={12}>
-                  <div className="InfoCard">
-                    <Image
-                      src={NetflowClose}
-                      className="CloseBtn"
-                      onClick={this.LeftClose}
-                    />
-                    <div className="m-b-30 InfoItem">
-                      <div className="title">
-                        <h3 className="inter-display-medium f-s-13 lh-15 black-191">
-                          Inflows
-                        </h3>
-                      </div>
-                      <div className="description">
-                        <p className="inter-display-medium f-s-13 lh-15 grey-969">
-                          sum total of all assets received by your portfolio
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="m-b-30 InfoItem">
-                      <div className="title">
-                        <h3 className="inter-display-medium f-s-13 lh-15 black-191">
-                          Outflows
-                        </h3>
-                      </div>
-                      <div className="description">
-                        <p className="inter-display-medium f-s-13 lh-15 grey-969">
-                          sum total of all assets and fees sent out by your
-                          portfolio
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="InfoItem">
-                      <div className="title">
-                        <h3 className="inter-display-medium f-s-13 lh-15 black-191">
-                          Net
-                        </h3>
-                      </div>
-                      <div className="description">
-                        <p className="inter-display-medium f-s-13 lh-15 grey-969">
-                          outflows - inflows
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </Col>
-              )}
-
-              {/* Second */}
-              {this.state.RightShow && (
-                <Col md={7} style={{ paddingLeft: "10px" }} sm={12}>
-                  <div className="InfoCardRight">
-                    <Image
-                      src={NetflowClose}
-                      className="CloseBtn"
-                      onClick={this.RightClose}
-                    />
-                    <div className="imageSection">
-                      <Image src={NetflowImg} />
-                      <h3 className="inter-display-bold f-s-10 lh-12 black-191 m-t-12 explainer-text">
-                        EXPLAINER
-                      </h3>
-                    </div>
-
-                    <div className="RightSection">
-                      <h3
-                        className="inter-display-medium f-s-16 lh-19 black-191 m-b-12"
-                        // style={{ width: "75px" }}
-                      >
-                        Inflows and Outflows might appear inflated if the same
-                        funds went in and out of a single wallet multiple times.
-                      </h3>
-                      <p
-                        className="inter-display-medium f-s-13 lh-15 grey-969"
-                        // style={{ width: "215px" }}
-                      >
-                        This chart is most accurate when all your wallet
-                        addresses are added to Loch. This way we don't double
-                        count funds.
-                      </p>
-                    </div>
-                  </div>
-                </Col>
-              )}
-            </Row>
-
-            {/* Netflow Info End */}
-
-            <div style={{ position: "relative", minWidth: "85rem" }}>
-              {this.props.intelligenceState.graphValue ? (
-                <BarGraphSection
-                  isScrollVisible={false}
-                  data={this.props.intelligenceState.graphValue[0]}
-                  options={this.props.intelligenceState.graphValue[1]}
-                  coinsList={this.props.OnboardingState.coinsList}
-                  timeFunction={(e, activeBadgeList) =>
-                    this.timeFilter(e, activeBadgeList)
-                  }
-                  showSwitch={true}
-                  isSwitch={this.state.isSwitch}
-                  setSwitch={this.setSwitch}
-                  marginBottom="m-b-32"
-                  // showFooter={false}
-                  showFooterDropdown={false}
-                  showFooter={true}
-                  showToken={true}
-                  footerLabels={[
-                    "Max",
-                    "5 Y",
-                    "4 Y",
-                    "3 Y",
-                    "2 Y",
-                    "1 Y",
-                    "6 M",
-                    "1 M",
-                    "1 W",
-                    "1 D",
-                  ]}
-                  activeTitle={this.state.title}
-                  assetList={this.state.AssetList}
-                  // handleSelect={(opt) => this.handleSelect(opt)}
-                  showBadges={true}
-                  showPercentage={this.props.intelligenceState.graphValue[2]}
-                  handleBadge={(activeBadgeList, activeFooter) =>
-                    this.handleBadge(activeBadgeList, activeFooter)
-                  }
-                  ProfitLossAsset={this.props.intelligenceState.ProfitLossAsset}
-                  handleAssetSelected={this.handleAssetSelected}
-
-                  // comingSoon={true}
-                />
-              ) : (
-                <div
-                  className="loading-wrapper"
-                  style={{
-                    height: "57.8rem",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Loading />
-                  <br />
-                  <br />
-                </div>
-              )}
-            </div>
-            {/* footer */}
-            <Footer />
           </div>
         </div>
-        {this.state.addModal && (
-          <FixAddModal
-            show={this.state.addModal}
-            onHide={this.handleAddModal}
-            modalIcon={AddWalletModalIcon}
-            title="Add wallet address"
-            subtitle="Add more wallet address here"
-            modalType="addwallet"
-            btnStatus={false}
-            btnText="Go"
-            history={this.props.history}
-            changeWalletList={this.handleChangeList}
-            apiResponse={(e) => this.CheckApiResponse(e)}
-            from="intelligence"
-          />
-        )}
-      </div>
+        <div className="intelligence-page-section m-t-80">
+          <div className="intelligence-section page">
+            {this.state.upgradeModal && (
+              <UpgradeModal
+                show={this.state.upgradeModal}
+                onHide={this.upgradeModal}
+                history={this.props.history}
+                isShare={localStorage.getItem("share_id")}
+                isStatic={this.state.isStatic}
+                triggerId={this.state.triggerId}
+                pname="intelligence"
+              />
+            )}
+            <PageHeader
+              title="Intelligence"
+              subTitle="Automated and personalized financial intelligence"
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              ShareBtn={true}
+              handleShare={this.handleShare}
+            />
+
+            <IntelWelcomeCard history={this.props.history} />
+            <div className="insights-image m-b-60">
+              <PageHeader
+                title="Insights"
+                showImg={insight}
+                viewMore={true}
+                // viewMoreRedirect={"/intelligence/insights"}
+                handleClick={() => {
+                  this.props.history.push("/intelligence/insights");
+                  InsightsViewMore({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+              />
+              <div style={{ position: "relative" }}>
+                <div className="insights-wrapper">
+                  {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
+                  {this.state.isLoading ? (
+                    <Loading />
+                  ) : this.props.intelligenceState.updatedInsightList &&
+                    this.props.intelligenceState.updatedInsightList.length >
+                      0 ? (
+                    this.props.intelligenceState.updatedInsightList
+                      ?.slice(0, 2)
+                      .map((insight, key) => {
+                        // console.log("insignt", insight);
+                        return (
+                          <div className="insights-card" key={key}>
+                            <Image
+                              src={
+                                insight.insight_type ===
+                                InsightType.COST_REDUCTION
+                                  ? reduceCost
+                                  : insight.insight_type ===
+                                    InsightType.RISK_REDUCTION
+                                  ? reduceRisk
+                                  : increaseYield
+                              }
+                              className="insight-icon"
+                            />
+                            <div className="insights-content">
+                              <div className="chips-wrapper">
+                                <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                                  {InsightType.getText(insight.insight_type)}
+                                </h5>
+                                {insight?.sub_type && (
+                                  <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
+                                    {InsightType.getRiskType(insight.sub_type)}
+                                  </h5>
+                                )}
+                              </div>
+                              <p
+                                className="inter-display-medium f-s-13 lh-16 grey-969"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.sub_title,
+                                }}
+                              ></p>
+                              <h4
+                                className="inter-display-medium f-s-16 lh-19 grey-313"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.title,
+                                }}
+                              ></h4>
+                            </div>
+                          </div>
+                        );
+                      })
+                  ) : (
+                    <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
+                      {
+                        "This wallet is not active enough for us to generate any useful insights here :)."
+                      }
+                    </h5>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="portfolio-bar-graph" id="netflow">
+              <PageHeader title="Net Flows" showImg={eyeIcon} />
+              {/* Netflow Info Start */}
+
+              <Row
+                style={
+                  this.state.RightShow || this.state.LeftShow
+                    ? { marginBottom: "2.6rem" }
+                    : {}
+                }
+              >
+                {/* 1st */}
+                {this.state.LeftShow && (
+                  <Col md={5} style={{ paddingRight: "10px" }} sm={12}>
+                    <div className="InfoCard">
+                      <Image
+                        src={NetflowClose}
+                        className="CloseBtn"
+                        onClick={this.LeftClose}
+                      />
+                      <div className="m-b-30 InfoItem">
+                        <div className="title">
+                          <h3 className="inter-display-medium f-s-13 lh-15 black-191">
+                            Inflows
+                          </h3>
+                        </div>
+                        <div className="description">
+                          <p className="inter-display-medium f-s-13 lh-15 grey-969">
+                            sum total of all assets received by your portfolio
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="m-b-30 InfoItem">
+                        <div className="title">
+                          <h3 className="inter-display-medium f-s-13 lh-15 black-191">
+                            Outflows
+                          </h3>
+                        </div>
+                        <div className="description">
+                          <p className="inter-display-medium f-s-13 lh-15 grey-969">
+                            sum total of all assets and fees sent out by your
+                            portfolio
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="InfoItem">
+                        <div className="title">
+                          <h3 className="inter-display-medium f-s-13 lh-15 black-191">
+                            Net
+                          </h3>
+                        </div>
+                        <div className="description">
+                          <p className="inter-display-medium f-s-13 lh-15 grey-969">
+                            outflows - inflows
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </Col>
+                )}
+
+                {/* Second */}
+                {this.state.RightShow && (
+                  <Col md={7} style={{ paddingLeft: "10px" }} sm={12}>
+                    <div className="InfoCardRight">
+                      <Image
+                        src={NetflowClose}
+                        className="CloseBtn"
+                        onClick={this.RightClose}
+                      />
+                      <div className="imageSection">
+                        <Image src={NetflowImg} />
+                        <h3 className="inter-display-bold f-s-10 lh-12 black-191 m-t-12 explainer-text">
+                          EXPLAINER
+                        </h3>
+                      </div>
+
+                      <div className="RightSection">
+                        <h3
+                          className="inter-display-medium f-s-16 lh-19 black-191 m-b-12"
+                          // style={{ width: "75px" }}
+                        >
+                          Inflows and Outflows might appear inflated if the same
+                          funds went in and out of a single wallet multiple
+                          times.
+                        </h3>
+                        <p
+                          className="inter-display-medium f-s-13 lh-15 grey-969"
+                          // style={{ width: "215px" }}
+                        >
+                          This chart is most accurate when all your wallet
+                          addresses are added to Loch. This way we don't double
+                          count funds.
+                        </p>
+                      </div>
+                    </div>
+                  </Col>
+                )}
+              </Row>
+
+              {/* Netflow Info End */}
+
+              <div style={{ position: "relative", minWidth: "85rem" }}>
+                {this.props.intelligenceState.graphValue ? (
+                  <BarGraphSection
+                    isScrollVisible={false}
+                    data={this.props.intelligenceState.graphValue[0]}
+                    options={this.props.intelligenceState.graphValue[1]}
+                    coinsList={this.props.OnboardingState.coinsList}
+                    timeFunction={(e, activeBadgeList) =>
+                      this.timeFilter(e, activeBadgeList)
+                    }
+                    showSwitch={true}
+                    isSwitch={this.state.isSwitch}
+                    setSwitch={this.setSwitch}
+                    marginBottom="m-b-32"
+                    // showFooter={false}
+                    showFooterDropdown={false}
+                    showFooter={true}
+                    showToken={true}
+                    footerLabels={[
+                      "Max",
+                      "5 Y",
+                      "4 Y",
+                      "3 Y",
+                      "2 Y",
+                      "1 Y",
+                      "6 M",
+                      "1 M",
+                      "1 W",
+                      "1 D",
+                    ]}
+                    activeTitle={this.state.title}
+                    assetList={this.state.AssetList}
+                    // handleSelect={(opt) => this.handleSelect(opt)}
+                    showBadges={true}
+                    showPercentage={this.props.intelligenceState.graphValue[2]}
+                    handleBadge={(activeBadgeList, activeFooter) =>
+                      this.handleBadge(activeBadgeList, activeFooter)
+                    }
+                    ProfitLossAsset={
+                      this.props.intelligenceState.ProfitLossAsset
+                    }
+                    handleAssetSelected={this.handleAssetSelected}
+
+                    // comingSoon={true}
+                  />
+                ) : (
+                  <div
+                    className="loading-wrapper"
+                    style={{
+                      height: "57.8rem",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Loading />
+                    <br />
+                    <br />
+                  </div>
+                )}
+              </div>
+              {/* footer */}
+              <Footer />
+            </div>
+          </div>
+          {this.state.addModal && (
+            <FixAddModal
+              show={this.state.addModal}
+              onHide={this.handleAddModal}
+              modalIcon={AddWalletModalIcon}
+              title="Add wallet address"
+              subtitle="Add more wallet address here"
+              modalType="addwallet"
+              btnStatus={false}
+              btnText="Go"
+              history={this.props.history}
+              changeWalletList={this.handleChangeList}
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              from="intelligence"
+            />
+          )}
+        </div>
+      </>
     );
   }
 }

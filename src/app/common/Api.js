@@ -121,8 +121,9 @@ export const updateUserWalletApi = (data,ctx) =>{
         // ctx.setState({
         //    recievedResponse: true
         // })
-        ctx.props.apiResponse(true);
         
+        ctx.props.apiResponse(true);
+      
       }
      
       if (ctx.props.handleUpdateWallet) {

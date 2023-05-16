@@ -36,6 +36,7 @@ import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 
 class Cost extends Component {
@@ -754,168 +755,187 @@ class Cost extends Component {
     ];
 
     return (
-      <div className="cost-page-section">
-        {this.state.connectModal ? (
-          <ConnectModal
-            show={this.state.connectModal}
-            onHide={this.handleConnectModal}
-            history={this.props.history}
-            headerTitle={"Connect exchanges"}
-            modalType={"connectModal"}
-            iconImage={LinkIcon}
-          />
-        ) : (
-          ""
-        )}
-        <div className="m-t-50 cost-section page">
-          {this.state.addModal && (
-            <FixAddModal
-              show={this.state.addModal}
-              onHide={this.handleAddModal}
-              modalIcon={AddWalletModalIcon}
-              title="Add wallet address"
-              subtitle="Add more wallet address here"
-              modalType="addwallet"
-              btnStatus={false}
-              btnText="Go"
+      <>
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
+          >
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="cost-page-section m-t-80">
+          {this.state.connectModal ? (
+            <ConnectModal
+              show={this.state.connectModal}
+              onHide={this.handleConnectModal}
               history={this.props.history}
-              changeWalletList={this.handleChangeList}
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              from="cost"
+              headerTitle={"Connect exchanges"}
+              modalType={"connectModal"}
+              iconImage={LinkIcon}
             />
+          ) : (
+            ""
           )}
-          <PageHeader
-            title="Costs"
-            subTitle="Bring light to your hidden costs"
-            btnText={"Add wallet"}
-            handleBtn={this.handleAddModal}
-            showpath={true}
-            currentPage={"costs"}
-            ShareBtn={true}
-            handleShare={this.handleShare}
-          />
-          <div className="m-b-43 cost-table-section">
-            <div style={{ position: "relative" }}>
-              {/* <div className="coming-soon-div">
+          <div className="m-t-50 cost-section page">
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
+                history={this.props.history}
+                changeWalletList={this.handleChangeList}
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                from="cost"
+              />
+            )}
+            <PageHeader
+              title="Costs"
+              subTitle="Bring light to your hidden costs"
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              showpath={true}
+              currentPage={"costs"}
+              ShareBtn={true}
+              handleShare={this.handleShare}
+            />
+            <div className="m-b-43 cost-table-section">
+              <div style={{ position: "relative" }}>
+                {/* <div className="coming-soon-div">
                 <Image src={ExportIconWhite} className="coming-soon-img" />
                 <p className="inter-display-regular f-s-13 lh-16 black-191">
                   This feature is coming soon.
                 </p>
               </div> */}
-              <TransactionTable
-                title="Average Cost Basis"
-                subTitle="Understand your average entry price"
-                tableData={tableData}
-                columnList={columnData}
-                headerHeight={64}
-                comingSoon={false}
-                isArrow={false}
-                isLoading={this.state.AvgCostLoading}
-                isGainLoss={true}
-                ishideDust={true}
-                totalPercentage={this.props.intelligenceState.totalPercentage}
-                handleDust={this.handleDust}
-                // handleExchange={this.handleConnectModal}
-                isStickyHead={true}
-                className="cost-basis-table"
+                <TransactionTable
+                  title="Average Cost Basis"
+                  subTitle="Understand your average entry price"
+                  tableData={tableData}
+                  columnList={columnData}
+                  headerHeight={64}
+                  comingSoon={false}
+                  isArrow={false}
+                  isLoading={this.state.AvgCostLoading}
+                  isGainLoss={true}
+                  ishideDust={true}
+                  totalPercentage={this.props.intelligenceState.totalPercentage}
+                  handleDust={this.handleDust}
+                  // handleExchange={this.handleConnectModal}
+                  isStickyHead={true}
+                  className="cost-basis-table"
+                />
+              </div>
+            </div>
+            <div
+              style={{
+                position: "relative",
+                minHeight: "66.25rem",
+                minWidth: "85rem",
+              }}
+            >
+              <BarGraphSection
+                headerTitle="Blockchain Fees over Time"
+                headerSubTitle="Understand your gas costs"
+                data={
+                  this.props.intelligenceState.graphfeeValue &&
+                  this.props.intelligenceState.graphfeeValue[0]
+                }
+                options={
+                  this.props.intelligenceState.graphfeeValue &&
+                  this.props.intelligenceState.graphfeeValue[1]
+                }
+                options2={
+                  this.props.intelligenceState.graphfeeValue &&
+                  this.props.intelligenceState.graphfeeValue[2]
+                }
+                digit={this.state.GraphDigit}
+                coinsList={this.props.OnboardingState.coinsList}
+                timeFunction={(e) => {
+                  this.getBlockchainFee(e);
+                }}
+                marginBottom="m-b-30"
+                showFooter={true}
+                showBadges={true}
+                isScrollVisible={false}
+                isScroll={true}
+                isLoading={this.state.gasFeesGraphLoading}
+                // isLoading={true}
+                handleBadge={(activeBadgeList) =>
+                  this.handleBadge(activeBadgeList, 1)
+                }
+
+                // height={420}
+                // width={824}
+                // comingSoon={false}
               />
             </div>
-          </div>
-          <div
-            style={{
-              position: "relative",
-              minHeight: "66.25rem",
-              minWidth: "85rem",
-            }}
-          >
-            <BarGraphSection
-              headerTitle="Blockchain Fees over Time"
-              headerSubTitle="Understand your gas costs"
-              data={
-                this.props.intelligenceState.graphfeeValue &&
-                this.props.intelligenceState.graphfeeValue[0]
-              }
-              options={
-                this.props.intelligenceState.graphfeeValue &&
-                this.props.intelligenceState.graphfeeValue[1]
-              }
-              options2={
-                this.props.intelligenceState.graphfeeValue &&
-                this.props.intelligenceState.graphfeeValue[2]
-              }
-              digit={this.state.GraphDigit}
-              coinsList={this.props.OnboardingState.coinsList}
-              timeFunction={(e) => {
-                this.getBlockchainFee(e);
+            <div
+              id="cp"
+              style={{
+                position: "relative",
+                minHeight: "66.5rem",
+                minWidth: "85rem",
               }}
-              marginBottom="m-b-30"
-              showFooter={true}
-              showBadges={true}
-              isScrollVisible={false}
-              isScroll={true}
-              isLoading={this.state.gasFeesGraphLoading}
-              // isLoading={true}
-              handleBadge={(activeBadgeList) =>
-                this.handleBadge(activeBadgeList, 1)
-              }
-
-              // height={420}
-              // width={824}
-              // comingSoon={false}
-            />
-          </div>
-          <div
-            id="cp"
-            style={{
-              position: "relative",
-              minHeight: "66.5rem",
-              minWidth: "85rem",
-            }}
-          >
-            {/* <div className="coming-soon-div">
+            >
+              {/* <div className="coming-soon-div">
               <Image src={ExportIconWhite} className="coming-soon-img" />
               <p className="inter-display-regular f-s-13 lh-16 black-191">
                 This feature is coming soon.
               </p>
             </div> */}
 
-            <BarGraphSection
-              headerTitle="Counterparty Volume Over Time"
-              headerSubTitle="Understand where you’ve exchanged the most value"
-              data={
-                this.props.intelligenceState.counterPartyValue &&
-                this.props.intelligenceState.counterPartyValue[0]
-              }
-              options={
-                this.props.intelligenceState.counterPartyValue &&
-                this.props.intelligenceState.counterPartyValue[1]
-              }
-              options2={
-                this.props.intelligenceState.counterPartyValue &&
-                this.props.intelligenceState.counterPartyValue[2]
-              }
-              digit={this.state.counterGraphDigit}
-              coinsList={this.props.OnboardingState.coinsList}
-              timeFunction={(e) => this.getCounterPartyFee(e)}
-              marginBottom="m-b-30"
-              showFooter={true}
-              showBadges={true}
-              isScrollVisible={false}
-              isScroll={true}
-              isLoading={this.state.counterGraphLoading}
-              // isLoading={true}
-              handleBadge={(activeBadgeList) =>
-                this.handleBadge(activeBadgeList, 2)
-              }
-              // height={"400px"}
-              // width={"824px"}
-              // comingSoon={true}
-            />
-          </div>
+              <BarGraphSection
+                headerTitle="Counterparty Volume Over Time"
+                headerSubTitle="Understand where you’ve exchanged the most value"
+                data={
+                  this.props.intelligenceState.counterPartyValue &&
+                  this.props.intelligenceState.counterPartyValue[0]
+                }
+                options={
+                  this.props.intelligenceState.counterPartyValue &&
+                  this.props.intelligenceState.counterPartyValue[1]
+                }
+                options2={
+                  this.props.intelligenceState.counterPartyValue &&
+                  this.props.intelligenceState.counterPartyValue[2]
+                }
+                digit={this.state.counterGraphDigit}
+                coinsList={this.props.OnboardingState.coinsList}
+                timeFunction={(e) => this.getCounterPartyFee(e)}
+                marginBottom="m-b-30"
+                showFooter={true}
+                showBadges={true}
+                isScrollVisible={false}
+                isScroll={true}
+                isLoading={this.state.counterGraphLoading}
+                // isLoading={true}
+                handleBadge={(activeBadgeList) =>
+                  this.handleBadge(activeBadgeList, 2)
+                }
+                // height={"400px"}
+                // width={"824px"}
+                // comingSoon={true}
+              />
+            </div>
 
-          {/* <FeedbackForm page={"Cost Page"} /> */}
+            {/* <FeedbackForm page={"Cost Page"} /> */}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

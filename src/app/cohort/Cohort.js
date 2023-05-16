@@ -49,8 +49,9 @@ import { searchCohort, updateCohort } from "./Api";
 import moment from "moment";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import UpgradeModal from "../common/upgradeModal";
-import { GetAllPlan, getUser } from "../common/Api";
+import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import PodCard from "./pod-card";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 class Cohort extends Component {
   constructor(props) {
     super(props);
@@ -90,7 +91,8 @@ class Cohort extends Component {
       triggerId: 0,
       total_addresses: 0,
       search: "",
-      sortedItem:[],
+      sortedItem: [],
+      isUpdate: 0,
     };
   }
 
@@ -115,7 +117,6 @@ class Cohort extends Component {
     this.makeApiCall();
     GetAllPlan();
     getUser();
-   
 
     let obj = UpgradeTriggered();
 
@@ -467,215 +468,274 @@ class Cohort extends Component {
     //   this.props.cohortState?.sortedList
     // );
     this.setState({ search: event.target.value });
-let filteredItems =[];
-  
-      if (!event.target.value) {
-        // console.log("show")
-        this.props.updateCohort(this.props.cohortState?.cardList);
-         this.setState({
-           searchNotFound: false,
-         });
+    let filteredItems = [];
+
+    if (!event.target.value) {
+      // console.log("show")
+      this.props.updateCohort(this.props.cohortState?.cardList);
+      this.setState({
+        searchNotFound: false,
+      });
+    } else {
+      filteredItems = this.props?.cohortState?.sortedList?.filter((item) =>
+        item.name.toLowerCase().includes(event.target.value.toLowerCase())
+      );
+
+      this.props.updateCohort(filteredItems);
+      if (filteredItems.length === 0) {
+        this.setState({
+          searchNotFound: true,
+        });
+        // console.log("show true");
       } else {
-         filteredItems = this.props?.cohortState?.sortedList?.filter((item) =>
-          item.name.toLowerCase().includes(event.target.value.toLowerCase())
-        );
-
-
-        this.props.updateCohort(filteredItems);
-        if (filteredItems.length === 0) {
-          this.setState({
-            searchNotFound: true,
-          });
-          // console.log("show true");
-        } else {
-          this.setState({
-            searchNotFound: false,
-          });
-          // console.log("show false");
-        }
+        this.setState({
+          searchNotFound: false,
+        });
+        // console.log("show false");
       }
-    
-      
-    
+    }
+  };
+
+  // For add new address
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+    });
+  };
+
+  CheckApiResponseWallet = (value) => {
    
+
+    this.props.setPageFlagDefault();
+  
   };
 
   render() {
     return (
-      <div className="cohort-page-section">
-        {/* <Sidebar ownerName="" /> */}
-        {this.state.upgradeModal && (
-          <UpgradeModal
-            show={this.state.upgradeModal}
-            onHide={this.upgradeModal}
-            history={this.props.history}
-            isShare={localStorage.getItem("share_id")}
-            isStatic={this.state.isStatic}
-            triggerId={this.state.triggerId}
-            pname="cohort-page"
-          />
-        )}
-
-        {this.state.cohortModal ? (
-          <ExitOverlay
-            show={this.state.cohortModal}
-            // link="http://loch.one/a2y1jh2jsja"
-            onHide={this.handleCohort}
-            history={this.props.history}
-            modalType={"cohort"}
-            iconImage={CohortIcon}
-            headerTitle={"Create a whale pod"}
-            changeWalletList={this.handleChangeList}
-            apiResponse={(e) => this.CheckApiResponse(e)}
-            total_addresses={this.props.cohortState?.total_addresses}
-          />
-        ) : this.state.RegisterModal ? (
-          <ExitOverlay
-            show={this.state.RegisterModal}
-            // link="http://loch.one/a2y1jh2jsja"
-            onHide={this.AddEmailModal}
-            history={this.props.history}
-            modalType={"create_account"}
-            iconImage={CohortIcon}
-            isSkip={() => this.handleSkip()}
-
-            // headerTitle={"Create a Wallet cohort"}
-            // changeWalletList={this.handleChangeList}
-            // apiResponse={(e) => this.CheckApiResponse(e)}
-          />
-        ) : (
-          ""
-        )}
-
-        {this.state.isEditModal ? (
-          <ExitOverlay
-            show={this.state.isEditModal}
-            // link="http://loch.one/a2y1jh2jsja"
-            onHide={this.handleEdit}
-            history={this.props.history}
-            modalType={"cohort"}
-            headerTitle={this.state.editItemName}
-            isEdit={true}
-            changeWalletList={this.handleChangeList}
-            apiResponse={(e) => this.CheckApiResponse(e)}
-            walletaddress={this.state.editWalletAddressList}
-            addedon={moment(this.state?.createOn).format("MM/DD/YY")}
-            cohortId={this.state.editcohortId}
-            chainImages={this.state?.chainImages}
-            total_addresses={this.props.cohortState?.total_addresses}
-            totalEditAddress={this.state.editWalletAddressList?.length}
-          />
-        ) : (
-          ""
-        )}
-
-        <div className="cohort-section page">
-          <PageHeader
-            title="Pods"
-            subTitle="Track all your whale pods here"
-            btnText="Create a pod"
-            handleBtn={this.handleCohort}
-            handleSearch={this.handleSearch}
-            // showData={totalWalletAmt}
-            // isLoading={isLoading}
-          />
-          <CoinBadges
-            activeBadge={this.state.activeBadge}
-            chainList={this.props.OnboardingState.coinsList}
-            handleFunction={this.handleFunction}
-          />
-          <div className="m-b-16 sortby-section">
-            <div className="dropdown-section">
-              <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
-                Sort by
-              </span>
-              {this.state.sortBy.map((e, index) => {
-                return (
-                  <span
-                    className="sort-by-title"
-                    key={index}
-                    onClick={() => this.handleSort(e)}
-                  >
-                    <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
-                      {e.title}
-                    </span>{" "}
-                    {/* <Image src={sort} style={{ width: "1rem" }} /> */}
-                    <Image
-                      src={sortByIcon}
-                      // style={{ width: "1.6rem" }}
-                      className={e.down ? "rotateDown" : "rotateUp"}
-                    />
-                  </span>
-                );
-              })}
-            </div>
-            <div className="page-search-wrapper">
-              <Image src={SearchIcon} />
-              <input
-                type="text"
-                placeholder="Search"
-                onChange={this.handleSearch}
-                className="page-search-input"
+      <>
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
+          >
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+                // handleUpdate={this.handleUpdateWallet}
               />
             </div>
           </div>
-          {/* card  */}
-          {!this.state.searchNotFound ? (
-            <Row style={{ minWidth: "91rem" }}>
-              {this.props.cohortState?.sortedList?.length !== 0 &&
-              this.props.cohortState?.sortedList !== "" ? (
-                this.sortbyUserid()?.map((item, i) => {
-                  let sortedAddress = (item?.wallet_address_details).sort(
-                    (a, b) => b.net_worth - a.net_worth
-                  );
-                  let sortedChains = [];
-                  sortedAddress &&
-                    sortedAddress?.map((e) => {
-                      e.chains?.map((chain) => {
-                        if (!sortedChains.includes(chain?.symbol)) {
-                          sortedChains.push(chain?.symbol);
-                        }
-                      });
-                    });
-                  // if(item.name === "test")
-                  //   console.log("sort", sortedChains)
-                  return (
-                    <Col
-                      md={4}
-                      style={{ padding: "10px", marginBottom: "1rem" }}
-                      key={item.id}
-                    >
-                      <PodCard
-                        item={item}
-                        total_addresses={
-                          this.props.cohortState?.total_addresses
-                        }
-                        index={i}
-                        handleEdit={this.handleEdit}
-                        history={this.props.history}
-                      />
-                    </Col>
-                  );
-                })
-              ) : this.props.cohortState?.sortedList !== "" ? (
-                <Col md={12}>
-                  <div className="animation-wrapper">
-                    <Loading />
-                  </div>
-                </Col>
-              ) : (
-                <div className="animation-wrapper" style={{width:"100%", height:"20rem", display:"flex", alignItems:"center", justifyContent:"center", padding:0}}>
-                  <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
-                    No data found
-                  </h3>
-                </div>
-              )}
-            </Row>
+        </div>
+        <div className="cohort-page-section m-t-80">
+          {/* <Sidebar ownerName="" /> */}
+          {this.state.upgradeModal && (
+            <UpgradeModal
+              show={this.state.upgradeModal}
+              onHide={this.upgradeModal}
+              history={this.props.history}
+              isShare={localStorage.getItem("share_id")}
+              isStatic={this.state.isStatic}
+              triggerId={this.state.triggerId}
+              pname="cohort-page"
+            />
+          )}
+
+          {this.state.cohortModal ? (
+            <ExitOverlay
+              show={this.state.cohortModal}
+              // link="http://loch.one/a2y1jh2jsja"
+              onHide={this.handleCohort}
+              history={this.props.history}
+              modalType={"cohort"}
+              iconImage={CohortIcon}
+              headerTitle={"Create a whale pod"}
+              changeWalletList={this.handleChangeList}
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              total_addresses={this.props.cohortState?.total_addresses}
+            />
+          ) : this.state.RegisterModal ? (
+            <ExitOverlay
+              show={this.state.RegisterModal}
+              // link="http://loch.one/a2y1jh2jsja"
+              onHide={this.AddEmailModal}
+              history={this.props.history}
+              modalType={"create_account"}
+              iconImage={CohortIcon}
+              isSkip={() => this.handleSkip()}
+
+              // headerTitle={"Create a Wallet cohort"}
+              // changeWalletList={this.handleChangeList}
+              // apiResponse={(e) => this.CheckApiResponse(e)}
+            />
           ) : (
             ""
           )}
+
+          {this.state.addModal && (
+            <FixAddModal
+              show={this.state.addModal}
+              onHide={this.handleAddModal}
+              modalIcon={AddWalletModalIcon}
+              title="Add wallet address"
+              subtitle="Add more wallet address here"
+              modalType="addwallet"
+              btnStatus={false}
+              btnText="Go"
+              history={this.props.history}
+              // changeWalletList={this.handleChangeList}
+              apiResponse={(e) => {
+                this.CheckApiResponseWallet(e)
+               
+              }}
+              from="transaction history"
+            />
+          )}
+
+          {this.state.isEditModal ? (
+            <ExitOverlay
+              show={this.state.isEditModal}
+              // link="http://loch.one/a2y1jh2jsja"
+              onHide={this.handleEdit}
+              history={this.props.history}
+              modalType={"cohort"}
+              headerTitle={this.state.editItemName}
+              isEdit={true}
+              changeWalletList={this.handleChangeList}
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              walletaddress={this.state.editWalletAddressList}
+              addedon={moment(this.state?.createOn).format("MM/DD/YY")}
+              cohortId={this.state.editcohortId}
+              chainImages={this.state?.chainImages}
+              total_addresses={this.props.cohortState?.total_addresses}
+              totalEditAddress={this.state.editWalletAddressList?.length}
+            />
+          ) : (
+            ""
+          )}
+
+          <div className="cohort-section page">
+            <PageHeader
+              title="Pods"
+              subTitle="Track all your whale pods here"
+              btnText="Create a pod"
+              handleBtn={this.handleCohort}
+              handleSearch={this.handleSearch}
+              // showData={totalWalletAmt}
+              // isLoading={isLoading}
+            />
+            <CoinBadges
+              activeBadge={this.state.activeBadge}
+              chainList={this.props.OnboardingState.coinsList}
+              handleFunction={this.handleFunction}
+            />
+            <div className="m-b-16 sortby-section">
+              <div className="dropdown-section">
+                <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+                  Sort by
+                </span>
+                {this.state.sortBy.map((e, index) => {
+                  return (
+                    <span
+                      className="sort-by-title"
+                      key={index}
+                      onClick={() => this.handleSort(e)}
+                    >
+                      <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
+                        {e.title}
+                      </span>{" "}
+                      {/* <Image src={sort} style={{ width: "1rem" }} /> */}
+                      <Image
+                        src={sortByIcon}
+                        // style={{ width: "1.6rem" }}
+                        className={e.down ? "rotateDown" : "rotateUp"}
+                      />
+                    </span>
+                  );
+                })}
+              </div>
+              <div className="page-search-wrapper">
+                <Image src={SearchIcon} />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  onChange={this.handleSearch}
+                  className="page-search-input"
+                />
+              </div>
+            </div>
+            {/* card  */}
+            {!this.state.searchNotFound ? (
+              <Row style={{ minWidth: "91rem" }}>
+                {this.props.cohortState?.sortedList?.length !== 0 &&
+                this.props.cohortState?.sortedList !== "" ? (
+                  this.sortbyUserid()?.map((item, i) => {
+                    let sortedAddress = (item?.wallet_address_details).sort(
+                      (a, b) => b.net_worth - a.net_worth
+                    );
+                    let sortedChains = [];
+                    sortedAddress &&
+                      sortedAddress?.map((e) => {
+                        e.chains?.map((chain) => {
+                          if (!sortedChains.includes(chain?.symbol)) {
+                            sortedChains.push(chain?.symbol);
+                          }
+                        });
+                      });
+                    // if(item.name === "test")
+                    //   console.log("sort", sortedChains)
+                    return (
+                      <Col
+                        md={4}
+                        style={{ padding: "10px", marginBottom: "1rem" }}
+                        key={item.id}
+                      >
+                        <PodCard
+                          item={item}
+                          total_addresses={
+                            this.props.cohortState?.total_addresses
+                          }
+                          index={i}
+                          handleEdit={this.handleEdit}
+                          history={this.props.history}
+                        />
+                      </Col>
+                    );
+                  })
+                ) : this.props.cohortState?.sortedList !== "" ? (
+                  <Col md={12}>
+                    <div className="animation-wrapper">
+                      <Loading />
+                    </div>
+                  </Col>
+                ) : (
+                  <div
+                    className="animation-wrapper"
+                    style={{
+                      width: "100%",
+                      height: "20rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 0,
+                    }}
+                  >
+                    <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
+                      No data found
+                    </h3>
+                  </div>
+                )}
+              </Row>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }
@@ -688,6 +748,7 @@ const mapDispatchToProps = {
   getAllCoins,
   searchCohort,
   updateCohort,
+  setPageFlagDefault
 };
 Cohort.propTypes = {
   // getPosts: PropTypes.func

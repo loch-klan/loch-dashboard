@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import DropDown from "../common/DropDown";
 import { lte } from "lodash";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 
 class InsightsPage extends Component {
@@ -256,233 +257,253 @@ class InsightsPage extends Component {
 
   render() {
     return (
-      <div className="insights-section">
-        <div className="insights-page page">
-          {this.state.addModal && (
-            <FixAddModal
-              show={this.state.addModal}
-              onHide={this.handleAddModal}
-              modalIcon={AddWalletModalIcon}
-              title="Add wallet address"
-              subtitle="Add more wallet address here"
-              modalType="addwallet"
-              btnStatus={false}
-              btnText="Go"
-              history={this.props.history}
-              changeWalletList={this.handleChangeList}
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              from="insights"
-            />
-          )}
-
-          {this.state.upgradeModal && (
-            <UpgradeModal
-              show={this.state.upgradeModal}
-              onHide={this.upgradeModal}
-              history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
-              isStatic={this.state.isStatic}
-              triggerId={this.state.triggerId}
-              pname="insight-page"
-            />
-          )}
-
-          <PageHeader
-            title={"Insights"}
-            subTitle={"Valuable insights based on your assets"}
-            showpath={true}
-            currentPage={"insights"}
-            btnText={"Add wallet"}
-            handleBtn={this.handleAddModal}
-            ShareBtn={true}
-            handleShare={this.handleShare}
-            // history={this.props.history}
-          />
-          <div style={{ position: "relative" }}>
-            {
-              // this.state.insightList && this.state.insightList.length > 0 &&
-              <div className="insights-filter">
-                {this.state.insightFilter?.map((filter, key) => {
-                  return (
-                    <div
-                      id={key}
-                      className={`filter ${
-                        filter.value === this.state.selectedFilter
-                          ? "active"
-                          : ""
-                      }`}
-                      onClick={() => this.handleSelect(filter.value)}
-                    >
-                      {filter.name}
-                    </div>
-                  );
-                })}
-              </div>
-            }
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "2rem",
-              }}
-            >
-              <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
-                This week
-              </h2>
-
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <DropDown
-                  class="cohort-dropdown"
-                  list={[
-                    "All risks",
-                    "Token Float Risk",
-                    "Borrower Risk",
-                    "Unlock Risk",
-                    "Lender Risk",
-                    "Market Cap Risk",
-                    "Staking Risk",
-                    "Discoverability Risk",
-                    "Concentration Risk",
-                  ]}
-                  onSelect={this.handleInsights}
-                  title={this.state.riskType}
-                  activetab={this.state.riskType}
-                />
-              </div>
-            </div>
-            <div className="insights-wrapper">
-              {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
-              {this.state.isLoading ? (
-                <Loading />
-              ) : this.state.updatedInsightList &&
-                this.state.updatedInsightList.length > 0 ? (
-                this.state.updatedInsightList?.map((insight, key) => {
-                  return (
-                    <div className="insights-card" key={key}>
-                      <Image
-                        src={
-                          insight.insight_type === InsightType.COST_REDUCTION
-                            ? reduceCost
-                            : insight.insight_type ===
-                              InsightType.RISK_REDUCTION
-                            ? reduceRisk
-                            : increaseYield
-                        }
-                        className="insight-icon"
-                      />
-                      <div className="insights-content">
-                        <div className="chips-wrapper">
-                          <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                            {InsightType.getText(insight.insight_type)}
-                          </h5>
-                          {insight?.sub_type && (
-                            <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
-                              {InsightType.getRiskType(insight.sub_type)}
-                            </h5>
-                          )}
-                        </div>
-                        <p
-                          className="inter-display-medium f-s-13 lh-16 grey-969"
-                          dangerouslySetInnerHTML={{
-                            __html: insight.sub_title,
-                          }}
-                        ></p>
-                        <h4
-                          className="inter-display-medium f-s-16 lh-19 grey-313"
-                          dangerouslySetInnerHTML={{ __html: insight.title }}
-                        ></h4>
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                this.state.userPlan.name !== "Free" && (
-                  <>
-                    <div
-                      style={{
-                        // height:
-                        //   this.props.intelligenceState.updatedInsightList
-                        //     ?.length === 0
-                        //     ? "35rem"
-                        //     : this.props.intelligenceState.updatedInsightList
-                        //         ?.length === 1
-                        //     ? "25rem"
-                        //     : "16rem",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        position: "relative",
-                        marginTop: "5rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          position: "absolute",
-                          width: "16rem",
-                          height: "16rem",
-                          background:
-                            "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",
-                          filter: "blur(50px)",
-                          borderRadius: "10rem",
-                          zIndex: 0,
-                        }}
-                      ></div>
-                      <Image
-                        src={InsightImg}
-                        style={{ position: "relative" }}
-                      />
-                      <h5
-                        className="inter-display-medium f-s-16 lh-19 grey-313 text-center"
-                        style={{
-                          marginBottom: "1rem",
-                          width: "90%",
-                          marginTop: "1.2rem",
-                          position: "relative",
-                        }}
-                      >
-                        Add all your wallets and exchanges to gain more insights
-                      </h5>
-                      <p
-                        className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"
-                        style={{ position: "relative" }}
-                      >
-                        Insights increase with your usage
-                      </p>
-                    </div>
-                  </>
-                )
-              )}
+      <>
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
+          >
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+              />
             </div>
           </div>
-          {/* Upgrade Insight section */}
-          {this.state.userPlan.name === "Free" && (
-            <div className="Insight-upgrade-wrapper m-t-16">
-              <div className="Insight-upgrade">
-                <Image src={GradientImg} />
-                <h3 className="inter-display-medium f-s-25 lh-30 m-b-5 text-center">
-                  More insights with Loch
-                </h3>
-                <h5 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-24 text-center">
-                  Upgrade your plan
-                </h5>
-                <Button
-                  className="secondary-btn text-center"
-                  onClick={this.upgradeModal}
-                >
-                  Upgrade
-                </Button>
-              </div>
-              <div className="inner-box"></div>
-              <div className="inner-box2"></div>
-            </div>
-          )}
-
-          {/* footer */}
-          <Footer />
         </div>
-      </div>
+        <div className="insights-section m-t-80">
+          <div className="insights-page page">
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
+                history={this.props.history}
+                changeWalletList={this.handleChangeList}
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                from="insights"
+              />
+            )}
+
+            {this.state.upgradeModal && (
+              <UpgradeModal
+                show={this.state.upgradeModal}
+                onHide={this.upgradeModal}
+                history={this.props.history}
+                isShare={localStorage.getItem("share_id")}
+                isStatic={this.state.isStatic}
+                triggerId={this.state.triggerId}
+                pname="insight-page"
+              />
+            )}
+
+            <PageHeader
+              title={"Insights"}
+              subTitle={"Valuable insights based on your assets"}
+              showpath={true}
+              currentPage={"insights"}
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              ShareBtn={true}
+              handleShare={this.handleShare}
+              // history={this.props.history}
+            />
+            <div style={{ position: "relative" }}>
+              {
+                // this.state.insightList && this.state.insightList.length > 0 &&
+                <div className="insights-filter">
+                  {this.state.insightFilter?.map((filter, key) => {
+                    return (
+                      <div
+                        id={key}
+                        className={`filter ${
+                          filter.value === this.state.selectedFilter
+                            ? "active"
+                            : ""
+                        }`}
+                        onClick={() => this.handleSelect(filter.value)}
+                      >
+                        {filter.name}
+                      </div>
+                    );
+                  })}
+                </div>
+              }
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "2rem",
+                }}
+              >
+                <h2 className="inter-display-medium f-s-25 l-h-30 black-191">
+                  This week
+                </h2>
+
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <DropDown
+                    class="cohort-dropdown"
+                    list={[
+                      "All risks",
+                      "Token Float Risk",
+                      "Borrower Risk",
+                      "Unlock Risk",
+                      "Lender Risk",
+                      "Market Cap Risk",
+                      "Staking Risk",
+                      "Discoverability Risk",
+                      "Concentration Risk",
+                    ]}
+                    onSelect={this.handleInsights}
+                    title={this.state.riskType}
+                    activetab={this.state.riskType}
+                  />
+                </div>
+              </div>
+              <div className="insights-wrapper">
+                {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
+                {this.state.isLoading ? (
+                  <Loading />
+                ) : this.state.updatedInsightList &&
+                  this.state.updatedInsightList.length > 0 ? (
+                  this.state.updatedInsightList?.map((insight, key) => {
+                    return (
+                      <div className="insights-card" key={key}>
+                        <Image
+                          src={
+                            insight.insight_type === InsightType.COST_REDUCTION
+                              ? reduceCost
+                              : insight.insight_type ===
+                                InsightType.RISK_REDUCTION
+                              ? reduceRisk
+                              : increaseYield
+                          }
+                          className="insight-icon"
+                        />
+                        <div className="insights-content">
+                          <div className="chips-wrapper">
+                            <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                              {InsightType.getText(insight.insight_type)}
+                            </h5>
+                            {insight?.sub_type && (
+                              <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
+                                {InsightType.getRiskType(insight.sub_type)}
+                              </h5>
+                            )}
+                          </div>
+                          <p
+                            className="inter-display-medium f-s-13 lh-16 grey-969"
+                            dangerouslySetInnerHTML={{
+                              __html: insight.sub_title,
+                            }}
+                          ></p>
+                          <h4
+                            className="inter-display-medium f-s-16 lh-19 grey-313"
+                            dangerouslySetInnerHTML={{ __html: insight.title }}
+                          ></h4>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  this.state.userPlan.name !== "Free" && (
+                    <>
+                      <div
+                        style={{
+                          // height:
+                          //   this.props.intelligenceState.updatedInsightList
+                          //     ?.length === 0
+                          //     ? "35rem"
+                          //     : this.props.intelligenceState.updatedInsightList
+                          //         ?.length === 1
+                          //     ? "25rem"
+                          //     : "16rem",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                          position: "relative",
+                          marginTop: "5rem",
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            width: "16rem",
+                            height: "16rem",
+                            background:
+                              "radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 244, 158, 0.8) 100%)",
+                            filter: "blur(50px)",
+                            borderRadius: "10rem",
+                            zIndex: 0,
+                          }}
+                        ></div>
+                        <Image
+                          src={InsightImg}
+                          style={{ position: "relative" }}
+                        />
+                        <h5
+                          className="inter-display-medium f-s-16 lh-19 grey-313 text-center"
+                          style={{
+                            marginBottom: "1rem",
+                            width: "90%",
+                            marginTop: "1.2rem",
+                            position: "relative",
+                          }}
+                        >
+                          Add all your wallets and exchanges to gain more
+                          insights
+                        </h5>
+                        <p
+                          className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"
+                          style={{ position: "relative" }}
+                        >
+                          Insights increase with your usage
+                        </p>
+                      </div>
+                    </>
+                  )
+                )}
+              </div>
+            </div>
+            {/* Upgrade Insight section */}
+            {this.state.userPlan.name === "Free" && (
+              <div className="Insight-upgrade-wrapper m-t-16">
+                <div className="Insight-upgrade">
+                  <Image src={GradientImg} />
+                  <h3 className="inter-display-medium f-s-25 lh-30 m-b-5 text-center">
+                    More insights with Loch
+                  </h3>
+                  <h5 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-24 text-center">
+                    Upgrade your plan
+                  </h5>
+                  <Button
+                    className="secondary-btn text-center"
+                    onClick={this.upgradeModal}
+                  >
+                    Upgrade
+                  </Button>
+                </div>
+                <div className="inner-box"></div>
+                <div className="inner-box2"></div>
+              </div>
+            )}
+
+            {/* footer */}
+            <Footer />
+          </div>
+        </div>
+      </>
     );
   }
 }

@@ -1713,14 +1713,16 @@ class ExitOverlay extends BaseReactComponent {
                       </div>
                     </Form>
                   </div>
-                  <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
-                    or
-                  </p>
-                  <div className="m-b-24 links">
-                    <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
-                      {this.state.sharelink}
-                    </div>
-                    {/* <div className='edit-options'>
+                  {!this.props?.signup && (
+                    <>
+                      <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
+                        or
+                      </p>
+                      <div className="m-b-24 links">
+                        <div className="inter-display-medium f-s-16 lh-19 black-191 linkInfo">
+                          {this.state.sharelink}
+                        </div>
+                        {/* <div className='edit-options'>
                                 <Image src={EditBtnImage} className="m-r-8"/>
                                 <Dropdown
                                     id="edit-option-dropdown"
@@ -1730,38 +1732,40 @@ class ExitOverlay extends BaseReactComponent {
                                     activetab = {this.state.activeli}
                                 />
                             </div> */}
-                  </div>
-                  <div className="copy-link-section">
-                    <div className="link" onClick={this.copyLink}>
-                      <Image src={CopyLink} className="m-r-8" />
-                      <h3 className="inter-display-medium f-s-16 lh-19 black-191">
-                        Copy link
-                      </h3>
-                    </div>
-                    <div
-                      className="link"
-                      onClick={() => {
-                        MenuLetMeLeave({
-                          email_address: getCurrentUser().email,
-                          session_id: getCurrentUser().id,
-                        });
-                        resetUser();
-                        localStorage.setItem("refresh", false);
-                        this.props.history.push("/welcome");
-                      }}
-                      style={{ marginLeft: "4rem" }}
-                    >
-                      <h3 className="inter-display-medium f-s-16 lh-19 grey-969">
-                        No thanks, let me leave
-                      </h3>
-                    </div>
-                    {/* <div className="link" onClick={this.shareLink}>
+                      </div>
+                      <div className="copy-link-section">
+                        <div className="link" onClick={this.copyLink}>
+                          <Image src={CopyLink} className="m-r-8" />
+                          <h3 className="inter-display-medium f-s-16 lh-19 black-191">
+                            Copy link
+                          </h3>
+                        </div>
+                        <div
+                          className="link"
+                          onClick={() => {
+                            MenuLetMeLeave({
+                              email_address: getCurrentUser().email,
+                              session_id: getCurrentUser().id,
+                            });
+                            resetUser();
+                            localStorage.setItem("refresh", false);
+                            this.props.history.push("/welcome");
+                          }}
+                          style={{ marginLeft: "4rem" }}
+                        >
+                          <h3 className="inter-display-medium f-s-16 lh-19 grey-969">
+                            No thanks, let me leave
+                          </h3>
+                        </div>
+                        {/* <div className="link" onClick={this.shareLink}>
                   <Image src={ShareLink} className="m-r-8" />
                   <h3 className="inter-display-medium f-s-16 lh-19 black-191">
                     Share
                   </h3>
                 </div> */}
-                  </div>
+                      </div>
+                    </>
+                  )}
 
                   <div className="m-b-36 footer">
                     <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">

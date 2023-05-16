@@ -70,6 +70,7 @@ import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
 import DropDown from "../common/DropDown";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 class TopAccountPage extends BaseReactComponent {
   constructor(props) {
@@ -77,7 +78,6 @@ class TopAccountPage extends BaseReactComponent {
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-   
 
     this.state = {
       currency: JSON.parse(localStorage.getItem("currency")),
@@ -118,7 +118,7 @@ class TopAccountPage extends BaseReactComponent {
         },
         {
           title: "tagName",
-          up:false
+          up: false,
         },
       ],
       showDust: false,
@@ -177,22 +177,22 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
-     const prevParams = new URLSearchParams(prevProps.location.search);
-     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
+    const prevParams = new URLSearchParams(prevProps.location.search);
+    const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
-     const params = new URLSearchParams(this.props.location.search);
-     const page = parseInt(params.get("p") || START_INDEX, 10);
+    const params = new URLSearchParams(this.props.location.search);
+    const page = parseInt(params.get("p") || START_INDEX, 10);
 
-     if (
-       prevPage !== page ||
-       prevState.condition !== this.state.condition ||
-       prevState.sort !== this.state.sort
-     ) {
-       this.callApi(page);
-       this.setState({
-         currentPage: page,
-       });
-     }
+    if (
+      prevPage !== page ||
+      prevState.condition !== this.state.condition ||
+      prevState.sort !== this.state.sort
+    ) {
+      this.callApi(page);
+      this.setState({
+        currentPage: page,
+      });
+    }
   }
 
   onValidSubmit = () => {
@@ -200,51 +200,51 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   addCondition = (key, value) => {
-    console.log("test", key, value)
-     let index = this.state.condition.findIndex((e) => e.key === key);
-     // console.log("index", index);
-     let arr = [...this.state.condition];
-     let search_index = this.state.condition.findIndex(
-       (e) => e.key === SEARCH_BY_TEXT
-     );
-     if (
-       index !== -1 &&
-       value !== "allchain" &&
-       value !== "AllNetworth" &&
-       value !== "Allasset"
-     ) {
-       // console.log("first if", index);
-       arr[index].value = value;
-     } else if (
-       value === "allchain" ||
-       value === "AllNetworth" ||
-       value === "Allasset"
-     ) {
-       // console.log("second if", index);
-       if (index !== -1) {
-         arr.splice(index, 1);
-       }
-     } else {
-       // console.log("else", index);
-       let obj = {};
-       obj = {
-         key: key,
-         value: value,
-       };
-       arr.push(obj);
-     }
-     if (search_index !== -1) {
-       if (value === "" && key === SEARCH_BY_TEXT) {
-         arr.splice(search_index, 1);
-       }
-     }
-     // On Filter start from page 0
-     this.props.history.replace({
-       search: `?p=${START_INDEX}`,
-     });
-     this.setState({
-       condition: arr,
-     });
+    console.log("test", key, value);
+    let index = this.state.condition.findIndex((e) => e.key === key);
+    // console.log("index", index);
+    let arr = [...this.state.condition];
+    let search_index = this.state.condition.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allchain" &&
+      value !== "AllNetworth" &&
+      value !== "Allasset"
+    ) {
+      // console.log("first if", index);
+      arr[index].value = value;
+    } else if (
+      value === "allchain" ||
+      value === "AllNetworth" ||
+      value === "Allasset"
+    ) {
+      // console.log("second if", index);
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      // console.log("else", index);
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    // On Filter start from page 0
+    this.props.history.replace({
+      search: `?p=${START_INDEX}`,
+    });
+    this.setState({
+      condition: arr,
+    });
   };
   onChangeMethod = () => {};
   handleSort = (val) => {
@@ -330,6 +330,22 @@ class TopAccountPage extends BaseReactComponent {
     });
   };
 
+  // For add new address
+  handleAddModal = () => {
+    this.setState({
+      addModal: !this.state.addModal,
+    });
+  };
+
+  CheckApiResponse = (value) => {
+    this.setState({
+      apiResponse: value,
+    });
+
+    this.props.setPageFlagDefault();
+    // console.log("api respinse", value);
+  };
+
   render() {
     // console.log("value", this.state.methodFilter);
 
@@ -339,7 +355,7 @@ class TopAccountPage extends BaseReactComponent {
         value: e.id,
         label: e.name,
       }));
-    
+
     let assetList = this.state?.AssetList?.filter((e) =>
       ["Ethereum", "Polygon", "Avalanche"].includes(e.label)
     );
@@ -455,8 +471,8 @@ class TopAccountPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
-            return (
-              rowData.tagName ? <CustomOverlay
+            return rowData.tagName ? (
+              <CustomOverlay
                 position="top"
                 isIcon={false}
                 isInfo={true}
@@ -464,7 +480,9 @@ class TopAccountPage extends BaseReactComponent {
                 text={rowData.tagName}
               >
                 <span>{rowData.tagName}</span>
-              </CustomOverlay>: "-"
+              </CustomOverlay>
+            ) : (
+              "-"
             );
           }
         },
@@ -718,58 +736,76 @@ class TopAccountPage extends BaseReactComponent {
     ];
 
     return (
-      <div className="history-table-section">
-        <div className="history-table page">
-          {this.state.addModal && (
-            <FixAddModal
-              show={this.state.addModal}
-              onHide={this.handleAddModal}
-              modalIcon={AddWalletModalIcon}
-              title="Add wallet address"
-              subtitle="Add more wallet address here"
-              modalType="addwallet"
-              btnStatus={false}
-              btnText="Go"
+      <>
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
+          >
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="history-table-section m-t-80">
+          <div className="history-table page">
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
+                history={this.props.history}
+                changeWalletList={this.handleChangeList}
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                from="transaction history"
+              />
+            )}
+            {this.state.upgradeModal && (
+              <UpgradeModal
+                show={this.state.upgradeModal}
+                onHide={this.upgradeModal}
+                history={this.props.history}
+                isShare={localStorage.getItem("share_id")}
+                isStatic={this.state.isStatic}
+                triggerId={this.state.triggerId}
+                pname="treansaction history"
+              />
+            )}
+            <PageHeader
+              title={"Top Accounts"}
+              subTitle={"Valuable insights for Top Accounts"}
+              // showpath={true}
+              // currentPage={"transaction-history"}
               history={this.props.history}
-              changeWalletList={this.handleChangeList}
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              from="transaction history"
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              // ShareBtn={true}
+              // handleShare={this.handleShare}
             />
-          )}
-          {this.state.upgradeModal && (
-            <UpgradeModal
-              show={this.state.upgradeModal}
-              onHide={this.upgradeModal}
-              history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
-              isStatic={this.state.isStatic}
-              triggerId={this.state.triggerId}
-              pname="treansaction history"
-            />
-          )}
-          <PageHeader
-            title={"Top Accounts"}
-            subTitle={"Valuable insights for Top Accounts"}
-            showpath={true}
-            currentPage={"transaction-history"}
-            history={this.props.history}
-            // btnText={"Add wallet"}
-            // handleBtn={this.handleAddModal}
-            // ShareBtn={true}
-            // handleShare={this.handleShare}
-          />
 
-          <div className="fillter_tabs_section">
-            <Form onValidSubmit={this.onValidSubmit}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div style={{ width: "20%" }}>
-                  {/* <CustomDropdown
+            <div className="fillter_tabs_section">
+              <Form onValidSubmit={this.onValidSubmit}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div style={{ width: "20%" }}>
+                    {/* <CustomDropdown
                     filtername="Time"
                     options={[
                       { value: "alltime", label: "All time" },
@@ -783,114 +819,118 @@ class TopAccountPage extends BaseReactComponent {
                     handleClick={(key, value) => this.addCondition(key, value)}
                     isTopaccount={true}
                   /> */}
-                  <DropDown
-                    class="cohort-dropdown"
-                    list={[
-                      "All time",
-                      "1 week",
-                      "1 month",
-                      "6 months",
-                      "1 year",
-                      "5 years",
-                    ]}
-                    onSelect={this.handleTime}
-                    title={this.state.timeFIlter}
-                    activetab={
-                      this.state.timeFIlter === "Time"
-                        ? "All time"
-                        : this.state.timeFIlter
-                    }
-                    showChecked={true}
-                    customArrow={true}
-                    relative={true}
-                  />
-                </div>
-                <div style={{ width: "20%" }}>
-                  <CustomDropdown
-                    filtername="Chains"
-                    options={[
-                      ...[{ value: "allchain", label: "All chains" }],
-                      ...chainList,
-                    ]}
-                    action={"SEARCH_BY_CHAIN_IN"}
-                    handleClick={(key, value) => this.addCondition(key, value)}
-                    isTopaccount={true}
-                  />
-                </div>
-                <div style={{ width: "20%" }}>
-                  <CustomDropdown
-                    filtername="Net worth"
-                    options={[
-                      { value: "AllNetworth", label: "All" },
-                      { value: "0-1", label: "less 1m" },
-                      { value: "1-10", label: "1m-10m" },
-                      { value: "10-100", label: "10m-100m" },
-                      { value: "100-1000", label: "100m-1b" },
-                      { value: "1000+", label: "more than 1b" },
-                    ]}
-                    action={"SEARCH_BY_AMOUNT"}
-                    handleClick={(key, value) => {
-                      // this.addCondition(key, value);
-                      console.log(key, value);
-                    }}
-                    isTopaccount={true}
-                  />
-                </div>
-                <div style={{ width: "20%" }}>
-                  <CustomDropdown
-                    filtername="Assets"
-                    options={[
-                      ...[{ value: "Allasset", label: "All assets" }],
-                      ...assetList,
-                    ]}
-                    action={"SEARCH_BY_ASSETS_IN"}
-                    handleClick={(key, value) => this.addCondition(key, value)}
-                    isTopaccount={true}
-                  />
-                </div>
-                {/* {fillter_tabs} */}
-                <div style={{ width: "20%" }}>
-                  <div className="searchBar top-account-search">
-                    <Image src={searchIcon} className="search-icon" />
-                    <FormElement
-                      valueLink={this.linkState(
-                        this,
-                        "search",
-                        this.onChangeMethod
-                      )}
-                      control={{
-                        type: CustomTextControl,
-                        settings: {
-                          placeholder: "Search",
-                        },
-                      }}
-                      classes={{
-                        inputField: "search-input",
-                        prefix: "search-prefix",
-                        suffix: "search-suffix",
-                      }}
+                    <DropDown
+                      class="cohort-dropdown"
+                      list={[
+                        "All time",
+                        "1 week",
+                        "1 month",
+                        "6 months",
+                        "1 year",
+                        "5 years",
+                      ]}
+                      onSelect={this.handleTime}
+                      title={this.state.timeFIlter}
+                      activetab={
+                        this.state.timeFIlter === "Time"
+                          ? "All time"
+                          : this.state.timeFIlter
+                      }
+                      showChecked={true}
+                      customArrow={true}
+                      relative={true}
                     />
                   </div>
+                  <div style={{ width: "20%" }}>
+                    <CustomDropdown
+                      filtername="Chains"
+                      options={[
+                        ...[{ value: "allchain", label: "All chains" }],
+                        ...chainList,
+                      ]}
+                      action={"SEARCH_BY_CHAIN_IN"}
+                      handleClick={(key, value) =>
+                        this.addCondition(key, value)
+                      }
+                      isTopaccount={true}
+                    />
+                  </div>
+                  <div style={{ width: "20%" }}>
+                    <CustomDropdown
+                      filtername="Net worth"
+                      options={[
+                        { value: "AllNetworth", label: "All" },
+                        { value: "0-1", label: "less 1m" },
+                        { value: "1-10", label: "1m-10m" },
+                        { value: "10-100", label: "10m-100m" },
+                        { value: "100-1000", label: "100m-1b" },
+                        { value: "1000+", label: "more than 1b" },
+                      ]}
+                      action={"SEARCH_BY_AMOUNT"}
+                      handleClick={(key, value) => {
+                        // this.addCondition(key, value);
+                        console.log(key, value);
+                      }}
+                      isTopaccount={true}
+                    />
+                  </div>
+                  <div style={{ width: "20%" }}>
+                    <CustomDropdown
+                      filtername="Assets"
+                      options={[
+                        ...[{ value: "Allasset", label: "All assets" }],
+                        ...assetList,
+                      ]}
+                      action={"SEARCH_BY_ASSETS_IN"}
+                      handleClick={(key, value) =>
+                        this.addCondition(key, value)
+                      }
+                      isTopaccount={true}
+                    />
+                  </div>
+                  {/* {fillter_tabs} */}
+                  <div style={{ width: "20%" }}>
+                    <div className="searchBar top-account-search">
+                      <Image src={searchIcon} className="search-icon" />
+                      <FormElement
+                        valueLink={this.linkState(
+                          this,
+                          "search",
+                          this.onChangeMethod
+                        )}
+                        control={{
+                          type: CustomTextControl,
+                          settings: {
+                            placeholder: "Search",
+                          },
+                        }}
+                        classes={{
+                          inputField: "search-input",
+                          prefix: "search-prefix",
+                          suffix: "search-suffix",
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </Form>
-          </div>
-          <div className="transaction-history-table">
-            {this.state.tableLoading ? (
-              <Loading />
-            ) : (
-              <>
-                <TransactionTable
-                  tableData={tableData}
-                  columnList={columnList}
-                  message={"No accounts found"}
-                  totalPage={this.state.totalPage}
-                  history={this.props.history}
-                  location={this.props.location}
-                  page={this.state.currentPage}
-                  tableLoading={this.state.tableLoading}
-                />
-                {/* <div className="ShowDust">
+              </Form>
+            </div>
+            <div className="transaction-history-table">
+              {this.state.tableLoading ? (
+                <Loading />
+              ) : (
+                <>
+                  <TransactionTable
+                    tableData={tableData}
+                    columnList={columnList}
+                    message={"No accounts found"}
+                    totalPage={this.state.totalPage}
+                    history={this.props.history}
+                    location={this.props.location}
+                    page={this.state.currentPage}
+                    tableLoading={this.state.tableLoading}
+                  />
+                  {/* <div className="ShowDust">
                   <p
                     onClick={this.showDust}
                     className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
@@ -900,12 +940,13 @@ class TopAccountPage extends BaseReactComponent {
                       : "Hide dust (less than $1)"}
                   </p>
                 </div> */}
-              </>
-            )}
+                </>
+              )}
+            </div>
+            {/* <FeedbackForm page={"Transaction History Page"} /> */}
           </div>
-          {/* <FeedbackForm page={"Transaction History Page"} /> */}
         </div>
-      </div>
+      </>
     );
   }
 }

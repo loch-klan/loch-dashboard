@@ -495,11 +495,13 @@ function Sidebar(props) {
   ].includes(activeTab);
     return (
       <div className="sidebar-section">
-        <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}>
+        {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
+        <Container className={"no-padding"}>
           <div className="sidebar">
             <div style={{ width: "100%" }}>
               <div
-                className={`logo ${activeTab === "/home" ? "home-topbar" : ""}`}
+                // className={`logo ${activeTab === "/home" ? "home-topbar" : ""}`}
+                className={`logo home-topbar`}
               >
                 <div>
                   <Image src={logo} />
@@ -899,9 +901,7 @@ function Sidebar(props) {
                             activeclassname="active"
                           >
                             <Image
-                              src={
-                               StarIcon
-                              }
+                              src={StarIcon}
                               style={
                                 activeTab === "/top-accounts"
                                   ? {
@@ -1024,7 +1024,7 @@ function Sidebar(props) {
                       Export
                     </Button>
                   </span>
-                  {lochUser || activeTab === "/home" ? (
+                  
                     <span
                       onMouseOver={(e) =>
                         (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -1041,7 +1041,7 @@ function Sidebar(props) {
                         Share
                       </Button>
                     </span>
-                  ) : (
+{/*                   
                     <span
                       // onMouseOver={(e) =>
                       //   (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -1059,7 +1059,7 @@ function Sidebar(props) {
                         Sign in
                       </Button>
                     </span>
-                  )}
+                   */}
                 </li>
                 {/* <li>
                     <span
@@ -1111,7 +1111,7 @@ function Sidebar(props) {
                       Leave
                     </Button>
                   </span>
-                  {!lochUser && activeTab !== "/home" && (
+                  {/* {!lochUser && activeTab !== "/home" && (
                     <span
                       onMouseOver={(e) =>
                         (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -1128,7 +1128,7 @@ function Sidebar(props) {
                         Share
                       </Button>
                     </span>
-                  )}
+                  )} */}
                 </li>
               </ul>
 

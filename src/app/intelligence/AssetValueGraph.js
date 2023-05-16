@@ -28,6 +28,7 @@ import { GetAllPlan, getUser } from "../common/Api";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH, ASSET_VALUE_GRAPH_YEAR } from "../Portfolio/ActionTypes";
 import { toast } from "react-toastify";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 
 class AssetValueGraph extends Component {
@@ -230,66 +231,85 @@ class AssetValueGraph extends Component {
 
   render() {
     return (
-      <div className="volume-traded-section">
-        <div className="page volume-traded-page">
-          {this.state.addModal && (
-            <FixAddModal
-              show={this.state.addModal}
-              onHide={this.handleAddModal}
-              modalIcon={AddWalletModalIcon}
-              title="Add wallet address"
-              subtitle="Add more wallet address here"
-              modalType="addwallet"
-              btnStatus={false}
-              btnText="Go"
-              history={this.props.history}
-              changeWalletList={this.handleChangeList}
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              from="asset value"
-            />
-          )}
-          <PageHeader
-            title={"Asset Value"}
-            subTitle={"Analyze your portfolio value over time"}
-            showpath={true}
-            currentPage={"asset-value"}
-            history={this.props.history}
-            btnText={"Add wallet"}
-            handleBtn={this.handleAddModal}
-            hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
-            ShareBtn={true}
-            handleShare={this.handleShare}
-          />
-          <div className="graph-container" style={{ marginBottom: "5rem" }}>
-            <LineChartSlider
-              assetValueData={
-                this.state.tab === "day"
-                  ? this.props.portfolioState.assetValueDay &&
-                    this.props.portfolioState.assetValueDay
-                  : this.state.tab === "month"
-                  ? this.props.portfolioState.assetValueMonth &&
-                    this.props.portfolioState.assetValueMonth
-                  : this.state.tab === "year"
-                  ? this.props.portfolioState.assetValueYear &&
-                    this.props.portfolioState.assetValueYear
-                  : []
-              }
-              externalEvents={
-                this.props.portfolioState.externalEvents &&
-                this.props.portfolioState.externalEvents
-              }
-              coinLists={this.props.OnboardingState.coinsLists}
-              isScrollVisible={false}
-              handleGroupBy={(value) => this.handleGroupBy(value)}
-              graphLoading={this.state.graphLoading}
-              isUpdate={this.state.isUpdate}
-              isPage={true}
-              dataLoaded={this.props.portfolioState.assetValueDataLoaded}
-            />
+      <>
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
+          >
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+              />
+            </div>
           </div>
-          {/* <FeedbackForm page={"Asset Value Graph Page"} /> */}
         </div>
-      </div>
+        <div className="volume-traded-section m-t-80">
+          <div className="page volume-traded-page">
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
+                history={this.props.history}
+                changeWalletList={this.handleChangeList}
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                from="asset value"
+              />
+            )}
+            <PageHeader
+              title={"Asset Value"}
+              subTitle={"Analyze your portfolio value over time"}
+              showpath={true}
+              currentPage={"asset-value"}
+              history={this.props.history}
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
+              ShareBtn={true}
+              handleShare={this.handleShare}
+            />
+            <div className="graph-container" style={{ marginBottom: "5rem" }}>
+              <LineChartSlider
+                assetValueData={
+                  this.state.tab === "day"
+                    ? this.props.portfolioState.assetValueDay &&
+                      this.props.portfolioState.assetValueDay
+                    : this.state.tab === "month"
+                    ? this.props.portfolioState.assetValueMonth &&
+                      this.props.portfolioState.assetValueMonth
+                    : this.state.tab === "year"
+                    ? this.props.portfolioState.assetValueYear &&
+                      this.props.portfolioState.assetValueYear
+                    : []
+                }
+                externalEvents={
+                  this.props.portfolioState.externalEvents &&
+                  this.props.portfolioState.externalEvents
+                }
+                coinLists={this.props.OnboardingState.coinsLists}
+                isScrollVisible={false}
+                handleGroupBy={(value) => this.handleGroupBy(value)}
+                graphLoading={this.state.graphLoading}
+                isUpdate={this.state.isUpdate}
+                isPage={true}
+                dataLoaded={this.props.portfolioState.assetValueDataLoaded}
+              />
+            </div>
+            {/* <FeedbackForm page={"Asset Value Graph Page"} /> */}
+          </div>
+        </div>
+      </>
     );
   }
 }

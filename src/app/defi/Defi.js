@@ -38,6 +38,7 @@ import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
 import { AssetType } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 class Defi extends Component {
   constructor(props) {
@@ -347,434 +348,457 @@ class Defi extends Component {
     ];
 
     return (
-      <div className="cohort-page-section">
-        <div className="cohort-section page">
-          {this.state.addModal && (
-            <FixAddModal
-              show={this.state.addModal}
-              onHide={this.handleAddModal}
-              modalIcon={AddWalletModalIcon}
-              title="Add wallet address"
-              subtitle="Add more wallet address here"
-              modalType="addwallet"
-              btnStatus={false}
-              btnText="Go"
-              history={this.props.history}
-              changeWalletList={this.handleChangeList}
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              from="defi"
-            />
-          )}
-          {this.state.upgradeModal && (
-            <UpgradeModal
-              show={this.state.upgradeModal}
-              onHide={this.upgradeModal}
-              history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
-              // isStatic={true}
-              triggerId={this.state.triggerId}
-              pname="defi"
-            />
-          )}
-          <PageHeader
-            title="Decentralized Finance"
-            subTitle="Decipher all your DeFi data from one place"
-            btnText={"Add wallet"}
-            handleBtn={this.handleAddModal}
-            // showpath={true}
-            currentPage={"decentralized-finance"}
-            // showData={totalWalletAmt}
-            // isLoading={isLoading}
-          />
-
-          {/* Balance sheet */}
-          <h2 className="inter-display-medium f-s-20 lh-24 m-t-40">
-            Balance sheet
-          </h2>
-          <div style={{}} className="balance-sheet-card">
-            <div className="balance-dropdown">
-              <div className="balance-list-content">
-                {/* For yeild */}
-                <Row>
-                  <Col md={6}>
-                    <div
-                      className="balance-sheet-title"
-                      onClick={this.toggleYield}
-                      style={
-                        !this.state.isYeildToggle || !this.state.isDebtToggle
-                          ? { marginBottom: "0.5rem" }
-                          : { marginBottom: "1rem" }
-                      }
-                    >
-                      <div>
-                        <span
-                          className="inter-display-semi-bold f-s-16 lh-19"
-                          style={{ color: "#636467", marginRight: "0.8rem" }}
-                        >
-                          Credit
-                        </span>
-                        <span
-                          className="inter-display-medium f-s-16 lh-19"
-                          style={{ marginRight: "0.8rem" }}
-                        >
-                          {CurrencyType(false)}
-                          {this.props.defiState.totalYield &&
-                            numToCurrency(
-                              this.props.defiState.totalYield *
-                                (this.state.currency?.rate || 1)
-                            )}
-                        </span>
-                      </div>
-                      <Image
-                        src={arrowUp}
-                        style={
-                          this.state.isYeildToggle
-                            ? { transform: "rotate(180deg)" }
-                            : {}
-                        }
-                      />
-                    </div>
-                    {this.props.defiState.YieldValues?.length !== 0 &&
-                      this.state.isYeildToggle &&
-                      this.props.defiState.YieldValues?.map((item, i) => {
-                        return (
-                          <div
-                            className="balance-sheet-list"
-                            style={
-                              i === this.props.defiState.YieldValues?.length - 1
-                                ? { paddingBottom: "0.3rem" }
-                                : {}
-                            }
-                          >
-                            <span className="inter-display-medium f-s-16 lh-19">
-                              {item.name}
-                            </span>
-                            <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                              {CurrencyType(false)}
-                              {amountFormat(
-                                item.totalPrice.toFixed(2) *
-                                  (this.state.currency?.rate || 1),
-                                "en-US",
-                                "USD"
-                              )}
-                            </span>
-                          </div>
-                        );
-                      })}
-                  </Col>
-                  <Col md={6}>
-                    <div
-                      className="balance-sheet-title"
-                      onClick={this.toggleDebt}
-                      style={
-                        !this.state.isYeildToggle || !this.state.isDebtToggle
-                          ? { marginBottom: "0.5rem" }
-                          : {}
-                      }
-                    >
-                      <div>
-                        <span
-                          className="inter-display-semi-bold f-s-16 lh-19"
-                          style={{ color: "#636467", marginRight: "0.8rem" }}
-                        >
-                          Debt
-                        </span>
-                        <span
-                          className="inter-display-medium f-s-16 lh-19"
-                          style={{ marginRight: "0.8rem" }}
-                        >
-                          {CurrencyType(false)}
-                          {this.props.defiState.totalDebt &&
-                            numToCurrency(
-                              this.props.defiState.totalDebt *
-                                (this.state.currency?.rate || 1)
-                            )}
-                        </span>
-                      </div>
-                      <Image
-                        src={arrowUp}
-                        style={
-                          this.state.isDebtToggle
-                            ? { transform: "rotate(180deg)" }
-                            : {}
-                        }
-                      />
-                    </div>
-
-                    {this.props.defiState.DebtValues?.length !== 0 &&
-                      this.state.isDebtToggle &&
-                      this.props.defiState.DebtValues?.map((item, i) => {
-                        return (
-                          <div
-                            className="balance-sheet-list"
-                            style={
-                              i === this.props.defiState.DebtValues?.length - 1
-                                ? { paddingBottom: "0.3rem" }
-                                : {}
-                            }
-                          >
-                            <span className="inter-display-medium f-s-16 lh-19">
-                              {item.name}
-                            </span>
-                            <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                              {CurrencyType(false)}
-                              {amountFormat(
-                                item.totalPrice.toFixed(2) *
-                                  (this.state.currency?.rate || 1),
-                                "en-US",
-                                "USD"
-                              )}
-                            </span>
-                          </div>
-                        );
-                      })}
-                  </Col>
-                </Row>
-
-                {/* For debt */}
-              </div>
+      <>
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
+          >
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+              />
             </div>
           </div>
+        </div>
+        <div className="cohort-page-section m-t-80">
+          <div className="cohort-section page">
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
+                history={this.props.history}
+                changeWalletList={this.handleChangeList}
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                from="defi"
+              />
+            )}
+            {this.state.upgradeModal && (
+              <UpgradeModal
+                show={this.state.upgradeModal}
+                onHide={this.upgradeModal}
+                history={this.props.history}
+                isShare={localStorage.getItem("share_id")}
+                // isStatic={true}
+                triggerId={this.state.triggerId}
+                pname="defi"
+              />
+            )}
+            <PageHeader
+              title="Decentralized Finance"
+              subTitle="Decipher all your DeFi data from one place"
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              // showpath={true}
+              currentPage={"decentralized-finance"}
+              // showData={totalWalletAmt}
+              // isLoading={isLoading}
+            />
 
-          {/* filter */}
-          <div className="m-b-16 sortby-section">
-            <div className="dropdown-section">
-              <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
-                Sort by
-              </span>
-              {this.state.sortBy.map((e, index) => {
-                return (
-                  <span
-                    className="sort-by-title"
-                    key={index}
-                    onClick={() => this.handleSort(e)}
-                  >
-                    <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
-                      {e.title}
-                    </span>{" "}
-                    {/* <Image src={sort} style={{ width: "1rem" }} /> */}
-                    <Image
-                      src={sortByIcon}
-                      // style={{ width: "1.6rem" }}
-                      className={e.down ? "rotateDown" : "rotateUp"}
-                    />
-                  </span>
-                );
-              })}
-            </div>
-          </div>
-          {/* End filter */}
-
-          {/* start card */}
-
-          {this.props.defiState?.sortedList?.length !== 0 &&
-          this.props.defiState?.sortedList !== "" ? (
-            this.props.defiState?.sortedList?.map((card, index) => {
-              let tableRows = card?.row.sort((a, b) => b.usdValue - a.usdValue);
-
-              return (
-                <div className="defi-card-wrapper">
-                  <div className="top-title-wrapper">
-                    <div className="heading-image">
-                      <Image src={card?.symbol} />
-                      <h3 className="inter-display-medium f-s-16 lh-19">
-                        {card?.name}
-                      </h3>
-                    </div>
-                    <h3 className="inter-display-medium f-s-16 lh-19">
-                      {CurrencyType(false)}
-                      {numToCurrency(
-                        card?.totalUsd * (this.state.currency?.rate || 1)
-                      )}{" "}
-                      <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
-                        {CurrencyType(true)}
-                      </span>
-                    </h3>
-                  </div>
-
-                  {/* Table head*/}
-                  <Row className="table-head">
-                    <Col md={3}>
+            {/* Balance sheet */}
+            <h2 className="inter-display-medium f-s-20 lh-24 m-t-40">
+              Balance sheet
+            </h2>
+            <div style={{}} className="balance-sheet-card">
+              <div className="balance-dropdown">
+                <div className="balance-list-content">
+                  {/* For yeild */}
+                  <Row>
+                    <Col md={6}>
                       <div
-                        className="cp header-col"
-                        // onClick={() => handleTableSort("asset", index)}
+                        className="balance-sheet-title"
+                        onClick={this.toggleYield}
+                        style={
+                          !this.state.isYeildToggle || !this.state.isDebtToggle
+                            ? { marginBottom: "0.5rem" }
+                            : { marginBottom: "1rem" }
+                        }
                       >
-                        <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
-                          Asset
-                        </span>
-                        {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
-                        {/* className=
-                        {!this.state.tableSortOpt[4].up
-                          ? "rotateDown"
-                          : "rotateUp"} */}
+                        <div>
+                          <span
+                            className="inter-display-semi-bold f-s-16 lh-19"
+                            style={{ color: "#636467", marginRight: "0.8rem" }}
+                          >
+                            Credit
+                          </span>
+                          <span
+                            className="inter-display-medium f-s-16 lh-19"
+                            style={{ marginRight: "0.8rem" }}
+                          >
+                            {CurrencyType(false)}
+                            {this.props.defiState.totalYield &&
+                              numToCurrency(
+                                this.props.defiState.totalYield *
+                                  (this.state.currency?.rate || 1)
+                              )}
+                          </span>
+                        </div>
+                        <Image
+                          src={arrowUp}
+                          style={
+                            this.state.isYeildToggle
+                              ? { transform: "rotate(180deg)" }
+                              : {}
+                          }
+                        />
                       </div>
+                      {this.props.defiState.YieldValues?.length !== 0 &&
+                        this.state.isYeildToggle &&
+                        this.props.defiState.YieldValues?.map((item, i) => {
+                          return (
+                            <div
+                              className="balance-sheet-list"
+                              style={
+                                i ===
+                                this.props.defiState.YieldValues?.length - 1
+                                  ? { paddingBottom: "0.3rem" }
+                                  : {}
+                              }
+                            >
+                              <span className="inter-display-medium f-s-16 lh-19">
+                                {item.name}
+                              </span>
+                              <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                {CurrencyType(false)}
+                                {amountFormat(
+                                  item.totalPrice.toFixed(2) *
+                                    (this.state.currency?.rate || 1),
+                                  "en-US",
+                                  "USD"
+                                )}
+                              </span>
+                            </div>
+                          );
+                        })}
                     </Col>
-                    <Col
-                      md={3}
-                      style={{
-                        justifyContent: "center",
-                      }}
-                    >
+                    <Col md={6}>
                       <div
-                        className="cp header-col"
-                        // onClick={() => this.handleTableSort("", index)}
+                        className="balance-sheet-title"
+                        onClick={this.toggleDebt}
+                        style={
+                          !this.state.isYeildToggle || !this.state.isDebtToggle
+                            ? { marginBottom: "0.5rem" }
+                            : {}
+                        }
                       >
-                        <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
-                          Type
-                        </span>
-                        {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
+                        <div>
+                          <span
+                            className="inter-display-semi-bold f-s-16 lh-19"
+                            style={{ color: "#636467", marginRight: "0.8rem" }}
+                          >
+                            Debt
+                          </span>
+                          <span
+                            className="inter-display-medium f-s-16 lh-19"
+                            style={{ marginRight: "0.8rem" }}
+                          >
+                            {CurrencyType(false)}
+                            {this.props.defiState.totalDebt &&
+                              numToCurrency(
+                                this.props.defiState.totalDebt *
+                                  (this.state.currency?.rate || 1)
+                              )}
+                          </span>
+                        </div>
+                        <Image
+                          src={arrowUp}
+                          style={
+                            this.state.isDebtToggle
+                              ? { transform: "rotate(180deg)" }
+                              : {}
+                          }
+                        />
                       </div>
-                    </Col>
-                    <Col
-                      md={3}
-                      style={{
-                        justifyContent: "center",
-                      }}
-                    >
-                      <div
-                        className="cp header-col"
-                        //   onClick={() => this.handleTableSort("from")}
-                      >
-                        <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
-                          Balance
-                        </span>
-                        {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
-                      </div>
-                    </Col>
-                    <Col
-                      md={3}
-                      style={{
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      <div
-                        className="cp header-col"
-                        // onClick={() => handleTableSort("usdValue", false)}
-                      >
-                        <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
-                          USD Value
-                        </span>
-                        {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
-                      </div>
+
+                      {this.props.defiState.DebtValues?.length !== 0 &&
+                        this.state.isDebtToggle &&
+                        this.props.defiState.DebtValues?.map((item, i) => {
+                          return (
+                            <div
+                              className="balance-sheet-list"
+                              style={
+                                i ===
+                                this.props.defiState.DebtValues?.length - 1
+                                  ? { paddingBottom: "0.3rem" }
+                                  : {}
+                              }
+                            >
+                              <span className="inter-display-medium f-s-16 lh-19">
+                                {item.name}
+                              </span>
+                              <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                {CurrencyType(false)}
+                                {amountFormat(
+                                  item.totalPrice.toFixed(2) *
+                                    (this.state.currency?.rate || 1),
+                                  "en-US",
+                                  "USD"
+                                )}
+                              </span>
+                            </div>
+                          );
+                        })}
                     </Col>
                   </Row>
 
-                  {/* Table Content */}
-                  {tableRows &&
-                    tableRows.map((item, i) => {
-                      return (
-                        <Row className="table-content-row">
-                          <Col md={3}>
-                            {/* <CoinChip
+                  {/* For debt */}
+                </div>
+              </div>
+            </div>
+
+            {/* filter */}
+            <div className="m-b-16 sortby-section">
+              <div className="dropdown-section">
+                <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+                  Sort by
+                </span>
+                {this.state.sortBy.map((e, index) => {
+                  return (
+                    <span
+                      className="sort-by-title"
+                      key={index}
+                      onClick={() => this.handleSort(e)}
+                    >
+                      <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
+                        {e.title}
+                      </span>{" "}
+                      {/* <Image src={sort} style={{ width: "1rem" }} /> */}
+                      <Image
+                        src={sortByIcon}
+                        // style={{ width: "1.6rem" }}
+                        className={e.down ? "rotateDown" : "rotateUp"}
+                      />
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+            {/* End filter */}
+
+            {/* start card */}
+
+            {this.props.defiState?.sortedList?.length !== 0 &&
+            this.props.defiState?.sortedList !== "" ? (
+              this.props.defiState?.sortedList?.map((card, index) => {
+                let tableRows = card?.row.sort(
+                  (a, b) => b.usdValue - a.usdValue
+                );
+
+                return (
+                  <div className="defi-card-wrapper">
+                    <div className="top-title-wrapper">
+                      <div className="heading-image">
+                        <Image src={card?.symbol} />
+                        <h3 className="inter-display-medium f-s-16 lh-19">
+                          {card?.name}
+                        </h3>
+                      </div>
+                      <h3 className="inter-display-medium f-s-16 lh-19">
+                        {CurrencyType(false)}
+                        {numToCurrency(
+                          card?.totalUsd * (this.state.currency?.rate || 1)
+                        )}{" "}
+                        <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
+                          {CurrencyType(true)}
+                        </span>
+                      </h3>
+                    </div>
+
+                    {/* Table head*/}
+                    <Row className="table-head">
+                      <Col md={3}>
+                        <div
+                          className="cp header-col"
+                          // onClick={() => handleTableSort("asset", index)}
+                        >
+                          <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                            Asset
+                          </span>
+                          {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
+                          {/* className=
+                        {!this.state.tableSortOpt[4].up
+                          ? "rotateDown"
+                          : "rotateUp"} */}
+                        </div>
+                      </Col>
+                      <Col
+                        md={3}
+                        style={{
+                          justifyContent: "center",
+                        }}
+                      >
+                        <div
+                          className="cp header-col"
+                          // onClick={() => this.handleTableSort("", index)}
+                        >
+                          <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                            Type
+                          </span>
+                          {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
+                        </div>
+                      </Col>
+                      <Col
+                        md={3}
+                        style={{
+                          justifyContent: "center",
+                        }}
+                      >
+                        <div
+                          className="cp header-col"
+                          //   onClick={() => this.handleTableSort("from")}
+                        >
+                          <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                            Balance
+                          </span>
+                          {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
+                        </div>
+                      </Col>
+                      <Col
+                        md={3}
+                        style={{
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        <div
+                          className="cp header-col"
+                          // onClick={() => handleTableSort("usdValue", false)}
+                        >
+                          <span className="inter-display-medium f-s-13 lh-15 grey-4F4">
+                            USD Value
+                          </span>
+                          {/* <Image src={sortByIcon} className={"rotateDown"} /> */}
+                        </div>
+                      </Col>
+                    </Row>
+
+                    {/* Table Content */}
+                    {tableRows &&
+                      tableRows.map((item, i) => {
+                        return (
+                          <Row className="table-content-row">
+                            <Col md={3}>
+                              {/* <CoinChip
                     colorCode={"#E84042"}
                     coin_img_src={Coin}
                     coin_percent={"Defi"}
                     type={"cohort"}
                   /> */}
-                            {item.assets?.length > 1 ? (
-                              <div className="overlap-img">
-                                {item.assets?.map((e, i) => {
-                                  return (
-                                    <Image
-                                      src={e?.symbol}
-                                      style={{
-                                        zIndex: item.assets?.length - i,
-                                        marginLeft: i === 0 ? "0" : "-1rem",
-                                      }}
-                                    />
-                                  );
+                              {item.assets?.length > 1 ? (
+                                <div className="overlap-img">
+                                  {item.assets?.map((e, i) => {
+                                    return (
+                                      <Image
+                                        src={e?.symbol}
+                                        style={{
+                                          zIndex: item.assets?.length - i,
+                                          marginLeft: i === 0 ? "0" : "-1rem",
+                                        }}
+                                      />
+                                    );
+                                  })}
+                                </div>
+                              ) : (
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <Image
+                                    src={item.assets[0]?.symbol}
+                                    style={{
+                                      width: "1.7rem",
+                                      borderRadius: "4px",
+                                    }}
+                                  />
+                                  <h3 className="inter-display-medium f-s-13 lh-13 m-l-4">
+                                    {item.assets[0]?.code}
+                                  </h3>
+                                </div>
+                              )}
+                            </Col>
+                            <Col
+                              md={3}
+                              style={{
+                                justifyContent: "center",
+                              }}
+                            >
+                              <div className="gray-chip inter-display-medium f-s-15 lh-15">
+                                {item.type_name}
+                              </div>
+                            </Col>
+                            <Col
+                              md={3}
+                              style={{
+                                justifyContent: "center",
+                              }}
+                            >
+                              <div className="gray-chip inter-display-medium f-s-15 lh-15">
+                                {item?.balance.map((e, i) => {
+                                  return `${amountFormat(
+                                    e?.value.toFixed(2) *
+                                      (this.state.currency?.rate || 1),
+                                    "en-US",
+                                    "USD"
+                                  )}  ${
+                                    item.balance?.length > 1 ? " " + e.code : ""
+                                  }  ${
+                                    item.balance?.length - 1 !== i ? " + " : ""
+                                  }`;
                                 })}
                               </div>
-                            ) : (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}
-                              >
-                                <Image
-                                  src={item.assets[0]?.symbol}
-                                  style={{
-                                    width: "1.7rem",
-                                    borderRadius: "4px",
-                                  }}
-                                />
-                                <h3 className="inter-display-medium f-s-13 lh-13 m-l-4">
-                                  {item.assets[0]?.code}
-                                </h3>
-                              </div>
-                            )}
-                          </Col>
-                          <Col
-                            md={3}
-                            style={{
-                              justifyContent: "center",
-                            }}
-                          >
-                            <div className="gray-chip inter-display-medium f-s-15 lh-15">
-                              {item.type_name}
-                            </div>
-                          </Col>
-                          <Col
-                            md={3}
-                            style={{
-                              justifyContent: "center",
-                            }}
-                          >
-                            <div className="gray-chip inter-display-medium f-s-15 lh-15">
-                              {item?.balance.map((e, i) => {
-                                return `${amountFormat(
-                                  e?.value.toFixed(2) *
-                                    (this.state.currency?.rate || 1),
+                            </Col>
+                            <Col
+                              md={3}
+                              style={{
+                                justifyContent: "flex-end",
+                              }}
+                            >
+                              <div className="gray-chip inter-display-medium f-s-15 lh-15">
+                                {CurrencyType(false)}
+                                {amountFormat(
+                                  item.usdValue.toFixed(2),
                                   "en-US",
                                   "USD"
-                                )}  ${
-                                  item.balance?.length > 1 ? " " + e.code : ""
-                                }  ${
-                                  item.balance?.length - 1 !== i ? " + " : ""
-                                }`;
-                              })}
-                            </div>
-                          </Col>
-                          <Col
-                            md={3}
-                            style={{
-                              justifyContent: "flex-end",
-                            }}
-                          >
-                            <div className="gray-chip inter-display-medium f-s-15 lh-15">
-                              {CurrencyType(false)}
-                              {amountFormat(
-                                item.usdValue.toFixed(2),
-                                "en-US",
-                                "USD"
-                              )}
-                            </div>
-                          </Col>
-                        </Row>
-                      );
-                    })}
-                </div>
-              );
-            })
-          ) : this.props.defiState?.sortedList !== "" ? (
-            // <Col md={12}>
-            <div className="defi animation-wrapper">
-              <Loading />
-            </div>
-          ) : (
-            // </Col>
-            <div
-              className="defi animation-wrapper"
-              style={{ padding: "3rem", textAlign: "center" }}
-            >
-              <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
-                No data found
-              </h3>
-            </div>
-          )}
+                                )}
+                              </div>
+                            </Col>
+                          </Row>
+                        );
+                      })}
+                  </div>
+                );
+              })
+            ) : this.props.defiState?.sortedList !== "" ? (
+              // <Col md={12}>
+              <div className="defi animation-wrapper">
+                <Loading />
+              </div>
+            ) : (
+              // </Col>
+              <div
+                className="defi animation-wrapper"
+                style={{ padding: "3rem", textAlign: "center" }}
+              >
+                <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
+                  No data found
+                </h3>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

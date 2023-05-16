@@ -28,6 +28,7 @@ import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 
 
@@ -1317,134 +1318,159 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     ];
     return (
-      <div className="history-table-section">
-        <div className="history-table page">
-          {this.state.addModal && (
-            <FixAddModal
-              show={this.state.addModal}
-              onHide={this.handleAddModal}
-              modalIcon={AddWalletModalIcon}
-              title="Add wallet address"
-              subtitle="Add more wallet address here"
-              modalType="addwallet"
-              btnStatus={false}
-              btnText="Go"
-              history={this.props.history}
-              changeWalletList={this.handleChangeList}
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              from="transaction history"
-            />
-          )}
-          {this.state.upgradeModal && (
-            <UpgradeModal
-              show={this.state.upgradeModal}
-              onHide={this.upgradeModal}
-              history={this.props.history}
-              isShare={localStorage.getItem("share_id")}
-              isStatic={this.state.isStatic}
-              triggerId={this.state.triggerId}
-              pname="treansaction history"
-            />
-          )}
-          <PageHeader
-            title={"Transaction history"}
-            subTitle={
-              "Sort, filter, and dissect all your transactions from one place"
-            }
-            showpath={true}
-            currentPage={"transaction-history"}
-            history={this.props.history}
-            btnText={"Add wallet"}
-            handleBtn={this.handleAddModal}
-            ShareBtn={true}
-            handleShare={this.handleShare}
-          />
-
-          <div className="fillter_tabs_section">
-            <Form onValidSubmit={this.onValidSubmit}>
-              <Row>
-                <Col md={3}>
-                  <CustomDropdown
-                    filtername="All years"
-                    options={this.props.intelligenceState.yearFilter}
-                    action={SEARCH_BY_TIMESTAMP_IN}
-                    handleClick={(key, value) => this.addCondition(key, value)}
-                  />
-                </Col>
-                <Col md={3}>
-                  <CustomDropdown
-                    filtername="All assets"
-                    options={this.props.intelligenceState.assetFilter}
-                    action={SEARCH_BY_ASSETS_IN}
-                    handleClick={(key, value) => this.addCondition(key, value)}
-                  />
-                </Col>
-                <Col md={3}>
-                  <CustomDropdown
-                    filtername="All methods"
-                    options={this.props.intelligenceState.methodFilter}
-                    action={SEARCH_BY_METHOD_IN}
-                    handleClick={(key, value) => this.addCondition(key, value)}
-                  />
-                </Col>
-                {/* {fillter_tabs} */}
-                <Col md={3}>
-                  <div className="searchBar">
-                    <Image src={searchIcon} className="search-icon" />
-                    <FormElement
-                      valueLink={this.linkState(
-                        this,
-                        "search",
-                        this.onChangeMethod
-                      )}
-                      control={{
-                        type: CustomTextControl,
-                        settings: {
-                          placeholder: "Search",
-                        },
-                      }}
-                      classes={{
-                        inputField: "search-input",
-                        prefix: "search-prefix",
-                        suffix: "search-suffix",
-                      }}
-                    />
-                  </div>
-                </Col>
-              </Row>
-            </Form>
+      <>
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
+          >
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+              />
+            </div>
           </div>
-          <div className="transaction-history-table">
-            {this.state.tableLoading ? (
-              <Loading />
-            ) : (
-              <>
-                <TransactionTable
-                  tableData={tableData}
-                  columnList={columnList}
-                  message={"No Transactions Found"}
-                  totalPage={totalPage}
-                  history={this.props.history}
-                  location={this.props.location}
-                  page={currentPage}
-                  tableLoading={this.state.tableLoading}
-                />
-                <div className="ShowDust">
-                  <p
-                    onClick={this.showDust}
-                    className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
-                  >
-                    {this.state.showDust
-                      ? "Reveal dust (less than $1)"
-                      : "Hide dust (less than $1)"}
-                  </p>
-                </div>
-              </>
-            )}
-          </div>
-          {/* <FeedbackForm page={"Transaction History Page"} /> */}
         </div>
-      </div>
+        <div className="history-table-section m-t-80">
+          <div className="history-table page">
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
+                history={this.props.history}
+                changeWalletList={this.handleChangeList}
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                from="transaction history"
+              />
+            )}
+            {this.state.upgradeModal && (
+              <UpgradeModal
+                show={this.state.upgradeModal}
+                onHide={this.upgradeModal}
+                history={this.props.history}
+                isShare={localStorage.getItem("share_id")}
+                isStatic={this.state.isStatic}
+                triggerId={this.state.triggerId}
+                pname="treansaction history"
+              />
+            )}
+            <PageHeader
+              title={"Transaction history"}
+              subTitle={
+                "Sort, filter, and dissect all your transactions from one place"
+              }
+              showpath={true}
+              currentPage={"transaction-history"}
+              history={this.props.history}
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              ShareBtn={true}
+              handleShare={this.handleShare}
+            />
+
+            <div className="fillter_tabs_section">
+              <Form onValidSubmit={this.onValidSubmit}>
+                <Row>
+                  <Col md={3}>
+                    <CustomDropdown
+                      filtername="All years"
+                      options={this.props.intelligenceState.yearFilter}
+                      action={SEARCH_BY_TIMESTAMP_IN}
+                      handleClick={(key, value) =>
+                        this.addCondition(key, value)
+                      }
+                    />
+                  </Col>
+                  <Col md={3}>
+                    <CustomDropdown
+                      filtername="All assets"
+                      options={this.props.intelligenceState.assetFilter}
+                      action={SEARCH_BY_ASSETS_IN}
+                      handleClick={(key, value) =>
+                        this.addCondition(key, value)
+                      }
+                    />
+                  </Col>
+                  <Col md={3}>
+                    <CustomDropdown
+                      filtername="All methods"
+                      options={this.props.intelligenceState.methodFilter}
+                      action={SEARCH_BY_METHOD_IN}
+                      handleClick={(key, value) =>
+                        this.addCondition(key, value)
+                      }
+                    />
+                  </Col>
+                  {/* {fillter_tabs} */}
+                  <Col md={3}>
+                    <div className="searchBar">
+                      <Image src={searchIcon} className="search-icon" />
+                      <FormElement
+                        valueLink={this.linkState(
+                          this,
+                          "search",
+                          this.onChangeMethod
+                        )}
+                        control={{
+                          type: CustomTextControl,
+                          settings: {
+                            placeholder: "Search",
+                          },
+                        }}
+                        classes={{
+                          inputField: "search-input",
+                          prefix: "search-prefix",
+                          suffix: "search-suffix",
+                        }}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+            <div className="transaction-history-table">
+              {this.state.tableLoading ? (
+                <Loading />
+              ) : (
+                <>
+                  <TransactionTable
+                    tableData={tableData}
+                    columnList={columnList}
+                    message={"No Transactions Found"}
+                    totalPage={totalPage}
+                    history={this.props.history}
+                    location={this.props.location}
+                    page={currentPage}
+                    tableLoading={this.state.tableLoading}
+                  />
+                  <div className="ShowDust">
+                    <p
+                      onClick={this.showDust}
+                      className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
+                    >
+                      {this.state.showDust
+                        ? "Reveal dust (less than $1)"
+                        : "Hide dust (less than $1)"}
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+            {/* <FeedbackForm page={"Transaction History Page"} /> */}
+          </div>
+        </div>
+      </>
     );
   }
 }
