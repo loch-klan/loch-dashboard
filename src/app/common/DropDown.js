@@ -44,7 +44,7 @@ export default function DropDown(props) {
     })
 
     return (
-      <div style={{ position: "relative" }}>
+      <div style={props?.relative? { position: "relative" }:{}}>
         <DropdownButton
           id={props.id}
           className={props.class ? props.class : ""}

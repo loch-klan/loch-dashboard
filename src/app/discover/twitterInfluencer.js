@@ -741,6 +741,7 @@ class TwitterInflucencePage extends BaseReactComponent {
                     }
                     showChecked={true}
                     customArrow={true}
+                    relative={true}
                   />
                 </div>
 

@@ -664,7 +664,11 @@ let filteredItems =[];
                   </div>
                 </Col>
               ) : (
-                ""
+                <div className="animation-wrapper" style={{width:"100%", height:"20rem", display:"flex", alignItems:"center", justifyContent:"center", padding:0}}>
+                  <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
+                    No data found
+                  </h3>
+                </div>
               )}
             </Row>
           ) : (

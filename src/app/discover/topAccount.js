@@ -802,6 +802,7 @@ class TopAccountPage extends BaseReactComponent {
                     }
                     showChecked={true}
                     customArrow={true}
+                    relative={true}
                   />
                 </div>
                 <div style={{ width: "20%" }}>
@@ -830,7 +831,7 @@ class TopAccountPage extends BaseReactComponent {
                     action={"SEARCH_BY_AMOUNT"}
                     handleClick={(key, value) => {
                       // this.addCondition(key, value);
-                      console.log(key,value)
+                      console.log(key, value);
                     }}
                     isTopaccount={true}
                   />
@@ -875,7 +876,7 @@ class TopAccountPage extends BaseReactComponent {
             </Form>
           </div>
           <div className="transaction-history-table">
-            {this.state.tableLoading  ? (
+            {this.state.tableLoading ? (
               <Loading />
             ) : (
               <>
