@@ -70,8 +70,10 @@ import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
 import DropDown from "../common/DropDown";
+import CheckboxCustomTable from "../common/customCheckboxTable";
+import RemarkInput from "./remarkInput";
 
-class TwitterInflucencePage extends BaseReactComponent {
+class WishListPage extends BaseReactComponent {
   constructor(props) {
     super(props);
     const search = props.location.search;
@@ -101,21 +103,14 @@ class TwitterInflucencePage extends BaseReactComponent {
           up: false,
         },
         {
-          title: "followers",
+          title: "isAnalyzed",
           up: false,
         },
         {
-          title: "tokensMentioned",
+          title: "remark",
           up: false,
         },
-        {
-          title: "tokenPerformance",
-          up: false,
-        },
-        {
-          title: "watchlist",
-          up: false,
-        },
+        
         
       ],
       showDust: false,
@@ -207,14 +202,14 @@ class TwitterInflucencePage extends BaseReactComponent {
      if (
        index !== -1 &&
        value !== "allchain" &&
-       value !== "allfollowers" &&
+       value !== "AllNetworth" &&
        value !== "Allasset"
      ) {
        // console.log("first if", index);
        arr[index].value = value;
      } else if (
        value === "allchain" ||
-       value === "allfollowers" ||
+       value === "AllNetworth" ||
        value === "Allasset"
      ) {
        // console.log("second if", index);
@@ -257,31 +252,17 @@ class TwitterInflucencePage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-        } else if (val === "followers") {
+        } else if (val === "isAnalyzed") {
           obj = [
             {
               key: SORT_BY_NETWORTH,
               value: !el.up,
             },
           ];
-        } else if (val === "tokensMentioned") {
+        } else if (val === "remark") {
           obj = [
             {
               key: SORT_BY_NETFLOWS,
-              value: !el.up,
-            },
-          ];
-        } else if (val === "tokenPerformance") {
-          obj = [
-            {
-              key: SORT_BY_LARGEST_BOUGHT,
-              value: !el.up,
-            },
-          ];
-        } else if (val === "watchlist") {
-          obj = [
-            {
-              key: SORT_BY_LARGEST_SOLD,
               value: !el.up,
             },
           ];
@@ -340,25 +321,13 @@ class TwitterInflucencePage extends BaseReactComponent {
     const tableData = [
       {
         account: "@cryptocobie",
-        followers: 2449,
-        tokensMentioned: [
-          {
-            name: "ETH 1",
-            symbol: Ethereum,
-            colorCode: "#7B44DA",
-          },
-          {
-            name: "ETH 2",
-            symbol: Ethereum,
-            colorCode: "#7B44DA",
-          },
-          {
-            name: "ETH 3",
-            symbol: Ethereum,
-            colorCode: "#7B44DA",
-          },
-        ],
-        tokenPerformance: 20,
+        isAnalyzed: true,
+        remark: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+      },
+      {
+        account: "@cryptocobie2",
+        isAnalyzed: false,
+        remark: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
       },
     ];
 
@@ -371,7 +340,7 @@ class TwitterInflucencePage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Account
+              To Analyze
             </span>
             <Image
               src={sortByIcon}
@@ -383,7 +352,7 @@ class TwitterInflucencePage extends BaseReactComponent {
         ),
         dataKey: "account",
         // coumnWidth: 153,
-        coumnWidth: 0.25,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -409,11 +378,11 @@ class TwitterInflucencePage extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="followers"
+            id="isAnalyzed"
             onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Followers
+              Analyzed
             </span>
             <Image
               src={sortByIcon}
@@ -423,90 +392,13 @@ class TwitterInflucencePage extends BaseReactComponent {
             />
           </div>
         ),
-        dataKey: "followers",
-        // coumnWidth: 153,
-        coumnWidth: 0.25,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "followers") {
-            return rowData.followers ? (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={amountFormat(rowData.followers, "en-US", "USD")}
-              >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                  {numToCurrency(rowData.followers)}
-                </div>
-              </CustomOverlay>
-            ) : (
-              "-"
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="tokensMentioned"
-            onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Tokens Mentioned
-            </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-              }
-            />
-          </div>
-        ),
-        dataKey: "tokensMentioned",
+        dataKey: "isAnalyzed",
         // coumnWidth: 153,
         coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "tokensMentioned") {
-            let text = "";
-            rowData?.tokensMentioned?.map((e, i) => {
-              text =
-                text +
-                e.name +
-                (rowData?.tokensMentioned?.length - 1 === i ? "" : ", ");
-            });
-
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={text}
-              >
-                {/* <div className="">imgs</div> */}
-                <div className="overlap-img-topAccount">
-                  {rowData?.tokensMentioned?.map((e, i) => {
-                    return (
-                      <Image
-                        src={e?.symbol}
-                        style={{
-                          zIndex: rowData?.tokensMentioned?.length - i,
-                          marginLeft: i === 0 ? "0" : "-1rem",
-                          border: `1px solid ${lightenDarkenColor(
-                            e.colorCode,
-                            -0.15
-                          )} `,
-                        }}
-                      />
-                    );
-                  })}
-                </div>
-              </CustomOverlay>
-            );
+          if (dataKey === "isAnalyzed") {
+            return <CheckboxCustomTable isChecked={rowData?.isAnalyzed} />;
           }
         },
       },
@@ -514,146 +406,30 @@ class TwitterInflucencePage extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="tokenPerformance"
-            onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
+            id="remark"
+            onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Token Performance after tweet
+              Remarks
             </span>
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
         ),
-        dataKey: "tokenPerformance",
-        // coumnWidth: 128,
-        coumnWidth: 0.4,
+        dataKey: "remark",
+        // coumnWidth: 153,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "tokenPerformance") {
-            return (
-              <div
-                className={`gainLoss ${
-                  rowData.tokenPerformance < 0 ? "loss" : "gain"
-                }`}
-              >
-                {/* <Image
-                  src={rowData.tokenPerformance < 0 ? LossIcon : GainIcon}
-                /> */}
-                <div className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.tokenPerformance.toFixed(2) + "%"}
-                </div>
-              </div>
-            );
+          if (dataKey === "remark") {
+            return <RemarkInput />;
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="largestSold"
-      //       onClick={() => this.handleSort(this.state.tableSortOpt[4].title)}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Largest Sold
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={
-      //           !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "largestSold",
-      //   // coumnWidth: 153,
-      //   coumnWidth: 0.2,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "largestSold") {
-      //       let text = "";
-      //       rowData?.largestSold?.map((e, i) => {
-      //         text =
-      //           text +
-      //           e.name +
-      //           (rowData?.largestSold?.length - 1 === i ? "" : ", ");
-      //       });
-
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={text}
-      //         >
-      //           {/* <div className="">imgs</div> */}
-      //           <div className="overlap-img-topAccount">
-      //             {rowData?.largestSold?.map((e, i) => {
-      //               return (
-      //                 <Image
-      //                   src={e?.symbol}
-      //                   style={{
-      //                     zIndex: rowData?.largestSold?.length - i,
-      //                     marginLeft: i === 0 ? "0" : "-1rem",
-      //                     border: `1px solid ${lightenDarkenColor(
-      //                       e.colorCode,
-      //                       -0.15
-      //                     )} `,
-      //                   }}
-      //                 />
-      //               );
-      //             })}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Gain loss"
-      //       onClick={() => this.handleSort(this.state.sortBy[6])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         % Gain / Loss
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={
-      //           this.state.sortBy[6].down ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "GainLoss",
-      //   // coumnWidth: 128,
-      //   coumnWidth: 0.25,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "GainLoss") {
-      //       return (
-      //         <div
-      //           className={`gainLoss ${
-      //             rowData.GainLoss < 0 ? "loss" : "gain"
-      //           }`}
-      //         >
-      //           <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313">
-      //             {rowData.GainLoss.toFixed(2) + "%"}
-      //           </div>
-      //         </div>
-      //       );
-      //     }
-      //   },
-      // },
     ];
 
     return (
@@ -687,8 +463,8 @@ class TwitterInflucencePage extends BaseReactComponent {
             />
           )}
           <PageHeader
-            title={"Twitter Influencers"}
-            subTitle={"Popular Twitter Influencers "}
+            title={"Watchlist"}
+            subTitle={"People to watch"}
             showpath={true}
             currentPage={"transaction-history"}
             history={this.props.history}
@@ -707,46 +483,11 @@ class TwitterInflucencePage extends BaseReactComponent {
                   justifyContent: "space-between",
                 }}
               >
-                <div style={{ width: "25%" }}>
-                  {/* <CustomDropdown
-                    filtername="Time"
-                    options={[
-                      { value: "alltime", label: "All time" },
-                      { value: "1week", label: "1 week" },
-                      { value: "1month", label: "1 month" },
-                      { value: "6months", label: "6 months" },
-                      { value: "1year", label: "1 year" },
-                      { value: "5years", label: "5 years" },
-                    ]}
-                    action={SEARCH_BY_TIMESTAMP_IN}
-                    handleClick={(key, value) => this.addCondition(key, value)}
-                    isTopaccount={true}
-                  /> */}
-                  <DropDown
-                    class="cohort-dropdown"
-                    list={[
-                      "All time",
-                      "1 week",
-                      "1 month",
-                      "6 months",
-                      "1 year",
-                      "5 years",
-                    ]}
-                    onSelect={this.handleTime}
-                    title={this.state.timeFIlter}
-                    activetab={
-                      this.state.timeFIlter === "Time"
-                        ? "All time"
-                        : this.state.timeFIlter
-                    }
-                    showChecked={true}
-                    customArrow={true}
-                  />
-                </div>
+            
 
-                <div style={{ width: "25%" }}>
+                <div style={{ width: "60%" }}>
                   <CustomDropdown
-                    filtername="Assets"
+                    filtername="Type"
                     options={[
                       ...[{ value: "Allasset", label: "All assets" }],
                       ...assetList,
@@ -756,20 +497,9 @@ class TwitterInflucencePage extends BaseReactComponent {
                     isTopaccount={true}
                   />
                 </div>
-                <div style={{ width: "25%" }}>
-                  <CustomDropdown
-                    filtername="Followers"
-                    options={[
-                      ...[{ value: "allfollowers", label: "All" }],
-                      ...chainList,
-                    ]}
-                    action={"SEARCH_BY_CHAIN_IN"}
-                    handleClick={(key, value) => this.addCondition(key, value)}
-                    isTopaccount={true}
-                  />
-                </div>
+               
                 {/* {fillter_tabs} */}
-                <div style={{ width: "25%" }}>
+                <div style={{ width: "40%" }}>
                   <div className="searchBar top-account-search">
                     <Image src={searchIcon} className="search-icon" />
                     <FormElement
@@ -795,6 +525,7 @@ class TwitterInflucencePage extends BaseReactComponent {
               </div>
             </Form>
           </div>
+
           <div className="transaction-history-table">
             {this.state.tableLoading ? (
               <Loading />
@@ -843,8 +574,5 @@ const mapDispatchToProps = {
   setPageFlagDefault,
 };
 
-TwitterInflucencePage.propTypes = {};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TwitterInflucencePage);
+WishListPage.propTypes = {};
+export default connect(mapStateToProps, mapDispatchToProps)(WishListPage);

@@ -23,6 +23,7 @@ import LPPeace from "./app/home/landing-page-peace";
 import WhopLoader from "./app/common/WhopAccount"
 import TopAccount from "./app/discover/topAccount";
 import twitterInfluencer from "./app/discover/twitterInfluencer";
+import wishlist from "./app/discover/wishlist";
 const routes = [
   {
     path: "/",
@@ -125,6 +126,12 @@ const routes = [
     name: "Twitter Influencers",
     type: PrivateRoute,
     component: twitterInfluencer,
+  },
+  {
+    path: "/wishlist",
+    name: "Wishlist",
+    type: PrivateRoute,
+    component: wishlist,
   },
   {
     path: "/decentralized-finance",

@@ -23,6 +23,10 @@ import ExportIcon from '../../assets/images/icons/ExportIcon.svg'
 import SharePortfolioIcon from '../../assets/images/icons/SharePortfolioIcon.svg'
 import SharePortfolioIconWhite from '../../assets/images/icons/SharePortfolioIconWhite.svg'
 import ExportIconWhite from '../../assets/images/icons/ExportBlackIcon.svg'
+import StarIcon from "../../assets/images/icons/star-top.svg";
+import TwitterIcon from "../../assets/images/icons/twitter-top.svg";
+import EyeIcon from "../../assets/images/icons/eye.svg";
+import CompassIcon from "../../assets/images/icons/compass.svg";
 import ApiIcon from '../../assets/images/icons/ApiIcon.svg'
 import ApiBlackIcon from '../../assets/images/icons/ApiBlackIcon.svg'
 import LeaveIcon from '../../assets/images/icons/LeaveIcon.svg'
@@ -171,7 +175,7 @@ function Sidebar(props) {
   
   React.useEffect(() => {
      console.log("in use effect")
-     //  its mean user in ME section
+     //  its mean user in ME section but not in intelligence
      if (
        ![
          "/intelligence/transaction-history",
@@ -186,7 +190,7 @@ function Sidebar(props) {
      ) {
        let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
        let obj = {
-         me: currentValue.me,
+         me: true,
          discover: currentValue.discover,
          intelligence: false,
        };
@@ -214,7 +218,7 @@ function Sidebar(props) {
        let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
        let obj = {
          me: false,
-         discover: currentValue.discover,
+         discover: true,
          intelligence: false,
        };
        setSubmenu(obj);
@@ -485,7 +489,9 @@ function Sidebar(props) {
 
   let isDiscoverActive = [
     "/whale-watch",
-    "/top-accounts"
+    "/top-accounts",
+    "/twitter-influencers",
+    "/wishlist",
   ].includes(activeTab);
     return (
       <div className="sidebar-section">
@@ -544,67 +550,63 @@ function Sidebar(props) {
                   props.ownerName ? "sidebar-body" : "sidebar-body nowallet"
                 }
               >
+                {/* menu tab */}
+                <div className="menu-tab-wrapper">
+                  <div
+                    className={`tab ${isSubmenu.discover ? "active" : ""}`}
+                    onClick={handleDiscoverSubmenu}
+                  >
+                    <Image src={CompassIcon} />
+                    <h4 className="inter-display-semi-bold f-s-13 lh-16 grey-7C7">
+                      Discover
+                    </h4>
+                  </div>
+                  <div
+                    className={`tab ${isSubmenu.me ? "active" : ""}`}
+                    onClick={handleMeSubmenu}
+                  >
+                    <Image src={ProfileIcon} />
+                    <h4 className="inter-display-semi-bold f-s-13 lh-16 grey-7C7">
+                      Me
+                    </h4>
+                  </div>
+                </div>
                 <nav>
                   <ul>
-                    {/* <li>
-                      <NavLink
-                        exact={true}
-                        onClick={handleMeSubmenu}
-                        className={`nav-link ${isMeActive ? "" : "none"}`}
-                        to="#"
-                        activeclassname={`${isMeActive ? "active" : "none"}`}
-                      >
-                        <Image
-                          src={isMeActive ? ActiveHomeIcon : InActiveHomeIcon}
-                        />
-                        Me
-                        <Image
-                          src={arrowUp}
-                          className={`arrow-menu ${
-                            isSubmenu?.me ? "show-submenu" : ""
-                          }`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            console.log("test");
-                            handleMeSubmenu();
-                          }}
-                        />
-                      </NavLink>
-                    </li>
-                    */}
-                    <li>
-                      <NavLink
-                        exact={true}
-                        className="nav-link"
-                        to={activeTab === "/home" ? "#" : "/home"}
-                        onClick={(e) => {
-                          // console.log("user",getCurrentUser())
-                          if (!isWallet) {
-                            e.preventDefault();
-                          } else {
-                            HomeMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          }
-                        }}
-                        activeclassname="active"
-                      >
-                        <Image
-                          src={
-                            activeTab === "/home"
-                              ? ActiveHomeIcon
-                              : InActiveHomeIcon
-                          }
-                        />
-                        Home
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        exact={true}
-                        className={`nav-link
+                    {isSubmenu.me && (
+                      <>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            className="nav-link"
+                            to={activeTab === "/home" ? "#" : "/home"}
+                            onClick={(e) => {
+                              // console.log("user",getCurrentUser())
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                HomeMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/home"
+                                  ? ActiveHomeIcon
+                                  : InActiveHomeIcon
+                              }
+                            />
+                            Home
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            exact={true}
+                            className={`nav-link
                         ${
                           activeTab === "/intelligence/transaction-history"
                             ? "active"
@@ -619,210 +621,216 @@ function Sidebar(props) {
                         ${
                           activeTab === "/intelligence/insights" ? "active" : ""
                         } ${
-                          activeTab === "/intelligence/asset-value"
-                            ? "active"
-                            : ""
-                        } ${activeTab === "/intelligence/costs" ? "active" : ""}
+                              activeTab === "/intelligence/asset-value"
+                                ? "active"
+                                : ""
+                            } ${
+                              activeTab === "/intelligence/costs"
+                                ? "active"
+                                : ""
+                            }
                         `}
-                        to="/intelligence"
-                        activeclassname="active"
-                        onClick={(e) => {
-                          if (!isWallet) {
-                            e.preventDefault();
-                          } else {
-                            IntelligenceMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          }
-                        }}
-                      >
-                        <Image
-                          src={
-                            [
-                              "/intelligence/transaction-history",
-                              "/intelligence",
-                              "/intelligence/volume-traded-by-counterparty",
-                              "/intelligence/insights",
-                              "/intelligence/costs",
-                              "/intelligence/asset-value",
-                            ].includes(activeTab)
-                              ? ActiveIntelligenceIcon
-                              : IntelligenceIcon
-                          }
-                        />
-                        Intelligence
-                        <Image
-                          src={arrowUp}
-                          className={`arrow-menu ${
-                            isSubmenu?.intelligence ? "show-submenu" : ""
-                          }`}
-                          onClick={(e) => {
-                            e.preventDefault();
+                            to="/intelligence"
+                            activeclassname="active"
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                IntelligenceMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                          >
+                            <Image
+                              src={
+                                [
+                                  "/intelligence/transaction-history",
+                                  "/intelligence",
+                                  "/intelligence/volume-traded-by-counterparty",
+                                  "/intelligence/insights",
+                                  "/intelligence/costs",
+                                  "/intelligence/asset-value",
+                                ].includes(activeTab)
+                                  ? ActiveIntelligenceIcon
+                                  : IntelligenceIcon
+                              }
+                            />
+                            Intelligence
+                            <Image
+                              src={arrowUp}
+                              className={`arrow-menu ${
+                                isSubmenu?.intelligence ? "show-submenu" : ""
+                              }`}
+                              onClick={(e) => {
+                                e.preventDefault();
 
-                            handleIntelligentSubmenu();
-                          }}
-                        />
-                      </NavLink>
-                    </li>
+                                handleIntelligentSubmenu();
+                              }}
+                            />
+                          </NavLink>
+                        </li>
 
-                    {isSubmenu?.intelligence && (
-                      <>
-                        <li className="sub-menu">
+                        {isSubmenu?.intelligence && (
+                          <>
+                            <li className="sub-menu">
+                              <NavLink
+                                exact={true}
+                                onClick={(e) => {
+                                  if (!isWallet) {
+                                    e.preventDefault();
+                                  } else {
+                                  }
+                                }}
+                                className={`nav-link ${
+                                  activeTab === "/intelligence" ? "none" : ""
+                                }`}
+                                to="/intelligence#netflow"
+                                activeclassname="active"
+                              >
+                                Net flows
+                              </NavLink>
+                            </li>
+                            <li className="sub-menu">
+                              <NavLink
+                                exact={true}
+                                onClick={(e) => {
+                                  if (!isWallet) {
+                                    e.preventDefault();
+                                  } else {
+                                  }
+                                }}
+                                className="nav-link"
+                                to="/intelligence/transaction-history"
+                                activeclassname="active"
+                              >
+                                Transaction history
+                              </NavLink>
+                            </li>
+                            <li className="sub-menu">
+                              <NavLink
+                                exact={true}
+                                onClick={(e) => {
+                                  if (!isWallet) {
+                                    e.preventDefault();
+                                  } else {
+                                  }
+                                }}
+                                className="nav-link"
+                                to="/intelligence/asset-value"
+                                activeclassname="active"
+                              >
+                                Asset value over time
+                              </NavLink>
+                            </li>
+                            <li className="sub-menu">
+                              <NavLink
+                                exact={true}
+                                onClick={(e) => {
+                                  if (!isWallet) {
+                                    e.preventDefault();
+                                  } else {
+                                  }
+                                }}
+                                className="nav-link"
+                                to="/intelligence/insights"
+                                activeclassname="active"
+                              >
+                                Insights
+                              </NavLink>
+                            </li>
+                            <li className="sub-menu">
+                              <NavLink
+                                exact={true}
+                                onClick={(e) => {
+                                  if (!isWallet) {
+                                    e.preventDefault();
+                                  } else {
+                                    WalletsMenu({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
+                                  }
+                                }}
+                                className="nav-link"
+                                to="/intelligence/costs"
+                                activeclassname="active"
+                              >
+                                Costs
+                              </NavLink>
+                            </li>
+                          </>
+                        )}
+
+                        <li>
                           <NavLink
-                            exact={true}
+                            className={`nav-link ${!isDefi ? "none" : ""}`}
+                            to={`${!isDefi ? "#" : "/decentralized-finance"}`}
                             onClick={(e) => {
+                              DeFiMenu({
+                                session_id: getCurrentUser().id,
+                                email_address: getCurrentUser().email,
+                              });
+                              if (!isDefi) {
+                                upgradeModal();
+                              }
                               if (!isWallet) {
                                 e.preventDefault();
-                              } else {
                               }
                             }}
-                            className={`nav-link ${
-                              activeTab === "/intelligence" ? "none" : ""
-                            }`}
-                            to="/intelligence#netflow"
-                            activeclassname="active"
+                            activeclassname={`${!isDefi ? "none" : "active"}`}
+                            // className="nav-link none"
+                            // to="#"
+                            // activeclassname="none"
                           >
-                            Net flows
-                          </NavLink>
-                        </li>
-                        <li className="sub-menu">
-                          <NavLink
-                            exact={true}
-                            onClick={(e) => {
-                              if (!isWallet) {
-                                e.preventDefault();
-                              } else {
+                            <Image
+                              src={
+                                activeTab === "/decentralized-finance"
+                                  ? DefiIcon
+                                  : DefiIcon
                               }
-                            }}
-                            className="nav-link"
-                            to="/intelligence/transaction-history"
-                            activeclassname="active"
-                          >
-                            Transaction history
-                          </NavLink>
-                        </li>
-                        <li className="sub-menu">
-                          <NavLink
-                            exact={true}
-                            onClick={(e) => {
-                              if (!isWallet) {
-                                e.preventDefault();
-                              } else {
+                              style={
+                                activeTab === "/decentralized-finance"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
                               }
-                            }}
-                            className="nav-link"
-                            to="/intelligence/asset-value"
-                            activeclassname="active"
-                          >
-                            Asset value over time
+                            />
+                            DeFi
                           </NavLink>
                         </li>
-                        <li className="sub-menu">
+                        <li>
                           <NavLink
                             exact={true}
                             onClick={(e) => {
                               if (!isWallet) {
                                 e.preventDefault();
                               } else {
-                              }
-                            }}
-                            className="nav-link"
-                            to="/intelligence/insights"
-                            activeclassname="active"
-                          >
-                            Insights
-                          </NavLink>
-                        </li>
-                        <li className="sub-menu">
-                          <NavLink
-                            exact={true}
-                            onClick={(e) => {
-                              if (!isWallet) {
-                                e.preventDefault();
-                              } else {
-                                WalletsMenu({
+                                ProfileMenu({
                                   session_id: getCurrentUser().id,
                                   email_address: getCurrentUser().email,
                                 });
                               }
                             }}
                             className="nav-link"
-                            to="/intelligence/costs"
+                            to="/profile"
                             activeclassname="active"
                           >
-                            Costs
+                            <Image
+                              src={
+                                activeTab === "/profile"
+                                  ? ActiveProfileIcon
+                                  : ProfileIcon
+                              }
+                            />
+                            Profile
                           </NavLink>
                         </li>
                       </>
                     )}
-
-                    <li>
-                      <NavLink
-                        className={`nav-link ${!isDefi ? "none" : ""}`}
-                        to={`${!isDefi ? "#" : "/decentralized-finance"}`}
-                        onClick={(e) => {
-                          DeFiMenu({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                          });
-                          if (!isDefi) {
-                            upgradeModal();
-                          }
-                          if (!isWallet) {
-                            e.preventDefault();
-                          }
-                        }}
-                        activeclassname={`${!isDefi ? "none" : "active"}`}
-                        // className="nav-link none"
-                        // to="#"
-                        // activeclassname="none"
-                      >
-                        <Image
-                          src={
-                            activeTab === "/decentralized-finance"
-                              ? DefiIcon
-                              : DefiIcon
-                          }
-                          style={
-                            activeTab === "/decentralized-finance"
-                              ? {
-                                  filter: "brightness(0)",
-                                }
-                              : {}
-                          }
-                        />
-                        DeFi
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        exact={true}
-                        onClick={(e) => {
-                          if (!isWallet) {
-                            e.preventDefault();
-                          } else {
-                            ProfileMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          }
-                        }}
-                        className="nav-link"
-                        to="/profile"
-                        activeclassname="active"
-                      >
-                        <Image
-                          src={
-                            activeTab === "/profile"
-                              ? ActiveProfileIcon
-                              : ProfileIcon
-                          }
-                        />
-                        Profile
-                      </NavLink>
-                    </li>
-                    <li>
+                    {/* <li>
                       <NavLink
                         exact={true}
                         onClick={handleDiscoverSubmenu}
@@ -849,10 +857,10 @@ function Sidebar(props) {
                           }}
                         />
                       </NavLink>
-                    </li>
+                    </li> */}
                     {isSubmenu.discover && (
                       <>
-                        <li className="sub-menu">
+                        <li>
                           <NavLink
                             className="nav-link"
                             to={"/whale-watch"}
@@ -868,18 +876,18 @@ function Sidebar(props) {
                             }}
                             activeclassname="active"
                           >
-                            {/* <Image
+                            <Image
                               src={
                                 activeTab === "/whale-watch"
                                   ? ActiveCohortIcon
                                   : CohortIcon
                               }
-                            /> */}
+                            />
                             Whale Watch
                           </NavLink>
                         </li>
 
-                        <li className="sub-menu">
+                        <li>
                           <NavLink
                             className={`nav-link`}
                             to="/top-accounts"
@@ -890,11 +898,9 @@ function Sidebar(props) {
                             }}
                             activeclassname="active"
                           >
-                            {/* <Image
+                            <Image
                               src={
-                                activeTab === "/top-accounts"
-                                  ? DefiIcon
-                                  : DefiIcon
+                               StarIcon
                               }
                               style={
                                 activeTab === "/top-accounts"
@@ -903,12 +909,12 @@ function Sidebar(props) {
                                     }
                                   : {}
                               }
-                            /> */}
+                            />
                             Top accounts
                           </NavLink>
                         </li>
 
-                        <li className="sub-menu">
+                        <li>
                           <NavLink
                             className={`nav-link`}
                             to="/twitter-influencers"
@@ -919,21 +925,41 @@ function Sidebar(props) {
                             }}
                             activeclassname="active"
                           >
-                            {/* <Image
-                              src={
-                                activeTab === "/top-accounts"
-                                  ? DefiIcon
-                                  : DefiIcon
-                              }
+                            <Image
+                              src={TwitterIcon}
                               style={
-                                activeTab === "/top-accounts"
+                                activeTab === "/twitter-influencers"
                                   ? {
                                       filter: "brightness(0)",
                                     }
                                   : {}
                               }
-                            /> */}
+                            />
                             Twitter Influencers
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            className={`nav-link`}
+                            to="/wishlist"
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={EyeIcon}
+                              style={
+                                activeTab === "/wishlist"
+                                  ? {
+                                      filter: "brightness(0)",
+                                    }
+                                  : {}
+                              }
+                            />
+                            Wishlist
                           </NavLink>
                         </li>
                       </>
