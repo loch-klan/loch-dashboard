@@ -762,7 +762,7 @@ class TwitterInflucencePage extends BaseReactComponent {
                     filtername="Followers"
                     options={[
                       ...[{ value: "allfollowers", label: "All" }],
-                      ...chainList,
+                     
                     ]}
                     action={"SEARCH_BY_CHAIN_IN"}
                     handleClick={(key, value) => this.addCondition(key, value)}

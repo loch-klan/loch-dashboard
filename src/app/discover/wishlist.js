@@ -489,8 +489,8 @@ class WishListPage extends BaseReactComponent {
                   <CustomDropdown
                     filtername="Type"
                     options={[
-                      ...[{ value: "Allasset", label: "All assets" }],
-                      ...assetList,
+                      ...[{ value: "Allasset", label: "All" }],
+                      
                     ]}
                     action={"SEARCH_BY_ASSETS_IN"}
                     handleClick={(key, value) => this.addCondition(key, value)}
