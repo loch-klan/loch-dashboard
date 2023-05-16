@@ -255,7 +255,7 @@ export default function WelcomeCard(props) {
             Add wallet address
           </div>
         </div>
-        {props.assetTotal && (
+        {props.showNetworth && (
           <div
             className="row-div"
             style={{
@@ -310,7 +310,7 @@ export default function WelcomeCard(props) {
             }}
           >
             <span onClick={handleSigninModal} className="signin">
-              <Image src={SignInIcon} />
+              {/* <Image src={SignInIcon} /> */}
               <Button
                 className="inter-display-medium f-s-16 lh-19 navbar-button"
                 style={{
@@ -321,9 +321,9 @@ export default function WelcomeCard(props) {
                 Sign in
               </Button>
             </span>
-            <span className="inter-display-medium f-s-16 lh-19 navbar-button">
+            {/* <span className="inter-display-medium f-s-16 lh-19 navbar-button">
               /
-            </span>
+            </span> */}
             <span
               onClick={handleSignUpModal}
               // style={{ position: "absolute", right: "29rem" }}

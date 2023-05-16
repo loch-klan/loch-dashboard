@@ -1864,6 +1864,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  showNetworth={true}
                   // yesterday balance
                   yesterdayBalance={this.props.portfolioState.yesterdayBalance}
                   // toggleAddWallet={this.state.toggleAddWallet}
@@ -1909,7 +1910,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  marginTop: "9rem"
+                  marginTop: "9rem",
                 }}
               >
                 <PieChart2
@@ -2062,8 +2063,8 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                           this.props.intelligenceState.graphValue[2]
                         }
                         isLoading={this.state.netFlowLoading}
-                          className={"portfolio-profit-and-loss"}
-                          isMinichart={true}
+                        className={"portfolio-profit-and-loss"}
+                        isMinichart={true}
                       />
                     </div>
                   </Col>
@@ -2315,9 +2316,8 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 </Row>
               </div>
 
-            
-                {/* footer  */}
-                <Footer />
+              {/* footer  */}
+              <Footer />
             </div>
           </div>
         )}

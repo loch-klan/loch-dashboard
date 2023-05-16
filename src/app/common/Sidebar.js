@@ -151,7 +151,7 @@ function Sidebar(props) {
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
       console.log("current", currentValue)
       let obj = {
-        me: !currentValue.me,
+        me: true,
         discover: false,
         intelligence: false,
       };
@@ -165,7 +165,7 @@ function Sidebar(props) {
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
       let obj = {
         me: false,
-        discover: !currentValue.discover,
+        discover: true,
         intelligence: false,
       };
       setSubmenu(obj);
