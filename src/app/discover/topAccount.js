@@ -70,6 +70,7 @@ import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
 import DropDown from "../common/DropDown";
+import { SORT_BY_NAME } from "../../utils/Constant";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 
 class TopAccountPage extends BaseReactComponent {
@@ -263,14 +264,14 @@ class TopAccountPage extends BaseReactComponent {
         } else if (val === "networth") {
           obj = [
             {
-              key: SORT_BY_NETWORTH,
+              key: SORT_BY_AMOUNT,
               value: !el.up,
             },
           ];
         } else if (val === "netflows") {
           obj = [
             {
-              key: SORT_BY_NETFLOWS,
+              key: SORT_BY_AMOUNT,
               value: !el.up,
             },
           ];
@@ -291,7 +292,7 @@ class TopAccountPage extends BaseReactComponent {
         } else if (val === "tagName") {
           obj = [
             {
-              key: SORT_BY_TAG_NAME,
+              key: SORT_BY_NAME,
               value: !el.up,
             },
           ];
@@ -303,7 +304,7 @@ class TopAccountPage extends BaseReactComponent {
     });
 
     this.setState({
-      // sort: obj,
+      sort: obj,
       tableSortOpt: sort,
     });
   };
@@ -416,12 +417,12 @@ class TopAccountPage extends BaseReactComponent {
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Account
             </span>
-            <Image
+            {/* <Image
               src={sortByIcon}
               className={
                 !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
               }
-            />
+            /> */}
           </div>
         ),
         dataKey: "account",
