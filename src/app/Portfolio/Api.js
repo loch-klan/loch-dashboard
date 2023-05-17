@@ -341,7 +341,7 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                 
                 
               } else{
-                toast.error(res.data.message || "Something Went Wrong")
+                // toast.error(res.data.message || "Something Went Wrong")
                 ctx && ctx?.props.history.push("/welcome")
               }
           })
