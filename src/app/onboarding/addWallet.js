@@ -330,7 +330,7 @@ class AddWallet extends BaseReactComponent {
       });
     }
     this.props.getAllCoins();
-    this.props.getAllParentChains();
+    this.props.getAllParentChains(); 
     this.setState({
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });

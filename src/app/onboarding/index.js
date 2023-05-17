@@ -253,7 +253,7 @@ class OnBoarding extends Component {
             triggerId={this.state.triggerId}
             signinBack={true}
             from="home"
-            pname="index.js"
+            pname="index"
             // isShare={localStorage.getItem("share_id")}
             // isStatic={this.state.isStatic}
           />

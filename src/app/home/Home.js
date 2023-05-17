@@ -281,7 +281,7 @@ class Home extends BaseReactComponent {
             selectedId={this.state.selectedId}
             signinBack={true}
             form="home"
-            pname="home.js"
+            pname="home"
           />
         )}
       </>
