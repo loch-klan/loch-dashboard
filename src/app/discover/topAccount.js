@@ -88,7 +88,7 @@ class TopAccountPage extends BaseReactComponent {
       asset: "",
       methodsDropdown: Method.opt,
       table: [],
-      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      sort: [{ key: SORT_BY_AMOUNT, value: false }],
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
@@ -394,9 +394,9 @@ class TopAccountPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="history-table-header-col"
             id="Accounts"
-            onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
+            // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Account
@@ -456,8 +456,8 @@ class TopAccountPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
-            return (
-              rowData.tagName ? <CustomOverlay
+            return rowData.tagName ? (
+              <CustomOverlay
                 position="top"
                 isIcon={false}
                 isInfo={true}
@@ -465,7 +465,9 @@ class TopAccountPage extends BaseReactComponent {
                 text={rowData.tagName}
               >
                 <span>{rowData.tagName}</span>
-              </CustomOverlay>: "-"
+              </CustomOverlay>
+            ) : (
+              "-"
             );
           }
         },
@@ -478,7 +480,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Net worth
+              Native Asset Net Worth
             </span>
             <Image
               src={sortByIcon}
@@ -750,7 +752,7 @@ class TopAccountPage extends BaseReactComponent {
           )}
           <PageHeader
             title={"Top Accounts"}
-            subTitle={"Valuable insights for Top Accounts"}
+            subTitle={"Analyze the top accounts here"}
             showpath={true}
             currentPage={"transaction-history"}
             history={this.props.history}
@@ -769,7 +771,7 @@ class TopAccountPage extends BaseReactComponent {
                   justifyContent: "space-between",
                 }}
               >
-                <div style={{ width: "20%" }}>
+                <div style={{ width: "25%" }}>
                   {/* <CustomDropdown
                     filtername="Time"
                     options={[
@@ -806,7 +808,7 @@ class TopAccountPage extends BaseReactComponent {
                     relative={true}
                   />
                 </div>
-                <div style={{ width: "20%" }}>
+                <div style={{ width: "25%" }}>
                   <CustomDropdown
                     filtername="Chains"
                     options={[
@@ -818,7 +820,7 @@ class TopAccountPage extends BaseReactComponent {
                     isTopaccount={true}
                   />
                 </div>
-                <div style={{ width: "20%" }}>
+                <div style={{ width: "25%" }}>
                   <CustomDropdown
                     filtername="Net worth"
                     options={[
@@ -837,7 +839,7 @@ class TopAccountPage extends BaseReactComponent {
                     isTopaccount={true}
                   />
                 </div>
-                <div style={{ width: "20%" }}>
+                {/* <div style={{ width: "20%" }}>
                   <CustomDropdown
                     filtername="Assets"
                     options={[
@@ -848,9 +850,9 @@ class TopAccountPage extends BaseReactComponent {
                     handleClick={(key, value) => this.addCondition(key, value)}
                     isTopaccount={true}
                   />
-                </div>
+                </div> */}
                 {/* {fillter_tabs} */}
-                <div style={{ width: "20%" }}>
+                <div style={{ width: "25%" }}>
                   <div className="searchBar top-account-search">
                     <Image src={searchIcon} className="search-icon" />
                     <FormElement
