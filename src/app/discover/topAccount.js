@@ -829,12 +829,12 @@ class TopAccountPage extends BaseReactComponent {
                       { value: "1-10", label: "1m-10m" },
                       { value: "10-100", label: "10m-100m" },
                       { value: "100-1000", label: "100m-1b" },
-                      { value: "1000+", label: "more than 1b" },
+                      { value: "1000-1000000", label: "more than 1b" },
                     ]}
-                    action={"SEARCH_BY_AMOUNT"}
+                    action={"SEARCH_BY_NETWORTH"}
                     handleClick={(key, value) => {
-                      // this.addCondition(key, value);
-                      console.log(key, value);
+                      this.addCondition(key, value);
+                      // console.log(key, value);
                     }}
                     isTopaccount={true}
                   />
