@@ -478,6 +478,7 @@ class Cost extends Component {
               <CoinChip
                 coin_img_src={rowData.Asset}
                 coin_code={rowData.AssetCode}
+                chain={rowData?.chain}
               />
             );
           }
