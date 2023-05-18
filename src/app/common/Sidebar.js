@@ -491,7 +491,7 @@ function Sidebar(props) {
     "/whale-watch",
     "/top-accounts",
     "/twitter-influencers",
-    "/wishlist",
+    "/watchlist",
   ].includes(activeTab);
     return (
       <div className="sidebar-section">
@@ -941,7 +941,7 @@ function Sidebar(props) {
                         <li>
                           <NavLink
                             className={`nav-link`}
-                            to="/wishlist"
+                            to="/watchlist"
                             onClick={(e) => {
                               if (!isWallet) {
                                 e.preventDefault();
