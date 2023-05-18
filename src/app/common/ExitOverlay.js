@@ -1672,12 +1672,21 @@ class ExitOverlay extends BaseReactComponent {
                   <h6 className="inter-display-medium f-s-20 lh-24 ">
                     Don’t lose your data
                   </h6>
-                  <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
-                    Access your data again through the unique reusable link,
-                  </p>
-                  <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24">
-                    or link your email
-                  </p>
+                  {this?.porps?.signup ? (
+                    <>
+                      <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
+                        Access your data again through the unique reusable link,
+                      </p>
+                      <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24">
+                        or link your email
+                      </p>
+                    </>
+                  ) : (
+                    <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24" style={{textAlign:"center"}}>
+                      Don’t let your hard work go to waste. Add your email so
+                      you can analyze your portfolio with superpowers
+                    </p>
+                  )}
                   <div className="email-section">
                     <Form onValidSubmit={this.handleSave}>
                       <FormElement
