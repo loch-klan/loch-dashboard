@@ -158,7 +158,7 @@ export const verifyEmailApi = (ctx, data) =>{
   .then((res)=>{
     if(!res.data.error){
       localStorage.setItem("lochToken", res.data?.data?.token);
-      localStorage.setItem("addWallet", JSON.stringify([]));
+      // localStorage.setItem("addWallet", JSON.stringify([]));
       localStorage.setItem("stopClick", true);
       // free pricing
       let plan = {
@@ -230,14 +230,16 @@ export const verifyEmailApi = (ctx, data) =>{
         last_name: res?.data?.data?.user?.last_name,
       });
       ctx.setState({ error: false });
-      setTimeout(() => {
-        ctx.props.history.push({
-          pathname: "/home",
-          state: {
-            isVerified: true,
-          },
-        });
-      }, 3000);
+      // setTimeout(() => {
+      //   ctx.props.history.push({
+      //     pathname: "/home",
+      //     state: {
+      //       isVerified: true,
+      //       chainDetect:true,
+      //     },
+      //   });
+      // }, 3000);
+      getUserAddresses(ctx);
     } else{
       ctx.setState({error: true});
     }
@@ -246,6 +248,84 @@ export const verifyEmailApi = (ctx, data) =>{
     // console.log("fixwallet",err)
   })
 }
+
+// get user detail for chain
+
+export const getUserAddresses = (ctx) => {
+  postLoginInstance.post("organisation/user/get-user").then((res) => {
+    if (!res.data.error) {
+    
+    let apiResponse = res.data?.data;
+    let newAddWallet = [];
+    if (apiResponse?.wallets) {
+      // const allChains = getState().OnboardingState.coinsList;
+      const allChains = ctx.props?.OnboardingState?.coinsList;
+
+      // console.log("res", apiResponse)
+      for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
+        let obj = {}; // <----- new Object
+        obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+        obj["displayAddress"] =
+          apiResponse?.user?.user_wallets[i]?.display_address;
+
+        // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
+
+        const chainsDetected =
+          apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
+            ?.chains ||
+          apiResponse.wallets[
+            apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+          ]?.chains;
+
+        obj["coins"] = allChains.map((chain) => {
+          let coinDetected = false;
+          chainsDetected.map((item) => {
+            if (item.id === chain.id) {
+              coinDetected = true;
+            }
+          });
+          return {
+            coinCode: chain.code,
+            coinSymbol: chain.symbol,
+            coinName: chain.name,
+            chain_detected: coinDetected,
+            coinColor: chain.color,
+          };
+        });
+        obj["wallet_metadata"] = apiResponse?.user?.user_wallets[i]?.wallet;
+        obj["id"] = `wallet${i + 1}`;
+        // obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+        let chainLength =
+          apiResponse.wallets[apiResponse.user?.user_wallets[i]?.address]
+            ?.chains?.length ||
+          apiResponse?.wallets[
+            apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+          ]?.chains?.length;
+        obj["coinFound"] = chainLength > 0 ? true : false;
+
+        obj["nickname"] = apiResponse?.user?.user_wallets[i]?.nickname;
+        obj["showAddress"] =
+          apiResponse?.user?.user_wallets[i]?.nickname === "" ? true : false;
+        obj["showNickname"] =
+          apiResponse?.user?.user_wallets[i]?.nickname !== "" ? true : false;
+        newAddWallet.push(obj);
+      }
+    }
+    // console.log('newAddWallet',newAddWallet);
+    localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+    setTimeout(() => {
+      ctx.props.history.push({
+        pathname: "/home",
+        state: {
+          isVerified: !apiResponse?.wallets ? true : false,
+        },
+      });
+    }, 3000);
+    } else {
+      toast.error(res.data.message || "Something Went Wrong");
+    }
+  });
+};
 
 export const sendWhopCode = (ctx, data) => {
   //  console.log("ctx", ctx.props.OnboardingState.coinsList);
@@ -1192,6 +1272,8 @@ export const getUser = (ctx = null, showToast = false) => {
         };
 
         localStorage.setItem("lochUser", JSON.stringify(obj));
+       
+     
       }
       if (
         ctx?.props?.location?.search === "?status=success" ||
