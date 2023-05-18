@@ -1672,7 +1672,7 @@ class ExitOverlay extends BaseReactComponent {
                   <h6 className="inter-display-medium f-s-20 lh-24 ">
                     Don’t lose your data
                   </h6>
-                  {this?.porps?.signup ? (
+                  {!this.props?.signup ? (
                     <>
                       <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
                         Access your data again through the unique reusable link,
@@ -1682,7 +1682,10 @@ class ExitOverlay extends BaseReactComponent {
                       </p>
                     </>
                   ) : (
-                    <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24" style={{textAlign:"center"}}>
+                    <p
+                      className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24"
+                      style={{ textAlign: "center" }}
+                    >
                       Don’t let your hard work go to waste. Add your email so
                       you can analyze your portfolio with superpowers
                     </p>
