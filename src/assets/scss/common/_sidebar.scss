@@ -186,10 +186,16 @@
         ul {
           li {
             // old
-            // margin-bottom: 1.6rem;
-            &.sub-menu {
+            // margin-bottom: 1.6rem
+
+             &.sub-menu {
               margin-left: 2.6rem;
             }
+
+            &.sub-menu-level-tow {
+              margin-left: 5.2rem;
+            }
+
             margin-bottom: 1rem;
             .nav-link {
               @include font($grey-636, "Inter-Medium", 1.3rem, 500, 19.2px);

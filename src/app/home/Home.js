@@ -109,6 +109,8 @@ class Home extends BaseReactComponent {
                 me: false,
                 discover: false,
                 intelligence: false,
+                topAccount: false,
+                topAccountintelligence: false,
               })
             );
              let isRefresh = JSON.parse(localStorage.getItem("refresh"));
@@ -137,6 +139,8 @@ class Home extends BaseReactComponent {
              me: false,
              discover: false,
              intelligence: false,
+             topAccount: false,
+             topAccountintelligence: false,
            })
          );
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
