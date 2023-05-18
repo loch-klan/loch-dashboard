@@ -175,22 +175,23 @@ class Intelligence extends Component {
 
     
     if (
-     
       this.props?.location?.pathname + this.props?.location?.hash ===
-        "/intelligence#netflow"
+        "/intelligence#netflow" ||
+      this.props?.location?.pathname + this.props?.location?.hash ===
+        "/top-accounts/intelligence#netflow"
     ) {
-     if (this.props.location.hash !== "") {
-       setTimeout(() => {
-         const id = this.props.location.hash.replace("#", "");
-         // console.log('id',id);
-         const element = document.getElementById(id);
-         if (element) {
-           element.scrollIntoView();
-         }
-       }, 0);
-     } else {
-       window.scrollTo(0, 0);
-     }
+      if (this.props.location.hash !== "") {
+        setTimeout(() => {
+          const id = this.props.location.hash.replace("#", "");
+          // console.log('id',id);
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView();
+          }
+        }, 0);
+      } else {
+        window.scrollTo(0, 0);
+      }
     }
   }
   componentWillUnmount() {

@@ -268,6 +268,7 @@ function Sidebar(props) {
 
     //  when user click on intellignece we show all the submenu inside intelligence tab
     if (activeTab === "/intelligence") {
+      console.log("int")
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
       let obj = {
         me: true,
@@ -285,15 +286,15 @@ function Sidebar(props) {
     // top account but not in intelligence
     if (
       ![
-        "/top-account/intelligence/transaction-history",
-        "/top-account/intelligence#netflow",
-        "/top-account/intelligence",
-        "/top-account/intelligence/volume-traded-by-counterparty",
-        "/top-account/intelligence/insights",
-        "/top-account/intelligence/costs",
-        "/top-account/intelligence/asset-value",
+        "/top-accounts/intelligence/transaction-history",
+        "/top-accounts/intelligence#netflow",
+        "/top-accounts/intelligence",
+        "/top-accounts/intelligence/volume-traded-by-counterparty",
+        "/top-accounts/intelligence/insights",
+        "/top-accounts/intelligence/costs",
+        "/top-accounts/intelligence/asset-value",
       ].includes(activeTab) &&
-      ["/top-account/home", "/top-account/decentralized-finance"].includes(
+      ["/top-accounts/home", "/top-accounts/decentralized-finance"].includes(
         activeTab
       )
     ) {
@@ -309,8 +310,32 @@ function Sidebar(props) {
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
 
+    // if user in top account intelligences page of submenu
+    if (
+      [
+        "/top-accounts/intelligence/transaction-history",
+        "/top-accounts/intelligence#netflow",
+        "/top-accounts/intelligence",
+        "/top-accounts/intelligence/volume-traded-by-counterparty",
+        "/top-accounts/intelligence/insights",
+        "/top-accounts/intelligence/costs",
+        "/top-accounts/intelligence/asset-value",
+      ].includes(activeTab)
+    ) {
+      let obj = {
+        me: false,
+        discover: true,
+        intelligence: false,
+        topAccount: true,
+        topAccountintelligence: true,
+      };
+      setSubmenu(obj);
+
+      localStorage.setItem("isSubmenu", JSON.stringify(obj));
+    }
+
     //  when user click on top-account we show all the submenu inside top account tab
-    if (activeTab === "/top-account") {
+    if (activeTab === "/top-accounts") {
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
       let obj = {
         me: false,
@@ -326,7 +351,7 @@ function Sidebar(props) {
     }
 
     //  when user click on top-account/intellignece we show all the submenu inside intelligence tab
-    if (activeTab === "/top-account/intelligence") {
+    if (activeTab === "/top-accounts/intelligence") {
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
       let obj = {
         me: false,
@@ -595,15 +620,15 @@ function Sidebar(props) {
   ].includes(activeTab);
 
   let isTopAccountActive = [
-    "/top-account/home",
-    "/top-account/intelligence/transaction-history",
-    "/top-account/intelligence#netflow",
-    "/top-account/intelligence",
-    "/top-account/intelligence/volume-traded-by-counterparty",
-    "/top-account/intelligence/insights",
-    "/top-account/intelligence/costs",
-    "/top-account/intelligence/asset-value",
-    "/top-account/decentralized-finance",
+    "/top-accounts/home",
+    "/top-accounts/intelligence/transaction-history",
+    "/top-accounts/intelligence#netflow",
+    "/top-accounts/intelligence",
+    "/top-accounts/intelligence/volume-traded-by-counterparty",
+    "/top-accounts/intelligence/insights",
+    "/top-accounts/intelligence/costs",
+    "/top-accounts/intelligence/asset-value",
+    "/top-accounts/decentralized-finance",
   ].includes(activeTab);
     return (
       <div className="sidebar-section">
@@ -1045,9 +1070,9 @@ function Sidebar(props) {
                                 exact={true}
                                 className="nav-link"
                                 to={
-                                  activeTab === "/top-account/home"
+                                  activeTab === "/top-accounts/home"
                                     ? "#"
-                                    : "/top-account/home"
+                                    : "/top-accounts/home"
                                 }
                                 onClick={(e) => {
                                   // console.log("user",getCurrentUser())
@@ -1064,7 +1089,7 @@ function Sidebar(props) {
                               >
                                 <Image
                                   src={
-                                    activeTab === "/top-account/home"
+                                    activeTab === "/top-accounts/home"
                                       ? ActiveHomeIcon
                                       : InActiveHomeIcon
                                   }
@@ -1078,33 +1103,33 @@ function Sidebar(props) {
                                 className={`nav-link
                         ${
                           activeTab ===
-                          "/top-account/intelligence/transaction-history"
+                          "/top-accounts/intelligence/transaction-history"
                             ? "active"
                             : ""
                         }
                         ${
                           activeTab ===
-                          "/top-account/intelligence/volume-traded-by-counterparty"
+                          "/top-accounts/intelligence/volume-traded-by-counterparty"
                             ? "active"
                             : ""
                         }
                         ${
-                          activeTab === "/top-account/intelligence/insights"
+                          activeTab === "/top-accounts/intelligence/insights"
                             ? "active"
                             : ""
                         } ${
                                   activeTab ===
-                                  "/top-account/intelligence/asset-value"
+                                  "/top-accounts/intelligence/asset-value"
                                     ? "active"
                                     : ""
                                 } ${
                                   activeTab ===
-                                  "/top-account/intelligence/costs"
+                                  "/top-accounts/intelligence/costs"
                                     ? "active"
                                     : ""
                                 }
                         `}
-                                to="/top-account/intelligence"
+                                to="/top-accounts/intelligence"
                                 activeclassname="active"
                                 onClick={(e) => {
                                   if (!isWallet) {
@@ -1120,12 +1145,12 @@ function Sidebar(props) {
                                 <Image
                                   src={
                                     [
-                                      "/top-account/intelligence/transaction-history",
-                                      "/top-account/intelligence",
-                                      "/top-account/intelligence/volume-traded-by-counterparty",
-                                      "/top-account/intelligence/insights",
-                                      "/top-account/intelligence/costs",
-                                      "/top-account/intelligence/asset-value",
+                                      "/top-accounts/intelligence/transaction-history",
+                                      "/top-accounts/intelligence",
+                                      "/top-accounts/intelligence/volume-traded-by-counterparty",
+                                      "/top-accounts/intelligence/insights",
+                                      "/top-accounts/intelligence/costs",
+                                      "/top-accounts/intelligence/asset-value",
                                     ].includes(activeTab)
                                       ? ActiveIntelligenceIcon
                                       : IntelligenceIcon
@@ -1160,11 +1185,11 @@ function Sidebar(props) {
                                       }
                                     }}
                                     className={`nav-link ${
-                                      activeTab === "/top-account/intelligence"
+                                      activeTab === "/top-accounts/intelligence"
                                         ? "none"
                                         : ""
                                     }`}
-                                    to="/top-account/intelligence#netflow"
+                                    to="/top-accounts/intelligence#netflow"
                                     activeclassname="active"
                                   >
                                     Net flows
@@ -1180,7 +1205,7 @@ function Sidebar(props) {
                                       }
                                     }}
                                     className="nav-link"
-                                    to="/top-account/intelligence/transaction-history"
+                                    to="/top-accounts/intelligence/transaction-history"
                                     activeclassname="active"
                                   >
                                     Transaction history
@@ -1196,7 +1221,7 @@ function Sidebar(props) {
                                       }
                                     }}
                                     className="nav-link"
-                                    to="/top-account/intelligence/asset-value"
+                                    to="/top-accounts/intelligence/asset-value"
                                     activeclassname="active"
                                   >
                                     Asset value over time
@@ -1212,7 +1237,7 @@ function Sidebar(props) {
                                       }
                                     }}
                                     className="nav-link"
-                                    to="/top-account/intelligence/insights"
+                                    to="/top-accounts/intelligence/insights"
                                     activeclassname="active"
                                   >
                                     Insights
@@ -1232,7 +1257,7 @@ function Sidebar(props) {
                                       }
                                     }}
                                     className="nav-link"
-                                    to="/top-account/intelligence/costs"
+                                    to="/top-accounts/intelligence/costs"
                                     activeclassname="active"
                                   >
                                     Costs
@@ -1247,7 +1272,7 @@ function Sidebar(props) {
                                 to={`${
                                   !isDefi
                                     ? "#"
-                                    : "/top-account/decentralized-finance"
+                                    : "/top-accounts/decentralized-finance"
                                 }`}
                                 onClick={(e) => {
                                   DeFiMenu({
@@ -1271,7 +1296,7 @@ function Sidebar(props) {
                                 <Image
                                   src={
                                     activeTab ===
-                                    "/top-account/decentralized-finance"
+                                    "/top-accounts/decentralized-finance"
                                       ? DefiIcon
                                       : DefiIcon
                                   }

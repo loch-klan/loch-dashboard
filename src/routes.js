@@ -122,6 +122,48 @@ const routes = [
     component: TopAccount,
   },
   {
+    path: "/top-accounts/home",
+    name: "Top Account Portfolio",
+    type: PrivateRoute,
+    component: Portfolio,
+  },
+  {
+    path: "/top-accounts/intelligence",
+    name: "Top Account Intelligence",
+    type: PrivateRoute,
+    component: Intelligence,
+  },
+  {
+    path: "/top-accounts/intelligence/transaction-history",
+    name: "Top Account Transaction History",
+    type: PrivateRoute,
+    component: TransactionHistoryPage,
+  },
+  {
+    path: "/top-accounts/intelligence/volume-traded-by-counterparty",
+    name: "Top Account Volume Traded By Counterparty",
+    type: PrivateRoute,
+    component: VolumeTradedByCounterparty,
+  },
+  {
+    path: "/top-accounts/intelligence/asset-value",
+    name: "Top Account Asset Value",
+    type: PrivateRoute,
+    component: AssetValueGraph,
+  },
+  {
+    path: "/top-accounts/intelligence/insights",
+    name: "Insights",
+    type: PrivateRoute,
+    component: InsightsPage,
+  },
+  {
+    path: "/top-accounts/intelligence/costs",
+  name: "Top Account Costs",
+    type: PrivateRoute,
+    component: Cost,
+  },
+  {
     path: "/twitter-influencers",
     name: "Twitter Influencers",
     type: PrivateRoute,
