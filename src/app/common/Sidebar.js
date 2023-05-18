@@ -191,7 +191,7 @@ function Sidebar(props) {
        let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
        let obj = {
          me: true,
-         discover: currentValue.discover,
+         discover: false,
          intelligence: false,
        };
        setSubmenu(obj);
@@ -231,7 +231,7 @@ function Sidebar(props) {
      if (activeTab === "/intelligence") {
        let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
        let obj = {
-         me: currentValue.me,
+         me: true,
          discover: false,
          intelligence: true,
        };
@@ -910,7 +910,7 @@ function Sidebar(props) {
                                   : {}
                               }
                             />
-                            Top accounts
+                            Top Accounts
                           </NavLink>
                         </li>
 
@@ -952,14 +952,14 @@ function Sidebar(props) {
                             <Image
                               src={EyeIcon}
                               style={
-                                activeTab === "/wishlist"
+                                activeTab === "/watchlist"
                                   ? {
                                       filter: "brightness(0)",
                                     }
                                   : {}
                               }
                             />
-                            Wishlist
+                            Watchlist
                           </NavLink>
                         </li>
                       </>

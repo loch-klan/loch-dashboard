@@ -128,8 +128,8 @@ const routes = [
     component: twitterInfluencer,
   },
   {
-    path: "/wishlist",
-    name: "Wishlist",
+    path: "/watchlist",
+    name: "Watchlist",
     type: PrivateRoute,
     component: wishlist,
   },
