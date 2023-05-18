@@ -553,18 +553,20 @@ class PieChart2 extends BaseReactComponent {
     let DebtValues = [];
     let allAssetType = [20, 30, 40, 50, 60, 70];
     allAssetType.map((e) => {
-      if (e !== 30) {
+      if (![30, 50].includes(e)) {
         YieldValues.push({
           id: e,
           name: AssetType.getText(e),
           totalPrice: 0,
         });
       } else {
-        DebtValues.push({
-          id: 30,
-          name: AssetType.getText(30),
-          totalPrice: 0,
-        });
+         [30, 50].map((e) => {
+           DebtValues.push({
+             id: e,
+             name: AssetType.getText(e),
+             totalPrice: 0,
+           });
+         });
       }
     });
 
