@@ -89,6 +89,7 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
 import arrowUp from "../../assets/images/arrow-up.svg";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 class CohortPage extends BaseReactComponent {
   constructor(props) {
@@ -729,860 +730,893 @@ class CohortPage extends BaseReactComponent {
     ];
 
     return (
-      <div className="insights-section m-b-80">
-        {this.state.cohortModal ? (
-          <ExitOverlay
-            show={this.state.cohortModal}
-            // link="http://loch.one/a2y1jh2jsja"
-            onHide={this.handleCohort}
-            history={this.props.history}
-            modalType={"cohort"}
-            headerTitle={
-              this.state.cohortName ? this.state.cohortName : PageName
-            }
-            isRedirect={true}
-            isEdit={true}
-            chainImages={this.state?.chainImages}
-            cohortId={this.state.cohortId}
-            walletaddress={this.state.walletAddresses}
-            addedon={moment(this.state?.createOn).format("MM/DD/YY")}
-            changeWalletList={this.handleChangeList}
-            apiResponse={(e) => this.CheckApiResponse(e)}
-            total_addresses={this.state.total_addresses}
-            totalEditAddress={this.state.walletAddresses?.length}
-          />
-        ) : (
-          ""
-        )}
-        {this.state.RegisterModal ? (
-          <AuthModal
-            show={this.state.RegisterModal}
-            // link="http://loch.one/a2y1jh2jsja"
-            onHide={this.AddEmailModal}
-            history={this.props.history}
-            modalType={"create_account"}
-            iconImage={CohortIcon}
-            isSkip={() => this.handleSkip()}
-            hideSkip={this.state.showBtn ? true : false}
-            tracking="Whale watching"
-            // headerTitle={"Create a Wallet cohort"}
-            // changeWalletList={this.handleChangeList}
-            // apiResponse={(e) => this.CheckApiResponse(e)}
-          />
-        ) : (
-          ""
-        )}
-        {this.state.upgradeModal && (
-          <UpgradeModal
-            show={this.state.upgradeModal}
-            onHide={this.upgradeModal}
-            history={this.props.history}
-            isShare={localStorage.getItem("share_id")}
-            isStatic={this.state.isStatic}
-            triggerId={this.state.triggerId}
-            pname="cohort-individual"
-          />
-        )}
-
-        <div className="insights-page page">
-          <PageHeader
-            title={this.state.cohortName ? this.state.cohortName : PageName}
-            subTitle={`
-              Added ${moment(this.state?.createOn).format("MM/DD/YY")}`}
-            showpath={true}
-            currentPage={nav_list[2]}
-            btnText={this.state.userId ? "Edit" : false}
-            history={this.props.history}
-            btnOutline={false}
-            handleBtn={this.handleCohort}
-            ShareBtn={true}
-            handleShare={this.handleShare}
-            multipleImg={this.state?.chainImages?.slice(0, 4)}
-          />
-
-          <Row className="m-t-40 m-b-40">
-            <Col md={4} style={{ paddingRight: "0.8rem" }}>
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "12px",
-                  padding: "2rem",
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    marginBottom: "2rem",
-                  }}
-                >
-                  <Image src={netWorthIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-18 lh-22 m-l-12">
-                    Total
-                    <br />
-                    net worth
-                  </h3>
-                </div>
-                <h3
-                  className="space-grotesk-medium f-s-24 lh-29"
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  {CurrencyType(false)}
-                  {numToCurrency(this.state.totalNetWorth)}
-                  <span className="inter-display-semi-bold f-s-12 grey-ADA m-l-4">
-                    {/* {" "} */}
-                    {CurrencyType(true)}
-                  </span>
-                </h3>
-              </div>
-            </Col>
-            <Col
-              md={4}
-              style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
-            >
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "12px",
-                  padding: "2rem",
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    marginBottom: "2rem",
-                  }}
-                >
-                  <Image src={StarIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-18 lh-22 m-l-12">
-                    Average <br />
-                    net worth
-                  </h3>
-                </div>
-
-                <h3
-                  className="space-grotesk-medium f-s-24 lh-29"
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  {CurrencyType(false)}
-                  {numToCurrency(
-                    this.state.totalNetWorth / this.state.walletAddresses.length
-                  )}
-                  <span className="inter-display-semi-bold f-s-12 grey-ADA m-l-4">
-                    {CurrencyType(true)}
-                  </span>
-                </h3>
-              </div>
-            </Col>
-            <Col md={4} style={{ paddingLeft: "0.8rem" }}>
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "12px",
-                  padding: "2rem",
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    marginBottom: "2rem",
-                  }}
-                >
-                  <Image src={MedalIcon} className="net-worth-icon" />
-                  <h3 className="inter-display-medium f-s-18 lh-22 m-l-12">
-                    Largest
-                    <br />
-                    holding
-                  </h3>
-                </div>
-
-                <div style={{ height: "1.7rem", width: "max-content" }}>
-                  {this.state?.largestHoldingChain &&
-                  !this.state.LargestChainLoader ? (
-                    // <CoinChip
-                    //   colorCode={this.state?.largestHoldingChain?.color}
-                    //   coin_img_src={this.state?.largestHoldingChain?.symbol}
-                    //   coin_percent={this.state?.largestHoldingChain?.name}
-                    //   type={"cohort"}
-                    // />
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Image
-                        src={this.state?.largestHoldingChain?.symbol}
-                        style={{ width: "1.7rem" }}
-                      />
-                      <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                        {this.state?.largestHoldingChain?.name}
-                      </h3>
-                    </div>
-                  ) : this.state.LargestChainLoader ? (
-                    loadingAnimation()
-                  ) : (
-                    <h3 className="inter-display-medium f-s-13 lh-15">
-                      No movement
-                    </h3>
-                  )}
-                </div>
-              </div>
-            </Col>
-          </Row>
-
-          {/* Net worth end */}
-          <h2
-            className="m-t-40 m-b-20 inter-display-medium f-s-20 l-h-24 black-191"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "start",
-            }}
+      <>
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
           >
-            <Image
-              src={DefiIcon}
-              style={{ marginRight: "1.2rem", filter: "brightness(0)" }}
-            />{" "}
-            DeFi balance sheet
-          </h2>
-          <div style={{}} className="balance-sheet-card">
-            <div className="balance-dropdown">
-              <div
-                className="balance-list-content"
-                style={this.state.DefiLoader ? { marginBottom: "2.5rem" } : {}}
-              >
-                {/* For yeild */}
-                <Row>
-                  {!this.state.DefiLoader ? (
-                    <>
-                      <Col md={6}>
-                        <div
-                          className="balance-sheet-title"
-                          onClick={this.toggleYield}
-                          style={
-                            // !this.state.isYeildToggle || !this.state.isDebtToggle
-                            //   ? { marginBottom: "0.5rem" }
-                            //   : { marginBottom: "0.5rem" }
-                            { marginBottom: "0.5rem" }
-                          }
-                        >
-                          <div>
-                            <span
-                              className="inter-display-semi-bold f-s-16 lh-19"
-                              style={{
-                                color: "#636467",
-                                marginRight: "0.8rem",
-                              }}
-                            >
-                              Credit
-                            </span>
-                            <span
-                              className="inter-display-medium f-s-16 lh-19"
-                              style={{ marginRight: "0.8rem" }}
-                            >
-                              {CurrencyType(false)}
-                              {this.state.totalYield &&
-                                numToCurrency(
-                                  this.state.totalYield *
-                                    (this.state.currency?.rate || 1)
-                                )}
-                            </span>
-                          </div>
-                          <Image
-                            src={arrowUp}
-                            style={
-                              this.state.isYeildToggle
-                                ? { transform: "rotate(180deg)" }
-                                : {}
-                            }
-                          />
-                        </div>
-                        {this.state.YieldValues?.length !== 0 &&
-                          this.state.isYeildToggle &&
-                          this.state.YieldValues?.sort(
-                            (a, b) => b.totalPrice - a.totalPrice
-                          )?.map((item, i) => {
-                            return (
-                              <div
-                                className="balance-sheet-list"
-                                style={
-                                  i === this.state.YieldValues?.length - 1
-                                    ? { paddingBottom: "0.3rem" }
-                                    : {}
-                                }
-                              >
-                                <span className="inter-display-medium f-s-16 lh-19">
-                                  {item.name}
-                                </span>
-                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {amountFormat(
-                                    item.totalPrice.toFixed(2) *
-                                      (this.state.currency?.rate || 1),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </div>
-                            );
-                          })}
-                      </Col>
-                      <Col md={6}>
-                        <div
-                          className="balance-sheet-title"
-                          onClick={this.toggleDebt}
-                          style={
-                            // !this.state.isYeildToggle || !this.state.isDebtToggle
-                            //   ? { marginBottom: "0.5rem" }
-                            //   : { marginBottom: "0.5rem" }
-                            { marginBottom: "0.5rem" }
-                          }
-                        >
-                          <div>
-                            <span
-                              className="inter-display-semi-bold f-s-16 lh-19"
-                              style={{
-                                color: "#636467",
-                                marginRight: "0.8rem",
-                              }}
-                            >
-                              Debt
-                            </span>
-                            <span
-                              className="inter-display-medium f-s-16 lh-19"
-                              style={{ marginRight: "0.8rem" }}
-                            >
-                              {CurrencyType(false)}
-                              {this.state.totalDebt &&
-                                numToCurrency(
-                                  this.state.totalDebt *
-                                    (this.state.currency?.rate || 1)
-                                )}
-                            </span>
-                          </div>
-                          <Image
-                            src={arrowUp}
-                            style={
-                              this.state.isDebtToggle
-                                ? { transform: "rotate(180deg)" }
-                                : {}
-                            }
-                          />
-                        </div>
-
-                        {this.state.DebtValues &&
-                          this.state.DebtValues?.length !== 0 &&
-                          this.state.isDebtToggle &&
-                          this.state.DebtValues.sort(
-                            (a, b) => b.totalPrice - a.totalPrice
-                          )?.map((item, i) => {
-                            return (
-                              <div
-                                className="balance-sheet-list"
-                                style={
-                                  i === this.state.DebtValues?.length - 1
-                                    ? { paddingBottom: "0.3rem" }
-                                    : {}
-                                }
-                              >
-                                <span className="inter-display-medium f-s-16 lh-19">
-                                  {item.name}
-                                </span>
-                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                  {CurrencyType(false)}
-                                  {amountFormat(
-                                    item.totalPrice.toFixed(2) *
-                                      (this.state.currency?.rate || 1),
-                                    "en-US",
-                                    "USD"
-                                  )}
-                                </span>
-                              </div>
-                            );
-                          })}
-                      </Col>
-                    </>
-                  ) : (
-                    <Col md={12}>
-                      <div className="">
-                        <Loading />
-                      </div>
-                    </Col>
-                  )}
-                </Row>
-
-                {/* For debt */}
-              </div>
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+                handleUpdate={this.handleUpdateWallet}
+              />
             </div>
           </div>
+        </div>
+        <div className="insights-section m-b-80 m-t-80">
+          {this.state.cohortModal ? (
+            <ExitOverlay
+              show={this.state.cohortModal}
+              // link="http://loch.one/a2y1jh2jsja"
+              onHide={this.handleCohort}
+              history={this.props.history}
+              modalType={"cohort"}
+              headerTitle={
+                this.state.cohortName ? this.state.cohortName : PageName
+              }
+              isRedirect={true}
+              isEdit={true}
+              chainImages={this.state?.chainImages}
+              cohortId={this.state.cohortId}
+              walletaddress={this.state.walletAddresses}
+              addedon={moment(this.state?.createOn).format("MM/DD/YY")}
+              changeWalletList={this.handleChangeList}
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              total_addresses={this.state.total_addresses}
+              totalEditAddress={this.state.walletAddresses?.length}
+            />
+          ) : (
+            ""
+          )}
+          {this.state.RegisterModal ? (
+            <AuthModal
+              show={this.state.RegisterModal}
+              // link="http://loch.one/a2y1jh2jsja"
+              onHide={this.AddEmailModal}
+              history={this.props.history}
+              modalType={"create_account"}
+              iconImage={CohortIcon}
+              isSkip={() => this.handleSkip()}
+              hideSkip={this.state.showBtn ? true : false}
+              tracking="Whale watching"
+              // headerTitle={"Create a Wallet cohort"}
+              // changeWalletList={this.handleChangeList}
+              // apiResponse={(e) => this.CheckApiResponse(e)}
+            />
+          ) : (
+            ""
+          )}
+          {this.state.upgradeModal && (
+            <UpgradeModal
+              show={this.state.upgradeModal}
+              onHide={this.upgradeModal}
+              history={this.props.history}
+              isShare={localStorage.getItem("share_id")}
+              isStatic={this.state.isStatic}
+              triggerId={this.state.triggerId}
+              pname="cohort-individual"
+            />
+          )}
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "2rem",
-              marginTop: "4rem",
-            }}
-          >
+          <div className="insights-page page">
+            <PageHeader
+              title={this.state.cohortName ? this.state.cohortName : PageName}
+              subTitle={`
+              Added ${moment(this.state?.createOn).format("MM/DD/YY")}`}
+              showpath={true}
+              currentPage={nav_list[2]}
+              btnText={this.state.userId ? "Edit" : false}
+              history={this.props.history}
+              btnOutline={false}
+              handleBtn={this.handleCohort}
+              ShareBtn={true}
+              handleShare={this.handleShare}
+              multipleImg={this.state?.chainImages?.slice(0, 4)}
+            />
+
+            <Row className="m-t-40 m-b-40">
+              <Col md={4} style={{ paddingRight: "0.8rem" }}>
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      marginBottom: "2rem",
+                    }}
+                  >
+                    <Image src={netWorthIcon} className="net-worth-icon" />
+                    <h3 className="inter-display-medium f-s-18 lh-22 m-l-12">
+                      Total
+                      <br />
+                      net worth
+                    </h3>
+                  </div>
+                  <h3
+                    className="space-grotesk-medium f-s-24 lh-29"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    {CurrencyType(false)}
+                    {numToCurrency(this.state.totalNetWorth)}
+                    <span className="inter-display-semi-bold f-s-12 grey-ADA m-l-4">
+                      {/* {" "} */}
+                      {CurrencyType(true)}
+                    </span>
+                  </h3>
+                </div>
+              </Col>
+              <Col
+                md={4}
+                style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
+              >
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      marginBottom: "2rem",
+                    }}
+                  >
+                    <Image src={StarIcon} className="net-worth-icon" />
+                    <h3 className="inter-display-medium f-s-18 lh-22 m-l-12">
+                      Average <br />
+                      net worth
+                    </h3>
+                  </div>
+
+                  <h3
+                    className="space-grotesk-medium f-s-24 lh-29"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    {CurrencyType(false)}
+                    {numToCurrency(
+                      this.state.totalNetWorth /
+                        this.state.walletAddresses.length
+                    )}
+                    <span className="inter-display-semi-bold f-s-12 grey-ADA m-l-4">
+                      {CurrencyType(true)}
+                    </span>
+                  </h3>
+                </div>
+              </Col>
+              <Col md={4} style={{ paddingLeft: "0.8rem" }}>
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      marginBottom: "2rem",
+                    }}
+                  >
+                    <Image src={MedalIcon} className="net-worth-icon" />
+                    <h3 className="inter-display-medium f-s-18 lh-22 m-l-12">
+                      Largest
+                      <br />
+                      holding
+                    </h3>
+                  </div>
+
+                  <div style={{ height: "1.7rem", width: "max-content" }}>
+                    {this.state?.largestHoldingChain &&
+                    !this.state.LargestChainLoader ? (
+                      // <CoinChip
+                      //   colorCode={this.state?.largestHoldingChain?.color}
+                      //   coin_img_src={this.state?.largestHoldingChain?.symbol}
+                      //   coin_percent={this.state?.largestHoldingChain?.name}
+                      //   type={"cohort"}
+                      // />
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Image
+                          src={this.state?.largestHoldingChain?.symbol}
+                          style={{ width: "1.7rem" }}
+                        />
+                        <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                          {this.state?.largestHoldingChain?.name}
+                        </h3>
+                      </div>
+                    ) : this.state.LargestChainLoader ? (
+                      loadingAnimation()
+                    ) : (
+                      <h3 className="inter-display-medium f-s-13 lh-15">
+                        No movement
+                      </h3>
+                    )}
+                  </div>
+                </div>
+              </Col>
+            </Row>
+
+            {/* Net worth end */}
             <h2
-              className="inter-display-medium f-s-20 lh-20 black-191"
+              className="m-t-40 m-b-20 inter-display-medium f-s-20 l-h-24 black-191"
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "start",
               }}
             >
-              <Image src={TrendIcon} style={{ marginRight: "1.2rem" }} /> Trends
+              <Image
+                src={DefiIcon}
+                style={{ marginRight: "1.2rem", filter: "brightness(0)" }}
+              />{" "}
+              DeFi balance sheet
             </h2>
+            <div style={{}} className="balance-sheet-card">
+              <div className="balance-dropdown">
+                <div
+                  className="balance-list-content"
+                  style={
+                    this.state.DefiLoader ? { marginBottom: "2.5rem" } : {}
+                  }
+                >
+                  {/* For yeild */}
+                  <Row>
+                    {!this.state.DefiLoader ? (
+                      <>
+                        <Col md={6}>
+                          <div
+                            className="balance-sheet-title"
+                            onClick={this.toggleYield}
+                            style={
+                              // !this.state.isYeildToggle || !this.state.isDebtToggle
+                              //   ? { marginBottom: "0.5rem" }
+                              //   : { marginBottom: "0.5rem" }
+                              { marginBottom: "0.5rem" }
+                            }
+                          >
+                            <div>
+                              <span
+                                className="inter-display-semi-bold f-s-16 lh-19"
+                                style={{
+                                  color: "#636467",
+                                  marginRight: "0.8rem",
+                                }}
+                              >
+                                Credit
+                              </span>
+                              <span
+                                className="inter-display-medium f-s-16 lh-19"
+                                style={{ marginRight: "0.8rem" }}
+                              >
+                                {CurrencyType(false)}
+                                {this.state.totalYield &&
+                                  numToCurrency(
+                                    this.state.totalYield *
+                                      (this.state.currency?.rate || 1)
+                                  )}
+                              </span>
+                            </div>
+                            <Image
+                              src={arrowUp}
+                              style={
+                                this.state.isYeildToggle
+                                  ? { transform: "rotate(180deg)" }
+                                  : {}
+                              }
+                            />
+                          </div>
+                          {this.state.YieldValues?.length !== 0 &&
+                            this.state.isYeildToggle &&
+                            this.state.YieldValues?.sort(
+                              (a, b) => b.totalPrice - a.totalPrice
+                            )?.map((item, i) => {
+                              return (
+                                <div
+                                  className="balance-sheet-list"
+                                  style={
+                                    i === this.state.YieldValues?.length - 1
+                                      ? { paddingBottom: "0.3rem" }
+                                      : {}
+                                  }
+                                >
+                                  <span className="inter-display-medium f-s-16 lh-19">
+                                    {item.name}
+                                  </span>
+                                  <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                    {CurrencyType(false)}
+                                    {amountFormat(
+                                      item.totalPrice.toFixed(2) *
+                                        (this.state.currency?.rate || 1),
+                                      "en-US",
+                                      "USD"
+                                    )}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                        </Col>
+                        <Col md={6}>
+                          <div
+                            className="balance-sheet-title"
+                            onClick={this.toggleDebt}
+                            style={
+                              // !this.state.isYeildToggle || !this.state.isDebtToggle
+                              //   ? { marginBottom: "0.5rem" }
+                              //   : { marginBottom: "0.5rem" }
+                              { marginBottom: "0.5rem" }
+                            }
+                          >
+                            <div>
+                              <span
+                                className="inter-display-semi-bold f-s-16 lh-19"
+                                style={{
+                                  color: "#636467",
+                                  marginRight: "0.8rem",
+                                }}
+                              >
+                                Debt
+                              </span>
+                              <span
+                                className="inter-display-medium f-s-16 lh-19"
+                                style={{ marginRight: "0.8rem" }}
+                              >
+                                {CurrencyType(false)}
+                                {this.state.totalDebt &&
+                                  numToCurrency(
+                                    this.state.totalDebt *
+                                      (this.state.currency?.rate || 1)
+                                  )}
+                              </span>
+                            </div>
+                            <Image
+                              src={arrowUp}
+                              style={
+                                this.state.isDebtToggle
+                                  ? { transform: "rotate(180deg)" }
+                                  : {}
+                              }
+                            />
+                          </div>
+
+                          {this.state.DebtValues &&
+                            this.state.DebtValues?.length !== 0 &&
+                            this.state.isDebtToggle &&
+                            this.state.DebtValues.sort(
+                              (a, b) => b.totalPrice - a.totalPrice
+                            )?.map((item, i) => {
+                              return (
+                                <div
+                                  className="balance-sheet-list"
+                                  style={
+                                    i === this.state.DebtValues?.length - 1
+                                      ? { paddingBottom: "0.3rem" }
+                                      : {}
+                                  }
+                                >
+                                  <span className="inter-display-medium f-s-16 lh-19">
+                                    {item.name}
+                                  </span>
+                                  <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                    {CurrencyType(false)}
+                                    {amountFormat(
+                                      item.totalPrice.toFixed(2) *
+                                        (this.state.currency?.rate || 1),
+                                      "en-US",
+                                      "USD"
+                                    )}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                        </Col>
+                      </>
+                    ) : (
+                      <Col md={12}>
+                        <div className="">
+                          <Loading />
+                        </div>
+                      </Col>
+                    )}
+                  </Row>
+
+                  {/* For debt */}
+                </div>
+              </div>
+            </div>
+
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                marginBottom: "2rem",
+                marginTop: "4rem",
               }}
             >
-              {" "}
-              <div style={{ width: "20rem", marginRight: "1.2rem" }}>
-                <CustomDropdown
-                  filtername="All assets selected"
-                  options={this.state.AssetFilterList}
-                  action={null}
-                  handleClick={(arr) => this.handleAsset(arr)}
-                  LightTheme={true}
-                  placeholderName={"asset"}
-                  // isChain={true}
-                  // selectedTokens={this.state.activeBadge}
-                />
-              </div>
-              <div style={{ width: "20rem" }}>
-                <CustomDropdown
-                  filtername="All chains selected"
-                  options={this.props.OnboardingState.coinsList}
-                  action={null}
-                  handleClick={this.handleFunctionChain}
-                  isChain={true}
-                  // selectedTokens={this.state.activeBadge}
-                />
-              </div>
-              <p
-                onClick={this.showDust}
-                className="inter-display-medium f-s-16 lh-19 cp grey-ADA m-l-12 cohort-dust"
-              >
-                {this.state.showDust
-                  ? "Reveal dust (less than $1)"
-                  : "Hide dust (less than $1)"}
-              </p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              background: "#FFFFFF",
-              borderRadius: "12px",
-              padding: "12px",
-              marginBottom: "1.6rem",
-            }}
-          >
-            <BarGraphFooter
-              cohort={true}
-              handleFooterClick={this.handleFooter}
-              active={this.state.activeFooter}
-              footerLabels={[
-                "Max",
-                "5Y",
-                "4Y",
-                "3Y",
-                "2Y",
-                "1Y",
-                "6M",
-                "1M",
-                "1 Week",
-                "1 Day",
-              ]}
-            />
-          </div>
-
-          <Row>
-            <Col
-              md={4}
-              style={{ paddingRight: "0.8rem", marginBottom: "1.6rem" }}
-            >
-              <div
+              <h2
+                className="inter-display-medium f-s-20 lh-20 black-191"
                 style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "12px",
-                  padding: "2rem",
-                  // height: "100%",
-                  height: "19rem",
                   display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "start",
                 }}
               >
-                {!this.state.PurchasedAssetLoader ? (
-                  <>
-                    <div>
-                      <Image src={CartIcon} className="net-worth-icon" />
-                      <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                        Most frequently <br />
-                        purchased token
-                      </h3>
-                    </div>
-                    <div style={{ height: "1.7rem", width: "max-content" }}>
-                      {this.state.frequentlyPurchasedAsset &&
-                      !this.state.PurchasedAssetLoader ? (
-                        // <CoinChip
-                        //   colorCode={this.state.frequentlyPurchasedAsset?.color}
-                        //   coin_img_src={
-                        //     this.state.frequentlyPurchasedAsset?.symbol
-                        //   }
-                        //   coin_percent={
-                        //     this.state.frequentlyPurchasedAsset?.name
-                        //   }
-                        //   type={"cohort"}
-                        // />
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <Image
-                            src={this.state.frequentlyPurchasedAsset?.symbol}
-                            style={{ width: "1.7rem" }}
-                          />
-                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                            {this.state.frequentlyPurchasedAsset?.name}
-                          </h3>
-                        </div>
-                      ) : (
-                        <h3 className="inter-display-medium f-s-13 lh-15">
-                          No movement
-                        </h3>
-                      )}
-                    </div>
-                  </>
-                ) : (
-                  <div
-                  // style={{
-                  //   transform: "scale(0.65)",
-                  //   marginTop: "-3.5rem",
-                  //   marginLeft: "1rem",
-                  // }}
-                  >
-                    <Loading showIcon={true} />
-                  </div>
-                )}
+                <Image src={TrendIcon} style={{ marginRight: "1.2rem" }} />{" "}
+                Trends
+              </h2>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {" "}
+                <div style={{ width: "20rem", marginRight: "1.2rem" }}>
+                  <CustomDropdown
+                    filtername="All assets selected"
+                    options={this.state.AssetFilterList}
+                    action={null}
+                    handleClick={(arr) => this.handleAsset(arr)}
+                    LightTheme={true}
+                    placeholderName={"asset"}
+                    // isChain={true}
+                    // selectedTokens={this.state.activeBadge}
+                  />
+                </div>
+                <div style={{ width: "20rem" }}>
+                  <CustomDropdown
+                    filtername="All chains selected"
+                    options={this.props.OnboardingState.coinsList}
+                    action={null}
+                    handleClick={this.handleFunctionChain}
+                    isChain={true}
+                    // selectedTokens={this.state.activeBadge}
+                  />
+                </div>
+                <p
+                  onClick={this.showDust}
+                  className="inter-display-medium f-s-16 lh-19 cp grey-ADA m-l-12 cohort-dust"
+                >
+                  {this.state.showDust
+                    ? "Reveal dust (less than $1)"
+                    : "Hide dust (less than $1)"}
+                </p>
               </div>
-            </Col>
-            <Col
-              md={4}
+            </div>
+
+            <div
               style={{
-                paddingRight: "0.8rem",
-                paddingLeft: "0.8rem",
+                background: "#FFFFFF",
+                borderRadius: "12px",
+                padding: "12px",
                 marginBottom: "1.6rem",
               }}
             >
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "12px",
-                  padding: "2rem",
-                  // height: "100%",
-                  height: "19rem",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
-                }}
-              >
-                {!this.state.SoldAssetLoader ? (
-                  <>
-                    <div>
-                      <Image src={TokenIcon} className="net-worth-icon" />
-                      <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                        Most frequently <br />
-                        sold token
-                      </h3>
-                    </div>
+              <BarGraphFooter
+                cohort={true}
+                handleFooterClick={this.handleFooter}
+                active={this.state.activeFooter}
+                footerLabels={[
+                  "Max",
+                  "5Y",
+                  "4Y",
+                  "3Y",
+                  "2Y",
+                  "1Y",
+                  "6M",
+                  "1M",
+                  "1 Week",
+                  "1 Day",
+                ]}
+              />
+            </div>
 
-                    <div style={{ height: "1.7rem", width: "max-content" }}>
-                      {this.state.frequentlySoldAsset &&
-                      !this.state.SoldAssetLoader ? (
-                        // <CoinChip
-                        //   colorCode={this.state.frequentlySoldAsset?.color}
-                        //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
-                        //   coin_percent={this.state.frequentlySoldAsset?.name}
-                        //   type={"cohort"}
-                        // />
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <Image
-                            src={this.state.frequentlySoldAsset?.symbol}
-                            style={{ width: "1.7rem" }}
-                          />
-                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                            {this.state.frequentlySoldAsset?.name}
-                          </h3>
-                        </div>
-                      ) : (
-                        <h3 className="inter-display-medium f-s-13 lh-15">
-                          No movement
-                        </h3>
-                      )}
-                    </div>
-                  </>
-                ) : (
-                  <div
-                  // style={{
-                  //   transform: "scale(0.65)",
-                  //   marginTop: "-3.5rem",
-                  //   marginLeft: "1rem",
-                  // }}
-                  >
-                    <Loading showIcon={true} />
-                  </div>
-                )}
-              </div>
-            </Col>
-            <Col
-              md={4}
-              style={{ paddingLeft: "0.8rem", marginBottom: "1.6rem" }}
-            >
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "12px",
-                  padding: "2rem",
-                  // height: "100%",
-                  height: "19rem",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
-                }}
+            <Row>
+              <Col
+                md={4}
+                style={{ paddingRight: "0.8rem", marginBottom: "1.6rem" }}
               >
-                {!this.state.LargestAssetLoader ? (
-                  <>
-                    <div>
-                      <div
-                        style={{
-                          backgroundColor: "#19191A",
-                          padding: "0.9rem",
-                          width: "4rem",
-                          height: "4rem",
-                          borderRadius: "1.2rem",
-                        }}
-                      >
-                        <Image
-                          src={TransactionIcon}
-                          className="net-worth-icon"
-                          style={{
-                            filter: "invert(1)",
-                            width: "2.3rem",
-                          }}
-                        />
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    // height: "100%",
+                    height: "19rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  {!this.state.PurchasedAssetLoader ? (
+                    <>
+                      <div>
+                        <Image src={CartIcon} className="net-worth-icon" />
+                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                          Most frequently <br />
+                          purchased token
+                        </h3>
                       </div>
-                      <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                        Largest volume <br />
-                        exchanged token
-                      </h3>
-                    </div>
-
-                    <div style={{ height: "1.7rem", width: "max-content" }}>
-                      {this.state?.LargestAsset &&
-                      !this.state.LargestAssetLoader ? (
-                        // <CoinChip
-                        //   colorCode={this.state?.LargestAsset?.color}
-                        //   coin_img_src={this.state?.LargestAsset?.symbol}
-                        //   coin_percent={this.state?.LargestAsset?.name}
-                        //   type={"cohort"}
-                        // />
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <Image
-                            src={this.state?.LargestAsset?.symbol}
-                            style={{ width: "1.7rem" }}
-                          />
-                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                            {this.state?.LargestAsset?.name}
+                      <div style={{ height: "1.7rem", width: "max-content" }}>
+                        {this.state.frequentlyPurchasedAsset &&
+                        !this.state.PurchasedAssetLoader ? (
+                          // <CoinChip
+                          //   colorCode={this.state.frequentlyPurchasedAsset?.color}
+                          //   coin_img_src={
+                          //     this.state.frequentlyPurchasedAsset?.symbol
+                          //   }
+                          //   coin_percent={
+                          //     this.state.frequentlyPurchasedAsset?.name
+                          //   }
+                          //   type={"cohort"}
+                          // />
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              src={this.state.frequentlyPurchasedAsset?.symbol}
+                              style={{ width: "1.7rem" }}
+                            />
+                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                              {this.state.frequentlyPurchasedAsset?.name}
+                            </h3>
+                          </div>
+                        ) : (
+                          <h3 className="inter-display-medium f-s-13 lh-15">
+                            No movement
                           </h3>
-                        </div>
-                      ) : (
-                        <h3 className="inter-display-medium f-s-13 lh-15">
-                          No movement
-                        </h3>
-                      )}
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                    // style={{
+                    //   transform: "scale(0.65)",
+                    //   marginTop: "-3.5rem",
+                    //   marginLeft: "1rem",
+                    // }}
+                    >
+                      <Loading showIcon={true} />
                     </div>
-                  </>
-                ) : (
-                  <div
-                  // style={{
-                  //   transform: "scale(0.65)",
-                  //   marginTop: "-3.5rem",
-                  //   marginLeft: "1rem",
-                  // }}
-                  >
-                    <Loading showIcon={true} />
-                  </div>
-                )}
-              </div>
-            </Col>
-            <Col md={4} style={{ paddingRight: "0.8rem" }}>
-              <div
+                  )}
+                </div>
+              </Col>
+              <Col
+                md={4}
                 style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "12px",
-                  padding: "2rem",
-                  // height: "100%",
-                  height: "19rem",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
+                  paddingRight: "0.8rem",
+                  paddingLeft: "0.8rem",
+                  marginBottom: "1.6rem",
                 }}
               >
-                {!this.state.VolumeBoughtLoader ? (
-                  <>
-                    <div>
-                      <Image src={CartIcon} className="net-worth-icon" />
-                      <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                        Largest volume
-                        <br />
-                        bought token
-                      </h3>
-                    </div>
-                    <div style={{ height: "1.7rem", width: "max-content" }}>
-                      {this.state.LargestBoughtVolume &&
-                      !this.state.VolumeBoughtLoader ? (
-                        // <CoinChip
-                        //   colorCode={this.state.frequentlyPurchasedAsset?.color}
-                        //   coin_img_src={
-                        //     this.state.frequentlyPurchasedAsset?.symbol
-                        //   }
-                        //   coin_percent={
-                        //     this.state.frequentlyPurchasedAsset?.name
-                        //   }
-                        //   type={"cohort"}
-                        // />
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <Image
-                            src={this.state.LargestBoughtVolume?.symbol}
-                            style={{ width: "1.7rem" }}
-                          />
-                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                            {this.state.LargestBoughtVolume?.name}
-                          </h3>
-                        </div>
-                      ) : (
-                        <h3 className="inter-display-medium f-s-13 lh-15">
-                          No movement
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    // height: "100%",
+                    height: "19rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  {!this.state.SoldAssetLoader ? (
+                    <>
+                      <div>
+                        <Image src={TokenIcon} className="net-worth-icon" />
+                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                          Most frequently <br />
+                          sold token
                         </h3>
-                      )}
+                      </div>
+
+                      <div style={{ height: "1.7rem", width: "max-content" }}>
+                        {this.state.frequentlySoldAsset &&
+                        !this.state.SoldAssetLoader ? (
+                          // <CoinChip
+                          //   colorCode={this.state.frequentlySoldAsset?.color}
+                          //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
+                          //   coin_percent={this.state.frequentlySoldAsset?.name}
+                          //   type={"cohort"}
+                          // />
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              src={this.state.frequentlySoldAsset?.symbol}
+                              style={{ width: "1.7rem" }}
+                            />
+                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                              {this.state.frequentlySoldAsset?.name}
+                            </h3>
+                          </div>
+                        ) : (
+                          <h3 className="inter-display-medium f-s-13 lh-15">
+                            No movement
+                          </h3>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                    // style={{
+                    //   transform: "scale(0.65)",
+                    //   marginTop: "-3.5rem",
+                    //   marginLeft: "1rem",
+                    // }}
+                    >
+                      <Loading showIcon={true} />
                     </div>
-                  </>
-                ) : (
-                  <div
-                  // style={{
-                  //   transform: "scale(0.65)",
-                  //   marginTop: "-3.5rem",
-                  //   marginLeft: "1rem",
-                  // }}
-                  >
-                    <Loading showIcon={true} />
-                  </div>
-                )}
-              </div>
-            </Col>
-            <Col
-              md={4}
-              style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
-            >
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "12px",
-                  padding: "2rem",
-                  // height: "100%",
-                  height: "19rem",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexDirection: "column",
-                }}
+                  )}
+                </div>
+              </Col>
+              <Col
+                md={4}
+                style={{ paddingLeft: "0.8rem", marginBottom: "1.6rem" }}
               >
-                {!this.state.SoldVolumeLoader ? (
-                  <>
-                    <div>
-                      <Image src={TokenIcon} className="net-worth-icon" />
-                      <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                        Largest volume <br />
-                        sold token
-                      </h3>
-                    </div>
-
-                    <div style={{ height: "1.7rem", width: "max-content" }}>
-                      {this.state.LargestSoldVolume &&
-                      !this.state.SoldVolumeLoader ? (
-                        // <CoinChip
-                        //   colorCode={this.state.frequentlySoldAsset?.color}
-                        //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
-                        //   coin_percent={this.state.frequentlySoldAsset?.name}
-                        //   type={"cohort"}
-                        // />
-                        <div style={{ display: "flex", alignItems: "center" }}>
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    // height: "100%",
+                    height: "19rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  {!this.state.LargestAssetLoader ? (
+                    <>
+                      <div>
+                        <div
+                          style={{
+                            backgroundColor: "#19191A",
+                            padding: "0.9rem",
+                            width: "4rem",
+                            height: "4rem",
+                            borderRadius: "1.2rem",
+                          }}
+                        >
                           <Image
-                            src={this.state.LargestSoldVolume?.symbol}
-                            style={{ width: "1.7rem" }}
+                            src={TransactionIcon}
+                            className="net-worth-icon"
+                            style={{
+                              filter: "invert(1)",
+                              width: "2.3rem",
+                            }}
                           />
-                          <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                            {this.state.LargestSoldVolume?.name}
-                          </h3>
                         </div>
-                      ) : (
-                        <h3 className="inter-display-medium f-s-13 lh-15">
-                          No movement
+                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                          Largest volume <br />
+                          exchanged token
                         </h3>
-                      )}
+                      </div>
+
+                      <div style={{ height: "1.7rem", width: "max-content" }}>
+                        {this.state?.LargestAsset &&
+                        !this.state.LargestAssetLoader ? (
+                          // <CoinChip
+                          //   colorCode={this.state?.LargestAsset?.color}
+                          //   coin_img_src={this.state?.LargestAsset?.symbol}
+                          //   coin_percent={this.state?.LargestAsset?.name}
+                          //   type={"cohort"}
+                          // />
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              src={this.state?.LargestAsset?.symbol}
+                              style={{ width: "1.7rem" }}
+                            />
+                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                              {this.state?.LargestAsset?.name}
+                            </h3>
+                          </div>
+                        ) : (
+                          <h3 className="inter-display-medium f-s-13 lh-15">
+                            No movement
+                          </h3>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                    // style={{
+                    //   transform: "scale(0.65)",
+                    //   marginTop: "-3.5rem",
+                    //   marginLeft: "1rem",
+                    // }}
+                    >
+                      <Loading showIcon={true} />
                     </div>
-                  </>
-                ) : (
-                  <div
-                  // style={{
-                  //   transform: "scale(0.65)",
-                  //   marginTop: "-3.5rem",
-                  //   marginLeft: "1rem",
-                  // }}
-                  >
-                    <Loading showIcon={true} />
-                  </div>
-                )}
-              </div>
-            </Col>
-          </Row>
+                  )}
+                </div>
+              </Col>
+              <Col md={4} style={{ paddingRight: "0.8rem" }}>
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    // height: "100%",
+                    height: "19rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  {!this.state.VolumeBoughtLoader ? (
+                    <>
+                      <div>
+                        <Image src={CartIcon} className="net-worth-icon" />
+                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                          Largest volume
+                          <br />
+                          bought token
+                        </h3>
+                      </div>
+                      <div style={{ height: "1.7rem", width: "max-content" }}>
+                        {this.state.LargestBoughtVolume &&
+                        !this.state.VolumeBoughtLoader ? (
+                          // <CoinChip
+                          //   colorCode={this.state.frequentlyPurchasedAsset?.color}
+                          //   coin_img_src={
+                          //     this.state.frequentlyPurchasedAsset?.symbol
+                          //   }
+                          //   coin_percent={
+                          //     this.state.frequentlyPurchasedAsset?.name
+                          //   }
+                          //   type={"cohort"}
+                          // />
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              src={this.state.LargestBoughtVolume?.symbol}
+                              style={{ width: "1.7rem" }}
+                            />
+                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                              {this.state.LargestBoughtVolume?.name}
+                            </h3>
+                          </div>
+                        ) : (
+                          <h3 className="inter-display-medium f-s-13 lh-15">
+                            No movement
+                          </h3>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                    // style={{
+                    //   transform: "scale(0.65)",
+                    //   marginTop: "-3.5rem",
+                    //   marginLeft: "1rem",
+                    // }}
+                    >
+                      <Loading showIcon={true} />
+                    </div>
+                  )}
+                </div>
+              </Col>
+              <Col
+                md={4}
+                style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
+              >
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    // height: "100%",
+                    height: "19rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  {!this.state.SoldVolumeLoader ? (
+                    <>
+                      <div>
+                        <Image src={TokenIcon} className="net-worth-icon" />
+                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                          Largest volume <br />
+                          sold token
+                        </h3>
+                      </div>
 
-          {/* 4 card end */}
+                      <div style={{ height: "1.7rem", width: "max-content" }}>
+                        {this.state.LargestSoldVolume &&
+                        !this.state.SoldVolumeLoader ? (
+                          // <CoinChip
+                          //   colorCode={this.state.frequentlySoldAsset?.color}
+                          //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
+                          //   coin_percent={this.state.frequentlySoldAsset?.name}
+                          //   type={"cohort"}
+                          // />
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              src={this.state.LargestSoldVolume?.symbol}
+                              style={{ width: "1.7rem" }}
+                            />
+                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                              {this.state.LargestSoldVolume?.name}
+                            </h3>
+                          </div>
+                        ) : (
+                          <h3 className="inter-display-medium f-s-13 lh-15">
+                            No movement
+                          </h3>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                    // style={{
+                    //   transform: "scale(0.65)",
+                    //   marginTop: "-3.5rem",
+                    //   marginLeft: "1rem",
+                    // }}
+                    >
+                      <Loading showIcon={true} />
+                    </div>
+                  )}
+                </div>
+              </Col>
+            </Row>
 
-          {/* <div
+            {/* 4 card end */}
+
+            {/* <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -1601,8 +1635,8 @@ class CohortPage extends BaseReactComponent {
             )}
           </div> */}
 
-          {/* Notification start */}
-          {/* <div className="notification-row">
+            {/* Notification start */}
+            {/* <div className="notification-row">
             <Row>
               <Col md={4} style={{ padding: "0 10px" }}>
                 <div className="email-card">
@@ -1776,37 +1810,37 @@ class CohortPage extends BaseReactComponent {
               </Col>
             </Row>
           </div> */}
-          {/* notification end */}
+            {/* notification end */}
 
-          {/* Address Start */}
-          {this.state.userId && (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <h2
-                  className="m-t-40 m-b-20 inter-display-medium f-s-20 l-h-24 black-191"
+            {/* Address Start */}
+            {this.state.userId && (
+              <>
+                <div
                   style={{
                     display: "flex",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    justifyContent: "start",
                   }}
                 >
-                  <Image src={GlobeIcon} style={{ marginRight: "1.2rem" }} />{" "}
-                  Addresses{" "}
-                  <span
-                    style={{ marginLeft: "0.8rem" }}
-                    className="inter-display-medium f-s-13 l-h-16 grey-7C7"
+                  <h2
+                    className="m-t-40 m-b-20 inter-display-medium f-s-20 l-h-24 black-191"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "start",
+                    }}
                   >
-                    {this.state.walletAddresses?.length} addresses
-                  </span>
-                </h2>
+                    <Image src={GlobeIcon} style={{ marginRight: "1.2rem" }} />{" "}
+                    Addresses{" "}
+                    <span
+                      style={{ marginLeft: "0.8rem" }}
+                      className="inter-display-medium f-s-13 l-h-16 grey-7C7"
+                    >
+                      {this.state.walletAddresses?.length} addresses
+                    </span>
+                  </h2>
 
-                {/* <h2
+                  {/* <h2
               className="m-t-40 m-b-20 inter-display-semi-bold f-s-13 lh-16 black-191 cp"
               style={{
                 display: "flex",
@@ -1820,131 +1854,131 @@ class CohortPage extends BaseReactComponent {
                 style={{ marginLeft: "1rem", width: "0.55rem" }}
               />
             </h2> */}
-              </div>
-              <div
-                style={{
-                  background: "#FFFFFF",
-                  boxShadow:
-                    "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                  borderRadius: "16px",
-                  padding: "2.1rem 2.4rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                {/* Address */}
+                </div>
                 <div
-                  className="cohort-address-wrapper"
-                  style={
-                    this.state.walletAddresses.length < 10
-                      ? { overflowY: "visible" }
-                      : {}
-                  }
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "16px",
+                    padding: "2.1rem 2.4rem",
+                    marginBottom: "1rem",
+                  }}
                 >
-                  {/* Address list */}
-                  {this.state.walletAddresses &&
-                    this.state.walletAddresses?.map((e, i) => {
-                      let address =
-                        e?.display_address && e?.display_address != ""
-                          ? e?.display_address
-                          : e?.wallet_address;
-                      return (
-                        <div
-                          style={
-                            i === this.state.walletAddresses.length - 1
-                              ? {
-                                  marginBottom: "0rem",
-                                  paddingBottom: "0rem",
-                                  border: "none",
-                                  marginRight: `${
-                                    this.state.walletAddresses.length < 10
-                                      ? "0rem"
-                                      : "1rem"
-                                  }`,
-                                }
-                              : {
-                                  marginRight: `${
-                                    this.state.walletAddresses.length < 10
-                                      ? "0rem"
-                                      : "1rem"
-                                  }`,
-                                }
-                          }
-                          className="address-list"
-                        >
-                          <div style={{}} className="address-left">
-                            <h4 className="inter-display-medium f-s-13 l-h-16 grey-636">
-                              {address}
-                            </h4>
-                            <Image
-                              src={CopyClipboardIcon}
-                              style={{ marginLeft: "1.5rem" }}
-                              onClick={() => this.copyLink(address)}
-                            />
-                            {this.state.userId && (
+                  {/* Address */}
+                  <div
+                    className="cohort-address-wrapper"
+                    style={
+                      this.state.walletAddresses.length < 10
+                        ? { overflowY: "visible" }
+                        : {}
+                    }
+                  >
+                    {/* Address list */}
+                    {this.state.walletAddresses &&
+                      this.state.walletAddresses?.map((e, i) => {
+                        let address =
+                          e?.display_address && e?.display_address != ""
+                            ? e?.display_address
+                            : e?.wallet_address;
+                        return (
+                          <div
+                            style={
+                              i === this.state.walletAddresses.length - 1
+                                ? {
+                                    marginBottom: "0rem",
+                                    paddingBottom: "0rem",
+                                    border: "none",
+                                    marginRight: `${
+                                      this.state.walletAddresses.length < 10
+                                        ? "0rem"
+                                        : "1rem"
+                                    }`,
+                                  }
+                                : {
+                                    marginRight: `${
+                                      this.state.walletAddresses.length < 10
+                                        ? "0rem"
+                                        : "1rem"
+                                    }`,
+                                  }
+                            }
+                            className="address-list"
+                          >
+                            <div style={{}} className="address-left">
+                              <h4 className="inter-display-medium f-s-13 l-h-16 grey-636">
+                                {address}
+                              </h4>
                               <Image
-                                src={DeleteIcon}
-                                style={{
-                                  width: "1.5rem",
-                                  marginLeft: "1.5rem",
-                                }}
-                                onClick={() => this.deleteAddress(address)}
+                                src={CopyClipboardIcon}
+                                style={{ marginLeft: "1.5rem" }}
+                                onClick={() => this.copyLink(address)}
                               />
-                            )}
-                            {this.state.userId && (
-                              <div className="nickname-input">
-                                <Form
-                                  onValidSubmit={() => {
-                                    this.onSubmitNickname(address, i);
+                              {this.state.userId && (
+                                <Image
+                                  src={DeleteIcon}
+                                  style={{
+                                    width: "1.5rem",
+                                    marginLeft: "1.5rem",
                                   }}
-                                >
-                                  <FormElement
-                                    valueLink={this.linkState(
-                                      this,
-                                      `nickname-${i + 1}`
-                                    )}
-                                    required
-                                    control={{
-                                      type: CustomTextControl,
-                                      settings: {
-                                        placeholder: "Nickname",
-                                      },
+                                  onClick={() => this.deleteAddress(address)}
+                                />
+                              )}
+                              {this.state.userId && (
+                                <div className="nickname-input">
+                                  <Form
+                                    onValidSubmit={() => {
+                                      this.onSubmitNickname(address, i);
                                     }}
-                                    // classes={{
-                                    //   inputField:
-                                    //     this.state[`nickname-${i + 1}`] !== ""
-                                    //       ? "done"
-                                    //       : "",
-                                    // }}
-                                  />
-                                </Form>
-                              </div>
-                            )}
+                                  >
+                                    <FormElement
+                                      valueLink={this.linkState(
+                                        this,
+                                        `nickname-${i + 1}`
+                                      )}
+                                      required
+                                      control={{
+                                        type: CustomTextControl,
+                                        settings: {
+                                          placeholder: "Nickname",
+                                        },
+                                      }}
+                                      // classes={{
+                                      //   inputField:
+                                      //     this.state[`nickname-${i + 1}`] !== ""
+                                      //       ? "done"
+                                      //       : "",
+                                      // }}
+                                    />
+                                  </Form>
+                                </div>
+                              )}
 
-                            {/* <Image
+                              {/* <Image
                         src={EditIcon}
                         style={{ marginLeft: "1.2rem" }}
                         onClick={this.handleShow}
                       /> */}
+                            </div>
+                            <h4 className="inter-display-medium f-s-16 lh-19">
+                              {CurrencyType(false)}
+                              {numToCurrency(e.net_worth)}{" "}
+                              <span className="f-s-10 grey-ADA">
+                                {" "}
+                                {CurrencyType(true)}
+                              </span>
+                            </h4>
                           </div>
-                          <h4 className="inter-display-medium f-s-16 lh-19">
-                            {CurrencyType(false)}
-                            {numToCurrency(e.net_worth)}{" "}
-                            <span className="f-s-10 grey-ADA">
-                              {" "}
-                              {CurrencyType(true)}
-                            </span>
-                          </h4>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                  </div>
                 </div>
-              </div>
-            </>
-          )}
-          {/* Address End  */}
+              </>
+            )}
+            {/* Address End  */}
 
-          {/* Recommandation Start */}
-          {/* <div
+            {/* Recommandation Start */}
+            {/* <div
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -1970,9 +2004,9 @@ class CohortPage extends BaseReactComponent {
               />
             </h2>
           </div> */}
-          {/* <div className="cards"> */}
-          {/* Recomandation Cards */}
-          {/* {[...Array(3)].map((e) => {
+            {/* <div className="cards"> */}
+            {/* Recomandation Cards */}
+            {/* {[...Array(3)].map((e) => {
               return (
                 <div className="walletcard">
                   <>
@@ -2037,16 +2071,17 @@ class CohortPage extends BaseReactComponent {
                 </div>
               );
             })} */}
-          {/* </div> */}
+            {/* </div> */}
 
-          {/* Recommandation */}
+            {/* Recommandation */}
 
-          {/* Balance sheet */}
-          {/* <h2 className="inter-display-medium f-s-20 lh-24 m-t-40">
+            {/* Balance sheet */}
+            {/* <h2 className="inter-display-medium f-s-20 lh-24 m-t-40">
             Balance sheet
           </h2> */}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

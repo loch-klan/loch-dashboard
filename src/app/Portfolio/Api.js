@@ -341,7 +341,7 @@ export const getDetailsByLinkApi = (link,ctx=null) => {
                 
                 
               } else{
-                toast.error(res.data.message || "Something Went Wrong")
+                // toast.error(res.data.message || "Something Went Wrong")
                 ctx && ctx?.props.history.push("/welcome")
               }
           })
@@ -507,7 +507,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
                 let usdValue = asset.balance_usd;
                 let type_text = "";
 
-                if (type !== 30) {
+                if (![30, 50].includes(type)) {
                   yeild_total = yeild_total + usdValue;
                   type_text = "Yield";
                 } else {
@@ -572,7 +572,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
                 }
               });
 
-            if (!isfound && e !== 30) {
+            if (!isfound && ![30,50].includes(e)) {
               YieldValues.push({
                 id: e,
                 name: AssetType.getText(e),
@@ -581,11 +581,13 @@ export const getProtocolBalanceApi = (ctx,data) => {
             }
           });
           if (DebtValues.length === 0) {
-            DebtValues.push({
-              id: 30,
-              name: AssetType.getText(30),
-              totalPrice: 0,
-            });
+            [30, 50]?.map(e => {
+              DebtValues.push({
+                id: e,
+                name: AssetType.getText(e),
+                totalPrice: 0,
+              });
+            })
           }
           let sorted =
             cardList?.length === 0

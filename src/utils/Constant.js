@@ -37,6 +37,14 @@ export const GROUP_BY_YEAR = "GROUP_BY_YEAR";
 export const GROUP_BY_DATE = "GROUP_BY_DATE";
 export const GROUP_BY_WEEK = "GROUP_BY_WEEK";
 
+// Top Accounts
+export const SORT_BY_LARGEST_SOLD = "SORT_BY_LARGEST_SOLD";
+export const SORT_BY_LARGEST_BOUGHT = "SORT_BY_LARGEST_BOUGHT";
+export const SORT_BY_NETFLOWS = "SORT_BY_NETFLOWS";
+export const SORT_BY_NETWORTH = "SORT_BY_NETWORTH";
+export const SORT_BY_ACCOUNT = "SORT_BY_ACCOUNT";
+export const SORT_BY_TAG_NAME = "SORT_BY_TAG_NAME";
+
 export const GroupByOptions = {
   GROUP_BY_MONTH: "GROUP_BY_MONTH",
   GROUP_BY_YEAR: "GROUP_BY_YEAR",

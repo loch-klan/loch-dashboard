@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { BaseReactComponent, CustomTextControl, Form, FormElement, FormSubmitButton, FormValidator } from '../../utils/form';
 import { deleteToken } from '../../utils/ManageToken';
 import { verifyEmailApi } from './Api';
-import Loading from './Loading';
 import { getAllCoins, getAllParentChains } from '../onboarding/Api';
+import Loading from './Loading';
 // import { loginApi } from './Api';
 
 class VerifyEmail extends BaseReactComponent {
@@ -30,6 +30,8 @@ class VerifyEmail extends BaseReactComponent {
     const data = new URLSearchParams();
     data.append('token', this.state.token);
     verifyEmailApi(this, data);
+
+  
   }
 
   render() {

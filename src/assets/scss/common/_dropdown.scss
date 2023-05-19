@@ -255,6 +255,7 @@
     // svg > path:nth-child(2) {
     //   fill: #000000;
     // }
+
     }
 
     svg {
@@ -267,7 +268,21 @@
     svg path {
       fill: hsl(0, 0%, 80%);
     }
+
+   
   }
+
+   &.top-account-dropdown{
+      .placeholder{
+ svg {
+      position: absolute;
+      right: 1.5rem;
+      // top: -0.1rem;
+       top: 1rem;
+    }
+      }
+      
+    }
 
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .show {

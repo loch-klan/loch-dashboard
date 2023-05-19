@@ -20,9 +20,11 @@ import AuthModal from "../common/AuthModal";
 import {
   ConnectExPopup,
   HomeConnectExchange,
+  resetUser,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import ExitOverlay from "../common/ExitOverlay";
 
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
@@ -30,6 +32,7 @@ export default function WelcomeCard(props) {
   const [AddWallet, setAddWallet] = React.useState(true);
   const [connectModal, setconnectModal] = React.useState(false);
   const [signinModal, setSigninModal] = React.useState(false);
+   const [signUpModal, setSignUpModal] = React.useState(false);
   // const [addWallet, setAddWallet] = React.useState(true)
   // console.log(props)
   function handleAddWalletClick() {
@@ -49,6 +52,11 @@ export default function WelcomeCard(props) {
     //   session_id: getCurrentUser().id,
     // });
   };
+
+  const handleSignUpModal = () => {
+     setSignUpModal(!signUpModal);
+
+  }
 
   const handleConnectModal = () => {
     setconnectModal(!connectModal);
@@ -81,11 +89,11 @@ export default function WelcomeCard(props) {
   };
 
   let difference =
-    props.assetTotal && props.yesterdayBalance
-      ? props.assetTotal - props.yesterdayBalance
+    props?.assetTotal && props?.yesterdayBalance
+      ? props?.assetTotal - props?.yesterdayBalance
       : 0;
   let percent =
-    props.assetTotal && ((difference / props.assetTotal) * 100).toFixed(2);
+    props?.assetTotal && ((difference / props?.assetTotal) * 100).toFixed(2);
   return (
     // <div className="welcome-card-section">
     //   <div className="welcome-card">
@@ -247,68 +255,91 @@ export default function WelcomeCard(props) {
             Add wallet address
           </div>
         </div>
-        <div
-          className="row-div"
-          style={
-            {
+        {props.showNetworth && (
+          <div
+            className="row-div"
+            style={{
               // position: "absolute",
               // // left: "50%",
               // // transform: "translateX(-50%)",
               // right: 0,
-              marginRight:!lochUser ? "3.2rem" :"0rem"
-            }
-          }
-        >
-          <div
-            className={`growth-div inter-display-medium f-s-13 lh-15 grey-313 ${
-              difference < 0 ? "downfall" : ""
-            }`}
-            style={{ marginRight: "1.2rem" }}
+              marginRight: !lochUser ? "8.2rem" : "0rem",
+            }}
           >
-            <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
-            {numToCurrency(difference) + "(" + Math.round(percent) + "%)"}
-          </div>
-          {props.assetTotal !== null && !props.isLoading ? (
-            <CustomOverlay
-              position="bottom"
-              isIcon={false}
-              isInfo={true}
-              isText={true}
-              text={
-                CurrencyType(false) +
-                amountFormat(props.assetTotal, "en-US", "USD") +
-                CurrencyType(true)
-              }
+            <div
+              className={`growth-div inter-display-medium f-s-13 lh-15 grey-313 ${
+                difference < 0 ? "downfall" : ""
+              }`}
+              style={{ marginRight: "1.2rem" }}
             >
-              <h3 className="space-grotesk-medium wallet-amount">
-                {CurrencyType(false)}
-                {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                {numToCurrency(props.assetTotal)} {CurrencyType(true)}
-              </h3>
-            </CustomOverlay>
-          ) : (
-            <div style={{ position: "relative", top: "0.6rem" }}>
-              <CustomLoader loaderType="text" />
+              <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
+              {numToCurrency(difference) + "(" + Math.round(percent) + "%)"}
             </div>
-          )}
-        </div>
+            {props.assetTotal !== null && !props.isLoading ? (
+              <CustomOverlay
+                position="bottom"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  CurrencyType(false) +
+                  amountFormat(props.assetTotal, "en-US", "USD") +
+                  CurrencyType(true)
+                }
+              >
+                <h3 className="space-grotesk-medium wallet-amount">
+                  {CurrencyType(false)}
+                  {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
+                  {numToCurrency(props?.assetTotal)} {CurrencyType(true)}
+                </h3>
+              </CustomOverlay>
+            ) : (
+              <div style={{ position: "relative", top: "0.6rem" }}>
+                <CustomLoader loaderType="text" />
+              </div>
+            )}
+          </div>
+        )}
         {!lochUser && (
-          <span
-            onClick={handleSigninModal}
-            style={{ position:"absolute", right:"29rem" }}
-            className="signin"
+          <div
+            style={{
+              position: "absolute",
+              right: "29rem",
+              display: "flex",
+              alignItems: "center",
+            }}
           >
-            <Image src={SignInIcon} />
-            <Button
-              className="inter-display-medium f-s-16 lh-19 navbar-button"
-              style={{
-                paddingTop: "0rem",
-                paddingBottom: "0rem",
-              }}
+            <span onClick={handleSigninModal} className="signin">
+              {/* <Image src={SignInIcon} /> */}
+              <Button
+                className="inter-display-medium f-s-16 lh-19 navbar-button"
+                style={{
+                  paddingTop: "0rem",
+                  paddingBottom: "0rem",
+                }}
+              >
+                Sign in
+              </Button>
+            </span>
+            {/* <span className="inter-display-medium f-s-16 lh-19 navbar-button">
+              /
+            </span> */}
+            <span
+              onClick={handleSignUpModal}
+              // style={{ position: "absolute", right: "29rem" }}
+              className="signin"
             >
-              Sign in
-            </Button>
-          </span>
+              <Button
+                className="inter-display-medium f-s-16 lh-19 navbar-button"
+                style={{
+                  paddingTop: "0rem",
+                  paddingBottom: "0rem",
+                }}
+              >
+                Sign up
+              </Button>
+            </span>
+          </div>
         )}
       </div>
       {connectModal ? (
@@ -321,6 +352,7 @@ export default function WelcomeCard(props) {
           iconImage={LinkIcon}
           openPopup={handlePopup}
           tracking="home page"
+          handleUpdate={props?.handleUpdate}
         />
       ) : (
         ""
@@ -354,6 +386,24 @@ export default function WelcomeCard(props) {
           description="Get right back into your account"
           stopUpdate={true}
           tracking="Sign in button"
+        />
+      ) : (
+        ""
+      )}
+      {signUpModal ? (
+        <ExitOverlay
+          show={signUpModal}
+          // link="http://loch.one/a2y1jh2jsja"
+          onHide={handleSignUpModal}
+          history={history}
+          modalType={"exitOverlay"}
+          handleRedirection={() => {
+            resetUser();
+            setTimeout(function () {
+              props.history.push("/welcome");
+            }, 3000);
+          }}
+          signup={true}
         />
       ) : (
         ""

@@ -88,29 +88,35 @@ class Home extends BaseReactComponent {
           this.props.setPageFlagDefault();
           deleteToken();
         } else {
-           this.props.history.push("/home");
-          // // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
-          // let user = localStorage.getItem("lochUser") ? JSON.parse(localStorage.getItem("lochUser")): false;
-          // if (user) {
-          //     this.props.history.push("/home");
-          // } else {
-          //    this.props.setPageFlagDefault();
-          //    deleteToken();
-          //    // console.log("inside else after derlete token")
-          //    localStorage.setItem("defi_access", true);
-          //    localStorage.setItem("isPopup", true);
-          //    // localStorage.setItem("whalepodview", true);
-          //    localStorage.setItem(
-          //      "whalepodview",
-          //      JSON.stringify({ access: true, id: "" })
-          //    );
-          //    localStorage.setItem("isSubmenu", false);
-          //    let isRefresh = JSON.parse(localStorage.getItem("refresh"));
-          //    if (!isRefresh) {
-          //      localStorage.setItem("refresh", true);
-          //      window.location.reload(true);
-          //    }
-          // }
+          // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
+          let user = localStorage.getItem("lochUser") ? JSON.parse(localStorage.getItem("lochUser")): false;
+          if (user) {
+              this.props.history.push("/home");
+          } else {
+             this.props.setPageFlagDefault();
+             deleteToken();
+             // console.log("inside else after derlete token")
+             localStorage.setItem("defi_access", true);
+             localStorage.setItem("isPopup", true);
+             // localStorage.setItem("whalepodview", true);
+             localStorage.setItem(
+               "whalepodview",
+               JSON.stringify({ access: true, id: "" })
+             );
+            localStorage.setItem(
+              "isSubmenu",
+              JSON.stringify({
+                me: false,
+                discover: false,
+                intelligence: false,
+              })
+            );
+             let isRefresh = JSON.parse(localStorage.getItem("refresh"));
+             if (!isRefresh) {
+               localStorage.setItem("refresh", true);
+               window.location.reload(true);
+             }
+          }
         
         }
       } else {
@@ -124,7 +130,15 @@ class Home extends BaseReactComponent {
           "whalepodview",
           JSON.stringify({ access: true, id: "" })
         );
-        localStorage.setItem("isSubmenu", false);
+        // localStorage.setItem("isSubmenu", false);
+         localStorage.setItem(
+           "isSubmenu",
+           JSON.stringify({
+             me: false,
+             discover: false,
+             intelligence: false,
+           })
+         );
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
         if (!isRefresh) {
           localStorage.setItem("refresh", true);
@@ -267,7 +281,7 @@ class Home extends BaseReactComponent {
             selectedId={this.state.selectedId}
             signinBack={true}
             form="home"
-            pname="home.js"
+            pname="home"
           />
         )}
       </>

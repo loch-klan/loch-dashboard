@@ -28,6 +28,7 @@ import UpgradeModal from "../common/upgradeModal";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import moment from "moment";
 import Wallet from "../wallet/Wallet";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 class Profile extends Component {
   constructor(props) {
@@ -167,7 +168,25 @@ class Profile extends Component {
   render() {
     return (
       <>
-        <div className="profile-page-section">
+        {/* topbar */}
+        <div className="portfolio-page-section">
+          <div
+            className="portfolio-container page"
+            style={{ overflow: "visible" }}
+          >
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                // history
+                history={this.props.history}
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+                handleUpdate={this.handleUpdateWallet}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="profile-page-section m-t-80">
           <div className="profile-section page">
             {this.state.addModal && (
               <FixAddModal
@@ -187,11 +206,11 @@ class Profile extends Component {
             <PageHeader
               title="Profile"
               subTitle="Manage your profile here"
-              btnText={"Add wallet"}
-              handleBtn={this.handleAddModal}
-              // connect exchange btn
-              SecondaryBtn={true}
-              handleUpdate={this.handleUpdateWallet}
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              // // connect exchange btn
+              // SecondaryBtn={true}
+              // handleUpdate={this.handleUpdateWallet}
             />
             {/* <div className="profile-plan-wrapper">
             <h4 className="inter-display-semi-bold f-s-25 lh-30 secondary">

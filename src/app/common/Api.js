@@ -121,8 +121,9 @@ export const updateUserWalletApi = (data,ctx) =>{
         // ctx.setState({
         //    recievedResponse: true
         // })
-        ctx.props.apiResponse(true);
         
+        ctx.props.apiResponse(true);
+      
       }
      
       if (ctx.props.handleUpdateWallet) {
@@ -324,6 +325,7 @@ export const getUserAddresses = (ctx) => {
     }
   });
 };
+
 
 
 export const sendWhopCode = (ctx, data) => {
@@ -1271,6 +1273,8 @@ export const getUser = (ctx = null, showToast = false) => {
         };
 
         localStorage.setItem("lochUser", JSON.stringify(obj));
+       
+     
       }
       if (
         ctx?.props?.location?.search === "?status=success" ||
