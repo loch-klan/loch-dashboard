@@ -149,7 +149,7 @@ function Sidebar(props) {
 
     const handleMeSubmenu = () => {
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
-      console.log("current", currentValue)
+      // console.log("current", currentValue)
       let obj = {
         me: true,
         discover: false,
@@ -174,7 +174,7 @@ function Sidebar(props) {
     };
   
   React.useEffect(() => {
-     console.log("in use effect")
+    //  console.log("in use effect")
      //  its mean user in ME section but not in intelligence
      if (
        ![
@@ -197,7 +197,7 @@ function Sidebar(props) {
        setSubmenu(obj);
 
        localStorage.setItem("isSubmenu", JSON.stringify(obj));
-        console.log("in 1st if");
+        // console.log("in 1st if");
      }
 
      //  user user not in these url means use in discover pages so hide me and show discover
@@ -224,7 +224,7 @@ function Sidebar(props) {
        setSubmenu(obj);
 
        localStorage.setItem("isSubmenu", JSON.stringify(obj));
-        console.log("in 2nd if");
+        // console.log("in 2nd if");
      }
 
      //  when user click on intellignece we show all the submenu inside intelligence tab
@@ -238,7 +238,7 @@ function Sidebar(props) {
        setSubmenu(obj);
 
        localStorage.setItem("isSubmenu", JSON.stringify(obj));
-        console.log("in 3rd if");
+        // console.log("in 3rd if");
      }
    }, []);
   
@@ -553,7 +553,7 @@ function Sidebar(props) {
                 }
               >
                 {/* menu tab */}
-                <div className="menu-tab-wrapper">
+                {/* <div className="menu-tab-wrapper">
                   <div
                     className={`tab ${isSubmenu.discover ? "active" : ""}`}
                     onClick={handleDiscoverSubmenu}
@@ -572,7 +572,7 @@ function Sidebar(props) {
                       Me
                     </h4>
                   </div>
-                </div>
+                </div> */}
                 <nav>
                   <ul>
                     {isSubmenu.me && (
@@ -860,7 +860,8 @@ function Sidebar(props) {
                         />
                       </NavLink>
                     </li> */}
-                    {isSubmenu.discover && (
+                    {/* temp hide */}
+                    {/* {isSubmenu.discover && (
                       <>
                         <li>
                           <NavLink
@@ -963,7 +964,8 @@ function Sidebar(props) {
                           </NavLink>
                         </li>
                       </>
-                    )}
+                    )} */}
+                    {/* temp hide top */}
                     {/* <li>
                         <NavLink
                           exact={true}
