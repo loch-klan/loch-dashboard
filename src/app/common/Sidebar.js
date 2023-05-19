@@ -186,7 +186,9 @@ function Sidebar(props) {
          "/intelligence/costs",
          "/intelligence/asset-value",
        ].includes(activeTab) &&
-       ["/home", "/profile", "/decentralized-finance"].includes(activeTab)
+       ["/home", "/profile", "/decentralized-finance", "/whale-watch"].includes(
+         activeTab
+       )
      ) {
        let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
        let obj = {
@@ -197,7 +199,7 @@ function Sidebar(props) {
        setSubmenu(obj);
 
        localStorage.setItem("isSubmenu", JSON.stringify(obj));
-        // console.log("in 1st if");
+       // console.log("in 1st if");
      }
 
      //  user user not in these url means use in discover pages so hide me and show discover
@@ -213,6 +215,7 @@ function Sidebar(props) {
          "/home",
          "/profile",
          "/decentralized-finance",
+         "/whale-watch",
        ].includes(activeTab)
      ) {
        let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
@@ -224,7 +227,7 @@ function Sidebar(props) {
        setSubmenu(obj);
 
        localStorage.setItem("isSubmenu", JSON.stringify(obj));
-        // console.log("in 2nd if");
+       // console.log("in 2nd if");
      }
 
      //  when user click on intellignece we show all the submenu inside intelligence tab
@@ -767,6 +770,59 @@ function Sidebar(props) {
 
                         <li>
                           <NavLink
+                            exact={true}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                ProfileMenu({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }
+                            }}
+                            className="nav-link"
+                            to="/profile"
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/profile"
+                                  ? ActiveProfileIcon
+                                  : ProfileIcon
+                              }
+                            />
+                            Profile
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            className="nav-link"
+                            to={"/whale-watch"}
+                            onClick={(e) => {
+                              if (!isWallet) {
+                                e.preventDefault();
+                              } else {
+                                MenuWhale({
+                                  email_address: getCurrentUser().email,
+                                  session_id: getCurrentUser().id,
+                                });
+                              }
+                            }}
+                            activeclassname="active"
+                          >
+                            <Image
+                              src={
+                                activeTab === "/whale-watch"
+                                  ? ActiveCohortIcon
+                                  : CohortIcon
+                              }
+                            />
+                            Whale Watch
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
                             className={`nav-link ${!isDefi ? "none" : ""}`}
                             to={`${!isDefi ? "#" : "/decentralized-finance"}`}
                             onClick={(e) => {
@@ -801,33 +857,6 @@ function Sidebar(props) {
                               }
                             />
                             DeFi
-                          </NavLink>
-                        </li>
-                        <li>
-                          <NavLink
-                            exact={true}
-                            onClick={(e) => {
-                              if (!isWallet) {
-                                e.preventDefault();
-                              } else {
-                                ProfileMenu({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                              }
-                            }}
-                            className="nav-link"
-                            to="/profile"
-                            activeclassname="active"
-                          >
-                            <Image
-                              src={
-                                activeTab === "/profile"
-                                  ? ActiveProfileIcon
-                                  : ProfileIcon
-                              }
-                            />
-                            Profile
                           </NavLink>
                         </li>
                       </>
@@ -1026,24 +1055,24 @@ function Sidebar(props) {
                       Export
                     </Button>
                   </span>
-                  
-                    <span
-                      onMouseOver={(e) =>
-                        (e.currentTarget.children[0].src = SharePortfolioIcon)
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.children[0].src =
-                          SharePortfolioIconWhite)
-                      }
-                      onClick={handleShareModal}
-                      style={{ marginRight: "1rem" }}
-                    >
-                      <Image src={SharePortfolioIconWhite} />
-                      <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                        Share
-                      </Button>
-                    </span>
-{/*                   
+
+                  <span
+                    onMouseOver={(e) =>
+                      (e.currentTarget.children[0].src = SharePortfolioIcon)
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.children[0].src =
+                        SharePortfolioIconWhite)
+                    }
+                    onClick={handleShareModal}
+                    style={{ marginRight: "1rem" }}
+                  >
+                    <Image src={SharePortfolioIconWhite} />
+                    <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                      Share
+                    </Button>
+                  </span>
+                  {/*                   
                     <span
                       // onMouseOver={(e) =>
                       //   (e.currentTarget.children[0].src = SharePortfolioIcon)

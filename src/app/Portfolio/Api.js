@@ -507,7 +507,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
                 let usdValue = asset.balance_usd;
                 let type_text = "";
 
-                if (![30, 50].includes(type)) {
+                if (![30].includes(type)) {
                   yeild_total = yeild_total + usdValue;
                   type_text = "Yield";
                 } else {
@@ -572,7 +572,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
                 }
               });
 
-            if (!isfound && ![30,50].includes(e)) {
+            if (!isfound && ![30].includes(e)) {
               YieldValues.push({
                 id: e,
                 name: AssetType.getText(e),
@@ -581,7 +581,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
             }
           });
           if (DebtValues.length === 0) {
-            [30, 50]?.map(e => {
+            [30]?.map(e => {
               DebtValues.push({
                 id: e,
                 name: AssetType.getText(e),
