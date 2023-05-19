@@ -1,9 +1,8 @@
 import React from "react";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
-import WelcomeCard from "./WelcomeCard";
-import PieChart from "./PieChart";
-import LineChartSlider from "./LineCharSlider";
+import WelcomeCard from "../Portfolio/WelcomeCard";
+import LineChartSlider from "../Portfolio/LineCharSlider";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import LightBulb from "../../assets/images/icons/lightbulb.svg";
@@ -20,7 +19,7 @@ import {
   settingDefaultValues,
   getExternalEventsApi,
   getExchangeBalances,
-} from "./Api";
+} from "../Portfolio/Api";
 import { Button, Image, Row, Col } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
@@ -81,7 +80,7 @@ import {
   HomeInsightsExpand,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
-import { getAssetGraphDataApi } from "./Api";
+import { getAssetGraphDataApi } from "../Portfolio/Api";
 import {
   getAllCounterFeeApi,
   getAvgCostBasis,
@@ -95,19 +94,20 @@ import {
   noExponents,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import PieChart2 from "./PieChart2";
+import PieChart2 from "../Portfolio/PieChart2";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
 import { toast } from "react-toastify";
 import { GraphHeader } from "../common/GraphHeader";
-import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH } from "./ActionTypes";
+
 import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import Slider from "react-slick";
 import CoinChip from "../wallet/CoinChip";
 import { getAllWalletApi } from "../wallet/Api";
 import Footer from "../common/footer";
+import { ASSET_VALUE_GRAPH_DAY } from "../Portfolio/ActionTypes";
 
-class Portfolio extends BaseReactComponent {
+class TopPortfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
     // console.log("props", props);
@@ -1910,6 +1910,7 @@ class Portfolio extends BaseReactComponent {
                       email_address: getCurrentUser().email,
                     });
                   }}
+                    isPreviewing={true}
                 />
               </div>
 
@@ -2409,6 +2410,6 @@ const mapDispatchToProps = {
   ResetAverageCostBasis,
   updateAverageCostBasis,
 };
-Portfolio.propTypes = {};
+TopPortfolio.propTypes = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
+export default connect(mapStateToProps, mapDispatchToProps)(TopPortfolio);

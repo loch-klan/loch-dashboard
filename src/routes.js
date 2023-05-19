@@ -24,6 +24,13 @@ import WhopLoader from "./app/common/WhopAccount"
 import TopAccount from "./app/discover/topAccount";
 import twitterInfluencer from "./app/discover/twitterInfluencer";
 import wishlist from "./app/discover/wishlist";
+import topHome from "./app/topAccount/top-home";
+import topIntelligence from "./app/topAccount/top-intelligence";
+import topTransactionHistory from "./app/topAccount/top-transaction-history";
+import topAssetValue from "./app/topAccount/top-asset-value";
+import topInsights from "./app/topAccount/top-insights";
+import topCosts from "./app/topAccount/top-costs";
+import topDefi from "./app/topAccount/top-defi";
 const routes = [
   {
     path: "/",
@@ -125,43 +132,43 @@ const routes = [
     path: "/top-accounts/home",
     name: "Top Account Portfolio",
     type: PrivateRoute,
-    component: Portfolio,
+    component: topHome,
   },
   {
     path: "/top-accounts/intelligence",
     name: "Top Account Intelligence",
     type: PrivateRoute,
-    component: Intelligence,
+    component: topIntelligence,
   },
   {
     path: "/top-accounts/intelligence/transaction-history",
     name: "Top Account Transaction History",
     type: PrivateRoute,
-    component: TransactionHistoryPage,
-  },
-  {
-    path: "/top-accounts/intelligence/volume-traded-by-counterparty",
-    name: "Top Account Volume Traded By Counterparty",
-    type: PrivateRoute,
-    component: VolumeTradedByCounterparty,
+    component: topTransactionHistory,
   },
   {
     path: "/top-accounts/intelligence/asset-value",
     name: "Top Account Asset Value",
     type: PrivateRoute,
-    component: AssetValueGraph,
+    component: topAssetValue,
   },
   {
     path: "/top-accounts/intelligence/insights",
     name: "Insights",
     type: PrivateRoute,
-    component: InsightsPage,
+    component: topInsights,
   },
   {
     path: "/top-accounts/intelligence/costs",
-  name: "Top Account Costs",
+    name: "Top Account Costs",
     type: PrivateRoute,
-    component: Cost,
+    component: topCosts,
+  },
+  {
+    path: "/top-accounts/decentralized-finance",
+    name: "Decentralized Finance",
+    type: PrivateRoute,
+    component: topDefi,
   },
   {
     path: "/twitter-influencers",

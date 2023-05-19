@@ -25,7 +25,8 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ExitOverlay from "../common/ExitOverlay";
-
+import EyeIcon from "../../assets/images/icons/eye.svg";
+import ChangeIcon from "../../assets/images/icons/change-icon.svg";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
   const [manageWallet, setManageWallet] = React.useState(true);
@@ -226,34 +227,61 @@ export default function WelcomeCard(props) {
             // transform: "translateX(-50%)",
           }}
         >
-          <div
-            className="topbar-btn"
-            style={{
-              marginRight: "1.7rem",
-              // marginLeft: "11rem"
-              width: "46%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            onClick={handleConnectModal}
-          >
-            <Image className="connect-exchange-img" src={LinkIconBtn} />
-            Connect exchange
-          </div>
-          <div
-            className="topbar-btn"
-            style={{
-              width: "46%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            onClick={handleAddWalletClick}
-            ref={buttonRef}
-            id="address-button"
-          >
-            <Image src={AddWalletAddress} />
-            Add wallet address
-          </div>
+          {props?.isPreviewing ? (
+            <div
+              className="Preview-topbar-btn"
+              style={{
+                marginRight: "1.7rem",
+                // marginLeft: "11rem"
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+              // onClick={handleConnectModal}
+            >
+              <div className="account-detail">
+                <Image src={EyeIcon} />
+                Previewing{" "}
+                <span className="account-name grey-313">abd...tvb</span>
+              </div>
+              <div className="account-detail cp">
+                <Image src={ChangeIcon} />
+                Change
+              </div>
+            </div>
+          ) : (
+            <>
+              <div
+                className="topbar-btn"
+                style={{
+                  marginRight: "1.7rem",
+                  // marginLeft: "11rem"
+                  width: "46%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                onClick={handleConnectModal}
+              >
+                <Image className="connect-exchange-img" src={LinkIconBtn} />
+                Connect exchange
+              </div>
+              <div
+                className="topbar-btn"
+                style={{
+                  width: "46%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                onClick={handleAddWalletClick}
+                ref={buttonRef}
+                id="address-button"
+              >
+                <Image src={AddWalletAddress} />
+                Add wallet address
+              </div>
+            </>
+          )}
         </div>
         {props.showNetworth && (
           <div
