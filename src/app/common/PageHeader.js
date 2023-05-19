@@ -53,13 +53,18 @@ export default function PageHeader(props) {
    };
 
   const breads = nav_list.map((e, key) => {
-    // console.log(e , props.currentPage)
+    console.log(e, props?.topaccount, key);
     return (
       e && (
         <>
           <Breadcrumb.Item
             linkAs={Link}
-            linkProps={{ to: `/${e}` }}
+            linkProps={{
+              to:
+                props?.topaccount && key === 2
+                  ? `/${nav_list[1]}/${e}`
+                  : `/${e}`,
+            }}
             className="inter-display-medium f-s-13 lh-16"
             active={e === props.currentPage}
             key={key}

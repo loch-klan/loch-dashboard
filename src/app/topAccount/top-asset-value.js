@@ -284,6 +284,7 @@ class TopAssetValueGraph extends Component {
               history={this.props.history}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
+              topaccount={true}
               hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
               // ShareBtn={true}
               // handleShare={this.handleShare}

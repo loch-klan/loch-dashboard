@@ -311,6 +311,7 @@ class TopInsightsPage extends Component {
               // ShareBtn={true}
               // handleShare={this.handleShare}
               // history={this.props.history}
+              topaccount={true}
             />
             <div style={{ position: "relative" }}>
               {

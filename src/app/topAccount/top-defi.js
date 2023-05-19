@@ -356,7 +356,6 @@ class TopDefi extends Component {
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 isPreviewing={true}
-              
               />
             </div>
           </div>
@@ -399,6 +398,7 @@ class TopDefi extends Component {
               currentPage={"decentralized-finance"}
               // showData={totalWalletAmt}
               // isLoading={isLoading}
+           
             />
 
             {/* Balance sheet */}

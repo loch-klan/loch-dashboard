@@ -1417,6 +1417,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
               showpath={true}
               currentPage={"transaction-history"}
               history={this.props.history}
+              topaccount={true}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               // ShareBtn={true}

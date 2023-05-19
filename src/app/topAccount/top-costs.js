@@ -821,6 +821,7 @@ class TopCost extends Component {
               currentPage={"costs"}
               // ShareBtn={true}
               // handleShare={this.handleShare}
+              topaccount={true}
             />
             <div className="m-b-43 cost-table-section">
               <div style={{ position: "relative" }}>
