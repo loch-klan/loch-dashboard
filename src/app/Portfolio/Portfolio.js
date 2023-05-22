@@ -92,6 +92,7 @@ import Slider from "react-slick";
 import CoinChip from "../wallet/CoinChip";
 import { getAllWalletApi } from "../wallet/Api";
 import Footer from "../common/footer";
+import Steps from "./steps";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -2315,6 +2316,9 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                   </Col> */}
                 </Row>
               </div>
+
+              {/* steps */}
+              <Steps />
 
               {/* footer  */}
               <Footer />
