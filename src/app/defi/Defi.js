@@ -282,14 +282,14 @@ class Defi extends Component {
     let DebtValues = [];
     let allAssetType = [20, 30, 40, 50, 60, 70];
     allAssetType.map((e) => {
-      if (![30, 50].includes(e)) {
+      if (![30].includes(e)) {
         YieldValues.push({
           id: e,
           name: AssetType.getText(e),
           totalPrice: 0,
         });
       } else {
-        [30, 50].map(e => {
+        [30].map(e => {
           DebtValues.push({
             id: e,
             name: AssetType.getText(e),
