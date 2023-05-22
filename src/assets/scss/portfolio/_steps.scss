@@ -47,6 +47,7 @@ overflow: hidden;
       padding: 2.4rem 0rem 3.2rem 3.2rem;
       display: flex;
       align-items: center;
+      position: relative;
 
       .card-icon{
         img{
@@ -56,6 +57,7 @@ overflow: hidden;
       }
 
       .card-content{
+        
       }
       .go-btn{
         align-self: flex-end;
@@ -63,6 +65,8 @@ overflow: hidden;
         align-items: center;
         justify-content: center;
         margin-bottom: 0.8rem;
+        position: absolute;
+        right: 2rem;
 
         img{
             width: 1.2rem;

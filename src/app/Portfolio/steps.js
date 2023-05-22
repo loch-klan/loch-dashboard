@@ -6,6 +6,12 @@ import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import ArrowRight from "../../assets/images/icons/arrow-right.svg";
 import AddWallet from "../../assets/images/add-wallet-step.png"
+import Nickname from "../../assets/images/add-wallet-step.png";
+import MultiAddWallet from "../../assets/images/add-wallet-step.png";
+import ConnectExchange from "../../assets/images/add-wallet-step.png";
+import MultiConnectExchange from "../../assets/images/add-wallet-step.png";
+import WhalePod from "../../assets/images/add-wallet-step.png";
+
 class Steps extends Component {
   constructor(props) {
      const settings = {
