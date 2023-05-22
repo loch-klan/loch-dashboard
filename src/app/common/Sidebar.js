@@ -220,8 +220,8 @@ function Sidebar(props) {
      ) {
        let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
        let obj = {
-         me: false,
-         discover: true,
+         me: true,
+         discover: false,
          intelligence: false,
        };
        setSubmenu(obj);
