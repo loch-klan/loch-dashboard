@@ -4230,3 +4230,91 @@ export const DefiSortByName = ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Defi: sort by name");
 };
+
+
+//Menu: Me tab - done
+export const MenuMeTab = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Me tab";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Me tab");
+};
+
+
+//Menu: Discover tab - done
+export const MenuDiscoverTab = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Discover tab";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Discover tab");
+};
+
+//Menu: Top accounts - done
+export const MenuTopAccounts = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Top accounts";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Top accounts");
+};
+
+
+//Menu: Twitter influencers - done
+export const MenuTwitterInfluencers = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Twitter influencers";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Twitter influencers");
+};
+
+//Menu: Watchlist - done
+export const MenuWatchlist = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Watchlist";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Watchlist");
+};
+
+//Menu:export hide dust - done
+export const MenuExportHideDust = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu:export hide dust";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu:export hide dust");
+};
+

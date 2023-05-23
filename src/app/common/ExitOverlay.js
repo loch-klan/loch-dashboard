@@ -41,7 +41,7 @@ import {
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
-  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName, ExportDateSelected, signUpProperties, resetUser, signInUser,
+  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName, ExportDateSelected, signUpProperties, resetUser, signInUser, MenuExportHideDust,
 } from "../../utils/AnalyticsFunctions.js";
 import { DatePickerControl } from '../../utils/form';
 import moment from 'moment';
@@ -1149,6 +1149,10 @@ class ExitOverlay extends BaseReactComponent {
                           onChange={(e) => {
                             this.setState({
                               switchselected: e.target.checked,
+                            });
+                            MenuExportHideDust({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email
                             });
                           }}
                         />

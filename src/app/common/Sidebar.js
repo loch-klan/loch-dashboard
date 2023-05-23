@@ -69,6 +69,11 @@ import {
   MenuIntTransactionHistory,
   MenuIntInsight,
   MenuIntCosts,
+  MenuMeTab,
+  MenuDiscoverTab,
+  MenuTopAccounts,
+  MenuTwitterInfluencers,
+  MenuWatchlist,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
@@ -195,6 +200,11 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
+
+      MenuMeTab({
+        session_id: getCurrentUser().id,
+        email_address:getCurrentUser().email
+      });
     };
   
   
@@ -210,6 +220,11 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
+
+      MenuDiscoverTab({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     };
   
   React.useEffect(() => {
@@ -1054,6 +1069,11 @@ function Sidebar(props) {
                             onClick={(e) => {
                               if (!isWallet) {
                                 e.preventDefault();
+                              } else {
+                                MenuTopAccounts({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email
+                                });
                               }
                             }}
                             activeclassname="active"
@@ -1343,6 +1363,11 @@ function Sidebar(props) {
                             onClick={(e) => {
                               if (!isWallet) {
                                 e.preventDefault();
+                              } else {
+                                MenuTwitterInfluencers({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
                               }
                             }}
                             activeclassname="active"
@@ -1367,6 +1392,11 @@ function Sidebar(props) {
                             onClick={(e) => {
                               if (!isWallet) {
                                 e.preventDefault();
+                              } else {
+                               MenuWatchlist({
+                                 session_id: getCurrentUser().id,
+                                 email_address: getCurrentUser().email,
+                               });
                               }
                             }}
                             activeclassname="active"
