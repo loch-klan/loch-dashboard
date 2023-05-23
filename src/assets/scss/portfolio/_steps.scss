@@ -5,8 +5,8 @@ border-radius: 1.2rem;
 width: 100%;
 overflow: hidden;
 
- .green-color{
-        color:#18C278;
+ .percentage{
+        color:#18C278;margin-right:5rem;
     }
 
 
@@ -43,6 +43,34 @@ overflow: hidden;
 .step-slider-wrapper{
  width: 100%;
 
+  // slick
+           .slick-next,
+              .slick-prev {
+
+    top: -34px;
+    bottom: auto;
+    left: auto;
+
+                    filter: brightness(0.2);
+              }
+              .slick-next {
+                    right: 30px;
+
+
+                &.slick-disabled{
+                    filter: brightness(1);
+                }
+              }
+              .slick-prev {
+                   right: 50px;
+
+
+                  &.slick-disabled{
+                    filter: brightness(1);
+                }
+              }
+            
+
  .step-card{
       padding: 2.4rem 0rem 3.2rem 3.2rem;
       display: flex;
@@ -57,16 +85,26 @@ overflow: hidden;
       }
 
       .card-content{
-        
-      }
-      .go-btn{
+
+        .step-name{
+            //    white-space: nowrap;
+               margin-bottom: 0.2rem;
+        }
+
+        .bottom-text{
+            display: flex;
+            align-items: center;
+            //  white-space: nowrap;
+             .go-btn{
         align-self: flex-end;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 0.8rem;
-        position: absolute;
-        right: 2rem;
+        margin-left: 2rem;
+        // flex-wrap: nowrap;
+        // margin-bottom: 0.8rem;
+        // position: absolute;
+        // right: 2rem;
 
         img{
             width: 1.2rem;
@@ -74,6 +112,10 @@ overflow: hidden;
         }
             
         }
+        }
+        
+      }
+     
  }
 
 
