@@ -206,6 +206,7 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
+     
 
       MenuMeTab({
         session_id: getCurrentUser().id,
@@ -263,6 +264,8 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
+      localStorage.setItem("previewAddress", "");
+       setPreviewAddress(localStorage.getItem("previewAddress"));
       console.log("in 1st if");
     }
 

@@ -97,6 +97,14 @@ export default function WelcomeCard(props) {
     }
   };
 
+  const TruncateText = (string) => {
+    return (
+      string.substring(0, 3) +
+      "..." +
+      string.substring(string.length - 3, string.length)
+    );
+  };
+
   let difference =
     props?.assetTotal && props?.yesterdayBalance
       ? props?.assetTotal - props?.yesterdayBalance
@@ -251,9 +259,13 @@ export default function WelcomeCard(props) {
               <div className="account-detail">
                 <Image src={EyeIcon} />
                 Previewing{" "}
-                <span className="account-name grey-313">abd...tvb</span>
+                <span className="account-name grey-313">
+                  {TruncateText(localStorage.getItem("previewAddress"))}
+                </span>
               </div>
-              <div className="account-detail cp">
+              <div className="account-detail cp change-text" onClick={() => {
+                props?.history.push("/top-accounts")
+              }}>
                 <Image src={ChangeIcon} />
                 Change
               </div>

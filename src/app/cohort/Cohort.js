@@ -99,6 +99,7 @@ class Cohort extends Component {
   }
 
   componentDidMount() {
+    localStorage.setItem("previewAddress", "");
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", this.state.startTime / 1000);
     PageViewWhale({

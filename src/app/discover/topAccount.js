@@ -155,7 +155,7 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   componentDidMount() {
-    localStorage.setItem("previewAddress", "");
+    // localStorage.setItem("previewAddress", "");
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
