@@ -74,6 +74,13 @@ import {
   ProfitLossEV,
   HomePage,
   HomeInsightsExpand,
+  AddMoreAddres,
+  AssetValueExpandview,
+  HomeCostSortByAsset,
+  HomeSortByCostBasis,
+  HomeSortByCurrentValue,
+  HomeSortByGainLoss,
+  HomeCostAssetHover,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
@@ -837,6 +844,11 @@ class Portfolio extends BaseReactComponent {
   simulateButtonClick = () => {
     const buttonElement = document.querySelector("#address-button");
     buttonElement.click();
+
+    AddMoreAddres({
+      email_address: getCurrentUser().email,
+      session_id: getCurrentUser().id
+    });
   };
 
   sortArray = (key, order) => {
@@ -885,12 +897,16 @@ class Portfolio extends BaseReactComponent {
       this.setState({
         sortBy: sort,
       });
-      console.log("asset");
+      HomeCostSortByAsset({
+        session_id: getCurrentUser().id,
+        email_address:getCurrentUser().email
+      });
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
         sortBy: sort,
       });
+      
     } else if (e.title === "Current price") {
       this.sortArray("CurrentPrice", isDown);
       this.setState({
@@ -906,16 +922,28 @@ class Portfolio extends BaseReactComponent {
       this.setState({
         sortBy: sort,
       });
+       HomeSortByCostBasis({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
     } else if (e.title === "Current value") {
       this.sortArray("CurrentValue", isDown);
       this.setState({
         sortBy: sort,
       });
+       HomeSortByCurrentValue({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
     } else if (e.title === "Gain loss") {
       this.sortArray("GainLoss", isDown);
       this.setState({
         sortBy: sort,
       });
+       HomeSortByGainLoss({
+         session_id: getCurrentUser().id,
+         email_address: getCurrentUser().email,
+       });
     }
   };
   render() {
@@ -1552,22 +1580,18 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 isText={true}
                 text={rowData.AssetCode}
               >
-                <div style={{display:"flex", justifyContent:"center"}}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
                   <div style={{ position: "relative", width:"fit-content" }}>
                     <Image
                       src={rowData.Asset}
                       className="history-table-icon"
                       style={{width:"2rem", height:"2rem"}}
                       onMouseEnter={() => {
-                        // //console.log("address", rowData.from.metaData);
-                        // TransactionHistoryAddress({
-                        //   session_id: getCurrentUser().id,
-                        //   email_address: getCurrentUser().email,
-                        //   address_hovered: rowData.from.address,
-                        //   display_name: rowData.from.wallet_metaData?.text
-                        //     ? rowData.from.wallet_metaData?.text
-                        //     : rowData.from.metaData?.displayAddress,
-                        // });
+                          HomeCostAssetHover({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                            asset_hover: rowData.AssetCode,
+                          }); 
                       }}
                     />
                     {rowData.chain && (
@@ -2018,6 +2042,10 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                         isUpdate={this.state.isUpdate}
                         handleClick={() => {
                           if (this.state.lochToken) {
+                            AssetValueExpandview({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
                             this.props.history.push(
                               "/intelligence/asset-value"
                             );
@@ -2262,10 +2290,10 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                           // console.log("wallet", this.state.userWalletList);
                           if (this.state.lochToken) {
                             this.props.history.push("/intelligence/costs");
-                            // TransactionHistoryEView({
-                            //   session_id: getCurrentUser().id,
-                            //   email_address: getCurrentUser().email,
-                            // });
+                            AverageCostBasisEView({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
                           }
                         }}
                         subTitle="Understand your average entry price"
@@ -2274,6 +2302,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                         headerHeight={60}
                         isArrow={true}
                         isLoading={this.state.AvgCostLoading}
+                        isAnalytics="average cost basis"
                       />
                     </div>
                   </Col>

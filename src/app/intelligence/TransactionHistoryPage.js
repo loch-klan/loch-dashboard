@@ -16,7 +16,7 @@ import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import { CurrencyType, noExponents, UpgradeTriggered } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { TransactionHistoryAddress, TransactionHistoryAssetFilter, TransactionHistoryHideDust, TransactionHistoryMethodFilter, TransactionHistoryPageView, TransactionHistorySearch, TransactionHistorySortAmount, TransactionHistorySortAsset, TransactionHistorySortDate, TransactionHistorySortFrom, TransactionHistorySortMethod, TransactionHistorySortTo, TransactionHistorySortUSDAmount, TransactionHistorySortUSDFee, TransactionHistoryYearFilter } from "../../utils/AnalyticsFunctions";
+import { TimeSpentTransactionHistory, TransactionHistoryAddress, TransactionHistoryAssetFilter, TransactionHistoryHideDust, TransactionHistoryMethodFilter, TransactionHistoryPageBack, TransactionHistoryPageNext, TransactionHistoryPageSearch, TransactionHistoryPageView, TransactionHistorySearch, TransactionHistoryShare, TransactionHistorySortAmount, TransactionHistorySortAsset, TransactionHistorySortDate, TransactionHistorySortFrom, TransactionHistorySortMethod, TransactionHistorySortTo, TransactionHistorySortUSDAmount, TransactionHistorySortUSDFee, TransactionHistoryYearFilter } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
@@ -116,6 +116,9 @@ class TransactionHistoryPage extends BaseReactComponent {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
+
+      // start time for time spent on page
+      startTime: "",
     };
     this.delayTimer = 0;
   }
@@ -128,6 +131,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   };
 
   componentDidMount() {
+    this.state.startTime = new Date() * 1;
     TransactionHistoryPageView({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -157,6 +161,20 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   }
 
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentTransactionHistory({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+
+    //  this.timeFilter(0);
+  }
+
   callApi = (page = START_INDEX) => {
     this.setState({ tableLoading: true });
     let data = new URLSearchParams();
@@ -174,12 +192,38 @@ class TransactionHistoryPage extends BaseReactComponent {
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
 
+    // console.log("prev", prevPage,"cur", page)
+
     if (
       prevPage !== page ||
       prevState.condition !== this.state.condition ||
       prevState.sort !== this.state.sort
     ) {
+
+    // console.log("prev", prevPage, "cur", page);
       this.callApi(page);
+      if (prevPage !== page) {
+         if (prevPage - 1 === page) {
+           TransactionHistoryPageBack({
+             session_id: getCurrentUser().id,
+             email_address: getCurrentUser().email,
+             page_no: page + 1,
+           });
+         } else if (prevPage + 1 === page) {
+           TransactionHistoryPageNext({
+             session_id: getCurrentUser().id,
+             email_address: getCurrentUser().email,
+             page_no: page + 1,
+           });
+         } else {
+           TransactionHistoryPageSearch({
+             session_id: getCurrentUser().id,
+             email_address: getCurrentUser().email,
+             page_search: page + 1,
+           });
+         }
+      }
+       
     }
 
     // add wallet
@@ -246,19 +290,22 @@ class TransactionHistoryPage extends BaseReactComponent {
     } else if (key === "SEARCH_BY_ASSETS_IN") {
       // console.log("tes", this.props.intelligenceState.assetFilter);
       let assets = [];
+      // console.log("con", value !== "allAssets");
       Promise.all([
-        () => {
+        new Promise((resolve) => {
+          // console.log("abc");
           if (value !== "allAssets") {
-            // console.log("test");
+            console.log("test");
             this.props.intelligenceState?.assetFilter?.map((e) => {
               if (value?.includes(e.value)) {
                 assets.push(e.label);
               }
             });
           }
-        },
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
       ]).then(() => {
-        // console.log("asset arr", assets)
+        // console.log("asset arr", assets, value);
         TransactionHistoryAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
@@ -488,6 +535,11 @@ class TransactionHistoryPage extends BaseReactComponent {
       "?redirect=intelligence/transaction-history";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
+
+    TransactionHistoryShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email
+    });
 
     // console.log("share pod", shareLink);
   };

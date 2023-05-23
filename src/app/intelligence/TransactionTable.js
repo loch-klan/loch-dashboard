@@ -19,7 +19,7 @@ function TransactionTable(props) {
             subtitle={props.subTitle}
             isArrow={props.isArrow}
             handleClick={props.handleClick}
-            isAnalytics="Transaction Table"
+            isAnalytics={props?.isAnalytics ? props?.isAnalytics : "Transaction Table"}
             isGainLoss={props.isGainLoss}
             ishideDust={props.ishideDust}
             handleDust={props.handleDust}

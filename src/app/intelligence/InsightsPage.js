@@ -7,7 +7,7 @@ import increaseYield from '../../assets/images/icons/increase-yield.svg'
 import { getAllInsightsApi } from "./Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
-import { AllInsights, InsightPage, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk } from "../../utils/AnalyticsFunctions";
+import { AllInsights, InsightPage, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk, InsightsShare, RiskTypeDropdownClicked, RiskTypeHover, RiskTypeSelected, TimeSpentInsights } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 
@@ -70,6 +70,9 @@ class InsightsPage extends Component {
       triggerId: 9,
 
       riskType: "All risks",
+
+      // start time for time spent on page
+      startTime: "",
     };
   }
 
@@ -81,6 +84,7 @@ class InsightsPage extends Component {
   };
 
   componentDidMount() {
+    this.state.startTime = new Date() * 1;
     InsightPage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -89,6 +93,16 @@ class InsightsPage extends Component {
     GetAllPlan();
     getUser();
     this.setState({});
+  }
+
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    TimeSpentInsights({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -200,59 +214,59 @@ class InsightsPage extends Component {
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
+    InsightsShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+
     // console.log("share pod", shareLink);
   };
 
   handleInsights = (e) => {
+  
     let title = e.split(" ")[1];
     if (e.split(" ")[2] !== undefined) {
-    
       title = title + " " + e.split(" ")[2];
     }
-    if (e.split(" ")[3] !== "undefined")
-    
-    {
-         
+    if (e.split(" ")[3] !== "undefined") {
       title = title + " " + e.split(" ")[3];
-      }
-      console.log("title", title);
+    }
+    console.log("title", title);
     this.setState(
       {
         riskType: title,
-  
-      }, () => {
-        
+      },
+      () => {
+        RiskTypeSelected({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          type:title
+        });
         let riskType = InsightType.getRiskNumber(this.state.riskType);
         let insightList = this.props.intelligenceState.updatedInsightList;
-        
+
         if (riskType !== 0) {
           insightList =
-          this.state.selectedFilter === 1
-            ? insightList?.filter(
-              (item) =>
-                item.sub_type === riskType
-            )
-            : insightList?.filter(
-              (item) =>
-                item.sub_type === riskType &&
-                item.insight_type === this.state.selectedFilter
-            );
+            this.state.selectedFilter === 1
+              ? insightList?.filter((item) => item.sub_type === riskType)
+              : insightList?.filter(
+                  (item) =>
+                    item.sub_type === riskType &&
+                    item.insight_type === this.state.selectedFilter
+                );
         } else {
           if (this.state.selectedFilter !== 1) {
             insightList = insightList?.filter(
-              (item) =>
-                item.insight_type === this.state.selectedFilter
+              (item) => item.insight_type === this.state.selectedFilter
             );
           }
         }
-        
-            this.setState({
-              updatedInsightList: insightList,
-            });
-        
-        
 
-      })
+        this.setState({
+          updatedInsightList: insightList,
+        });
+      }
+    );
   };
 
   render() {
@@ -350,7 +364,17 @@ class InsightsPage extends Component {
                   This week
                 </h2>
 
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center" }} onClick={() => {
+                    RiskTypeDropdownClicked({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                }} onMouseEnter={() => {
+                  RiskTypeHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}>
                   <DropDown
                     class="cohort-dropdown"
                     list={[

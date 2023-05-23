@@ -479,33 +479,6 @@ export const VolumeTradeByCP = ({ session_id, email_address }) => {
   //console.log("Home:volume traded by counterparty expanded view");
 };
 
-//23. Home:average cost basis expanded view
-export const AverageCostBasisEView = ({ session_id, email_address }) => {
-  const event_name = "Home:average cost basis expanded view";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Home:average cost basis expanded view");
-};
-
-//24. Home:average cost basis specific asset selected
-export const AverageCostBasisAsset = ({
-  session_id,
-  email_address,
-  asset_clicked,
-}) => {
-  const event_name = "Home:average cost basis specific asset selected";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "asset clicked": asset_clicked,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Home:average cost basis specific asset selected");
-};
-
 //25. Home:language clicked
 export const LanguageClicked = ({
   session_id,
@@ -1212,109 +1185,6 @@ export const CounterpartyFeesSpecificBar = ({ session_id, email_address, counter
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Costs:counterparty fees specific bar");
-}
-
-
-//75. Costs:average cost basis expanded view
-export const CAverageCostBasis = ({ session_id, email_address}) => {
-  const event_name = "Costs:average cost basis expanded view";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Costs:average cost basis expanded view");
-}
-
-
-//76. Costs:average cost basis specific asset selected
-export const CAverageCostBasisSpecific = ({ session_id, email_address,asset_selected}) => {
-  const event_name = "Costs:average cost basis specific asset selected";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "asset selected":asset_selected
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Costs:average cost basis specific asset selected");
-}
-
-
-//77. Costs:average cost basis: sort by asset
-export const CostSortByAsset = ({ session_id, email_address}) => {
-  const event_name = "Costs:average cost basis: sort by asset";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Costs:average cost basis: sort by asset");
-}
-
-//78. Costs:average cost basis: sort by average cost price
-export const CostSortByCostPrice = ({ session_id, email_address}) => {
-  const event_name = "Costs:average cost basis: sort by average cost price";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Costs:average cost basis: sort by average cost price");
-}
-
-//79. Costs:average cost basis: sort by current price
-export const CostSortByCurrentPrice = ({ session_id, email_address}) => {
-  const event_name = "Costs:average cost basis: sort by current price";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Costs:average cost basis: sort by current price");
-}
-
-//80. Costs:average cost basis: sort by amount
-export const CostSortByAmount = ({ session_id, email_address}) => {
-  const event_name = "Costs:average cost basis: sort by amount";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Costs:average cost basis: sort by amount");
-}
-
-//81. Costs:average cost basis: sort by cost basis
-export const SortByCostBasis = ({ session_id, email_address}) => {
-  const event_name = "Costs:average cost basis: sort by cost basis";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Costs:average cost basis: sort by cost basis");
-}
-
-//82. Costs:average cost basis: sort by current value
-export const SortByCurrentValue = ({ session_id, email_address}) => {
-  const event_name = "Costs:average cost basis: sort by current value";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Costs:average cost basis: sort by current value");
-}
-
-//83. Costs:average cost basis: sort by % gain / loss
-export const SortByGainLoss = ({ session_id, email_address}) => {
-  const event_name = "Costs:average cost basis: sort by % gain / loss";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Costs:average cost basis: sort by % gain / loss");
 }
 
 
@@ -2287,12 +2157,14 @@ export const TimeSpentWhalePodPage = ({
   session_id,
   email_address,
   time_spent,
+  pod_name
 }) => {
   const event_name = "Whale: time spent on Expanded whale pod page";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "time spent": time_spent,
+    "pod name": pod_name
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:time spent on onboarding");
@@ -3134,7 +3006,7 @@ export const TransactionHistoryHideDust = ({
   //console.log("Menu:intelligence menu");
 };
 
-// Transaction History: page next
+// Transaction History: page next - done
 
 export const TransactionHistoryPageNext = ({
   session_id,
@@ -3152,7 +3024,7 @@ export const TransactionHistoryPageNext = ({
 };
 
 
-// Transaction History: page back
+// Transaction History: page back - done
 
 export const TransactionHistoryPageBack = ({
   session_id,
@@ -3181,6 +3053,39 @@ export const TransactionHistoryPageSearch = ({
     "session id": session_id,
     "email address": email_address,
     "page search": page_search
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
+// Transaction History: add wallet - done
+export const AssetValueAddWallet = ({
+  session_id,
+  email_address,
+  addresses_added,
+  ENS_added,
+  addresses_deleted,
+  ENS_deleted,
+  unrecognized_addresses,
+  recognized_addresses,
+  blockchains_detected,
+  nicknames
+
+}) => {
+  const event_name = "Asset value: add wallet";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "addresses added": addresses_added,
+    "ENS added": ENS_added,
+    "addresses deleted":
+      addresses_deleted.length == 0 ? ["None"] : addresses_deleted,
+    "ENS deleted": ENS_deleted.length == 0 ? ["None"] : ENS_deleted,
+    "unrecognized addresses":
+      unrecognized_addresses.length == 0 ? ["None"] : unrecognized_addresses,
+    "recognized addresses": recognized_addresses,
+    "blockchains detected": blockchains_detected,
+    nicknames: nicknames,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
@@ -3592,3 +3497,855 @@ export const TextboxPeace = () => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
+
+
+//23. Home Page: Average cost basis expanded view
+export const AverageCostBasisEView = ({ session_id, email_address }) => {
+  const event_name = "Home Page: Average cost basis expanded view";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home:average cost basis expanded view");
+};
+
+
+// Home Page: insight add more address clicked - done
+export const AddMoreAddres = ({ session_id, email_address }) => {
+  const event_name = "Home Page: insight add more address clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: insight add more address clicked");
+};
+
+// Home Page: Network tab expanded - done
+export const NetworkTab = ({ session_id, email_address }) => {
+  const event_name = "Home Page: Network tab expanded";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Network tab expanded");
+};
+
+
+// Home Page: Asset value expanded page - done
+export const AssetValueExpandview = ({ session_id, email_address }) => {
+  const event_name = "Home Page: Asset value expanded page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Asset value expanded page");
+};
+
+//Home Page: Asset Value: x axis manipulation - done
+export const HomeAssetValueNavigator = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Home Page: Asset Value: x axis manipulation";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  console.log("Home Page: Asset Value: x axis manipulation");
+};
+
+// average cost basis
+
+
+//77. Home Page: Average cost basis: sort by asset - done
+export const HomeCostSortByAsset = ({ session_id, email_address}) => {
+  const event_name = "Home Page: Average cost basis: sort by asset";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Average cost basis: sort by asset");
+}
+
+
+//81. Home Page: Average cost basis: sort by cost basis - done
+export const HomeSortByCostBasis = ({ session_id, email_address}) => {
+  const event_name = "Home Page: Average cost basis: sort by cost basis";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Average cost basis: sort by cost basis");
+}
+
+
+//82. Home Page: Average cost basis: sort by current value - done
+export const HomeSortByCurrentValue = ({ session_id, email_address}) => {
+  const event_name = "Home Page: Average cost basis: sort by current value";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Average cost basis: sort by current value");
+}
+
+//83. Home Page: Average cost basis: sort by percent gain and loss - done
+export const HomeSortByGainLoss = ({ session_id, email_address}) => {
+  const event_name =
+    "Home Page: Average cost basis: sort by percent gain and loss";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Average cost basis: sort by percent gain and loss");
+}
+
+//83. Home Page: Average cost basis: asset hover - done
+export const HomeCostAssetHover = ({ session_id, email_address, asset_hover}) => {
+  const event_name =
+    "Home Page: Average cost basis: asset hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset hovered": asset_hover
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Average cost basis: asset hover");
+}
+
+// ------
+
+//75. Costs: Average Cost Basis: sort cost basis - done
+export const CAverageCostBasisSort = ({ session_id, email_address}) => {
+  const event_name = "Costs: Average Cost Basis: sort cost basis";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort cost basis");
+}
+
+
+//77.Costs: Average Cost Basis: sort asset - done
+export const CostSortByAsset = ({ session_id, email_address}) => {
+  const event_name = "Costs: Average Cost Basis: sort asset";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort asset");
+}
+
+//78. Costs: Average Cost Basis: sort Average cost price - done
+export const CostSortByCostPrice = ({ session_id, email_address}) => {
+  const event_name = "Costs: Average Cost Basis: sort Average cost price";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort Average cost price");
+}
+
+//79. Costs: Average Cost Basis: sort current price - done
+export const CostSortByCurrentPrice = ({ session_id, email_address}) => {
+  const event_name = "Costs: Average Cost Basis: sort current price";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort current price");
+}
+
+//80.Costs: Average Cost Basis: sort amount - done
+export const CostSortByAmount = ({ session_id, email_address}) => {
+  const event_name = "Costs: Average Cost Basis: sort amount";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort amount");
+}
+
+
+//82. Costs: Average Cost Basis: sort current value - done
+
+export const SortByCurrentValue = ({ session_id, email_address}) => {
+  const event_name = "Costs: Average Cost Basis: sort current value";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort current value);
+}
+
+//83. Costs: Average Cost Basis: sort % gain loss - done
+export const SortByGainLoss = ({ session_id, email_address}) => {
+  const event_name = "Costs: Average Cost Basis: sort % gain loss";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: sort % gain loss");
+}
+
+// ------------
+
+// Menu: Intelligence submenu: netflow - done
+export const MenuIntNetflow = ({ session_id, email_address}) => {
+  const event_name = "Menu: Intelligence submenu: netflow";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu: Intelligence submenu: netflow");
+}
+
+// Menu: Intelligence submenu: asset value - done
+export const MenuIntAssetValue = ({ session_id, email_address}) => {
+  const event_name = "Menu: Intelligence submenu: asset value";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu: Intelligence submenu: asset value");
+}
+
+
+// Menu: Intelligence submenu: insights - done
+export const MenuIntInsight = ({ session_id, email_address}) => {
+  const event_name = "Menu: Intelligence submenu: insights";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu: Intelligence submenu: insights");
+}
+
+
+// Menu: Intelligence submenu: costs - done
+export const MenuIntCosts = ({ session_id, email_address}) => {
+  const event_name = "Menu: Intelligence submenu: costs";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu: Intelligence submenu: costs");
+}
+
+// Menu: Intelligence submenu: transaction history - done
+export const MenuIntTransactionHistory = ({ session_id, email_address}) => {
+  const event_name = "Menu: Intelligence submenu: transaction history";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu: Intelligence submenu: transaction history");
+}
+
+//46. Intelligence:costs - done
+export const IntCost = ({ session_id, email_address }) => {
+  const event_name = "Intelligence:costs";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:costs");
+};
+
+
+//46. Intelligence: share - done
+export const IntShare = ({ session_id, email_address }) => {
+  const event_name = "Intelligence: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence: share");
+};
+
+
+//8.Transaction History: time spent on transaction history page
+export const TimeSpentTransactionHistory = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Transaction History: time spent on transaction history page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Transaction History: time spent on transaction history page");
+};
+
+
+
+//46.Transaction history: share - done
+export const TransactionHistoryShare = ({ session_id, email_address }) => {
+  const event_name = "Transaction history: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Transaction history: share");
+};
+
+// Asset value: time spent on asset value page - done
+
+export const TimeSpentAssetValue = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Asset value: time spent on asset value page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Asset value: time spent on asset value page");
+};
+
+// Asset Value: share - done
+export const AssetValueShare = ({ session_id, email_address }) => {
+  const event_name = "Asset Value: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Asset Value: share");
+};
+
+
+// Insights: time spent on insights page - done
+
+export const TimeSpentInsights = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Insights: time spent on insights page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Insights: time spent on insights page");
+};
+
+// Insights: share - done
+export const InsightsShare = ({ session_id, email_address }) => {
+  const event_name = "Insights: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Insights: share");
+};
+
+// Insights: risk type dropdown clicked - done
+export const RiskTypeDropdownClicked = ({ session_id, email_address }) => {
+  const event_name = "Insights: risk type dropdown clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Insights: risk type dropdown clicked");
+};
+
+// Insights: risk type selected- done
+export const RiskTypeSelected = ({ session_id, email_address, type }) => {
+  const event_name = "Insights: risk type selected";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "risk selected": type
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Insights: risk type selected");
+};
+
+// Insights: risk type dropdown hover - done
+export const RiskTypeHover = ({ session_id, email_address }) => {
+  const event_name = "Insights: risk type dropdown hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Insights: risk type dropdown hover");
+};
+
+// Page View: Whale watch - done
+export const PageViewWhale = ({ session_id, email_address }) => {
+  const event_name = "Page View: Whale watch";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Page View: Whale watch");
+};
+
+// Page View: Whale pod expanded page - done
+export const PageViewWhaleExpanded = ({ session_id, email_address, pod_name }) => {
+  const event_name = "Page View: Whale pod expanded page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Page View: Whale pod expanded page");
+};
+
+// Whale: Expanded Pod page: share - done
+export const WhaleExpandShare = ({ session_id, email_address, pod_name }) => {
+  const event_name = "Whale: Expanded Pod page: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: share");
+};
+
+// Whale: Expanded Pod page: Defi balance sheet: yield expanded - done
+export const WhaleExpandDefiCredit = ({ session_id, email_address, pod_name }) => {
+  const event_name =
+    "Whale: Expanded Pod page: Defi balance sheet: yield expanded";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: Defi balance sheet: yield expanded");
+};
+
+// Whale: Expanded Pod page: Defi balance sheet: debt expanded - done
+export const WhaleExpandDefiDebt = ({ session_id, email_address, pod_name }) => {
+  const event_name =
+    "Whale: Expanded Pod page: Defi balance sheet: debt expanded";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: Defi balance sheet: debt expanded");
+};
+
+
+// Whale: Expanded Pod page: asset filter - done
+export const WhaleExpandAssetFilter = ({
+  session_id,
+  email_address,
+  selected,
+  pod_name,
+}) => {
+  const event_name = "Whale: Expanded Pod page: asset filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "selected asset": selected,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: asset filter");
+};
+
+
+// Whale: Expanded Pod page: chain filter - done
+export const WhaleExpandChainFilter = ({
+  session_id,
+  email_address,
+  selected,
+  pod_name,
+}) => {
+  const event_name = "Whale: Expanded Pod page: chain filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "selected asset": selected,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("WWhale: Expanded Pod page: chain filter");
+};
+
+// Whale: Expanded Pod page: hide dust - done
+export const WhaleExpandHideDust = ({ session_id, email_address, pod_name }) => {
+  const event_name = "Whale: Expanded Pod page: hide dust";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: hide dust");
+};
+
+// Whale: Expanded Pod page: address copied - done
+export const WhaleExpandAddressCopied = ({
+  session_id,
+  email_address,
+  address,
+  pod_name,
+}) => {
+  const event_name = "Whale: Expanded Pod page: address copied";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "copied address": address,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: address copied");
+};
+
+// Whale: Expanded Pod page: address deleted - done
+export const WhaleExpandAddressDelete = ({
+  session_id,
+  email_address,
+  address,
+  pod_name,
+}) => {
+  const event_name = "Whale: Expanded Pod page: address deleted";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "deleted address": address,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: address deleted");
+};
+
+// Whale: Expanded Pod page: Edit button clicked - done
+export const WhaleExpandEdit = ({ session_id, email_address, pod_name }) => {
+  const event_name = "Whale: Expanded Pod page: Edit button clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: Edit button clicked");
+};
+
+
+// Costs: share - done
+export const CostShare = ({ session_id, email_address }) => {
+  const event_name = "Costs: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: share");
+};
+
+// Costs: Add wallet - done
+export const CostAddWallet = ({
+  session_id,
+  email_address,
+  addresses_added,
+  ENS_added,
+  addresses_deleted,
+  ENS_deleted,
+  unrecognized_addresses,
+  recognized_addresses,
+  blockchains_detected,
+  nicknames
+
+}) => {
+  const event_name = "Costs: Add wallet";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "addresses added": addresses_added,
+    "ENS added": ENS_added,
+    "addresses deleted":
+      addresses_deleted.length == 0 ? ["None"] : addresses_deleted,
+    "ENS deleted": ENS_deleted.length == 0 ? ["None"] : ENS_deleted,
+    "unrecognized addresses":
+      unrecognized_addresses.length == 0 ? ["None"] : unrecognized_addresses,
+    "recognized addresses": recognized_addresses,
+    "blockchains detected": blockchains_detected,
+    nicknames: nicknames,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Add wallet");
+};
+
+// Costs: Average Cost Basis: hide dust - done
+export const CostHideDust = ({ session_id, email_address }) => {
+  const event_name = "Costs: Average Cost Basis: hide dust";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: Average Cost Basis: hide dust");
+};
+
+
+//Profile: time spent on profile page - done
+
+export const TimeSpentProfile = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Profile: time spent on profile page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Profile: time spent on profile page");
+};
+
+
+//Defi: time spent on defi page - done
+export const TimeSpentDefi = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Defi: time spent on defi page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Defi: time spent on defi page");
+};
+
+
+//Page View: Defi page - done
+export const PageviewDefi = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Page View: Defi page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Page View: Defi page");
+};
+
+//Defi: balance sheet: yield expanded - done
+export const DefiCredit = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Defi: balance sheet: yield expanded";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Defi: balance sheet: yield expanded");
+};
+
+
+//Defi: balance sheet: debt expanded - done
+export const DefiDebt = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Defi: balance sheet: debt expanded";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Defi: balance sheet: debt expanded");
+};
+
+//Defi: sort by amount - done
+export const DefiSortByAmount = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Defi: sort by amount";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Defi: sort by amount");
+};
+
+
+//Defi: sort by name - done
+export const DefiSortByName = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Defi: sort by name";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Defi: sort by name");
+};
+
+
+//Menu: Me tab - done
+export const MenuMeTab = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Me tab";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Me tab");
+};
+
+
+//Menu: Discover tab - done
+export const MenuDiscoverTab = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Discover tab";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Discover tab");
+};
+
+//Menu: Top accounts - done
+export const MenuTopAccounts = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Top accounts";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Top accounts");
+};
+
+
+//Menu: Twitter influencers - done
+export const MenuTwitterInfluencers = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Twitter influencers";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Twitter influencers");
+};
+
+//Menu: Watchlist - done
+export const MenuWatchlist = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu: Watchlist";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Watchlist");
+};
+
+//Menu:export hide dust - done
+export const MenuExportHideDust = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Menu:export hide dust";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu:export hide dust");
+};
+
+
+
+//Topbar sign up - done
+export const TopbarSignup = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Topbar: sign up";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Topbar: sign up");
+};
+
+
+//Topbar sign up - done
+export const TopbarSignin = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Topbar: sign up";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Topbar: sign up");
+};
+

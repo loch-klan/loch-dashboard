@@ -484,6 +484,12 @@ export const getProtocolBalanceApi = (ctx,data) => {
             let debt_total = 0;
 
             let tableRow = [];
+
+            // getting all type in this array per card
+            let assetTypes = item?.assets?.map((e) => e?.product_type);
+            // console.log("asset types", item?.name, assetTypes);
+
+            let debtTypes = assetTypes.includes(40) ? [30,50] : [30];
             if (item.assets?.length !== 0) {
               item?.assets.map((asset) => {
                 let assetSymbol = [];
@@ -502,12 +508,20 @@ export const getProtocolBalanceApi = (ctx,data) => {
                     userAssetSymbol.push(token.code);
                   }
                 });
-                let typename = AssetType.getText(asset.product_type);
-                let type = asset.product_type;
+                // if 50 in debtTypes then add 50 data into borrowed means 30 
+                let typename = asset.product_type === 50 && debtTypes.includes(
+                  asset.product_type
+                )
+                  ? AssetType.getText(30)
+                  : AssetType.getText(asset.product_type);
+                let type = asset.product_type === 50 && debtTypes.includes(
+                  asset.product_type
+                )
+                ? 30 : asset.product_type;
                 let usdValue = asset.balance_usd;
                 let type_text = "";
 
-                if (![30, 50].includes(type)) {
+                if (!debtTypes.includes(type)) {
                   yeild_total = yeild_total + usdValue;
                   type_text = "Yield";
                 } else {
@@ -572,7 +586,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
                 }
               });
 
-            if (!isfound && ![30,50].includes(e)) {
+            if (!isfound && ![30].includes(e)) {
               YieldValues.push({
                 id: e,
                 name: AssetType.getText(e),
@@ -581,7 +595,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
             }
           });
           if (DebtValues.length === 0) {
-            [30, 50]?.map(e => {
+            [30]?.map(e => {
               DebtValues.push({
                 id: e,
                 name: AssetType.getText(e),

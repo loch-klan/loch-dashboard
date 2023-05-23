@@ -339,6 +339,7 @@ class BarGraphSection extends Component {
                       // isChain={true}
                       LightTheme={true}
                       placeholderName={"asset"}
+                      getObj={this.props?.getObj}
                       // selectedTokens={this.state.activeBadge}
                     />
                   </div>

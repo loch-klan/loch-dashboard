@@ -21,6 +21,7 @@ import {
   HomeDefiDebt,
   HomeDefiYield,
   HomeRefreshButton,
+  NetworkTab,
   PiechartChainName,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -553,14 +554,14 @@ class PieChart2 extends BaseReactComponent {
     let DebtValues = [];
     let allAssetType = [20, 30, 40, 50, 60, 70];
     allAssetType.map((e) => {
-      if (![30, 50].includes(e)) {
+      if (![30].includes(e)) {
         YieldValues.push({
           id: e,
           name: AssetType.getText(e),
           totalPrice: 0,
         });
       } else {
-         [30, 50].map((e) => {
+         [30].map((e) => {
            DebtValues.push({
              id: e,
              name: AssetType.getText(e),
@@ -586,6 +587,11 @@ class PieChart2 extends BaseReactComponent {
       isChainToggle: !this.state.isChainToggle,
     });
     this.props.undetectedWallet(!this.state.isChainToggle);
+
+    NetworkTab({
+      session_id: getCurrentUser().id,
+      email_address:getCurrentUser().email
+    });
   };
 
   toggleYield = () => {
