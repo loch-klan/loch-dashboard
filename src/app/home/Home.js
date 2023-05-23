@@ -5,7 +5,7 @@ import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 import OnBoarding from "../onboarding";
 import "../../assets/scss/onboarding/_onboarding.scss";
 import { Button, Image } from "react-bootstrap";
-import Banner from "../../assets/images/Overlay.png";
+import Banner from "../../assets/images/bg-img-welcome.png";
 import { deleteToken, getToken } from '../../utils/ManageToken';
 import { getAllCurrencyRatesApi, GetDefaultPlan, setPageFlagDefault } from '../common/Api';
 import UpgradeModal from '../common/upgradeModal';
@@ -268,6 +268,7 @@ class Home extends BaseReactComponent {
             {!this.state.showEmailPopup && (
               <>
                 <Image src={Banner} className="overlay-banner" />
+                <div className="overlay-bg"></div>
                 <OnBoarding {...this.props} hideModal={this.hideModal} />
               </>
             )}
