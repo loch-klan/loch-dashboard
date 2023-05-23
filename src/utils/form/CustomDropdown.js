@@ -286,7 +286,7 @@ class CustomDropdown extends Component {
     selected = this.state?.options
       .filter((e) => e?.isSelected === true)
       .map((e) =>
-        this.props.isChain ? { name: e.label, id: e.value } : e?.value
+        this.props.isChain || this.props?.getObj ? { name: e.label, id: e.value } : e?.value
       );
   
     let count;
@@ -294,11 +294,12 @@ class CustomDropdown extends Component {
       // selected = this.props.isChain
       //   ? [{ name: "All", id: "" }]
       //   : selected?.toString();
-      selected = this.props.isChain
-        ? [{ name: "All", id: "" }]
-        : this.props.isLineChart
-        ? []
-        : selected[0]?.toString();
+      selected =
+        this.props.isChain || this.props?.getObj
+          ? [{ name: "All", id: "" }]
+          : this.props.isLineChart
+          ? []
+          : selected[0]?.toString();
       count = 0;
     } else {
       count = selected.length;
@@ -369,6 +370,8 @@ class CustomDropdown extends Component {
             this.getSelected()?.selected
           );
       this.setState({ showMenu: false });
+
+
     } else {
       // console.log("Please select");
     }

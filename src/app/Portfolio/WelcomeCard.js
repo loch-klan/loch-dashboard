@@ -20,6 +20,8 @@ import AuthModal from "../common/AuthModal";
 import {
   ConnectExPopup,
   HomeConnectExchange,
+  TopbarSignin,
+  TopbarSignup,
   resetUser,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -48,13 +50,19 @@ export default function WelcomeCard(props) {
   const handleSigninModal = () => {
     setSigninModal(!signinModal);
 
-    // SigninMenu({
-    //   session_id: getCurrentUser().id,
-    // });
+    TopbarSignin({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   const handleSignUpModal = () => {
-     setSignUpModal(!signUpModal);
+    setSignUpModal(!signUpModal);
+    
+    TopbarSignup({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email
+    });
 
   }
 

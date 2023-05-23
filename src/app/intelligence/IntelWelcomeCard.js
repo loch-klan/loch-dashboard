@@ -13,6 +13,7 @@ import {
   TradeByCounterParty,
   Insights,
   AssetValueAnalytics,
+  IntCost,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 export default function IntelWelcomeCard(props) {
@@ -70,10 +71,10 @@ export default function IntelWelcomeCard(props) {
         background: "lightgreen",
         path: "/intelligence/costs",
         analyticEvent: () => {
-          // Insights({
-          //   session_id: getCurrentUser().id,
-          //   email_address: getCurrentUser().email,
-          // });
+          IntCost({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         },
       },
     ];
