@@ -4318,3 +4318,34 @@ export const MenuExportHideDust = ({
   ////console.log("Menu:export hide dust");
 };
 
+
+
+//Topbar sign up - done
+export const TopbarSignup = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Topbar: sign up";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Topbar: sign up");
+};
+
+
+//Topbar sign up - done
+export const TopbarSignin = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Topbar: sign up";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Topbar: sign up");
+};
+
