@@ -17,6 +17,15 @@ import {
   FeesTimePeriodFilter,
   CounterpartyFeesTimeFilter,
   CostsPage,
+  CostShare,
+  CostHideDust,
+  CAverageCostBasisSort,
+  CostSortByAsset,
+  CostSortByCostPrice,
+  CostSortByCurrentPrice,
+  CostSortByAmount,
+  SortByCurrentValue,
+  SortByGainLoss,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
@@ -355,36 +364,64 @@ class Cost extends Component {
       this.setState({
         sortBy: sort,
       });
+      CostSortByAsset({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
       // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
         sortBy: sort,
       });
+      CostSortByCostPrice({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (e.title === "Current price") {
       this.sortArray("CurrentPrice", isDown);
       this.setState({
         sortBy: sort,
+      });
+      CostSortByCurrentPrice({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
       });
     } else if (e.title === "Amount") {
       this.sortArray("Amount", isDown);
       this.setState({
         sortBy: sort,
       });
+     CostSortByAmount({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
     } else if (e.title === "Cost basis") {
       this.sortArray("CostBasis", isDown);
       this.setState({
         sortBy: sort,
+      });
+      CAverageCostBasisSort({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
       });
     } else if (e.title === "Current value") {
       this.sortArray("CurrentValue", isDown);
       this.setState({
         sortBy: sort,
       });
+      SortByCurrentValue({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (e.title === "Gain loss") {
       this.sortArray("GainLoss", isDown);
       this.setState({
         sortBy: sort,
+      });
+      SortByGainLoss({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
       });
     }
   };
@@ -398,6 +435,11 @@ class Cost extends Component {
     } else {
       this.props.ResetAverageCostBasis();
     }
+
+    CostHideDust({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   handleShare = () => {
@@ -412,6 +454,11 @@ class Cost extends Component {
       BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/costs";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
+
+    CostShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
 
     // console.log("share pod", shareLink);
   };

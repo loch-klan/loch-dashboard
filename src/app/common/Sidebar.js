@@ -64,6 +64,11 @@ import {
   SigninMenu,
   MenuCurrencyDropdown,
   MenuCurrencyDropdownSelected,
+  MenuIntNetflow,
+  MenuIntAssetValue,
+  MenuIntTransactionHistory,
+  MenuIntInsight,
+  MenuIntCosts,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
@@ -820,6 +825,10 @@ function Sidebar(props) {
                                   if (!isWallet) {
                                     e.preventDefault();
                                   } else {
+                                    MenuIntNetflow({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email
+                                    });
                                   }
                                 }}
                                 className={`nav-link ${
@@ -838,6 +847,10 @@ function Sidebar(props) {
                                   if (!isWallet) {
                                     e.preventDefault();
                                   } else {
+                                    MenuIntTransactionHistory({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
                                   }
                                 }}
                                 className="nav-link"
@@ -854,6 +867,10 @@ function Sidebar(props) {
                                   if (!isWallet) {
                                     e.preventDefault();
                                   } else {
+                                    MenuIntAssetValue({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
                                   }
                                 }}
                                 className="nav-link"
@@ -870,6 +887,10 @@ function Sidebar(props) {
                                   if (!isWallet) {
                                     e.preventDefault();
                                   } else {
+                                    MenuIntInsight({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
                                   }
                                 }}
                                 className="nav-link"
@@ -886,7 +907,7 @@ function Sidebar(props) {
                                   if (!isWallet) {
                                     e.preventDefault();
                                   } else {
-                                    WalletsMenu({
+                                    MenuIntCosts({
                                       session_id: getCurrentUser().id,
                                       email_address: getCurrentUser().email,
                                     });

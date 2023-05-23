@@ -39,6 +39,8 @@ import { AssetType } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { DefiCredit, DefiDebt, DefiSortByAmount, DefiSortByName, PageviewDefi, TimeSpentDefi } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class Defi extends Component {
   constructor(props) {
@@ -67,19 +69,13 @@ class Defi extends Component {
 
       // defi
 
-      // new
-      // totalYield: 0,
-      // totalDebt: 0,
-      // cardList: [],
-      // sortedList: [],
-      // DebtValues: [],
-      // YieldValues: [],
-      // BalanceSheetValue: {},
-
       isYeildToggle: false,
       isDebtToggle: false,
       upgradeModal: false,
       triggerId: 6,
+
+      // time spent
+      startTime: "",
     };
   }
   upgradeModal = () => {
@@ -100,12 +96,22 @@ class Defi extends Component {
       isYeildToggle: !this.state.isYeildToggle,
       // isDebtToggle: false,
     });
+
+    DefiCredit({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   toggleDebt = () => {
     this.setState({
       isDebtToggle: !this.state.isDebtToggle,
       // isYeildToggle: false,
+    });
+
+    DefiDebt({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
     });
   };
 
@@ -118,59 +124,73 @@ class Defi extends Component {
     //   this.handleReset();
     //   this.upgradeModal();
     // }
-    
+    this.state.startTime = new Date() * 1;
+     PageviewDefi({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
+
     this.props.getAllCoins();
-    this.setState({})
-   
+    this.setState({});
+
     // comment api
-      //  this.getYieldBalance();
-    
+    //  this.getYieldBalance();
+  }
+
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime / 1000);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentDefi({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
     if (!this.props.commonState.defi) {
-       this.props.updateDefiData({
-         totalYield: 0,
-         totalDebt: 0,
-         cardList: [],
-         sortedList: [],
-         DebtValues: [],
-         YieldValues: [],
-         BalanceSheetValue: {},
-       });
-      
+      this.props.updateDefiData({
+        totalYield: 0,
+        totalDebt: 0,
+        cardList: [],
+        sortedList: [],
+        DebtValues: [],
+        YieldValues: [],
+        BalanceSheetValue: {},
+      });
+
       // set defi page to true
-      this.props.updateWalletListFlag("defi",true);
-         this.setState(
-           {
-             isYeildToggle: false,
-             isDebtToggle: false,
-             apiResponse: false,
-           },
-           () => {
-             //  getAllProtocol(this);
-             this.getYieldBalance();
-           }
-         );
+      this.props.updateWalletListFlag("defi", true);
+      this.setState(
+        {
+          isYeildToggle: false,
+          isDebtToggle: false,
+          apiResponse: false,
+        },
+        () => {
+          //  getAllProtocol(this);
+          this.getYieldBalance();
+        }
+      );
     } else {
-        let defi_access = JSON.parse(localStorage.getItem("defi_access"));
-       if (this.state.userPlan?.name === "Free" && defi_access) {
-         setTimeout(() => {
-           this.setState(
-             {
-               isStatic: true,
-             },
-             () => {
-               this.upgradeModal();
-               localStorage.setItem("defi_access", false);
-             }
-           );
-         }, 10000);
-       }
+      let defi_access = JSON.parse(localStorage.getItem("defi_access"));
+      if (this.state.userPlan?.name === "Free" && defi_access) {
+        setTimeout(() => {
+          this.setState(
+            {
+              isStatic: true,
+            },
+            () => {
+              this.upgradeModal();
+              localStorage.setItem("defi_access", false);
+            }
+          );
+        }, 10000);
+      }
     }
-
-
   }
   sortArray = (key, order) => {
     let array = this.props.defiState?.cardList; //all data
@@ -201,7 +221,7 @@ class Defi extends Component {
     //   sortedList,
     // });
     // update fun
-     this.props.updateDefiData({ sortedList });
+    this.props.updateDefiData({ sortedList });
   };
 
   handleSort = (e) => {
@@ -222,10 +242,10 @@ class Defi extends Component {
       this.setState({
         sortBy: sort,
       });
-      //   WhaleSortByAmt({
-      //     email_address: getCurrentUser().email,
-      //     session_id: getCurrentUser().id,
-      //   });
+        DefiSortByAmount({
+          email_address: getCurrentUser().email,
+          session_id: getCurrentUser().id,
+        });
     } else if (e.title === "Date added") {
       this.sortArray("created_on", isDown);
       this.setState({
@@ -240,15 +260,14 @@ class Defi extends Component {
       this.setState({
         sortBy: sort,
       });
-      //   WhaleSortByName({
-      //     email_address: getCurrentUser().email,
-      //     session_id: getCurrentUser().id,
-      //   });
+         DefiSortByName({
+           email_address: getCurrentUser().email,
+           session_id: getCurrentUser().id,
+         });
     }
   };
 
   getYieldBalance = () => {
-  
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     if (UserWallet.length !== 0) {
       UserWallet?.map((e) => {
@@ -256,25 +275,22 @@ class Defi extends Component {
         data.append("wallet_address", e.address);
         this.props.getProtocolBalanceApi(this, data);
       });
-      
     } else {
       this.handleReset();
     }
     if (this.state.userPlan?.name === "Free") {
-    
-   setTimeout(() => {
-     this.setState(
-       {
-         isStatic: true,
-       },
-       () => {
-         this.upgradeModal();
-          localStorage.setItem("defi_access", false);
-       }
-     );
-   }, 10000);
-}
-   
+      setTimeout(() => {
+        this.setState(
+          {
+            isStatic: true,
+          },
+          () => {
+            this.upgradeModal();
+            localStorage.setItem("defi_access", false);
+          }
+        );
+      }, 10000);
+    }
   };
   // for 0 all value
   handleReset = () => {
@@ -295,7 +311,7 @@ class Defi extends Component {
             name: AssetType.getText(e),
             totalPrice: 0,
           });
-        })
+        });
       }
     });
 
@@ -326,8 +342,8 @@ class Defi extends Component {
     this.setState({
       apiResponse: value,
     });
-    
-  this.props.setPageFlagDefault()
+
+    this.props.setPageFlagDefault();
   };
 
   render() {

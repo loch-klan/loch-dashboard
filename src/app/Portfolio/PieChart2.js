@@ -21,6 +21,7 @@ import {
   HomeDefiDebt,
   HomeDefiYield,
   HomeRefreshButton,
+  NetworkTab,
   PiechartChainName,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -586,6 +587,11 @@ class PieChart2 extends BaseReactComponent {
       isChainToggle: !this.state.isChainToggle,
     });
     this.props.undetectedWallet(!this.state.isChainToggle);
+
+    NetworkTab({
+      session_id: getCurrentUser().id,
+      email_address:getCurrentUser().email
+    });
   };
 
   toggleYield = () => {

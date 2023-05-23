@@ -11,6 +11,7 @@ import { Col, Image, Row } from "react-bootstrap";
 import {
   InsightsViewMore,
   IntelligencePage,
+  IntShare,
   netflowAssetFilter,
   netflowChainFilter,
   netflowExplainer1,
@@ -547,15 +548,16 @@ class Intelligence extends Component {
   };
 
   handleAssetSelected = (arr) => {
+
     this.setState(
       {
-        selectedAssets: arr === "allAssets" ? [] : arr,
+        selectedAssets: arr[0].name === "All" ? [] : arr.map((e) => e?.id),
       },
       () => {
         netflowAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          selected: arr === "allAssets" ? "All assets" : arr,
+          selected: arr[0] === "All" ? "All assets" : arr.map((e) => e?.name),
         });
         this.handleBadge(this.state.selectedActiveBadge, this.state.title);
       }
@@ -575,6 +577,10 @@ class Intelligence extends Component {
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
+    IntShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email
+    });
     // console.log("share pod", shareLink);
   };
 
@@ -844,6 +850,7 @@ class Intelligence extends Component {
                       this.props.intelligenceState.ProfitLossAsset
                     }
                     handleAssetSelected={this.handleAssetSelected}
+                    getObj={true}
 
                     // comingSoon={true}
                   />

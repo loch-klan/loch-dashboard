@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import ProfileForm from "./ProfileForm";
 import PageHeader from "./../common/PageHeader";
 import FeedbackForm from "../common/FeedbackForm";
-import { ProfilePage } from "../../utils/AnalyticsFunctions";
+import { ProfilePage, TimeSpentProfile } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 // add wallet
@@ -120,10 +120,13 @@ class Profile extends Component {
       selectedPlan: selectedPlan ? selectedPlan : {},
       manageUrl: "",
       upgradeModal: false,
+
+      startTime: "",
     };
   }
 
   componentDidMount() {
+    this.state.startTime = new Date() * 1;
     ProfilePage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -133,6 +136,17 @@ class Profile extends Component {
     ManageLink(this);
   }
 
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime / 1000);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentProfile({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  }
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
@@ -150,7 +164,6 @@ class Profile extends Component {
   handleUpdateWallet = () => {
     // window.location.reload()
     this.setState({
-     
       isUpdate: this.state.isUpdate === 0 ? 1 : 0,
     });
   };
