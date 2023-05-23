@@ -487,7 +487,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
 
             // getting all type in this array per card
             let assetTypes = item?.assets?.map((e) => e?.product_type);
-            console.log("asset types", item?.name, assetTypes);
+            // console.log("asset types", item?.name, assetTypes);
 
             let debtTypes = assetTypes.includes(40) ? [30,50] : [30];
             if (item.assets?.length !== 0) {
