@@ -305,7 +305,7 @@ class Portfolio extends BaseReactComponent {
         graphLoading: true,
         tableLoading: true,
         AvgCostLoading: true,
-        chainLoader:true,
+        chainLoader: true,
       });
     }
   };
@@ -337,7 +337,7 @@ class Portfolio extends BaseReactComponent {
       graphLoading: true,
       tableLoading: true,
       AvgCostLoading: true,
-      chainLoader:true,
+      chainLoader: true,
     });
     // console.log("load")
   };
@@ -359,7 +359,6 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidMount() {
-    
     this.setState({
       settings: {
         ...this.state.settings,
@@ -375,7 +374,6 @@ class Portfolio extends BaseReactComponent {
     // reset discount modal
     localStorage.setItem("discountEmail", false);
 
- 
     this.state.startTime = new Date() * 1;
 
     // if share link store share id to show upgrade modal
@@ -396,7 +394,7 @@ class Portfolio extends BaseReactComponent {
 
     if (this.props.location?.state?.isVerified) {
       setTimeout(() => {
-        this.simulateButtonClick();
+        this.handleAddModal();
       }, 1000);
     }
     // get token to check if wallet address not loaded
@@ -426,7 +424,7 @@ class Portfolio extends BaseReactComponent {
         graphLoading: true,
         tableLoading: true,
         AvgCostLoading: true,
-        chainLoader:true,
+        chainLoader: true,
       });
 
       // console.log("inside coin rate list");
@@ -471,7 +469,7 @@ class Portfolio extends BaseReactComponent {
         // connect exchange api
         // this.props.getExchangeBalance("binance", this);
         // this.props.getExchangeBalance("coinbase", this);
-        this.props.getExchangeBalances(this,false);
+        this.props.getExchangeBalances(this, false);
 
         if (!isFound) {
           this.setState({
@@ -520,8 +518,6 @@ class Portfolio extends BaseReactComponent {
       // add loader
       this.props.getProfitAndLossApi(this, false, false, false);
 
-     
-
       // run when updatedInsightList === ""
       this.props.getAllInsightsApi(this);
 
@@ -532,9 +528,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllParentChains();
         getDetectedChainsApi(this);
       }, 1000);
-       
-     
-      
+
       GetAllPlan();
       getUser(this);
 
@@ -627,18 +621,18 @@ class Portfolio extends BaseReactComponent {
         //  console.log("portfolio before", this.props);
         // console.log("path",redirectPath)
         localStorage.setItem("gotShareProtfolio", true);
-        
-         let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
-         //  console.log("redirect", redirect);
-         if (!redirect && redirectPath) {
-           localStorage.setItem(
-             "ShareRedirect",
-             JSON.stringify({
-               path: redirectPath,
-               hash: this.props?.location?.hash,
-             })
-           );
-         }
+
+        let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
+        //  console.log("redirect", redirect);
+        if (!redirect && redirectPath) {
+          localStorage.setItem(
+            "ShareRedirect",
+            JSON.stringify({
+              path: redirectPath,
+              hash: this.props?.location?.hash,
+            })
+          );
+        }
         this.props.history.push({
           pathname: "/",
           state: {
@@ -648,7 +642,7 @@ class Portfolio extends BaseReactComponent {
             params: {
               id: this.props.match.params.id,
               redirectPath: redirectPath,
-              hash: this.props?.location?.hash
+              hash: this.props?.location?.hash,
             },
           },
         });
@@ -669,7 +663,6 @@ class Portfolio extends BaseReactComponent {
           );
         }
       }
-       
     } else {
       // run all api
 
@@ -842,12 +835,26 @@ class Portfolio extends BaseReactComponent {
 
   // click add wallet address btn
   simulateButtonClick = () => {
-    const buttonElement = document.querySelector("#address-button");
+    // connect - exchange - btn;
+    // const buttonElement = document.querySelector("#address-button");
+    // buttonElement.click();
+    this.handleAddModal();
+
+    AddMoreAddres({
+      email_address: getCurrentUser().email,
+      session_id: getCurrentUser().id,
+    });
+  };
+
+  // click connect exchange btn
+  connectExchangeBtn = () => {
+    // connect - exchange - btn;
+    const buttonElement = document.querySelector("#connect-exchange-btn");
     buttonElement.click();
 
     AddMoreAddres({
       email_address: getCurrentUser().email,
-      session_id: getCurrentUser().id
+      session_id: getCurrentUser().id,
     });
   };
 
@@ -899,14 +906,13 @@ class Portfolio extends BaseReactComponent {
       });
       HomeCostSortByAsset({
         session_id: getCurrentUser().id,
-        email_address:getCurrentUser().email
+        email_address: getCurrentUser().email,
       });
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
         sortBy: sort,
       });
-      
     } else if (e.title === "Current price") {
       this.sortArray("CurrentPrice", isDown);
       this.setState({
@@ -922,28 +928,28 @@ class Portfolio extends BaseReactComponent {
       this.setState({
         sortBy: sort,
       });
-       HomeSortByCostBasis({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-       });
+      HomeSortByCostBasis({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (e.title === "Current value") {
       this.sortArray("CurrentValue", isDown);
       this.setState({
         sortBy: sort,
       });
-       HomeSortByCurrentValue({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-       });
+      HomeSortByCurrentValue({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (e.title === "Gain loss") {
       this.sortArray("GainLoss", isDown);
       this.setState({
         sortBy: sort,
       });
-       HomeSortByGainLoss({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-       });
+      HomeSortByGainLoss({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     }
   };
   render() {
@@ -1544,7 +1550,7 @@ class Portfolio extends BaseReactComponent {
     ];
 
     // Cost basis
-let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
+    let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
     const CostBasisColumnData = [
       {
         labelName: (
@@ -1581,17 +1587,17 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 text={rowData.AssetCode}
               >
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                  <div style={{ position: "relative", width:"fit-content" }}>
+                  <div style={{ position: "relative", width: "fit-content" }}>
                     <Image
                       src={rowData.Asset}
                       className="history-table-icon"
-                      style={{width:"2rem", height:"2rem"}}
+                      style={{ width: "2rem", height: "2rem" }}
                       onMouseEnter={() => {
-                          HomeCostAssetHover({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            asset_hover: rowData.AssetCode,
-                          }); 
+                        HomeCostAssetHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          asset_hover: rowData.AssetCode,
+                        });
                       }}
                     />
                     {rowData.chain && (
@@ -2347,7 +2353,11 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
               </div>
 
               {/* steps */}
-              <Steps />
+              <Steps
+                handleAddModal={this.handleAddModal}
+                handleConnect={this.connectExchangeBtn}
+                history={this.props.history}
+              />
 
               {/* footer  */}
               <Footer />

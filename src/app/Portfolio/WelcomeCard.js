@@ -31,6 +31,7 @@ import EyeIcon from "../../assets/images/icons/eye.svg";
 import ChangeIcon from "../../assets/images/icons/change-icon.svg";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
+   const ConnectExchangeRef = useRef(null);
   const [manageWallet, setManageWallet] = React.useState(true);
   const [AddWallet, setAddWallet] = React.useState(true);
   const [connectModal, setconnectModal] = React.useState(false);
@@ -263,9 +264,12 @@ export default function WelcomeCard(props) {
                   {TruncateText(localStorage.getItem("previewAddress"))}
                 </span>
               </div>
-              <div className="account-detail cp change-text" onClick={() => {
-                props?.history.push("/top-accounts")
-              }}>
+              <div
+                className="account-detail cp change-text"
+                onClick={() => {
+                  props?.history.push("/top-accounts");
+                }}
+              >
                 <Image src={ChangeIcon} />
                 Change
               </div>
@@ -282,6 +286,8 @@ export default function WelcomeCard(props) {
                   justifyContent: "center",
                 }}
                 onClick={handleConnectModal}
+                ref={ConnectExchangeRef}
+                id="connect-exchange-btn"
               >
                 <Image className="connect-exchange-img" src={LinkIconBtn} />
                 Connect exchange

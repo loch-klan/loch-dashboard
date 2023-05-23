@@ -101,6 +101,7 @@ overflow: hidden;
         align-items: center;
         justify-content: center;
         margin-left: 2rem;
+        cursor: pointer;
         // flex-wrap: nowrap;
         // margin-bottom: 0.8rem;
         // position: absolute;
@@ -109,6 +110,10 @@ overflow: hidden;
         img{
             width: 1.2rem;
             height: 1.2rem;
+        }
+
+        &:hover{
+            opacity: 0.5;
         }
             
         }

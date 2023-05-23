@@ -101,11 +101,20 @@ class Cohort extends Component {
   componentDidMount() {
     localStorage.setItem("previewAddress", "");
     this.state.startTime = new Date() * 1;
+
     // console.log("page Enter", this.state.startTime / 1000);
     PageViewWhale({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+
+     const search = this.props.location.search;
+     const params = new URLSearchParams(search);
+    const pod = params.get("pod");
+    if (pod) {
+      this.handleCohort();
+      this.props.history.replace("/whale-watch")
+    }
 
     this.props.getAllCoins();
     this.makeApiCall();

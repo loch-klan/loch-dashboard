@@ -11,9 +11,11 @@ import MultiAddWallet from "../../assets/images/mutli-address-step.png";
 import ConnectExchange from "../../assets/images/connect-exchange-step.png";
 import MultiConnectExchange from "../../assets/images/connect-exchange-step.png";
 import WhalePod from "../../assets/images/whalel-pod-step.png";
+import { connect } from 'react-redux';
 
 class Steps extends Component {
   constructor(props) {
+    
     const settings = {
       className: "slider variable-width",
       dots: false,
@@ -31,6 +33,7 @@ class Steps extends Component {
      };
   }
   render() {
+    
     return (
       <div className="step-wrapper">
         <div className="top-header">
@@ -67,7 +70,12 @@ class Steps extends Component {
                     <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
                       Start with a wallet address
                     </h5>
-                    <div className="go-btn">
+                    <div
+                      className="go-btn"
+                      onClick={() => {
+                        this.props?.handleAddModal();
+                      }}
+                    >
                       <h6 className="inter-display-semi-bold f-s-13 lh-15 m-r-5">
                         Go
                       </h6>
@@ -90,7 +98,12 @@ class Steps extends Component {
                     <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
                       Organise your address
                     </h5>
-                    <div className="go-btn">
+                    <div
+                      className="go-btn"
+                      onClick={() => {
+                        this.props?.handleAddModal();
+                      }}
+                    >
                       <h6 className="inter-display-semi-bold f-s-13 lh-15 m-r-5">
                         Go
                       </h6>
@@ -113,7 +126,12 @@ class Steps extends Component {
                     <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
                       Add more wallets
                     </h5>
-                    <div className="go-btn">
+                    <div
+                      className="go-btn"
+                      onClick={() => {
+                        this.props?.handleAddModal();
+                      }}
+                    >
                       <h6 className="inter-display-semi-bold f-s-13 lh-15 m-r-5">
                         Go
                       </h6>
@@ -136,7 +154,12 @@ class Steps extends Component {
                     <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
                       Start with an exchange
                     </h5>
-                    <div className="go-btn">
+                    <div
+                      className="go-btn"
+                      onClick={() => {
+                        this.props?.handleConnect();
+                      }}
+                    >
                       <h6 className="inter-display-semi-bold f-s-13 lh-15 m-r-5">
                         Go
                       </h6>
@@ -159,7 +182,12 @@ class Steps extends Component {
                     <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
                       Add more exchanges
                     </h5>
-                    <div className="go-btn">
+                    <div
+                      className="go-btn"
+                      onClick={() => {
+                        this.props?.handleConnect();
+                      }}
+                    >
                       <h6 className="inter-display-semi-bold f-s-13 lh-15 m-r-5">
                         Go
                       </h6>
@@ -182,7 +210,12 @@ class Steps extends Component {
                     <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
                       Start with a whale pod
                     </h5>
-                    <div className="go-btn">
+                    <div
+                      className="go-btn"
+                      onClick={() => {
+                        this.props?.history.push("/whale-watch?pod=true");
+                      }}
+                    >
                       <h6 className="inter-display-semi-bold f-s-13 lh-15 m-r-5">
                         Go
                       </h6>
@@ -198,4 +231,6 @@ class Steps extends Component {
     );
   }
 }
-export default Steps
+
+
+export default Steps;
