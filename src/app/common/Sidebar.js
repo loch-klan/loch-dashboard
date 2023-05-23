@@ -145,6 +145,11 @@ function Sidebar(props) {
     JSON.parse(localStorage.getItem("isSubmenu"))
   );
 
+  // preview address
+  const [previewAddress, setPreviewAddress] = React.useState(
+    localStorage.getItem("previewAddress")
+  );
+
   const handleIntelligentSubmenu = () => {
     let currentValue = JSON.parse(localStorage.getItem("isSubmenu"))
     let obj = {
@@ -165,7 +170,8 @@ function Sidebar(props) {
        me: false,
        discover: true,
        intelligence: false,
-       topAccount: true,
+       // if not found preview address then false else true
+       topAccount: previewAddress ? true : false,
        topAccountintelligence: !currentValue.topAccountintelligence,
      };
      setSubmenu(obj);
@@ -230,6 +236,9 @@ function Sidebar(props) {
   React.useEffect(() => {
     console.log("in use effect");
 
+    // update previewaddress from localstorage
+    setPreviewAddress(localStorage.getItem("previewAddress"))
+
     //  its mean user in ME section but not in intelligence
     if (
       ![
@@ -283,7 +292,8 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
-      console.log("in 2nd if");
+      
+
     }
 
     //  when user click on intellignece we show all the submenu inside intelligence tab
@@ -318,11 +328,14 @@ function Sidebar(props) {
         activeTab
       )
     ) {
+      console.log("preview in top acc", previewAddress);
+
       let obj = {
         me: false,
         discover: true,
         intelligence: false,
-        topAccount: true,
+        // if not found preview address then false else true
+        topAccount: previewAddress ? true : false,
         topAccountintelligence: false,
       };
       setSubmenu(obj);
@@ -342,11 +355,13 @@ function Sidebar(props) {
         "/top-accounts/intelligence/asset-value",
       ].includes(activeTab)
     ) {
+      console.log("preview int", previewAddress);
       let obj = {
         me: false,
         discover: true,
         intelligence: false,
-        topAccount: true,
+        // if not found preview address then false else true
+        topAccount: previewAddress ? true : false,
         topAccountintelligence: true,
       };
       setSubmenu(obj);
@@ -356,12 +371,18 @@ function Sidebar(props) {
 
     //  when user click on top-account we show all the submenu inside top account tab
     if (activeTab === "/top-accounts") {
+     setTimeout(() => {
+       console.log("preview in top acc page", previewAddress);
+     }, 2000);
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
       let obj = {
+        
+
         me: false,
         discover: true,
         intelligence: false,
-        topAccount: true,
+        // if not found preview address then false else true
+        topAccount: previewAddress ? true : false,
         topAccountintelligence: false,
       };
       setSubmenu(obj);
@@ -377,7 +398,8 @@ function Sidebar(props) {
         me: false,
         discover: true,
         intelligence: false,
-        topAccount: true,
+        // if not found preview address then false else true
+        topAccount: previewAddress ? true : false,
         topAccountintelligence: true,
       };
       setSubmenu(obj);
@@ -842,7 +864,7 @@ function Sidebar(props) {
                                   } else {
                                     MenuIntNetflow({
                                       session_id: getCurrentUser().id,
-                                      email_address: getCurrentUser().email
+                                      email_address: getCurrentUser().email,
                                     });
                                   }
                                 }}
@@ -1072,7 +1094,7 @@ function Sidebar(props) {
                               } else {
                                 MenuTopAccounts({
                                   session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email
+                                  email_address: getCurrentUser().email,
                                 });
                               }
                             }}
@@ -1089,22 +1111,24 @@ function Sidebar(props) {
                               }
                             />
                             Top Accounts
-                            <Image
-                              src={arrowUp}
-                              className={`arrow-menu ${
-                                isSubmenu?.topAccountintelligence
-                                  ? "show-submenu"
-                                  : ""
-                              }`}
-                              onClick={(e) => {
-                                e.preventDefault();
+                            {previewAddress && (
+                              <Image
+                                src={arrowUp}
+                                className={`arrow-menu ${
+                                  isSubmenu?.topAccountintelligence
+                                    ? "show-submenu"
+                                    : ""
+                                }`}
+                                onClick={(e) => {
+                                  e.preventDefault();
 
-                                handleTopAccountSubmenu();
-                              }}
-                            />
+                                  handleTopAccountSubmenu();
+                                }}
+                              />
+                            )}
                           </NavLink>
                         </li>
-                        {isSubmenu.topAccount && (
+                        {(isSubmenu.topAccount && previewAddress) && (
                           <>
                             <li className="sub-menu">
                               <NavLink
@@ -1393,10 +1417,10 @@ function Sidebar(props) {
                               if (!isWallet) {
                                 e.preventDefault();
                               } else {
-                               MenuWatchlist({
-                                 session_id: getCurrentUser().id,
-                                 email_address: getCurrentUser().email,
-                               });
+                                MenuWatchlist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
                               }
                             }}
                             activeclassname="active"

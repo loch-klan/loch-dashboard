@@ -155,6 +155,7 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   componentDidMount() {
+    localStorage.setItem("previewAddress", "");
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -447,7 +448,14 @@ class TopAccountPage extends BaseReactComponent {
 
               //   </div>
               // </CustomOverlay>
-              this.TruncateText(rowData.account)
+              <span onClick={() => {
+                localStorage.setItem(
+                  "previewAddress",
+                  rowData.account
+                );
+                this.props.history.push("/top-accounts/home")
+              }} style={{textDecoration:"underline", cursor:"pointer"}}>{this.TruncateText(rowData.account)}</span>
+              
             );
           }
         },
