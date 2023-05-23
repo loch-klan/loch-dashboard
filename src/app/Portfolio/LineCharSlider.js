@@ -16,6 +16,7 @@ import {
   AssetValueFilter,
   AssetValueHover,
   AssetValueInternalEvent,
+  HomeAssetValueNavigator,
   IntlAssetValueAssetFilter,
   IntlAssetValueDay,
   IntlAssetValueFilter,
@@ -139,11 +140,11 @@ class LineChartSlider extends BaseReactComponent {
 
   DropdownData = (arr) => {
     // console.log("dropdown arr", arr);
-    this.setState({ legends: arr, selectedEvents: [] }, () => {
+    this.setState({ legends: arr[0]?.name === "All" ? [] : arr?.map(e => e?.id), selectedEvents: [] }, () => {
       IntlAssetValueAssetFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        filter_clicked:arr
+        filter_clicked: arr[0]?.name === "All" ? [] : arr?.map((e) => e?.name),
       });
     });
   };
@@ -783,26 +784,35 @@ class LineChartSlider extends BaseReactComponent {
           setExtremes(e) {
             let diff = Math.round(e.max - e.min);
 
+              
+
             if (parent.props.hideTimeFilter) {
               // console.log("diff", diff);
+              HomeAssetValueNavigator({
+                       session_id: getCurrentUser().id,
+                       email_address: getCurrentUser().email,
+                     });
             } else {
               if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
                 parent.setState({
                   plotLineHide: 1,
                 });
-                IntlAssetValueNavigator({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                });
+               
+                   IntlAssetValueNavigator({
+                     session_id: getCurrentUser().id,
+                     email_address: getCurrentUser().email,
+                   });
+                
               } else {
                 if (diff < 9 && parent.state.plotLineHide !== 0) {
                   parent.setState({
                     plotLineHide: 0,
                   });
-                  IntlAssetValueNavigator({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
+                   IntlAssetValueNavigator({
+                     session_id: getCurrentUser().id,
+                     email_address: getCurrentUser().email,
+                   });
+                  
                 }
               }
 
@@ -810,20 +820,11 @@ class LineChartSlider extends BaseReactComponent {
                 parent.setState({
                   steps: 1,
                 });
-                IntlAssetValueNavigator({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                });
-              } else if (diff > 11 && diff <= 20 && parent.state.steps !== 2) {
-                // console.log("middle");
-                parent.setState({
-                  steps: 2,
-                  plotLineHide: 2,
-                });
-                IntlAssetValueNavigator({
-                  session_id: getCurrentUser().id,
-                  email_address: getCurrentUser().email,
-                });
+                 IntlAssetValueNavigator({
+                   session_id: getCurrentUser().id,
+                   email_address: getCurrentUser().email,
+                 });
+                  
               } else {
                 // if (diff >= 13 && parent.state.plotLineHide !== 3) {
                 //   parent.setState({
@@ -835,10 +836,11 @@ class LineChartSlider extends BaseReactComponent {
                   parent.setState({
                     steps: 3,
                   });
-                  IntlAssetValueNavigator({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
+                   IntlAssetValueNavigator({
+                     session_id: getCurrentUser().id,
+                     email_address: getCurrentUser().email,
+                   });
+                  
                 }
               }
             }
@@ -1287,6 +1289,7 @@ backdrop-filter: blur(15px);">
                           }
                           handleClick={(arr) => this.DropdownData(arr)}
                           isLineChart={true}
+                          getObj={true}
                         />
                       </span>
                     </>

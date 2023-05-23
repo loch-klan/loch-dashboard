@@ -27,6 +27,7 @@ import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import {
 
   CreateWhalePod,
+  PageViewWhale,
   TimeSpentWhalePod,
   WhaleExpandedPod,
   WhaleFilterByChain,
@@ -93,25 +94,17 @@ class Cohort extends Component {
       search: "",
       sortedItem: [],
       isUpdate: 0,
+      startTime:"",
     };
   }
 
   componentDidMount() {
-    // console.log("mount clog", this.props)
-    // if (this.props.location.search) {
-    //   // console.log("inside search")
-    //   if (getToken()) {
-    //   } else {
-    //     // create user then run api
-    //   }
-    // }
-
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", this.state.startTime / 1000);
-    // WalletsPage({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // })
+    PageViewWhale({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
 
     this.props.getAllCoins();
     this.makeApiCall();

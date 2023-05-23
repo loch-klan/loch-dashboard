@@ -17,7 +17,7 @@ import {
 } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
-import { AssetValuePage } from "../../utils/AnalyticsFunctions";
+import { AssetValuePage, AssetValueShare, TimeSpentAssetValue } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -50,11 +50,14 @@ class AssetValueGraph extends Component {
       // asset value loader
       assetValueDataLoaded: false,
       tab: "day",
+
+      // start time for time spent on page
+      startTime: "",
     };
   }
 
   componentDidMount() {
-    // this.state.startTime = new Date() * 1;
+    this.state.startTime = new Date() * 1;
     AssetValuePage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -97,8 +100,13 @@ class AssetValueGraph extends Component {
   }
 
   componentWillUnmount() {
-    // reset to month graph on page leave
-    // this.getGraphData();
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    TimeSpentAssetValue({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   }
 
   // For add new address
@@ -225,6 +233,11 @@ class AssetValueGraph extends Component {
       BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/asset-value";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
+
+    AssetValueShare({
+      session_id: getCurrentUser().id,
+      email_address:getCurrentUser().email
+    });
 
     // console.log("share pod", shareLink);
   };

@@ -77,11 +77,21 @@ import {
   NotificationDropdown1,
   NotificationDropdown2,
   NotificationSaved,
+  PageViewWhaleExpanded,
   PodNickname,
   TimeSpentWhalePodPage,
   WhaleCreateAccountModal,
   WhaleCreateAccountSkip,
+  WhaleExpandAddressCopied,
+  WhaleExpandAddressDelete,
+  WhaleExpandAssetFilter,
+  WhaleExpandChainFilter,
+  WhaleExpandDefiCredit,
+  WhaleExpandDefiDebt,
+  WhaleExpandEdit,
   WhaleExpandedPodFilter,
+  WhaleExpandHideDust,
+  WhaleExpandShare,
   WhalePopup,
 } from "../../utils/AnalyticsFunctions";
 import { connect } from "react-redux";
@@ -168,6 +178,11 @@ class CohortPage extends BaseReactComponent {
       isYeildToggle: !this.state.isYeildToggle,
       // isDebtToggle: false,
     });
+    WhaleExpandDefiCredit({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName
+    });
   };
 
   toggleDebt = () => {
@@ -175,6 +190,11 @@ class CohortPage extends BaseReactComponent {
       isDebtToggle: !this.state.isDebtToggle,
       // isYeildToggle: false,
     });
+     WhaleExpandDefiDebt({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+       pod_name: this.state.cohortName,
+     });
   };
 
   showDust = () => {
@@ -186,6 +206,11 @@ class CohortPage extends BaseReactComponent {
         this.getAssetData(this.state.activeFooter);
       }
     );
+    WhaleExpandHideDust({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+    });
   };
 
   upgradeModal = () => {
@@ -205,6 +230,7 @@ class CohortPage extends BaseReactComponent {
           activeBadgeList: [],
         },
         () => {
+           
           this.getAssetData(this.state.activeFooter);
         }
       );
@@ -219,15 +245,29 @@ class CohortPage extends BaseReactComponent {
         }
       );
     }
+
+     WhaleExpandChainFilter({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+       pod_name: this.state.cohortName,
+       selected:
+         badge[0]?.name === "All" ? "All chains" : badge?.map((e) => e?.name),
+     });
   };
 
   handleAsset = (arr) => {
     // console.log("arr",arr)
     this.setState(
       {
-        activeAsset: arr === "allAssets" ? [] : arr,
+        activeAsset: arr[0]?.name === "All" ? [] : arr?.map(e => e?.id),
       },
       () => {
+          WhaleExpandAssetFilter({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            pod_name: this.state.cohortName,
+            selected: arr[0]?.name === "All" ? "All assets" : arr?.map((e) => e?.name),
+          });
         this.getAssetData(this.state.activeFooter);
       }
     );
@@ -297,11 +337,23 @@ class CohortPage extends BaseReactComponent {
     // console.log("cohort click");
     this.setState({
       cohortModal: !this.state.cohortModal,
+    }, () => {
+      if (this.state.cohortModal) {
+         WhaleExpandEdit({
+           session_id: getCurrentUser().id,
+           email_address: getCurrentUser().email,
+           pod_name: this.state.cohortName,
+         });
+      }
     });
+   
   };
   componentDidMount() {
+
     // console.log("test")
     this.state.startTime = new Date() * 1;
+    
+
 
     this.getCohortDetail();
     this.getAssetData(0);
@@ -327,6 +379,13 @@ class CohortPage extends BaseReactComponent {
         }
       );
     }
+    setTimeout(() => {
+        PageViewWhaleExpanded({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          pod_name: this.state?.cohortName,
+        });
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -337,6 +396,7 @@ class CohortPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       time_spent: TimeSpent,
+      pod_name: this.state.cohortName,
     });
   }
 
@@ -576,6 +636,12 @@ class CohortPage extends BaseReactComponent {
   copyLink = (address) => {
     navigator.clipboard.writeText(address);
     toast.success("Wallet Address has been copied");
+    WhaleExpandAddressCopied({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+      address: address
+    });
   };
 
   handleShow = () => {
@@ -667,6 +733,14 @@ class CohortPage extends BaseReactComponent {
     data.append("cohort_id", this.state.cohortId);
     data.append("address", address);
     DeleteCohortAddress(data, this);
+
+
+     WhaleExpandAddressDelete({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+       pod_name: this.state.cohortName,
+       address: address,
+     });
   };
 
   handleShare = () => {
@@ -679,6 +753,12 @@ class CohortPage extends BaseReactComponent {
       this.props.match.params.cohortName;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
+
+    WhaleExpandShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+    });
 
     // console.log("share pod", shareLink);
   };
@@ -1194,6 +1274,8 @@ class CohortPage extends BaseReactComponent {
                     handleClick={(arr) => this.handleAsset(arr)}
                     LightTheme={true}
                     placeholderName={"asset"}
+                    getObj={true}
+
                     // isChain={true}
                     // selectedTokens={this.state.activeBadge}
                   />
