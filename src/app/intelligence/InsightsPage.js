@@ -93,6 +93,14 @@ class InsightsPage extends Component {
     GetAllPlan();
     getUser();
     this.setState({});
+
+      const search = this.props.location.search;
+      const params = new URLSearchParams(search);
+      const addAddress = params.get("add-address");
+      if (addAddress) {
+        this.handleAddModal();
+        this.props.history.replace("/intelligence/insights");
+      }
   }
 
   componentWillUnmount() {

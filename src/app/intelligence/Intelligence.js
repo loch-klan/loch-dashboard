@@ -145,6 +145,15 @@ class Intelligence extends Component {
         }
       );
     }
+
+
+      const search = this.props.location.search;
+      const params = new URLSearchParams(search);
+      const addAddress = params.get("add-address");
+      if (addAddress) {
+        this.handleAddModal();
+        this.props.history.replace("/intelligence#netflow");
+      }
   }
 
   componentDidUpdate(prevProps, prevState) {

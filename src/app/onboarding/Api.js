@@ -490,7 +490,7 @@ export const AppFeaturesCreateUser = (
   localStorage.setItem("lochToken", "jsk");
 
   postLoginInstance.post("organisation/user/create-user", data).then((res) => {
-    // console.log("inside create user function")
+    console.log("inside create user function", res)
     if (!res.data.error) {
       localStorage.setItem("lochDummyUser", res.data.data.user.link);
       localStorage.setItem("lochToken", res.data.data.token);
@@ -552,9 +552,11 @@ export const AppFeaturesCreateUser = (
        localStorage.setItem(
          "isSubmenu",
          JSON.stringify({
-           me: false,
+           me: true,
            discover: false,
            intelligence: false,
+           topAccount: false,
+           topAccountintelligence: false,
          })
        );
 
@@ -614,10 +616,10 @@ export const AppFeaturesCreateUser = (
         newAddWallet.push(obj);
       }
       localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
-      console.log("wallet", newAddWallet);
-
       if (userFunction) {
-         userFunction();
+       setTimeout(() => {
+          userFunction();
+       }, 200);
       }
          } else {
       toast.error(res.data.message || "Something Went Wrong");
