@@ -122,6 +122,14 @@ class Cost extends Component {
     this.props.getAvgCostBasis(this);
     GetAllPlan();
     getUser();
+
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const addAddress = params.get("add-address");
+    if (addAddress) {
+      this.handleAddModal();
+      this.props.history.replace("/intelligence/costs");
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {

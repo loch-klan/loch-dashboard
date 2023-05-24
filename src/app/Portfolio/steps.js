@@ -213,7 +213,9 @@ class Steps extends Component {
                     <div
                       className="go-btn"
                       onClick={() => {
-                        this.props?.history.push("/whale-watch?pod=true");
+                        this.props?.history.push(
+                          "/whale-watch?create-pod=true"
+                        );
                       }}
                     >
                       <h6 className="inter-display-semi-bold f-s-13 lh-15 m-r-5">
