@@ -32,11 +32,21 @@ class FixAddModal extends BaseReactComponent {
     let addWalletList = JSON.parse(localStorage.getItem("addWallet"));
     addWalletList =
       addWalletList && addWalletList?.length > 0
-        ? addWalletList?.map((e) => {
+        ? addWalletList?.map((e,i) => {
             return {
               ...e,
-              showAddress: e.nickname === "" ? true : false,
-              showNickname: e.nickname === "" ? false : true,
+              showAddress:
+                props?.showNickname && i === 0
+                  ? true
+                  : e.nickname === ""
+                  ? true
+                  : false,
+              showNickname:
+                props?.showNickname && i === 0
+                  ? true
+                  : e.nickname === ""
+                  ? false
+                  : true,
               apiAddress: e.address,
             };
           })
@@ -103,6 +113,8 @@ class FixAddModal extends BaseReactComponent {
     };
     this.timeout = 0;
   }
+
+
 
   // upload csv
   fileInputRef = React.createRef();
@@ -334,7 +346,7 @@ class FixAddModal extends BaseReactComponent {
           walletCopy[i].nickname !== "" ? true : false;
       }
     });
-    // console.log(walletCopy)
+    console.log("input fouc",walletCopy)
     this.setState({
       // addButtonVisible: this.state.walletInput.some((wallet) =>
       //   wallet.address ? true : false
@@ -439,6 +451,7 @@ class FixAddModal extends BaseReactComponent {
     // set popup active
     localStorage.setItem("isPopupActive", true);
 
+
     this.props.getAllCoins();
     this.props.getAllParentChains();
     //  this.makeApiCall();
@@ -460,6 +473,7 @@ class FixAddModal extends BaseReactComponent {
     this.setState({
       fixWalletAddress: fixWallet,
     });
+
   }
 
   componentWillUnmount() {
@@ -614,7 +628,6 @@ class FixAddModal extends BaseReactComponent {
           });
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
-       
           const data = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
           data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -646,7 +659,7 @@ class FixAddModal extends BaseReactComponent {
           // }
           // console.log("fix",this.state.addWalletList);
           const address = this.state.addWalletList?.map((e) => e.address);
-          
+
           // console.log("address", address);
           const addressDeleted = this.state.deletedAddress;
           // console.log("Deteted address", addressDeleted);
@@ -701,18 +714,18 @@ class FixAddModal extends BaseReactComponent {
               nicknames: nicknames,
             });
           } else if (this.props.from === "cost") {
-           CostAddWallet({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-             addresses_added: address,
-             ENS_added: address,
-             addresses_deleted: addressDeleted,
-             ENS_deleted: addressDeleted,
-             unrecognized_addresses: unrecog_address,
-             recognized_addresses: recog_address,
-             blockchains_detected: blockchainDetected,
-             nicknames: nicknames,
-           });
+            CostAddWallet({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              addresses_added: address,
+              ENS_added: address,
+              addresses_deleted: addressDeleted,
+              ENS_deleted: addressDeleted,
+              unrecognized_addresses: unrecog_address,
+              recognized_addresses: recog_address,
+              blockchains_detected: blockchainDetected,
+              nicknames: nicknames,
+            });
           } else if (this.props.from === "defi") {
             // TransactionHistoryAddWallet({
             //   session_id: getCurrentUser().id,
@@ -727,18 +740,18 @@ class FixAddModal extends BaseReactComponent {
             //   nicknames: nicknames,
             // });
           } else if (this.props.from === "asset value") {
-           AssetValueAddWallet({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-             addresses_added: address,
-             ENS_added: address,
-             addresses_deleted: addressDeleted,
-             ENS_deleted: addressDeleted,
-             unrecognized_addresses: unrecog_address,
-             recognized_addresses: recog_address,
-             blockchains_detected: blockchainDetected,
-             nicknames: nicknames,
-           });
+            AssetValueAddWallet({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              addresses_added: address,
+              ENS_added: address,
+              addresses_deleted: addressDeleted,
+              ENS_deleted: addressDeleted,
+              unrecognized_addresses: unrecog_address,
+              recognized_addresses: recog_address,
+              blockchains_detected: blockchainDetected,
+              nicknames: nicknames,
+            });
           }
         }, 100);
       }
@@ -945,6 +958,7 @@ class FixAddModal extends BaseReactComponent {
   };
 
   render() {
+    console.log("wall list", this.state.addWalletList)
     let walletDropDownList = [];
     this.state.walletNameList?.map((wallet) => {
       walletDropDownList.push({ name: wallet.name, id: wallet.id });
@@ -1368,7 +1382,10 @@ class FixAddModal extends BaseReactComponent {
                     )}
                     {/* Form */}
                     <>
-                      <div className="form-wrapper m-t-20" style={{margin: "2rem 10rem"}}>
+                      <div
+                        className="form-wrapper m-t-20"
+                        style={{ margin: "2rem 10rem" }}
+                      >
                         {/* <Image src={FileIcon} /> */}
                         {!this.state.emailAdded && !this.state.isIndexed && (
                           <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">

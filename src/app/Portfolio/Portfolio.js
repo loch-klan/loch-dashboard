@@ -263,6 +263,9 @@ class Portfolio extends BaseReactComponent {
 
       chainLoader: false,
       totalChainDetechted: 0,
+
+      // // when user click go form steps we set thia true else false
+      showNickname: false,
     };
   }
 
@@ -352,11 +355,58 @@ class Portfolio extends BaseReactComponent {
 
   // add wallet modal
   handleAddModal = () => {
-    this.setState({
-      addModal: !this.state.addModal,
-      toggleAddWallet: false,
-    });
+    this.setState(
+      {
+        addModal: !this.state.addModal,
+        toggleAddWallet: false,
+      },
+      () => {
+        if (!this.state.addModal) {
+          
+          this.setState({
+            showNickname: false,
+          });
+          localStorage.setItem(
+            "addWallet",
+            JSON.stringify(this.state.userWalletList?.map((e, i) => {
+                return {
+                  ...e,
+                  showNickname: e.nickname === "" ? false : true,
+                  showAddress: e.nickname === "" ? true : false,
+                };
+              }))
+              
+          );
+        }
+      }
+    );
   };
+
+  // for nickname
+  handleAddModalNickname = () => {
+     this.setState({
+       showNickname: true,
+     }, () => {
+           localStorage.setItem(
+             "addWallet",
+             JSON.stringify(
+               this.state.userWalletList?.map((e, i) => {
+                 return {
+                   ...e,
+                   showNickname: i === 0 ? true : e.showNickname,
+                   showAddress: i === 0 ? true : e.showAddress,
+                 };
+               })
+             )
+           );
+
+           this.handleAddModal();
+     });
+
+
+ 
+     
+  }
 
   componentDidMount() {
     this.setState({
@@ -851,11 +901,6 @@ class Portfolio extends BaseReactComponent {
     // connect - exchange - btn;
     const buttonElement = document.querySelector("#connect-exchange-btn");
     buttonElement.click();
-
-    AddMoreAddres({
-      email_address: getCurrentUser().email,
-      session_id: getCurrentUser().id,
-    });
   };
 
   sortArray = (key, order) => {
@@ -2355,8 +2400,10 @@ class Portfolio extends BaseReactComponent {
               {/* steps */}
               <Steps
                 handleAddModal={this.handleAddModal}
+                handleAddModalNickname={this.handleAddModalNickname}
                 handleConnect={this.connectExchangeBtn}
                 history={this.props.history}
+                ctx={this}
               />
 
               {/* footer  */}
@@ -2395,6 +2442,7 @@ class Portfolio extends BaseReactComponent {
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
             from="home"
+            showNickname={this.state.showNickname}
           />
         )}
 

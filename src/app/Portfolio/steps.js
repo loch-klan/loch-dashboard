@@ -101,7 +101,7 @@ class Steps extends Component {
                     <div
                       className="go-btn"
                       onClick={() => {
-                        this.props?.handleAddModal();
+                        this.props?.handleAddModalNickname();
                       }}
                     >
                       <h6 className="inter-display-semi-bold f-s-13 lh-15 m-r-5">
@@ -113,14 +113,14 @@ class Steps extends Component {
                 </div>
               </div>
             </div>
-            <div style={{ width: "32.6rem" }}>
+            <div style={{ width: "34.4rem" }}>
               <div className="step-card">
                 <div className="card-icon m-r-12">
                   <Image src={MultiAddWallet} />
                 </div>
                 <div className="card-content m-r-20">
                   <h5 className="inter-display-medium f-s-16 lh-19 step-name">
-                    Add multiple wallet address
+                    Add multiple wallet addresses
                   </h5>
                   <div className="bottom-text">
                     <h5 className="inter-display-medium f-s-13 lh-15 grey-969">
