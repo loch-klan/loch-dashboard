@@ -24,6 +24,7 @@ import WhopLoader from "./app/common/WhopAccount"
 import TopAccount from "./app/discover/topAccount";
 import twitterInfluencer from "./app/discover/twitterInfluencer";
 import wishlist from "./app/discover/wishlist";
+import appFeature from "./app/common/appFeature";
 const routes = [
   {
     path: "/",
@@ -144,6 +145,12 @@ const routes = [
     name: "Verify Email",
     type: Route,
     component: VerifyEmail,
+  },
+  {
+    path: "/app-feature",
+    name: "App Features",
+    type: Route,
+    component: appFeature,
   },
   {
     path: "/callback/whop",
