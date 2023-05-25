@@ -74,6 +74,14 @@ class AssetValueGraph extends Component {
       // assetValueData: this.props.portfolioState.assetValueMonth,
       tab: "day",
     });
+
+      const search = this.props.location.search;
+      const params = new URLSearchParams(search);
+      const addAddress = params.get("add-address");
+      if (addAddress) {
+        this.handleAddModal();
+        this.props.history.replace("/intelligence/asset-value");
+      }
   }
   componentDidUpdate(prevProps, prevState) {
     // add wallet

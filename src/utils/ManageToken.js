@@ -34,5 +34,32 @@ const getCurrentUser = () => {
   return lochUser != null ? {id:lochUser.link ,email:lochUser.email} : {id: lochDummyUser, email: ""}
 }
 
+// set localstorage for general features which not depend on api but we set this initally when app load
+// set all the localstorage value when 
+const setLocalStoraage = () => {
+  // for defi access - check when plan is free
+  localStorage.setItem("defi_access", true);
 
-export { getToken, deleteToken, getCurrentUser };
+   localStorage.setItem("isPopup", true);
+   localStorage.setItem(
+     "whalepodview",
+     JSON.stringify({ access: true, id: "" })
+   );
+  
+  // submenu for sidebar
+  localStorage.setItem(
+    "isSubmenu",
+    JSON.stringify({
+      me: true,
+      discover: false,
+      intelligence: false,
+      topAccount: false,
+      topAccountintelligence: false,
+    })
+  );
+
+  localStorage.setItem("previewAddress", "");
+}
+
+
+export { getToken, deleteToken, getCurrentUser, setLocalStoraage };

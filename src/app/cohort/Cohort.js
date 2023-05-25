@@ -106,6 +106,14 @@ class Cohort extends Component {
       email_address: getCurrentUser().email,
     });
 
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const pod = params.get("create-pod");
+    if (pod) {
+      this.handleCohort();
+      this.props.history.replace("/whale-watch");
+    }
+
     this.props.getAllCoins();
     this.makeApiCall();
     GetAllPlan();
