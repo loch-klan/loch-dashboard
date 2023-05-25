@@ -50,9 +50,11 @@ const setLocalStoraage = () => {
   localStorage.setItem(
     "isSubmenu",
     JSON.stringify({
-      me: false,
+      me: true,
       discover: false,
       intelligence: false,
+      topAccount: false,
+      topAccountintelligence: false,
     })
   );
 
