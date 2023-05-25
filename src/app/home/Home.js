@@ -6,7 +6,7 @@ import OnBoarding from "../onboarding";
 import "../../assets/scss/onboarding/_onboarding.scss";
 import { Button, Image } from "react-bootstrap";
 import Banner from "../../assets/images/bg-img-welcome.png";
-import { deleteToken, getToken } from '../../utils/ManageToken';
+import { deleteToken, getToken, setLocalStoraage } from '../../utils/ManageToken';
 import { getAllCurrencyRatesApi, GetDefaultPlan, setPageFlagDefault } from '../common/Api';
 import UpgradeModal from '../common/upgradeModal';
 import FormElement from "../../utils/form/FormElement";
@@ -96,24 +96,22 @@ class Home extends BaseReactComponent {
              this.props.setPageFlagDefault();
              deleteToken();
              // console.log("inside else after derlete token")
-             localStorage.setItem("defi_access", true);
-            localStorage.setItem("isPopup", true);
-            localStorage.setItem("previewAddress","");
-             // localStorage.setItem("whalepodview", true);
-             localStorage.setItem(
-               "whalepodview",
-               JSON.stringify({ access: true, id: "" })
-             );
-            localStorage.setItem(
-              "isSubmenu",
-              JSON.stringify({
-                me: false,
-                discover: false,
-                intelligence: false,
-                topAccount: false,
-                topAccountintelligence: false,
-              })
-            );
+            //  localStorage.setItem("defi_access", true);
+            //  localStorage.setItem("isPopup", true);
+            //  // localStorage.setItem("whalepodview", true);
+            //  localStorage.setItem(
+            //    "whalepodview",
+            //    JSON.stringify({ access: true, id: "" })
+            //  );
+            // localStorage.setItem(
+            //   "isSubmenu",
+            //   JSON.stringify({
+            //     me: false,
+            //     discover: false,
+            //     intelligence: false,
+            //   })
+            // );
+                setLocalStoraage();
              let isRefresh = JSON.parse(localStorage.getItem("refresh"));
              if (!isRefresh) {
                localStorage.setItem("refresh", true);
@@ -126,24 +124,23 @@ class Home extends BaseReactComponent {
         this.props.setPageFlagDefault();
         deleteToken();
         // console.log("inside else after derlete token")
-        localStorage.setItem("defi_access", true);
-        localStorage.setItem("isPopup", true);
-        // localStorage.setItem("whalepodview", true);
-        localStorage.setItem(
-          "whalepodview",
-          JSON.stringify({ access: true, id: "" })
-        );
-        // localStorage.setItem("isSubmenu", false);
-         localStorage.setItem(
-           "isSubmenu",
-           JSON.stringify({
-             me: false,
-             discover: false,
-             intelligence: false,
-             topAccount: false,
-             topAccountintelligence: false,
-           })
-         );
+        // localStorage.setItem("defi_access", true);
+        // localStorage.setItem("isPopup", true);
+        // // localStorage.setItem("whalepodview", true);
+        // localStorage.setItem(
+        //   "whalepodview",
+        //   JSON.stringify({ access: true, id: "" })
+        // );
+        // // localStorage.setItem("isSubmenu", false);
+        //  localStorage.setItem(
+        //    "isSubmenu",
+        //    JSON.stringify({
+        //      me: false,
+        //      discover: false,
+        //      intelligence: false,
+        //    })
+        //  );
+            setLocalStoraage();
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
         if (!isRefresh) {
           localStorage.setItem("refresh", true);

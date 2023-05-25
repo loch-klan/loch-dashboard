@@ -8,7 +8,7 @@ import {
   FormSubmitButton,
   FormValidator,
 } from "../../utils/form";
-import { deleteToken } from "../../utils/ManageToken";
+import { deleteToken, setLocalStoraage } from "../../utils/ManageToken";
 import { GetDefaultPlan, loginApi } from "./Api";
 // import { loginApi } from './Api';
 import logo from "../../image/Loch.svg";
@@ -53,13 +53,14 @@ class Login extends BaseReactComponent {
     // }
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     // deleteToken();
-    localStorage.setItem("defi_access", true);
-    localStorage.setItem("isPopup", true);
-    // localStorage.setItem("whalepodview", true);
-    localStorage.setItem(
-      "whalepodview",
-      JSON.stringify({ access: true, id: "" })
-    );
+    // localStorage.setItem("defi_access", true);
+    // localStorage.setItem("isPopup", true);
+    // // localStorage.setItem("whalepodview", true);
+    // localStorage.setItem(
+    //   "whalepodview",
+    //   JSON.stringify({ access: true, id: "" })
+    // );
+    setLocalStoraage();
 
     localStorage.setItem(
       "currency",

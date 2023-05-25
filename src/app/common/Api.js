@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import { ConnectExEmailVerified, GeneralPopupEmailVerified, Home_CE_OAuthCompleted, LP_CE_OAuthCompleted, SigninMenuEmailVerified, SigninModalTrack, signInUser, signUpProperties, UpgradeSignInPopupEmailAdded, Wallet_CE_OAuthCompleted, WhaleCreateAccountEmailVerified, WhalePopupEmailVerified } from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
 import postLoginInstance from './../../utils/PostLoginAxios';
 import { PAGE_POPUP, SET_DEFAULT_VALUE, WALLET_LIST_UPDATED } from "./ActionTypes";
 
@@ -215,14 +215,14 @@ export const verifyEmailApi = (ctx, data) =>{
 
       localStorage.setItem("lochUser", JSON.stringify(obj));
 
-      localStorage.setItem("defi_access", true);
-      localStorage.setItem("isPopup", true);
-      // localStorage.setItem("whalepodview", true);
-      localStorage.setItem(
-        "whalepodview",
-        JSON.stringify({ access: true, id: "" })
-      );
-
+      // localStorage.setItem("defi_access", true);
+      // localStorage.setItem("isPopup", true);
+      // // localStorage.setItem("whalepodview", true);
+      // localStorage.setItem(
+      //   "whalepodview",
+      //   JSON.stringify({ access: true, id: "" })
+      // ); 
+setLocalStoraage();
       signUpProperties({
         userId: res?.data?.data?.user?.link,
         email_address: res?.data?.data?.user?.email,
@@ -454,13 +454,14 @@ export const sendWhopCode = (ctx, data) => {
           link: res.data.data.user?.link,
         };
         localStorage.setItem("lochUser", JSON.stringify(obj));
-        localStorage.setItem("defi_access", true);
-        localStorage.setItem("isPopup", true);
-        // localStorage.setItem("whalepodview", true);
-        localStorage.setItem(
-          "whalepodview",
-          JSON.stringify({ access: true, id: "" })
-        );
+        // localStorage.setItem("defi_access", true);
+        // localStorage.setItem("isPopup", true);
+        // // localStorage.setItem("whalepodview", true);
+        // localStorage.setItem(
+        //   "whalepodview",
+        //   JSON.stringify({ access: true, id: "" })
+        // );
+        setLocalStoraage();
         signUpProperties({
           userId: res?.data?.data?.user?.link,
           email_address: res?.data?.data?.user?.email,
