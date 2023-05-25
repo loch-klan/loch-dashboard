@@ -53,7 +53,7 @@ export default function PageHeader(props) {
    };
 
   const breads = nav_list.map((e, key) => {
-    console.log(e, props?.topaccount, key);
+    // console.log(e, props?.topaccount, key);
     return (
       e && (
         <>

@@ -195,7 +195,7 @@ function Sidebar(props) {
 
     const handleMeSubmenu = () => {
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
-      console.log("current", currentValue)
+      // console.log("current", currentValue)
       let obj = {
         me: true,
         discover: false,
@@ -235,7 +235,7 @@ function Sidebar(props) {
     };
   
   React.useEffect(() => {
-    console.log("in use effect");
+    // console.log("in use effect");
 
     // update previewaddress from localstorage
     setPreviewAddress(localStorage.getItem("previewAddress"))
@@ -266,7 +266,7 @@ function Sidebar(props) {
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
       localStorage.setItem("previewAddress", "");
        setPreviewAddress(localStorage.getItem("previewAddress"));
-      console.log("in 1st if");
+      // console.log("in 1st if");
     }
 
     //  user user not in these url means use in discover pages so hide me and show discover
@@ -301,7 +301,7 @@ function Sidebar(props) {
 
     //  when user click on intellignece we show all the submenu inside intelligence tab
     if (activeTab === "/intelligence") {
-      console.log("int")
+      // console.log("int")
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
       let obj = {
         me: true,
@@ -313,7 +313,7 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
-      console.log("in 3rd if");
+      // console.log("in 3rd if");
     }
 
     // top account but not in intelligence
@@ -331,7 +331,7 @@ function Sidebar(props) {
         activeTab
       )
     ) {
-      console.log("preview in top acc", previewAddress);
+      // console.log("preview in top acc", previewAddress);
 
       let obj = {
         me: false,
@@ -358,7 +358,7 @@ function Sidebar(props) {
         "/top-accounts/intelligence/asset-value",
       ].includes(activeTab)
     ) {
-      console.log("preview int", previewAddress);
+      // console.log("preview int", previewAddress);
       let obj = {
         me: false,
         discover: true,
@@ -374,9 +374,7 @@ function Sidebar(props) {
 
     //  when user click on top-account we show all the submenu inside top account tab
     if (activeTab === "/top-accounts") {
-     setTimeout(() => {
-       console.log("preview in top acc page", previewAddress);
-     }, 2000);
+
       let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
       let obj = {
         
@@ -391,7 +389,7 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
-      console.log("in 3rd if");
+      // console.log("in 3rd if");
     }
 
     //  when user click on top-account/intellignece we show all the submenu inside intelligence tab
@@ -408,7 +406,7 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
-      console.log("in 3rd if");
+      // console.log("in 3rd if");
     }
   }, []);
   
