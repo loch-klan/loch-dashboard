@@ -1,5 +1,4 @@
 const deleteToken = () => {
-  
   localStorage.removeItem('lochToken');
   localStorage.removeItem("addWallet")
   localStorage.removeItem("lochUser")

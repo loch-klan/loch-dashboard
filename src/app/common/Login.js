@@ -89,7 +89,6 @@ class Login extends BaseReactComponent {
        this.props.getAllCoins(this.handleResponse);
        
     } else {
-      // console.log("welcome")
       this.props.history.push("/welcome");
     }
   }
@@ -118,14 +117,14 @@ class Login extends BaseReactComponent {
   };
 
   handleShareLinkUser = () => {
-    // console.log("handle share");
-    // console.log("this",this.state.id)
+    console.log("handle share");
+    console.log("this",this.state.id)
     this.props.getDetailsByLinkApi(this.state.id, this);
   };
 
   handleResponse = () => {
     if (this.state.podName) {
-      // console.log("podname login create user")
+      console.log("podname login create user")
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify([]));
       // data.append("link", this.state.id);

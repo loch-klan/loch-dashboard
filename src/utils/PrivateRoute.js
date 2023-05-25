@@ -14,12 +14,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
    const redirectPath = searchParams.get("redirect");
 
        let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
-      //  console.log("redirect", redirect);
        if (!redirect && redirectPath) {
 localStorage.setItem(
   "ShareRedirect",
   JSON.stringify({ path: redirectPath, hash: props?.location?.hash })
 );
+
         
        }
       return requireAuth() ? (
