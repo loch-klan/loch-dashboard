@@ -86,12 +86,10 @@ class AssetValueEmailModal extends BaseReactComponent {
             className="exit-overlay-body"
             style={{ padding: "0rem 10.5rem" }}
           >
-            <h6 className="inter-display-medium f-s-20 lh-24 ">
-              Get Notify
-            </h6>
+            <h6 className="inter-display-medium f-s-20 lh-24 ">Get notified</h6>
             <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-              Add your email address so we can notify you <br/> when all your data is
-              loaded
+              Add your email address so we can notify you <br /> when all your
+              data is loaded
             </p>
 
             <div className="email-section auth-modal">

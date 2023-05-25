@@ -1257,32 +1257,38 @@ backdrop-filter: blur(15px);">
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
-                  {this.props.dataLoaded || true && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        right: "0px",
-                        top: !this.props.hideTimeFilter ? "-38px" : "-9px",
+                  {this.props.dataLoaded ||
+                    (true && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          right: "0px",
+                          top: !this.props.hideTimeFilter ? "-38px" : "-9px",
                           zIndex: 1,
                           display: "flex",
-                        alignItems:"center",
-                      }}
-                    >
-                      <h5
-                        className="inter-display-medium f-s-10 lh-14"
-                        style={{
-                          // position: "absolute",
-                          // right: "0px",
-                          // top: !this.props.hideTimeFilter ? "-27px" : "-2px",
-                          // zIndex: 1,
-                          marginRight:"0.8rem"
+                          alignItems: "center",
                         }}
                       >
-                        Don't worry we're still loading all your data
+                        <h5
+                          className="inter-display-medium f-s-10 lh-14"
+                          style={{
+                            // position: "absolute",
+                            // right: "0px",
+                            // top: !this.props.hideTimeFilter ? "-27px" : "-2px",
+                            // zIndex: 1,
+                            marginRight: "0.8rem",
+                          }}
+                        >
+                          Don't worry we're still loading all your data
                         </h5>
-                        <Button className="secondary-btn small-btn" onClick={this.handleAskEmail}>Get notify</Button>
-                    </div>
-                  )}
+                        <Button
+                          className="secondary-btn small-btn"
+                          onClick={this.handleAskEmail}
+                        >
+                          Get notified
+                        </Button>
+                      </div>
+                    ))}
                   {!this.props.hideTimeFilter && (
                     <>
                       <span
