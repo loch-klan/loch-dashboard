@@ -12,7 +12,7 @@ import {
   signInUser,
   signUpProperties,
 } from "../../utils/AnalyticsFunctions.js";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
 export const getAllCoins = (handleShareLinkUser = null) => {
     return async function (dispatch, getState) {
         let data = new URLSearchParams();
@@ -490,7 +490,7 @@ export const AppFeaturesCreateUser = (
   localStorage.setItem("lochToken", "jsk");
 
   postLoginInstance.post("organisation/user/create-user", data).then((res) => {
-    console.log("inside create user function", res)
+    // console.log("inside create user function", res)
     if (!res.data.error) {
       localStorage.setItem("lochDummyUser", res.data.data.user.link);
       localStorage.setItem("lochToken", res.data.data.token);
@@ -540,25 +540,26 @@ export const AppFeaturesCreateUser = (
       // );
 
       localStorage.setItem("stopClick", true);
-      localStorage.setItem("defi_access", true);
-      localStorage.setItem("isPopup", true);
-      // localStorage.setItem("whalepodview", true);
-      localStorage.setItem(
-        "whalepodview",
-        JSON.stringify({ access: true, id: "" })
-      );
-      localStorage.setItem("previewAddress", "");
+      // localStorage.setItem("defi_access", true);
+      // localStorage.setItem("isPopup", true);
+      // // localStorage.setItem("whalepodview", true);
+      // localStorage.setItem(
+      //   "whalepodview",
+      //   JSON.stringify({ access: true, id: "" })
+      // );
+      // localStorage.setItem("previewAddress", "");
 
-       localStorage.setItem(
-         "isSubmenu",
-         JSON.stringify({
-           me: true,
-           discover: false,
-           intelligence: false,
-           topAccount: false,
-           topAccountintelligence: false,
-         })
-       );
+      //  localStorage.setItem(
+      //    "isSubmenu",
+      //    JSON.stringify({
+      //      me: true,
+      //      discover: false,
+      //      intelligence: false,
+      //      topAccount: false,
+      //      topAccountintelligence: false,
+      //    })
+      //  );
+      setLocalStoraage();
 
       signUpProperties({
         userId: res.data.data.user.link,
