@@ -656,16 +656,22 @@ class Portfolio extends BaseReactComponent {
         // remove redirect urls
         localStorage.removeItem("ShareRedirect");
 
-        if (this.props.location?.state?.hash) {
+        if (
+          this.props.location?.state?.hash &&
+          this.props?.location?.state?.redirectPath
+        ) {
           this.props.history.push(
             "/" +
               this.props?.location?.state?.redirectPath +
               this.props.location?.state?.hash
           );
         } else {
-          this.props.history.push(
-            "/" + this.props?.location?.state?.redirectPath
-          );
+          if (this.props?.location?.state?.redirectPath) {
+            this.props.history.push(
+              "/" + this.props?.location?.state?.redirectPath
+            );
+          }
+            
         }
       }
        
