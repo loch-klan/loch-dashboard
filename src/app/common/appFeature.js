@@ -58,23 +58,23 @@ class AppFeature extends Component {
         this.props.history.push("/whale-watch?create-pod=true");
         
         } else if (this.state.PageName === "average-cost-basis") {
-          console.log("average-cost-basis");
+          // console.log("average-cost-basis");
           
           this.props.history.push("/intelligence/costs?add-address=true");
         } else if (this.state.PageName === "netflow") {
-          console.log("netflows");
+          // console.log("netflows");
               this.props.history.push({
                 pathname: "/intelligence",
                 hash:"netflow",
                 search: "?add-address=true",
               });
         } else if (this.state.PageName === "insights") {
-          console.log("insights");
+          // console.log("insights");
               this.props.history.push(
                 "/intelligence/insights?add-address=true"
               );
         } else if (this.state.PageName === "asset-value-chart") {
-          console.log("asset-value-chart");
+          // console.log("asset-value-chart");
               this.props.history.push(
                 "/intelligence/asset-value?add-address=true"
               );

@@ -238,7 +238,7 @@ class InsightsPage extends Component {
     if (e.split(" ")[3] !== "undefined") {
       title = title + " " + e.split(" ")[3];
     }
-    console.log("title", title);
+    // console.log("title", title);
     this.setState(
       {
         riskType: title,
