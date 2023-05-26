@@ -74,6 +74,14 @@ import {
   MenuTopAccounts,
   MenuTwitterInfluencers,
   MenuWatchlist,
+  MenuTopAccountsHome,
+  MenuTopAccountsInt,
+  MenuTopAccountsDefi,
+  MenuTopAccountsInsight,
+  MenuTopAccountsCosts,
+  MenuTopAccountsTH,
+  MenuTopAccountsAssetValue,
+  MenuTopAccountsNetflow,
 } from "../../utils/AnalyticsFunctions.js";
 import SharePortfolio from './SharePortfolio'
 import DropDown from './DropDown'
@@ -1145,10 +1153,10 @@ function Sidebar(props) {
                                   if (!isWallet) {
                                     e.preventDefault();
                                   } else {
-                                    // HomeMenu({
-                                    //   session_id: getCurrentUser().id,
-                                    //   email_address: getCurrentUser().email,
-                                    // });
+                                    MenuTopAccountsHome({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
                                   }
                                 }}
                                 activeclassname="active"
@@ -1201,10 +1209,10 @@ function Sidebar(props) {
                                   if (!isWallet) {
                                     e.preventDefault();
                                   } else {
-                                    IntelligenceMenu({
-                                      session_id: getCurrentUser().id,
-                                      email_address: getCurrentUser().email,
-                                    });
+                                   MenuTopAccountsInt({
+                                     session_id: getCurrentUser().id,
+                                     email_address: getCurrentUser().email,
+                                   });
                                   }
                                 }}
                               >
@@ -1248,6 +1256,10 @@ function Sidebar(props) {
                                       if (!isWallet) {
                                         e.preventDefault();
                                       } else {
+                                        MenuTopAccountsNetflow({
+                                          session_id: getCurrentUser().id,
+                                          email_address: getCurrentUser().email,
+                                        });
                                       }
                                     }}
                                     className={`nav-link ${
@@ -1268,6 +1280,10 @@ function Sidebar(props) {
                                       if (!isWallet) {
                                         e.preventDefault();
                                       } else {
+                                       MenuTopAccountsTH({
+                                         session_id: getCurrentUser().id,
+                                         email_address: getCurrentUser().email,
+                                       });
                                       }
                                     }}
                                     className="nav-link"
@@ -1284,6 +1300,10 @@ function Sidebar(props) {
                                       if (!isWallet) {
                                         e.preventDefault();
                                       } else {
+                                        MenuTopAccountsAssetValue({
+                                          session_id: getCurrentUser().id,
+                                          email_address: getCurrentUser().email,
+                                        });
                                       }
                                     }}
                                     className="nav-link"
@@ -1300,6 +1320,10 @@ function Sidebar(props) {
                                       if (!isWallet) {
                                         e.preventDefault();
                                       } else {
+                                        MenuTopAccountsInsight({
+                                          session_id: getCurrentUser().id,
+                                          email_address: getCurrentUser().email,
+                                        });
                                       }
                                     }}
                                     className="nav-link"
@@ -1316,10 +1340,10 @@ function Sidebar(props) {
                                       if (!isWallet) {
                                         e.preventDefault();
                                       } else {
-                                        WalletsMenu({
-                                          session_id: getCurrentUser().id,
-                                          email_address: getCurrentUser().email,
-                                        });
+                                       MenuTopAccountsCosts({
+                                         session_id: getCurrentUser().id,
+                                         email_address: getCurrentUser().email,
+                                       });
                                       }
                                     }}
                                     className="nav-link"
@@ -1341,10 +1365,10 @@ function Sidebar(props) {
                                     : "/top-accounts/decentralized-finance"
                                 }`}
                                 onClick={(e) => {
-                                  DeFiMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
+                                 MenuTopAccountsDefi({
+                                   session_id: getCurrentUser().id,
+                                   email_address: getCurrentUser().email,
+                                 });
                                   if (!isDefi) {
                                     upgradeModal();
                                   }

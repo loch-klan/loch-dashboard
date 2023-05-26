@@ -50,7 +50,6 @@ import {
   CustomTextControl,
   BaseReactComponent,
 } from "../../utils/form";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
@@ -79,6 +78,7 @@ import DropDown from "../common/DropDown";
 import { SORT_BY_NAME } from "../../utils/Constant";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { TimeFilterType } from "../../utils/Constant";
+import { TopAccountClickedAccount, TopAccountInflowHover, TopAccountNameHover, TopAccountNetHover, TopAccountNetflowHover, TopAccountNetworthFilter, TopAccountOutflowHover, TopAccountPageNext, TopAccountPagePrev, TopAccountPageSearch, TopAccountPageView, TopAccountSearch, TopAccountSortByNetWorth, TopAccountSortByNetflows, TopAccountSortByTag, TopAccountTimeFilter, TopAccountTimeSpent } from "../../utils/AnalyticsFunctions";
 class TopAccountPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -145,6 +145,7 @@ class TopAccountPage extends BaseReactComponent {
       totalPage: 0,
       timeFIlter: "Time",
       AssetList: [],
+      startTime: "",
     };
     this.delayTimer = 0;
   }
@@ -158,6 +159,11 @@ class TopAccountPage extends BaseReactComponent {
 
   componentDidMount() {
     // localStorage.setItem("previewAddress", "");
+    this.state.startTime = new Date() * 1;
+    TopAccountPageView({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -166,6 +172,18 @@ class TopAccountPage extends BaseReactComponent {
     this.assetList();
     GetAllPlan();
     getUser();
+  }
+
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime / 1000);
+    // console.log("Time Spent", TimeSpent);
+    TopAccountTimeSpent({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   }
 
   assetList = () => {
@@ -200,6 +218,27 @@ class TopAccountPage extends BaseReactComponent {
       this.setState({
         currentPage: page,
       });
+       if (prevPage !== page) {
+         if (prevPage - 1 === page) {
+           TopAccountPagePrev({
+             session_id: getCurrentUser().id,
+             email_address: getCurrentUser().email,
+             page: page + 1,
+           });
+         } else if (prevPage + 1 === page) {
+          TopAccountPageNext({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page: page + 1,
+          });
+         } else {
+          TopAccountPageSearch({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page: page + 1,
+          });
+         }
+       }
     }
   }
 
@@ -208,7 +247,27 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   addCondition = (key, value) => {
-    console.log("test", key, value);
+    // console.log("test", key, value);
+    let networthList = {
+      // "AllNetworth": "All",
+      "0-1": "less 1m",
+      "1-10": "1m-10m",
+      "10-100": "10m-100m",
+      "100-1000": "100m- 1b",
+      "1000-1000000":"more than 1b"
+    }
+    if (key === SEARCH_BY_NETWORTH) {
+
+      let selectedValue =
+        value === "AllNetworth" ? "All" : value?.map((e) => networthList[e]);
+      // console.log("sele",selectedValue)
+
+      TopAccountNetworthFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        selected: selectedValue,
+      });
+    }
     let index = this.state.condition.findIndex((e) => e.key === key);
     // console.log("index", index);
     let arr = [...this.state.condition];
@@ -258,6 +317,12 @@ class TopAccountPage extends BaseReactComponent {
     clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
       this.addCondition(SEARCH_BY_TEXT, this.state.search);
+
+      TopAccountSearch({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        search: this.state.search,
+      });
       // this.callApi(this.state.currentPage || START_INDEX, condition)
     }, 1000);
   };
@@ -281,6 +346,10 @@ class TopAccountPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+ TopAccountSortByNetWorth({
+   session_id: getCurrentUser().id,
+   email_address: getCurrentUser().email,
+ });
         } else if (val === "netflows") {
           obj = [
             {
@@ -288,6 +357,10 @@ class TopAccountPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+           TopAccountSortByNetflows({
+             session_id: getCurrentUser().id,
+             email_address: getCurrentUser().email,
+           });
         } else if (val === "largestbought") {
           obj = [
             {
@@ -309,6 +382,11 @@ class TopAccountPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+
+          TopAccountSortByTag({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         }
         el.up = !el.up;
       } else {
@@ -341,6 +419,12 @@ class TopAccountPage extends BaseReactComponent {
     console.log("title", title);
     this.setState({
       timeFIlter: title,
+    });
+
+    TopAccountTimeFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      selected: title
     });
   };
 
@@ -458,6 +542,11 @@ class TopAccountPage extends BaseReactComponent {
               // </CustomOverlay>
               <span
                 onClick={() => {
+                  TopAccountClickedAccount({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    account: rowData.account,
+                  });
                   localStorage.setItem("previewAddress", rowData.account);
                   this.props.history.push("/top-accounts/home");
                 }}
@@ -501,7 +590,13 @@ class TopAccountPage extends BaseReactComponent {
                 isText={true}
                 text={rowData.tagName}
               >
-                <span>{rowData.tagName}</span>
+                <span onMouseEnter={() => {
+                  TopAccountNameHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    hover: rowData.tagName,
+                  });
+                }}>{rowData.tagName}</span>
               </CustomOverlay>
             ) : (
               "-"
@@ -545,7 +640,20 @@ class TopAccountPage extends BaseReactComponent {
                   "USD"
                 )}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
+                <div
+                  className="inter-display-medium f-s-13 lh-16 grey-313 cost-common"
+                  onMouseEnter={() => {
+                    TopAccountNetHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: amountFormat(
+                        rowData.networth * this.state.currency?.rate,
+                        "en-US",
+                        "USD"
+                      ),
+                    });
+                  }}
+                >
                   {numToCurrency(rowData.networth * this.state.currency?.rate)}
                 </div>
               </CustomOverlay>
@@ -603,6 +711,17 @@ class TopAccountPage extends BaseReactComponent {
                       ? "cost-common"
                       : "gain"
                   }`}
+                  onMouseEnter={() => {
+                    TopAccountNetflowHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: amountFormat(
+                        rowData.netflows[type] * this.state.currency?.rate,
+                        "en-US",
+                        "USD"
+                      ),
+                    });
+                  }}
                 >
                   <Image
                     src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
@@ -666,7 +785,16 @@ class TopAccountPage extends BaseReactComponent {
                 text={text}
               >
                 {/* <div className="">imgs</div> */}
-                <div className="overlap-img-topAccount">
+                <div
+                  className="overlap-img-topAccount"
+                  onMouseEnter={() => {
+                    TopAccountInflowHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: text,
+                    });
+                  }}
+                >
                   {rowData?.largestBought[type]?.map((e, i) => {
                     return (
                       <Image
@@ -740,7 +868,16 @@ class TopAccountPage extends BaseReactComponent {
                 text={text}
               >
                 {/* <div className="">imgs</div> */}
-                <div className="overlap-img-topAccount">
+                <div
+                  className="overlap-img-topAccount"
+                  onMouseEnter={() => {
+                    TopAccountOutflowHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: text,
+                    });
+                  }}
+                >
                   {rowData?.largestSold[type]?.map((e, i) => {
                     return (
                       <Image
