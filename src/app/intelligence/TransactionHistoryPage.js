@@ -1189,7 +1189,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
               true
-            )} Amount (Then)`}</span>
+            )} amount (then)`}</span>
             <Image
               src={sortByIcon}
               className={
@@ -1264,7 +1264,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
               true
-            )} Fee (Then)`}</span>
+            )} fee (then)`}</span>
             <Image
               src={sortByIcon}
               className={

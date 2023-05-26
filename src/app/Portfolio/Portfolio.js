@@ -1757,7 +1757,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost Basis
+              Cost basis
             </span>
             <Image
               src={sortByIcon}
@@ -1807,7 +1807,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Value
+              Current value
             </span>
             <Image
               src={sortByIcon}
@@ -2067,7 +2067,7 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                   <Col md={6}>
                     <div className="profit-chart">
                       <BarGraphSection
-                        headerTitle="Net Flows"
+                        headerTitle="Net flows"
                         headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
                         handleClick={() => {

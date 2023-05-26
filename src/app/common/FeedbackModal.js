@@ -16,7 +16,7 @@ class FeedbackModal extends BaseReactComponent {
     super(props);
     this.state = {
       feedback: "",
-      page: "Select Section",
+      page: "Select section",
       hoverStar: 0,
       starSelected: 0,
     };
@@ -40,7 +40,7 @@ class FeedbackModal extends BaseReactComponent {
   handleSubmit = () => {
     // console.log("values", this.state.page, this.state.starSelected, this.state.feedback)g
     if (
-      this.state.page !== "Select Section" &&
+      this.state.page !== "Select section" &&
       this.starSelected != 0 &&
       this.state.feedback != ""
     ) {

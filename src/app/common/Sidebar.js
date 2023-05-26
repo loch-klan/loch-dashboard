@@ -1081,7 +1081,7 @@ function Sidebar(props) {
                                   : CohortIcon
                               }
                             />
-                            Whale Watch
+                            Whale watch
                           </NavLink>
                         </li>
 
@@ -1111,7 +1111,7 @@ function Sidebar(props) {
                                   : {}
                               }
                             />
-                            Top Accounts
+                            Top accounts
                             {previewAddress && (
                               <Image
                                 src={arrowUp}
@@ -1407,7 +1407,7 @@ function Sidebar(props) {
                                   : {}
                               }
                             />
-                            Twitter Influencers
+                            Twitter influencers
                           </NavLink>
                         </li>
                         <li>

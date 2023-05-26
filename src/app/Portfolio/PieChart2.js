@@ -1308,7 +1308,7 @@ class PieChart2 extends BaseReactComponent {
                               )}`,
                             }}
                           />
-                          Centralized Exchanges
+                          Centralized exchanges
                         </span>
                         <span className="inter-display-medium f-s-15 lh-19 grey-233 chain-list-amt">
                           {CurrencyType(false)}

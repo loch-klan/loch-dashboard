@@ -44,6 +44,7 @@ export const SORT_BY_NET_FLOW = "SORT_BY_NET_FLOW";
 export const SORT_BY_NETWORTH = "SORT_BY_NETWORTH";
 export const SORT_BY_ACCOUNT = "SORT_BY_ACCOUNT";
 export const SORT_BY_TAG_NAME = "SORT_BY_TAG_NAME";
+export const SEARCH_BY_NETWORTH = "SEARCH_BY_NETWORTH";
 
 export const GroupByOptions = {
   GROUP_BY_MONTH: "GROUP_BY_MONTH",
