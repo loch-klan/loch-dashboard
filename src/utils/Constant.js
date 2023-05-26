@@ -40,7 +40,7 @@ export const GROUP_BY_WEEK = "GROUP_BY_WEEK";
 // Top Accounts
 export const SORT_BY_LARGEST_SOLD = "SORT_BY_LARGEST_SOLD";
 export const SORT_BY_LARGEST_BOUGHT = "SORT_BY_LARGEST_BOUGHT";
-export const SORT_BY_NETFLOWS = "SORT_BY_NETFLOWS";
+export const SORT_BY_NET_FLOW = "SORT_BY_NET_FLOW";
 export const SORT_BY_NETWORTH = "SORT_BY_NETWORTH";
 export const SORT_BY_ACCOUNT = "SORT_BY_ACCOUNT";
 export const SORT_BY_TAG_NAME = "SORT_BY_TAG_NAME";
@@ -397,6 +397,23 @@ export const PodType = {
       description:
         "This pod was created by someone else who shared it with you.",
     },
+  },
+  getText: function (value) {
+    return this._presentable[value];
+  },
+};
+
+// top accounts time filter
+
+export const TimeFilterType = {
+  _presentable: {
+    "All time": 4000,
+    "1 week": 7,
+    "1 month": 30,
+    "6 months": 183,
+    "1 year": 365,
+    "3 years": 1096,
+    "5 years": 1825,
   },
   getText: function (value) {
     return this._presentable[value];
