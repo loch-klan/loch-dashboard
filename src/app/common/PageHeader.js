@@ -213,7 +213,7 @@ export default function PageHeader(props) {
             className="view-more"
             onClick={props.handleClick}
           >
-            View More
+            View more
           </h3>
         )}
       </div>

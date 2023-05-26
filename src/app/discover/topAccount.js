@@ -35,6 +35,7 @@ import {
   SORT_BY_LARGEST_SOLD,
   SORT_BY_TAG_NAME,
   SORT_BY_NET_FLOW,
+  SEARCH_BY_NETWORTH,
 } from "../../utils/Constant";
 import {
   searchTransactionApi,
@@ -142,7 +143,7 @@ class TopAccountPage extends BaseReactComponent {
       triggerId: 0,
       accountList: [],
       totalPage: 0,
-      timeFIlter: "All time",
+      timeFIlter: "Time",
       AssetList: [],
     };
     this.delayTimer = 0;
@@ -422,7 +423,7 @@ class TopAccountPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="history-table-header-col"
+            className="history-table-header-col no-hover"
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
@@ -476,7 +477,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Name Tag
+              Name tag
             </span>
             <Image
               src={sortByIcon}
@@ -516,7 +517,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Net Worth{" (" + CurrencyType(false) + ")"}
+              Net worth{" (" + CurrencyType(false) + ")"}
             </span>
             <Image
               src={sortByIcon}
@@ -576,7 +577,11 @@ class TopAccountPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "netflows") {
-            let type = TimeFilterType.getText(this.state.timeFIlter);
+            let type = TimeFilterType.getText(
+              this.state.timeFIlter === "Time"
+                ? "5 years"
+                : this.state.timeFIlter
+            );
             // console.log("type netflow", type);
             return (
               <CustomOverlay
@@ -617,12 +622,12 @@ class TopAccountPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="history-table-header-col no-hover"
             id="largestBought"
             // onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Largest Bought
+              Largest inflows
             </span>
             {/* <Image
               src={sortByIcon}
@@ -638,7 +643,11 @@ class TopAccountPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "largestBought") {
-            let type = TimeFilterType.getText(this.state.timeFIlter);
+            let type = TimeFilterType.getText(
+              this.state.timeFIlter === "Time"
+                ? "5 years"
+                : this.state.timeFIlter
+            );
             // console.log("type bought", type);
             let text = "";
             rowData?.largestBought[type]?.map((e, i) => {
@@ -665,9 +674,9 @@ class TopAccountPage extends BaseReactComponent {
                         style={{
                           zIndex: i,
                           marginLeft: i === 0 ? "0" : "-1rem",
-                          border: "1px solid #737373",
-                          backgroundColor: "#ffffff",
-                          padding: "0.3rem",
+                          // border: "1px solid #737373",
+                          // backgroundColor: "#ffffff",
+                          // padding: "0.3rem",
                           // border: `1px solid ${lightenDarkenColor(
                           //   e.colorCode,
                           //   -0.15
@@ -687,12 +696,12 @@ class TopAccountPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="history-table-header-col no-hover"
             id="largestSold"
             // onClick={() => this.handleSort(this.state.tableSortOpt[4].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Largest Sold
+              Largest outflows
             </span>
             {/* <Image
               src={sortByIcon}
@@ -708,7 +717,11 @@ class TopAccountPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "largestSold") {
-            let type = TimeFilterType.getText(this.state.timeFIlter);
+            let type = TimeFilterType.getText(
+              this.state.timeFIlter === "Time"
+                ? "5 years"
+                : this.state.timeFIlter
+            );
             //  console.log("type sold", type);
             let text = "";
             rowData?.largestSold[type]?.map((e, i) => {
@@ -842,7 +855,7 @@ class TopAccountPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Top Accounts"}
+              title={"Top accounts"}
               subTitle={"Analyze the top accounts here"}
               // showpath={true}
               // currentPage={"transaction-history"}
@@ -880,7 +893,7 @@ class TopAccountPage extends BaseReactComponent {
                     <DropDown
                       class="cohort-dropdown"
                       list={[
-                        "All time",
+                        // "All time",
                         "1 week",
                         "1 month",
                         "6 months",
@@ -892,7 +905,7 @@ class TopAccountPage extends BaseReactComponent {
                       title={this.state.timeFIlter}
                       activetab={
                         this.state.timeFIlter === "Time"
-                          ? "All time"
+                          ? "5 years"
                           : this.state.timeFIlter
                       }
                       showChecked={true}
@@ -925,7 +938,7 @@ class TopAccountPage extends BaseReactComponent {
                         { value: "100-1000", label: "100m-1b" },
                         { value: "1000-1000000", label: "more than 1b" },
                       ]}
-                      action={"SEARCH_BY_NETWORTH"}
+                      action={SEARCH_BY_NETWORTH}
                       handleClick={(key, value) => {
                         this.addCondition(key, value);
                         // console.log(key, value);

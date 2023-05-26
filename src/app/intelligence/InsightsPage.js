@@ -43,15 +43,15 @@ class InsightsPage extends Component {
           value: 1,
         },
         {
-          name: "Reduce Cost",
+          name: "Reduce cost",
           value: 10,
         },
         {
-          name: "Reduce Risk",
+          name: "Reduce risk",
           value: 20,
         },
         {
-          name: "Increase Yield",
+          name: "Increase yield",
           value: 30,
         },
       ],

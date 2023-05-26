@@ -548,7 +548,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Average Cost Price
+              Average cost price
             </span>
             <Image
               src={sortByIcon}
@@ -598,7 +598,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Price
+              Current price
             </span>
             <Image
               src={sortByIcon}
@@ -684,7 +684,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost Basis
+              Cost basis
             </span>
             <Image
               src={sortByIcon}
@@ -734,7 +734,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Value
+              Current value
             </span>
             <Image
               src={sortByIcon}
@@ -877,7 +877,7 @@ class Cost extends Component {
                 </p>
               </div> */}
                 <TransactionTable
-                  title="Average Cost Basis"
+                  title="Average cost basis"
                   subTitle="Understand your average entry price"
                   tableData={tableData}
                   columnList={columnData}
@@ -903,7 +903,7 @@ class Cost extends Component {
               }}
             >
               <BarGraphSection
-                headerTitle="Blockchain Fees over Time"
+                headerTitle="Blockchain fees over time"
                 headerSubTitle="Understand your gas costs"
                 data={
                   this.props.intelligenceState.graphfeeValue &&
@@ -954,7 +954,7 @@ class Cost extends Component {
             </div> */}
 
               <BarGraphSection
-                headerTitle="Counterparty Volume Over Time"
+                headerTitle="Counterparty volume over time"
                 headerSubTitle="Understand where you’ve exchanged the most value"
                 data={
                   this.props.intelligenceState.counterPartyValue &&

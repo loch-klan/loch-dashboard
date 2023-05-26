@@ -191,7 +191,7 @@ class ProfileForm extends BaseReactComponent {
         <div className="form-title">
           <Image src={profileInfoIcon} className="m-r-12" />
           <p className="inter-display-semi-bold f-s-16 lh-19">
-            Basic Information
+            Basic information
           </p>
         </div>
         <div className="form">
@@ -201,7 +201,7 @@ class ProfileForm extends BaseReactComponent {
                 <Col md={3} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "firstName")}
-                    label="First Name"
+                    label="First name"
                     control={{
                       type: CustomTextControl,
                       settings: {
@@ -218,7 +218,7 @@ class ProfileForm extends BaseReactComponent {
                 <Col md={3} className="p-r-0">
                   <FormElement
                     valueLink={this.linkState(this, "lastName")}
-                    label="Last Name"
+                    label="Last name"
                     control={{
                       type: CustomTextControl,
                       settings: {
@@ -252,7 +252,7 @@ class ProfileForm extends BaseReactComponent {
                 <Col md={3}>
                   <FormElement
                     valueLink={this.linkState(this, "mobileNumber")}
-                    label="Mobile Number"
+                    label="Mobile number"
                     control={{
                       type: CustomTextControl,
                       settings: {

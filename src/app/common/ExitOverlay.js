@@ -92,7 +92,7 @@ class ExitOverlay extends BaseReactComponent {
       fromDate: startDate,
       toDate: new Date(),
       selectedExportItem: {
-        name: "Transaction History",
+        name: "Transaction history",
         value: 10,
         apiurl: "wallet/transaction/export-transactions",
         fileName: "transaction-history-export",
@@ -100,25 +100,25 @@ class ExitOverlay extends BaseReactComponent {
       loadingExportFile: false,
       exportItem: [
         {
-          name: "Transaction History",
+          name: "Transaction history",
           value: 10,
           apiurl: "wallet/transaction/export-transactions",
           fileName: "transaction-history-export",
         },
         {
-          name: "Blockchain Gas Costs",
+          name: "Blockchain gas costs",
           value: 20,
           apiurl: "wallet/transaction/export-gas-fee-overtime",
           fileName: "blockchain-gas-costs-export",
         },
         {
-          name: "Counterparty Costs",
+          name: "Counterparty costs",
           value: 30,
           apiurl: "wallet/transaction/export-counter-party-volume-traded",
           fileName: "counterparty-costs-export",
         },
         {
-          name: "Average Cost Basis",
+          name: "Average cost basis",
           value: 40,
           apiurl: "wallet/user-wallet/export-average-cost-basis",
           fileName: "average-cost-basis-export",

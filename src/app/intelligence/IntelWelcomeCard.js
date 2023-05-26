@@ -21,7 +21,7 @@ export default function IntelWelcomeCard(props) {
     const cardData = [
       {
         icon: TransactionIcon,
-        title: "Transaction History",
+        title: "Transaction history",
         background: "lightblue",
         path: props?.isTopAccount
           ? "/top-accounts/intelligence/transaction-history"
@@ -45,7 +45,7 @@ export default function IntelWelcomeCard(props) {
       // },
       {
         icon: ShuffleIcon,
-        title: "Asset Value",
+        title: "Asset value",
         background: "lightyellow",
         path: props?.isTopAccount
           ? "/top-accounts/intelligence/asset-value"

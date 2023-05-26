@@ -714,7 +714,7 @@ class Intelligence extends Component {
               </div>
             </div>
             <div className="portfolio-bar-graph" id="netflow">
-              <PageHeader title="Net Flows" showImg={eyeIcon} />
+              <PageHeader title="Net flows" showImg={eyeIcon} />
               {/* Netflow Info Start */}
 
               <Row

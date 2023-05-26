@@ -472,7 +472,7 @@ class TwitterInflucencePage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Tokens Mentioned
+              Tokens mentioned
             </span>
             <Image
               src={sortByIcon}
@@ -535,7 +535,7 @@ class TwitterInflucencePage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Token Performance after tweet
+              Token performance after tweet
             </span>
             <Image
               src={sortByIcon}
@@ -722,8 +722,8 @@ class TwitterInflucencePage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Twitter Influencers"}
-              subTitle={"Popular Twitter Influencers "}
+              title={"Twitter influencers"}
+              subTitle={"Popular twitter influencers "}
               // showpath={true}
               // currentPage={"transaction-history"}
               history={this.props.history}
