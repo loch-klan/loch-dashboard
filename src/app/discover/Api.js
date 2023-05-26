@@ -14,41 +14,9 @@ export const getTopAccounts = (data,ctx) => {
           account: e?.address,
           networth: e?.net_worth,
           tagName: e?.name,
-          // netflows: 37344,
-          // largestBought: [
-          //   {
-          //     name: "ETH 1",
-          //     symbol: Ethereum,
-          //     colorCode: "#7B44DA",
-          //   },
-          //   {
-          //     name: "ETH 2",
-          //     symbol: Ethereum,
-          //     colorCode: "#7B44DA",
-          //   },
-          //   {
-          //     name: "ETH 3",
-          //     symbol: Ethereum,
-          //     colorCode: "#7B44DA",
-          //   },
-          // ],
-          // largestSold: [
-          //   {
-          //     name: "ETH 1",
-          //     symbol: Ethereum,
-          //     colorCode: "#7B44DA",
-          //   },
-          //   {
-          //     name: "ETH 2",
-          //     symbol: Ethereum,
-          //     colorCode: "#7B44DA",
-          //   },
-          //   {
-          //     name: "ETH 3",
-          //     symbol: Ethereum,
-          //     colorCode: "#7B44DA",
-          //   },
-          // ],
+          netflows: e?.net_flow,
+          largestBought: e?.largest_bought_assets,
+          largestSold: e?.largest_sold_assets,
         }));
 
         ctx.setState({

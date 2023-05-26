@@ -30,10 +30,11 @@ import {
   BASE_URL_S3,
   SORT_BY_ACCOUNT,
   SORT_BY_NETWORTH,
-  SORT_BY_NETFLOWS,
+
   SORT_BY_LARGEST_BOUGHT,
   SORT_BY_LARGEST_SOLD,
   SORT_BY_TAG_NAME,
+  SORT_BY_NET_FLOW,
 } from "../../utils/Constant";
 import { searchTransactionApi, getFilters, getTransactionAsset } from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
@@ -267,7 +268,7 @@ class TwitterInflucencePage extends BaseReactComponent {
         } else if (val === "tokensMentioned") {
           obj = [
             {
-              key: SORT_BY_NETFLOWS,
+              key: SORT_BY_NET_FLOW,
               value: !el.up,
             },
           ];
