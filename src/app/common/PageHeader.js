@@ -86,7 +86,7 @@ export default function PageHeader(props) {
 
   return (
     <div
-      className={`m-b-40 page-header ${props.showpath ? "history-header" : ""}`}
+      className={`m-b-40 page-header ${props.showpath || props?.topaccount ? "history-header" : ""}`}
     >
       {props.showpath ? breadCrumb : ""}
 
