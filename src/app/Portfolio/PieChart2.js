@@ -616,12 +616,7 @@ class PieChart2 extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
   };
-  handleAddWalletClick = () => {
-    this.props.handleAddModal();
-  };
-  handleManageClick = () => {
-    this.props.handleManage();
-  };
+
 
   getCurrentTime = () => {
     let currentTime = new Date().getTime();

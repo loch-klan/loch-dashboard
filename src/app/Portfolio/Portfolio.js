@@ -551,6 +551,7 @@ class Portfolio extends BaseReactComponent {
     } else if (
       prevProps.location.state?.noLoad !== this.props.location.state?.noLoad
     ) {
+      console.log("no load")
       // if share link
       if (this.props.location.state?.addWallet != undefined) {
         // console.log("sha")
@@ -1985,14 +1986,14 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                   isLoading={this.state.isLoading}
                   isUpdate={this.state.isUpdate}
                   walletTotal={this.props.portfolioState.walletTotal}
-                  handleAddModal={this.handleAddModal}
-                  handleManage={() => {
-                    this.props.history.push("/wallets");
-                    ManageWallets({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
+                  // handleAddModal={this.handleAddModal}
+                  // handleManage={() => {
+                  //   this.props.history.push("/wallets");
+                  //   ManageWallets({
+                  //     session_id: getCurrentUser().id,
+                  //     email_address: getCurrentUser().email,
+                  //   });
+                  // }}
                   undetectedWallet={(e) => this.undetectedWallet(e)}
                   getProtocolTotal={this.getProtocolTotal}
                 />
@@ -2037,7 +2038,8 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                           this.props.portfolioState.assetValueDay
                         }
                         externalEvents={
-                          this.state.externalEvents && this.state.externalEvents
+                          this.props.portfolioState.externalEvents &&
+                          this.props.portfolioState.externalEvents
                         }
                         coinLists={this.props.OnboardingState.coinsLists}
                         isScrollVisible={false}

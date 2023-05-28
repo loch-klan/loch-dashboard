@@ -39,13 +39,8 @@ export default function WelcomeCard(props) {
   // const [addWallet, setAddWallet] = React.useState(true)
   // console.log(props)
   function handleAddWalletClick() {
-    props.handleAddModal();
+    props?.handleAddModal && props?.handleAddModal();
   }
-  function handleManageClick() {
-    // setManageWallet(!manageWallet);
-    props.handleManage();
-  }
-
   const history = useHistory();
 
   const handleSigninModal = () => {
