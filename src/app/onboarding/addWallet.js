@@ -451,7 +451,7 @@ class AddWallet extends BaseReactComponent {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
       for (let i = 0; i < parentCoinList.length; i++) {
-        this.props.detectCoin(
+        this.props.detectCoin( 
           {
             id: name,
             coinCode: parentCoinList[i].code,
@@ -504,7 +504,7 @@ class AddWallet extends BaseReactComponent {
     );
 
     newAddress[i].apiAddress = data?.apiaddress;
-
+      // console.log("new",newAddress)
     this.setState({
       walletInput: newAddress,
     });

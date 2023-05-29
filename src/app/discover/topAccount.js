@@ -69,8 +69,8 @@ import FixAddModal from "../common/FixAddModal";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import { detectCoin, getAllCoins } from "../onboarding/Api.js";
+import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
@@ -146,6 +146,20 @@ class TopAccountPage extends BaseReactComponent {
       timeFIlter: "Time",
       AssetList: [],
       startTime: "",
+
+      // this is used in chain detect api to check it call from top accout or not
+      topAccountPage: true,
+      walletInput: [
+        {
+          id: "wallet1",
+          address: "",
+          coins: [],
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+          apiAddress:"",
+        },
+      ],
     };
     this.delayTimer = 0;
   }
@@ -203,6 +217,10 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    // chain detection
+    if (prevState?.walletInput !== this.state.walletInput) {
+      console.log("wal", this.state.walletInput);
+    }
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
@@ -218,27 +236,27 @@ class TopAccountPage extends BaseReactComponent {
       this.setState({
         currentPage: page,
       });
-       if (prevPage !== page) {
-         if (prevPage - 1 === page) {
-           TopAccountPagePrev({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-             page: page + 1,
-           });
-         } else if (prevPage + 1 === page) {
+      if (prevPage !== page) {
+        if (prevPage - 1 === page) {
+          TopAccountPagePrev({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page: page + 1,
+          });
+        } else if (prevPage + 1 === page) {
           TopAccountPageNext({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
           });
-         } else {
+        } else {
           TopAccountPageSearch({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
           });
-         }
-       }
+        }
+      }
     }
   }
 
@@ -254,10 +272,9 @@ class TopAccountPage extends BaseReactComponent {
       "1-10": "1m-10m",
       "10-100": "10m-100m",
       "100-1000": "100m- 1b",
-      "1000-1000000":"more than 1b"
-    }
+      "1000-1000000": "more than 1b",
+    };
     if (key === SEARCH_BY_NETWORTH) {
-
       let selectedValue =
         value === "AllNetworth" ? "All" : value?.map((e) => networthList[e]);
       // console.log("sele",selectedValue)
@@ -346,10 +363,10 @@ class TopAccountPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
- TopAccountSortByNetWorth({
-   session_id: getCurrentUser().id,
-   email_address: getCurrentUser().email,
- });
+          TopAccountSortByNetWorth({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "netflows") {
           obj = [
             {
@@ -357,10 +374,10 @@ class TopAccountPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-           TopAccountSortByNetflows({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-           });
+          TopAccountSortByNetflows({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "largestbought") {
           obj = [
             {
@@ -424,7 +441,7 @@ class TopAccountPage extends BaseReactComponent {
     TopAccountTimeFilter({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
-      selected: title
+      selected: title,
     });
   };
 
@@ -442,6 +459,73 @@ class TopAccountPage extends BaseReactComponent {
 
     this.props.setPageFlagDefault();
     // console.log("api respinse", value);
+  };
+
+  getCoinBasedOnWalletAddress = (value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && value) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+         
+            this.props.detectCoin(
+              {
+                id: "wallet1",
+                coinCode: parentCoinList[i].code,
+                coinSymbol: parentCoinList[i].symbol,
+                coinName: parentCoinList[i].name,
+                address: value,
+                coinColor: parentCoinList[i].color,
+                subChains: parentCoinList[i].sub_chains,
+              },
+              this
+            );
+      }
+    }
+  };
+
+  handleSetCoin = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+    
+    let i = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+    let newAddress = [...this.state.walletInput];
+    // data.address === newAddress[i].address && console.log("heyyy", newAddress[i].address, data.address)
+    //new code
+    data.address !== newAddress[i].address
+      ? (newAddress[i].coins = [])
+      : newAddress[i].coins.push(...newCoinList);
+
+    // if (data.id === newAddress[i].id) {
+    //   newAddress[i].address = data.address;
+    // }
+
+    newAddress[i].coinFound = newAddress[i].coins.some(
+      (e) => e.chain_detected === true
+    );
+
+    newAddress[i].apiAddress = data?.apiaddress;
+    // console.log("new",newAddress)
+    this.setState({
+      walletInput: newAddress,
+    }, () => {
+      console.log("eas", this.state.walletInput)
+    });
   };
 
   render() {
@@ -548,6 +632,8 @@ class TopAccountPage extends BaseReactComponent {
                     account: rowData.account,
                   });
                   localStorage.setItem("previewAddress", rowData.account);
+                  this.props?.TopsetPageFlagDefault();
+                  this.getCoinBasedOnWalletAddress(rowData.account);
                   this.props.history.push("/top-accounts/home");
                 }}
                 style={{ textDecoration: "underline", cursor: "pointer" }}
@@ -590,13 +676,17 @@ class TopAccountPage extends BaseReactComponent {
                 isText={true}
                 text={rowData.tagName}
               >
-                <span onMouseEnter={() => {
-                  TopAccountNameHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    hover: rowData.tagName,
-                  });
-                }}>{rowData.tagName}</span>
+                <span
+                  onMouseEnter={() => {
+                    TopAccountNameHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: rowData.tagName,
+                    });
+                  }}
+                >
+                  {rowData.tagName}
+                </span>
               </CustomOverlay>
             ) : (
               "-"
@@ -1124,8 +1214,15 @@ class TopAccountPage extends BaseReactComponent {
               </Form>
             </div>
             <div className="transaction-history-table">
-              {this.state.tableLoading? (
-                <div style={{display:"flex", alignItems:"center", justifyContent:"center", height:"69rem"}}>
+              {this.state.tableLoading ? (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "69rem",
+                  }}
+                >
                   <Loading />
                 </div>
               ) : (
@@ -1165,13 +1262,16 @@ const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
+
 });
 const mapDispatchToProps = {
   searchTransactionApi,
   // getCoinRate,
+  detectCoin,
   getAllCoins,
   getFilters,
   setPageFlagDefault,
+  TopsetPageFlagDefault,
 };
 
 TopAccountPage.propTypes = {};

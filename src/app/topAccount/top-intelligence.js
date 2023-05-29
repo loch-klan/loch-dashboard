@@ -57,14 +57,6 @@ class TopIntelligence extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // showPercentage: {
-      //   icon: arrowUpRight,
-      //   percent: "25",
-      //   status: "Increase",
-      //   GraphData: [],
-      //   graphValue: "null",
-      // },
-
       startTime: "",
       updatedInsightList: "",
       isLoading: false,
@@ -92,6 +84,9 @@ class TopIntelligence extends Component {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
+
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
     };
   }
 
@@ -165,15 +160,15 @@ class TopIntelligence extends Component {
       });
     }
 
-    if (!this.props.commonState.intelligence) {
-      this.props.updateWalletListFlag("intelligence", true);
+    if (!this.props.commonState.top_intelligence) {
+      this.props.updateWalletListFlag("top_intelligence", true);
       this.props.getAllCoins();
       this.timeFilter(0);
       this.assetList();
     }
 
-    if (!this.props.commonState.insight) {
-      this.props.updateWalletListFlag("insight", true);
+    if (!this.props.commonState.top_insight) {
+      this.props.updateWalletListFlag("top_insight", true);
       this.props.getAllInsightsApi(this);
     }
 
@@ -650,10 +645,10 @@ class TopIntelligence extends Component {
                   {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
                   {this.state.isLoading ? (
                     <Loading />
-                  ) : this.props.intelligenceState.updatedInsightList &&
-                    this.props.intelligenceState.updatedInsightList.length >
+                  ) : this.props.topAccountState.updatedInsightList &&
+                    this.props.topAccountState.updatedInsightList.length >
                       0 ? (
-                    this.props.intelligenceState.updatedInsightList
+                    this.props.topAccountState.updatedInsightList
                       ?.slice(0, 2)
                       .map((insight, key) => {
                         // console.log("insignt", insight);
@@ -813,11 +808,11 @@ class TopIntelligence extends Component {
               {/* Netflow Info End */}
 
               <div style={{ position: "relative", minWidth: "85rem" }}>
-                {this.props.intelligenceState.graphValue ? (
+                {this.props.topAccountState.graphValue ? (
                   <BarGraphSection
                     isScrollVisible={false}
-                    data={this.props.intelligenceState.graphValue[0]}
-                    options={this.props.intelligenceState.graphValue[1]}
+                    data={this.props.topAccountState.graphValue[0]}
+                    options={this.props.topAccountState.graphValue[1]}
                     coinsList={this.props.OnboardingState.coinsList}
                     timeFunction={(e, activeBadgeList) =>
                       this.timeFilter(e, activeBadgeList)
@@ -846,12 +841,12 @@ class TopIntelligence extends Component {
                     assetList={this.state.AssetList}
                     // handleSelect={(opt) => this.handleSelect(opt)}
                     showBadges={true}
-                    showPercentage={this.props.intelligenceState.graphValue[2]}
+                    showPercentage={this.props.topAccountState.graphValue[2]}
                     handleBadge={(activeBadgeList, activeFooter) =>
                       this.handleBadge(activeBadgeList, activeFooter)
                     }
                     ProfitLossAsset={
-                      this.props.intelligenceState.ProfitLossAsset
+                      this.props.topAccountState.ProfitLossAsset
                     }
                     handleAssetSelected={this.handleAssetSelected}
 
@@ -906,6 +901,9 @@ const mapStateToProps = (state) => ({
   // add wallet
   portfolioState: state.PortfolioState,
   commonState: state.CommonState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts

@@ -79,7 +79,8 @@ export const detectCoin = (wallet, ctx = null, isCohort= false) => {
           }
           
          
-          if (!isCohort) {
+          if (!isCohort && !ctx?.topAccountPage) {
+          
       // wallet.address = res.data.data.wallet_address;
             dispatch({
               type: WALLET_LIST,

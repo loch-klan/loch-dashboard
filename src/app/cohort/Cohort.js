@@ -50,7 +50,7 @@ import { searchCohort, updateCohort } from "./Api";
 import moment from "moment";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import UpgradeModal from "../common/upgradeModal";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
 import PodCard from "./pod-card";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 class Cohort extends Component {
@@ -99,7 +99,9 @@ class Cohort extends Component {
   }
 
   componentDidMount() {
+    // reset previewAddress
     localStorage.setItem("previewAddress", "");
+    this.props?.TopsetPageFlagDefault();
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", this.state.startTime / 1000);
     PageViewWhale({
@@ -750,7 +752,8 @@ const mapDispatchToProps = {
   getAllCoins,
   searchCohort,
   updateCohort,
-  setPageFlagDefault
+  setPageFlagDefault,
+  TopsetPageFlagDefault,
 };
 Cohort.propTypes = {
   // getPosts: PropTypes.func

@@ -58,6 +58,9 @@ class TopAssetValueGraph extends Component {
       // asset value loader
       assetValueDataLoaded: false,
       tab: "day",
+
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
     };
   }
 
@@ -76,7 +79,7 @@ class TopAssetValueGraph extends Component {
     GetAllPlan();
     getUser();
     this.setState({
-      // assetValueData: this.props.portfolioState.assetValueMonth,
+      // assetValueData: this.props.topAccountState.assetValueMonth,
       tab: "day",
     });
   }
@@ -91,14 +94,14 @@ class TopAssetValueGraph extends Component {
       });
     }
 
-    if (!this.props.commonState.asset_value) {
+    if (!this.props.commonState.top_asset_value) {
       //  console.log("up")
-      this.props.updateWalletListFlag("asset_value", true);
-      this.props.portfolioState.assetValueMonth = null;
-      this.props.portfolioState.assetValueYear = null;
-      this.props.portfolioState.assetValueDay = null;
+      this.props.updateWalletListFlag("top_asset_value", true);
+      this.props.topAccountState.assetValueMonth = null;
+      this.props.topAccountState.assetValueYear = null;
+      this.props.topAccountState.assetValueDay = null;
       this.props.getAllCoins();
-      if (!this.props.portfolioState.assetValueDay) {
+      if (!this.props.topAccountState.assetValueDay) {
         this.getGraphData();
       }
     }
@@ -143,49 +146,49 @@ class TopAssetValueGraph extends Component {
     let runApi = false;
     if (groupByValue === GROUP_BY_MONTH) {
       ActionType = ASSET_VALUE_GRAPH_MONTH;
-      if (this.props.portfolioState.assetValueMonth) {
+      if (this.props.topAccountState.assetValueMonth) {
         runApi = false;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueMonth,
+          // assetValueData: this.props.topAccountState.assetValueMonth,
           tab: "month",
         });
         // console.log("months");
       } else {
         runApi = true;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueMonth,
+          // assetValueData: this.props.topAccountState.assetValueMonth,
           tab: "month",
         });
       }
     } else if (groupByValue === GROUP_BY_YEAR) {
       ActionType = ASSET_VALUE_GRAPH_YEAR;
-      if (this.props.portfolioState.assetValueYear) {
+      if (this.props.topAccountState.assetValueYear) {
         runApi = false;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueYear,
+          // assetValueData: this.props.topAccountState.assetValueYear,
           tab: "year",
         });
         // console.log("year");
       } else {
         runApi = true;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueMonth,
+          // assetValueData: this.props.topAccountState.assetValueMonth,
           tab: "year",
         });
       }
     } else if (groupByValue === GROUP_BY_DATE) {
       ActionType = ASSET_VALUE_GRAPH_DAY;
-      if (this.props.portfolioState.assetValueDay) {
+      if (this.props.topAccountState.assetValueDay) {
         runApi = false;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueDay,
+          // assetValueData: this.props.topAccountState.assetValueDay,
           tab: "day",
         });
         //  console.log("data");
       } else {
         runApi = true;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueDay,
+          // assetValueData: this.props.topAccountState.assetValueDay,
           tab: "day",
         });
       }
@@ -293,19 +296,19 @@ class TopAssetValueGraph extends Component {
               <LineChartSlider
                 assetValueData={
                   this.state.tab === "day"
-                    ? this.props.portfolioState.assetValueDay &&
-                      this.props.portfolioState.assetValueDay
+                    ? this.props.topAccountState.assetValueDay &&
+                      this.props.topAccountState.assetValueDay
                     : this.state.tab === "month"
-                    ? this.props.portfolioState.assetValueMonth &&
-                      this.props.portfolioState.assetValueMonth
+                    ? this.props.topAccountState.assetValueMonth &&
+                      this.props.topAccountState.assetValueMonth
                     : this.state.tab === "year"
-                    ? this.props.portfolioState.assetValueYear &&
-                      this.props.portfolioState.assetValueYear
+                    ? this.props.topAccountState.assetValueYear &&
+                      this.props.topAccountState.assetValueYear
                     : []
                 }
                 externalEvents={
-                  this.props.portfolioState.externalEvents &&
-                  this.props.portfolioState.externalEvents
+                  this.props.topAccountState.externalEvents &&
+                  this.props.topAccountState.externalEvents
                 }
                 coinLists={this.props.OnboardingState.coinsLists}
                 isScrollVisible={false}
@@ -313,7 +316,7 @@ class TopAssetValueGraph extends Component {
                 graphLoading={this.state.graphLoading}
                 isUpdate={this.state.isUpdate}
                 isPage={true}
-                dataLoaded={this.props.portfolioState.assetValueDataLoaded}
+                dataLoaded={this.props.topAccountState.assetValueDataLoaded}
               />
             </div>
             {/* <FeedbackForm page={"Asset Value Graph Page"} /> */}
@@ -327,6 +330,9 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
   commonState: state.CommonState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 
 const mapDispatchToProps = {

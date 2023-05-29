@@ -71,6 +71,7 @@ import { GraphHeader } from "../common/GraphHeader";
 import Slider from "react-slick";
 import Footer from "../common/footer";
 import { ASSET_VALUE_GRAPH_DAY } from "../Portfolio/ActionTypes";
+import TopPiechart from "./top-piechart";
 
 class TopPortfolio extends BaseReactComponent {
   constructor(props) {
@@ -168,6 +169,7 @@ class TopPortfolio extends BaseReactComponent {
       chainLoader: false,
       totalChainDetechted: 0,
 
+      // this is used in api to check api call fromt op acount page or not
       isTopAccountPage:true
     };
   }
@@ -257,8 +259,8 @@ class TopPortfolio extends BaseReactComponent {
   componentDidUpdate(prevProps, prevState) {
 
     // Check if the coin rate api values are changed
-    if (!this.props.commonState.home && this.state.lochToken) {
-      this.props.updateWalletListFlag("home", true);
+    if (!this.props.commonState.top_home && this.state.lochToken) {
+      this.props.updateWalletListFlag("top_home", true);
       this.setState({
         isLoadingInsight: true,
         netFlowLoading: true,
@@ -301,7 +303,6 @@ class TopPortfolio extends BaseReactComponent {
         });
         // connect exchange balance
         // this.props.getExchangeBalances(this, false);
-
       } else {
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues();
@@ -311,7 +312,6 @@ class TopPortfolio extends BaseReactComponent {
 
         // run this api if itws value 0
         this.props.getYesterdaysBalanceApi(this);
-      
       }
 
       // aset value chart
@@ -325,7 +325,7 @@ class TopPortfolio extends BaseReactComponent {
 
       // avg cost basis
       this.props.getAvgCostBasis(this);
-      
+
       // for chain detect
       setTimeout(() => {
         this.props.getAllCoins();
@@ -335,7 +335,6 @@ class TopPortfolio extends BaseReactComponent {
 
       GetAllPlan();
       getUser(this);
-
     }
   }
 
@@ -721,7 +720,7 @@ class TopPortfolio extends BaseReactComponent {
                   marginTop: "9rem",
                 }}
               >
-                <PieChart2
+                <TopPiechart
                   setLoader={this.setLoader}
                   chainLoader={this.state.chainLoader}
                   totalChainDetechted={this.state.totalChainDetechted}
@@ -756,7 +755,8 @@ class TopPortfolio extends BaseReactComponent {
                   }
                   assetPrice={
                     this.props.topAccountState.assetPrice &&
-                    Object.keys(this.props.topAccountState.assetPrice).length > 0
+                    Object.keys(this.props.topAccountState.assetPrice).length >
+                      0
                       ? Object.values(this.props.topAccountState.assetPrice)
                       : null
                   }
@@ -886,8 +886,8 @@ class TopPortfolio extends BaseReactComponent {
                               <div className="insight-slider">
                                 {this.props.topAccountState
                                   .updatedInsightList &&
-                                  this.props.topAccountState
-                                    .updatedInsightList.length > 0 && (
+                                  this.props.topAccountState.updatedInsightList
+                                    .length > 0 && (
                                     <Slider {...this.state.settings}>
                                       {this.props.topAccountState.updatedInsightList
                                         ?.slice(0, 3)

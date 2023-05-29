@@ -1200,7 +1200,7 @@ backdrop-filter: blur(15px);">
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginBottom: "5rem",
+                        marginBottom: this.props.dataLoaded ? "5rem": "2rem",
                       }}
                     >
                       <div

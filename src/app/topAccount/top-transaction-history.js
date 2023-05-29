@@ -81,7 +81,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-    const walletList = JSON.parse(localStorage.getItem("addWallet"));
+    const walletList = []
+    // JSON.parse(localStorage.getItem("addWallet"));
     const address = walletList?.map((wallet) => {
       return wallet.address;
     });
@@ -159,6 +160,9 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
+
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
     };
     this.delayTimer = 0;
   }
@@ -287,13 +291,13 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         year_filter: value == "allYear" ? "All years" : value,
       });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
-      // console.log("tes", this.props.intelligenceState.assetFilter);
+      // console.log("tes", this.props.topAccountState.assetFilter);
       let assets = [];
       Promise.all([
         () => {
           if (value !== "allAssets") {
             // console.log("test");
-            this.props.intelligenceState?.assetFilter?.map((e) => {
+            this.props.topAccountState?.assetFilter?.map((e) => {
               if (value?.includes(e.value)) {
                 assets.push(e.label);
               }
@@ -538,7 +542,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
   render() {
     // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
-      this.props.intelligenceState;
+      this.props.topAccountState;
     const { walletList, currency } = this.state;
     let tableData =
       table &&
@@ -1430,7 +1434,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   <Col md={3}>
                     <CustomDropdown
                       filtername="All years"
-                      options={this.props.intelligenceState.yearFilter}
+                      options={this.props.topAccountState.yearFilter}
                       action={SEARCH_BY_TIMESTAMP_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
@@ -1440,7 +1444,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   <Col md={3}>
                     <CustomDropdown
                       filtername="All assets"
-                      options={this.props.intelligenceState.assetFilter}
+                      options={this.props.topAccountState.assetFilter}
                       action={SEARCH_BY_ASSETS_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
@@ -1450,7 +1454,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   <Col md={3}>
                     <CustomDropdown
                       filtername="All methods"
-                      options={this.props.intelligenceState.methodFilter}
+                      options={this.props.topAccountState.methodFilter}
                       action={SEARCH_BY_METHOD_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
@@ -1523,6 +1527,9 @@ class TopTransactionHistoryPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
