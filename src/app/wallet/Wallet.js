@@ -253,7 +253,7 @@ class Wallet extends Component {
           className="wallet-section page"
           style={
             this.props.hidePageHeader
-              ? { marginTop: "4rem", marginBottom: "4rem" }
+              ? { marginTop: "3rem", marginBottom: "4rem" }
               : {}
           }
         >

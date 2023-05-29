@@ -841,7 +841,7 @@ class Cost extends Component {
           ) : (
             ""
           )}
-          <div className="m-t-50 cost-section page">
+          <div className="m-t-30 cost-section page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}

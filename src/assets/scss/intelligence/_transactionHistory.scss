@@ -2,7 +2,7 @@
   display: flex;
 
   .history-table {
-    margin-top: 5rem;
+    margin-top: 3rem;
 
     .ShowDust {
       text-align: left;
@@ -137,6 +137,7 @@
           width: 100%;
           padding: 0.4rem;
           height: 14rem;
+          z-index: 1;
           overflow-y: scroll;
 
           .dropdown-item {

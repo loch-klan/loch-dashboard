@@ -113,19 +113,19 @@ class TopAccountPage extends BaseReactComponent {
         },
         {
           title: "netflows",
-          up: false,
+          up: true,
         },
         {
           title: "largestbought",
-          up: false,
+          up: true,
         },
         {
           title: "largestsold",
-          up: false,
+          up: true,
         },
         {
           title: "tagName",
-          up: false,
+          up: true,
         },
       ],
       showDust: false,
@@ -997,6 +997,7 @@ class TopAccountPage extends BaseReactComponent {
               // showpath={true}
               // currentPage={"transaction-history"}
               history={this.props.history}
+              topaccount={true}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               // ShareBtn={true}
@@ -1123,8 +1124,10 @@ class TopAccountPage extends BaseReactComponent {
               </Form>
             </div>
             <div className="transaction-history-table">
-              {this.state.tableLoading ? (
-                <Loading />
+              {this.state.tableLoading? (
+                <div style={{display:"flex", alignItems:"center", justifyContent:"center", height:"69rem"}}>
+                  <Loading />
+                </div>
               ) : (
                 <>
                   <TransactionTable
