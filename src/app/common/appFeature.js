@@ -55,7 +55,7 @@ class AppFeature extends Component {
     handleRedirection = () => {
       if (this.state.PageName === "whale-watch") {
           
-        this.props.history.push("/whale-watch?create-pod=true");
+        this.props.history.push("/whale-watch");
         
         } else if (this.state.PageName === "average-cost-basis") {
           console.log("average-cost-basis");
