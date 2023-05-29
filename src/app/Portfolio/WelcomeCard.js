@@ -255,7 +255,7 @@ export default function WelcomeCard(props) {
                 <Image src={EyeIcon} />
                 Previewing{" "}
                 <span className="account-name grey-313">
-                  {TruncateText(localStorage.getItem("previewAddress"))}
+                  {TruncateText(JSON.parse(localStorage.getItem("previewAddress"))?.address)}
                 </span>
               </div>
               <div className="account-detail cp change-text" onClick={() => {

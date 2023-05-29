@@ -85,7 +85,9 @@ class TopPieChart extends BaseReactComponent {
       defiLoader: false,
 
       // refresh
-      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      userWalletList: localStorage.getItem("previewAddress")
+         ? [JSON.parse(localStorage.getItem("previewAddress"))]
+         : [],
       isStopLoading: false,
 
       chainLoader: false,
@@ -169,8 +171,9 @@ class TopPieChart extends BaseReactComponent {
     });
     let chainList = [];
 
-    let UserWallet = []
-    // JSON.parse(localStorage.getItem("addWallet"));
+    let UserWallet = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
     let uniquechains = [];
     UserWallet &&
       UserWallet?.map((item) => {
@@ -268,9 +271,9 @@ class TopPieChart extends BaseReactComponent {
     this.setState({
       defiLoader: true,
     });
-      let UserWallet = []
-    //   JSON.parse(localStorage.getItem("addWallet"));
-    //  console.log("wallet_address", UserWallet);
+       let UserWallet = localStorage.getItem("previewAddress")
+         ? [JSON.parse(localStorage.getItem("previewAddress"))]
+         : [];
 
     if (UserWallet?.length !== 0) {
       // console.log("wallet_addres3s");
@@ -419,7 +422,9 @@ class TopPieChart extends BaseReactComponent {
       //     });
       //   }
       // });
-        let UserWallet = []
+        let UserWallet = localStorage.getItem("previewAddress")
+          ? [JSON.parse(localStorage.getItem("previewAddress"))]
+          : [];
             // || JSON.parse(localStorage.getItem("addWallet"));
       let uniquechains = [];
 
@@ -514,7 +519,7 @@ class TopPieChart extends BaseReactComponent {
         DebtValues: [],
         YieldValues: [],
         BalanceSheetValue: {},
-      });
+      },this);
 
       // set defi page to true
       this.props.updateWalletListFlag("top_defi", true);
@@ -546,6 +551,7 @@ class TopPieChart extends BaseReactComponent {
 
     // stop loader after refresh btn clicked
     if (this.state.isStopLoading) {
+
       this.props.setLoader(false);
 
       this.setState({
@@ -582,7 +588,7 @@ class TopPieChart extends BaseReactComponent {
     //   DebtValues,
     // });
     // update data
-    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues });
+    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues },this);
   };
   setHoverData = (e) => {
     this.setState({ pieSectionDataEnabled: e });
@@ -694,7 +700,9 @@ class TopPieChart extends BaseReactComponent {
 
     // console.log("Refresh clicked");
     // localStorage.setItem("refreshApiTime", currentTime);
-    let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
+    let userWalletList = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
 
     userWalletList?.map((wallet, i) => {
       if (wallet.coinFound) {
@@ -984,8 +992,9 @@ class TopPieChart extends BaseReactComponent {
     };
 
     // console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
-      let UserWallet = [];
-        //   || JSON.parse(localStorage.getItem("addWallet"));
+      let UserWallet = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
     let chainList = [];
     let uniqueAddress = [];
     let uniqueList =
@@ -1717,7 +1726,7 @@ class TopPieChart extends BaseReactComponent {
                                   <span className="inter-display-medium f-s-15 l-h-19 black-191 coin-hover-display-text2-upper-coinrevenue">
                                     {numToCurrency(
                                       totalCount *
-                                        this.props.topAccountState.coinRateList[
+                                        this.props.portfolioState.coinRateList[
                                           this.state.selectedSection[0].assetId
                                         ].quote?.USD.price *
                                         currency?.rate

@@ -60,7 +60,7 @@ import {
   numToCurrency,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
 
@@ -69,7 +69,7 @@ import FixAddModal from "../common/FixAddModal";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { detectCoin, getAllCoins } from "../onboarding/Api.js";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
@@ -149,17 +149,7 @@ class TopAccountPage extends BaseReactComponent {
 
       // this is used in chain detect api to check it call from top accout or not
       topAccountPage: true,
-      walletInput: [
-        {
-          id: "wallet1",
-          address: "",
-          coins: [],
-          nickname: "",
-          showAddress: true,
-          showNickname: true,
-          apiAddress:"",
-        },
-      ],
+      walletInput: [JSON.parse(localStorage.getItem("previewAddress"))],
     };
     this.delayTimer = 0;
   }
@@ -182,6 +172,7 @@ class TopAccountPage extends BaseReactComponent {
       search: `?p=${this.state.currentPage}`,
     });
     this.props.getAllCoins();
+    this.props.getAllParentChains();
     this.callApi(this.state.currentPage || START_INDEX);
     this.assetList();
     GetAllPlan();
@@ -461,72 +452,7 @@ class TopAccountPage extends BaseReactComponent {
     // console.log("api respinse", value);
   };
 
-  getCoinBasedOnWalletAddress = (value) => {
-    let parentCoinList = this.props.OnboardingState.parentCoinList;
-    if (parentCoinList && value) {
-      for (let i = 0; i < parentCoinList.length; i++) {
-         
-            this.props.detectCoin(
-              {
-                id: "wallet1",
-                coinCode: parentCoinList[i].code,
-                coinSymbol: parentCoinList[i].symbol,
-                coinName: parentCoinList[i].name,
-                address: value,
-                coinColor: parentCoinList[i].color,
-                subChains: parentCoinList[i].sub_chains,
-              },
-              this
-            );
-      }
-    }
-  };
 
-  handleSetCoin = (data) => {
-    let coinList = {
-      chain_detected: data.chain_detected,
-      coinCode: data.coinCode,
-      coinName: data.coinName,
-      coinSymbol: data.coinSymbol,
-      coinColor: data.coinColor,
-    };
-    let newCoinList = [];
-    newCoinList.push(coinList);
-    data.subChains &&
-      data.subChains?.map((item) =>
-        newCoinList.push({
-          chain_detected: data.chain_detected,
-          coinCode: item.code,
-          coinName: item.name,
-          coinSymbol: item.symbol,
-          coinColor: item.color,
-        })
-      );
-    
-    let i = this.state.walletInput.findIndex((obj) => obj.id === data.id);
-    let newAddress = [...this.state.walletInput];
-    // data.address === newAddress[i].address && console.log("heyyy", newAddress[i].address, data.address)
-    //new code
-    data.address !== newAddress[i].address
-      ? (newAddress[i].coins = [])
-      : newAddress[i].coins.push(...newCoinList);
-
-    // if (data.id === newAddress[i].id) {
-    //   newAddress[i].address = data.address;
-    // }
-
-    newAddress[i].coinFound = newAddress[i].coins.some(
-      (e) => e.chain_detected === true
-    );
-
-    newAddress[i].apiAddress = data?.apiaddress;
-    // console.log("new",newAddress)
-    this.setState({
-      walletInput: newAddress,
-    }, () => {
-      console.log("eas", this.state.walletInput)
-    });
-  };
 
   render() {
     // console.log("value", this.state.methodFilter);
@@ -626,14 +552,20 @@ class TopAccountPage extends BaseReactComponent {
               // </CustomOverlay>
               <span
                 onClick={() => {
+                   resetPreviewAddress();
                   TopAccountClickedAccount({
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
                     account: rowData.account,
                   });
-                  localStorage.setItem("previewAddress", rowData.account);
+                  let obj = JSON.parse(localStorage.getItem("previewAddress"))
+                  localStorage.setItem("previewAddress", JSON.stringify({
+                    ...obj,
+                    address: rowData.account,
+                  }));
                   this.props?.TopsetPageFlagDefault();
-                  this.getCoinBasedOnWalletAddress(rowData.account);
+                 
+                  // this.getCoinBasedOnWalletAddress(rowData.account);
                   this.props.history.push("/top-accounts/home");
                 }}
                 style={{ textDecoration: "underline", cursor: "pointer" }}
@@ -1267,11 +1199,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   searchTransactionApi,
   // getCoinRate,
-  detectCoin,
+
   getAllCoins,
   getFilters,
   setPageFlagDefault,
   TopsetPageFlagDefault,
+  getAllParentChains,
 };
 
 TopAccountPage.propTypes = {};

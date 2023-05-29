@@ -56,7 +56,7 @@ import {
   numToCurrency,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
 
@@ -147,7 +147,7 @@ class TwitterInflucencePage extends BaseReactComponent {
   };
 
   componentDidMount() {
-    localStorage.setItem("previewAddress", "");
+    resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,

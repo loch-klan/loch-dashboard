@@ -81,8 +81,9 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-    const walletList = []
-    // JSON.parse(localStorage.getItem("addWallet"));
+    const walletList = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
     const address = walletList?.map((wallet) => {
       return wallet.address;
     });

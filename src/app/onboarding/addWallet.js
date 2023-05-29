@@ -461,7 +461,7 @@ class AddWallet extends BaseReactComponent {
             coinColor: parentCoinList[i].color,
             subChains: parentCoinList[i].sub_chains,
           },
-          this
+          this, false, 0
         );
       }
     }

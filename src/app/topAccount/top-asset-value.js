@@ -38,6 +38,7 @@ import {
 } from "../Portfolio/ActionTypes";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { TOP_ASSET_VALUE_GRAPH_DAY, TOP_ASSET_VALUE_GRAPH_MONTH, TOP_ASSET_VALUE_GRAPH_YEAR } from "./ActionTypes";
 
 class TopAssetValueGraph extends Component {
   constructor(props) {
@@ -45,7 +46,9 @@ class TopAssetValueGraph extends Component {
     this.state = {
       graphLoading: false,
       // externalEvents: [],
-      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      userWalletList: localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [],
       // add new wallet
 
       addModal: false,
@@ -142,10 +145,10 @@ class TopAssetValueGraph extends Component {
   getGraphData = (groupByValue = GROUP_BY_DATE) => {
     // console.log("data a", this.props);
 
-    let ActionType = ASSET_VALUE_GRAPH_DAY;
+    let ActionType = TOP_ASSET_VALUE_GRAPH_DAY;
     let runApi = false;
     if (groupByValue === GROUP_BY_MONTH) {
-      ActionType = ASSET_VALUE_GRAPH_MONTH;
+      ActionType = TOP_ASSET_VALUE_GRAPH_MONTH;
       if (this.props.topAccountState.assetValueMonth) {
         runApi = false;
         this.setState({
@@ -161,7 +164,7 @@ class TopAssetValueGraph extends Component {
         });
       }
     } else if (groupByValue === GROUP_BY_YEAR) {
-      ActionType = ASSET_VALUE_GRAPH_YEAR;
+      ActionType = TOP_ASSET_VALUE_GRAPH_YEAR;
       if (this.props.topAccountState.assetValueYear) {
         runApi = false;
         this.setState({
@@ -177,7 +180,7 @@ class TopAssetValueGraph extends Component {
         });
       }
     } else if (groupByValue === GROUP_BY_DATE) {
-      ActionType = ASSET_VALUE_GRAPH_DAY;
+      ActionType = TOP_ASSET_VALUE_GRAPH_DAY;
       if (this.props.topAccountState.assetValueDay) {
         runApi = false;
         this.setState({

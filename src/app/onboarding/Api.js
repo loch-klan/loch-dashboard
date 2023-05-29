@@ -51,8 +51,10 @@ export const getAllParentChains = () => {
   };
 };
 
-export const detectCoin = (wallet, ctx = null, isCohort= false) => {
+export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
+ 
   return function (dispatch, getState) {
+    
     let data = new URLSearchParams();
     data.append("chain", wallet.coinCode);
     data.append("wallet_address", wallet.address);
@@ -60,6 +62,7 @@ export const detectCoin = (wallet, ctx = null, isCohort= false) => {
       .post("wallet/chain/detect-chain", data)
       .then((res) => {
         // && res.data.data.chain_detected
+        
         if (!res.error && res.data) {
           if (res.data.data.chain_detected && !isCohort) {
             WalletAddressTextbox({
@@ -97,6 +100,7 @@ export const detectCoin = (wallet, ctx = null, isCohort= false) => {
               },
             });
           }
+           
           if (ctx) {
             // console.log("walletr", res.data.data.wallet_address, wallet);
             ctx.handleSetCoin({
@@ -104,6 +108,14 @@ export const detectCoin = (wallet, ctx = null, isCohort= false) => {
               chain_detected: res.data.data.chain_detected,
               apiaddress: res.data.data.wallet_address,
             });
+
+            if (ctx?.state.isTopAccountPage && index === ctx?.props?.OnboardingState.parentCoinList?.length -1) {
+             
+              setTimeout(() => {
+                 console.log("last");
+                ctx?.CalculateOverview && ctx?.CalculateOverview();
+              }, 1000);
+            }
           }
         }
       })

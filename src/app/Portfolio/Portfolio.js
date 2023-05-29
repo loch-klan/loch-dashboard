@@ -437,7 +437,7 @@ class Portfolio extends BaseReactComponent {
       ) {
         // console.log("inside if");
         // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues();
+        this.props.settingDefaultValues(this);
 
         // Loops on coins to fetch details of each coin which exist in wallet
         let isFound = false;
@@ -482,7 +482,7 @@ class Portfolio extends BaseReactComponent {
       } else {
         // console.log("inside else");
         // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues();
+        this.props.settingDefaultValues(this);
 
         // when wallet address not present run connect exchnage api
         // this.props.getExchangeBalance("binance", this);
@@ -715,7 +715,7 @@ class Portfolio extends BaseReactComponent {
     });
 
     // reset all sort average cost
-    this.props.ResetAverageCostBasis();
+    this.props.ResetAverageCostBasis(this);
   }
 
   // asset value chart api call
@@ -882,7 +882,7 @@ class Portfolio extends BaseReactComponent {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList);
+    this.props.updateAverageCostBasis(sortedList,this);
   };
   // sort
   handleSort = (e) => {

@@ -9,7 +9,7 @@ import LightBulb from "../../assets/images/icons/lightbulb.svg";
 import ArrowRight from "../../assets/images/icons/arrow-right.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
-
+import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import {
   getCoinRate,
   getDetailsByLinkApi,
@@ -20,7 +20,7 @@ import {
   getExchangeBalances,
 } from "../Portfolio/Api";
 import { Button, Image, Row, Col } from "react-bootstrap";
-import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import TransactionTable from "../intelligence/TransactionTable";
 import BarGraphSection from "./../common/BarGraphSection";
@@ -39,6 +39,14 @@ import {
   GroupByOptions,
   GROUP_BY_DATE,
   InsightType,
+  SORT_BY_TIMESTAMP,
+  SORT_BY_FROM_WALLET,
+  SORT_BY_TO_WALLET,
+  SORT_BY_ASSET,
+  SORT_BY_USD_VALUE_THEN,
+  SORT_BY_METHOD,
+  START_INDEX,
+  SEARCH_BY_WALLET_ADDRESS_IN,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import reduceCost from "../../assets/images/icons/reduce-cost-img.svg";
@@ -49,8 +57,15 @@ import {
   ProfitLossEV,
   HomePage,
   HomeInsightsExpand,
+  TransactionHistoryDate,
+  TransactionHistoryFrom,
+  TransactionHistoryAddress,
+  TransactionHistoryTo,
+  TransactionHistoryAsset,
+  TransactionHistoryUSD,
+  TransactionHistoryEView,
 } from "../../utils/AnalyticsFunctions.js";
-import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
+import { deleteToken, getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "../Portfolio/Api";
 import {
   getAvgCostBasis,
@@ -72,6 +87,8 @@ import Slider from "react-slick";
 import Footer from "../common/footer";
 import { ASSET_VALUE_GRAPH_DAY } from "../Portfolio/ActionTypes";
 import TopPiechart from "./top-piechart";
+import { TOP_ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
+import moment from "moment";
 
 class TopPortfolio extends BaseReactComponent {
   constructor(props) {
@@ -89,8 +106,8 @@ class TopPortfolio extends BaseReactComponent {
     this.state = {
       settings,
       id: props.match.params?.id,
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
+      userWalletList: localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
         : [],
 
       // page loader
@@ -128,7 +145,6 @@ class TopPortfolio extends BaseReactComponent {
       // not used any where on this page
       counterGraphDigit: 3,
 
-
       // undetected btn
       showBtn: false,
 
@@ -145,8 +161,8 @@ class TopPortfolio extends BaseReactComponent {
       lochToken: JSON.parse(localStorage.getItem("stopClick")),
 
       // insight
-      updatedInsightList: "",
-      isLoadingInsight: false,
+      // updatedInsightList: "",
+      // isLoadingInsight: false,
 
       // Asset value data loaded
       assetValueDataLoaded: false,
@@ -169,8 +185,44 @@ class TopPortfolio extends BaseReactComponent {
       chainLoader: false,
       totalChainDetechted: 0,
 
+      // transaction history table
+      tableLoading: false,
+      // sort
+      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
+
+      // transaction history table row limit
+      limit: 6,
+
+      // transaction history sort
+      tableSortOpt: [
+        {
+          title: "time",
+          up: false,
+        },
+        {
+          title: "from",
+          up: false,
+        },
+        {
+          title: "to",
+          up: false,
+        },
+        {
+          title: "asset",
+          up: false,
+        },
+        {
+          title: "usdValue",
+          up: false,
+        },
+        {
+          title: "method",
+          up: false,
+        },
+      ],
+
       // this is used in api to check api call fromt op acount page or not
-      isTopAccountPage:true
+      isTopAccountPage: true,
     };
   }
 
@@ -206,7 +258,7 @@ class TopPortfolio extends BaseReactComponent {
       }
     } else {
       this.setState({
-        isLoadingInsight: true,
+        // isLoadingInsight: true,
         netFlowLoading: true,
         isLoading: true,
         isLoadingNet: true,
@@ -225,7 +277,6 @@ class TopPortfolio extends BaseReactComponent {
     });
   };
 
-
   // add wallet modal
   handleAddModal = () => {
     this.setState({
@@ -235,15 +286,13 @@ class TopPortfolio extends BaseReactComponent {
   };
 
   componentDidMount() {
-    this.setState({
-      settings: {
-        ...this.state.settings,
-        slidesToShow:
-          this.props.topAccountState.updatedInsightList?.length === 1
-            ? 1
-            : 1.5,
-      },
-    });
+    // this.setState({
+    //   settings: {
+    //     ...this.state.settings,
+    //     slidesToShow:
+    //       this.props.topAccountState.updatedInsightList?.length === 1 ? 1 : 1.5,
+    //   },
+    // });
 
     this.state.startTime = new Date() * 1;
 
@@ -256,13 +305,130 @@ class TopPortfolio extends BaseReactComponent {
     this.getToken();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  CalculateOverview = () => {
+    // if wallet address change
+    console.log("overview");
+    if (
+      this.state &&
+      this.state.userWalletList &&
+      this.state.userWalletList?.length > 0
+    ) {
+      console.log("inside if");
+      // Resetting the user wallet list, total and chain wallet
+      this.props.settingDefaultValues(this);
 
+      // Loops on coins to fetch details of each coin which exist in wallet
+      let isFound = false;
+      this.state.userWalletList?.map((wallet, i) => {
+        if (wallet.coinFound) {
+          isFound = true;
+          wallet.coins.map((coin) => {
+            if (coin.chain_detected) {
+              let userCoinWallet = {
+                address: wallet.address,
+                coinCode: coin.coinCode,
+              };
+              this.props.getUserWallet(userCoinWallet, this, false, i);
+            }
+          });
+        }
+
+        if (i === this.state.userWalletList?.length - 1) {
+          this.props.getYesterdaysBalanceApi(this);
+        }
+      });
+      // connect exchange balance
+      // this.props.getExchangeBalances(this, false);
+    } else {
+      // Resetting the user wallet list, total and chain wallet
+      this.props.settingDefaultValues(this);
+      console.log("inside else");
+      // // when wallet address not present run connect exchnage api
+      // this.props.getExchangeBalances(this, false);
+
+      // run this api if itws value 0
+      this.props.getYesterdaysBalanceApi(this);
+    }
+  };
+
+  getCoinBasedOnWalletAddress = () => {
+  
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+    if (parentCoinList && this.state.userWalletList[0]?.address) {
+      for (let i = 0; i < parentCoinList.length; i++) {
+        // console.log("in loop");
+        this.props.detectCoin(
+          {
+            id: "wallet1",
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: this.state.userWalletList[0]?.address,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          i
+        );
+      }
+    }
+  };
+
+  handleSetCoin = (data) => {
+    // console.log("data", data);
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+
+    let newAddress = [...this.state.userWalletList];
+    newAddress[0].coins.push(...newCoinList);
+
+    newAddress[0].coinFound = newAddress[0].coins.some(
+      (e) => e.chain_detected === true
+    );
+
+    newAddress[0].apiAddress = data?.apiaddress;
+    newAddress[0].address = data?.apiaddress;
+    this.setState(
+      {
+        userWalletList: newAddress,
+      },
+      () => {
+        let obj = JSON.parse(localStorage.getItem("previewAddress"));
+        localStorage.setItem(
+          "previewAddress",
+          JSON.stringify({
+            ...obj,
+            ...this.state.userWalletList[0],
+          })
+        );
+      }
+    );
+  };
+
+  componentDidUpdate(prevProps, prevState) {
     // Check if the coin rate api values are changed
     if (!this.props.commonState.top_home && this.state.lochToken) {
       this.props.updateWalletListFlag("top_home", true);
       this.setState({
-        isLoadingInsight: true,
+        // isLoadingInsight: true,
         netFlowLoading: true,
         isLoading: true,
         isLoadingNet: true,
@@ -271,47 +437,29 @@ class TopPortfolio extends BaseReactComponent {
         chainLoader: true,
       });
 
-      // if wallet address change
-      if (
-        this.state &&
-        this.state.userWalletList &&
-        this.state.userWalletList?.length > 0
-      ) {
-        // console.log("inside if");
-        // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues();
+      //  get chain detect
 
-        // Loops on coins to fetch details of each coin which exist in wallet
-        let isFound = false;
-        this.state.userWalletList?.map((wallet, i) => {
-          if (wallet.coinFound) {
-            isFound = true;
-            wallet.coins.map((coin) => {
-              if (coin.chain_detected) {
-                let userCoinWallet = {
-                  address: wallet.address,
-                  coinCode: coin.coinCode,
-                };
-                this.props.getUserWallet(userCoinWallet, this, false, i);
-              }
-            });
-          }
-
-          if (i === this.state.userWalletList?.length - 1) {
-            this.props.getYesterdaysBalanceApi(this);
-          }
-        });
-        // connect exchange balance
-        // this.props.getExchangeBalances(this, false);
+      // current data
+      let addressObj = localStorage.getItem("previewAddress")
+        ? JSON.parse(localStorage.getItem("previewAddress"))
+        : [];
+      if (addressObj?.coinFound) {
+        this.CalculateOverview();
       } else {
-        // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues();
-
-        // when wallet address not present run connect exchnage api
-        this.props.getExchangeBalances(this, false);
-
-        // run this api if itws value 0
-        this.props.getYesterdaysBalanceApi(this);
+        resetPreviewAddress();
+        // after reset previewAddress obj
+        // when user refresh then parent chain get empty so we are calling api to get parent chain
+          this.props.getAllCoins();
+          this.props.getAllParentChains();
+        let obj = JSON.parse(localStorage.getItem("previewAddress"));
+        localStorage.setItem(
+          "previewAddress",
+          JSON.stringify({
+            ...obj,
+            address: addressObj?.address,
+          })
+        );
+        this.getCoinBasedOnWalletAddress();
       }
 
       // aset value chart
@@ -321,22 +469,43 @@ class TopPortfolio extends BaseReactComponent {
       this.props.getProfitAndLossApi(this, false, false, false);
 
       // insights
-      this.props.getAllInsightsApi(this);
+      // this.props.getAllInsightsApi(this);
+
+      // transaction history
+      this.getTableData();
 
       // avg cost basis
       this.props.getAvgCostBasis(this);
 
       // for chain detect
       setTimeout(() => {
-        this.props.getAllCoins();
-        this.props.getAllParentChains();
         getDetectedChainsApi(this);
       }, 1000);
 
       GetAllPlan();
       getUser(this);
-    }
+    }else if (prevState.sort !== this.state.sort) {
+      // sort table
+      this.getTableData();
+    } 
   }
+
+  // transaction history table data
+  getTableData = () => {
+    //console.log("calling table");
+    this.setState({ tableLoading: true });
+    let arr = this.state.userWalletList;
+    let address = arr?.map((wallet) => {
+      return wallet.address;
+    });
+    let condition = [{ key: SEARCH_BY_WALLET_ADDRESS_IN, value: address }];
+    let data = new URLSearchParams();
+    data.append("start", START_INDEX);
+    data.append("conditions", JSON.stringify(condition));
+    data.append("limit", this.state.limit);
+    data.append("sorts", JSON.stringify(this.state.sort));
+    this.props.searchTransactionApi(data, this);
+  };
 
   // get refresh btn
   setLoader = (value) => {
@@ -349,6 +518,7 @@ class TopPortfolio extends BaseReactComponent {
 
   apiCall = () => {
     this.props.getAllCoins();
+    this.props.getAllParentChains();
     this.props.getCoinRate();
   };
 
@@ -362,13 +532,13 @@ class TopPortfolio extends BaseReactComponent {
     });
 
     // reset all sort average cost
-    this.props.ResetAverageCostBasis();
+    this.props.ResetAverageCostBasis(this);
   }
 
   // asset value chart api call
   getGraphData = (groupByValue = GROUP_BY_DATE) => {
     //console.log("calling graph");
-    let ActionType = ASSET_VALUE_GRAPH_DAY;
+    let ActionType = TOP_ASSET_VALUE_GRAPH_DAY;
     this.setState({ graphLoading: true }, () => {
       let addressList = [];
       this.state.userWalletList.map((wallet) =>
@@ -385,7 +555,7 @@ class TopPortfolio extends BaseReactComponent {
   handleGroupBy = (value) => {
     let groupByValue = GroupByOptions.getGroupBy(value);
     this.getGraphData(groupByValue);
-  }; 
+  };
 
   // this is for undetected wallet button zIndex
   undetectedWallet = (e) => {
@@ -425,7 +595,7 @@ class TopPortfolio extends BaseReactComponent {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList);
+    this.props.updateAverageCostBasis(sortedList, this);
   };
   // sort
   handleSort = (e) => {
@@ -479,8 +649,650 @@ class TopPortfolio extends BaseReactComponent {
       });
     }
   };
-  render() {
 
+  // sort transaction history api
+  handleTableSort = (val) => {
+    let sort = [...this.state.tableSortOpt];
+    let obj = [];
+    sort.map((el) => {
+      if (el.title === val) {
+        if (val === "time") {
+          obj = [
+            {
+              key: SORT_BY_TIMESTAMP,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "from") {
+          obj = [
+            {
+              key: SORT_BY_FROM_WALLET,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "to") {
+          obj = [
+            {
+              key: SORT_BY_TO_WALLET,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "asset") {
+          obj = [
+            {
+              key: SORT_BY_ASSET,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "usdValue") {
+          // console.log("el.up", el.up)
+          obj = [
+            {
+              key: SORT_BY_USD_VALUE_THEN,
+              value: !el.up,
+            },
+          ];
+        } else if (val === "method") {
+          obj = [
+            {
+              key: SORT_BY_METHOD,
+              value: !el.up,
+            },
+          ];
+        }
+        el.up = !el.up;
+      } else {
+        el.up = false;
+      }
+    });
+
+    this.setState({
+      sort: obj,
+      tableSortOpt: sort,
+    });
+  };
+
+  render() {
+    const { table_home, assetPriceList_home } = this.props.topAccountState;
+    const { userWalletList, currency } = this.state;
+    // Transaction history
+    let tableData =
+      table_home &&
+      table_home.map((row) => {
+        let walletFromData = null;
+        let walletToData = null;
+
+        userWalletList &&
+          userWalletList.map((wallet) => {
+            if (
+              wallet.address?.toLowerCase() ===
+                row.from_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() ===
+                row.from_wallet.address?.toLowerCase()
+            ) {
+              walletFromData = {
+                wallet_metaData: wallet.wallet_metadata,
+                displayAddress: wallet.displayAddress,
+                nickname: wallet?.nickname,
+              };
+            }
+            if (
+              wallet.address?.toLowerCase() ==
+                row.to_wallet.address?.toLowerCase() ||
+              wallet.displayAddress?.toLowerCase() ==
+                row.to_wallet.address?.toLowerCase()
+            ) {
+              walletToData = {
+                wallet_metaData: wallet.wallet_metadata,
+                displayAddress: wallet.displayAddress,
+                nickname: wallet?.nickname,
+              };
+            }
+          });
+
+        return {
+          time: row.timestamp,
+          from: {
+            address: row.from_wallet.address,
+            metaData: walletFromData,
+            wallet_metaData: {
+              symbol: row.from_wallet.wallet_metadata
+                ? row.from_wallet.wallet_metadata.symbol
+                : null,
+              text: row.from_wallet.wallet_metadata
+                ? row.from_wallet.wallet_metadata.name
+                : null,
+            },
+          },
+          to: {
+            address: row.to_wallet.address,
+            metaData: walletToData,
+            wallet_metaData: {
+              symbol: row.to_wallet.wallet_metadata
+                ? row.to_wallet.wallet_metadata.symbol
+                : null,
+              text: row.to_wallet.wallet_metadata
+                ? row.to_wallet.wallet_metadata.name
+                : null,
+            },
+          },
+          asset: {
+            code: row.asset.code,
+            symbol: row.asset.symbol,
+          },
+
+          usdValueToday: {
+            value: row.asset.value,
+            id: row.asset.id,
+          },
+          usdValueThen: {
+            value: row.asset.value,
+            id: row.asset.id,
+            assetPrice: row.asset_price,
+          },
+        };
+      });
+
+    const columnList = [
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="time"
+            onClick={() => {
+              this.handleTableSort("time");
+              TransactionHistoryDate({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Date
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "time",
+        // coumnWidth: 73,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "time") {
+            return moment(rowData.time).format("MM/DD/YY");
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="from"
+            onClick={() => {
+              this.handleTableSort("from");
+              TransactionHistoryFrom({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              From
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "from",
+        // coumnWidth: 61,
+        coumnWidth: 0.17,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "from") {
+            // console.log("row", rowData)
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                // text={rowData.from.address}
+                text={
+                  (rowData.from.metaData?.nickname
+                    ? rowData.from.metaData?.nickname + ": "
+                    : "") +
+                  (rowData.from.wallet_metaData?.text
+                    ? rowData.from.wallet_metaData?.text + ": "
+                    : "") +
+                  (rowData.from.metaData?.displayAddress &&
+                  rowData.from.metaData?.displayAddress !== rowData.from.address
+                    ? rowData.from.metaData?.displayAddress + ": "
+                    : "") +
+                  rowData.from.address
+                }
+              >
+                {rowData.from.metaData?.wallet_metaData ? (
+                  <Image
+                    src={
+                      rowData.from.metaData?.wallet_metaData?.symbol ||
+                      unrecognizedIcon
+                    }
+                    className="history-table-icon"
+                    onMouseEnter={() => {
+                      // //console.log("address", rowData.from.metaData);
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                ) : rowData.from.wallet_metaData.symbol ||
+                  rowData.from.wallet_metaData.text ||
+                  rowData.from.metaData?.nickname ? (
+                  rowData.from.wallet_metaData.symbol ? (
+                    <Image
+                      src={rowData.from.wallet_metaData.symbol}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        //  //console.log(
+                        //    "address",
+                        //    rowData.from.metaData
+                        //  );
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    />
+                  ) : rowData.from.metaData?.nickname ? (
+                    <span
+                      onMouseEnter={() => {
+                        //  //console.log(
+                        //    "address",
+                        //    rowData.from.metaData
+                        //  );
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.from.metaData?.nickname}
+                    </span>
+                  ) : (
+                    <span
+                      onMouseEnter={() => {
+                        //  //console.log(
+                        //    "address",
+                        //    rowData.from.metaData
+                        //  );
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.from.address,
+                          display_name: rowData.from.wallet_metaData?.text
+                            ? rowData.from.wallet_metaData?.text
+                            : rowData.from.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.from.wallet_metaData.text}
+                    </span>
+                  )
+                ) : rowData.from.metaData?.displayAddress ? (
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
+                      });
+                    }}
+                  >
+                    {rowData.from.metaData?.displayAddress}
+                  </span>
+                ) : (
+                  <Image
+                    src={unrecognizedIcon}
+                    className="history-table-icon"
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.from.address,
+                        display_name: rowData.from.wallet_metaData?.text
+                          ? rowData.from.wallet_metaData?.text
+                          : rowData.from.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                )}
+                {/* <Image src={rowData.from.wallet_metaData.symbol} className="history-table-icon" /> */}
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="to"
+            onClick={() => {
+              this.handleTableSort("to");
+              TransactionHistoryTo({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              To
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "to",
+        coumnWidth: 0.17,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "to") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                // text={rowData.to.address}
+                text={
+                  (rowData.to.metaData?.nickname
+                    ? rowData.to.metaData?.nickname + ": "
+                    : "") +
+                  (rowData.to.wallet_metaData?.text
+                    ? rowData.to.wallet_metaData?.text + ": "
+                    : "") +
+                  (rowData.to.metaData?.displayAddress &&
+                  rowData.to.metaData?.displayAddress !== rowData.to.address
+                    ? rowData.to.metaData?.displayAddress + ": "
+                    : "") +
+                  rowData.to.address
+                }
+              >
+                {rowData.to.metaData?.wallet_metaData ? (
+                  <Image
+                    src={
+                      rowData.to.metaData?.wallet_metaData?.symbol ||
+                      unrecognizedIcon
+                    }
+                    className="history-table-icon heyyyy"
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                ) : rowData.to.wallet_metaData.symbol ||
+                  rowData.to.wallet_metaData.text ||
+                  rowData.to.metaData?.nickname ? (
+                  rowData.to.wallet_metaData.symbol ? (
+                    <Image
+                      src={rowData.to.wallet_metaData.symbol}
+                      className="history-table-icon"
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    />
+                  ) : rowData.to.metaData?.nickname ? (
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.to.metaData?.nickname}
+                    </span>
+                  ) : (
+                    <span
+                      onMouseEnter={() => {
+                        TransactionHistoryAddress({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          address_hovered: rowData.to.address,
+                          display_name: rowData.to.wallet_metaData?.text
+                            ? rowData.to.wallet_metaData?.text
+                            : rowData.to.metaData?.displayAddress,
+                        });
+                      }}
+                    >
+                      {rowData.to.wallet_metaData.text}
+                    </span>
+                  )
+                ) : rowData.to.metaData?.displayAddress ? (
+                  <span
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
+                      });
+                    }}
+                  >
+                    {rowData.to.metaData?.displayAddress}
+                  </span>
+                ) : (
+                  <Image
+                    src={unrecognizedIcon}
+                    className="history-table-icon"
+                    onMouseEnter={() => {
+                      TransactionHistoryAddress({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        address_hovered: rowData.to.address,
+                        display_name: rowData.to.wallet_metaData?.text
+                          ? rowData.to.wallet_metaData?.text
+                          : rowData.to.metaData?.displayAddress,
+                      });
+                    }}
+                  />
+                )}
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="asset"
+            onClick={() => {
+              this.handleTableSort("asset");
+              TransactionHistoryAsset({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Asset
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "asset",
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "asset") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.asset.code}
+              >
+                <Image src={rowData.asset.symbol} className="asset-symbol" />
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="usdValue"
+            onClick={() => {
+              this.handleTableSort("usdValue");
+              TransactionHistoryUSD({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+            }}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              {CurrencyType(true)} Value
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "usdValue",
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "usdValue") {
+            let chain = Object.entries(assetPriceList_home);
+            let value;
+            chain.find((chain) => {
+              // if (chain[0] === rowData.usdValueToday.id) {
+              //   value =
+              //     rowData.usdValueToday.value *
+              //       chain[1].quote.USD.price *
+              //       currency?.rate || DEFAULT_PRICE;
+              //   return;
+              // }
+              if (chain[0] === rowData.usdValueThen.id) {
+                value =
+                  rowData.usdValueThen.value *
+                  rowData.usdValueThen.assetPrice *
+                  (currency?.rate || 1);
+              }
+            });
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={Number(value?.toFixed(2)).toLocaleString("en-US")}
+              >
+                <div className="inter-display-medium f-s-13 lh-16 grey-313 ellipsis-div">
+                  {Number(value?.toFixed(2)).toLocaleString("en-US")}
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      // {
+      //   labelName: (
+      //     <div
+      //       className="cp history-table-header-col"
+      //       id="method"
+      //       onClick={() => {
+      //         this.handleTableSort("method");
+      //         TransactionHistoryMethod({
+      //           session_id: getCurrentUser().id,
+      //           email_address: getCurrentUser().email,
+      //         });
+      //       }}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         Method
+      //       </span>
+      //       <Image
+      //         src={sortByIcon}
+      //         className={
+      //           !this.state.tableSortOpt[5].up ? "rotateDown" : "rotateUp"
+      //         }
+      //       />
+      //     </div>
+      //   ),
+      //   dataKey: "method",
+      //   coumnWidth: 0.22,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "method") {
+      //       return (
+      //         <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer">
+      //           {rowData.method}
+      //         </div>
+      //       );
+      //     }
+      //   },
+      // },
+    ];
     // Cost basis
     let tableDataCostBasis = this.props.topAccountState.Average_cost_basis;
     const CostBasisColumnData = [
@@ -520,9 +1332,7 @@ class TopPortfolio extends BaseReactComponent {
                       src={rowData.Asset}
                       className="history-table-icon"
                       style={{ width: "2rem", height: "2rem" }}
-                      onMouseEnter={() => {
-                      
-                      }}
+                      onMouseEnter={() => {}}
                     />
                     {rowData.chain && (
                       <Image
@@ -793,7 +1603,7 @@ class TopPortfolio extends BaseReactComponent {
                         handleClick={() => {
                           if (this.state.lochToken) {
                             this.props.history.push(
-                              "/intelligence/asset-value"
+                              "/top-accounts/intelligence/asset-value"
                             );
                           }
                         }}
@@ -817,7 +1627,9 @@ class TopPortfolio extends BaseReactComponent {
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                            this.props.history.push("/intelligence#netflow");
+                            this.props.history.push(
+                              "/top-accounts/intelligence#netflow"
+                            );
                           }
                         }}
                         isScrollVisible={false}
@@ -848,7 +1660,7 @@ class TopPortfolio extends BaseReactComponent {
               <div className="m-b-22 graph-table-section">
                 <Row>
                   <Col md={6}>
-                    <div className="m-r-16 profit-chart">
+                    {/* <div className="m-r-16 profit-chart">
                       <div
                         className={`bar-graph-section m-b-32`}
                         style={{ paddingBottom: "0rem", position: "relative" }}
@@ -858,18 +1670,18 @@ class TopPortfolio extends BaseReactComponent {
                           subtitle={"Valuable insights based on your assets"}
                           isArrow={true}
                           handleClick={() => {
-                            // console.log("wallet", this.state.userWalletList);
                             if (this.state.lochToken) {
                               HomeInsightsExpand({
                                 session_id: getCurrentUser().id,
                                 email_address: getCurrentUser().email,
                               });
-                              this.props.history.push("/intelligence/insights");
+                              this.props.history.push(
+                                "/top-accounts/intelligence/insights"
+                              );
                             }
                           }}
                         />
                         <div className="insights-wrapper">
-                          {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
                           {this.state.isLoadingInsight ? (
                             <div
                               style={{
@@ -964,29 +1776,43 @@ class TopPortfolio extends BaseReactComponent {
                                     </Slider>
                                   )}
 
-                                {/* <div className="bottom-msg">
-                                  <div className="row-insight op">
-                                    <Image src={LightBulb} />
-                                    <h5 className="inter-display-medium f-s-13 lh-15 m-l-12">
-                                      Add all your wallets and <br />
-                                      exchanges to gain more insights
-                                    </h5>
-                                  </div>
-                                  <div
-                                    className="row-insight-arrow cp"
-                                    onClick={this.simulateButtonClick}
-                                  >
-                                    <h6 className="inter-display-medium f-s-13 lh-15 m-r-5">
-                                      Add more
-                                    </h6>
-                                    <Image src={ArrowRight} />
-                                  </div>
-                                </div> */}
+                               
                               </div>
                             </>
                           )}
                         </div>
                       </div>
+                    </div> */}
+                    <div
+                      className="m-r-16 section-table"
+                      style={{
+                        paddingBottom: "1.6rem",
+                        height: "51rem",
+                        minHeight: "51rem",
+                        marginBottom: 0,
+                      }}
+                    >
+                      <TransactionTable
+                        title="Transaction History"
+                        handleClick={() => {
+                          // console.log("wallet", this.state.userWalletList);
+                          if (this.state.lochToken) {
+                            this.props.history.push(
+                              "/top-accounts/intelligence/transaction-history"
+                            );
+                            TransactionHistoryEView({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          }
+                        }}
+                        subTitle="Sort, filter, and dissect all your transactions from one place"
+                        tableData={tableData.slice(0, 6)}
+                        columnList={columnList}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.state.tableLoading}
+                      />
                     </div>
                   </Col>
                   <Col md={6}>
@@ -1003,7 +1829,9 @@ class TopPortfolio extends BaseReactComponent {
                         title="Average cost basis"
                         handleClick={() => {
                           if (this.state.lochToken) {
-                            this.props.history.push("/intelligence/costs");
+                            this.props.history.push(
+                              "/top-accounts/intelligence/costs"
+                            );
                           }
                         }}
                         subTitle="Understand your average entry price"
@@ -1066,12 +1894,14 @@ const mapDispatchToProps = {
   getAllInsightsApi,
   updateWalletListFlag,
   setPageFlagDefault,
+  detectCoin,
 
   // avg cost
   getAvgCostBasis,
   // average cost
   ResetAverageCostBasis,
   updateAverageCostBasis,
+  getAllParentChains,
 };
 TopPortfolio.propTypes = {};
 

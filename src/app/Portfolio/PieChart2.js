@@ -507,7 +507,7 @@ class PieChart2 extends BaseReactComponent {
         DebtValues: [],
         YieldValues: [],
         BalanceSheetValue: {},
-      });
+      },this);
 
       // set defi page to true
       this.props.updateWalletListFlag("defi", true);
@@ -539,7 +539,6 @@ class PieChart2 extends BaseReactComponent {
 
     // stop loader after refresh btn clicked
     if (this.state.isStopLoading) {
-      
       this.props.setLoader(false);
 
       this.setState({
@@ -576,7 +575,7 @@ class PieChart2 extends BaseReactComponent {
     //   DebtValues,
     // });
     // update data
-    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues });
+    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues },this);
   };
   setHoverData = (e) => {
     this.setState({ pieSectionDataEnabled: e });
@@ -675,11 +674,10 @@ class PieChart2 extends BaseReactComponent {
       email_address: getCurrentUser().email,
       session_id: getCurrentUser().id,
     });
+    
     // get the current time
   this.props.setLoader(true);
     let currentTime = new Date().getTime();
-
-    // console.log("state", this)
     // reset all data
     this.props.portfolioState.walletTotal = 0;
     this.props.portfolioState.chainPortfolio = {};

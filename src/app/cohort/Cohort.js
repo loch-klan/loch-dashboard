@@ -36,7 +36,7 @@ import {
   WhaleSortByDate,
   WhaleSortByName,
 } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser, getToken } from "../../utils/ManageToken";
+import { getCurrentUser, getToken, resetPreviewAddress } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 import { CurrencyType, numToCurrency, UpgradeTriggered } from "../../utils/ReusableFunctions";
 import Coin from "../../assets/images/coin-ava.svg";
@@ -100,7 +100,8 @@ class Cohort extends Component {
 
   componentDidMount() {
     // reset previewAddress
-    localStorage.setItem("previewAddress", "");
+    resetPreviewAddress();
+
     this.props?.TopsetPageFlagDefault();
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", this.state.startTime / 1000);

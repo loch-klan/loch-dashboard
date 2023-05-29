@@ -138,7 +138,7 @@ class TopDefi extends Component {
         DebtValues: [],
         YieldValues: [],
         BalanceSheetValue: {},
-      });
+      },this);
 
       // set defi page to true
       this.props.updateWalletListFlag("top_defi", true);
@@ -199,7 +199,7 @@ class TopDefi extends Component {
     //   sortedList,
     // });
     // update fun
-    this.props.updateDefiData({ sortedList });
+    this.props.updateDefiData({ sortedList },this);
   };
 
   handleSort = (e) => {
@@ -246,7 +246,9 @@ class TopDefi extends Component {
   };
 
   getYieldBalance = () => {
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let UserWallet = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
     if (UserWallet.length !== 0) {
       UserWallet?.map((e) => {
         let data = new URLSearchParams();
@@ -299,7 +301,7 @@ class TopDefi extends Component {
     //   DebtValues,
     // });
     // update data
-    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues });
+    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues },this);
   };
   // For add new address
   handleAddModal = () => {

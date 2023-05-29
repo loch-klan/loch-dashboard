@@ -383,7 +383,7 @@ class ExitOverlay extends BaseReactComponent {
             subChains: parentCoinList[i].sub_chains,
           },
           this,
-          true
+          true, 0
         );
       }
     }
