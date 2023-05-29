@@ -57,8 +57,31 @@ const setLocalStoraage = () => {
     })
   );
 
-  localStorage.setItem("previewAddress", "");
+  resetPreviewAddress();
 }
 
 
-export { getToken, deleteToken, getCurrentUser, setLocalStoraage };
+const resetPreviewAddress = () => {
+  localStorage.setItem(
+    "previewAddress",
+    JSON.stringify(
+      {
+        id: "wallet1",
+        address: "",
+        coins: [],
+        nickname: "",
+        showAddress: true,
+        showNickname: true,
+        apiAddress: "",
+      },
+    )
+  );
+}
+
+export {
+  getToken,
+  deleteToken,
+  getCurrentUser,
+  setLocalStoraage,
+  resetPreviewAddress,
+};

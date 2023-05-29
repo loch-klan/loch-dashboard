@@ -9,11 +9,12 @@ import OnboardingReducer from "../app/onboarding/OnboardingReducer";
 import PortfolioReducer from "../app/Portfolio/PortfolioReducer";
 import WalletReducer from '../app/wallet/WalletReducer';
 import IntelligenceReducer from '../app/intelligence/IntelligenceReducer';
+import TopAccountReducer from '../app/topAccount/TopAccountReducer';
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
-	DefiState: DefiReducer,
-	CohortState: CohortReducer,
+  DefiState: DefiReducer,
+  CohortState: CohortReducer,
   ProfileState: ProfileReducer,
   CommonState: CommonReducer,
   HomeState: HomeReducer,
@@ -21,4 +22,5 @@ export default combineReducers({
   PortfolioState: PortfolioReducer,
   WalletState: WalletReducer,
   IntelligenceState: IntelligenceReducer,
+  TopAccountState: TopAccountReducer,
 });

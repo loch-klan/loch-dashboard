@@ -55,7 +55,7 @@ import {
   numToCurrency,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
 
@@ -65,7 +65,7 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
@@ -140,7 +140,8 @@ class WishListPage extends BaseReactComponent {
   };
 
   componentDidMount() {
-    localStorage.setItem("previewAddress", "");
+   resetPreviewAddress();
+    this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -604,6 +605,7 @@ const mapDispatchToProps = {
   getAllCoins,
   getFilters,
   setPageFlagDefault,
+  TopsetPageFlagDefault,
 };
 
 WishListPage.propTypes = {};

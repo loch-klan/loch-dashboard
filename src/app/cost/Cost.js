@@ -278,7 +278,7 @@ class Cost extends Component {
     // console.log("data");
     // this.getBlockchainFee(0);
     // this.getCounterPartyFee(0);
-    this.props.ResetAverageCostBasis();
+    this.props.ResetAverageCostBasis(this);
     // updateAverageCostBasis,
   }
 
@@ -302,7 +302,7 @@ class Cost extends Component {
       // this.setState({
       //   graphfeeValue: getGraphData(graphDataObj, this),
       // });
-      this.props.updateFeeGraph(GraphfeeData, getGraphData(graphDataObj, this));
+      this.props.updateFeeGraph(GraphfeeData, getGraphData(graphDataObj, this),this);
     } else {
       counterPartyData &&
         counterPartyData?.map((tempGraphData) => {
@@ -318,7 +318,7 @@ class Cost extends Component {
       // });
       this.props.updateCounterParty(
         counterPartyData,
-        getCounterGraphData(counterPartyDataMaster, this)
+        getCounterGraphData(counterPartyDataMaster, this),this
       );
     }
   };
@@ -351,7 +351,7 @@ class Cost extends Component {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList);
+    this.props.updateAverageCostBasis(sortedList,this);
   };
   // sort
   handleSort = (e) => {
@@ -439,9 +439,9 @@ class Cost extends Component {
       let array = this.props.intelligenceState?.Average_cost_basis?.filter(
         (e) => e.CurrentValue >= 1
       ); //all data
-      this.props.updateAverageCostBasis(array);
+      this.props.updateAverageCostBasis(array,this);
     } else {
-      this.props.ResetAverageCostBasis();
+      this.props.ResetAverageCostBasis(this);
     }
 
     CostHideDust({

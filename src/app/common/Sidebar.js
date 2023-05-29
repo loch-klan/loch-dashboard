@@ -44,7 +44,7 @@ import LinkIcon from "../../assets/images/icons/link.svg";
 import BaronIcon from "../../assets/images/icons/baron-logo.svg";
 
 import ConfirmLeaveModal from './ConformLeaveModal';
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import {
     IntelligenceMenu,
     WalletsMenu,
@@ -155,7 +155,7 @@ function Sidebar(props) {
 
   // preview address
   const [previewAddress, setPreviewAddress] = React.useState(
-    localStorage.getItem("previewAddress")
+    JSON.parse(localStorage.getItem("previewAddress"))
   );
 
   const handleIntelligentSubmenu = () => {
@@ -179,7 +179,7 @@ function Sidebar(props) {
        discover: true,
        intelligence: false,
        // if not found preview address then false else true
-       topAccount: previewAddress ? true : false,
+       topAccount: previewAddress?.address ? true : false,
        topAccountintelligence: !currentValue.topAccountintelligence,
      };
      setSubmenu(obj);
@@ -246,7 +246,7 @@ function Sidebar(props) {
     // console.log("in use effect");
 
     // update previewaddress from localstorage
-    setPreviewAddress(localStorage.getItem("previewAddress"))
+    setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")))
 
     //  its mean user in ME section but not in intelligence
     if (
@@ -272,8 +272,8 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
-      localStorage.setItem("previewAddress", "");
-       setPreviewAddress(localStorage.getItem("previewAddress"));
+      resetPreviewAddress();
+       setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
       // console.log("in 1st if");
     }
 
@@ -346,7 +346,7 @@ function Sidebar(props) {
         discover: true,
         intelligence: false,
         // if not found preview address then false else true
-        topAccount: previewAddress ? true : false,
+        topAccount: previewAddress?.address ? true : false,
         topAccountintelligence: false,
       };
       setSubmenu(obj);
@@ -372,7 +372,7 @@ function Sidebar(props) {
         discover: true,
         intelligence: false,
         // if not found preview address then false else true
-        topAccount: previewAddress ? true : false,
+        topAccount: previewAddress?.address ? true : false,
         topAccountintelligence: true,
       };
       setSubmenu(obj);
@@ -391,7 +391,7 @@ function Sidebar(props) {
         discover: true,
         intelligence: false,
         // if not found preview address then false else true
-        topAccount: previewAddress ? true : false,
+        topAccount: previewAddress?.address ? true : false,
         topAccountintelligence: false,
       };
       setSubmenu(obj);
@@ -408,7 +408,7 @@ function Sidebar(props) {
         discover: true,
         intelligence: false,
         // if not found preview address then false else true
-        topAccount: previewAddress ? true : false,
+        topAccount: previewAddress?.address ? true : false,
         topAccountintelligence: true,
       };
       setSubmenu(obj);
@@ -1120,7 +1120,7 @@ function Sidebar(props) {
                               }
                             />
                             Top accounts
-                            {previewAddress && (
+                            {previewAddress?.address && (
                               <Image
                                 src={arrowUp}
                                 className={`arrow-menu ${
@@ -1137,7 +1137,7 @@ function Sidebar(props) {
                             )}
                           </NavLink>
                         </li>
-                        {(isSubmenu.topAccount && previewAddress) && (
+                        {(isSubmenu.topAccount && previewAddress?.address) && (
                           <>
                             <li className="sub-menu">
                               <NavLink

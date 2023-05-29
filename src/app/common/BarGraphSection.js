@@ -470,7 +470,9 @@ class BarGraphSection extends Component {
         ) : (
           <div
             style={{
-              height: "30rem",
+              height: this?.props?.loaderHeight
+                ? this?.props?.loaderHeight +"rem"
+                : "30rem",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",

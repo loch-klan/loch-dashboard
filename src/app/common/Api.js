@@ -5,7 +5,7 @@ import { ConnectExEmailVerified, GeneralPopupEmailVerified, Home_CE_OAuthComplet
 import { FeedbackType } from "../../utils/Constant";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
 import postLoginInstance from './../../utils/PostLoginAxios';
-import { PAGE_POPUP, SET_DEFAULT_VALUE, WALLET_LIST_UPDATED } from "./ActionTypes";
+import { PAGE_POPUP, SET_DEFAULT_VALUE, TOP_SET_DEFAULT_VALUE, WALLET_LIST_UPDATED } from "./ActionTypes";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance.post('common/test/temp-login', data)
@@ -1392,12 +1392,22 @@ export const updateWalletListFlag = (page, status) => {
 };
 
 
-// set app flags to false
+// set page flags to false
 
 export const setPageFlagDefault = () => {
   return function (dispatch, getState) {
     dispatch({
       type: SET_DEFAULT_VALUE,
+    });
+  }
+};
+
+// set page flags to false for top accont pages
+
+export const TopsetPageFlagDefault = () => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: TOP_SET_DEFAULT_VALUE,
     });
   }
 };

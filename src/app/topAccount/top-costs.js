@@ -75,9 +75,10 @@ class TopCost extends Component {
       GraphDigit: 3,
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
-        : [],
+      userWalletList: [],
+      // localStorage.getItem("addWallet")
+      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      //   : 
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
@@ -92,6 +93,9 @@ class TopCost extends Component {
         { title: "Current value", down: true },
         { title: "Gain loss", down: true },
       ],
+
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
     };
   }
 
@@ -269,12 +273,12 @@ class TopCost extends Component {
     // console.log("data");
     // this.getBlockchainFee(0);
     // this.getCounterPartyFee(0);
-    this.props.ResetAverageCostBasis();
+    this.props.ResetAverageCostBasis(this);
     // updateAverageCostBasis,
   }
 
   handleBadge = (activeBadgeList, type) => {
-    const { GraphfeeData, counterPartyData } = this.props.intelligenceState;
+    const { GraphfeeData, counterPartyData } = this.props.topAccountState;
     let graphDataMaster = [];
     let counterPartyDataMaster = [];
     if (type === 1) {
@@ -293,7 +297,7 @@ class TopCost extends Component {
       // this.setState({
       //   graphfeeValue: getGraphData(graphDataObj, this),
       // });
-      this.props.updateFeeGraph(GraphfeeData, getGraphData(graphDataObj, this));
+      this.props.updateFeeGraph(GraphfeeData, getGraphData(graphDataObj, this),this);
     } else {
       counterPartyData &&
         counterPartyData?.map((tempGraphData) => {
@@ -309,7 +313,7 @@ class TopCost extends Component {
       // });
       this.props.updateCounterParty(
         counterPartyData,
-        getCounterGraphData(counterPartyDataMaster, this)
+        getCounterGraphData(counterPartyDataMaster, this), this
       );
     }
   };
@@ -318,7 +322,7 @@ class TopCost extends Component {
   };
 
   sortArray = (key, order) => {
-    let array = this.props.intelligenceState?.Average_cost_basis; //all data
+    let array = this.props.topAccountState?.Average_cost_basis; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -342,7 +346,7 @@ class TopCost extends Component {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList);
+    this.props.updateAverageCostBasis(sortedList,this);
   };
   // sort
   handleSort = (e) => {
@@ -399,12 +403,12 @@ class TopCost extends Component {
 
   handleDust = (ishide) => {
     if (!ishide) {
-      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+      let array = this.props.topAccountState?.Average_cost_basis?.filter(
         (e) => e.CurrentValue >= 1
       ); //all data
-      this.props.updateAverageCostBasis(array);
+      this.props.updateAverageCostBasis(array,this);
     } else {
-      this.props.ResetAverageCostBasis();
+      this.props.ResetAverageCostBasis(this);
     }
   };
 
@@ -428,7 +432,7 @@ class TopCost extends Component {
     // console.log("counter", this.state.counterGraphDigit);
     // console.log("fes", this.state.GraphDigit);
 
-    let tableData = this.props.intelligenceState.Average_cost_basis;
+    let tableData = this.props.topAccountState.Average_cost_basis;
     // const tableData = [
     //   {
     //     Asset: Ethereum,
@@ -842,7 +846,7 @@ class TopCost extends Component {
                   isLoading={this.state.AvgCostLoading}
                   isGainLoss={true}
                   ishideDust={true}
-                  totalPercentage={this.props.intelligenceState.totalPercentage}
+                  totalPercentage={this.props.topAccountState.totalPercentage}
                   handleDust={this.handleDust}
                   // handleExchange={this.handleConnectModal}
                   isStickyHead={true}
@@ -861,16 +865,16 @@ class TopCost extends Component {
                 headerTitle="Blockchain Fees over Time"
                 headerSubTitle="Understand your gas costs"
                 data={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[0]
+                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState.graphfeeValue[0]
                 }
                 options={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[1]
+                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState.graphfeeValue[1]
                 }
                 options2={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[2]
+                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState.graphfeeValue[2]
                 }
                 digit={this.state.GraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
@@ -887,6 +891,7 @@ class TopCost extends Component {
                 handleBadge={(activeBadgeList) =>
                   this.handleBadge(activeBadgeList, 1)
                 }
+                loaderHeight={47.3}
 
                 // height={420}
                 // width={824}
@@ -912,16 +917,16 @@ class TopCost extends Component {
                 headerTitle="Counterparty Volume Over Time"
                 headerSubTitle="Understand where you’ve exchanged the most value"
                 data={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[0]
+                  this.props.topAccountState.counterPartyValue &&
+                  this.props.topAccountState.counterPartyValue[0]
                 }
                 options={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[1]
+                  this.props.topAccountState.counterPartyValue &&
+                  this.props.topAccountState.counterPartyValue[1]
                 }
                 options2={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[2]
+                  this.props.topAccountState.counterPartyValue &&
+                  this.props.topAccountState.counterPartyValue[2]
                 }
                 digit={this.state.counterGraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
@@ -936,6 +941,7 @@ class TopCost extends Component {
                 handleBadge={(activeBadgeList) =>
                   this.handleBadge(activeBadgeList, 2)
                 }
+                loaderHeight={45}
                 // height={"400px"}
                 // width={"824px"}
                 // comingSoon={true}
@@ -952,6 +958,9 @@ class TopCost extends Component {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 const mapDispatchToProps = {
   getAllCoins,

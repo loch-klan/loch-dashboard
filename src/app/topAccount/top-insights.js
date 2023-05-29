@@ -40,7 +40,7 @@ class TopInsightsPage extends Component {
     this.state = {
       // insightList: "",
       isLoading: false,
-      updatedInsightList: this.props.intelligenceState.updatedInsightList,
+      updatedInsightList: this.props.topAccountState.updatedInsightList,
       selected: "",
       insightFilter: [
         {
@@ -75,6 +75,9 @@ class TopInsightsPage extends Component {
       triggerId: 9,
 
       riskType: "All risks",
+
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
     };
   }
 
@@ -101,16 +104,16 @@ class TopInsightsPage extends Component {
 
     // used for filter
     if (
-      prevProps.intelligenceState.updatedInsightList !==
-      this.props.intelligenceState.updatedInsightList
+      prevProps.topAccountState.updatedInsightList !==
+      this.props.topAccountState.updatedInsightList
     ) {
       this.setState({
-        updatedInsightList: this.props.intelligenceState.updatedInsightList,
+        updatedInsightList: this.props.topAccountState.updatedInsightList,
       });
     }
 
-    if (!this.props.commonState.insight) {
-      this.props.updateWalletListFlag("insight", true);
+    if (!this.props.commonState.top_insight) {
+      this.props.updateWalletListFlag("top_insight", true);
       this.setState({
         isLoading: true,
       });
@@ -154,7 +157,7 @@ class TopInsightsPage extends Component {
   };
   handleSelect = (value) => {
     // console.log("value",value)
-    let insightList = this.props.intelligenceState.updatedInsightList;
+    let insightList = this.props.topAccountState.updatedInsightList;
     insightList = insightList?.filter((item) =>
       value === 1 ? item : item.insight_type === value
     );
@@ -223,7 +226,7 @@ class TopInsightsPage extends Component {
       },
       () => {
         let riskType = InsightType.getRiskNumber(this.state.riskType);
-        let insightList = this.props.intelligenceState.updatedInsightList;
+        let insightList = this.props.topAccountState.updatedInsightList;
 
         if (riskType !== 0) {
           insightList =
@@ -417,10 +420,10 @@ class TopInsightsPage extends Component {
                       <div
                         style={{
                           // height:
-                          //   this.props.intelligenceState.updatedInsightList
+                          //   this.props.topAccountState.updatedInsightList
                           //     ?.length === 0
                           //     ? "35rem"
-                          //     : this.props.intelligenceState.updatedInsightList
+                          //     : this.props.topAccountState.updatedInsightList
                           //         ?.length === 1
                           //     ? "25rem"
                           //     : "16rem",
@@ -507,6 +510,9 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 
 const mapDispatchToProps = {

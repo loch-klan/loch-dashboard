@@ -78,6 +78,9 @@ class TopDefi extends Component {
       isDebtToggle: false,
       upgradeModal: false,
       triggerId: 6,
+
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
     };
   }
   upgradeModal = () => {
@@ -126,7 +129,7 @@ class TopDefi extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
-    if (!this.props.commonState.defi) {
+    if (!this.props.commonState.top_defi) {
       this.props.updateDefiData({
         totalYield: 0,
         totalDebt: 0,
@@ -135,10 +138,10 @@ class TopDefi extends Component {
         DebtValues: [],
         YieldValues: [],
         BalanceSheetValue: {},
-      });
+      },this);
 
       // set defi page to true
-      this.props.updateWalletListFlag("defi", true);
+      this.props.updateWalletListFlag("top_defi", true);
       this.setState(
         {
           isYeildToggle: false,
@@ -168,7 +171,7 @@ class TopDefi extends Component {
     }
   }
   sortArray = (key, order) => {
-    let array = this.props.defiState?.cardList; //all data
+    let array = this.props.topAccountState?.cardList; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -196,7 +199,7 @@ class TopDefi extends Component {
     //   sortedList,
     // });
     // update fun
-    this.props.updateDefiData({ sortedList });
+    this.props.updateDefiData({ sortedList },this);
   };
 
   handleSort = (e) => {
@@ -243,7 +246,9 @@ class TopDefi extends Component {
   };
 
   getYieldBalance = () => {
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let UserWallet = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
     if (UserWallet.length !== 0) {
       UserWallet?.map((e) => {
         let data = new URLSearchParams();
@@ -296,7 +301,7 @@ class TopDefi extends Component {
     //   DebtValues,
     // });
     // update data
-    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues });
+    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues },this);
   };
   // For add new address
   handleAddModal = () => {
@@ -432,9 +437,9 @@ class TopDefi extends Component {
                             style={{ marginRight: "0.8rem" }}
                           >
                             {CurrencyType(false)}
-                            {this.props.defiState.totalYield &&
+                            {this.props.topAccountState.totalYield &&
                               numToCurrency(
-                                this.props.defiState.totalYield *
+                                this.props.topAccountState.totalYield *
                                   (this.state.currency?.rate || 1)
                               )}
                           </span>
@@ -448,15 +453,15 @@ class TopDefi extends Component {
                           }
                         />
                       </div>
-                      {this.props.defiState.YieldValues?.length !== 0 &&
+                      {this.props.topAccountState.YieldValues?.length !== 0 &&
                         this.state.isYeildToggle &&
-                        this.props.defiState.YieldValues?.map((item, i) => {
+                        this.props.topAccountState.YieldValues?.map((item, i) => {
                           return (
                             <div
                               className="balance-sheet-list"
                               style={
                                 i ===
-                                this.props.defiState.YieldValues?.length - 1
+                                this.props.topAccountState.YieldValues?.length - 1
                                   ? { paddingBottom: "0.3rem" }
                                   : {}
                               }
@@ -499,9 +504,9 @@ class TopDefi extends Component {
                             style={{ marginRight: "0.8rem" }}
                           >
                             {CurrencyType(false)}
-                            {this.props.defiState.totalDebt &&
+                            {this.props.topAccountState.totalDebt &&
                               numToCurrency(
-                                this.props.defiState.totalDebt *
+                                this.props.topAccountState.totalDebt *
                                   (this.state.currency?.rate || 1)
                               )}
                           </span>
@@ -516,15 +521,15 @@ class TopDefi extends Component {
                         />
                       </div>
 
-                      {this.props.defiState.DebtValues?.length !== 0 &&
+                      {this.props.topAccountState.DebtValues?.length !== 0 &&
                         this.state.isDebtToggle &&
-                        this.props.defiState.DebtValues?.map((item, i) => {
+                        this.props.topAccountState.DebtValues?.map((item, i) => {
                           return (
                             <div
                               className="balance-sheet-list"
                               style={
                                 i ===
-                                this.props.defiState.DebtValues?.length - 1
+                                this.props.topAccountState.DebtValues?.length - 1
                                   ? { paddingBottom: "0.3rem" }
                                   : {}
                               }
@@ -583,9 +588,9 @@ class TopDefi extends Component {
 
             {/* start card */}
 
-            {this.props.defiState?.sortedList?.length !== 0 &&
-            this.props.defiState?.sortedList !== "" ? (
-              this.props.defiState?.sortedList?.map((card, index) => {
+            {this.props.topAccountState?.sortedList?.length !== 0 &&
+            this.props.topAccountState?.sortedList !== "" ? (
+              this.props.topAccountState?.sortedList?.map((card, index) => {
                 let tableRows = card?.row.sort(
                   (a, b) => b.usdValue - a.usdValue
                 );
@@ -775,7 +780,7 @@ class TopDefi extends Component {
                   </div>
                 );
               })
-            ) : this.props.defiState?.sortedList !== "" ? (
+            ) : this.props.topAccountState?.sortedList !== "" ? (
               // <Col md={12}>
               <div className="defi animation-wrapper">
                 <Loading />
@@ -801,6 +806,9 @@ class TopDefi extends Component {
 const mapStateToProps = (state) => ({
   defiState: state.DefiState,
   commonState: state.CommonState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts

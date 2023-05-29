@@ -486,7 +486,7 @@ class Portfolio extends BaseReactComponent {
       ) {
         // console.log("inside if");
         // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues();
+        this.props.settingDefaultValues(this);
 
         // Loops on coins to fetch details of each coin which exist in wallet
         let isFound = false;
@@ -531,7 +531,7 @@ class Portfolio extends BaseReactComponent {
       } else {
         // console.log("inside else");
         // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues();
+        this.props.settingDefaultValues(this);
 
         // when wallet address not present run connect exchnage api
         // this.props.getExchangeBalance("binance", this);
@@ -596,6 +596,7 @@ class Portfolio extends BaseReactComponent {
     } else if (
       prevProps.location.state?.noLoad !== this.props.location.state?.noLoad
     ) {
+      console.log("no load")
       // if share link
       if (this.props.location.state?.addWallet != undefined) {
         // console.log("sha")
@@ -758,7 +759,7 @@ class Portfolio extends BaseReactComponent {
     });
 
     // reset all sort average cost
-    this.props.ResetAverageCostBasis();
+    this.props.ResetAverageCostBasis(this);
   }
 
   // asset value chart api call
@@ -934,7 +935,7 @@ class Portfolio extends BaseReactComponent {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList);
+    this.props.updateAverageCostBasis(sortedList,this);
   };
   // sort
   handleSort = (e) => {
@@ -2037,14 +2038,14 @@ class Portfolio extends BaseReactComponent {
                   isLoading={this.state.isLoading}
                   isUpdate={this.state.isUpdate}
                   walletTotal={this.props.portfolioState.walletTotal}
-                  handleAddModal={this.handleAddModal}
-                  handleManage={() => {
-                    this.props.history.push("/wallets");
-                    ManageWallets({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
+                  // handleAddModal={this.handleAddModal}
+                  // handleManage={() => {
+                  //   this.props.history.push("/wallets");
+                  //   ManageWallets({
+                  //     session_id: getCurrentUser().id,
+                  //     email_address: getCurrentUser().email,
+                  //   });
+                  // }}
                   undetectedWallet={(e) => this.undetectedWallet(e)}
                   getProtocolTotal={this.getProtocolTotal}
                 />
@@ -2089,7 +2090,8 @@ class Portfolio extends BaseReactComponent {
                           this.props.portfolioState.assetValueDay
                         }
                         externalEvents={
-                          this.state.externalEvents && this.state.externalEvents
+                          this.props.portfolioState.externalEvents &&
+                          this.props.portfolioState.externalEvents
                         }
                         coinLists={this.props.OnboardingState.coinsLists}
                         isScrollVisible={false}
