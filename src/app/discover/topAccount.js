@@ -568,7 +568,8 @@ class TopAccountPage extends BaseReactComponent {
                   // this.getCoinBasedOnWalletAddress(rowData.account);
                   this.props.history.push("/top-accounts/home");
                 }}
-                style={{ textDecoration: "underline", cursor: "pointer" }}
+                // style={{ textDecoration: "underline", cursor: "pointer" }}
+                className="top-account-address"
               >
                 {this.TruncateText(rowData.account)}
               </span>
