@@ -188,7 +188,7 @@
       position: relative;
 
       .scroll-menu-wrapper{
-               max-height: 78vh;
+               max-height: calc(100vh - 15.5rem);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
