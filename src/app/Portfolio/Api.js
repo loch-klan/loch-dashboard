@@ -364,7 +364,7 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
      postLoginInstance
        .post("wallet/user-wallet/get-asset-value-graph", data)
        .then((res) => {
-         // console.log("all data", res);
+        //  console.log("all data", res, ActionType);
          if (!res.data.error) {
            dispatch({
              type: ActionType,
