@@ -307,13 +307,13 @@ class TopPortfolio extends BaseReactComponent {
 
   CalculateOverview = () => {
     // if wallet address change
-    console.log("overview");
+    // console.log("overview");
     if (
       this.state &&
       this.state.userWalletList &&
       this.state.userWalletList?.length > 0
     ) {
-      console.log("inside if");
+      // console.log("inside if");
       // Resetting the user wallet list, total and chain wallet
       this.props.settingDefaultValues(this);
 
@@ -342,13 +342,16 @@ class TopPortfolio extends BaseReactComponent {
     } else {
       // Resetting the user wallet list, total and chain wallet
       this.props.settingDefaultValues(this);
-      console.log("inside else");
+      // console.log("inside else");
       // // when wallet address not present run connect exchnage api
       // this.props.getExchangeBalances(this, false);
 
       // run this api if itws value 0
       this.props.getYesterdaysBalanceApi(this);
     }
+
+    // aset value chart
+    this.getGraphData();
   };
 
   getCoinBasedOnWalletAddress = () => {
@@ -462,9 +465,7 @@ class TopPortfolio extends BaseReactComponent {
         this.getCoinBasedOnWalletAddress();
       }
 
-      // aset value chart
-      this.getGraphData();
-
+     
       // add netflows
       this.props.getProfitAndLossApi(this, false, false, false);
 
@@ -545,7 +546,7 @@ class TopPortfolio extends BaseReactComponent {
         addressList.push(wallet.address)
       );
       let data = new URLSearchParams();
-      data.append("wallet_addresses", JSON.stringify(addressList));
+      data.append("wallet_address", JSON.stringify(addressList));
       data.append("group_criteria", groupByValue);
       this.props.getAssetGraphDataApi(data, this, ActionType);
     });
@@ -715,6 +716,8 @@ class TopPortfolio extends BaseReactComponent {
   render() {
     const { table_home, assetPriceList_home } = this.props.topAccountState;
     const { userWalletList, currency } = this.state;
+
+    // console.log("vvv", this.props.topAccountState.assetValueDay);
     // Transaction history
     let tableData =
       table_home &&

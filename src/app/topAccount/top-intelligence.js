@@ -208,6 +208,11 @@ class TopIntelligence extends Component {
 
   assetList = () => {
     let data = new URLSearchParams();
+    let addressObj = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
+    let address = addressObj?.map((e) => e?.address);
+    data.append("wallet_address", JSON.stringify(address));
     // data.append("end_datetime", endDate);
     getTransactionAsset(data, this);
   };

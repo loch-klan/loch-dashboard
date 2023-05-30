@@ -210,7 +210,7 @@ class TopAssetValueGraph extends Component {
       );
       // console.log("addressList", this.state.userWalletList);
       let data = new URLSearchParams();
-      data.append("wallet_addresses", JSON.stringify(addressList));
+      data.append("wallet_address", JSON.stringify(addressList));
       data.append("group_criteria", groupByValue);
       this.props.getAssetGraphDataApi(data, this, ActionType);
 
