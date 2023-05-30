@@ -278,14 +278,18 @@ class TopAccountPage extends BaseReactComponent {
       index !== -1 &&
       value !== "allchain" &&
       value !== "AllNetworth" &&
-      value !== "Allasset"
+      value !== "Allasset" &&
+      value !== "Time" &&
+      value !== 1825
     ) {
       // console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allchain" ||
       value === "AllNetworth" ||
-      value === "Allasset"
+      value === "Allasset" ||
+      value === "Time" ||
+      value === 1825
     ) {
       // console.log("second if", index);
       if (index !== -1) {
@@ -356,11 +360,20 @@ class TopAccountPage extends BaseReactComponent {
               key: SORT_BY_NET_FLOW,
               value: !el.up,
             },
+            
           ];
-           TopAccountSortByNetflows({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-           });
+          this.addCondition(
+            "SEARCH_BY_TIMESTAMP",
+            TimeFilterType.getText(
+              this.state.timeFIlter === "Time"
+                ? "5 years"
+                : this.state.timeFIlter
+            )
+          ),
+            TopAccountSortByNetflows({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+            });
         } else if (val === "largestbought") {
           obj = [
             {
