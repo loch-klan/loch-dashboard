@@ -1042,7 +1042,7 @@ class AddWallet extends BaseReactComponent {
                   Already have an account?
                 </span>
                 <span
-                  className="inter-display-bold f-s-13 lh-16 black-191 cp"
+                  className="inter-display-medium f-s-13 lh-16 black-191 cp welcome-sigin"
                   onClick={this.handleSignText}
                 >
                   Sign In

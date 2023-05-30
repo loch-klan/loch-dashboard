@@ -15,11 +15,12 @@
 
       // when Home page add padding on sidebar-body
       .sidebar-body {
-        padding: 0rem 2.4rem;
+        // padding: 0rem 2.4rem;
       }
 
       .sidebar-footer {
-        padding: 3rem 3rem 0rem;
+        // padding: 3rem 3rem 0rem;
+        padding: 3rem 1rem 0rem;
       }
     }
   }
@@ -182,6 +183,38 @@
       // margin-bottom: 3.2rem;
       margin-bottom: 1rem;
       position: relative;
+
+      .scroll-menu-wrapper{
+            max-height: 75vh;
+           padding: 0rem 2.4rem;
+           padding-right: 2.8rem;
+           
+            overflow: auto;
+
+            &::-webkit-scrollbar {
+                            width: 0.4rem;
+                            // height: 0.4rem;
+                        }
+            
+            &:hover{
+               &::-webkit-scrollbar {
+                            width: 0.4rem;
+                            // height: 0.4rem;
+                        }
+
+                        &::-webkit-scrollbar-thumb {
+                            border-radius: 0.8rem;
+                            background-color: $scrollBar-thumb;
+                        }
+
+                        &::-webkit-scrollbar-track {
+                            // background-color: rgba(229, 229, 230, 0.5);
+                            // background-color: $grey-E5E;
+                            border-radius: 0.8rem;
+                        }
+            }
+      }
+
       nav {
         ul {
           li {
