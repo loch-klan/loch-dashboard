@@ -188,11 +188,12 @@
       position: relative;
 
       .scroll-menu-wrapper{
-            max-height: 75vh;
+               max-height: 78vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             height:100%;
+            padding-top: 2.5rem;
           
            
             overflow: auto;
@@ -217,6 +218,7 @@
                             // background-color: rgba(229, 229, 230, 0.5);
                             // background-color: $grey-E5E;
                             border-radius: 0.8rem;
+                            margin-top:2.5rem;
                         }
             }
       }
@@ -347,7 +349,7 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 2.5rem;
+        // margin-bottom: 2.5rem;
 
       .tab {
         display: flex;
