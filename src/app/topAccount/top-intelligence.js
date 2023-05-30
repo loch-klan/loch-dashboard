@@ -52,6 +52,7 @@ import UpgradeModal from "../common/upgradeModal";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import base64url from "base64url";
 
 class TopIntelligence extends Component {
   constructor(props) {
@@ -565,15 +566,19 @@ class TopIntelligence extends Component {
   };
 
   handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    const previewAddress = localStorage.getItem("previewAddress") ? JSON.parse(localStorage.getItem("previewAddress")) : "";
+    const encodedAddress = base64url.encode(previewAddress?.address);
+  //  console.log(
+  //    "encoded address",
+  //    encodedAddress,
+  //    "address",
+  //    previewAddress?.address,
+  //    "decode address",
+  //    base64url.decode(encodedAddress)
+  //  );
     let shareLink =
-      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence#netflow";
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=intelligence#netflow`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
@@ -621,8 +626,8 @@ class TopIntelligence extends Component {
               currentPage={"intelligence"}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
 
             <IntelWelcomeCard
@@ -651,8 +656,7 @@ class TopIntelligence extends Component {
                   {this.state.isLoading ? (
                     <Loading />
                   ) : this.props.topAccountState.updatedInsightList &&
-                    this.props.topAccountState.updatedInsightList.length >
-                      0 ? (
+                    this.props.topAccountState.updatedInsightList.length > 0 ? (
                     this.props.topAccountState.updatedInsightList
                       ?.slice(0, 2)
                       .map((insight, key) => {
@@ -850,9 +854,7 @@ class TopIntelligence extends Component {
                     handleBadge={(activeBadgeList, activeFooter) =>
                       this.handleBadge(activeBadgeList, activeFooter)
                     }
-                    ProfitLossAsset={
-                      this.props.topAccountState.ProfitLossAsset
-                    }
+                    ProfitLossAsset={this.props.topAccountState.ProfitLossAsset}
                     handleAssetSelected={this.handleAssetSelected}
 
                     // comingSoon={true}

@@ -82,10 +82,10 @@ class Login extends BaseReactComponent {
    
 
     if (this.state.link && !this.state.podName) {
-      // console.log("login in")
+      console.log("login in")
       this.props.getAllCoins(this.handleShareLinkUser);
     } else if (this.state.link && this.state.podName) {
-      // console.log("cohort name", this.state.cohortName);
+      console.log("cohort name", this.state.cohortName);
        this.props.getAllCoins(this.handleResponse);
        
     } else {

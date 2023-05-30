@@ -83,10 +83,17 @@ export default function PageHeader(props) {
       {breads}
     </Breadcrumb>
   );
-
+console.log(
+  "tr",
+  props?.bottomPadding
+    ? { paddingBottom: props?.bottomPadding + "rem" }
+    : { padding: 0 },
+  props?.bottomPadding
+);
   return (
     <div
       className={`m-b-40 page-header ${props.showpath || props?.topaccount ? "history-header" : ""}`}
+      style={props?.bottomPadding ? {paddingBottom: props?.bottomPadding+"rem"}:{padding:0}}
     >
       {props.showpath ? breadCrumb : ""}
 

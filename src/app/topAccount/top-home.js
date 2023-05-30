@@ -47,6 +47,7 @@ import {
   SORT_BY_METHOD,
   START_INDEX,
   SEARCH_BY_WALLET_ADDRESS_IN,
+  BASE_URL_S3,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import reduceCost from "../../assets/images/icons/reduce-cost-img.svg";
@@ -89,6 +90,8 @@ import { ASSET_VALUE_GRAPH_DAY } from "../Portfolio/ActionTypes";
 import TopPiechart from "./top-piechart";
 import { TOP_ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
 import moment from "moment";
+import PageHeader from "../common/PageHeader";
+import base64url from "base64url";
 
 class TopPortfolio extends BaseReactComponent {
   constructor(props) {
@@ -355,7 +358,7 @@ class TopPortfolio extends BaseReactComponent {
   };
 
   getCoinBasedOnWalletAddress = () => {
-  
+    //  console.log("detect coin");
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && this.state.userWalletList[0]?.address) {
       for (let i = 0; i < parentCoinList.length; i++) {
@@ -447,13 +450,15 @@ class TopPortfolio extends BaseReactComponent {
         ? JSON.parse(localStorage.getItem("previewAddress"))
         : [];
       if (addressObj?.coinFound) {
+        // console.log("coint found")
         this.CalculateOverview();
       } else {
         resetPreviewAddress();
+        //  console.log("reset");
         // after reset previewAddress obj
         // when user refresh then parent chain get empty so we are calling api to get parent chain
-          this.props.getAllCoins();
-          this.props.getAllParentChains();
+        this.props.getAllCoins();
+        this.props.getAllParentChains();
         let obj = JSON.parse(localStorage.getItem("previewAddress"));
         localStorage.setItem(
           "previewAddress",
@@ -465,7 +470,6 @@ class TopPortfolio extends BaseReactComponent {
         this.getCoinBasedOnWalletAddress();
       }
 
-     
       // add netflows
       this.props.getProfitAndLossApi(this, false, false, false);
 
@@ -485,10 +489,10 @@ class TopPortfolio extends BaseReactComponent {
 
       GetAllPlan();
       getUser(this);
-    }else if (prevState.sort !== this.state.sort) {
+    } else if (prevState.sort !== this.state.sort) {
       // sort table
       this.getTableData();
-    } 
+    }
   }
 
   // transaction history table data
@@ -711,6 +715,28 @@ class TopPortfolio extends BaseReactComponent {
       sort: obj,
       tableSortOpt: sort,
     });
+  };
+
+  handleShare = () => {
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = base64url.encode(previewAddress?.address);
+    //  console.log(
+    //    "encoded address",
+    //    encodedAddress,
+    //    "address",
+    //    previewAddress?.address,
+    //    "decode address",
+    //    base64url.decode(encodedAddress)
+    //  );
+    let shareLink =
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=home`;
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    // console.log("share pod", shareLink);
   };
 
   render() {
@@ -1525,12 +1551,31 @@ class TopPortfolio extends BaseReactComponent {
                   isPreviewing={true}
                 />
               </div>
+              <div
+                style={{
+                  marginTop: "10rem",
+                }}
+              >
+                <PageHeader
+                  title="Overview"
+                  // subTitle="Decipher all your DeFi data from one place"
+                  // btnText={"Add wallet"}
+                  // handleBtn={this.handleAddModal}
+                  // showpath={true}
+                  currentPage={"home"}
+                  // showData={totalWalletAmt}
+                  // isLoading={isLoading}
+                  ShareBtn={true}
+                  handleShare={this.handleShare}
+                  bottomPadding="0"
+                />
+              </div>
 
               <div
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  marginTop: "9rem",
+                  // marginTop: "9rem",
                 }}
               >
                 <TopPiechart

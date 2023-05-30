@@ -33,10 +33,12 @@ import CoinChip from "../wallet/CoinChip";
 
 import Coin2 from "../../assets/images/icons/temp-coin1.svg";
 import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
-import { AssetType } from "../../utils/Constant";
+import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import base64url from "base64url";
+import { toast } from "react-toastify";
 
 class TopDefi extends Component {
   constructor(props) {
@@ -130,15 +132,18 @@ class TopDefi extends Component {
   componentDidUpdate(prevProps, prevState) {
     // add wallet
     if (!this.props.commonState.top_defi) {
-      this.props.updateDefiData({
-        totalYield: 0,
-        totalDebt: 0,
-        cardList: [],
-        sortedList: [],
-        DebtValues: [],
-        YieldValues: [],
-        BalanceSheetValue: {},
-      },this);
+      this.props.updateDefiData(
+        {
+          totalYield: 0,
+          totalDebt: 0,
+          cardList: [],
+          sortedList: [],
+          DebtValues: [],
+          YieldValues: [],
+          BalanceSheetValue: {},
+        },
+        this
+      );
 
       // set defi page to true
       this.props.updateWalletListFlag("top_defi", true);
@@ -199,7 +204,7 @@ class TopDefi extends Component {
     //   sortedList,
     // });
     // update fun
-    this.props.updateDefiData({ sortedList },this);
+    this.props.updateDefiData({ sortedList }, this);
   };
 
   handleSort = (e) => {
@@ -301,7 +306,10 @@ class TopDefi extends Component {
     //   DebtValues,
     // });
     // update data
-    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues },this);
+    this.props.updateDefiData(
+      { sortedList: "", YieldValues, DebtValues },
+      this
+    );
   };
   // For add new address
   handleAddModal = () => {
@@ -326,25 +334,30 @@ class TopDefi extends Component {
     this.props.setPageFlagDefault();
   };
 
-  render() {
-    // console.log("nav list", nav_list, PageName);
-    const chips = [
-      {
-        chain: {
-          symbol: Coin2,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-      {
-        chain: {
-          symbol: Coin3,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-    ];
+  handleShare = () => {
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = base64url.encode(previewAddress?.address);
+    //  console.log(
+    //    "encoded address",
+    //    encodedAddress,
+    //    "address",
+    //    previewAddress?.address,
+    //    "decode address",
+    //    base64url.decode(encodedAddress)
+    //  );
+    let shareLink =
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=decentralized-finance`;
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
 
+    // console.log("share pod", shareLink);
+  };
+
+  render() {
+  
     return (
       <>
         {/* topbar */}
@@ -401,9 +414,10 @@ class TopDefi extends Component {
               // handleBtn={this.handleAddModal}
               showpath={true}
               currentPage={"decentralized-finance"}
+              ShareBtn={true}
+              handleShare={this.handleShare}
               // showData={totalWalletAmt}
               // isLoading={isLoading}
-           
             />
 
             {/* Balance sheet */}
@@ -455,32 +469,36 @@ class TopDefi extends Component {
                       </div>
                       {this.props.topAccountState.YieldValues?.length !== 0 &&
                         this.state.isYeildToggle &&
-                        this.props.topAccountState.YieldValues?.map((item, i) => {
-                          return (
-                            <div
-                              className="balance-sheet-list"
-                              style={
-                                i ===
-                                this.props.topAccountState.YieldValues?.length - 1
-                                  ? { paddingBottom: "0.3rem" }
-                                  : {}
-                              }
-                            >
-                              <span className="inter-display-medium f-s-16 lh-19">
-                                {item.name}
-                              </span>
-                              <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                {CurrencyType(false)}
-                                {amountFormat(
-                                  item.totalPrice.toFixed(2) *
-                                    (this.state.currency?.rate || 1),
-                                  "en-US",
-                                  "USD"
-                                )}
-                              </span>
-                            </div>
-                          );
-                        })}
+                        this.props.topAccountState.YieldValues?.map(
+                          (item, i) => {
+                            return (
+                              <div
+                                className="balance-sheet-list"
+                                style={
+                                  i ===
+                                  this.props.topAccountState.YieldValues
+                                    ?.length -
+                                    1
+                                    ? { paddingBottom: "0.3rem" }
+                                    : {}
+                                }
+                              >
+                                <span className="inter-display-medium f-s-16 lh-19">
+                                  {item.name}
+                                </span>
+                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                  {CurrencyType(false)}
+                                  {amountFormat(
+                                    item.totalPrice.toFixed(2) *
+                                      (this.state.currency?.rate || 1),
+                                    "en-US",
+                                    "USD"
+                                  )}
+                                </span>
+                              </div>
+                            );
+                          }
+                        )}
                     </Col>
                     <Col md={6}>
                       <div
@@ -523,32 +541,36 @@ class TopDefi extends Component {
 
                       {this.props.topAccountState.DebtValues?.length !== 0 &&
                         this.state.isDebtToggle &&
-                        this.props.topAccountState.DebtValues?.map((item, i) => {
-                          return (
-                            <div
-                              className="balance-sheet-list"
-                              style={
-                                i ===
-                                this.props.topAccountState.DebtValues?.length - 1
-                                  ? { paddingBottom: "0.3rem" }
-                                  : {}
-                              }
-                            >
-                              <span className="inter-display-medium f-s-16 lh-19">
-                                {item.name}
-                              </span>
-                              <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                {CurrencyType(false)}
-                                {amountFormat(
-                                  item.totalPrice.toFixed(2) *
-                                    (this.state.currency?.rate || 1),
-                                  "en-US",
-                                  "USD"
-                                )}
-                              </span>
-                            </div>
-                          );
-                        })}
+                        this.props.topAccountState.DebtValues?.map(
+                          (item, i) => {
+                            return (
+                              <div
+                                className="balance-sheet-list"
+                                style={
+                                  i ===
+                                  this.props.topAccountState.DebtValues
+                                    ?.length -
+                                    1
+                                    ? { paddingBottom: "0.3rem" }
+                                    : {}
+                                }
+                              >
+                                <span className="inter-display-medium f-s-16 lh-19">
+                                  {item.name}
+                                </span>
+                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                  {CurrencyType(false)}
+                                  {amountFormat(
+                                    item.totalPrice.toFixed(2) *
+                                      (this.state.currency?.rate || 1),
+                                    "en-US",
+                                    "USD"
+                                  )}
+                                </span>
+                              </div>
+                            );
+                          }
+                        )}
                     </Col>
                   </Row>
 

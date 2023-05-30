@@ -4675,3 +4675,14 @@ export const TopAccountPageSearch= ({ session_id, email_address, page}) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: page search");
 };
+
+//46. Defi: share - done
+export const DefiShare = ({ session_id, email_address }) => {
+  const event_name = "Defi: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence: share");
+};

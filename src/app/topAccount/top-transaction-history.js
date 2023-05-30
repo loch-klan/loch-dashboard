@@ -74,6 +74,7 @@ import { getAllCoins } from "../onboarding/Api.js";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import base64url from "base64url";
 
 class TopTransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -522,23 +523,27 @@ class TopTransactionHistoryPage extends BaseReactComponent {
   };
 
   handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = base64url.encode(previewAddress?.address);
+    //  console.log(
+    //    "encoded address",
+    //    encodedAddress,
+    //    "address",
+    //    previewAddress?.address,
+    //    "decode address",
+    //    base64url.decode(encodedAddress)
+    //  );
     let shareLink =
       BASE_URL_S3 +
-      "home/" +
-      slink +
-      "?redirect=intelligence/transaction-history";
+      `top-account/${encodedAddress}?redirect=intelligence/transaction-history`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
     // console.log("share pod", shareLink);
   };
+ 
 
   render() {
     // console.log("value", this.state.methodFilter);
@@ -1425,8 +1430,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
               topaccount={true}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
 
             <div className="fillter_tabs_section">

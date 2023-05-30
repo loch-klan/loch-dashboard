@@ -32,6 +32,7 @@ import topAssetValue from "./app/topAccount/top-asset-value";
 import topInsights from "./app/topAccount/top-insights";
 import topCosts from "./app/topAccount/top-costs";
 import topDefi from "./app/topAccount/top-defi";
+import topAccountShare from "./app/common/topAccountShare";
 const routes = [
   {
     path: "/",
@@ -129,6 +130,7 @@ const routes = [
     type: PrivateRoute,
     component: TopAccount,
   },
+
   {
     path: "/top-accounts/home",
     name: "Top Account Portfolio",
@@ -206,6 +208,12 @@ const routes = [
     name: "Whop loader",
     type: Route,
     component: WhopLoader,
+  },
+  {
+    path: "/top-account/:id",
+    name: "Top accounts share",
+    type: Route,
+    component: topAccountShare,
   },
   {
     path: "/landing-page-whale",

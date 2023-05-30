@@ -33,6 +33,7 @@ import Footer from "../common/footer";
 import DropDown from "../common/DropDown";
 import { lte } from "lodash";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import base64url from "base64url";
 
 class TopInsightsPage extends Component {
   constructor(props) {
@@ -194,22 +195,29 @@ class TopInsightsPage extends Component {
       // console.log("not valid value")
     }
   };
-
   handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = base64url.encode(previewAddress?.address);
+    //  console.log(
+    //    "encoded address",
+    //    encodedAddress,
+    //    "address",
+    //    previewAddress?.address,
+    //    "decode address",
+    //    base64url.decode(encodedAddress)
+    //  );
     let shareLink =
-      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/insights";
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=intelligence/insights`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
     // console.log("share pod", shareLink);
   };
+
+
 
   handleInsights = (e) => {
     let title = e.split(" ")[1];
@@ -311,8 +319,8 @@ class TopInsightsPage extends Component {
               currentPage={"insights"}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
+              ShareBtn={true}
+              handleShare={this.handleShare}
               // history={this.props.history}
               topaccount={true}
             />

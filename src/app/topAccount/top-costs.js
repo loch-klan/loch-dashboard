@@ -46,6 +46,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import base64url from "base64url";
 
 class TopCost extends Component {
   constructor(props) {
@@ -78,7 +79,7 @@ class TopCost extends Component {
       userWalletList: [],
       // localStorage.getItem("addWallet")
       //   ? JSON.parse(localStorage.getItem("addWallet"))
-      //   : 
+      //   :
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
@@ -297,7 +298,11 @@ class TopCost extends Component {
       // this.setState({
       //   graphfeeValue: getGraphData(graphDataObj, this),
       // });
-      this.props.updateFeeGraph(GraphfeeData, getGraphData(graphDataObj, this),this);
+      this.props.updateFeeGraph(
+        GraphfeeData,
+        getGraphData(graphDataObj, this),
+        this
+      );
     } else {
       counterPartyData &&
         counterPartyData?.map((tempGraphData) => {
@@ -313,7 +318,8 @@ class TopCost extends Component {
       // });
       this.props.updateCounterParty(
         counterPartyData,
-        getCounterGraphData(counterPartyDataMaster, this), this
+        getCounterGraphData(counterPartyDataMaster, this),
+        this
       );
     }
   };
@@ -346,7 +352,7 @@ class TopCost extends Component {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList,this);
+    this.props.updateAverageCostBasis(sortedList, this);
   };
   // sort
   handleSort = (e) => {
@@ -406,27 +412,33 @@ class TopCost extends Component {
       let array = this.props.topAccountState?.Average_cost_basis?.filter(
         (e) => e.CurrentValue >= 1
       ); //all data
-      this.props.updateAverageCostBasis(array,this);
+      this.props.updateAverageCostBasis(array, this);
     } else {
       this.props.ResetAverageCostBasis(this);
     }
   };
 
   handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = base64url.encode(previewAddress?.address);
+    //  console.log(
+    //    "encoded address",
+    //    encodedAddress,
+    //    "address",
+    //    previewAddress?.address,
+    //    "decode address",
+    //    base64url.decode(encodedAddress)
+    //  );
     let shareLink =
-      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/costs";
+      BASE_URL_S3 + `top-account/${encodedAddress}?redirect=intelligence/costs`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
     // console.log("share pod", shareLink);
   };
+
 
   render() {
     // console.log("counter", this.state.counterGraphDigit);
@@ -823,8 +835,8 @@ class TopCost extends Component {
               // handleBtn={this.handleAddModal}
               showpath={true}
               currentPage={"costs"}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
+              ShareBtn={true}
+              handleShare={this.handleShare}
               topaccount={true}
             />
             <div className="m-b-43 cost-table-section">

@@ -686,7 +686,7 @@ function Sidebar(props) {
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>
           <div className="sidebar">
-            <div style={{ width: "100%" }}>
+            <div style={{ width: "100%", height:"100%" }}>
               <div
                 // className={`logo ${activeTab === "/home" ? "home-topbar" : ""}`}
                 className={`logo home-topbar`}
@@ -1507,7 +1507,7 @@ function Sidebar(props) {
                     </ul>
                   </nav>
                   <div className="sidebar-footer">
-                    <ul>
+                   {!isSubmenu.discover && <ul>
                       <li style={{ justifyContent: "space-between" }}>
                         <span
                           onMouseOver={(e) =>
@@ -1630,7 +1630,7 @@ function Sidebar(props) {
                     </span>
                   )} */}
                       </li>
-                    </ul>
+                    </ul>}
 
                     <div
                       className="m-b-12 footer-divOne"

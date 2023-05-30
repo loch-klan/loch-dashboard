@@ -39,6 +39,7 @@ import {
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { TOP_ASSET_VALUE_GRAPH_DAY, TOP_ASSET_VALUE_GRAPH_MONTH, TOP_ASSET_VALUE_GRAPH_YEAR } from "./ActionTypes";
+import base64url from "base64url";
 
 class TopAssetValueGraph extends Component {
   constructor(props) {
@@ -228,20 +229,28 @@ class TopAssetValueGraph extends Component {
   };
 
   handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = base64url.encode(previewAddress?.address);
+    //  console.log(
+    //    "encoded address",
+    //    encodedAddress,
+    //    "address",
+    //    previewAddress?.address,
+    //    "decode address",
+    //    base64url.decode(encodedAddress)
+    //  );
     let shareLink =
-      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/asset-value";
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=intelligence/asset-value`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
     // console.log("share pod", shareLink);
   };
+
+ 
 
   render() {
     return (
@@ -292,8 +301,8 @@ class TopAssetValueGraph extends Component {
               // handleBtn={this.handleAddModal}
               topaccount={true}
               hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
             <div className="graph-container" style={{ marginBottom: "5rem" }}>
               <LineChartSlider
