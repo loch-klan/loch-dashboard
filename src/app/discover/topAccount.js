@@ -362,14 +362,9 @@ class TopAccountPage extends BaseReactComponent {
             },
             
           ];
-          this.addCondition(
-            "SEARCH_BY_TIMESTAMP",
-            TimeFilterType.getText(
-              this.state.timeFIlter === "Time"
-                ? "5 years"
-                : this.state.timeFIlter
-            )
-          ),
+          let time = TimeFilterType.getText(this.state.timeFIlter === "Time" ? "5 years" : this.state.timeFIlter
+          );
+          this.addCondition("SEARCH_BY_TIMESTAMP", time);
             TopAccountSortByNetflows({
               session_id: getCurrentUser().id,
               email_address: getCurrentUser().email,
