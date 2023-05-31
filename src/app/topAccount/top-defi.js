@@ -39,7 +39,7 @@ import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import base64url from "base64url";
 import { toast } from "react-toastify";
-import { TopDefiShare } from "../../utils/AnalyticsFunctions";
+import { PageviewDefi, PageviewTopDefi, TimeSpentTopDefi, TopDefiShare } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 class TopDefi extends Component {
@@ -85,6 +85,9 @@ class TopDefi extends Component {
 
       // this is used in api to check api call fromt op acount page or not
       isTopAccountPage: true,
+
+      // time spent
+      startTime: "",
     };
   }
   upgradeModal = () => {
@@ -123,7 +126,11 @@ class TopDefi extends Component {
     //   this.handleReset();
     //   this.upgradeModal();
     // }
-
+ this.state.startTime = new Date() * 1;
+ PageviewTopDefi({
+   session_id: getCurrentUser().id,
+   email_address: getCurrentUser().email,
+ });
     this.props.getAllCoins();
     this.setState({});
 
@@ -131,6 +138,16 @@ class TopDefi extends Component {
     //  this.getYieldBalance();
   }
 
+    componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    TimeSpentTopDefi({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+
+  }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
     if (!this.props.commonState.top_defi) {

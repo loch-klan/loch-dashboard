@@ -4811,3 +4811,222 @@ export const TopCostsShare = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Top accounts: costs share");
 };
+
+//Page View: Top accounts: Defi page - done
+export const PageviewTopDefi = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Page View: Top accounts: Defi page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Page View: Top accounts: Defi page");
+};
+
+//Page View: Top accounts: Home page - done
+export const PageviewTopHome = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Page View: Top accounts: Home page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Page View: Top accounts: Home page");
+};
+
+
+//Page View: Top accounts: Costs page - done
+export const PageviewTopCosts = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Page View: Top accounts: Costs page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Page View: Top accounts: Costs page");
+};
+
+
+//Page View: Top accounts: Insights page - done
+export const PageviewTopInsights = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Page View: Top accounts: Insights page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Page View: Top accounts: Insights page");
+};
+
+//Page View: Top accounts: Asset value page - done
+export const PageviewTopAssetValue = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Page View: Top accounts: Asset value page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Page View: Top accounts: Asset value page");
+};
+
+//Page View: Top accounts: Intelligence page- done
+export const PageviewTopInt = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Page View: Top accounts: Intelligence page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Page View: Top accounts: Intelligence page");
+};
+
+//Page View: Top accounts: Transaction page- done
+export const PageviewTopTransaction = ({
+  session_id,
+  email_address
+}) => {
+  const event_name = "Page View: Top accounts: Transaction history page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Page View: Top accounts: Intelligence page");
+};
+
+
+//8.Top accounts:Home: time spent on home page - done
+export const TimeSpentTopHome= ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Top accounts: Home: time spent on home page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Top accounts:Home: time spent on home page");
+};
+
+
+//8.Top accounts:Defi: time spent on Defi page- done
+export const TimeSpentTopDefi= ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Top accounts: Defi: time spent on Defi page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Top accounts:Defi: time spent on Defi page");
+};
+
+//8.TTop accounts: Costs: time spent on costs page- done
+export const TimeSpentTopCosts= ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Top accounts: Costs: time spent on costs page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Top accounts: Costs: time spent on costs page");
+};
+
+
+//8.Top accounts: Insights: time spent on insights page- done
+export const TimeSpentTopInsights= ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Top accounts: Insights: time spent on insights page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Top accounts: Insights: time spent on insights page");
+};
+
+//8.Top accounts: Asset value: time spent on asset value page- done
+export const TimeSpentTopAssetValue= ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Top accounts: Asset value: time spent on asset value page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Top accounts: Asset value: time spent on asset value page");
+};
+
+//8.Top accounts: Intelligence: time spent on intelligence page - done
+export const TimeSpentTopInt= ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Top accounts: Intelligence: time spent on intelligence page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Top accounts: Intelligence: time spent on intelligence page");
+};
+
+
+//8.Top accounts: Transaction history: time spent on transaction history page - done
+export const TimeSpentTopTransaction= ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Top accounts: Transaction history: time spent on transaction history page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Top accounts: Transaction history: time spent on transaction history page");
+};

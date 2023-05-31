@@ -13,6 +13,8 @@ import {
   InsightsIncreaseYield,
   InsightsReduceCost,
   InsightsReduceRisk,
+  PageviewTopInsights,
+  TimeSpentTopInsights,
   TopInsightShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -80,6 +82,8 @@ class TopInsightsPage extends Component {
 
       // this is used in api to check api call fromt op acount page or not
       isTopAccountPage: true,
+      // time spent
+      startTime: "",
     };
   }
 
@@ -91,16 +95,29 @@ class TopInsightsPage extends Component {
   };
 
   componentDidMount() {
-    InsightPage({
+    this.state.startTime = new Date() * 1;
+    PageviewTopInsights({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    // this.props.getAllInsightsApi(this);
     GetAllPlan();
     getUser();
     this.setState({});
   }
 
+  componentWillUnmount() {
+    // reset to month graph on page leave
+    // this.getGraphData();
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentTopInsights({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
@@ -214,14 +231,12 @@ class TopInsightsPage extends Component {
       `top-account/${encodedAddress}?redirect=intelligence/insights`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
- TopInsightShare({
-   session_id: getCurrentUser().id,
-   email_address: getCurrentUser().email,
- });
+    TopInsightShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     // console.log("share pod", shareLink);
   };
-
-
 
   handleInsights = (e) => {
     let title = e.split(" ")[1];

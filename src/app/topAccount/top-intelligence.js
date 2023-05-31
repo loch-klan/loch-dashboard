@@ -16,7 +16,9 @@ import {
   netflowExplainer1,
   netflowExplainer2,
   netflowTimeFilter,
+  PageviewTopInt,
   TimeSpentIntelligence,
+  TimeSpentTopInt,
   TopIntShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -121,7 +123,7 @@ class TopIntelligence extends Component {
     }
     this.state.startTime = new Date() * 1;
     // console.log("page Enter", this.state.startTime);
-    IntelligencePage({
+    PageviewTopInt({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -202,7 +204,7 @@ class TopIntelligence extends Component {
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
     // console.log("page Leave", endTime);
     // console.log("Time Spent", TimeSpent);
-    TimeSpentIntelligence({
+    TimeSpentTopInt({
       time_spent: TimeSpent,
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,

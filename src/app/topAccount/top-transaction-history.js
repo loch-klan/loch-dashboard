@@ -46,6 +46,8 @@ import {
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
+  PageviewTopTransaction,
+  TimeSpentTopTransaction,
   TopInsightShare,
   TopTransactionShare,
   TransactionHistoryAddress,
@@ -167,6 +169,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
 
       // this is used in api to check api call fromt op acount page or not
       isTopAccountPage: true,
+      // time spent
+      startTime: "",
     };
     this.delayTimer = 0;
   }
@@ -179,7 +183,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
   };
 
   componentDidMount() {
-    TransactionHistoryPageView({
+    this.state.startTime = new Date() * 1;
+    PageviewTopTransaction({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -206,6 +211,20 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         }
       );
     }
+  }
+
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentTopTransaction({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+
+    this.timeFilter(0);
   }
 
   callApi = (page = START_INDEX) => {
@@ -542,13 +561,12 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       `top-account/${encodedAddress}?redirect=intelligence/transaction-history`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
- TopTransactionShare({
-   session_id: getCurrentUser().id,
-   email_address: getCurrentUser().email,
- });
+    TopTransactionShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     // console.log("share pod", shareLink);
   };
- 
 
   render() {
     // console.log("value", this.state.methodFilter);

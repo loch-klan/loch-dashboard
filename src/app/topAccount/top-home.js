@@ -67,6 +67,9 @@ import {
   TransactionHistoryUSD,
   TransactionHistoryEView,
   TopHomeShare,
+  PageviewTopHome,
+  TimeSpentTopDefi,
+  TimeSpentTopHome,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "../Portfolio/Api";
@@ -304,10 +307,10 @@ class TopPortfolio extends BaseReactComponent {
 
     this.state.startTime = new Date() * 1;
 
-    // HomePage({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
+     PageviewTopHome({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
     this.apiCall();
     // get token to check if wallet address not loaded
     this.getToken();
@@ -543,7 +546,7 @@ class TopPortfolio extends BaseReactComponent {
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentHome({
+    TimeSpentTopHome({
       time_spent: TimeSpent,
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,

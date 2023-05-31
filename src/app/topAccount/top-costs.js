@@ -18,6 +18,8 @@ import {
   CounterpartyFeesTimeFilter,
   CostsPage,
   TopCostsShare,
+  PageviewTopCosts,
+  TimeSpentTopCosts,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
@@ -102,10 +104,11 @@ class TopCost extends Component {
   }
 
   componentDidMount() {
-    CostsPage({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    this.state.startTime = new Date() * 1;
+     PageviewTopCosts({
+       session_id: getCurrentUser().id,
+       email_address: getCurrentUser().email,
+     });
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
@@ -118,7 +121,7 @@ class TopCost extends Component {
     } else {
       window.scrollTo(0, 0);
     }
-    this.state.startTime = new Date() * 1;
+    
     // console.log("page Enter", this.state.startTime / 1000);
 
     this.props.getAllCoins();
@@ -265,7 +268,7 @@ class TopCost extends Component {
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
     // console.log("page Leave", endTime / 1000);
     // console.log("Time Spent", TimeSpent);
-    TimeSpentCosts({
+    TimeSpentTopCosts({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       time_spent: TimeSpent,

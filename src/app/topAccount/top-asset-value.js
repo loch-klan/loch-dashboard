@@ -23,7 +23,7 @@ import {
 } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
-import { AssetValuePage, TopAssetValueShare } from "../../utils/AnalyticsFunctions";
+import { AssetValuePage, PageviewTopAssetValue, TimeSpentTopAssetValue, TopAssetValueShare } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -65,12 +65,14 @@ class TopAssetValueGraph extends Component {
 
       // this is used in api to check api call fromt op acount page or not
       isTopAccountPage: true,
+      // time spent
+      startTime: "",
     };
   }
 
   componentDidMount() {
-    // this.state.startTime = new Date() * 1;
-    AssetValuePage({
+    this.state.startTime = new Date() * 1;
+    PageviewTopAssetValue({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -114,6 +116,15 @@ class TopAssetValueGraph extends Component {
   componentWillUnmount() {
     // reset to month graph on page leave
     // this.getGraphData();
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentTopAssetValue({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   }
 
   // For add new address
