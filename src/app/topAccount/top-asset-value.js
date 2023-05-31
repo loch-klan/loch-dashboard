@@ -23,7 +23,7 @@ import {
 } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
-import { AssetValuePage, PageviewTopAssetValue, TimeSpentTopAssetValue, TopAssetValueShare } from "../../utils/AnalyticsFunctions";
+import { PageviewTopAssetValue, TimeSpentTopAssetValue, TopAssetValueShare } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";

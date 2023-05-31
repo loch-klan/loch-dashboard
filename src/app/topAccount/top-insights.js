@@ -8,11 +8,6 @@ import { getAllInsightsApi } from "../intelligence/Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import {
-  AllInsights,
-  InsightPage,
-  InsightsIncreaseYield,
-  InsightsReduceCost,
-  InsightsReduceRisk,
   PageviewTopInsights,
   TimeSpentTopInsights,
   TopInsightShare,
@@ -187,28 +182,28 @@ class TopInsightsPage extends Component {
     });
 
     if (value === 1) {
-      AllInsights({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      // AllInsights({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
       // console.log("All");
     } else if (value === 10) {
-      InsightsReduceCost({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      // InsightsReduceCost({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
       //  console.log("Reduce Cost");
     } else if (value === 20) {
-      InsightsReduceRisk({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      // InsightsReduceRisk({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
       //  console.log("Reduce Risk");
     } else if (value === 30) {
-      InsightsIncreaseYield({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      // InsightsIncreaseYield({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
     } else {
       // console.log("not valid value")
     }

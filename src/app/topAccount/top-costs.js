@@ -13,10 +13,6 @@ import CoinChip from "../wallet/CoinChip";
 import TransactionTable from "../intelligence/TransactionTable";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import {
-  TimeSpentCosts,
-  FeesTimePeriodFilter,
-  CounterpartyFeesTimeFilter,
-  CostsPage,
   TopCostsShare,
   PageviewTopCosts,
   TimeSpentTopCosts,
@@ -210,11 +206,11 @@ class TopCost extends Component {
       handleSelected = "Week";
     }
     // console.log("handle select", handleSelected);
-    FeesTimePeriodFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_period_selected: handleSelected,
-    });
+    // FeesTimePeriodFilter({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    //   time_period_selected: handleSelected,
+    // });
   }
 
   getCounterPartyFee(option) {
@@ -256,11 +252,11 @@ class TopCost extends Component {
 
     // console.log("handle select", handleSelected)
     // CounterpartyFeesTimeFilter;
-    CounterpartyFeesTimeFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_period_selected: handleSelected,
-    });
+    // CounterpartyFeesTimeFilter({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    //   time_period_selected: handleSelected,
+    // });
   }
 
   componentWillUnmount() {

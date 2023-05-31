@@ -55,20 +55,9 @@ import reduceCost from "../../assets/images/icons/reduce-cost-img.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk-img.svg";
 import increaseYield from "../../assets/images/icons/increase-yield-img.svg";
 import {
-  TimeSpentHome,
-  ProfitLossEV,
-  HomePage,
-  HomeInsightsExpand,
-  TransactionHistoryDate,
-  TransactionHistoryFrom,
-  TransactionHistoryAddress,
-  TransactionHistoryTo,
-  TransactionHistoryAsset,
-  TransactionHistoryUSD,
-  TransactionHistoryEView,
+
   TopHomeShare,
   PageviewTopHome,
-  TimeSpentTopDefi,
   TimeSpentTopHome,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
@@ -854,10 +843,10 @@ class TopPortfolio extends BaseReactComponent {
             id="time"
             onClick={() => {
               this.handleTableSort("time");
-              TransactionHistoryDate({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              });
+              // TransactionHistoryDate({
+              //   session_id: getCurrentUser().id,
+              //   email_address: getCurrentUser().email,
+              // });
             }}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
@@ -888,10 +877,10 @@ class TopPortfolio extends BaseReactComponent {
             id="from"
             onClick={() => {
               this.handleTableSort("from");
-              TransactionHistoryFrom({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              });
+              // TransactionHistoryFrom({
+              //   session_id: getCurrentUser().id,
+              //   email_address: getCurrentUser().email,
+              // });
             }}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
@@ -942,14 +931,14 @@ class TopPortfolio extends BaseReactComponent {
                     className="history-table-icon"
                     onMouseEnter={() => {
                       // //console.log("address", rowData.from.metaData);
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.from.address,
-                        display_name: rowData.from.wallet_metaData?.text
-                          ? rowData.from.wallet_metaData?.text
-                          : rowData.from.metaData?.displayAddress,
-                      });
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.from.address,
+                      //   display_name: rowData.from.wallet_metaData?.text
+                      //     ? rowData.from.wallet_metaData?.text
+                      //     : rowData.from.metaData?.displayAddress,
+                      // });
                     }}
                   />
                 ) : rowData.from.wallet_metaData.symbol ||
@@ -964,14 +953,14 @@ class TopPortfolio extends BaseReactComponent {
                         //    "address",
                         //    rowData.from.metaData
                         //  );
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     />
                   ) : rowData.from.metaData?.nickname ? (
@@ -981,14 +970,14 @@ class TopPortfolio extends BaseReactComponent {
                         //    "address",
                         //    rowData.from.metaData
                         //  );
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {rowData.from.metaData?.nickname}
@@ -1000,14 +989,14 @@ class TopPortfolio extends BaseReactComponent {
                         //    "address",
                         //    rowData.from.metaData
                         //  );
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {rowData.from.wallet_metaData.text}
@@ -1016,14 +1005,14 @@ class TopPortfolio extends BaseReactComponent {
                 ) : rowData.from.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.from.address,
-                        display_name: rowData.from.wallet_metaData?.text
-                          ? rowData.from.wallet_metaData?.text
-                          : rowData.from.metaData?.displayAddress,
-                      });
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.from.address,
+                      //   display_name: rowData.from.wallet_metaData?.text
+                      //     ? rowData.from.wallet_metaData?.text
+                      //     : rowData.from.metaData?.displayAddress,
+                      // });
                     }}
                   >
                     {rowData.from.metaData?.displayAddress}
@@ -1033,14 +1022,14 @@ class TopPortfolio extends BaseReactComponent {
                     src={unrecognizedIcon}
                     className="history-table-icon"
                     onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.from.address,
-                        display_name: rowData.from.wallet_metaData?.text
-                          ? rowData.from.wallet_metaData?.text
-                          : rowData.from.metaData?.displayAddress,
-                      });
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.from.address,
+                      //   display_name: rowData.from.wallet_metaData?.text
+                      //     ? rowData.from.wallet_metaData?.text
+                      //     : rowData.from.metaData?.displayAddress,
+                      // });
                     }}
                   />
                 )}
@@ -1057,10 +1046,10 @@ class TopPortfolio extends BaseReactComponent {
             id="to"
             onClick={() => {
               this.handleTableSort("to");
-              TransactionHistoryTo({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              });
+              // TransactionHistoryTo({
+              //   session_id: getCurrentUser().id,
+              //   email_address: getCurrentUser().email,
+              // });
             }}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
@@ -1108,14 +1097,14 @@ class TopPortfolio extends BaseReactComponent {
                     }
                     className="history-table-icon heyyyy"
                     onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.wallet_metaData?.text
-                          ? rowData.to.wallet_metaData?.text
-                          : rowData.to.metaData?.displayAddress,
-                      });
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.to.address,
+                      //   display_name: rowData.to.wallet_metaData?.text
+                      //     ? rowData.to.wallet_metaData?.text
+                      //     : rowData.to.metaData?.displayAddress,
+                      // });
                     }}
                   />
                 ) : rowData.to.wallet_metaData.symbol ||
@@ -1126,27 +1115,27 @@ class TopPortfolio extends BaseReactComponent {
                       src={rowData.to.wallet_metaData.symbol}
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     />
                   ) : rowData.to.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {rowData.to.metaData?.nickname}
@@ -1154,14 +1143,14 @@ class TopPortfolio extends BaseReactComponent {
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {rowData.to.wallet_metaData.text}
@@ -1170,14 +1159,14 @@ class TopPortfolio extends BaseReactComponent {
                 ) : rowData.to.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.wallet_metaData?.text
-                          ? rowData.to.wallet_metaData?.text
-                          : rowData.to.metaData?.displayAddress,
-                      });
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.to.address,
+                      //   display_name: rowData.to.wallet_metaData?.text
+                      //     ? rowData.to.wallet_metaData?.text
+                      //     : rowData.to.metaData?.displayAddress,
+                      // });
                     }}
                   >
                     {rowData.to.metaData?.displayAddress}
@@ -1187,14 +1176,14 @@ class TopPortfolio extends BaseReactComponent {
                     src={unrecognizedIcon}
                     className="history-table-icon"
                     onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.wallet_metaData?.text
-                          ? rowData.to.wallet_metaData?.text
-                          : rowData.to.metaData?.displayAddress,
-                      });
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.to.address,
+                      //   display_name: rowData.to.wallet_metaData?.text
+                      //     ? rowData.to.wallet_metaData?.text
+                      //     : rowData.to.metaData?.displayAddress,
+                      // });
                     }}
                   />
                 )}
@@ -1210,10 +1199,10 @@ class TopPortfolio extends BaseReactComponent {
             id="asset"
             onClick={() => {
               this.handleTableSort("asset");
-              TransactionHistoryAsset({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              });
+              // TransactionHistoryAsset({
+              //   session_id: getCurrentUser().id,
+              //   email_address: getCurrentUser().email,
+              // });
             }}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
@@ -1253,10 +1242,10 @@ class TopPortfolio extends BaseReactComponent {
             id="usdValue"
             onClick={() => {
               this.handleTableSort("usdValue");
-              TransactionHistoryUSD({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              });
+              // TransactionHistoryUSD({
+              //   session_id: getCurrentUser().id,
+              //   email_address: getCurrentUser().email,
+              // });
             }}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
@@ -1688,10 +1677,10 @@ class TopPortfolio extends BaseReactComponent {
                         isArrow={true}
                         handleClick={() => {
                           if (this.state.lochToken) {
-                            ProfitLossEV({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
+                            // ProfitLossEV({
+                            //   session_id: getCurrentUser().id,
+                            //   email_address: getCurrentUser().email,
+                            // });
                             this.props.history.push(
                               "/top-accounts/intelligence#netflow"
                             );
@@ -1871,10 +1860,10 @@ class TopPortfolio extends BaseReactComponent {
                             this.props.history.push(
                               "/top-accounts/intelligence/transaction-history"
                             );
-                            TransactionHistoryEView({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
+                            // TransactionHistoryEView({
+                            //   session_id: getCurrentUser().id,
+                            //   email_address: getCurrentUser().email,
+                            // });
                           }
                         }}
                         subTitle="Sort, filter, and dissect all your transactions from one place"

@@ -48,23 +48,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {
   PageviewTopTransaction,
   TimeSpentTopTransaction,
-  TopInsightShare,
   TopTransactionShare,
-  TransactionHistoryAddress,
-  TransactionHistoryAssetFilter,
-  TransactionHistoryHideDust,
-  TransactionHistoryMethodFilter,
-  TransactionHistoryPageView,
-  TransactionHistorySearch,
-  TransactionHistorySortAmount,
-  TransactionHistorySortAsset,
-  TransactionHistorySortDate,
-  TransactionHistorySortFrom,
-  TransactionHistorySortMethod,
-  TransactionHistorySortTo,
-  TransactionHistorySortUSDAmount,
-  TransactionHistorySortUSDFee,
-  TransactionHistoryYearFilter,
 } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
@@ -224,7 +208,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
 
-    this.timeFilter(0);
   }
 
   callApi = (page = START_INDEX) => {
@@ -308,11 +291,11 @@ class TopTransactionHistoryPage extends BaseReactComponent {
   addCondition = (key, value) => {
     // console.log("key, value", key, value);
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
-      TransactionHistoryYearFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        year_filter: value == "allYear" ? "All years" : value,
-      });
+      // TransactionHistoryYearFilter({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   year_filter: value == "allYear" ? "All years" : value,
+      // });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
       // console.log("tes", this.props.topAccountState.assetFilter);
       let assets = [];
@@ -329,18 +312,18 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         },
       ]).then(() => {
         // console.log("asset arr", assets)
-        TransactionHistoryAssetFilter({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          asset_filter: value == "allAssets" ? "All assets" : assets,
-        });
+        // TransactionHistoryAssetFilter({
+        //   session_id: getCurrentUser().id,
+        //   email_address: getCurrentUser().email,
+        //   asset_filter: value == "allAssets" ? "All assets" : assets,
+        // });
       });
     } else if (key === "SEARCH_BY_METHOD_IN") {
-      TransactionHistoryMethodFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        method_filter: value == "allMethod" ? "All method" : value,
-      });
+      // TransactionHistoryMethodFilter({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   method_filter: value == "allMethod" ? "All method" : value,
+      // });
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
     // console.log("index", index);
@@ -391,11 +374,11 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
       this.addCondition(SEARCH_BY_TEXT, this.state.search);
-      TransactionHistorySearch({
-        session_id: getCurrentUser().id,
-        email: getCurrentUser().email,
-        searched: this.state.search,
-      });
+      // TransactionHistorySearch({
+      //   session_id: getCurrentUser().id,
+      //   email: getCurrentUser().email,
+      //   searched: this.state.search,
+      // });
       // this.callApi(this.state.currentPage || START_INDEX, condition)
     }, 1000);
   };
@@ -413,10 +396,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
             },
           ];
 
-          TransactionHistorySortDate({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          // TransactionHistorySortDate({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "from") {
           obj = [
             {
@@ -424,10 +407,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortFrom({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          // TransactionHistorySortFrom({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "to") {
           obj = [
             {
@@ -435,10 +418,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortTo({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          // TransactionHistorySortTo({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "asset") {
           obj = [
             {
@@ -446,10 +429,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortAsset({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          // TransactionHistorySortAsset({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "amount") {
           obj = [
             {
@@ -457,10 +440,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortAmount({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          // TransactionHistorySortAmount({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "usdThen") {
           obj = [
             {
@@ -468,10 +451,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortUSDAmount({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          // TransactionHistorySortUSDAmount({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "usdTransaction") {
           obj = [
             {
@@ -479,10 +462,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortUSDFee({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          // TransactionHistorySortUSDFee({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "method") {
           obj = [
             {
@@ -490,10 +473,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortMethod({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          // TransactionHistorySortMethod({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         }
         el.up = !el.up;
       } else {
@@ -534,10 +517,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         showDust: !this.state.showDust,
       },
       () => {
-        TransactionHistoryHideDust({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-        });
+        // TransactionHistoryHideDust({
+        //   session_id: getCurrentUser().id,
+        //   email_address: getCurrentUser().email,
+        // });
         this.addCondition(SEARCH_BY_NOT_DUST, this.state.showDust);
       }
     );
@@ -764,14 +747,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                       className="history-table-icon"
                       onMouseEnter={() => {
                         // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     />
                     <Image
@@ -791,14 +774,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                         className="history-table-icon"
                         onMouseEnter={() => {
                           // console.log("address", rowData.from.metaData);
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.from.address,
-                            display_name: rowData.from.wallet_metaData?.text
-                              ? rowData.from.wallet_metaData?.text
-                              : rowData.from.metaData?.displayAddress,
-                          });
+                          // TransactionHistoryAddress({
+                          //   session_id: getCurrentUser().id,
+                          //   email_address: getCurrentUser().email,
+                          //   address_hovered: rowData.from.address,
+                          //   display_name: rowData.from.wallet_metaData?.text
+                          //     ? rowData.from.wallet_metaData?.text
+                          //     : rowData.from.metaData?.displayAddress,
+                          // });
                         }}
                       />
                       <Image
@@ -812,14 +795,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                     <span
                       onMouseEnter={() => {
                         // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {this.TruncateText(rowData.from.metaData?.nickname)}
@@ -834,14 +817,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                     <span
                       onMouseEnter={() => {
                         // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {this.TruncateText(rowData.from.wallet_metaData.text)}
@@ -857,14 +840,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   <span
                     onMouseEnter={() => {
                       // console.log("address", rowData.from.metaData);
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.from.address,
-                        display_name: rowData.from.wallet_metaData?.text
-                          ? rowData.from.wallet_metaData?.text
-                          : rowData.from.metaData?.displayAddress,
-                      });
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.from.address,
+                      //   display_name: rowData.from.wallet_metaData?.text
+                      //     ? rowData.from.wallet_metaData?.text
+                      //     : rowData.from.metaData?.displayAddress,
+                      // });
                     }}
                   >
                     {this.TruncateText(rowData.from.metaData?.displayAddress)}
@@ -882,14 +865,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                       className="history-table-icon"
                       onMouseEnter={() => {
                         // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     />
                     <Image
@@ -980,14 +963,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                       }
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     />
                     <Image
@@ -1006,14 +989,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                         src={rowData.to.wallet_metaData.symbol}
                         className="history-table-icon"
                         onMouseEnter={() => {
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.to.address,
-                            display_name: rowData.to.wallet_metaData?.text
-                              ? rowData.to.wallet_metaData?.text
-                              : rowData.to.metaData?.displayAddress,
-                          });
+                          // TransactionHistoryAddress({
+                          //   session_id: getCurrentUser().id,
+                          //   email_address: getCurrentUser().email,
+                          //   address_hovered: rowData.to.address,
+                          //   display_name: rowData.to.wallet_metaData?.text
+                          //     ? rowData.to.wallet_metaData?.text
+                          //     : rowData.to.metaData?.displayAddress,
+                          // });
                         }}
                       />
                       <Image
@@ -1026,14 +1009,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   ) : rowData.to.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {this.TruncateText(rowData.to.metaData?.nickname)}
@@ -1047,14 +1030,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {this.TruncateText(rowData.to.wallet_metaData.text)}
@@ -1069,14 +1052,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                 ) : rowData.to.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.wallet_metaData?.text
-                          ? rowData.to.wallet_metaData?.text
-                          : rowData.to.metaData?.displayAddress,
-                      });
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.to.address,
+                      //   display_name: rowData.to.wallet_metaData?.text
+                      //     ? rowData.to.wallet_metaData?.text
+                      //     : rowData.to.metaData?.displayAddress,
+                      // });
                     }}
                   >
                     {this.TruncateText(rowData.to.metaData?.displayAddress)}
@@ -1093,14 +1076,14 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                       src={unrecognizedIcon}
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     />
                     <Image

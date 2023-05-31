@@ -9,15 +9,7 @@ import BarGraphSection from "../common/BarGraphSection";
 import { getAllCoins } from "../onboarding/Api.js";
 import { Col, Image, Row } from "react-bootstrap";
 import {
-  InsightsViewMore,
-  IntelligencePage,
-  netflowAssetFilter,
-  netflowChainFilter,
-  netflowExplainer1,
-  netflowExplainer2,
-  netflowTimeFilter,
   PageviewTopInt,
-  TimeSpentIntelligence,
   TimeSpentTopInt,
   TopIntShare,
 } from "../../utils/AnalyticsFunctions";
@@ -409,11 +401,11 @@ class TopIntelligence extends Component {
         this.state.selectedAssets
       );
     }
-    netflowTimeFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      selected: handleSelected,
-    });
+    // netflowTimeFilter({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    //   selected: handleSelected,
+    // });
     this.setState({
       title: option,
     });
@@ -491,11 +483,11 @@ class TopIntelligence extends Component {
       );
     }
 
-    netflowChainFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      selected: selectedChains,
-    });
+    // netflowChainFilter({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    //   selected: selectedChains,
+    // });
   };
 
   handleSelect = (opt) => {
@@ -538,10 +530,10 @@ class TopIntelligence extends Component {
     this.setState({
       RightShow: false,
     });
-    netflowExplainer2({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    // netflowExplainer2({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
   };
 
   LeftClose = () => {
@@ -549,10 +541,10 @@ class TopIntelligence extends Component {
       LeftShow: false,
     });
 
-    netflowExplainer1({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    // netflowExplainer1({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
   };
 
   handleAssetSelected = (arr) => {
@@ -561,11 +553,11 @@ class TopIntelligence extends Component {
         selectedAssets: arr === "allAssets" ? [] : arr,
       },
       () => {
-        netflowAssetFilter({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          selected: arr === "allAssets" ? "All assets" : arr,
-        });
+        // netflowAssetFilter({
+        //   session_id: getCurrentUser().id,
+        //   email_address: getCurrentUser().email,
+        //   selected: arr === "allAssets" ? "All assets" : arr,
+        // });
         this.handleBadge(this.state.selectedActiveBadge, this.state.title);
       }
     );
@@ -653,10 +645,10 @@ class TopIntelligence extends Component {
                   this.props.history.push(
                     "/top-accounts/intelligence/insights"
                   );
-                  InsightsViewMore({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
+                  // InsightsViewMore({
+                  //   session_id: getCurrentUser().id,
+                  //   email_address: getCurrentUser().email,
+                  // });
                 }}
               />
               <div style={{ position: "relative" }}>

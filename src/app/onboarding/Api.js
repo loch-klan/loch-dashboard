@@ -64,7 +64,11 @@ export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
         // && res.data.data.chain_detected
         
         if (!res.error && res.data) {
-          if (res.data.data.chain_detected && !isCohort) {
+          if (
+            res.data.data.chain_detected &&
+            !isCohort &&
+            !ctx?.topAccountPage
+          ) {
             WalletAddressTextbox({
               session_id: "",
               address: wallet.address,
