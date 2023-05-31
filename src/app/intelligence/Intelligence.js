@@ -89,6 +89,7 @@ class Intelligence extends Component {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
+      netFlowLoading:false,
     };
   }
 
@@ -235,7 +236,7 @@ class Intelligence extends Component {
     //   })
     // }
     let handleSelected = "All";
-    this.setState({ graphValue: "" });
+    this.setState({ graphValue: "", netFlowLoading: true });
     const today = moment().unix();
     if (option == 0) {
       this.props.getProfitAndLossApi(
@@ -425,6 +426,7 @@ class Intelligence extends Component {
 
     this.setState({
       selectedActiveBadge: activeBadgeList,
+      netFlowLoading:true,
     });
     let startDate = moment().unix();
     let endDate;
@@ -860,7 +862,8 @@ class Intelligence extends Component {
                     }
                     handleAssetSelected={this.handleAssetSelected}
                     getObj={true}
-
+                    isLoading={this.state.netFlowLoading}
+                    loaderHeight={57.8}
                     // comingSoon={true}
                   />
                 ) : (
