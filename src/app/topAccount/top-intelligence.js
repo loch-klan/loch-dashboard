@@ -192,6 +192,9 @@ class TopIntelligence extends Component {
       } else {
         window.scrollTo(0, 0);
       }
+      setTimeout(() => {
+        this.props.history.replace("/top-accounts/intelligence");
+      }, 1000);
     }
   }
   componentWillUnmount() {
@@ -205,7 +208,7 @@ class TopIntelligence extends Component {
       email_address: getCurrentUser().email,
     });
 
-    //  this.timeFilter(0);
+     this.timeFilter(0);
   }
 
   assetList = () => {

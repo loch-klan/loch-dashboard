@@ -26,6 +26,7 @@ import TransactionTable from "../intelligence/TransactionTable";
 import BarGraphSection from "./../common/BarGraphSection";
 import {
   getAllInsightsApi,
+  getAssetProfitLoss,
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
@@ -227,6 +228,9 @@ class TopPortfolio extends BaseReactComponent {
 
       // this is used in api to check api call fromt op acount page or not
       isTopAccountPage: true,
+
+      // netflow switch
+      isSwitch: false,
     };
   }
 
@@ -473,6 +477,14 @@ class TopPortfolio extends BaseReactComponent {
 
       // add netflows
       this.props.getProfitAndLossApi(this, false, false, false);
+      // netflow breakdown
+       this.props.getAssetProfitLoss(
+         this,
+         false,
+         false,
+         false
+       );
+      
 
       // insights
       // this.props.getAllInsightsApi(this);
@@ -717,7 +729,12 @@ class TopPortfolio extends BaseReactComponent {
       tableSortOpt: sort,
     });
   };
-
+ setSwitch = () => {
+    this.setState({
+      isSwitch: !this.state.isSwitch,
+    });
+    // console.log("switch")
+  };
   handleShare = () => {
     const previewAddress = localStorage.getItem("previewAddress")
       ? JSON.parse(localStorage.getItem("previewAddress"))
@@ -1690,13 +1707,19 @@ class TopPortfolio extends BaseReactComponent {
                         marginBottom="m-b-32"
                         showFooter={false}
                         showBadges={false}
-                        showPercentage={
-                          this.props.topAccountState.graphValue &&
-                          this.props.topAccountState.graphValue[2]
-                        }
+                        // showPercentage={
+                        //   this.props.topAccountState.graphValue &&
+                        //   this.props.topAccountState.graphValue[2]
+                        // }
                         isLoading={this.state.netFlowLoading}
                         className={"portfolio-profit-and-loss"}
                         isMinichart={true}
+                        showSwitch={true}
+                        isSwitch={this.state.isSwitch}
+                        setSwitch={this.setSwitch}
+                        ProfitLossAsset={
+                          this.props.topAccountState.ProfitLossAsset
+                        }
                       />
                     </div>
                   </Col>
@@ -1954,6 +1977,7 @@ const mapDispatchToProps = {
   ResetAverageCostBasis,
   updateAverageCostBasis,
   getAllParentChains,
+  getAssetProfitLoss,
 };
 TopPortfolio.propTypes = {};
 

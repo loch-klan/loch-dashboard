@@ -68,7 +68,7 @@ export const getProfitLossAsset = (arr) => {
 const options = {
   chart: {
     type: "column",
-    spacingBottom: 35,
+    spacingBottom: 0,
     events: {
       load: function () {
         // Get the renderer

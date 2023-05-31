@@ -768,7 +768,8 @@ function Sidebar(props) {
                       </h4>
                     </div>
                   </div>
-                  {isSubmenu.me && showDiscoverpopup && (
+                  {/* hide below tooltip to test tab */}
+                  {/* {isSubmenu.me && showDiscoverpopup && (
                     <div className="discover-tooltip">
                       <Image src={DiscoverIcon} />
                       Change here to <br />
@@ -779,7 +780,7 @@ function Sidebar(props) {
                         onClick={handleClose}
                       />
                     </div>
-                  )}
+                  )} */}
                 </div>
                 <div className="scroll-menu-wrapper">
                   <nav>

@@ -347,11 +347,17 @@ class BarGraphSection extends Component {
               </div>
             }
 
-            {showPercentage ? (
+            {showPercentage || showSwitch ? (
               <div
                 className="show-percentage-div"
                 style={
-                  showSwitch
+                  showSwitch && !showPercentage
+                    ? {
+                        marginBottom: "1rem",
+                        marginTop: "-2.5rem",
+                        justifyContent: "end",
+                      }
+                    : showSwitch
                     ? { marginBottom: "2rem" }
                     : {
                         justifyContent: "flex-end",
@@ -360,18 +366,22 @@ class BarGraphSection extends Component {
                       }
                 }
               >
-                <div
-                  className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
-                    showPercentage.status === "Increase"
-                      ? "inc"
-                      : showPercentage.status === "No Change"
-                      ? "inc"
-                      : "dec"
-                  }`}
-                >
-                  <Image src={showPercentage.icon} className="m-r-4" />
-                  {showPercentage.percent}% {showPercentage.status}
-                </div>
+                {showPercentage && (
+                  <div
+                    className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
+                      showPercentage.status === "Increase"
+                        ? "inc"
+                        : showPercentage.status === "No Change"
+                        ? "inc"
+                        : "dec"
+                    }`}
+                  >
+                    <Image src={showPercentage.icon} className="m-r-4" />
+                    {showPercentage.percent}% {showPercentage.status}
+                  </div>
+                )}
+
+                {/* {showSwitch && !showPercentage && <div></div>} */}
 
                 {showSwitch && (
                   <div>
@@ -433,13 +443,17 @@ class BarGraphSection extends Component {
                     <Bar options={options} data={data} />
                   </div>
                 ) : (
-                  <div className="chartArea">
+                  <div
+                    className="chartArea"
+                    style={  showSwitch && !showPercentage?{ maxHeight: "35.55rem"}:{}}
+                  >
                     <HighchartsReact
                       highcharts={Highcharts}
                       options={this.props?.ProfitLossAsset}
                       // constructorType={"stockChart"}
                       // allowChartUpdate={true}
                       // updateArgs={[true]}
+                      containerProps={{ style: { height: "100%" } }}
                     />
                   </div>
                 )}
@@ -471,7 +485,7 @@ class BarGraphSection extends Component {
           <div
             style={{
               height: this?.props?.loaderHeight
-                ? this?.props?.loaderHeight +"rem"
+                ? this?.props?.loaderHeight + "rem"
                 : "30rem",
               display: "flex",
               justifyContent: "center",

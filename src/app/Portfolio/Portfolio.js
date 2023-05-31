@@ -30,6 +30,7 @@ import TransactionTable from "../intelligence/TransactionTable";
 import BarGraphSection from "./../common/BarGraphSection";
 import {
   getAllInsightsApi,
+  getAssetProfitLoss,
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
@@ -262,6 +263,9 @@ class Portfolio extends BaseReactComponent {
 
       chainLoader: false,
       totalChainDetechted: 0,
+
+      // netflow switch
+      isSwitch: false,
     };
   }
 
@@ -425,7 +429,7 @@ class Portfolio extends BaseReactComponent {
         graphLoading: true,
         tableLoading: true,
         AvgCostLoading: true,
-        chainLoader:true,
+        chainLoader: true,
       });
 
       // console.log("inside coin rate list");
@@ -470,7 +474,7 @@ class Portfolio extends BaseReactComponent {
         // connect exchange api
         // this.props.getExchangeBalance("binance", this);
         // this.props.getExchangeBalance("coinbase", this);
-        this.props.getExchangeBalances(this,false);
+        this.props.getExchangeBalances(this, false);
 
         if (!isFound) {
           this.setState({
@@ -519,7 +523,8 @@ class Portfolio extends BaseReactComponent {
       // add loader
       this.props.getProfitAndLossApi(this, false, false, false);
 
-     
+      // netflow breakdown
+      this.props.getAssetProfitLoss(this, false, false, false);
 
       // run when updatedInsightList === ""
       this.props.getAllInsightsApi(this);
@@ -531,9 +536,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllParentChains();
         getDetectedChainsApi(this);
       }, 1000);
-       
-     
-      
+
       GetAllPlan();
       getUser(this);
 
@@ -951,6 +954,12 @@ class Portfolio extends BaseReactComponent {
          email_address: getCurrentUser().email,
        });
     }
+  };
+   setSwitch = () => {
+    this.setState({
+      isSwitch: !this.state.isSwitch,
+    });
+    // console.log("switch")
   };
   render() {
     const { table_home, assetPriceList_home } = this.props.intelligenceState;
@@ -2087,13 +2096,19 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                         marginBottom="m-b-32"
                         showFooter={false}
                         showBadges={false}
-                        showPercentage={
-                          this.props.intelligenceState.graphValue &&
-                          this.props.intelligenceState.graphValue[2]
-                        }
+                        // showPercentage={
+                        //   this.props.intelligenceState.graphValue &&
+                        //   this.props.intelligenceState.graphValue[2]
+                        // }
+                        showSwitch={true}
                         isLoading={this.state.netFlowLoading}
                         className={"portfolio-profit-and-loss"}
                         isMinichart={true}
+                        ProfitLossAsset={
+                          this.props.intelligenceState.ProfitLossAsset
+                        }
+                        isSwitch={this.state.isSwitch}
+                        setSwitch={this.setSwitch}
                       />
                     </div>
                   </Col>
@@ -2438,6 +2453,7 @@ const mapDispatchToProps = {
   // average cost
   ResetAverageCostBasis,
   updateAverageCostBasis,
+  getAssetProfitLoss
 };
 Portfolio.propTypes = {};
 

@@ -203,6 +203,9 @@ class Intelligence extends Component {
       } else {
         window.scrollTo(0, 0);
       }
+      setTimeout(() => {
+         this.props.history.replace("/intelligence");
+      }, 1000);
     }
   }
   componentWillUnmount() {
@@ -216,7 +219,7 @@ class Intelligence extends Component {
       email_address: getCurrentUser().email,
     });
 
-    //  this.timeFilter(0);
+     this.timeFilter(0);
    
   }
 
@@ -862,8 +865,10 @@ class Intelligence extends Component {
                     }
                     handleAssetSelected={this.handleAssetSelected}
                     getObj={true}
-                    isLoading={this.state.netFlowLoading}
-                    loaderHeight={57.8}
+                    // hiding loader for now
+                    // isLoading={this.state.netFlowLoading}
+                    // loaderHeight={57.8}
+
                     // comingSoon={true}
                   />
                 ) : (
