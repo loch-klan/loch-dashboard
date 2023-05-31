@@ -9,7 +9,7 @@ import CoinBadges from "./../common/CoinBadges";
 import DropDown from "../common/DropDown";
 import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
 import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
-
+import loaderIcon from "../../assets/images/icons/loader.svg"
 import GraphLogo from "../../assets/images/graph-logo.svg";
 import { GroupByOptions, Months } from "../../utils/Constant";
 import {
@@ -41,6 +41,7 @@ import { toast } from "react-toastify";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import AssetValueEmailModal from "./EmailNotify"
+import SwitchButton from "./SwitchBtn";
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -1200,7 +1201,8 @@ backdrop-filter: blur(15px);">
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginBottom: this.props.dataLoaded ? "5rem": "2rem",
+                        marginBottom:
+                          this.props.dataLoaded || true ? "5rem" : "2rem",
                       }}
                     >
                       <div
@@ -1257,18 +1259,19 @@ backdrop-filter: blur(15px);">
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
-                  {this.props.dataLoaded  && (
+                  {this.props.dataLoaded ||
+                    (true && (
                       <div
                         style={{
                           position: "absolute",
                           right: "0px",
-                          top: !this.props.hideTimeFilter ? "-38px" : "-9px",
+                          top: !this.props.hideTimeFilter ? "-38px" : "-5px",
                           zIndex: 1,
                           display: "flex",
                           alignItems: "center",
                         }}
                       >
-                        <h5
+                        {/* <h5
                           className="inter-display-medium f-s-10 lh-14"
                           style={{
                             // position: "absolute",
@@ -1279,15 +1282,20 @@ backdrop-filter: blur(15px);">
                           }}
                         >
                           Don't worry we're still loading all your data
-                        </h5>
-                        <Button
+                        </h5> */}
+                        {/* <Button
                           className="secondary-btn small-btn"
                           onClick={this.handleAskEmail}
                         >
                           Get notified
-                        </Button>
+                        </Button> */}
+                        <SwitchButton
+                          handleEmail={this.handleAskEmail}
+                          isTopAccount={this.props?.isTopAccountPage}
+                        />
+                        <Image src={loaderIcon} className="rotate-loader" />
                       </div>
-                    )}
+                    ))}
                   {!this.props.hideTimeFilter && (
                     <>
                       <span
@@ -1540,6 +1548,7 @@ backdrop-filter: blur(15px);">
             show={this.state.EmailModal}
             onHide={this.handleAskEmail}
             history={this.props.history}
+            from={this.props?.isTopAccountPage ? "topaccount" : "me"}
           />
         )}
       </div>

@@ -1907,6 +1907,7 @@ class TopPortfolio extends BaseReactComponent {
                         dataLoaded={
                           this.props.topAccountState.assetValueDataLoaded
                         }
+                        isTopAccountPage={true}
                       />
                     </div>
                   </Col>

@@ -1396,6 +1396,14 @@ export const updateWalletListFlag = (page, status) => {
 
 export const setPageFlagDefault = () => {
   return function (dispatch, getState) {
+     let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+     localStorage.setItem(
+       "assetValueLoader",
+       JSON.stringify({
+         me: false,
+         topaccount: obj?.topaccount,
+       })
+     );
     dispatch({
       type: SET_DEFAULT_VALUE,
     });
@@ -1406,6 +1414,14 @@ export const setPageFlagDefault = () => {
 
 export const TopsetPageFlagDefault = () => {
   return function (dispatch, getState) {
+    let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+    localStorage.setItem(
+      "assetValueLoader",
+      JSON.stringify({
+        me: obj?.me,
+        topaccount: false,
+      })
+    );
     dispatch({
       type: TOP_SET_DEFAULT_VALUE,
     });

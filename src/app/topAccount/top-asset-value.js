@@ -343,6 +343,7 @@ class TopAssetValueGraph extends Component {
                 isUpdate={this.state.isUpdate}
                 isPage={true}
                 dataLoaded={this.props.topAccountState.assetValueDataLoaded}
+                isTopAccountPage={true}
               />
             </div>
             {/* <FeedbackForm page={"Asset Value Graph Page"} /> */}

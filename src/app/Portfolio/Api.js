@@ -386,6 +386,17 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
                setTimeout(() => {
                  ctx.props.getAssetGraphDataApi(data, ctx, ActionType);
                }, 15000);
+           } else {
+             let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+            localStorage.setItem(
+              "assetValueLoader",
+              JSON.stringify({
+                me: !ctx?.state?.isTopAccountPage ? false : obj?.me,
+                topaccount: ctx?.state?.isTopAccountPage
+                  ? false
+                  : obj?.topaccount,
+              })
+            );
            }
          } else {
            toast.error(res.data.message || "Something Went Wrong");

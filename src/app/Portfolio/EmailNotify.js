@@ -46,6 +46,15 @@ class AssetValueEmailModal extends BaseReactComponent {
 
     data.append("email", this.state.email);
 
+    let obj = JSON.parse(localStorage.getItem("assetValueLoader"))
+    localStorage.setItem(
+      "assetValueLoader",
+      JSON.stringify({
+        me: this.props.from === "me" ? true : obj?.me,
+        topaccount: this.props.from === "topaccount" ? true : obj?.topaccount,
+      })
+    );
+    this.state.onHide();
     // updateUser(data, this);
   };
 
