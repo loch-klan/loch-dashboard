@@ -42,7 +42,7 @@ import ApiModalIcon from '../../assets/images/icons/ApiModalIcon.svg';
 import ConnectModalIcon from '../../assets/images/icons/connectIcon.svg';
 import LinkIcon from "../../assets/images/icons/link.svg";
 import BaronIcon from "../../assets/images/icons/baron-logo.svg";
-
+import Close from "../../assets/images/icons/netflow-close.svg";
 import ConfirmLeaveModal from './ConformLeaveModal';
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import {
@@ -92,7 +92,7 @@ import UpgradeModal from './upgradeModal'
 import ConnectModal from './ConnectModal'
 import AuthModal from './AuthModal';
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg"
-
+import DiscoverIcon from "../../assets/images/icons/discover-arrow.svg";
 
 function Sidebar(props) {
 // console.log('props',props);
@@ -681,12 +681,18 @@ function Sidebar(props) {
     "/top-accounts/intelligence/asset-value",
     "/top-accounts/decentralized-finance",
   ].includes(activeTab);
+
+  const [showDiscoverpopup, setDiscoverPopup] = React.useState(true);
+  const handleClose = () => {
+    setDiscoverPopup(false)
+    
+  }
     return (
       <div className="sidebar-section">
         {/* <Container className={`${activeTab === "/home" ? "no-padding" : ""}`}> */}
         <Container className={"no-padding"}>
           <div className="sidebar">
-            <div style={{ width: "100%", height:"100%" }}>
+            <div style={{ width: "100%", height: "100%" }}>
               <div
                 // className={`logo ${activeTab === "/home" ? "home-topbar" : ""}`}
                 className={`logo home-topbar`}
@@ -741,7 +747,7 @@ function Sidebar(props) {
                 }
               >
                 {/* menu tab */}
-                <div style={{ padding: "0rem 2.4rem" }}>
+                <div style={{ padding: "0rem 2.4rem", position: "relative" }}>
                   <div className="menu-tab-wrapper">
                     <div
                       className={`tab ${isSubmenu.discover ? "active" : ""}`}
@@ -762,6 +768,18 @@ function Sidebar(props) {
                       </h4>
                     </div>
                   </div>
+                  {isSubmenu.me && showDiscoverpopup && (
+                    <div className="discover-tooltip">
+                      <Image src={DiscoverIcon} />
+                      Change here to <br />
+                      discover alpha
+                      <Image
+                        src={Close}
+                        className="tooltip-close"
+                        onClick={handleClose}
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="scroll-menu-wrapper">
                   <nav>
@@ -1507,41 +1525,43 @@ function Sidebar(props) {
                     </ul>
                   </nav>
                   <div className="sidebar-footer">
-                   {!isSubmenu.discover && <ul>
-                      <li style={{ justifyContent: "space-between" }}>
-                        <span
-                          onMouseOver={(e) =>
-                            (e.currentTarget.children[0].src = ExportIconWhite)
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.children[0].src = ExportIcon)
-                          }
-                          onClick={handleExportModal}
-                        >
-                          <Image src={ExportIcon} />
-                          <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                            Export
-                          </Button>
-                        </span>
+                    {!isSubmenu.discover && (
+                      <ul>
+                        <li style={{ justifyContent: "space-between" }}>
+                          <span
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src =
+                                ExportIconWhite)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = ExportIcon)
+                            }
+                            onClick={handleExportModal}
+                          >
+                            <Image src={ExportIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Export
+                            </Button>
+                          </span>
 
-                        <span
-                          onMouseOver={(e) =>
-                            (e.currentTarget.children[0].src =
-                              SharePortfolioIcon)
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.children[0].src =
-                              SharePortfolioIconWhite)
-                          }
-                          onClick={handleShareModal}
-                          style={{ marginRight: "1rem" }}
-                        >
-                          <Image src={SharePortfolioIconWhite} />
-                          <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                            Share
-                          </Button>
-                        </span>
-                        {/*                   
+                          <span
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src =
+                                SharePortfolioIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src =
+                                SharePortfolioIconWhite)
+                            }
+                            onClick={handleShareModal}
+                            style={{ marginRight: "1rem" }}
+                          >
+                            <Image src={SharePortfolioIconWhite} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Share
+                            </Button>
+                          </span>
+                          {/*                   
                     <span
                       // onMouseOver={(e) =>
                       //   (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -1560,8 +1580,8 @@ function Sidebar(props) {
                       </Button>
                     </span>
                    */}
-                      </li>
-                      {/* <li>
+                        </li>
+                        {/* <li>
                     <span
                       onMouseOver={(e) =>
                         (e.currentTarget.children[0].src = ApiBlackIcon)
@@ -1577,7 +1597,7 @@ function Sidebar(props) {
                       </Button>
                     </span>
                   </li> */}
-                      {/* {JSON.parse(localStorage.getItem("lochUser")) && (
+                        {/* {JSON.parse(localStorage.getItem("lochUser")) && (
                   <li
                     onMouseOver={(e) =>
                       (e.currentTarget.children[0].src = ShareProfileDarkIcon)
@@ -1596,22 +1616,22 @@ function Sidebar(props) {
                   </li>
                 )} */}
 
-                      <li style={{ justifyContent: "space-between" }}>
-                        <span
-                          onClick={handleLeave}
-                          onMouseOver={(e) =>
-                            (e.currentTarget.children[0].src = LeaveBlackIcon)
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.children[0].src = LeaveIcon)
-                          }
-                        >
-                          <Image src={LeaveIcon} />
-                          <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                            Leave
-                          </Button>
-                        </span>
-                        {/* {!lochUser && activeTab !== "/home" && (
+                        <li style={{ justifyContent: "space-between" }}>
+                          <span
+                            onClick={handleLeave}
+                            onMouseOver={(e) =>
+                              (e.currentTarget.children[0].src = LeaveBlackIcon)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.children[0].src = LeaveIcon)
+                            }
+                          >
+                            <Image src={LeaveIcon} />
+                            <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
+                              Leave
+                            </Button>
+                          </span>
+                          {/* {!lochUser && activeTab !== "/home" && (
                     <span
                       onMouseOver={(e) =>
                         (e.currentTarget.children[0].src = SharePortfolioIcon)
@@ -1629,8 +1649,9 @@ function Sidebar(props) {
                       </Button>
                     </span>
                   )} */}
-                      </li>
-                    </ul>}
+                        </li>
+                      </ul>
+                    )}
 
                     <div
                       className="m-b-12 footer-divOne"

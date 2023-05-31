@@ -1635,35 +1635,28 @@ class TopPortfolio extends BaseReactComponent {
                   <Col md={6}>
                     <div
                       className="m-r-16 section-table"
-                      // style={{ paddingBottom: "1.15rem" }}
+                      style={{
+                        paddingBottom: "1.6rem",
+                        height: "51rem",
+                        minHeight: "51rem",
+                        marginBottom: 0,
+                      }}
                     >
-                      <LineChartSlider
-                        assetValueData={
-                          this.props.topAccountState.assetValueDay &&
-                          this.props.topAccountState.assetValueDay
-                        }
-                        externalEvents={
-                          this.props.topAccountState.externalEvents &&
-                          this.props.topAccountState.externalEvents
-                        }
-                        coinLists={this.props.OnboardingState.coinsLists}
-                        isScrollVisible={false}
-                        handleGroupBy={(value) => this.handleGroupBy(value)}
-                        graphLoading={this.state.graphLoading}
-                        // graphLoading={true}
-                        isUpdate={this.state.isUpdate}
+                      <TransactionTable
+                        title="Average cost basis"
                         handleClick={() => {
                           if (this.state.lochToken) {
                             this.props.history.push(
-                              "/top-accounts/intelligence/asset-value"
+                              "/top-accounts/intelligence/costs"
                             );
                           }
                         }}
-                        hideTimeFilter={true}
-                        hideChainFilter={true}
-                        dataLoaded={
-                          this.props.topAccountState.assetValueDataLoaded
-                        }
+                        subTitle="Understand your average entry price"
+                        tableData={tableDataCostBasis.slice(0, 6)}
+                        columnList={CostBasisColumnData}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.state.AvgCostLoading}
                       />
                     </div>
                   </Col>
@@ -1870,28 +1863,35 @@ class TopPortfolio extends BaseReactComponent {
                   <Col md={6}>
                     <div
                       className="section-table"
-                      style={{
-                        paddingBottom: "1.6rem",
-                        height: "51rem",
-                        minHeight: "51rem",
-                        marginBottom: 0,
-                      }}
+                      // style={{ paddingBottom: "1.15rem" }}
                     >
-                      <TransactionTable
-                        title="Average cost basis"
+                      <LineChartSlider
+                        assetValueData={
+                          this.props.topAccountState.assetValueDay &&
+                          this.props.topAccountState.assetValueDay
+                        }
+                        externalEvents={
+                          this.props.topAccountState.externalEvents &&
+                          this.props.topAccountState.externalEvents
+                        }
+                        coinLists={this.props.OnboardingState.coinsLists}
+                        isScrollVisible={false}
+                        handleGroupBy={(value) => this.handleGroupBy(value)}
+                        graphLoading={this.state.graphLoading}
+                        // graphLoading={true}
+                        isUpdate={this.state.isUpdate}
                         handleClick={() => {
                           if (this.state.lochToken) {
                             this.props.history.push(
-                              "/top-accounts/intelligence/costs"
+                              "/top-accounts/intelligence/asset-value"
                             );
                           }
                         }}
-                        subTitle="Understand your average entry price"
-                        tableData={tableDataCostBasis.slice(0, 6)}
-                        columnList={CostBasisColumnData}
-                        headerHeight={60}
-                        isArrow={true}
-                        isLoading={this.state.AvgCostLoading}
+                        hideTimeFilter={true}
+                        hideChainFilter={true}
+                        dataLoaded={
+                          this.props.topAccountState.assetValueDataLoaded
+                        }
                       />
                     </div>
                   </Col>

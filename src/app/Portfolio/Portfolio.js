@@ -2030,39 +2030,32 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                   <Col md={6}>
                     <div
                       className="m-r-16 section-table"
-                      // style={{ paddingBottom: "1.15rem" }}
+                      style={{
+                        paddingBottom: "1.6rem",
+                        height: "51rem",
+                        minHeight: "51rem",
+                        marginBottom: 0,
+                      }}
                     >
-                      <LineChartSlider
-                        assetValueData={
-                          this.props.portfolioState.assetValueDay &&
-                          this.props.portfolioState.assetValueDay
-                        }
-                        externalEvents={
-                          this.props.portfolioState.externalEvents &&
-                          this.props.portfolioState.externalEvents
-                        }
-                        coinLists={this.props.OnboardingState.coinsLists}
-                        isScrollVisible={false}
-                        handleGroupBy={(value) => this.handleGroupBy(value)}
-                        graphLoading={this.state.graphLoading}
-                        // graphLoading={true}
-                        isUpdate={this.state.isUpdate}
+                      <TransactionTable
+                        title="Average cost basis"
                         handleClick={() => {
+                          // console.log("wallet", this.state.userWalletList);
                           if (this.state.lochToken) {
-                            AssetValueExpandview({
+                            this.props.history.push("/intelligence/costs");
+                            AverageCostBasisEView({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                            this.props.history.push(
-                              "/intelligence/asset-value"
-                            );
                           }
                         }}
-                        hideTimeFilter={true}
-                        hideChainFilter={true}
-                        dataLoaded={
-                          this.props.portfolioState.assetValueDataLoaded
-                        }
+                        subTitle="Understand your average entry price"
+                        tableData={tableDataCostBasis.slice(0, 6)}
+                        columnList={CostBasisColumnData}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.state.AvgCostLoading}
+                        isAnalytics="average cost basis"
                       />
                     </div>
                   </Col>
@@ -2284,32 +2277,39 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                   <Col md={6}>
                     <div
                       className="section-table"
-                      style={{
-                        paddingBottom: "1.6rem",
-                        height: "51rem",
-                        minHeight: "51rem",
-                        marginBottom: 0,
-                      }}
+                      // style={{ paddingBottom: "1.15rem" }}
                     >
-                      <TransactionTable
-                        title="Average cost basis"
+                      <LineChartSlider
+                        assetValueData={
+                          this.props.portfolioState.assetValueDay &&
+                          this.props.portfolioState.assetValueDay
+                        }
+                        externalEvents={
+                          this.props.portfolioState.externalEvents &&
+                          this.props.portfolioState.externalEvents
+                        }
+                        coinLists={this.props.OnboardingState.coinsLists}
+                        isScrollVisible={false}
+                        handleGroupBy={(value) => this.handleGroupBy(value)}
+                        graphLoading={this.state.graphLoading}
+                        // graphLoading={true}
+                        isUpdate={this.state.isUpdate}
                         handleClick={() => {
-                          // console.log("wallet", this.state.userWalletList);
                           if (this.state.lochToken) {
-                            this.props.history.push("/intelligence/costs");
-                            AverageCostBasisEView({
+                            AssetValueExpandview({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
+                            this.props.history.push(
+                              "/intelligence/asset-value"
+                            );
                           }
                         }}
-                        subTitle="Understand your average entry price"
-                        tableData={tableDataCostBasis.slice(0, 6)}
-                        columnList={CostBasisColumnData}
-                        headerHeight={60}
-                        isArrow={true}
-                        isLoading={this.state.AvgCostLoading}
-                        isAnalytics="average cost basis"
+                        hideTimeFilter={true}
+                        hideChainFilter={true}
+                        dataLoaded={
+                          this.props.portfolioState.assetValueDataLoaded
+                        }
                       />
                     </div>
                   </Col>
