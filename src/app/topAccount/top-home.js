@@ -65,6 +65,7 @@ import {
   TransactionHistoryAsset,
   TransactionHistoryUSD,
   TransactionHistoryEView,
+  TopHomeShare,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "../Portfolio/Api";
@@ -735,7 +736,10 @@ class TopPortfolio extends BaseReactComponent {
       `top-account/${encodedAddress}?redirect=home`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
+ TopHomeShare({
+   session_id: getCurrentUser().id,
+   email_address: getCurrentUser().email,
+ });
     // console.log("share pod", shareLink);
   };
 

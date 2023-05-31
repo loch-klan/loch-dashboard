@@ -54,31 +54,32 @@ class AppFeature extends Component {
 
     handleRedirection = () => {
       if (this.state.PageName === "whale-watch") {
-          
         this.props.history.push("/whale-watch");
-        
-        } else if (this.state.PageName === "average-cost-basis") {
-          console.log("average-cost-basis");
-          
-          this.props.history.push("/intelligence/costs?add-address=true");
-        } else if (this.state.PageName === "netflow") {
-          console.log("netflows");
-              this.props.history.push({
-                pathname: "/intelligence",
-                hash:"netflow",
-                search: "?add-address=true",
-              });
-        } else if (this.state.PageName === "insights") {
-          console.log("insights");
-              this.props.history.push(
-                "/intelligence/insights?add-address=true"
-              );
-        } else if (this.state.PageName === "asset-value-chart") {
-          console.log("asset-value-chart");
-              this.props.history.push(
-                "/intelligence/asset-value?add-address=true"
-              );
-        }
+      } else if (this.state.PageName === "average-cost-basis") {
+        console.log("average-cost-basis");
+
+        this.props.history.push("/intelligence/costs?add-address=true");
+      } else if (this.state.PageName === "netflow") {
+        console.log("netflows");
+        this.props.history.push({
+          pathname: "/intelligence",
+          hash: "netflow",
+          search: "?add-address=true",
+        });
+      } else if (this.state.PageName === "insights") {
+        console.log("insights");
+        this.props.history.push("/intelligence/insights?add-address=true");
+      } else if (this.state.PageName === "asset-value-chart") {
+        console.log("asset-value-chart");
+        this.props.history.push("/intelligence/asset-value?add-address=true");
+      } else if (this.state.PageName === "top-accounts") {
+        this.props.history.push("/top-accounts");
+      } else if (this.state.PageName === "twitter-influencers") {
+        this.props.history.push("/twitter-influencers");
+    
+      } else if (this.state.PageName === "watchlist") {
+        this.props.history.push("/watchlist");
+      }
   };
 
   componentWillUnmount() {}

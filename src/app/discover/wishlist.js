@@ -73,6 +73,7 @@ import DropDown from "../common/DropDown";
 import CheckboxCustomTable from "../common/customCheckboxTable";
 import RemarkInput from "./remarkInput";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { WatchlistShare } from "../../utils/AnalyticsFunctions";
 
 class WishListPage extends BaseReactComponent {
   constructor(props) {
@@ -140,7 +141,7 @@ class WishListPage extends BaseReactComponent {
   };
 
   componentDidMount() {
-   resetPreviewAddress();
+    resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
@@ -317,6 +318,25 @@ class WishListPage extends BaseReactComponent {
     // console.log("api respinse", value);
   };
 
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink = BASE_URL_S3 + "app-feature?redirect=watchlist";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+   WatchlistShare({
+     session_id: getCurrentUser().id,
+     email_address: getCurrentUser().email,
+   });
+    // console.log("share pod", shareLink);
+  };
+
   render() {
     // console.log("value", this.state.methodFilter);
 
@@ -463,6 +483,7 @@ class WishListPage extends BaseReactComponent {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                hideButton={true}
               />
             </div>
           </div>
@@ -503,10 +524,10 @@ class WishListPage extends BaseReactComponent {
               // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}
+              ShareBtn={true}
+              handleShare={this.handleShare}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
             />
 
             <div className="fillter_tabs_section">

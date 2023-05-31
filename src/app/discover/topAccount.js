@@ -78,7 +78,7 @@ import DropDown from "../common/DropDown";
 import { SORT_BY_NAME } from "../../utils/Constant";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { TimeFilterType } from "../../utils/Constant";
-import { TopAccountClickedAccount, TopAccountInflowHover, TopAccountNameHover, TopAccountNetHover, TopAccountNetflowHover, TopAccountNetworthFilter, TopAccountOutflowHover, TopAccountPageNext, TopAccountPagePrev, TopAccountPageSearch, TopAccountPageView, TopAccountSearch, TopAccountSortByNetWorth, TopAccountSortByNetflows, TopAccountSortByTag, TopAccountTimeFilter, TopAccountTimeSpent } from "../../utils/AnalyticsFunctions";
+import { TopAccountClickedAccount, TopAccountInflowHover, TopAccountNameHover, TopAccountNetHover, TopAccountNetflowHover, TopAccountNetworthFilter, TopAccountOutflowHover, TopAccountPageNext, TopAccountPagePrev, TopAccountPageSearch, TopAccountPageView, TopAccountSearch, TopAccountShare, TopAccountSortByNetWorth, TopAccountSortByNetflows, TopAccountSortByTag, TopAccountTimeFilter, TopAccountTimeSpent } from "../../utils/AnalyticsFunctions";
 class TopAccountPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -368,15 +368,15 @@ class TopAccountPage extends BaseReactComponent {
               key: SORT_BY_NET_FLOW,
               value: !el.up,
             },
-            
           ];
-          let time = TimeFilterType.getText(this.state.timeFIlter === "Time" ? "5 years" : this.state.timeFIlter
+          let time = TimeFilterType.getText(
+            this.state.timeFIlter === "Time" ? "5 years" : this.state.timeFIlter
           );
           this.addCondition("SEARCH_BY_TIMESTAMP", time);
-            TopAccountSortByNetflows({
-              session_id: getCurrentUser().id,
-              email_address: getCurrentUser().email,
-            });
+          TopAccountSortByNetflows({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "largestbought") {
           obj = [
             {
@@ -460,7 +460,25 @@ class TopAccountPage extends BaseReactComponent {
     // console.log("api respinse", value);
   };
 
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink =
+      BASE_URL_S3 + "app-feature?redirect=top-accounts";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
 
+    TopAccountShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // console.log("share pod", shareLink);
+  };
 
   render() {
     // console.log("value", this.state.methodFilter);
@@ -560,19 +578,22 @@ class TopAccountPage extends BaseReactComponent {
               // </CustomOverlay>
               <span
                 onClick={() => {
-                   resetPreviewAddress();
+                  resetPreviewAddress();
                   TopAccountClickedAccount({
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
                     account: rowData.account,
                   });
-                  let obj = JSON.parse(localStorage.getItem("previewAddress"))
-                  localStorage.setItem("previewAddress", JSON.stringify({
-                    ...obj,
-                    address: rowData.account,
-                  }));
+                  let obj = JSON.parse(localStorage.getItem("previewAddress"));
+                  localStorage.setItem(
+                    "previewAddress",
+                    JSON.stringify({
+                      ...obj,
+                      address: rowData.account,
+                    })
+                  );
                   this.props?.TopsetPageFlagDefault();
-                 
+
                   // this.getCoinBasedOnWalletAddress(rowData.account);
                   this.props.history.push("/top-accounts/home");
                 }}
@@ -989,6 +1010,7 @@ class TopAccountPage extends BaseReactComponent {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                hideButton={true}
               />
             </div>
           </div>
@@ -1031,8 +1053,8 @@ class TopAccountPage extends BaseReactComponent {
               topaccount={true}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
 
             <div className="fillter_tabs_section">

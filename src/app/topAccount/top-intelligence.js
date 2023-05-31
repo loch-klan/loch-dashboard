@@ -17,6 +17,7 @@ import {
   netflowExplainer2,
   netflowTimeFilter,
   TimeSpentIntelligence,
+  TopIntShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment/moment";
@@ -581,7 +582,10 @@ class TopIntelligence extends Component {
       `top-account/${encodedAddress}?redirect=intelligence#netflow`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
+ TopIntShare({
+   session_id: getCurrentUser().id,
+   email_address: getCurrentUser().email,
+ });
     // console.log("share pod", shareLink);
   };
 

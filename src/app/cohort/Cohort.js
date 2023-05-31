@@ -16,6 +16,7 @@ import {
   SORT_BY_PORTFOLIO_AMOUNT,
   SORT_BY_CREATED_ON,
   Plans,
+  BASE_URL_S3,
 } from "../../utils/Constant.js";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -32,6 +33,7 @@ import {
   WhaleExpandedPod,
   WhaleFilterByChain,
   WhaleHoverPod,
+  WhaleShare,
   WhaleSortByAmt,
   WhaleSortByDate,
   WhaleSortByName,
@@ -53,6 +55,7 @@ import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
 import PodCard from "./pod-card";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { toast } from "react-toastify";
 class Cohort extends Component {
   constructor(props) {
     super(props);
@@ -94,7 +97,7 @@ class Cohort extends Component {
       search: "",
       sortedItem: [],
       isUpdate: 0,
-      startTime:"",
+      startTime: "",
     };
   }
 
@@ -509,12 +512,27 @@ class Cohort extends Component {
   };
 
   CheckApiResponseWallet = (value) => {
-   
-
     this.props.setPageFlagDefault();
-  
   };
 
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink = BASE_URL_S3 + "app-feature?redirect=whale-watch";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    WhaleShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // console.log("share pod", shareLink);
+  };
   render() {
     return (
       <>
@@ -531,6 +549,7 @@ class Cohort extends Component {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                hideButton={true}
                 // handleUpdate={this.handleUpdateWallet}
               />
             </div>
@@ -594,8 +613,7 @@ class Cohort extends Component {
               history={this.props.history}
               // changeWalletList={this.handleChangeList}
               apiResponse={(e) => {
-                this.CheckApiResponseWallet(e)
-               
+                this.CheckApiResponseWallet(e);
               }}
               from="transaction history"
             />
@@ -632,6 +650,8 @@ class Cohort extends Component {
               handleSearch={this.handleSearch}
               // showData={totalWalletAmt}
               // isLoading={isLoading}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
             <CoinBadges
               activeBadge={this.state.activeBadge}

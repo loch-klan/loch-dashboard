@@ -23,7 +23,7 @@ import {
 } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
-import { AssetValuePage } from "../../utils/AnalyticsFunctions";
+import { AssetValuePage, TopAssetValueShare } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -246,7 +246,10 @@ class TopAssetValueGraph extends Component {
       `top-account/${encodedAddress}?redirect=intelligence/asset-value`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
+ TopAssetValueShare({
+   session_id: getCurrentUser().id,
+   email_address: getCurrentUser().email,
+ });
     // console.log("share pod", shareLink);
   };
 

@@ -4686,3 +4686,128 @@ export const DefiShare = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Intelligence: share");
 };
+
+
+//46. whale pod: share - done
+export const WhaleShare = ({ session_id, email_address }) => {
+  const event_name = "Whale watch: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence: share");
+};
+
+
+//46. top account: share - done
+export const TopAccountShare = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top Accounts: share");
+};
+
+//46.Twitter Influencers: share- done
+export const TwitterInfluencerShare = ({ session_id, email_address }) => {
+  const event_name = "Twitter Influencers: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Twitter Influencers: share");
+};
+
+//46. Watchlist: share - done
+export const WatchlistShare = ({ session_id, email_address }) => {
+  const event_name = "Watchlist: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Watchlist: share");
+};
+
+//46. top account defi: share - done
+export const TopDefiShare = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: Defi: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Defi: share");
+};
+
+//46. Top accounts: Home: share - done
+export const TopHomeShare = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: Home: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Home: share");
+};
+
+
+//46. Top accounts: Intellignece: share - done
+export const TopIntShare = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: Intelligence: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Intelligence: share");
+};
+
+//46. Top accounts: Transaction history: share - done
+export const TopTransactionShare = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: Transaction history: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Transaction history: share");
+};
+
+//46. Top accounts: asset value: share - done
+export const TopAssetValueShare = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: Asset value chart: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Asset value chart: share");
+};
+
+
+//46. Top accounts: Insights: share - done
+export const TopInsightShare = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: Insights: share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Insights: share");
+};
+
+//46. Top accounts: costs share - done
+export const TopCostsShare = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: costs share";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: costs share");
+};

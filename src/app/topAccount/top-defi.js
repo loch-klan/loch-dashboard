@@ -39,6 +39,8 @@ import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import base64url from "base64url";
 import { toast } from "react-toastify";
+import { TopDefiShare } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class TopDefi extends Component {
   constructor(props) {
@@ -352,6 +354,11 @@ class TopDefi extends Component {
       `top-account/${encodedAddress}?redirect=decentralized-finance`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
+
+    TopDefiShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
 
     // console.log("share pod", shareLink);
   };

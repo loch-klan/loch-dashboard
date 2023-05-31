@@ -266,7 +266,7 @@ export default function WelcomeCard(props) {
               </div>
             </div>
           ) : (
-            <>
+           !props?.hideButton ? <>
               <div
                 className="topbar-btn"
                 style={{
@@ -295,7 +295,7 @@ export default function WelcomeCard(props) {
                 <Image src={AddWalletAddress} />
                 Add wallet address
               </div>
-            </>
+            </>:<></>
           )}
         </div>
         {props.showNetworth && (

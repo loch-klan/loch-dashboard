@@ -13,6 +13,7 @@ import {
   InsightsIncreaseYield,
   InsightsReduceCost,
   InsightsReduceRisk,
+  TopInsightShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
@@ -213,7 +214,10 @@ class TopInsightsPage extends Component {
       `top-account/${encodedAddress}?redirect=intelligence/insights`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
+ TopInsightShare({
+   session_id: getCurrentUser().id,
+   email_address: getCurrentUser().email,
+ });
     // console.log("share pod", shareLink);
   };
 

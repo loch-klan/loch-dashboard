@@ -72,6 +72,7 @@ import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
 import DropDown from "../common/DropDown";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { TwitterInfluencerShare } from "../../utils/AnalyticsFunctions";
 
 class TwitterInflucencePage extends BaseReactComponent {
   constructor(props) {
@@ -336,6 +337,25 @@ class TwitterInflucencePage extends BaseReactComponent {
 
     this.props.setPageFlagDefault();
     // console.log("api respinse", value);
+  };
+
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink = BASE_URL_S3 + "app-feature?redirect=twitter-influencers";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    TwitterInfluencerShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // console.log("share pod", shareLink);
   };
 
   render() {
@@ -689,6 +709,9 @@ class TwitterInflucencePage extends BaseReactComponent {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                hideButton={true}
+                ShareBtn={true}
+                handleShare={this.handleShare}
               />
             </div>
           </div>
@@ -731,8 +754,8 @@ class TwitterInflucencePage extends BaseReactComponent {
               topaccount={true}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
 
             <div className="fillter_tabs_section">

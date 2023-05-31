@@ -46,6 +46,8 @@ import {
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
+  TopInsightShare,
+  TopTransactionShare,
   TransactionHistoryAddress,
   TransactionHistoryAssetFilter,
   TransactionHistoryHideDust,
@@ -540,7 +542,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       `top-account/${encodedAddress}?redirect=intelligence/transaction-history`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
+ TopTransactionShare({
+   session_id: getCurrentUser().id,
+   email_address: getCurrentUser().email,
+ });
     // console.log("share pod", shareLink);
   };
  

@@ -17,6 +17,7 @@ import {
   FeesTimePeriodFilter,
   CounterpartyFeesTimeFilter,
   CostsPage,
+  TopCostsShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
@@ -435,7 +436,10 @@ class TopCost extends Component {
       BASE_URL_S3 + `top-account/${encodedAddress}?redirect=intelligence/costs`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
+ TopCostsShare({
+   session_id: getCurrentUser().id,
+   email_address: getCurrentUser().email,
+ });
     // console.log("share pod", shareLink);
   };
 
