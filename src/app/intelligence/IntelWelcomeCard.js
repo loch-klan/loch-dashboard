@@ -18,7 +18,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 export default function IntelWelcomeCard(props) {
 
-    const cardData = [
+    let cardData = [
       {
         icon: TransactionIcon,
         title: "Transaction history",
@@ -86,7 +86,9 @@ export default function IntelWelcomeCard(props) {
         },
       },
     ];
-
+  if (props?.isTopAccount) {
+    cardData = cardData?.filter((_,i) => i !== 2 )
+}
     const cards = cardData?.map((card, key) => {
         return (
             <div className='info' key={key} onClick={() => {
