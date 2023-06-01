@@ -9,6 +9,7 @@ import BarGraphSection from "../common/BarGraphSection";
 import { getAllCoins } from "../onboarding/Api.js";
 import { Col, Image, Row } from "react-bootstrap";
 import {
+  NetflowSwitchTop,
   PageviewTopInt,
   TimeSpentTopInt,
   TopIntShare,
@@ -98,6 +99,12 @@ class TopIntelligence extends Component {
       isSwitch: !this.state.isSwitch,
     });
     // console.log("switch")
+
+
+     NetflowSwitchTop({
+       email_address: getCurrentUser().email,
+       session_id: getCurrentUser().id,
+     });
   };
 
   componentDidMount() {

@@ -5030,3 +5030,40 @@ export const TimeSpentTopTransaction= ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: Transaction history: time spent on transaction history page");
 };
+
+//Home Page: Netflows: click to show breakdown - done
+
+export const NetflowSwitchHome = ({ session_id, email_address }) => {
+  const event_name = "Home Page: Netflows: click to show breakdown";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Netflows: click to show breakdown");
+};
+
+//Top accounts: home: Netflows: click to show breakdown - done
+
+export const NetflowSwitchTopHome = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: home: Netflows: click to show breakdown";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Home Page: Netflows: click to show breakdown");
+};
+
+//Top accounts: Intellignece: Netflows: click to show breakdown - done
+
+export const NetflowSwitchTop = ({ session_id, email_address }) => {
+  const event_name =
+    "Top accounts: Intellignece: Netflows: click to show breakdown";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
+};

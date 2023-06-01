@@ -391,10 +391,7 @@ class BarGraphSection extends Component {
                       label="Click to show breakdown"
                       checked={this.state.switchselected}
                       onChange={(e) => {
-                        NetflowSwitch({
-                          email_address: getCurrentUser().email,
-                          session_id: getCurrentUser().id,
-                        });
+                       
                         this.setState({
                           switchselected: e.target.checked,
                         });
