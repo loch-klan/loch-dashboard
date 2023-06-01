@@ -17,6 +17,8 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LochIcon from "../../assets/images/icons/loch-icon.svg";
 import { updateUser } from "../profile/Api";
 import { AssetValueEmail } from "./Api";
+import { AssetValueEmailNotify, TopAssetValueEmailNotify } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class AssetValueEmailModal extends BaseReactComponent {
   constructor(props) {
@@ -47,6 +49,19 @@ class AssetValueEmailModal extends BaseReactComponent {
     data.append("email_id", this.state.email);
     AssetValueEmail(data,this);
 
+    if (this?.props.from === "topaccount") {
+       TopAssetValueEmailNotify({
+         session_id: getCurrentUser().id,
+         email_address: this.state.email,
+       });
+    }
+    if (this?.props.from === "me") {
+        AssetValueEmailNotify({
+          session_id: getCurrentUser().id,
+          email_address: this.state.email,
+        });
+     }
+     
    
     // updateUser(data, this);
   };
