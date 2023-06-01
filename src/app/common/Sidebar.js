@@ -1434,7 +1434,7 @@ function Sidebar(props) {
                               </li>
                             </>
                           )}
-
+{/* 
                           <li>
                             <NavLink
                               className={`nav-link`}
@@ -1492,7 +1492,7 @@ function Sidebar(props) {
                               />
                               Watchlist
                             </NavLink>
-                          </li>
+                          </li> */}
                         </>
                       )}
                       {/* <li>

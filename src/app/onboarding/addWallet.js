@@ -971,7 +971,7 @@ class AddWallet extends BaseReactComponent {
             {this.state.connectExchange && (
               <div className="ob-connect-exchange">
                 {/* upload */}
-                <div
+                {/* <div
                   className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
                   style={{left:"5.6rem",right:"auto"}}
                   onClick={this.handleUpload}
@@ -992,7 +992,7 @@ class AddWallet extends BaseReactComponent {
                     }}
                   />
                   Upload CSV / Text file
-                </div>
+                </div> */}
                 <div
                   className="inter-display-semi-bold f-s-13 lh-16 black-191 connect-exchange-btn"
                   onClick={() => {

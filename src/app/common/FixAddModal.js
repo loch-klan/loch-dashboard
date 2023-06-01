@@ -1233,13 +1233,13 @@ class FixAddModal extends BaseReactComponent {
                       this.state.modalType === "addwallet" && (
                         <div className="add-wallet-btn">
                           <Button
-                            className="grey-btn m-b-16"
+                            className="grey-btn m-b-32"
                             onClick={this.addAddress}
                           >
                             <Image src={PlusIcon} /> Add another
                           </Button>
 
-                          {this.state.modalType === "addwallet" && (
+                          {/* {this.state.modalType === "addwallet" && (
                             <div style={{}} className="m-b-32">
                               <div
                                 className="inter-display-semi-bold f-s-13 lh-16 black-191 upload-scv-btn"
@@ -1263,7 +1263,7 @@ class FixAddModal extends BaseReactComponent {
                                 Upload CSV / Text file
                               </div>
                             </div>
-                          )}
+                          )} */}
                         </div>
                       )}
 

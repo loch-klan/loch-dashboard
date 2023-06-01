@@ -1200,7 +1200,7 @@ backdrop-filter: blur(15px);">
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginBottom: this.props.dataLoaded ? "5rem": "2rem",
+                        marginBottom: this.props.dataLoaded ? "4rem": "2rem",
                       }}
                     >
                       <div
@@ -1257,12 +1257,12 @@ backdrop-filter: blur(15px);">
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
-                  {this.props.dataLoaded  && (
+                  {this.props.dataLoaded && (
                       <div
                         style={{
                           position: "absolute",
                           right: "0px",
-                          top: !this.props.hideTimeFilter ? "-38px" : "-9px",
+                          top: !this.props.hideTimeFilter ? "-28px" : "-5px",
                           zIndex: 1,
                           display: "flex",
                           alignItems: "center",
@@ -1280,12 +1280,12 @@ backdrop-filter: blur(15px);">
                         >
                           Don't worry we're still loading all your data
                         </h5>
-                        <Button
+                        {/* <Button
                           className="secondary-btn small-btn"
                           onClick={this.handleAskEmail}
                         >
                           Get notified
-                        </Button>
+                        </Button> */}
                       </div>
                     )}
                   {!this.props.hideTimeFilter && (
