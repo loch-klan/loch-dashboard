@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import BellOffIcon from "../../assets/images/icons/bell-off.svg"
-import BellIcon from "../../assets/images/icons/bell.svg";
+import BellIcon from "../../assets/images/icons/bell-asset.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 
