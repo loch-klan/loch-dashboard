@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import BellOffIcon from "../../assets/images/icons/bell-off.svg"
 import BellIcon from "../../assets/images/icons/bell-asset.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { AssetValueEmailNotifyClicked, TopAssetValueEmailNotifyClicked } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 
 const SwitchButton = (props) => {
@@ -11,7 +13,16 @@ const SwitchButton = (props) => {
   const handleToggle = () => {
     // setIsChecked(!isChecked);
     if(!isChecked){
-    props.handleEmail()}
+      props.handleEmail()
+    }
+    
+    props?.isTopAccount
+      ? TopAssetValueEmailNotifyClicked({
+          session_id: getCurrentUser().id,
+        })
+      : AssetValueEmailNotifyClicked({
+          session_id: getCurrentUser().id,
+        });
   };
 
   let text = (

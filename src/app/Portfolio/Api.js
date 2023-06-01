@@ -688,6 +688,7 @@ export const AssetValueEmail = (data,ctx) => {
                ctx?.props.from === "topaccount" ? true : obj?.topaccount,
            })
          );
+              toast.success("Emial added")
          ctx.state.onHide();
       } else {
         toast.error(res.data.message || "Something Went Wrong");
