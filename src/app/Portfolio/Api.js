@@ -671,3 +671,29 @@ export const getProtocolBalanceApi = (ctx,data) => {
       });
   }
 };
+
+
+export const AssetValueEmail = (data,ctx) => {
+  postLoginInstance
+    .post("user-wallet/notify-asset-value-chart",data)
+    .then((res) => {
+      if (!res.data.error) {
+
+         let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+         localStorage.setItem(
+           "assetValueLoader",
+           JSON.stringify({
+             me: ctx?.props.from === "me" ? true : obj?.me,
+             topaccount:
+               ctx?.props.from === "topaccount" ? true : obj?.topaccount,
+           })
+         );
+         ctx.state.onHide();
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    })
+    .catch((err) => {
+      console.log("Catch", err);
+    });
+};

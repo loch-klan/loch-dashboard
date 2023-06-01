@@ -16,6 +16,7 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 
 import LochIcon from "../../assets/images/icons/loch-icon.svg";
 import { updateUser } from "../profile/Api";
+import { AssetValueEmail } from "./Api";
 
 class AssetValueEmailModal extends BaseReactComponent {
   constructor(props) {
@@ -43,18 +44,10 @@ class AssetValueEmailModal extends BaseReactComponent {
 
   handleUpdateEmail = () => {
     const data = new URLSearchParams();
-
     data.append("email", this.state.email);
+    AssetValueEmail(data,this);
 
-    let obj = JSON.parse(localStorage.getItem("assetValueLoader"))
-    localStorage.setItem(
-      "assetValueLoader",
-      JSON.stringify({
-        me: this.props.from === "me" ? true : obj?.me,
-        topaccount: this.props.from === "topaccount" ? true : obj?.topaccount,
-      })
-    );
-    this.state.onHide();
+   
     // updateUser(data, this);
   };
 

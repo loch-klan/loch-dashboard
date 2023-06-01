@@ -10,7 +10,8 @@ const SwitchButton = (props) => {
   let isChecked = props?.isTopAccount ? obj.topaccount:obj.me; 
   const handleToggle = () => {
     // setIsChecked(!isChecked);
-    props.handleEmail()
+    if(!isChecked){
+    props.handleEmail()}
   };
 
   let text = (
