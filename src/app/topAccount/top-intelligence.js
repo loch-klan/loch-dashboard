@@ -9,6 +9,7 @@ import BarGraphSection from "../common/BarGraphSection";
 import { getAllCoins } from "../onboarding/Api.js";
 import { Col, Image, Row } from "react-bootstrap";
 import {
+  NetflowSwitchTop,
   PageviewTopInt,
   TimeSpentTopInt,
   TopIntShare,
@@ -98,6 +99,12 @@ class TopIntelligence extends Component {
       isSwitch: !this.state.isSwitch,
     });
     // console.log("switch")
+
+
+     NetflowSwitchTop({
+       email_address: getCurrentUser().email,
+       session_id: getCurrentUser().id,
+     });
   };
 
   componentDidMount() {
@@ -163,10 +170,10 @@ class TopIntelligence extends Component {
       this.assetList();
     }
 
-    if (!this.props.commonState.top_insight) {
-      this.props.updateWalletListFlag("top_insight", true);
-      this.props.getAllInsightsApi(this);
-    }
+    // if (!this.props.commonState.top_insight) {
+    //   this.props.updateWalletListFlag("top_insight", true);
+    //   this.props.getAllInsightsApi(this);
+    // }
 
     if (
       this.props?.location?.pathname + this.props?.location?.hash ===
@@ -635,7 +642,7 @@ class TopIntelligence extends Component {
               history={this.props.history}
               isTopAccount={true}
             />
-            <div className="insights-image m-b-60">
+            {/* <div className="insights-image m-b-60">
               <PageHeader
                 title="Insights"
                 showImg={insight}
@@ -653,7 +660,7 @@ class TopIntelligence extends Component {
               />
               <div style={{ position: "relative" }}>
                 <div className="insights-wrapper">
-                  {/* <h2 className="inter-display-medium f-s-25 lh-30 black-191">This week</h2> */}
+                  
                   {this.state.isLoading ? (
                     <Loading />
                   ) : this.props.topAccountState.updatedInsightList &&
@@ -712,7 +719,7 @@ class TopIntelligence extends Component {
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="portfolio-bar-graph" id="netflow">
               <PageHeader title="Net Flows" showImg={eyeIcon} />
               {/* Netflow Info Start */}

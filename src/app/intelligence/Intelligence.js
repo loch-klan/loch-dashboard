@@ -16,6 +16,7 @@ import {
   netflowChainFilter,
   netflowExplainer1,
   netflowExplainer2,
+  NetflowSwitch,
   netflowTimeFilter,
   TimeSpentIntelligence,
 } from "../../utils/AnalyticsFunctions";
@@ -104,6 +105,11 @@ class Intelligence extends Component {
     this.setState({
       isSwitch: !this.state.isSwitch,
     });
+
+     NetflowSwitch({
+       email_address: getCurrentUser().email,
+       session_id: getCurrentUser().id,
+     });
     // console.log("switch")
   };
 

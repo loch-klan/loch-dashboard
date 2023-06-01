@@ -1339,7 +1339,7 @@ function Sidebar(props) {
                                       Asset value over time
                                     </NavLink>
                                   </li>
-                                  <li className="sub-menu-level-tow">
+                                  {/* <li className="sub-menu-level-tow">
                                     <NavLink
                                       exact={true}
                                       onClick={(e) => {
@@ -1359,7 +1359,7 @@ function Sidebar(props) {
                                     >
                                       Insights
                                     </NavLink>
-                                  </li>
+                                  </li> */}
                                   <li className="sub-menu-level-tow">
                                     <NavLink
                                       exact={true}

@@ -59,6 +59,7 @@ import {
   TopHomeShare,
   PageviewTopHome,
   TimeSpentTopHome,
+  NetflowSwitchTopHome,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "../Portfolio/Api";
@@ -725,6 +726,11 @@ class TopPortfolio extends BaseReactComponent {
     this.setState({
       isSwitch: !this.state.isSwitch,
     });
+   
+   NetflowSwitchTopHome({
+     email_address: getCurrentUser().email,
+     session_id: getCurrentUser().id,
+   });
     // console.log("switch")
   };
   handleShare = () => {

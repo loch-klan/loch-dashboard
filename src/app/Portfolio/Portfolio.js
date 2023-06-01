@@ -82,6 +82,8 @@ import {
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
   HomeCostAssetHover,
+  NetflowSwitch,
+  NetflowSwitchHome,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
@@ -959,6 +961,11 @@ class Portfolio extends BaseReactComponent {
     this.setState({
       isSwitch: !this.state.isSwitch,
     });
+     
+      NetflowSwitchHome({
+        email_address: getCurrentUser().email,
+        session_id: getCurrentUser().id,
+      });
     // console.log("switch")
   };
   render() {
