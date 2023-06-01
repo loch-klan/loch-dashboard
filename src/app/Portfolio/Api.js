@@ -386,6 +386,17 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
                setTimeout(() => {
                  ctx.props.getAssetGraphDataApi(data, ctx, ActionType);
                }, 15000);
+           } else {
+             let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+            localStorage.setItem(
+              "assetValueLoader",
+              JSON.stringify({
+                me: !ctx?.state?.isTopAccountPage ? false : obj?.me,
+                topaccount: ctx?.state?.isTopAccountPage
+                  ? false
+                  : obj?.topaccount,
+              })
+            );
            }
          } else {
            toast.error(res.data.message || "Something Went Wrong");
@@ -659,4 +670,30 @@ export const getProtocolBalanceApi = (ctx,data) => {
         console.log("Catch", err);
       });
   }
+};
+
+
+export const AssetValueEmail = (data,ctx) => {
+  postLoginInstance
+    .post("wallet/user-wallet/notify-asset-value-chart",data)
+    .then((res) => {
+      if (!res.data.error) {
+
+         let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+         localStorage.setItem(
+           "assetValueLoader",
+           JSON.stringify({
+             me: ctx?.props.from === "me" ? true : obj?.me,
+             topaccount:
+               ctx?.props.from === "topaccount" ? true : obj?.topaccount,
+           })
+         );
+         ctx.state.onHide();
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    })
+    .catch((err) => {
+      console.log("Catch", err);
+    });
 };
