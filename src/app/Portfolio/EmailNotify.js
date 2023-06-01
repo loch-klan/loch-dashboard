@@ -44,7 +44,7 @@ class AssetValueEmailModal extends BaseReactComponent {
 
   handleUpdateEmail = () => {
     const data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append("email_id", this.state.email);
     AssetValueEmail(data,this);
 
    

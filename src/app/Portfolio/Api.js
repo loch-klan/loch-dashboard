@@ -675,7 +675,7 @@ export const getProtocolBalanceApi = (ctx,data) => {
 
 export const AssetValueEmail = (data,ctx) => {
   postLoginInstance
-    .post("user-wallet/notify-asset-value-chart",data)
+    .post("wallet/user-wallet/notify-asset-value-chart",data)
     .then((res) => {
       if (!res.data.error) {
 
