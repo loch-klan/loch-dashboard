@@ -1259,7 +1259,7 @@ backdrop-filter: blur(15px);">
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
-                  {(this.props.dataLoaded || true) && (
+                  {this.props.dataLoaded && (
                       <div
                         style={{
                           position: "absolute",
