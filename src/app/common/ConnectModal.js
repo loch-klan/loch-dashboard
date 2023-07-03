@@ -18,7 +18,7 @@ import BitfinexIcon from "../../assets/images/icons/Bitfinex.png";
 
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import backIcon from "../../assets/images/icons/back-icon.svg";
+import backIcon from "../../assets/images/icons/Back-icon.svg";
 import Slider from 'react-slick';
 import { addUpdateAccount, getUserAccount } from '../cost/Api';
 import {getExchangeBalance } from "../Portfolio/Api";
