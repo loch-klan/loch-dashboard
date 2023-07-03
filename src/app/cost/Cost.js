@@ -26,17 +26,28 @@ import {
   CostSortByAmount,
   SortByCurrentValue,
   SortByGainLoss,
+  costFeesChainFilter,
+  costVolumeChainFilter,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
-import {getCounterGraphData, getGraphData} from "./getGraphData";
-import { getAllFeeApi, getAllCounterFeeApi, updateCounterParty, updateFeeGraph, getAvgCostBasis, updateAverageCostBasis, ResetAverageCostBasis } from "./Api";
+import { getCounterGraphData, getGraphData } from "./getGraphData";
+import {
+  getAllFeeApi,
+  getAllCounterFeeApi,
+  updateCounterParty,
+  updateFeeGraph,
+  getAvgCostBasis,
+  updateAverageCostBasis,
+  ResetAverageCostBasis,
+} from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
-import graphImage from '../../assets/images/gas-fees-graph.png'
+import graphImage from "../../assets/images/gas-fees-graph.png";
 import FeedbackForm from "../common/FeedbackForm";
-import LinkIcon from '../../assets/images/icons/link.svg';
-import ConnectModal from "../common/ConnectModal";import FixAddModal from "../common/FixAddModal";
+import LinkIcon from "../../assets/images/icons/link.svg";
+import ConnectModal from "../common/ConnectModal";
+import FixAddModal from "../common/FixAddModal";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -46,7 +57,6 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-
 
 class Cost extends Component {
   constructor(props) {
@@ -82,7 +92,8 @@ class Cost extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-
+      isFeesChainSearchUsed: false,
+      isVolumeChainSearchUsed: false,
       // sort
       sortBy: [
         { title: "Asset", down: true },
@@ -95,7 +106,12 @@ class Cost extends Component {
       ],
     };
   }
-
+  feesChainSearchIsUsed = () => {
+    this.setState({ isFeesChainSearchUsed: true });
+  };
+  volumeChainSearchIsUsed = () => {
+    this.setState({ isVolumeChainSearchUsed: true });
+  };
   componentDidMount() {
     CostsPage({
       session_id: getCurrentUser().id,
@@ -283,6 +299,12 @@ class Cost extends Component {
   }
 
   handleBadge = (activeBadgeList, type) => {
+    let selectedChains = [];
+    this.props.OnboardingState.coinsList?.map((item) => {
+      if (activeBadgeList?.includes(item.id)) {
+        selectedChains.push(item.code);
+      }
+    });
     const { GraphfeeData, counterPartyData } = this.props.intelligenceState;
     let graphDataMaster = [];
     let counterPartyDataMaster = [];
@@ -302,7 +324,19 @@ class Cost extends Component {
       // this.setState({
       //   graphfeeValue: getGraphData(graphDataObj, this),
       // });
-      this.props.updateFeeGraph(GraphfeeData, getGraphData(graphDataObj, this),this);
+      this.props.updateFeeGraph(
+        GraphfeeData,
+        getGraphData(graphDataObj, this),
+        this
+      );
+      const tempIsSearchUsed = this.state.isFeesChainSearchUsed;
+      costFeesChainFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        selected: selectedChains,
+        isSearchUsed: tempIsSearchUsed,
+      });
+      this.setState({ isFeesChainSearchUsed: false });
     } else {
       counterPartyData &&
         counterPartyData?.map((tempGraphData) => {
@@ -318,8 +352,17 @@ class Cost extends Component {
       // });
       this.props.updateCounterParty(
         counterPartyData,
-        getCounterGraphData(counterPartyDataMaster, this),this
+        getCounterGraphData(counterPartyDataMaster, this),
+        this
       );
+      const tempIsSearchUsed = this.state.isVolumeChainSearchUsed;
+      costVolumeChainFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        selected: selectedChains,
+        isSearchUsed: tempIsSearchUsed,
+      });
+      this.setState({ isVolumeChainSearchUsed: false });
     }
   };
   handleConnectModal = () => {
@@ -351,7 +394,7 @@ class Cost extends Component {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList,this);
+    this.props.updateAverageCostBasis(sortedList, this);
   };
   // sort
   handleSort = (e) => {
@@ -400,10 +443,10 @@ class Cost extends Component {
       this.setState({
         sortBy: sort,
       });
-     CostSortByAmount({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
+      CostSortByAmount({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (e.title === "Cost basis") {
       this.sortArray("CostBasis", isDown);
       this.setState({
@@ -439,7 +482,7 @@ class Cost extends Component {
       let array = this.props.intelligenceState?.Average_cost_basis?.filter(
         (e) => e.CurrentValue >= 1
       ); //all data
-      this.props.updateAverageCostBasis(array,this);
+      this.props.updateAverageCostBasis(array, this);
     } else {
       this.props.ResetAverageCostBasis(this);
     }
@@ -932,7 +975,7 @@ class Cost extends Component {
                 handleBadge={(activeBadgeList) =>
                   this.handleBadge(activeBadgeList, 1)
                 }
-
+                chainSearchIsUsed={this.feesChainSearchIsUsed}
                 // height={420}
                 // width={824}
                 // comingSoon={false}
@@ -984,6 +1027,7 @@ class Cost extends Component {
                 // height={"400px"}
                 // width={"824px"}
                 // comingSoon={true}
+                chainSearchIsUsed={this.volumeChainSearchIsUsed}
               />
             </div>
 

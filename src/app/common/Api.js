@@ -1,80 +1,102 @@
 import moment from "moment";
 import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
-import { ConnectExEmailVerified, GeneralPopupEmailVerified, Home_CE_OAuthCompleted, LP_CE_OAuthCompleted, SigninMenuEmailVerified, SigninModalTrack, signInUser, signUpProperties, UpgradeSignInPopupEmailAdded, Wallet_CE_OAuthCompleted, WhaleCreateAccountEmailVerified, WhalePopupEmailVerified } from "../../utils/AnalyticsFunctions";
+import {
+  ConnectExEmailVerified,
+  GeneralPopupEmailVerified,
+  Home_CE_OAuthCompleted,
+  LP_CE_OAuthCompleted,
+  SigninMenuEmailVerified,
+  SigninModalTrack,
+  signInUser,
+  signUpProperties,
+  UpgradeSignInPopupEmailAdded,
+  Wallet_CE_OAuthCompleted,
+  WhaleCreateAccountEmailVerified,
+  WhalePopupEmailVerified,
+} from "../../utils/AnalyticsFunctions";
 import { FeedbackType } from "../../utils/Constant";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
-import postLoginInstance from './../../utils/PostLoginAxios';
-import { PAGE_POPUP, SET_DEFAULT_VALUE, TOP_SET_DEFAULT_VALUE, WALLET_LIST_UPDATED } from "./ActionTypes";
+import postLoginInstance from "./../../utils/PostLoginAxios";
+import {
+  PAGE_POPUP,
+  SET_DEFAULT_VALUE,
+  TOP_SET_DEFAULT_VALUE,
+  WALLET_LIST_UPDATED,
+} from "./ActionTypes";
 
 export const loginApi = (ctx, data) => {
-  preLoginInstance.post('common/test/temp-login', data)
-    .then(res => {
+  preLoginInstance
+    .post("common/test/temp-login", data)
+    .then((res) => {
       // console.log('res',res);
       if (!res.data.error) {
         // console.log('res', res.data.data.token);
         // console.log('ctx');
-        localStorage.setItem('currency',JSON.stringify({
-          active: true,
-          code: "USD",
-          id: "6399a2d35a10114b677299fe",
-          name: "United States Dollar",
-          symbol: "$",
-          rate: 1,
-      }))
-        localStorage.setItem('lochToken', res.data.data.token);
-        if(ctx.state.link && ctx.state.id){
-          ctx.props.getAllCoins(ctx.handleShareLinkUser)
-        } else{
-          ctx.props.history.push('/welcome');
+        localStorage.setItem(
+          "currency",
+          JSON.stringify({
+            active: true,
+            code: "USD",
+            id: "6399a2d35a10114b677299fe",
+            name: "United States Dollar",
+            symbol: "$",
+            rate: 1,
+          })
+        );
+        localStorage.setItem("lochToken", res.data.data.token);
+        if (ctx.state.link && ctx.state.id) {
+          ctx.props.getAllCoins(ctx.handleShareLinkUser);
+        } else {
+          ctx.props.history.push("/welcome");
         }
-
       } else {
         toast.error(res.data.message || "Something went wrong");
         ctx.setState({
-          errorMessage: res.data.message || "Invalid Credentials"
+          errorMessage: res.data.message || "Invalid Credentials",
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       ctx.setState({
-        errorMessage: "Something went wrong"
+        errorMessage: "Something went wrong",
       });
     });
-}
+};
 
-export const fixWalletApi = (ctx,info) =>{
-      postLoginInstance.post("organisation/user/update-user",info)
-      .then((res)=>{
-        if(!res.data.error){
-          ctx.handleRedirection();
-          // ctx.props.history.push('/welcome');
-        }
-        else{
-          toast.error(res.data.message || "Something went wrong");
-        }
-      })
-      .catch((err)=>{
-        // console.log("fixwallet",err)
-      })
-}
+export const fixWalletApi = (ctx, info) => {
+  postLoginInstance
+    .post("organisation/user/update-user", info)
+    .then((res) => {
+      if (!res.data.error) {
+        ctx.handleRedirection();
+        // ctx.props.history.push('/welcome');
+      } else {
+        toast.error(res.data.message || "Something went wrong");
+      }
+    })
+    .catch((err) => {
+      // console.log("fixwallet",err)
+    });
+};
 
-export const updateUserWalletApi = (data,ctx) =>{
-  postLoginInstance.post("organisation/user/update-user-wallet",data)
-  .then((res)=>{
-    if(!res.data.error){
+export const updateUserWalletApi = (data, ctx) => {
+  postLoginInstance
+    .post("organisation/user/update-user-wallet", data)
+    .then((res) => {
+      if (!res.data.error) {
+        // const allChains = getState().OnboardingState.coinsList;
+        const allChains = ctx.props.OnboardingState.coinsList;
+        let newAddWallet = [];
+        const apiResponse = res.data.data;
+        // console.log("res", apiResponse)
+        for (let i = 0; i < apiResponse.user.user_wallets.length; i++) {
+          let obj = {}; // <----- new Object
+          obj["address"] = apiResponse.user.user_wallets[i].address;
+          obj["displayAddress"] =
+            apiResponse.user.user_wallets[i]?.display_address;
 
-      // const allChains = getState().OnboardingState.coinsList;
-      const allChains = ctx.props.OnboardingState.coinsList
-      let newAddWallet = [];
-      const apiResponse = res.data.data;
-      // console.log("res", apiResponse)
-      for (let i = 0; i < apiResponse.user.user_wallets.length; i++){
-        let obj = {}; // <----- new Object
-        obj['address'] = apiResponse.user.user_wallets[i].address;
-        obj['displayAddress'] = apiResponse.user.user_wallets[i]?.display_address;
-        
-        // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
+          // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
 
           const chainsDetected =
             apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
@@ -82,245 +104,239 @@ export const updateUserWalletApi = (data,ctx) =>{
             apiResponse.wallets[
               apiResponse.user?.user_wallets[i]?.address.toLowerCase()
             ]?.chains;
-        
-              obj['coins'] = allChains.map((chain)=>{
-                let coinDetected = false;
-                chainsDetected.map((item)=>{
-                  if(item.id === chain.id){
-                    coinDetected = true;
-                  }
-                })
-                return ({coinCode: chain.code,
-                    coinSymbol: chain.symbol,
-                    coinName: chain.name,
-                    chain_detected: coinDetected,
-                  coinColor: chain.color})
-              });
-              obj['wallet_metadata']= apiResponse.user.user_wallets[i].wallet;
-              obj['id'] = `wallet${i+1}`;
-        // obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
-        let chainLength =
-          apiResponse.wallets[apiResponse.user?.user_wallets[i]?.address]
-            ?.chains?.length ||
-          apiResponse.wallets[
-            apiResponse.user?.user_wallets[i]?.address.toLowerCase()
-          ]?.chains?.length;
-        obj["coinFound"] = chainLength > 0 ? true : false;
-        
-        obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
-         obj["showAddress"] =
-           apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
-         obj["showNickname"] =
-           apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
-              newAddWallet.push(obj);
-      }
-      // console.log('newAddWallet',newAddWallet);
-      localStorage.setItem("addWallet", JSON.stringify(newAddWallet))
-      ctx.state.changeList && ctx.state.changeList(newAddWallet);
-      if (ctx.props.apiResponse) {
-        // ctx.setState({
-        //    recievedResponse: true
-        // })
-        
-        ctx.props.apiResponse(true);
-      
-      }
-     
-      if (ctx.props.handleUpdateWallet) {
-        ctx.props.handleUpdateWallet()
-        
-      }
-      if (ctx.state.pageName == "Landing Page") {
-        ctx.props.history.push("/home")
+
+          obj["coins"] = allChains.map((chain) => {
+            let coinDetected = false;
+            chainsDetected.map((item) => {
+              if (item.id === chain.id) {
+                coinDetected = true;
+              }
+            });
+            return {
+              coinCode: chain.code,
+              coinSymbol: chain.symbol,
+              coinName: chain.name,
+              chain_detected: coinDetected,
+              coinColor: chain.color,
+            };
+          });
+          obj["wallet_metadata"] = apiResponse.user.user_wallets[i].wallet;
+          obj["id"] = `wallet${i + 1}`;
+          // obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+          let chainLength =
+            apiResponse.wallets[apiResponse.user?.user_wallets[i]?.address]
+              ?.chains?.length ||
+            apiResponse.wallets[
+              apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+            ]?.chains?.length;
+          obj["coinFound"] = chainLength > 0 ? true : false;
+
+          obj["nickname"] = apiResponse.user.user_wallets[i]?.nickname;
+          obj["showAddress"] =
+            apiResponse.user.user_wallets[i]?.nickname === "" ? true : false;
+          obj["showNickname"] =
+            apiResponse.user.user_wallets[i]?.nickname !== "" ? true : false;
+          newAddWallet.push(obj);
+        }
+        // console.log('newAddWallet',newAddWallet);
+        localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+        ctx.state.changeList && ctx.state.changeList(newAddWallet);
+        if (ctx.props.apiResponse) {
+          // ctx.setState({
+          //    recievedResponse: true
+          // })
+
+          ctx.props.apiResponse(true);
+        }
+
+        if (ctx.props.handleUpdateWallet) {
+          ctx.props.handleUpdateWallet();
+        }
+        if (ctx.state.pageName == "Landing Page") {
+          ctx.props.history.push("/home");
+        } else {
+          ctx.props.history.push({
+            pathname: ctx.props.pathName,
+            state: { addWallet: JSON.parse(localStorage.getItem("addWallet")) },
+          });
+        }
       } else {
-         ctx.props.history.push({
-           pathname: ctx.props.pathName,
-           state: { addWallet: JSON.parse(localStorage.getItem("addWallet")) },
-         });
+        toast.error(res.data.message || "Something went wrong");
       }
-     
+    })
+    .catch((err) => {
+      // console.log("fixwallet",err)
+    });
+};
 
-      
-
-     
-    } else{
-      toast.error(res.data.message || "Something went wrong");
-    }
-  })
-  .catch((err)=>{
-    // console.log("fixwallet",err)
-  })
-}
-
-export const verifyEmailApi = (ctx, data) =>{
+export const verifyEmailApi = (ctx, data) => {
   preLoginInstance
-  .post("organisation/user/verify-email", data)
-  .then((res)=>{
-    if(!res.data.error){
-      localStorage.setItem("lochToken", res.data?.data?.token);
-      // localStorage.setItem("addWallet", JSON.stringify([]));
-      localStorage.setItem("stopClick", true);
-      // free pricing
-      let plan = {
-        defi_enabled: true,
-        export_address_limit: -1,
-        id: "63eb32769b5e4daf6b588207",
-        is_default: false,
-        is_trial: false,
-        name: "Sovereign",
-        notifications_limit: -1,
-        notifications_provided: true,
-        plan_reference_id: "prod_NM0aQTO38msDkq",
-        subscription: {
-          active: true,
-          created_on: "2023-04-06 06:41:11.302000+00:00",
-          id: "642e69878cc994b64ca49272",
-          modified_on: "2023-04-06 06:41:11.302000+00:00",
-          plan_id: "63eb32769b5e4daf6b588207",
+    .post("organisation/user/verify-email", data)
+    .then((res) => {
+      if (!res.data.error) {
+        localStorage.setItem("lochToken", res.data?.data?.token);
+        // localStorage.setItem("addWallet", JSON.stringify([]));
+        localStorage.setItem("stopClick", true);
+        // free pricing
+        let plan = {
+          defi_enabled: true,
+          export_address_limit: -1,
+          id: "63eb32769b5e4daf6b588207",
+          is_default: false,
+          is_trial: false,
+          name: "Sovereign",
+          notifications_limit: -1,
+          notifications_provided: true,
           plan_reference_id: "prod_NM0aQTO38msDkq",
-          subscription_reference_id: "",
-          trial_subscription: false,
-          user_id: "63f89011251cc82aeebfcae5",
-          valid_till: "2023-05-06 00:00:00+00:00",
-        },
-        trial_days: 30,
-        upload_csv: true,
-        wallet_address_limit: -1,
-        whale_pod_address_limit: -1,
-        whale_pod_limit: -1,
-        influencer_pod_limit: -1,
-      };
-      // free pricing
-      localStorage.setItem(
-        "currentPlan",
-        JSON.stringify({
-          ...plan,
+          subscription: {
+            active: true,
+            created_on: "2023-04-06 06:41:11.302000+00:00",
+            id: "642e69878cc994b64ca49272",
+            modified_on: "2023-04-06 06:41:11.302000+00:00",
+            plan_id: "63eb32769b5e4daf6b588207",
+            plan_reference_id: "prod_NM0aQTO38msDkq",
+            subscription_reference_id: "",
+            trial_subscription: false,
+            user_id: "63f89011251cc82aeebfcae5",
+            valid_till: "2023-05-06 00:00:00+00:00",
+          },
+          trial_days: 30,
+          upload_csv: true,
+          wallet_address_limit: -1,
+          whale_pod_address_limit: -1,
+          whale_pod_limit: -1,
           influencer_pod_limit: -1,
-        })
-      );
-      // actual
-      // localStorage.setItem(
-      //   "currentPlan",
-      //   JSON.stringify({...res.data?.data?.current_plan,influencer_pod_limit:
-            // res.data.data?.current_plan.name === "Free" ? 1 : -1,} || {})
-      // );
-      //  let obj = JSON.parse(localStorage.getItem("lochUser"));
-      let obj = {
-        first_name: res.data.data.user?.first_name,
-        last_name: res.data.data.user?.last_name,
-        email: res.data.data.user?.email,
-        mobile: res.data.data.user?.mobile,
-        link: res.data.data.user?.link,
-      };
+        };
+        // free pricing
+        localStorage.setItem(
+          "currentPlan",
+          JSON.stringify({
+            ...plan,
+            influencer_pod_limit: -1,
+          })
+        );
+        // actual
+        // localStorage.setItem(
+        //   "currentPlan",
+        //   JSON.stringify({...res.data?.data?.current_plan,influencer_pod_limit:
+        // res.data.data?.current_plan.name === "Free" ? 1 : -1,} || {})
+        // );
+        //  let obj = JSON.parse(localStorage.getItem("lochUser"));
+        let obj = {
+          first_name: res.data.data.user?.first_name,
+          last_name: res.data.data.user?.last_name,
+          email: res.data.data.user?.email,
+          mobile: res.data.data.user?.mobile,
+          link: res.data.data.user?.link,
+        };
 
-      localStorage.setItem("lochUser", JSON.stringify(obj));
+        localStorage.setItem("lochUser", JSON.stringify(obj));
 
-      // localStorage.setItem("defi_access", true);
-      // localStorage.setItem("isPopup", true);
-      // // localStorage.setItem("whalepodview", true);
-      // localStorage.setItem(
-      //   "whalepodview",
-      //   JSON.stringify({ access: true, id: "" })
-      // ); 
-setLocalStoraage();
-      signUpProperties({
-        userId: res?.data?.data?.user?.link,
-        email_address: res?.data?.data?.user?.email,
-        first_name: res?.data?.data?.user?.first_name,
-        last_name: res?.data?.data?.user?.last_name,
-      });
-      ctx.setState({ error: false });
-      // setTimeout(() => {
-      //   ctx.props.history.push({
-      //     pathname: "/home",
-      //     state: {
-      //       isVerified: true,
-      //       chainDetect:true,
-      //     },
-      //   });
-      // }, 3000);
-      getUserAddresses(ctx);
-    } else{
-      ctx.setState({error: true});
-    }
-  })
-  .catch((err)=>{
-    // console.log("fixwallet",err)
-  })
-}
+        // localStorage.setItem("defi_access", true);
+        // localStorage.setItem("isPopup", true);
+        // // localStorage.setItem("whalepodview", true);
+        // localStorage.setItem(
+        //   "whalepodview",
+        //   JSON.stringify({ access: true, id: "" })
+        // );
+        setLocalStoraage();
+        signUpProperties({
+          userId: res?.data?.data?.user?.link,
+          email_address: res?.data?.data?.user?.email,
+          first_name: res?.data?.data?.user?.first_name,
+          last_name: res?.data?.data?.user?.last_name,
+        });
+        ctx.setState({ error: false });
+        // setTimeout(() => {
+        //   ctx.props.history.push({
+        //     pathname: "/home",
+        //     state: {
+        //       isVerified: true,
+        //       chainDetect:true,
+        //     },
+        //   });
+        // }, 3000);
+        getUserAddresses(ctx);
+      } else {
+        ctx.setState({ error: true });
+      }
+    })
+    .catch((err) => {
+      // console.log("fixwallet",err)
+    });
+};
 
 // get user detail for chain
 
 export const getUserAddresses = (ctx) => {
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
-    
-    let apiResponse = res.data?.data;
-    let newAddWallet = [];
-    if (apiResponse?.wallets) {
-      // const allChains = getState().OnboardingState.coinsList;
-      const allChains = ctx.props?.OnboardingState?.coinsList;
+      let apiResponse = res.data?.data;
+      let newAddWallet = [];
+      if (apiResponse?.wallets) {
+        // const allChains = getState().OnboardingState.coinsList;
+        const allChains = ctx.props?.OnboardingState?.coinsList;
 
-      // console.log("res", apiResponse)
-      for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
-        let obj = {}; // <----- new Object
-        obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
-        obj["displayAddress"] =
-          apiResponse?.user?.user_wallets[i]?.display_address;
+        // console.log("res", apiResponse)
+        for (let i = 0; i < apiResponse?.user?.user_wallets?.length; i++) {
+          let obj = {}; // <----- new Object
+          obj["address"] = apiResponse?.user?.user_wallets[i]?.address;
+          obj["displayAddress"] =
+            apiResponse?.user?.user_wallets[i]?.display_address;
 
-        // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
+          // const chainsDetected = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains;
 
-        const chainsDetected =
-          apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
-            ?.chains ||
-          apiResponse.wallets[
-            apiResponse.user?.user_wallets[i]?.address.toLowerCase()
-          ]?.chains;
+          const chainsDetected =
+            apiResponse.wallets[apiResponse?.user?.user_wallets[i]?.address]
+              ?.chains ||
+            apiResponse.wallets[
+              apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+            ]?.chains;
 
-        obj["coins"] = allChains.map((chain) => {
-          let coinDetected = false;
-          chainsDetected.map((item) => {
-            if (item.id === chain.id) {
-              coinDetected = true;
-            }
+          obj["coins"] = allChains.map((chain) => {
+            let coinDetected = false;
+            chainsDetected.map((item) => {
+              if (item.id === chain.id) {
+                coinDetected = true;
+              }
+            });
+            return {
+              coinCode: chain.code,
+              coinSymbol: chain.symbol,
+              coinName: chain.name,
+              chain_detected: coinDetected,
+              coinColor: chain.color,
+            };
           });
-          return {
-            coinCode: chain.code,
-            coinSymbol: chain.symbol,
-            coinName: chain.name,
-            chain_detected: coinDetected,
-            coinColor: chain.color,
-          };
-        });
-        obj["wallet_metadata"] = apiResponse?.user?.user_wallets[i]?.wallet;
-        obj["id"] = `wallet${i + 1}`;
-        // obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
-        let chainLength =
-          apiResponse.wallets[apiResponse.user?.user_wallets[i]?.address]
-            ?.chains?.length ||
-          apiResponse?.wallets[
-            apiResponse.user?.user_wallets[i]?.address.toLowerCase()
-          ]?.chains?.length;
-        obj["coinFound"] = chainLength > 0 ? true : false;
+          obj["wallet_metadata"] = apiResponse?.user?.user_wallets[i]?.wallet;
+          obj["id"] = `wallet${i + 1}`;
+          // obj['coinFound'] = apiResponse.wallets[apiResponse.user.user_wallets[i].address].chains.length > 0 ? true : false;
+          let chainLength =
+            apiResponse.wallets[apiResponse.user?.user_wallets[i]?.address]
+              ?.chains?.length ||
+            apiResponse?.wallets[
+              apiResponse.user?.user_wallets[i]?.address.toLowerCase()
+            ]?.chains?.length;
+          obj["coinFound"] = chainLength > 0 ? true : false;
 
-        obj["nickname"] = apiResponse?.user?.user_wallets[i]?.nickname;
-        obj["showAddress"] =
-          apiResponse?.user?.user_wallets[i]?.nickname === "" ? true : false;
-        obj["showNickname"] =
-          apiResponse?.user?.user_wallets[i]?.nickname !== "" ? true : false;
-        newAddWallet.push(obj);
+          obj["nickname"] = apiResponse?.user?.user_wallets[i]?.nickname;
+          obj["showAddress"] =
+            apiResponse?.user?.user_wallets[i]?.nickname === "" ? true : false;
+          obj["showNickname"] =
+            apiResponse?.user?.user_wallets[i]?.nickname !== "" ? true : false;
+          newAddWallet.push(obj);
+        }
       }
-    }
-    // console.log('newAddWallet',newAddWallet);
-    localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
-    setTimeout(() => {
-      ctx.props.history.push({
-        pathname: "/home",
-        state: {
-          isVerified: !apiResponse?.wallets ? true : false,
-        },
-      });
-    }, 3000);
+      // console.log('newAddWallet',newAddWallet);
+      localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+      setTimeout(() => {
+        ctx.props.history.push({
+          pathname: "/home",
+          state: {
+            isVerified: !apiResponse?.wallets ? true : false,
+          },
+        });
+      }, 3000);
     } else {
       toast.error(res.data.message || "Something Went Wrong");
     }
@@ -330,7 +346,7 @@ export const getUserAddresses = (ctx) => {
 export const sendWhopCode = (ctx, data) => {
   //  console.log("ctx", ctx.props.OnboardingState.coinsList);
   // setTimeout(() => {
-     
+
   // }, 3000);
   preLoginInstance
     .post("commerce/payment/create-user-whop", data)
@@ -437,13 +453,13 @@ export const sendWhopCode = (ctx, data) => {
           "currentPlan",
           JSON.stringify({
             ...plan,
-            influencer_pod_limit:-1,
+            influencer_pod_limit: -1,
           })
         );
         // localStorage.setItem(
         //   "currentPlan",
         //   JSON.stringify({...res.data?.data?.current_plan,influencer_pod_limit:
-              // res.data.data?.current_plan.name === "Free" ? 1 : -1} || {})
+        // res.data.data?.current_plan.name === "Free" ? 1 : -1} || {})
         // );
         //  let obj = JSON.parse(localStorage.getItem("lochUser"));
         let obj = {
@@ -486,124 +502,130 @@ export const sendWhopCode = (ctx, data) => {
     });
 };
 
+export const getDetectedChainsApi = (ctx) => {
+  postLoginInstance
+    .post("wallet/user-wallet/get-detected-chains")
+    .then((res) => {
+      if (!res.data.error) {
+        // console.log('res',res);
+        // CHAIN LIST
+        //
+        ctx.setState({
+          total_addresses: res.data.data.total_wallet_addresses,
+        });
 
-
-export const getDetectedChainsApi = (ctx) =>{
-  postLoginInstance.post("wallet/user-wallet/get-detected-chains")
-  .then((res)=>{
-    if(!res.data.error){
-      // console.log('res',res);
-      // CHAIN LIST
-      //
-      ctx.setState({
-        total_addresses: res.data.data.total_wallet_addresses,
-      });
-      
-      
-      let chainList = [];
-      ctx.props.OnboardingState.coinsList.map((item)=>{
-          return(chainList.push({
+        let chainList = [];
+        ctx.props.OnboardingState.coinsList.map((item) => {
+          return chainList.push({
             coinCode: item.code,
             coinSymbol: item.symbol,
             coinName: item.name,
             chain_detected: false,
-            coinColor: item.color
-          }))
-        })
-      // console.log('chainList',chainList);
-      let addWallet = JSON.parse(localStorage.getItem("addWallet"));
-  let totalChainDetechted = 0;
-      addWallet = addWallet?.map(e => ({...e, apiAddress: e.address}))
-      // console.log('addWallet',addWallet);
-      let xyz = Object.keys(res.data.data.chains).map((chain)=>({
-        address: chain,
-        display_address: res.data.data.chains[chain].display_address,
-        chains: res.data.data.chains[chain].chains
-      }))
-      // console.log("addwallet", xyz, res.data.data.chains);
-      addWallet?.map((wallet)=>{
-        let userWallet = null;
-        let coinFound = false;
-        xyz.map((item)=>{
-          if (
-            item.address === wallet.address ||
-            item.address === wallet.address.toLowerCase() ||
-            item.display_address === wallet.address
-          ) {
-            userWallet = item;
-          }
-        })
-
-        // console.log("chain", userWallet);
-      
-        let chainsDetected = chainList.map((chain)=>{
-          let dummyChain = {...chain}
-          let isDetected = false;
-          userWallet?.chains?.map((userChain)=>{
-            if(userChain.code === dummyChain.coinCode){
-              isDetected = true;
-              coinFound = true;
-              totalChainDetechted = totalChainDetechted + 1;
-            }
-          })
-          dummyChain.chain_detected = isDetected;
-          return dummyChain
+            coinColor: item.color,
+          });
         });
-        wallet.coinFound = coinFound
-      wallet.coins = chainsDetected
-      })
-    
-      ctx.setState({
-        addWalletList:
-          addWallet?.length > 0
-            ? addWallet
-            : [
-                {
-                  id: `wallet${(addWallet?.length || 0 )+ 1}`,
-                  address: "",
-                  coins: [],
-                  displayAddress: "",
-                  wallet_metadata: {},
-                  showAddress: true,
-                  showNickname: true,
-                  nickname: "",
-                  apiAddress: "",
-                },
-              ],
-        chainLoader: false,
-        totalChainDetechted: totalChainDetechted,
-      });
-      addWallet && addWallet.length > 0 && localStorage.setItem('addWallet', JSON.stringify(addWallet))
-    } else{
-      toast.error(res.data.message || "Something went wrong");
-    }
-  })
-   .catch((err)=>{
-    console.log("fixwallet",err)
-  })
-}
+        // console.log('chainList',chainList);
+        let addWallet = JSON.parse(localStorage.getItem("addWallet"));
+        let totalChainDetechted = 0;
+        addWallet = addWallet?.map((e) => ({ ...e, apiAddress: e.address }));
+        // console.log('addWallet',addWallet);
+        let xyz = Object.keys(res.data.data.chains).map((chain) => ({
+          address: chain,
+          display_address: res.data.data.chains[chain].display_address,
+          chains: res.data.data.chains[chain].chains,
+        }));
+        // console.log("addwallet", xyz, res.data.data.chains);
+        addWallet?.map((wallet) => {
+          let userWallet = null;
+          let coinFound = false;
+          xyz.map((item) => {
+            if (
+              item.address === wallet.address ||
+              item.address === wallet.address.toLowerCase() ||
+              item.display_address === wallet.address
+            ) {
+              userWallet = item;
+            }
+          });
 
-export const exportDataApi = (data,ctx) =>{
-  postLoginInstance.post(ctx.state.selectedExportItem.apiurl,data)
-  .then((res)=>{
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    // link.setAttribute('download', 'file.txt');
-    link.setAttribute('download', `${ctx.state.selectedExportItem.fileName}-${moment(ctx.state.fromDate).format("ll")}-${moment(ctx.state.toDate).format("ll")}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    ctx.setState({
-      loadingExportFile:false,
+          // console.log("chain", userWallet);
+
+          let chainsDetected = chainList.map((chain) => {
+            let dummyChain = { ...chain };
+            let isDetected = false;
+            userWallet?.chains?.map((userChain) => {
+              if (userChain.code === dummyChain.coinCode) {
+                isDetected = true;
+                coinFound = true;
+                totalChainDetechted = totalChainDetechted + 1;
+              }
+            });
+            dummyChain.chain_detected = isDetected;
+            return dummyChain;
+          });
+          wallet.coinFound = coinFound;
+          wallet.coins = chainsDetected;
+        });
+
+        ctx.setState({
+          addWalletList:
+            addWallet?.length > 0
+              ? addWallet
+              : [
+                  {
+                    id: `wallet${(addWallet?.length || 0) + 1}`,
+                    address: "",
+                    coins: [],
+                    displayAddress: "",
+                    wallet_metadata: {},
+                    showAddress: true,
+                    showNickname: true,
+                    nickname: "",
+                    apiAddress: "",
+                  },
+                ],
+          chainLoader: false,
+          totalChainDetechted: totalChainDetechted,
+        });
+        addWallet &&
+          addWallet.length > 0 &&
+          localStorage.setItem("addWallet", JSON.stringify(addWallet));
+      } else {
+        toast.error(res.data.message || "Something went wrong");
+      }
     })
-  })
-  .catch((err)=>{
-    ctx.setState({
-      loadingExportFile:false,
+    .catch((err) => {
+      console.log("fixwallet", err);
+    });
+};
+
+export const exportDataApi = (data, ctx) => {
+  postLoginInstance
+    .post(ctx.state.selectedExportItem.apiurl, data)
+    .then((res) => {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      // link.setAttribute('download', 'file.txt');
+      link.setAttribute(
+        "download",
+        `${ctx.state.selectedExportItem.fileName}-${moment(
+          ctx.state.fromDate
+        ).format("ll")}-${moment(ctx.state.toDate).format("ll")}.csv`
+      );
+      document.body.appendChild(link);
+      link.click();
+      ctx.setState({
+        loadingExportFile: false,
+      });
     })
-    console.log("Catch", err);
-  })
-}
+    .catch((err) => {
+      ctx.setState({
+        loadingExportFile: false,
+      });
+      console.log("Catch", err);
+    });
+};
 
 export const sendFeedbackApi = (data, ctx) => {
   postLoginInstance
@@ -626,56 +648,61 @@ export const sendFeedbackApi = (data, ctx) => {
     });
 };
 
-export const getAllCurrencyApi = (setAllCurrencyList) =>{
-  postLoginInstance.post("common/master/get-all-currencies")
-  .then((res)=>{
-    if(!res.data.error){
-      // console.log('set');
-      setAllCurrencyList(res.data.data.currencies)
-    } else{
-      toast.error(res.data.message || "Something went wrong");
-    }
-  })
-  .catch((err)=>{
-    console.log('err',err);
-  })
-}
-export const getAllCurrencyRatesApi = () =>{
-  postLoginInstance.post("common/master/get-currency-rates")
-  .then((res)=>{
-    if(!res.data.error){
-      let currency = JSON.parse(localStorage.getItem("currency")) || {
-        active: true,
-        code: "USD",
-        id: "6399a2d35a10114b677299fe",
-        name: "United States Dollar",
-        symbol: "$",
-        rate: 1,
-      };
+export const getAllCurrencyApi = (setAllCurrencyList) => {
+  postLoginInstance
+    .post("common/master/get-all-currencies")
+    .then((res) => {
+      if (!res.data.error) {
+        // console.log('set');
+        setAllCurrencyList(res.data.data.currencies);
+      } else {
+        toast.error(res.data.message || "Something went wrong");
+      }
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};
+export const getAllCurrencyRatesApi = () => {
+  postLoginInstance
+    .post("common/master/get-currency-rates")
+    .then((res) => {
+      if (!res.data.error) {
+        let currency = JSON.parse(localStorage.getItem("currency")) || {
+          active: true,
+          code: "USD",
+          id: "6399a2d35a10114b677299fe",
+          name: "United States Dollar",
+          symbol: "$",
+          rate: 1,
+        };
 
-      for (const [key, value] of Object.entries(res.data.data.rates.rates)) {
-        // console.log(`${key}: ${value}`);
-        if(key === currency?.code){
-          currency = {
-            ...currency,
-            rate: value
+        for (const [key, value] of Object.entries(res.data.data.rates.rates)) {
+          // console.log(`${key}: ${value}`);
+          if (key === currency?.code) {
+            currency = {
+              ...currency,
+              rate: value,
+            };
           }
         }
+        localStorage.setItem("currency", JSON.stringify(currency));
+        localStorage.setItem(
+          "currencyRates",
+          JSON.stringify(res.data.data.rates)
+        );
+      } else {
+        toast.error(res.data.message || "Something went wrong");
       }
-      localStorage.setItem('currency',JSON.stringify(currency))
-      localStorage.setItem('currencyRates',JSON.stringify(res.data.data.rates))
-    } else{
-      toast.error(res.data.message || "Something went wrong");
-    }
-  })
-  .catch((err)=>{
-    console.log('err',err);
-  })
-}
+    })
+    .catch((err) => {
+      console.log("err", err);
+    });
+};
 
 // Send Email OTP from whale pod
 
-export const SendOtp = (data,ctx) => {
+export const SendOtp = (data, ctx) => {
   postLoginInstance
     .post("organisation/user/send-email-otp", data)
     .then((res) => {
@@ -701,7 +728,7 @@ export const SendOtp = (data,ctx) => {
 
 // Verify email
 
-export const VerifyEmail = (data,ctx) => {
+export const VerifyEmail = (data, ctx) => {
   postLoginInstance
     .post("organisation/user/verify-otp-code", data)
     .then((res) => {
@@ -1048,6 +1075,9 @@ export const VerifyEmail = (data,ctx) => {
             }
           }
         );
+        if (isOptValid) {
+          toast.success(`Email verified`);
+        }
 
         // console.log("user id ", userId)
       } else if (res.data.error === true) {
@@ -1062,11 +1092,9 @@ export const VerifyEmail = (data,ctx) => {
     });
 };
 
-
-
 // Update user details
 
-export const UpdateUserDetails = (data,ctx) => {
+export const UpdateUserDetails = (data, ctx) => {
   postLoginInstance
     .post("organisation/user/update-user-details", data)
     .then((res) => {
@@ -1094,20 +1122,18 @@ export const UpdateUserDetails = (data,ctx) => {
         localStorage.setItem("lochUser", JSON.stringify(obj));
         // toast.success(" Your wallets and pods has been saved");
         if (ctx.AddEmailModal) {
-// for upgrade
-          ctx.AddEmailModal()
+          // for upgrade
+          ctx.AddEmailModal();
         } else {
-        // for whale watch
-           ctx.state.onHide();
-        };
-       
-      } 
+          // for whale watch
+          ctx.state.onHide();
+        }
+      }
     })
     .catch((err) => {
       console.log("err", err);
     });
 };
-
 
 // get-all-plans
 export const GetAllPlan = () => {
@@ -1116,10 +1142,9 @@ export const GetAllPlan = () => {
     .then((res) => {
       if (!res.data.error) {
         // Analytics
-       
+
         localStorage.setItem("Plans", JSON.stringify(res.data.data.plans));
         // toast.success(" Your wallets and pods has been saved");
-
       }
     })
     .catch((err) => {
@@ -1189,9 +1214,8 @@ export const GetDefaultPlan = () => {
     });
 };
 
-
 // get-all-plans
-export const CreatePyment = (data,ctx) => {
+export const CreatePyment = (data, ctx) => {
   postLoginInstance
     .post("commerce/payment/create-payment", data)
     .then((res) => {
@@ -1200,7 +1224,7 @@ export const CreatePyment = (data,ctx) => {
         ctx.setState({
           payment_link: res.data.data.payment.payment_url,
         });
-        
+
         // toast.success(" Your wallets and pods has been saved");
       }
     })
@@ -1209,13 +1233,9 @@ export const CreatePyment = (data,ctx) => {
     });
 };
 
-
-
 export const getUser = (ctx = null, showToast = false) => {
-  
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
-      
       // free pricing
       let plan = {
         defi_enabled: true,
@@ -1273,8 +1293,6 @@ export const getUser = (ctx = null, showToast = false) => {
         };
 
         localStorage.setItem("lochUser", JSON.stringify(obj));
-       
-     
       }
       if (
         ctx?.props?.location?.search === "?status=success" ||
@@ -1304,22 +1322,19 @@ export const getUser = (ctx = null, showToast = false) => {
   });
 };
 
-
-
-export const GetAuthUrl = (data,ctx) => {
-  postLoginInstance.post("organisation/user/get-authorize-url",data).then((res) => {
-    if (!res.data.error) {
-
-      ctx.setState({
-        AuthUrl: res?.data?.data?.url
-      })
-     
-    } else {
-      toast.error(res.data.message || "Something Went Wrong");
-    }
-  });
+export const GetAuthUrl = (data, ctx) => {
+  postLoginInstance
+    .post("organisation/user/get-authorize-url", data)
+    .then((res) => {
+      if (!res.data.error) {
+        ctx.setState({
+          AuthUrl: res?.data?.data?.url,
+        });
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    });
 };
-
 
 export const updateAccessToken = (data, ctx, name) => {
   // console.log("this",name)
@@ -1330,67 +1345,64 @@ export const updateAccessToken = (data, ctx, name) => {
         // ctx.setState({
         //   AuthUrl: res?.data?.data?.url,
         // });
-           if (ctx.props.tracking === "home page") {
-             Home_CE_OAuthCompleted({
-               session_id: getCurrentUser().id,
-               email_address: getCurrentUser().email,
-               exchange_name: name,
-             });
-           } else if (ctx.props.tracking === "landing page") {
-             LP_CE_OAuthCompleted({
-               session_id: getCurrentUser().id,
-               email_address: getCurrentUser().email,
-               exchange_name: name,
-             });
-           } else if (ctx.props.tracking === "wallet page") {
-             Wallet_CE_OAuthCompleted({
-               session_id: getCurrentUser().id,
-               email_address: getCurrentUser().email,
-               exchange_name: name,
-             });
-           }
-          ctx.setState({
-            isLoadingbtn: false,
+        if (ctx.props.tracking === "home page") {
+          Home_CE_OAuthCompleted({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            exchange_name: name,
           });
+        } else if (ctx.props.tracking === "landing page") {
+          LP_CE_OAuthCompleted({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            exchange_name: name,
+          });
+        } else if (ctx.props.tracking === "wallet page") {
+          Wallet_CE_OAuthCompleted({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            exchange_name: name,
+          });
+        }
+        ctx.setState({
+          isLoadingbtn: false,
+        });
         if (ctx.props.ishome) {
-            toast.success(`${name} connected to loch`);
-           ctx.handleUpdateList();
-           setTimeout(() => {
-            //  ctx.props.handleBackConnect(ctx.state.connectExchangesList);
-             ctx.handleBack();
-            //  toast.success(`${name} connected to loch`);
-           }, 200);
-         } else {
           toast.success(`${name} connected to loch`);
-           ctx.state.onHide();
-           // window.location.reload();
-           setTimeout(() => {
-             ctx.props.setPageFlagDefault();
-             ctx.props?.handleUpdate && ctx.props.handleUpdate();
-             ctx.props.openPopup();
-           }, 1000);
-         }
-
+          ctx.handleUpdateList();
+          setTimeout(() => {
+            //  ctx.props.handleBackConnect(ctx.state.connectExchangesList);
+            ctx.handleBack();
+            //  toast.success(`${name} connected to loch`);
+          }, 200);
+        } else {
+          toast.success(`${name} connected to loch`);
+          ctx.state.onHide();
+          // window.location.reload();
+          setTimeout(() => {
+            ctx.props.setPageFlagDefault();
+            ctx.props?.handleUpdate && ctx.props.handleUpdate();
+            ctx.props.openPopup();
+          }, 1000);
+        }
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
 };
 
-
 // api page flage
 
 export const updateWalletListFlag = (page, status) => {
-  let payload = {}
+  let payload = {};
   payload[page] = status;
   return function (dispatch, getState) {
     dispatch({
       type: WALLET_LIST_UPDATED,
-      payload: {...payload},
+      payload: { ...payload },
     });
-  }
+  };
 };
-
 
 // set page flags to false
 
@@ -1399,7 +1411,7 @@ export const setPageFlagDefault = () => {
     dispatch({
       type: SET_DEFAULT_VALUE,
     });
-  }
+  };
 };
 
 // set page flags to false for top accont pages
@@ -1409,7 +1421,7 @@ export const TopsetPageFlagDefault = () => {
     dispatch({
       type: TOP_SET_DEFAULT_VALUE,
     });
-  }
+  };
 };
 
 // export const PopupState = () => {
@@ -1422,15 +1434,12 @@ export const TopsetPageFlagDefault = () => {
 //   }
 // }
 
-
 // Update crypto payment
 export const UpdateCryptoPayment = (data, ctx, userFunction = null) => {
-
   postLoginInstance
     .post("commerce/payment/update-user-crypto-payment", data)
     .then((res) => {
       if (!res.data.error) {
-       
         userFunction();
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -1438,10 +1447,8 @@ export const UpdateCryptoPayment = (data, ctx, userFunction = null) => {
     });
 };
 
-
 // Signin Wallet
 export const SigninWallet = (data, ctx, userFunction = null) => {
-
   postLoginInstance
     .post("organisation/user/signin-with-wallet", data)
     .then((res) => {
@@ -1717,22 +1724,19 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
     });
 };
 
-
 // Update crypto payment
 export const CreateUserLandingPage = (data, ctx) => {
-
   postLoginInstance.post("organisation/user/signup", data).then((res) => {
     if (!res.data.error) {
       // userFunction();
-       ctx.setState({
-         emailAdded: true,
-         is_new_user: res.data.data.is_new_user,
-       });
-      
+      ctx.setState({
+        emailAdded: true,
+        is_new_user: res.data.data.is_new_user,
+      });
+
       setTimeout(() => {
-      ctx.props.history.push("/welcome");
-    }, 5000);
-  
+        ctx.props.history.push("/welcome");
+      }, 5000);
     } else {
       toast.error(res.data.message || "Something Went Wrong");
     }

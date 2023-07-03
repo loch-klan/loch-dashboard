@@ -1,25 +1,48 @@
-import React from 'react'
-import { BaseReactComponent, CustomTextControl, Form, FormElement, FormValidator } from '../../utils/form';
-import { connect } from 'react-redux';
-import { Modal, Image, Button } from 'react-bootstrap';
+import React from "react";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+  FormValidator,
+} from "../../utils/form";
+import { connect } from "react-redux";
+import { Modal, Image, Button } from "react-bootstrap";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
-import Banner from "../../image/Frame.png"
+import Banner from "../../image/Frame.png";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import CloseBtn from "../../assets/images/icons/CloseBtn.svg"
+import CloseBtn from "../../assets/images/icons/CloseBtn.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import CloseIcon from '../../assets/images/icons/CloseIcon.svg'
-import { getAllCoins, detectCoin, getAllParentChains } from "../onboarding//Api";
-import { getDetectedChainsApi, updateUserWalletApi, updateWalletListFlag } from './Api';
-import { getAllWalletApi, updateWalletApi } from './../wallet/Api';
-import { loadingAnimation ,getPadding} from '../../utils/ReusableFunctions';
-import { AddWalletAddress, AddWalletAddressNickname, AddWalletAddressPodName, AnonymityWalletConnection, AssetValueAddWallet, CostAddWallet, DoneFixingConnection, TransactionHistoryAddWallet } from '../../utils/AnalyticsFunctions';
-import { getCurrentUser } from '../../utils/ManageToken';
-import { Plans } from '../../utils/Constant';
-import UpgradeModal from './upgradeModal';
-import { searchCohort } from '../cohort/Api';
+import CloseIcon from "../../assets/images/icons/CloseIcon.svg";
+import {
+  getAllCoins,
+  detectCoin,
+  getAllParentChains,
+} from "../onboarding//Api";
+import {
+  getDetectedChainsApi,
+  updateUserWalletApi,
+  updateWalletListFlag,
+} from "./Api";
+import { getAllWalletApi, updateWalletApi } from "./../wallet/Api";
+import { loadingAnimation, getPadding } from "../../utils/ReusableFunctions";
+import {
+  AddWalletAddress,
+  AddWalletAddressNickname,
+  AddWalletAddressPodName,
+  AnonymityWalletConnection,
+  AssetValueAddWallet,
+  CostAddWallet,
+  DoneFixingConnection,
+  TransactionHistoryAddWallet,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { Plans } from "../../utils/Constant";
+import UpgradeModal from "./upgradeModal";
+import { searchCohort } from "../cohort/Api";
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
 import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
@@ -381,7 +404,9 @@ class FixAddModal extends BaseReactComponent {
             coinColor: parentCoinList[i].color,
             subChains: parentCoinList[i].sub_chains,
           },
-          this, false,0
+          this,
+          false,
+          0
         );
       }
     }
@@ -614,7 +639,6 @@ class FixAddModal extends BaseReactComponent {
           });
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
-       
           const data = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
           data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -646,7 +670,7 @@ class FixAddModal extends BaseReactComponent {
           // }
           // console.log("fix",this.state.addWalletList);
           const address = this.state.addWalletList?.map((e) => e.address);
-          
+
           // console.log("address", address);
           const addressDeleted = this.state.deletedAddress;
           // console.log("Deteted address", addressDeleted);
@@ -701,18 +725,18 @@ class FixAddModal extends BaseReactComponent {
               nicknames: nicknames,
             });
           } else if (this.props.from === "cost") {
-           CostAddWallet({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-             addresses_added: address,
-             ENS_added: address,
-             addresses_deleted: addressDeleted,
-             ENS_deleted: addressDeleted,
-             unrecognized_addresses: unrecog_address,
-             recognized_addresses: recog_address,
-             blockchains_detected: blockchainDetected,
-             nicknames: nicknames,
-           });
+            CostAddWallet({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              addresses_added: address,
+              ENS_added: address,
+              addresses_deleted: addressDeleted,
+              ENS_deleted: addressDeleted,
+              unrecognized_addresses: unrecog_address,
+              recognized_addresses: recog_address,
+              blockchains_detected: blockchainDetected,
+              nicknames: nicknames,
+            });
           } else if (this.props.from === "defi") {
             // TransactionHistoryAddWallet({
             //   session_id: getCurrentUser().id,
@@ -727,18 +751,18 @@ class FixAddModal extends BaseReactComponent {
             //   nicknames: nicknames,
             // });
           } else if (this.props.from === "asset value") {
-           AssetValueAddWallet({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-             addresses_added: address,
-             ENS_added: address,
-             addresses_deleted: addressDeleted,
-             ENS_deleted: addressDeleted,
-             unrecognized_addresses: unrecog_address,
-             recognized_addresses: recog_address,
-             blockchains_detected: blockchainDetected,
-             nicknames: nicknames,
-           });
+            AssetValueAddWallet({
+              session_id: getCurrentUser().id,
+              email_address: getCurrentUser().email,
+              addresses_added: address,
+              ENS_added: address,
+              addresses_deleted: addressDeleted,
+              ENS_deleted: addressDeleted,
+              unrecognized_addresses: unrecog_address,
+              recognized_addresses: recog_address,
+              blockchains_detected: blockchainDetected,
+              nicknames: nicknames,
+            });
           }
         }, 100);
       }
@@ -1368,7 +1392,10 @@ class FixAddModal extends BaseReactComponent {
                     )}
                     {/* Form */}
                     <>
-                      <div className="form-wrapper m-t-20" style={{margin: "2rem 10rem"}}>
+                      <div
+                        className="form-wrapper m-t-20"
+                        style={{ margin: "2rem 10rem" }}
+                      >
                         {/* <Image src={FileIcon} /> */}
                         {!this.state.emailAdded && !this.state.isIndexed && (
                           <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
@@ -1511,7 +1538,6 @@ const mapDispatchToProps = {
   getAllParentChains,
   updateWalletListFlag,
 };
-FixAddModal.propTypes = {
-};
+FixAddModal.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FixAddModal);

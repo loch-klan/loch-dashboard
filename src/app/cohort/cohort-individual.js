@@ -20,7 +20,13 @@ import {
   UpdateCohortNickname,
 } from "./Api";
 import { getAllCoins } from "../onboarding/Api.js";
-import { AmountType, BASE_URL_S3, DormantType, InsightType, PodType } from "../../utils/Constant";
+import {
+  AmountType,
+  BASE_URL_S3,
+  DormantType,
+  InsightType,
+  PodType,
+} from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
@@ -168,7 +174,7 @@ class CohortPage extends BaseReactComponent {
       totalYield: 0,
       totalDebt: 0,
       DebtValues: [],
-      DefiLoader:false,
+      DefiLoader: false,
     };
   }
 
@@ -181,7 +187,7 @@ class CohortPage extends BaseReactComponent {
     WhaleExpandDefiCredit({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
-      pod_name: this.state.cohortName
+      pod_name: this.state.cohortName,
     });
   };
 
@@ -190,11 +196,11 @@ class CohortPage extends BaseReactComponent {
       isDebtToggle: !this.state.isDebtToggle,
       // isYeildToggle: false,
     });
-     WhaleExpandDefiDebt({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-       pod_name: this.state.cohortName,
-     });
+    WhaleExpandDefiDebt({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+    });
   };
 
   showDust = () => {
@@ -230,7 +236,6 @@ class CohortPage extends BaseReactComponent {
           activeBadgeList: [],
         },
         () => {
-           
           this.getAssetData(this.state.activeFooter);
         }
       );
@@ -246,28 +251,29 @@ class CohortPage extends BaseReactComponent {
       );
     }
 
-     WhaleExpandChainFilter({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-       pod_name: this.state.cohortName,
-       selected:
-         badge[0]?.name === "All" ? "All chains" : badge?.map((e) => e?.name),
-     });
+    WhaleExpandChainFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+      selected:
+        badge[0]?.name === "All" ? "All chains" : badge?.map((e) => e?.name),
+    });
   };
 
   handleAsset = (arr) => {
     // console.log("arr",arr)
     this.setState(
       {
-        activeAsset: arr[0]?.name === "All" ? [] : arr?.map(e => e?.id),
+        activeAsset: arr[0]?.name === "All" ? [] : arr?.map((e) => e?.id),
       },
       () => {
-          WhaleExpandAssetFilter({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            pod_name: this.state.cohortName,
-            selected: arr[0]?.name === "All" ? "All assets" : arr?.map((e) => e?.name),
-          });
+        WhaleExpandAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          pod_name: this.state.cohortName,
+          selected:
+            arr[0]?.name === "All" ? "All assets" : arr?.map((e) => e?.name),
+        });
         this.getAssetData(this.state.activeFooter);
       }
     );
@@ -335,25 +341,24 @@ class CohortPage extends BaseReactComponent {
 
   handleCohort = () => {
     // console.log("cohort click");
-    this.setState({
-      cohortModal: !this.state.cohortModal,
-    }, () => {
-      if (this.state.cohortModal) {
-         WhaleExpandEdit({
-           session_id: getCurrentUser().id,
-           email_address: getCurrentUser().email,
-           pod_name: this.state.cohortName,
-         });
+    this.setState(
+      {
+        cohortModal: !this.state.cohortModal,
+      },
+      () => {
+        if (this.state.cohortModal) {
+          WhaleExpandEdit({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            pod_name: this.state.cohortName,
+          });
+        }
       }
-    });
-   
+    );
   };
   componentDidMount() {
-
     // console.log("test")
     this.state.startTime = new Date() * 1;
-    
-
 
     this.getCohortDetail();
     this.getAssetData(0);
@@ -380,11 +385,11 @@ class CohortPage extends BaseReactComponent {
       );
     }
     setTimeout(() => {
-        PageViewWhaleExpanded({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          pod_name: this.state?.cohortName,
-        });
+      PageViewWhaleExpanded({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        pod_name: this.state?.cohortName,
+      });
     }, 1000);
   }
 
@@ -640,7 +645,7 @@ class CohortPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       pod_name: this.state.cohortName,
-      address: address
+      address: address,
     });
   };
 
@@ -734,13 +739,12 @@ class CohortPage extends BaseReactComponent {
     data.append("address", address);
     DeleteCohortAddress(data, this);
 
-
-     WhaleExpandAddressDelete({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-       pod_name: this.state.cohortName,
-       address: address,
-     });
+    WhaleExpandAddressDelete({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+      address: address,
+    });
   };
 
   handleShare = () => {
@@ -1329,6 +1333,143 @@ class CohortPage extends BaseReactComponent {
             </div>
 
             <Row>
+              <Col md={4} style={{ paddingRight: "0.8rem" }}>
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    // height: "100%",
+                    height: "19rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  {!this.state.VolumeBoughtLoader ? (
+                    <>
+                      <div>
+                        <Image src={CartIcon} className="net-worth-icon" />
+                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                          Highest Volume
+                          <br />
+                          Inflow
+                        </h3>
+                      </div>
+                      <div style={{ height: "1.7rem", width: "max-content" }}>
+                        {this.state.LargestBoughtVolume &&
+                        !this.state.VolumeBoughtLoader ? (
+                          // <CoinChip
+                          //   colorCode={this.state.frequentlyPurchasedAsset?.color}
+                          //   coin_img_src={
+                          //     this.state.frequentlyPurchasedAsset?.symbol
+                          //   }
+                          //   coin_percent={
+                          //     this.state.frequentlyPurchasedAsset?.name
+                          //   }
+                          //   type={"cohort"}
+                          // />
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              src={this.state.LargestBoughtVolume?.symbol}
+                              style={{ width: "1.7rem" }}
+                            />
+                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                              {this.state.LargestBoughtVolume?.name}
+                            </h3>
+                          </div>
+                        ) : (
+                          <h3 className="inter-display-medium f-s-13 lh-15">
+                            No movement
+                          </h3>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                    // style={{
+                    //   transform: "scale(0.65)",
+                    //   marginTop: "-3.5rem",
+                    //   marginLeft: "1rem",
+                    // }}
+                    >
+                      <Loading showIcon={true} />
+                    </div>
+                  )}
+                </div>
+              </Col>
+              <Col
+                md={4}
+                style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
+              >
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    // height: "100%",
+                    height: "19rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  {!this.state.SoldVolumeLoader ? (
+                    <>
+                      <div>
+                        <Image src={TokenIcon} className="net-worth-icon" />
+                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                          Highest Volume <br />
+                          Outflow
+                        </h3>
+                      </div>
+
+                      <div style={{ height: "1.7rem", width: "max-content" }}>
+                        {this.state.LargestSoldVolume &&
+                        !this.state.SoldVolumeLoader ? (
+                          // <CoinChip
+                          //   colorCode={this.state.frequentlySoldAsset?.color}
+                          //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
+                          //   coin_percent={this.state.frequentlySoldAsset?.name}
+                          //   type={"cohort"}
+                          // />
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              src={this.state.LargestSoldVolume?.symbol}
+                              style={{ width: "1.7rem" }}
+                            />
+                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                              {this.state.LargestSoldVolume?.name}
+                            </h3>
+                          </div>
+                        ) : (
+                          <h3 className="inter-display-medium f-s-13 lh-15">
+                            No movement
+                          </h3>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                    // style={{
+                    //   transform: "scale(0.65)",
+                    //   marginTop: "-3.5rem",
+                    //   marginLeft: "1rem",
+                    // }}
+                    >
+                      <Loading showIcon={true} />
+                    </div>
+                  )}
+                </div>
+              </Col>
               <Col
                 md={4}
                 style={{ paddingRight: "0.8rem", marginBottom: "1.6rem" }}
@@ -1352,8 +1493,9 @@ class CohortPage extends BaseReactComponent {
                       <div>
                         <Image src={CartIcon} className="net-worth-icon" />
                         <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Most frequently <br />
-                          purchased token
+                          Most Frequent
+                          <br />
+                          Inflow
                         </h3>
                       </div>
                       <div style={{ height: "1.7rem", width: "max-content" }}>
@@ -1427,8 +1569,8 @@ class CohortPage extends BaseReactComponent {
                       <div>
                         <Image src={TokenIcon} className="net-worth-icon" />
                         <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Most frequently <br />
-                          sold token
+                          Most Frequent <br />
+                          Outflow
                         </h3>
                       </div>
 
@@ -1512,8 +1654,8 @@ class CohortPage extends BaseReactComponent {
                           />
                         </div>
                         <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Largest volume <br />
-                          exchanged token
+                          Highest Volume <br />
+                          Traded
                         </h3>
                       </div>
 
@@ -1535,143 +1677,6 @@ class CohortPage extends BaseReactComponent {
                             />
                             <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
                               {this.state?.LargestAsset?.name}
-                            </h3>
-                          </div>
-                        ) : (
-                          <h3 className="inter-display-medium f-s-13 lh-15">
-                            No movement
-                          </h3>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <div
-                    // style={{
-                    //   transform: "scale(0.65)",
-                    //   marginTop: "-3.5rem",
-                    //   marginLeft: "1rem",
-                    // }}
-                    >
-                      <Loading showIcon={true} />
-                    </div>
-                  )}
-                </div>
-              </Col>
-              <Col md={4} style={{ paddingRight: "0.8rem" }}>
-                <div
-                  style={{
-                    background: "#FFFFFF",
-                    boxShadow:
-                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                    borderRadius: "12px",
-                    padding: "2rem",
-                    // height: "100%",
-                    height: "19rem",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexDirection: "column",
-                  }}
-                >
-                  {!this.state.VolumeBoughtLoader ? (
-                    <>
-                      <div>
-                        <Image src={CartIcon} className="net-worth-icon" />
-                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Largest volume
-                          <br />
-                          bought token
-                        </h3>
-                      </div>
-                      <div style={{ height: "1.7rem", width: "max-content" }}>
-                        {this.state.LargestBoughtVolume &&
-                        !this.state.VolumeBoughtLoader ? (
-                          // <CoinChip
-                          //   colorCode={this.state.frequentlyPurchasedAsset?.color}
-                          //   coin_img_src={
-                          //     this.state.frequentlyPurchasedAsset?.symbol
-                          //   }
-                          //   coin_percent={
-                          //     this.state.frequentlyPurchasedAsset?.name
-                          //   }
-                          //   type={"cohort"}
-                          // />
-                          <div
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <Image
-                              src={this.state.LargestBoughtVolume?.symbol}
-                              style={{ width: "1.7rem" }}
-                            />
-                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                              {this.state.LargestBoughtVolume?.name}
-                            </h3>
-                          </div>
-                        ) : (
-                          <h3 className="inter-display-medium f-s-13 lh-15">
-                            No movement
-                          </h3>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <div
-                    // style={{
-                    //   transform: "scale(0.65)",
-                    //   marginTop: "-3.5rem",
-                    //   marginLeft: "1rem",
-                    // }}
-                    >
-                      <Loading showIcon={true} />
-                    </div>
-                  )}
-                </div>
-              </Col>
-              <Col
-                md={4}
-                style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
-              >
-                <div
-                  style={{
-                    background: "#FFFFFF",
-                    boxShadow:
-                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                    borderRadius: "12px",
-                    padding: "2rem",
-                    // height: "100%",
-                    height: "19rem",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexDirection: "column",
-                  }}
-                >
-                  {!this.state.SoldVolumeLoader ? (
-                    <>
-                      <div>
-                        <Image src={TokenIcon} className="net-worth-icon" />
-                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Largest volume <br />
-                          sold token
-                        </h3>
-                      </div>
-
-                      <div style={{ height: "1.7rem", width: "max-content" }}>
-                        {this.state.LargestSoldVolume &&
-                        !this.state.SoldVolumeLoader ? (
-                          // <CoinChip
-                          //   colorCode={this.state.frequentlySoldAsset?.color}
-                          //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
-                          //   coin_percent={this.state.frequentlySoldAsset?.name}
-                          //   type={"cohort"}
-                          // />
-                          <div
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <Image
-                              src={this.state.LargestSoldVolume?.symbol}
-                              style={{ width: "1.7rem" }}
-                            />
-                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                              {this.state.LargestSoldVolume?.name}
                             </h3>
                           </div>
                         ) : (

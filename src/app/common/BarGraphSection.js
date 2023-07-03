@@ -1,27 +1,31 @@
-import React, { Component } from 'react'
-import { GraphHeader } from './GraphHeader'
-import CoinBadges from './CoinBadges';
-import { BarGraphFooter } from './BarGraphFooter';
+import React, { Component } from "react";
+import { GraphHeader } from "./GraphHeader";
+import CoinBadges from "./CoinBadges";
+import { BarGraphFooter } from "./BarGraphFooter";
 import { connect } from "react-redux";
-import { Form, Image } from 'react-bootstrap'
+import { Form, Image } from "react-bootstrap";
 import GraphLogo from "../../assets/images/graph-logo.svg";
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2'
-import { BlockchainFeesFilter, CounterpartyFeesFilter, NetflowSwitch } from '../../utils/AnalyticsFunctions';
-import { getCurrentUser } from '../../utils/ManageToken';
-import Loading from './Loading';
-import { CurrencyType } from '../../utils/ReusableFunctions';
-import DropDown from './DropDown';
-import CustomDropdown from '../../utils/form/CustomDropdown';
-import { info } from '../intelligence/stackGrapgh';
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import {
+  BlockchainFeesFilter,
+  CounterpartyFeesFilter,
+  NetflowSwitch,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import Loading from "./Loading";
+import { CurrencyType } from "../../utils/ReusableFunctions";
+import DropDown from "./DropDown";
+import CustomDropdown from "../../utils/form/CustomDropdown";
+import { info } from "../intelligence/stackGrapgh";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HC_rounded from "highcharts-rounded-corners";
@@ -39,8 +43,6 @@ ChartJS.register(
   Legend,
   ChartjsPluginWatermark
 );
-
-
 
 class BarGraphSection extends Component {
   constructor(props) {
@@ -67,7 +69,6 @@ class BarGraphSection extends Component {
       // activeDropdown: props.activeDropdown,
       handleSelect: props.handleSelect,
       switchselected: props.isSwitch,
-      
       // stackedgraphdata: {
       //   options: info[0],
       // },
@@ -80,7 +81,7 @@ class BarGraphSection extends Component {
         options: this.props.options,
         options2: this.props.options2,
         data: this.props.data,
-        showPercentage: this.props.showPercentage
+        showPercentage: this.props.showPercentage,
       });
       // console.log("active badge", this.state.activeBadge)
       // console.log("active badgeList", this.state.activeBadgeList);
@@ -91,30 +92,31 @@ class BarGraphSection extends Component {
     }
 
     if (prevProps.digit != this.props.digit) {
-       this.setState({
-         digit: this.props.digit
-       });
+      this.setState({
+        digit: this.props.digit,
+      });
     }
   }
 
   handleFooter = (event) => {
     this.setState({
       activeFooter: event.target.id,
-       activeBadge: [{ name: "All", id: "" }],
-                      activeBadgeList: [],
-    })
+      activeBadge: [{ name: "All", id: "" }],
+      activeBadgeList: [],
+    });
     // console.log("handle footer", event.target.id);
     this.props.timeFunction(event.target.id, this.state.activeBadgeList);
   };
   handleFunction = (badge) => {
     // console.log("badge",badge)
-    let activeFooter = this.props.showFooterDropdown ? this.props.activeDropdown : this.state.activeFooter;
+    let activeFooter = this.props.showFooterDropdown
+      ? this.props.activeDropdown
+      : this.state.activeFooter;
     if (badge?.[0].name === "All") {
       this.setState(
         {
           activeBadge: [{ name: "All", id: "" }],
           activeBadgeList: [],
-        
         },
         () => {
           this.props.handleBadge(this.state.activeBadgeList, activeFooter);
@@ -125,7 +127,6 @@ class BarGraphSection extends Component {
         {
           activeBadge: badge,
           activeBadgeList: badge?.map((item) => item.id),
-        
         },
         () => {
           this.props.handleBadge(this.state.activeBadgeList, activeFooter);
@@ -200,8 +201,6 @@ class BarGraphSection extends Component {
       });
   };
 
- 
-
   render() {
     const {
       data,
@@ -220,7 +219,7 @@ class BarGraphSection extends Component {
       digit,
       showFooterDropdown,
       footerDropdownLabels,
-      handleSelect
+      handleSelect,
     } = this.state;
     const {
       marginBottom,
@@ -303,6 +302,7 @@ class BarGraphSection extends Component {
                       action={null}
                       handleClick={this.handleFunction}
                       isChain={true}
+                      searchIsUsed={this.props.chainSearchIsUsed}
                       // selectedTokens={this.state.activeBadge}
                     />
                   </div>
@@ -340,6 +340,7 @@ class BarGraphSection extends Component {
                       LightTheme={true}
                       placeholderName={"asset"}
                       getObj={this.props?.getObj}
+                      searchIsUsed={this.props.assetSearchIsUsed}
                       // selectedTokens={this.state.activeBadge}
                     />
                   </div>
@@ -391,11 +392,12 @@ class BarGraphSection extends Component {
                       label="Click to show breakdown"
                       checked={this.state.switchselected}
                       onChange={(e) => {
-                       
                         this.setState({
                           switchselected: e.target.checked,
                         });
-                        this.props.setSwitch();
+                        if (this.props.setSwitch) {
+                          this.props.setSwitch();
+                        }
                       }}
                     />
                   </div>
@@ -428,34 +430,56 @@ class BarGraphSection extends Component {
                   }`,
                 }}
               >
-                {!this.state.switchselected ? (
+                {this.props.isGraphLoading ? (
                   <div
-                    className="chartArea"
-                    style={
-                      data.labels.length > 8 && isScroll
-                        ? ScrollStyle
-                        : NormalStyle
-                    }
+                    style={{
+                      height: this?.props?.loaderHeight
+                        ? this?.props?.loaderHeight + "rem"
+                        : "30rem",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
-                    <Bar options={options} data={data} />
+                    <Loading />
                   </div>
                 ) : (
-                  <div
-                    className="chartArea"
-                    style={  showSwitch && !showPercentage?{ maxHeight: "35.55rem"}:{}}
-                  >
-                    <HighchartsReact
-                      highcharts={Highcharts}
-                      options={this.props?.ProfitLossAsset}
-                      // constructorType={"stockChart"}
-                      // allowChartUpdate={true}
-                      // updateArgs={[true]}
-                      containerProps={{ style: { height: "100%" } }}
-                    />
-                  </div>
+                  <>
+                    {!this.state.switchselected ? (
+                      <div
+                        className="chartArea"
+                        style={
+                          data.labels.length > 8 && isScroll
+                            ? ScrollStyle
+                            : NormalStyle
+                        }
+                      >
+                        <Bar options={options} data={data} />
+                      </div>
+                    ) : (
+                      <div
+                        className="chartArea"
+                        style={
+                          showSwitch && !showPercentage
+                            ? { maxHeight: "35.55rem" }
+                            : {}
+                        }
+                      >
+                        <HighchartsReact
+                          highcharts={Highcharts}
+                          options={this.props?.ProfitLossAsset}
+                          // constructorType={"stockChart"}
+                          // allowChartUpdate={true}
+                          // updateArgs={[true]}
+                          containerProps={{ style: { height: "100%" } }}
+                        />
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
+
             {/* Grapgh Section End */}
 
             {showFooterDropdown ? (
@@ -501,12 +525,7 @@ BarGraphSection.defaultProps = {
   isScroll: false,
 };
 
-const mapStateToProps = state => ({
-
-});
-const mapDispatchToProps = {
-
-}
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(BarGraphSection);
-

@@ -30,7 +30,11 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
-import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  noExponents,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import { Button, Image } from "react-bootstrap";
 import CalenderIcon from "../../assets/images/calendar.svg";
 import DoubleArrow from "../../assets/images/double-arrow.svg";
@@ -40,7 +44,7 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import { toast } from "react-toastify";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { BarGraphFooter } from "../common/BarGraphFooter";
-import AssetValueEmailModal from "./EmailNotify"
+import AssetValueEmailModal from "./EmailNotify";
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -59,9 +63,16 @@ class LineChartSlider extends BaseReactComponent {
       plotLineHide: 0,
       rangeSelected: 1,
       EmailModal: false,
+      isTokenSearchUsed: false,
+      isChainSearchUsed: false,
     };
   }
-
+  chainSearchIsUsed = () => {
+    this.setState({ isChainSearchUsed: true });
+  };
+  tokenSearchIsUsed = () => {
+    this.setState({ isTokenSearchUsed: true });
+  };
   componentDidUpdate(prevProps) {
     if (prevProps.isUpdate !== this.props.isUpdate) {
       // console.log("Something update");
@@ -92,18 +103,22 @@ class LineChartSlider extends BaseReactComponent {
         selectedEvents: [],
       });
     }
-
+    const tempIsSearchUsed = this.state.isChainSearchUsed;
     this.props.isPage
       ? IntlAssetValueFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           filter_clicked: badge?.map((item) => item?.name),
+          isSearchUsed: tempIsSearchUsed,
         })
       : AssetValueFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           filter_clicked: badge?.map((item) => item?.name),
+          isSearchUsed: tempIsSearchUsed,
         });
+
+    this.setState({ isChainSearchUsed: false });
   };
   handleSelect = (opt) => {
     // console.log("opt", opt.target.id);
@@ -147,12 +162,15 @@ class LineChartSlider extends BaseReactComponent {
         selectedEvents: [],
       },
       () => {
+        const tempIsSearchUsed = this.state.isTokenSearchUsed;
         IntlAssetValueAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           filter_clicked:
             arr[0]?.name === "All" ? [] : arr?.map((e) => e?.name),
+          isSearchUsed: tempIsSearchUsed,
         });
+        this.setState({ isTokenSearchUsed: false });
       }
     );
   };
@@ -174,9 +192,9 @@ class LineChartSlider extends BaseReactComponent {
   // for email notify btn
 
   handleAskEmail = () => {
-   this.setState({
-     EmailModal: !this.state.EmailModal,
-   });
+    this.setState({
+      EmailModal: !this.state.EmailModal,
+    });
   };
   render() {
     const { assetValueData, externalEvents } = this.props;
@@ -1200,7 +1218,7 @@ backdrop-filter: blur(15px);">
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginBottom: this.props.dataLoaded ? "5rem": "2rem",
+                        marginBottom: this.props.dataLoaded ? "5rem" : "2rem",
                       }}
                     >
                       <div
@@ -1240,6 +1258,7 @@ backdrop-filter: blur(15px);">
                             handleClick={this.handleFunction}
                             isChain={true}
                             // selectedTokens={this.state.activeBadge}
+                            searchIsUsed={this.chainSearchIsUsed}
                           />
                         </div>
                       </div>
@@ -1257,37 +1276,37 @@ backdrop-filter: blur(15px);">
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
-                  {this.props.dataLoaded  && (
-                      <div
+                  {this.props.dataLoaded && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        right: "0px",
+                        top: !this.props.hideTimeFilter ? "-38px" : "-9px",
+                        zIndex: 1,
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <h5
+                        className="inter-display-medium f-s-10 lh-14"
                         style={{
-                          position: "absolute",
-                          right: "0px",
-                          top: !this.props.hideTimeFilter ? "-38px" : "-9px",
-                          zIndex: 1,
-                          display: "flex",
-                          alignItems: "center",
+                          // position: "absolute",
+                          // right: "0px",
+                          // top: !this.props.hideTimeFilter ? "-27px" : "-2px",
+                          // zIndex: 1,
+                          marginRight: "0.8rem",
                         }}
                       >
-                        <h5
-                          className="inter-display-medium f-s-10 lh-14"
-                          style={{
-                            // position: "absolute",
-                            // right: "0px",
-                            // top: !this.props.hideTimeFilter ? "-27px" : "-2px",
-                            // zIndex: 1,
-                            marginRight: "0.8rem",
-                          }}
-                        >
-                          Don't worry we're still loading all your data
-                        </h5>
-                        <Button
-                          className="secondary-btn small-btn"
-                          onClick={this.handleAskEmail}
-                        >
-                          Get notified
-                        </Button>
-                      </div>
-                    )}
+                        Don't worry we're still loading all your data
+                      </h5>
+                      <Button
+                        className="secondary-btn small-btn"
+                        onClick={this.handleAskEmail}
+                      >
+                        Get notified
+                      </Button>
+                    </div>
+                  )}
                   {!this.props.hideTimeFilter && (
                     <>
                       <span
@@ -1311,6 +1330,7 @@ backdrop-filter: blur(15px);">
                           handleClick={(arr) => this.DropdownData(arr)}
                           isLineChart={true}
                           getObj={true}
+                          searchIsUsed={this.tokenSearchIsUsed}
                         />
                       </span>
                     </>

@@ -18,10 +18,10 @@ export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
   const [connectModal, setconnectModal] = React.useState(false);
   const history = useHistory();
-  
-   const [popupModal, setpopupModal] = React.useState(false);
+
+  const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
-      let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(localStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
 
@@ -35,11 +35,11 @@ export default function PageHeader(props) {
         }
       }, 200);
     }
-   };
+  };
 
-  
+
   const handleConnectModal = () => {
-    
+
     setconnectModal(!connectModal);
     setTimeout(() => {
       if (connectModal) {
@@ -49,8 +49,8 @@ export default function PageHeader(props) {
         });
       }
     }, 200);
-     
-   };
+
+  };
 
   const breads = nav_list.map((e, key) => {
     // console.log(e, props?.topaccount, key);
@@ -83,17 +83,10 @@ export default function PageHeader(props) {
       {breads}
     </Breadcrumb>
   );
-console.log(
-  "tr",
-  props?.bottomPadding
-    ? { paddingBottom: props?.bottomPadding + "rem" }
-    : { padding: 0 },
-  props?.bottomPadding
-);
   return (
     <div
       className={`m-b-40 page-header ${props.showpath || props?.topaccount ? "history-header" : ""}`}
-      style={props?.bottomPadding ? {paddingBottom: props?.bottomPadding+"rem"}:{padding:0}}
+      style={props?.bottomPadding ? { paddingBottom: props?.bottomPadding + "rem" } : { padding: 0 }}
     >
       {props.showpath ? breadCrumb : ""}
 
@@ -122,9 +115,8 @@ console.log(
           )}
           <div>
             <h4
-              className={`inter-display-medium f-s-24 lh-30 ${
-                props.showImg || props.multipleImg ? "" : "m-b-8"
-              }`}
+              className={`inter-display-medium f-s-24 lh-30 ${props.showImg || props.multipleImg ? "" : "m-b-8"
+                }`}
             >
               {props.title}
             </h4>
@@ -174,45 +166,44 @@ console.log(
         {(props.btnText ||
           props.SecondaryBtn ||
           props.ShareBtn) && (
-          <div>
-           
-            {props.SecondaryBtn && (
-              <Button
-                className="secondary-btn white-bg"
-                onClick={handleConnectModal}
-              >
-                Connect exchange
-              </Button>
-            )}
-            {props.ShareBtn && (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={"Click to copy link"}
-              >
+            <div>
+
+              {props.SecondaryBtn && (
                 <Button
                   className="secondary-btn white-bg"
-                  style={!props.btnText ? { marginRight: "0rem" } : {}}
-                  onClick={props.handleShare}
+                  onClick={handleConnectModal}
                 >
-                  Share
+                  Connect exchange
                 </Button>
-              </CustomOverlay>
-            )}
-            {props.btnText && (
-              <Button
-                className={`${
-                  props.btnOutline ? "secondary-btn" : "primary-btn"
-                }`}
-                onClick={props.handleBtn}
-              >
-                {props.btnText}
-              </Button>
-            )}
-          </div>
-        )}
+              )}
+              {props.ShareBtn && (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={"Click to copy link"}
+                >
+                  <Button
+                    className="secondary-btn white-bg"
+                    style={!props.btnText ? { marginRight: "0rem" } : {}}
+                    onClick={props.handleShare}
+                  >
+                    Share
+                  </Button>
+                </CustomOverlay>
+              )}
+              {props.btnText && (
+                <Button
+                  className={`${props.btnOutline ? "secondary-btn" : "primary-btn"
+                    }`}
+                  onClick={props.handleBtn}
+                >
+                  {props.btnText}
+                </Button>
+              )}
+            </div>
+          )}
 
         {props.viewMore && (
           <h3
