@@ -10,7 +10,11 @@ import ConnectModal from "./ConnectModal";
 import { useHistory } from "react-router-dom";
 import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import AuthModal from "./AuthModal";
-import { AssetValueExplainer, ConnectExPopup, WalletConnectExchange } from "../../utils/AnalyticsFunctions";
+import {
+  AssetValueExplainer,
+  ConnectExPopup,
+  WalletConnectExchange,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import SearchIcon from "../../assets/images/icons/search-icon.svg";
 
@@ -18,10 +22,10 @@ export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
   const [connectModal, setconnectModal] = React.useState(false);
   const history = useHistory();
-  
-   const [popupModal, setpopupModal] = React.useState(false);
+
+  const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
-      let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(localStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
 
@@ -35,11 +39,9 @@ export default function PageHeader(props) {
         }
       }, 200);
     }
-   };
+  };
 
-  
   const handleConnectModal = () => {
-    
     setconnectModal(!connectModal);
     setTimeout(() => {
       if (connectModal) {
@@ -49,8 +51,7 @@ export default function PageHeader(props) {
         });
       }
     }, 200);
-     
-   };
+  };
 
   const breads = nav_list.map((e, key) => {
     // console.log(e , props.currentPage)
@@ -159,11 +160,8 @@ export default function PageHeader(props) {
         </div>
         {/* search */}
 
-        {(props.btnText ||
-          props.SecondaryBtn ||
-          props.ShareBtn) && (
+        {(props.btnText || props.SecondaryBtn || props.ShareBtn) && (
           <div>
-           
             {props.SecondaryBtn && (
               <Button
                 className="secondary-btn white-bg"
@@ -247,5 +245,4 @@ export default function PageHeader(props) {
       )}
     </div>
   );
-
 }

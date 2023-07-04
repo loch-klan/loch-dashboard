@@ -46,16 +46,16 @@ class AskEmailModal extends BaseReactComponent {
     // set popup active
     localStorage.setItem("isPopupActive", false);
   }
-    componentDidUpdate() { }
-    
-    handleUpdateEmail = () => {
-         const data = new URLSearchParams();
-        
-      data.append("email", this.state.email);
-      data.append("signed_up_from", "Email added after metamask connect");
-         
-         updateUser(data, this);
-    };
+  componentDidUpdate() {}
+
+  handleUpdateEmail = () => {
+    const data = new URLSearchParams();
+
+    data.append("email", this.state.email);
+    data.append("signed_up_from", "Email added after metamask connect");
+
+    updateUser(data, this);
+  };
 
   render() {
     return (
@@ -174,9 +174,7 @@ class AskEmailModal extends BaseReactComponent {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {
-
-};
+const mapDispatchToProps = {};
 AskEmailModal.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AskEmailModal);

@@ -7,7 +7,18 @@ import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import { getAllInsightsApi } from "./Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
-import { AllInsights, InsightPage, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk, InsightsShare, RiskTypeDropdownClicked, RiskTypeHover, RiskTypeSelected, TimeSpentInsights } from "../../utils/AnalyticsFunctions";
+import {
+  AllInsights,
+  InsightPage,
+  InsightsIncreaseYield,
+  InsightsReduceCost,
+  InsightsReduceRisk,
+  InsightsShare,
+  RiskTypeDropdownClicked,
+  RiskTypeHover,
+  RiskTypeSelected,
+  TimeSpentInsights,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 
@@ -93,13 +104,13 @@ class InsightsPage extends Component {
     getUser();
     this.setState({});
 
-      const search = this.props.location.search;
-      const params = new URLSearchParams(search);
-      const addAddress = params.get("add-address");
-      if (addAddress) {
-        this.handleAddModal();
-        this.props.history.replace("/intelligence/insights");
-      }
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const addAddress = params.get("add-address");
+    if (addAddress) {
+      this.handleAddModal();
+      this.props.history.replace("/intelligence/insights");
+    }
   }
 
   componentWillUnmount() {
@@ -230,7 +241,6 @@ class InsightsPage extends Component {
   };
 
   handleInsights = (e) => {
-  
     let title = e.split(" ")[1];
     if (e.split(" ")[2] !== undefined) {
       title = title + " " + e.split(" ")[2];
@@ -247,7 +257,7 @@ class InsightsPage extends Component {
         RiskTypeSelected({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          type:title
+          type: title,
         });
         let riskType = InsightType.getRiskNumber(this.state.riskType);
         let insightList = this.props.intelligenceState.updatedInsightList;
@@ -371,17 +381,21 @@ class InsightsPage extends Component {
                   This week
                 </h2>
 
-                <div style={{ display: "flex", alignItems: "center" }} onClick={() => {
+                <div
+                  style={{ display: "flex", alignItems: "center" }}
+                  onClick={() => {
                     RiskTypeDropdownClicked({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
                     });
-                }} onMouseEnter={() => {
-                  RiskTypeHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }}>
+                  }}
+                  onMouseEnter={() => {
+                    RiskTypeHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                    });
+                  }}
+                >
                   <DropDown
                     class="cohort-dropdown"
                     list={[

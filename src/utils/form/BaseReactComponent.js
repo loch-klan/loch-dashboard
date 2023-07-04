@@ -14,7 +14,6 @@ class BaseReactComponent extends React.Component {
     let getElement = { ...obj };
     // console.log('getElement 1', getElement);
     while (stack.length) {
-
       getElement = getElement[stack.shift()];
     }
     // console.log('getElement', getElement);
@@ -50,18 +49,16 @@ class BaseReactComponent extends React.Component {
     // console.log('newCurrent', newCurrent);
     newCurrent.map((item, i) => {
       if (i === position) {
-        return (
-          item.key = !item.key
-        )
+        return (item.key = !item.key);
       }
-      return item
-    })
+      return item;
+    });
     return newCurrent;
-  }
+  };
 
-  linkState = (ctx, path, onUpdateCallback) => (
+  linkState = (ctx, path, onUpdateCallback) =>
     // console.log('ctx, path, onUpdateCallback', ctx, path, onUpdateCallback),
-    {
+    ({
       // todo : add type to handle type of input
       // also add preUpdateCallback if required.
       value: this.getIn(ctx.state, path),
@@ -83,8 +80,7 @@ class BaseReactComponent extends React.Component {
           if (onSetCallback) {
             onSetCallback(value);
           }
-        })
-
+        }),
     });
 
   render() {
@@ -93,11 +89,11 @@ class BaseReactComponent extends React.Component {
 }
 
 BaseReactComponent.propTypes = {
-  children: PropTypes.any
+  children: PropTypes.any,
 };
 
 BaseReactComponent.defaultProps = {
-  children: null
+  children: null,
 };
 
 export default BaseReactComponent;

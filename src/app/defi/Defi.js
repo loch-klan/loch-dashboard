@@ -14,9 +14,7 @@ import {
   getProtocolBalanceApi,
   getYieldBalanceApi,
 } from "../Portfolio/Api";
-import {
-  updateDefiData,
-} from "./Api";
+import { updateDefiData } from "./Api";
 import {
   amountFormat,
   CurrencyType,
@@ -39,7 +37,14 @@ import { AssetType } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import { DefiCredit, DefiDebt, DefiSortByAmount, DefiSortByName, PageviewDefi, TimeSpentDefi } from "../../utils/AnalyticsFunctions";
+import {
+  DefiCredit,
+  DefiDebt,
+  DefiSortByAmount,
+  DefiSortByName,
+  PageviewDefi,
+  TimeSpentDefi,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 class Defi extends Component {
@@ -125,10 +130,10 @@ class Defi extends Component {
     //   this.upgradeModal();
     // }
     this.state.startTime = new Date() * 1;
-     PageviewDefi({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
+    PageviewDefi({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
 
     this.props.getAllCoins();
     this.setState({});
@@ -242,10 +247,10 @@ class Defi extends Component {
       this.setState({
         sortBy: sort,
       });
-        DefiSortByAmount({
-          email_address: getCurrentUser().email,
-          session_id: getCurrentUser().id,
-        });
+      DefiSortByAmount({
+        email_address: getCurrentUser().email,
+        session_id: getCurrentUser().id,
+      });
     } else if (e.title === "Date added") {
       this.sortArray("created_on", isDown);
       this.setState({
@@ -260,10 +265,10 @@ class Defi extends Component {
       this.setState({
         sortBy: sort,
       });
-         DefiSortByName({
-           email_address: getCurrentUser().email,
-           session_id: getCurrentUser().id,
-         });
+      DefiSortByName({
+        email_address: getCurrentUser().email,
+        session_id: getCurrentUser().id,
+      });
     }
   };
 
@@ -298,21 +303,21 @@ class Defi extends Component {
     let DebtValues = [];
     let allAssetType = [20, 30, 40, 50, 60, 70];
     allAssetType.map((e) => {
-       if (![30].includes(e)) {
-         YieldValues.push({
-           id: e,
-           name: AssetType.getText(e),
-           totalPrice: 0,
-         });
-       } else {
-         [30].map((e) => {
-           DebtValues.push({
-             id: e,
-             name: AssetType.getText(e),
-             totalPrice: 0,
-           });
-         });
-       }
+      if (![30].includes(e)) {
+        YieldValues.push({
+          id: e,
+          name: AssetType.getText(e),
+          totalPrice: 0,
+        });
+      } else {
+        [30].map((e) => {
+          DebtValues.push({
+            id: e,
+            name: AssetType.getText(e),
+            totalPrice: 0,
+          });
+        });
+      }
     });
 
     // this.setState({
@@ -824,7 +829,6 @@ class Defi extends Component {
 const mapStateToProps = (state) => ({
   defiState: state.DefiState,
   commonState: state.CommonState,
-  
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts

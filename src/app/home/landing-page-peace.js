@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
@@ -34,7 +33,7 @@ import {
 import DefiIcon from "../../assets/images/icons/lp-defi.svg";
 
 import CohortImg from "../../assets/images/cohort-img.svg";
-import InsightVideo from "../../assets/videos/defi-insights.mov"
+import InsightVideo from "../../assets/videos/defi-insights.mov";
 import Slider from "react-slick";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
@@ -119,7 +118,6 @@ class LPPeace extends BaseReactComponent {
   };
 
   Emailadded = () => {
-   
     if (this.state.email) {
       // console.log("email", this.state.email)
       EmailAddedPeace({ email_address: this.state.email });
@@ -403,8 +401,7 @@ class LPPeace extends BaseReactComponent {
                           placeholder: "Your email address",
                           onBlur: (onBlur) => {
                             this.Emailadded();
-
-                          },       
+                          },
                         },
                       }}
                       // onClick={() => {

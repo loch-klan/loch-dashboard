@@ -22,8 +22,8 @@ class RemarkInput extends BaseReactComponent {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-            }}
-            className="remarkInput"
+        }}
+        className="remarkInput"
       >
         <Form
           onValidSubmit={() => {
@@ -39,7 +39,6 @@ class RemarkInput extends BaseReactComponent {
                 placeholder: "What do you think of this account?",
               },
             }}
-            
           />
         </Form>
       </div>

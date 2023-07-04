@@ -89,17 +89,17 @@ class PieChart2 extends BaseReactComponent {
       isStopLoading: false,
 
       chainLoader: false,
-      chartUpdate:true
+      chartUpdate: true,
     };
   }
 
   componentDidMount() {
     // for temp
-   
+
     this.getCurrentTime();
     if (this.props.userWalletData && this.props.userWalletData.length > 0) {
       let assetData = [];
-      
+
       if (
         this.props.userWalletData &&
         this.props.userWalletData.length > 0 &&
@@ -144,7 +144,6 @@ class PieChart2 extends BaseReactComponent {
             count: this.props.userWalletData[i].totalCount,
           });
         }
-
       }
       this.setState({
         chartData: this.props.userWalletData,
@@ -154,11 +153,9 @@ class PieChart2 extends BaseReactComponent {
             : [],
         chartOptions: {},
         pieSectionDataEnabled: {},
-
       });
     } else {
       // this.setState({
-
       // })
     }
     // console.log("assetData mount", this.state.assetData)
@@ -226,16 +223,18 @@ class PieChart2 extends BaseReactComponent {
       chainList.sort((a, b) => {
         return b.total - a.total;
       });
-    this.setState({
-      chainList,
-      
-    }, () => {
-      setTimeout(() => {
-        this.setState({
-          chainLoader: false,
-        });
-      }, 500);
-    });
+    this.setState(
+      {
+        chainList,
+      },
+      () => {
+        setTimeout(() => {
+          this.setState({
+            chainLoader: false,
+          });
+        }, 500);
+      }
+    );
 
     // console.log("props asset price", this.props.assetPrice);
     let assetPrice =
@@ -275,9 +274,9 @@ class PieChart2 extends BaseReactComponent {
       });
     } else {
       this.handleReset();
-        this.setState({
-          defiLoader: false,
-        });
+      this.setState({
+        defiLoader: false,
+      });
     }
     if (!UserWallet) {
       //  console.log("null")
@@ -297,17 +296,17 @@ class PieChart2 extends BaseReactComponent {
   componentDidUpdate(prevProps) {
     if (this.props.assetTotal !== prevProps.assetTotal) {
       this.setState({ assetTotal: this.props.assetTotal });
-    // }
-    // if (this.props.userWalletData !== prevProps.userWalletData) {
+      // }
+      // if (this.props.userWalletData !== prevProps.userWalletData) {
       // this.props.userWalletData && this.setState({ piechartisLoading: true })
       // if (this.props.userWalletData?.assetCode == "BTC") {
-       
+
       // }
       // console.log("did update")
       // let btc = this.props?.userWalletData?.filter((e) => e.assetCode === "BTC");
-          
+
       let assetData = [];
- 
+
       if (
         this.props.userWalletData &&
         this.props.userWalletData.length > 0 &&
@@ -315,7 +314,7 @@ class PieChart2 extends BaseReactComponent {
       ) {
         // for temp
         // console.log("asset", btc[0]?.assetValue);
-     
+
         for (let i = 0; i < this.props.userWalletData.length; i++) {
           let z =
             (parseFloat(this.props.userWalletData[i].assetValue) /
@@ -356,7 +355,7 @@ class PieChart2 extends BaseReactComponent {
           });
         }
 
-          // console.log("assetData didupdate", this.state.assetData);
+        // console.log("assetData didupdate", this.state.assetData);
 
         //  console.log("updae");
 
@@ -375,11 +374,10 @@ class PieChart2 extends BaseReactComponent {
       });
     }
 
-      
-// console.log("inside", this.props.chainPortfolio, prevProps.chainPortfolio);
+    // console.log("inside", this.props.chainPortfolio, prevProps.chainPortfolio);
     if (
       this.props.chainPortfolio !== prevProps.chainPortfolio ||
-      this.props.chainPortfolio?.length !== prevProps.chainPortfolio?.length 
+      this.props.chainPortfolio?.length !== prevProps.chainPortfolio?.length
     ) {
       // console.log(
       //   "inside",
@@ -539,12 +537,11 @@ class PieChart2 extends BaseReactComponent {
 
     // stop loader after refresh btn clicked
     if (this.state.isStopLoading) {
-      
       this.props.setLoader(false);
 
       this.setState({
-       isStopLoading:false
-      })
+        isStopLoading: false,
+      });
     }
   }
 
@@ -561,13 +558,13 @@ class PieChart2 extends BaseReactComponent {
           totalPrice: 0,
         });
       } else {
-         [30].map((e) => {
-           DebtValues.push({
-             id: e,
-             name: AssetType.getText(e),
-             totalPrice: 0,
-           });
-         });
+        [30].map((e) => {
+          DebtValues.push({
+            id: e,
+            name: AssetType.getText(e),
+            totalPrice: 0,
+          });
+        });
       }
     });
 
@@ -590,7 +587,7 @@ class PieChart2 extends BaseReactComponent {
 
     NetworkTab({
       session_id: getCurrentUser().id,
-      email_address:getCurrentUser().email
+      email_address: getCurrentUser().email,
     });
   };
 
@@ -599,10 +596,10 @@ class PieChart2 extends BaseReactComponent {
       isYeildToggle: !this.state.isYeildToggle,
       isDebtToggle: false,
     });
-     HomeDefiDebt({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
+    HomeDefiDebt({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   toggleDebt = () => {
@@ -681,7 +678,7 @@ class PieChart2 extends BaseReactComponent {
       session_id: getCurrentUser().id,
     });
     // get the current time
-  this.props.setLoader(true);
+    this.props.setLoader(true);
     let currentTime = new Date().getTime();
 
     // console.log("state", this)
@@ -695,8 +692,8 @@ class PieChart2 extends BaseReactComponent {
     // console.log("Refresh clicked");
     // localStorage.setItem("refreshApiTime", currentTime);
     let userWalletList = JSON.parse(localStorage.getItem("addWallet"));
-  
-         userWalletList?.map((wallet, i) => {
+
+    userWalletList?.map((wallet, i) => {
       if (wallet.coinFound) {
         wallet.coins?.map((coin) => {
           if (coin.chain_detected) {
@@ -704,15 +701,13 @@ class PieChart2 extends BaseReactComponent {
               address: wallet.address,
               coinCode: coin.coinCode,
             };
-            this.props.getUserWallet(userCoinWallet, this, true,i);
+            this.props.getUserWallet(userCoinWallet, this, true, i);
           }
         });
       }
-         })
-    
-      this.props.getExchangeBalances(this, true);
-    
- 
+    });
+
+    this.props.getExchangeBalances(this, true);
 
     //  this.getCurrentTime();
 
@@ -720,7 +715,6 @@ class PieChart2 extends BaseReactComponent {
   };
 
   render() {
- 
     //  console.log("asset price props", this.props.assetPrice);
     let self = this;
     let chartOptions = {
@@ -732,7 +726,6 @@ class PieChart2 extends BaseReactComponent {
         width: 350,
         events: {
           render: function () {
-          
             var series = this.series[0],
               seriesCenter = series.center,
               x = seriesCenter[0] + this.plotLeft,
@@ -813,7 +806,6 @@ class PieChart2 extends BaseReactComponent {
             padding: 12,
             allowOverlap: true,
             formatter: function () {
-              
               return `<span class="f-s-16" style="color:${
                 this.point.borderColor
               }; z-index: 10;">\u25CF &nbsp;</span><p class="inter-display-regular f-s-16" style="fill:#5B5B5B">${
@@ -906,9 +898,9 @@ class PieChart2 extends BaseReactComponent {
               },
               mouseOver: function () {
                 var currentData = this;
-                
+
                 self.setState({
-                  chartUpdate:false,
+                  chartUpdate: false,
                 });
                 this.graphic.attr({
                   fill: this.options.borderColor,
@@ -917,9 +909,7 @@ class PieChart2 extends BaseReactComponent {
                   zIndex: 10,
                 });
                 this.series.data?.map((data, i) => {
-                  
                   if (currentData.assetCode !== data.assetCode) {
-                    
                     data.dataLabel
                       .css({
                         // opacity: 0,
@@ -989,14 +979,14 @@ class PieChart2 extends BaseReactComponent {
         },
       ],
     };
-    
+
     // console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
     let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
     let chainList = [];
     let uniqueAddress = [];
     let uniqueList =
       this.state.selectedSection[0] && this.state.selectedSection[0]?.chain;
-  
+
     uniqueList &&
       uniqueList?.map((chain) => {
         // console.log("chain",chain)
@@ -1006,7 +996,8 @@ class PieChart2 extends BaseReactComponent {
           // console.log("item", item.address, item.protocalName)
           if (
             chain?.address === item.address &&
-            !uniqueAddress.includes(chain?.address) && !chain?.protocalName
+            !uniqueAddress.includes(chain?.address) &&
+            !chain?.protocalName
           ) {
             total += item.assetCount;
           } else {
@@ -1029,7 +1020,8 @@ class PieChart2 extends BaseReactComponent {
               nickname = e?.nickname;
             }
           });
-        !uniqueAddress.includes(chain?.address) && !chain?.protocalName &&
+        !uniqueAddress.includes(chain?.address) &&
+          !chain?.protocalName &&
           chainList.push({
             address: chain?.address,
             assetCount: chain.assetCount,
@@ -1041,7 +1033,7 @@ class PieChart2 extends BaseReactComponent {
             nickname: nickname,
             protocalName: protocalName,
           });
-        
+
         !uniqueAddress.includes(chain?.protocalName) &&
           chain?.protocalName &&
           chainList.push({
@@ -1057,7 +1049,7 @@ class PieChart2 extends BaseReactComponent {
           });
         !uniqueAddress.includes(chain?.address) &&
           uniqueAddress.push(chain?.address);
-        
+
         !uniqueAddress.includes(protocalName) &&
           uniqueAddress.push(protocalName);
       });
@@ -1222,8 +1214,8 @@ class PieChart2 extends BaseReactComponent {
                       >
                         {this.state.chainList &&
                         this.state.chainList?.length <= 1
-                          ? (this.state.chainList?.length + 1) + " Network"
-                          : (this.state.chainList?.length + 1) + " Networks"}
+                          ? this.state.chainList?.length + 1 + " Network"
+                          : this.state.chainList?.length + 1 + " Networks"}
                       </span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -1299,7 +1291,7 @@ class PieChart2 extends BaseReactComponent {
                             style={{
                               width: "2.6rem",
                               height: "2.6rem",
-                              padding:"0.55rem",
+                              padding: "0.55rem",
                               borderRadius: "6px",
                               objectFit: "cover",
                               border: `1px solid ${lightenDarkenColor(

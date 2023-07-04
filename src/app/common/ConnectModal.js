@@ -1,8 +1,14 @@
-import React from 'react'
-import { connect } from 'react-redux';
-import { Modal, Image, Button, Row, Col, Container } from 'react-bootstrap';
-import {Form, FormElement, FormValidator, BaseReactComponent, CustomTextControl} from '../../utils/form'
-import CloseIcon from '../../assets/images/icons/dummyX.svg'
+import React from "react";
+import { connect } from "react-redux";
+import { Modal, Image, Button, Row, Col, Container } from "react-bootstrap";
+import {
+  Form,
+  FormElement,
+  FormValidator,
+  BaseReactComponent,
+  CustomTextControl,
+} from "../../utils/form";
+import CloseIcon from "../../assets/images/icons/dummyX.svg";
 import BinanceIcon from "../../assets/images/icons/Binance.svg";
 import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
 
@@ -19,13 +25,24 @@ import BitfinexIcon from "../../assets/images/icons/Bitfinex.png";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import backIcon from "../../assets/images/icons/Back-icon.svg";
-import Slider from 'react-slick';
-import { addUpdateAccount, getUserAccount } from '../cost/Api';
-import {getExchangeBalance } from "../Portfolio/Api";
-import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from './Api';
+import Slider from "react-slick";
+import { addUpdateAccount, getUserAccount } from "../cost/Api";
+import { getExchangeBalance } from "../Portfolio/Api";
+import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from "./Api";
 import CustomButton from "../../utils/form/CustomButton";
 import WalletIconBtn from "../../assets/images/icons/wallet_icon.svg";
-import { HomeConnectExchangeSelected, Home_CE_ApiSyncAttmepted, Home_CE_OAuthAttempted, LPConnectExchangeSelected, LPC_Go, LP_CE_ApiSyncAttmepted, LP_CE_OAuthAttempted, WalletConnectExchangeSelected, Wallet_CE_ApiSyncAttmepted, Wallet_CE_OAuthAttempted } from "../../utils/AnalyticsFunctions";
+import {
+  HomeConnectExchangeSelected,
+  Home_CE_ApiSyncAttmepted,
+  Home_CE_OAuthAttempted,
+  LPConnectExchangeSelected,
+  LPC_Go,
+  LP_CE_ApiSyncAttmepted,
+  LP_CE_OAuthAttempted,
+  WalletConnectExchangeSelected,
+  Wallet_CE_ApiSyncAttmepted,
+  Wallet_CE_OAuthAttempted,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   getAllCoins,
@@ -438,7 +455,9 @@ class ConnectModal extends BaseReactComponent {
                           STEP 4
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Select API Trading as your <b>Purpose</b>. Enter an <b>API Name</b> like “OKX - Loch” and enter a <b>passphrase</b>
+                          Select API Trading as your <b>Purpose</b>. Enter an{" "}
+                          <b>API Name</b> like “OKX - Loch” and enter a{" "}
+                          <b>passphrase</b>
                         </p>
                       </div>
                     </div>
@@ -460,7 +479,9 @@ class ConnectModal extends BaseReactComponent {
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
                           After completing Two-factor authentication, copy and
-                          paste your <b>API Key</b>, <b>API Secret</b>, and <b>Passphrase</b> into the Loch website and click <b>Connect</b>
+                          paste your <b>API Key</b>, <b>API Secret</b>, and{" "}
+                          <b>Passphrase</b> into the Loch website and click{" "}
+                          <b>Connect</b>
                         </p>
                       </div>
                     </div>
@@ -544,7 +565,8 @@ class ConnectModal extends BaseReactComponent {
                           STEP 6
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          After completing two-factor authentication, click <b>Activate API key</b> and click{" "}
+                          After completing two-factor authentication, click{" "}
+                          <b>Activate API key</b> and click{" "}
                           <b>Activate API Key</b> on the confirmation email
                         </p>
                       </div>
@@ -600,7 +622,8 @@ class ConnectModal extends BaseReactComponent {
                           STEP 3
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Click <b>Create New Key</b> and select <b>System-generated API key</b>
+                          Click <b>Create New Key</b> and select{" "}
+                          <b>System-generated API key</b>
                         </p>
                       </div>
                     </div>
@@ -622,7 +645,8 @@ class ConnectModal extends BaseReactComponent {
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
                           Select API Transaction as your <b>Purpose</b>. Enter
-                          an <b>API Name</b> like “Bybit - Loch” and grant <b>Read-Only</b> API Key permissions
+                          an <b>API Name</b> like “Bybit - Loch” and grant{" "}
+                          <b>Read-Only</b> API Key permissions
                         </p>
                       </div>
                     </div>
@@ -757,7 +781,8 @@ class ConnectModal extends BaseReactComponent {
                           STEP 3
                         </h6>
                         <p className="inter-display-medium f-s-14 lh-16">
-                          Enter <b>Notes</b> like “Huobi - Loch”, select <b>read-only</b>, and click <b>Create</b>
+                          Enter <b>Notes</b> like “Huobi - Loch”, select{" "}
+                          <b>read-only</b>, and click <b>Create</b>
                         </p>
                       </div>
                     </div>
@@ -814,8 +839,6 @@ class ConnectModal extends BaseReactComponent {
     };
   }
 
- 
-
   componentWillUnmount() {
     // set popup active
     localStorage.setItem("isPopupActive", false);
@@ -853,14 +876,16 @@ class ConnectModal extends BaseReactComponent {
         email_address: getCurrentUser().email,
         exchange_name: item.name,
       });
-    } 
+    }
     this.setState(
       {
         selection: item,
       },
       () => {
-        const islochUser = localStorage.getItem("lochUser") || localStorage.getItem("lochDummyUser");
-       if(islochUser){
+        const islochUser =
+          localStorage.getItem("lochUser") ||
+          localStorage.getItem("lochDummyUser");
+        if (islochUser) {
           this.getUrl();
           this.getUserConnectExchange();
         }
@@ -912,7 +937,7 @@ class ConnectModal extends BaseReactComponent {
   componentDidMount() {
     // set popup active
     localStorage.setItem("isPopupActive", true);
-    
+
     if (this.props.ishome) {
       let count = 0;
       this.props?.walletAddress?.map((e) => {
@@ -971,21 +996,18 @@ class ConnectModal extends BaseReactComponent {
     //      this.getUrl();
     //    }
     // }
-     const islochUser = localStorage.getItem("lochDummyUser");
+    const islochUser = localStorage.getItem("lochDummyUser");
     if (!islochUser && this.props.ishome) {
       // console.log("user not found create user then connect exchnage");
       if (
         (this.state.apiKey &&
           this.state.connectionName &&
           this.state.apiSecret) ||
-        (this.state.coinBase)
+        this.state.coinBase
       ) {
         this.onValidSubmit(false);
-      } 
-       
-      
+      }
     } else {
-
       // Auth Attempted
       if (this.props.tracking === "home page") {
         Home_CE_OAuthAttempted({
@@ -1005,41 +1027,40 @@ class ConnectModal extends BaseReactComponent {
           email_address: getCurrentUser().email,
           exchange_name: this.state.selection?.name,
         });
-      } 
-    
+      }
+
       //  console.log("user found connect exchnage");
-       let exchangename = this.state?.selection?.name?.toLowerCase();
-       let cname = this.state?.connectionName;
-       let parentState = this;
+      let exchangename = this.state?.selection?.name?.toLowerCase();
+      let cname = this.state?.connectionName;
+      let parentState = this;
       if (this.state.coinBase && this.state?.selection.isOAuth) {
         //  console.log("auth url", this.state.AuthUrl)
-         var win = window.open(
-           this.state.AuthUrl,
-           "test",
-           "width=600,height=600,left=400,top=100"
-         );
+        var win = window.open(
+          this.state.AuthUrl,
+          "test",
+          "width=600,height=600,left=400,top=100"
+        );
 
-         var timer = setInterval(function () {
-           //  console.log("win", win.location.href, win.location.search);
-           const searchParams = new URLSearchParams(win.location.search);
-           const code = searchParams.get("code");
-          
-           if (code) {
-             // run api
-             let data = new URLSearchParams();
-             data.append("exchange", exchangename);
-             data.append("access_code", code);
-             data.append("account_name", cname);
-             updateAccessToken(
-               data,
-               parentState,
-               parentState.state?.selection?.name
-             );
-             win.close();
-             clearInterval(timer);
+        var timer = setInterval(function () {
+          //  console.log("win", win.location.href, win.location.search);
+          const searchParams = new URLSearchParams(win.location.search);
+          const code = searchParams.get("code");
 
-           }
-         }, 1000);
+          if (code) {
+            // run api
+            let data = new URLSearchParams();
+            data.append("exchange", exchangename);
+            data.append("access_code", code);
+            data.append("account_name", cname);
+            updateAccessToken(
+              data,
+              parentState,
+              parentState.state?.selection?.name
+            );
+            win.close();
+            clearInterval(timer);
+          }
+        }, 1000);
       } else {
         // Api sync attempted
         if (this.props.tracking === "home page") {
@@ -1060,32 +1081,33 @@ class ConnectModal extends BaseReactComponent {
             email_address: getCurrentUser().email,
             exchange_name: this.state.selection?.name,
           });
-        } 
-         if (
-           this.state.apiKey &&
-           this.state.connectionName &&
-           this.state.apiSecret
-         ) {
-             this.setState({
-               isLoadingbtn: true,
-             });
-           let data = new URLSearchParams();
+        }
+        if (
+          this.state.apiKey &&
+          this.state.connectionName &&
+          this.state.apiSecret
+        ) {
+          this.setState({
+            isLoadingbtn: true,
+          });
+          let data = new URLSearchParams();
 
-           data.append("exchange", this.state.selection.name.toLowerCase());
-           data.append("account_name", this.state.connectionName);
-           data.append("api_secret", this.state.apiSecret);
-           data.append("api_key", this.state.apiKey);
+          data.append("exchange", this.state.selection.name.toLowerCase());
+          data.append("account_name", this.state.connectionName);
+          data.append("api_secret", this.state.apiSecret);
+          data.append("api_key", this.state.apiKey);
 
-           if (this.state.selection.name.toLowerCase() === "kucoin" || this.state.selection.name.toLowerCase() === "okx") {
-             data.append("api_passphrase", this.state.api_passphrase);
-           }
+          if (
+            this.state.selection.name.toLowerCase() === "kucoin" ||
+            this.state.selection.name.toLowerCase() === "okx"
+          ) {
+            data.append("api_passphrase", this.state.api_passphrase);
+          }
 
-           addUpdateAccount(data, this);
-         }
-       }
+          addUpdateAccount(data, this);
+        }
+      }
     }
-
-   
   };
 
   showCoinbaseAuthSteps = () => {
@@ -1130,8 +1152,8 @@ class ConnectModal extends BaseReactComponent {
   // call create user
   onValidSubmit = (isConnect) => {
     this.setState({
-      isLoadingbtn: true
-    })
+      isLoadingbtn: true,
+    });
     // console.log("on submit clicked")
     let walletAddress = [];
     let addWallet = this.props?.walletAddress;
@@ -1176,9 +1198,9 @@ class ConnectModal extends BaseReactComponent {
       createAnonymousUserApi(data, this, finalArr, null);
     } else {
       // console.log("create user and connect exhcnage");
-        createAnonymousUserApi(data, this, finalArr, this.handleConnect);
+      createAnonymousUserApi(data, this, finalArr, this.handleConnect);
     }
-    
+
     // console.log(finalArr);
 
     const address = finalArr?.map((e) => e.address);
@@ -1216,14 +1238,12 @@ class ConnectModal extends BaseReactComponent {
   };
 
   handleGo = () => {
-    
     const islochUser = localStorage.getItem("lochDummyUser");
-    if (islochUser) { 
+    if (islochUser) {
       // already login go to ho page
       //  console.log("user found go to home");
-      this.props.history.push("/home")
-    }
-    else {
+      this.props.history.push("/home");
+    } else {
       //  console.log("user not found create user then go to home");
       this.onValidSubmit(true);
     }
@@ -1380,7 +1400,8 @@ class ConnectModal extends BaseReactComponent {
                           )}
                           {(!this.state.coinBase ||
                             !this.state?.selection.isOAuth) &&
-                            (selection.name === "Kucoin" || selection.name === "OKX") && (
+                            (selection.name === "Kucoin" ||
+                              selection.name === "OKX") && (
                               <FormElement
                                 valueLink={this.linkState(
                                   this,
@@ -1429,9 +1450,14 @@ class ConnectModal extends BaseReactComponent {
                         //   Connect
                         // </Button>
                         <CustomButton
-                          className={`primary-btn connect-btn ${(!this.state.coinBase ||
+                          className={`primary-btn connect-btn ${
+                            (!this.state.coinBase ||
                               !this.state?.selection.isOAuth) &&
-                            (selection.name === "Kucoin" || selection.name === "OKX" ) ? "m-t-8" : ""}
+                            (selection.name === "Kucoin" ||
+                              selection.name === "OKX")
+                              ? "m-t-8"
+                              : ""
+                          }
                             `}
                           isLoading={this.state.isLoadingbtn}
                           isDisabled={this.state.isLoadingbtn}
@@ -1578,7 +1604,6 @@ const mapDispatchToProps = {
   getExchangeBalance,
   setPageFlagDefault,
 };
-ConnectModal.propTypes = {
-};
+ConnectModal.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConnectModal);

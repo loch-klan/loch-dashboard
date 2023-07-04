@@ -1,14 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const CustomRadio = props => {
+const CustomRadio = (props) => {
   const {
-    classes, radioId, radioName, valueLink, options, disabled, isInline
+    classes,
+    radioId,
+    radioName,
+    valueLink,
+    options,
+    disabled,
+    isInline,
   } = props;
   return (
     <div className={`radio-wrapper ${isInline ? "inline" : ""}`}>
-      {
-        options &&
+      {options &&
         options.map((option, key) => (
           <div className="radio-control" key={key}>
             <input
@@ -22,7 +27,7 @@ const CustomRadio = props => {
               key={option.key}
               value={option.key}
               checked={valueLink.value.indexOf(option.key) > -1}
-              onChange={e => valueLink.requestChange(e.target.value)}
+              onChange={(e) => valueLink.requestChange(e.target.value)}
               id={radioId}
               name={radioName}
               className={classes.inputField}

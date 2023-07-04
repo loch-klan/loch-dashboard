@@ -1,94 +1,99 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
-import { Home_CE_ApiSyncCompleted, LP_CE_ApiSyncCompleted, Wallet_CE_ApiSyncCompleted } from "../../utils/AnalyticsFunctions";
+import {
+  Home_CE_ApiSyncCompleted,
+  LP_CE_ApiSyncCompleted,
+  Wallet_CE_ApiSyncCompleted,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { AVERAGE_COST_BASIS, AVERAGE_COST_RESET, AVERAGE_COST_SORT, COUNTER_PARTY_VOLUME, GAS_FEES } from "../intelligence/ActionTypes";
-import {getGraphData, getCounterGraphData} from "./getGraphData";
+import {
+  AVERAGE_COST_BASIS,
+  AVERAGE_COST_RESET,
+  AVERAGE_COST_SORT,
+  COUNTER_PARTY_VOLUME,
+  GAS_FEES,
+} from "../intelligence/ActionTypes";
+import { getGraphData, getCounterGraphData } from "./getGraphData";
 
 export const getAllFeeApi = (ctx, startDate, endDate) => {
-
   return async function (dispatch, getState) {
-
-     let data = new URLSearchParams();
-     if (startDate) {
-       data.append("start_datetime", startDate);
-       data.append("end_datetime", endDate);
-     }
-     postLoginInstance
-       .post("wallet/transaction/get-gas-fee-overtime", data)
-       .then((res) => {
-         if (!res.data.error) {
-            dispatch({
-              type: GAS_FEES,
-              payload: {
-                GraphfeeData: res.data.data,
-                graphfeeValue: getGraphData(res.data.data, ctx),
-              },
-            });
-           ctx.setState({
-             barGraphLoading: false,
+    let data = new URLSearchParams();
+    if (startDate) {
+      data.append("start_datetime", startDate);
+      data.append("end_datetime", endDate);
+    }
+    postLoginInstance
+      .post("wallet/transaction/get-gas-fee-overtime", data)
+      .then((res) => {
+        if (!res.data.error) {
+          dispatch({
+            type: GAS_FEES,
+            payload: {
+              GraphfeeData: res.data.data,
+              graphfeeValue: getGraphData(res.data.data, ctx),
+            },
+          });
+          ctx.setState({
+            barGraphLoading: false,
             //  GraphData: res.data.data,
             //  graphValue: getGraphData(res.data.data, ctx),
-             gasFeesGraphLoading: false,
-           });
-         } else {
-           toast.error(res.data.message || "Something Went Wrong");
-         }
-       });
-  }
-  
-}
+            gasFeesGraphLoading: false,
+          });
+        } else {
+          toast.error(res.data.message || "Something Went Wrong");
+        }
+      });
+  };
+};
 export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
-  return async function (dispatch, getState) { 
-      let data = new URLSearchParams();
-      if (startDate) {
-        data.append("start_datetime", startDate);
-        data.append("end_datetime", endDate);
-      }
-      postLoginInstance
-        .post("wallet/transaction/get-counter-party-volume-traded", data)
-        .then((res) => {
-          if (!res.data.error) {
-            //  console.log("calling counter fees");
-            let g_data = res.data.data.counter_party_volume_traded.sort(
-              (a, b) => {
-                return b.total_volume - a.total_volume;
-              }
-            );
-            g_data = g_data.slice(0, 3);
-            // console.log("data", g_data)
-            dispatch({
-              type: COUNTER_PARTY_VOLUME,
-              payload: {
-                counterPartyData: res.data.data.counter_party_volume_traded,
-                counterPartyValue:
-                  ctx.state.currentPage === "Home"
-                    ? getCounterGraphData(g_data, ctx)
-                    : getCounterGraphData(
-                        res.data.data.counter_party_volume_traded,
-                        ctx
-                      ),
-              },
-            });
-            ctx.setState({
-              counterGraphLoading: false,
-              // counterPartyData: res.data.data.counter_party_volume_traded,
-              // counterPartyValue:
-              //   ctx.state.currentPage === "Home"
-              //     ? getCounterGraphData(g_data, ctx)
-              //     : getCounterGraphData(
-              //         res.data.data.counter_party_volume_traded,
-              //         ctx
-              //       ),
-            });
-          } else {
-            toast.error(res.data.message || "Something Went Wrong");
-          }
-        });
-  }
- 
-  
-}
+  return async function (dispatch, getState) {
+    let data = new URLSearchParams();
+    if (startDate) {
+      data.append("start_datetime", startDate);
+      data.append("end_datetime", endDate);
+    }
+    postLoginInstance
+      .post("wallet/transaction/get-counter-party-volume-traded", data)
+      .then((res) => {
+        if (!res.data.error) {
+          //  console.log("calling counter fees");
+          let g_data = res.data.data.counter_party_volume_traded.sort(
+            (a, b) => {
+              return b.total_volume - a.total_volume;
+            }
+          );
+          g_data = g_data.slice(0, 3);
+          // console.log("data", g_data)
+          dispatch({
+            type: COUNTER_PARTY_VOLUME,
+            payload: {
+              counterPartyData: res.data.data.counter_party_volume_traded,
+              counterPartyValue:
+                ctx.state.currentPage === "Home"
+                  ? getCounterGraphData(g_data, ctx)
+                  : getCounterGraphData(
+                      res.data.data.counter_party_volume_traded,
+                      ctx
+                    ),
+            },
+          });
+          ctx.setState({
+            counterGraphLoading: false,
+            // counterPartyData: res.data.data.counter_party_volume_traded,
+            // counterPartyValue:
+            //   ctx.state.currentPage === "Home"
+            //     ? getCounterGraphData(g_data, ctx)
+            //     : getCounterGraphData(
+            //         res.data.data.counter_party_volume_traded,
+            //         ctx
+            //       ),
+          });
+        } else {
+          toast.error(res.data.message || "Something Went Wrong");
+        }
+      });
+  };
+};
 
 // update counterpary value and data
 export const updateCounterParty = (data, value) => {
@@ -101,7 +106,7 @@ export const updateCounterParty = (data, value) => {
       },
     });
   };
-}
+};
 
 // update counterpary value and data
 export const updateFeeGraph = (data, value) => {
@@ -114,11 +119,10 @@ export const updateFeeGraph = (data, value) => {
       },
     });
   };
-}
+};
 
 // add update account - connect exchange
-export const addUpdateAccount = (data,ctx) => {
-
+export const addUpdateAccount = (data, ctx) => {
   postLoginInstance
     .post("organisation/user/add-update-user-account", data)
     .then((res) => {
@@ -175,8 +179,7 @@ export const addUpdateAccount = (data,ctx) => {
 };
 
 // get user account - connect exchange
-export const getUserAccount = (data,ctx) => {
-
+export const getUserAccount = (data, ctx) => {
   postLoginInstance
     .post("organisation/user/get-user-account-by-exchange", data)
     .then((res) => {
@@ -189,24 +192,20 @@ export const getUserAccount = (data,ctx) => {
             apiKey: apiResponse.credentials.api_key,
           });
         }
-        
-       
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
 };
 
-
 export const getAvgCostBasis = (ctx) => {
   return async function (dispatch, getState) {
-
     postLoginInstance
       .post("wallet/user-wallet/get-average-cost-basis")
       .then((res) => {
         if (!res.data.error) {
           let ApiResponse = res?.data.data?.assets;
-             let currency = JSON.parse(localStorage.getItem("currency"));
+          let currency = JSON.parse(localStorage.getItem("currency"));
           // let ApiResponse = [
           //   {
           //     asset: {
@@ -332,20 +331,23 @@ export const getAvgCostBasis = (ctx) => {
           let AssetsList = [];
           let totalCostBasis = 0;
           let totalCurrentValue = 0;
-          ApiResponse?.map(item => {
-            let costBasis = item.count * item.average_price * (currency?.rate || 1);
-            let current_price = 
+          ApiResponse?.map((item) => {
+            let costBasis =
+              item.count * item.average_price * (currency?.rate || 1);
+            let current_price =
               item.count * item.current_price * (currency?.rate || 1);
-            
+
             totalCostBasis = totalCostBasis + costBasis;
             totalCurrentValue = totalCurrentValue + current_price;
             AssetsList.push({
-              chain:item?.chain ? {
-                name: item?.chain?.name,
-                code: item?.chain?.code,
-                color: item?.chain?.color,
-                symbol:item?.chain?.symbol
-              } : null,
+              chain: item?.chain
+                ? {
+                    name: item?.chain?.name,
+                    code: item?.chain?.code,
+                    color: item?.chain?.color,
+                    symbol: item?.chain?.symbol,
+                  }
+                : null,
               Asset: item.asset.symbol,
               AssetCode: item.asset.code,
               AssetName: item.asset.name,
@@ -361,16 +363,20 @@ export const getAvgCostBasis = (ctx) => {
             });
           });
 
-          let totalPercentage = totalCostBasis === 0 ? 0 : (
-            ((totalCurrentValue - totalCostBasis) / totalCostBasis)* 100
-          ).toFixed(2);
+          let totalPercentage =
+            totalCostBasis === 0
+              ? 0
+              : (
+                  ((totalCurrentValue - totalCostBasis) / totalCostBasis) *
+                  100
+                ).toFixed(2);
 
           // console.log("Asset",AssetsList)
           dispatch({
             type: AVERAGE_COST_BASIS,
             payload: {
               Average_cost_basis: AssetsList,
-              totalPercentage: totalPercentage
+              totalPercentage: totalPercentage,
             },
           });
           ctx.setState({
@@ -389,7 +395,7 @@ export const updateAverageCostBasis = (data) => {
   return function (dispatch, getState) {
     dispatch({
       type: AVERAGE_COST_SORT,
-      payload: data
+      payload: data,
     });
   };
 };
@@ -399,7 +405,7 @@ export const updateAverageCostBasis = (data) => {
 export const ResetAverageCostBasis = () => {
   return function (dispatch, getState) {
     dispatch({
-      type: AVERAGE_COST_RESET
+      type: AVERAGE_COST_RESET,
     });
   };
 };

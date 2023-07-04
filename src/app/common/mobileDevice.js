@@ -18,10 +18,13 @@ import { getDetailsByLinkApi } from "../Portfolio/Api";
 import { createAnonymousUserApi, getAllCoins } from "../onboarding/Api";
 import Loading from "./Loading";
 
-import DesktopImg from '../../assets/images/icons/desktop.svg'
+import DesktopImg from "../../assets/images/icons/desktop.svg";
 import LochIcon from "../../assets/images/icons/grey-loch.svg";
 import BackIcon from "../../assets/images/icons/Back-icon.svg";
-import { MobileEmail, MobileEmailPageView } from "../../utils/AnalyticsFunctions";
+import {
+  MobileEmail,
+  MobileEmailPageView,
+} from "../../utils/AnalyticsFunctions";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 
@@ -29,7 +32,7 @@ class MobileDevice extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      email:""
+      email: "",
     };
   }
 
@@ -40,14 +43,12 @@ class MobileDevice extends BaseReactComponent {
   componentWillUnmount() {}
 
   handleSave = () => {
-  
-
     MobileEmail({ email_address: this.state.email });
     toast.success("Email added to our mailing list");
 
     this.setState({
-      email:""
-    })
+      email: "",
+    });
 
     // setTimeout(() => {
     //   this.props.history.push("/welcome");

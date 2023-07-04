@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
@@ -104,12 +103,11 @@ class LPIntelligence extends BaseReactComponent {
   };
 
   Emailadded = () => {
-    
     if (this.state.email) {
       // console.log("email", this.state.email);
-     EmailAddedInt({ email_address: this.state.email });
+      EmailAddedInt({ email_address: this.state.email });
     }
-     TextboxInt();
+    TextboxInt();
   };
 
   render() {

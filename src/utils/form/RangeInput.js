@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const RangeInput = props => {
-  const {
-    classes, rangeId, rangeName, minValue, maxValue, step, valueLink
-  } = props;
+const RangeInput = (props) => {
+  const { classes, rangeId, rangeName, minValue, maxValue, step, valueLink } =
+    props;
   return (
     <input
       style={{
@@ -15,7 +14,7 @@ const RangeInput = props => {
       }}
       type="range"
       value={valueLink.value}
-      onChange={e => valueLink.requestChange(e.target.value)}
+      onChange={(e) => valueLink.requestChange(e.target.value)}
       id={rangeId}
       name={rangeName}
       min={minValue}
@@ -23,7 +22,6 @@ const RangeInput = props => {
       step={step}
       className={classes.inputField}
     />
-
   );
 };
 

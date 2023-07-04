@@ -25,7 +25,6 @@ import { Col, Image, Row } from "react-bootstrap";
 import Loading from "../common/Loading";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import {
-
   CreateWhalePod,
   PageViewWhale,
   TimeSpentWhalePod,
@@ -38,7 +37,11 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
-import { CurrencyType, numToCurrency, UpgradeTriggered } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  numToCurrency,
+  UpgradeTriggered,
+} from "../../utils/ReusableFunctions";
 import Coin from "../../assets/images/coin-ava.svg";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
@@ -94,7 +97,7 @@ class Cohort extends Component {
       search: "",
       sortedItem: [],
       isUpdate: 0,
-      startTime:"",
+      startTime: "",
     };
   }
 
@@ -505,10 +508,7 @@ class Cohort extends Component {
   };
 
   CheckApiResponseWallet = (value) => {
-   
-
     this.props.setPageFlagDefault();
-  
   };
 
   render() {
@@ -590,8 +590,7 @@ class Cohort extends Component {
               history={this.props.history}
               // changeWalletList={this.handleChangeList}
               apiResponse={(e) => {
-                this.CheckApiResponseWallet(e)
-               
+                this.CheckApiResponseWallet(e);
               }}
               from="transaction history"
             />
@@ -749,7 +748,7 @@ const mapDispatchToProps = {
   getAllCoins,
   searchCohort,
   updateCohort,
-  setPageFlagDefault
+  setPageFlagDefault,
 };
 Cohort.propTypes = {
   // getPosts: PropTypes.func

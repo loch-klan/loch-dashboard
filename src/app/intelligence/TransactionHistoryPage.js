@@ -6,17 +6,67 @@ import TransactionTable from "./TransactionTable";
 import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { SEARCH_BY_WALLET_ADDRESS_IN, Method, API_LIMIT, START_INDEX, SEARCH_BY_ASSETS_IN, SEARCH_BY_TEXT, SEARCH_BY_TIMESTAMP_IN, SEARCH_BY_METHOD_IN, SORT_BY_TIMESTAMP, SORT_BY_FROM_WALLET, SORT_BY_TO_WALLET, SORT_BY_ASSET, SORT_BY_AMOUNT, SORT_BY_USD_VALUE_THEN, SORT_BY_TRANSACTION_FEE, SORT_BY_METHOD, DEFAULT_PRICE, SEARCH_BY_NOT_DUST, BASE_URL_S3 } from "../../utils/Constant";
+import {
+  SEARCH_BY_WALLET_ADDRESS_IN,
+  Method,
+  API_LIMIT,
+  START_INDEX,
+  SEARCH_BY_ASSETS_IN,
+  SEARCH_BY_TEXT,
+  SEARCH_BY_TIMESTAMP_IN,
+  SEARCH_BY_METHOD_IN,
+  SORT_BY_TIMESTAMP,
+  SORT_BY_FROM_WALLET,
+  SORT_BY_TO_WALLET,
+  SORT_BY_ASSET,
+  SORT_BY_AMOUNT,
+  SORT_BY_USD_VALUE_THEN,
+  SORT_BY_TRANSACTION_FEE,
+  SORT_BY_METHOD,
+  DEFAULT_PRICE,
+  SEARCH_BY_NOT_DUST,
+  BASE_URL_S3,
+} from "../../utils/Constant";
 import { searchTransactionApi, getFilters } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
-import { FormElement, Form, CustomTextControl, BaseReactComponent } from "../../utils/form";
+import {
+  FormElement,
+  Form,
+  CustomTextControl,
+  BaseReactComponent,
+} from "../../utils/form";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
-import { CurrencyType, noExponents, UpgradeTriggered } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  noExponents,
+  UpgradeTriggered,
+} from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { TimeSpentTransactionHistory, TransactionHistoryAddress, TransactionHistoryAssetFilter, TransactionHistoryHideDust, TransactionHistoryMethodFilter, TransactionHistoryPageBack, TransactionHistoryPageNext, TransactionHistoryPageSearch, TransactionHistoryPageView, TransactionHistorySearch, TransactionHistoryShare, TransactionHistorySortAmount, TransactionHistorySortAsset, TransactionHistorySortDate, TransactionHistorySortFrom, TransactionHistorySortMethod, TransactionHistorySortTo, TransactionHistorySortUSDAmount, TransactionHistorySortUSDFee, TransactionHistoryYearFilter } from "../../utils/AnalyticsFunctions";
+import {
+  TimeSpentTransactionHistory,
+  TransactionHistoryAddress,
+  TransactionHistoryAssetFilter,
+  TransactionHistoryHideDust,
+  TransactionHistoryMethodFilter,
+  TransactionHistoryPageBack,
+  TransactionHistoryPageNext,
+  TransactionHistoryPageSearch,
+  TransactionHistoryPageView,
+  TransactionHistorySearch,
+  TransactionHistoryShare,
+  TransactionHistorySortAmount,
+  TransactionHistorySortAsset,
+  TransactionHistorySortDate,
+  TransactionHistorySortFrom,
+  TransactionHistorySortMethod,
+  TransactionHistorySortTo,
+  TransactionHistorySortUSDAmount,
+  TransactionHistorySortUSDFee,
+  TransactionHistoryYearFilter,
+} from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
@@ -29,8 +79,6 @@ import { getAllCoins } from "../onboarding/Api.js";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-
-
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -199,31 +247,29 @@ class TransactionHistoryPage extends BaseReactComponent {
       prevState.condition !== this.state.condition ||
       prevState.sort !== this.state.sort
     ) {
-
-    // console.log("prev", prevPage, "cur", page);
+      // console.log("prev", prevPage, "cur", page);
       this.callApi(page);
       if (prevPage !== page) {
-         if (prevPage - 1 === page) {
-           TransactionHistoryPageBack({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-             page_no: page + 1,
-           });
-         } else if (prevPage + 1 === page) {
-           TransactionHistoryPageNext({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-             page_no: page + 1,
-           });
-         } else {
-           TransactionHistoryPageSearch({
-             session_id: getCurrentUser().id,
-             email_address: getCurrentUser().email,
-             page_search: page + 1,
-           });
-         }
+        if (prevPage - 1 === page) {
+          TransactionHistoryPageBack({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page_no: page + 1,
+          });
+        } else if (prevPage + 1 === page) {
+          TransactionHistoryPageNext({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page_no: page + 1,
+          });
+        } else {
+          TransactionHistoryPageSearch({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page_search: page + 1,
+          });
+        }
       }
-       
     }
 
     // add wallet
@@ -538,7 +584,7 @@ class TransactionHistoryPage extends BaseReactComponent {
 
     TransactionHistoryShare({
       session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email
+      email_address: getCurrentUser().email,
     });
 
     // console.log("share pod", shareLink);
@@ -1536,7 +1582,7 @@ const mapDispatchToProps = {
   // getCoinRate,
   getAllCoins,
   getFilters,
-  setPageFlagDefault
+  setPageFlagDefault,
 };
 
 TransactionHistoryPage.propTypes = {};

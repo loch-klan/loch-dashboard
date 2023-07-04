@@ -29,14 +29,23 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
-import {getCounterGraphData, getGraphData} from "./getGraphData";
-import { getAllFeeApi, getAllCounterFeeApi, updateCounterParty, updateFeeGraph, getAvgCostBasis, updateAverageCostBasis, ResetAverageCostBasis } from "./Api";
+import { getCounterGraphData, getGraphData } from "./getGraphData";
+import {
+  getAllFeeApi,
+  getAllCounterFeeApi,
+  updateCounterParty,
+  updateFeeGraph,
+  getAvgCostBasis,
+  updateAverageCostBasis,
+  ResetAverageCostBasis,
+} from "./Api";
 import Loading from "../common/Loading";
 import moment from "moment/moment";
-import graphImage from '../../assets/images/gas-fees-graph.png'
+import graphImage from "../../assets/images/gas-fees-graph.png";
 import FeedbackForm from "../common/FeedbackForm";
-import LinkIcon from '../../assets/images/icons/link.svg';
-import ConnectModal from "../common/ConnectModal";import FixAddModal from "../common/FixAddModal";
+import LinkIcon from "../../assets/images/icons/link.svg";
+import ConnectModal from "../common/ConnectModal";
+import FixAddModal from "../common/FixAddModal";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -46,7 +55,6 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-
 
 class Cost extends Component {
   constructor(props) {
@@ -400,10 +408,10 @@ class Cost extends Component {
       this.setState({
         sortBy: sort,
       });
-     CostSortByAmount({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
+      CostSortByAmount({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (e.title === "Cost basis") {
       this.sortArray("CostBasis", isDown);
       this.setState({

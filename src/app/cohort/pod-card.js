@@ -69,13 +69,12 @@ class PodCard extends Component {
 
   componentDidMount() {
     if (!this.props.item.indexed) {
-       this.getPodStatusFunction();
+      this.getPodStatusFunction();
     } else {
       this.setState({
-        isIndexed:true
+        isIndexed: true,
       });
     }
-   
   }
 
   componentWillUnmount() {
@@ -116,7 +115,7 @@ class PodCard extends Component {
           }
         });
       });
-    
+
     // console.log(item)
 
     // let cardType = item.user_id

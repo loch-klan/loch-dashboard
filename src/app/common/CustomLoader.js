@@ -1,11 +1,11 @@
-import React from "react"
-import ContentLoader from "react-content-loader"
+import React from "react";
+import ContentLoader from "react-content-loader";
 
 const CustomLoader = (props) => (
   <ContentLoader
     speed={3}
     width={props.loaderType === "pie" ? 600 : 135}
-    height={props.loaderType === 'pie' ? 600 : 59}
+    height={props.loaderType === "pie" ? 600 : 59}
     // height={props.loaderType === "pie" ? 600 : 40}
     viewBox="0"
     backgroundColor="#e8e8e8"
@@ -23,4 +23,4 @@ const CustomLoader = (props) => (
   </ContentLoader>
 );
 
-export default CustomLoader
+export default CustomLoader;

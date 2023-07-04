@@ -7,7 +7,7 @@ import LineChartSlider from "./LineCharSlider";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import LightBulb from "../../assets/images/icons/lightbulb.svg";
-import ArrowRight from "../../assets/images/icons/arrow-right.svg"
+import ArrowRight from "../../assets/images/icons/arrow-right.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
 
@@ -34,7 +34,12 @@ import {
   searchTransactionApi,
 } from "../intelligence/Api.js";
 
-import { GetDefaultPlan, getDetectedChainsApi, setPageFlagDefault, updateWalletListFlag } from "../common/Api";
+import {
+  GetDefaultPlan,
+  getDetectedChainsApi,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api";
 import {
   SEARCH_BY_WALLET_ADDRESS_IN,
   Method,
@@ -84,17 +89,26 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
-import { getAllCounterFeeApi, getAvgCostBasis, ResetAverageCostBasis, updateAverageCostBasis } from "../cost/Api";
+import {
+  getAllCounterFeeApi,
+  getAvgCostBasis,
+  ResetAverageCostBasis,
+  updateAverageCostBasis,
+} from "../cost/Api";
 import Loading from "../common/Loading";
 import FeedbackForm from "../common/FeedbackForm";
-import { CurrencyType, noExponents, UpgradeTriggered } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  noExponents,
+  UpgradeTriggered,
+} from "../../utils/ReusableFunctions";
 import PieChart2 from "./PieChart2";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
 import { toast } from "react-toastify";
 import { GraphHeader } from "../common/GraphHeader";
 import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH } from "./ActionTypes";
-import InsightImg from "../../assets/images/icons/insight-msg.svg"
+import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import Slider from "react-slick";
 import CoinChip from "../wallet/CoinChip";
 import { getAllWalletApi } from "../wallet/Api";
@@ -304,7 +318,7 @@ class Portfolio extends BaseReactComponent {
         graphLoading: true,
         tableLoading: true,
         AvgCostLoading: true,
-        chainLoader:true,
+        chainLoader: true,
       });
     }
   };
@@ -336,7 +350,7 @@ class Portfolio extends BaseReactComponent {
       graphLoading: true,
       tableLoading: true,
       AvgCostLoading: true,
-      chainLoader:true,
+      chainLoader: true,
     });
     // console.log("load")
   };
@@ -358,7 +372,6 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidMount() {
-    
     this.setState({
       settings: {
         ...this.state.settings,
@@ -374,7 +387,6 @@ class Portfolio extends BaseReactComponent {
     // reset discount modal
     localStorage.setItem("discountEmail", false);
 
- 
     this.state.startTime = new Date() * 1;
 
     // if share link store share id to show upgrade modal
@@ -425,7 +437,7 @@ class Portfolio extends BaseReactComponent {
         graphLoading: true,
         tableLoading: true,
         AvgCostLoading: true,
-        chainLoader:true,
+        chainLoader: true,
       });
 
       // console.log("inside coin rate list");
@@ -470,7 +482,7 @@ class Portfolio extends BaseReactComponent {
         // connect exchange api
         // this.props.getExchangeBalance("binance", this);
         // this.props.getExchangeBalance("coinbase", this);
-        this.props.getExchangeBalances(this,false);
+        this.props.getExchangeBalances(this, false);
 
         if (!isFound) {
           this.setState({
@@ -519,8 +531,6 @@ class Portfolio extends BaseReactComponent {
       // add loader
       this.props.getProfitAndLossApi(this, false, false, false);
 
-     
-
       // run when updatedInsightList === ""
       this.props.getAllInsightsApi(this);
 
@@ -531,9 +541,7 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllParentChains();
         getDetectedChainsApi(this);
       }, 1000);
-       
-     
-      
+
       GetAllPlan();
       getUser(this);
 
@@ -626,18 +634,18 @@ class Portfolio extends BaseReactComponent {
         //  console.log("portfolio before", this.props);
         // console.log("path",redirectPath)
         localStorage.setItem("gotShareProtfolio", true);
-        
-         let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
-         //  console.log("redirect", redirect);
-         if (!redirect && redirectPath) {
-           localStorage.setItem(
-             "ShareRedirect",
-             JSON.stringify({
-               path: redirectPath,
-               hash: this.props?.location?.hash,
-             })
-           );
-         }
+
+        let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
+        //  console.log("redirect", redirect);
+        if (!redirect && redirectPath) {
+          localStorage.setItem(
+            "ShareRedirect",
+            JSON.stringify({
+              path: redirectPath,
+              hash: this.props?.location?.hash,
+            })
+          );
+        }
         this.props.history.push({
           pathname: "/",
           state: {
@@ -647,7 +655,7 @@ class Portfolio extends BaseReactComponent {
             params: {
               id: this.props.match.params.id,
               redirectPath: redirectPath,
-              hash: this.props?.location?.hash
+              hash: this.props?.location?.hash,
             },
           },
         });
@@ -671,10 +679,8 @@ class Portfolio extends BaseReactComponent {
               "/" + this.props?.location?.state?.redirectPath
             );
           }
-            
         }
       }
-       
     } else {
       // run all api
 
@@ -852,7 +858,7 @@ class Portfolio extends BaseReactComponent {
 
     AddMoreAddres({
       email_address: getCurrentUser().email,
-      session_id: getCurrentUser().id
+      session_id: getCurrentUser().id,
     });
   };
 
@@ -904,14 +910,13 @@ class Portfolio extends BaseReactComponent {
       });
       HomeCostSortByAsset({
         session_id: getCurrentUser().id,
-        email_address:getCurrentUser().email
+        email_address: getCurrentUser().email,
       });
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
         sortBy: sort,
       });
-      
     } else if (e.title === "Current price") {
       this.sortArray("CurrentPrice", isDown);
       this.setState({
@@ -927,28 +932,28 @@ class Portfolio extends BaseReactComponent {
       this.setState({
         sortBy: sort,
       });
-       HomeSortByCostBasis({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-       });
+      HomeSortByCostBasis({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (e.title === "Current value") {
       this.sortArray("CurrentValue", isDown);
       this.setState({
         sortBy: sort,
       });
-       HomeSortByCurrentValue({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-       });
+      HomeSortByCurrentValue({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     } else if (e.title === "Gain loss") {
       this.sortArray("GainLoss", isDown);
       this.setState({
         sortBy: sort,
       });
-       HomeSortByGainLoss({
-         session_id: getCurrentUser().id,
-         email_address: getCurrentUser().email,
-       });
+      HomeSortByGainLoss({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
     }
   };
   render() {
@@ -1549,7 +1554,7 @@ class Portfolio extends BaseReactComponent {
     ];
 
     // Cost basis
-let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
+    let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
     const CostBasisColumnData = [
       {
         labelName: (
@@ -1586,17 +1591,17 @@ let tableDataCostBasis = this.props.intelligenceState.Average_cost_basis;
                 text={rowData.AssetCode}
               >
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                  <div style={{ position: "relative", width:"fit-content" }}>
+                  <div style={{ position: "relative", width: "fit-content" }}>
                     <Image
                       src={rowData.Asset}
                       className="history-table-icon"
-                      style={{width:"2rem", height:"2rem"}}
+                      style={{ width: "2rem", height: "2rem" }}
                       onMouseEnter={() => {
-                          HomeCostAssetHover({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            asset_hover: rowData.AssetCode,
-                          }); 
+                        HomeCostAssetHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          asset_hover: rowData.AssetCode,
+                        });
                       }}
                     />
                     {rowData.chain && (

@@ -1,7 +1,16 @@
-import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
-import arrowUpRight from '../../assets/images/icons/arrowUpRight.svg'
-import arrowDownRight from '../../assets/images/icons/arrow-down-right.svg'
-import { netflowInflowHover, netflowNetHover, netflowOutflowHover, ProfitLossHover } from "../../utils/AnalyticsFunctions";
+import {
+  CurrencyType,
+  noExponents,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
+import arrowUpRight from "../../assets/images/icons/arrowUpRight.svg";
+import arrowDownRight from "../../assets/images/icons/arrow-down-right.svg";
+import {
+  netflowInflowHover,
+  netflowNetHover,
+  netflowOutflowHover,
+  ProfitLossHover,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { useHistory } from "react-router-dom";
 import GraphLogo from "../../assets/images/graph-logo.svg";
@@ -159,7 +168,10 @@ export const getProfitAndLossData = (arr, parentctx) => {
       image: GraphLogoImage,
 
       x: 0,
-      y: parentctx.props.history.location.pathname.substring(1) === "home" ? 41:22,
+      y:
+        parentctx.props.history.location.pathname.substring(1) === "home"
+          ? 41
+          : 22,
 
       width: 104,
       height: 39,

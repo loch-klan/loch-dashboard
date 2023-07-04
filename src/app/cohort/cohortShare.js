@@ -61,8 +61,8 @@ class CohortSharePage extends Component {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
-        total_addresses: 0,
-      pageName:"share"
+      total_addresses: 0,
+      pageName: "share",
     };
   }
 
@@ -97,18 +97,15 @@ class CohortSharePage extends Component {
     data.append("sorts", JSON.stringify([]));
     this.props.searchCohort(data, this);
     // console.log(data);
-// console.log("tetghn")
-     
-     
-  
+    // console.log("tetghn")
   };
 
   handleCohort = () => {
     // console.log("cohort click");
-  //  console.log(
-  //    this.props.cohortState?.total_addresses,
-  //    this.state.userPlan.wallet_address_limit
-  //  );
+    //  console.log(
+    //    this.props.cohortState?.total_addresses,
+    //    this.state.userPlan.wallet_address_limit
+    //  );
     const cohortCards = this.props.cohortState.cardList?.filter(
       (e) => e.user_id
     );
@@ -118,7 +115,7 @@ class CohortSharePage extends Component {
         this.state.userPlan.wallet_address_limit &&
       this.state.userPlan.wallet_address_limit !== -1
     ) {
-        // console.log("address pass")
+      // console.log("address pass")
       this.setState(
         {
           triggerId: 1,
@@ -132,11 +129,11 @@ class CohortSharePage extends Component {
         cohortCards?.length < this.state.userPlan?.whale_pod_limit ||
         this.state.userPlan?.whale_pod_limit === -1
       ) {
-            // console.log("pod pass");
-          const dataCopy = new URLSearchParams();
-          dataCopy.append("slug", this.props.match.params.podName);
-          dataCopy.append("user_id", this.props.match.params.userId);
-          CopyCohort(dataCopy, this);
+        // console.log("pod pass");
+        const dataCopy = new URLSearchParams();
+        dataCopy.append("slug", this.props.match.params.podName);
+        dataCopy.append("user_id", this.props.match.params.userId);
+        CopyCohort(dataCopy, this);
 
         // CreateWhalePod({
         //   session_id: getCurrentUser().id,
@@ -219,7 +216,6 @@ const mapDispatchToProps = {
 };
 CohortSharePage.propTypes = {
   // getPosts: PropTypes.func
-  
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CohortSharePage);

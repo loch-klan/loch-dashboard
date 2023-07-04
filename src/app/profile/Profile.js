@@ -495,7 +495,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
-setPageFlagDefault
+  setPageFlagDefault,
 };
 Profile.propTypes = {
   // getPosts: PropTypes.func

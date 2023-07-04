@@ -1,30 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Switch } from "react-router-dom";
 // import './App.css';
 import routes from "./routes";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from 'react-toastify';
-import MobileDevice from './app/common/mobileDevice';
+import { ToastContainer } from "react-toastify";
+import MobileDevice from "./app/common/mobileDevice";
 
 function App() {
-    const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-    useEffect(() => {
-      const mediaQuery = window.matchMedia("(max-width: 480px)");
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 480px)");
+    setIsMobile(mediaQuery.matches);
+
+    function handleResize() {
       setIsMobile(mediaQuery.matches);
+    }
 
-      function handleResize() {
-        setIsMobile(mediaQuery.matches);
-      }
+    window.addEventListener("resize", handleResize);
 
-      window.addEventListener("resize", handleResize);
-
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }, []);
-
-
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return isMobile ? (
     <MobileDevice />

@@ -1,9 +1,9 @@
-import React from 'react'
-import {Row,Col} from 'react-bootstrap'
+import React from "react";
+import { Row, Col } from "react-bootstrap";
 export const BarGraphFooter = (props) => {
-
-   
-  const timeSeries = props.footerLabels ? props.footerLabels : ["All time", "5 Years", "1 Year", "6 Months", "1 Month", "1 Week"]
+  const timeSeries = props.footerLabels
+    ? props.footerLabels
+    : ["All time", "5 Years", "1 Year", "6 Months", "1 Month", "1 Week"];
 
   const timeBadge = timeSeries?.map((badge, index) => {
     // console.log(props.active, index);
@@ -29,12 +29,12 @@ export const BarGraphFooter = (props) => {
         {badge}
       </div>
     );
-  })
+  });
 
   return (
     <div
       className={`bar-graph-footer ${props.lineChart ? "linechartFooter" : ""}`}
-      style={props.cohort ? {marginBottom:"0px"}:{}}
+      style={props.cohort ? { marginBottom: "0px" } : {}}
     >
       {/* <Row>
         {timeBadge}
@@ -44,4 +44,4 @@ export const BarGraphFooter = (props) => {
       </div>
     </div>
   );
-}
+};

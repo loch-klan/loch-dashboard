@@ -21,7 +21,11 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment/moment";
-import { getAssetProfitLoss, getProfitAndLossApi, getTransactionAsset } from "./Api";
+import {
+  getAssetProfitLoss,
+  getProfitAndLossApi,
+  getTransactionAsset,
+} from "./Api";
 import Loading from "../common/Loading";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
@@ -146,14 +150,13 @@ class Intelligence extends Component {
       );
     }
 
-
-      const search = this.props.location.search;
-      const params = new URLSearchParams(search);
-      const addAddress = params.get("add-address");
-      if (addAddress) {
-        this.handleAddModal();
-        this.props.history.replace("/intelligence#netflow");
-      }
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const addAddress = params.get("add-address");
+    if (addAddress) {
+      this.handleAddModal();
+      this.props.history.replace("/intelligence#netflow");
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -183,24 +186,22 @@ class Intelligence extends Component {
       this.props.getAllInsightsApi(this);
     }
 
-    
     if (
-     
       this.props?.location?.pathname + this.props?.location?.hash ===
-        "/intelligence#netflow"
+      "/intelligence#netflow"
     ) {
-     if (this.props.location.hash !== "") {
-       setTimeout(() => {
-         const id = this.props.location.hash.replace("#", "");
-         // console.log('id',id);
-         const element = document.getElementById(id);
-         if (element) {
-           element.scrollIntoView();
-         }
-       }, 0);
-     } else {
-       window.scrollTo(0, 0);
-     }
+      if (this.props.location.hash !== "") {
+        setTimeout(() => {
+          const id = this.props.location.hash.replace("#", "");
+          // console.log('id',id);
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView();
+          }
+        }, 0);
+      } else {
+        window.scrollTo(0, 0);
+      }
     }
   }
   componentWillUnmount() {
@@ -215,7 +216,6 @@ class Intelligence extends Component {
     });
 
     //  this.timeFilter(0);
-   
   }
 
   assetList = () => {
@@ -556,7 +556,6 @@ class Intelligence extends Component {
   };
 
   handleAssetSelected = (arr) => {
-
     this.setState(
       {
         selectedAssets: arr[0].name === "All" ? [] : arr.map((e) => e?.id),
@@ -587,7 +586,7 @@ class Intelligence extends Component {
 
     IntShare({
       session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email
+      email_address: getCurrentUser().email,
     });
     // console.log("share pod", shareLink);
   };

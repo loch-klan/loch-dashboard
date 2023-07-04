@@ -15,10 +15,17 @@ import {
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import netWorthIcon from "../../assets/images/icons/net-worth.svg";
-import sortByIcon from '../../assets/images/icons/triangle-down.svg'
+import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { Image } from "react-bootstrap";
 import Loading from "../common/Loading";
-import { FilterBasedAssest, SortByAmount, SortByDate, SortByName, TimeSpentWallet, WalletsPage } from "../../utils/AnalyticsFunctions";
+import {
+  FilterBasedAssest,
+  SortByAmount,
+  SortByDate,
+  SortByName,
+  TimeSpentWallet,
+  WalletsPage,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import FeedbackForm from "../common/FeedbackForm";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
@@ -47,7 +54,7 @@ class Wallet extends Component {
       ],
       startTime: "",
       totalWalletAmt: 0,
-      conditions:[],
+      conditions: [],
     };
     // this.sortby = [{title:"Amount",down:true}, {title:"Date added",down:true},{title:"Name", down:true}];
   }
@@ -79,7 +86,6 @@ class Wallet extends Component {
   }
 
   makeApiCall = (cond = this.state.conditions) => {
-    
     let data = new URLSearchParams();
     data.append("start", this.state.start);
     data.append("conditions", JSON.stringify(cond ? cond : []));
@@ -152,7 +158,7 @@ class Wallet extends Component {
     // this.makeApiCall()
   };
   handleFunction = (badge) => {
-     this.setState({ isLoading: true });
+    this.setState({ isLoading: true });
     let newArr = [...this.state.activeBadge];
     if (this.state.activeBadge.some((e) => e.name === badge.name)) {
       let index = newArr.findIndex((x) => x.name === badge.name);
@@ -203,8 +209,8 @@ class Wallet extends Component {
         condition = [];
       }
       this.setState({
-        conditions:condition
-      })
+        conditions: condition,
+      });
       this.makeApiCall(condition);
     } else if (prevState.sorts !== this.state.sorts) {
       this.makeApiCall();
@@ -222,14 +228,14 @@ class Wallet extends Component {
 
   handleUpdateWallet = () => {
     // console.log("YES API")
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true });
     this.makeApiCall();
     this.props.setPageFlagDefault();
   };
 
   render() {
-    const { walletList,totalWalletAmt } = this.props.walletState;
-    const {currency, isLoading} = this.state;
+    const { walletList, totalWalletAmt } = this.props.walletState;
+    const { currency, isLoading } = this.state;
     return (
       <div className="wallet-page-section">
         {/* <Sidebar ownerName="" /> */}

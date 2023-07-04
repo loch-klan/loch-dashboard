@@ -1,21 +1,22 @@
 import { toast } from "react-toastify";
-import postLoginInstance from './../../utils/PostLoginAxios';
+import postLoginInstance from "./../../utils/PostLoginAxios";
 import { signInUser } from "../../utils/AnalyticsFunctions";
-export const updateUser = (data,ctx) =>{
-    postLoginInstance.post("organisation/user/update-user",data)
-    .then((res)=>{
-      if(!res.data.error){
+export const updateUser = (data, ctx) => {
+  postLoginInstance
+    .post("organisation/user/update-user", data)
+    .then((res) => {
+      if (!res.data.error) {
         // console.log(data)
-        let obj =  JSON.parse(localStorage.getItem("lochUser"))
+        let obj = JSON.parse(localStorage.getItem("lochUser"));
         obj = {
-            ...obj,
-            first_name  : ctx.state.firstName,
-            last_name : ctx.state.lastName,
-            email : ctx.state.email,
-            mobile:ctx.state.mobileNumber,
-            link: ctx.state.link,
-        }
-        localStorage.setItem("lochUser",JSON.stringify(obj))
+          ...obj,
+          first_name: ctx.state.firstName,
+          last_name: ctx.state.lastName,
+          email: ctx.state.email,
+          mobile: ctx.state.mobileNumber,
+          link: ctx.state.link,
+        };
+        localStorage.setItem("lochUser", JSON.stringify(obj));
         // toast.success("Profile Successfully Updated");
         // console.log("ctx",ctx)
         if (ctx.props.modalType === "create_account") {
@@ -33,10 +34,10 @@ export const updateUser = (data,ctx) =>{
             );
             signInUser({
               email_address: ctx.state.email,
-              track:"Email added after metamask connect"
+              track: "Email added after metamask connect",
             });
             ctx.state.onHide(true);
-            
+
             setTimeout(() => {
               window.location.reload();
             }, 500);
@@ -58,18 +59,15 @@ export const updateUser = (data,ctx) =>{
               </div>
             );
           }
-          
         }
-       
-      } else{
+      } else {
         toast.error(res.data.message || "Something went wrong");
       }
     })
-    .catch((err)=>{
-      console.log("fixwallet",err)
-    })
-  }
-
+    .catch((err) => {
+      console.log("fixwallet", err);
+    });
+};
 
 export const ManageLink = (ctx) => {
   postLoginInstance
@@ -78,7 +76,7 @@ export const ManageLink = (ctx) => {
       if (!res.data.error) {
         ctx.setState({
           manageUrl: res.data?.data?.url,
-        })
+        });
       }
       // console.log(data)
     })
@@ -86,5 +84,3 @@ export const ManageLink = (ctx) => {
       console.log("fixwallet", err);
     });
 };
-
-

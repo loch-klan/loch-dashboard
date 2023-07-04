@@ -7,7 +7,7 @@ class FormSubmitButtonComponent extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      inProgress: false
+      inProgress: false,
     };
   }
 
@@ -23,13 +23,19 @@ class FormSubmitButtonComponent extends BaseReactComponent {
     this.props.formContext.unRegisterSubmitButton(this);
   }
 
-  updateInProgress = inProgress => {
+  updateInProgress = (inProgress) => {
     this.setState({ inProgress });
   };
 
   render() {
-    const { progressMessage, children, formError = false, customClass = '', name = "" } = this.props;
-    const inProgress = (this.state.inProgress && formError);
+    const {
+      progressMessage,
+      children,
+      formError = false,
+      customClass = "",
+      name = "",
+    } = this.props;
+    const inProgress = this.state.inProgress && formError;
     return (
       <Button
         variant="raised"

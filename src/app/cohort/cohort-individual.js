@@ -20,7 +20,13 @@ import {
   UpdateCohortNickname,
 } from "./Api";
 import { getAllCoins } from "../onboarding/Api.js";
-import { AmountType, BASE_URL_S3, DormantType, InsightType, PodType } from "../../utils/Constant";
+import {
+  AmountType,
+  BASE_URL_S3,
+  DormantType,
+  InsightType,
+  PodType,
+} from "../../utils/Constant";
 import Loading from "../common/Loading";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
@@ -168,7 +174,7 @@ class CohortPage extends BaseReactComponent {
       totalYield: 0,
       totalDebt: 0,
       DebtValues: [],
-      DefiLoader:false,
+      DefiLoader: false,
     };
   }
 
@@ -181,7 +187,7 @@ class CohortPage extends BaseReactComponent {
     WhaleExpandDefiCredit({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
-      pod_name: this.state.cohortName
+      pod_name: this.state.cohortName,
     });
   };
 
@@ -190,11 +196,11 @@ class CohortPage extends BaseReactComponent {
       isDebtToggle: !this.state.isDebtToggle,
       // isYeildToggle: false,
     });
-     WhaleExpandDefiDebt({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-       pod_name: this.state.cohortName,
-     });
+    WhaleExpandDefiDebt({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+    });
   };
 
   showDust = () => {
@@ -230,7 +236,6 @@ class CohortPage extends BaseReactComponent {
           activeBadgeList: [],
         },
         () => {
-           
           this.getAssetData(this.state.activeFooter);
         }
       );
@@ -246,28 +251,29 @@ class CohortPage extends BaseReactComponent {
       );
     }
 
-     WhaleExpandChainFilter({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-       pod_name: this.state.cohortName,
-       selected:
-         badge[0]?.name === "All" ? "All chains" : badge?.map((e) => e?.name),
-     });
+    WhaleExpandChainFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+      selected:
+        badge[0]?.name === "All" ? "All chains" : badge?.map((e) => e?.name),
+    });
   };
 
   handleAsset = (arr) => {
     // console.log("arr",arr)
     this.setState(
       {
-        activeAsset: arr[0]?.name === "All" ? [] : arr?.map(e => e?.id),
+        activeAsset: arr[0]?.name === "All" ? [] : arr?.map((e) => e?.id),
       },
       () => {
-          WhaleExpandAssetFilter({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            pod_name: this.state.cohortName,
-            selected: arr[0]?.name === "All" ? "All assets" : arr?.map((e) => e?.name),
-          });
+        WhaleExpandAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          pod_name: this.state.cohortName,
+          selected:
+            arr[0]?.name === "All" ? "All assets" : arr?.map((e) => e?.name),
+        });
         this.getAssetData(this.state.activeFooter);
       }
     );
@@ -335,25 +341,24 @@ class CohortPage extends BaseReactComponent {
 
   handleCohort = () => {
     // console.log("cohort click");
-    this.setState({
-      cohortModal: !this.state.cohortModal,
-    }, () => {
-      if (this.state.cohortModal) {
-         WhaleExpandEdit({
-           session_id: getCurrentUser().id,
-           email_address: getCurrentUser().email,
-           pod_name: this.state.cohortName,
-         });
+    this.setState(
+      {
+        cohortModal: !this.state.cohortModal,
+      },
+      () => {
+        if (this.state.cohortModal) {
+          WhaleExpandEdit({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            pod_name: this.state.cohortName,
+          });
+        }
       }
-    });
-   
+    );
   };
   componentDidMount() {
-
     // console.log("test")
     this.state.startTime = new Date() * 1;
-    
-
 
     this.getCohortDetail();
     this.getAssetData(0);
@@ -380,11 +385,11 @@ class CohortPage extends BaseReactComponent {
       );
     }
     setTimeout(() => {
-        PageViewWhaleExpanded({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          pod_name: this.state?.cohortName,
-        });
+      PageViewWhaleExpanded({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        pod_name: this.state?.cohortName,
+      });
     }, 1000);
   }
 
@@ -640,7 +645,7 @@ class CohortPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       pod_name: this.state.cohortName,
-      address: address
+      address: address,
     });
   };
 
@@ -734,13 +739,12 @@ class CohortPage extends BaseReactComponent {
     data.append("address", address);
     DeleteCohortAddress(data, this);
 
-
-     WhaleExpandAddressDelete({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-       pod_name: this.state.cohortName,
-       address: address,
-     });
+    WhaleExpandAddressDelete({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state.cohortName,
+      address: address,
+    });
   };
 
   handleShare = () => {

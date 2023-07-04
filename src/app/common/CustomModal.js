@@ -1,20 +1,23 @@
-import React from 'react';
+import React from "react";
 import { Image, Modal } from "react-bootstrap";
-import closeIcon from '../../assets/images/icons/close-icon.svg';
+import closeIcon from "../../assets/images/icons/close-icon.svg";
 
 const CustomModal = ({ show, onHide, title, children, modalClass = null }) => {
   return (
-    <Modal show={show} onHide={onHide} dialogClassName={`custom-modal ${modalClass}`}>
-      {
-        title &&
+    <Modal
+      show={show}
+      onHide={onHide}
+      dialogClassName={`custom-modal ${modalClass}`}
+    >
+      {title && (
         <Modal.Header>
-          <Modal.Title className='inter-display-bold f-s-20'>{title}</Modal.Title>
-          <Image src={closeIcon} className='close-icon' onClick={onHide} />
+          <Modal.Title className="inter-display-bold f-s-20">
+            {title}
+          </Modal.Title>
+          <Image src={closeIcon} className="close-icon" onClick={onHide} />
         </Modal.Header>
-      }
-      <Modal.Body>
-        {children}
-      </Modal.Body>
+      )}
+      <Modal.Body>{children}</Modal.Body>
     </Modal>
   );
 };

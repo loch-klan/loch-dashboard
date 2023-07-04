@@ -9,7 +9,13 @@ import { Image } from "react-bootstrap";
 import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import graphImage from "../../assets/images/volume-traded-graph.png";
 import LineChartSlider from "../Portfolio/LineCharSlider";
-import { GroupByOptions, GROUP_BY_DATE, GROUP_BY_MONTH, GROUP_BY_YEAR, BASE_URL_S3 } from "../../utils/Constant";
+import {
+  GroupByOptions,
+  GROUP_BY_DATE,
+  GROUP_BY_MONTH,
+  GROUP_BY_YEAR,
+  BASE_URL_S3,
+} from "../../utils/Constant";
 import {
   getAssetGraphDataApi,
   getCoinRate,
@@ -17,19 +23,25 @@ import {
 } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
-import { AssetValuePage, AssetValueShare, TimeSpentAssetValue } from "../../utils/AnalyticsFunctions";
+import {
+  AssetValuePage,
+  AssetValueShare,
+  TimeSpentAssetValue,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
 
-
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
-import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH, ASSET_VALUE_GRAPH_YEAR } from "../Portfolio/ActionTypes";
+import {
+  ASSET_VALUE_GRAPH_DAY,
+  ASSET_VALUE_GRAPH_MONTH,
+  ASSET_VALUE_GRAPH_YEAR,
+} from "../Portfolio/ActionTypes";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-
 
 class AssetValueGraph extends Component {
   constructor(props) {
@@ -75,13 +87,13 @@ class AssetValueGraph extends Component {
       tab: "day",
     });
 
-      const search = this.props.location.search;
-      const params = new URLSearchParams(search);
-      const addAddress = params.get("add-address");
-      if (addAddress) {
-        this.handleAddModal();
-        this.props.history.replace("/intelligence/asset-value");
-      }
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const addAddress = params.get("add-address");
+    if (addAddress) {
+      this.handleAddModal();
+      this.props.history.replace("/intelligence/asset-value");
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
@@ -244,7 +256,7 @@ class AssetValueGraph extends Component {
 
     AssetValueShare({
       session_id: getCurrentUser().id,
-      email_address:getCurrentUser().email
+      email_address: getCurrentUser().email,
     });
 
     // console.log("share pod", shareLink);

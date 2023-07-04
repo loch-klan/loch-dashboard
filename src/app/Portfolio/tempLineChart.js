@@ -350,7 +350,7 @@ class LineChartSlider extends BaseReactComponent {
                   e_address.substr(e_address.length - 3, e_address.length) +
                   '"';
               }
-              
+
               selectedEvents.push({
                 usd: e_usd,
                 assetValue: e_assetValue,

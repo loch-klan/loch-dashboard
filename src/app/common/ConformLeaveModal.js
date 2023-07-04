@@ -1,8 +1,8 @@
-import React from 'react'
-import BaseReactComponent from './../../utils/form/BaseReactComponent';
-import { connect } from 'react-redux';
-import { Modal, Image, Button } from 'react-bootstrap';
-import { resetUser } from '../../utils/AnalyticsFunctions';
+import React from "react";
+import BaseReactComponent from "./../../utils/form/BaseReactComponent";
+import { connect } from "react-redux";
+import { Modal, Image, Button } from "react-bootstrap";
+import { resetUser } from "../../utils/AnalyticsFunctions";
 
 class ConfirmLeaveModal extends BaseReactComponent {
   constructor(props) {
@@ -16,7 +16,6 @@ class ConfirmLeaveModal extends BaseReactComponent {
   componentDidMount() {
     // set popup active
     localStorage.setItem("isPopupActive", true);
-    
   }
 
   componentWillUnmount() {
@@ -61,10 +60,7 @@ class ConfirmLeaveModal extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
-});
-const mapDispatchToProps = {
-}
-
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmLeaveModal);

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { AppFeaturesCreateUser, getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import {
+  AppFeaturesCreateUser,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding/Api.js";
 import Loading from "../common/Loading";
 
 import { GetAllPlan, GetDefaultPlan, getUser } from "../common/Api";
@@ -52,33 +56,27 @@ class AppFeature extends Component {
     AppFeaturesCreateUser(data, this, this.handleRedirection);
   };
 
-    handleRedirection = () => {
-      if (this.state.PageName === "whale-watch") {
-          
-        this.props.history.push("/whale-watch?create-pod=true");
-        
-        } else if (this.state.PageName === "average-cost-basis") {
-          // console.log("average-cost-basis");
-          
-          this.props.history.push("/intelligence/costs?add-address=true");
-        } else if (this.state.PageName === "netflow") {
-          // console.log("netflows");
-              this.props.history.push({
-                pathname: "/intelligence",
-                hash:"netflow",
-                search: "?add-address=true",
-              });
-        } else if (this.state.PageName === "insights") {
-          // console.log("insights");
-              this.props.history.push(
-                "/intelligence/insights?add-address=true"
-              );
-        } else if (this.state.PageName === "asset-value-chart") {
-          // console.log("asset-value-chart");
-              this.props.history.push(
-                "/intelligence/asset-value?add-address=true"
-              );
-        }
+  handleRedirection = () => {
+    if (this.state.PageName === "whale-watch") {
+      this.props.history.push("/whale-watch?create-pod=true");
+    } else if (this.state.PageName === "average-cost-basis") {
+      // console.log("average-cost-basis");
+
+      this.props.history.push("/intelligence/costs?add-address=true");
+    } else if (this.state.PageName === "netflow") {
+      // console.log("netflows");
+      this.props.history.push({
+        pathname: "/intelligence",
+        hash: "netflow",
+        search: "?add-address=true",
+      });
+    } else if (this.state.PageName === "insights") {
+      // console.log("insights");
+      this.props.history.push("/intelligence/insights?add-address=true");
+    } else if (this.state.PageName === "asset-value-chart") {
+      // console.log("asset-value-chart");
+      this.props.history.push("/intelligence/asset-value?add-address=true");
+    }
   };
 
   componentWillUnmount() {}

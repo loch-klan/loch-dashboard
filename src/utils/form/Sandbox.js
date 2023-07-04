@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
-import { Col, Container, Row } from 'react-bootstrap';
-import ReactDOM from 'react-dom';
+import { Col, Container, Row } from "react-bootstrap";
+import ReactDOM from "react-dom";
 import BaseReactComponent from "./BaseReactComponent";
 import CustomButton from "./CustomButton";
 import CustomTextControl from "./CustomTextControl";
@@ -11,10 +11,9 @@ import FormValidator from "./FormValidator";
 import RangeInput from "./RangeInput";
 import SelectControl from "./SelectControl";
 import CustomRadio from "./CustomRadio";
-import FileUploadControl from './FileUploadControl';
+import FileUploadControl from "./FileUploadControl";
 import CustomCheckbox from "./CustomCheckbox";
 import CustomTable from "../commonComponent/CustomTable";
-
 
 class Sandbox extends BaseReactComponent {
   constructor(props) {
@@ -29,17 +28,17 @@ class Sandbox extends BaseReactComponent {
       address: "",
       lastName: "",
       gender: "",
-      searchableSingleRegion: '',
+      searchableSingleRegion: "",
       searchableMultipleRegion: "",
       regionOptions: [
         { value: 1, label: "Goa" },
         { value: 2, label: "Maha" },
         { value: 3, label: "Delhi" },
-        { value: 4, label: "Goa highway" }
+        { value: 4, label: "Goa highway" },
       ],
       attachment: {
         name: "filename.jpg",
-        url: "https://image.shutterstock.com/image-photo/mountains-during-sunset-beautiful-natural-260nw-407021107.jpg"
+        url: "https://image.shutterstock.com/image-photo/mountains-during-sunset-beautiful-natural-260nw-407021107.jpg",
       },
       attachments: [],
       checkboxList: [
@@ -54,7 +53,7 @@ class Sandbox extends BaseReactComponent {
           label: "Retail Venue",
           // isDefault: false,
           // isChecked: false,
-        }
+        },
       ],
       dummyData: [
         {
@@ -91,8 +90,8 @@ class Sandbox extends BaseReactComponent {
   };
 
   handlePageSize = (pageSize) => {
-    console.log('Heyyy pageSize', pageSize);
-  }
+    console.log("Heyyy pageSize", pageSize);
+  };
 
   /* onSubmit = (event) => {
     // console.log('hey', event);
@@ -106,20 +105,20 @@ class Sandbox extends BaseReactComponent {
 
   componentDidMount() {
     this.props.history.replace({
-      search: `?p=${this.state.page}`
-    })
+      search: `?p=${this.state.page}`,
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     // console.log('Hey');
     const prevParams = new URLSearchParams(prevProps.location.search);
-    const prevPage = parseInt(prevParams.get('p'), 10) || 1;
+    const prevPage = parseInt(prevParams.get("p"), 10) || 1;
 
     const params = new URLSearchParams(this.props.location.search);
-    const page = parseInt(params.get('p'), 10) || 1;
+    const page = parseInt(params.get("p"), 10) || 1;
 
     if (prevPage !== page) {
-      this.setState({ page })
+      this.setState({ page });
     }
   }
 
@@ -128,7 +127,7 @@ class Sandbox extends BaseReactComponent {
     const { dummyData } = this.state;
     return (
       <Fragment>
-        <Form onValidSubmit={this.onValidSubmit} ref={el => this.form = el}>
+        <Form onValidSubmit={this.onValidSubmit} ref={(el) => (this.form = el)}>
           <Container>
             <Row className="show-grid">
               <Col md={6}>
@@ -141,16 +140,16 @@ class Sandbox extends BaseReactComponent {
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "Field cannot be empty"
-                    }
+                      message: "Field cannot be empty",
+                    },
                   ]}
                   control={{
                     type: CustomTextControl,
                     settings: {
                       placeholder: "Enter First Name",
                       prefix: "Mr/Ms",
-                      suffix: "is here!"
-                    }
+                      suffix: "is here!",
+                    },
                   }}
                 />
               </Col>
@@ -164,8 +163,8 @@ class Sandbox extends BaseReactComponent {
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "Field cannot be empty"
-                    }
+                      message: "Field cannot be empty",
+                    },
                   ]}
                   control={{
                     type: CustomTextControl,
@@ -179,11 +178,11 @@ class Sandbox extends BaseReactComponent {
                       // classes: "custom-text"
                       // readOnly: true,
                       // disabled: true,
-                    }
+                    },
                   }}
                   classes={{
                     inputField: "custom-input",
-                    label: "custom-label"
+                    label: "custom-label",
                   }}
                 />
               </Col>
@@ -197,17 +196,16 @@ class Sandbox extends BaseReactComponent {
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "Field cannot be empty"
-                    }
+                      message: "Field cannot be empty",
+                    },
                   ]}
-
                   control={{
                     type: CustomTextControl,
                     settings: {
                       placeholder: "Enter Last Name",
                       // prefix: "Mr/Ms",
                       // suffix: "is here!"
-                    }
+                    },
                   }}
                 />
               </Col>
@@ -221,10 +219,9 @@ class Sandbox extends BaseReactComponent {
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "Field cannot be empty"
-                    }
+                      message: "Field cannot be empty",
+                    },
                   ]}
-
                   control={{
                     type: RangeInput,
                     settings: {
@@ -232,7 +229,7 @@ class Sandbox extends BaseReactComponent {
                       maxValue: 100,
                       rangeId: "ratingRange",
                       rangeName: "ratingRange",
-                    }
+                    },
                   }}
                 />
               </Col>
@@ -244,13 +241,13 @@ class Sandbox extends BaseReactComponent {
                   helpText=""
                   hint={{
                     title: "Title Custom",
-                    description: <span> Custom Hint Bro! </span>
+                    description: <span> Custom Hint Bro! </span>,
                   }}
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "Field cannot be empty"
-                    }
+                      message: "Field cannot be empty",
+                    },
                   ]}
                   control={{
                     type: SelectControl,
@@ -261,8 +258,8 @@ class Sandbox extends BaseReactComponent {
                       onChangeCallback: (onBlur) => {
                         onBlur(this.state.searchableSingleRegion);
                         // console.log('Hello world!');
-                      }
-                    }
+                      },
+                    },
                   }}
                 />
               </Col>
@@ -274,13 +271,13 @@ class Sandbox extends BaseReactComponent {
                   helpText=""
                   hint={{
                     title: "Title Custom",
-                    description: <span> Custom Hint Bro! </span>
+                    description: <span> Custom Hint Bro! </span>,
                   }}
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "Field cannot be empty"
-                    }
+                      message: "Field cannot be empty",
+                    },
                   ]}
                   control={{
                     type: SelectControl,
@@ -293,8 +290,8 @@ class Sandbox extends BaseReactComponent {
                       onChangeCallback: (onBlur) => {
                         onBlur(this.state.searchableMultipleRegion);
                         // console.log('Hello world!');
-                      }
-                    }
+                      },
+                    },
                   }}
                 />
               </Col>
@@ -308,8 +305,8 @@ class Sandbox extends BaseReactComponent {
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "Field cannot be empty"
-                    }
+                      message: "Field cannot be empty",
+                    },
                   ]}
                   control={{
                     type: CustomRadio,
@@ -319,15 +316,15 @@ class Sandbox extends BaseReactComponent {
                       options: [
                         {
                           key: "1",
-                          label: "On Premise Venue"
+                          label: "On Premise Venue",
                         },
                         {
                           key: "2",
-                          label: "Retail Venue"
-                        }
+                          label: "Retail Venue",
+                        },
                       ],
                       isInline: true,
-                    }
+                    },
                   }}
                 />
               </Col>
@@ -341,8 +338,8 @@ class Sandbox extends BaseReactComponent {
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "Field cannot be empty"
-                    }
+                      message: "Field cannot be empty",
+                    },
                   ]}
                   control={{
                     type: CustomCheckbox,
@@ -351,12 +348,11 @@ class Sandbox extends BaseReactComponent {
                       radioName: "hobby",
                       options: this.state.checkboxList,
                       // isInline: true,
-                    }
+                    },
                   }}
                 />
               </Col>
               <Col md={6}>
-
                 <FormElement
                   valueLink={this.linkState(this, "attachment")}
                   label="Upload Image"
@@ -364,8 +360,8 @@ class Sandbox extends BaseReactComponent {
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "File is required"
-                    }
+                      message: "File is required",
+                    },
                   ]}
                   control={{
                     type: FileUploadControl,
@@ -383,11 +379,11 @@ class Sandbox extends BaseReactComponent {
                           name: file.name,
                           size: file.size,
                           mimeType: file.type,
-                          path: "single.jpg"
+                          path: "single.jpg",
                         };
                         callback(fileInfo, "http://35.154.155.206/api");
-                      }
-                    }
+                      },
+                    },
                   }}
                 />
               </Col>
@@ -399,8 +395,8 @@ class Sandbox extends BaseReactComponent {
                   validations={[
                     {
                       validate: FormValidator.isRequired,
-                      message: "File is required"
-                    }
+                      message: "File is required",
+                    },
                   ]}
                   control={{
                     type: FileUploadControl,
@@ -418,18 +414,33 @@ class Sandbox extends BaseReactComponent {
                           name: file.name,
                           size: file.size,
                           mimeType: file.type,
-                          path: "multi" + (this.state.attachments.length + 1) + ".jpg"
+                          path:
+                            "multi" +
+                            (this.state.attachments.length + 1) +
+                            ".jpg",
                         };
                         callback(fileInfo, "http://35.154.155.206/api");
-                      }
-                    }
+                      },
+                    },
                   }}
                 />
               </Col>
 
               <Col md={12}>
-                <CustomButton type={"submit"} handleClick={() => { this.setValue("now") }} variant="success" buttonText="Now" />
-                <CustomButton handleClick={() => { this.setValue("later") }} buttonText="Later" />
+                <CustomButton
+                  type={"submit"}
+                  handleClick={() => {
+                    this.setValue("now");
+                  }}
+                  variant="success"
+                  buttonText="Now"
+                />
+                <CustomButton
+                  handleClick={() => {
+                    this.setValue("later");
+                  }}
+                  buttonText="Later"
+                />
               </Col>
             </Row>
           </Container>
@@ -448,9 +459,9 @@ class Sandbox extends BaseReactComponent {
                     isCell: true,
                     cell: (rowData, dataKey) => {
                       if (dataKey === "firstName") {
-                        return rowData.firstName
+                        return rowData.firstName;
                       }
-                    }
+                    },
                   },
                   {
                     coumnWidth: 250,
@@ -460,10 +471,10 @@ class Sandbox extends BaseReactComponent {
                     isCell: true,
                     cell: (rowData, dataKey) => {
                       if (dataKey === "lastName") {
-                        return rowData.lastName
+                        return rowData.lastName;
                       }
-                    }
-                  }
+                    },
+                  },
                 ]}
                 message="No data found"
                 // For Pagination
@@ -480,7 +491,6 @@ class Sandbox extends BaseReactComponent {
                 ]}
                 handlePageSize={this.handlePageSize}
               />
-
             </Col>
           </Row>
         </Container>
@@ -490,7 +500,7 @@ class Sandbox extends BaseReactComponent {
 }
 
 Sandbox.propTypes = {
-  classes: PropTypes.object
+  classes: PropTypes.object,
 };
 
 export default Sandbox;
