@@ -1,7 +1,7 @@
-import React from "react"
+import React from "react";
 
 const Switch = (props) => {
-  let handleBtn = props.handleBtn === false ? false : true
+  let handleBtn = props.handleBtn === false ? false : true;
   return (
     <div className="switch-wrapper">
       {handleBtn && (
@@ -20,6 +20,6 @@ const Switch = (props) => {
         {props.checked ? "Active" : "Inactive"}
       </span>
     </div>
-  )
-}
-export default Switch
+  );
+};
+export default Switch;

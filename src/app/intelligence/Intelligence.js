@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import IntelWelcomeCard from "./IntelWelcomeCard";
 import PageHeader from "../common/PageHeader";
@@ -16,19 +15,23 @@ import {
   netflowChainFilter,
   netflowExplainer1,
   netflowExplainer2,
+  NetflowSwitch,
   netflowTimeFilter,
   TimeSpentIntelligence,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment/moment";
-import { getAssetProfitLoss, getProfitAndLossApi, getTransactionAsset } from "./Api";
+import {
+  getAssetProfitLoss,
+  getProfitAndLossApi,
+  getTransactionAsset,
+} from "./Api";
 import Loading from "../common/Loading";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import { getAllInsightsApi } from "./Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
-import FeedbackForm from "../common/FeedbackForm";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import NetflowImg from "../../assets/images/icons/netflow.svg";
 import NetflowClose from "../../assets/images/icons/netflow-close.svg";
@@ -42,7 +45,6 @@ import {
 } from "../Portfolio/Api";
 
 import FixAddModal from "../common/FixAddModal";
-import { info } from "./stackGrapgh";
 import { GetAllPlan, getUser } from "../common/Api";
 import { UpgradeTriggered } from "../../utils/ReusableFunctions";
 import UpgradeModal from "../common/upgradeModal";
@@ -89,9 +91,18 @@ class Intelligence extends Component {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
+      netFlowLoading: false,
+      isGraphLoading: true,
+      isChainSearchUsed: false,
+      isAssetSearchUsed: false,
     };
   }
-
+  chainSearchIsUsed = () => {
+    this.setState({ isChainSearchUsed: true });
+  };
+  assetSearchIsUsed = () => {
+    this.setState({ isAssetSearchUsed: true });
+  };
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
@@ -103,14 +114,32 @@ class Intelligence extends Component {
     this.setState({
       isSwitch: !this.state.isSwitch,
     });
-    // console.log("switch")
+
+    NetflowSwitch({
+      email_address: getCurrentUser().email,
+      session_id: getCurrentUser().id,
+    });
+    this.updateTimer();
+  };
+
+  startPageView = () => {
+    this.setState({
+      startTime: new Date() * 1,
+    });
+    IntelligencePage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // Inactivity Check
+    window.checkIntelligenceTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
   };
 
   componentDidMount() {
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
-        // console.log('id',id);
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView();
@@ -119,15 +148,9 @@ class Intelligence extends Component {
     } else {
       window.scrollTo(0, 0);
     }
-    this.state.startTime = new Date() * 1;
-    // console.log("page Enter", this.state.startTime);
-    IntelligencePage({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    this.startPageView();
     this.props.getAllCoins();
-    this.timeFilter(0);
-    // this.props.getAllInsightsApi(this);
+    this.timeFilter(0, true);
     GetAllPlan();
     getUser();
     this.assetList();
@@ -146,22 +169,27 @@ class Intelligence extends Component {
       );
     }
 
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const addAddress = params.get("add-address");
+    if (addAddress) {
+      this.handleAddModal();
+      this.props.history.replace("/intelligence#netflow");
+    }
 
-      const search = this.props.location.search;
-      const params = new URLSearchParams(search);
-      const addAddress = params.get("add-address");
-      if (addAddress) {
-        this.handleAddModal();
-        this.props.history.replace("/intelligence#netflow");
-      }
+    this.updateTimer(true);
+
+    return () => {
+      clearInterval(window.checkIntelligenceTimer);
+    };
   }
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
-
+    if (prevProps.intelligenceState !== this.props.intelligenceState) {
+      this.setState({ isGraphLoading: false });
+    }
     if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
-
       // this.props.getAllCoins();
       // this.timeFilter(0);
       // this.props.getAllInsightsApi(this);
@@ -183,39 +211,60 @@ class Intelligence extends Component {
       this.props.getAllInsightsApi(this);
     }
 
-    
     if (
-     
       this.props?.location?.pathname + this.props?.location?.hash ===
-        "/intelligence#netflow"
+        "/intelligence#netflow" ||
+      this.props?.location?.pathname + this.props?.location?.hash ===
+        "/top-accounts/intelligence#netflow"
     ) {
-     if (this.props.location.hash !== "") {
-       setTimeout(() => {
-         const id = this.props.location.hash.replace("#", "");
-         // console.log('id',id);
-         const element = document.getElementById(id);
-         if (element) {
-           element.scrollIntoView();
-         }
-       }, 0);
-     } else {
-       window.scrollTo(0, 0);
-     }
+      if (this.props.location.hash !== "") {
+        setTimeout(() => {
+          const id = this.props.location.hash.replace("#", "");
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView();
+          }
+        }, 0);
+      } else {
+        window.scrollTo(0, 0);
+      }
+      setTimeout(() => {
+        this.props.history.replace("/intelligence");
+      }, 1000);
     }
   }
-  componentWillUnmount() {
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "intelligencePageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkIntelligenceTimer);
+    localStorage.removeItem("intelligencePageExpiryTime");
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime);
-    // console.log("Time Spent", TimeSpent);
     TimeSpentIntelligence({
       time_spent: TimeSpent,
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-
-    //  this.timeFilter(0);
-   
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("intelligencePageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("intelligencePageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   assetList = () => {
@@ -223,8 +272,7 @@ class Intelligence extends Component {
     // data.append("end_datetime", endDate);
     getTransactionAsset(data, this);
   };
-  timeFilter = (option) => {
-    // console.log("time filter", option)
+  timeFilter = (option, first) => {
     let selectedChains = [];
     // if(activeBadgeList){
     //   this.props.OnboardingState.coinsList.map((item)=>{
@@ -234,7 +282,11 @@ class Intelligence extends Component {
     //   })
     // }
     let handleSelected = "All";
-    this.setState({ graphValue: "" });
+    this.setState({
+      graphValue: "",
+      netFlowLoading: true,
+      isGraphLoading: true,
+    });
     const today = moment().unix();
     if (option == 0) {
       this.props.getProfitAndLossApi(
@@ -254,7 +306,6 @@ class Intelligence extends Component {
       );
       handleSelected = "All";
     } else if (option == 1) {
-      // console.log("inside 1")
       const fiveyear = moment().subtract(5, "years").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -409,21 +460,24 @@ class Intelligence extends Component {
         this.state.selectedAssets
       );
     }
-    netflowTimeFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      selected: handleSelected,
-    });
+    if (!first) {
+      netflowTimeFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        selected: handleSelected,
+      });
+      this.updateTimer();
+    }
     this.setState({
       title: option,
     });
   };
 
   handleBadge = (activeBadgeList, activeFooter = this.state.title) => {
-    // console.log("handle badge", activeBadgeList, activeFooter);
-
     this.setState({
       selectedActiveBadge: activeBadgeList,
+      netFlowLoading: true,
+      isGraphLoading: true,
     });
     let startDate = moment().unix();
     let endDate;
@@ -491,11 +545,15 @@ class Intelligence extends Component {
       );
     }
 
+    const tempIsSearchUsed = this.state.isChainSearchUsed;
     netflowChainFilter({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       selected: selectedChains,
+      isSearchUsed: tempIsSearchUsed,
     });
+    this.updateTimer();
+    this.setState({ isChainSearchUsed: false });
   };
 
   handleSelect = (opt) => {
@@ -528,7 +586,6 @@ class Intelligence extends Component {
     this.setState({
       apiResponse: value,
     });
-    // console.log("api respinse", value);
     // wallet updated set all falg to default
     // this.props.updateWalletListFlag("home", false);
     this.props.setPageFlagDefault();
@@ -542,6 +599,7 @@ class Intelligence extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
   };
 
   LeftClose = () => {
@@ -553,20 +611,23 @@ class Intelligence extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
   };
 
   handleAssetSelected = (arr) => {
-
     this.setState(
       {
         selectedAssets: arr[0].name === "All" ? [] : arr.map((e) => e?.id),
       },
       () => {
+        const tempIsSearchUsed = this.state.isAssetSearchUsed;
         netflowAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           selected: arr[0] === "All" ? "All assets" : arr.map((e) => e?.name),
+          isSearchUsed: tempIsSearchUsed,
         });
+        this.setState({ isAssetSearchUsed: false });
         this.handleBadge(this.state.selectedActiveBadge, this.state.title);
       }
     );
@@ -587,9 +648,9 @@ class Intelligence extends Component {
 
     IntShare({
       session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email
+      email_address: getCurrentUser().email,
     });
-    // console.log("share pod", shareLink);
+    this.updateTimer();
   };
 
   render() {
@@ -608,6 +669,7 @@ class Intelligence extends Component {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                updateTimer={this.updateTimer}
               />
             </div>
           </div>
@@ -623,6 +685,7 @@ class Intelligence extends Component {
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="intelligence"
+                updateTimer={this.updateTimer}
               />
             )}
             <PageHeader
@@ -632,6 +695,7 @@ class Intelligence extends Component {
               // handleBtn={this.handleAddModal}
               ShareBtn={true}
               handleShare={this.handleShare}
+              updateTimer={this.updateTimer}
             />
 
             <IntelWelcomeCard history={this.props.history} />
@@ -648,6 +712,7 @@ class Intelligence extends Component {
                     email_address: getCurrentUser().email,
                   });
                 }}
+                updateTimer={this.updateTimer}
               />
               <div style={{ position: "relative" }}>
                 <div className="insights-wrapper">
@@ -660,7 +725,6 @@ class Intelligence extends Component {
                     this.props.intelligenceState.updatedInsightList
                       ?.slice(0, 2)
                       .map((insight, key) => {
-                        // console.log("insignt", insight);
                         return (
                           <div className="insights-card" key={key}>
                             <Image
@@ -713,7 +777,7 @@ class Intelligence extends Component {
               </div>
             </div>
             <div className="portfolio-bar-graph" id="netflow">
-              <PageHeader title="Net Flows" showImg={eyeIcon} />
+              <PageHeader title="Net flows" showImg={eyeIcon} />
               {/* Netflow Info Start */}
 
               <Row
@@ -859,6 +923,12 @@ class Intelligence extends Component {
                     }
                     handleAssetSelected={this.handleAssetSelected}
                     getObj={true}
+                    isGraphLoading={this.state.isGraphLoading}
+                    chainSearchIsUsed={this.chainSearchIsUsed}
+                    assetSearchIsUsed={this.assetSearchIsUsed}
+                    // hiding loader for now
+                    // isLoading={this.state.netFlowLoading}
+                    // loaderHeight={57.8}
 
                     // comingSoon={true}
                   />
@@ -896,6 +966,7 @@ class Intelligence extends Component {
               changeWalletList={this.handleChangeList}
               apiResponse={(e) => this.CheckApiResponse(e)}
               from="intelligence"
+              updateTimer={this.updateTimer}
             />
           )}
         </div>

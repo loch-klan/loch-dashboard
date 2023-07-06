@@ -3,13 +3,27 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import Select from "react-select";
 
-const SelectControl = props => {
+const SelectControl = (props) => {
   // console.log('props', props);
   const {
-    onBlur, valueLink, options, multiple, searchable, placeholder, closeMenuOnSelect, menuIsOpen,
-    noOptionCustom = () => noOptionAction ? <div className="btn black-btn" onClick={noOptionAction}>Add New Customer</div> : <div>No Options</div>,
+    onBlur,
+    valueLink,
+    options,
+    multiple,
+    searchable,
+    placeholder,
+    closeMenuOnSelect,
+    menuIsOpen,
+    noOptionCustom = () =>
+      noOptionAction ? (
+        <div className="btn black-btn" onClick={noOptionAction}>
+          Add New Customer
+        </div>
+      ) : (
+        <div>No Options</div>
+      ),
     noOptionAction = null,
-    onChangeCallback = () => { },
+    onChangeCallback = () => {},
     disabled = false,
     failedValidation,
   } = props;
@@ -18,15 +32,15 @@ const SelectControl = props => {
   const stateValue = valueLink.value;
   let valueOption = "";
   if (multiple && stateValue.length > 0) {
-    valueOption = stateValue.map(value => optionsDict[value]);
+    valueOption = stateValue.map((value) => optionsDict[value]);
   }
   if (!multiple && stateValue) {
     valueOption = optionsDict[stateValue];
   }
 
-  const onChangeInternal = selectedOption => {
+  const onChangeInternal = (selectedOption) => {
     if (multiple) {
-      valueLink.requestChange(selectedOption.map(option => option.value));
+      valueLink.requestChange(selectedOption.map((option) => option.value));
       // onBlur(stateValue);
       // ON BLUR METHOD IS REMOVED AND INSTED PASSED AS CALLBACK METHOD.
       onChangeCallback(onBlur);
@@ -56,7 +70,9 @@ const SelectControl = props => {
       placeholder={placeholder}
       noOptionsMessage={noOptionCustom}
       classNamePrefix={`custom-select`}
-      className={`${failedValidation && failedValidation.message ? "has-error" : ""}`}
+      className={`${
+        failedValidation && failedValidation.message ? "has-error" : ""
+      }`}
     />
   );
 };
@@ -67,12 +83,12 @@ SelectControl.propTypes = {
   valueLink: PropTypes.object.isRequired,
   options: PropTypes.array.isRequired,
   multiple: PropTypes.bool,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
 };
 
 SelectControl.defaultProps = {
   multiple: false,
-  placeholder: 'Select Values'
+  placeholder: "Select Values",
 };
 
 export default SelectControl;

@@ -30,7 +30,11 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
 import Loading from "../common/Loading";
-import { CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  noExponents,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import { Image } from "react-bootstrap";
 import CalenderIcon from "../../assets/images/calendar.svg";
 import DoubleArrow from "../../assets/images/double-arrow.svg";
@@ -58,9 +62,16 @@ class LineChartSlider extends BaseReactComponent {
       steps: this.props.hideTimeFilter ? 6 : 1,
       plotLineHide: 0,
       rangeSelected: 1,
+      isTokenSearchUsed: false,
+      isChainSearchUsed: false,
     };
   }
-
+  chainSearchIsUsed = () => {
+    this.setState({ isChainSearchUsed: true });
+  };
+  tokenSearchIsUsed = () => {
+    this.setState({ isTokenSearchUsed: true });
+  };
   componentDidUpdate(prevProps) {
     if (prevProps.isUpdate !== this.props.isUpdate) {
       // console.log("Something update");
@@ -77,76 +88,105 @@ class LineChartSlider extends BaseReactComponent {
     // console.log("badge", badge)
 
     if (badge?.[0].name === "All") {
-        this.setState({
-          activeBadge: [{ name: "All", id: "" }],
-          activeBadgeList: [],
-          selectedEvents: [],
-          legends: [],
-        });
-      } else {
-        this.setState({
-          activeBadge: badge,
-          activeBadgeList: badge?.map((item) => item.id),
-          legends: [],
-          selectedEvents: [],
-        });
-      }
-    
+      this.setState({
+        activeBadge: [{ name: "All", id: "" }],
+        activeBadgeList: [],
+        selectedEvents: [],
+        legends: [],
+      });
+    } else {
+      this.setState({
+        activeBadge: badge,
+        activeBadgeList: badge?.map((item) => item.id),
+        legends: [],
+        selectedEvents: [],
+      });
+    }
+    const tempIsSearchUsed = this.state.isChainSearchUsed;
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
     this.props.isPage
       ? IntlAssetValueFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           filter_clicked: badge?.map((item) => item?.name),
+          isSearchUsed: tempIsSearchUsed,
         })
       : AssetValueFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           filter_clicked: badge?.map((item) => item?.name),
+          isSearchUsed: tempIsSearchUsed,
         });
+
+    this.setState({ isChainSearchUsed: false });
   };
   handleSelect = (opt) => {
     // console.log("opt", opt.target.id);
     //  let t = opt.split(" ")[1];
-    let t = "Day"
+    let t = "Day";
     if (opt.target.id == 0) {
       t = "Year";
       IntlAssetValueYear({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else if (opt.target.id == 1) {
       t = "Month";
       IntlAssetValueMonth({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else if (opt.target.id == 2) {
       t = "Day";
       IntlAssetValueDay({
         session_id: getCurrentUser().id,
-        email_address:getCurrentUser().email
+        email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else {
-       t = "Day";
+      t = "Day";
     }
-      this.setState({
-        title: t,
-        selectedEvents: [],
-        steps: this.props.hideTimeFilter ? 6 : 1,
-        rangeSelected: 1,
-      });
+    this.setState({
+      title: t,
+      selectedEvents: [],
+      steps: this.props.hideTimeFilter ? 6 : 1,
+      rangeSelected: 1,
+    });
     this.props.handleGroupBy(t);
   };
 
   DropdownData = (arr) => {
     // console.log("dropdown arr", arr);
-    this.setState({ legends: arr[0]?.name === "All" ? [] : arr?.map(e => e?.id), selectedEvents: [] }, () => {
-      IntlAssetValueAssetFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        filter_clicked: arr[0]?.name === "All" ? [] : arr?.map((e) => e?.name),
-      });
-    });
+    this.setState(
+      {
+        legends: arr[0]?.name === "All" ? [] : arr?.map((e) => e?.id),
+        selectedEvents: [],
+      },
+      () => {
+        const tempIsSearchUsed = this.state.isTokenSearchUsed;
+        IntlAssetValueAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          filter_clicked:
+            arr[0]?.name === "All" ? [] : arr?.map((e) => e?.name),
+          isSearchUsed: tempIsSearchUsed,
+        });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
+        this.setState({ isTokenSearchUsed: false });
+      }
+    );
   };
 
   copyContent = (text) => {
@@ -178,7 +218,6 @@ class LineChartSlider extends BaseReactComponent {
         : this.state.title === "Month"
         ? moment().format("MMMM YYYY")
         : moment().format("DD/MM/YYYY");
-   
 
     assetValueData &&
       assetValueData?.map((assetData) => {
@@ -199,7 +238,6 @@ class LineChartSlider extends BaseReactComponent {
           }
 
           assetData.assets?.map((data) => {
-            
             let dataCount =
               this.state.title === "Year" &&
               moment(assetData.timestamp).format("YYYY") === currentDate
@@ -208,36 +246,36 @@ class LineChartSlider extends BaseReactComponent {
                   moment(assetData.timestamp).format("MMMM YYYY") ===
                     currentDate
                 ? data.count
-                  : data.max_count;
-            
-        //     if (
-        //       (this.state.title === "Year" &&
-        //         moment(assetData.timestamp).format("YYYY") === currentDate) ||
-        //       (this.state.title === "Month" &&
-        //         moment(assetData.timestamp).format("MMMM YYYY") ===
-        //           currentDate) ||
-        //       (this.state.title === "Day" &&
-        //         moment(assetData.timestamp).format("DD/MM/YYYY") ===
-        //           currentDate)
-        //     ) {
-        //       console.log(
-        //         "data count api",
-        //         data.count,
-        //         "data max count",
-        //         data.max_count,
-        //         "data count",
-        //         dataCount,
-        //         "current date",
-        //         currentDate,
-        //         "date",
-        //         this.state.title === "Year"
-        //           ? moment(assetData.timestamp).format("YYYY")
-        //           :this.state.title === "Month"
-        // ? moment().format("MMMM YYYY")
-        // : moment().format("DD/MM/YYYY")
-        //       );
-        //     }
-           
+                : data.max_count;
+
+            //     if (
+            //       (this.state.title === "Year" &&
+            //         moment(assetData.timestamp).format("YYYY") === currentDate) ||
+            //       (this.state.title === "Month" &&
+            //         moment(assetData.timestamp).format("MMMM YYYY") ===
+            //           currentDate) ||
+            //       (this.state.title === "Day" &&
+            //         moment(assetData.timestamp).format("DD/MM/YYYY") ===
+            //           currentDate)
+            //     ) {
+            //       console.log(
+            //         "data count api",
+            //         data.count,
+            //         "data max count",
+            //         data.max_count,
+            //         "data count",
+            //         dataCount,
+            //         "current date",
+            //         currentDate,
+            //         "date",
+            //         this.state.title === "Year"
+            //           ? moment(assetData.timestamp).format("YYYY")
+            //           :this.state.title === "Month"
+            // ? moment().format("MMMM YYYY")
+            // : moment().format("DD/MM/YYYY")
+            //       );
+            //     }
+
             if (data.asset.id in assetMaster) {
               if (assetData.timestamp in assetMaster[data.asset.id]) {
                 assetMaster[data.asset.id][assetData.timestamp] =
@@ -316,7 +354,7 @@ class LineChartSlider extends BaseReactComponent {
     }
 
     // console.log("assetmaster", assetMaster);
-  
+
     for (const [key, value] of Object.entries(assetMaster)) {
       // seriesData.push({
       //   name: value.assetDetails.name,
@@ -352,7 +390,6 @@ class LineChartSlider extends BaseReactComponent {
         // lastValue: Math.max(...graphData),
       });
     }
-
 
     let yaxis_max = 0;
     let max = 0;
@@ -502,7 +539,8 @@ class LineChartSlider extends BaseReactComponent {
             // selectedEvents.push(item);
             item.event?.map((a) => {
               let e_usd =
-                a.asset.value * (a.asset_price * (this.state.currency?.rate || 1));
+                a.asset.value *
+                (a.asset_price * (this.state.currency?.rate || 1));
               let e_text = "";
               let e_assetValue = a.asset.value;
               let e_assetCode = a.asset.code;
@@ -552,14 +590,16 @@ class LineChartSlider extends BaseReactComponent {
             });
           }
         });
-// console.log("all eve", selectedEvents)
+      // console.log("all eve", selectedEvents)
       selectedEvents =
         selectedEvents &&
         selectedEvents.sort((a, b) => {
           return b.usd - a.usd;
         });
       noOfInternalEvent = selectedEvents.length;
-      selectedEvents = selectedEvents && selectedEvents.slice(0, this.props.hideTimeFilter ? 4 : 10);
+      selectedEvents =
+        selectedEvents &&
+        selectedEvents.slice(0, this.props.hideTimeFilter ? 4 : 10);
     };
     timestampList?.map((time) => {
       let dummy = new Date(time);
@@ -599,7 +639,7 @@ class LineChartSlider extends BaseReactComponent {
       // console.log("default");
       updatedPlotLine = plotLines;
     }
-   
+
     let SelectedSeriesData = [];
     seriesData =
       seriesData &&
@@ -615,16 +655,15 @@ class LineChartSlider extends BaseReactComponent {
 
     let topLegends =
       this.state.legends.length === 0
-        ? AllLegends.slice(1, 5).map(e => e.value)
+        ? AllLegends.slice(1, 5).map((e) => e.value)
         : this.state.legends;
     // console.log("top", topLegends);
-
 
     SelectedSeriesData =
       topLegends.length === 0
         ? seriesData.slice(0, 4)
         : seriesData.filter((e) => topLegends.includes(e.id));
-    
+
     let totalData = [];
     let otherData = [];
 
@@ -632,72 +671,67 @@ class LineChartSlider extends BaseReactComponent {
       // calculate total
       e?.data.map((value, i) => {
         totalData[i] = totalData[i] ? totalData[i] + value : value;
-      })
+      });
 
       // calculate others
       if (!topLegends.includes(e.id)) {
         e?.data.map((value, i) => {
           otherData[i] = otherData[i] ? otherData[i] + value : value;
         });
-       
       }
-    })
+    });
 
     if (otherData.length !== 0) {
-        SelectedSeriesData = [
-          ...SelectedSeriesData,
-          {
-            // linkedTo: key,
-            name: "Other",
-            id: 1,
-            type: "area",
-            // type: "areaspline",
-            fillOpacity: 0.1,
-            color: "#16182B",
-            marker: {
-              // enabled: true,
-              symbol: "circle",
-            },
-            showInLegend: true,
-            data: otherData,
-            lastValue: otherData[otherData.length - 1],
-            assetName: "Other",
-            // lastValue: Math.max(...graphData),
+      SelectedSeriesData = [
+        ...SelectedSeriesData,
+        {
+          // linkedTo: key,
+          name: "Other",
+          id: 1,
+          type: "area",
+          // type: "areaspline",
+          fillOpacity: 0.1,
+          color: "#16182B",
+          marker: {
+            // enabled: true,
+            symbol: "circle",
           },
-        ];
+          showInLegend: true,
+          data: otherData,
+          lastValue: otherData[otherData.length - 1],
+          assetName: "Other",
+          // lastValue: Math.max(...graphData),
+        },
+      ];
     }
-  
-    
-    // total plot
-      // {
-      //    // linkedTo: key,
-      //    name: "Total",
-      //    id: 2,
-      //    type: "area",
-      //    // type: "areaspline",
-      //    fillOpacity: 0.1,
-      //    color: "#CF1011",
-      //    marker: {
-      //      // enabled: true,
-      //      symbol: "circle",
-      //    },
-      //    showInLegend: true,
-      //    data: totalData,
-      //    lastValue: totalData[totalData.length - 1],
-      //    assetName: "Total",
-      //    // lastValue: Math.max(...graphData),
-      //  },
 
+    // total plot
+    // {
+    //    // linkedTo: key,
+    //    name: "Total",
+    //    id: 2,
+    //    type: "area",
+    //    // type: "areaspline",
+    //    fillOpacity: 0.1,
+    //    color: "#CF1011",
+    //    marker: {
+    //      // enabled: true,
+    //      symbol: "circle",
+    //    },
+    //    showInLegend: true,
+    //    data: totalData,
+    //    lastValue: totalData[totalData.length - 1],
+    //    assetName: "Total",
+    //    // lastValue: Math.max(...graphData),
+    //  },
 
     SelectedSeriesData = SelectedSeriesData.sort((a, b) => {
       return b.lastValue - a.lastValue;
     });
     // console.log(seriesData)
 
-
-    
     // AllLegends = [{ label: "All", value: "All" }, ...AllLegends.sort((a, b) => (a.label > b.label ? 1 : -1))];
-    
+
     // console.log("all legend", SelectedSeriesData);
     let selectedValue = null;
 
@@ -713,6 +747,9 @@ class LineChartSlider extends BaseReactComponent {
         events: {
           click: function (event) {
             if (parent.state.selectedValue !== selectedValue) {
+              if (parent.props.updateTimer) {
+                parent.props.updateTimer();
+              }
               parent.props.isPage
                 ? IntlAssetValueInternalEvent({
                     session_id: getCurrentUser().id,
@@ -751,7 +788,7 @@ class LineChartSlider extends BaseReactComponent {
             renderer
               .image(GraphLogo, x, y, imageWidth, imageHeight)
               .attr({
-                zIndex: 0, // Set the zIndex so it appears above the chart
+                zIndex: 99, // Set the zIndex so it appears above the chart
               })
               .add();
           },
@@ -784,35 +821,40 @@ class LineChartSlider extends BaseReactComponent {
           setExtremes(e) {
             let diff = Math.round(e.max - e.min);
 
-              
-
             if (parent.props.hideTimeFilter) {
               // console.log("diff", diff);
               HomeAssetValueNavigator({
-                       session_id: getCurrentUser().id,
-                       email_address: getCurrentUser().email,
-                     });
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+              if (parent.props.updateTimer) {
+                parent.props.updateTimer();
+              }
             } else {
               if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
                 parent.setState({
                   plotLineHide: 1,
                 });
-               
-                   IntlAssetValueNavigator({
-                     session_id: getCurrentUser().id,
-                     email_address: getCurrentUser().email,
-                   });
-                
+
+                IntlAssetValueNavigator({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                });
+                if (parent.props.updateTimer) {
+                  parent.props.updateTimer();
+                }
               } else {
                 if (diff < 9 && parent.state.plotLineHide !== 0) {
                   parent.setState({
                     plotLineHide: 0,
                   });
-                   IntlAssetValueNavigator({
-                     session_id: getCurrentUser().id,
-                     email_address: getCurrentUser().email,
-                   });
-                  
+                  IntlAssetValueNavigator({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                  if (parent.props.updateTimer) {
+                    parent.props.updateTimer();
+                  }
                 }
               }
 
@@ -820,11 +862,13 @@ class LineChartSlider extends BaseReactComponent {
                 parent.setState({
                   steps: 1,
                 });
-                 IntlAssetValueNavigator({
-                   session_id: getCurrentUser().id,
-                   email_address: getCurrentUser().email,
-                 });
-                  
+                IntlAssetValueNavigator({
+                  session_id: getCurrentUser().id,
+                  email_address: getCurrentUser().email,
+                });
+                if (parent.props.updateTimer) {
+                  parent.props.updateTimer();
+                }
               } else {
                 // if (diff >= 13 && parent.state.plotLineHide !== 3) {
                 //   parent.setState({
@@ -836,11 +880,13 @@ class LineChartSlider extends BaseReactComponent {
                   parent.setState({
                     steps: 3,
                   });
-                   IntlAssetValueNavigator({
-                     session_id: getCurrentUser().id,
-                     email_address: getCurrentUser().email,
-                   });
-                  
+                  IntlAssetValueNavigator({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                  if (parent.props.updateTimer) {
+                    parent.props.updateTimer();
+                  }
                 }
               }
             }
@@ -982,6 +1028,10 @@ class LineChartSlider extends BaseReactComponent {
                 value: x_value,
                 address: walletAddress,
               });
+
+          if (parent.props.updateTimer) {
+            parent.props.updateTimer();
+          }
           let net_amount = 0;
           this.points?.map((item) => {
             // console.log(
@@ -1135,16 +1185,16 @@ backdrop-filter: blur(15px);">
       },
     };
 
-    const minVersion = { padding: "3.2rem 3.2rem 0rem 3.2rem" }
-     const minVersionSection = {
-       minHeight: "51rem",
-       marginBottom: 0,
-       width: "100%",
-       minWidth: "100%",
-       padding: 0,
-       boxShadow: "none",
-     };
-    
+    const minVersion = { padding: "3.2rem 3.2rem 0rem 3.2rem" };
+    const minVersionSection = {
+      minHeight: "51rem",
+      marginBottom: 0,
+      width: "100%",
+      minWidth: "100%",
+      padding: 0,
+      boxShadow: "none",
+    };
+
     // console.log("selected event",this.state.selectedEvents)
     return (
       <div
@@ -1167,7 +1217,7 @@ backdrop-filter: blur(15px);">
           >
             {!this.props.isPage && (
               <GraphHeader
-                title="Asset Value"
+                title="Asset value"
                 subtitle="Analyze your portfolio value over time"
                 isArrow={true}
                 isAnalytics="Asset Value"
@@ -1197,7 +1247,7 @@ backdrop-filter: blur(15px);">
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginBottom: "4rem",
+                        marginBottom: this.props.dataLoaded ? "5rem" : "2rem",
                       }}
                     >
                       <div
@@ -1237,6 +1287,7 @@ backdrop-filter: blur(15px);">
                             handleClick={this.handleFunction}
                             isChain={true}
                             // selectedTokens={this.state.activeBadge}
+                            searchIsUsed={this.chainSearchIsUsed}
                           />
                         </div>
                       </div>
@@ -1290,6 +1341,7 @@ backdrop-filter: blur(15px);">
                           handleClick={(arr) => this.DropdownData(arr)}
                           isLineChart={true}
                           getObj={true}
+                          searchIsUsed={this.tokenSearchIsUsed}
                         />
                       </span>
                     </>
@@ -1393,11 +1445,7 @@ backdrop-filter: blur(15px);">
 
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {Number(
-                                      noExponents(
-                                        event.assetValue.toFixed(count)
-                                      )
-                                    ).toLocaleString("en-US")}{" "}
+                                    {event.assetValue.toFixed(count)}{" "}
                                     {event.assetCode}
                                     {` or `}
                                     <span className="inter-display-semi-bold">
@@ -1473,11 +1521,7 @@ backdrop-filter: blur(15px);">
 
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {Number(
-                                      noExponents(
-                                        event.assetValue.toFixed(count)
-                                      )
-                                    ).toLocaleString("en-US")}{" "}
+                                    {event.assetValue.toFixed(count)}{" "}
                                     {event.assetCode}
                                     {` or `}
                                     <span className="inter-display-semi-bold">

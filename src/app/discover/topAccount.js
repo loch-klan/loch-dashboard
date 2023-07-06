@@ -500,7 +500,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-             Native Asset Net Worth
+              Native Asset Net Worth
             </span>
             <Image
               src={sortByIcon}
@@ -824,60 +824,62 @@ class TopAccountPage extends BaseReactComponent {
                     handleClick={(key, value) => this.addCondition(key, value)}
                     isTopaccount={true}
                   /> */}
-                  <DropDown
-                    class="cohort-dropdown"
-                    list={[
-                      "All time",
-                      "1 week",
-                      "1 month",
-                      "6 months",
-                      "1 year",
-                      "5 years",
-                    ]}
-                    onSelect={this.handleTime}
-                    title={this.state.timeFIlter}
-                    activetab={
-                      this.state.timeFIlter === "Time"
-                        ? "All time"
-                        : this.state.timeFIlter
-                    }
-                    showChecked={true}
-                    customArrow={true}
-                    relative={true}
-                  />
-                </div>
-                <div style={{ width: "25%" }}>
-                  <CustomDropdown
-                    filtername="Chains"
-                    options={[
-                      ...[{ value: "allchain", label: "All chains" }],
-                      ...chainList,
-                    ]}
-                    action={"SEARCH_BY_CHAIN_IN"}
-                    handleClick={(key, value) => this.addCondition(key, value)}
-                    isTopaccount={true}
-                  />
-                </div>
-                <div style={{ width: "25%" }}>
-                  <CustomDropdown
-                    filtername="Net worth"
-                    options={[
-                      { value: "AllNetworth", label: "All" },
-                      { value: "0-1", label: "less 1m" },
-                      { value: "1-10", label: "1m-10m" },
-                      { value: "10-100", label: "10m-100m" },
-                      { value: "100-1000", label: "100m-1b" },
-                      { value: "1000-1000000", label: "more than 1b" },
-                    ]}
-                    action={"SEARCH_BY_NETWORTH"}
-                    handleClick={(key, value) => {
-                      this.addCondition(key, value);
-                      // console.log(key, value);
-                    }}
-                    isTopaccount={true}
-                  />
-                </div>
-                {/* <div style={{ width: "20%" }}>
+                    <DropDown
+                      class="cohort-dropdown"
+                      list={[
+                        "All time",
+                        "1 week",
+                        "1 month",
+                        "6 months",
+                        "1 year",
+                        "5 years",
+                      ]}
+                      onSelect={this.handleTime}
+                      title={this.state.timeFIlter}
+                      activetab={
+                        this.state.timeFIlter === "Time"
+                          ? "All time"
+                          : this.state.timeFIlter
+                      }
+                      showChecked={true}
+                      customArrow={true}
+                      relative={true}
+                    />
+                  </div>
+                  <div style={{ width: "25%" }}>
+                    <CustomDropdown
+                      filtername="Chains"
+                      options={[
+                        ...[{ value: "allchain", label: "All chains" }],
+                        ...chainList,
+                      ]}
+                      action={"SEARCH_BY_CHAIN_IN"}
+                      handleClick={(key, value) =>
+                        this.addCondition(key, value)
+                      }
+                      isTopaccount={true}
+                    />
+                  </div>
+                  <div style={{ width: "25%" }}>
+                    <CustomDropdown
+                      filtername="Net worth"
+                      options={[
+                        { value: "AllNetworth", label: "All" },
+                        { value: "0-1", label: "less 1m" },
+                        { value: "1-10", label: "1m-10m" },
+                        { value: "10-100", label: "10m-100m" },
+                        { value: "100-1000", label: "100m-1b" },
+                        { value: "1000-1000000", label: "more than 1b" },
+                      ]}
+                      action={"SEARCH_BY_NETWORTH"}
+                      handleClick={(key, value) => {
+                        this.addCondition(key, value);
+                        // console.log(key, value);
+                      }}
+                      isTopaccount={true}
+                    />
+                  </div>
+                  {/* <div style={{ width: "20%" }}>
                   <CustomDropdown
                     filtername="Assets"
                     options={[
@@ -889,49 +891,49 @@ class TopAccountPage extends BaseReactComponent {
                     isTopaccount={true}
                   />
                 </div> */}
-                {/* {fillter_tabs} */}
-                <div style={{ width: "25%" }}>
-                  <div className="searchBar top-account-search">
-                    <Image src={searchIcon} className="search-icon" />
-                    <FormElement
-                      valueLink={this.linkState(
-                        this,
-                        "search",
-                        this.onChangeMethod
-                      )}
-                      control={{
-                        type: CustomTextControl,
-                        settings: {
-                          placeholder: "Search",
-                        },
-                      }}
-                      classes={{
-                        inputField: "search-input",
-                        prefix: "search-prefix",
-                        suffix: "search-suffix",
-                      }}
-                    />
+                  {/* {fillter_tabs} */}
+                  <div style={{ width: "25%" }}>
+                    <div className="searchBar top-account-search">
+                      <Image src={searchIcon} className="search-icon" />
+                      <FormElement
+                        valueLink={this.linkState(
+                          this,
+                          "search",
+                          this.onChangeMethod
+                        )}
+                        control={{
+                          type: CustomTextControl,
+                          settings: {
+                            placeholder: "Search",
+                          },
+                        }}
+                        classes={{
+                          inputField: "search-input",
+                          prefix: "search-prefix",
+                          suffix: "search-suffix",
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Form>
-          </div>
-          <div className="transaction-history-table">
-            {this.state.tableLoading ? (
-              <Loading />
-            ) : (
-              <>
-                <TransactionTable
-                  tableData={tableData}
-                  columnList={columnList}
-                  message={"No accounts found"}
-                  totalPage={this.state.totalPage}
-                  history={this.props.history}
-                  location={this.props.location}
-                  page={this.state.currentPage}
-                  tableLoading={this.state.tableLoading}
-                />
-                {/* <div className="ShowDust">
+              </Form>
+            </div>
+            <div className="transaction-history-table">
+              {this.state.tableLoading ? (
+                <Loading />
+              ) : (
+                <>
+                  <TransactionTable
+                    tableData={tableData}
+                    columnList={columnList}
+                    message={"No accounts found"}
+                    totalPage={this.state.totalPage}
+                    history={this.props.history}
+                    location={this.props.location}
+                    page={this.state.currentPage}
+                    tableLoading={this.state.tableLoading}
+                  />
+                  {/* <div className="ShowDust">
                   <p
                     onClick={this.showDust}
                     className="inter-display-medium f-s-16 lh-19 cp grey-ADA"

@@ -9,7 +9,6 @@ import {
   ASSET_VALUE_GRAPH_MONTH,
   ASSET_VALUE_GRAPH_YEAR,
   ASSET_VALUE_GRAPH_DAY,
-
 } from "./ActionTypes";
 const INITIAL_STATE = {
   coinRateList: [],
@@ -33,7 +32,7 @@ const INITIAL_STATE = {
   externalEvents: [],
 
   // centralizedExchanges
-  centralizedExchanges:0,
+  centralizedExchanges: 0,
 };
 const PortfolioReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -52,9 +51,8 @@ const PortfolioReducer = (state = INITIAL_STATE, action) => {
       let CentralizedExchanges = state.centralizedExchanges || 0;
 
       // calculating CentralizedExchanges,
-     
-      if (action.payload.userWalletList?.protocol) {
 
+      if (action.payload.userWalletList?.protocol) {
         CentralizedExchanges =
           CentralizedExchanges + action.payload.userWalletList?.total_amount;
       }

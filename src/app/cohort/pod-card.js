@@ -69,13 +69,12 @@ class PodCard extends Component {
 
   componentDidMount() {
     if (!this.props.item.indexed) {
-       this.getPodStatusFunction();
+      this.getPodStatusFunction();
     } else {
       this.setState({
-        isIndexed:true
+        isIndexed: true,
       });
     }
-   
   }
 
   componentWillUnmount() {
@@ -116,7 +115,7 @@ class PodCard extends Component {
           }
         });
       });
-    
+
     // console.log(item)
 
     // let cardType = item.user_id
@@ -158,6 +157,9 @@ class PodCard extends Component {
               session_id: getCurrentUser().id,
               pod_name: item?.name,
             });
+            if (this.props.updateTimer) {
+              this.props.updateTimer();
+            }
           }}
           onClick={() => {
             if (this.state.isIndexed) {
@@ -179,6 +181,9 @@ class PodCard extends Component {
                     session_id: getCurrentUser().id,
                     pod_name: item?.name,
                   });
+                  if (this.props.updateTimer) {
+                    this.props.updateTimer();
+                  }
                   this.props.history.push({
                     pathname: `/whale-watch/${item?.slug}`,
                     state: {
@@ -198,6 +203,9 @@ class PodCard extends Component {
                   session_id: getCurrentUser().id,
                   pod_name: item?.name,
                 });
+                if (this.props.updateTimer) {
+                  this.props.updateTimer();
+                }
                 this.props.history.push({
                   pathname: `/whale-watch/${item?.slug}`,
                   state: {

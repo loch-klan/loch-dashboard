@@ -1,22 +1,33 @@
 import { useState } from "react";
-import { CounterpartyFeesSpecificBar, FeesSpecificBar, HomeCounterPartyHover } from "../../utils/AnalyticsFunctions";
+import {
+  CounterpartyFeesSpecificBar,
+  FeesSpecificBar,
+  HomeCounterPartyHover,
+} from "../../utils/AnalyticsFunctions";
 import { DEFAULT_PRICE } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { amountFormat, CurrencyType, noExponents, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  amountFormat,
+  CurrencyType,
+  noExponents,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import GraphLogo from "../../assets/images/graph-logo.svg";
 
 export const getGraphData = (apidata, parentCtx) => {
   let arr = apidata?.gas_fee_overtime;
   let assetPrices = apidata?.asset_prices;
   // console.log(apidata);
-  let currency = JSON.parse(localStorage.getItem('currency'));
+  let currency = JSON.parse(localStorage.getItem("currency"));
   // const digit = numToCurrency(
   //   Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   // ).length;
-  
+
   let digit = 3;
   //  console.log("state", apidata);
-  const labels = arr ? arr?.map((e) => e?.chain ? e?.chain?.name : e?.exchange) : [];
+  const labels = arr
+    ? arr?.map((e) => (e?.chain ? e?.chain?.name : e?.exchange))
+    : [];
   let GraphLogoImage = new Image();
   GraphLogoImage.src = GraphLogo;
   const options = {
@@ -195,7 +206,7 @@ export const getGraphData = (apidata, parentCtx) => {
           maxRotation: 0,
           minRotation: 0,
           autoSkip: false,
-          display: false
+          display: false,
         },
         grid: {
           display: false,
@@ -218,7 +229,7 @@ export const getGraphData = (apidata, parentCtx) => {
           weight: 400,
           color: "#B0B1B3",
           callback: function (value, index, ticks) {
-            let val = Number(noExponents(value).toLocaleString('en-US'))
+            let val = Number(noExponents(value).toLocaleString("en-US"));
             if (
               digit <
               CurrencyType(false).length + numToCurrency(val).length
@@ -229,7 +240,7 @@ export const getGraphData = (apidata, parentCtx) => {
               });
             }
             return CurrencyType(false) + numToCurrency(val);
-          }
+          },
         },
         grid: {
           drawBorder: false,
@@ -240,7 +251,7 @@ export const getGraphData = (apidata, parentCtx) => {
       },
     },
   };
-// == coinbase hai tho #0052FF and == binance tho #F0B90B
+  // == coinbase hai tho #0052FF and == binance tho #F0B90B
   const data = {
     labels,
     datasets: [
@@ -255,10 +266,15 @@ export const getGraphData = (apidata, parentCtx) => {
                 : e?.chain?.color + "4D"
             )
           : [],
-        borderColor: arr ? arr?.map((e) =>  e?.exchange == "coinbase"
+        borderColor: arr
+          ? arr?.map((e) =>
+              e?.exchange == "coinbase"
                 ? "#0052FF"
                 : e?.exchange == "binance"
-                ? "#F0B90B" : e.chain?.color) : [],
+                ? "#F0B90B"
+                : e.chain?.color
+            )
+          : [],
         defaultAssetCode: arr
           ? arr?.map((e) => e.chain?.default_asset_code)
           : [],
@@ -278,20 +294,19 @@ export const getGraphData = (apidata, parentCtx) => {
     ],
   };
 
-    return [data, options, options2]
-
-}
+  return [data, options, options2];
+};
 
 export const getCounterGraphData = (arr, parentCtx) => {
-  let currency= JSON.parse(localStorage.getItem('currency'));
+  let currency = JSON.parse(localStorage.getItem("currency"));
   //  const digit = numToCurrency(
   //    Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   //  ).length;
   let digit = 3;
 
   const labels = arr?.map((e) => e._id);
-let GraphLogoImage = new Image();
-GraphLogoImage.src = GraphLogo;
+  let GraphLogoImage = new Image();
+  GraphLogoImage.src = GraphLogo;
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -470,11 +485,11 @@ GraphLogoImage.src = GraphLogo;
         },
       },
       y: {
-      //   min: min,
-      //   max: 22574,
+        //   min: min,
+        //   max: 22574,
         afterFit: (ctx) => {
           // console.log("digit width" ,digit )
-          ctx.width = `${digit}`+0;
+          ctx.width = `${digit}` + 0;
         },
         ticks: {
           // stepSize: 1500,
@@ -484,28 +499,28 @@ GraphLogoImage.src = GraphLogo;
           family: "Inter-Medium",
           weight: 400,
           color: "#B0B1B3",
-          callback: function(value, index, ticks) {
-            let val = Number(noExponents(value).toLocaleString('en-US'))
-              // console.log(
-              //   "tick gas",
-              //   CurrencyType(false) + numToCurrency(val),
-              //   value,
-              //   CurrencyType(false).length,
-              //   numToCurrency(val).length,
-              //   "sum",
-              //   CurrencyType(false).length + numToCurrency(val).length
-              // );
-             if (
-               digit <
-               CurrencyType(false).length + numToCurrency(val).length
-             ) {
-               digit = CurrencyType(false).length + numToCurrency(val).length;
-               parentCtx.setState({
-                 counterGraphDigit: digit,
-               });
-             }
-                return CurrencyType(false) + numToCurrency(val);
-          }
+          callback: function (value, index, ticks) {
+            let val = Number(noExponents(value).toLocaleString("en-US"));
+            // console.log(
+            //   "tick gas",
+            //   CurrencyType(false) + numToCurrency(val),
+            //   value,
+            //   CurrencyType(false).length,
+            //   numToCurrency(val).length,
+            //   "sum",
+            //   CurrencyType(false).length + numToCurrency(val).length
+            // );
+            if (
+              digit <
+              CurrencyType(false).length + numToCurrency(val).length
+            ) {
+              digit = CurrencyType(false).length + numToCurrency(val).length;
+              parentCtx.setState({
+                counterGraphDigit: digit,
+              });
+            }
+            return CurrencyType(false) + numToCurrency(val);
+          },
         },
         grid: {
           drawBorder: false,
@@ -558,7 +573,6 @@ GraphLogoImage.src = GraphLogo;
   };
 
   return [data, options, options2];
-
-}
+};
 
 // export default getGraphData;

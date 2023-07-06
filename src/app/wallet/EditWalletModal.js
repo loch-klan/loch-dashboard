@@ -1,14 +1,30 @@
-import React from 'react'
-import { Modal, Image, Button } from 'react-bootstrap'
+import React from "react";
+import { Modal, Image, Button } from "react-bootstrap";
 // import closeIcon from '../../assets/images/icons/close-icon.svg'
-import closeIcon from '../../assets/images/icons/dummyX.svg'
-import { connect } from 'react-redux';
-import {updateWalletApi , getAllWalletListApi, getAllWalletApi, deleteWallet} from './Api.js'
+import closeIcon from "../../assets/images/icons/dummyX.svg";
+import { connect } from "react-redux";
+import {
+  updateWalletApi,
+  getAllWalletListApi,
+  getAllWalletApi,
+  deleteWallet,
+} from "./Api.js";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
-import { SelectControl, FormElement, CustomTextControl, FormValidator, BaseReactComponent, Form } from '../../utils/form';
-import { lightenDarkenColor } from '../../utils/ReusableFunctions';
-import { AddNameTag, DeleteWallet, EditSpecificWallet } from '../../utils/AnalyticsFunctions';
-import { getCurrentUser } from '../../utils/ManageToken';
+import {
+  SelectControl,
+  FormElement,
+  CustomTextControl,
+  FormValidator,
+  BaseReactComponent,
+  Form,
+} from "../../utils/form";
+import { lightenDarkenColor } from "../../utils/ReusableFunctions";
+import {
+  AddNameTag,
+  DeleteWallet,
+  EditSpecificWallet,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 class EditWalletModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -252,15 +268,14 @@ class EditWalletModal extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
-    walletState: state.WalletState,
+const mapStateToProps = (state) => ({
+  walletState: state.WalletState,
 });
 const mapDispatchToProps = {
   updateWalletApi,
   getAllWalletListApi,
   deleteWallet,
-}
-EditWalletModal.propTypes = {
 };
+EditWalletModal.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditWalletModal);

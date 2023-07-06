@@ -7,9 +7,19 @@ import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import { getAllInsightsApi } from "./Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
-import { AllInsights, InsightPage, InsightsIncreaseYield, InsightsReduceCost, InsightsReduceRisk, InsightsShare, RiskTypeDropdownClicked, RiskTypeHover, RiskTypeSelected, TimeSpentInsights } from "../../utils/AnalyticsFunctions";
+import {
+  AllInsights,
+  InsightPage,
+  InsightsIncreaseYield,
+  InsightsReduceCost,
+  InsightsReduceRisk,
+  InsightsShare,
+  RiskTypeDropdownClicked,
+  RiskTypeHover,
+  RiskTypeSelected,
+  TimeSpentInsights,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import FeedbackForm from "../common/FeedbackForm";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -25,7 +35,6 @@ import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import DropDown from "../common/DropDown";
-import { lte } from "lodash";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 
 class InsightsPage extends Component {
@@ -82,27 +91,52 @@ class InsightsPage extends Component {
     });
   };
 
-  componentDidMount() {
-    this.state.startTime = new Date() * 1;
+  startPageView = () => {
+    this.setState({
+      startTime: new Date() * 1,
+    });
     InsightPage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkInsightsTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
     // this.props.getAllInsightsApi(this);
     GetAllPlan();
     getUser();
     this.setState({});
 
-      const search = this.props.location.search;
-      const params = new URLSearchParams(search);
-      const addAddress = params.get("add-address");
-      if (addAddress) {
-        this.handleAddModal();
-        this.props.history.replace("/intelligence/insights");
-      }
-  }
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const addAddress = params.get("add-address");
+    if (addAddress) {
+      this.handleAddModal();
+      this.props.history.replace("/intelligence/insights");
+    }
+    this.startPageView();
+    this.updateTimer(true);
 
-  componentWillUnmount() {
+    return () => {
+      clearInterval(window.checkInsightsTimer);
+    };
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "insightsPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkInsightsTimer);
+    localStorage.removeItem("insightsPageExpiryTime");
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
     TimeSpentInsights({
@@ -110,6 +144,18 @@ class InsightsPage extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("insightsPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("insightsPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -179,7 +225,7 @@ class InsightsPage extends Component {
       updatedInsightList: insightList,
       riskType: "All risks",
     });
-
+    this.updateTimer();
     if (value === 1) {
       AllInsights({
         session_id: getCurrentUser().id,
@@ -225,12 +271,12 @@ class InsightsPage extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
 
     // console.log("share pod", shareLink);
   };
 
   handleInsights = (e) => {
-  
     let title = e.split(" ")[1];
     if (e.split(" ")[2] !== undefined) {
       title = title + " " + e.split(" ")[2];
@@ -247,8 +293,9 @@ class InsightsPage extends Component {
         RiskTypeSelected({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          type:title
+          type: title,
         });
+        this.updateTimer();
         let riskType = InsightType.getRiskNumber(this.state.riskType);
         let insightList = this.props.intelligenceState.updatedInsightList;
 
@@ -275,7 +322,20 @@ class InsightsPage extends Component {
       }
     );
   };
-
+  onClickDropdown = () => {
+    RiskTypeDropdownClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
+  };
+  onHoverDropdown = () => {
+    RiskTypeHover({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
+  };
   render() {
     return (
       <>
@@ -292,6 +352,7 @@ class InsightsPage extends Component {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                updateTimer={this.updateTimer}
               />
             </div>
           </div>
@@ -312,6 +373,7 @@ class InsightsPage extends Component {
                 changeWalletList={this.handleChangeList}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 from="insights"
+                updateTimer={this.updateTimer}
               />
             )}
 
@@ -324,6 +386,7 @@ class InsightsPage extends Component {
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="insight-page"
+                updateTimer={this.updateTimer}
               />
             )}
 
@@ -336,7 +399,7 @@ class InsightsPage extends Component {
               // handleBtn={this.handleAddModal}
               ShareBtn={true}
               handleShare={this.handleShare}
-              // history={this.props.history}
+              // history={this.props.history}updateTimer={this.updateTimer}
             />
             <div style={{ position: "relative" }}>
               {
@@ -345,6 +408,7 @@ class InsightsPage extends Component {
                   {this.state.insightFilter?.map((filter, key) => {
                     return (
                       <div
+                        key={key}
                         id={key}
                         className={`filter ${
                           filter.value === this.state.selectedFilter
@@ -371,17 +435,11 @@ class InsightsPage extends Component {
                   This week
                 </h2>
 
-                <div style={{ display: "flex", alignItems: "center" }} onClick={() => {
-                    RiskTypeDropdownClicked({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                }} onMouseEnter={() => {
-                  RiskTypeHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }}>
+                <div
+                  style={{ display: "flex", alignItems: "center" }}
+                  onClick={this.onClickDropdown}
+                  onMouseEnter={this.onHoverDropdown}
+                >
                   <DropDown
                     class="cohort-dropdown"
                     list={[

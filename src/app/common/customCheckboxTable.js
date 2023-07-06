@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import checkIcon from "../../assets/images/icons/check-cohort.svg";
-import { Image } from 'react-bootstrap';
+import { Image } from "react-bootstrap";
 
 class CheckboxCustomTable extends Component {
   constructor(props) {
@@ -10,21 +10,24 @@ class CheckboxCustomTable extends Component {
       isChecked: props?.isChecked || false,
     };
   }
-    handleChecked = () => {
-        this.setState({
-          isChecked: !this.state.isChecked,
-        });
+  handleChecked = () => {
+    this.setState({
+      isChecked: !this.state.isChecked,
+    });
   };
   render() {
     return (
-      <div style={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-   
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <div
           style={{
             margin: "10px",
-            background: this.state.isChecked
-              ? "#0071E3"
-              : "transparent",
+            background: this.state.isChecked ? "#0071E3" : "transparent",
           }}
           className="custom-checkbox"
           onClick={this.handleChecked}

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import OnboardingModal from "../common/OnboardingModal";
 import "../../assets/scss/onboarding/_onboarding.scss";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import WalletIcon from "../../assets/images/icons/wallet-icon.svg";
 // import SignInIcon from "../../image/profile-icon.png";
-import SignInIcon from '../../assets/images/icons/ActiveProfileIcon.svg'
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import AddWallet from "./addWallet";
 import SignIn from "./signIn";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -15,12 +15,13 @@ import LinkIcon from "../../assets/images/icons/link.svg";
 import {
   LPConnectExchange,
   OnboardingPage,
-  PrivacyMessage, TimeSpentOnboarding
+  PrivacyMessage,
+  TimeSpentOnboarding,
 } from "../../utils/AnalyticsFunctions.js";
-import { GetAllPlan } from '../common/Api';
-import UpgradeModal from '../common/upgradeModal';
-import ConnectModal from '../common/ConnectModal';
-import { getCurrentUser } from '../../utils/ManageToken';
+import { GetAllPlan } from "../common/Api";
+import UpgradeModal from "../common/upgradeModal";
+import ConnectModal from "../common/ConnectModal";
+import { getCurrentUser } from "../../utils/ManageToken";
 // export { default as OnboardingReducer } from "./OnboardingReducer";
 class OnBoarding extends Component {
   constructor(props) {
@@ -72,23 +73,26 @@ class OnBoarding extends Component {
 
   handleConnectModal = (address = this.state.walletAddress) => {
     // console.log("test", address)
-    this.setState({
-      connectExchangeModal: !this.state.connectExchangeModal,
-      walletAddress: address
-    }, () => {
-      if (this.state.connectExchangeModal) {
-         LPConnectExchange({
-           session_id: getCurrentUser().id,
-           email_address: getCurrentUser().email,
-         });
+    this.setState(
+      {
+        connectExchangeModal: !this.state.connectExchangeModal,
+        walletAddress: address,
+      },
+      () => {
+        if (this.state.connectExchangeModal) {
+          LPConnectExchange({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+        }
+        let value = this.state.connectExchangeModal ? false : true;
+        this.setState({
+          showPrevModal: value,
+        });
+        // console.log("test 2")
       }
-      let value = this.state.connectExchangeModal ? false : true;
-      this.setState({
-        showPrevModal: value,
-      });
-      // console.log("test 2")
-    });
-  }
+    );
+  };
 
   handleBackConnect = (exchanges = this.state.exchanges) => {
     // console.log("backed clicked in index.js")
@@ -96,17 +100,16 @@ class OnBoarding extends Component {
       {
         connectExchangeModal: !this.state.connectExchangeModal,
         walletAddress: this.state.walletAddress,
-        exchanges: exchanges
+        exchanges: exchanges,
       },
       () => {
         let value = this.state.connectExchangeModal ? false : true;
         this.setState({
           showPrevModal: value,
         });
-        
       }
     );
-  }
+  };
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
@@ -117,7 +120,7 @@ class OnBoarding extends Component {
 
     OnboardingPage({});
 
-      // console.log("test mount index.js");
+    // console.log("test mount index.js");
   }
 
   componentWillUnmount() {
@@ -126,7 +129,6 @@ class OnBoarding extends Component {
     // console.log("page Leave", endTime/1000);
     // console.log("Time Spent", TimeSpent);
     TimeSpentOnboarding({ time_spent: TimeSpent });
-   
   }
   onClose = () => {
     this.setState({ showModal: false });
@@ -279,11 +281,8 @@ class OnBoarding extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-});
-const mapDispatchToProps = {
-}
-OnBoarding.propTypes = {
-};
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {};
+OnBoarding.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnBoarding);

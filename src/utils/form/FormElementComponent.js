@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Form, FormGroup, Image } from "react-bootstrap";
 import BaseReactComponent from "./BaseReactComponent";
-import cancelIcon from '../../assets/images/icons/EmailNotFoundCross.svg';
+import cancelIcon from "../../assets/images/icons/EmailNotFoundCross.svg";
 
 class FormElementComponent extends BaseReactComponent {
   constructor(props) {
@@ -33,16 +33,16 @@ class FormElementComponent extends BaseReactComponent {
     let isInvalidState = null;
 
     if (validations) {
-      failedValidation = validations.find(
-        validation => {
-          return validation.validate(valueLink.value || stateValue) === false
-        }
-      );
+      failedValidation = validations.find((validation) => {
+        return validation.validate(valueLink.value || stateValue) === false;
+      });
       failedValidation =
         failedValidation !== undefined ? failedValidation : null;
       // console.log('failedValidation', failedValidation);
-      isInvalidState = failedValidation && failedValidation.message ? true : false;
-      isValidState = failedValidation && failedValidation.message ? false : true;
+      isInvalidState =
+        failedValidation && failedValidation.message ? true : false;
+      isValidState =
+        failedValidation && failedValidation.message ? false : true;
     }
 
     // console.log('isInvalidState', isInvalidState);
@@ -66,7 +66,7 @@ class FormElementComponent extends BaseReactComponent {
       isInvalidState: null,
       // isValidState:null,
     });
-  }
+  };
 
   render() {
     const {
@@ -81,14 +81,14 @@ class FormElementComponent extends BaseReactComponent {
       isInvalid,
       isCancel = false,
       hideOnblur = false,
-      control: { type, settings }
+      control: { type, settings },
     } = this.props;
     // console.log('this.props', this.props);
     const { failedValidation, isInvalidState, isValidState } = this.state;
     const FormElementControl = type;
 
     const requiredStyle = {
-      color: "red"
+      color: "red",
     };
     // console.log('valueLink', valueLink);
     return (
@@ -115,7 +115,6 @@ class FormElementComponent extends BaseReactComponent {
           <FormElementControl
             valueLink={valueLink}
             onBlur={hideOnblur ? this.hideOnblur : this.validate}
-            
             failedValidation={this.state.failedValidation}
             classes={classes}
             disabled={disabled}
@@ -194,7 +193,7 @@ FormElementComponent.defaultProps = {
   helpText: "",
   toolTipText: "",
   validations: [],
-  classes: {}
+  classes: {},
 };
 
 export default FormElementComponent;

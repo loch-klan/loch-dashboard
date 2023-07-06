@@ -35,7 +35,7 @@
     "react-loading-dot": "^1.0.6",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.1",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "react-select": "^4.3.1",
     "react-slick": "^0.29.0",
     "react-toastify": "^8.1.0",
@@ -53,13 +53,14 @@
     "build": "sh -ac '. ./src/env/.${ENV}; react-scripts build'",
     "build:dev": "ENV=development npm run build",
     "predeploy:dev": "npm run build:dev",
-    "deploy:dev": "aws s3 sync --profile loch build/ s3://staging.loch.com",
+    "deploy:dev": "aws s3 sync build/ s3://staging.loch.com",
     "build:prod": "GENERATE_SOURCEMAP=false ENV=production npm run build",
     "predeploy:prod": "npm run build:prod",
-    "deploy:prod": "aws s3 sync --profile loch build/ s3://app.loch.one; aws cloudfront --profile loch create-invalidation --distribution-id E3LEY732SHUGA7 --paths '/*'",
+    "deploy:prod": "aws s3 sync build/ s3://app.loch.one; aws cloudfront create-invalidation --distribution-id E3LEY732SHUGA7 --paths '/*'",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate": "plop"
+    "generate": "plop",
+    "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
   },
   "eslintConfig": {
     "extends": [
@@ -80,6 +81,7 @@
     ]
   },
   "devDependencies": {
-    "plop": "^2.7.4"
+    "plop": "^2.7.4",
+    "prettier": "^2.8.8"
   }
 }

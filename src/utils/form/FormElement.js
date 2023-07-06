@@ -3,13 +3,17 @@ import PropTypes from "prop-types";
 import FormContext from "./FormContext";
 import FormElementComponent from "./FormElementComponent";
 
-const FormElement = props => {
+const FormElement = (props) => {
   const { classes, ...elementProps } = props;
 
   return (
     <FormContext.Consumer>
-      {formContext => (
-        <FormElementComponent formContext={formContext} {...elementProps} classes={classes} />
+      {(formContext) => (
+        <FormElementComponent
+          formContext={formContext}
+          {...elementProps}
+          classes={classes}
+        />
       )}
     </FormContext.Consumer>
   );
@@ -24,7 +28,7 @@ FormElement.propTypes = {
   helpText: PropTypes.string,
   toolTipText: PropTypes.string,
   validations: PropTypes.array,
-  control: PropTypes.object.isRequired
+  control: PropTypes.object.isRequired,
 };
 
 FormElement.defaultProps = {
@@ -33,7 +37,7 @@ FormElement.defaultProps = {
   hint: null,
   helpText: "",
   toolTipText: "",
-  validations: []
+  validations: [],
 };
 
 export default FormElement;

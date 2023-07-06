@@ -8,20 +8,22 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "./ConnectModal";
 import { useHistory } from "react-router-dom";
-import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
 import AuthModal from "./AuthModal";
-import { AssetValueExplainer, ConnectExPopup, WalletConnectExchange } from "../../utils/AnalyticsFunctions";
+import {
+  AssetValueExplainer,
+  ConnectExPopup,
+  WalletConnectExchange,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
   const [connectModal, setconnectModal] = React.useState(false);
   const history = useHistory();
-  
-   const [popupModal, setpopupModal] = React.useState(false);
+
+  const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
-      let lochUser = JSON.parse(localStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(localStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
 
@@ -32,14 +34,15 @@ export default function PageHeader(props) {
             email_address: getCurrentUser().email,
             from: "Wallet connect exchange",
           });
+          if (props.updateTimer) {
+            props.updateTimer();
+          }
         }
       }, 200);
     }
-   };
+  };
 
-  
   const handleConnectModal = () => {
-    
     setconnectModal(!connectModal);
     setTimeout(() => {
       if (connectModal) {
@@ -47,26 +50,26 @@ export default function PageHeader(props) {
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
         });
+        if (props.updateTimer) {
+          props.updateTimer();
+        }
       }
     }, 200);
-     
-   };
+  };
 
   const breads = nav_list.map((e, key) => {
     // console.log(e , props.currentPage)
     return (
       e && (
-        <>
-          <Breadcrumb.Item
-            linkAs={Link}
-            linkProps={{ to: `/${e}` }}
-            className="inter-display-medium f-s-13 lh-16"
-            active={e === props.currentPage}
-            key={key}
-          >
-            {e.replace(/-/g, " ")}
-          </Breadcrumb.Item>
-        </>
+        <Breadcrumb.Item
+          linkAs={Link}
+          linkProps={{ to: `/${e}` }}
+          className="inter-display-medium f-s-13 lh-16"
+          active={e === props.currentPage}
+          key={key}
+        >
+          {e.replace(/-/g, " ")}
+        </Breadcrumb.Item>
       )
     );
   });
@@ -78,7 +81,15 @@ export default function PageHeader(props) {
       {breads}
     </Breadcrumb>
   );
-
+  const mouseHoverQuestion = () => {
+    AssetValueExplainer({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    if (props.updateTimer) {
+      props.updateTimer();
+    }
+  };
   return (
     <div
       className={`m-b-40 page-header ${props.showpath ? "history-header" : ""}`}
@@ -96,6 +107,7 @@ export default function PageHeader(props) {
               {props.multipleImg.map((e, i) => {
                 return (
                   <Image
+                    key={"phkey-" + i}
                     src={e}
                     style={{
                       zIndex: props.multipleImg?.length - i,
@@ -132,12 +144,7 @@ export default function PageHeader(props) {
                       src={InfoIcon}
                       className="info-icon"
                       style={{ width: "1.6rem", marginTop: "-3px" }}
-                      onMouseEnter={() => {
-                        AssetValueExplainer({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
+                      onMouseEnter={mouseHoverQuestion}
                     />
                   </CustomOverlay>
                 ) : (
@@ -159,11 +166,8 @@ export default function PageHeader(props) {
         </div>
         {/* search */}
 
-        {(props.btnText ||
-          props.SecondaryBtn ||
-          props.ShareBtn) && (
+        {(props.btnText || props.SecondaryBtn || props.ShareBtn) && (
           <div>
-           
             {props.SecondaryBtn && (
               <Button
                 className="secondary-btn white-bg"
@@ -247,5 +251,4 @@ export default function PageHeader(props) {
       )}
     </div>
   );
-
 }

@@ -20,7 +20,7 @@ import Defi from "./app/defi/Defi";
 import LPWhale from "./app/home/landing-page-whale";
 import LPIntelligence from "./app/home/landing-page-intelligence";
 import LPPeace from "./app/home/landing-page-peace";
-import WhopLoader from "./app/common/WhopAccount"
+import WhopLoader from "./app/common/WhopAccount";
 import TopAccount from "./app/discover/topAccount";
 import twitterInfluencer from "./app/discover/twitterInfluencer";
 import wishlist from "./app/discover/wishlist";

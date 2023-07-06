@@ -1,13 +1,24 @@
-import React from 'react';
-import {BaseReactComponent, CustomTextControl, Form, FormElement, FormValidator} from "../../utils/form";
+import React from "react";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+  FormValidator,
+} from "../../utils/form";
 import { connect } from "react-redux";
 import { Button, Image } from "react-bootstrap";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import CustomButton from "../../utils/form/CustomButton";
-import { getAllCoins, detectCoin, createAnonymousUserApi, getAllParentChains} from "./Api";
+import {
+  getAllCoins,
+  detectCoin,
+  createAnonymousUserApi,
+  getAllParentChains,
+} from "./Api";
 import CustomChip from "../../utils/commonComponent/CustomChip";
-import { getPadding } from '../../utils/ReusableFunctions';
+import { getPadding } from "../../utils/ReusableFunctions";
 import {
   DeleteWalletAddress,
   PreviewDemo,
@@ -17,9 +28,9 @@ import {
   LandingPageNickname,
   AddWalletAddress,
 } from "../../utils/AnalyticsFunctions.js";
-import { getCurrentUser } from '../../utils/ManageToken';
-import UpgradeModal from '../common/upgradeModal';
-import { GetAllPlan, GetDefaultPlan, updateUserWalletApi } from '../common/Api';
+import { getCurrentUser } from "../../utils/ManageToken";
+import UpgradeModal from "../common/upgradeModal";
+import { GetAllPlan, GetDefaultPlan, updateUserWalletApi } from "../common/Api";
 import LinkIconBtn from "../../assets/images/link.svg";
 
 // upload csv
@@ -170,7 +181,6 @@ class AddWallet extends BaseReactComponent {
           let prevAddressList = [];
           this.state?.walletInput &&
             this.state?.walletInput?.map((e) => {
-             
               if (e.address !== "") {
                 prevAddressList.push(e);
               }
@@ -194,9 +204,7 @@ class AddWallet extends BaseReactComponent {
           // console.log("state", this.state.walletInput, prevAddressList, addressList);
 
           // check
-          let total_address =
-            prevAddressList?.length +
-            addressList?.length + 1
+          let total_address = prevAddressList?.length + addressList?.length + 1;
 
           if (
             total_address <= this.state.userPlan?.whale_pod_address_limit ||
@@ -207,49 +215,44 @@ class AddWallet extends BaseReactComponent {
             //   email_address: getCurrentUser().email,
             //   addresses: uploadedAddress,
             // });
-     
-             let arr = [];
-             let total_address = 0;
+
+            let arr = [];
+            let total_address = 0;
             this.setState(
               {
                 walletInput: [...prevAddressList, ...addressList],
               },
 
-              
               () => {
                 // call api to store pod
-                this.state.walletInput?.slice(0,10).map((e) =>
-                  this.getCoinBasedOnWalletAddress(e.id, e.address)
-                );
+                this.state.walletInput
+                  ?.slice(0, 10)
+                  .map((e) =>
+                    this.getCoinBasedOnWalletAddress(e.id, e.address)
+                  );
 
-                
                 // this.handleAddWallet();
-               
-               const promises = [];
-               for (let i = 0; i < this.state.walletInput.length; i++) {
-                 let curr = this.state.walletInput[i];
-                 if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
-                   arr.push(curr.address.trim());
-                   arr.push(curr.displayAddress?.trim());
-                   arr.push(curr.apiAddress?.trim());
-                   total_address = total_address + 1;
-                 }
-                 promises.push(Promise.resolve());
-               }
 
-               Promise.all(promises).then(() => {
-               
-                 this.setState({
-                   total_unique_address: total_address,
-                   addButtonVisible: this.state.walletInput.some((wallet) =>
-                     wallet.address ? true : false
-                   ),
-                 });
-               });
-                
-                 
-                
-                
+                const promises = [];
+                for (let i = 0; i < this.state.walletInput.length; i++) {
+                  let curr = this.state.walletInput[i];
+                  if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
+                    arr.push(curr.address.trim());
+                    arr.push(curr.displayAddress?.trim());
+                    arr.push(curr.apiAddress?.trim());
+                    total_address = total_address + 1;
+                  }
+                  promises.push(Promise.resolve());
+                }
+
+                Promise.all(promises).then(() => {
+                  this.setState({
+                    total_unique_address: total_address,
+                    addButtonVisible: this.state.walletInput.some((wallet) =>
+                      wallet.address ? true : false
+                    ),
+                  });
+                });
               }
             );
           } else {
@@ -273,7 +276,6 @@ class AddWallet extends BaseReactComponent {
   };
 
   handleDone = () => {
-    
     // this.state.onHide();
 
     this.setState({
@@ -283,8 +285,6 @@ class AddWallet extends BaseReactComponent {
       isChangeFile: true,
       showWarningMsg: false,
     });
-
-    
   };
 
   // upgradeModal = () => {
@@ -330,7 +330,7 @@ class AddWallet extends BaseReactComponent {
       });
     }
     this.props.getAllCoins();
-    this.props.getAllParentChains(); 
+    this.props.getAllParentChains();
     this.setState({
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
@@ -604,10 +604,8 @@ class AddWallet extends BaseReactComponent {
           let address = curr.address.trim();
           nicknameArr[address] = curr.nickname;
           addressList.push(curr.address.trim());
-
         }
       }
-
 
       finalArr = finalArr?.map((item, index) => {
         return {
@@ -616,7 +614,6 @@ class AddWallet extends BaseReactComponent {
         };
       });
 
-      
       // console.log("final array", addressList);
 
       const data = new URLSearchParams();
@@ -625,8 +622,6 @@ class AddWallet extends BaseReactComponent {
       // data.append("link", );
       createAnonymousUserApi(data, this, finalArr, null);
       // console.log(finalArr);
-     
-
 
       const address = finalArr?.map((e) => e.address);
       // console.log("address", address);
@@ -698,7 +693,6 @@ class AddWallet extends BaseReactComponent {
           arr.push(curr.apiAddress?.trim());
           addressList.push(curr.address?.trim());
           //  console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
-          
         }
       }
 
@@ -716,8 +710,6 @@ class AddWallet extends BaseReactComponent {
       data.append("wallet_addresses", JSON.stringify(addressList));
 
       updateUserWalletApi(data, this);
-
-     
 
       // if (!this.state.showWarningMsg) {
       //   this.state.onHide();
@@ -1197,16 +1189,15 @@ class AddWallet extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
-    OnboardingState: state.OnboardingState
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
-    getAllCoins,
-    detectCoin,
-    createAnonymousUserApi,
-    getAllParentChains
-}
-AddWallet.propTypes = {
+  getAllCoins,
+  detectCoin,
+  createAnonymousUserApi,
+  getAllParentChains,
 };
+AddWallet.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddWallet);

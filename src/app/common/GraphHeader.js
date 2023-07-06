@@ -1,24 +1,24 @@
-import React, { useState } from 'react'
-import { Button, Image } from 'react-bootstrap'
-import ArrowRight from '../../assets/images/icons/ArrowRight.svg'
-import { TitleAssetValueHover, TransactionHistoryHover } from '../../utils/AnalyticsFunctions';
-import { getCurrentUser } from '../../utils/ManageToken';
-import LinkIcon from '../../assets/images/icons/link.svg';
+import React, { useState } from "react";
+import { Button, Image } from "react-bootstrap";
+import ArrowRight from "../../assets/images/icons/ArrowRight.svg";
+import {
+  TitleAssetValueHover,
+  TransactionHistoryHover,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import LinkIcon from "../../assets/images/icons/link.svg";
 import arrowUpRight from "../../assets/images/icons/arrowUpRight.svg";
 import arrowDownRight from "../../assets/images/icons/arrow-down-right.svg";
 export const GraphHeader = (props) => {
-  const [showDust, setDust] = useState(false)
+  const [showDust, setDust] = useState(false);
 
   const toggleDust = () => {
+    setDust(!showDust);
 
-   
-
-    setDust(!showDust)
-
-  setTimeout(() => {
-     props.handleDust(showDust);
-  }, 200);
-  }
+    setTimeout(() => {
+      props.handleDust(showDust);
+    }, 200);
+  };
   return (
     <div className="graph-header">
       <div className="header">
@@ -61,7 +61,10 @@ export const GraphHeader = (props) => {
         )} */}
         <div className="show-percentage-cost-basis">
           {props.ishideDust && (
-            <div className="inter-display-medium f-s-15 lh-15 cp grey-ADA dust-style m-r-12" onClick={toggleDust}>
+            <div
+              className="inter-display-medium f-s-15 lh-15 cp grey-ADA dust-style m-r-12"
+              onClick={toggleDust}
+            >
               {showDust
                 ? "Reveal dust (less than $1)"
                 : "Hide dust (less than $1)"}
@@ -79,7 +82,7 @@ export const GraphHeader = (props) => {
                 style={{ position: "relative", top: "-2px" }}
               />
               {props.totalPercentage + "%"}{" "}
-              {props.totalPercentage == 0.00
+              {props.totalPercentage == 0.0
                 ? "No Change"
                 : props.totalPercentage > 0
                 ? "Increase"
@@ -96,4 +99,4 @@ export const GraphHeader = (props) => {
       </div>
     </div>
   );
-}
+};

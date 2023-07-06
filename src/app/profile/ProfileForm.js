@@ -68,10 +68,8 @@ class ProfileForm extends BaseReactComponent {
         });
 
         if (!localStorage.getItem("lochUser")) {
-
           this.SigninWallet();
         }
-      
       } catch (error) {
         console.error(error);
       }
@@ -84,16 +82,16 @@ class ProfileForm extends BaseReactComponent {
   // Signin wit wallet
   SigninWallet = () => {
     // get device id
-      const deviceId = localStorage.getItem("deviceId") || uuidv4();
+    const deviceId = localStorage.getItem("deviceId") || uuidv4();
 
-      if (!localStorage.getItem("deviceId")) {
-        // console.log("no device id");
-        localStorage.setItem("deviceId", deviceId);
-      }
+    if (!localStorage.getItem("deviceId")) {
+      // console.log("no device id");
+      localStorage.setItem("deviceId", deviceId);
+    }
 
-      if (!localStorage.getItem("connectWalletAddress")) {
-        localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
-      }
+    if (!localStorage.getItem("connectWalletAddress")) {
+      localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
+    }
 
     let data = new URLSearchParams();
     data.append("device_id", deviceId);
@@ -106,11 +104,11 @@ class ProfileForm extends BaseReactComponent {
     ManageLink(this);
 
     // check metamask already connected or not
-     if (localStorage.getItem("connectWalletAddress")) {
-       this.setState({
-         MetaAddress: localStorage.getItem("connectWalletAddress"),
-       });
-     }
+    if (localStorage.getItem("connectWalletAddress")) {
+      this.setState({
+        MetaAddress: localStorage.getItem("connectWalletAddress"),
+      });
+    }
   }
 
   upgradeModal = () => {

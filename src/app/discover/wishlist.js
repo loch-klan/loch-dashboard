@@ -35,7 +35,11 @@ import {
   SORT_BY_LARGEST_SOLD,
   SORT_BY_TAG_NAME,
 } from "../../utils/Constant";
-import { searchTransactionApi, getFilters, getTransactionAsset } from "../intelligence/Api";
+import {
+  searchTransactionApi,
+  getFilters,
+  getTransactionAsset,
+} from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
 import {
