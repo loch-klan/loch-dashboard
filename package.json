@@ -56,7 +56,7 @@
     "deploy:dev": "aws s3 sync build/ s3://staging.loch.com",
     "build:prod": "GENERATE_SOURCEMAP=false ENV=production npm run build",
     "predeploy:prod": "npm run build:prod",
-    "deploy:prod": "aws s3 sync --profile loch build/ s3://app.loch.one; aws cloudfront --profile loch create-invalidation --distribution-id E3LEY732SHUGA7 --paths '/*'",
+    "deploy:prod": "aws s3 sync build/ s3://app.loch.one; aws cloudfront create-invalidation --distribution-id E3LEY732SHUGA7 --paths '/*'",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "generate": "plop",

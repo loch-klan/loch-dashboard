@@ -25,8 +25,10 @@ function App() {
   useEffect(() => {
     const isRendered = window.sessionStorage.getItem("isRendered");
     if (!isRendered) {
-      window.sessionStorage.setItem("isRendered", true);
-      window.location.reload();
+      setTimeout(() => {
+        window.sessionStorage.setItem("isRendered", true);
+        window.location.reload(true);
+      }, 1000);
     }
     return () => {
       window.sessionStorage.removeItem("isRendered");
