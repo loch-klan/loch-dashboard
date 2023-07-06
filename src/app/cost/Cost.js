@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import BarGraphSection from "../common/BarGraphSection";
 import PageHeader from "../common/PageHeader";
-import Sidebar from "../common/Sidebar";
-import { info, years5, ethereum } from "./dummyData.js";
+import { info } from "./dummyData.js";
 import { connect } from "react-redux";
 import { getAllCoins } from "../onboarding/Api.js";
-import Ethereum from "../../assets/images/icons/ether-coin.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { Image } from "react-bootstrap";
@@ -26,9 +24,10 @@ import {
   CostSortByAmount,
   SortByCurrentValue,
   SortByGainLoss,
+  costFeesChainFilter,
+  costVolumeChainFilter,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import { getCounterGraphData, getGraphData } from "./getGraphData";
 import {
   getAllFeeApi,
@@ -39,10 +38,7 @@ import {
   updateAverageCostBasis,
   ResetAverageCostBasis,
 } from "./Api";
-import Loading from "../common/Loading";
 import moment from "moment/moment";
-import graphImage from "../../assets/images/gas-fees-graph.png";
-import FeedbackForm from "../common/FeedbackForm";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "../common/ConnectModal";
 import FixAddModal from "../common/FixAddModal";
@@ -90,7 +86,8 @@ class Cost extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-
+      isFeesChainSearchUsed: false,
+      isVolumeChainSearchUsed: false,
       // sort
       sortBy: [
         { title: "Asset", down: true },
@@ -103,12 +100,24 @@ class Cost extends Component {
       ],
     };
   }
-
-  componentDidMount() {
+  feesChainSearchIsUsed = () => {
+    this.setState({ isFeesChainSearchUsed: true });
+  };
+  volumeChainSearchIsUsed = () => {
+    this.setState({ isVolumeChainSearchUsed: true });
+  };
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
     CostsPage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkCostTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
@@ -121,12 +130,10 @@ class Cost extends Component {
     } else {
       window.scrollTo(0, 0);
     }
-    this.state.startTime = new Date() * 1;
-    // console.log("page Enter", this.state.startTime / 1000);
 
     this.props.getAllCoins();
-    this.getBlockchainFee(0);
-    this.getCounterPartyFee(0);
+    this.getBlockchainFee(0, true);
+    this.getCounterPartyFee(0, true);
     this.props.getAvgCostBasis(this);
     GetAllPlan();
     getUser();
@@ -138,6 +145,12 @@ class Cost extends Component {
       this.handleAddModal();
       this.props.history.replace("/intelligence/costs");
     }
+    this.startPageView();
+    this.updateTimer(true);
+
+    return () => {
+      clearInterval(window.checkCostTimer);
+    };
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -181,7 +194,7 @@ class Cost extends Component {
     this.props.setPageFlagDefault();
   };
 
-  getBlockchainFee(option) {
+  getBlockchainFee(option, first) {
     const today = moment().valueOf();
     let handleSelected = "";
     // console.log("headle click");
@@ -218,14 +231,17 @@ class Cost extends Component {
       handleSelected = "Week";
     }
     // console.log("handle select", handleSelected);
-    FeesTimePeriodFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_period_selected: handleSelected,
-    });
+    if (!first) {
+      FeesTimePeriodFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_period_selected: handleSelected,
+      });
+      this.updateTimer();
+    }
   }
 
-  getCounterPartyFee(option) {
+  getCounterPartyFee(option, first) {
     const today = moment().unix();
     let handleSelected = "";
     // console.log("headle click");
@@ -237,60 +253,77 @@ class Cost extends Component {
       const fiveyear = moment().subtract(5, "years").unix();
 
       this.props.getAllCounterFeeApi(this, fiveyear, today);
-      // console.log(fiveyear, today, "5 years");
       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").unix();
       this.props.getAllCounterFeeApi(this, year, today);
-      // console.log(year, today, "1 year");
       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").unix();
 
       this.props.getAllCounterFeeApi(this, sixmonth, today);
-      // console.log(sixmonth, today, "6 months");
       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").unix();
       this.props.getAllCounterFeeApi(this, month, today);
-      // console.log(month, today, "1 month");
       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").unix();
       this.props.getAllCounterFeeApi(this, week, today);
-      // console.log(week, today, "week");
       handleSelected = "Week";
     }
-
-    // console.log("handle select", handleSelected)
-    // CounterpartyFeesTimeFilter;
-    CounterpartyFeesTimeFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_period_selected: handleSelected,
-    });
+    if (!first) {
+      CounterpartyFeesTimeFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_period_selected: handleSelected,
+      });
+      this.updateTimer();
+    }
   }
-
-  componentWillUnmount() {
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem("costPageExpiryTime");
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("costPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkCostTimer);
+    localStorage.removeItem("costPageExpiryTime");
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime / 1000);
-    // console.log("Time Spent", TimeSpent);
     TimeSpentCosts({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       time_spent: TimeSpent,
     });
-
-    // get all data on page leave
-    // console.log("data");
     // this.getBlockchainFee(0);
     // this.getCounterPartyFee(0);
-    this.props.ResetAverageCostBasis();
+    this.props.ResetAverageCostBasis(this);
     // updateAverageCostBasis,
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("costPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("costPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   handleBadge = (activeBadgeList, type) => {
+    let selectedChains = [];
+    this.props.OnboardingState.coinsList?.map((item) => {
+      if (activeBadgeList?.includes(item.id)) {
+        selectedChains.push(item.code);
+      }
+    });
     const { GraphfeeData, counterPartyData } = this.props.intelligenceState;
     let graphDataMaster = [];
     let counterPartyDataMaster = [];
@@ -310,7 +343,20 @@ class Cost extends Component {
       // this.setState({
       //   graphfeeValue: getGraphData(graphDataObj, this),
       // });
-      this.props.updateFeeGraph(GraphfeeData, getGraphData(graphDataObj, this));
+      this.props.updateFeeGraph(
+        GraphfeeData,
+        getGraphData(graphDataObj, this),
+        this
+      );
+      const tempIsSearchUsed = this.state.isFeesChainSearchUsed;
+      costFeesChainFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        selected: selectedChains,
+        isSearchUsed: tempIsSearchUsed,
+      });
+      this.updateTimer();
+      this.setState({ isFeesChainSearchUsed: false });
     } else {
       counterPartyData &&
         counterPartyData?.map((tempGraphData) => {
@@ -326,8 +372,18 @@ class Cost extends Component {
       // });
       this.props.updateCounterParty(
         counterPartyData,
-        getCounterGraphData(counterPartyDataMaster, this)
+        getCounterGraphData(counterPartyDataMaster, this),
+        this
       );
+      const tempIsSearchUsed = this.state.isVolumeChainSearchUsed;
+      costVolumeChainFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        selected: selectedChains,
+        isSearchUsed: tempIsSearchUsed,
+      });
+      this.updateTimer();
+      this.setState({ isVolumeChainSearchUsed: false });
     }
   };
   handleConnectModal = () => {
@@ -359,7 +415,7 @@ class Cost extends Component {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList);
+    this.props.updateAverageCostBasis(sortedList, this);
   };
   // sort
   handleSort = (e) => {
@@ -384,6 +440,7 @@ class Cost extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
       // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
@@ -394,6 +451,7 @@ class Cost extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
     } else if (e.title === "Current price") {
       this.sortArray("CurrentPrice", isDown);
       this.setState({
@@ -403,6 +461,7 @@ class Cost extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
     } else if (e.title === "Amount") {
       this.sortArray("Amount", isDown);
       this.setState({
@@ -412,6 +471,7 @@ class Cost extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
     } else if (e.title === "Cost basis") {
       this.sortArray("CostBasis", isDown);
       this.setState({
@@ -421,6 +481,7 @@ class Cost extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
     } else if (e.title === "Current value") {
       this.sortArray("CurrentValue", isDown);
       this.setState({
@@ -430,6 +491,7 @@ class Cost extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
     } else if (e.title === "Gain loss") {
       this.sortArray("GainLoss", isDown);
       this.setState({
@@ -439,6 +501,7 @@ class Cost extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      this.updateTimer();
     }
   };
 
@@ -447,15 +510,16 @@ class Cost extends Component {
       let array = this.props.intelligenceState?.Average_cost_basis?.filter(
         (e) => e.CurrentValue >= 1
       ); //all data
-      this.props.updateAverageCostBasis(array);
+      this.props.updateAverageCostBasis(array, this);
     } else {
-      this.props.ResetAverageCostBasis();
+      this.props.ResetAverageCostBasis(this);
     }
 
     CostHideDust({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
   };
 
   handleShare = () => {
@@ -475,14 +539,10 @@ class Cost extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-
-    // console.log("share pod", shareLink);
+    this.updateTimer();
   };
 
   render() {
-    // console.log("counter", this.state.counterGraphDigit);
-    // console.log("fes", this.state.GraphDigit);
-
     let tableData = this.props.intelligenceState.Average_cost_basis;
     // const tableData = [
     //   {
@@ -556,7 +616,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Average Cost Price
+              Average cost price
             </span>
             <Image
               src={sortByIcon}
@@ -585,13 +645,17 @@ class Cost extends Component {
                       ).toLocaleString("en-US")
                 }
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                  {rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.AverageCostPrice.toFixed(2))
-                      ).toLocaleString("en-US")}
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {rowData.AverageCostPrice === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          Number(
+                            noExponents(rowData.AverageCostPrice.toFixed(2))
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </div>
                 </div>
               </CustomOverlay>
             );
@@ -606,7 +670,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Price
+              Current price
             </span>
             <Image
               src={sortByIcon}
@@ -633,11 +697,15 @@ class Cost extends Component {
                   ).toLocaleString("en-US")
                 }
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                  {CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentPrice.toFixed(2))
-                    ).toLocaleString("en-US")}
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CurrentPrice.toFixed(2))
+                        ).toLocaleString("en-US")}
+                    </span>
+                  </div>
                 </div>
               </CustomOverlay>
             );
@@ -692,7 +760,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost Basis
+              Cost basis
             </span>
             <Image
               src={sortByIcon}
@@ -742,7 +810,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Value
+              Current value
             </span>
             <Image
               src={sortByIcon}
@@ -803,14 +871,33 @@ class Cost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
             return (
-              <div
-                className={`gainLoss ${rowData.GainLoss < 0 ? "loss" : "gain"}`}
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  Number(
+                    noExponents(rowData.GainLoss.toFixed(2))
+                  ).toLocaleString("en-US") + "%"
+                }
+                colorCode="#000"
               >
-                <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                <div className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.GainLoss.toFixed(2) + "%"}
+                <div className="gainLossContainer">
+                  <div
+                    className={`gainLoss ${
+                      rowData.GainLoss < 0 ? "loss" : "gain"
+                    }`}
+                  >
+                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                      {Number(
+                        noExponents(rowData.GainLoss.toFixed(2))
+                      ).toLocaleString("en-US") + "%"}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </CustomOverlay>
             );
           }
         },
@@ -832,6 +919,7 @@ class Cost extends Component {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                updateTimer={this.updateTimer}
               />
             </div>
           </div>
@@ -845,11 +933,12 @@ class Cost extends Component {
               headerTitle={"Connect exchanges"}
               modalType={"connectModal"}
               iconImage={LinkIcon}
+              updateTimer={this.updateTimer}
             />
           ) : (
             ""
           )}
-          <div className="m-t-50 cost-section page">
+          <div className="m-t-30 cost-section page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -864,6 +953,7 @@ class Cost extends Component {
                 changeWalletList={this.handleChangeList}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 from="cost"
+                updateTimer={this.updateTimer}
               />
             )}
             <PageHeader
@@ -875,6 +965,7 @@ class Cost extends Component {
               currentPage={"costs"}
               ShareBtn={true}
               handleShare={this.handleShare}
+              updateTimer={this.updateTimer}
             />
             <div className="m-b-43 cost-table-section">
               <div style={{ position: "relative" }}>
@@ -885,7 +976,7 @@ class Cost extends Component {
                 </p>
               </div> */}
                 <TransactionTable
-                  title="Average Cost Basis"
+                  title="Average cost basis"
                   subTitle="Understand your average entry price"
                   tableData={tableData}
                   columnList={columnData}
@@ -911,7 +1002,7 @@ class Cost extends Component {
               }}
             >
               <BarGraphSection
-                headerTitle="Blockchain Fees over Time"
+                headerTitle="Blockchain fees over time"
                 headerSubTitle="Understand your gas costs"
                 data={
                   this.props.intelligenceState.graphfeeValue &&
@@ -940,7 +1031,7 @@ class Cost extends Component {
                 handleBadge={(activeBadgeList) =>
                   this.handleBadge(activeBadgeList, 1)
                 }
-
+                chainSearchIsUsed={this.feesChainSearchIsUsed}
                 // height={420}
                 // width={824}
                 // comingSoon={false}
@@ -962,7 +1053,7 @@ class Cost extends Component {
             </div> */}
 
               <BarGraphSection
-                headerTitle="Counterparty Volume Over Time"
+                headerTitle="Counterparty volume over time"
                 headerSubTitle="Understand where you’ve exchanged the most value"
                 data={
                   this.props.intelligenceState.counterPartyValue &&
@@ -992,6 +1083,7 @@ class Cost extends Component {
                 // height={"400px"}
                 // width={"824px"}
                 // comingSoon={true}
+                chainSearchIsUsed={this.volumeChainSearchIsUsed}
               />
             </div>
 

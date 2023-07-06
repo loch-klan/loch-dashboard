@@ -1,13 +1,10 @@
-import React, { Component } from "react";
-import { Button, Col, Image, Row } from "react-bootstrap";
+import React from "react";
+import { Col, Image, Row } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
-import reduceCost from "../../assets/images/icons/reduce-cost.svg";
-import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
-import increaseYield from "../../assets/images/icons/increase-yield.svg";
+
 import {
   CreateUpdateNotification,
   DeleteCohortAddress,
-  getAllInsightsApi,
   GetAssetFilter,
   getCohort,
   getDefiCohort,
@@ -24,25 +21,14 @@ import {
   AmountType,
   BASE_URL_S3,
   DormantType,
-  InsightType,
   PodType,
 } from "../../utils/Constant";
 import Loading from "../common/Loading";
-import Coin1 from "../../assets/images/icons/Coin0.svg";
-import Coin2 from "../../assets/images/icons/Coin-1.svg";
-import Coin3 from "../../assets/images/icons/Coin-2.svg";
-import Coin4 from "../../assets/images/icons/Coin-3.svg";
 import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 import TransactionIcon from "../../image/TransactionHistoryIcon.svg";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import netWorthIcon from "../../assets/images/icons/total-net-dark.svg";
-import BellIcon from "../../assets/images/icons/bell.svg";
-import BellIconColor from "../../assets/images/icons/bell-color.svg";
-import VerticalIcon from "../../assets/images/icons/veritcal-line.svg";
 import TrendIcon from "../../assets/images/icons/trending-up.svg";
-
-import ClockIcon from "../../assets/images/icons/clock.svg";
-import PlusIcon from "../../assets/images/icons/plus-circle.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import {
@@ -52,12 +38,9 @@ import {
   numToCurrency,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import CoinChip from "../wallet/CoinChip";
 import Coin from "../../assets/images/coin-ava.svg";
 import GlobeIcon from "../../assets/images/icons/globe.svg";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
-import EditIcon from "../../assets/images/EditIcon.svg";
-import ArrowRight from "../../assets/images/icons/ArrowRight.svg";
 import CartIcon from "../../assets/images/icons/cart-dark.svg";
 import TokenIcon from "../../assets/images/icons/token-dark.svg";
 import MedalIcon from "../../assets/images/icons/medal-dark.svg";
@@ -65,23 +48,15 @@ import StarIcon from "../../assets/images/icons/star-dark.svg";
 import ExitOverlay from "../common/ExitOverlay";
 import Form from "../../utils/form/Form";
 import FormElement from "../../utils/form/FormElement";
-import FormValidator from "./../../utils/form/FormValidator";
 import CustomTextControl from "./../../utils/form/CustomTextControl";
 import { toast } from "react-toastify";
-import DropDown from "../common/DropDown";
-import EditWalletModal from "../wallet/EditWalletModal";
-import checkIcon from "../../assets/images/icons/check-cohort.svg";
 import moment from "moment";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
 import AuthModal from "../common/AuthModal";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import {
   NotificationAmount,
-  NotificationCheckbox1,
-  NotificationCheckbox2,
   NotificationDays,
-  NotificationDropdown1,
-  NotificationDropdown2,
   NotificationSaved,
   PageViewWhaleExpanded,
   PodNickname,
@@ -189,6 +164,7 @@ class CohortPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       pod_name: this.state.cohortName,
     });
+    this.updateTimer();
   };
 
   toggleDebt = () => {
@@ -201,6 +177,7 @@ class CohortPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       pod_name: this.state.cohortName,
     });
+    this.updateTimer();
   };
 
   showDust = () => {
@@ -217,6 +194,7 @@ class CohortPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       pod_name: this.state.cohortName,
     });
+    this.updateTimer();
   };
 
   upgradeModal = () => {
@@ -258,6 +236,7 @@ class CohortPage extends BaseReactComponent {
       selected:
         badge[0]?.name === "All" ? "All chains" : badge?.map((e) => e?.name),
     });
+    this.updateTimer();
   };
 
   handleAsset = (arr) => {
@@ -274,6 +253,7 @@ class CohortPage extends BaseReactComponent {
           selected:
             arr[0]?.name === "All" ? "All assets" : arr?.map((e) => e?.name),
         });
+        this.updateTimer();
         this.getAssetData(this.state.activeFooter);
       }
     );
@@ -308,6 +288,7 @@ class CohortPage extends BaseReactComponent {
           WhalePopup({
             session_id: getCurrentUser().id,
           });
+          this.updateTimer();
         }
       }, 200);
     }
@@ -317,6 +298,7 @@ class CohortPage extends BaseReactComponent {
         email_address: getCurrentUser().email,
         pod_name: this.state.cohortName,
       });
+      this.updateTimer();
     }
   };
 
@@ -327,6 +309,7 @@ class CohortPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       pod_name: this.state.cohortName,
     });
+    this.updateTimer();
     this.setState(
       {
         skip: true,
@@ -352,16 +335,26 @@ class CohortPage extends BaseReactComponent {
             email_address: getCurrentUser().email,
             pod_name: this.state.cohortName,
           });
+          this.updateTimer();
         }
       }
     );
   };
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
+    PageViewWhaleExpanded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      pod_name: this.state?.cohortName,
+    });
+    // Inactivity Check
+    window.checkWhalePodIndividualTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
   componentDidMount() {
-    // console.log("test")
-    this.state.startTime = new Date() * 1;
-
     this.getCohortDetail();
-    this.getAssetData(0);
+    this.getAssetData(0, true);
     this.getNotificationApi();
     this.props.getAllCoins();
     this.getAssetFilter();
@@ -384,16 +377,27 @@ class CohortPage extends BaseReactComponent {
         }
       );
     }
-    setTimeout(() => {
-      PageViewWhaleExpanded({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        pod_name: this.state?.cohortName,
-      });
-    }, 1000);
-  }
 
-  componentWillUnmount() {
+    this.updateTimer(true);
+    this.startPageView();
+
+    return () => {
+      clearInterval(window.checkWhalePodIndividualTimer);
+    };
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "whalePodIndividualPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("whalePodIndividualPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkWhalePodIndividualTimer);
+    localStorage.removeItem("whalePodIndividualPageExpiryTime");
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000;
 
@@ -403,6 +407,23 @@ class CohortPage extends BaseReactComponent {
       time_spent: TimeSpent,
       pod_name: this.state.cohortName,
     });
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem(
+      "whalePodIndividualPageExpiryTime"
+    );
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem(
+      "whalePodIndividualPageExpiryTime"
+    );
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   getNotificationApi = () => {
@@ -423,7 +444,7 @@ class CohortPage extends BaseReactComponent {
     }
   }
 
-  getAssetData = (activeFooter) => {
+  getAssetData = (activeFooter, first) => {
     this.setState({
       PurchasedAssetLoader: true,
       SoldAssetLoader: true,
@@ -481,11 +502,14 @@ class CohortPage extends BaseReactComponent {
     }
 
     // Analyics
-    WhaleExpandedPodFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_period_selected: handleSelected,
-    });
+    if (!first) {
+      WhaleExpandedPodFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_period_selected: handleSelected,
+      });
+      this.updateTimer();
+    }
     // api for Get Sold Asset
     GetSoldAsset(data, this);
     // api for get purchased asset
@@ -558,6 +582,7 @@ class CohortPage extends BaseReactComponent {
           dropdown_name1: this.state.title,
           dropdown_name2: this.state.titleday,
         });
+        this.updateTimer();
         let data = new URLSearchParams();
         data.append("cohort_id", this.state.cohortId);
         data.append("email", this.state.email);
@@ -614,6 +639,7 @@ class CohortPage extends BaseReactComponent {
           is_checked: this.state.walletNotification,
           amount_selected: title,
         });
+        this.updateTimer();
       }
     );
   };
@@ -634,6 +660,7 @@ class CohortPage extends BaseReactComponent {
           is_checked: this.state.dayNotification,
           day_selected: title,
         });
+        this.updateTimer();
       }
     );
   };
@@ -647,6 +674,7 @@ class CohortPage extends BaseReactComponent {
       pod_name: this.state.cohortName,
       address: address,
     });
+    this.updateTimer();
   };
 
   handleShow = () => {
@@ -670,6 +698,7 @@ class CohortPage extends BaseReactComponent {
           is_checked: this.state.walletNotification,
           amount_selected: this.state.title,
         });
+        this.updateTimer();
       }
     );
 
@@ -690,6 +719,7 @@ class CohortPage extends BaseReactComponent {
           is_checked: this.state.dayNotification,
           day_selected: this.state.titleday,
         });
+        this.updateTimer();
       }
     );
     //  toast.success("You will be receiving notifications");
@@ -731,6 +761,7 @@ class CohortPage extends BaseReactComponent {
       nickname: this.state[`nickname-${i + 1}`],
       address: address,
     });
+    this.updateTimer();
   };
 
   deleteAddress = (address) => {
@@ -745,6 +776,7 @@ class CohortPage extends BaseReactComponent {
       pod_name: this.state.cohortName,
       address: address,
     });
+    this.updateTimer();
   };
 
   handleShare = () => {
@@ -763,6 +795,7 @@ class CohortPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       pod_name: this.state.cohortName,
     });
+    this.updateTimer();
 
     // console.log("share pod", shareLink);
   };
@@ -829,6 +862,7 @@ class CohortPage extends BaseReactComponent {
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 handleUpdate={this.handleUpdateWallet}
+                updateTimer={this.updateTimer}
               />
             </div>
           </div>
@@ -854,6 +888,7 @@ class CohortPage extends BaseReactComponent {
               apiResponse={(e) => this.CheckApiResponse(e)}
               total_addresses={this.state.total_addresses}
               totalEditAddress={this.state.walletAddresses?.length}
+              updateTimer={this.updateTimer}
             />
           ) : (
             ""
@@ -885,6 +920,7 @@ class CohortPage extends BaseReactComponent {
               isStatic={this.state.isStatic}
               triggerId={this.state.triggerId}
               pname="cohort-individual"
+              updateTimer={this.updateTimer}
             />
           )}
 
@@ -902,6 +938,7 @@ class CohortPage extends BaseReactComponent {
               ShareBtn={true}
               handleShare={this.handleShare}
               multipleImg={this.state?.chainImages?.slice(0, 4)}
+              updateTimer={this.updateTimer}
             />
 
             <Row className="m-t-40 m-b-40">
@@ -1333,6 +1370,143 @@ class CohortPage extends BaseReactComponent {
             </div>
 
             <Row>
+              <Col md={4} style={{ paddingRight: "0.8rem" }}>
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    // height: "100%",
+                    height: "19rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  {!this.state.VolumeBoughtLoader ? (
+                    <>
+                      <div>
+                        <Image src={CartIcon} className="net-worth-icon" />
+                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                          Highest Volume
+                          <br />
+                          Inflow
+                        </h3>
+                      </div>
+                      <div style={{ height: "1.7rem", width: "max-content" }}>
+                        {this.state.LargestBoughtVolume &&
+                        !this.state.VolumeBoughtLoader ? (
+                          // <CoinChip
+                          //   colorCode={this.state.frequentlyPurchasedAsset?.color}
+                          //   coin_img_src={
+                          //     this.state.frequentlyPurchasedAsset?.symbol
+                          //   }
+                          //   coin_percent={
+                          //     this.state.frequentlyPurchasedAsset?.name
+                          //   }
+                          //   type={"cohort"}
+                          // />
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              src={this.state.LargestBoughtVolume?.symbol}
+                              style={{ width: "1.7rem" }}
+                            />
+                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                              {this.state.LargestBoughtVolume?.name}
+                            </h3>
+                          </div>
+                        ) : (
+                          <h3 className="inter-display-medium f-s-13 lh-15">
+                            No movement
+                          </h3>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                    // style={{
+                    //   transform: "scale(0.65)",
+                    //   marginTop: "-3.5rem",
+                    //   marginLeft: "1rem",
+                    // }}
+                    >
+                      <Loading showIcon={true} />
+                    </div>
+                  )}
+                </div>
+              </Col>
+              <Col
+                md={4}
+                style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
+              >
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow:
+                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
+                    borderRadius: "12px",
+                    padding: "2rem",
+                    // height: "100%",
+                    height: "19rem",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexDirection: "column",
+                  }}
+                >
+                  {!this.state.SoldVolumeLoader ? (
+                    <>
+                      <div>
+                        <Image src={TokenIcon} className="net-worth-icon" />
+                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
+                          Highest Volume <br />
+                          Outflow
+                        </h3>
+                      </div>
+
+                      <div style={{ height: "1.7rem", width: "max-content" }}>
+                        {this.state.LargestSoldVolume &&
+                        !this.state.SoldVolumeLoader ? (
+                          // <CoinChip
+                          //   colorCode={this.state.frequentlySoldAsset?.color}
+                          //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
+                          //   coin_percent={this.state.frequentlySoldAsset?.name}
+                          //   type={"cohort"}
+                          // />
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <Image
+                              src={this.state.LargestSoldVolume?.symbol}
+                              style={{ width: "1.7rem" }}
+                            />
+                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
+                              {this.state.LargestSoldVolume?.name}
+                            </h3>
+                          </div>
+                        ) : (
+                          <h3 className="inter-display-medium f-s-13 lh-15">
+                            No movement
+                          </h3>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                    // style={{
+                    //   transform: "scale(0.65)",
+                    //   marginTop: "-3.5rem",
+                    //   marginLeft: "1rem",
+                    // }}
+                    >
+                      <Loading showIcon={true} />
+                    </div>
+                  )}
+                </div>
+              </Col>
               <Col
                 md={4}
                 style={{ paddingRight: "0.8rem", marginBottom: "1.6rem" }}
@@ -1356,8 +1530,9 @@ class CohortPage extends BaseReactComponent {
                       <div>
                         <Image src={CartIcon} className="net-worth-icon" />
                         <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Most frequently <br />
-                          purchased token
+                          Most Frequent
+                          <br />
+                          Inflow
                         </h3>
                       </div>
                       <div style={{ height: "1.7rem", width: "max-content" }}>
@@ -1431,8 +1606,8 @@ class CohortPage extends BaseReactComponent {
                       <div>
                         <Image src={TokenIcon} className="net-worth-icon" />
                         <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Most frequently <br />
-                          sold token
+                          Most Frequent <br />
+                          Outflow
                         </h3>
                       </div>
 
@@ -1516,8 +1691,8 @@ class CohortPage extends BaseReactComponent {
                           />
                         </div>
                         <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Largest volume <br />
-                          exchanged token
+                          Highest Volume <br />
+                          Traded
                         </h3>
                       </div>
 
@@ -1539,143 +1714,6 @@ class CohortPage extends BaseReactComponent {
                             />
                             <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
                               {this.state?.LargestAsset?.name}
-                            </h3>
-                          </div>
-                        ) : (
-                          <h3 className="inter-display-medium f-s-13 lh-15">
-                            No movement
-                          </h3>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <div
-                    // style={{
-                    //   transform: "scale(0.65)",
-                    //   marginTop: "-3.5rem",
-                    //   marginLeft: "1rem",
-                    // }}
-                    >
-                      <Loading showIcon={true} />
-                    </div>
-                  )}
-                </div>
-              </Col>
-              <Col md={4} style={{ paddingRight: "0.8rem" }}>
-                <div
-                  style={{
-                    background: "#FFFFFF",
-                    boxShadow:
-                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                    borderRadius: "12px",
-                    padding: "2rem",
-                    // height: "100%",
-                    height: "19rem",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexDirection: "column",
-                  }}
-                >
-                  {!this.state.VolumeBoughtLoader ? (
-                    <>
-                      <div>
-                        <Image src={CartIcon} className="net-worth-icon" />
-                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Largest volume
-                          <br />
-                          bought token
-                        </h3>
-                      </div>
-                      <div style={{ height: "1.7rem", width: "max-content" }}>
-                        {this.state.LargestBoughtVolume &&
-                        !this.state.VolumeBoughtLoader ? (
-                          // <CoinChip
-                          //   colorCode={this.state.frequentlyPurchasedAsset?.color}
-                          //   coin_img_src={
-                          //     this.state.frequentlyPurchasedAsset?.symbol
-                          //   }
-                          //   coin_percent={
-                          //     this.state.frequentlyPurchasedAsset?.name
-                          //   }
-                          //   type={"cohort"}
-                          // />
-                          <div
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <Image
-                              src={this.state.LargestBoughtVolume?.symbol}
-                              style={{ width: "1.7rem" }}
-                            />
-                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                              {this.state.LargestBoughtVolume?.name}
-                            </h3>
-                          </div>
-                        ) : (
-                          <h3 className="inter-display-medium f-s-13 lh-15">
-                            No movement
-                          </h3>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <div
-                    // style={{
-                    //   transform: "scale(0.65)",
-                    //   marginTop: "-3.5rem",
-                    //   marginLeft: "1rem",
-                    // }}
-                    >
-                      <Loading showIcon={true} />
-                    </div>
-                  )}
-                </div>
-              </Col>
-              <Col
-                md={4}
-                style={{ paddingRight: "0.8rem", paddingLeft: "0.8rem" }}
-              >
-                <div
-                  style={{
-                    background: "#FFFFFF",
-                    boxShadow:
-                      "0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04)",
-                    borderRadius: "12px",
-                    padding: "2rem",
-                    // height: "100%",
-                    height: "19rem",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexDirection: "column",
-                  }}
-                >
-                  {!this.state.SoldVolumeLoader ? (
-                    <>
-                      <div>
-                        <Image src={TokenIcon} className="net-worth-icon" />
-                        <h3 className="inter-display-medium f-s-16 lh-19 m-t-12 m-b-20">
-                          Largest volume <br />
-                          sold token
-                        </h3>
-                      </div>
-
-                      <div style={{ height: "1.7rem", width: "max-content" }}>
-                        {this.state.LargestSoldVolume &&
-                        !this.state.SoldVolumeLoader ? (
-                          // <CoinChip
-                          //   colorCode={this.state.frequentlySoldAsset?.color}
-                          //   coin_img_src={this.state.frequentlySoldAsset?.symbol}
-                          //   coin_percent={this.state.frequentlySoldAsset?.name}
-                          //   type={"cohort"}
-                          // />
-                          <div
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <Image
-                              src={this.state.LargestSoldVolume?.symbol}
-                              style={{ width: "1.7rem" }}
-                            />
-                            <h3 className="inter-display-medium f-s-13 lh-15 m-l-4">
-                              {this.state.LargestSoldVolume?.name}
                             </h3>
                           </div>
                         ) : (

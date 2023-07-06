@@ -121,6 +121,9 @@ class Wallet extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else if (e.title === "Date added") {
       let obj = [
         {
@@ -137,6 +140,9 @@ class Wallet extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else if (e.title === "Name") {
       let obj = [
         {
@@ -153,6 +159,9 @@ class Wallet extends Component {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     }
 
     // this.makeApiCall()
@@ -191,6 +200,9 @@ class Wallet extends Component {
       email_address: getCurrentUser().email,
       assets_selected: badge.name,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
 
   componentDidUpdate(prevProps, prevState) {

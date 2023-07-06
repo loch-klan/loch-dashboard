@@ -864,18 +864,27 @@ class ConnectModal extends BaseReactComponent {
         email_address: getCurrentUser().email,
         exchange_name: item.name,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else if (this.props.tracking === "landing page") {
       LPConnectExchangeSelected({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
         exchange_name: item.name,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else if (this.props.tracking === "wallet page") {
       WalletConnectExchangeSelected({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
         exchange_name: item.name,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     }
     this.setState(
       {
@@ -1015,18 +1024,27 @@ class ConnectModal extends BaseReactComponent {
           email_address: getCurrentUser().email,
           exchange_name: this.state.selection?.name,
         });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
       } else if (this.props.tracking === "landing page") {
         LP_CE_OAuthAttempted({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           exchange_name: this.state.selection?.name,
         });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
       } else if (this.props.tracking === "wallet page") {
         Wallet_CE_OAuthAttempted({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           exchange_name: this.state.selection?.name,
         });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
       }
 
       //  console.log("user found connect exchnage");
@@ -1069,18 +1087,27 @@ class ConnectModal extends BaseReactComponent {
             email_address: getCurrentUser().email,
             exchange_name: this.state.selection?.name,
           });
+          if (this.props.updateTimer) {
+            this.props.updateTimer();
+          }
         } else if (this.props.tracking === "landing page") {
           LP_CE_ApiSyncAttmepted({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             exchange_name: this.state.selection?.name,
           });
+          if (this.props.updateTimer) {
+            this.props.updateTimer();
+          }
         } else if (this.props.tracking === "wallet page") {
           Wallet_CE_ApiSyncAttmepted({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             exchange_name: this.state.selection?.name,
           });
+          if (this.props.updateTimer) {
+            this.props.updateTimer();
+          }
         }
         if (
           this.state.apiKey &&
@@ -1235,6 +1262,9 @@ class ConnectModal extends BaseReactComponent {
       unrecognized_ENS: unrecog_address,
       nicknames: nicknames,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
 
   handleGo = () => {

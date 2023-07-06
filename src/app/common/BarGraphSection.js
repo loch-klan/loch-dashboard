@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { GraphHeader } from "./GraphHeader";
-import CoinBadges from "./CoinBadges";
 import { BarGraphFooter } from "./BarGraphFooter";
 import { connect } from "react-redux";
 import { Form, Image } from "react-bootstrap";
-import GraphLogo from "../../assets/images/graph-logo.svg";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,24 +13,17 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import {
-  BlockchainFeesFilter,
-  CounterpartyFeesFilter,
-  NetflowSwitch,
-} from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+
 import Loading from "./Loading";
 import { CurrencyType } from "../../utils/ReusableFunctions";
 import DropDown from "./DropDown";
 import CustomDropdown from "../../utils/form/CustomDropdown";
-import { info } from "../intelligence/stackGrapgh";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HC_rounded from "highcharts-rounded-corners";
 import ChartjsPluginWatermark from "chartjs-plugin-watermark";
 
 HC_rounded(Highcharts);
-// import { BarGraphSection } from './BarGraphSection';
 
 ChartJS.register(
   CategoryScale,
@@ -69,7 +60,7 @@ class BarGraphSection extends Component {
       // activeDropdown: props.activeDropdown,
       handleSelect: props.handleSelect,
       switchselected: props.isSwitch,
-
+      isSmallerToggle: props.isSmallerToggle,
       // stackedgraphdata: {
       //   options: info[0],
       // },
@@ -187,19 +178,19 @@ class BarGraphSection extends Component {
     //   );
     // }
 
-    if (this.props.headerTitle === "Blockchain Fees over Time")
-      BlockchainFeesFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        asset_selected: badge.name,
-      });
+    // if (this.props.headerTitle === "Blockchain Fees over Time")
+    //   BlockchainFeesFilter({
+    //     session_id: getCurrentUser().id,
+    //     email_address: getCurrentUser().email,
+    //     asset_selected: badge.name,
+    //   });
 
-    if (this.props.headerTitle === "Counterparty Fees Over Time")
-      CounterpartyFeesFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        asset_selected: badge.name,
-      });
+    // if (this.props.headerTitle === "Counterparty Fees Over Time")
+    //   CounterpartyFeesFilter({
+    //     session_id: getCurrentUser().id,
+    //     email_address: getCurrentUser().email,
+    //     asset_selected: badge.name,
+    //   });
   };
 
   render() {
@@ -303,6 +294,7 @@ class BarGraphSection extends Component {
                       action={null}
                       handleClick={this.handleFunction}
                       isChain={true}
+                      searchIsUsed={this.props.chainSearchIsUsed}
                       // selectedTokens={this.state.activeBadge}
                     />
                   </div>
@@ -340,6 +332,7 @@ class BarGraphSection extends Component {
                       LightTheme={true}
                       placeholderName={"asset"}
                       getObj={this.props?.getObj}
+                      searchIsUsed={this.props.assetSearchIsUsed}
                       // selectedTokens={this.state.activeBadge}
                     />
                   </div>
@@ -347,11 +340,17 @@ class BarGraphSection extends Component {
               </div>
             }
 
-            {showPercentage ? (
+            {showPercentage || showSwitch ? (
               <div
                 className="show-percentage-div"
                 style={
-                  showSwitch
+                  showSwitch && !showPercentage
+                    ? {
+                        marginBottom: "1rem",
+                        marginTop: "-2.5rem",
+                        justifyContent: "end",
+                      }
+                    : showSwitch
                     ? { marginBottom: "2rem" }
                     : {
                         justifyContent: "flex-end",
@@ -360,35 +359,41 @@ class BarGraphSection extends Component {
                       }
                 }
               >
-                <div
-                  className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
-                    showPercentage.status === "Increase"
-                      ? "inc"
-                      : showPercentage.status === "No Change"
-                      ? "inc"
-                      : "dec"
-                  }`}
-                >
-                  <Image src={showPercentage.icon} className="m-r-4" />
-                  {showPercentage.percent}% {showPercentage.status}
-                </div>
+                {showPercentage && (
+                  <div
+                    className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
+                      showPercentage.status === "Increase"
+                        ? "inc"
+                        : showPercentage.status === "No Change"
+                        ? "inc"
+                        : "dec"
+                    }`}
+                  >
+                    <Image src={showPercentage.icon} className="m-r-4" />
+                    {showPercentage.percent}% {showPercentage.status}
+                  </div>
+                )}
 
                 {showSwitch && (
-                  <div>
+                  <div
+                    className={`inter-display-medium f-s-13 lh-16 ${
+                      this.state.isSmallerToggle
+                        ? "smaller-toggle grey-ADA"
+                        : "primary-color"
+                    }`}
+                  >
                     <Form.Check
                       type="switch"
                       id="custom-switch"
                       label="Click to show breakdown"
                       checked={this.state.switchselected}
                       onChange={(e) => {
-                        NetflowSwitch({
-                          email_address: getCurrentUser().email,
-                          session_id: getCurrentUser().id,
-                        });
                         this.setState({
                           switchselected: e.target.checked,
                         });
-                        this.props.setSwitch();
+                        if (this.props.setSwitch) {
+                          this.props.setSwitch();
+                        }
                       }}
                     />
                   </div>
@@ -421,30 +426,56 @@ class BarGraphSection extends Component {
                   }`,
                 }}
               >
-                {!this.state.switchselected ? (
+                {this.props.isGraphLoading ? (
                   <div
-                    className="chartArea"
-                    style={
-                      data.labels.length > 8 && isScroll
-                        ? ScrollStyle
-                        : NormalStyle
-                    }
+                    style={{
+                      height: this?.props?.loaderHeight
+                        ? this?.props?.loaderHeight + "rem"
+                        : "30rem",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
-                    <Bar options={options} data={data} />
+                    <Loading />
                   </div>
                 ) : (
-                  <div className="chartArea">
-                    <HighchartsReact
-                      highcharts={Highcharts}
-                      options={this.props?.ProfitLossAsset}
-                      // constructorType={"stockChart"}
-                      // allowChartUpdate={true}
-                      // updateArgs={[true]}
-                    />
-                  </div>
+                  <>
+                    {!this.state.switchselected ? (
+                      <div
+                        className="chartArea"
+                        style={
+                          data.labels.length > 8 && isScroll
+                            ? ScrollStyle
+                            : NormalStyle
+                        }
+                      >
+                        <Bar options={options} data={data} />
+                      </div>
+                    ) : (
+                      <div
+                        className="chartArea"
+                        style={
+                          showSwitch && !showPercentage
+                            ? { maxHeight: "35.55rem" }
+                            : {}
+                        }
+                      >
+                        <HighchartsReact
+                          highcharts={Highcharts}
+                          options={this.props?.ProfitLossAsset}
+                          // constructorType={"stockChart"}
+                          // allowChartUpdate={true}
+                          // updateArgs={[true]}
+                          containerProps={{ style: { height: "100%" } }}
+                        />
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
+
             {/* Grapgh Section End */}
 
             {showFooterDropdown ? (
@@ -470,7 +501,9 @@ class BarGraphSection extends Component {
         ) : (
           <div
             style={{
-              height: "30rem",
+              height: this?.props?.loaderHeight
+                ? this?.props?.loaderHeight + "rem"
+                : "30rem",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",

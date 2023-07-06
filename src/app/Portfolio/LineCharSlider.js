@@ -62,9 +62,16 @@ class LineChartSlider extends BaseReactComponent {
       steps: this.props.hideTimeFilter ? 6 : 1,
       plotLineHide: 0,
       rangeSelected: 1,
+      isTokenSearchUsed: false,
+      isChainSearchUsed: false,
     };
   }
-
+  chainSearchIsUsed = () => {
+    this.setState({ isChainSearchUsed: true });
+  };
+  tokenSearchIsUsed = () => {
+    this.setState({ isTokenSearchUsed: true });
+  };
   componentDidUpdate(prevProps) {
     if (prevProps.isUpdate !== this.props.isUpdate) {
       // console.log("Something update");
@@ -95,18 +102,25 @@ class LineChartSlider extends BaseReactComponent {
         selectedEvents: [],
       });
     }
-
+    const tempIsSearchUsed = this.state.isChainSearchUsed;
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
     this.props.isPage
       ? IntlAssetValueFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           filter_clicked: badge?.map((item) => item?.name),
+          isSearchUsed: tempIsSearchUsed,
         })
       : AssetValueFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           filter_clicked: badge?.map((item) => item?.name),
+          isSearchUsed: tempIsSearchUsed,
         });
+
+    this.setState({ isChainSearchUsed: false });
   };
   handleSelect = (opt) => {
     // console.log("opt", opt.target.id);
@@ -118,18 +132,27 @@ class LineChartSlider extends BaseReactComponent {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else if (opt.target.id == 1) {
       t = "Month";
       IntlAssetValueMonth({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else if (opt.target.id == 2) {
       t = "Day";
       IntlAssetValueDay({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else {
       t = "Day";
     }
@@ -150,12 +173,18 @@ class LineChartSlider extends BaseReactComponent {
         selectedEvents: [],
       },
       () => {
+        const tempIsSearchUsed = this.state.isTokenSearchUsed;
         IntlAssetValueAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           filter_clicked:
             arr[0]?.name === "All" ? [] : arr?.map((e) => e?.name),
+          isSearchUsed: tempIsSearchUsed,
         });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
+        this.setState({ isTokenSearchUsed: false });
       }
     );
   };
@@ -718,6 +747,9 @@ class LineChartSlider extends BaseReactComponent {
         events: {
           click: function (event) {
             if (parent.state.selectedValue !== selectedValue) {
+              if (parent.props.updateTimer) {
+                parent.props.updateTimer();
+              }
               parent.props.isPage
                 ? IntlAssetValueInternalEvent({
                     session_id: getCurrentUser().id,
@@ -756,7 +788,7 @@ class LineChartSlider extends BaseReactComponent {
             renderer
               .image(GraphLogo, x, y, imageWidth, imageHeight)
               .attr({
-                zIndex: 0, // Set the zIndex so it appears above the chart
+                zIndex: 99, // Set the zIndex so it appears above the chart
               })
               .add();
           },
@@ -795,6 +827,9 @@ class LineChartSlider extends BaseReactComponent {
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
               });
+              if (parent.props.updateTimer) {
+                parent.props.updateTimer();
+              }
             } else {
               if (diff >= 9 && diff < 11 && parent.state.plotLineHide !== 1) {
                 parent.setState({
@@ -805,6 +840,9 @@ class LineChartSlider extends BaseReactComponent {
                   session_id: getCurrentUser().id,
                   email_address: getCurrentUser().email,
                 });
+                if (parent.props.updateTimer) {
+                  parent.props.updateTimer();
+                }
               } else {
                 if (diff < 9 && parent.state.plotLineHide !== 0) {
                   parent.setState({
@@ -814,6 +852,9 @@ class LineChartSlider extends BaseReactComponent {
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
                   });
+                  if (parent.props.updateTimer) {
+                    parent.props.updateTimer();
+                  }
                 }
               }
 
@@ -825,6 +866,9 @@ class LineChartSlider extends BaseReactComponent {
                   session_id: getCurrentUser().id,
                   email_address: getCurrentUser().email,
                 });
+                if (parent.props.updateTimer) {
+                  parent.props.updateTimer();
+                }
               } else {
                 // if (diff >= 13 && parent.state.plotLineHide !== 3) {
                 //   parent.setState({
@@ -840,6 +884,9 @@ class LineChartSlider extends BaseReactComponent {
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
                   });
+                  if (parent.props.updateTimer) {
+                    parent.props.updateTimer();
+                  }
                 }
               }
             }
@@ -981,6 +1028,10 @@ class LineChartSlider extends BaseReactComponent {
                 value: x_value,
                 address: walletAddress,
               });
+
+          if (parent.props.updateTimer) {
+            parent.props.updateTimer();
+          }
           let net_amount = 0;
           this.points?.map((item) => {
             // console.log(
@@ -1166,7 +1217,7 @@ backdrop-filter: blur(15px);">
           >
             {!this.props.isPage && (
               <GraphHeader
-                title="Asset Value"
+                title="Asset value"
                 subtitle="Analyze your portfolio value over time"
                 isArrow={true}
                 isAnalytics="Asset Value"
@@ -1196,7 +1247,7 @@ backdrop-filter: blur(15px);">
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginBottom: "4rem",
+                        marginBottom: this.props.dataLoaded ? "5rem" : "2rem",
                       }}
                     >
                       <div
@@ -1236,6 +1287,7 @@ backdrop-filter: blur(15px);">
                             handleClick={this.handleFunction}
                             isChain={true}
                             // selectedTokens={this.state.activeBadge}
+                            searchIsUsed={this.chainSearchIsUsed}
                           />
                         </div>
                       </div>
@@ -1289,6 +1341,7 @@ backdrop-filter: blur(15px);">
                           handleClick={(arr) => this.DropdownData(arr)}
                           isLineChart={true}
                           getObj={true}
+                          searchIsUsed={this.tokenSearchIsUsed}
                         />
                       </span>
                     </>
@@ -1392,11 +1445,7 @@ backdrop-filter: blur(15px);">
 
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {Number(
-                                      noExponents(
-                                        event.assetValue.toFixed(count)
-                                      )
-                                    ).toLocaleString("en-US")}{" "}
+                                    {event.assetValue.toFixed(count)}{" "}
                                     {event.assetCode}
                                     {` or `}
                                     <span className="inter-display-semi-bold">
@@ -1472,11 +1521,7 @@ backdrop-filter: blur(15px);">
 
                                 <p className="inter-display-medium f-s-13 lh-16 grey-B4D">
                                   <span>
-                                    {Number(
-                                      noExponents(
-                                        event.assetValue.toFixed(count)
-                                      )
-                                    ).toLocaleString("en-US")}{" "}
+                                    {event.assetValue.toFixed(count)}{" "}
                                     {event.assetCode}
                                     {` or `}
                                     <span className="inter-display-semi-bold">

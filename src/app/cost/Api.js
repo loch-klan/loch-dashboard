@@ -22,6 +22,14 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
       data.append("start_datetime", startDate);
       data.append("end_datetime", endDate);
     }
+
+    if (ctx?.state?.isTopAccountPage) {
+      let addressObj = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
+      let address = addressObj?.map((e) => e?.address);
+      data.append("wallet_address", JSON.stringify(address));
+    }
     postLoginInstance
       .post("wallet/transaction/get-gas-fee-overtime", data)
       .then((res) => {
@@ -51,6 +59,13 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
     if (startDate) {
       data.append("start_datetime", startDate);
       data.append("end_datetime", endDate);
+    }
+    if (ctx?.state?.isTopAccountPage) {
+      let addressObj = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
+      let address = addressObj?.map((e) => e?.address);
+      data.append("wallet_address", JSON.stringify(address));
     }
     postLoginInstance
       .post("wallet/transaction/get-counter-party-volume-traded", data)
@@ -96,7 +111,7 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
 };
 
 // update counterpary value and data
-export const updateCounterParty = (data, value) => {
+export const updateCounterParty = (data, value, ctx) => {
   return function (dispatch, getState) {
     dispatch({
       type: COUNTER_PARTY_VOLUME,
@@ -109,7 +124,7 @@ export const updateCounterParty = (data, value) => {
 };
 
 // update counterpary value and data
-export const updateFeeGraph = (data, value) => {
+export const updateFeeGraph = (data, value, ctx) => {
   return function (dispatch, getState) {
     dispatch({
       type: GAS_FEES,
@@ -200,8 +215,16 @@ export const getUserAccount = (data, ctx) => {
 
 export const getAvgCostBasis = (ctx) => {
   return async function (dispatch, getState) {
+    let data = new URLSearchParams();
+    if (ctx?.state?.isTopAccountPage) {
+      let addressObj = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
+      let address = addressObj?.map((e) => e?.address);
+      data.append("wallet_address", JSON.stringify(address));
+    }
     postLoginInstance
-      .post("wallet/user-wallet/get-average-cost-basis")
+      .post("wallet/user-wallet/get-average-cost-basis", data)
       .then((res) => {
         if (!res.data.error) {
           let ApiResponse = res?.data.data?.assets;
@@ -391,7 +414,7 @@ export const getAvgCostBasis = (ctx) => {
 
 // sort average cost basis
 
-export const updateAverageCostBasis = (data) => {
+export const updateAverageCostBasis = (data, ctx) => {
   return function (dispatch, getState) {
     dispatch({
       type: AVERAGE_COST_SORT,
@@ -402,7 +425,7 @@ export const updateAverageCostBasis = (data) => {
 
 // reset average cost basis
 
-export const ResetAverageCostBasis = () => {
+export const ResetAverageCostBasis = (ctx) => {
   return function (dispatch, getState) {
     dispatch({
       type: AVERAGE_COST_RESET,

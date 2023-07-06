@@ -20,7 +20,7 @@ postLoginInstance.interceptors.request.use(function (config) {
 // INTERCEPT RESPONSE TO CHECK IF TOKEN HAS EXPIRED AND IF YES THEN REDIRECT TO LOGIN OR HOME
 postLoginInstance.interceptors.response.use(undefined, (error) => {
   console.log("error", error);
-  if (error.response.status === 401) {
+  if (error?.response?.status === 401) {
     deleteToken();
     window.location = "/";
   }

@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 // import Sidebar from '../common/Sidebar';
 import ProfileForm from "./ProfileForm";
 import PageHeader from "./../common/PageHeader";
-import FeedbackForm from "../common/FeedbackForm";
 import { ProfilePage, TimeSpentProfile } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
@@ -12,7 +11,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
-import { Button, Col, Image, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
 // Upgrade
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
@@ -26,7 +25,6 @@ import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
 import { ManageLink } from "./Api";
 import UpgradeModal from "../common/upgradeModal";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
-import moment from "moment";
 import Wallet from "../wallet/Wallet";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 
@@ -124,28 +122,63 @@ class Profile extends Component {
       startTime: "",
     };
   }
-
-  componentDidMount() {
-    this.state.startTime = new Date() * 1;
+  startPageView = () => {
+    this.setState({
+      startTime: new Date() * 1,
+    });
     ProfilePage({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkProfileTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
     GetAllPlan();
     getUser();
     ManageLink(this);
-  }
 
-  componentWillUnmount() {
+    this.startPageView();
+    this.updateTimer(true);
+
+    return () => {
+      clearInterval(window.checkProfileTimer);
+    };
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "profilePageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("profilePageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkProfileTimer);
+    localStorage.removeItem("profilePageExpiryTime");
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime / 1000);
-    // console.log("Time Spent", TimeSpent);
     TimeSpentProfile({
       time_spent: TimeSpent,
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("profilePageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("profilePageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
   upgradeModal = () => {
     this.setState({
@@ -478,13 +511,18 @@ class Profile extends Component {
                 isStatic={this.state.isStatic}
                 triggerId={0}
                 pname="profile"
+                updateTimer={this.updateTimer}
               />
             )}
             {/* <FeedbackForm page={"Profile Page"} /> */}
           </div>
         </div>
         {/* wallet page component */}
-        <Wallet hidePageHeader={true} isUpdate={this.state.isUpdate} />
+        <Wallet
+          hidePageHeader={true}
+          isUpdate={this.state.isUpdate}
+          updateTimer={this.updateTimer}
+        />
       </>
     );
   }

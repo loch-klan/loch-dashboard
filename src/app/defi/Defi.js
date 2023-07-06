@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Loading from "../common/Loading";
 import { getAllCoins } from "../onboarding/Api.js";
@@ -8,12 +7,7 @@ import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import PageHeader from "../common/PageHeader";
 import FixAddModal from "../common/FixAddModal";
 import arrowUp from "../../assets/images/arrow-up.svg";
-import arrowDown from "../../assets/images/arrow-down.svg";
-import {
-  getAllProtocol,
-  getProtocolBalanceApi,
-  getYieldBalanceApi,
-} from "../Portfolio/Api";
+import { getProtocolBalanceApi } from "../Portfolio/Api";
 import { updateDefiData } from "./Api";
 import {
   amountFormat,
@@ -22,15 +16,6 @@ import {
 } from "../../utils/ReusableFunctions";
 import { Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import Coin from "../../assets/images/icons/Coin0.svg";
-import Coin1 from "../../assets/images/icons/Coin0.svg";
-
-import Coin4 from "../../assets/images/icons/Coin-3.svg";
-
-import ReflexerIcon from "../../assets/images/icons/reflexer.svg";
-import MakerIcon from "../../assets/images/icons/maker.svg";
-import CoinChip from "../wallet/CoinChip";
-
 import Coin2 from "../../assets/images/icons/temp-coin1.svg";
 import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
 import { AssetType } from "../../utils/Constant";
@@ -70,13 +55,11 @@ class Defi extends Component {
 
       upgradeModal: false,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
-      triggerId: 0,
 
       // defi
 
       isYeildToggle: false,
       isDebtToggle: false,
-      upgradeModal: false,
       triggerId: 6,
 
       // time spent
@@ -106,6 +89,7 @@ class Defi extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
   };
 
   toggleDebt = () => {
@@ -118,8 +102,20 @@ class Defi extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
   };
 
+  startPageView = () => {
+    // Inactivity Check
+    window.checkDefiTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+    this.setState({ startTime: new Date() * 1 });
+    PageviewDefi({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
   componentDidMount() {
     // if (this.state.userPlan?.defi_enabled) {
     //   this.props.getAllCoins();
@@ -129,29 +125,47 @@ class Defi extends Component {
     //   this.handleReset();
     //   this.upgradeModal();
     // }
-    this.state.startTime = new Date() * 1;
-    PageviewDefi({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
 
     this.props.getAllCoins();
-    this.setState({});
 
-    // comment api
-    //  this.getYieldBalance();
+    this.startPageView();
+    this.updateTimer(true);
+
+    return () => {
+      clearInterval(window.checkDefiTimer);
+    };
   }
-
-  componentWillUnmount() {
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem("defiPageExpiryTime");
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("defiPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkDefiTimer);
+    localStorage.removeItem("defiPageExpiryTime");
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime / 1000);
-    // console.log("Time Spent", TimeSpent);
+
     TimeSpentDefi({
       time_spent: TimeSpent,
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("defiPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("defiPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -251,6 +265,7 @@ class Defi extends Component {
         email_address: getCurrentUser().email,
         session_id: getCurrentUser().id,
       });
+      this.updateTimer();
     } else if (e.title === "Date added") {
       this.sortArray("created_on", isDown);
       this.setState({
@@ -269,6 +284,7 @@ class Defi extends Component {
         email_address: getCurrentUser().email,
         session_id: getCurrentUser().id,
       });
+      this.updateTimer();
     }
   };
 
@@ -385,6 +401,7 @@ class Defi extends Component {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                updateTimer={this.updateTimer}
               />
             </div>
           </div>
@@ -405,9 +422,10 @@ class Defi extends Component {
                 changeWalletList={this.handleChangeList}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 from="defi"
+                updateTimer={this.updateTimer}
               />
             )}
-            {this.state.upgradeModal && (
+            {this.state.upgradeModal ? (
               <UpgradeModal
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
@@ -416,8 +434,9 @@ class Defi extends Component {
                 // isStatic={true}
                 triggerId={this.state.triggerId}
                 pname="defi"
+                updateTimer={this.updateTimer}
               />
-            )}
+            ) : null}
             <PageHeader
               title="Decentralized Finance"
               subTitle="Decipher all your DeFi data from one place"
@@ -427,6 +446,7 @@ class Defi extends Component {
               currentPage={"decentralized-finance"}
               // showData={totalWalletAmt}
               // isLoading={isLoading}
+              updateTimer={this.updateTimer}
             />
 
             {/* Balance sheet */}
@@ -488,6 +508,7 @@ class Defi extends Component {
                                   ? { paddingBottom: "0.3rem" }
                                   : {}
                               }
+                              key={`defiYEildValue-${i}`}
                             >
                               <span className="inter-display-medium f-s-16 lh-19">
                                 {item.name}
@@ -556,6 +577,7 @@ class Defi extends Component {
                                   ? { paddingBottom: "0.3rem" }
                                   : {}
                               }
+                              key={`defiDebtValue-${i}`}
                             >
                               <span className="inter-display-medium f-s-16 lh-19">
                                 {item.name}
@@ -619,7 +641,10 @@ class Defi extends Component {
                 );
 
                 return (
-                  <div className="defi-card-wrapper">
+                  <div
+                    key={`sortedList-${index}`}
+                    className="defi-card-wrapper"
+                  >
                     <div className="top-title-wrapper">
                       <div className="heading-image">
                         <Image src={card?.symbol} />
@@ -709,7 +734,10 @@ class Defi extends Component {
                     {tableRows &&
                       tableRows.map((item, i) => {
                         return (
-                          <Row className="table-content-row">
+                          <Row
+                            key={`defiTableRows-${i}`}
+                            className="table-content-row"
+                          >
                             <Col md={3}>
                               {/* <CoinChip
                     colorCode={"#E84042"}
@@ -722,6 +750,7 @@ class Defi extends Component {
                                   {item.assets?.map((e, i) => {
                                     return (
                                       <Image
+                                        key={`defiTableRowAsset-${i}`}
                                         src={e?.symbol}
                                         style={{
                                           zIndex: item.assets?.length - i,

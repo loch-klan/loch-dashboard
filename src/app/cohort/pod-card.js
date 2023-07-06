@@ -157,6 +157,9 @@ class PodCard extends Component {
               session_id: getCurrentUser().id,
               pod_name: item?.name,
             });
+            if (this.props.updateTimer) {
+              this.props.updateTimer();
+            }
           }}
           onClick={() => {
             if (this.state.isIndexed) {
@@ -178,6 +181,9 @@ class PodCard extends Component {
                     session_id: getCurrentUser().id,
                     pod_name: item?.name,
                   });
+                  if (this.props.updateTimer) {
+                    this.props.updateTimer();
+                  }
                   this.props.history.push({
                     pathname: `/whale-watch/${item?.slug}`,
                     state: {
@@ -197,6 +203,9 @@ class PodCard extends Component {
                   session_id: getCurrentUser().id,
                   pod_name: item?.name,
                 });
+                if (this.props.updateTimer) {
+                  this.props.updateTimer();
+                }
                 this.props.history.push({
                   pathname: `/whale-watch/${item?.slug}`,
                   state: {

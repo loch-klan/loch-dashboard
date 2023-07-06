@@ -2,7 +2,6 @@ import React from "react";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
 import WelcomeCard from "./WelcomeCard";
-import PieChart from "./PieChart";
 import LineChartSlider from "./LineCharSlider";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
@@ -14,14 +13,13 @@ import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import {
   getCoinRate,
   getDetailsByLinkApi,
-  getExchangeBalance,
   getUserWallet,
   getYesterdaysBalanceApi,
   settingDefaultValues,
   getExternalEventsApi,
   getExchangeBalances,
 } from "./Api";
-import { Button, Image, Row, Col } from "react-bootstrap";
+import { Image, Row, Col } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
@@ -30,19 +28,18 @@ import TransactionTable from "../intelligence/TransactionTable";
 import BarGraphSection from "./../common/BarGraphSection";
 import {
   getAllInsightsApi,
+  getAssetProfitLoss,
   getProfitAndLossApi,
   searchTransactionApi,
 } from "../intelligence/Api.js";
 
 import {
-  GetDefaultPlan,
   getDetectedChainsApi,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
 import {
   SEARCH_BY_WALLET_ADDRESS_IN,
-  Method,
   START_INDEX,
   SORT_BY_TIMESTAMP,
   SORT_BY_FROM_WALLET,
@@ -50,11 +47,8 @@ import {
   SORT_BY_ASSET,
   SORT_BY_USD_VALUE_THEN,
   SORT_BY_METHOD,
-  GROUP_BY_MONTH,
-  GROUP_BY_YEAR,
   GroupByOptions,
   GROUP_BY_DATE,
-  DEFAULT_PRICE,
   InsightType,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
@@ -65,8 +59,6 @@ import reduceRisk from "../../assets/images/icons/reduce-risk-img.svg";
 import increaseYield from "../../assets/images/icons/increase-yield-img.svg";
 import {
   ManageWallets,
-  TransactionHistoryEView,
-  VolumeTradeByCP,
   AverageCostBasisEView,
   TimeSpentHome,
   TransactionHistoryAddress,
@@ -75,7 +67,6 @@ import {
   TransactionHistoryTo,
   TransactionHistoryAsset,
   TransactionHistoryUSD,
-  TransactionHistoryMethod,
   ProfitLossEV,
   HomePage,
   HomeInsightsExpand,
@@ -86,17 +77,16 @@ import {
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
   HomeCostAssetHover,
+  NetflowSwitchHome,
 } from "../../utils/AnalyticsFunctions.js";
 import { deleteToken, getCurrentUser } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "./Api";
 import {
-  getAllCounterFeeApi,
   getAvgCostBasis,
   ResetAverageCostBasis,
   updateAverageCostBasis,
 } from "../cost/Api";
 import Loading from "../common/Loading";
-import FeedbackForm from "../common/FeedbackForm";
 import {
   CurrencyType,
   noExponents,
@@ -105,13 +95,10 @@ import {
 import PieChart2 from "./PieChart2";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
-import { toast } from "react-toastify";
 import { GraphHeader } from "../common/GraphHeader";
-import { ASSET_VALUE_GRAPH_DAY, ASSET_VALUE_GRAPH_MONTH } from "./ActionTypes";
-import InsightImg from "../../assets/images/icons/insight-msg.svg";
+import { ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
 import Slider from "react-slick";
-import CoinChip from "../wallet/CoinChip";
-import { getAllWalletApi } from "../wallet/Api";
+
 import Footer from "../common/footer";
 
 class Portfolio extends BaseReactComponent {
@@ -276,6 +263,9 @@ class Portfolio extends BaseReactComponent {
 
       chainLoader: false,
       totalChainDetechted: 0,
+
+      // netflow switch
+      isSwitch: false,
     };
   }
 
@@ -370,7 +360,17 @@ class Portfolio extends BaseReactComponent {
       toggleAddWallet: false,
     });
   };
-
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
+    HomePage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // Inactivity Check
+    window.checkPortfolioTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
   componentDidMount() {
     this.setState({
       settings: {
@@ -387,17 +387,12 @@ class Portfolio extends BaseReactComponent {
     // reset discount modal
     localStorage.setItem("discountEmail", false);
 
-    this.state.startTime = new Date() * 1;
-
     // if share link store share id to show upgrade modal
     if (this.props.match.params.id) {
       localStorage.setItem("share_id", this.props.match.params.id);
     }
 
-    HomePage({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    this.startPageView();
 
     if (this.props.location.state?.noLoad) {
     } else {
@@ -412,6 +407,11 @@ class Portfolio extends BaseReactComponent {
     }
     // get token to check if wallet address not loaded
     this.getToken();
+    this.updateTimer(true);
+
+    return () => {
+      clearInterval(window.checkPortfolioTimer);
+    };
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -449,7 +449,7 @@ class Portfolio extends BaseReactComponent {
       ) {
         // console.log("inside if");
         // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues();
+        this.props.settingDefaultValues(this);
 
         // Loops on coins to fetch details of each coin which exist in wallet
         let isFound = false;
@@ -494,7 +494,7 @@ class Portfolio extends BaseReactComponent {
       } else {
         // console.log("inside else");
         // Resetting the user wallet list, total and chain wallet
-        this.props.settingDefaultValues();
+        this.props.settingDefaultValues(this);
 
         // when wallet address not present run connect exchnage api
         // this.props.getExchangeBalance("binance", this);
@@ -530,6 +530,9 @@ class Portfolio extends BaseReactComponent {
       // run when graphValue == null and  GraphData: [],
       // add loader
       this.props.getProfitAndLossApi(this, false, false, false);
+
+      // netflow breakdown
+      this.props.getAssetProfitLoss(this, false, false, false);
 
       // run when updatedInsightList === ""
       this.props.getAllInsightsApi(this);
@@ -710,7 +713,19 @@ class Portfolio extends BaseReactComponent {
     }
   };
 
-  componentWillUnmount() {
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "portfolioPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("portfolioPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkPortfolioTimer);
+    localStorage.removeItem("portfolioPageExpiryTime");
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
     TimeSpentHome({
@@ -718,7 +733,18 @@ class Portfolio extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("portfolioPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("portfolioPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
     // reset all sort average cost
     this.props.ResetAverageCostBasis();
   }
@@ -887,7 +913,7 @@ class Portfolio extends BaseReactComponent {
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList);
+    this.props.updateAverageCostBasis(sortedList, this);
   };
   // sort
   handleSort = (e) => {
@@ -955,6 +981,17 @@ class Portfolio extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
     }
+  };
+  setSwitch = () => {
+    this.setState({
+      isSwitch: !this.state.isSwitch,
+    });
+
+    NetflowSwitchHome({
+      email_address: getCurrentUser().email,
+      session_id: getCurrentUser().id,
+    });
+    // console.log("switch")
   };
   render() {
     const { table_home, assetPriceList_home } = this.props.intelligenceState;
@@ -1574,7 +1611,7 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.26,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -1626,94 +1663,110 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Average Cost Price"
-      //       onClick={() => this.handleSort(this.state.sortBy[1])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Average Cost Price
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "AverageCostPrice",
-      //   // coumnWidth: 153,
-      //   coumnWidth: 0.38,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "AverageCostPrice") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={
-      //             rowData.AverageCostPrice === 0
-      //               ? "N/A"
-      //               : CurrencyType(false) +
-      //                 Number(
-      //                   noExponents(rowData.AverageCostPrice.toFixed(2))
-      //                 ).toLocaleString("en-US")
-      //           }
-      //         >
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-      //             {rowData.AverageCostPrice === 0
-      //               ? "N/A"
-      //               : CurrencyType(false) +
-      //                 Number(
-      //                   noExponents(rowData.AverageCostPrice.toFixed(2))
-      //                 ).toLocaleString("en-US")}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="Current Price"
-      //       onClick={() => this.handleSort(this.state.sortBy[2])}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Current Price
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "CurrentPrice",
-      //   // coumnWidth: 128,
-      //   coumnWidth: 0.2,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "CurrentPrice") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={CurrencyType(false) + rowData.CurrentPrice.toFixed(2)}
-      //         >
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-      //             {CurrencyType(false) + rowData.CurrentPrice.toFixed(2)}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Average Cost Price"
+            onClick={() => this.handleSort(this.state.sortBy[1])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Avg cost price
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "AverageCostPrice",
+        // coumnWidth: 153,
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "AverageCostPrice") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.AverageCostPrice === 0
+                    ? "N/A"
+                    : CurrencyType(false) +
+                      Number(
+                        noExponents(rowData.AverageCostPrice.toFixed(2))
+                      ).toLocaleString("en-US")
+                }
+              >
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {rowData.AverageCostPrice === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          Number(
+                            noExponents(rowData.AverageCostPrice.toFixed(2))
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="Current Price"
+            onClick={() => this.handleSort(this.state.sortBy[2])}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Current price
+            </span>
+            <Image
+              src={sortByIcon}
+              className={this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "CurrentPrice",
+        // coumnWidth: 128,
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "CurrentPrice") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  CurrencyType(false) +
+                  Number(
+                    noExponents(rowData.CurrentPrice.toFixed(2))
+                  ).toLocaleString("en-US")
+                }
+              >
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CurrentPrice.toFixed(2))
+                        ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
       // {
       //   labelName: (
       //     <div
@@ -1754,102 +1807,102 @@ class Portfolio extends BaseReactComponent {
       //     }
       //   },
       // },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="Cost Basis"
-            onClick={() => this.handleSort(this.state.sortBy[4])}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost Basis
-            </span>
-            <Image
-              src={sortByIcon}
-              className={this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "CostBasis",
-        // coumnWidth: 100,
-        coumnWidth: 0.34,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "CostBasis") {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
-                      ).toLocaleString("en-US")
-                }
-              >
-                <span>
-                  {rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
-                      ).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col"
-            id="Current Value"
-            onClick={() => this.handleSort(this.state.sortBy[5])}
-          >
-            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Value
-            </span>
-            <Image
-              src={sortByIcon}
-              className={this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "CurrentValue",
-        // coumnWidth: 140,
-        coumnWidth: 0.37,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "CurrentValue") {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  Number(
-                    noExponents(rowData.CurrentValue.toFixed(2))
-                  ).toLocaleString("en-US")
-                }
-              >
-                <span>
-                  {CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentValue.toFixed(2))
-                    ).toLocaleString("en-US")}
-                </span>
-              </CustomOverlay>
-            );
-          }
-        },
-      },
+      // {
+      //   labelName: (
+      //     <div
+      //       className="cp history-table-header-col"
+      //       id="Cost Basis"
+      //       onClick={() => this.handleSort(this.state.sortBy[4])}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         Cost basis
+      //       </span>
+      //       <Image
+      //         src={sortByIcon}
+      //         className={this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
+      //       />
+      //     </div>
+      //   ),
+      //   dataKey: "CostBasis",
+      //   // coumnWidth: 100,
+      //   coumnWidth: 0.34,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "CostBasis") {
+      //       return (
+      //         <CustomOverlay
+      //           position="top"
+      //           isIcon={false}
+      //           isInfo={true}
+      //           isText={true}
+      //           text={
+      //             rowData.CostBasis === 0
+      //               ? "N/A"
+      //               : CurrencyType(false) +
+      //               Number(
+      //                 noExponents(rowData.CostBasis.toFixed(2))
+      //               ).toLocaleString("en-US")
+      //           }
+      //         >
+      //           <span>
+      //             {rowData.CostBasis === 0
+      //               ? "N/A"
+      //               : CurrencyType(false) +
+      //               Number(
+      //                 noExponents(rowData.CostBasis.toFixed(2))
+      //               ).toLocaleString("en-US")}
+      //           </span>
+      //         </CustomOverlay>
+      //       );
+      //     }
+      //   },
+      // },
+      // {
+      //   labelName: (
+      //     <div
+      //       className="cp history-table-header-col"
+      //       id="Current Value"
+      //       onClick={() => this.handleSort(this.state.sortBy[5])}
+      //     >
+      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+      //         Current value
+      //       </span>
+      //       <Image
+      //         src={sortByIcon}
+      //         className={this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
+      //       />
+      //     </div>
+      //   ),
+      //   dataKey: "CurrentValue",
+      //   // coumnWidth: 140,
+      //   coumnWidth: 0.37,
+      //   isCell: true,
+      //   cell: (rowData, dataKey) => {
+      //     if (dataKey === "CurrentValue") {
+      //       return (
+      //         <CustomOverlay
+      //           position="top"
+      //           isIcon={false}
+      //           isInfo={true}
+      //           isText={true}
+      //           text={
+      //             CurrencyType(false) +
+      //             Number(
+      //               noExponents(rowData.CurrentValue.toFixed(2))
+      //             ).toLocaleString("en-US")
+      //           }
+      //         >
+      //           <span>
+      //             {CurrencyType(false) +
+      //               Number(
+      //                 noExponents(rowData.CurrentValue.toFixed(2))
+      //               ).toLocaleString("en-US")}
+      //           </span>
+      //         </CustomOverlay>
+      //       );
+      //     }
+      //   },
+      // },
       {
         labelName: (
           <div
@@ -1868,19 +1921,38 @@ class Portfolio extends BaseReactComponent {
         ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
-        coumnWidth: 0.37,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
             return (
-              <div
-                className={`gainLoss ${rowData.GainLoss < 0 ? "loss" : "gain"}`}
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  Number(
+                    noExponents(rowData.GainLoss.toFixed(2))
+                  ).toLocaleString("en-US") + "%"
+                }
+                colorCode="#000"
               >
-                <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                <div className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.GainLoss.toFixed(2) + "%"}
+                <div className="gainLossContainer">
+                  <div
+                    className={`gainLoss ${
+                      rowData.GainLoss < 0 ? "loss" : "gain"
+                    }`}
+                  >
+                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                      {Number(
+                        noExponents(rowData.GainLoss.toFixed(2))
+                      ).toLocaleString("en-US") + "%"}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </CustomOverlay>
             );
           }
         },
@@ -1990,16 +2062,17 @@ class Portfolio extends BaseReactComponent {
                   isLoading={this.state.isLoading}
                   isUpdate={this.state.isUpdate}
                   walletTotal={this.props.portfolioState.walletTotal}
-                  handleAddModal={this.handleAddModal}
-                  handleManage={() => {
-                    this.props.history.push("/wallets");
-                    ManageWallets({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
-                  }}
+                  // handleAddModal={this.handleAddModal}
+                  // handleManage={() => {
+                  //   this.props.history.push("/wallets");
+                  //   ManageWallets({
+                  //     session_id: getCurrentUser().id,
+                  //     email_address: getCurrentUser().email,
+                  //   });
+                  // }}
                   undetectedWallet={(e) => this.undetectedWallet(e)}
                   getProtocolTotal={this.getProtocolTotal}
+                  updateTimer={this.updateTimer}
                 />
                 {/* {this.state.userWalletList?.findIndex(
                   (w) => w.coinFound !== true
@@ -2034,45 +2107,39 @@ class Portfolio extends BaseReactComponent {
                   <Col md={6}>
                     <div
                       className="m-r-16 section-table"
-                      // style={{ paddingBottom: "1.15rem" }}
+                      style={{
+                        paddingBottom: "1.6rem",
+                        height: "51rem",
+                        minHeight: "51rem",
+                        marginBottom: 0,
+                      }}
                     >
-                      <LineChartSlider
-                        assetValueData={
-                          this.props.portfolioState.assetValueDay &&
-                          this.props.portfolioState.assetValueDay
-                        }
-                        externalEvents={
-                          this.state.externalEvents && this.state.externalEvents
-                        }
-                        coinLists={this.props.OnboardingState.coinsLists}
-                        isScrollVisible={false}
-                        handleGroupBy={(value) => this.handleGroupBy(value)}
-                        graphLoading={this.state.graphLoading}
-                        // graphLoading={true}
-                        isUpdate={this.state.isUpdate}
+                      <TransactionTable
+                        title="Average cost basis"
                         handleClick={() => {
+                          // console.log("wallet", this.state.userWalletList);
                           if (this.state.lochToken) {
-                            AssetValueExpandview({
+                            this.props.history.push("/intelligence/costs");
+                            AverageCostBasisEView({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                            this.props.history.push(
-                              "/intelligence/asset-value"
-                            );
                           }
                         }}
-                        hideTimeFilter={true}
-                        hideChainFilter={true}
-                        dataLoaded={
-                          this.props.portfolioState.assetValueDataLoaded
-                        }
+                        subTitle="Understand your average entry price"
+                        tableData={tableDataCostBasis.slice(0, 6)}
+                        columnList={CostBasisColumnData}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.state.AvgCostLoading}
+                        isAnalytics="average cost basis"
                       />
                     </div>
                   </Col>
                   <Col md={6}>
                     <div className="profit-chart">
                       <BarGraphSection
-                        headerTitle="Net Flows"
+                        headerTitle="Net flows"
                         headerSubTitle="Understand your portfolio's profitability"
                         isArrow={true}
                         handleClick={() => {
@@ -2097,13 +2164,20 @@ class Portfolio extends BaseReactComponent {
                         marginBottom="m-b-32"
                         showFooter={false}
                         showBadges={false}
-                        showPercentage={
-                          this.props.intelligenceState.graphValue &&
-                          this.props.intelligenceState.graphValue[2]
-                        }
+                        // showPercentage={
+                        //   this.props.intelligenceState.graphValue &&
+                        //   this.props.intelligenceState.graphValue[2]
+                        // }
+                        showSwitch={true}
                         isLoading={this.state.netFlowLoading}
                         className={"portfolio-profit-and-loss"}
                         isMinichart={true}
+                        ProfitLossAsset={
+                          this.props.intelligenceState.ProfitLossAsset
+                        }
+                        isSwitch={this.state.isSwitch}
+                        setSwitch={this.setSwitch}
+                        isSmallerToggle
                       />
                     </div>
                   </Col>
@@ -2189,7 +2263,7 @@ class Portfolio extends BaseReactComponent {
                                         .map((insight, key) => {
                                           // console.log("insignt", insight);
                                           return (
-                                            <div>
+                                            <div key={`sliderKey-${key}`}>
                                               <div className="steps">
                                                 <div className="top-section">
                                                   <Image
@@ -2287,32 +2361,40 @@ class Portfolio extends BaseReactComponent {
                   <Col md={6}>
                     <div
                       className="section-table"
-                      style={{
-                        paddingBottom: "1.6rem",
-                        height: "51rem",
-                        minHeight: "51rem",
-                        marginBottom: 0,
-                      }}
+                      // style={{ paddingBottom: "1.15rem" }}
                     >
-                      <TransactionTable
-                        title="Average cost basis"
+                      <LineChartSlider
+                        assetValueData={
+                          this.props.portfolioState.assetValueDay &&
+                          this.props.portfolioState.assetValueDay
+                        }
+                        externalEvents={
+                          this.props.portfolioState.externalEvents &&
+                          this.props.portfolioState.externalEvents
+                        }
+                        coinLists={this.props.OnboardingState.coinsLists}
+                        isScrollVisible={false}
+                        handleGroupBy={(value) => this.handleGroupBy(value)}
+                        graphLoading={this.state.graphLoading}
+                        // graphLoading={true}
+                        isUpdate={this.state.isUpdate}
                         handleClick={() => {
-                          // console.log("wallet", this.state.userWalletList);
                           if (this.state.lochToken) {
-                            this.props.history.push("/intelligence/costs");
-                            AverageCostBasisEView({
+                            AssetValueExpandview({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
+                            this.props.history.push(
+                              "/intelligence/asset-value"
+                            );
                           }
                         }}
-                        subTitle="Understand your average entry price"
-                        tableData={tableDataCostBasis.slice(0, 6)}
-                        columnList={CostBasisColumnData}
-                        headerHeight={60}
-                        isArrow={true}
-                        isLoading={this.state.AvgCostLoading}
-                        isAnalytics="average cost basis"
+                        hideTimeFilter={true}
+                        hideChainFilter={true}
+                        dataLoaded={
+                          this.props.portfolioState.assetValueDataLoaded
+                        }
+                        updateTimer={this.updateTimer}
                       />
                     </div>
                   </Col>
@@ -2376,6 +2458,7 @@ class Portfolio extends BaseReactComponent {
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
             from="home"
+            updateTimer={this.updateTimer}
           />
         )}
         {this.state.addModal && (
@@ -2392,6 +2475,7 @@ class Portfolio extends BaseReactComponent {
             changeWalletList={this.handleChangeList}
             apiResponse={(e) => this.CheckApiResponse(e)}
             from="home"
+            updateTimer={this.updateTimer}
           />
         )}
 
@@ -2404,6 +2488,7 @@ class Portfolio extends BaseReactComponent {
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="portfolio"
+            updateTimer={this.updateTimer}
           />
         )}
       </div>
@@ -2441,6 +2526,7 @@ const mapDispatchToProps = {
   // average cost
   ResetAverageCostBasis,
   updateAverageCostBasis,
+  getAssetProfitLoss,
 };
 Portfolio.propTypes = {};
 

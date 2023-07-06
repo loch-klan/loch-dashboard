@@ -286,6 +286,9 @@ class ExitOverlay extends BaseReactComponent {
         " to " +
         moment(this.state.toDate).format("DD MMMM YY"),
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
 
   addAddress = () => {
@@ -320,6 +323,9 @@ class ExitOverlay extends BaseReactComponent {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else {
       this.setState(
         {
@@ -346,6 +352,9 @@ class ExitOverlay extends BaseReactComponent {
       email_address: getCurrentUser().email,
       address: this.state.addWalletList[index]?.address,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
     this.state.addWalletList.splice(index, 1);
     this.state.addWalletList?.map((w, i) => {
       w.id = `wallet${i + 1}`;
@@ -555,6 +564,9 @@ class ExitOverlay extends BaseReactComponent {
             unrecognized_addresses: unrecog_address,
             chains_detected_against_them: blockchainDetected,
           });
+          if (this.props.updateTimer) {
+            this.props.updateTimer();
+          }
         }
       }, 100);
     }
@@ -563,7 +575,6 @@ class ExitOverlay extends BaseReactComponent {
   handleDeleteCohort = () => {
     //  let addressList = this.props?.walletaddress && this.props?.walletaddress?.map(e => e.wallet_address);
 
-    // WhalePodDeleted();
     // console.log("name", this.state.cohort_name);
     // console.log("address", this.state.addWalletList?.map(e => e.displayAddress ? e.displayAddress : e.address))
     WhalePodDeleted({
@@ -574,6 +585,9 @@ class ExitOverlay extends BaseReactComponent {
         e.displayAddress ? e.displayAddress : e.address
       ),
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
     const data = new URLSearchParams();
     data.append("cohort_id", this.props.cohortId);
 
@@ -587,6 +601,9 @@ class ExitOverlay extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
   handleSave = () => {
     if (this.props.modalType === "create_account") {
@@ -612,6 +629,9 @@ class ExitOverlay extends BaseReactComponent {
         last_name: "",
         track: "leaving",
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
       let email_arr = [];
       let data = JSON.parse(localStorage.getItem("addWallet"));
       if (data) {
@@ -627,6 +647,9 @@ class ExitOverlay extends BaseReactComponent {
           session_id: getCurrentUser().id,
           email_address: this.state.email,
         });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
       }
     }
   };
@@ -649,6 +672,9 @@ class ExitOverlay extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
 
   leavePrivacy = () => {
@@ -656,6 +682,9 @@ class ExitOverlay extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
     // console.log("on hover privacy msg");
   };
 
@@ -686,6 +715,9 @@ class ExitOverlay extends BaseReactComponent {
         ],
         data_exported: this.state.selectedExportItem.fileName,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
       // console.log(
       //   "date range",
       //   moment(this.state.fromDate).format("DD MMMM YY"),
@@ -810,6 +842,9 @@ class ExitOverlay extends BaseReactComponent {
               email_address: getCurrentUser().email,
               addresses: uploadedAddress,
             });
+            if (this.props.updateTimer) {
+              this.props.updateTimer();
+            }
 
             this.setState(
               {
@@ -1224,6 +1259,9 @@ class ExitOverlay extends BaseReactComponent {
                                         email_address: getCurrentUser().email,
                                         pod_name: this.state.cohort_name,
                                       });
+                                      if (this.props.updateTimer) {
+                                        this.props.updateTimer();
+                                      }
                                     },
                                   },
                                 }}
@@ -1781,7 +1819,13 @@ class ExitOverlay extends BaseReactComponent {
                               email_address: getCurrentUser().email,
                               session_id: getCurrentUser().id,
                             });
+                            if (this.props.updateTimer) {
+                              this.props.updateTimer();
+                            }
                             resetUser();
+                            if (this.props.updateTimer) {
+                              this.props.updateTimer();
+                            }
                             localStorage.setItem("refresh", false);
                             this.props.history.push("/welcome");
                           }}

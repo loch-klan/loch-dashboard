@@ -709,6 +709,9 @@ class FixAddModal extends BaseReactComponent {
               blockchains_detected: blockchainDetected,
               nicknames: nicknames,
             });
+            if (this.props.updateTimer) {
+              this.props.updateTimer();
+            }
           } else if (this.props.from === "transaction history") {
             TransactionHistoryAddWallet({
               session_id: getCurrentUser().id,
@@ -722,6 +725,9 @@ class FixAddModal extends BaseReactComponent {
               blockchains_detected: blockchainDetected,
               nicknames: nicknames,
             });
+            if (this.props.updateTimer) {
+              this.props.updateTimer();
+            }
           } else if (this.props.from === "cost") {
             CostAddWallet({
               session_id: getCurrentUser().id,
@@ -735,6 +741,9 @@ class FixAddModal extends BaseReactComponent {
               blockchains_detected: blockchainDetected,
               nicknames: nicknames,
             });
+            if (this.props.updateTimer) {
+              this.props.updateTimer();
+            }
           } else if (this.props.from === "defi") {
             // TransactionHistoryAddWallet({
             //   session_id: getCurrentUser().id,
@@ -761,6 +770,9 @@ class FixAddModal extends BaseReactComponent {
               blockchains_detected: blockchainDetected,
               nicknames: nicknames,
             });
+            if (this.props.updateTimer) {
+              this.props.updateTimer();
+            }
           }
         }, 100);
       }
@@ -853,6 +865,9 @@ class FixAddModal extends BaseReactComponent {
           wallet_address: obj.address,
           blockchainDetected: coinName,
         });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
       });
 
     clearTimeout(this.delayTimer);
@@ -1141,6 +1156,9 @@ class FixAddModal extends BaseReactComponent {
                   nickname: e.target?.value,
                   address: elem.address,
                 });
+                if (this.props.updateTimer) {
+                  this.props.updateTimer();
+                }
               }}
               // onKeyDown={this.handleTabPress}
             />
@@ -1499,6 +1517,9 @@ class FixAddModal extends BaseReactComponent {
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
                           });
+                          if (this.props.updateTimer) {
+                            this.props.updateTimer();
+                          }
                         }}
                       />
                     </CustomOverlay>

@@ -8,7 +8,6 @@ import MobileDevice from "./app/common/mobileDevice";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
-
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 480px)");
     setIsMobile(mediaQuery.matches);
@@ -21,6 +20,16 @@ function App() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  useEffect(() => {
+    const isRendered = window.sessionStorage.getItem("isRendered");
+    if (!isRendered) {
+      window.sessionStorage.setItem("isRendered", true);
+      window.location.reload();
+    }
+    return () => {
+      window.sessionStorage.removeItem("isRendered");
     };
   }, []);
 

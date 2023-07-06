@@ -167,23 +167,39 @@ class TransactionHistoryPage extends BaseReactComponent {
 
       // start time for time spent on page
       startTime: "",
+      isTimeSearchUsed: false,
+      isAssetSearchUsed: false,
+      isMethodSearchUsed: false,
     };
     this.delayTimer = 0;
   }
-
+  timeSearchIsUsed = () => {
+    this.setState({ isTimeSearchUsed: true });
+  };
+  assetSearchIsUsed = () => {
+    this.setState({ isAssetSearchUsed: true });
+  };
+  methodSearchIsUsed = () => {
+    this.setState({ isMethodSearchUsed: true });
+  };
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
   };
-
-  componentDidMount() {
-    this.state.startTime = new Date() * 1;
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
     TransactionHistoryPageView({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkTransactionHistoryTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -207,20 +223,49 @@ class TransactionHistoryPage extends BaseReactComponent {
         }
       );
     }
-  }
+    this.startPageView();
+    this.updateTimer(true);
 
-  componentWillUnmount() {
+    return () => {
+      clearInterval(window.checkTransactionHistoryTimer);
+    };
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "transactionHistoryPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("transactionHistoryPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkTransactionHistoryTimer);
+    localStorage.removeItem("transactionHistoryPageExpiryTime");
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime);
-    // console.log("Time Spent", TimeSpent);
     TimeSpentTransactionHistory({
       time_spent: TimeSpent,
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-
-    //  this.timeFilter(0);
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem(
+      "transactionHistoryPageExpiryTime"
+    );
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem(
+      "transactionHistoryPageExpiryTime"
+    );
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   callApi = (page = START_INDEX) => {
@@ -256,18 +301,21 @@ class TransactionHistoryPage extends BaseReactComponent {
             email_address: getCurrentUser().email,
             page_no: page + 1,
           });
+          this.updateTimer();
         } else if (prevPage + 1 === page) {
           TransactionHistoryPageNext({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page_no: page + 1,
           });
+          this.updateTimer();
         } else {
           TransactionHistoryPageSearch({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page_search: page + 1,
           });
+          this.updateTimer();
         }
       }
     }
@@ -328,11 +376,15 @@ class TransactionHistoryPage extends BaseReactComponent {
   addCondition = (key, value) => {
     // console.log("key, value", key, value);
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      const tempIsTimeUsed = this.state.isTimeSearchUsed;
       TransactionHistoryYearFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        year_filter: value == "allYear" ? "All years" : value,
+        year_filter: value === "allYear" ? "All years" : value,
+        isSearchUsed: tempIsTimeUsed,
       });
+      this.updateTimer();
+      this.setState({ isTimeSearchUsed: false });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
       // console.log("tes", this.props.intelligenceState.assetFilter);
       let assets = [];
@@ -352,18 +404,26 @@ class TransactionHistoryPage extends BaseReactComponent {
         }),
       ]).then(() => {
         // console.log("asset arr", assets, value);
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
         TransactionHistoryAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          asset_filter: value == "allAssets" ? "All assets" : assets,
+          asset_filter: value === "allAssets" ? "All assets" : assets,
+          isSearchUsed: tempIsAssetUsed,
         });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false });
       });
     } else if (key === "SEARCH_BY_METHOD_IN") {
+      const tempIsMethodUsed = this.state.isMethodSearchUsed;
       TransactionHistoryMethodFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        method_filter: value == "allMethod" ? "All method" : value,
+        method_filter: value === "allMethod" ? "All method" : value,
+        isSearchUsed: tempIsMethodUsed,
       });
+      this.updateTimer();
+      this.setState({ isMethodSearchUsed: false });
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
     // console.log("index", index);
@@ -419,6 +479,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         email: getCurrentUser().email,
         searched: this.state.search,
       });
+      this.updateTimer();
       // this.callApi(this.state.currentPage || START_INDEX, condition)
     }, 1000);
   };
@@ -440,6 +501,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         } else if (val === "from") {
           obj = [
             {
@@ -451,6 +513,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         } else if (val === "to") {
           obj = [
             {
@@ -462,6 +525,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         } else if (val === "asset") {
           obj = [
             {
@@ -473,6 +537,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         } else if (val === "amount") {
           obj = [
             {
@@ -484,6 +549,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         } else if (val === "usdThen") {
           obj = [
             {
@@ -495,6 +561,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         } else if (val === "usdTransaction") {
           obj = [
             {
@@ -506,6 +573,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         } else if (val === "method") {
           obj = [
             {
@@ -517,6 +585,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         }
         el.up = !el.up;
       } else {
@@ -561,6 +630,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
         });
+        this.updateTimer();
         this.addCondition(SEARCH_BY_NOT_DUST, this.state.showDust);
       }
     );
@@ -586,6 +656,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
 
     // console.log("share pod", shareLink);
   };
@@ -794,6 +865,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             ? rowData.from.wallet_metaData?.text
                             : rowData.from.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     />
                     <Image
@@ -821,6 +893,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                               ? rowData.from.wallet_metaData?.text
                               : rowData.from.metaData?.displayAddress,
                           });
+                          this.updateTimer();
                         }}
                       />
                       <Image
@@ -842,6 +915,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             ? rowData.from.wallet_metaData?.text
                             : rowData.from.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     >
                       {this.TruncateText(rowData.from.metaData?.nickname)}
@@ -864,6 +938,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             ? rowData.from.wallet_metaData?.text
                             : rowData.from.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     >
                       {this.TruncateText(rowData.from.wallet_metaData.text)}
@@ -887,6 +962,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                           ? rowData.from.wallet_metaData?.text
                           : rowData.from.metaData?.displayAddress,
                       });
+                      this.updateTimer();
                     }}
                   >
                     {this.TruncateText(rowData.from.metaData?.displayAddress)}
@@ -912,6 +988,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             ? rowData.from.wallet_metaData?.text
                             : rowData.from.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     />
                     <Image
@@ -1010,6 +1087,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             ? rowData.to.wallet_metaData?.text
                             : rowData.to.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     />
                     <Image
@@ -1036,6 +1114,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                               ? rowData.to.wallet_metaData?.text
                               : rowData.to.metaData?.displayAddress,
                           });
+                          this.updateTimer();
                         }}
                       />
                       <Image
@@ -1056,6 +1135,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             ? rowData.to.wallet_metaData?.text
                             : rowData.to.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     >
                       {this.TruncateText(rowData.to.metaData?.nickname)}
@@ -1077,6 +1157,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             ? rowData.to.wallet_metaData?.text
                             : rowData.to.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     >
                       {this.TruncateText(rowData.to.wallet_metaData.text)}
@@ -1099,6 +1180,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                           ? rowData.to.wallet_metaData?.text
                           : rowData.to.metaData?.displayAddress,
                       });
+                      this.updateTimer();
                     }}
                   >
                     {this.TruncateText(rowData.to.metaData?.displayAddress)}
@@ -1123,6 +1205,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                             ? rowData.to.wallet_metaData?.text
                             : rowData.to.metaData?.displayAddress,
                         });
+                        this.updateTimer();
                       }}
                     />
                     <Image
@@ -1235,7 +1318,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
               true
-            )} Amount (Then)`}</span>
+            )} amount (then)`}</span>
             <Image
               src={sortByIcon}
               className={
@@ -1310,7 +1393,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
               true
-            )} Fee (Then)`}</span>
+            )} fee (then)`}</span>
             <Image
               src={sortByIcon}
               className={
@@ -1429,6 +1512,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 // history
                 history={this.props.history}
                 // add wallet address modal
+                updateTimer={this.updateTimer}
                 handleAddModal={this.handleAddModal}
               />
             </div>
@@ -1449,6 +1533,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 history={this.props.history}
                 changeWalletList={this.handleChangeList}
                 apiResponse={(e) => this.CheckApiResponse(e)}
+                updateTimer={this.updateTimer}
                 from="transaction history"
               />
             )}
@@ -1461,6 +1546,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"
+                updateTimer={this.updateTimer}
               />
             )}
             <PageHeader
@@ -1475,6 +1561,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               // handleBtn={this.handleAddModal}
               ShareBtn={true}
               handleShare={this.handleShare}
+              updateTimer={this.updateTimer}
             />
 
             <div className="fillter_tabs_section">
@@ -1488,6 +1575,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
+                      searchIsUsed={this.timeSearchIsUsed}
                     />
                   </Col>
                   <Col md={3}>
@@ -1498,6 +1586,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
+                      searchIsUsed={this.assetSearchIsUsed}
                     />
                   </Col>
                   <Col md={3}>
@@ -1508,6 +1597,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
+                      searchIsUsed={this.methodSearchIsUsed}
                     />
                   </Col>
                   {/* {fillter_tabs} */}

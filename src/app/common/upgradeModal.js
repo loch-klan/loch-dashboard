@@ -459,6 +459,9 @@ class UpgradeModal extends BaseReactComponent {
           UpgradeSignInPopup({
             session_id: getCurrentUser().id,
           });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
       }
     );
   };
@@ -1481,6 +1484,9 @@ class UpgradeModal extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                           email_address: this.state.email,
                         });
+                        if (this.props.updateTimer) {
+                          this.props.updateTimer();
+                        }
                       }}
                     />
                   </CustomOverlay>
