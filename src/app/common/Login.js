@@ -39,11 +39,9 @@ class Login extends BaseReactComponent {
       podName: props.location?.state?.params?.podName,
       forgotPassword: false,
     };
- 
   }
 
   componentDidMount() {
-    
     // if (!this.state.hash && !this.state.redirectPath && !redirect) {
     //   this.setState({
     //     redirectPath: this.props.location?.state?.params?.redirectPath || "",
@@ -73,21 +71,18 @@ class Login extends BaseReactComponent {
         rate: 1,
       })
     );
-  
 
-     let userPlan = JSON.parse(localStorage.getItem("currentPlan"));
-     if (!userPlan) {
-       GetDefaultPlan();
-     }
-   
+    let userPlan = JSON.parse(localStorage.getItem("currentPlan"));
+    if (!userPlan) {
+      GetDefaultPlan();
+    }
 
     if (this.state.link && !this.state.podName) {
       // console.log("login in")
       this.props.getAllCoins(this.handleShareLinkUser);
     } else if (this.state.link && this.state.podName) {
       // console.log("cohort name", this.state.cohortName);
-       this.props.getAllCoins(this.handleResponse);
-       
+      this.props.getAllCoins(this.handleResponse);
     } else {
       // console.log("welcome")
       this.props.history.push("/welcome");
@@ -131,24 +126,23 @@ class Login extends BaseReactComponent {
       // data.append("link", this.state.id);
       createAnonymousUserApi(data, this, [], null);
     } else {
-       let addWallet = JSON.parse(localStorage.getItem("addWallet"));
-       // console.log('Heyyyy',addWallet);
-       let walletAddress = [];
-       let AddressList = [];
-       for (let i = 0; i < addWallet.length; i++) {
-         let curr = addWallet[i];
-         if (!walletAddress.includes(curr.address) && curr.address) {
-           walletAddress.push(curr.address);
-           AddressList.push(curr.displayAddress || curr.address);
-         }
-       }
+      let addWallet = JSON.parse(localStorage.getItem("addWallet"));
+      // console.log('Heyyyy',addWallet);
+      let walletAddress = [];
+      let AddressList = [];
+      for (let i = 0; i < addWallet.length; i++) {
+        let curr = addWallet[i];
+        if (!walletAddress.includes(curr.address) && curr.address) {
+          walletAddress.push(curr.address);
+          AddressList.push(curr.displayAddress || curr.address);
+        }
+      }
 
-       const data = new URLSearchParams();
-       data.append("wallet_addresses", JSON.stringify(AddressList));
-       data.append("link", this.state.id);
-       createAnonymousUserApi(data, this, addWallet, null);
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(AddressList));
+      data.append("link", this.state.id);
+      createAnonymousUserApi(data, this, addWallet, null);
     }
-   
   };
 
   render() {

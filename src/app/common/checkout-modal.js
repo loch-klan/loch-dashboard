@@ -101,9 +101,9 @@ class CheckoutModal extends BaseReactComponent {
     // this.props.getAllParentChains();
     //    this.AddEmailModal();
 
-      let data = new URLSearchParams();
-      data.append("price_id", this.props.price_id);
-      CreatePyment(data, this);
+    let data = new URLSearchParams();
+    data.append("price_id", this.props.price_id);
+    CreatePyment(data, this);
   }
 
   componentDidUpdate(prevProps, prevState) {

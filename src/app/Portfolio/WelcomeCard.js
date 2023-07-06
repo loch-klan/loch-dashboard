@@ -34,7 +34,7 @@ export default function WelcomeCard(props) {
   const [AddWallet, setAddWallet] = React.useState(true);
   const [connectModal, setconnectModal] = React.useState(false);
   const [signinModal, setSigninModal] = React.useState(false);
-   const [signUpModal, setSignUpModal] = React.useState(false);
+  const [signUpModal, setSignUpModal] = React.useState(false);
   // const [addWallet, setAddWallet] = React.useState(true)
   // console.log(props)
   function handleAddWalletClick() {
@@ -54,17 +54,22 @@ export default function WelcomeCard(props) {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (props.updateTimer) {
+      props.updateTimer();
+    }
   };
 
   const handleSignUpModal = () => {
     setSignUpModal(!signUpModal);
-    
+
     TopbarSignup({
       session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email
+      email_address: getCurrentUser().email,
     });
-
-  }
+    if (props.updateTimer) {
+      props.updateTimer();
+    }
+  };
 
   const handleConnectModal = () => {
     setconnectModal(!connectModal);
@@ -75,6 +80,9 @@ export default function WelcomeCard(props) {
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
         });
+        if (props.updateTimer) {
+          props.updateTimer();
+        }
       }
     }, 200);
   };
@@ -91,6 +99,9 @@ export default function WelcomeCard(props) {
             email_address: getCurrentUser().email,
             from: "Home connect exchange",
           });
+          if (props.updateTimer) {
+            props.updateTimer();
+          }
         }
       }, 200);
     }
@@ -407,6 +418,9 @@ export default function WelcomeCard(props) {
           modalType={"exitOverlay"}
           handleRedirection={() => {
             resetUser();
+            if (props.updateTimer) {
+              props.updateTimer();
+            }
             setTimeout(function () {
               props.history.push("/welcome");
             }, 3000);

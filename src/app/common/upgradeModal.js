@@ -20,7 +20,15 @@ import {
 } from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { CreatePyment, fixWalletApi, getUser, SendOtp, SigninWallet, UpdateCryptoPayment, VerifyEmail } from "./Api.js";
+import {
+  CreatePyment,
+  fixWalletApi,
+  getUser,
+  SendOtp,
+  SigninWallet,
+  UpdateCryptoPayment,
+  VerifyEmail,
+} from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Back-icon-upgrade.svg";
@@ -50,7 +58,6 @@ import axios from "axios";
 import USDT_ABI from "./USDT_ABI.json";
 import USDC_ABI from "./USDC_ABI.json";
 import AskEmailModal from "./AskEmailModal";
-
 
 class UpgradeModal extends BaseReactComponent {
   constructor(props) {
@@ -314,7 +321,7 @@ class UpgradeModal extends BaseReactComponent {
       // Ask eamil after crypto payment
       emailModal: false,
 
-      tracking:"Create or sign in from Upgrade pop up"
+      tracking: "Create or sign in from Upgrade pop up",
     };
   }
 
@@ -441,17 +448,22 @@ class UpgradeModal extends BaseReactComponent {
   };
 
   handleSignin = () => {
-    this.setState({
-      signinModal: !this.state.signinModal,
-      hideModal: true,
-      isLochUser: JSON.parse(localStorage.getItem("lochUser")),
-    }, () => {
-      if (this.state.signinModal)
-        UpgradeSignInPopup({
-          session_id: getCurrentUser().id,
-        });
-    });
-    
+    this.setState(
+      {
+        signinModal: !this.state.signinModal,
+        hideModal: true,
+        isLochUser: JSON.parse(localStorage.getItem("lochUser")),
+      },
+      () => {
+        if (this.state.signinModal)
+          UpgradeSignInPopup({
+            session_id: getCurrentUser().id,
+          });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
+      }
+    );
   };
 
   handleAskEmail = (emailUpdated = false) => {
@@ -465,7 +477,6 @@ class UpgradeModal extends BaseReactComponent {
         isLochUser: user,
       });
     }
-    
   };
 
   handleSigninBackbtn = () => {
@@ -474,7 +485,6 @@ class UpgradeModal extends BaseReactComponent {
       signinModal: !this.state.signinModal,
       hideModal: false,
     });
-   
   };
 
   connectMetamask = async (isSignin = true) => {
@@ -789,7 +799,7 @@ class UpgradeModal extends BaseReactComponent {
       if (this.props.from === "home") {
         this.props.history.push("/home");
       } else {
-        this.handleAskEmail(); 
+        this.handleAskEmail();
         // this.state.onHide();
       }
     }, 1000);
@@ -1474,6 +1484,9 @@ class UpgradeModal extends BaseReactComponent {
                           session_id: getCurrentUser().id,
                           email_address: this.state.email,
                         });
+                        if (this.props.updateTimer) {
+                          this.props.updateTimer();
+                        }
                       }}
                     />
                   </CustomOverlay>

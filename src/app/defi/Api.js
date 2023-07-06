@@ -1,4 +1,3 @@
-
 import { preLoginInstance } from "../../utils";
 import { GET_DEFI_DATA } from "./ActionTypes";
 
@@ -8,8 +7,8 @@ export const updateDefiData = (data) => {
     dispatch({
       type: GET_DEFI_DATA,
       payload: {
-        ...data
-      }
-    })
-  }
-}
+        ...data,
+      },
+    });
+  };
+};

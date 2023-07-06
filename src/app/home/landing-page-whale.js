@@ -42,7 +42,6 @@ import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import logo from "../../image/Loch.svg";
 
-
 class LPWhale extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -119,8 +118,7 @@ class LPWhale extends BaseReactComponent {
       // console.log("email", this.state.email);
       EmailAddedWhale({ email_address: this.state.email });
     }
-    TextboxWhale(); 
-   
+    TextboxWhale();
   };
   render() {
     return (

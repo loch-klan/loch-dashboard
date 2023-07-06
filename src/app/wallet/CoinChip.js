@@ -1,9 +1,8 @@
-import React from 'react'
-import {Image} from'react-bootstrap'
-import { lightenDarkenColor } from '../../utils/ReusableFunctions'
+import React from "react";
+import { Image } from "react-bootstrap";
+import { lightenDarkenColor } from "../../utils/ReusableFunctions";
 
 export default function CoinChip(props) {
-
   return (
     <div
       className="coin-chip"

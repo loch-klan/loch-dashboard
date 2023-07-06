@@ -3,14 +3,19 @@ import PropTypes from "prop-types";
 
 // import { FormControl, Form } from 'react-bootstrap'
 
-const CustomCheckbox = props => {
+const CustomCheckbox = (props) => {
   const {
-    classes, checkboxId, checkboxName, valueLink, options, disabled, isInline
+    classes,
+    checkboxId,
+    checkboxName,
+    valueLink,
+    options,
+    disabled,
+    isInline,
   } = props;
   return (
     <div className={`checkbox-wrapper ${isInline ? "inline" : ""}`}>
-      {
-        options &&
+      {options &&
         options.map((option, i) => (
           <div className="checkbox-control" key={i}>
             <input
@@ -19,10 +24,10 @@ const CustomCheckbox = props => {
               value={option.key}
               // defaultChecked={option.isDefault}
               checked={option.key}
-              onChange={e => {
+              onChange={(e) => {
                 // console.log(' valueLink.requestChange', valueLink);
                 // console.log('e.target.value', e.target.value);
-                valueLink.requestCheckboxChange(e.target.value, i)
+                valueLink.requestCheckboxChange(e.target.value, i);
               }}
               // onChange={() => {
               //   option.isChecked = !option.isChecked

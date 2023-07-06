@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { FormControl, InputGroup } from 'react-bootstrap'
+import { FormControl, InputGroup } from "react-bootstrap";
 
-const getFormControlData = props => {
+const getFormControlData = (props) => {
   const {
     type,
     disabled,
@@ -31,26 +31,33 @@ const getFormControlData = props => {
       value={valueLink.value}
       maxLength={maxLength}
       // multiline={multiline}
-      onChange={event => valueLink.requestChange(event.target.value)}
+      onChange={(event) => valueLink.requestChange(event.target.value)}
       isValid={isValid}
       isInvalid={isInvalid}
     />
   );
 };
-const CustomTextControl = props => {
+const CustomTextControl = (props) => {
   return (
     <div>
-      {
-        (props.prefix || props.suffix) ? (
-          <InputGroup>
-            {props.prefix && <InputGroup.Prepend className={props.classes.prefix}>{props.prefix}</InputGroup.Prepend>}
-            {getFormControlData(props)}
-            {props.suffix && <InputGroup.Prepend className={props.classes.suffix}>{props.suffix}</InputGroup.Prepend>}
-          </InputGroup>
-        ) : getFormControlData(props)
-
-      }
-    </div >
+      {props.prefix || props.suffix ? (
+        <InputGroup>
+          {props.prefix && (
+            <InputGroup.Prepend className={props.classes.prefix}>
+              {props.prefix}
+            </InputGroup.Prepend>
+          )}
+          {getFormControlData(props)}
+          {props.suffix && (
+            <InputGroup.Prepend className={props.classes.suffix}>
+              {props.suffix}
+            </InputGroup.Prepend>
+          )}
+        </InputGroup>
+      ) : (
+        getFormControlData(props)
+      )}
+    </div>
   );
 };
 

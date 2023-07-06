@@ -1,54 +1,29 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
 import PageHeader from "../common/PageHeader";
 import CoinBadges from "./../common/CoinBadges";
-import { getAllWalletListApi, getAllWalletApi } from "../wallet/Api";
 import { getAllCoins } from "../onboarding/Api.js";
-import EditIcon from "../../assets/images/EditIcon.svg";
 import CohortIcon from "../../assets/images/icons/active-cohort.svg";
 import SearchIcon from "../../assets/images/icons/search-icon.svg";
-
-import {
-  SEARCH_BY_CHAIN_IN,
-  SORT_BY_NAME,
-  SORT_BY_PORTFOLIO_AMOUNT,
-  SORT_BY_CREATED_ON,
-  Plans,
-} from "../../utils/Constant.js";
 import FixAddModal from "../common/FixAddModal";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import netWorthIcon from "../../assets/images/icons/net-worth.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { Col, Image, Row } from "react-bootstrap";
 import Loading from "../common/Loading";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import {
-
   CreateWhalePod,
   PageViewWhale,
   TimeSpentWhalePod,
-  WhaleExpandedPod,
   WhaleFilterByChain,
-  WhaleHoverPod,
   WhaleSortByAmt,
   WhaleSortByDate,
   WhaleSortByName,
 } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser, getToken } from "../../utils/ManageToken";
-import FeedbackForm from "../common/FeedbackForm";
-import { CurrencyType, numToCurrency, UpgradeTriggered } from "../../utils/ReusableFunctions";
-import Coin from "../../assets/images/coin-ava.svg";
-import Coin1 from "../../assets/images/icons/Coin0.svg";
-import Coin2 from "../../assets/images/icons/Coin-1.svg";
-import Coin3 from "../../assets/images/icons/Coin-2.svg";
-import Coin4 from "../../assets/images/icons/Coin-3.svg";
-import CoinChip from "../wallet/CoinChip";
+import { getCurrentUser } from "../../utils/ManageToken";
+import { UpgradeTriggered } from "../../utils/ReusableFunctions";
 import ExitOverlay from "../common/ExitOverlay";
 import { searchCohort, updateCohort } from "./Api";
 import moment from "moment";
-import CustomChip from "../../utils/commonComponent/CustomChip";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import PodCard from "./pod-card";
@@ -94,18 +69,21 @@ class Cohort extends Component {
       search: "",
       sortedItem: [],
       isUpdate: 0,
-      startTime:"",
+      startTime: "",
     };
   }
-
-  componentDidMount() {
-    this.state.startTime = new Date() * 1;
-    // console.log("page Enter", this.state.startTime / 1000);
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
     PageViewWhale({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-
+    // Inactivity Check
+    window.checkWhalePodTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
     const pod = params.get("create-pod");
@@ -132,9 +110,27 @@ class Cohort extends Component {
         }
       );
     }
+    this.startPageView();
+    this.updateTimer(true);
+
+    return () => {
+      clearInterval(window.checkWhalePodTimer);
+    };
   }
 
-  componentWillUnmount() {
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "whalePodPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("whalePodPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkWhalePodTimer);
+    localStorage.removeItem("whalePodPageExpiryTime");
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000;
 
@@ -143,6 +139,19 @@ class Cohort extends Component {
       email_address: getCurrentUser().email,
       time_spent: TimeSpent,
     });
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("whalePodPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("whalePodPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -203,6 +212,7 @@ class Cohort extends Component {
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
         });
+        this.updateTimer();
       } else {
         this.setState(
           {
@@ -333,6 +343,7 @@ class Cohort extends Component {
         email_address: getCurrentUser().email,
         session_id: getCurrentUser().id,
       });
+      this.updateTimer();
     } else if (e.title === "Date added") {
       this.sortArray("created_on", isDown);
       this.setState({
@@ -342,6 +353,7 @@ class Cohort extends Component {
         email_address: getCurrentUser().email,
         session_id: getCurrentUser().id,
       });
+      this.updateTimer();
     } else if (e.title === "Name") {
       this.sortArray("name", isDown);
       this.setState({
@@ -351,6 +363,7 @@ class Cohort extends Component {
         email_address: getCurrentUser().email,
         session_id: getCurrentUser().id,
       });
+      this.updateTimer();
     }
   };
 
@@ -362,6 +375,7 @@ class Cohort extends Component {
       session_id: getCurrentUser().id,
       chain_name: badge.name,
     });
+    this.updateTimer();
 
     let newArr = [...this.state.activeBadge];
     let activeBadgeIds = [];
@@ -505,10 +519,7 @@ class Cohort extends Component {
   };
 
   CheckApiResponseWallet = (value) => {
-   
-
     this.props.setPageFlagDefault();
-  
   };
 
   render() {
@@ -528,6 +539,7 @@ class Cohort extends Component {
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 // handleUpdate={this.handleUpdateWallet}
+                updateTimer={this.updateTimer}
               />
             </div>
           </div>
@@ -543,6 +555,7 @@ class Cohort extends Component {
               isStatic={this.state.isStatic}
               triggerId={this.state.triggerId}
               pname="cohort-page"
+              updateTimer={this.updateTimer}
             />
           )}
 
@@ -558,6 +571,7 @@ class Cohort extends Component {
               changeWalletList={this.handleChangeList}
               apiResponse={(e) => this.CheckApiResponse(e)}
               total_addresses={this.props.cohortState?.total_addresses}
+              updateTimer={this.updateTimer}
             />
           ) : this.state.RegisterModal ? (
             <ExitOverlay
@@ -568,10 +582,10 @@ class Cohort extends Component {
               modalType={"create_account"}
               iconImage={CohortIcon}
               isSkip={() => this.handleSkip()}
-
               // headerTitle={"Create a Wallet cohort"}
               // changeWalletList={this.handleChangeList}
               // apiResponse={(e) => this.CheckApiResponse(e)}
+              updateTimer={this.updateTimer}
             />
           ) : (
             ""
@@ -590,10 +604,10 @@ class Cohort extends Component {
               history={this.props.history}
               // changeWalletList={this.handleChangeList}
               apiResponse={(e) => {
-                this.CheckApiResponseWallet(e)
-               
+                this.CheckApiResponseWallet(e);
               }}
               from="transaction history"
+              updateTimer={this.updateTimer}
             />
           )}
 
@@ -614,6 +628,7 @@ class Cohort extends Component {
               chainImages={this.state?.chainImages}
               total_addresses={this.props.cohortState?.total_addresses}
               totalEditAddress={this.state.editWalletAddressList?.length}
+              updateTimer={this.updateTimer}
             />
           ) : (
             ""
@@ -628,6 +643,7 @@ class Cohort extends Component {
               handleSearch={this.handleSearch}
               // showData={totalWalletAmt}
               // isLoading={isLoading}
+              updateTimer={this.updateTimer}
             />
             <CoinBadges
               activeBadge={this.state.activeBadge}
@@ -703,6 +719,7 @@ class Cohort extends Component {
                           index={i}
                           handleEdit={this.handleEdit}
                           history={this.props.history}
+                          updateTimer={this.updateTimer}
                         />
                       </Col>
                     );
@@ -749,7 +766,7 @@ const mapDispatchToProps = {
   getAllCoins,
   searchCohort,
   updateCohort,
-  setPageFlagDefault
+  setPageFlagDefault,
 };
 Cohort.propTypes = {
   // getPosts: PropTypes.func

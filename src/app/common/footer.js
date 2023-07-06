@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import mediumIcon from "../../assets/images/icons/medium.png";
 import TwitterIcon from "../../assets/images/icons/twitter.png";
 import TelegramIcon from "../../assets/images/icons/telegram.png";
-import moment from 'moment';
-import { Image } from 'react-bootstrap';
+import moment from "moment";
+import { Image } from "react-bootstrap";
 
 class Footer extends Component {
   render() {

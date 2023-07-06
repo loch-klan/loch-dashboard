@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import BaseReactComponent from "./../../utils/form/BaseReactComponent";
@@ -6,15 +6,29 @@ import OnBoarding from "../onboarding";
 import "../../assets/scss/onboarding/_onboarding.scss";
 import { Button, Image } from "react-bootstrap";
 import Banner from "../../assets/images/bg-img-welcome.png";
-import { deleteToken, getToken, setLocalStoraage } from '../../utils/ManageToken';
-import { getAllCurrencyRatesApi, GetDefaultPlan, setPageFlagDefault } from '../common/Api';
-import UpgradeModal from '../common/upgradeModal';
+import {
+  deleteToken,
+  getToken,
+  setLocalStoraage,
+} from "../../utils/ManageToken";
+import {
+  getAllCurrencyRatesApi,
+  GetDefaultPlan,
+  setPageFlagDefault,
+} from "../common/Api";
+import UpgradeModal from "../common/upgradeModal";
 import FormElement from "../../utils/form/FormElement";
 import FormValidator from "./../../utils/form/FormValidator";
 import CustomTextControl from "./../../utils/form/CustomTextControl";
 import LochIcon from "../../assets/images/icons/loch-icon-white.svg";
 import Form from "../../utils/form/Form";
-import { DiscountEmailPage, DiscountEmailSkip, EmailAddedDiscount, TimeSpentDiscountEmail, TimeSpentOnboarding } from '../../utils/AnalyticsFunctions';
+import {
+  DiscountEmailPage,
+  DiscountEmailSkip,
+  EmailAddedDiscount,
+  TimeSpentDiscountEmail,
+  TimeSpentOnboarding,
+} from "../../utils/AnalyticsFunctions";
 
 class Home extends BaseReactComponent {
   constructor(props) {
@@ -89,13 +103,15 @@ class Home extends BaseReactComponent {
           deleteToken();
         } else {
           // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
-          let user = localStorage.getItem("lochUser") ? JSON.parse(localStorage.getItem("lochUser")): false;
+          let user = localStorage.getItem("lochUser")
+            ? JSON.parse(localStorage.getItem("lochUser"))
+            : false;
           if (user) {
-              this.props.history.push("/home");
+            this.props.history.push("/home");
           } else {
-             this.props.setPageFlagDefault();
-             deleteToken();
-             // console.log("inside else after derlete token")
+            this.props.setPageFlagDefault();
+            deleteToken();
+            // console.log("inside else after derlete token")
             //  localStorage.setItem("defi_access", true);
             //  localStorage.setItem("isPopup", true);
             //  // localStorage.setItem("whalepodview", true);
@@ -111,14 +127,13 @@ class Home extends BaseReactComponent {
             //     intelligence: false,
             //   })
             // );
-                setLocalStoraage();
-             let isRefresh = JSON.parse(localStorage.getItem("refresh"));
-             if (!isRefresh) {
-               localStorage.setItem("refresh", true);
-               window.location.reload(true);
-             }
+            setLocalStoraage();
+            let isRefresh = JSON.parse(localStorage.getItem("refresh"));
+            if (!isRefresh) {
+              localStorage.setItem("refresh", true);
+              window.location.reload(true);
+            }
           }
-        
         }
       } else {
         this.props.setPageFlagDefault();
@@ -140,7 +155,7 @@ class Home extends BaseReactComponent {
         //      intelligence: false,
         //    })
         //  );
-            setLocalStoraage();
+        setLocalStoraage();
         let isRefresh = JSON.parse(localStorage.getItem("refresh"));
         if (!isRefresh) {
           localStorage.setItem("refresh", true);
@@ -152,10 +167,9 @@ class Home extends BaseReactComponent {
     GetDefaultPlan();
   }
 
-
   componentWillUnmount() {
-     let endTime = new Date() * 1;
-     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
     //  console.log("page Leave", endTime/1000);
     //  console.log("Time Spent", TimeSpent);
     TimeSpentDiscountEmail({ time_spent: TimeSpent });
@@ -163,12 +177,11 @@ class Home extends BaseReactComponent {
 
   hideModal = (value) => {};
   handleSave = () => {
-
     this.setState({
       emailAdded: true,
-    })
+    });
 
-    EmailAddedDiscount({email_address:this.state.email});
+    EmailAddedDiscount({ email_address: this.state.email });
 
     setTimeout(() => {
       this.setState({
@@ -176,14 +189,13 @@ class Home extends BaseReactComponent {
       });
       localStorage.setItem("discountEmail", true);
     }, 2000);
-    
-  }
+  };
   handleSkip = () => {
     DiscountEmailSkip();
     this.setState({
       showEmailPopup: false,
     });
-  }
+  };
 
   render() {
     return (
@@ -292,13 +304,13 @@ class Home extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
-  homeState: state.HomeState
+const mapStateToProps = (state) => ({
+  homeState: state.HomeState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
-  setPageFlagDefault
-}
+  setPageFlagDefault,
+};
 Home.propTypes = {
   // getPosts: PropTypes.func
 };

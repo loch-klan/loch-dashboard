@@ -1,11 +1,18 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
+import React from "react";
+import { Button } from "react-bootstrap";
 import { connect } from "react-redux";
-import { BaseReactComponent, CustomTextControl, Form, FormElement, FormSubmitButton, FormValidator } from '../../utils/form';
-import { deleteToken } from '../../utils/ManageToken';
-import { verifyEmailApi } from './Api';
-import { getAllCoins, getAllParentChains } from '../onboarding/Api';
-import Loading from './Loading';
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+  FormSubmitButton,
+  FormValidator,
+} from "../../utils/form";
+import { deleteToken } from "../../utils/ManageToken";
+import { verifyEmailApi } from "./Api";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api";
+import Loading from "./Loading";
 // import { loginApi } from './Api';
 
 class VerifyEmail extends BaseReactComponent {
@@ -19,7 +26,7 @@ class VerifyEmail extends BaseReactComponent {
       forgotPassword: false,
       token: token ? token : "",
       error: false,
-    }
+    };
   }
 
   componentDidMount() {
@@ -28,10 +35,8 @@ class VerifyEmail extends BaseReactComponent {
     this.props.getAllCoins();
     this.props.getAllParentChains();
     const data = new URLSearchParams();
-    data.append('token', this.state.token);
+    data.append("token", this.state.token);
     verifyEmailApi(this, data);
-
-  
   }
 
   render() {

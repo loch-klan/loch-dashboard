@@ -48,7 +48,6 @@ class EditWalletExchange extends BaseReactComponent {
   }
 
   onValidSubmit = () => {
-    
     let data = new URLSearchParams();
     data.append("exchange", this.state.walletMetaData?.name);
     data.append("account_name", this.state.walletNickname);
@@ -188,8 +187,7 @@ const mapStateToProps = (state) => ({
   walletState: state.WalletState,
 });
 const mapDispatchToProps = {
-  
-   updateAccountName,
+  updateAccountName,
   deleteAccount,
 };
 EditWalletExchange.propTypes = {};

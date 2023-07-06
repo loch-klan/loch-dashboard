@@ -1,6 +1,6 @@
 import { Badge, Image } from "react-bootstrap";
 import CustomOverlay from "./CustomOverlay";
-import unrecognized from '../../image/unrecognized.svg';
+import unrecognized from "../../image/unrecognized.svg";
 import { lightenDarkenColor, loadingAnimation } from "../ReusableFunctions";
 
 function CustomChip({ coins, isLoaded, id, isCohort }) {

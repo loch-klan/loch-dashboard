@@ -17,12 +17,27 @@ import {
 } from "../onboarding//Api";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import {fixWalletApi, SendOtp, setPageFlagDefault, SigninWallet, VerifyEmail } from "./Api.js";
+import {
+  fixWalletApi,
+  SendOtp,
+  setPageFlagDefault,
+  SigninWallet,
+  VerifyEmail,
+} from "./Api.js";
 import { updateUser } from "../profile/Api";
 import { toHaveStyle } from "@testing-library/jest-dom/dist/matchers";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { ConnectExPopupEmailAdded, GeneralPopupEmailAdded, SigninMenuEmailAdded, UpgradeSignInEmailVerified, WhaleCreateAccountEmailSaved, WhaleCreateAccountPrivacyHover, WhalePopup, WhalePopupEmailAdded } from "../../utils/AnalyticsFunctions";
+import {
+  ConnectExPopupEmailAdded,
+  GeneralPopupEmailAdded,
+  SigninMenuEmailAdded,
+  UpgradeSignInEmailVerified,
+  WhaleCreateAccountEmailSaved,
+  WhaleCreateAccountPrivacyHover,
+  WhalePopup,
+  WhalePopupEmailAdded,
+} from "../../utils/AnalyticsFunctions";
 import { loadingAnimation } from "../../utils/ReusableFunctions";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
@@ -61,7 +76,6 @@ class AuthModal extends BaseReactComponent {
   }
 
   componentDidMount() {
-
     // set popup active
     localStorage.setItem("isPopupActive", true);
     // this.props.getAllCoins();
@@ -69,7 +83,7 @@ class AuthModal extends BaseReactComponent {
   }
 
   componentWillUnmount() {
-     // set popup active
+    // set popup active
     localStorage.setItem("isPopupActive", false);
   }
 
@@ -130,17 +144,14 @@ class AuthModal extends BaseReactComponent {
       GeneralPopupEmailAdded({
         session_id: getCurrentUser().id,
         email_added: this.state.email,
-        from:this.props?.tracking
+        from: this.props?.tracking,
       });
     }
 
-    
     // WhaleCreateAccountEmailSaved({
     //   session_id: getCurrentUser().id,
     //   email_address: this.state.email,
     // });
-
-  
   };
 
   handleOtp = () => {
@@ -211,16 +222,16 @@ class AuthModal extends BaseReactComponent {
   // Signin wit wallet
   SigninWallet = () => {
     // get device id
-     const deviceId = localStorage.getItem("deviceId") || uuidv4();
+    const deviceId = localStorage.getItem("deviceId") || uuidv4();
 
-     if (!localStorage.getItem("deviceId")) {
-       // console.log("no device id");
-       localStorage.setItem("deviceId", deviceId);
-     }
+    if (!localStorage.getItem("deviceId")) {
+      // console.log("no device id");
+      localStorage.setItem("deviceId", deviceId);
+    }
 
-     if (!localStorage.getItem("connectWalletAddress")) {
-       localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
-     }
+    if (!localStorage.getItem("connectWalletAddress")) {
+      localStorage.setItem("connectWalletAddress", this.state.MetaAddress);
+    }
 
     let data = new URLSearchParams();
     data.append("device_id", deviceId);
@@ -452,7 +463,7 @@ const mapDispatchToProps = {
   getAllCoins,
   detectCoin,
   getAllParentChains,
-  setPageFlagDefault
+  setPageFlagDefault,
 };
 
 AuthModal.propTypes = {};

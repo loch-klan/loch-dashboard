@@ -1,15 +1,20 @@
-import React from 'react'
-import {BaseReactComponent, CustomTextControl, Form, FormElement} from './../../utils/form';
-import { connect } from 'react-redux';
-import { Modal, Image, Button, Col, Row } from 'react-bootstrap';
-import CloseIcon from '../../assets/images/icons/dummyX.svg'
-import { FeedbackType } from '../../utils/Constant';
-import downBlack from '../../assets/images/icons/thumbs-down-black.svg';
-import upBlack from '../../assets/images/icons/thumbs-up-black.svg';
+import React from "react";
+import {
+  BaseReactComponent,
+  CustomTextControl,
+  Form,
+  FormElement,
+} from "./../../utils/form";
+import { connect } from "react-redux";
+import { Modal, Image, Button, Col, Row } from "react-bootstrap";
+import CloseIcon from "../../assets/images/icons/dummyX.svg";
+import { FeedbackType } from "../../utils/Constant";
+import downBlack from "../../assets/images/icons/thumbs-down-black.svg";
+import upBlack from "../../assets/images/icons/thumbs-up-black.svg";
 import starIcon from "../../assets/images/icons/star.svg";
 import starIconActive from "../../assets/images/icons/star-active.svg";
-import { sendFeedbackApi } from './Api';
-import DropDown from './DropDown';
+import { sendFeedbackApi } from "./Api";
+import DropDown from "./DropDown";
 
 class FeedbackModal extends BaseReactComponent {
   constructor(props) {
@@ -268,11 +273,8 @@ class FeedbackModal extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = state => ({
-});
-const mapDispatchToProps = {
-}
-FeedbackModal.propTypes = {
-};
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {};
+FeedbackModal.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedbackModal);

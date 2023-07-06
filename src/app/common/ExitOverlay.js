@@ -1,11 +1,16 @@
-import React from 'react'
-import {BaseReactComponent, Form, FormElement, FormValidator} from './../../utils/form';
-import { connect } from 'react-redux';
-import { Modal, Image, Button } from 'react-bootstrap';
-import ExitOverlayIcon from '../../assets/images/icons/ExitOverlayWalletIcon.svg'
+import React from "react";
+import {
+  BaseReactComponent,
+  Form,
+  FormElement,
+  FormValidator,
+} from "./../../utils/form";
+import { connect } from "react-redux";
+import { Modal, Image, Button } from "react-bootstrap";
+import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
 // import CloseIcon from '../../assets/images/icons/close-icon.svg'
-import CloseIcon from '../../assets/images/icons/dummyX.svg'
-import CustomTextControl from './../../utils/form/CustomTextControl';
+import CloseIcon from "../../assets/images/icons/dummyX.svg";
+import CustomTextControl from "./../../utils/form/CustomTextControl";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import {
   getAllCoins,
@@ -14,48 +19,65 @@ import {
 } from "../onboarding//Api";
 // import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
 // import Dropdown from '../common/DropDown.js';
-import CopyLink from '../../assets/images/icons/CopyLink.svg';
+import CopyLink from "../../assets/images/icons/CopyLink.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import ShareLink from '../../assets/images/icons/ShareLink.svg'
-import {exportDataApi, fixWalletApi} from './Api.js'
-import { BASE_URL_S3, Plans } from '../../utils/Constant';
-import { toast } from 'react-toastify';
-import ApiModalFrame from '../../assets/images/apiModalFrame.svg';
-import nextIcon from '../../assets/images/icons/next.svg'
-import next2Icon from '../../assets/images/icons/next2.svg'
-import prevIcon from '../../assets/images/icons/prev.svg'
-import prev2Icon from '../../assets/images/icons/prev2.svg'
+import ShareLink from "../../assets/images/icons/ShareLink.svg";
+import { exportDataApi, fixWalletApi } from "./Api.js";
+import { BASE_URL_S3, Plans } from "../../utils/Constant";
+import { toast } from "react-toastify";
+import ApiModalFrame from "../../assets/images/apiModalFrame.svg";
+import nextIcon from "../../assets/images/icons/next.svg";
+import next2Icon from "../../assets/images/icons/next2.svg";
+import prevIcon from "../../assets/images/icons/prev.svg";
+import prev2Icon from "../../assets/images/icons/prev2.svg";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import { getCurrentUser } from "../../utils/ManageToken";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
 import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
 import {
-
   CreateWhalePodSave,
   ExportDataDownlaod,
   LeaveEmailAdded,
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
-  MenuLetMeLeave,WhalePodAddressDelete,WhalePodAddTextbox,WhalePodDeleted, WhalePodUploadFile, PodName, ExportDateSelected, signUpProperties, resetUser, signInUser,
+  MenuLetMeLeave,
+  WhalePodAddressDelete,
+  WhalePodAddTextbox,
+  WhalePodDeleted,
+  WhalePodUploadFile,
+  PodName,
+  ExportDateSelected,
+  signUpProperties,
+  resetUser,
+  signInUser,
 } from "../../utils/AnalyticsFunctions.js";
-import { DatePickerControl } from '../../utils/form';
-import moment from 'moment';
+import { DatePickerControl } from "../../utils/form";
+import moment from "moment";
 import lochClean from "../../assets/images/LochClean.gif";
-import { CurrencyType, getPadding, loadingAnimation } from '../../utils/ReusableFunctions';
-import CustomChip from '../../utils/commonComponent/CustomChip';
+import {
+  CurrencyType,
+  getPadding,
+  loadingAnimation,
+} from "../../utils/ReusableFunctions";
+import CustomChip from "../../utils/commonComponent/CustomChip";
 import Coin1 from "../../assets/images/icons/Coin0.svg";
 import Coin2 from "../../assets/images/icons/Coin-1.svg";
 import Coin3 from "../../assets/images/icons/Coin-2.svg";
 import Coin4 from "../../assets/images/icons/Coin-3.svg";
-import { createCohort, deleteCohort, getPodStatus, notificationSend } from '../cohort/Api';
+import {
+  createCohort,
+  deleteCohort,
+  getPodStatus,
+  notificationSend,
+} from "../cohort/Api";
 import Papa from "papaparse";
-import { updateUser } from '../profile/Api';
-import UpgradeModal from './upgradeModal';
+import { updateUser } from "../profile/Api";
+import UpgradeModal from "./upgradeModal";
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import { Form as FormB } from "react-bootstrap";
 class ExitOverlay extends BaseReactComponent {
@@ -264,6 +286,9 @@ class ExitOverlay extends BaseReactComponent {
         " to " +
         moment(this.state.toDate).format("DD MMMM YY"),
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
 
   addAddress = () => {
@@ -298,6 +323,9 @@ class ExitOverlay extends BaseReactComponent {
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
     } else {
       this.setState(
         {
@@ -324,6 +352,9 @@ class ExitOverlay extends BaseReactComponent {
       email_address: getCurrentUser().email,
       address: this.state.addWalletList[index]?.address,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
     this.state.addWalletList.splice(index, 1);
     this.state.addWalletList?.map((w, i) => {
       w.id = `wallet${i + 1}`;
@@ -533,6 +564,9 @@ class ExitOverlay extends BaseReactComponent {
             unrecognized_addresses: unrecog_address,
             chains_detected_against_them: blockchainDetected,
           });
+          if (this.props.updateTimer) {
+            this.props.updateTimer();
+          }
         }
       }, 100);
     }
@@ -541,7 +575,6 @@ class ExitOverlay extends BaseReactComponent {
   handleDeleteCohort = () => {
     //  let addressList = this.props?.walletaddress && this.props?.walletaddress?.map(e => e.wallet_address);
 
-    // WhalePodDeleted();
     // console.log("name", this.state.cohort_name);
     // console.log("address", this.state.addWalletList?.map(e => e.displayAddress ? e.displayAddress : e.address))
     WhalePodDeleted({
@@ -552,6 +585,9 @@ class ExitOverlay extends BaseReactComponent {
         e.displayAddress ? e.displayAddress : e.address
       ),
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
     const data = new URLSearchParams();
     data.append("cohort_id", this.props.cohortId);
 
@@ -565,6 +601,9 @@ class ExitOverlay extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
   handleSave = () => {
     if (this.props.modalType === "create_account") {
@@ -588,8 +627,11 @@ class ExitOverlay extends BaseReactComponent {
         userId: getCurrentUser().id,
         first_name: "",
         last_name: "",
-        track:"leaving"
+        track: "leaving",
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
       let email_arr = [];
       let data = JSON.parse(localStorage.getItem("addWallet"));
       if (data) {
@@ -605,6 +647,9 @@ class ExitOverlay extends BaseReactComponent {
           session_id: getCurrentUser().id,
           email_address: this.state.email,
         });
+        if (this.props.updateTimer) {
+          this.props.updateTimer();
+        }
       }
     }
   };
@@ -627,6 +672,9 @@ class ExitOverlay extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
 
   leavePrivacy = () => {
@@ -634,6 +682,9 @@ class ExitOverlay extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
     // console.log("on hover privacy msg");
   };
 
@@ -664,6 +715,9 @@ class ExitOverlay extends BaseReactComponent {
         ],
         data_exported: this.state.selectedExportItem.fileName,
       });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
       // console.log(
       //   "date range",
       //   moment(this.state.fromDate).format("DD MMMM YY"),
@@ -788,6 +842,9 @@ class ExitOverlay extends BaseReactComponent {
               email_address: getCurrentUser().email,
               addresses: uploadedAddress,
             });
+            if (this.props.updateTimer) {
+              this.props.updateTimer();
+            }
 
             this.setState(
               {
@@ -1202,6 +1259,9 @@ class ExitOverlay extends BaseReactComponent {
                                         email_address: getCurrentUser().email,
                                         pod_name: this.state.cohort_name,
                                       });
+                                      if (this.props.updateTimer) {
+                                        this.props.updateTimer();
+                                      }
                                     },
                                   },
                                 }}
@@ -1759,7 +1819,13 @@ class ExitOverlay extends BaseReactComponent {
                               email_address: getCurrentUser().email,
                               session_id: getCurrentUser().id,
                             });
+                            if (this.props.updateTimer) {
+                              this.props.updateTimer();
+                            }
                             resetUser();
+                            if (this.props.updateTimer) {
+                              this.props.updateTimer();
+                            }
                             localStorage.setItem("refresh", false);
                             this.props.history.push("/welcome");
                           }}
@@ -1832,8 +1898,6 @@ const mapDispatchToProps = {
   getAllParentChains,
 };
 
-
-ExitOverlay.propTypes = {
-};
+ExitOverlay.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExitOverlay);
