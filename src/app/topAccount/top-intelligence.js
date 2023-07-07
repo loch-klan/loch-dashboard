@@ -81,7 +81,7 @@ class TopIntelligence extends Component {
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
-
+      isGraphLoading: false,
       // this is used in api to check api call fromt op acount page or not
       isTopAccountPage: true,
     };
@@ -100,11 +100,10 @@ class TopIntelligence extends Component {
     });
     // console.log("switch")
 
-
-     NetflowSwitchTop({
-       email_address: getCurrentUser().email,
-       session_id: getCurrentUser().id,
-     });
+    NetflowSwitchTop({
+      email_address: getCurrentUser().email,
+      session_id: getCurrentUser().id,
+    });
   };
 
   componentDidMount() {
@@ -150,7 +149,9 @@ class TopIntelligence extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
-
+    if (prevProps !== this.props) {
+      this.setState({ isGraphLoading: false });
+    }
     if (prevState.apiResponse != this.state.apiResponse) {
       // console.log("update");
 
@@ -209,7 +210,7 @@ class TopIntelligence extends Component {
       email_address: getCurrentUser().email,
     });
 
-     this.timeFilter(0);
+    this.timeFilter(0);
   }
 
   assetList = () => {
@@ -233,7 +234,7 @@ class TopIntelligence extends Component {
     //   })
     // }
     let handleSelected = "All";
-    this.setState({ graphValue: "" });
+    this.setState({ graphValue: "", isGraphLoading: true });
     const today = moment().unix();
     if (option == 0) {
       this.props.getProfitAndLossApi(
@@ -423,6 +424,7 @@ class TopIntelligence extends Component {
 
     this.setState({
       selectedActiveBadge: activeBadgeList,
+      isGraphLoading: true,
     });
     let startDate = moment().unix();
     let endDate;
@@ -571,25 +573,27 @@ class TopIntelligence extends Component {
   };
 
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress") ? JSON.parse(localStorage.getItem("previewAddress")) : "";
-    const encodedAddress = base64url.encode(previewAddress?.address);
-  //  console.log(
-  //    "encoded address",
-  //    encodedAddress,
-  //    "address",
-  //    previewAddress?.address,
-  //    "decode address",
-  //    base64url.decode(encodedAddress)
-  //  );
-    let shareLink =
-      BASE_URL_S3 +
-      `top-account/${encodedAddress}?redirect=intelligence#netflow`;
-    navigator.clipboard.writeText(shareLink);
-    toast.success("Link copied");
- TopIntShare({
-   session_id: getCurrentUser().id,
-   email_address: getCurrentUser().email,
- });
+    // const previewAddress = localStorage.getItem("previewAddress")
+    //   ? JSON.parse(localStorage.getItem("previewAddress"))
+    //   : "";
+    // const encodedAddress = base64url.encode(previewAddress?.address);
+    //  console.log(
+    //    "encoded address",
+    //    encodedAddress,
+    //    "address",
+    //    previewAddress?.address,
+    //    "decode address",
+    //    base64url.decode(encodedAddress)
+    //  );
+    // let shareLink =
+    //   BASE_URL_S3 +
+    //   `top-account/${encodedAddress}?redirect=intelligence#netflow`;
+    // navigator.clipboard.writeText(shareLink);
+    // toast.success("Link copied");
+    // TopIntShare({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
     // console.log("share pod", shareLink);
   };
 
@@ -864,7 +868,7 @@ class TopIntelligence extends Component {
                     }
                     ProfitLossAsset={this.props.topAccountState.ProfitLossAsset}
                     handleAssetSelected={this.handleAssetSelected}
-
+                    isGraphLoading={this.state.isGraphLoading}
                     // comingSoon={true}
                   />
                 ) : (

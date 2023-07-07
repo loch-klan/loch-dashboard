@@ -407,22 +407,6 @@ export default function WelcomeCard(props) {
         ""
       )}
 
-      {popupModal ? (
-        <AuthModal
-          show={popupModal}
-          onHide={handlePopup}
-          history={history}
-          modalType={"create_account"}
-          iconImage={LinkIcon}
-          hideSkip={true}
-          title="Don’t lose your data"
-          description="Don’t let your hard work go to waste. Add your email so you can analyze your CeFi and DeFi portfolio together"
-          stopUpdate={true}
-          tracking="Home connect exchange"
-        />
-      ) : (
-        ""
-      )}
       {signinModal ? (
         <AuthModal
           show={signinModal}

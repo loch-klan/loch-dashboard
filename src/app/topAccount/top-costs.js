@@ -101,10 +101,10 @@ class TopCost extends Component {
 
   componentDidMount() {
     this.state.startTime = new Date() * 1;
-     PageviewTopCosts({
-       session_id: getCurrentUser().id,
-       email_address: getCurrentUser().email,
-     });
+    PageviewTopCosts({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
@@ -117,7 +117,7 @@ class TopCost extends Component {
     } else {
       window.scrollTo(0, 0);
     }
-    
+
     // console.log("page Enter", this.state.startTime / 1000);
 
     this.props.getAllCoins();
@@ -419,10 +419,10 @@ class TopCost extends Component {
   };
 
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
-      : "";
-    const encodedAddress = base64url.encode(previewAddress?.address);
+    // const previewAddress = localStorage.getItem("previewAddress")
+    //   ? JSON.parse(localStorage.getItem("previewAddress"))
+    //   : "";
+    // const encodedAddress = base64url.encode(previewAddress?.address);
     //  console.log(
     //    "encoded address",
     //    encodedAddress,
@@ -431,17 +431,16 @@ class TopCost extends Component {
     //    "decode address",
     //    base64url.decode(encodedAddress)
     //  );
-    let shareLink =
-      BASE_URL_S3 + `top-account/${encodedAddress}?redirect=intelligence/costs`;
-    navigator.clipboard.writeText(shareLink);
-    toast.success("Link copied");
- TopCostsShare({
-   session_id: getCurrentUser().id,
-   email_address: getCurrentUser().email,
- });
+    // let shareLink =
+    //   BASE_URL_S3 + `top-account/${encodedAddress}?redirect=intelligence/costs`;
+    // navigator.clipboard.writeText(shareLink);
+    // toast.success("Link copied");
+    // TopCostsShare({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
     // console.log("share pod", shareLink);
   };
-
 
   render() {
     // console.log("counter", this.state.counterGraphDigit);
@@ -520,7 +519,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Average Cost Price
+              Average cost price
             </span>
             <Image
               src={sortByIcon}
@@ -549,13 +548,17 @@ class TopCost extends Component {
                       ).toLocaleString("en-US")
                 }
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                  {rowData.AverageCostPrice === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.AverageCostPrice.toFixed(2))
-                      ).toLocaleString("en-US")}
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {rowData.AverageCostPrice === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          Number(
+                            noExponents(rowData.AverageCostPrice.toFixed(2))
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </div>
                 </div>
               </CustomOverlay>
             );
@@ -570,7 +573,7 @@ class TopCost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[2])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Price
+              Current price
             </span>
             <Image
               src={sortByIcon}
@@ -597,11 +600,15 @@ class TopCost extends Component {
                   ).toLocaleString("en-US")
                 }
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                  {CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentPrice.toFixed(2))
-                    ).toLocaleString("en-US")}
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CurrentPrice.toFixed(2))
+                        ).toLocaleString("en-US")}
+                    </span>
+                  </div>
                 </div>
               </CustomOverlay>
             );
@@ -767,14 +774,33 @@ class TopCost extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
             return (
-              <div
-                className={`gainLoss ${rowData.GainLoss < 0 ? "loss" : "gain"}`}
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  Number(
+                    noExponents(rowData.GainLoss.toFixed(2))
+                  ).toLocaleString("en-US") + "%"
+                }
+                colorCode="#000"
               >
-                <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                <div className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.GainLoss.toFixed(2) + "%"}
+                <div className="gainLossContainer">
+                  <div
+                    className={`gainLoss ${
+                      rowData.GainLoss < 0 ? "loss" : "gain"
+                    }`}
+                  >
+                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                      {Number(
+                        noExponents(rowData.GainLoss.toFixed(2))
+                      ).toLocaleString("en-US") + "%"}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </CustomOverlay>
             );
           }
         },

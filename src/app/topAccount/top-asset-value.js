@@ -23,7 +23,11 @@ import {
 } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import FeedbackForm from "../common/FeedbackForm";
-import { PageviewTopAssetValue, TimeSpentTopAssetValue, TopAssetValueShare } from "../../utils/AnalyticsFunctions";
+import {
+  PageviewTopAssetValue,
+  TimeSpentTopAssetValue,
+  TopAssetValueShare,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -38,7 +42,11 @@ import {
 } from "../Portfolio/ActionTypes";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import { TOP_ASSET_VALUE_GRAPH_DAY, TOP_ASSET_VALUE_GRAPH_MONTH, TOP_ASSET_VALUE_GRAPH_YEAR } from "./ActionTypes";
+import {
+  TOP_ASSET_VALUE_GRAPH_DAY,
+  TOP_ASSET_VALUE_GRAPH_MONTH,
+  TOP_ASSET_VALUE_GRAPH_YEAR,
+} from "./ActionTypes";
 import base64url from "base64url";
 
 class TopAssetValueGraph extends Component {
@@ -240,10 +248,10 @@ class TopAssetValueGraph extends Component {
   };
 
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
-      : "";
-    const encodedAddress = base64url.encode(previewAddress?.address);
+    // const previewAddress = localStorage.getItem("previewAddress")
+    //   ? JSON.parse(localStorage.getItem("previewAddress"))
+    //   : "";
+    // const encodedAddress = base64url.encode(previewAddress?.address);
     //  console.log(
     //    "encoded address",
     //    encodedAddress,
@@ -252,19 +260,17 @@ class TopAssetValueGraph extends Component {
     //    "decode address",
     //    base64url.decode(encodedAddress)
     //  );
-    let shareLink =
-      BASE_URL_S3 +
-      `top-account/${encodedAddress}?redirect=intelligence/asset-value`;
-    navigator.clipboard.writeText(shareLink);
-    toast.success("Link copied");
- TopAssetValueShare({
-   session_id: getCurrentUser().id,
-   email_address: getCurrentUser().email,
- });
+    //     let shareLink =
+    //       BASE_URL_S3 +
+    //       `top-account/${encodedAddress}?redirect=intelligence/asset-value`;
+    //     navigator.clipboard.writeText(shareLink);
+    //     toast.success("Link copied");
+    //  TopAssetValueShare({
+    //    session_id: getCurrentUser().id,
+    //    email_address: getCurrentUser().email,
+    //  });
     // console.log("share pod", shareLink);
   };
-
- 
 
   render() {
     return (

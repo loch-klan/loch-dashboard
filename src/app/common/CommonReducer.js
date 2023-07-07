@@ -2,6 +2,7 @@ import {
   PAGE_POPUP,
   SET_COMMON_REDUCER,
   SET_DEFAULT_VALUE,
+  TOP_SET_DEFAULT_VALUE,
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
 
@@ -14,6 +15,13 @@ const INITIAL_STATE = {
   insight: false,
   defi: false,
   defi_home: false,
+
+  // top account
+  top_home: false,
+  top_intelligence: false,
+  top_asset_value: false,
+  top_insight: false,
+  top_defi: false,
 };
 
 const CommonReducer = (state = INITIAL_STATE, action) => {
@@ -37,6 +45,15 @@ const CommonReducer = (state = INITIAL_STATE, action) => {
         insight: false,
         defi: false,
         defi_home: false,
+      };
+    case TOP_SET_DEFAULT_VALUE:
+      return {
+        ...state,
+        top_home: false,
+        top_intelligence: false,
+        top_asset_value: false,
+        top_insight: false,
+        top_defi: false,
       };
     default:
       return state;

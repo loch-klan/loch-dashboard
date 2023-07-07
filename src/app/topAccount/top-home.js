@@ -5,8 +5,6 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 import LineChartSlider from "../Portfolio/LineCharSlider";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import LightBulb from "../../assets/images/icons/lightbulb.svg";
-import ArrowRight from "../../assets/images/icons/arrow-right.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
@@ -19,7 +17,7 @@ import {
   getExternalEventsApi,
   getExchangeBalances,
 } from "../Portfolio/Api";
-import { Button, Image, Row, Col } from "react-bootstrap";
+import { Image, Row, Col } from "react-bootstrap";
 import {
   detectCoin,
   getAllCoins,
@@ -43,7 +41,6 @@ import {
 import {
   GroupByOptions,
   GROUP_BY_DATE,
-  InsightType,
   SORT_BY_TIMESTAMP,
   SORT_BY_FROM_WALLET,
   SORT_BY_TO_WALLET,
@@ -55,20 +52,13 @@ import {
   BASE_URL_S3,
 } from "../../utils/Constant";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import reduceCost from "../../assets/images/icons/reduce-cost-img.svg";
-import reduceRisk from "../../assets/images/icons/reduce-risk-img.svg";
-import increaseYield from "../../assets/images/icons/increase-yield-img.svg";
 import {
   TopHomeShare,
   PageviewTopHome,
   TimeSpentTopHome,
   NetflowSwitchTopHome,
 } from "../../utils/AnalyticsFunctions.js";
-import {
-  deleteToken,
-  getCurrentUser,
-  resetPreviewAddress,
-} from "../../utils/ManageToken";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import { getAssetGraphDataApi } from "../Portfolio/Api";
 import {
   getAvgCostBasis,
@@ -735,10 +725,10 @@ class TopPortfolio extends BaseReactComponent {
     // console.log("switch")
   };
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
-      : "";
-    const encodedAddress = base64url.encode(previewAddress?.address);
+    // const previewAddress = localStorage.getItem("previewAddress")
+    //   ? JSON.parse(localStorage.getItem("previewAddress"))
+    //   : "";
+    // const encodedAddress = base64url.encode(previewAddress?.address);
     //  console.log(
     //    "encoded address",
     //    encodedAddress,
@@ -747,13 +737,13 @@ class TopPortfolio extends BaseReactComponent {
     //    "decode address",
     //    base64url.decode(encodedAddress)
     //  );
-    let shareLink = BASE_URL_S3 + `top-account/${encodedAddress}?redirect=home`;
-    navigator.clipboard.writeText(shareLink);
-    toast.success("Link copied");
-    TopHomeShare({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    // let shareLink = BASE_URL_S3 + `top-account/${encodedAddress}?redirect=home`;
+    // navigator.clipboard.writeText(shareLink);
+    // toast.success("Link copied");
+    // TopHomeShare({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
     // console.log("share pod", shareLink);
   };
 
@@ -1361,11 +1351,15 @@ class TopPortfolio extends BaseReactComponent {
         ),
         dataKey: "Asset",
         // coumnWidth: 118,
-        coumnWidth: 0.26,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
             return (
+              // <CoinChip
+              //   coin_img_src={rowData.Asset}
+              //   coin_code={rowData.AssetCode}
+              // />
               <CustomOverlay
                 position="top"
                 isIcon={false}
@@ -1379,7 +1373,13 @@ class TopPortfolio extends BaseReactComponent {
                       src={rowData.Asset}
                       className="history-table-icon"
                       style={{ width: "2rem", height: "2rem" }}
-                      onMouseEnter={() => {}}
+                      onMouseEnter={() => {
+                        // HomeCostAssetHover({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   asset_hover: rowData.AssetCode,
+                        // });
+                      }}
                     />
                     {rowData.chain && (
                       <Image
@@ -1407,24 +1407,24 @@ class TopPortfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Cost Basis"
-            onClick={() => this.handleSort(this.state.sortBy[4])}
+            id="Average Cost Price"
+            onClick={() => this.handleSort(this.state.sortBy[1])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost Basis
+              Avg cost price
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
+              className={this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
-        dataKey: "CostBasis",
-        // coumnWidth: 100,
-        coumnWidth: 0.34,
+        dataKey: "AverageCostPrice",
+        // coumnWidth: 153,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "CostBasis") {
+          if (dataKey === "AverageCostPrice") {
             return (
               <CustomOverlay
                 position="top"
@@ -1432,22 +1432,26 @@ class TopPortfolio extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={
-                  rowData.CostBasis === 0
+                  rowData.AverageCostPrice === 0
                     ? "N/A"
                     : CurrencyType(false) +
                       Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
+                        noExponents(rowData.AverageCostPrice.toFixed(2))
                       ).toLocaleString("en-US")
                 }
               >
-                <span>
-                  {rowData.CostBasis === 0
-                    ? "N/A"
-                    : CurrencyType(false) +
-                      Number(
-                        noExponents(rowData.CostBasis.toFixed(2))
-                      ).toLocaleString("en-US")}
-                </span>
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {rowData.AverageCostPrice === 0
+                        ? "N/A"
+                        : CurrencyType(false) +
+                          Number(
+                            noExponents(rowData.AverageCostPrice.toFixed(2))
+                          ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </div>
               </CustomOverlay>
             );
           }
@@ -1457,24 +1461,24 @@ class TopPortfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col"
-            id="Current Value"
-            onClick={() => this.handleSort(this.state.sortBy[5])}
+            id="Current Price"
+            onClick={() => this.handleSort(this.state.sortBy[2])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current Value
+              Current price
             </span>
             <Image
               src={sortByIcon}
-              className={this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
+              className={this.state.sortBy[2].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
-        dataKey: "CurrentValue",
-        // coumnWidth: 140,
-        coumnWidth: 0.37,
+        dataKey: "CurrentPrice",
+        // coumnWidth: 128,
+        coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "CurrentValue") {
+          if (dataKey === "CurrentPrice") {
             return (
               <CustomOverlay
                 position="top"
@@ -1484,16 +1488,20 @@ class TopPortfolio extends BaseReactComponent {
                 text={
                   CurrencyType(false) +
                   Number(
-                    noExponents(rowData.CurrentValue.toFixed(2))
+                    noExponents(rowData.CurrentPrice.toFixed(2))
                   ).toLocaleString("en-US")
                 }
               >
-                <span>
-                  {CurrencyType(false) +
-                    Number(
-                      noExponents(rowData.CurrentValue.toFixed(2))
-                    ).toLocaleString("en-US")}
-                </span>
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {CurrencyType(false) +
+                        Number(
+                          noExponents(rowData.CurrentPrice.toFixed(2))
+                        ).toLocaleString("en-US")}
+                    </span>
+                  </div>
+                </div>
               </CustomOverlay>
             );
           }
@@ -1517,19 +1525,38 @@ class TopPortfolio extends BaseReactComponent {
         ),
         dataKey: "GainLoss",
         // coumnWidth: 128,
-        coumnWidth: 0.37,
+        coumnWidth: 0.3,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
             return (
-              <div
-                className={`gainLoss ${rowData.GainLoss < 0 ? "loss" : "gain"}`}
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  Number(
+                    noExponents(rowData.GainLoss.toFixed(2))
+                  ).toLocaleString("en-US") + "%"
+                }
+                colorCode="#000"
               >
-                <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
-                <div className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.GainLoss.toFixed(2) + "%"}
+                <div className="gainLossContainer">
+                  <div
+                    className={`gainLoss ${
+                      rowData.GainLoss < 0 ? "loss" : "gain"
+                    }`}
+                  >
+                    <Image src={rowData.GainLoss < 0 ? LossIcon : GainIcon} />
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                      {Number(
+                        noExponents(rowData.GainLoss.toFixed(2))
+                      ).toLocaleString("en-US") + "%"}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </CustomOverlay>
             );
           }
         },

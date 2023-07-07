@@ -39,7 +39,12 @@ import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import base64url from "base64url";
 import { toast } from "react-toastify";
-import { PageviewDefi, PageviewTopDefi, TimeSpentTopDefi, TopDefiShare } from "../../utils/AnalyticsFunctions";
+import {
+  PageviewDefi,
+  PageviewTopDefi,
+  TimeSpentTopDefi,
+  TopDefiShare,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 class TopDefi extends Component {
@@ -126,11 +131,11 @@ class TopDefi extends Component {
     //   this.handleReset();
     //   this.upgradeModal();
     // }
- this.state.startTime = new Date() * 1;
- PageviewTopDefi({
-   session_id: getCurrentUser().id,
-   email_address: getCurrentUser().email,
- });
+    this.state.startTime = new Date() * 1;
+    PageviewTopDefi({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.props.getAllCoins();
     this.setState({});
 
@@ -138,7 +143,7 @@ class TopDefi extends Component {
     //  this.getYieldBalance();
   }
 
-    componentWillUnmount() {
+  componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
     TimeSpentTopDefi({
@@ -146,7 +151,6 @@ class TopDefi extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-
   }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
@@ -354,10 +358,10 @@ class TopDefi extends Component {
   };
 
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
-      : "";
-    const encodedAddress = base64url.encode(previewAddress?.address);
+    // const previewAddress = localStorage.getItem("previewAddress")
+    //   ? JSON.parse(localStorage.getItem("previewAddress"))
+    //   : "";
+    // const encodedAddress = base64url.encode(previewAddress?.address);
     //  console.log(
     //    "encoded address",
     //    encodedAddress,
@@ -366,22 +370,19 @@ class TopDefi extends Component {
     //    "decode address",
     //    base64url.decode(encodedAddress)
     //  );
-    let shareLink =
-      BASE_URL_S3 +
-      `top-account/${encodedAddress}?redirect=decentralized-finance`;
-    navigator.clipboard.writeText(shareLink);
-    toast.success("Link copied");
-
-    TopDefiShare({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-
+    // let shareLink =
+    //   BASE_URL_S3 +
+    //   `top-account/${encodedAddress}?redirect=decentralized-finance`;
+    // navigator.clipboard.writeText(shareLink);
+    // toast.success("Link copied");
+    // TopDefiShare({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
     // console.log("share pod", shareLink);
   };
 
   render() {
-  
     return (
       <>
         {/* topbar */}

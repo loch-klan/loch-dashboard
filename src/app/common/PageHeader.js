@@ -8,15 +8,12 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "./ConnectModal";
 import { useHistory } from "react-router-dom";
-import SignInPopupIcon from "../../assets/images/icons/loch-icon.svg";
-import AuthModal from "./AuthModal";
 import {
   AssetValueExplainer,
   ConnectExPopup,
   WalletConnectExchange,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
 
 export default function PageHeader(props) {
   const nav_list = window.location.pathname.split("/");
@@ -233,23 +230,6 @@ export default function PageHeader(props) {
           handleUpdate={props?.handleUpdate}
           openPopup={handlePopup}
           tracking="wallet page"
-        />
-      ) : (
-        ""
-      )}
-
-      {popupModal ? (
-        <AuthModal
-          show={popupModal}
-          onHide={handlePopup}
-          history={history}
-          modalType={"create_account"}
-          iconImage={LinkIcon}
-          hideSkip={true}
-          title="Don’t lose your data"
-          description="Don’t let your hard work go to waste. Add your email so you can analyze your CeFi and DeFi portfolio together"
-          stopUpdate={true}
-          tracking="Wallet connect exchange"
         />
       ) : (
         ""

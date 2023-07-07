@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "base64url": "^3.0.1",
     "bootstrap": "^4.6.0",
+    "buffer": "^6.0.3",
     "chart.js": "^3.9.1",
     "chartjs-plugin-watermark": "^2.0.2",
     "date-fns": "^2.27.0",

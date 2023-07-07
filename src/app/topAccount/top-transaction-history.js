@@ -207,7 +207,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-
   }
 
   callApi = (page = START_INDEX) => {
@@ -527,10 +526,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
   };
 
   handleShare = () => {
-    const previewAddress = localStorage.getItem("previewAddress")
-      ? JSON.parse(localStorage.getItem("previewAddress"))
-      : "";
-    const encodedAddress = base64url.encode(previewAddress?.address);
+    // const previewAddress = localStorage.getItem("previewAddress")
+    //   ? JSON.parse(localStorage.getItem("previewAddress"))
+    //   : "";
+    // const encodedAddress = base64url.encode(previewAddress?.address);
     //  console.log(
     //    "encoded address",
     //    encodedAddress,
@@ -539,15 +538,15 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     //    "decode address",
     //    base64url.decode(encodedAddress)
     //  );
-    let shareLink =
-      BASE_URL_S3 +
-      `top-account/${encodedAddress}?redirect=intelligence/transaction-history`;
-    navigator.clipboard.writeText(shareLink);
-    toast.success("Link copied");
-    TopTransactionShare({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    // let shareLink =
+    //   BASE_URL_S3 +
+    //   `top-account/${encodedAddress}?redirect=intelligence/transaction-history`;
+    // navigator.clipboard.writeText(shareLink);
+    // toast.success("Link copied");
+    // TopTransactionShare({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
     // console.log("share pod", shareLink);
   };
 

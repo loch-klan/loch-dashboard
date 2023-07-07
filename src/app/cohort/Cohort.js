@@ -25,7 +25,12 @@ import ExitOverlay from "../common/ExitOverlay";
 import { searchCohort, updateCohort } from "./Api";
 import moment from "moment";
 import UpgradeModal from "../common/upgradeModal";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  getUser,
+  TopsetPageFlagDefault,
+  setPageFlagDefault,
+} from "../common/Api";
 import PodCard from "./pod-card";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 class Cohort extends Component {
@@ -84,6 +89,7 @@ class Cohort extends Component {
     }, 900000);
   };
   componentDidMount() {
+    this.props?.TopsetPageFlagDefault();
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
     const pod = params.get("create-pod");
@@ -767,6 +773,7 @@ const mapDispatchToProps = {
   searchCohort,
   updateCohort,
   setPageFlagDefault,
+  TopsetPageFlagDefault,
 };
 Cohort.propTypes = {
   // getPosts: PropTypes.func

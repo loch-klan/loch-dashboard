@@ -86,8 +86,8 @@ class TopPieChart extends BaseReactComponent {
 
       // refresh
       userWalletList: localStorage.getItem("previewAddress")
-         ? [JSON.parse(localStorage.getItem("previewAddress"))]
-         : [],
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [],
       isStopLoading: false,
 
       chainLoader: false,
@@ -181,8 +181,7 @@ class TopPieChart extends BaseReactComponent {
           item.coins?.map((coin, i) => {
             let isfound = false;
             this.props.chainPortfolio &&
-                this.props.chainPortfolio?.map((chain) => {
-           
+              this.props.chainPortfolio?.map((chain) => {
                 if (
                   coin?.coinName === chain?.name &&
                   !uniquechains.includes(chain?.name)
@@ -203,7 +202,6 @@ class TopPieChart extends BaseReactComponent {
               coin?.chain_detected &&
               !uniquechains.includes(coin?.coinName)
             ) {
-               
               chainList.push({
                 name: coin?.coinName,
                 symbol: coin?.coinSymbol,
@@ -212,7 +210,7 @@ class TopPieChart extends BaseReactComponent {
                 color: coin?.coinColor,
               });
             }
-               uniquechains.push(coin?.coinName);
+            uniquechains.push(coin?.coinName);
           });
       });
     // console.log("coinlist mount", chainList, uniquechains);
@@ -271,9 +269,9 @@ class TopPieChart extends BaseReactComponent {
     this.setState({
       defiLoader: true,
     });
-       let UserWallet = localStorage.getItem("previewAddress")
-         ? [JSON.parse(localStorage.getItem("previewAddress"))]
-         : [];
+    let UserWallet = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
 
     if (UserWallet?.length !== 0) {
       // console.log("wallet_addres3s");
@@ -422,10 +420,10 @@ class TopPieChart extends BaseReactComponent {
       //     });
       //   }
       // });
-        let UserWallet = localStorage.getItem("previewAddress")
-          ? [JSON.parse(localStorage.getItem("previewAddress"))]
-          : [];
-            // || JSON.parse(localStorage.getItem("addWallet"));
+      let UserWallet = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
+      // || JSON.parse(localStorage.getItem("addWallet"));
       let uniquechains = [];
 
       UserWallet &&
@@ -463,11 +461,11 @@ class TopPieChart extends BaseReactComponent {
                   id: i,
                   color: coin?.coinColor,
                 });
-                   uniquechains.push(coin?.coinName);
+                uniquechains.push(coin?.coinName);
               }
             });
         });
-    //   console.log("coinlist", chainList, uniquechains)
+      //   console.log("coinlist", chainList, uniquechains)
       // this.props.chainPortfolio &&
       //   this.props.chainPortfolio.map((chain) => {
       //     chainList.push({
@@ -511,15 +509,18 @@ class TopPieChart extends BaseReactComponent {
     }
 
     if (!this.props.commonState.top_defi) {
-      this.props.updateDefiData({
-        totalYield: 0,
-        totalDebt: 0,
-        cardList: [],
-        sortedList: [],
-        DebtValues: [],
-        YieldValues: [],
-        BalanceSheetValue: {},
-      },this);
+      this.props.updateDefiData(
+        {
+          totalYield: 0,
+          totalDebt: 0,
+          cardList: [],
+          sortedList: [],
+          DebtValues: [],
+          YieldValues: [],
+          BalanceSheetValue: {},
+        },
+        this
+      );
 
       // set defi page to true
       this.props.updateWalletListFlag("top_defi", true);
@@ -551,7 +552,6 @@ class TopPieChart extends BaseReactComponent {
 
     // stop loader after refresh btn clicked
     if (this.state.isStopLoading) {
-
       this.props.setLoader(false);
 
       this.setState({
@@ -588,7 +588,10 @@ class TopPieChart extends BaseReactComponent {
     //   DebtValues,
     // });
     // update data
-    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues },this);
+    this.props.updateDefiData(
+      { sortedList: "", YieldValues, DebtValues },
+      this
+    );
   };
   setHoverData = (e) => {
     this.setState({ pieSectionDataEnabled: e });
@@ -992,9 +995,9 @@ class TopPieChart extends BaseReactComponent {
     };
 
     // console.log("wallet address", JSON.parse(localStorage.getItem("addWallet")))
-      let UserWallet = localStorage.getItem("previewAddress")
-        ? [JSON.parse(localStorage.getItem("previewAddress"))]
-        : [];
+    let UserWallet = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
     let chainList = [];
     let uniqueAddress = [];
     let uniqueList =
@@ -1097,7 +1100,7 @@ class TopPieChart extends BaseReactComponent {
         }`}
         style={{
           overflow: "visible",
-          paddingTop:0
+          paddingTop: 0,
         }}
       >
         {/* // <div className={`portfolio-over-container m-b-32`} > */}
@@ -1366,7 +1369,9 @@ class TopPieChart extends BaseReactComponent {
                         >
                           {CurrencyType(false)}
                           {this.props.topAccountState.YieldValues &&
-                            numToCurrency(this.props.topAccountState.totalYield)}
+                            numToCurrency(
+                              this.props.topAccountState.totalYield
+                            )}
                         </span>
 
                         <Image
@@ -1401,7 +1406,9 @@ class TopPieChart extends BaseReactComponent {
                           >
                             {CurrencyType(false)}
                             {this.props.topAccountState.DebtValues &&
-                              numToCurrency(this.props.topAccountState.totalDebt)}
+                              numToCurrency(
+                                this.props.topAccountState.totalDebt
+                              )}
                           </span>
 
                           <Image

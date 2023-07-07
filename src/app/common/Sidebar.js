@@ -1120,9 +1120,7 @@ function Sidebar(props) {
                               <Image
                                 src={arrowUp}
                                 className={`arrow-menu ${
-                                  isSubmenu?.topAccountintelligence
-                                    ? "show-submenu"
-                                    : ""
+                                  isSubmenu?.topAccount ? "show-submenu" : ""
                                 }`}
                                 onClick={(e) => {
                                   e.preventDefault();
@@ -1402,7 +1400,7 @@ function Sidebar(props) {
                           </>
                         )}
 
-                        <li>
+                        {/* <li>
                           <NavLink
                             className={`nav-link`}
                             to="/twitter-influencers"
@@ -1459,7 +1457,7 @@ function Sidebar(props) {
                             />
                             Watchlist
                           </NavLink>
-                        </li>
+                        </li> */}
                       </>
                     )}
                     {/* <li>
