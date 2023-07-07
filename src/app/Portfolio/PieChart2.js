@@ -879,8 +879,8 @@ class PieChart2 extends BaseReactComponent {
                   asset_clicked: currentData.options.name,
                   asset_amount: CurrencyType(false) + currentData.options.usd,
                 });
-                if (this.props.updateTimer) {
-                  this.props.updateTimer();
+                if (self?.props?.updateTimer) {
+                  self.props.updateTimer();
                 }
               },
               unselect: function () {
@@ -1621,7 +1621,7 @@ class PieChart2 extends BaseReactComponent {
                           ].quote;
                         if (index < 2) {
                           return (
-                            <div key={`assetPrice-${index}`}>
+                            <>
                               <div
                                 style={{
                                   width: "1px",
@@ -1677,7 +1677,7 @@ class PieChart2 extends BaseReactComponent {
                                   </span>
                                 </div>
                               </div>
-                            </div>
+                            </>
                           );
                         } else {
                           return (
