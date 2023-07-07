@@ -105,6 +105,7 @@ export default function WelcomeCard(props) {
       : 0;
   let percent =
     props?.assetTotal && ((difference / props?.assetTotal) * 100).toFixed(2);
+
   return (
     // <div className="welcome-card-section">
     //   <div className="welcome-card">
@@ -252,15 +253,30 @@ export default function WelcomeCard(props) {
             >
               <div className="account-detail">
                 <Image src={EyeIcon} />
-                Previewing{" "}
-                <span className="account-name grey-313">
-                  {TruncateText(
-                    JSON.parse(localStorage.getItem("previewAddress"))?.address
-                  )}
-                </span>
+                <div>Previewing</div>
+                <div className="accounNameId">
+                  <span className="account-name grey-313">
+                    {TruncateText(
+                      JSON.parse(localStorage.getItem("previewAddress"))
+                        ?.address
+                    )}
+                  </span>
+                  {JSON.parse(localStorage.getItem("previewAddress"))
+                    ?.nameTag ? (
+                    <span className="grey-313">
+                      {" "}
+                      ({" "}
+                      {
+                        JSON.parse(localStorage.getItem("previewAddress"))
+                          ?.nameTag
+                      }{" "}
+                      )
+                    </span>
+                  ) : null}
+                </div>
               </div>
               <div
-                className="account-detail cp change-text"
+                className="account-detail-change cp change-text"
                 onClick={() => {
                   props?.history.push("/top-accounts");
                 }}

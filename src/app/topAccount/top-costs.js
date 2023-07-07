@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import BarGraphSection from "../common/BarGraphSection";
 import PageHeader from "../common/PageHeader";
-import Sidebar from "../common/Sidebar";
-import { info, years5, ethereum } from "../cost/dummyData.js";
+import { info } from "../cost/dummyData.js";
 import { connect } from "react-redux";
 import { getAllCoins } from "../onboarding/Api.js";
-import Ethereum from "../../assets/images/icons/ether-coin.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { Image } from "react-bootstrap";
@@ -18,7 +16,6 @@ import {
   TimeSpentTopCosts,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
 import { getCounterGraphData, getGraphData } from "../cost/getGraphData";
 import {
   getAllFeeApi,
@@ -29,10 +26,7 @@ import {
   updateAverageCostBasis,
   ResetAverageCostBasis,
 } from "../cost/Api";
-import Loading from "../common/Loading";
 import moment from "moment/moment";
-import graphImage from "../../assets/images/gas-fees-graph.png";
-import FeedbackForm from "../common/FeedbackForm";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "../common/ConnectModal";
 import FixAddModal from "../common/FixAddModal";
@@ -45,7 +39,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import base64url from "base64url";
+import { Buffer } from "buffer";
 
 class TopCost extends Component {
   constructor(props) {
@@ -419,33 +413,23 @@ class TopCost extends Component {
   };
 
   handleShare = () => {
-    // const previewAddress = localStorage.getItem("previewAddress")
-    //   ? JSON.parse(localStorage.getItem("previewAddress"))
-    //   : "";
-    // const encodedAddress = base64url.encode(previewAddress?.address);
-    //  console.log(
-    //    "encoded address",
-    //    encodedAddress,
-    //    "address",
-    //    previewAddress?.address,
-    //    "decode address",
-    //    base64url.decode(encodedAddress)
-    //  );
-    // let shareLink =
-    //   BASE_URL_S3 + `top-account/${encodedAddress}?redirect=intelligence/costs`;
-    // navigator.clipboard.writeText(shareLink);
-    // toast.success("Link copied");
-    // TopCostsShare({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    // console.log("share pod", shareLink);
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = Buffer.from(previewAddress?.address).toString(
+      "base64"
+    );
+    let shareLink =
+      BASE_URL_S3 + `top-account/${encodedAddress}?redirect=intelligence/costs`;
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+    TopCostsShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   render() {
-    // console.log("counter", this.state.counterGraphDigit);
-    // console.log("fes", this.state.GraphDigit);
-
     let tableData = this.props.topAccountState.Average_cost_basis;
     // const tableData = [
     //   {

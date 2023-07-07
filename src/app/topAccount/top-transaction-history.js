@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Image, Row, Col } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
 import TransactionTable from "../intelligence/TransactionTable";
-import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
@@ -51,7 +50,6 @@ import {
   TopTransactionShare,
 } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
-import FeedbackForm from "../common/FeedbackForm";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { toast } from "react-toastify";
 import FixAddModal from "../common/FixAddModal";
@@ -62,7 +60,7 @@ import { getAllCoins } from "../onboarding/Api.js";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import base64url from "base64url";
+import { Buffer } from "buffer";
 
 class TopTransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -526,28 +524,22 @@ class TopTransactionHistoryPage extends BaseReactComponent {
   };
 
   handleShare = () => {
-    // const previewAddress = localStorage.getItem("previewAddress")
-    //   ? JSON.parse(localStorage.getItem("previewAddress"))
-    //   : "";
-    // const encodedAddress = base64url.encode(previewAddress?.address);
-    //  console.log(
-    //    "encoded address",
-    //    encodedAddress,
-    //    "address",
-    //    previewAddress?.address,
-    //    "decode address",
-    //    base64url.decode(encodedAddress)
-    //  );
-    // let shareLink =
-    //   BASE_URL_S3 +
-    //   `top-account/${encodedAddress}?redirect=intelligence/transaction-history`;
-    // navigator.clipboard.writeText(shareLink);
-    // toast.success("Link copied");
-    // TopTransactionShare({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    // console.log("share pod", shareLink);
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = Buffer.from(previewAddress?.address).toString(
+      "base64"
+    );
+
+    let shareLink =
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=intelligence/transaction-history`;
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+    TopTransactionShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   render() {

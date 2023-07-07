@@ -71,19 +71,15 @@ import {
   noExponents,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import PieChart2 from "../Portfolio/PieChart2";
 import UpgradeModal from "../common/upgradeModal";
 import { GetAllPlan, getUser } from "../common/Api";
 import { toast } from "react-toastify";
-import { GraphHeader } from "../common/GraphHeader";
-import Slider from "react-slick";
 import Footer from "../common/footer";
-import { ASSET_VALUE_GRAPH_DAY } from "../Portfolio/ActionTypes";
 import TopPiechart from "./top-piechart";
 import { TOP_ASSET_VALUE_GRAPH_DAY } from "./ActionTypes";
 import moment from "moment";
 import PageHeader from "../common/PageHeader";
-import base64url from "base64url";
+import { Buffer } from "buffer";
 
 class TopPortfolio extends BaseReactComponent {
   constructor(props) {
@@ -725,26 +721,19 @@ class TopPortfolio extends BaseReactComponent {
     // console.log("switch")
   };
   handleShare = () => {
-    // const previewAddress = localStorage.getItem("previewAddress")
-    //   ? JSON.parse(localStorage.getItem("previewAddress"))
-    //   : "";
-    // const encodedAddress = base64url.encode(previewAddress?.address);
-    //  console.log(
-    //    "encoded address",
-    //    encodedAddress,
-    //    "address",
-    //    previewAddress?.address,
-    //    "decode address",
-    //    base64url.decode(encodedAddress)
-    //  );
-    // let shareLink = BASE_URL_S3 + `top-account/${encodedAddress}?redirect=home`;
-    // navigator.clipboard.writeText(shareLink);
-    // toast.success("Link copied");
-    // TopHomeShare({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    // console.log("share pod", shareLink);
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = Buffer.from(previewAddress?.address).toString(
+      "base64"
+    );
+    let shareLink = BASE_URL_S3 + `top-account/${encodedAddress}?redirect=home`;
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+    TopHomeShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   render() {

@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
-import BarGraphSection from "../common/BarGraphSection";
 import PageHeader from "../common/PageHeader";
-
-import { info } from "../cost/dummyData";
-import { Image } from "react-bootstrap";
-import ExportIconWhite from "../../assets/images/apiModalFrame.svg";
-import graphImage from "../../assets/images/volume-traded-graph.png";
 import LineChartSlider from "../Portfolio/LineCharSlider";
 import {
   GroupByOptions,
@@ -16,30 +9,18 @@ import {
   GROUP_BY_YEAR,
   BASE_URL_S3,
 } from "../../utils/Constant";
-import {
-  getAssetGraphDataApi,
-  getCoinRate,
-  getExternalEventsApi,
-} from "../Portfolio/Api";
+import { getAssetGraphDataApi, getExternalEventsApi } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
-import FeedbackForm from "../common/FeedbackForm";
 import {
   PageviewTopAssetValue,
   TimeSpentTopAssetValue,
   TopAssetValueShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-// add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
-
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
-import {
-  ASSET_VALUE_GRAPH_DAY,
-  ASSET_VALUE_GRAPH_MONTH,
-  ASSET_VALUE_GRAPH_YEAR,
-} from "../Portfolio/ActionTypes";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
@@ -47,7 +28,7 @@ import {
   TOP_ASSET_VALUE_GRAPH_MONTH,
   TOP_ASSET_VALUE_GRAPH_YEAR,
 } from "./ActionTypes";
-import base64url from "base64url";
+import { Buffer } from "buffer";
 
 class TopAssetValueGraph extends Component {
   constructor(props) {
@@ -248,28 +229,22 @@ class TopAssetValueGraph extends Component {
   };
 
   handleShare = () => {
-    // const previewAddress = localStorage.getItem("previewAddress")
-    //   ? JSON.parse(localStorage.getItem("previewAddress"))
-    //   : "";
-    // const encodedAddress = base64url.encode(previewAddress?.address);
-    //  console.log(
-    //    "encoded address",
-    //    encodedAddress,
-    //    "address",
-    //    previewAddress?.address,
-    //    "decode address",
-    //    base64url.decode(encodedAddress)
-    //  );
-    //     let shareLink =
-    //       BASE_URL_S3 +
-    //       `top-account/${encodedAddress}?redirect=intelligence/asset-value`;
-    //     navigator.clipboard.writeText(shareLink);
-    //     toast.success("Link copied");
-    //  TopAssetValueShare({
-    //    session_id: getCurrentUser().id,
-    //    email_address: getCurrentUser().email,
-    //  });
-    // console.log("share pod", shareLink);
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = Buffer.from(previewAddress?.address).toString(
+      "base64"
+    );
+
+    let shareLink =
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=intelligence/asset-value`;
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+    TopAssetValueShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   render() {

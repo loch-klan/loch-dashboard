@@ -613,6 +613,7 @@ class TopAccountPage extends BaseReactComponent {
                     JSON.stringify({
                       ...obj,
                       address: rowData.account,
+                      nameTag: rowData.tagName ? rowData.tagName : "",
                     })
                   );
                   this.props?.TopsetPageFlagDefault();

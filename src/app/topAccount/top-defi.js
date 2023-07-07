@@ -1,19 +1,12 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Loading from "../common/Loading";
 import { getAllCoins } from "../onboarding/Api.js";
-// add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import PageHeader from "../common/PageHeader";
 import FixAddModal from "../common/FixAddModal";
 import arrowUp from "../../assets/images/arrow-up.svg";
-import arrowDown from "../../assets/images/arrow-down.svg";
-import {
-  getAllProtocol,
-  getProtocolBalanceApi,
-  getYieldBalanceApi,
-} from "../Portfolio/Api";
+import { getProtocolBalanceApi } from "../Portfolio/Api";
 import { updateDefiData } from "../defi/Api";
 import {
   amountFormat,
@@ -22,30 +15,18 @@ import {
 } from "../../utils/ReusableFunctions";
 import { Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import Coin from "../../assets/images/icons/Coin0.svg";
-import Coin1 from "../../assets/images/icons/Coin0.svg";
-
-import Coin4 from "../../assets/images/icons/Coin-3.svg";
-
-import ReflexerIcon from "../../assets/images/icons/reflexer.svg";
-import MakerIcon from "../../assets/images/icons/maker.svg";
-import CoinChip from "../wallet/CoinChip";
-
-import Coin2 from "../../assets/images/icons/temp-coin1.svg";
-import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
 import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import base64url from "base64url";
 import { toast } from "react-toastify";
 import {
-  PageviewDefi,
   PageviewTopDefi,
   TimeSpentTopDefi,
   TopDefiShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { Buffer } from "buffer";
 
 class TopDefi extends Component {
   constructor(props) {
@@ -357,31 +338,6 @@ class TopDefi extends Component {
     this.props.setPageFlagDefault();
   };
 
-  handleShare = () => {
-    // const previewAddress = localStorage.getItem("previewAddress")
-    //   ? JSON.parse(localStorage.getItem("previewAddress"))
-    //   : "";
-    // const encodedAddress = base64url.encode(previewAddress?.address);
-    //  console.log(
-    //    "encoded address",
-    //    encodedAddress,
-    //    "address",
-    //    previewAddress?.address,
-    //    "decode address",
-    //    base64url.decode(encodedAddress)
-    //  );
-    // let shareLink =
-    //   BASE_URL_S3 +
-    //   `top-account/${encodedAddress}?redirect=decentralized-finance`;
-    // navigator.clipboard.writeText(shareLink);
-    // toast.success("Link copied");
-    // TopDefiShare({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    // console.log("share pod", shareLink);
-  };
-
   render() {
     return (
       <>
@@ -439,8 +395,6 @@ class TopDefi extends Component {
               // handleBtn={this.handleAddModal}
               showpath={true}
               currentPage={"decentralized-finance"}
-              ShareBtn={true}
-              handleShare={this.handleShare}
               // showData={totalWalletAmt}
               // isLoading={isLoading}
             />

@@ -7,14 +7,9 @@ import {
 } from "../onboarding/Api.js";
 import Loading from "../common/Loading";
 
-import {
-  GetAllPlan,
-  GetDefaultPlan,
-  TopsetPageFlagDefault,
-  getUser,
-} from "../common/Api";
+import { GetDefaultPlan, TopsetPageFlagDefault } from "../common/Api";
 import { deleteToken, resetPreviewAddress } from "../../utils/ManageToken.js";
-import base64url from "base64url";
+import { Buffer } from "buffer";
 
 class TopAccountShare extends Component {
   constructor(props) {
@@ -70,7 +65,11 @@ class TopAccountShare extends Component {
     // resetting top accounts pages
     resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
-    const decodedAddress = base64url.decode(this.state.data);
+    const decodedAddress = Buffer.from(
+      this.state?.data ? this.state?.data : "",
+      "base64"
+    ).toString("ascii");
+    // const decodedAddress = base64url.decode(this.state.data);
     // console.log("de add", decodedAddress,"en add", this.state.data, "hash",this.state.hash, "page",this.state.page);
 
     let obj = JSON.parse(localStorage.getItem("previewAddress"));

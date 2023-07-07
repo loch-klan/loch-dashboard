@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import IntelWelcomeCard from "../intelligence/IntelWelcomeCard";
 import PageHeader from "../common/PageHeader";
 import eyeIcon from "../../assets/images/icons/eyeIcon.svg";
-import insight from "../../assets/images/icons/insight.svg";
 import BarGraphSection from "../common/BarGraphSection";
 import { getAllCoins } from "../onboarding/Api.js";
 import { Col, Image, Row } from "react-bootstrap";
@@ -22,12 +20,9 @@ import {
   getTransactionAsset,
 } from "../intelligence/Api";
 import Loading from "../common/Loading";
-import reduceCost from "../../assets/images/icons/reduce-cost.svg";
-import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
-import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import { getAllInsightsApi } from "../intelligence/Api";
-import { BASE_URL_S3, InsightType } from "../../utils/Constant";
-import FeedbackForm from "../common/FeedbackForm";
+import { BASE_URL_S3 } from "../../utils/Constant";
+
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import NetflowImg from "../../assets/images/icons/netflow.svg";
 import NetflowClose from "../../assets/images/icons/netflow-close.svg";
@@ -41,14 +36,13 @@ import {
 } from "../Portfolio/Api";
 
 import FixAddModal from "../common/FixAddModal";
-import { info } from "../intelligence/stackGrapgh";
 import { GetAllPlan, getUser } from "../common/Api";
 import { UpgradeTriggered } from "../../utils/ReusableFunctions";
 import UpgradeModal from "../common/upgradeModal";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import base64url from "base64url";
+import { Buffer } from "buffer";
 
 class TopIntelligence extends Component {
   constructor(props) {
@@ -573,28 +567,22 @@ class TopIntelligence extends Component {
   };
 
   handleShare = () => {
-    // const previewAddress = localStorage.getItem("previewAddress")
-    //   ? JSON.parse(localStorage.getItem("previewAddress"))
-    //   : "";
-    // const encodedAddress = base64url.encode(previewAddress?.address);
-    //  console.log(
-    //    "encoded address",
-    //    encodedAddress,
-    //    "address",
-    //    previewAddress?.address,
-    //    "decode address",
-    //    base64url.decode(encodedAddress)
-    //  );
-    // let shareLink =
-    //   BASE_URL_S3 +
-    //   `top-account/${encodedAddress}?redirect=intelligence#netflow`;
-    // navigator.clipboard.writeText(shareLink);
-    // toast.success("Link copied");
-    // TopIntShare({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    // console.log("share pod", shareLink);
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = Buffer.from(previewAddress?.address).toString(
+      "base64"
+    );
+
+    let shareLink =
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=intelligence#netflow`;
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+    TopIntShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
 
   render() {

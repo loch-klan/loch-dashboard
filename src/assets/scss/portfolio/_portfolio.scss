@@ -117,11 +117,21 @@
           // cursor: pointer;
 
           .account-detail {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             cursor: default;
+            .accounNameId {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              flex: 1;
+            }
 
             &.change-text {
               cursor: pointer;
