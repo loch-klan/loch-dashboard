@@ -34,6 +34,8 @@ import {
   SORT_BY_LARGEST_BOUGHT,
   SORT_BY_LARGEST_SOLD,
   SORT_BY_TAG_NAME,
+  SORT_BY_NET_FLOW,
+  SEARCH_BY_NETWORTH,
 } from "../../utils/Constant";
 import {
   searchTransactionApi,
@@ -48,7 +50,6 @@ import {
   CustomTextControl,
   BaseReactComponent,
 } from "../../utils/form";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
@@ -59,7 +60,7 @@ import {
   numToCurrency,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
 
@@ -68,15 +69,40 @@ import FixAddModal from "../common/FixAddModal";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
+import {
+  GetAllPlan,
+  TopsetPageFlagDefault,
+  getUser,
+  setPageFlagDefault,
+} from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
 import DropDown from "../common/DropDown";
 import { SORT_BY_NAME } from "../../utils/Constant";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-
+import { TimeFilterType } from "../../utils/Constant";
+import {
+  TopAccountClickedAccount,
+  TopAccountInflowHover,
+  TopAccountNameHover,
+  TopAccountNetHover,
+  TopAccountNetflowHover,
+  TopAccountNetworthFilter,
+  TopAccountOutflowHover,
+  TopAccountPageNext,
+  TopAccountPagePrev,
+  TopAccountPageSearch,
+  TopAccountPageView,
+  TopAccountSearch,
+  TopAccountShare,
+  TopAccountSortByNetWorth,
+  TopAccountSortByNetflows,
+  TopAccountSortByTag,
+  TopAccountTimeFilter,
+  TopAccountTimeSpent,
+} from "../../utils/AnalyticsFunctions";
 class TopAccountPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -111,19 +137,19 @@ class TopAccountPage extends BaseReactComponent {
         },
         {
           title: "netflows",
-          up: false,
+          up: true,
         },
         {
           title: "largestbought",
-          up: false,
+          up: true,
         },
         {
           title: "largestsold",
-          up: false,
+          up: true,
         },
         {
           title: "tagName",
-          up: false,
+          up: true,
         },
       ],
       showDust: false,
@@ -143,6 +169,11 @@ class TopAccountPage extends BaseReactComponent {
       totalPage: 0,
       timeFIlter: "Time",
       AssetList: [],
+      startTime: "",
+
+      // this is used in chain detect api to check it call from top accout or not
+      topAccountPage: true,
+      walletInput: [JSON.parse(localStorage.getItem("previewAddress"))],
     };
     this.delayTimer = 0;
   }
@@ -155,14 +186,33 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   componentDidMount() {
+    // localStorage.setItem("previewAddress", "");
+    this.state.startTime = new Date() * 1;
+    TopAccountPageView({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
     this.props.getAllCoins();
+    this.props.getAllParentChains();
     this.callApi(this.state.currentPage || START_INDEX);
     this.assetList();
     GetAllPlan();
     getUser();
+  }
+
+  componentWillUnmount() {
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime / 1000);
+    // console.log("Time Spent", TimeSpent);
+    TopAccountTimeSpent({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   }
 
   assetList = () => {
@@ -182,6 +232,10 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    // chain detection
+    // if (prevState?.walletInput !== this.state.walletInput) {
+    //   console.log("wal", this.state.walletInput);
+    // }
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
 
@@ -197,6 +251,27 @@ class TopAccountPage extends BaseReactComponent {
       this.setState({
         currentPage: page,
       });
+      if (prevPage !== page) {
+        if (prevPage - 1 === page) {
+          TopAccountPagePrev({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page: page + 1,
+          });
+        } else if (prevPage + 1 === page) {
+          TopAccountPageNext({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page: page + 1,
+          });
+        } else {
+          TopAccountPageSearch({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            page: page + 1,
+          });
+        }
+      }
     }
   }
 
@@ -205,7 +280,26 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   addCondition = (key, value) => {
-    console.log("test", key, value);
+    // console.log("test", key, value);
+    let networthList = {
+      // "AllNetworth": "All",
+      "0-1": "less 1m",
+      "1-10": "1m-10m",
+      "10-100": "10m-100m",
+      "100-1000": "100m- 1b",
+      "1000-1000000": "more than 1b",
+    };
+    if (key === SEARCH_BY_NETWORTH) {
+      let selectedValue =
+        value === "AllNetworth" ? "All" : value?.map((e) => networthList[e]);
+      // console.log("sele",selectedValue)
+
+      TopAccountNetworthFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        selected: selectedValue,
+      });
+    }
     let index = this.state.condition.findIndex((e) => e.key === key);
     // console.log("index", index);
     let arr = [...this.state.condition];
@@ -216,14 +310,18 @@ class TopAccountPage extends BaseReactComponent {
       index !== -1 &&
       value !== "allchain" &&
       value !== "AllNetworth" &&
-      value !== "Allasset"
+      value !== "Allasset" &&
+      value !== "Time" &&
+      value !== 1825
     ) {
       // console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allchain" ||
       value === "AllNetworth" ||
-      value === "Allasset"
+      value === "Allasset" ||
+      value === "Time" ||
+      value === 1825
     ) {
       // console.log("second if", index);
       if (index !== -1) {
@@ -251,7 +349,19 @@ class TopAccountPage extends BaseReactComponent {
       condition: arr,
     });
   };
-  onChangeMethod = () => {};
+  onChangeMethod = () => {
+    clearTimeout(this.delayTimer);
+    this.delayTimer = setTimeout(() => {
+      this.addCondition(SEARCH_BY_TEXT, this.state.search);
+
+      TopAccountSearch({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        search: this.state.search,
+      });
+      // this.callApi(this.state.currentPage || START_INDEX, condition)
+    }, 1000);
+  };
   handleSort = (val) => {
     console.log(val);
     let sort = [...this.state.tableSortOpt];
@@ -272,13 +382,25 @@ class TopAccountPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+          TopAccountSortByNetWorth({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "netflows") {
           obj = [
             {
-              key: SORT_BY_AMOUNT,
+              key: SORT_BY_NET_FLOW,
               value: !el.up,
             },
           ];
+          let time = TimeFilterType.getText(
+            this.state.timeFIlter === "Time" ? "5 years" : this.state.timeFIlter
+          );
+          this.addCondition("SEARCH_BY_TIMESTAMP", time);
+          TopAccountSortByNetflows({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         } else if (val === "largestbought") {
           obj = [
             {
@@ -300,6 +422,11 @@ class TopAccountPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
+
+          TopAccountSortByTag({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
         }
         el.up = !el.up;
       } else {
@@ -333,6 +460,12 @@ class TopAccountPage extends BaseReactComponent {
     this.setState({
       timeFIlter: title,
     });
+
+    TopAccountTimeFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      selected: title,
+    });
   };
 
   // For add new address
@@ -349,6 +482,25 @@ class TopAccountPage extends BaseReactComponent {
 
     this.props.setPageFlagDefault();
     // console.log("api respinse", value);
+  };
+
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink = BASE_URL_S3 + "app-feature?redirect=top-accounts";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    TopAccountShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // console.log("share pod", shareLink);
   };
 
   render() {
@@ -414,7 +566,7 @@ class TopAccountPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="history-table-header-col"
+            className="history-table-header-col no-hover"
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
@@ -431,7 +583,7 @@ class TopAccountPage extends BaseReactComponent {
         ),
         dataKey: "account",
         // coumnWidth: 153,
-        coumnWidth: 0.5,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
@@ -447,7 +599,32 @@ class TopAccountPage extends BaseReactComponent {
 
               //   </div>
               // </CustomOverlay>
-              this.TruncateText(rowData.account)
+              <span
+                onClick={() => {
+                  resetPreviewAddress();
+                  TopAccountClickedAccount({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                    account: rowData.account,
+                  });
+                  let obj = JSON.parse(localStorage.getItem("previewAddress"));
+                  localStorage.setItem(
+                    "previewAddress",
+                    JSON.stringify({
+                      ...obj,
+                      address: rowData.account,
+                    })
+                  );
+                  this.props?.TopsetPageFlagDefault();
+
+                  // this.getCoinBasedOnWalletAddress(rowData.account);
+                  this.props.history.push("/top-accounts/home");
+                }}
+                // style={{ textDecoration: "underline", cursor: "pointer" }}
+                className="top-account-address"
+              >
+                {this.TruncateText(rowData.account)}
+              </span>
             );
           }
         },
@@ -460,7 +637,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Name Tag
+              Name tag
             </span>
             <Image
               src={sortByIcon}
@@ -472,7 +649,7 @@ class TopAccountPage extends BaseReactComponent {
         ),
         dataKey: "tagName",
         // coumnWidth: 153,
-        coumnWidth: 0.5,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "tagName") {
@@ -484,7 +661,17 @@ class TopAccountPage extends BaseReactComponent {
                 isText={true}
                 text={rowData.tagName}
               >
-                <span>{rowData.tagName}</span>
+                <span
+                  onMouseEnter={() => {
+                    TopAccountNameHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: rowData.tagName,
+                    });
+                  }}
+                >
+                  {rowData.tagName}
+                </span>
               </CustomOverlay>
             ) : (
               "-"
@@ -500,7 +687,7 @@ class TopAccountPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Native Asset Net Worth
+              Net worth{" (" + CurrencyType(false) + ")"}
             </span>
             <Image
               src={sortByIcon}
@@ -512,7 +699,7 @@ class TopAccountPage extends BaseReactComponent {
         ),
         dataKey: "networth",
         // coumnWidth: 153,
-        coumnWidth: 0.5,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "networth") {
@@ -522,182 +709,268 @@ class TopAccountPage extends BaseReactComponent {
                 isIcon={false}
                 isInfo={true}
                 isText={true}
-                text={amountFormat(rowData.networth, "en-US", "USD")}
+                text={amountFormat(
+                  rowData.networth * this.state.currency?.rate,
+                  "en-US",
+                  "USD"
+                )}
               >
-                <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-                  {numToCurrency(rowData.networth)}
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                      {numToCurrency(
+                        rowData.networth * this.state.currency?.rate
+                      )}
+                    </span>
+                  </div>
                 </div>
               </CustomOverlay>
             );
           }
         },
       },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="netflows"
-      //       onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Net flows
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={
-      //           !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "netflows",
-      //   // coumnWidth: 153,
-      //   coumnWidth: 0.2,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "netflows") {
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={amountFormat(rowData.netflows, "en-US", "USD")}
-      //         >
-      //           <div className="inter-display-medium f-s-13 lh-16 grey-313 cost-common">
-      //             {numToCurrency(rowData.netflows)}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="largestBought"
-      //       onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Largest Bought
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={
-      //           !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "largestBought",
-      //   // coumnWidth: 153,
-      //   coumnWidth: 0.2,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "largestBought") {
-      //       let text = "";
-      //       rowData?.largestBought?.map((e, i) => {
-      //         text =
-      //           text +
-      //           e.name +
-      //           (rowData?.largestBought?.length - 1 === i ? "" : ", ");
-      //       });
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="netflows"
+            onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Net flows {"(" + CurrencyType(false) + ")"}
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "netflows",
+        // coumnWidth: 153,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "netflows") {
+            let type = TimeFilterType.getText(
+              this.state.timeFIlter === "Time"
+                ? "5 years"
+                : this.state.timeFIlter
+            );
+            // console.log("type netflow", type);
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={amountFormat(
+                  rowData.netflows[type] * this.state.currency?.rate,
+                  "en-US",
+                  "USD"
+                )}
+              >
+                <div className="gainLossContainer">
+                  <div
+                    className={`gainLoss ${
+                      rowData.netflows[type] < 0
+                        ? "loss"
+                        : rowData.netflows[type] === 0
+                        ? "cost-common"
+                        : "gain"
+                    }`}
+                    onMouseEnter={() => {
+                      TopAccountNetflowHover({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        hover: amountFormat(
+                          rowData.netflows[type] * this.state.currency?.rate,
+                          "en-US",
+                          "USD"
+                        ),
+                      });
+                    }}
+                  >
+                    <Image
+                      src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
+                    />
+                    <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                      {(rowData.netflows[type] < 0 ? "-" : "") +
+                        numToCurrency(
+                          rowData.netflows[type] * this.state.currency?.rate
+                        )}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="history-table-header-col no-hover"
+            id="largestBought"
+            // onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Largest inflows
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[3].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "largestBought",
+        // coumnWidth: 153,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "largestBought") {
+            let type = TimeFilterType.getText(
+              this.state.timeFIlter === "Time"
+                ? "5 years"
+                : this.state.timeFIlter
+            );
+            // console.log("type bought", type);
+            let text = "";
+            rowData?.largestBought[type]?.map((e, i) => {
+              text =
+                text +
+                e[0] +
+                (rowData?.largestBought[type]?.length - 1 === i ? "" : ", ");
+            });
 
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={text}
-      //         >
-      //           {/* <div className="">imgs</div> */}
-      //           <div className="overlap-img-topAccount">
-      //             {rowData?.largestBought?.map((e, i) => {
-      //               return (
-      //                 <Image
-      //                   src={e?.symbol}
-      //                   style={{
-      //                     zIndex: rowData?.largestBought?.length - i,
-      //                     marginLeft: i === 0 ? "0" : "-1rem",
-      //                     border: `1px solid ${lightenDarkenColor(
-      //                       e.colorCode,
-      //                       -0.15
-      //                     )} `,
-      //                   }}
-      //                 />
-      //               );
-      //             })}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
-      // {
-      //   labelName: (
-      //     <div
-      //       className="cp history-table-header-col"
-      //       id="largestSold"
-      //       onClick={() => this.handleSort(this.state.tableSortOpt[4].title)}
-      //     >
-      //       <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-      //         Largest Sold
-      //       </span>
-      //       <Image
-      //         src={sortByIcon}
-      //         className={
-      //           !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
-      //         }
-      //       />
-      //     </div>
-      //   ),
-      //   dataKey: "largestSold",
-      //   // coumnWidth: 153,
-      //   coumnWidth: 0.2,
-      //   isCell: true,
-      //   cell: (rowData, dataKey) => {
-      //     if (dataKey === "largestSold") {
-      //       let text = "";
-      //       rowData?.largestSold?.map((e, i) => {
-      //         text =
-      //           text +
-      //           e.name +
-      //           (rowData?.largestSold?.length - 1 === i ? "" : ", ");
-      //       });
+            return rowData?.largestBought[type].length !== 0 ? (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={text}
+              >
+                {/* <div className="">imgs</div> */}
+                <div
+                  className="overlap-img-topAccount"
+                  onMouseEnter={() => {
+                    TopAccountInflowHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: text,
+                    });
+                  }}
+                >
+                  {rowData?.largestBought[type]?.map((e, i) => {
+                    return (
+                      <Image
+                        src={e[1]}
+                        style={{
+                          zIndex: i,
+                          marginLeft: i === 0 ? "0" : "-1rem",
+                          // border: "1px solid #737373",
+                          // backgroundColor: "#ffffff",
+                          // padding: "0.3rem",
+                          // border: `1px solid ${lightenDarkenColor(
+                          //   e.colorCode,
+                          //   -0.15
+                          // )} `,
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </CustomOverlay>
+            ) : (
+              "-"
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="history-table-header-col no-hover"
+            id="largestSold"
+            // onClick={() => this.handleSort(this.state.tableSortOpt[4].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Largest outflows
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[4].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "largestSold",
+        // coumnWidth: 153,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "largestSold") {
+            let type = TimeFilterType.getText(
+              this.state.timeFIlter === "Time"
+                ? "5 years"
+                : this.state.timeFIlter
+            );
+            //  console.log("type sold", type);
+            let text = "";
+            rowData?.largestSold[type]?.map((e, i) => {
+              text =
+                text +
+                e[0] +
+                (rowData?.largestSold[type]?.length - 1 === i ? "" : ", ");
+            });
 
-      //       return (
-      //         <CustomOverlay
-      //           position="top"
-      //           isIcon={false}
-      //           isInfo={true}
-      //           isText={true}
-      //           text={text}
-      //         >
-      //           {/* <div className="">imgs</div> */}
-      //           <div className="overlap-img-topAccount">
-      //             {rowData?.largestSold?.map((e, i) => {
-      //               return (
-      //                 <Image
-      //                   src={e?.symbol}
-      //                   style={{
-      //                     zIndex: rowData?.largestSold?.length - i,
-      //                     marginLeft: i === 0 ? "0" : "-1rem",
-      //                     border: `1px solid ${lightenDarkenColor(
-      //                       e.colorCode,
-      //                       -0.15
-      //                     )} `,
-      //                   }}
-      //                 />
-      //               );
-      //             })}
-      //           </div>
-      //         </CustomOverlay>
-      //       );
-      //     }
-      //   },
-      // },
+            return rowData?.largestSold[type]?.length !== 0 ? (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={text}
+              >
+                {/* <div className="">imgs</div> */}
+                <div
+                  className="overlap-img-topAccount"
+                  onMouseEnter={() => {
+                    TopAccountOutflowHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: text,
+                    });
+                  }}
+                >
+                  {rowData?.largestSold[type]?.map((e, i) => {
+                    return (
+                      <Image
+                        src={e[1]}
+                        style={{
+                          zIndex: i,
+                          marginLeft: i === 0 ? "0" : "-1rem",
+                          // border: `1px solid ${lightenDarkenColor(
+                          //   e.colorCode,
+                          //   -0.15
+                          // )} `,
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </CustomOverlay>
+            ) : (
+              "-"
+            );
+          }
+        },
+      },
 
       // {
       //   labelName: (
@@ -755,6 +1028,7 @@ class TopAccountPage extends BaseReactComponent {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                hideButton={true}
               />
             </div>
           </div>
@@ -789,15 +1063,16 @@ class TopAccountPage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Top Accounts"}
+              title={"Top accounts"}
               subTitle={"Analyze the top accounts here"}
               // showpath={true}
               // currentPage={"transaction-history"}
               history={this.props.history}
+              topaccount={true}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
 
             <div className="fillter_tabs_section">
@@ -809,7 +1084,7 @@ class TopAccountPage extends BaseReactComponent {
                     justifyContent: "space-between",
                   }}
                 >
-                  <div style={{ width: "25%" }}>
+                  <div style={{ width: "30%" }}>
                     {/* <CustomDropdown
                     filtername="Time"
                     options={[
@@ -827,18 +1102,19 @@ class TopAccountPage extends BaseReactComponent {
                     <DropDown
                       class="cohort-dropdown"
                       list={[
-                        "All time",
+                        // "All time",
                         "1 week",
                         "1 month",
                         "6 months",
                         "1 year",
+                        "3 years",
                         "5 years",
                       ]}
                       onSelect={this.handleTime}
                       title={this.state.timeFIlter}
                       activetab={
                         this.state.timeFIlter === "Time"
-                          ? "All time"
+                          ? "5 years"
                           : this.state.timeFIlter
                       }
                       showChecked={true}
@@ -846,7 +1122,7 @@ class TopAccountPage extends BaseReactComponent {
                       relative={true}
                     />
                   </div>
-                  <div style={{ width: "25%" }}>
+                  {/* <div style={{ width: "25%" }}>
                     <CustomDropdown
                       filtername="Chains"
                       options={[
@@ -859,8 +1135,8 @@ class TopAccountPage extends BaseReactComponent {
                       }
                       isTopaccount={true}
                     />
-                  </div>
-                  <div style={{ width: "25%" }}>
+                  </div> */}
+                  <div style={{ width: "30%" }}>
                     <CustomDropdown
                       filtername="Net worth"
                       options={[
@@ -871,7 +1147,7 @@ class TopAccountPage extends BaseReactComponent {
                         { value: "100-1000", label: "100m-1b" },
                         { value: "1000-1000000", label: "more than 1b" },
                       ]}
-                      action={"SEARCH_BY_NETWORTH"}
+                      action={SEARCH_BY_NETWORTH}
                       handleClick={(key, value) => {
                         this.addCondition(key, value);
                         // console.log(key, value);
@@ -892,7 +1168,7 @@ class TopAccountPage extends BaseReactComponent {
                   />
                 </div> */}
                   {/* {fillter_tabs} */}
-                  <div style={{ width: "25%" }}>
+                  <div style={{ width: "50%" }}>
                     <div className="searchBar top-account-search">
                       <Image src={searchIcon} className="search-icon" />
                       <FormElement
@@ -920,7 +1196,16 @@ class TopAccountPage extends BaseReactComponent {
             </div>
             <div className="transaction-history-table">
               {this.state.tableLoading ? (
-                <Loading />
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "69rem",
+                  }}
+                >
+                  <Loading />
+                </div>
               ) : (
                 <>
                   <TransactionTable
@@ -962,9 +1247,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   searchTransactionApi,
   // getCoinRate,
+
   getAllCoins,
   getFilters,
   setPageFlagDefault,
+  TopsetPageFlagDefault,
+  getAllParentChains,
 };
 
 TopAccountPage.propTypes = {};

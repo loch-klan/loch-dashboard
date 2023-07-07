@@ -4,9 +4,7 @@ import { preLoginInstance } from "../../utils";
 const fetchPosts = (cityName) => {
   return function (dispatch, getState) {
     // dispatch(requestPosts());
-    console.log("====================================");
     console.log("clicked", getState());
-    console.log("====================================");
     return preLoginInstance
       .get(
         `weather?q=${cityName},uk&APPID=${process.env.REACT_APP_WEATHER_API}/`
