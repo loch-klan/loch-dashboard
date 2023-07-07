@@ -265,11 +265,11 @@ export default function WelcomeCard(props) {
                     ?.nameTag ? (
                     <span className="grey-313">
                       {" "}
-                      ({" "}
+                      (
                       {
                         JSON.parse(localStorage.getItem("previewAddress"))
                           ?.nameTag
-                      }{" "}
+                      }
                       )
                     </span>
                   ) : null}
