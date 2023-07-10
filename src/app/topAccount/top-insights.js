@@ -90,14 +90,13 @@ class TopInsightsPage extends Component {
   };
 
   componentDidMount() {
-    this.state.startTime = new Date() * 1;
     PageviewTopInsights({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     GetAllPlan();
     getUser();
-    this.setState({});
+    this.setState({ startTime: new Date() * 1 });
   }
 
   componentWillUnmount() {

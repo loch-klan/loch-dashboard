@@ -8,9 +8,14 @@ import { getAllCoins } from "../onboarding/Api.js";
 import { Col, Image, Row } from "react-bootstrap";
 import {
   NetflowSwitchTop,
+  topNetflowAssetFilter,
+  topNetflowChainFilter,
+  topNetflowTimeFilter,
   PageviewTopInt,
   TimeSpentTopInt,
   TopIntShare,
+  topNetflowExplainer1,
+  topNetflowExplainer2,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment/moment";
@@ -78,8 +83,16 @@ class TopIntelligence extends Component {
       isGraphLoading: false,
       // this is used in api to check api call fromt op acount page or not
       isTopAccountPage: true,
+      isChainSearchUsed: false,
+      isAssetSearchUsed: false,
     };
   }
+  chainSearchIsUsed = () => {
+    this.setState({ isChainSearchUsed: true });
+  };
+  assetSearchIsUsed = () => {
+    this.setState({ isAssetSearchUsed: true });
+  };
 
   upgradeModal = () => {
     this.setState({
@@ -92,19 +105,31 @@ class TopIntelligence extends Component {
     this.setState({
       isSwitch: !this.state.isSwitch,
     });
-    // console.log("switch")
 
     NetflowSwitchTop({
       email_address: getCurrentUser().email,
       session_id: getCurrentUser().id,
     });
+
+    this.updateTimer();
+  };
+
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
+    PageviewTopInt({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // Inactivity Check
+    window.checkTopIntelligenceTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
   };
 
   componentDidMount() {
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
-        // console.log('id',id);
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView();
@@ -113,15 +138,10 @@ class TopIntelligence extends Component {
     } else {
       window.scrollTo(0, 0);
     }
-    this.state.startTime = new Date() * 1;
-    // console.log("page Enter", this.state.startTime);
-    PageviewTopInt({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
     this.props.getAllCoins();
-    this.timeFilter(0);
-    // this.props.getAllInsightsApi(this);
+    this.timeFilter(0, true);
+    this.startPageView();
+    this.updateTimer(true);
     GetAllPlan();
     getUser();
     this.assetList();
@@ -140,19 +160,51 @@ class TopIntelligence extends Component {
       );
     }
   }
-
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "topIntelligencePageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("topIntelligencePageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkTopIntelligenceTimer);
+    localStorage.removeItem("topIntelligencePageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentTopInt({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem(
+      "topIntelligencePageExpiryTime"
+    );
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem(
+      "topIntelligencePageExpiryTime"
+    );
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
+  }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
     if (prevProps !== this.props) {
       this.setState({ isGraphLoading: false });
     }
     if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
-
-      // this.props.getAllCoins();
-      // this.timeFilter(0);
-      // this.props.getAllInsightsApi(this);
-      // this.assetList();
       this.setState({
         apiResponse: false,
       });
@@ -161,14 +213,9 @@ class TopIntelligence extends Component {
     if (!this.props.commonState.top_intelligence) {
       this.props.updateWalletListFlag("top_intelligence", true);
       this.props.getAllCoins();
-      this.timeFilter(0);
+      this.timeFilter(0, true);
       this.assetList();
     }
-
-    // if (!this.props.commonState.top_insight) {
-    //   this.props.updateWalletListFlag("top_insight", true);
-    //   this.props.getAllInsightsApi(this);
-    // }
 
     if (
       this.props?.location?.pathname + this.props?.location?.hash ===
@@ -179,7 +226,6 @@ class TopIntelligence extends Component {
       if (this.props.location.hash !== "") {
         setTimeout(() => {
           const id = this.props.location.hash.replace("#", "");
-          // console.log('id',id);
           const element = document.getElementById(id);
           if (element) {
             element.scrollIntoView();
@@ -193,19 +239,6 @@ class TopIntelligence extends Component {
       }, 1000);
     }
   }
-  componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime);
-    // console.log("Time Spent", TimeSpent);
-    TimeSpentTopInt({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-
-    this.timeFilter(0);
-  }
 
   assetList = () => {
     let data = new URLSearchParams();
@@ -217,16 +250,8 @@ class TopIntelligence extends Component {
     // data.append("end_datetime", endDate);
     getTransactionAsset(data, this);
   };
-  timeFilter = (option) => {
-    // console.log("time filter", option)
+  timeFilter = (option, first) => {
     let selectedChains = [];
-    // if(activeBadgeList){
-    //   this.props.OnboardingState.coinsList.map((item)=>{
-    //     if(activeBadgeList.includes(item.id)){
-    //       selectedChains.push(item.code)
-    //     }
-    //   })
-    // }
     let handleSelected = "All";
     this.setState({ graphValue: "", isGraphLoading: true });
     const today = moment().unix();
@@ -248,7 +273,6 @@ class TopIntelligence extends Component {
       );
       handleSelected = "All";
     } else if (option == 1) {
-      // console.log("inside 1")
       const fiveyear = moment().subtract(5, "years").unix();
       this.props.getProfitAndLossApi(
         this,
@@ -403,19 +427,21 @@ class TopIntelligence extends Component {
         this.state.selectedAssets
       );
     }
-    // netflowTimeFilter({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    //   selected: handleSelected,
-    // });
+    if (!first) {
+      topNetflowTimeFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        selected: handleSelected,
+      });
+
+      this.updateTimer();
+    }
     this.setState({
       title: option,
     });
   };
 
   handleBadge = (activeBadgeList, activeFooter = this.state.title) => {
-    // console.log("handle badge", activeBadgeList, activeFooter);
-
     this.setState({
       selectedActiveBadge: activeBadgeList,
       isGraphLoading: true,
@@ -486,11 +512,16 @@ class TopIntelligence extends Component {
       );
     }
 
-    // netflowChainFilter({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    //   selected: selectedChains,
-    // });
+    const tempIsSearchUsed = this.state.isChainSearchUsed;
+    topNetflowChainFilter({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      selected: selectedChains,
+      isSearchUsed: tempIsSearchUsed,
+    });
+
+    this.updateTimer();
+    this.setState({ isChainSearchUsed: false });
   };
 
   handleSelect = (opt) => {
@@ -523,7 +554,6 @@ class TopIntelligence extends Component {
     this.setState({
       apiResponse: value,
     });
-    // console.log("api respinse", value);
     // wallet updated set all falg to default
     // this.props.updateWalletListFlag("home", false);
     this.props.setPageFlagDefault();
@@ -533,10 +563,11 @@ class TopIntelligence extends Component {
     this.setState({
       RightShow: false,
     });
-    // netflowExplainer2({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
+    topNetflowExplainer2({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
   };
 
   LeftClose = () => {
@@ -544,10 +575,11 @@ class TopIntelligence extends Component {
       LeftShow: false,
     });
 
-    // netflowExplainer1({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
+    topNetflowExplainer1({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.updateTimer();
   };
 
   handleAssetSelected = (arr) => {
@@ -556,11 +588,16 @@ class TopIntelligence extends Component {
         selectedAssets: arr === "allAssets" ? [] : arr,
       },
       () => {
-        // netflowAssetFilter({
-        //   session_id: getCurrentUser().id,
-        //   email_address: getCurrentUser().email,
-        //   selected: arr === "allAssets" ? "All assets" : arr,
-        // });
+        const tempIsSearchUsed = this.state.isAssetSearchUsed;
+        topNetflowAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          selected: arr[0] === "All" ? "All assets" : arr.map((e) => e?.name),
+          isSearchUsed: tempIsSearchUsed,
+        });
+
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false });
         this.handleBadge(this.state.selectedActiveBadge, this.state.title);
       }
     );
@@ -583,6 +620,8 @@ class TopIntelligence extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+
+    this.updateTimer();
   };
 
   render() {
@@ -634,84 +673,7 @@ class TopIntelligence extends Component {
               history={this.props.history}
               isTopAccount={true}
             />
-            {/* <div className="insights-image m-b-60">
-              <PageHeader
-                title="Insights"
-                showImg={insight}
-                viewMore={true}
-                // viewMoreRedirect={"/intelligence/insights"}
-                handleClick={() => {
-                  this.props.history.push(
-                    "/top-accounts/intelligence/insights"
-                  );
-                  // InsightsViewMore({
-                  //   session_id: getCurrentUser().id,
-                  //   email_address: getCurrentUser().email,
-                  // });
-                }}
-              />
-              <div style={{ position: "relative" }}>
-                <div className="insights-wrapper">
-                  
-                  {this.state.isLoading ? (
-                    <Loading />
-                  ) : this.props.topAccountState.updatedInsightList &&
-                    this.props.topAccountState.updatedInsightList.length > 0 ? (
-                    this.props.topAccountState.updatedInsightList
-                      ?.slice(0, 2)
-                      .map((insight, key) => {
-                        // console.log("insignt", insight);
-                        return (
-                          <div className="insights-card" key={key}>
-                            <Image
-                              src={
-                                insight.insight_type ===
-                                InsightType.COST_REDUCTION
-                                  ? reduceCost
-                                  : insight.insight_type ===
-                                    InsightType.RISK_REDUCTION
-                                  ? reduceRisk
-                                  : increaseYield
-                              }
-                              className="insight-icon"
-                            />
-                            <div className="insights-content">
-                              <div className="chips-wrapper">
-                                <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                                  {InsightType.getText(insight.insight_type)}
-                                </h5>
-                                {insight?.sub_type && (
-                                  <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
-                                    {InsightType.getRiskType(insight.sub_type)}
-                                  </h5>
-                                )}
-                              </div>
-                              <p
-                                className="inter-display-medium f-s-13 lh-16 grey-969"
-                                dangerouslySetInnerHTML={{
-                                  __html: insight.sub_title,
-                                }}
-                              ></p>
-                              <h4
-                                className="inter-display-medium f-s-16 lh-19 grey-313"
-                                dangerouslySetInnerHTML={{
-                                  __html: insight.title,
-                                }}
-                              ></h4>
-                            </div>
-                          </div>
-                        );
-                      })
-                  ) : (
-                    <h5 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8 text-center">
-                      {
-                        "This wallet is not active enough for us to generate any useful insights here :)."
-                      }
-                    </h5>
-                  )}
-                </div>
-              </div>
-            </div> */}
+
             <div className="portfolio-bar-graph" id="netflow">
               <PageHeader title="Net Flows" showImg={eyeIcon} />
               {/* Netflow Info Start */}
@@ -857,6 +819,8 @@ class TopIntelligence extends Component {
                     ProfitLossAsset={this.props.topAccountState.ProfitLossAsset}
                     handleAssetSelected={this.handleAssetSelected}
                     isGraphLoading={this.state.isGraphLoading}
+                    chainSearchIsUsed={this.chainSearchIsUsed}
+                    assetSearchIsUsed={this.assetSearchIsUsed}
                     // comingSoon={true}
                   />
                 ) : (

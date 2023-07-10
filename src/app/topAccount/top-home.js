@@ -279,26 +279,52 @@ class TopPortfolio extends BaseReactComponent {
     });
   };
 
-  componentDidMount() {
-    // this.setState({
-    //   settings: {
-    //     ...this.state.settings,
-    //     slidesToShow:
-    //       this.props.topAccountState.updatedInsightList?.length === 1 ? 1 : 1.5,
-    //   },
-    // });
-
-    this.state.startTime = new Date() * 1;
-
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
     PageviewTopHome({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkTopHomeTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
+    this.startPageView();
+    this.updateTimer(true);
     this.apiCall();
-    // get token to check if wallet address not loaded
     this.getToken();
   }
-
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "topHomePageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("topHomePageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkTopHomeTimer);
+    localStorage.removeItem("topHomePageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentTopHome({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("topHomePageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
   CalculateOverview = () => {
     // if wallet address change
     // console.log("overview");
@@ -521,14 +547,10 @@ class TopPortfolio extends BaseReactComponent {
   };
 
   componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentTopHome({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-
+    const tempExpiryTime = localStorage.getItem("topHomePageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
     // reset all sort average cost
     this.props.ResetAverageCostBasis(this);
   }
@@ -718,6 +740,7 @@ class TopPortfolio extends BaseReactComponent {
       email_address: getCurrentUser().email,
       session_id: getCurrentUser().id,
     });
+    this.updateTimer();
     // console.log("switch")
   };
   handleShare = () => {
@@ -734,6 +757,7 @@ class TopPortfolio extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
   };
 
   render() {
@@ -1602,6 +1626,7 @@ class TopPortfolio extends BaseReactComponent {
                   ShareBtn={true}
                   handleShare={this.handleShare}
                   bottomPadding="0"
+                  updateTimer={this.updateTimer}
                 />
               </div>
 
@@ -1657,6 +1682,7 @@ class TopPortfolio extends BaseReactComponent {
                   walletTotal={this.props.topAccountState.walletTotal}
                   undetectedWallet={(e) => this.undetectedWallet(e)}
                   getProtocolTotal={this.getProtocolTotal}
+                  updateTimer={this.updateTimer}
                 />
               </div>
 
@@ -1742,129 +1768,6 @@ class TopPortfolio extends BaseReactComponent {
               <div className="m-b-22 graph-table-section">
                 <Row>
                   <Col md={6}>
-                    {/* <div className="m-r-16 profit-chart">
-                      <div
-                        className={`bar-graph-section m-b-32`}
-                        style={{ paddingBottom: "0rem", position: "relative" }}
-                      >
-                        <GraphHeader
-                          title={"Insights"}
-                          subtitle={"Valuable insights based on your assets"}
-                          isArrow={true}
-                          handleClick={() => {
-                            if (this.state.lochToken) {
-                              HomeInsightsExpand({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                              });
-                              this.props.history.push(
-                                "/top-accounts/intelligence/insights"
-                              );
-                            }
-                          }}
-                        />
-                        <div className="insights-wrapper">
-                          {this.state.isLoadingInsight ? (
-                            <div
-                              style={{
-                                height: "30rem",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <Loading />
-                            </div>
-                          ) : (
-                            <>
-                              <div className="insight-slider">
-                                {this.props.topAccountState
-                                  .updatedInsightList &&
-                                  this.props.topAccountState.updatedInsightList
-                                    .length > 0 && (
-                                    <Slider {...this.state.settings}>
-                                      {this.props.topAccountState.updatedInsightList
-                                        ?.slice(0, 3)
-                                        .map((insight, key) => {
-                                          // console.log("insignt", insight);
-                                          return (
-                                            <div>
-                                              <div className="steps">
-                                                <div className="top-section">
-                                                  <Image
-                                                    src={
-                                                      insight.insight_type ===
-                                                      InsightType.COST_REDUCTION
-                                                        ? reduceCost
-                                                        : insight.insight_type ===
-                                                          InsightType.RISK_REDUCTION
-                                                        ? reduceRisk
-                                                        : increaseYield
-                                                    }
-                                                    className="insight-icon"
-                                                  />
-                                                  <div className="insight-title">
-                                                    <h5 className="inter-display-medium f-s-16 lh-19">
-                                                      {InsightType.getSmallText(
-                                                        insight.insight_type
-                                                      )}
-                                                    </h5>
-                                                    {insight?.sub_type ? (
-                                                      <h6
-                                                        className="inter-display-bold f-s-10 lh-12"
-                                                        style={{
-                                                          color: "#ffffff",
-                                                          background: "#19191A",
-                                                          borderRadius:
-                                                            "0.8rem",
-                                                          padding:
-                                                            "0.4rem 0.8rem",
-                                                          width: "fit-content",
-                                                          textTransform:
-                                                            "uppercase",
-                                                          marginTop: "0.4rem",
-                                                        }}
-                                                      >
-                                                        {InsightType.getRiskType(
-                                                          insight.sub_type
-                                                        )}
-                                                      </h6>
-                                                    ) : (
-                                                      <h6 className="inter-display-semi-bold f-s-10 lh-12 m-t-04">
-                                                        INSIGHT
-                                                      </h6>
-                                                    )}
-                                                  </div>
-                                                </div>
-
-                                                <div className="content-section">
-                                                  <p
-                                                    className="inter-display-medium f-s-13 lh-16 grey-969"
-                                                    dangerouslySetInnerHTML={{
-                                                      __html: insight.sub_title,
-                                                    }}
-                                                  ></p>
-                                                  <h4
-                                                    className="inter-display-medium f-s-16 lh-19 grey-313 m-t-12"
-                                                    dangerouslySetInnerHTML={{
-                                                      __html: insight.title,
-                                                    }}
-                                                  ></h4>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          );
-                                        })}
-                                    </Slider>
-                                  )}
-
-                               
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div> */}
                     <div
                       className="m-r-16 section-table"
                       style={{
@@ -1929,6 +1832,7 @@ class TopPortfolio extends BaseReactComponent {
                         dataLoaded={
                           this.props.topAccountState.assetValueDataLoaded
                         }
+                        updateTimer={this.updateTimer}
                       />
                     </div>
                   </Col>
@@ -1950,6 +1854,7 @@ class TopPortfolio extends BaseReactComponent {
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="portfolio"
+            updateTimer={this.updateTimer}
           />
         )}
       </div>

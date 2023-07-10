@@ -104,7 +104,6 @@ import Footer from "../common/footer";
 class Portfolio extends BaseReactComponent {
   constructor(props) {
     super(props);
-    // console.log("props", props);
     if (props.location.state) {
       // localStorage.setItem(
       //   "addWallet",
@@ -271,7 +270,6 @@ class Portfolio extends BaseReactComponent {
 
   // get token
   getToken = () => {
-    // console.log(this.state.lochToken)
     let token = localStorage.getItem("lochToken");
     if (!this.state.lochToken) {
       this.setState({
@@ -342,7 +340,6 @@ class Portfolio extends BaseReactComponent {
       AvgCostLoading: true,
       chainLoader: true,
     });
-    // console.log("load")
   };
 
   // undetected modal
@@ -392,8 +389,6 @@ class Portfolio extends BaseReactComponent {
       localStorage.setItem("share_id", this.props.match.params.id);
     }
 
-    this.startPageView();
-
     if (this.props.location.state?.noLoad) {
     } else {
       // call api if no share link
@@ -407,11 +402,49 @@ class Portfolio extends BaseReactComponent {
     }
     // get token to check if wallet address not loaded
     this.getToken();
+    this.startPageView();
     this.updateTimer(true);
 
     return () => {
       clearInterval(window.checkPortfolioTimer);
     };
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "portfolioPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("portfolioPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkPortfolioTimer);
+    localStorage.removeItem("portfolioPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentHome({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("portfolioPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("portfolioPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
+    // reset all sort average cost
+    this.props.ResetAverageCostBasis();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -440,14 +473,12 @@ class Portfolio extends BaseReactComponent {
         chainLoader: true,
       });
 
-      // console.log("inside coin rate list");
       // if wallet address change
       if (
         this.state &&
         this.state.userWalletList &&
         this.state.userWalletList?.length > 0
       ) {
-        // console.log("inside if");
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues(this);
 
@@ -492,7 +523,6 @@ class Portfolio extends BaseReactComponent {
           });
         }
       } else {
-        // console.log("inside else");
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues(this);
 
@@ -549,7 +579,6 @@ class Portfolio extends BaseReactComponent {
       getUser(this);
 
       // if (prevProps.userWalletList !== this.state.userWalletList) {
-      //   // console.log("inside diff userWalletlist");
       //   this.state.userWalletList?.length > 0 &&
       //     this.setState({
       //       netFlowLoading: true,
@@ -564,7 +593,6 @@ class Portfolio extends BaseReactComponent {
     ) {
       // if share link
       if (this.props.location.state?.addWallet != undefined) {
-        // console.log("sha")
         localStorage.setItem(
           "addWallet",
           JSON.stringify(this.props.location.state?.addWallet)
@@ -577,7 +605,6 @@ class Portfolio extends BaseReactComponent {
 
   // get refresh btn
   setLoader = (value) => {
-    // console.log("stop");
     this.setState({
       isLoading: value,
       isLoadingNet: value,
@@ -585,12 +612,10 @@ class Portfolio extends BaseReactComponent {
   };
 
   apiCall = () => {
-    //console.log("APPCALL");
     this.props.getAllCoins();
     if (this.props.match.params.id) {
       // if share link call this app
       // if (this.state.portfolioLink) {
-      //   console.log("ekl3he",!Object.values(this.state?.userWalletList[0]).includes(
       //       this.props.match.params.id), Object.values(this.state?.userWalletList[0]),
       //       this.props.match.params.id)
       //   if (
@@ -601,7 +626,6 @@ class Portfolio extends BaseReactComponent {
       //     // if not found address or id
       //     // eg: vitalik.eth, 0x02w92w.. and user id not found in userWalletlist so we will delete token even if there is not token their (now browser)
       //     deleteToken();
-      //     // console.log("delete")
       //     this.props.history.push({
       //       pathname: "/",
       //       state: {
@@ -618,7 +642,6 @@ class Portfolio extends BaseReactComponent {
       //     this.setState({
       //       portfolioLink: false,
       //     });
-      //     console.log("else pr")
       //   }
       // }
       // if its true means we ahve store share data and remove token else remove token and call share api
@@ -634,12 +657,9 @@ class Portfolio extends BaseReactComponent {
 
         const searchParams = new URLSearchParams(this.props.location.search);
         const redirectPath = searchParams.get("redirect");
-        //  console.log("portfolio before", this.props);
-        // console.log("path",redirectPath)
         localStorage.setItem("gotShareProtfolio", true);
 
         let redirect = JSON.parse(localStorage.getItem("ShareRedirect"));
-        //  console.log("redirect", redirect);
         if (!redirect && redirectPath) {
           localStorage.setItem(
             "ShareRedirect",
@@ -713,45 +733,8 @@ class Portfolio extends BaseReactComponent {
     }
   };
 
-  updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
-      "portfolioPageExpiryTime"
-    );
-    if (!tempExistingExpiryTime && !first) {
-      this.startPageView();
-    }
-    const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("portfolioPageExpiryTime", tempExpiryTime);
-  };
-  endPageView = () => {
-    clearInterval(window.checkPortfolioTimer);
-    localStorage.removeItem("portfolioPageExpiryTime");
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentHome({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-  };
-  checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("portfolioPageExpiryTime");
-    if (tempExpiryTime && tempExpiryTime < Date.now()) {
-      this.endPageView();
-    }
-  };
-  componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("portfolioPageExpiryTime");
-    if (tempExpiryTime) {
-      this.endPageView();
-    }
-    // reset all sort average cost
-    this.props.ResetAverageCostBasis();
-  }
-
   // asset value chart api call
   getGraphData = (groupByValue = GROUP_BY_DATE) => {
-    //console.log("calling graph");
     let ActionType = ASSET_VALUE_GRAPH_DAY;
     this.setState({ graphLoading: true }, () => {
       let addressList = [];
@@ -778,7 +761,6 @@ class Portfolio extends BaseReactComponent {
 
   // transaction history table data
   getTableData = () => {
-    //console.log("calling table");
     this.setState({ tableLoading: true });
     let arr = this.state.userWalletList;
     let address = arr?.map((wallet) => {
@@ -843,7 +825,6 @@ class Portfolio extends BaseReactComponent {
             },
           ];
         } else if (val === "usdValue") {
-          // console.log("el.up", el.up)
           obj = [
             {
               key: SORT_BY_USD_VALUE_THEN,
@@ -991,20 +972,14 @@ class Portfolio extends BaseReactComponent {
       email_address: getCurrentUser().email,
       session_id: getCurrentUser().id,
     });
-    // console.log("switch")
   };
   render() {
     const { table_home, assetPriceList_home } = this.props.intelligenceState;
     const { userWalletList, currency } = this.state;
-    // console.log("reducer state",this.props.portfolioState)
 
-    //     console.log("reducer state", this.state);
-
-    // console.log(
     //   "asset price state",
     //  this.state?.assetPrice? Object.keys(this.state?.assetPrice)?.length:""
     // );
-    //  console.log(
     //    "asset price redux",
     //    this.props.portfolioState?.assetPrice ?Object.keys(
     //      this.props.portfolioState?.assetPrice
@@ -1154,7 +1129,6 @@ class Portfolio extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "from") {
-            // console.log("row", rowData)
             return (
               <CustomOverlay
                 position="top"
@@ -1184,7 +1158,6 @@ class Portfolio extends BaseReactComponent {
                     }
                     className="history-table-icon"
                     onMouseEnter={() => {
-                      // //console.log("address", rowData.from.metaData);
                       TransactionHistoryAddress({
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
@@ -1203,7 +1176,6 @@ class Portfolio extends BaseReactComponent {
                       src={rowData.from.wallet_metaData.symbol}
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        //  //console.log(
                         //    "address",
                         //    rowData.from.metaData
                         //  );
@@ -1220,7 +1192,6 @@ class Portfolio extends BaseReactComponent {
                   ) : rowData.from.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        //  //console.log(
                         //    "address",
                         //    rowData.from.metaData
                         //  );
@@ -1239,7 +1210,6 @@ class Portfolio extends BaseReactComponent {
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        //  //console.log(
                         //    "address",
                         //    rowData.from.metaData
                         //  );
@@ -2117,7 +2087,6 @@ class Portfolio extends BaseReactComponent {
                       <TransactionTable
                         title="Average cost basis"
                         handleClick={() => {
-                          // console.log("wallet", this.state.userWalletList);
                           if (this.state.lochToken) {
                             this.props.history.push("/intelligence/costs");
                             AverageCostBasisEView({
@@ -2198,7 +2167,6 @@ class Portfolio extends BaseReactComponent {
                       <TransactionTable
                         title="Transaction History"
                         handleClick={() => {
-                          // console.log("wallet", this.state.userWalletList);
                           if (this.state.lochToken) {
                             this.props.history.push(
                               "/intelligence/transaction-history"
@@ -2227,7 +2195,6 @@ class Portfolio extends BaseReactComponent {
                           subtitle={"Valuable insights based on your assets"}
                           isArrow={true}
                           handleClick={() => {
-                            // console.log("wallet", this.state.userWalletList);
                             if (this.state.lochToken) {
                               HomeInsightsExpand({
                                 session_id: getCurrentUser().id,
@@ -2261,7 +2228,6 @@ class Portfolio extends BaseReactComponent {
                                       {this.props.intelligenceState.updatedInsightList
                                         ?.slice(0, 3)
                                         .map((insight, key) => {
-                                          // console.log("insignt", insight);
                                           return (
                                             <div key={`sliderKey-${key}`}>
                                               <div className="steps">

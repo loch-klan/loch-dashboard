@@ -334,15 +334,17 @@ class CohortPage extends BaseReactComponent {
   endPageView = () => {
     clearInterval(window.checkWhalePodIndividualTimer);
     localStorage.removeItem("whalePodIndividualPageExpiryTime");
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000;
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000;
 
-    TimeSpentWhalePodPage({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_spent: TimeSpent,
-      pod_name: this.state.cohortName,
-    });
+      TimeSpentWhalePodPage({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_spent: TimeSpent,
+        pod_name: this.state.cohortName,
+      });
+    }
   };
   checkForInactivity = () => {
     const tempExpiryTime = localStorage.getItem(

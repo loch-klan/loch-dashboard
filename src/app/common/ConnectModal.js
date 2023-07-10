@@ -1195,7 +1195,7 @@ class ConnectModal extends BaseReactComponent {
       let curr = addWallet[i];
       if (
         !walletAddress.includes(curr?.apiAddress?.trim()) &&
-        curr.address.trim()
+        curr?.address?.trim()
       ) {
         finalArr.push(curr);
         walletAddress.push(curr?.address?.trim());

@@ -15,18 +15,15 @@ import {
 } from "../../utils/ReusableFunctions";
 import { Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import { AssetType, BASE_URL_S3 } from "../../utils/Constant";
+import { AssetType } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import { toast } from "react-toastify";
 import {
   PageviewTopDefi,
   TimeSpentTopDefi,
-  TopDefiShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { Buffer } from "buffer";
 
 class TopDefi extends Component {
   constructor(props) {
@@ -52,17 +49,6 @@ class TopDefi extends Component {
       upgradeModal: false,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       triggerId: 0,
-
-      // defi
-
-      // new
-      // totalYield: 0,
-      // totalDebt: 0,
-      // cardList: [],
-      // sortedList: [],
-      // DebtValues: [],
-      // YieldValues: [],
-      // BalanceSheetValue: {},
 
       isYeildToggle: false,
       isDebtToggle: false,
@@ -103,35 +89,56 @@ class TopDefi extends Component {
     });
   };
 
-  componentDidMount() {
-    // if (this.state.userPlan?.defi_enabled) {
-    //   this.props.getAllCoins();
-    //   // getAllProtocol(this);
-    //   this.getYieldBalance();
-    // } else {
-    //   this.handleReset();
-    //   this.upgradeModal();
-    // }
-    this.state.startTime = new Date() * 1;
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
     PageviewTopDefi({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkTopDefiTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
+    this.startPageView();
+    this.updateTimer(true);
     this.props.getAllCoins();
-    this.setState({});
-
-    // comment api
-    //  this.getYieldBalance();
   }
-
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "topDefiPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("topDefiPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkTopDefiTimer);
+    localStorage.removeItem("topDefiPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentTopDefi({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("topDefiPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
   componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentTopDefi({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    const tempExpiryTime = localStorage.getItem("topDefiPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
@@ -400,7 +407,12 @@ class TopDefi extends Component {
             />
 
             {/* Balance sheet */}
-            <h2 className="inter-display-medium f-s-20 lh-24 m-t-40">
+            <h2
+              onClick={() => {
+                this.updateTimer();
+              }}
+              className="inter-display-medium f-s-20 lh-24 m-t-40"
+            >
               Balance sheet
             </h2>
             <div style={{}} className="balance-sheet-card">

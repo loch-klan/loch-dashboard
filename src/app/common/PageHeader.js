@@ -33,6 +33,9 @@ export default function PageHeader(props) {
             email_address: getCurrentUser().email,
             from: "Wallet connect exchange",
           });
+          if (props.updateTimer) {
+            props.updateTimer();
+          }
         }
       }, 200);
     }
@@ -46,6 +49,9 @@ export default function PageHeader(props) {
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
         });
+        if (props.updateTimer) {
+          props.updateTimer();
+        }
       }
     }, 200);
   };
@@ -146,6 +152,9 @@ export default function PageHeader(props) {
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
                         });
+                        if (props.updateTimer) {
+                          props.updateTimer();
+                        }
                       }}
                     />
                   </CustomOverlay>

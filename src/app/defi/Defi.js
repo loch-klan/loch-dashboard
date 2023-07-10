@@ -146,14 +146,16 @@ class Defi extends Component {
   endPageView = () => {
     clearInterval(window.checkDefiTimer);
     localStorage.removeItem("defiPageExpiryTime");
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
 
-    TimeSpentDefi({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+      TimeSpentDefi({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
   };
   checkForInactivity = () => {
     const tempExpiryTime = localStorage.getItem("defiPageExpiryTime");

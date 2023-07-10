@@ -246,13 +246,15 @@ class Intelligence extends Component {
   endPageView = () => {
     clearInterval(window.checkIntelligenceTimer);
     localStorage.removeItem("intelligencePageExpiryTime");
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentIntelligence({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentIntelligence({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
   };
   checkForInactivity = () => {
     const tempExpiryTime = localStorage.getItem("intelligencePageExpiryTime");
@@ -635,7 +637,6 @@ class Intelligence extends Component {
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
     let userWallet = JSON.parse(localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1

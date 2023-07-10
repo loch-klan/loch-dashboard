@@ -164,12 +164,18 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     });
   };
 
-  componentDidMount() {
-    this.state.startTime = new Date() * 1;
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
     PageviewTopTransaction({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkTopTransactionHistoryTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -179,7 +185,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     // this.props.getCoinRate();
     GetAllPlan();
     getUser();
-
+    this.startPageView();
+    this.updateTimer(true);
     let obj = UpgradeTriggered();
 
     if (obj.trigger) {
@@ -194,17 +201,44 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       );
     }
   }
-
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "topTransactionHistoryPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("topTransactionHistoryPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkTopTransactionHistoryTimer);
+    localStorage.removeItem("topTransactionHistoryPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentTopTransaction({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem(
+      "topTransactionHistoryPageExpiryTime"
+    );
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
   componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime);
-    // console.log("Time Spent", TimeSpent);
-    TimeSpentTopTransaction({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    const tempExpiryTime = localStorage.getItem(
+      "topTransactionHistoryPageExpiryTime"
+    );
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   callApi = (page = START_INDEX) => {
@@ -234,7 +268,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
 
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
       const address = this.state.walletList?.map((wallet) => {
         return wallet.address;
       });
@@ -278,15 +311,11 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     });
 
     this.props.setPageFlagDefault();
-    // console.log("api respinse", value);
   };
 
-  onValidSubmit = () => {
-    // console.log("Sbmit")
-  };
+  onValidSubmit = () => {};
 
   addCondition = (key, value) => {
-    // console.log("key, value", key, value);
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       // TransactionHistoryYearFilter({
       //   session_id: getCurrentUser().id,
@@ -294,12 +323,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       //   year_filter: value == "allYear" ? "All years" : value,
       // });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
-      // console.log("tes", this.props.topAccountState.assetFilter);
       let assets = [];
       Promise.all([
         () => {
           if (value !== "allAssets") {
-            // console.log("test");
             this.props.topAccountState?.assetFilter?.map((e) => {
               if (value?.includes(e.value)) {
                 assets.push(e.label);
@@ -308,7 +335,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
           }
         },
       ]).then(() => {
-        // console.log("asset arr", assets)
         // TransactionHistoryAssetFilter({
         //   session_id: getCurrentUser().id,
         //   email_address: getCurrentUser().email,
@@ -323,7 +349,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       // });
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
-    // console.log("index", index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -334,19 +359,16 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       value !== "allMethod" &&
       value !== "allYear"
     ) {
-      // console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
       value === "allYear"
     ) {
-      // console.log("second if", index);
       if (index !== -1) {
         arr.splice(index, 1);
       }
     } else {
-      // console.log("else", index);
       let obj = {};
       obj = {
         key: key,
@@ -380,7 +402,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
-    // console.log(val)
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -493,11 +514,8 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       .writeText(text)
       .then(() => {
         toast.success("Copied");
-        // console.log("successfully copied");
       })
-      .catch(() => {
-        console.log("something went wrong");
-      });
+      .catch(() => {});
     // toggleCopied(true)
   };
 
@@ -540,10 +558,10 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
   };
 
   render() {
-    // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
       this.props.topAccountState;
     const { walletList, currency } = this.state;
@@ -552,7 +570,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
       table?.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        // console.log("row",row)
         walletList &&
           walletList?.map((wallet) => {
             if (
@@ -633,7 +650,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
           method: row.method,
         };
       });
-    // console.log('tableData',tableData);
     const columnList = [
       {
         labelName: (
@@ -737,7 +753,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                       }
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
                         // TransactionHistoryAddress({
                         //   session_id: getCurrentUser().id,
                         //   email_address: getCurrentUser().email,
@@ -764,7 +779,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                         src={rowData.from.wallet_metaData.symbol}
                         className="history-table-icon"
                         onMouseEnter={() => {
-                          // console.log("address", rowData.from.metaData);
                           // TransactionHistoryAddress({
                           //   session_id: getCurrentUser().id,
                           //   email_address: getCurrentUser().email,
@@ -785,7 +799,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   ) : rowData.from.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
                         // TransactionHistoryAddress({
                         //   session_id: getCurrentUser().id,
                         //   email_address: getCurrentUser().email,
@@ -807,7 +820,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
                         // TransactionHistoryAddress({
                         //   session_id: getCurrentUser().id,
                         //   email_address: getCurrentUser().email,
@@ -830,7 +842,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                 ) : rowData.from.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
-                      // console.log("address", rowData.from.metaData);
                       // TransactionHistoryAddress({
                       //   session_id: getCurrentUser().id,
                       //   email_address: getCurrentUser().email,
@@ -855,7 +866,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                       src={unrecognizedIcon}
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
                         // TransactionHistoryAddress({
                         //   session_id: getCurrentUser().id,
                         //   email_address: getCurrentUser().email,
@@ -902,7 +912,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
-          // console.log('rowData',rowData);
           if (dataKey === "to") {
             return (
               <CustomOverlay
@@ -1156,7 +1165,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "amount") {
-            // console.log(value)
             // return rowData.amount.value?.toFixed(2)
             return (
               <CustomOverlay
@@ -1220,8 +1228,6 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   currency?.rate;
               }
             });
-            // console.log('valueToday',valueToday);
-            // console.log('valueThen',valueThen);
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <CustomOverlay
@@ -1277,14 +1283,12 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
-          // console.log(rowData)
           if (dataKey === "usdTransactionFee") {
             let chain = Object.entries(assetPriceList);
             let valueToday;
             let valueThen;
             chain.find((chain) => {
               if (chain[0] === rowData.usdTransactionFee.id) {
-                // console.log('chain',chain);
                 valueToday =
                   rowData.usdTransactionFee.value *
                     chain[1].quote.USD.price *

@@ -92,17 +92,21 @@ class TopCost extends Component {
       isTopAccountPage: true,
     };
   }
-
-  componentDidMount() {
-    this.state.startTime = new Date() * 1;
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
     PageviewTopCosts({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkTopCostTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
-        // console.log('id',id);
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView();
@@ -111,26 +115,57 @@ class TopCost extends Component {
     } else {
       window.scrollTo(0, 0);
     }
-
-    // console.log("page Enter", this.state.startTime / 1000);
-
+    this.startPageView();
+    this.updateTimer(true);
     this.props.getAllCoins();
-    this.getBlockchainFee(0);
-    this.getCounterPartyFee(0);
+    this.getBlockchainFee(0, true);
+    this.getCounterPartyFee(0, true);
     this.props.getAvgCostBasis(this);
     GetAllPlan();
     getUser();
   }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "topCostPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("topCostPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkTopCostTimer);
+    localStorage.removeItem("topCostPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentTopCosts({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_spent: TimeSpent,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("topCostPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("topCostPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
+    this.props.ResetAverageCostBasis(this);
+  }
 
   componentDidUpdate(prevProps, prevState) {
-    // add wallet
-
     if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
-
       this.props.getAllCoins();
-      this.getBlockchainFee(0);
-      this.getCounterPartyFee(0);
+      this.getBlockchainFee(0, true);
+      this.getCounterPartyFee(0, true);
       this.props.getAvgCostBasis(this);
       this.setState({
         apiResponse: false,
@@ -159,47 +194,38 @@ class TopCost extends Component {
     this.setState({
       apiResponse: value,
     });
-    // console.log("api respinse", value);
     this.props.setPageFlagDefault();
   };
 
-  getBlockchainFee(option) {
+  getBlockchainFee(option, first) {
     const today = moment().valueOf();
     let handleSelected = "";
-    // console.log("headle click");
     if (option == 0) {
       this.props.getAllFeeApi(this, false, false);
-      // console.log(option, "All");
       handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
       this.props.getAllFeeApi(this, fiveyear, today);
-      // console.log(fiveyear, today, "5 years");
       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
       this.props.getAllFeeApi(this, year, today);
-      // console.log(year, today, "1 year");
       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
       this.props.getAllFeeApi(this, sixmonth, today);
-      // console.log(sixmonth, today, "6 months");
       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
       this.props.getAllFeeApi(this, month, today);
-      // console.log(month, today, "1 month");
       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
       this.props.getAllFeeApi(this, week, today);
-      // console.log(week, today, "week");
       handleSelected = "Week";
     }
-    // console.log("handle select", handleSelected);
     // FeesTimePeriodFilter({
     //   session_id: getCurrentUser().id,
     //   email_address: getCurrentUser().email,
@@ -207,69 +233,42 @@ class TopCost extends Component {
     // });
   }
 
-  getCounterPartyFee(option) {
+  getCounterPartyFee(option, first) {
     const today = moment().unix();
     let handleSelected = "";
-    // console.log("headle click");
     if (option == 0) {
       this.props.getAllCounterFeeApi(this, false, false);
-      // console.log(option, "All");
       handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").unix();
 
       this.props.getAllCounterFeeApi(this, fiveyear, today);
-      // console.log(fiveyear, today, "5 years");
       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").unix();
       this.props.getAllCounterFeeApi(this, year, today);
-      // console.log(year, today, "1 year");
       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").unix();
 
       this.props.getAllCounterFeeApi(this, sixmonth, today);
-      // console.log(sixmonth, today, "6 months");
       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").unix();
       this.props.getAllCounterFeeApi(this, month, today);
-      // console.log(month, today, "1 month");
       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").unix();
       this.props.getAllCounterFeeApi(this, week, today);
-      // console.log(week, today, "week");
       handleSelected = "Week";
     }
 
-    // console.log("handle select", handleSelected)
     // CounterpartyFeesTimeFilter;
     // CounterpartyFeesTimeFilter({
     //   session_id: getCurrentUser().id,
     //   email_address: getCurrentUser().email,
     //   time_period_selected: handleSelected,
     // });
-  }
-
-  componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime / 1000);
-    // console.log("Time Spent", TimeSpent);
-    TimeSpentTopCosts({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_spent: TimeSpent,
-    });
-
-    // get all data on page leave
-    // console.log("data");
-    // this.getBlockchainFee(0);
-    // this.getCounterPartyFee(0);
-    this.props.ResetAverageCostBasis(this);
-    // updateAverageCostBasis,
   }
 
   handleBadge = (activeBadgeList, type) => {
@@ -367,7 +366,6 @@ class TopCost extends Component {
       this.setState({
         sortBy: sort,
       });
-      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
@@ -427,6 +425,7 @@ class TopCost extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
   };
 
   render() {

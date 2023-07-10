@@ -1,39 +1,21 @@
-import React, { Component } from "react";
-import { Image, Row, Col } from "react-bootstrap";
+import React from "react";
+import { Image } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
-import CoinChip from "../wallet/CoinChip";
-import Ethereum from "../../assets/images/icons/ether-coin.svg";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
   Method,
   API_LIMIT,
   START_INDEX,
-  SEARCH_BY_ASSETS_IN,
   SEARCH_BY_TEXT,
-  SEARCH_BY_TIMESTAMP_IN,
-  SEARCH_BY_METHOD_IN,
-  SORT_BY_TIMESTAMP,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
-  SORT_BY_ASSET,
   SORT_BY_AMOUNT,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_TRANSACTION_FEE,
-  SORT_BY_METHOD,
-  DEFAULT_PRICE,
-  SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
   SORT_BY_ACCOUNT,
-  SORT_BY_NETWORTH,
-  SORT_BY_NETFLOWS,
   SORT_BY_LARGEST_BOUGHT,
   SORT_BY_LARGEST_SOLD,
-  SORT_BY_TAG_NAME,
   SORT_BY_NET_FLOW,
   SEARCH_BY_NETWORTH,
 } from "../../utils/Constant";
@@ -42,8 +24,6 @@ import {
   getFilters,
   getTransactionAsset,
 } from "../intelligence/Api";
-// import { getCoinRate } from "../Portfolio/Api.js";
-import moment from "moment";
 import {
   FormElement,
   Form,
@@ -55,19 +35,12 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import {
   amountFormat,
   CurrencyType,
-  lightenDarkenColor,
-  noExponents,
   numToCurrency,
-  UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
-
 import Loading from "../common/Loading";
-
 import { toast } from "react-toastify";
 import FixAddModal from "../common/FixAddModal";
-
-// add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import {
@@ -87,7 +60,6 @@ import {
   TopAccountClickedAccount,
   TopAccountInflowHover,
   TopAccountNameHover,
-  TopAccountNetHover,
   TopAccountNetflowHover,
   TopAccountNetworthFilter,
   TopAccountOutflowHover,
@@ -120,9 +92,6 @@ class TopAccountPage extends BaseReactComponent {
       table: [],
       sort: [{ key: SORT_BY_AMOUNT, value: false }],
       currentPage: page ? parseInt(page, 10) : START_INDEX,
-      // assetFilter: [],
-      // yearFilter: [],
-      // methodFilter: [],
       delayTimer: 0,
       condition: [],
       tableLoading: true,
@@ -160,7 +129,6 @@ class TopAccountPage extends BaseReactComponent {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
@@ -185,13 +153,21 @@ class TopAccountPage extends BaseReactComponent {
     });
   };
 
-  componentDidMount() {
-    // localStorage.setItem("previewAddress", "");
-    this.state.startTime = new Date() * 1;
+  startPageView = () => {
+    this.setState({
+      startTime: new Date() * 1,
+    });
     TopAccountPageView({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkTopAccountTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
+    // localStorage.setItem("previewAddress", "");
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -201,18 +177,43 @@ class TopAccountPage extends BaseReactComponent {
     this.assetList();
     GetAllPlan();
     getUser();
+    this.startPageView();
+    this.updateTimer(true);
   }
-
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "topAccountPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("topAccountPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkTopAccountTimer);
+    localStorage.removeItem("topAccountPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TopAccountTimeSpent({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("topAccountPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
   componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime / 1000);
-    // console.log("Time Spent", TimeSpent);
-    TopAccountTimeSpent({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    const tempExpiryTime = localStorage.getItem("topAccountPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
 
   assetList = () => {
@@ -234,7 +235,6 @@ class TopAccountPage extends BaseReactComponent {
   componentDidUpdate(prevProps, prevState) {
     // chain detection
     // if (prevState?.walletInput !== this.state.walletInput) {
-    //   console.log("wal", this.state.walletInput);
     // }
     const prevParams = new URLSearchParams(prevProps.location.search);
     const prevPage = parseInt(prevParams.get("p") || START_INDEX, 10);
@@ -258,29 +258,29 @@ class TopAccountPage extends BaseReactComponent {
             email_address: getCurrentUser().email,
             page: page + 1,
           });
+          this.updateTimer();
         } else if (prevPage + 1 === page) {
           TopAccountPageNext({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
           });
+          this.updateTimer();
         } else {
           TopAccountPageSearch({
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
             page: page + 1,
           });
+          this.updateTimer();
         }
       }
     }
   }
 
-  onValidSubmit = () => {
-    // console.log("Sbmit")
-  };
+  onValidSubmit = () => {};
 
   addCondition = (key, value) => {
-    // console.log("test", key, value);
     let networthList = {
       // "AllNetworth": "All",
       "0-1": "less 1m",
@@ -292,16 +292,15 @@ class TopAccountPage extends BaseReactComponent {
     if (key === SEARCH_BY_NETWORTH) {
       let selectedValue =
         value === "AllNetworth" ? "All" : value?.map((e) => networthList[e]);
-      // console.log("sele",selectedValue)
 
       TopAccountNetworthFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
         selected: selectedValue,
       });
+      this.updateTimer();
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
-    // console.log("index", index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -314,7 +313,6 @@ class TopAccountPage extends BaseReactComponent {
       value !== "Time" &&
       value !== 1825
     ) {
-      // console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allchain" ||
@@ -323,12 +321,10 @@ class TopAccountPage extends BaseReactComponent {
       value === "Time" ||
       value === 1825
     ) {
-      // console.log("second if", index);
       if (index !== -1) {
         arr.splice(index, 1);
       }
     } else {
-      // console.log("else", index);
       let obj = {};
       obj = {
         key: key,
@@ -359,11 +355,11 @@ class TopAccountPage extends BaseReactComponent {
         email_address: getCurrentUser().email,
         search: this.state.search,
       });
+      this.updateTimer();
       // this.callApi(this.state.currentPage || START_INDEX, condition)
     }, 1000);
   };
   handleSort = (val) => {
-    console.log(val);
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -386,6 +382,7 @@ class TopAccountPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         } else if (val === "netflows") {
           obj = [
             {
@@ -401,6 +398,7 @@ class TopAccountPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         } else if (val === "largestbought") {
           obj = [
             {
@@ -427,6 +425,7 @@ class TopAccountPage extends BaseReactComponent {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         }
         el.up = !el.up;
       } else {
@@ -456,7 +455,6 @@ class TopAccountPage extends BaseReactComponent {
     if (e.split(" ")[3] !== "undefined") {
       title = title + " " + e.split(" ")[3];
     }
-    console.log("title", title);
     this.setState({
       timeFIlter: title,
     });
@@ -466,6 +464,7 @@ class TopAccountPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       selected: title,
     });
+    this.updateTimer();
   };
 
   // For add new address
@@ -481,18 +480,16 @@ class TopAccountPage extends BaseReactComponent {
     });
 
     this.props.setPageFlagDefault();
-    // console.log("api respinse", value);
   };
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
     let userWallet = JSON.parse(localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
         : lochUser;
-    let shareLink = BASE_URL_S3 + "app-feature?redirect=top-accounts";
+    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=top-accounts";
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
@@ -500,12 +497,10 @@ class TopAccountPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    // console.log("share pod", shareLink);
+    this.updateTimer();
   };
 
   render() {
-    // console.log("value", this.state.methodFilter);
-
     let chainList = this.props.OnboardingState?.coinsList
       ?.filter((e) => ["Ethereum", "Polygon", "Avalanche"].includes(e.name))
       ?.map((e) => ({
@@ -516,8 +511,6 @@ class TopAccountPage extends BaseReactComponent {
     let assetList = this.state?.AssetList?.filter((e) =>
       ["Ethereum", "Polygon", "Avalanche"].includes(e.label)
     );
-
-    // console.log("text", assetList);
 
     const tableData = this.state.accountList;
     // const tableData = [
@@ -607,6 +600,7 @@ class TopAccountPage extends BaseReactComponent {
                     email_address: getCurrentUser().email,
                     account: rowData.account,
                   });
+                  this.updateTimer();
                   let obj = JSON.parse(localStorage.getItem("previewAddress"));
                   localStorage.setItem(
                     "previewAddress",
@@ -669,6 +663,7 @@ class TopAccountPage extends BaseReactComponent {
                       email_address: getCurrentUser().email,
                       hover: rowData.tagName,
                     });
+                    this.updateTimer();
                   }}
                 >
                   {rowData.tagName}
@@ -759,7 +754,6 @@ class TopAccountPage extends BaseReactComponent {
                 ? "5 years"
                 : this.state.timeFIlter
             );
-            // console.log("type netflow", type);
             return (
               <CustomOverlay
                 position="top"
@@ -791,6 +785,7 @@ class TopAccountPage extends BaseReactComponent {
                           "USD"
                         ),
                       });
+                      this.updateTimer();
                     }}
                   >
                     <Image
@@ -838,7 +833,6 @@ class TopAccountPage extends BaseReactComponent {
                 ? "5 years"
                 : this.state.timeFIlter
             );
-            // console.log("type bought", type);
             let text = "";
             rowData?.largestBought[type]?.map((e, i) => {
               text =
@@ -864,6 +858,7 @@ class TopAccountPage extends BaseReactComponent {
                       email_address: getCurrentUser().email,
                       hover: text,
                     });
+                    this.updateTimer();
                   }}
                 >
                   {rowData?.largestBought[type]?.map((e, i) => {
@@ -921,7 +916,6 @@ class TopAccountPage extends BaseReactComponent {
                 ? "5 years"
                 : this.state.timeFIlter
             );
-            //  console.log("type sold", type);
             let text = "";
             rowData?.largestSold[type]?.map((e, i) => {
               text =
@@ -947,6 +941,7 @@ class TopAccountPage extends BaseReactComponent {
                       email_address: getCurrentUser().email,
                       hover: text,
                     });
+                    this.updateTimer();
                   }}
                 >
                   {rowData?.largestSold[type]?.map((e, i) => {
@@ -1151,7 +1146,6 @@ class TopAccountPage extends BaseReactComponent {
                       action={SEARCH_BY_NETWORTH}
                       handleClick={(key, value) => {
                         this.addCondition(key, value);
-                        // console.log(key, value);
                       }}
                       isTopaccount={true}
                     />

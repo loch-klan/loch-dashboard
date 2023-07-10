@@ -282,7 +282,7 @@ export default function WelcomeCard(props) {
                 }}
               >
                 <Image src={ChangeIcon} />
-                Change
+                <span className="ml-2">Change</span>
               </div>
             </div>
           ) : !props?.hideButton ? (

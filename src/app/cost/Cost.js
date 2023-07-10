@@ -292,17 +292,16 @@ class Cost extends Component {
   endPageView = () => {
     clearInterval(window.checkCostTimer);
     localStorage.removeItem("costPageExpiryTime");
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentCosts({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_spent: TimeSpent,
-    });
-    // this.getBlockchainFee(0);
-    // this.getCounterPartyFee(0);
-    this.props.ResetAverageCostBasis(this);
-    // updateAverageCostBasis,
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentCosts({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_spent: TimeSpent,
+      });
+      this.props.ResetAverageCostBasis(this);
+    }
   };
   checkForInactivity = () => {
     const tempExpiryTime = localStorage.getItem("costPageExpiryTime");

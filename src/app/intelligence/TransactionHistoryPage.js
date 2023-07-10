@@ -243,6 +243,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   endPageView = () => {
     clearInterval(window.checkTransactionHistoryTimer);
     localStorage.removeItem("transactionHistoryPageExpiryTime");
+    if (this.state.startTime) {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
     TimeSpentTransactionHistory({
@@ -250,6 +251,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+  };
   };
   checkForInactivity = () => {
     const tempExpiryTime = localStorage.getItem(

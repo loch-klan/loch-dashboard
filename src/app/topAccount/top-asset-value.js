@@ -58,39 +58,72 @@ class TopAssetValueGraph extends Component {
       startTime: "",
     };
   }
-
-  componentDidMount() {
-    this.state.startTime = new Date() * 1;
+  startPageView = () => {
+    this.setState({ startTime: new Date() * 1 });
     PageviewTopAssetValue({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    // console.log("page Enter", this.state.startTime / 1000);
-    // console.log('this.state',this.state);
-    //    this.props.getCoinRate();
+    // Inactivity Check
+    window.checkTopAssetValueTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
     this.props.getAllCoins();
-    // this.getGraphData();
-    this.setState({});
     GetAllPlan();
     getUser();
+    this.startPageView();
+    this.updateTimer(true);
     this.setState({
-      // assetValueData: this.props.topAccountState.assetValueMonth,
       tab: "day",
     });
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "topAssetValuePageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("topAssetValuePageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkTopAssetValueTimer);
+    localStorage.removeItem("topAssetValuePageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentTopAssetValue({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("topAssetValuePageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("topAssetValuePageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
     if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
-
       this.setState({
         apiResponse: false,
       });
     }
 
     if (!this.props.commonState.top_asset_value) {
-      //  console.log("up")
       this.props.updateWalletListFlag("top_asset_value", true);
       this.props.topAccountState.assetValueMonth = null;
       this.props.topAccountState.assetValueYear = null;
@@ -100,20 +133,6 @@ class TopAssetValueGraph extends Component {
         this.getGraphData();
       }
     }
-  }
-
-  componentWillUnmount() {
-    // reset to month graph on page leave
-    // this.getGraphData();
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime);
-    // console.log("Time Spent", TimeSpent);
-    TimeSpentTopAssetValue({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
   }
 
   // For add new address
@@ -131,21 +150,16 @@ class TopAssetValueGraph extends Component {
       // for page
       // graphLoading: true,
     });
-
-    // console.log("updated wallet", value);
   };
 
   CheckApiResponse = (value) => {
     this.setState({
       apiResponse: value,
     });
-    // console.log("api respinse", value)
     this.props.setPageFlagDefault();
   };
 
   getGraphData = (groupByValue = GROUP_BY_DATE) => {
-    // console.log("data a", this.props);
-
     let ActionType = TOP_ASSET_VALUE_GRAPH_DAY;
     let runApi = false;
     if (groupByValue === GROUP_BY_MONTH) {
@@ -156,7 +170,6 @@ class TopAssetValueGraph extends Component {
           // assetValueData: this.props.topAccountState.assetValueMonth,
           tab: "month",
         });
-        // console.log("months");
       } else {
         runApi = true;
         this.setState({
@@ -172,7 +185,6 @@ class TopAssetValueGraph extends Component {
           // assetValueData: this.props.topAccountState.assetValueYear,
           tab: "year",
         });
-        // console.log("year");
       } else {
         runApi = true;
         this.setState({
@@ -188,7 +200,6 @@ class TopAssetValueGraph extends Component {
           // assetValueData: this.props.topAccountState.assetValueDay,
           tab: "day",
         });
-        //  console.log("data");
       } else {
         runApi = true;
         this.setState({
@@ -198,18 +209,14 @@ class TopAssetValueGraph extends Component {
       }
     } else {
       runApi = true;
-      // console.log("api");
     }
 
     if (runApi) {
-      //  console.log("api");
       this.setState({ graphLoading: true });
       let addressList = [];
-      // console.log("wallet addres", this.state.userWalletList);
       this.state.userWalletList?.map((wallet) =>
         addressList.push(wallet.address)
       );
-      // console.log("addressList", this.state.userWalletList);
       let data = new URLSearchParams();
       data.append("wallet_address", JSON.stringify(addressList));
       data.append("group_criteria", groupByValue);
@@ -245,6 +252,7 @@ class TopAssetValueGraph extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    this.updateTimer();
   };
 
   render() {

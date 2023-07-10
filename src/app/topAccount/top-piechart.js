@@ -3,7 +3,6 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { connect } from "react-redux";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import CustomLoader from "../common/CustomLoader";
 import LinkIcon from "../../assets/images/link.svg";
 import {
   amountFormat,
@@ -15,7 +14,6 @@ import {
 import unrecognized from "../../image/unrecognized.svg";
 import { AssetType, DEFAULT_COLOR, DEFAULT_PRICE } from "../../utils/Constant";
 import { Col, Image, Row } from "react-bootstrap";
-import noDataImage from "../../image/no-data.png";
 import Loading from "../common/Loading";
 import {
   HomeDefiDebt,
@@ -26,18 +24,8 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import ManageWallet from "../../assets/images/icons/ManageWallet.svg";
-import ManageWalletWhite from "../../assets/images/icons/ManageWalletWhite.svg";
-import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
-import AddWalletAddressWhite from "../../assets/images/icons/AddWalletAddressWhite.svg";
 import arrowUp from "../../assets/images/arrow-up.svg";
-import arrowDown from "../../assets/images/arrow-down.svg";
-import Coin1 from "../../assets/images/Coin.svg";
-import Coin2 from "../../assets/images/Coin2.svg";
-import Coin3 from "../../assets/images/Coin3.svg";
 import {
-  getAllProtocol,
-  getYieldBalanceApi,
   getUserWallet,
   getProtocolBalanceApi,
   getExchangeBalances,
@@ -607,6 +595,9 @@ class TopPieChart extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
 
   toggleYield = () => {
@@ -618,6 +609,9 @@ class TopPieChart extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
 
   toggleDebt = () => {
@@ -630,6 +624,9 @@ class TopPieChart extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
   };
 
   getCurrentTime = () => {
@@ -689,6 +686,9 @@ class TopPieChart extends BaseReactComponent {
       email_address: getCurrentUser().email,
       session_id: getCurrentUser().id,
     });
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
     // get the current time
     this.props.setLoader(true);
     let currentTime = new Date().getTime();
@@ -890,6 +890,9 @@ class TopPieChart extends BaseReactComponent {
                   asset_clicked: currentData.options.name,
                   asset_amount: CurrencyType(false) + currentData.options.usd,
                 });
+                if (self.props.updateTimer) {
+                  self.props.updateTimer();
+                }
               },
               unselect: function () {
                 // console.log("UNSELECT")

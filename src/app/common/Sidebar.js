@@ -234,20 +234,8 @@ function Sidebar(props) {
     // update previewaddress from localstorage
     setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
 
-    //  its mean user in ME section but not in intelligence
-    if (
-      ![
-        "/intelligence/transaction-history",
-        "/intelligence#netflow",
-        "/intelligence",
-        "/intelligence/volume-traded-by-counterparty",
-        "/intelligence/insights",
-        "/intelligence/costs",
-        "/intelligence/asset-value",
-      ].includes(activeTab) &&
-      ["/home", "/profile", "/decentralized-finance"].includes(activeTab)
-    ) {
-      let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
+    // Me section
+    if (["/home", "/decentralized-finance", "/profile"].includes(activeTab)) {
       let obj = {
         me: true,
         discover: false,
@@ -260,41 +248,18 @@ function Sidebar(props) {
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
       resetPreviewAddress();
       setPreviewAddress(JSON.parse(localStorage.getItem("previewAddress")));
-      // console.log("in 1st if");
     }
-
-    //  user user not in these url means use in discover pages so hide me and show discover
-    if (
-      ![
-        "/intelligence/transaction-history",
-        "/intelligence#netflow",
+    // Me section with intelligence
+    else if (
+      [
         "/intelligence",
-        "/intelligence/volume-traded-by-counterparty",
+        "/intelligence#netflow",
+        "/intelligence/transaction-history",
+        "/intelligence/asset-value",
         "/intelligence/insights",
         "/intelligence/costs",
-        "/intelligence/asset-value",
-        "/home",
-        "/profile",
-        "/decentralized-finance",
       ].includes(activeTab)
     ) {
-      let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
-      let obj = {
-        me: false,
-        discover: true,
-        intelligence: false,
-        topAccount: false,
-        topAccountintelligence: false,
-      };
-      setSubmenu(obj);
-
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
-    }
-
-    //  when user click on intellignece we show all the submenu inside intelligence tab
-    if (activeTab === "/intelligence") {
-      // console.log("int")
-      let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
       let obj = {
         me: true,
         discover: false,
@@ -305,23 +270,16 @@ function Sidebar(props) {
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
-      // console.log("in 3rd if");
     }
 
-    // top account but not in intelligence
-    if (
-      ![
-        "/top-accounts/intelligence/transaction-history",
-        "/top-accounts/intelligence#netflow",
-        "/top-accounts/intelligence",
-        "/top-accounts/intelligence/volume-traded-by-counterparty",
-        "/top-accounts/intelligence/insights",
-        "/top-accounts/intelligence/costs",
-        "/top-accounts/intelligence/asset-value",
-      ].includes(activeTab) &&
-      ["/top-accounts/home", "/top-accounts/decentralized-finance"].includes(
-        activeTab
-      )
+    // Discover section
+    else if (
+      [
+        "/whale-watch",
+        "/top-accounts",
+        "/top-accounts/home",
+        "/top-accounts/decentralized-finance",
+      ].includes(activeTab)
     ) {
       // console.log("preview in top acc", previewAddress);
 
@@ -329,17 +287,13 @@ function Sidebar(props) {
         me: false,
         discover: true,
         intelligence: false,
-        // if not found preview address then false else true
         topAccount: previewAddress?.address ? true : false,
         topAccountintelligence: false,
       };
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
-    }
-
-    // if user in top account intelligences page of submenu
-    if (
+    } else if (
       [
         "/top-accounts/intelligence/transaction-history",
         "/top-accounts/intelligence#netflow",
@@ -350,52 +304,27 @@ function Sidebar(props) {
         "/top-accounts/intelligence/asset-value",
       ].includes(activeTab)
     ) {
-      // console.log("preview int", previewAddress);
       let obj = {
         me: false,
         discover: true,
         intelligence: false,
-        // if not found preview address then false else true
         topAccount: previewAddress?.address ? true : false,
         topAccountintelligence: true,
       };
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
-    }
-
-    //  when user click on top-account we show all the submenu inside top account tab
-    if (activeTab === "/top-accounts") {
-      let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
+    } else {
       let obj = {
-        me: false,
-        discover: true,
+        me: true,
+        discover: false,
         intelligence: false,
-        // if not found preview address then false else true
-        topAccount: previewAddress?.address ? true : false,
-        topAccountintelligence: false,
-      };
-      setSubmenu(obj);
-
-      localStorage.setItem("isSubmenu", JSON.stringify(obj));
-      // console.log("in 3rd if");
-    }
-
-    //  when user click on top-account/intellignece we show all the submenu inside intelligence tab
-    if (activeTab === "/top-accounts/intelligence") {
-      let currentValue = JSON.parse(localStorage.getItem("isSubmenu"));
-      let obj = {
-        me: false,
-        discover: true,
-        intelligence: false,
-        // if not found preview address then false else true
-        topAccount: previewAddress?.address ? true : false,
+        topAccount: false,
         topAccountintelligence: true,
       };
       setSubmenu(obj);
 
       localStorage.setItem("isSubmenu", JSON.stringify(obj));
-      // console.log("in 3rd if");
     }
   }, []);
 

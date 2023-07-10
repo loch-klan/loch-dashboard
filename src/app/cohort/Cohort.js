@@ -137,14 +137,16 @@ class Cohort extends Component {
   endPageView = () => {
     clearInterval(window.checkWhalePodTimer);
     localStorage.removeItem("whalePodPageExpiryTime");
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000;
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000;
 
-    TimeSpentWhalePod({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_spent: TimeSpent,
-    });
+      TimeSpentWhalePod({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_spent: TimeSpent,
+      });
+    }
   };
   checkForInactivity = () => {
     const tempExpiryTime = localStorage.getItem("whalePodPageExpiryTime");

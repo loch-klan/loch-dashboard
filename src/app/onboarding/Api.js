@@ -119,7 +119,6 @@ export const detectCoin = (wallet, ctx = null, isCohort = false, index = 0) => {
               index === ctx?.props?.OnboardingState.parentCoinList?.length - 1
             ) {
               setTimeout(() => {
-                console.log("last");
                 ctx?.CalculateOverview && ctx?.CalculateOverview();
               }, 1000);
             }
