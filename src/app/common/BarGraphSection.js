@@ -362,15 +362,15 @@ class BarGraphSection extends Component {
                 {showPercentage && (
                   <div
                     className={`inter-display-medium f-s-16 lh-19 grey-313 content ${
-                      showPercentage.status === "Increase"
+                      showPercentage?.status === "Increase"
                         ? "inc"
-                        : showPercentage.status === "No Change"
+                        : showPercentage?.status === "No Change"
                         ? "inc"
                         : "dec"
                     }`}
                   >
-                    <Image src={showPercentage.icon} className="m-r-4" />
-                    {showPercentage.percent}% {showPercentage.status}
+                    <Image src={showPercentage?.icon} className="m-r-4" />
+                    {showPercentage?.percent}% {showPercentage?.status}
                   </div>
                 )}
 

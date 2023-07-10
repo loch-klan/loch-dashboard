@@ -112,7 +112,7 @@ class OnBoarding extends Component {
   };
 
   componentDidMount() {
-    this.state.startTime = new Date() * 1;
+    this.setState({ startTime: new Date() * 1 });
     // console.log("page Enter", (this.state.startTime / 1000));
     // let date = moment();
     // let currentDate = date.format("D/MM/YYYY");

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import PageHeader from "../common/PageHeader";
-
 import LineChartSlider from "../Portfolio/LineCharSlider";
 import {
   GroupByOptions,
@@ -14,32 +12,33 @@ import {
 import { getAssetGraphDataApi, getExternalEventsApi } from "../Portfolio/Api";
 import { getAllCoins } from "../onboarding/Api";
 import {
-  AssetValuePage,
-  AssetValueShare,
-  TimeSpentAssetValue,
+  PageviewTopAssetValue,
+  TimeSpentTopAssetValue,
+  TopAssetValueShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-// add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
-
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
-import {
-  ASSET_VALUE_GRAPH_DAY,
-  ASSET_VALUE_GRAPH_MONTH,
-  ASSET_VALUE_GRAPH_YEAR,
-} from "../Portfolio/ActionTypes";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import {
+  TOP_ASSET_VALUE_GRAPH_DAY,
+  TOP_ASSET_VALUE_GRAPH_MONTH,
+  TOP_ASSET_VALUE_GRAPH_YEAR,
+} from "./ActionTypes";
+import { Buffer } from "buffer";
 
-class AssetValueGraph extends Component {
+class TopAssetValueGraph extends Component {
   constructor(props) {
     super(props);
     this.state = {
       graphLoading: false,
       // externalEvents: [],
-      userWalletList: JSON.parse(localStorage.getItem("addWallet")),
+      userWalletList: localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [],
       // add new wallet
 
       addModal: false,
@@ -53,93 +52,50 @@ class AssetValueGraph extends Component {
       assetValueDataLoaded: false,
       tab: "day",
 
-      // start time for time spent on page
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
+      // time spent
       startTime: "",
     };
   }
   startPageView = () => {
-    this.setState({
-      startTime: new Date() * 1,
-    });
-    AssetValuePage({
+    this.setState({ startTime: new Date() * 1 });
+    PageviewTopAssetValue({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     // Inactivity Check
-    window.checkAssetValueTimer = setInterval(() => {
+    window.checkTopAssetValueTimer = setInterval(() => {
       this.checkForInactivity();
     }, 900000);
   };
   componentDidMount() {
-    this.setState({
-      // assetValueData: this.props.portfolioState.assetValueMonth,
-      tab: "day",
-    });
-
-    // console.log("page Enter", this.state.startTime / 1000);
-    // console.log('this.state',this.state);
-    //    this.props.getCoinRate();
     this.props.getAllCoins();
-    // this.getGraphData();
-    this.setState({});
     GetAllPlan();
     getUser();
-
-    const search = this.props.location.search;
-    const params = new URLSearchParams(search);
-    const addAddress = params.get("add-address");
-    if (addAddress) {
-      this.handleAddModal();
-      this.props.history.replace("/intelligence/asset-value");
-    }
     this.startPageView();
     this.updateTimer(true);
-
-    return () => {
-      clearInterval(window.checkAssetValueTimer);
-    };
+    this.setState({
+      tab: "day",
+    });
   }
-  componentDidUpdate(prevProps, prevState) {
-    // add wallet
-
-    if (prevState.apiResponse !== this.state.apiResponse) {
-      // console.log("update");
-
-      this.setState({
-        apiResponse: false,
-      });
-    }
-
-    if (!this.props.commonState.asset_value) {
-      //  console.log("up")
-      this.props.updateWalletListFlag("asset_value", true);
-      this.props.portfolioState.assetValueMonth = null;
-      this.props.portfolioState.assetValueYear = null;
-      this.props.portfolioState.assetValueDay = null;
-      this.props.getAllCoins();
-      if (!this.props.portfolioState.assetValueDay) {
-        this.getGraphData();
-      }
-    }
-  }
-
   updateTimer = (first) => {
     const tempExistingExpiryTime = localStorage.getItem(
-      "assetValuePageExpiryTime"
+      "topAssetValuePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("assetValuePageExpiryTime", tempExpiryTime);
+    localStorage.setItem("topAssetValuePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
-    clearInterval(window.checkAssetValueTimer);
-    localStorage.removeItem("assetValuePageExpiryTime");
+    clearInterval(window.checkTopAssetValueTimer);
+    localStorage.removeItem("topAssetValuePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      TimeSpentAssetValue({
+      TimeSpentTopAssetValue({
         time_spent: TimeSpent,
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
@@ -147,15 +103,35 @@ class AssetValueGraph extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("assetValuePageExpiryTime");
+    const tempExpiryTime = localStorage.getItem("topAssetValuePageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("assetValuePageExpiryTime");
+    const tempExpiryTime = localStorage.getItem("topAssetValuePageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    // add wallet
+
+    if (prevState.apiResponse != this.state.apiResponse) {
+      this.setState({
+        apiResponse: false,
+      });
+    }
+
+    if (!this.props.commonState.top_asset_value) {
+      this.props.updateWalletListFlag("top_asset_value", true);
+      this.props.topAccountState.assetValueMonth = null;
+      this.props.topAccountState.assetValueYear = null;
+      this.props.topAccountState.assetValueDay = null;
+      this.props.getAllCoins();
+      if (!this.props.topAccountState.assetValueDay) {
+        this.getGraphData();
+      }
     }
   }
 
@@ -174,87 +150,75 @@ class AssetValueGraph extends Component {
       // for page
       // graphLoading: true,
     });
-
-    // console.log("updated wallet", value);
   };
 
   CheckApiResponse = (value) => {
     this.setState({
       apiResponse: value,
     });
-    // console.log("api respinse", value)
     this.props.setPageFlagDefault();
   };
 
   getGraphData = (groupByValue = GROUP_BY_DATE) => {
-    // console.log("data a", this.props);
-
-    let ActionType = ASSET_VALUE_GRAPH_DAY;
+    let ActionType = TOP_ASSET_VALUE_GRAPH_DAY;
     let runApi = false;
     if (groupByValue === GROUP_BY_MONTH) {
-      ActionType = ASSET_VALUE_GRAPH_MONTH;
-      if (this.props.portfolioState.assetValueMonth) {
+      ActionType = TOP_ASSET_VALUE_GRAPH_MONTH;
+      if (this.props.topAccountState.assetValueMonth) {
         runApi = false;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueMonth,
+          // assetValueData: this.props.topAccountState.assetValueMonth,
           tab: "month",
         });
-        // console.log("months");
       } else {
         runApi = true;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueMonth,
+          // assetValueData: this.props.topAccountState.assetValueMonth,
           tab: "month",
         });
       }
     } else if (groupByValue === GROUP_BY_YEAR) {
-      ActionType = ASSET_VALUE_GRAPH_YEAR;
-      if (this.props.portfolioState.assetValueYear) {
+      ActionType = TOP_ASSET_VALUE_GRAPH_YEAR;
+      if (this.props.topAccountState.assetValueYear) {
         runApi = false;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueYear,
+          // assetValueData: this.props.topAccountState.assetValueYear,
           tab: "year",
         });
-        // console.log("year");
       } else {
         runApi = true;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueMonth,
+          // assetValueData: this.props.topAccountState.assetValueMonth,
           tab: "year",
         });
       }
     } else if (groupByValue === GROUP_BY_DATE) {
-      ActionType = ASSET_VALUE_GRAPH_DAY;
-      if (this.props.portfolioState.assetValueDay) {
+      ActionType = TOP_ASSET_VALUE_GRAPH_DAY;
+      if (this.props.topAccountState.assetValueDay) {
         runApi = false;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueDay,
+          // assetValueData: this.props.topAccountState.assetValueDay,
           tab: "day",
         });
-        //  console.log("data");
       } else {
         runApi = true;
         this.setState({
-          // assetValueData: this.props.portfolioState.assetValueDay,
+          // assetValueData: this.props.topAccountState.assetValueDay,
           tab: "day",
         });
       }
     } else {
       runApi = true;
-      // console.log("api");
     }
 
     if (runApi) {
-      //  console.log("api");
       this.setState({ graphLoading: true });
       let addressList = [];
-      // console.log("wallet addres", this.state.userWalletList);
       this.state.userWalletList?.map((wallet) =>
         addressList.push(wallet.address)
       );
-      // console.log("addressList", this.state.userWalletList);
       let data = new URLSearchParams();
-      data.append("wallet_addresses", JSON.stringify(addressList));
+      data.append("wallet_address", JSON.stringify(addressList));
       data.append("group_criteria", groupByValue);
       this.props.getAssetGraphDataApi(data, this, ActionType);
 
@@ -272,25 +236,23 @@ class AssetValueGraph extends Component {
   };
 
   handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = Buffer.from(previewAddress?.address).toString(
+      "base64"
+    );
+
     let shareLink =
-      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/asset-value";
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=intelligence/asset-value`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
-    AssetValueShare({
+    TopAssetValueShare({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     this.updateTimer();
-
-    // console.log("share pod", shareLink);
   };
 
   render() {
@@ -309,7 +271,7 @@ class AssetValueGraph extends Component {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
-                updateTimer={this.updateTimer}
+                isPreviewing={true}
               />
             </div>
           </div>
@@ -330,7 +292,6 @@ class AssetValueGraph extends Component {
                 changeWalletList={this.handleChangeList}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 from="asset value"
-                updateTimer={this.updateTimer}
               />
             )}
             <PageHeader
@@ -341,28 +302,28 @@ class AssetValueGraph extends Component {
               history={this.props.history}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
+              topaccount={true}
               hoverText={`This chart reflects the largest value for each token on a given day, month, or year.`}
               ShareBtn={true}
               handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
             />
             <div className="graph-container" style={{ marginBottom: "5rem" }}>
               <LineChartSlider
                 assetValueData={
                   this.state.tab === "day"
-                    ? this.props.portfolioState.assetValueDay &&
-                      this.props.portfolioState.assetValueDay
+                    ? this.props.topAccountState.assetValueDay &&
+                      this.props.topAccountState.assetValueDay
                     : this.state.tab === "month"
-                    ? this.props.portfolioState.assetValueMonth &&
-                      this.props.portfolioState.assetValueMonth
+                    ? this.props.topAccountState.assetValueMonth &&
+                      this.props.topAccountState.assetValueMonth
                     : this.state.tab === "year"
-                    ? this.props.portfolioState.assetValueYear &&
-                      this.props.portfolioState.assetValueYear
+                    ? this.props.topAccountState.assetValueYear &&
+                      this.props.topAccountState.assetValueYear
                     : []
                 }
                 externalEvents={
-                  this.props.portfolioState.externalEvents &&
-                  this.props.portfolioState.externalEvents
+                  this.props.topAccountState.externalEvents &&
+                  this.props.topAccountState.externalEvents
                 }
                 coinLists={this.props.OnboardingState.coinsLists}
                 isScrollVisible={false}
@@ -370,8 +331,7 @@ class AssetValueGraph extends Component {
                 graphLoading={this.state.graphLoading}
                 isUpdate={this.state.isUpdate}
                 isPage={true}
-                dataLoaded={this.props.portfolioState.assetValueDataLoaded}
-                updateTimer={this.updateTimer}
+                dataLoaded={this.props.topAccountState.assetValueDataLoaded}
               />
             </div>
             {/* <FeedbackForm page={"Asset Value Graph Page"} /> */}
@@ -385,6 +345,9 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   portfolioState: state.PortfolioState,
   commonState: state.CommonState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 
 const mapDispatchToProps = {
@@ -395,4 +358,4 @@ const mapDispatchToProps = {
   setPageFlagDefault,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AssetValueGraph);
+export default connect(mapStateToProps, mapDispatchToProps)(TopAssetValueGraph);

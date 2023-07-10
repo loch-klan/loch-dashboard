@@ -30,16 +30,13 @@ import {
   BASE_URL_S3,
   SORT_BY_ACCOUNT,
   SORT_BY_NETWORTH,
-  SORT_BY_NETFLOWS,
+
   SORT_BY_LARGEST_BOUGHT,
   SORT_BY_LARGEST_SOLD,
   SORT_BY_TAG_NAME,
+  SORT_BY_NET_FLOW,
 } from "../../utils/Constant";
-import {
-  searchTransactionApi,
-  getFilters,
-  getTransactionAsset,
-} from "../intelligence/Api";
+import { searchTransactionApi, getFilters, getTransactionAsset } from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
 import {
@@ -59,7 +56,7 @@ import {
   numToCurrency,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
 
@@ -69,12 +66,13 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
 import DropDown from "../common/DropDown";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { TwitterInfluencerShare } from "../../utils/AnalyticsFunctions";
 
 class TwitterInflucencePage extends BaseReactComponent {
   constructor(props) {
@@ -150,6 +148,8 @@ class TwitterInflucencePage extends BaseReactComponent {
   };
 
   componentDidMount() {
+    resetPreviewAddress();
+    this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -270,7 +270,7 @@ class TwitterInflucencePage extends BaseReactComponent {
         } else if (val === "tokensMentioned") {
           obj = [
             {
-              key: SORT_BY_NETFLOWS,
+              key: SORT_BY_NET_FLOW,
               value: !el.up,
             },
           ];
@@ -337,6 +337,25 @@ class TwitterInflucencePage extends BaseReactComponent {
 
     this.props.setPageFlagDefault();
     // console.log("api respinse", value);
+  };
+
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink = BASE_URL_S3 + "app-feature?redirect=twitter-influencers";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+    TwitterInfluencerShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // console.log("share pod", shareLink);
   };
 
   render() {
@@ -474,7 +493,7 @@ class TwitterInflucencePage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Tokens Mentioned
+              Tokens mentioned
             </span>
             <Image
               src={sortByIcon}
@@ -537,7 +556,7 @@ class TwitterInflucencePage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Token Performance after tweet
+              Token performance after tweet
             </span>
             <Image
               src={sortByIcon}
@@ -690,6 +709,9 @@ class TwitterInflucencePage extends BaseReactComponent {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                hideButton={true}
+                ShareBtn={true}
+                handleShare={this.handleShare}
               />
             </div>
           </div>
@@ -724,15 +746,16 @@ class TwitterInflucencePage extends BaseReactComponent {
               />
             )}
             <PageHeader
-              title={"Twitter Influencers"}
-              subTitle={"Popular Twitter Influencers "}
+              title={"Twitter influencers"}
+              subTitle={"Popular twitter influencers "}
               // showpath={true}
               // currentPage={"transaction-history"}
               history={this.props.history}
+              topaccount={true}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
+              ShareBtn={true}
+              handleShare={this.handleShare}
             />
 
             <div className="fillter_tabs_section">
@@ -881,6 +904,7 @@ const mapDispatchToProps = {
   getAllCoins,
   getFilters,
   setPageFlagDefault,
+  TopsetPageFlagDefault,
 };
 
 TwitterInflucencePage.propTypes = {};

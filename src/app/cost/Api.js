@@ -14,6 +14,13 @@ import {
   GAS_FEES,
 } from "../intelligence/ActionTypes";
 import { getGraphData, getCounterGraphData } from "./getGraphData";
+import {
+  TOP_AVERAGE_COST_BASIS,
+  TOP_AVERAGE_COST_RESET,
+  TOP_AVERAGE_COST_SORT,
+  TOP_COUNTER_PARTY_VOLUME,
+  TOP_GAS_FEES,
+} from "../topAccount/ActionTypes";
 
 export const getAllFeeApi = (ctx, startDate, endDate) => {
   return async function (dispatch, getState) {
@@ -35,7 +42,7 @@ export const getAllFeeApi = (ctx, startDate, endDate) => {
       .then((res) => {
         if (!res.data.error) {
           dispatch({
-            type: GAS_FEES,
+            type: ctx?.state?.isTopAccountPage ? TOP_GAS_FEES : GAS_FEES,
             payload: {
               GraphfeeData: res.data.data,
               graphfeeValue: getGraphData(res.data.data, ctx),
@@ -80,7 +87,9 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
           g_data = g_data.slice(0, 3);
           // console.log("data", g_data)
           dispatch({
-            type: COUNTER_PARTY_VOLUME,
+            type: ctx?.state?.isTopAccountPage
+              ? TOP_COUNTER_PARTY_VOLUME
+              : COUNTER_PARTY_VOLUME,
             payload: {
               counterPartyData: res.data.data.counter_party_volume_traded,
               counterPartyValue:
@@ -114,7 +123,9 @@ export const getAllCounterFeeApi = (ctx, startDate, endDate) => {
 export const updateCounterParty = (data, value, ctx) => {
   return function (dispatch, getState) {
     dispatch({
-      type: COUNTER_PARTY_VOLUME,
+      type: ctx?.state?.isTopAccountPage
+        ? TOP_COUNTER_PARTY_VOLUME
+        : COUNTER_PARTY_VOLUME,
       payload: {
         counterPartyData: data,
         counterPartyValue: value,
@@ -127,7 +138,7 @@ export const updateCounterParty = (data, value, ctx) => {
 export const updateFeeGraph = (data, value, ctx) => {
   return function (dispatch, getState) {
     dispatch({
-      type: GAS_FEES,
+      type: ctx?.state?.isTopAccountPage ? TOP_GAS_FEES : GAS_FEES,
       payload: {
         GraphfeeData: data,
         graphfeeValue: value,
@@ -396,7 +407,9 @@ export const getAvgCostBasis = (ctx) => {
 
           // console.log("Asset",AssetsList)
           dispatch({
-            type: AVERAGE_COST_BASIS,
+            type: ctx?.state?.isTopAccountPage
+              ? TOP_AVERAGE_COST_BASIS
+              : AVERAGE_COST_BASIS,
             payload: {
               Average_cost_basis: AssetsList,
               totalPercentage: totalPercentage,
@@ -417,7 +430,9 @@ export const getAvgCostBasis = (ctx) => {
 export const updateAverageCostBasis = (data, ctx) => {
   return function (dispatch, getState) {
     dispatch({
-      type: AVERAGE_COST_SORT,
+      type: ctx?.state?.isTopAccountPage
+        ? TOP_AVERAGE_COST_SORT
+        : AVERAGE_COST_SORT,
       payload: data,
     });
   };
@@ -428,7 +443,9 @@ export const updateAverageCostBasis = (data, ctx) => {
 export const ResetAverageCostBasis = (ctx) => {
   return function (dispatch, getState) {
     dispatch({
-      type: AVERAGE_COST_RESET,
+      type: ctx?.state?.isTopAccountPage
+        ? TOP_AVERAGE_COST_RESET
+        : AVERAGE_COST_RESET,
     });
   };
 };

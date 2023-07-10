@@ -4,22 +4,16 @@ import PageHeader from "../common/PageHeader";
 import reduceCost from "../../assets/images/icons/reduce-cost.svg";
 import reduceRisk from "../../assets/images/icons/reduce-risk.svg";
 import increaseYield from "../../assets/images/icons/increase-yield.svg";
-import { getAllInsightsApi } from "./Api";
+import { getAllInsightsApi } from "../intelligence/Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
 import {
-  AllInsights,
-  InsightPage,
-  InsightsIncreaseYield,
-  InsightsReduceCost,
-  InsightsReduceRisk,
-  InsightsShare,
-  RiskTypeDropdownClicked,
-  RiskTypeHover,
-  RiskTypeSelected,
-  TimeSpentInsights,
+  PageviewTopInsights,
+  TimeSpentTopInsights,
+  TopInsightShare,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import FeedbackForm from "../common/FeedbackForm";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
@@ -35,15 +29,17 @@ import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import { toast } from "react-toastify";
 import Footer from "../common/footer";
 import DropDown from "../common/DropDown";
+import { lte } from "lodash";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import base64url from "base64url";
 
-class InsightsPage extends Component {
+class TopInsightsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       // insightList: "",
       isLoading: false,
-      updatedInsightList: this.props.intelligenceState.updatedInsightList,
+      updatedInsightList: this.props.topAccountState.updatedInsightList,
       selected: "",
       insightFilter: [
         {
@@ -79,7 +75,9 @@ class InsightsPage extends Component {
 
       riskType: "All risks",
 
-      // start time for time spent on page
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
+      // time spent
       startTime: "",
     };
   }
@@ -91,90 +89,44 @@ class InsightsPage extends Component {
     });
   };
 
-  startPageView = () => {
-    this.setState({
-      startTime: new Date() * 1,
-    });
-    InsightPage({
+  componentDidMount() {
+    PageviewTopInsights({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    // Inactivity Check
-    window.checkInsightsTimer = setInterval(() => {
-      this.checkForInactivity();
-    }, 900000);
-  };
-  componentDidMount() {
-    // this.props.getAllInsightsApi(this);
     GetAllPlan();
     getUser();
-    this.setState({});
-
-    const search = this.props.location.search;
-    const params = new URLSearchParams(search);
-    const addAddress = params.get("add-address");
-    if (addAddress) {
-      this.handleAddModal();
-      this.props.history.replace("/intelligence/insights");
-    }
-    this.startPageView();
-    this.updateTimer(true);
-
-    return () => {
-      clearInterval(window.checkInsightsTimer);
-    };
+    this.setState({ startTime: new Date() * 1 });
   }
-  updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem(
-      "insightsPageExpiryTime"
-    );
-    if (!tempExistingExpiryTime && !first) {
-      this.startPageView();
-    }
-    const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
-  };
-  endPageView = () => {
-    clearInterval(window.checkInsightsTimer);
-    localStorage.removeItem("insightsPageExpiryTime");
-    if (this.state.startTime) {
-      let endTime = new Date() * 1;
-      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      TimeSpentInsights({
-        time_spent: TimeSpent,
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-    }
-  };
-  checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("insightsPageExpiryTime");
-    if (tempExpiryTime && tempExpiryTime < Date.now()) {
-      this.endPageView();
-    }
-  };
+
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("insightsPageExpiryTime");
-    if (tempExpiryTime) {
-      this.endPageView();
-    }
+    // reset to month graph on page leave
+    // this.getGraphData();
+    let endTime = new Date() * 1;
+    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+    // console.log("page Leave", endTime);
+    // console.log("Time Spent", TimeSpent);
+    TimeSpentTopInsights({
+      time_spent: TimeSpent,
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   }
-
   componentDidUpdate(prevProps, prevState) {
     // add wallet
 
     // used for filter
     if (
-      prevProps.intelligenceState.updatedInsightList !==
-      this.props.intelligenceState.updatedInsightList
+      prevProps.topAccountState.updatedInsightList !==
+      this.props.topAccountState.updatedInsightList
     ) {
       this.setState({
-        updatedInsightList: this.props.intelligenceState.updatedInsightList,
+        updatedInsightList: this.props.topAccountState.updatedInsightList,
       });
     }
 
-    if (!this.props.commonState.insight) {
-      this.props.updateWalletListFlag("insight", true);
+    if (!this.props.commonState.top_insight) {
+      this.props.updateWalletListFlag("top_insight", true);
       this.setState({
         isLoading: true,
       });
@@ -218,7 +170,7 @@ class InsightsPage extends Component {
   };
   handleSelect = (value) => {
     // console.log("value",value)
-    let insightList = this.props.intelligenceState.updatedInsightList;
+    let insightList = this.props.topAccountState.updatedInsightList;
     insightList = insightList?.filter((item) =>
       value === 1 ? item : item.insight_type === value
     );
@@ -227,54 +179,56 @@ class InsightsPage extends Component {
       updatedInsightList: insightList,
       riskType: "All risks",
     });
-    this.updateTimer();
+
     if (value === 1) {
-      AllInsights({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      // AllInsights({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
       // console.log("All");
     } else if (value === 10) {
-      InsightsReduceCost({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      // InsightsReduceCost({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
       //  console.log("Reduce Cost");
     } else if (value === 20) {
-      InsightsReduceRisk({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      // InsightsReduceRisk({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
       //  console.log("Reduce Risk");
     } else if (value === 30) {
-      InsightsIncreaseYield({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      // InsightsIncreaseYield({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      // });
     } else {
       // console.log("not valid value")
     }
   };
-
   handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = base64url.encode(previewAddress?.address);
+    //  console.log(
+    //    "encoded address",
+    //    encodedAddress,
+    //    "address",
+    //    previewAddress?.address,
+    //    "decode address",
+    //    base64url.decode(encodedAddress)
+    //  );
     let shareLink =
-      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/insights";
+      BASE_URL_S3 +
+      `top-account/${encodedAddress}?redirect=intelligence/insights`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
-    InsightsShare({
+    TopInsightShare({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    this.updateTimer();
-
     // console.log("share pod", shareLink);
   };
 
@@ -286,20 +240,14 @@ class InsightsPage extends Component {
     if (e.split(" ")[3] !== "undefined") {
       title = title + " " + e.split(" ")[3];
     }
-    // console.log("title", title);
+    console.log("title", title);
     this.setState(
       {
         riskType: title,
       },
       () => {
-        RiskTypeSelected({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          type: title,
-        });
-        this.updateTimer();
         let riskType = InsightType.getRiskNumber(this.state.riskType);
-        let insightList = this.props.intelligenceState.updatedInsightList;
+        let insightList = this.props.topAccountState.updatedInsightList;
 
         if (riskType !== 0) {
           insightList =
@@ -324,20 +272,7 @@ class InsightsPage extends Component {
       }
     );
   };
-  onClickDropdown = () => {
-    RiskTypeDropdownClicked({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
-  };
-  onHoverDropdown = () => {
-    RiskTypeHover({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
-  };
+
   render() {
     return (
       <>
@@ -354,7 +289,7 @@ class InsightsPage extends Component {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
-                updateTimer={this.updateTimer}
+                isPreviewing={true}
               />
             </div>
           </div>
@@ -375,7 +310,6 @@ class InsightsPage extends Component {
                 changeWalletList={this.handleChangeList}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 from="insights"
-                updateTimer={this.updateTimer}
               />
             )}
 
@@ -388,7 +322,6 @@ class InsightsPage extends Component {
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="insight-page"
-                updateTimer={this.updateTimer}
               />
             )}
 
@@ -401,7 +334,8 @@ class InsightsPage extends Component {
               // handleBtn={this.handleAddModal}
               ShareBtn={true}
               handleShare={this.handleShare}
-              // history={this.props.history}updateTimer={this.updateTimer}
+              // history={this.props.history}
+              topaccount={true}
             />
             <div style={{ position: "relative" }}>
               {
@@ -410,7 +344,6 @@ class InsightsPage extends Component {
                   {this.state.insightFilter?.map((filter, key) => {
                     return (
                       <div
-                        key={key}
                         id={key}
                         className={`filter ${
                           filter.value === this.state.selectedFilter
@@ -437,11 +370,7 @@ class InsightsPage extends Component {
                   This week
                 </h2>
 
-                <div
-                  style={{ display: "flex", alignItems: "center" }}
-                  onClick={this.onClickDropdown}
-                  onMouseEnter={this.onHoverDropdown}
-                >
+                <div style={{ display: "flex", alignItems: "center" }}>
                   <DropDown
                     class="cohort-dropdown"
                     list={[
@@ -512,10 +441,10 @@ class InsightsPage extends Component {
                       <div
                         style={{
                           // height:
-                          //   this.props.intelligenceState.updatedInsightList
+                          //   this.props.topAccountState.updatedInsightList
                           //     ?.length === 0
                           //     ? "35rem"
-                          //     : this.props.intelligenceState.updatedInsightList
+                          //     : this.props.topAccountState.updatedInsightList
                           //         ?.length === 1
                           //     ? "25rem"
                           //     : "16rem",
@@ -602,6 +531,9 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 
 const mapDispatchToProps = {
@@ -611,4 +543,4 @@ const mapDispatchToProps = {
   setPageFlagDefault,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(InsightsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(TopInsightsPage);

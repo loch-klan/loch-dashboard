@@ -51,8 +51,6 @@ import FormElement from "../../utils/form/FormElement";
 import CustomTextControl from "./../../utils/form/CustomTextControl";
 import { toast } from "react-toastify";
 import moment from "moment";
-import CohortIcon from "../../assets/images/icons/active-cohort.svg";
-import AuthModal from "../common/AuthModal";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import {
   NotificationAmount,
@@ -62,7 +60,6 @@ import {
   PodNickname,
   TimeSpentWhalePodPage,
   WhaleCreateAccountModal,
-  WhaleCreateAccountSkip,
   WhaleExpandAddressCopied,
   WhaleExpandAddressDelete,
   WhaleExpandAssetFilter,
@@ -126,7 +123,6 @@ class CohortPage extends BaseReactComponent {
       LargestSoldVolume: "",
       LargestBoughtVolume: "",
       notificationId: false,
-      RegisterModal: false,
       skip: false,
       userId: null,
 
@@ -265,63 +261,6 @@ class CohortPage extends BaseReactComponent {
     GetAssetFilter(data, this);
   };
 
-  AddEmailModal = () => {
-    // console.log("handle emailc close");
-    const isDummy = localStorage.getItem("lochDummyUser");
-    const islochUser = JSON.parse(localStorage.getItem("lochUser"));
-    if (islochUser || this.state.skip) {
-      this.setState({
-        RegisterModal: false,
-        email: islochUser?.email || "",
-        updateEmail: true,
-        isLochUser: islochUser,
-      });
-    } else {
-      this.setState({
-        RegisterModal: !this.state.RegisterModal,
-        // showBtn: false,
-        // updateEmail: false,
-      });
-
-      setTimeout(() => {
-        if (this.state.RegisterModal) {
-          WhalePopup({
-            session_id: getCurrentUser().id,
-          });
-          this.updateTimer();
-        }
-      }, 200);
-    }
-    if (this.state.RegisterModal) {
-      WhaleCreateAccountModal({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        pod_name: this.state.cohortName,
-      });
-      this.updateTimer();
-    }
-  };
-
-  handleSkip = () => {
-    // console.log("handle skip")
-    WhaleCreateAccountSkip({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      pod_name: this.state.cohortName,
-    });
-    this.updateTimer();
-    this.setState(
-      {
-        skip: true,
-      },
-      () => {
-        if (this.state.skip) {
-          this.AddEmailModal();
-        }
-      }
-    );
-  };
-
   handleCohort = () => {
     // console.log("cohort click");
     this.setState(
@@ -360,9 +299,6 @@ class CohortPage extends BaseReactComponent {
     this.getAssetFilter();
     GetAllPlan();
     getUser();
-    setTimeout(() => {
-      this.AddEmailModal();
-    }, 2000);
 
     let obj = UpgradeTriggered();
 
@@ -398,15 +334,17 @@ class CohortPage extends BaseReactComponent {
   endPageView = () => {
     clearInterval(window.checkWhalePodIndividualTimer);
     localStorage.removeItem("whalePodIndividualPageExpiryTime");
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000;
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000;
 
-    TimeSpentWhalePodPage({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      time_spent: TimeSpent,
-      pod_name: this.state.cohortName,
-    });
+      TimeSpentWhalePodPage({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_spent: TimeSpent,
+        pod_name: this.state.cohortName,
+      });
+    }
   };
   checkForInactivity = () => {
     const tempExpiryTime = localStorage.getItem(
@@ -553,18 +491,6 @@ class CohortPage extends BaseReactComponent {
       },
       () => {
         this.getAssetData(this.state.activeFooter);
-      }
-    );
-  };
-
-  handleUpdateEmail = () => {
-    this.setState(
-      {
-        // updateEmail: true,
-        showBtn: true,
-      },
-      () => {
-        this.AddEmailModal();
       }
     );
   };
@@ -889,24 +815,6 @@ class CohortPage extends BaseReactComponent {
               total_addresses={this.state.total_addresses}
               totalEditAddress={this.state.walletAddresses?.length}
               updateTimer={this.updateTimer}
-            />
-          ) : (
-            ""
-          )}
-          {this.state.RegisterModal ? (
-            <AuthModal
-              show={this.state.RegisterModal}
-              // link="http://loch.one/a2y1jh2jsja"
-              onHide={this.AddEmailModal}
-              history={this.props.history}
-              modalType={"create_account"}
-              iconImage={CohortIcon}
-              isSkip={() => this.handleSkip()}
-              hideSkip={this.state.showBtn ? true : false}
-              tracking="Whale watching"
-              // headerTitle={"Create a Wallet cohort"}
-              // changeWalletList={this.handleChangeList}
-              // apiResponse={(e) => this.CheckApiResponse(e)}
             />
           ) : (
             ""

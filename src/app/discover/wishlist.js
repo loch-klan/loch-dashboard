@@ -30,16 +30,12 @@ import {
   BASE_URL_S3,
   SORT_BY_ACCOUNT,
   SORT_BY_NETWORTH,
-  SORT_BY_NETFLOWS,
   SORT_BY_LARGEST_BOUGHT,
   SORT_BY_LARGEST_SOLD,
   SORT_BY_TAG_NAME,
+  SORT_BY_NET_FLOW,
 } from "../../utils/Constant";
-import {
-  searchTransactionApi,
-  getFilters,
-  getTransactionAsset,
-} from "../intelligence/Api";
+import { searchTransactionApi, getFilters, getTransactionAsset } from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
 import {
@@ -59,7 +55,7 @@ import {
   numToCurrency,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
 
@@ -69,7 +65,7 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getTopAccounts } from "./Api";
@@ -77,6 +73,7 @@ import DropDown from "../common/DropDown";
 import CheckboxCustomTable from "../common/customCheckboxTable";
 import RemarkInput from "./remarkInput";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { WatchlistShare } from "../../utils/AnalyticsFunctions";
 
 class WishListPage extends BaseReactComponent {
   constructor(props) {
@@ -144,6 +141,8 @@ class WishListPage extends BaseReactComponent {
   };
 
   componentDidMount() {
+    resetPreviewAddress();
+    this.props?.TopsetPageFlagDefault();
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -264,7 +263,7 @@ class WishListPage extends BaseReactComponent {
         } else if (val === "remark") {
           obj = [
             {
-              key: SORT_BY_NETFLOWS,
+              key: SORT_BY_NET_FLOW,
               value: !el.up,
             },
           ];
@@ -319,6 +318,25 @@ class WishListPage extends BaseReactComponent {
     // console.log("api respinse", value);
   };
 
+  handleShare = () => {
+    let lochUser = getCurrentUser().id;
+    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
+    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink = BASE_URL_S3 + "app-feature?redirect=watchlist";
+    navigator.clipboard.writeText(shareLink);
+    toast.success("Link copied");
+
+   WatchlistShare({
+     session_id: getCurrentUser().id,
+     email_address: getCurrentUser().email,
+   });
+    // console.log("share pod", shareLink);
+  };
+
   render() {
     // console.log("value", this.state.methodFilter);
 
@@ -358,7 +376,7 @@ class WishListPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              To Analyze
+              To analyze
             </span>
             <Image
               src={sortByIcon}
@@ -465,6 +483,7 @@ class WishListPage extends BaseReactComponent {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
+                hideButton={true}
               />
             </div>
           </div>
@@ -504,10 +523,11 @@ class WishListPage extends BaseReactComponent {
               // showpath={true}
               // currentPage={"transaction-history"}
               history={this.props.history}
+              topaccount={true}
+              ShareBtn={true}
+              handleShare={this.handleShare}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // ShareBtn={true}
-              // handleShare={this.handleShare}
             />
 
             <div className="fillter_tabs_section">
@@ -606,6 +626,7 @@ const mapDispatchToProps = {
   getAllCoins,
   getFilters,
   setPageFlagDefault,
+  TopsetPageFlagDefault,
 };
 
 WishListPage.propTypes = {};

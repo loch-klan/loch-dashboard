@@ -613,8 +613,8 @@ class FixAddModal extends BaseReactComponent {
             // );
             if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
               walletList.push(curr);
-              arr.push(curr.address.trim());
-              nicknameArr[curr.address.trim()] = curr.nickname;
+              arr.push(curr.address?.trim());
+              nicknameArr[curr.address?.trim()] = curr.nickname;
               arr.push(curr.displayAddress?.trim());
               arr.push(curr.apiAddress?.trim());
               addressList.push(curr.address?.trim());
@@ -892,10 +892,10 @@ class FixAddModal extends BaseReactComponent {
       let nicknameArr = {};
       for (let i = 0; i < localArr.length; i++) {
         let curr = localArr[i];
-        if (!newArr.includes(curr.address.trim())) {
+        if (!newArr.includes(curr.address?.trim())) {
           walletList.push(curr);
-          newArr.push(curr.address.trim());
-          nicknameArr[curr.address.trim()] = curr.nickname;
+          newArr.push(curr.address?.trim());
+          nicknameArr[curr.address?.trim()] = curr.nickname;
         }
       }
       walletList?.map((w, index) => (w.id = `wallet${index + 1}`));

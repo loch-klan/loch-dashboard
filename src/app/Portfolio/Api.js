@@ -14,6 +14,13 @@ import { getAllCounterFeeApi } from "../cost/Api";
 import { getAllInsightsApi, getProfitAndLossApi } from "../intelligence/Api";
 import { GetAllPlan, getUser } from "../common/Api";
 import { GET_DEFI_DATA } from "../defi/ActionTypes";
+import {
+  TOP_DEFAULT_VALUES,
+  TOP_EXTERNAL_EVENTS,
+  TOP_GET_DEFI_DATA,
+  TOP_USER_WALLET_LIST,
+  TOP_YESTERDAY_BALANCE,
+} from "../topAccount/ActionTypes";
 
 export const getCoinRate = () => {
   return async function (dispatch, getState) {
@@ -81,7 +88,9 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
         // }
 
         dispatch({
-          type: USER_WALLET_LIST,
+          type: ctx?.state?.isTopAccountPage
+            ? TOP_USER_WALLET_LIST
+            : USER_WALLET_LIST,
           payload: {
             address: wallet.address,
             userWalletList: userWalletList,
@@ -142,7 +151,9 @@ export const getExchangeBalance = (exchangeName, ctx) => {
         // );
         // isRefresh && ctx.getCurrentTime();
         dispatch({
-          type: USER_WALLET_LIST,
+          type: ctx?.state?.isTopAccountPage
+            ? TOP_USER_WALLET_LIST
+            : USER_WALLET_LIST,
           payload: {
             address: exchangeName,
             userWalletList: userWalletList,
@@ -192,7 +203,9 @@ export const getExchangeBalances = (ctx, isRefresh = false) => {
         userWalletList?.map((item, i) => {
           setTimeout(() => {
             dispatch({
-              type: USER_WALLET_LIST,
+              type: ctx?.state?.isTopAccountPage
+                ? TOP_USER_WALLET_LIST
+                : USER_WALLET_LIST,
               payload: {
                 address: item.protocol.name,
                 userWalletList: item,
@@ -220,10 +233,10 @@ export const getExchangeBalances = (ctx, isRefresh = false) => {
   };
 };
 
-export const settingDefaultValues = (wallet) => {
+export const settingDefaultValues = (ctx) => {
   return function (dispatch, getState) {
     dispatch({
-      type: DEFAULT_VALUES,
+      type: ctx?.state?.isTopAccountPage ? TOP_DEFAULT_VALUES : DEFAULT_VALUES,
     });
   };
 };
@@ -359,7 +372,7 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
     postLoginInstance
       .post("wallet/user-wallet/get-asset-value-graph", data)
       .then((res) => {
-        // console.log("all data", res);
+        //  console.log("all data", res, ActionType);
         if (!res.data.error) {
           dispatch({
             type: ActionType,
@@ -400,7 +413,9 @@ export const getExternalEventsApi = (ctx) => {
         // console.log("res", res);
         if (!res.data.error) {
           dispatch({
-            type: EXTERNAL_EVENTS,
+            type: ctx?.state?.isTopAccountPage
+              ? TOP_EXTERNAL_EVENTS
+              : EXTERNAL_EVENTS,
             payload: {
               externalEvents: res.data.data.events,
             },
@@ -420,14 +435,24 @@ export const getExternalEventsApi = (ctx) => {
 
 export const getYesterdaysBalanceApi = (ctx) => {
   return async function (dispatch, getState) {
+    let data = new URLSearchParams();
+    if (ctx?.state?.isTopAccountPage) {
+      let addressObj = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
+      let address = addressObj?.map((e) => e?.address);
+      data.append("wallet_address", JSON.stringify(address));
+    }
     postLoginInstance
-      .post("wallet/user-wallet/get-yesterday-portfolio-balance")
+      .post("wallet/user-wallet/get-yesterday-portfolio-balance", data)
       .then((res) => {
         if (!res.data.error) {
           let currency = JSON.parse(localStorage.getItem("currency"));
           let balance = res.data.data.balance * currency?.rate;
           dispatch({
-            type: YESTERDAY_BALANCE,
+            type: ctx?.state?.isTopAccountPage
+              ? TOP_YESTERDAY_BALANCE
+              : YESTERDAY_BALANCE,
             payload: { balance },
           });
 
@@ -621,7 +646,9 @@ export const getProtocolBalanceApi = (ctx, data) => {
 
           setTimeout(() => {
             dispatch({
-              type: GET_DEFI_DATA,
+              type: ctx?.state?.isTopAccountPage
+                ? TOP_GET_DEFI_DATA
+                : GET_DEFI_DATA,
               payload: {
                 totalYield: totalY,
                 totalDebt: totalD,

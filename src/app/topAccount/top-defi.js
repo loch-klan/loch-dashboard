@@ -2,13 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Loading from "../common/Loading";
 import { getAllCoins } from "../onboarding/Api.js";
-// add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import PageHeader from "../common/PageHeader";
 import FixAddModal from "../common/FixAddModal";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import { getProtocolBalanceApi } from "../Portfolio/Api";
-import { updateDefiData } from "./Api";
+import { updateDefiData } from "../defi/Api";
 import {
   amountFormat,
   CurrencyType,
@@ -16,23 +15,17 @@ import {
 } from "../../utils/ReusableFunctions";
 import { Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import Coin2 from "../../assets/images/icons/temp-coin1.svg";
-import Coin3 from "../../assets/images/icons/temp-coin-2.svg";
 import { AssetType } from "../../utils/Constant";
 import UpgradeModal from "../common/upgradeModal";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
-  DefiCredit,
-  DefiDebt,
-  DefiSortByAmount,
-  DefiSortByName,
-  PageviewDefi,
-  TimeSpentDefi,
+  PageviewTopDefi,
+  TimeSpentTopDefi,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
-class Defi extends Component {
+class TopDefi extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,12 +48,15 @@ class Defi extends Component {
 
       upgradeModal: false,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")) || "Free",
-
-      // defi
+      triggerId: 0,
 
       isYeildToggle: false,
       isDebtToggle: false,
+      upgradeModal: false,
       triggerId: 6,
+
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
 
       // time spent
       startTime: "",
@@ -84,12 +80,6 @@ class Defi extends Component {
       isYeildToggle: !this.state.isYeildToggle,
       // isDebtToggle: false,
     });
-
-    DefiCredit({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
   };
 
   toggleDebt = () => {
@@ -97,60 +87,41 @@ class Defi extends Component {
       isDebtToggle: !this.state.isDebtToggle,
       // isYeildToggle: false,
     });
-
-    DefiDebt({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
   };
 
   startPageView = () => {
-    // Inactivity Check
-    window.checkDefiTimer = setInterval(() => {
-      this.checkForInactivity();
-    }, 900000);
     this.setState({ startTime: new Date() * 1 });
-    PageviewDefi({
+    PageviewTopDefi({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
+    // Inactivity Check
+    window.checkTopDefiTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
   };
   componentDidMount() {
-    // if (this.state.userPlan?.defi_enabled) {
-    //   this.props.getAllCoins();
-    //   // getAllProtocol(this);
-    //   this.getYieldBalance();
-    // } else {
-    //   this.handleReset();
-    //   this.upgradeModal();
-    // }
-
-    this.props.getAllCoins();
-
     this.startPageView();
     this.updateTimer(true);
-
-    return () => {
-      clearInterval(window.checkDefiTimer);
-    };
+    this.props.getAllCoins();
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem("defiPageExpiryTime");
+    const tempExistingExpiryTime = localStorage.getItem(
+      "topDefiPageExpiryTime"
+    );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("defiPageExpiryTime", tempExpiryTime);
+    localStorage.setItem("topDefiPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
-    clearInterval(window.checkDefiTimer);
-    localStorage.removeItem("defiPageExpiryTime");
+    clearInterval(window.checkTopDefiTimer);
+    localStorage.removeItem("topDefiPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-
-      TimeSpentDefi({
+      TimeSpentTopDefi({
         time_spent: TimeSpent,
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
@@ -158,33 +129,35 @@ class Defi extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("defiPageExpiryTime");
+    const tempExpiryTime = localStorage.getItem("topDefiPageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("defiPageExpiryTime");
+    const tempExpiryTime = localStorage.getItem("topDefiPageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
   }
-
   componentDidUpdate(prevProps, prevState) {
     // add wallet
-    if (!this.props.commonState.defi) {
-      this.props.updateDefiData({
-        totalYield: 0,
-        totalDebt: 0,
-        cardList: [],
-        sortedList: [],
-        DebtValues: [],
-        YieldValues: [],
-        BalanceSheetValue: {},
-      });
+    if (!this.props.commonState.top_defi) {
+      this.props.updateDefiData(
+        {
+          totalYield: 0,
+          totalDebt: 0,
+          cardList: [],
+          sortedList: [],
+          DebtValues: [],
+          YieldValues: [],
+          BalanceSheetValue: {},
+        },
+        this
+      );
 
       // set defi page to true
-      this.props.updateWalletListFlag("defi", true);
+      this.props.updateWalletListFlag("top_defi", true);
       this.setState(
         {
           isYeildToggle: false,
@@ -214,7 +187,7 @@ class Defi extends Component {
     }
   }
   sortArray = (key, order) => {
-    let array = this.props.defiState?.cardList; //all data
+    let array = this.props.topAccountState?.cardList; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -242,7 +215,7 @@ class Defi extends Component {
     //   sortedList,
     // });
     // update fun
-    this.props.updateDefiData({ sortedList });
+    this.props.updateDefiData({ sortedList }, this);
   };
 
   handleSort = (e) => {
@@ -263,11 +236,10 @@ class Defi extends Component {
       this.setState({
         sortBy: sort,
       });
-      DefiSortByAmount({
-        email_address: getCurrentUser().email,
-        session_id: getCurrentUser().id,
-      });
-      this.updateTimer();
+      //   WhaleSortByAmt({
+      //     email_address: getCurrentUser().email,
+      //     session_id: getCurrentUser().id,
+      //   });
     } else if (e.title === "Date added") {
       this.sortArray("created_on", isDown);
       this.setState({
@@ -282,16 +254,17 @@ class Defi extends Component {
       this.setState({
         sortBy: sort,
       });
-      DefiSortByName({
-        email_address: getCurrentUser().email,
-        session_id: getCurrentUser().id,
-      });
-      this.updateTimer();
+      //   WhaleSortByName({
+      //     email_address: getCurrentUser().email,
+      //     session_id: getCurrentUser().id,
+      //   });
     }
   };
 
   getYieldBalance = () => {
-    let UserWallet = JSON.parse(localStorage.getItem("addWallet"));
+    let UserWallet = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
     if (UserWallet.length !== 0) {
       UserWallet?.map((e) => {
         let data = new URLSearchParams();
@@ -344,7 +317,10 @@ class Defi extends Component {
     //   DebtValues,
     // });
     // update data
-    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues });
+    this.props.updateDefiData(
+      { sortedList: "", YieldValues, DebtValues },
+      this
+    );
   };
   // For add new address
   handleAddModal = () => {
@@ -370,24 +346,6 @@ class Defi extends Component {
   };
 
   render() {
-    // console.log("nav list", nav_list, PageName);
-    const chips = [
-      {
-        chain: {
-          symbol: Coin2,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-      {
-        chain: {
-          symbol: Coin3,
-          name: "Avalanche",
-          color: "#E84042",
-        },
-      },
-    ];
-
     return (
       <>
         {/* topbar */}
@@ -403,7 +361,7 @@ class Defi extends Component {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
-                updateTimer={this.updateTimer}
+                isPreviewing={true}
               />
             </div>
           </div>
@@ -424,10 +382,9 @@ class Defi extends Component {
                 changeWalletList={this.handleChangeList}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 from="defi"
-                updateTimer={this.updateTimer}
               />
             )}
-            {this.state.upgradeModal ? (
+            {this.state.upgradeModal && (
               <UpgradeModal
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
@@ -436,23 +393,26 @@ class Defi extends Component {
                 // isStatic={true}
                 triggerId={this.state.triggerId}
                 pname="defi"
-                updateTimer={this.updateTimer}
               />
-            ) : null}
+            )}
             <PageHeader
               title="Decentralized Finance"
               subTitle="Decipher all your DeFi data from one place"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              // showpath={true}
+              showpath={true}
               currentPage={"decentralized-finance"}
               // showData={totalWalletAmt}
               // isLoading={isLoading}
-              updateTimer={this.updateTimer}
             />
 
             {/* Balance sheet */}
-            <h2 className="inter-display-medium f-s-20 lh-24 m-t-40">
+            <h2
+              onClick={() => {
+                this.updateTimer();
+              }}
+              className="inter-display-medium f-s-20 lh-24 m-t-40"
+            >
               Balance sheet
             </h2>
             <div style={{}} className="balance-sheet-card">
@@ -482,9 +442,9 @@ class Defi extends Component {
                             style={{ marginRight: "0.8rem" }}
                           >
                             {CurrencyType(false)}
-                            {this.props.defiState.totalYield &&
+                            {this.props.topAccountState.totalYield &&
                               numToCurrency(
-                                this.props.defiState.totalYield *
+                                this.props.topAccountState.totalYield *
                                   (this.state.currency?.rate || 1)
                               )}
                           </span>
@@ -498,35 +458,38 @@ class Defi extends Component {
                           }
                         />
                       </div>
-                      {this.props.defiState.YieldValues?.length !== 0 &&
+                      {this.props.topAccountState.YieldValues?.length !== 0 &&
                         this.state.isYeildToggle &&
-                        this.props.defiState.YieldValues?.map((item, i) => {
-                          return (
-                            <div
-                              className="balance-sheet-list"
-                              style={
-                                i ===
-                                this.props.defiState.YieldValues?.length - 1
-                                  ? { paddingBottom: "0.3rem" }
-                                  : {}
-                              }
-                              key={`defiYEildValue-${i}`}
-                            >
-                              <span className="inter-display-medium f-s-16 lh-19">
-                                {item.name}
-                              </span>
-                              <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                {CurrencyType(false)}
-                                {amountFormat(
-                                  item.totalPrice.toFixed(2) *
-                                    (this.state.currency?.rate || 1),
-                                  "en-US",
-                                  "USD"
-                                )}
-                              </span>
-                            </div>
-                          );
-                        })}
+                        this.props.topAccountState.YieldValues?.map(
+                          (item, i) => {
+                            return (
+                              <div
+                                className="balance-sheet-list"
+                                style={
+                                  i ===
+                                  this.props.topAccountState.YieldValues
+                                    ?.length -
+                                    1
+                                    ? { paddingBottom: "0.3rem" }
+                                    : {}
+                                }
+                              >
+                                <span className="inter-display-medium f-s-16 lh-19">
+                                  {item.name}
+                                </span>
+                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                  {CurrencyType(false)}
+                                  {amountFormat(
+                                    item.totalPrice.toFixed(2) *
+                                      (this.state.currency?.rate || 1),
+                                    "en-US",
+                                    "USD"
+                                  )}
+                                </span>
+                              </div>
+                            );
+                          }
+                        )}
                     </Col>
                     <Col md={6}>
                       <div
@@ -550,9 +513,9 @@ class Defi extends Component {
                             style={{ marginRight: "0.8rem" }}
                           >
                             {CurrencyType(false)}
-                            {this.props.defiState.totalDebt &&
+                            {this.props.topAccountState.totalDebt &&
                               numToCurrency(
-                                this.props.defiState.totalDebt *
+                                this.props.topAccountState.totalDebt *
                                   (this.state.currency?.rate || 1)
                               )}
                           </span>
@@ -567,35 +530,38 @@ class Defi extends Component {
                         />
                       </div>
 
-                      {this.props.defiState.DebtValues?.length !== 0 &&
+                      {this.props.topAccountState.DebtValues?.length !== 0 &&
                         this.state.isDebtToggle &&
-                        this.props.defiState.DebtValues?.map((item, i) => {
-                          return (
-                            <div
-                              className="balance-sheet-list"
-                              style={
-                                i ===
-                                this.props.defiState.DebtValues?.length - 1
-                                  ? { paddingBottom: "0.3rem" }
-                                  : {}
-                              }
-                              key={`defiDebtValue-${i}`}
-                            >
-                              <span className="inter-display-medium f-s-16 lh-19">
-                                {item.name}
-                              </span>
-                              <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
-                                {CurrencyType(false)}
-                                {amountFormat(
-                                  item.totalPrice.toFixed(2) *
-                                    (this.state.currency?.rate || 1),
-                                  "en-US",
-                                  "USD"
-                                )}
-                              </span>
-                            </div>
-                          );
-                        })}
+                        this.props.topAccountState.DebtValues?.map(
+                          (item, i) => {
+                            return (
+                              <div
+                                className="balance-sheet-list"
+                                style={
+                                  i ===
+                                  this.props.topAccountState.DebtValues
+                                    ?.length -
+                                    1
+                                    ? { paddingBottom: "0.3rem" }
+                                    : {}
+                                }
+                              >
+                                <span className="inter-display-medium f-s-16 lh-19">
+                                  {item.name}
+                                </span>
+                                <span className="inter-display-medium f-s-15 lh-19 grey-233 balance-amt">
+                                  {CurrencyType(false)}
+                                  {amountFormat(
+                                    item.totalPrice.toFixed(2) *
+                                      (this.state.currency?.rate || 1),
+                                    "en-US",
+                                    "USD"
+                                  )}
+                                </span>
+                              </div>
+                            );
+                          }
+                        )}
                     </Col>
                   </Row>
 
@@ -635,18 +601,15 @@ class Defi extends Component {
 
             {/* start card */}
 
-            {this.props.defiState?.sortedList?.length !== 0 &&
-            this.props.defiState?.sortedList !== "" ? (
-              this.props.defiState?.sortedList?.map((card, index) => {
+            {this.props.topAccountState?.sortedList?.length !== 0 &&
+            this.props.topAccountState?.sortedList !== "" ? (
+              this.props.topAccountState?.sortedList?.map((card, index) => {
                 let tableRows = card?.row.sort(
                   (a, b) => b.usdValue - a.usdValue
                 );
 
                 return (
-                  <div
-                    key={`sortedList-${index}`}
-                    className="defi-card-wrapper"
-                  >
+                  <div className="defi-card-wrapper">
                     <div className="top-title-wrapper">
                       <div className="heading-image">
                         <Image src={card?.symbol} />
@@ -736,10 +699,7 @@ class Defi extends Component {
                     {tableRows &&
                       tableRows.map((item, i) => {
                         return (
-                          <Row
-                            key={`defiTableRows-${i}`}
-                            className="table-content-row"
-                          >
+                          <Row className="table-content-row">
                             <Col md={3}>
                               {/* <CoinChip
                     colorCode={"#E84042"}
@@ -752,7 +712,6 @@ class Defi extends Component {
                                   {item.assets?.map((e, i) => {
                                     return (
                                       <Image
-                                        key={`defiTableRowAsset-${i}`}
                                         src={e?.symbol}
                                         style={{
                                           zIndex: item.assets?.length - i,
@@ -834,7 +793,7 @@ class Defi extends Component {
                   </div>
                 );
               })
-            ) : this.props.defiState?.sortedList !== "" ? (
+            ) : this.props.topAccountState?.sortedList !== "" ? (
               // <Col md={12}>
               <div className="defi animation-wrapper">
                 <Loading />
@@ -860,6 +819,9 @@ class Defi extends Component {
 const mapStateToProps = (state) => ({
   defiState: state.DefiState,
   commonState: state.CommonState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
@@ -871,8 +833,8 @@ const mapDispatchToProps = {
   updateWalletListFlag,
   setPageFlagDefault,
 };
-Defi.propTypes = {
+TopDefi.propTypes = {
   // getPosts: PropTypes.func
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Defi);
+export default connect(mapStateToProps, mapDispatchToProps)(TopDefi);

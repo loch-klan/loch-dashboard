@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Image, Row, Col } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
-import TransactionTable from "./TransactionTable";
-import CoinChip from "../wallet/CoinChip";
+import TransactionTable from "../intelligence/TransactionTable";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
@@ -27,7 +26,7 @@ import {
   SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
 } from "../../utils/Constant";
-import { searchTransactionApi, getFilters } from "./Api";
+import { searchTransactionApi, getFilters } from "../intelligence/Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
 import {
@@ -46,29 +45,11 @@ import {
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
-  TimeSpentTransactionHistory,
-  TransactionHistoryAddress,
-  TransactionHistoryAssetFilter,
-  TransactionHistoryHideDust,
-  TransactionHistoryMethodFilter,
-  TransactionHistoryPageBack,
-  TransactionHistoryPageNext,
-  TransactionHistoryPageSearch,
-  TransactionHistoryPageView,
-  TransactionHistorySearch,
-  TransactionHistoryShare,
-  TransactionHistorySortAmount,
-  TransactionHistorySortAsset,
-  TransactionHistorySortDate,
-  TransactionHistorySortFrom,
-  TransactionHistorySortMethod,
-  TransactionHistorySortTo,
-  TransactionHistorySortUSDAmount,
-  TransactionHistorySortUSDFee,
-  TransactionHistoryYearFilter,
+  PageviewTopTransaction,
+  TimeSpentTopTransaction,
+  TopTransactionShare,
 } from "../../utils/AnalyticsFunctions";
 import Loading from "../common/Loading";
-import FeedbackForm from "../common/FeedbackForm";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { toast } from "react-toastify";
 import FixAddModal from "../common/FixAddModal";
@@ -79,14 +60,17 @@ import { getAllCoins } from "../onboarding/Api.js";
 import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { Buffer } from "buffer";
 
-class TransactionHistoryPage extends BaseReactComponent {
+class TopTransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
     super(props);
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-    const walletList = JSON.parse(localStorage.getItem("addWallet"));
+    const walletList = localStorage.getItem("previewAddress")
+      ? [JSON.parse(localStorage.getItem("previewAddress"))]
+      : [];
     const address = walletList?.map((wallet) => {
       return wallet.address;
     });
@@ -165,37 +149,29 @@ class TransactionHistoryPage extends BaseReactComponent {
       isStatic: false,
       triggerId: 0,
 
-      // start time for time spent on page
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
+      // time spent
       startTime: "",
-      isTimeSearchUsed: false,
-      isAssetSearchUsed: false,
-      isMethodSearchUsed: false,
     };
     this.delayTimer = 0;
   }
-  timeSearchIsUsed = () => {
-    this.setState({ isTimeSearchUsed: true });
-  };
-  assetSearchIsUsed = () => {
-    this.setState({ isAssetSearchUsed: true });
-  };
-  methodSearchIsUsed = () => {
-    this.setState({ isMethodSearchUsed: true });
-  };
+
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
   };
+
   startPageView = () => {
     this.setState({ startTime: new Date() * 1 });
-    TransactionHistoryPageView({
+    PageviewTopTransaction({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     // Inactivity Check
-    window.checkTransactionHistoryTimer = setInterval(() => {
+    window.checkTopTransactionHistoryTimer = setInterval(() => {
       this.checkForInactivity();
     }, 900000);
   };
@@ -209,7 +185,8 @@ class TransactionHistoryPage extends BaseReactComponent {
     // this.props.getCoinRate();
     GetAllPlan();
     getUser();
-
+    this.startPageView();
+    this.updateTimer(true);
     let obj = UpgradeTriggered();
 
     if (obj.trigger) {
@@ -223,39 +200,33 @@ class TransactionHistoryPage extends BaseReactComponent {
         }
       );
     }
-    this.startPageView();
-    this.updateTimer(true);
-
-    return () => {
-      clearInterval(window.checkTransactionHistoryTimer);
-    };
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime = localStorage.getItem(
-      "transactionHistoryPageExpiryTime"
+      "topTransactionHistoryPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("transactionHistoryPageExpiryTime", tempExpiryTime);
+    localStorage.setItem("topTransactionHistoryPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
-    clearInterval(window.checkTransactionHistoryTimer);
-    localStorage.removeItem("transactionHistoryPageExpiryTime");
+    clearInterval(window.checkTopTransactionHistoryTimer);
+    localStorage.removeItem("topTransactionHistoryPageExpiryTime");
     if (this.state.startTime) {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentTransactionHistory({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-  };
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentTopTransaction({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
   };
   checkForInactivity = () => {
     const tempExpiryTime = localStorage.getItem(
-      "transactionHistoryPageExpiryTime"
+      "topTransactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
@@ -263,7 +234,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   };
   componentWillUnmount() {
     const tempExpiryTime = localStorage.getItem(
-      "transactionHistoryPageExpiryTime"
+      "topTransactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime) {
       this.endPageView();
@@ -287,44 +258,16 @@ class TransactionHistoryPage extends BaseReactComponent {
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
 
-    // console.log("prev", prevPage,"cur", page)
-
     if (
       prevPage !== page ||
       prevState.condition !== this.state.condition ||
       prevState.sort !== this.state.sort
     ) {
-      // console.log("prev", prevPage, "cur", page);
       this.callApi(page);
-      if (prevPage !== page) {
-        if (prevPage - 1 === page) {
-          TransactionHistoryPageBack({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            page_no: page + 1,
-          });
-          this.updateTimer();
-        } else if (prevPage + 1 === page) {
-          TransactionHistoryPageNext({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            page_no: page + 1,
-          });
-          this.updateTimer();
-        } else {
-          TransactionHistoryPageSearch({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-            page_search: page + 1,
-          });
-          this.updateTimer();
-        }
-      }
     }
 
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
       const address = this.state.walletList?.map((wallet) => {
         return wallet.address;
       });
@@ -368,67 +311,44 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
 
     this.props.setPageFlagDefault();
-    // console.log("api respinse", value);
   };
 
-  onValidSubmit = () => {
-    // console.log("Sbmit")
-  };
+  onValidSubmit = () => {};
 
   addCondition = (key, value) => {
-    // console.log("key, value", key, value);
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
-      const tempIsTimeUsed = this.state.isTimeSearchUsed;
-      TransactionHistoryYearFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        year_filter: value === "allYear" ? "All years" : value,
-        isSearchUsed: tempIsTimeUsed,
-      });
-      this.updateTimer();
-      this.setState({ isTimeSearchUsed: false });
+      // TransactionHistoryYearFilter({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   year_filter: value == "allYear" ? "All years" : value,
+      // });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
-      // console.log("tes", this.props.intelligenceState.assetFilter);
       let assets = [];
-      // console.log("con", value !== "allAssets");
       Promise.all([
-        new Promise((resolve) => {
-          // console.log("abc");
+        () => {
           if (value !== "allAssets") {
-            console.log("test");
-            this.props.intelligenceState?.assetFilter?.map((e) => {
+            this.props.topAccountState?.assetFilter?.map((e) => {
               if (value?.includes(e.value)) {
                 assets.push(e.label);
               }
             });
           }
-          resolve(); // Resolve the promise once the code execution is finished
-        }),
+        },
       ]).then(() => {
-        // console.log("asset arr", assets, value);
-        const tempIsAssetUsed = this.state.isAssetSearchUsed;
-        TransactionHistoryAssetFilter({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          asset_filter: value === "allAssets" ? "All assets" : assets,
-          isSearchUsed: tempIsAssetUsed,
-        });
-        this.updateTimer();
-        this.setState({ isAssetSearchUsed: false });
+        // TransactionHistoryAssetFilter({
+        //   session_id: getCurrentUser().id,
+        //   email_address: getCurrentUser().email,
+        //   asset_filter: value == "allAssets" ? "All assets" : assets,
+        // });
       });
     } else if (key === "SEARCH_BY_METHOD_IN") {
-      const tempIsMethodUsed = this.state.isMethodSearchUsed;
-      TransactionHistoryMethodFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        method_filter: value === "allMethod" ? "All method" : value,
-        isSearchUsed: tempIsMethodUsed,
-      });
-      this.updateTimer();
-      this.setState({ isMethodSearchUsed: false });
+      // TransactionHistoryMethodFilter({
+      //   session_id: getCurrentUser().id,
+      //   email_address: getCurrentUser().email,
+      //   method_filter: value == "allMethod" ? "All method" : value,
+      // });
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
-    // console.log("index", index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -439,19 +359,16 @@ class TransactionHistoryPage extends BaseReactComponent {
       value !== "allMethod" &&
       value !== "allYear"
     ) {
-      // console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
       value === "allYear"
     ) {
-      // console.log("second if", index);
       if (index !== -1) {
         arr.splice(index, 1);
       }
     } else {
-      // console.log("else", index);
       let obj = {};
       obj = {
         key: key,
@@ -476,17 +393,15 @@ class TransactionHistoryPage extends BaseReactComponent {
     clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
       this.addCondition(SEARCH_BY_TEXT, this.state.search);
-      TransactionHistorySearch({
-        session_id: getCurrentUser().id,
-        email: getCurrentUser().email,
-        searched: this.state.search,
-      });
-      this.updateTimer();
+      // TransactionHistorySearch({
+      //   session_id: getCurrentUser().id,
+      //   email: getCurrentUser().email,
+      //   searched: this.state.search,
+      // });
       // this.callApi(this.state.currentPage || START_INDEX, condition)
     }, 1000);
   };
   handleTableSort = (val) => {
-    // console.log(val)
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -499,11 +414,10 @@ class TransactionHistoryPage extends BaseReactComponent {
             },
           ];
 
-          TransactionHistorySortDate({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
+          // TransactionHistorySortDate({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "from") {
           obj = [
             {
@@ -511,11 +425,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortFrom({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
+          // TransactionHistorySortFrom({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "to") {
           obj = [
             {
@@ -523,11 +436,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortTo({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
+          // TransactionHistorySortTo({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "asset") {
           obj = [
             {
@@ -535,11 +447,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortAsset({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
+          // TransactionHistorySortAsset({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "amount") {
           obj = [
             {
@@ -547,11 +458,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortAmount({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
+          // TransactionHistorySortAmount({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "usdThen") {
           obj = [
             {
@@ -559,11 +469,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortUSDAmount({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
+          // TransactionHistorySortUSDAmount({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "usdTransaction") {
           obj = [
             {
@@ -571,11 +480,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortUSDFee({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
+          // TransactionHistorySortUSDFee({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         } else if (val === "method") {
           obj = [
             {
@@ -583,11 +491,10 @@ class TransactionHistoryPage extends BaseReactComponent {
               value: !el.up,
             },
           ];
-          TransactionHistorySortMethod({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-          this.updateTimer();
+          // TransactionHistorySortMethod({
+          //   session_id: getCurrentUser().id,
+          //   email_address: getCurrentUser().email,
+          // });
         }
         el.up = !el.up;
       } else {
@@ -607,11 +514,8 @@ class TransactionHistoryPage extends BaseReactComponent {
       .writeText(text)
       .then(() => {
         toast.success("Copied");
-        // console.log("successfully copied");
       })
-      .catch(() => {
-        console.log("something went wrong");
-      });
+      .catch(() => {});
     // toggleCopied(true)
   };
 
@@ -628,52 +532,44 @@ class TransactionHistoryPage extends BaseReactComponent {
         showDust: !this.state.showDust,
       },
       () => {
-        TransactionHistoryHideDust({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-        });
-        this.updateTimer();
+        // TransactionHistoryHideDust({
+        //   session_id: getCurrentUser().id,
+        //   email_address: getCurrentUser().email,
+        // });
         this.addCondition(SEARCH_BY_NOT_DUST, this.state.showDust);
       }
     );
   };
 
   handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = Buffer.from(previewAddress?.address).toString(
+      "base64"
+    );
+
     let shareLink =
       BASE_URL_S3 +
-      "home/" +
-      slink +
-      "?redirect=intelligence/transaction-history";
+      `top-account/${encodedAddress}?redirect=intelligence/transaction-history`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
-    TransactionHistoryShare({
+    TopTransactionShare({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     this.updateTimer();
-
-    // console.log("share pod", shareLink);
   };
 
   render() {
-    // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
-      this.props.intelligenceState;
+      this.props.topAccountState;
     const { walletList, currency } = this.state;
     let tableData =
       table &&
       table?.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        // console.log("row",row)
         walletList &&
           walletList?.map((wallet) => {
             if (
@@ -754,7 +650,6 @@ class TransactionHistoryPage extends BaseReactComponent {
           method: row.method,
         };
       });
-    // console.log('tableData',tableData);
     const columnList = [
       {
         labelName: (
@@ -858,16 +753,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                       }
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     />
                     <Image
@@ -886,16 +779,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                         src={rowData.from.wallet_metaData.symbol}
                         className="history-table-icon"
                         onMouseEnter={() => {
-                          // console.log("address", rowData.from.metaData);
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.from.address,
-                            display_name: rowData.from.wallet_metaData?.text
-                              ? rowData.from.wallet_metaData?.text
-                              : rowData.from.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
+                          // TransactionHistoryAddress({
+                          //   session_id: getCurrentUser().id,
+                          //   email_address: getCurrentUser().email,
+                          //   address_hovered: rowData.from.address,
+                          //   display_name: rowData.from.wallet_metaData?.text
+                          //     ? rowData.from.wallet_metaData?.text
+                          //     : rowData.from.metaData?.displayAddress,
+                          // });
                         }}
                       />
                       <Image
@@ -908,16 +799,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                   ) : rowData.from.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {this.TruncateText(rowData.from.metaData?.nickname)}
@@ -931,16 +820,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {this.TruncateText(rowData.from.wallet_metaData.text)}
@@ -955,16 +842,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                 ) : rowData.from.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
-                      // console.log("address", rowData.from.metaData);
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.from.address,
-                        display_name: rowData.from.wallet_metaData?.text
-                          ? rowData.from.wallet_metaData?.text
-                          : rowData.from.metaData?.displayAddress,
-                      });
-                      this.updateTimer();
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.from.address,
+                      //   display_name: rowData.from.wallet_metaData?.text
+                      //     ? rowData.from.wallet_metaData?.text
+                      //     : rowData.from.metaData?.displayAddress,
+                      // });
                     }}
                   >
                     {this.TruncateText(rowData.from.metaData?.displayAddress)}
@@ -981,16 +866,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={unrecognizedIcon}
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.from.address,
-                          display_name: rowData.from.wallet_metaData?.text
-                            ? rowData.from.wallet_metaData?.text
-                            : rowData.from.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.from.address,
+                        //   display_name: rowData.from.wallet_metaData?.text
+                        //     ? rowData.from.wallet_metaData?.text
+                        //     : rowData.from.metaData?.displayAddress,
+                        // });
                       }}
                     />
                     <Image
@@ -1029,7 +912,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
-          // console.log('rowData',rowData);
           if (dataKey === "to") {
             return (
               <CustomOverlay
@@ -1081,15 +963,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                       }
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     />
                     <Image
@@ -1108,15 +989,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                         src={rowData.to.wallet_metaData.symbol}
                         className="history-table-icon"
                         onMouseEnter={() => {
-                          TransactionHistoryAddress({
-                            session_id: getCurrentUser().id,
-                            email_address: getCurrentUser().email,
-                            address_hovered: rowData.to.address,
-                            display_name: rowData.to.wallet_metaData?.text
-                              ? rowData.to.wallet_metaData?.text
-                              : rowData.to.metaData?.displayAddress,
-                          });
-                          this.updateTimer();
+                          // TransactionHistoryAddress({
+                          //   session_id: getCurrentUser().id,
+                          //   email_address: getCurrentUser().email,
+                          //   address_hovered: rowData.to.address,
+                          //   display_name: rowData.to.wallet_metaData?.text
+                          //     ? rowData.to.wallet_metaData?.text
+                          //     : rowData.to.metaData?.displayAddress,
+                          // });
                         }}
                       />
                       <Image
@@ -1129,15 +1009,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                   ) : rowData.to.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {this.TruncateText(rowData.to.metaData?.nickname)}
@@ -1151,15 +1030,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     >
                       {this.TruncateText(rowData.to.wallet_metaData.text)}
@@ -1174,15 +1052,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                 ) : rowData.to.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
-                      TransactionHistoryAddress({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        address_hovered: rowData.to.address,
-                        display_name: rowData.to.wallet_metaData?.text
-                          ? rowData.to.wallet_metaData?.text
-                          : rowData.to.metaData?.displayAddress,
-                      });
-                      this.updateTimer();
+                      // TransactionHistoryAddress({
+                      //   session_id: getCurrentUser().id,
+                      //   email_address: getCurrentUser().email,
+                      //   address_hovered: rowData.to.address,
+                      //   display_name: rowData.to.wallet_metaData?.text
+                      //     ? rowData.to.wallet_metaData?.text
+                      //     : rowData.to.metaData?.displayAddress,
+                      // });
                     }}
                   >
                     {this.TruncateText(rowData.to.metaData?.displayAddress)}
@@ -1199,15 +1076,14 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={unrecognizedIcon}
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        TransactionHistoryAddress({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                          address_hovered: rowData.to.address,
-                          display_name: rowData.to.wallet_metaData?.text
-                            ? rowData.to.wallet_metaData?.text
-                            : rowData.to.metaData?.displayAddress,
-                        });
-                        this.updateTimer();
+                        // TransactionHistoryAddress({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        //   address_hovered: rowData.to.address,
+                        //   display_name: rowData.to.wallet_metaData?.text
+                        //     ? rowData.to.wallet_metaData?.text
+                        //     : rowData.to.metaData?.displayAddress,
+                        // });
                       }}
                     />
                     <Image
@@ -1289,7 +1165,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "amount") {
-            // console.log(value)
             // return rowData.amount.value?.toFixed(2)
             return (
               <CustomOverlay
@@ -1320,7 +1195,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
               true
-            )} amount (then)`}</span>
+            )} Amount (Then)`}</span>
             <Image
               src={sortByIcon}
               className={
@@ -1353,8 +1228,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                   currency?.rate;
               }
             });
-            // console.log('valueToday',valueToday);
-            // console.log('valueThen',valueThen);
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <CustomOverlay
@@ -1395,7 +1268,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">{`${CurrencyType(
               true
-            )} fee (then)`}</span>
+            )} Fee (Then)`}</span>
             <Image
               src={sortByIcon}
               className={
@@ -1410,14 +1283,12 @@ class TransactionHistoryPage extends BaseReactComponent {
         coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
-          // console.log(rowData)
           if (dataKey === "usdTransactionFee") {
             let chain = Object.entries(assetPriceList);
             let valueToday;
             let valueThen;
             chain.find((chain) => {
               if (chain[0] === rowData.usdTransactionFee.id) {
-                // console.log('chain',chain);
                 valueToday =
                   rowData.usdTransactionFee.value *
                     chain[1].quote.USD.price *
@@ -1514,8 +1385,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                 // history
                 history={this.props.history}
                 // add wallet address modal
-                updateTimer={this.updateTimer}
                 handleAddModal={this.handleAddModal}
+                isPreviewing={true}
               />
             </div>
           </div>
@@ -1535,7 +1406,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                 history={this.props.history}
                 changeWalletList={this.handleChangeList}
                 apiResponse={(e) => this.CheckApiResponse(e)}
-                updateTimer={this.updateTimer}
                 from="transaction history"
               />
             )}
@@ -1548,7 +1418,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"
-                updateTimer={this.updateTimer}
               />
             )}
             <PageHeader
@@ -1559,11 +1428,11 @@ class TransactionHistoryPage extends BaseReactComponent {
               showpath={true}
               currentPage={"transaction-history"}
               history={this.props.history}
+              topaccount={true}
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               ShareBtn={true}
               handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
             />
 
             <div className="fillter_tabs_section">
@@ -1572,34 +1441,31 @@ class TransactionHistoryPage extends BaseReactComponent {
                   <Col md={3}>
                     <CustomDropdown
                       filtername="All years"
-                      options={this.props.intelligenceState.yearFilter}
+                      options={this.props.topAccountState.yearFilter}
                       action={SEARCH_BY_TIMESTAMP_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
-                      searchIsUsed={this.timeSearchIsUsed}
                     />
                   </Col>
                   <Col md={3}>
                     <CustomDropdown
                       filtername="All assets"
-                      options={this.props.intelligenceState.assetFilter}
+                      options={this.props.topAccountState.assetFilter}
                       action={SEARCH_BY_ASSETS_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
-                      searchIsUsed={this.assetSearchIsUsed}
                     />
                   </Col>
                   <Col md={3}>
                     <CustomDropdown
                       filtername="All methods"
-                      options={this.props.intelligenceState.methodFilter}
+                      options={this.props.topAccountState.methodFilter}
                       action={SEARCH_BY_METHOD_IN}
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
-                      searchIsUsed={this.methodSearchIsUsed}
                     />
                   </Col>
                   {/* {fillter_tabs} */}
@@ -1668,6 +1534,9 @@ class TransactionHistoryPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
@@ -1677,8 +1546,8 @@ const mapDispatchToProps = {
   setPageFlagDefault,
 };
 
-TransactionHistoryPage.propTypes = {};
+TopTransactionHistoryPage.propTypes = {};
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TransactionHistoryPage);
+)(TopTransactionHistoryPage);

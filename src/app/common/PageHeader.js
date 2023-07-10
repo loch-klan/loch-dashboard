@@ -8,7 +8,6 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "./ConnectModal";
 import { useHistory } from "react-router-dom";
-import AuthModal from "./AuthModal";
 import {
   AssetValueExplainer,
   ConnectExPopup,
@@ -58,18 +57,25 @@ export default function PageHeader(props) {
   };
 
   const breads = nav_list.map((e, key) => {
-    // console.log(e , props.currentPage)
+    // console.log(e, props?.topaccount, key);
     return (
       e && (
-        <Breadcrumb.Item
-          linkAs={Link}
-          linkProps={{ to: `/${e}` }}
-          className="inter-display-medium f-s-13 lh-16"
-          active={e === props.currentPage}
-          key={key}
-        >
-          {e.replace(/-/g, " ")}
-        </Breadcrumb.Item>
+        <>
+          <Breadcrumb.Item
+            linkAs={Link}
+            linkProps={{
+              to:
+                props?.topaccount && key === 2
+                  ? `/${nav_list[1]}/${e}`
+                  : `/${e}`,
+            }}
+            className="inter-display-medium f-s-13 lh-16"
+            active={e === props.currentPage}
+            key={key}
+          >
+            {e.replace(/-/g, " ")}
+          </Breadcrumb.Item>
+        </>
       )
     );
   });
@@ -81,18 +87,16 @@ export default function PageHeader(props) {
       {breads}
     </Breadcrumb>
   );
-  const mouseHoverQuestion = () => {
-    AssetValueExplainer({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    if (props.updateTimer) {
-      props.updateTimer();
-    }
-  };
   return (
     <div
-      className={`m-b-40 page-header ${props.showpath ? "history-header" : ""}`}
+      className={`m-b-40 page-header ${
+        props.showpath || props?.topaccount ? "history-header" : ""
+      }`}
+      style={
+        props?.bottomPadding
+          ? { paddingBottom: props?.bottomPadding + "rem" }
+          : { padding: 0 }
+      }
     >
       {props.showpath ? breadCrumb : ""}
 
@@ -107,7 +111,6 @@ export default function PageHeader(props) {
               {props.multipleImg.map((e, i) => {
                 return (
                   <Image
-                    key={"phkey-" + i}
                     src={e}
                     style={{
                       zIndex: props.multipleImg?.length - i,
@@ -144,7 +147,15 @@ export default function PageHeader(props) {
                       src={InfoIcon}
                       className="info-icon"
                       style={{ width: "1.6rem", marginTop: "-3px" }}
-                      onMouseEnter={mouseHoverQuestion}
+                      onMouseEnter={() => {
+                        AssetValueExplainer({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                        if (props.updateTimer) {
+                          props.updateTimer();
+                        }
+                      }}
                     />
                   </CustomOverlay>
                 ) : (
@@ -212,7 +223,7 @@ export default function PageHeader(props) {
             className="view-more"
             onClick={props.handleClick}
           >
-            View More
+            View more
           </h3>
         )}
       </div>
@@ -228,23 +239,6 @@ export default function PageHeader(props) {
           handleUpdate={props?.handleUpdate}
           openPopup={handlePopup}
           tracking="wallet page"
-        />
-      ) : (
-        ""
-      )}
-
-      {popupModal ? (
-        <AuthModal
-          show={popupModal}
-          onHide={handlePopup}
-          history={history}
-          modalType={"create_account"}
-          iconImage={LinkIcon}
-          hideSkip={true}
-          title="Don’t lose your data"
-          description="Don’t let your hard work go to waste. Add your email so you can analyze your CeFi and DeFi portfolio together"
-          stopUpdate={true}
-          tracking="Wallet connect exchange"
         />
       ) : (
         ""
