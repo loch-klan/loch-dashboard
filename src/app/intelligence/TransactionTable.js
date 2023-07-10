@@ -1,63 +1,61 @@
-import React from "react";
+import React from 'react'
 
-import CustomTable from "./../../utils/commonComponent/CustomTable";
-import { GraphHeader } from "../common/GraphHeader";
-import ArrowRight from "../../assets/images/icons/ArrowRight.svg";
-import ActivePrevBtn from "../../assets/images/icons/ActivePrevBtn.svg";
-import ActiveNextBtn from "../../assets/images/icons/ActiveNextBtn.svg";
-import InactivePrevBtn from "../../assets/images/icons/InactivePrevBtn.svg";
-import transactionTableImage from "../../assets/images/transactionTableImage.png";
-import Loading from "../common/Loading";
-import { TransactionHistoryHover } from "../../utils/AnalyticsFunctions";
-import { getCurrentUser } from "../../utils/ManageToken";
+import CustomTable from './../../utils/commonComponent/CustomTable';
+import { GraphHeader } from '../common/GraphHeader'
+import ArrowRight from '../../assets/images/icons/ArrowRight.svg'
+import ActivePrevBtn from '../../assets/images/icons/ActivePrevBtn.svg'
+import ActiveNextBtn from '../../assets/images/icons/ActiveNextBtn.svg'
+import InactivePrevBtn from '../../assets/images/icons/InactivePrevBtn.svg'
+import transactionTableImage from "../../assets/images/transactionTableImage.png"
+import Loading from '../common/Loading';
+import { TransactionHistoryHover } from '../../utils/AnalyticsFunctions';
+import { getCurrentUser } from '../../utils/ManageToken';
 function TransactionTable(props) {
-  return (
-    <div className="transaction-table-section">
-      {props.title ? (
-        <GraphHeader
-          title={props.title}
-          subtitle={props.subTitle}
-          isArrow={props.isArrow}
-          handleClick={props.handleClick}
-          isAnalytics={
-            props?.isAnalytics ? props?.isAnalytics : "Transaction Table"
+    return (
+      <div className="transaction-table-section">
+        {props.title ? (
+          <GraphHeader
+            title={props.title}
+            subtitle={props.subTitle}
+            isArrow={props.isArrow}
+            handleClick={props.handleClick}
+            isAnalytics={props?.isAnalytics ? props?.isAnalytics : ""}
+            isGainLoss={props.isGainLoss}
+            ishideDust={props.ishideDust}
+            handleDust={props.handleDust}
+            totalPercentage={props.totalPercentage}
+            handleExchange={props.handleExchange}
+          />
+        ) : (
+          ""
+        )}
+        <CustomTable
+          className={`transaction-table ${props?.className} ${
+            props.comingSoon && "blur-effect"
+          }`}
+          tableData={props.tableData}
+          columnList={props.columnList}
+          headerHeight={props.headerHeight}
+          totalPage={props.totalPage}
+          history={props.history}
+          location={props.location}
+          currentPage={props.page}
+          pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
+          pageNext={
+            props.page === props.totalPage - 1 ? ActiveNextBtn : ActiveNextBtn
           }
-          isGainLoss={props.isGainLoss}
-          ishideDust={props.ishideDust}
-          handleDust={props.handleDust}
-          totalPercentage={props.totalPercentage}
-          handleExchange={props.handleExchange}
+          message={
+            props.title === "Average cost basis"
+              ? "No average cost basis found"
+              : props?.message
+              ? props?.message
+              : "No transactions found"
+          }
+          isLoading={props.isLoading}
+          // isStickyHead={props?.isStickyHead}
         />
-      ) : (
-        ""
-      )}
-      <CustomTable
-        className={`transaction-table ${props?.className} ${
-          props.comingSoon && "blur-effect"
-        }`}
-        tableData={props.tableData}
-        columnList={props.columnList}
-        headerHeight={props.headerHeight}
-        totalPage={props.totalPage}
-        history={props.history}
-        location={props.location}
-        currentPage={props.page}
-        pagePrev={props.page === 0 ? InactivePrevBtn : ActivePrevBtn}
-        pageNext={
-          props.page === props.totalPage - 1 ? ActiveNextBtn : ActiveNextBtn
-        }
-        message={
-          props.title === "Average cost basis"
-            ? "No average cost basis found"
-            : props?.message
-            ? props?.message
-            : "No transactions found"
-        }
-        isLoading={props.isLoading}
-        // isStickyHead={props?.isStickyHead}
-      />
-    </div>
-  );
+      </div>
+    );
 }
 
-export default TransactionTable;
+export default TransactionTable

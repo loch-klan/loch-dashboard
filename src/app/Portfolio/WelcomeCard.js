@@ -27,7 +27,8 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ExitOverlay from "../common/ExitOverlay";
-
+import EyeIcon from "../../assets/images/icons/eye.svg";
+import ChangeIcon from "../../assets/images/icons/change-icon.svg";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
   const [manageWallet, setManageWallet] = React.useState(true);
@@ -38,13 +39,8 @@ export default function WelcomeCard(props) {
   // const [addWallet, setAddWallet] = React.useState(true)
   // console.log(props)
   function handleAddWalletClick() {
-    props.handleAddModal();
+    props?.handleAddModal && props?.handleAddModal();
   }
-  function handleManageClick() {
-    // setManageWallet(!manageWallet);
-    props.handleManage();
-  }
-
   const history = useHistory();
 
   const handleSigninModal = () => {
@@ -54,9 +50,6 @@ export default function WelcomeCard(props) {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    if (props.updateTimer) {
-      props.updateTimer();
-    }
   };
 
   const handleSignUpModal = () => {
@@ -66,9 +59,6 @@ export default function WelcomeCard(props) {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    if (props.updateTimer) {
-      props.updateTimer();
-    }
   };
 
   const handleConnectModal = () => {
@@ -80,9 +70,6 @@ export default function WelcomeCard(props) {
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
         });
-        if (props.updateTimer) {
-          props.updateTimer();
-        }
       }
     }, 200);
   };
@@ -99,12 +86,17 @@ export default function WelcomeCard(props) {
             email_address: getCurrentUser().email,
             from: "Home connect exchange",
           });
-          if (props.updateTimer) {
-            props.updateTimer();
-          }
         }
       }, 200);
     }
+  };
+
+  const TruncateText = (string) => {
+    return (
+      string.substring(0, 3) +
+      "..." +
+      string.substring(string.length - 3, string.length)
+    );
   };
 
   let difference =
@@ -113,6 +105,7 @@ export default function WelcomeCard(props) {
       : 0;
   let percent =
     props?.assetTotal && ((difference / props?.assetTotal) * 100).toFixed(2);
+
   return (
     // <div className="welcome-card-section">
     //   <div className="welcome-card">
@@ -245,34 +238,87 @@ export default function WelcomeCard(props) {
             // transform: "translateX(-50%)",
           }}
         >
-          <div
-            className="topbar-btn"
-            style={{
-              marginRight: "1.7rem",
-              // marginLeft: "11rem"
-              width: "46%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            onClick={handleConnectModal}
-          >
-            <Image className="connect-exchange-img" src={LinkIconBtn} />
-            Connect exchange
-          </div>
-          <div
-            className="topbar-btn"
-            style={{
-              width: "46%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-            onClick={handleAddWalletClick}
-            ref={buttonRef}
-            id="address-button"
-          >
-            <Image src={AddWalletAddress} />
-            Add wallet address
-          </div>
+          {props?.isPreviewing ? (
+            <div
+              className="Preview-topbar-btn"
+              style={{
+                marginRight: "1.7rem",
+                // marginLeft: "11rem"
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+              // onClick={handleConnectModal}
+            >
+              <div className="account-detail">
+                <Image src={EyeIcon} />
+                <div>Previewing</div>
+                <div className="accounNameId">
+                  <span className="account-name grey-313">
+                    {TruncateText(
+                      JSON.parse(localStorage.getItem("previewAddress"))
+                        ?.address
+                    )}
+                  </span>
+                  {JSON.parse(localStorage.getItem("previewAddress"))
+                    ?.nameTag ? (
+                    <span className="grey-313">
+                      {" "}
+                      (
+                      {
+                        JSON.parse(localStorage.getItem("previewAddress"))
+                          ?.nameTag
+                      }
+                      )
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+              <div
+                className="account-detail-change cp change-text"
+                onClick={() => {
+                  props?.history.push("/top-accounts");
+                }}
+              >
+                <Image src={ChangeIcon} />
+                <span className="ml-2">Change</span>
+              </div>
+            </div>
+          ) : !props?.hideButton ? (
+            <>
+              <div
+                className="topbar-btn"
+                style={{
+                  marginRight: "1.7rem",
+                  // marginLeft: "11rem"
+                  width: "46%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                onClick={handleConnectModal}
+              >
+                <Image className="connect-exchange-img" src={LinkIconBtn} />
+                Connect exchange
+              </div>
+              <div
+                className="topbar-btn"
+                style={{
+                  width: "46%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                onClick={handleAddWalletClick}
+                ref={buttonRef}
+                id="address-button"
+              >
+                <Image src={AddWalletAddress} />
+                Add wallet address
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
         {props.showNetworth && (
           <div
@@ -377,22 +423,6 @@ export default function WelcomeCard(props) {
         ""
       )}
 
-      {popupModal ? (
-        <AuthModal
-          show={popupModal}
-          onHide={handlePopup}
-          history={history}
-          modalType={"create_account"}
-          iconImage={LinkIcon}
-          hideSkip={true}
-          title="Don’t lose your data"
-          description="Don’t let your hard work go to waste. Add your email so you can analyze your CeFi and DeFi portfolio together"
-          stopUpdate={true}
-          tracking="Home connect exchange"
-        />
-      ) : (
-        ""
-      )}
       {signinModal ? (
         <AuthModal
           show={signinModal}
@@ -418,9 +448,6 @@ export default function WelcomeCard(props) {
           modalType={"exitOverlay"}
           handleRedirection={() => {
             resetUser();
-            if (props.updateTimer) {
-              props.updateTimer();
-            }
             setTimeout(function () {
               props.history.push("/welcome");
             }, 3000);

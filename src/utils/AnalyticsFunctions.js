@@ -2672,11 +2672,43 @@ export const netflowExplainer2 = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const topNetflowExplainer1 = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: Intelligence:netflows: explainer1 closed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const topNetflowExplainer2 = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: Intelligence:netflows: explainer2 closed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 
 // Intelligence:netflows: time filter - done
 
 export const netflowTimeFilter = ({ session_id, email_address, selected }) => {
   const event_name = "Intelligence:netflows: time filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time filter selected": selected,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const topNetflowTimeFilter = ({
+  session_id,
+  email_address,
+  selected,
+}) => {
+  const event_name = "Top accounts: Intelligence:netflows: time filter";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -2703,6 +2735,21 @@ export const netflowChainFilter = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const topNetflowChainFilter = ({
+  session_id,
+  email_address,
+  selected,
+  isSearchUsed,
+}) => {
+  const event_name = "Top accounts: Intelligence:netflows: chain filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "chain selected": selected,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // Intelligence:netflows: assets filter - done
 
@@ -2721,6 +2768,21 @@ export const netflowAssetFilter = ({
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
+};
+export const topNetflowAssetFilter = ({
+  session_id,
+  email_address,
+  selected,
+  isSearchUsed,
+}) => {
+  const event_name = "Top accounts: Intelligence:netflows: assets filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset selected": selected,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 // Intelligence:netflows: inflows hover - done

@@ -12,6 +12,13 @@ import {
   PORTFOLIO_ASSET,
   TRANSACTION_FILTER,
 } from "./ActionTypes";
+import {
+  TOP_ALL_TRANSACTION_HISTORY_HOME,
+  TOP_INSIGHT_DATA,
+  TOP_NETFLOW_GRAPH,
+  TOP_PORTFOLIO_ASSET,
+  TOP_TRANSACTION_FILTER,
+} from "../topAccount/ActionTypes";
 
 export const searchTransactionApi = (data, ctx, page = 0) => {
   return function (dispatch, getState) {
@@ -22,11 +29,13 @@ export const searchTransactionApi = (data, ctx, page = 0) => {
         if (!res.data.error) {
           if (ctx.state.currentPage === "Home") {
             dispatch({
-              type: ALL_TRANSACTION_HISTORY_HOME,
+              type: ctx?.state?.isTopAccountPage
+                ? TOP_ALL_TRANSACTION_HISTORY_HOME
+                : ALL_TRANSACTION_HISTORY_HOME,
               payload: res.data.data,
             });
           } else {
-            dispatch(getAllTransactionHistory(res.data.data, page));
+            dispatch(getAllTransactionHistory(res.data.data, page, ctx));
           }
 
           if (ctx) {
@@ -47,6 +56,13 @@ export const searchTransactionApi = (data, ctx, page = 0) => {
 export const getFilters = (ctx) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
+    if (ctx?.state?.isTopAccountPage) {
+      let addressObj = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
+      let address = addressObj?.map((e) => e?.address);
+      data.append("wallet_address", JSON.stringify(address));
+    }
     postLoginInstance
       .post("wallet/transaction/get-transaction-filter", data)
       .then((res) => {
@@ -75,7 +91,9 @@ export const getFilters = (ctx) => {
           methodFilter.push(obj);
         });
         dispatch({
-          type: TRANSACTION_FILTER,
+          type: ctx?.state?.isTopAccountPage
+            ? TOP_TRANSACTION_FILTER
+            : TRANSACTION_FILTER,
           payload: {
             assetFilter,
             yearFilter,
@@ -116,13 +134,24 @@ export const getProfitAndLossApi = (
     if (selectedAsset && selectedAsset.length > 0) {
       data.append("asset_ids", JSON.stringify(selectedAsset));
     }
+
+    if (ctx?.state?.isTopAccountPage) {
+      let addressObj = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
+      let address = addressObj?.map((e) => e?.address);
+      // console.log("address", address);
+      data.append("wallet_address", JSON.stringify(address));
+    }
     postLoginInstance
       .post("wallet/transaction/get-profit-loss", data)
       .then((res) => {
         //   console.log("calling get profit and loss");
         if (!res.data.error) {
           dispatch({
-            type: NETFLOW_GRAPH,
+            type: ctx?.state?.isTopAccountPage
+              ? TOP_NETFLOW_GRAPH
+              : NETFLOW_GRAPH,
             payload: {
               GraphData: res.data.data.profit_loss,
               graphValue: getProfitAndLossData(res.data.data.profit_loss, ctx),
@@ -144,13 +173,22 @@ export const getAllInsightsApi = (ctx) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     data.append("currency_code", CurrencyType(true));
+    if (ctx?.state?.isTopAccountPage) {
+      let addressObj = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
+      let address = addressObj?.map((e) => e?.address);
+      data.append("wallet_address", JSON.stringify(address));
+    }
     postLoginInstance
       .post("wallet/user-wallet/get-wallet-insights", data)
       .then((res) => {
         if (!res.data.error) {
           // console.log("insights", res.data.data.insights);
           dispatch({
-            type: INSIGHT_DATA,
+            type: ctx?.state?.isTopAccountPage
+              ? TOP_INSIGHT_DATA
+              : INSIGHT_DATA,
             payload: {
               updatedInsightList: res.data.data.insights,
             },
@@ -204,13 +242,23 @@ export const getAssetProfitLoss = (
       data.append("asset_ids", JSON.stringify(selectedAsset));
     }
 
+    if (ctx?.state?.isTopAccountPage) {
+      let addressObj = localStorage.getItem("previewAddress")
+        ? [JSON.parse(localStorage.getItem("previewAddress"))]
+        : [];
+      let address = addressObj?.map((e) => e?.address);
+      data.append("wallet_address", JSON.stringify(address));
+    }
+
     postLoginInstance
       .post("wallet/transaction/get-asset-profit-loss", data)
       .then((res) => {
         if (!res.data.error) {
           //  console.log("get profit loss", res.data.data);
           dispatch({
-            type: PORTFOLIO_ASSET,
+            type: ctx?.state?.isTopAccountPage
+              ? TOP_PORTFOLIO_ASSET
+              : PORTFOLIO_ASSET,
             payload: {
               ProfitLossAsset: getProfitLossAsset(res.data.data?.profit_loss),
             },

@@ -25,6 +25,14 @@ import TopAccount from "./app/discover/topAccount";
 import twitterInfluencer from "./app/discover/twitterInfluencer";
 import wishlist from "./app/discover/wishlist";
 import appFeature from "./app/common/appFeature";
+import topHome from "./app/topAccount/top-home";
+import topIntelligence from "./app/topAccount/top-intelligence";
+import topTransactionHistory from "./app/topAccount/top-transaction-history";
+import topAssetValue from "./app/topAccount/top-asset-value";
+import topInsights from "./app/topAccount/top-insights";
+import topCosts from "./app/topAccount/top-costs";
+import topDefi from "./app/topAccount/top-defi";
+import topAccountShare from "./app/common/topAccountShare";
 const routes = [
   {
     path: "/",
@@ -122,6 +130,49 @@ const routes = [
     type: PrivateRoute,
     component: TopAccount,
   },
+
+  {
+    path: "/top-accounts/home",
+    name: "Top Account Portfolio",
+    type: PrivateRoute,
+    component: topHome,
+  },
+  {
+    path: "/top-accounts/intelligence",
+    name: "Top Account Intelligence",
+    type: PrivateRoute,
+    component: topIntelligence,
+  },
+  {
+    path: "/top-accounts/intelligence/transaction-history",
+    name: "Top Account Transaction History",
+    type: PrivateRoute,
+    component: topTransactionHistory,
+  },
+  {
+    path: "/top-accounts/intelligence/asset-value",
+    name: "Top Account Asset Value",
+    type: PrivateRoute,
+    component: topAssetValue,
+  },
+  {
+    path: "/top-accounts/intelligence/insights",
+    name: "Insights",
+    type: PrivateRoute,
+    component: topInsights,
+  },
+  {
+    path: "/top-accounts/intelligence/costs",
+    name: "Top Account Costs",
+    type: PrivateRoute,
+    component: topCosts,
+  },
+  {
+    path: "/top-accounts/decentralized-finance",
+    name: "Decentralized Finance",
+    type: PrivateRoute,
+    component: topDefi,
+  },
   {
     path: "/twitter-influencers",
     name: "Twitter Influencers",
@@ -157,6 +208,12 @@ const routes = [
     name: "Whop loader",
     type: Route,
     component: WhopLoader,
+  },
+  {
+    path: "/top-account/:id",
+    name: "Top accounts share",
+    type: Route,
+    component: topAccountShare,
   },
   {
     path: "/landing-page-whale",

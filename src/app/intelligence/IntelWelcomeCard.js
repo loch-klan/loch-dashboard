@@ -17,12 +17,14 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 export default function IntelWelcomeCard(props) {
-  const cardData = [
+  let cardData = [
     {
       icon: TransactionIcon,
-      title: "Transaction History",
+      title: "Transaction history",
       background: "lightblue",
-      path: "/intelligence/transaction-history",
+      path: props?.isTopAccount
+        ? "/top-accounts/intelligence/transaction-history"
+        : "/intelligence/transaction-history",
       analyticEvent: () => {
         TransactionHistory({
           session_id: getCurrentUser().id,
@@ -42,9 +44,11 @@ export default function IntelWelcomeCard(props) {
     // },
     {
       icon: ShuffleIcon,
-      title: "Asset Value",
+      title: "Asset value",
       background: "lightyellow",
-      path: "/intelligence/asset-value",
+      path: props?.isTopAccount
+        ? "/top-accounts/intelligence/asset-value"
+        : "/intelligence/asset-value",
       analyticEvent: () => {
         AssetValueAnalytics({
           session_id: getCurrentUser().id,
@@ -56,7 +60,9 @@ export default function IntelWelcomeCard(props) {
       icon: InsightsIcon,
       title: "Insights",
       background: "lightpurple",
-      path: "/intelligence/insights",
+      path: props?.isTopAccount
+        ? "/top-accounts/intelligence/insights"
+        : "/intelligence/insights",
       analyticEvent: () => {
         Insights({
           session_id: getCurrentUser().id,
@@ -68,7 +74,9 @@ export default function IntelWelcomeCard(props) {
       icon: ActiveDollarIcon,
       title: "Costs",
       background: "lightgreen",
-      path: "/intelligence/costs",
+      path: props?.isTopAccount
+        ? "/top-accounts/intelligence/costs"
+        : "/intelligence/costs",
       analyticEvent: () => {
         IntCost({
           session_id: getCurrentUser().id,
@@ -77,7 +85,9 @@ export default function IntelWelcomeCard(props) {
       },
     },
   ];
-
+  if (props?.isTopAccount) {
+    cardData = cardData?.filter((_, i) => i !== 2);
+  }
   const cards = cardData?.map((card, key) => {
     return (
       <div

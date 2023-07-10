@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import BarGraphSection from "../common/BarGraphSection";
 import PageHeader from "../common/PageHeader";
-import { info } from "./dummyData.js";
+import { info } from "../cost/dummyData.js";
 import { connect } from "react-redux";
 import { getAllCoins } from "../onboarding/Api.js";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
@@ -11,24 +11,12 @@ import CoinChip from "../wallet/CoinChip";
 import TransactionTable from "../intelligence/TransactionTable";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import {
-  TimeSpentCosts,
-  FeesTimePeriodFilter,
-  CounterpartyFeesTimeFilter,
-  CostsPage,
-  CostShare,
-  CostHideDust,
-  CAverageCostBasisSort,
-  CostSortByAsset,
-  CostSortByCostPrice,
-  CostSortByCurrentPrice,
-  CostSortByAmount,
-  SortByCurrentValue,
-  SortByGainLoss,
-  costFeesChainFilter,
-  costVolumeChainFilter,
+  TopCostsShare,
+  PageviewTopCosts,
+  TimeSpentTopCosts,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { getCounterGraphData, getGraphData } from "./getGraphData";
+import { getCounterGraphData, getGraphData } from "../cost/getGraphData";
 import {
   getAllFeeApi,
   getAllCounterFeeApi,
@@ -37,7 +25,7 @@ import {
   getAvgCostBasis,
   updateAverageCostBasis,
   ResetAverageCostBasis,
-} from "./Api";
+} from "../cost/Api";
 import moment from "moment/moment";
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "../common/ConnectModal";
@@ -51,8 +39,9 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { toast } from "react-toastify";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { Buffer } from "buffer";
 
-class Cost extends Component {
+class TopCost extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -80,14 +69,14 @@ class Cost extends Component {
       GraphDigit: 3,
 
       // add new wallet
-      userWalletList: localStorage.getItem("addWallet")
-        ? JSON.parse(localStorage.getItem("addWallet"))
-        : [],
+      userWalletList: [],
+      // localStorage.getItem("addWallet")
+      //   ? JSON.parse(localStorage.getItem("addWallet"))
+      //   :
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
-      isFeesChainSearchUsed: false,
-      isVolumeChainSearchUsed: false,
+
       // sort
       sortBy: [
         { title: "Asset", down: true },
@@ -98,22 +87,19 @@ class Cost extends Component {
         { title: "Current value", down: true },
         { title: "Gain loss", down: true },
       ],
+
+      // this is used in api to check api call fromt op acount page or not
+      isTopAccountPage: true,
     };
   }
-  feesChainSearchIsUsed = () => {
-    this.setState({ isFeesChainSearchUsed: true });
-  };
-  volumeChainSearchIsUsed = () => {
-    this.setState({ isVolumeChainSearchUsed: true });
-  };
   startPageView = () => {
     this.setState({ startTime: new Date() * 1 });
-    CostsPage({
+    PageviewTopCosts({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     // Inactivity Check
-    window.checkCostTimer = setInterval(() => {
+    window.checkTopCostTimer = setInterval(() => {
       this.checkForInactivity();
     }, 900000);
   };
@@ -121,7 +107,6 @@ class Cost extends Component {
     if (this.props.location.hash !== "") {
       setTimeout(() => {
         const id = this.props.location.hash.replace("#", "");
-        // console.log('id',id);
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView();
@@ -130,38 +115,57 @@ class Cost extends Component {
     } else {
       window.scrollTo(0, 0);
     }
-
+    this.startPageView();
+    this.updateTimer(true);
     this.props.getAllCoins();
     this.getBlockchainFee(0, true);
     this.getCounterPartyFee(0, true);
     this.props.getAvgCostBasis(this);
     GetAllPlan();
     getUser();
-
-    const search = this.props.location.search;
-    const params = new URLSearchParams(search);
-    const addAddress = params.get("add-address");
-    if (addAddress) {
-      this.handleAddModal();
-      this.props.history.replace("/intelligence/costs");
+  }
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "topCostPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
     }
-    this.startPageView();
-    this.updateTimer(true);
-
-    return () => {
-      clearInterval(window.checkCostTimer);
-    };
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("topCostPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkTopCostTimer);
+    localStorage.removeItem("topCostPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentTopCosts({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_spent: TimeSpent,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("topCostPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("topCostPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
+    this.props.ResetAverageCostBasis(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // add wallet
-
     if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
-
       this.props.getAllCoins();
-      this.getBlockchainFee(0);
-      this.getCounterPartyFee(0);
+      this.getBlockchainFee(0, true);
+      this.getCounterPartyFee(0, true);
       this.props.getAvgCostBasis(this);
       this.setState({
         apiResponse: false,
@@ -190,64 +194,50 @@ class Cost extends Component {
     this.setState({
       apiResponse: value,
     });
-    // console.log("api respinse", value);
     this.props.setPageFlagDefault();
   };
 
   getBlockchainFee(option, first) {
     const today = moment().valueOf();
     let handleSelected = "";
-    // console.log("headle click");
     if (option == 0) {
       this.props.getAllFeeApi(this, false, false);
-      // console.log(option, "All");
       handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").valueOf();
 
       this.props.getAllFeeApi(this, fiveyear, today);
-      // console.log(fiveyear, today, "5 years");
       handleSelected = "5 Years";
     } else if (option == 2) {
       const year = moment().subtract(1, "years").valueOf();
       this.props.getAllFeeApi(this, year, today);
-      // console.log(year, today, "1 year");
       handleSelected = "1 Year";
     } else if (option == 3) {
       const sixmonth = moment().subtract(6, "months").valueOf();
 
       this.props.getAllFeeApi(this, sixmonth, today);
-      // console.log(sixmonth, today, "6 months");
       handleSelected = "6 Months";
     } else if (option == 4) {
       const month = moment().subtract(1, "month").valueOf();
       this.props.getAllFeeApi(this, month, today);
-      // console.log(month, today, "1 month");
       handleSelected = "1 Month";
     } else if (option == 5) {
       const week = moment().subtract(1, "week").valueOf();
       this.props.getAllFeeApi(this, week, today);
-      // console.log(week, today, "week");
       handleSelected = "Week";
     }
-    // console.log("handle select", handleSelected);
-    if (!first) {
-      FeesTimePeriodFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        time_period_selected: handleSelected,
-      });
-      this.updateTimer();
-    }
+    // FeesTimePeriodFilter({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    //   time_period_selected: handleSelected,
+    // });
   }
 
   getCounterPartyFee(option, first) {
     const today = moment().unix();
     let handleSelected = "";
-    // console.log("headle click");
     if (option == 0) {
       this.props.getAllCounterFeeApi(this, false, false);
-      // console.log(option, "All");
       handleSelected = "All";
     } else if (option == 1) {
       const fiveyear = moment().subtract(5, "years").unix();
@@ -272,58 +262,17 @@ class Cost extends Component {
       this.props.getAllCounterFeeApi(this, week, today);
       handleSelected = "Week";
     }
-    if (!first) {
-      CounterpartyFeesTimeFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        time_period_selected: handleSelected,
-      });
-      this.updateTimer();
-    }
-  }
-  updateTimer = (first) => {
-    const tempExistingExpiryTime = localStorage.getItem("costPageExpiryTime");
-    if (!tempExistingExpiryTime && !first) {
-      this.startPageView();
-    }
-    const tempExpiryTime = Date.now() + 1800000;
-    localStorage.setItem("costPageExpiryTime", tempExpiryTime);
-  };
-  endPageView = () => {
-    clearInterval(window.checkCostTimer);
-    localStorage.removeItem("costPageExpiryTime");
-    if (this.state.startTime) {
-      let endTime = new Date() * 1;
-      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-      TimeSpentCosts({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        time_spent: TimeSpent,
-      });
-      this.props.ResetAverageCostBasis(this);
-    }
-  };
-  checkForInactivity = () => {
-    const tempExpiryTime = localStorage.getItem("costPageExpiryTime");
-    if (tempExpiryTime && tempExpiryTime < Date.now()) {
-      this.endPageView();
-    }
-  };
-  componentWillUnmount() {
-    const tempExpiryTime = localStorage.getItem("costPageExpiryTime");
-    if (tempExpiryTime) {
-      this.endPageView();
-    }
+
+    // CounterpartyFeesTimeFilter;
+    // CounterpartyFeesTimeFilter({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    //   time_period_selected: handleSelected,
+    // });
   }
 
   handleBadge = (activeBadgeList, type) => {
-    let selectedChains = [];
-    this.props.OnboardingState.coinsList?.map((item) => {
-      if (activeBadgeList?.includes(item.id)) {
-        selectedChains.push(item.code);
-      }
-    });
-    const { GraphfeeData, counterPartyData } = this.props.intelligenceState;
+    const { GraphfeeData, counterPartyData } = this.props.topAccountState;
     let graphDataMaster = [];
     let counterPartyDataMaster = [];
     if (type === 1) {
@@ -347,15 +296,6 @@ class Cost extends Component {
         getGraphData(graphDataObj, this),
         this
       );
-      const tempIsSearchUsed = this.state.isFeesChainSearchUsed;
-      costFeesChainFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        selected: selectedChains,
-        isSearchUsed: tempIsSearchUsed,
-      });
-      this.updateTimer();
-      this.setState({ isFeesChainSearchUsed: false });
     } else {
       counterPartyData &&
         counterPartyData?.map((tempGraphData) => {
@@ -374,15 +314,6 @@ class Cost extends Component {
         getCounterGraphData(counterPartyDataMaster, this),
         this
       );
-      const tempIsSearchUsed = this.state.isVolumeChainSearchUsed;
-      costVolumeChainFilter({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        selected: selectedChains,
-        isSearchUsed: tempIsSearchUsed,
-      });
-      this.updateTimer();
-      this.setState({ isVolumeChainSearchUsed: false });
     }
   };
   handleConnectModal = () => {
@@ -390,7 +321,7 @@ class Cost extends Component {
   };
 
   sortArray = (key, order) => {
-    let array = this.props.intelligenceState?.Average_cost_basis; //all data
+    let array = this.props.topAccountState?.Average_cost_basis; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -435,106 +366,62 @@ class Cost extends Component {
       this.setState({
         sortBy: sort,
       });
-      CostSortByAsset({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
-      // console.log("asset")
     } else if (e.title === "Average cost price") {
       this.sortArray("AverageCostPrice", isDown);
       this.setState({
         sortBy: sort,
       });
-      CostSortByCostPrice({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
     } else if (e.title === "Current price") {
       this.sortArray("CurrentPrice", isDown);
       this.setState({
         sortBy: sort,
       });
-      CostSortByCurrentPrice({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
     } else if (e.title === "Amount") {
       this.sortArray("Amount", isDown);
       this.setState({
         sortBy: sort,
       });
-      CostSortByAmount({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
     } else if (e.title === "Cost basis") {
       this.sortArray("CostBasis", isDown);
       this.setState({
         sortBy: sort,
       });
-      CAverageCostBasisSort({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
     } else if (e.title === "Current value") {
       this.sortArray("CurrentValue", isDown);
       this.setState({
         sortBy: sort,
       });
-      SortByCurrentValue({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
     } else if (e.title === "Gain loss") {
       this.sortArray("GainLoss", isDown);
       this.setState({
         sortBy: sort,
       });
-      SortByGainLoss({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-      this.updateTimer();
     }
   };
 
   handleDust = (ishide) => {
     if (!ishide) {
-      let array = this.props.intelligenceState?.Average_cost_basis?.filter(
+      let array = this.props.topAccountState?.Average_cost_basis?.filter(
         (e) => e.CurrentValue >= 1
       ); //all data
       this.props.updateAverageCostBasis(array, this);
     } else {
       this.props.ResetAverageCostBasis(this);
     }
-
-    CostHideDust({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
   };
 
   handleShare = () => {
-    let lochUser = getCurrentUser().id;
-    // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(localStorage.getItem("addWallet"));
-    let slink =
-      userWallet?.length === 1
-        ? userWallet[0].displayAddress || userWallet[0].address
-        : lochUser;
+    const previewAddress = localStorage.getItem("previewAddress")
+      ? JSON.parse(localStorage.getItem("previewAddress"))
+      : "";
+    const encodedAddress = Buffer.from(previewAddress?.address).toString(
+      "base64"
+    );
     let shareLink =
-      BASE_URL_S3 + "home/" + slink + "?redirect=intelligence/costs";
+      BASE_URL_S3 + `top-account/${encodedAddress}?redirect=intelligence/costs`;
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
-
-    CostShare({
+    TopCostsShare({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
@@ -542,7 +429,7 @@ class Cost extends Component {
   };
 
   render() {
-    let tableData = this.props.intelligenceState.Average_cost_basis;
+    let tableData = this.props.topAccountState.Average_cost_basis;
     // const tableData = [
     //   {
     //     Asset: Ethereum,
@@ -759,7 +646,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[4])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cost basis
+              Cost Basis
             </span>
             <Image
               src={sortByIcon}
@@ -809,7 +696,7 @@ class Cost extends Component {
             onClick={() => this.handleSort(this.state.sortBy[5])}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Current value
+              Current Value
             </span>
             <Image
               src={sortByIcon}
@@ -918,7 +805,7 @@ class Cost extends Component {
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
-                updateTimer={this.updateTimer}
+                isPreviewing={true}
               />
             </div>
           </div>
@@ -932,12 +819,11 @@ class Cost extends Component {
               headerTitle={"Connect exchanges"}
               modalType={"connectModal"}
               iconImage={LinkIcon}
-              updateTimer={this.updateTimer}
             />
           ) : (
             ""
           )}
-          <div className="m-t-30 cost-section page">
+          <div className="m-t-50 cost-section page">
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -952,7 +838,6 @@ class Cost extends Component {
                 changeWalletList={this.handleChangeList}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 from="cost"
-                updateTimer={this.updateTimer}
               />
             )}
             <PageHeader
@@ -964,7 +849,7 @@ class Cost extends Component {
               currentPage={"costs"}
               ShareBtn={true}
               handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
+              topaccount={true}
             />
             <div className="m-b-43 cost-table-section">
               <div style={{ position: "relative" }}>
@@ -975,7 +860,7 @@ class Cost extends Component {
                 </p>
               </div> */}
                 <TransactionTable
-                  title="Average cost basis"
+                  title="Average Cost Basis"
                   subTitle="Understand your average entry price"
                   tableData={tableData}
                   columnList={columnData}
@@ -985,7 +870,7 @@ class Cost extends Component {
                   isLoading={this.state.AvgCostLoading}
                   isGainLoss={true}
                   ishideDust={true}
-                  totalPercentage={this.props.intelligenceState.totalPercentage}
+                  totalPercentage={this.props.topAccountState.totalPercentage}
                   handleDust={this.handleDust}
                   // handleExchange={this.handleConnectModal}
                   isStickyHead={true}
@@ -1001,19 +886,19 @@ class Cost extends Component {
               }}
             >
               <BarGraphSection
-                headerTitle="Blockchain fees over time"
+                headerTitle="Blockchain Fees over Time"
                 headerSubTitle="Understand your gas costs"
                 data={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[0]
+                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState.graphfeeValue[0]
                 }
                 options={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[1]
+                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState.graphfeeValue[1]
                 }
                 options2={
-                  this.props.intelligenceState.graphfeeValue &&
-                  this.props.intelligenceState.graphfeeValue[2]
+                  this.props.topAccountState.graphfeeValue &&
+                  this.props.topAccountState.graphfeeValue[2]
                 }
                 digit={this.state.GraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
@@ -1030,7 +915,8 @@ class Cost extends Component {
                 handleBadge={(activeBadgeList) =>
                   this.handleBadge(activeBadgeList, 1)
                 }
-                chainSearchIsUsed={this.feesChainSearchIsUsed}
+                loaderHeight={47.3}
+
                 // height={420}
                 // width={824}
                 // comingSoon={false}
@@ -1052,19 +938,19 @@ class Cost extends Component {
             </div> */}
 
               <BarGraphSection
-                headerTitle="Counterparty volume over time"
+                headerTitle="Counterparty Volume Over Time"
                 headerSubTitle="Understand where you’ve exchanged the most value"
                 data={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[0]
+                  this.props.topAccountState.counterPartyValue &&
+                  this.props.topAccountState.counterPartyValue[0]
                 }
                 options={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[1]
+                  this.props.topAccountState.counterPartyValue &&
+                  this.props.topAccountState.counterPartyValue[1]
                 }
                 options2={
-                  this.props.intelligenceState.counterPartyValue &&
-                  this.props.intelligenceState.counterPartyValue[2]
+                  this.props.topAccountState.counterPartyValue &&
+                  this.props.topAccountState.counterPartyValue[2]
                 }
                 digit={this.state.counterGraphDigit}
                 coinsList={this.props.OnboardingState.coinsList}
@@ -1079,10 +965,10 @@ class Cost extends Component {
                 handleBadge={(activeBadgeList) =>
                   this.handleBadge(activeBadgeList, 2)
                 }
+                loaderHeight={45}
                 // height={"400px"}
                 // width={"824px"}
                 // comingSoon={true}
-                chainSearchIsUsed={this.volumeChainSearchIsUsed}
               />
             </div>
 
@@ -1096,6 +982,9 @@ class Cost extends Component {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
+
+  // top account
+  topAccountState: state.TopAccountState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -1116,4 +1005,4 @@ const mapDispatchToProps = {
   updateAverageCostBasis,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Cost);
+export default connect(mapStateToProps, mapDispatchToProps)(TopCost);

@@ -1,16 +1,11 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
-import {
-  AmountType,
-  AssetType,
-  DormantType,
-  PodType,
-} from "../../utils/Constant";
+import { AmountType, AssetType, DormantType, PodType } from "../../utils/Constant";
 import { GET_ALL_COHORT, UPDATE_COHORT } from "./ActionTypes";
 
-export const createCohort = (data, ctx) => {
-  //   let data = new URLSearchParams();
-
+export const createCohort = (data,ctx) => {
+//   let data = new URLSearchParams();
+  
   postLoginInstance
     .post("wallet/user-cohort/add-update-user-cohort", data)
     .then((res) => {
@@ -30,13 +25,14 @@ export const createCohort = (data, ctx) => {
         );
         if (!ctx.state.showWarningMsg) {
           // ctx.state.onHide();
-          ctx.props.apiResponse && ctx.props.apiResponse(true);
+           ctx.props.apiResponse && ctx.props.apiResponse(true);
         }
         // if (!ctx.state.showWarningMsg) {
-
+           
         // }
+         
       } else {
-        ctx.props.apiResponse && ctx.props.apiResponse(true);
+         ctx.props.apiResponse && ctx.props.apiResponse(true);
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
@@ -77,6 +73,7 @@ export const notificationSend = (data, ctx) => {
     });
 };
 
+
 export const deleteCohort = (data, ctx) => {
   //   let data = new URLSearchParams();
 
@@ -95,8 +92,9 @@ export const deleteCohort = (data, ctx) => {
     });
 };
 
-export const searchCohort = (data, ctx) => {
-  // let data = new URLSearchParams();
+
+export const searchCohort = (data,ctx) => {
+    // let data = new URLSearchParams();
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-cohort/search-user-cohort", data)
@@ -105,13 +103,10 @@ export const searchCohort = (data, ctx) => {
           // console.log("search cohort", res.data.data?.user_cohorts.results);
           let isShare = localStorage.getItem("share_id");
           let walletAddress = JSON.parse(localStorage.getItem("addWallet"));
-          const cohortCards = res.data.data?.user_cohorts.results?.filter(
-            (e) => e.user_id
-          );
-          let isLimitExceed =
-            ctx.state.userPlan?.whale_pod_limit == -1
-              ? false
-              : cohortCards?.length > ctx.state.userPlan?.whale_pod_limit;
+           const cohortCards = res.data.data?.user_cohorts.results?.filter(
+             (e) => e.user_id
+           );
+          let isLimitExceed = ctx.state.userPlan?.whale_pod_limit == -1 ? false : cohortCards?.length > ctx.state.userPlan?.whale_pod_limit;
 
           let isWhaleAddressLimitExceed = false;
 
@@ -153,14 +148,13 @@ export const searchCohort = (data, ctx) => {
             type: GET_ALL_COHORT,
             payload: {
               cardList: res.data.data?.user_cohorts.results.sort(
-                (a, b) => b.total_net_worth - a.total_net_worth
-              ),
-              sortedList: res.data.data?.user_cohorts.results.sort(
-                (a, b) => b.total_net_worth - a.total_net_worth
-              ),
+                (a, b) => b.total_net_worth - a.total_net_worth)
+              ,
+              sortedList: res.data.data?.user_cohorts.results.sort((a, b) => b.total_net_worth - a.total_net_worth),
               total_addresses,
             },
           });
+
 
           if (ctx.state.pageName === "share") {
             ctx.handleCohort();
@@ -169,12 +163,15 @@ export const searchCohort = (data, ctx) => {
             // cardList: res.data.data?.user_cohorts.results,
             // sortedList: res.data.data?.user_cohorts.results,
             // total_addresses,
+           
           });
         } else {
           toast.error(res.data.message || "Something Went Wrong");
         }
       });
-  };
+   }
+
+  
 };
 
 // update cohort detail
@@ -222,7 +219,7 @@ export const getCohort = (data, ctx) => {
             walletAddresses: response?.wallet_address_details,
             totalNetWorth: response?.total_net_worth,
             createOn: response?.created_on,
-            addressList: response?.wallet_addresses,
+            addressList:response?.wallet_addresses,
             // frequentlyPurchasedAsset: response.frequently_purchased_asset,
             // frequentlySoldAsset: response.frequently_sold_asset,
             largestHoldingChain: response?.largest_holding_asset?.asset,
@@ -238,6 +235,7 @@ export const getCohort = (data, ctx) => {
 
           // call get defi api after getting address
           ctx.getDefiDetail();
+          
         } else {
           ctx.props.history.push("/whale-watch");
         }
@@ -249,6 +247,7 @@ export const getCohort = (data, ctx) => {
 
 // get defi detail for cohort
 export const getDefiCohort = (data, ctx) => {
+
   postLoginInstance
     .post("wallet/user-wallet/get-defi-balance-sheet", data)
     .then((res) => {
@@ -257,10 +256,10 @@ export const getDefiCohort = (data, ctx) => {
         let DebtValues = [];
         let response = res?.data?.data?.balance_sheet;
         let totalYield = 0;
-        let totalDebt = 0;
+        let totalDebt = 0
 
-        let allAssetType = [20, 30, 40, 50, 60, 70];
-        allAssetType.map((e) => {
+         let allAssetType = [20, 30, 40, 50, 60, 70];
+        allAssetType.map((e) => { 
           if (e != 30) {
             if (response[e]) {
               YieldValues.push({
@@ -268,7 +267,7 @@ export const getDefiCohort = (data, ctx) => {
                 name: AssetType.getText(e),
                 totalPrice: response[e],
               });
-              totalYield = totalYield + response[e];
+              totalYield = totalYield + response[e]; 
             } else {
               YieldValues.push({
                 id: e,
@@ -276,6 +275,7 @@ export const getDefiCohort = (data, ctx) => {
                 totalPrice: 0,
               });
             }
+              
           } else {
             if (response[e]) {
               DebtValues.push({
@@ -283,7 +283,7 @@ export const getDefiCohort = (data, ctx) => {
                 name: AssetType.getText(e),
                 totalPrice: response[e],
               });
-              totalDebt = totalDebt + response[e];
+               totalDebt = totalDebt + response[e]; 
             } else {
               DebtValues.push({
                 id: e,
@@ -292,20 +292,22 @@ export const getDefiCohort = (data, ctx) => {
               });
             }
           }
-        });
+        })
         // console.log("get-frequently-sold-asset", res.data.data);
-        ctx.setState({
-          YieldValues,
-          totalYield,
-          totalDebt,
-          DebtValues,
-          DefiLoader: false,
-        });
+                ctx.setState({
+                  YieldValues,
+                  totalYield,
+                  totalDebt,
+                  DebtValues,
+                  DefiLoader: false,
+                });
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
 };
+
+
 
 export const GetSoldAsset = (data, ctx) => {
   // let data = new URLSearchParams();
@@ -319,6 +321,7 @@ export const GetSoldAsset = (data, ctx) => {
           frequentlySoldAsset: res.data.data?.asset?.asset,
           SoldAssetLoader: false,
         });
+        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
@@ -333,15 +336,17 @@ export const GetPurchasedAsset = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         // console.log("get-frequently-purchased-asset", res.data.data);
-        ctx.setState({
-          frequentlyPurchasedAsset: res.data.data?.asset?.asset,
-          PurchasedAssetLoader: false,
-        });
+         ctx.setState({
+           frequentlyPurchasedAsset: res.data.data?.asset?.asset,
+           PurchasedAssetLoader: false,
+         });
+        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
 };
+
 
 export const GetLargestAsset = (data, ctx) => {
   // let data = new URLSearchParams();
@@ -362,6 +367,7 @@ export const GetLargestAsset = (data, ctx) => {
     });
 };
 
+
 export const GetLargestVolumeSold = (data, ctx) => {
   // let data = new URLSearchParams();
 
@@ -374,6 +380,7 @@ export const GetLargestVolumeSold = (data, ctx) => {
           // LargestAsset: res.data.data?.asset?.asset,
           SoldVolumeLoader: false,
           LargestSoldVolume: res.data.data?.asset?.asset,
+         
         });
       } else {
         toast.error(res.data.message || "Something Went Wrong");
@@ -402,8 +409,9 @@ export const GetLargestVolumeBought = (data, ctx) => {
     });
 };
 
+
 // add-update-whale-notification
-export const CreateUpdateNotification = (data, ctx) => {
+export const CreateUpdateNotification = (data,ctx) => {
   // let data = new URLSearchParams();
 
   postLoginInstance
@@ -418,25 +426,27 @@ export const CreateUpdateNotification = (data, ctx) => {
         //   LargestBoughtVolume: res.data.data?.asset?.asset,
         //   VolumeBoughtLoader: false,
         // });
-
-        toast.success(
-          <div className="custom-toast-msg" style={{ width: "43rem" }}>
-            <div>Email updated</div>
-            <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-              You will be receiving notifications from us there
-            </div>
+          
+      toast.success(
+        <div className="custom-toast-msg" style={{ width: "43rem" }}>
+          <div>Email updated</div>
+          <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+            You will be receiving notifications from us there
           </div>
-        );
-
+        </div>
+      );
+        
         ctx.getNotificationApi();
+
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
     });
 };
 
+
 // get-whale-notification
-export const GetNotification = (data, ctx) => {
+export const GetNotification = (data,ctx) => {
   // let data = new URLSearchParams();
 
   postLoginInstance
@@ -449,7 +459,7 @@ export const GetNotification = (data, ctx) => {
         //   DormantType.getText(response.dormant_type),
         //   AmountType.getText(response.amount_type)
         // );
-        const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+         const userDetails = JSON.parse(localStorage.getItem("lochUser"));
         ctx.setState({
           // LargestAsset: res.data.data?.asset?.asset,
           // LargestValue: res.data.data?.asset?.total_value,
@@ -471,16 +481,20 @@ export const GetNotification = (data, ctx) => {
     });
 };
 
+
+
 // Update cohort name
-export const UpdateCohortNickname = (data, ctx) => {
+export const UpdateCohortNickname = (data,ctx) => {
   // let data = new URLSearchParams();
 
   postLoginInstance
     .post("wallet/user-cohort/update-user-cohort-nickname", data)
     .then((res) => {
       if (!res.data.error) {
+        
         // let response = res.data.data;
         toast.success("Nickname updated");
+        
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
@@ -489,19 +503,20 @@ export const UpdateCohortNickname = (data, ctx) => {
 
 export const DeleteCohortAddress = (data, ctx) => {
   // console.log("delete")
-  postLoginInstance
-    .post("wallet/user-cohort/delete-cohort-address", data)
-    .then((res) => {
-      if (!res.data.error) {
-        ctx.CheckApiResponse(true);
-      } else {
-        toast.error(res.data.message || "Something Went Wrong");
-      }
-    });
-};
+   postLoginInstance
+     .post("wallet/user-cohort/delete-cohort-address", data)
+     .then((res) => {
+       if (!res.data.error) {
+
+         ctx.CheckApiResponse(true);
+       } else {
+         toast.error(res.data.message || "Something Went Wrong");
+       }
+     });
+}
 
 // Get Asset filter by  Cohort
-export const GetAssetFilter = (data, ctx) => {
+export const GetAssetFilter= (data,ctx) => {
   // let data = new URLSearchParams();
 
   postLoginInstance
@@ -515,10 +530,10 @@ export const GetAssetFilter = (data, ctx) => {
             value: e._id,
             label: e.asset.name,
           });
-        });
-        ctx.setState({
-          AssetFilterList: assetFilter,
-        });
+        })
+          ctx.setState({
+            AssetFilterList: assetFilter,
+          });
       } else {
         toast.error(res.data.message || "Something Went Wrong");
       }
@@ -527,6 +542,7 @@ export const GetAssetFilter = (data, ctx) => {
 
 // Copy cohort
 export const CopyCohort = (data, ctx) => {
+ 
   postLoginInstance
     .post("wallet/user-cohort/copy-user-cohort", data)
     .then((res) => {
@@ -565,20 +581,23 @@ export const CopyCohort = (data, ctx) => {
               }
             );
           }
-        } else {
-          ctx.props.history.push({
-            pathname: `/whale-watch/${res.data.data.cohort.slug}`,
-            state: {
-              id: res.data.data.cohort.id,
-              // cohortWalletList: item?.wallet_address_details,
-              // chainImages: sortedChains,
-              // total_addresses: total_addresses,
-            },
-          });
         }
+        else {
+              ctx.props.history.push({
+                pathname: `/whale-watch/${res.data.data.cohort.slug}`,
+                state: {
+                  id: res.data.data.cohort.id,
+                  // cohortWalletList: item?.wallet_address_details,
+                  // chainImages: sortedChains,
+                  // total_addresses: total_addresses,
+                },
+              });
+        
+        }
+    
       } else {
         toast.error(res.data.message || "Something Went Wrong");
-        ctx.props.history.push(`/whale-watch`);
+         ctx.props.history.push(`/whale-watch`);
       }
     });
 };

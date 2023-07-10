@@ -8,7 +8,7 @@ export default class FormValidator {
     }
 
     if (_.isString(value)) {
-      return value.trim().length !== 0;
+      return value?.trim().length !== 0;
     }
 
     if (_.isNull(value) || _.isUndefined(value)) {

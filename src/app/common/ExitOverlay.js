@@ -482,14 +482,14 @@ class ExitOverlay extends BaseReactComponent {
         for (let i = 0; i < this.state.addWalletList.length; i++) {
           let curr = this.state.addWalletList[i];
           // console.log(curr)
-          if (!arr.includes(curr.address.trim()) && curr.address) {
+          if (!arr.includes(curr.address?.trim()) && curr.address) {
             walletList.push(curr);
-            arr.push(curr.address.trim());
+            arr.push(curr.address?.trim());
             arr.push(curr.displayAddress?.trim());
             addressList.push(
               curr.displayAddress !== ""
                 ? curr.displayAddress?.trim()
-                : curr.address.trim()
+                : curr.address?.trim()
             );
 
             isChainDetected.push(curr?.coinFound);

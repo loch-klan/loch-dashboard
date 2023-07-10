@@ -237,7 +237,7 @@ class AddWallet extends BaseReactComponent {
                 for (let i = 0; i < this.state.walletInput.length; i++) {
                   let curr = this.state.walletInput[i];
                   if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
-                    arr.push(curr.address.trim());
+                    arr.push(curr.address?.trim());
                     arr.push(curr.displayAddress?.trim());
                     arr.push(curr.apiAddress?.trim());
                     total_address = total_address + 1;
@@ -594,16 +594,16 @@ class AddWallet extends BaseReactComponent {
       for (let i = 0; i < addWallet.length; i++) {
         let curr = addWallet[i];
         if (
-          !walletAddress.includes(curr.apiAddress.trim()) &&
-          curr.address.trim()
+          !walletAddress.includes(curr.apiAddress?.trim()) &&
+          curr.address?.trim()
         ) {
           finalArr.push(curr);
-          walletAddress.push(curr.address.trim());
+          walletAddress.push(curr.address?.trim());
           walletAddress.push(curr.displayAddress?.trim());
           walletAddress.push(curr.apiAddress?.trim());
-          let address = curr.address.trim();
+          let address = curr.address?.trim();
           nicknameArr[address] = curr.nickname;
-          addressList.push(curr.address.trim());
+          addressList.push(curr.address?.trim());
         }
       }
 
@@ -687,8 +687,8 @@ class AddWallet extends BaseReactComponent {
         // );
         if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
           walletList.push(curr);
-          arr.push(curr.address.trim());
-          nicknameArr[curr.address.trim()] = curr.nickname;
+          arr.push(curr.address?.trim());
+          nicknameArr[curr.address?.trim()] = curr.nickname;
           arr.push(curr.displayAddress?.trim());
           arr.push(curr.apiAddress?.trim());
           addressList.push(curr.address?.trim());

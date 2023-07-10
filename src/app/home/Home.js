@@ -64,7 +64,7 @@ class Home extends BaseReactComponent {
   };
 
   componentDidMount() {
-    this.state.startTime = new Date() * 1;
+    this.setState({ startTime: new Date() * 1 });
     // DiscountEmailPage();
     let isEmailadded = JSON.parse(localStorage.getItem("discountEmail"));
     // console.log("is",isEmailadded)
@@ -170,8 +170,6 @@ class Home extends BaseReactComponent {
   componentWillUnmount() {
     let endTime = new Date() * 1;
     let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    //  console.log("page Leave", endTime/1000);
-    //  console.log("Time Spent", TimeSpent);
     TimeSpentDiscountEmail({ time_spent: TimeSpent });
   }
 
