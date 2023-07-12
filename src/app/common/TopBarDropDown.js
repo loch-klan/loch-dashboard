@@ -82,8 +82,8 @@ export default function TopBarDropDown(props) {
           >
             <Image className="topBarWalletChain" src={LinkIconBtn} />
             <div className="hideText">
-              <span className="ml-2">{props.totalWallets}</span>
-              <span className="topBarWalletName ml-1">{props.firstWallet}</span>
+              <span className="ml-1 mr-3">{props.totalWallets}</span>
+              <span className="topBarWalletName">{props.firstWallet}</span>
             </div>
             <OutsideClickHandler onOutsideClick={closeDropdown}>
               <span onClick={toggleDropdown} className="pl-3 h-100 pr-1">

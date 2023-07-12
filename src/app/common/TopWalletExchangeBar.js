@@ -56,7 +56,7 @@ class TopBar extends Component {
       });
       this.setState({
         firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
-        totalWallets: this.props.walletState.length,
+        totalWallets: walletList.length,
         walletList: tempWalletList,
         exchangeList: tempExchangeList,
         firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
