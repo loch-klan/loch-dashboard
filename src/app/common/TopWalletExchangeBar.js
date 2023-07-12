@@ -47,6 +47,8 @@ class TopBar extends Component {
         } else {
           if (data?.nickname) {
             tempWalletList.push(data.nickname);
+          } else if (data?.tag) {
+            tempWalletList.push(data.tag);
           } else if (data?.display_address) {
             tempWalletList.push(data.display_address);
           } else if (data?.address) {
