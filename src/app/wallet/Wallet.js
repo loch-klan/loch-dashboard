@@ -247,6 +247,7 @@ class Wallet extends Component {
 
   render() {
     const { walletList, totalWalletAmt } = this.props.walletState;
+    console.log("walletLis here ", walletList);
     const { currency, isLoading } = this.state;
     return (
       <div className="wallet-page-section">

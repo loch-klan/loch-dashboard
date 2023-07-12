@@ -1,10 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Modal, Image, Button, Row, Col, Container } from "react-bootstrap";
+import { Modal, Image, Row, Col, Container } from "react-bootstrap";
 import {
   Form,
   FormElement,
-  FormValidator,
   BaseReactComponent,
   CustomTextControl,
 } from "../../utils/form";
@@ -14,13 +13,11 @@ import CoinbaseIcon from "../../assets/images/icons/coinbase.svg";
 
 import BitstampIcon from "../../assets/images/icons/Bitstamp.jpg";
 import BybitIcon from "../../assets/images/icons/bybit.jpg";
-import GateIcon from "../../assets/images/icons/Gate.jpg";
 import GeminiIcon from "../../assets/images/icons/Gemini.jpg";
 import HuobiIcon from "../../assets/images/icons/Huobi.jpg";
 import OkxIcon from "../../assets/images/icons/okx.jpg";
 import krakanIcon from "../../assets/images/icons/krakan.svg";
 import KuCoinIcon from "../../assets/images/icons/kucoin.svg";
-import BitfinexIcon from "../../assets/images/icons/Bitfinex.png";
 
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
@@ -69,12 +66,14 @@ class ConnectModal extends BaseReactComponent {
       connectionName: "",
       apiKey: "",
       apiSecret: "",
+      connectedExchangeList: [],
       api_passphrase: null,
       connectExchangesList: props?.exchanges
         ? props?.exchanges
         : [
             {
               name: "Binance",
+              code: "BINANCE",
               icon: BinanceIcon,
               isActive: false,
               isOAuth: false,
@@ -156,6 +155,7 @@ class ConnectModal extends BaseReactComponent {
             },
             {
               name: "Coinbase",
+              code: "COINBASE",
               icon: CoinbaseIcon,
               isActive: false,
               isOAuth: true,
@@ -251,6 +251,7 @@ class ConnectModal extends BaseReactComponent {
             },
             {
               name: "Kraken",
+              code: "KRAKEN",
               icon: krakanIcon,
               isActive: false,
               isOAuth: false,
@@ -330,6 +331,7 @@ class ConnectModal extends BaseReactComponent {
             },
             {
               name: "Kucoin",
+              code: "KUCOIN",
               icon: KuCoinIcon,
               isActive: false,
               isOAuth: false,
@@ -411,6 +413,7 @@ class ConnectModal extends BaseReactComponent {
             },
             {
               name: "OKX",
+              code: "OKX",
               icon: OkxIcon,
               isActive: false,
               isOAuth: false,
@@ -497,6 +500,7 @@ class ConnectModal extends BaseReactComponent {
             // },
             {
               name: "Bitstamp",
+              code: "BITSTAMP",
               icon: BitstampIcon,
               isActive: false,
               isOAuth: false,
@@ -588,6 +592,7 @@ class ConnectModal extends BaseReactComponent {
             },
             {
               name: "Bybit",
+              code: "BYBIT",
               icon: BybitIcon,
               isActive: false,
               isOAuth: false,
@@ -680,6 +685,7 @@ class ConnectModal extends BaseReactComponent {
             },
             {
               name: "Gemini",
+              code: "GEMINI",
               icon: GeminiIcon,
               isActive: false,
               isOAuth: true,
@@ -747,6 +753,7 @@ class ConnectModal extends BaseReactComponent {
             },
             {
               name: "Huobi",
+              code: "HOUBI",
               icon: HuobiIcon,
               isActive: false,
               isOAuth: false,
@@ -942,10 +949,31 @@ class ConnectModal extends BaseReactComponent {
 
     getUserAccount(data, this);
   };
+  applyWalletList = () => {
+    if (this.props.walletState?.walletList?.length > 0) {
+      const walletList = this.props.walletState.walletList;
 
+      const tempExchangeList = [];
+
+      walletList.map((data) => {
+        if (data?.chains.length === 0) {
+          if (data.protocol) {
+            if (data.protocol.code) {
+              tempExchangeList.push(data.protocol.code);
+            }
+          }
+        }
+        return null;
+      });
+      this.setState({
+        connectedExchangeList: tempExchangeList,
+      });
+    }
+  };
   componentDidMount() {
     // set popup active
     localStorage.setItem("isPopupActive", true);
+    this.applyWalletList();
 
     if (this.props.ishome) {
       let count = 0;
@@ -1565,11 +1593,13 @@ class ConnectModal extends BaseReactComponent {
                             <h3 className="inter-display-medium f-s-16 lh-19 ">
                               {item.name}
                             </h3>
-                            {item.isActive && (
+                            {this.state.connectedExchangeList.includes(
+                              item?.code
+                            ) ? (
                               <p className="inter-display-semi-bold f-s-10 lh-13 grey-7C7">
                                 Connected
                               </p>
-                            )}
+                            ) : null}
                           </div>
                         </div>
                       </Col>
@@ -1626,6 +1656,7 @@ class ConnectModal extends BaseReactComponent {
 
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  walletState: state.WalletState,
 });
 const mapDispatchToProps = {
   getAllCoins,

@@ -21,6 +21,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment/moment";
+import { getAllWalletListApi } from "../wallet/Api";
 import {
   getAssetProfitLoss,
   getProfitAndLossApi,
@@ -204,6 +205,12 @@ class Intelligence extends Component {
       this.props.getAllCoins();
       this.timeFilter(0);
       this.assetList();
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
     }
 
     if (!this.props.commonState.insight) {
@@ -995,6 +1002,7 @@ const mapDispatchToProps = {
   getAssetProfitLoss,
   updateWalletListFlag,
   setPageFlagDefault,
+  getAllWalletListApi,
 };
 
 // const mapDispatchToProps = {

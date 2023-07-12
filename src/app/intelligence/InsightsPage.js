@@ -7,6 +7,7 @@ import increaseYield from "../../assets/images/icons/increase-yield.svg";
 import { getAllInsightsApi } from "./Api";
 import { BASE_URL_S3, InsightType } from "../../utils/Constant";
 import Loading from "../common/Loading";
+import { getAllWalletListApi } from "../wallet/Api";
 import {
   AllInsights,
   InsightPage,
@@ -179,6 +180,12 @@ class InsightsPage extends Component {
         isLoading: true,
       });
       this.props.getAllInsightsApi(this);
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
     }
 
     // if (this.state.apiResponse) {
@@ -609,6 +616,7 @@ const mapDispatchToProps = {
   getAllInsightsApi,
   updateWalletListFlag,
   setPageFlagDefault,
+  getAllWalletListApi,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(InsightsPage);
