@@ -9,7 +9,9 @@ import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { Image } from "react-bootstrap";
 import CoinChip from "../wallet/CoinChip";
 import TransactionTable from "../intelligence/TransactionTable";
+import { getAllWalletListApi } from "../wallet/Api";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
+
 import {
   TimeSpentCosts,
   FeesTimePeriodFilter,
@@ -45,7 +47,12 @@ import FixAddModal from "../common/FixAddModal";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  getUser,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api";
 import { CurrencyType, noExponents } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { BASE_URL_S3 } from "../../utils/Constant";
@@ -166,6 +173,15 @@ class Cost extends Component {
       this.setState({
         apiResponse: false,
       });
+    }
+    if (!this.props.commonState.cost) {
+      this.props.updateWalletListFlag("cost", true);
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
     }
   }
 
@@ -1096,6 +1112,7 @@ class Cost extends Component {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
   intelligenceState: state.IntelligenceState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -1114,6 +1131,8 @@ const mapDispatchToProps = {
   // average cost
   ResetAverageCostBasis,
   updateAverageCostBasis,
+  updateWalletListFlag,
+  getAllWalletListApi,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cost);

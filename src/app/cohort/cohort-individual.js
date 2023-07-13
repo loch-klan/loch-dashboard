@@ -17,6 +17,7 @@ import {
   UpdateCohortNickname,
 } from "./Api";
 import { getAllCoins } from "../onboarding/Api.js";
+import { getAllWalletListApi } from "../wallet/Api";
 import {
   AmountType,
   BASE_URL_S3,
@@ -75,7 +76,7 @@ import {
 import { connect } from "react-redux";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import UpgradeModal from "../common/upgradeModal";
-import { GetAllPlan, getUser } from "../common/Api";
+import { GetAllPlan, getUser, updateWalletListFlag } from "../common/Api";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 
@@ -379,6 +380,15 @@ class CohortPage extends BaseReactComponent {
       this.setState({
         apiResponse: false,
       });
+    }
+    if (!this.props.commonState.whaleWatchIndividual) {
+      this.props.updateWalletListFlag("whaleWatchIndividual", true);
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
     }
   }
 
@@ -2119,10 +2129,13 @@ class CohortPage extends BaseReactComponent {
 }
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
+  commonState: state.CommonState,
 });
 
 const mapDispatchToProps = {
   getAllCoins,
+  getAllWalletListApi,
+  updateWalletListFlag,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CohortPage);

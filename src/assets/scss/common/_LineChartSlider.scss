@@ -45,34 +45,34 @@
       margin-top: 2rem;
       flex-wrap: wrap;
 
-      .EventColumn{
-      display: flex;
-      align-items: start;
-      justify-content: stretch;
-      flex-direction: column;
-      width: 49%;
+      .EventColumn {
+        display: flex;
+        align-items: start;
+        justify-content: stretch;
+        flex-direction: column;
+        width: 49%;
 
         .GreyChip {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 1.2rem;
-        background: rgba(229, 229, 230, 0.5);
-        border-radius: 8px;
-        margin-bottom: 1.2rem;
-        width: 100%;
-        flex-wrap: nowrap;
-
-        h5 {
           display: flex;
           align-items: center;
-          margin-right: 1rem;
+          justify-content: flex-start;
+          padding: 1.2rem;
+          background: rgba(229, 229, 230, 0.5);
+          border-radius: 8px;
+          margin-bottom: 1.2rem;
+          width: 100%;
+          flex-wrap: nowrap;
 
-          img {
+          h5 {
+            display: flex;
+            align-items: center;
             margin-right: 1rem;
+
+            img {
+              margin-right: 1rem;
+            }
           }
         }
-      }
       }
     }
   }

@@ -26,6 +26,7 @@ import { getAllCoins, getAllParentChains } from "../onboarding/Api.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import TransactionTable from "../intelligence/TransactionTable";
 import BarGraphSection from "./../common/BarGraphSection";
+import { getAllWalletListApi } from "../wallet/Api";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
@@ -573,6 +574,13 @@ class Portfolio extends BaseReactComponent {
         this.props.getAllCoins();
         this.props.getAllParentChains();
         getDetectedChainsApi(this);
+
+        let tempData = new URLSearchParams();
+        tempData.append("start", 0);
+        tempData.append("conditions", JSON.stringify([]));
+        tempData.append("limit", 50);
+        tempData.append("sorts", JSON.stringify([]));
+        this.props.getAllWalletListApi(tempData, this);
       }, 1000);
 
       GetAllPlan();
@@ -2486,7 +2494,7 @@ const mapDispatchToProps = {
   getAllInsightsApi,
   updateWalletListFlag,
   setPageFlagDefault,
-
+  getAllWalletListApi,
   // avg cost
   getAvgCostBasis,
   // average cost

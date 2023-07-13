@@ -11,6 +11,10 @@ const INITIAL_STATE = {
   isPopup: true,
   home: false,
   intelligence: false,
+  transactionHistory: false,
+  cost: false,
+  whaleWatch: false,
+  whaleWatchIndividual: false,
   asset_value: false,
   insight: false,
   defi: false,
@@ -44,6 +48,10 @@ const CommonReducer = (state = INITIAL_STATE, action) => {
         asset_value: false,
         insight: false,
         defi: false,
+        transactionHistory: false,
+        whaleWatch: false,
+        whaleWatchIndividual: false,
+        cost: false,
         defi_home: false,
       };
     case TOP_SET_DEFAULT_VALUE:
