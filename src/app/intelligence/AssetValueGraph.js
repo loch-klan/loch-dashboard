@@ -23,6 +23,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import FixAddModal from "../common/FixAddModal";
 import { GetAllPlan, getUser } from "../common/Api";
+import { getAllWalletListApi } from "../wallet/Api";
 
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import {
@@ -143,6 +144,12 @@ class AssetValueGraph extends Component {
       if (!this.props.portfolioState.assetValueDay) {
         this.getGraphData();
       }
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
     }
   }
 
@@ -373,6 +380,7 @@ const mapDispatchToProps = {
   getExternalEventsApi,
   updateWalletListFlag,
   setPageFlagDefault,
+  getAllWalletListApi,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetValueGraph);

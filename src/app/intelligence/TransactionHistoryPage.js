@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { Image, Row, Col } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
 import TransactionTable from "./TransactionTable";
-import CoinChip from "../wallet/CoinChip";
 import { connect } from "react-redux";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+
 import {
   SEARCH_BY_WALLET_ADDRESS_IN,
   Method,
@@ -27,6 +27,7 @@ import {
   SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
 } from "../../utils/Constant";
+import { getAllWalletListApi } from "../wallet/Api";
 import { searchTransactionApi, getFilters } from "./Api";
 // import { getCoinRate } from "../Portfolio/Api.js";
 import moment from "moment";
@@ -76,7 +77,12 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  getUser,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 
@@ -244,14 +250,14 @@ class TransactionHistoryPage extends BaseReactComponent {
     clearInterval(window.checkTransactionHistoryTimer);
     localStorage.removeItem("transactionHistoryPageExpiryTime");
     if (this.state.startTime) {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentTransactionHistory({
-      time_spent: TimeSpent,
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-  };
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentTransactionHistory({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
   };
   checkForInactivity = () => {
     const tempExpiryTime = localStorage.getItem(
@@ -289,6 +295,15 @@ class TransactionHistoryPage extends BaseReactComponent {
 
     // console.log("prev", prevPage,"cur", page)
 
+    if (!this.props.commonState.transactionHistory) {
+      this.props.updateWalletListFlag("transactionHistory", true);
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
+    }
     if (
       prevPage !== page ||
       prevState.condition !== this.state.condition ||
@@ -1668,6 +1683,7 @@ class TransactionHistoryPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
@@ -1675,6 +1691,8 @@ const mapDispatchToProps = {
   getAllCoins,
   getFilters,
   setPageFlagDefault,
+  getAllWalletListApi,
+  updateWalletListFlag,
 };
 
 TransactionHistoryPage.propTypes = {};

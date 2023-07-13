@@ -10,6 +10,7 @@ import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import { Col, Image, Row } from "react-bootstrap";
 import Loading from "../common/Loading";
+import { getAllWalletListApi } from "../wallet/Api";
 import {
   CreateWhalePod,
   PageViewWhale,
@@ -30,6 +31,7 @@ import {
   getUser,
   TopsetPageFlagDefault,
   setPageFlagDefault,
+  updateWalletListFlag,
 } from "../common/Api";
 import PodCard from "./pod-card";
 import WelcomeCard from "../Portfolio/WelcomeCard";
@@ -169,6 +171,15 @@ class Cohort extends Component {
       this.setState({
         apiResponse: false,
       });
+    }
+    if (!this.props.commonState.whaleWatch) {
+      this.props.updateWalletListFlag("whaleWatch", true);
+      let tempData = new URLSearchParams();
+      tempData.append("start", 0);
+      tempData.append("conditions", JSON.stringify([]));
+      tempData.append("limit", 50);
+      tempData.append("sorts", JSON.stringify([]));
+      this.props.getAllWalletListApi(tempData, this);
     }
   }
 
@@ -769,6 +780,7 @@ class Cohort extends Component {
 const mapStateToProps = (state) => ({
   cohortState: state.CohortState,
   OnboardingState: state.OnboardingState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -776,6 +788,8 @@ const mapDispatchToProps = {
   updateCohort,
   setPageFlagDefault,
   TopsetPageFlagDefault,
+  getAllWalletListApi,
+  updateWalletListFlag,
 };
 Cohort.propTypes = {
   // getPosts: PropTypes.func

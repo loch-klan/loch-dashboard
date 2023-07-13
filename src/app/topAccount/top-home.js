@@ -1596,11 +1596,11 @@ class TopPortfolio extends BaseReactComponent {
                     this.props.topAccountState &&
                     this.props.topAccountState.walletTotal
                       ? this.props.topAccountState.walletTotal +
-                        this.props.defiState.totalYield -
-                        this.props.defiState.totalDebt
+                        this.props.topAccountState?.totalYield -
+                        this.props.topAccountState?.totalDebt
                       : 0 +
-                        this.props.defiState.totalYield -
-                        this.props.defiState.totalDebt
+                        this.props.topAccountState?.totalYield -
+                        this.props.topAccountState?.totalDebt
                   }
                   // history
                   history={this.props.history}
