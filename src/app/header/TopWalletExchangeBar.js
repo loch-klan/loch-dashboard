@@ -27,7 +27,13 @@ class TopBar extends Component {
       this.applyWalletList();
     }
   }
-
+  TruncateText = (string) => {
+    return (
+      string.substring(0, 3) +
+      "..." +
+      string.substring(string.length - 3, string.length)
+    );
+  };
   applyWalletList = () => {
     if (this.props.walletState?.walletList?.length > 0) {
       const walletList = this.props.walletState.walletList;
@@ -52,7 +58,7 @@ class TopBar extends Component {
           } else if (data?.display_address) {
             tempWalletList.push(data.display_address);
           } else if (data?.address) {
-            tempWalletList.push(data.address);
+            tempWalletList.push(this.TruncateText(data.address));
           }
         }
       });
@@ -107,7 +113,9 @@ class TopBar extends Component {
                 ))}
               </span>
               <span className="dotDotText">
-                {this.state.firstExchange}{" "}
+                <span className="captilasideText">
+                  {this.state.firstExchange?.toLowerCase()}{" "}
+                </span>
                 {this.state.exchangeList.length > 1 ? "and others " : ""}
                 {"connected"}
               </span>

@@ -86,12 +86,15 @@ export default function TopBarDropDown(props) {
               <span className="topBarWalletName">{props.firstWallet}</span>
             </div>
             <OutsideClickHandler onOutsideClick={closeDropdown}>
-              <span onClick={toggleDropdown} className="pl-3 h-100 pr-1">
+              <div
+                onClick={toggleDropdown}
+                className="topBarWalletArrowContainer pl-3 h-100 pr-1"
+              >
                 <Image
                   className="topBarWalletArrow"
                   src={RoundedArrowDownIcon}
                 />
-              </span>
+              </div>
             </OutsideClickHandler>
           </div>
         </Dropdown.Toggle>

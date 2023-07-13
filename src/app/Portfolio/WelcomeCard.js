@@ -29,7 +29,7 @@ import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ExitOverlay from "../common/ExitOverlay";
 import EyeIcon from "../../assets/images/icons/eye.svg";
 import ChangeIcon from "../../assets/images/icons/change-icon.svg";
-import { TopWalletExchangeBar } from "../common";
+import { TopWalletExchangeBar } from "../header";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
   const [manageWallet, setManageWallet] = React.useState(true);
