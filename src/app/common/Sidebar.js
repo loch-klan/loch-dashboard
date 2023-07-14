@@ -279,10 +279,9 @@ function Sidebar(props) {
         "/top-accounts",
         "/top-accounts/home",
         "/top-accounts/decentralized-finance",
-      ].includes(activeTab)
+      ].includes(activeTab) ||
+      activeTab.includes("/whale-watch")
     ) {
-      // console.log("preview in top acc", previewAddress);
-
       let obj = {
         me: false,
         discover: true,

@@ -29,6 +29,7 @@ import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ExitOverlay from "../common/ExitOverlay";
 import EyeIcon from "../../assets/images/icons/eye.svg";
 import ChangeIcon from "../../assets/images/icons/change-icon.svg";
+import { TopWalletExchangeBar } from "../header";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
   const [manageWallet, setManageWallet] = React.useState(true);
@@ -286,39 +287,27 @@ export default function WelcomeCard(props) {
               </div>
             </div>
           ) : !props?.hideButton ? (
-            <>
-              <div
-                className="topbar-btn"
-                style={{
-                  marginRight: "1.7rem",
-                  // marginLeft: "11rem"
-                  width: "46%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-                onClick={handleConnectModal}
-              >
-                <Image className="connect-exchange-img" src={LinkIconBtn} />
-                Connect exchange
-              </div>
-              <div
-                className="topbar-btn"
-                style={{
-                  width: "46%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-                onClick={handleAddWalletClick}
-                ref={buttonRef}
-                id="address-button"
-              >
-                <Image src={AddWalletAddress} />
-                Add wallet address
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
+            <TopWalletExchangeBar
+              buttonRef={buttonRef}
+              handleAddWalletClick={handleAddWalletClick}
+              handleConnectModal={handleConnectModal}
+            />
+          ) : // <div className="topBarContainer">
+          //   <div
+          //     className="topbar-btn"
+          //     onClick={handleAddWalletClick}
+          //     ref={buttonRef}
+          //     id="address-button"
+          //   >
+          //     <Image src={AddWalletAddress} />
+          //     Add wallet address
+          //   </div>
+          //   <div className="topbar-btn ml-2" onClick={handleConnectModal}>
+          //     <Image className="connect-exchange-img" src={LinkIconBtn} />
+          //     Connect exchange
+          //   </div>
+          // </div>
+          null}
         </div>
         {props.showNetworth && (
           <div

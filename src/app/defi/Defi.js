@@ -14,6 +14,7 @@ import {
   CurrencyType,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
+import { getAllWalletListApi } from "../wallet/Api";
 import { Col, Image, Row } from "react-bootstrap";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import Coin2 from "../../assets/images/icons/temp-coin1.svg";
@@ -172,6 +173,7 @@ class Defi extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // add wallet
+
     if (!this.props.commonState.defi) {
       this.props.updateDefiData({
         totalYield: 0,
@@ -194,6 +196,13 @@ class Defi extends Component {
         () => {
           //  getAllProtocol(this);
           this.getYieldBalance();
+
+          let tempData = new URLSearchParams();
+          tempData.append("start", 0);
+          tempData.append("conditions", JSON.stringify([]));
+          tempData.append("limit", 50);
+          tempData.append("sorts", JSON.stringify([]));
+          this.props.getAllWalletListApi(tempData, this);
         }
       );
     } else {
@@ -870,6 +879,7 @@ const mapDispatchToProps = {
   // page flag
   updateWalletListFlag,
   setPageFlagDefault,
+  getAllWalletListApi,
 };
 Defi.propTypes = {
   // getPosts: PropTypes.func
