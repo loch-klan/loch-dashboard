@@ -84,6 +84,7 @@ class OnBoarding extends Component {
             session_id: getCurrentUser().id,
             email_address: getCurrentUser().email,
           });
+          this.updateTimer();
         }
         let value = this.state.connectExchangeModal ? false : true;
         this.setState({
@@ -110,25 +111,55 @@ class OnBoarding extends Component {
       }
     );
   };
-
-  componentDidMount() {
+  startPageView = () => {
     this.setState({ startTime: new Date() * 1 });
+    OnboardingPage({});
+    // Inactivity Check
+    window.checkOnboardingTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
     // console.log("page Enter", (this.state.startTime / 1000));
     // let date = moment();
     // let currentDate = date.format("D/MM/YYYY");
     // // "17/06/2022"
 
-    OnboardingPage({});
+    this.startPageView();
+    this.updateTimer(true);
 
     // console.log("test mount index.js");
   }
-
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "onboardingPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("onboardingPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkOnboardingTimer);
+    localStorage.removeItem("onboardingPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentOnboarding({ time_spent: TimeSpent });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("onboardingPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
   componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime/1000);
-    // console.log("Time Spent", TimeSpent);
-    TimeSpentOnboarding({ time_spent: TimeSpent });
+    const tempExpiryTime = localStorage.getItem("onboardingPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
   onClose = () => {
     this.setState({ showModal: false });
@@ -172,6 +203,7 @@ class OnBoarding extends Component {
 
   privacymessage = () => {
     PrivacyMessage({});
+    this.updateTimer();
     // console.log("on hover privacy msg");
   };
   render() {

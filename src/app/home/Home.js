@@ -45,7 +45,7 @@ class Home extends BaseReactComponent {
 
       showEmailPopup: false,
       emailAdded: false,
-      startTime: 0,
+      startTime: "",
     };
   }
 
@@ -168,9 +168,11 @@ class Home extends BaseReactComponent {
   }
 
   componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentDiscountEmail({ time_spent: TimeSpent });
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentDiscountEmail({ time_spent: TimeSpent });
+    }
   }
 
   hideModal = (value) => {};
