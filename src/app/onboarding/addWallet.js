@@ -25,6 +25,7 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
+import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import { GetAllPlan, updateUserWalletApi } from "../common/Api";
 import { BinVectorIcon } from "../../assets/images/icons";
 import CustomButton from "../../utils/form/CustomButton";
@@ -842,6 +843,21 @@ class AddWallet extends BaseReactComponent {
                 {this.state.walletInput?.map((c, index) => {
                   return (
                     <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+                      {this.state.walletInput.length > 1 ? (
+                        <Image
+                          key={index}
+                          className={`awOldDelBtn`}
+                          // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
+                          src={DeleteIcon}
+                          onClick={() => this.deleteInputField(index, c)}
+                        />
+                      ) : (
+                        <Image
+                          key={index}
+                          className={`fakeBtn`}
+                          src={DeleteIcon}
+                        />
+                      )}
                       <div
                         className={`awInputWrapper ${
                           this.state.walletInput[index].address
@@ -868,46 +884,62 @@ class AddWallet extends BaseReactComponent {
                                 />
                               </div>
 
-                              {this.state.walletInput.length > 1 &&
-                              this.shouldRenderDelete(index) ? (
-                                <Image
-                                  key={index}
-                                  className="awInputBinIcon"
-                                  src={BinVectorIcon}
-                                  onClick={() =>
-                                    this.deleteInputField(index, c)
-                                  }
-                                />
-                              ) : null}
-                              {this.state.walletInput?.map((res, i) => {
+                              {this.state.walletInput?.map((e, i) => {
                                 if (
                                   this.state.walletInput[index].address &&
-                                  res.id === `wallet${index + 1}`
+                                  e.id === `wallet${index + 1}`
                                 ) {
-                                  if (
-                                    (!res.coinFound || res.coins.length <= 0) &&
-                                    res.coins.length !==
-                                      this.props.OnboardingState.coinsList
-                                        .length
-                                  ) {
+                                  // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                  if (e.coinFound && e.coins.length > 0) {
                                     return (
                                       <CustomCoin
                                         isStatic
-                                        coins={null}
+                                        coins={e.coins.filter(
+                                          (c) => c.chain_detected
+                                        )}
                                         key={i}
-                                        isLoaded={false}
+                                        isLoaded={true}
                                       />
                                     );
+                                  } else {
+                                    if (
+                                      e.coins.length ===
+                                      this.props.OnboardingState.coinsList
+                                        .length
+                                    ) {
+                                      return (
+                                        <CustomCoin
+                                          isStatic
+                                          coins={null}
+                                          key={i}
+                                          isLoaded={true}
+                                        />
+                                      );
+                                    } else {
+                                      return (
+                                        <CustomCoin
+                                          isStatic
+                                          coins={null}
+                                          key={i}
+                                          isLoaded={false}
+                                        />
+                                      );
+                                    }
                                   }
+                                } else {
+                                  return "";
                                 }
-                                return "";
                               })}
                             </div>
                           )}
                           {c.coinFound && c.showNickname && (
-                            <div className="awBottomInputWrapper mt-2">
+                            <div
+                              className={`awBottomInputWrapper ${
+                                c.showAddress ? "mt-2" : ""
+                              }`}
+                            >
                               <div className="awInputContainer">
-                                <div className="awLable">Nickname</div>
+                                {/* <div className="awLable">Nickname</div> */}
                                 <input
                                   name={`wallet${index + 1}`}
                                   value={c.nickname || ""}
@@ -930,65 +962,59 @@ class AddWallet extends BaseReactComponent {
                                   }}
                                 />
                               </div>
-                              {c.showNameTag && c.nameTag ? (
-                                <div className="awBlockContainer">
-                                  <div className="awLable">Name tag</div>
-                                  <div className="awNameTag">{c.nameTag}</div>
-                                </div>
-                              ) : null}
-                              {this.state.walletInput.length > 1 &&
-                              this.shouldRenderDeleteLineTwo(
-                                c.showAddress,
-                                index
-                              ) ? (
-                                <Image
-                                  key={index}
-                                  className="awInputBinIcon"
-                                  src={BinVectorIcon}
-                                  onClick={() =>
-                                    this.deleteInputField(index, c)
-                                  }
-                                />
-                              ) : null}
-                              {!this.shouldRenderDeleteLineTwo(
-                                c.showAddress,
-                                index
-                              ) &&
-                                this.state.walletInput?.map((res, i) => {
+                              {!c.showAddress &&
+                                this.state.walletInput?.map((e, i) => {
                                   if (
                                     this.state.walletInput[index].address &&
-                                    res.id === `wallet${index + 1}`
+                                    e.id === `wallet${index + 1}`
                                   ) {
-                                    if (res.coinFound && res.coins.length > 0) {
+                                    // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                    if (e.coinFound && e.coins.length > 0) {
                                       return (
                                         <CustomCoin
-                                          coins={res.coins.filter(
-                                            (filterData) =>
-                                              filterData.chain_detected
+                                          isStatic
+                                          coins={e.coins.filter(
+                                            (c) => c.chain_detected
                                           )}
                                           key={i}
                                           isLoaded={true}
-                                          isStatic
                                         />
                                       );
-                                    } else if (
-                                      res.coins.length ===
-                                      this.props.OnboardingState.coinsList
-                                        .length
-                                    ) {
-                                      return (
-                                        <CustomCoin
-                                          isStatic
-                                          coins={null}
-                                          key={i}
-                                          isLoaded={true}
-                                        />
-                                      );
+                                    } else {
+                                      if (
+                                        e.coins.length ===
+                                        this.props.OnboardingState.coinsList
+                                          .length
+                                      ) {
+                                        return (
+                                          <CustomCoin
+                                            isStatic
+                                            coins={null}
+                                            key={i}
+                                            isLoaded={true}
+                                          />
+                                        );
+                                      } else {
+                                        return (
+                                          <CustomCoin
+                                            isStatic
+                                            coins={null}
+                                            key={i}
+                                            isLoaded={false}
+                                          />
+                                        );
+                                      }
                                     }
                                   } else {
                                     return "";
                                   }
                                 })}
+                              {/* {c.showNameTag && c.nameTag ? (
+                                <div className="awBlockContainer">
+                                  <div className="awLable">Name tag</div>
+                                  <div className="awNameTag">{c.nameTag}</div>
+                                </div>
+                              ) : null} */}
                             </div>
                           )}
                         </>

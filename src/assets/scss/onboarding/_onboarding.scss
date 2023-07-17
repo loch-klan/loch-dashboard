@@ -109,7 +109,9 @@
     }
 
     .modal-body {
-      padding: 4rem 0 3.6rem;
+      padding: 1rem !important;
+      padding-top: 3rem !important;
+      padding-bottom: 3rem !important;
       text-align: center;
 
       // uploaad csv
@@ -389,7 +391,8 @@
       }
 
       .ob-modal-body-btn {
-        margin: 3.2rem 0 2.4rem;
+        margin-top: 3rem !important;
+        margin-bottom: 3rem !important;
         text-align: center;
 
         .go-btn {
@@ -441,34 +444,54 @@
         }
       }
       .addAnotherBtnContainer {
-        padding: 0 6rem;
+        padding: 0 9rem;
+        margin-top: 1rem;
       }
 
       .addWalletWrapperContainerParent {
         padding: 0 3rem;
-        padding-top: 2rem;
         .addWalletWrapperContainer {
-          padding: 0 3rem;
+          padding-right: 6rem;
           max-height: 25rem;
-          overflow: scroll;
+          overflow-y: auto;
+
           &::-webkit-scrollbar {
             width: 0.4rem;
           }
+
           &::-webkit-scrollbar-thumb {
             background: #96979a;
             border-radius: 0.8rem;
           }
-          // &::-webkit-scrollbar-track {
-          //   background-color: rgba(229, 229, 230, 0.5);
-          //   border-radius: 0.8rem;
-          // }
+
+          &::-webkit-scrollbar-track {
+            background-color: rgba(229, 229, 230, 0.5);
+            border-radius: 0.8rem;
+          }
           .addWalletWrapper {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
+            // flex-direction: column;
             margin-top: 1rem;
-
+            margin-bottom: 1rem;
+            .fakeBtn {
+              border-radius: 0.8rem;
+              width: 4rem;
+              margin-right: 2rem;
+              opacity: 0;
+            }
+            .awOldDelBtn {
+              border-radius: 0.8rem;
+              width: 4rem;
+              box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+                0px 1px 1px rgba(0, 0, 0, 0.04);
+              cursor: pointer;
+              margin-right: 2rem;
+              &:hover {
+                filter: brightness(0.965);
+              }
+            }
             .awInputWrapper {
               border: 0.1rem solid #d4d4d4;
               border-radius: 0.8rem;
