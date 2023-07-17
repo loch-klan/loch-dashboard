@@ -10,6 +10,7 @@ import {
   deleteToken,
   getToken,
   setLocalStoraage,
+  getCurrentUser,
 } from "../../utils/ManageToken";
 import {
   getAllCurrencyRatesApi,
@@ -28,7 +29,13 @@ import {
   EmailAddedDiscount,
   TimeSpentDiscountEmail,
   TimeSpentOnboarding,
+  LPConnectExchange,
 } from "../../utils/AnalyticsFunctions";
+import {
+  LinkVectorWhiteIcon,
+  ProfileVectorWhiteIcon,
+} from "../../assets/images/icons";
+import LinkIconBtn from "../../assets/images/link.svg";
 
 class Home extends BaseReactComponent {
   constructor(props) {
@@ -45,10 +52,160 @@ class Home extends BaseReactComponent {
 
       showEmailPopup: false,
       emailAdded: false,
-      startTime: 0,
+      startTime: "",
+
+      // Onboarding
+      onboardingShowModal: true,
+      onboardingSignInReq: false,
+      onboardingIsVerificationRequired: false,
+      onboardingIsVerified: false,
+      onboardingCurrentActiveModal: "signIn",
+      onboardingUpgradeModal: false,
+      onboardingIsStatic: false,
+      onboardingTriggerId: 1,
+      onboardingShowPrevModal: true,
+      onboardingConnectExchangeModal: false,
+      onboardingWalletAddress: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
+      onboardingExchanges: null,
+      onboardingShowEmailPopup: true,
     };
   }
+  // Onboarding
+  onboardingHandleUpgradeModal = () => {
+    this.setState(
+      {
+        onboardingUpgradeModal: !this.state.onboardingUpgradeModal,
+      },
+      () => {
+        let onboardingUpgradeModalValue = this.state.onboardingUpgradeModal
+          ? false
+          : true;
+        this.setState({
+          onboardingShowPrevModal: onboardingUpgradeModalValue,
+        });
+        const userDetails = JSON.parse(localStorage.getItem("lochUser"));
+        if (userDetails) {
+          this.props.history.push("/home");
+        }
+      }
+    );
+  };
+  copyWalletAddress = (copyWallet) => {
+    this.setState({ onboardingWalletAddress: copyWallet });
+  };
 
+  onboardingShowConnectModal = (
+    address = this.state.onboardingWalletAddress
+  ) => {
+    this.setState(
+      {
+        onboardingConnectExchangeModal: true,
+      },
+      () => {
+        if (this.state.onboardingConnectExchangeModal) {
+          LPConnectExchange({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+        }
+        let value = this.state.onboardingConnectExchangeModal ? false : true;
+        this.setState({
+          onboardingShowPrevModal: value,
+        });
+      }
+    );
+  };
+  onboardingHideConnectModal = () => {
+    this.setState(
+      {
+        onboardingConnectExchangeModal: false,
+      },
+      () => {
+        if (this.state.onboardingConnectExchangeModal) {
+          LPConnectExchange({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+        }
+        let value = this.state.onboardingConnectExchangeModal ? false : true;
+        this.setState({
+          onboardingShowPrevModal: value,
+        });
+      }
+    );
+  };
+  onboardingHandleBackConnect = (
+    exchanges = this.state.onboardingExchanges
+  ) => {
+    this.setState(
+      {
+        onboardingConnectExchangeModal:
+          !this.state.onboardingConnectExchangeModal,
+        onboardingWalletAddress: this.state.onboardingWalletAddress,
+        onboardingExchanges: exchanges,
+      },
+      () => {
+        let value = this.state.onboardingConnectExchangeModal ? false : true;
+        this.setState({
+          onboardingShowPrevModal: value,
+        });
+      }
+    );
+  };
+  onboardingOnClose = () => {
+    this.setState({ onboardingShowModal: false });
+  };
+  onboardingHandleStateChange = (value) => {
+    if (value === "verifyCode") {
+      this.setState({
+        onboardingCurrentActiveModal: value,
+      });
+    } else {
+      this.setState({
+        onboardingCurrentActiveModal: "signIn",
+      });
+    }
+  };
+
+  onboardingShowSignIn = () => {
+    this.onboardingHideConnectModal();
+    if (this.state.onboardingCurrentActiveModal === "verifyCode") {
+      this.setState({
+        onboardingSignInReq: true,
+        onboardingCurrentActiveModal: "signIn",
+      });
+    } else {
+      this.setState({
+        onboardingSignInReq: true,
+      });
+    }
+  };
+  onboardingSwitchSignIn = () => {
+    if (this.state.onboardingCurrentActiveModal === "verifyCode") {
+      this.setState({
+        onboardingSignInReq: true,
+        onboardingCurrentActiveModal: "signIn",
+      });
+    } else {
+      this.setState({
+        onboardingSignInReq: !this.state.onboardingSignInReq,
+      });
+    }
+  };
   upgradeModal = () => {
     this.setState(
       {
@@ -67,7 +224,6 @@ class Home extends BaseReactComponent {
     this.setState({ startTime: new Date() * 1 });
     // DiscountEmailPage();
     let isEmailadded = JSON.parse(localStorage.getItem("discountEmail"));
-    // console.log("is",isEmailadded)
     if (isEmailadded) {
       this.setState({
         emailAdded: true,
@@ -81,9 +237,7 @@ class Home extends BaseReactComponent {
       getAllCurrencyRatesApi();
     }
 
-    // console.log("test mount home.js");
     if (planId) {
-      // console.log("plan id", planId);
       this.setState(
         {
           selectedId: planId,
@@ -94,7 +248,6 @@ class Home extends BaseReactComponent {
       );
     } else {
       if (getToken()) {
-        // console.log("move to home");
         let isStopRedirect =
           localStorage.getItem("stop_redirect") &&
           JSON.parse(localStorage.getItem("stop_redirect"));
@@ -111,7 +264,6 @@ class Home extends BaseReactComponent {
           } else {
             this.props.setPageFlagDefault();
             deleteToken();
-            // console.log("inside else after derlete token")
             //  localStorage.setItem("defi_access", true);
             //  localStorage.setItem("isPopup", true);
             //  // localStorage.setItem("whalepodview", true);
@@ -138,7 +290,6 @@ class Home extends BaseReactComponent {
       } else {
         this.props.setPageFlagDefault();
         deleteToken();
-        // console.log("inside else after derlete token")
         // localStorage.setItem("defi_access", true);
         // localStorage.setItem("isPopup", true);
         // // localStorage.setItem("whalepodview", true);
@@ -168,9 +319,11 @@ class Home extends BaseReactComponent {
   }
 
   componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    TimeSpentDiscountEmail({ time_spent: TimeSpent });
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentDiscountEmail({ time_spent: TimeSpent });
+    }
   }
 
   hideModal = (value) => {};
@@ -226,7 +379,6 @@ class Home extends BaseReactComponent {
                           },
                           // {
                           //     validate: () => {
-                          //       console.log("state", this.state.isOptInValid);
                           //        return !this.state.isOptInValid;
                           //   },
                           //     message:"invalid verification code"
@@ -274,11 +426,66 @@ class Home extends BaseReactComponent {
         {this.state.showPrevModal && (
           <div>
             {!this.state.showEmailPopup && (
-              <>
-                <Image src={Banner} className="overlay-banner" />
+              <div className="overlayContainer">
                 <div className="overlay-bg"></div>
-                <OnBoarding {...this.props} hideModal={this.hideModal} />
-              </>
+                <Image src={Banner} className="overlay-banner" />
+                <div className="overLayHeader">
+                  <div
+                    onClick={this.onboardingShowConnectModal}
+                    className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
+                  >
+                    <img
+                      className="overLayHeaderOptionsIcons p-1"
+                      src={LinkVectorWhiteIcon}
+                      alt="ProfileVectorIcon"
+                    />
+                    <div>Connect exchange</div>
+                  </div>
+                  <div
+                    onClick={this.onboardingShowSignIn}
+                    className="inter-display-medium f-s-13 overLayHeaderOptions"
+                  >
+                    <img
+                      className="overLayHeaderOptionsIcons"
+                      src={ProfileVectorWhiteIcon}
+                      alt="ProfileVectorIcon"
+                    />
+                    <div>Sign in</div>
+                  </div>
+                </div>
+                <OnBoarding
+                  {...this.props}
+                  hideModal={this.hideModal}
+                  showModal={this.state.onboardingShowModal}
+                  signInReq={this.state.onboardingSignInReq}
+                  isVerificationRequired={
+                    this.state.onboardingIsVerificationRequired
+                  }
+                  isVerified={this.state.onboardingIsVerified}
+                  currentActiveModal={this.state.onboardingCurrentActiveModal}
+                  upgradeModal={this.state.onboardingUpgradeModal}
+                  isStatic={this.state.onboardingIsStatic}
+                  triggerId={this.state.onboardingTriggerId}
+                  showPrevModal={this.state.onboardingShowPrevModal}
+                  connectExchangeModal={
+                    this.state.onboardingConnectExchangeModal
+                  }
+                  onboardingWalletAddress={this.state.onboardingWalletAddress}
+                  exchanges={this.state.onboardingExchanges}
+                  showEmailPopup={this.state.onboardingShowEmailPopup}
+                  onboardingHandleUpgradeModal={
+                    this.onboardingHandleUpgradeModal
+                  }
+                  onboardingShowConnectModal={this.onboardingShowConnectModal}
+                  onboardingHideConnectModal={this.onboardingHideConnectModal}
+                  onboardingHandleBackConnect={this.onboardingHandleBackConnect}
+                  onboardingHandleStateChange={this.onboardingHandleStateChange}
+                  onboardingSwitchSignIn={this.onboardingSwitchSignIn}
+                  onboardingOnClose={this.onboardingOnClose}
+                  copyWalletAddress={this.copyWalletAddress}
+                  modalAnimation={false}
+                />
+              </div>
             )}
           </div>
         )}

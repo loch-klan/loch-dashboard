@@ -12,6 +12,7 @@ const OnboardingModal = ({
   handleBack,
   children,
   modalClass = null,
+  modalAnimation,
 }) => {
   return (
     <Modal
@@ -23,6 +24,7 @@ const OnboardingModal = ({
       backdrop="static"
       centered
       aria-labelledby="contained-modal-title-vcenter"
+      animation={modalAnimation !== undefined ? modalAnimation : true}
     >
       {title && (
         <Modal.Header>
