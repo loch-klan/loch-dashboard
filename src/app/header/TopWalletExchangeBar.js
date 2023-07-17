@@ -3,6 +3,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
+import LinkIconBtn from "../../assets/images/link.svg";
 import TopBarDropDown from "./TopBarDropDown";
 
 class TopBar extends Component {
@@ -122,7 +123,7 @@ class TopBar extends Component {
             </>
           ) : (
             <>
-              <Image className="topBarWalletAdd " src={AddWalletAddress} />
+              <Image className="topBarWalletAdd " src={LinkIconBtn} />
               <span className="dotDotText">Connect exchange</span>
             </>
           )}

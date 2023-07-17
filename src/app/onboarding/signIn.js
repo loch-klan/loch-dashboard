@@ -165,6 +165,7 @@ class SignIn extends BaseReactComponent {
                 ? "Send verification"
                 : "Enter code"
             }
+            isDisabled={!this.state.email}
           />
         </Form>
       </div>

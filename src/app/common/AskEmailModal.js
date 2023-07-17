@@ -9,7 +9,7 @@ import {
   CustomTextControl,
 } from "../../utils/form";
 import CloseIcon from "../../assets/images/icons/dummyX.svg";
-import backIcon from "../../assets/images/icons/Back-icon.svg";
+import backIcon from "../../assets/images/icons/back-icon.svg";
 import ExitOverlayIcon from "../../assets/images/icons/ExitOverlayWalletIcon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";

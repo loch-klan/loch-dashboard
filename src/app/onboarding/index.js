@@ -1,234 +1,123 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
+import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import WalletIcon from "../../assets/images/icons/wallet-icon.svg";
+import LockIcon from "../../assets/images/icons/lock-icon.svg";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
+import LinkIcon from "../../assets/images/icons/link.svg";
 import OnboardingModal from "../common/OnboardingModal";
 import "../../assets/scss/onboarding/_onboarding.scss";
-import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import WalletIcon from "../../assets/images/icons/wallet-icon.svg";
-// import SignInIcon from "../../image/profile-icon.png";
-import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
+import UpgradeModal from "../common/upgradeModal";
+import ConnectModal from "../common/ConnectModal";
+import { Image } from "react-bootstrap";
 import AddWallet from "./addWallet";
 import SignIn from "./signIn";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { Image } from "react-bootstrap";
-import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import LinkIcon from "../../assets/images/icons/link.svg";
+
 import {
-  LPConnectExchange,
   OnboardingPage,
   PrivacyMessage,
   TimeSpentOnboarding,
 } from "../../utils/AnalyticsFunctions.js";
-import { GetAllPlan } from "../common/Api";
-import UpgradeModal from "../common/upgradeModal";
-import ConnectModal from "../common/ConnectModal";
-import { getCurrentUser } from "../../utils/ManageToken";
-// export { default as OnboardingReducer } from "./OnboardingReducer";
 class OnBoarding extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: true,
-      signInReq: false,
-      isVerificationRequired: false,
-      isVerified: false,
-      currentActiveModal: "signIn",
       startTime: "",
-      // showSignText  :false
-
-      // Upgrade
-      upgradeModal: false,
-      isStatic: false,
-      triggerId: 1,
-      showPrevModal: true,
-
-      // connect exchange
-      connectExchangeModal: false,
-      walletAddress: null,
-      exchanges: null,
-
-      // showEmailPopup
-      showEmailPopup: true,
     };
   }
 
-  upgradeModal = () => {
-    this.setState(
-      {
-        upgradeModal: !this.state.upgradeModal,
-      },
-      () => {
-        let value = this.state.upgradeModal ? false : true;
-        this.setState({
-          showPrevModal: value,
-        });
-        // this.props.hideModal(value);
-        // console.log("eejbhf")
-        const userDetails = JSON.parse(localStorage.getItem("lochUser"));
-        if (userDetails) {
-          this.props.history.push("/home");
-        }
-      }
-    );
-  };
-
-  handleConnectModal = (address = this.state.walletAddress) => {
-    // console.log("test", address)
-    this.setState(
-      {
-        connectExchangeModal: !this.state.connectExchangeModal,
-        walletAddress: address,
-      },
-      () => {
-        if (this.state.connectExchangeModal) {
-          LPConnectExchange({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
-        }
-        let value = this.state.connectExchangeModal ? false : true;
-        this.setState({
-          showPrevModal: value,
-        });
-        // console.log("test 2")
-      }
-    );
-  };
-
-  handleBackConnect = (exchanges = this.state.exchanges) => {
-    // console.log("backed clicked in index.js")
-    this.setState(
-      {
-        connectExchangeModal: !this.state.connectExchangeModal,
-        walletAddress: this.state.walletAddress,
-        exchanges: exchanges,
-      },
-      () => {
-        let value = this.state.connectExchangeModal ? false : true;
-        this.setState({
-          showPrevModal: value,
-        });
-      }
-    );
-  };
-
-  componentDidMount() {
+  startPageView = () => {
     this.setState({ startTime: new Date() * 1 });
-    // console.log("page Enter", (this.state.startTime / 1000));
-    // let date = moment();
-    // let currentDate = date.format("D/MM/YYYY");
-    // // "17/06/2022"
-
     OnboardingPage({});
-
-    // console.log("test mount index.js");
+    // Inactivity Check
+    window.checkOnboardingTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  componentDidMount() {
+    this.startPageView();
+    this.updateTimer(true);
   }
-
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "onboardingPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("onboardingPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkOnboardingTimer);
+    localStorage.removeItem("onboardingPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentOnboarding({ time_spent: TimeSpent });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("onboardingPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
   componentWillUnmount() {
-    let endTime = new Date() * 1;
-    let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
-    // console.log("page Leave", endTime/1000);
-    // console.log("Time Spent", TimeSpent);
-    TimeSpentOnboarding({ time_spent: TimeSpent });
+    const tempExpiryTime = localStorage.getItem("onboardingPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
   }
-  onClose = () => {
-    this.setState({ showModal: false });
-  };
-
-  handleStateChange = (value) => {
-    if (value === "verifyCode") {
-      this.setState({
-        currentActiveModal: value,
-      });
-    } else {
-      this.setState({
-        currentActiveModal: "signIn",
-      });
-    }
-  };
-  switchSignIn = (e) => {
-    // console.log("active modalin indexx",this.state.currentActiveModal)
-    // console.log("verification req indexx",this.state.isVerificationRequired)
-    if (this.state.currentActiveModal === "verifyCode") {
-      this.setState({
-        // isVerificationRequired:false,
-        signInReq: true,
-        currentActiveModal: "signIn",
-      });
-    } else {
-      this.setState({
-        signInReq: !this.state.signInReq,
-      });
-    }
-    // if(this.state.showSignText){
-    //     this.handleShowSignText(false)
-    // }
-  };
-  // handleShowSignText = (val)=>{
-  //     console.log("HELLO",val)
-  //     this.setState({
-  //         showSignText:val
-  //     })
-  // }
 
   privacymessage = () => {
     PrivacyMessage({});
-    // console.log("on hover privacy msg");
+    this.updateTimer();
   };
   render() {
     return (
       <>
-        {this.state.showPrevModal && (
+        {this.props.showPrevModal ? (
           <OnboardingModal
-            show={this.state.showModal}
+            show={this.props.showModal}
             showImage={true}
-            onHide={this.onClose}
-            title={this.state.signInReq ? "Sign in" : "Welcome to Loch"}
+            onHide={this.props.onboardingOnClose}
+            title={this.props.signInReq ? "Sign in" : "Welcome to Loch"}
             subTitle={
-              this.state.signInReq
+              this.props.signInReq
                 ? "Get right back into your account"
-                : "Add any ENS or wallet address(es) to get started"
+                : "Add your wallet address(es) to get started"
             }
-            icon={this.state.signInReq ? SignInIcon : WalletIcon}
-            isSignInActive={this.state.signInReq}
-            handleBack={this.switchSignIn}
+            icon={this.props.signInReq ? SignInIcon : WalletIcon}
+            isSignInActive={this.props.signInReq}
+            handleBack={this.props.onboardingSwitchSignIn}
+            modalAnimation={this.props.modalAnimation}
           >
-            {this.state.signInReq ? (
+            {this.props.signInReq ? (
               <SignIn
-                isVerificationRequired={this.state.isVerificationRequired}
+                isVerificationRequired={this.props.isVerificationRequired}
                 history={this.props.history}
-                activemodal={this.state.currentActiveModal}
-                signInReq={this.state.signInReq}
-                handleStateChange={this.handleStateChange}
+                activemodal={this.props.currentActiveModal}
+                signInReq={this.props.signInReq}
+                handleStateChange={this.props.onboardingHandleStateChange}
               />
             ) : (
               <AddWallet
                 {...this.props}
-                switchSignIn={this.switchSignIn}
+                switchSignIn={this.props.onboardingSwitchSignIn}
                 hideModal={this.props.hideModal}
-                upgradeModal={this.upgradeModal}
-                walletAddress={this.state.walletAddress}
-                connectWallet={this.handleConnectModal}
-                exchanges={this.state.exchanges}
-
-                // showSignText={this.state.showSign}
-                // handleShowSignText={this.handleShowSignText}
+                upgradeModal={this.props.onboardingHandleUpgradeModal}
+                walletAddress={this.props.onboardingWalletAddress}
+                connectWallet={this.props.onboardingShowConnectModal}
+                exchanges={this.props.exchanges}
+                copyWalletAddress={this.props.copyWalletAddress}
               />
             )}
             <div className="ob-modal-body-info">
-              {/* {
-                        this.state.signInReq ?
-                         null
-                         :
-                         this.state.showSignText ?
-                          <h4 className='inter-display-medium f-s-13 lh-16 grey-ADA'>
-                            Already have an account?
-                             <span className='inter-display-bold black-191 cp' onClick={this.switchSignIn}>Sign in</span>
-                            </h4>
-                            :
-                            ""
-                          } */}
               <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
-                At Loch, we care intensely about your privacy and pseudonymity.
+                Don't worry. All your information remains private and anonymous.
                 <CustomOverlay
                   text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
                   position="top"
@@ -246,34 +135,33 @@ class OnBoarding extends Component {
               </p>
             </div>
           </OnboardingModal>
-        )}
-        {this.state.upgradeModal && (
+        ) : null}
+        {this.props.upgradeModal && (
           <UpgradeModal
-            show={this.state.upgradeModal}
-            onHide={this.upgradeModal}
+            show={this.props.upgradeModal}
+            onHide={this.props.onboardingHandleUpgradeModal}
             history={this.props.history}
-            triggerId={this.state.triggerId}
+            triggerId={this.props.triggerId}
             signinBack={true}
             from="home"
             pname="index"
-            // isShare={localStorage.getItem("share_id")}
-            // isStatic={this.state.isStatic}
           />
         )}
 
-        {this.state.connectExchangeModal && (
+        {this.props.connectExchangeModal && (
           <ConnectModal
-            show={this.state.connectExchangeModal}
-            onHide={this.handleConnectModal}
+            show={this.props.connectExchangeModal}
+            onHide={this.props.onboardingHideConnectModal}
             history={this.props.history}
             headerTitle={"Connect exchanges"}
             modalType={"connectModal"}
             iconImage={LinkIcon}
             ishome={true}
             tracking="landing page"
-            walletAddress={this.state?.walletAddress}
-            exchanges={this.state.exchanges}
-            handleBackConnect={this.handleBackConnect}
+            walletAddress={this.props?.onboardingWalletAddress}
+            exchanges={this.props.exchanges}
+            handleBackConnect={this.props.onboardingHandleBackConnect}
+            modalAnimation={this.props.modalAnimation}
           />
         )}
       </>
