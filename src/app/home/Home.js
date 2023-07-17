@@ -133,6 +133,7 @@ class Home extends BaseReactComponent {
     this.setState(
       {
         onboardingConnectExchangeModal: false,
+        onboardingSignInReq: false,
       },
       () => {
         if (this.state.onboardingConnectExchangeModal) {
@@ -153,6 +154,7 @@ class Home extends BaseReactComponent {
   ) => {
     this.setState(
       {
+        onboardingSignInReq: false,
         onboardingConnectExchangeModal:
           !this.state.onboardingConnectExchangeModal,
         onboardingWalletAddress: this.state.onboardingWalletAddress,
@@ -443,7 +445,7 @@ class Home extends BaseReactComponent {
                   </div>
                   <div
                     onClick={this.onboardingShowSignIn}
-                    className="inter-display-medium f-s-13 overLayHeaderOptions"
+                    className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderWhiteOptions"
                   >
                     <img
                       className="overLayHeaderOptionsIcons"

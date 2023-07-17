@@ -853,9 +853,6 @@ class AddWallet extends BaseReactComponent {
                           {c.showAddress && (
                             <div className="awTopInputWrapper">
                               <div className="awInputContainer">
-                                {c.address ? (
-                                  <div className="awLable">Address</div>
-                                ) : null}
                                 <input
                                   autoFocus
                                   name={`wallet${index + 1}`}
