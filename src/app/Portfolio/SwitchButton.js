@@ -28,7 +28,12 @@ const SwitchButton = (props) => {
     <>
       Don’t worry, we’re still loading <br />
       all of your data. <br />
-      <span className="grey-CAC m-t-04">Get notified when it’s done.</span>
+      <br />
+      <span className="grey-CAC m-t-04">
+        {isChecked
+          ? "You'll be notified when it's done."
+          : "Get notified when it’s done."}
+      </span>
     </>
   );
 

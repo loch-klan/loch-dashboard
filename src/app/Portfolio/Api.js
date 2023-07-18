@@ -389,7 +389,9 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
           });
           ctx.props.getExternalEventsApi(ctx);
           if (!res.data.data.data_loaded) {
-            ctx.setState({ assetValueDataLoaded: false });
+            if (ActionType === "ASSET_VALUE_GRAPH_DAY") {
+              ctx.setState({ assetValueDataLoaded: false });
+            }
             setTimeout(() => {
               if (count < 8) {
                 ctx.props.getAssetGraphDataApi(data, ctx, ActionType);
