@@ -449,7 +449,8 @@
       }
 
       .addWalletWrapperContainerParent {
-        padding: 0 3rem;
+        padding-left: 2rem;
+        padding-right: 3rem;
         .addWalletWrapperContainer {
           padding-right: 6rem;
           max-height: 25rem;
@@ -476,9 +477,6 @@
             margin-top: 1rem;
             margin-bottom: 1rem;
             .fakeBtn {
-              border-radius: 0.8rem;
-              width: 4rem;
-              margin-right: 2rem;
               opacity: 0;
             }
             .awOldDelBtn {
@@ -488,6 +486,7 @@
                 0px 1px 1px rgba(0, 0, 0, 0.04);
               cursor: pointer;
               margin-right: 2rem;
+              margin-left: 1rem;
               &:hover {
                 filter: brightness(0.965);
               }
@@ -663,9 +662,10 @@
   display: flex;
   align-items: center;
   margin-left: 0.7rem;
-
+  padding: 0;
   .spinner {
-    margin: 6px auto 0px;
+    margin: 0;
+    padding: 0;
     width: 40px;
     text-align: center;
 

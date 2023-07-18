@@ -27,7 +27,6 @@ import {
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import { GetAllPlan, updateUserWalletApi } from "../common/Api";
-import { BinVectorIcon } from "../../assets/images/icons";
 import CustomButton from "../../utils/form/CustomButton";
 import { CustomCoin } from "../../utils/commonComponent";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -430,7 +429,7 @@ class AddWallet extends BaseReactComponent {
         walletCopy[foundIndex].coins = [];
       }
       if (value === "") {
-        walletCopy[foundIndex].showNickname = false;
+        walletCopy[foundIndex].coinFound = false;
         walletCopy[foundIndex].nickname = "";
       }
       // walletCopy[foundIndex].trucatedAddress = value
@@ -597,7 +596,7 @@ class AddWallet extends BaseReactComponent {
     }
   };
 
-  isDisabled = () => {
+  isDisabled = (isLoading) => {
     let isDisableFlag = true;
     // if (this.state.walletInput.length <= 0) {
     //     isDisableFlag = true;
@@ -616,6 +615,11 @@ class AddWallet extends BaseReactComponent {
         }
       }
     });
+    if (isLoading && isDisableFlag) {
+      if (this.state.walletInput.length > 1) {
+        return false;
+      }
+    }
     return isDisableFlag;
   };
 
@@ -854,7 +858,7 @@ class AddWallet extends BaseReactComponent {
                       ) : (
                         <Image
                           key={index}
-                          className={`fakeBtn`}
+                          className={`awOldDelBtn fakeBtn`}
                           src={DeleteIcon}
                         />
                       )}
@@ -1089,7 +1093,7 @@ class AddWallet extends BaseReactComponent {
                 className="primary-btn go-btn"
                 type="submit"
                 isLoading={
-                  this.state.addButtonVisible ? this.isDisabled() : false
+                  this.state.addButtonVisible ? this.isDisabled(true) : false
                 }
                 isDisabled={
                   this.state.addButtonVisible ? this.isDisabled() : true
