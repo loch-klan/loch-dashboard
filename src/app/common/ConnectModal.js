@@ -21,7 +21,7 @@ import KuCoinIcon from "../../assets/images/icons/kucoin.svg";
 
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
-import backIcon from "../../assets/images/icons/Back-icon.svg";
+import backIcon from "../../assets/images/icons/back-icon.svg";
 import Slider from "react-slick";
 import { addUpdateAccount, getUserAccount } from "../cost/Api";
 import { getExchangeBalance } from "../Portfolio/Api";
@@ -1320,6 +1320,11 @@ class ConnectModal extends BaseReactComponent {
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
+        animation={
+          this.props.modalAnimation !== undefined
+            ? this.props.modalAnimation
+            : true
+        }
       >
         <Modal.Header>
           {(selection !== null || this.props.ishome) && (

@@ -1,63 +1,66 @@
 import React from "react";
+import { connect } from "react-redux";
+import { Button, Image } from "react-bootstrap";
+
 import {
   BaseReactComponent,
   CustomTextControl,
-  Form,
-  FormElement,
   FormValidator,
+  FormElement,
+  Form,
 } from "../../utils/form";
-import { connect } from "react-redux";
-import { Button, Image } from "react-bootstrap";
-import DeleteIcon from "../../assets/images/icons/delete-icon.png";
-import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
-import CustomButton from "../../utils/form/CustomButton";
 import {
-  getAllCoins,
-  detectCoin,
   createAnonymousUserApi,
   getAllParentChains,
+  detectNameTag,
+  getAllCoins,
+  detectCoin,
 } from "./Api";
-import CustomChip from "../../utils/commonComponent/CustomChip";
-import { getPadding } from "../../utils/ReusableFunctions";
 import {
   DeleteWalletAddress,
-  PreviewDemo,
-  AddTextbox,
-  LPC_Go,
-  LandingPagePodName,
   LandingPageNickname,
   AddWalletAddress,
+  AddTextbox,
+  LPC_Go,
 } from "../../utils/AnalyticsFunctions.js";
+
+import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
+import DeleteIcon from "../../assets/images/icons/delete-icon.png";
+import { GetAllPlan, updateUserWalletApi } from "../common/Api";
+import CustomButton from "../../utils/form/CustomButton";
+import { CustomCoin } from "../../utils/commonComponent";
 import { getCurrentUser } from "../../utils/ManageToken";
-import UpgradeModal from "../common/upgradeModal";
-import { GetAllPlan, GetDefaultPlan, updateUserWalletApi } from "../common/Api";
 import LinkIconBtn from "../../assets/images/link.svg";
+import UpgradeModal from "../common/upgradeModal";
 
 // upload csv
-import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
-import FileIcon from "../../assets/images/icons/file-text.svg";
 import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
 import ClockIcon from "../../assets/images/icons/clock-icon.svg";
+import FileIcon from "../../assets/images/icons/file-text.svg";
 import Papa from "papaparse";
 class AddWallet extends BaseReactComponent {
   constructor(props) {
     super(props);
-    // console.log("walletAddress", props.walletAddress);
     this.state = {
       showModal: true,
       signIn: false,
       addButtonVisible: false,
       pageName: "Landing Page",
-      walletInput: props.walletAddress
+      walletInput: props?.walletAddress
         ? props.walletAddress
         : [
             {
-              id: "wallet1",
+              id: `wallet1`,
               address: "",
               coins: [],
+              displayAddress: "",
+              wallet_metadata: {},
               nickname: "",
               showAddress: true,
               showNickname: true,
+              apiAddress: "",
+              showNameTag: true,
+              nameTag: "",
             },
           ],
       loading: false,
@@ -66,7 +69,6 @@ class AddWallet extends BaseReactComponent {
       isStatic: false,
       triggerId: 0,
       GoToHome: false,
-      connectExchange: true,
       deletedAddress: [],
 
       // upload csv/txt
@@ -120,11 +122,9 @@ class AddWallet extends BaseReactComponent {
   };
 
   handleUpload = () => {
-    // console.log("test", this.state.userPlan?.upload_csv);
     if (this.state.userPlan?.upload_csv) {
       this.fileInputRef.current.click();
     } else {
-      // console.log("test2");
       this.setState(
         {
           triggerId: 8,
@@ -134,15 +134,11 @@ class AddWallet extends BaseReactComponent {
         }
       );
     }
-    // console.log("upload click");
   };
 
   handleFileSelect = (event) => {
-    // console.log("con");
     const file = event.target.files[0];
     const name = event.target.files[0]?.name;
-
-    // console.log(name)
 
     if (this.state.showWarningMsg) {
       this.setState({
@@ -157,6 +153,8 @@ class AddWallet extends BaseReactComponent {
             showAddress: true,
             showNickname: true,
             apiAddress: "",
+            showNameTag: true,
+            nameTag: "",
           },
         ],
         uploadStatus: "Uploading",
@@ -198,10 +196,10 @@ class AddWallet extends BaseReactComponent {
               showAddress: true,
               showNickname: true,
               apiAddress: e[0],
+              showNameTag: true,
+              nameTag: "",
             });
           });
-
-          // console.log("state", this.state.walletInput, prevAddressList, addressList);
 
           // check
           let total_address = prevAddressList?.length + addressList?.length + 1;
@@ -265,12 +263,9 @@ class AddWallet extends BaseReactComponent {
               }
             );
           }
-
-          // console.log(results.data, addressList, prevAddressList);
         },
       });
     } else {
-      // console.log("Invalid file type. Only CSV and text files are allowed.");
     }
     event.target.value = "";
   };
@@ -294,7 +289,7 @@ class AddWallet extends BaseReactComponent {
   //   }, () => {
   //     let value = this.state.upgradeModal ? false : true;
   //     this.props.hideModal(value);
-  //     // console.log("eejbhf")
+
   //     const userDetails = JSON.parse(localStorage.getItem("lochUser"));
   //     if (userDetails) {
   //       this.props.history.push("/home")
@@ -317,7 +312,7 @@ class AddWallet extends BaseReactComponent {
         this.props.exchanges
           ?.filter((e) => e.isActive)
           .map(
-            (e) => (text = text == "" ? text + e.name : text + ", " + e.name)
+            (e) => (text = text == "" ? text + e?.name : text + ", " + e?.name)
           )
       ).then(() => {
         this.setState({
@@ -342,6 +337,9 @@ class AddWallet extends BaseReactComponent {
     if (this.state.userPlan === null) {
       this.state.userPlan = JSON.parse(localStorage.getItem("currentPlan"));
     }
+    if (this.state.walletInput !== prevState.walletInput) {
+      this.props.copyWalletAddress(this.state.walletInput);
+    }
   }
 
   nicknameOnChain = (e) => {
@@ -350,12 +348,12 @@ class AddWallet extends BaseReactComponent {
     let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
     if (foundIndex > -1) {
       // let prevValue = walletCopy[foundIndex].nickname;
-      // console.log(prevValue)
+
       walletCopy[foundIndex].nickname = value;
 
       // walletCopy[foundIndex].trucatedAddress = value
     }
-    // console.log(walletCopy)
+
     this.setState({
       // addButtonVisible: this.state.walletInput.some((wallet) =>
       //   wallet.address ? true : false
@@ -378,7 +376,7 @@ class AddWallet extends BaseReactComponent {
 
       // walletCopy[foundIndex].trucatedAddress = value
     }
-    // console.log(walletCopy)
+
     this.setState({
       // addButtonVisible: this.state.walletInput.some((wallet) =>
       //   wallet.address ? true : false
@@ -393,7 +391,7 @@ class AddWallet extends BaseReactComponent {
     let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
     // if (foundIndex > -1) {
     //   // let prevValue = walletCopy[foundIndex].nickname;
-    //   // console.log(prevValue)
+
     //   walletCopy[foundIndex].showAddress = true;
     //   walletCopy[foundIndex].showNickname = true;
 
@@ -410,7 +408,7 @@ class AddWallet extends BaseReactComponent {
           walletCopy[i].nickname !== "" ? true : false;
       }
     });
-    // console.log(walletCopy)
+
     this.setState({
       // addButtonVisible: this.state.walletInput.some((wallet) =>
       //   wallet.address ? true : false
@@ -425,10 +423,14 @@ class AddWallet extends BaseReactComponent {
     let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
     if (foundIndex > -1) {
       let prevValue = walletCopy[foundIndex].address;
-      // console.log(prevValue)
+
       walletCopy[foundIndex].address = value;
       if (value === "" || prevValue !== value) {
         walletCopy[foundIndex].coins = [];
+      }
+      if (value === "") {
+        walletCopy[foundIndex].coinFound = false;
+        walletCopy[foundIndex].nickname = "";
       }
       // walletCopy[foundIndex].trucatedAddress = value
     }
@@ -444,7 +446,7 @@ class AddWallet extends BaseReactComponent {
     // timeout;
     this.timeout = setTimeout(() => {
       this.getCoinBasedOnWalletAddress(name, value);
-    }, 500);
+    }, 1000);
   };
 
   getCoinBasedOnWalletAddress = (name, value) => {
@@ -463,6 +465,20 @@ class AddWallet extends BaseReactComponent {
           },
           this
         );
+        // this.props.detectNameTag(
+        //   {
+        //     id: name,
+        //     coinCode: parentCoinList[i].code,
+        //     coinSymbol: parentCoinList[i].symbol,
+        //     coinName: parentCoinList[i].name,
+        //     address: value,
+        //     coinColor: parentCoinList[i].color,
+        //     subChains: parentCoinList[i].sub_chains,
+        //   },
+        //   this,
+        //   false,
+        //   i
+        // );
       }
     }
   };
@@ -482,14 +498,14 @@ class AddWallet extends BaseReactComponent {
         newCoinList.push({
           chain_detected: data.chain_detected,
           coinCode: item.code,
-          coinName: item.name,
+          coinName: item?.name,
           coinSymbol: item.symbol,
           coinColor: item.color,
         })
       );
     let i = this.state.walletInput.findIndex((obj) => obj.id === data.id);
     let newAddress = [...this.state.walletInput];
-    // data.address === newAddress[i].address && console.log("heyyy", newAddress[i].address, data.address)
+
     //new code
     data.address !== newAddress[i].address
       ? (newAddress[i].coins = [])
@@ -509,6 +525,20 @@ class AddWallet extends BaseReactComponent {
       walletInput: newAddress,
     });
   };
+  handleSetNameTag = (data, nameTag) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        nameTag: nameTag,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
 
   addInputField = () => {
     if (
@@ -523,6 +553,8 @@ class AddWallet extends BaseReactComponent {
         nickname: "",
         showAddress: true,
         showNickname: true,
+        showNameTag: true,
+        nameTag: "",
       });
       this.setState({
         walletInput: this.state.walletInput,
@@ -547,14 +579,24 @@ class AddWallet extends BaseReactComponent {
       DeleteWalletAddress({
         address: wallet.address,
       });
-      this.setState({
-        walletInput: this.state.walletInput,
-      });
+      this.setState(
+        {
+          walletInput: this.state.walletInput,
+        },
+        () => {
+          if (this.state.walletInput.length === 1) {
+            this.setState({
+              addButtonVisible: this.state.walletInput.some((wallet) =>
+                wallet.address ? true : false
+              ),
+            });
+          }
+        }
+      );
     }
-    // console.log("Delete", wallet.address);
   };
 
-  isDisabled = () => {
+  isDisabled = (isLoading) => {
     let isDisableFlag = true;
     // if (this.state.walletInput.length <= 0) {
     //     isDisableFlag = true;
@@ -573,11 +615,15 @@ class AddWallet extends BaseReactComponent {
         }
       }
     });
+    if (isLoading && isDisableFlag) {
+      if (this.state.walletInput.length > 1) {
+        return false;
+      }
+    }
     return isDisableFlag;
   };
 
   onValidSubmit = () => {
-    // console.log("onvald")
     const islochUser = localStorage.getItem("lochDummyUser");
     if (islochUser) {
       this.updateWallet();
@@ -586,7 +632,6 @@ class AddWallet extends BaseReactComponent {
       let addWallet = this.state.walletInput;
       let finalArr = [];
 
-      //  console.log("cjeb", addWallet);
       let addressList = [];
 
       let nicknameArr = {};
@@ -614,22 +659,17 @@ class AddWallet extends BaseReactComponent {
         };
       });
 
-      // console.log("final array", addressList);
-
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
       data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
       // data.append("link", );
       createAnonymousUserApi(data, this, finalArr, null);
-      // console.log(finalArr);
 
       const address = finalArr?.map((e) => e.address);
-      // console.log("address", address);
 
       const unrecog_address = finalArr
         .filter((e) => !e.coinFound)
         .map((e) => e.address);
-      // console.log("Unreq address", unrecog_address);
 
       const blockchainDetected = [];
       const nicknames = [];
@@ -645,8 +685,6 @@ class AddWallet extends BaseReactComponent {
           nicknames.push({ address: address, nickname: nickname });
         });
 
-      // console.log("blockchain detected", blockchainDetected);
-
       LPC_Go({
         addresses: address,
         ENS: address,
@@ -659,13 +697,6 @@ class AddWallet extends BaseReactComponent {
   };
 
   updateWallet = () => {
-    // console.log(
-    //   "add wallet list",
-    //   this.state.total_addresses + this.state.addWalletList?.length >
-    //     this.state.userPlan.wallet_address_limit,
-    //   this.state.total_addresses , this.state.addWalletList?.length ,
-    //     this.state.userPlan.wallet_address_limit
-    // );
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
@@ -678,11 +709,6 @@ class AddWallet extends BaseReactComponent {
 
       for (let i = 0; i < this.state.walletInput.length; i++) {
         let curr = this.state.walletInput[i];
-        // console.log(
-        //   "current address",
-        //   curr,
-        //   "arr",
-        //   arr,
 
         // );
         if (!arr.includes(curr.apiAddress?.trim()) && curr.address) {
@@ -692,7 +718,6 @@ class AddWallet extends BaseReactComponent {
           arr.push(curr.displayAddress?.trim());
           arr.push(curr.apiAddress?.trim());
           addressList.push(curr.address?.trim());
-          //  console.log("curr add", curr.address, "dis", curr.displayAddress,"cur api", curr.apiAddress)
         }
       }
 
@@ -719,19 +744,14 @@ class AddWallet extends BaseReactComponent {
       // if (this.props.handleUpdateWallet) {
       //     this.props.handleUpdateWallet()
       // }
-      // console.log("fix",this.state.addWalletList);
       const address = this.state.walletInput?.map((e) => e.address);
-      // console.log("address", address);
       const addressDeleted = this.state.deletedAddress;
-      // console.log("Deteted address", addressDeleted);
       const unrecog_address = this.state.walletInput
         ?.filter((e) => !e.coinFound)
         ?.map((e) => e.address);
-      // console.log("Unreq address", unrecog_address);
       const recog_address = this.state.walletInput
         ?.filter((e) => e.coinFound)
         ?.map((e) => e.address);
-      // console.log("req address", recog_address);
 
       const blockchainDetected = [];
       const nicknames = [];
@@ -747,7 +767,6 @@ class AddWallet extends BaseReactComponent {
           nicknames.push({ address: address, nickname: nickname });
         });
 
-      // console.log("blockchain detected", blockchainDetected);
       AddWalletAddress({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
@@ -769,10 +788,48 @@ class AddWallet extends BaseReactComponent {
   handleTabPress = (event) => {
     if (event.key === "Tab") {
       event.preventDefault();
-      // console.log("yab press");
       // your function code here
       this.addInputField();
     }
+  };
+  shouldRenderDelete = (index) => {
+    let letItRender = true;
+    this.state.walletInput?.map((res, i) => {
+      if (
+        this.state.walletInput[index].address &&
+        res.id === `wallet${index + 1}`
+      ) {
+        if (
+          (!res.coinFound || res.coins.length <= 0) &&
+          res.coins.length !== this.props.OnboardingState.coinsList.length
+        ) {
+          letItRender = false;
+        }
+      }
+    });
+
+    return letItRender;
+  };
+  shouldRenderDeleteLineTwo = (showAddress, index) => {
+    if (showAddress) {
+      return false;
+    }
+    let letItRender = true;
+    this.state.walletInput?.map((res, i) => {
+      if (
+        this.state.walletInput[index].address &&
+        res.id === `wallet${index + 1}`
+      ) {
+        if (
+          (!res.coinFound || res.coins.length <= 0) &&
+          res.coins.length !== this.props.OnboardingState.coinsList.length
+        ) {
+          letItRender = false;
+        }
+      }
+    });
+
+    return letItRender;
   };
   render() {
     return (
@@ -785,157 +842,196 @@ class AddWallet extends BaseReactComponent {
                 : this.handleSignText
             }
           >
-            <div className="ob-modal-body-wrapper">
-              <div className="ob-modal-body-1">
+            <div className="addWalletWrapperContainerParent">
+              <div className="addWalletWrapperContainer">
                 {this.state.walletInput?.map((c, index) => {
-                  // console.log(c);
                   return (
-                    <div
-                      className={`ob-wallet-input-wrapper ${
-                        this.state.walletInput[index].address
-                          ? "is-valid"
-                          : null
-                      }`}
-                      style={
-                        index == this.state.walletInput.length - 1
-                          ? { marginBottom: 0 }
-                          : {}
-                      }
-                      key={index}
-                      id={`add-wallet-${index}`}
-                      // onFocus={(e) => {
-                      //   console.log(e);
-                      //   this.FocusInInput(`wallet${index + 1}`);
-                      // }}
-                      // onBlur={(e) => {
-                      //   console.log(e);
-                      //   this.FocusOutInput(`wallet${index + 1}`);
-                      // }}
-                    >
-                      <>
-                        {this.state.walletInput.length > 1 ? (
-                          <Image
-                            key={index}
-                            className={`ob-modal-body-del`}
-                            // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
-                            src={DeleteIcon}
-                            onClick={() => this.deleteInputField(index, c)}
-                          />
-                        ) : null}
-                        {c.showAddress && (
-                          <input
-                            autoFocus
-                            name={`wallet${index + 1}`}
-                            value={c.address || ""}
-                            className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text`}
-                            placeholder="Paste any wallet address or ENS here"
-                            title={c.address || ""}
-                            // style={{paddingRight: divWidth}}
-                            style={getPadding(
-                              `add-wallet-${index}`,
-                              c,
-                              this.props.OnboardingState
-                            )}
-                            // onKeyUp={(e) => this.setState({ loading: true })}
-                            onChange={(e) => this.handleOnChange(e)}
-                            // tabIndex={index}
-                            onKeyDown={this.handleTabPress}
-                            onFocus={(e) => {
-                              // console.log(e);
-                              this.FocusInInput(e);
-                            }}
-                            // onBlur={(e) => {
-                            //   // console.log(e);
-                            //   // this.FocusOutInput(e);
-                            // }}
-                          />
-                        )}
-                        {c.coinFound && c.showNickname && (
-                          <input
-                            name={`wallet${index + 1}`}
-                            value={c.nickname || ""}
-                            className={`inter-display-regular f-s-15 lh-20 ob-modal-body-text`}
-                            placeholder="Enter nickname"
-                            title={c.nickname || ""}
-                            // style={{paddingRight: divWidth}}
-                            style={getPadding(
-                              `add-wallet-nickname-${index}`,
-                              c,
-                              this.props.OnboardingState
-                            )}
-                            // onKeyUp={(e) => this.setState({ loading: true })}
-                            onChange={(e) => {
-                              this.nicknameOnChain(e);
-                              // console.log(e.target)
-                            }}
-                            onBlur={(e) => {
-                              // console.log(e);
-                              // this.FocusOutInput(e);
-                              LandingPageNickname({
-                                session_id: getCurrentUser().id,
-                                email_address: getCurrentUser().email,
-                                nickname: e.target?.value,
-                                address: c.address,
-                              });
-                            }}
-                            // autoFocus
-                            onFocus={(e) => {
-                              // console.log(e);
-                              this.FocusInInput(e);
-                            }}
-                          />
-                        )}
-                        {this.state.walletInput?.map((e, i) => {
-                          if (
-                            this.state.walletInput[index].address &&
-                            e.id === `wallet${index + 1}`
-                          ) {
-                            // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
-                            if (e.coinFound && e.coins.length > 0) {
-                              return (
-                                <CustomChip
-                                  coins={e.coins.filter(
-                                    (c) => c.chain_detected
-                                  )}
-                                  key={i}
-                                  isLoaded={true}
-                                ></CustomChip>
-                              );
-                            } else {
-                              if (
-                                e.coins.length ===
-                                this.props.OnboardingState.coinsList.length
-                              ) {
-                                return (
-                                  <CustomChip
-                                    coins={null}
-                                    key={i}
-                                    isLoaded={true}
-                                  ></CustomChip>
-                                );
-                              } else {
-                                return (
-                                  <CustomChip
-                                    coins={null}
-                                    key={i}
-                                    isLoaded={false}
-                                  ></CustomChip>
-                                );
-                              }
-                            }
-                          } else {
-                            return "";
-                          }
-                        })}
-                      </>
+                    <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
+                      {this.state.walletInput.length > 1 ? (
+                        <Image
+                          key={index}
+                          className={`awOldDelBtn`}
+                          // ${this.isDisabled()&& c.address  ? 'not-allowed' : ""}
+                          src={DeleteIcon}
+                          onClick={() => this.deleteInputField(index, c)}
+                        />
+                      ) : (
+                        <Image
+                          key={index}
+                          className={`awOldDelBtn fakeBtn`}
+                          src={DeleteIcon}
+                        />
+                      )}
+                      <div
+                        className={`awInputWrapper ${
+                          this.state.walletInput[index].address
+                            ? "isAwInputWrapperValid"
+                            : null
+                        }`}
+                      >
+                        <>
+                          {c.showAddress && (
+                            <div className="awTopInputWrapper">
+                              <div className="awInputContainer">
+                                <input
+                                  autoFocus
+                                  name={`wallet${index + 1}`}
+                                  value={c.address || ""}
+                                  className={`inter-display-regular f-s-15 lh-20 awInput`}
+                                  placeholder="Paste any wallet address here"
+                                  title={c.address || ""}
+                                  onChange={(e) => this.handleOnChange(e)}
+                                  onKeyDown={this.handleTabPress}
+                                  onFocus={(e) => {
+                                    this.FocusInInput(e);
+                                  }}
+                                />
+                              </div>
+
+                              {this.state.walletInput?.map((e, i) => {
+                                if (
+                                  this.state.walletInput[index].address &&
+                                  e.id === `wallet${index + 1}`
+                                ) {
+                                  // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                  if (e.coinFound && e.coins.length > 0) {
+                                    return (
+                                      <CustomCoin
+                                        isStatic
+                                        coins={e.coins.filter(
+                                          (c) => c.chain_detected
+                                        )}
+                                        key={i}
+                                        isLoaded={true}
+                                      />
+                                    );
+                                  } else {
+                                    if (
+                                      e.coins.length ===
+                                      this.props.OnboardingState.coinsList
+                                        .length
+                                    ) {
+                                      return (
+                                        <CustomCoin
+                                          isStatic
+                                          coins={null}
+                                          key={i}
+                                          isLoaded={true}
+                                        />
+                                      );
+                                    } else {
+                                      return (
+                                        <CustomCoin
+                                          isStatic
+                                          coins={null}
+                                          key={i}
+                                          isLoaded={false}
+                                        />
+                                      );
+                                    }
+                                  }
+                                } else {
+                                  return "";
+                                }
+                              })}
+                            </div>
+                          )}
+                          {c.coinFound && c.showNickname && (
+                            <div
+                              className={`awBottomInputWrapper ${
+                                c.showAddress ? "mt-2" : ""
+                              }`}
+                            >
+                              <div className="awInputContainer">
+                                {/* <div className="awLable">Nickname</div> */}
+                                <input
+                                  name={`wallet${index + 1}`}
+                                  value={c.nickname || ""}
+                                  className={`inter-display-regular f-s-15 lh-20 awInput`}
+                                  placeholder="Enter nickname"
+                                  title={c.nickname || ""}
+                                  onChange={(e) => {
+                                    this.nicknameOnChain(e);
+                                  }}
+                                  onBlur={(e) => {
+                                    LandingPageNickname({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                      nickname: e.target?.value,
+                                      address: c.address,
+                                    });
+                                  }}
+                                  onFocus={(e) => {
+                                    this.FocusInInput(e);
+                                  }}
+                                />
+                              </div>
+                              {!c.showAddress &&
+                                this.state.walletInput?.map((e, i) => {
+                                  if (
+                                    this.state.walletInput[index].address &&
+                                    e.id === `wallet${index + 1}`
+                                  ) {
+                                    // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
+                                    if (e.coinFound && e.coins.length > 0) {
+                                      return (
+                                        <CustomCoin
+                                          isStatic
+                                          coins={e.coins.filter(
+                                            (c) => c.chain_detected
+                                          )}
+                                          key={i}
+                                          isLoaded={true}
+                                        />
+                                      );
+                                    } else {
+                                      if (
+                                        e.coins.length ===
+                                        this.props.OnboardingState.coinsList
+                                          .length
+                                      ) {
+                                        return (
+                                          <CustomCoin
+                                            isStatic
+                                            coins={null}
+                                            key={i}
+                                            isLoaded={true}
+                                          />
+                                        );
+                                      } else {
+                                        return (
+                                          <CustomCoin
+                                            isStatic
+                                            coins={null}
+                                            key={i}
+                                            isLoaded={false}
+                                          />
+                                        );
+                                      }
+                                    }
+                                  } else {
+                                    return "";
+                                  }
+                                })}
+                              {/* {c.showNameTag && c.nameTag ? (
+                                <div className="awBlockContainer">
+                                  <div className="awLable">Name tag</div>
+                                  <div className="awNameTag">{c.nameTag}</div>
+                                </div>
+                              ) : null} */}
+                            </div>
+                          )}
+                        </>
+                      </div>
                     </div>
                   );
                 })}
               </div>
             </div>
+
             {this.state.addButtonVisible ? (
-              <div className="ob-modal-body-2">
-                <Button className="grey-btn" onClick={this.addInputField}>
+              <div className="addAnotherBtnContainer">
+                <Button className="grey-btn w-100" onClick={this.addInputField}>
                   <Image src={PlusIcon} /> Add another
                 </Button>
               </div>
@@ -991,39 +1087,20 @@ class AddWallet extends BaseReactComponent {
                   buttonText="Preview demo instead"
                   onClick={() => {
                     PreviewDemo({});
-                    console.log("Preview");
                   }}
                 /> */}
               <CustomButton
                 className="primary-btn go-btn"
                 type="submit"
                 isLoading={
-                  this.state.addButtonVisible ? this.isDisabled() : false
+                  this.state.addButtonVisible ? this.isDisabled(true) : false
                 }
                 isDisabled={
-                  this.state.addButtonVisible ? this.isDisabled() : false
+                  this.state.addButtonVisible ? this.isDisabled() : true
                 }
-                buttonText={
-                  this.state.addButtonVisible ? "Go" : "Sign in instead"
-                }
+                buttonText="Go"
               />
             </div>
-
-            {this.state.addButtonVisible ? (
-              <div className="m-b-30 m-t-30 addWallet-signIn-div">
-                <span className="inter-display-medium f-s-13 m-r-8 lh-16 grey-ADA">
-                  Already have an account?
-                </span>
-                <span
-                  className="inter-display-bold f-s-13 lh-16 black-191 cp"
-                  onClick={this.handleSignText}
-                >
-                  Sign In
-                </span>
-              </div>
-            ) : (
-              ""
-            )}
           </Form>
         ) : (
           <div
@@ -1174,7 +1251,7 @@ class AddWallet extends BaseReactComponent {
             </>
           </div>
         )}
-        {/* {this.state.upgradeModal && (
+        {this.state.upgradeModal && (
           <UpgradeModal
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
@@ -1183,7 +1260,7 @@ class AddWallet extends BaseReactComponent {
             // isShare={localStorage.getItem("share_id")}
             // isStatic={this.state.isStatic}
           />
-        )} */}
+        )}
       </>
     );
   }
@@ -1195,6 +1272,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   getAllCoins,
   detectCoin,
+  detectNameTag,
   createAnonymousUserApi,
   getAllParentChains,
 };

@@ -1171,7 +1171,7 @@ form {
     // background-color: $secondary;
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     outline: none;
     // box-shadow: none;
     // border: 1px solid $black-191;

@@ -2,7 +2,7 @@ import { Badge, Image } from "react-bootstrap";
 import CustomOverlay from "./CustomOverlay";
 import { lightenDarkenColor, loadingAnimation } from "../ReusableFunctions";
 
-function CustomChip({ coins, isLoaded, id, isCohort }) {
+function CustomCoin({ coins, isLoaded, id, isCohort, isStatic }) {
   // console.log("coins", coins);
   if (isCohort) {
     coins = coins?.map((e) => {
@@ -27,7 +27,7 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
             <div
               className="chip-wrapper chipBottomwrapper"
               id={id}
-              style={isCohort ? { position: "static" } : {}}
+              style={isStatic ? { position: "static" } : {}}
             >
               <div className="chip-container-dual">
                 <Image
@@ -56,7 +56,7 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
             <div
               className="chip-wrapper"
               id={id}
-              style={isCohort ? { position: "static" } : {}}
+              style={isStatic ? { position: "static" } : {}}
             >
               <div className="chip-container">
                 <Image
@@ -79,7 +79,7 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
           <div
             className="chip-wrapper"
             id={id}
-            style={isCohort ? { position: "static" } : {}}
+            style={isStatic ? { position: "static" } : {}}
           >
             {/* <div className="chip-container">
                             <Image src={unrecognized} className="unrecognized" style={{border: `1px solid ${lightenDarkenColor("#CACBCC",-0.15)} `}} />
@@ -88,11 +88,7 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
           </div>
         )
       ) : (
-        <div
-          className="chip-wrapper"
-          id={id}
-          style={isCohort ? { position: "static" } : {}}
-        >
+        <div id={id} style={isStatic ? { position: "static" } : {}}>
           {/* <div className="spinner-chip-container">
                             <div className="spinner">
                                 <div className="bounce1"></div>
@@ -107,4 +103,4 @@ function CustomChip({ coins, isLoaded, id, isCohort }) {
   );
 }
 
-export default CustomChip;
+export default CustomCoin;
