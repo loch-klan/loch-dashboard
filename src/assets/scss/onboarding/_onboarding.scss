@@ -476,9 +476,6 @@
             // flex-direction: column;
             margin-top: 1rem;
             margin-bottom: 1rem;
-            .fakeBtn {
-              opacity: 0;
-            }
             .awOldDelBtn {
               border-radius: 0.8rem;
               width: 4rem;
@@ -490,6 +487,10 @@
               &:hover {
                 filter: brightness(0.965);
               }
+            }
+            .fakeBtn {
+              opacity: 0;
+              cursor: default;
             }
             .awInputWrapper {
               border: 0.1rem solid #d4d4d4;
