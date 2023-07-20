@@ -18,14 +18,22 @@ class TopBar extends Component {
       firstExchange: "",
     };
   }
+
   componentDidMount() {
-    this.applyWalletList();
+    if (this.props.walletState?.walletList) {
+      this.applyWalletList();
+    } else {
+      this.applyTempWalletList();
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps?.walletState?.walletList !== this.props.walletState?.walletList
     ) {
       this.applyWalletList();
+    }
+    if (prevProps?.HeaderState !== this.props.HeaderState) {
+      this.applyTempWalletList();
     }
   }
   TruncateText = (string) => {
@@ -41,36 +49,62 @@ class TopBar extends Component {
       const tempWalletList = [];
       const tempExchangeList = [];
       const tempExchangeListImages = [];
-      walletList.map((data) => {
-        if (data?.chains.length === 0) {
-          if (data.protocol) {
-            if (data.protocol.code) {
-              tempExchangeList.push(data.protocol.code);
+      if (walletList) {
+        walletList.map((data) => {
+          if (data?.chains.length === 0) {
+            if (data.protocol) {
+              if (data.protocol.code) {
+                tempExchangeList.push(data.protocol.code);
+              }
+              if (data.protocol.symbol) {
+                tempExchangeListImages.push(data.protocol.symbol);
+              }
             }
-            if (data.protocol.symbol) {
-              tempExchangeListImages.push(data.protocol.symbol);
+          } else {
+            if (data?.nickname) {
+              tempWalletList.push(data.nickname);
+            } else if (data?.tag) {
+              tempWalletList.push(data.tag);
+            } else if (data?.display_address) {
+              tempWalletList.push(data.display_address);
+            } else if (data?.address) {
+              tempWalletList.push(this.TruncateText(data.address));
             }
           }
-        } else {
+          return null;
+        });
+        this.setState({
+          firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
+          totalWallets: tempWalletList.length,
+          walletList: tempWalletList,
+          exchangeList: tempExchangeList,
+          firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
+          exchangeListImages: tempExchangeListImages,
+        });
+      }
+    }
+  };
+  applyTempWalletList = () => {
+    if (this.props.HeaderState?.wallet?.length > 0) {
+      const walletList = this.props.HeaderState?.wallet;
+      const tempWalletList = [];
+      if (walletList) {
+        walletList.map((data) => {
           if (data?.nickname) {
             tempWalletList.push(data.nickname);
-          } else if (data?.tag) {
-            tempWalletList.push(data.tag);
-          } else if (data?.display_address) {
-            tempWalletList.push(data.display_address);
+          } else if (data?.displayAddress) {
+            tempWalletList.push(data.displayAddress);
           } else if (data?.address) {
             tempWalletList.push(this.TruncateText(data.address));
           }
-        }
-      });
-      this.setState({
-        firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
-        totalWallets: tempWalletList.length,
-        walletList: tempWalletList,
-        exchangeList: tempExchangeList,
-        firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
-        exchangeListImages: tempExchangeListImages,
-      });
+          return null;
+        });
+        this.setState({
+          firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
+          totalWallets: tempWalletList.length,
+          walletList: tempWalletList,
+        });
+      }
     }
   };
 
@@ -135,7 +169,9 @@ class TopBar extends Component {
 
 const mapStateToProps = (state) => ({
   walletState: state.WalletState,
+  HeaderState: state.HeaderState,
 });
+
 const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
