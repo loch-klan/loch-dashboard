@@ -31,6 +31,7 @@ import {
 } from "./Api";
 import { getAllWalletApi, updateWalletApi } from "./../wallet/Api";
 import { loadingAnimation, getPadding } from "../../utils/ReusableFunctions";
+import { setHeaderReducer } from "../header/HeaderAction";
 import {
   AddWalletAddress,
   AddWalletAddressNickname,
@@ -718,6 +719,9 @@ class FixAddModal extends BaseReactComponent {
           addWallet?.map((w, i) => {
             w.id = `wallet${i + 1}`;
           });
+          if (addWallet) {
+            this.props.setHeaderReducer(addWallet);
+          }
           localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
           const data = new URLSearchParams();
@@ -997,6 +1001,9 @@ class FixAddModal extends BaseReactComponent {
           nameTag: "",
           loadingNameTag: false,
         });
+      }
+      if (walletList) {
+        this.props.setHeaderReducer(walletList);
       }
       localStorage.setItem("addWallet", JSON.stringify(walletList));
       this.state.onHide();
@@ -1723,6 +1730,7 @@ const mapDispatchToProps = {
   getAllWalletApi,
   getAllParentChains,
   updateWalletListFlag,
+  setHeaderReducer,
   detectNameTag,
 };
 FixAddModal.propTypes = {};
