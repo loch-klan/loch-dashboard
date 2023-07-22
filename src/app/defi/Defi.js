@@ -81,29 +81,31 @@ class Defi extends Component {
     );
   };
   toggleYield = () => {
+    if (!this.state.isYeildToggle) {
+      DefiCredit({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
+    }
     this.setState({
       isYeildToggle: !this.state.isYeildToggle,
       // isDebtToggle: false,
     });
-
-    DefiCredit({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
   };
 
   toggleDebt = () => {
+    if (!this.state.isDebtToggle) {
+      DefiDebt({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.updateTimer();
+    }
     this.setState({
       isDebtToggle: !this.state.isDebtToggle,
       // isYeildToggle: false,
     });
-
-    DefiDebt({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.updateTimer();
   };
 
   startPageView = () => {

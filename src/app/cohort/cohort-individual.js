@@ -139,6 +139,8 @@ class CohortPage extends BaseReactComponent {
       isStatic: false,
       cohortType: PodType.MANUAL,
       addressList: [],
+      isAssetSearchUsed: false,
+      isChainSearchUsed: false,
 
       // defi
       isYeildToggle: false,
@@ -150,32 +152,41 @@ class CohortPage extends BaseReactComponent {
       DefiLoader: false,
     };
   }
-
+  assetSearchIsUsed = () => {
+    this.setState({ isAssetSearchUsed: true });
+  };
+  chainSearchIsUsed = () => {
+    this.setState({ isChainSearchUsed: true });
+  };
   // defi
   toggleYield = () => {
+    if (!this.state.isYeildToggle) {
+      WhaleExpandDefiCredit({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        pod_name: this.state.cohortName,
+      });
+      this.updateTimer();
+    }
     this.setState({
       isYeildToggle: !this.state.isYeildToggle,
       // isDebtToggle: false,
     });
-    WhaleExpandDefiCredit({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      pod_name: this.state.cohortName,
-    });
-    this.updateTimer();
   };
 
   toggleDebt = () => {
+    if (!this.state.isDebtToggle) {
+      WhaleExpandDefiDebt({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        pod_name: this.state.cohortName,
+      });
+      this.updateTimer();
+    }
     this.setState({
       isDebtToggle: !this.state.isDebtToggle,
       // isYeildToggle: false,
     });
-    WhaleExpandDefiDebt({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      pod_name: this.state.cohortName,
-    });
-    this.updateTimer();
   };
 
   showDust = () => {
@@ -184,7 +195,7 @@ class CohortPage extends BaseReactComponent {
         showDust: !this.state.showDust,
       },
       () => {
-        this.getAssetData(this.state.activeFooter);
+        this.getAssetData(this.state.activeFooter, true);
       }
     );
     WhaleExpandHideDust({
@@ -212,7 +223,7 @@ class CohortPage extends BaseReactComponent {
           activeBadgeList: [],
         },
         () => {
-          this.getAssetData(this.state.activeFooter);
+          this.getAssetData(this.state.activeFooter, true);
         }
       );
     } else {
@@ -222,19 +233,21 @@ class CohortPage extends BaseReactComponent {
           activeBadgeList: badge?.map((item) => item.id),
         },
         () => {
-          this.getAssetData(this.state.activeFooter);
+          this.getAssetData(this.state.activeFooter, true);
         }
       );
     }
-
+    const tempIsChainUsed = this.state.isChainSearchUsed;
     WhaleExpandChainFilter({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       pod_name: this.state.cohortName,
       selected:
         badge[0]?.name === "All" ? "All chains" : badge?.map((e) => e?.name),
+      isSearchUsed: tempIsChainUsed,
     });
     this.updateTimer();
+    this.setState({ isChainSearchUsed: false });
   };
 
   handleAsset = (arr) => {
@@ -244,15 +257,18 @@ class CohortPage extends BaseReactComponent {
         activeAsset: arr[0]?.name === "All" ? [] : arr?.map((e) => e?.id),
       },
       () => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
         WhaleExpandAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           pod_name: this.state.cohortName,
           selected:
             arr[0]?.name === "All" ? "All assets" : arr?.map((e) => e?.name),
+          isSearchUsed: tempIsAssetUsed,
         });
         this.updateTimer();
-        this.getAssetData(this.state.activeFooter);
+        this.getAssetData(this.state.activeFooter, true);
+        this.setState({ isAssetSearchUsed: false });
       }
     );
   };
@@ -1264,7 +1280,7 @@ class CohortPage extends BaseReactComponent {
                     LightTheme={true}
                     placeholderName={"asset"}
                     getObj={true}
-
+                    searchIsUsed={this.assetSearchIsUsed}
                     // isChain={true}
                     // selectedTokens={this.state.activeBadge}
                   />
@@ -1276,6 +1292,7 @@ class CohortPage extends BaseReactComponent {
                     action={null}
                     handleClick={this.handleFunctionChain}
                     isChain={true}
+                    searchIsUsed={this.chainSearchIsUsed}
                     // selectedTokens={this.state.activeBadge}
                   />
                 </div>
