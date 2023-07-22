@@ -396,6 +396,10 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
               if (count < 8) {
                 ctx.props.getAssetGraphDataApi(data, ctx, ActionType);
                 count++;
+              } else {
+                if (ActionType === "ASSET_VALUE_GRAPH_DAY") {
+                  ctx.setState({ assetValueDataLoaded: true });
+                }
               }
             }, 15000);
           } else {
