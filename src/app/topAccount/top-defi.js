@@ -397,7 +397,7 @@ class TopDefi extends Component {
             )}
             <PageHeader
               title="Decentralized Finance"
-              subTitle="Decipher all your DeFi data from one place"
+              subTitle="Decipher all your DeFi positions from one place"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               showpath={true}
