@@ -1867,6 +1867,15 @@ export const WhaleSortByName = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale:sort by name");
 };
+export const WhaleSearch = ({ session_id, email_address, searched_for }) => {
+  const event_name = "Whale:search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "searched for": searched_for,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 //Whale:hover pods
 
@@ -3939,11 +3948,39 @@ export const WhaleExpandDefiCredit = ({
   pod_name,
 }) => {
   const event_name =
-    "Whale: Expanded Pod page: Defi balance sheet: yield expanded";
+    "Whale: Expanded Pod page: Defi balance sheet: credit expanded";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "pod name": pod_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: Defi balance sheet: yield expanded");
+};
+export const AddWalletAddressModalOpen = ({
+  session_id,
+  email_address,
+  page,
+}) => {
+  const event_name = "Add Wallet: Modal Opened";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    page: page,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Whale: Expanded Pod page: Defi balance sheet: yield expanded");
+};
+export const AddConnectExchangeModalOpen = ({
+  session_id,
+  email_address,
+  page,
+}) => {
+  const event_name = "Connect Exchange: Modal Opened";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    page: page,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale: Expanded Pod page: Defi balance sheet: yield expanded");
@@ -3972,6 +4009,7 @@ export const WhaleExpandAssetFilter = ({
   email_address,
   selected,
   pod_name,
+  isSearchUsed,
 }) => {
   const event_name = "Whale: Expanded Pod page: asset filter";
   const eventProperties = {
@@ -3979,6 +4017,7 @@ export const WhaleExpandAssetFilter = ({
     "email address": email_address,
     "selected asset": selected,
     "pod name": pod_name,
+    "search used": isSearchUsed,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Whale: Expanded Pod page: asset filter");
@@ -3990,6 +4029,7 @@ export const WhaleExpandChainFilter = ({
   email_address,
   selected,
   pod_name,
+  isSearchUsed,
 }) => {
   const event_name = "Whale: Expanded Pod page: chain filter";
   const eventProperties = {
@@ -3997,6 +4037,7 @@ export const WhaleExpandChainFilter = ({
     "email address": email_address,
     "selected asset": selected,
     "pod name": pod_name,
+    "search used": isSearchUsed,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("WWhale: Expanded Pod page: chain filter");
@@ -4186,15 +4227,14 @@ export const PageviewDefi = ({ session_id, email_address }) => {
   ////console.log("Page View: Defi page");
 };
 
-//Defi: balance sheet: yield expanded - done
+//Defi: balance sheet: credit expanded - done
 export const DefiCredit = ({ session_id, email_address }) => {
-  const event_name = "Defi: balance sheet: yield expanded";
+  const event_name = "Defi: balance sheet: credit expanded";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  ////console.log("Defi: balance sheet: yield expanded");
 };
 
 //Defi: balance sheet: debt expanded - done
