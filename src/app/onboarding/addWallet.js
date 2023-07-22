@@ -456,18 +456,6 @@ class AddWallet extends BaseReactComponent {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
       for (let i = 0; i < parentCoinList.length; i++) {
-        this.props.detectCoin(
-          {
-            id: name,
-            coinCode: parentCoinList[i].code,
-            coinSymbol: parentCoinList[i].symbol,
-            coinName: parentCoinList[i].name,
-            address: value,
-            coinColor: parentCoinList[i].color,
-            subChains: parentCoinList[i].sub_chains,
-          },
-          this
-        );
         this.handleSetNameTagLoadingTrue({
           id: name,
           coinCode: parentCoinList[i].code,
@@ -490,6 +478,18 @@ class AddWallet extends BaseReactComponent {
           this,
           false,
           i
+        );
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this
         );
       }
     }
@@ -1059,6 +1059,7 @@ class AddWallet extends BaseReactComponent {
                               !c.nameTag &&
                               c.loadingNameTag ? (
                                 <div className="awBlockContainer">
+                                  <div className="awLable">Name tag</div>
                                   <CustomCoin
                                     isStatic
                                     coins={null}
