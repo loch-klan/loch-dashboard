@@ -616,7 +616,7 @@ class TopAccountPage extends BaseReactComponent {
                   this.props.history.push("/top-accounts/home");
                 }}
                 // style={{ textDecoration: "underline", cursor: "pointer" }}
-                className="top-account-address"
+                className="resetPreviewAddress"
               >
                 {this.TruncateText(rowData.account)}
               </span>

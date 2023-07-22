@@ -30,29 +30,25 @@ import TransactionIcon from "../../image/TransactionHistoryIcon.svg";
 import DefiIcon from "../../assets/images/icons/defi-icon.svg";
 import netWorthIcon from "../../assets/images/icons/total-net-dark.svg";
 import TrendIcon from "../../assets/images/icons/trending-up.svg";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import {
   amountFormat,
   CurrencyType,
   loadingAnimation,
   numToCurrency,
+  TruncateText,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions";
 import Coin from "../../assets/images/coin-ava.svg";
 import GlobeIcon from "../../assets/images/icons/globe.svg";
-import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import CartIcon from "../../assets/images/icons/cart-dark.svg";
 import TokenIcon from "../../assets/images/icons/token-dark.svg";
 import MedalIcon from "../../assets/images/icons/medal-dark.svg";
 import StarIcon from "../../assets/images/icons/star-dark.svg";
 import ExitOverlay from "../common/ExitOverlay";
-import Form from "../../utils/form/Form";
-import FormElement from "../../utils/form/FormElement";
-import CustomTextControl from "./../../utils/form/CustomTextControl";
 import { toast } from "react-toastify";
 import moment from "moment";
-import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import {
   NotificationAmount,
   NotificationDays,
@@ -60,7 +56,6 @@ import {
   PageViewWhaleExpanded,
   PodNickname,
   TimeSpentWhalePodPage,
-  WhaleCreateAccountModal,
   WhaleExpandAddressCopied,
   WhaleExpandAddressDelete,
   WhaleExpandAssetFilter,
@@ -71,14 +66,20 @@ import {
   WhaleExpandedPodFilter,
   WhaleExpandHideDust,
   WhaleExpandShare,
-  WhalePopup,
+  WhaleIndividualClickedAccount,
 } from "../../utils/AnalyticsFunctions";
 import { connect } from "react-redux";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import UpgradeModal from "../common/upgradeModal";
-import { GetAllPlan, getUser, updateWalletListFlag } from "../common/Api";
+import {
+  GetAllPlan,
+  getUser,
+  updateWalletListFlag,
+  TopsetPageFlagDefault,
+} from "../common/Api";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { EditIcon } from "../../assets/images";
 
 class CohortPage extends BaseReactComponent {
   constructor(props) {
@@ -735,7 +736,37 @@ class CohortPage extends BaseReactComponent {
 
     // console.log("share pod", shareLink);
   };
+  onAccountClick = (account) => {
+    resetPreviewAddress();
+    WhaleIndividualClickedAccount({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      account: account,
+    });
+    this.updateTimer();
+    let obj = JSON.parse(localStorage.getItem("previewAddress"));
+    localStorage.setItem(
+      "previewAddress",
+      JSON.stringify({
+        ...obj,
+        address: account,
+        // nameTag: rowData.tagName ? rowData.tagName : "",
+      })
+    );
+    this.props?.TopsetPageFlagDefault();
 
+    this.props.history.push("/top-accounts/home");
+  };
+  getAddress = (data) => {
+    if (data?.nickname) {
+      return data.nickname;
+    } else if (data?.display_address) {
+      return data.display_address;
+    } else if (data?.wallet_address) {
+      return TruncateText(data.wallet_address);
+    }
+    return "";
+  };
   render() {
     const nav_list = window.location.pathname.split("/");
     let PageName = nav_list[2].replace(/-/g, " ");
@@ -781,7 +812,6 @@ class CohortPage extends BaseReactComponent {
         },
       },
     ];
-
     return (
       <>
         {/* topbar */}
@@ -1855,7 +1885,8 @@ class CohortPage extends BaseReactComponent {
             {/* notification end */}
 
             {/* Address Start */}
-            {this.state.userId && (
+            {this.state.walletAddresses &&
+            this.state.walletAddresses.length > 0 ? (
               <>
                 <div
                   style={{
@@ -1920,7 +1951,7 @@ class CohortPage extends BaseReactComponent {
                     {this.state.walletAddresses &&
                       this.state.walletAddresses?.map((e, i) => {
                         let address =
-                          e?.display_address && e?.display_address != ""
+                          e?.display_address && e?.display_address !== ""
                             ? e?.display_address
                             : e?.wallet_address;
                         return (
@@ -1947,26 +1978,35 @@ class CohortPage extends BaseReactComponent {
                             }
                             className="address-list"
                           >
-                            <div style={{}} className="address-left">
-                              <h4 className="inter-display-medium f-s-13 l-h-16 grey-636">
-                                {address}
+                            <div className="address-left">
+                              <h4
+                                onClick={() => {
+                                  this.onAccountClick(
+                                    e.wallet_address
+                                      ? e.wallet_address
+                                      : address
+                                  );
+                                }}
+                                className="address-left-address inter-display-medium f-s-13 l-h-16 grey-636"
+                              >
+                                {this.getAddress(e)}
                               </h4>
-                              <Image
+                              {/* <Image
                                 src={CopyClipboardIcon}
                                 style={{ marginLeft: "1.5rem" }}
                                 onClick={() => this.copyLink(address)}
-                              />
-                              {this.state.userId && (
+                              /> */}
+                              {/* {this.state.userId && (
                                 <Image
-                                  src={DeleteIcon}
+                                  src={EditIcon}
                                   style={{
                                     width: "1.5rem",
                                     marginLeft: "1.5rem",
                                   }}
                                   onClick={() => this.deleteAddress(address)}
                                 />
-                              )}
-                              {this.state.userId && (
+                              )} */}
+                              {/* {this.state.userId && (
                                 <div className="nickname-input">
                                   <Form
                                     onValidSubmit={() => {
@@ -1994,7 +2034,7 @@ class CohortPage extends BaseReactComponent {
                                     />
                                   </Form>
                                 </div>
-                              )}
+                              )} */}
 
                               {/* <Image
                         src={EditIcon}
@@ -2016,7 +2056,7 @@ class CohortPage extends BaseReactComponent {
                   </div>
                 </div>
               </>
-            )}
+            ) : null}
             {/* Address End  */}
 
             {/* Recommandation Start */}
@@ -2136,6 +2176,7 @@ const mapDispatchToProps = {
   getAllCoins,
   getAllWalletListApi,
   updateWalletListFlag,
+  TopsetPageFlagDefault,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CohortPage);

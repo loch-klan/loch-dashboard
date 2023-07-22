@@ -4537,6 +4537,22 @@ export const TopAccountOutflowHover = ({
   ////console.log("Top accounts: largest outflows hover");
 };
 
+//Whale watch individual: account clicked - done
+export const WhaleIndividualClickedAccount = ({
+  session_id,
+  email_address,
+  account,
+}) => {
+  const event_name = "Whale watch: account clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "selected account": account,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Top accounts: account clicked");
+};
+
 //Top accounts: account clicked - done
 export const TopAccountClickedAccount = ({
   session_id,
