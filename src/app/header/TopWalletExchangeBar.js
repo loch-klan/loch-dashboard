@@ -5,6 +5,11 @@ import { connect } from "react-redux";
 import AddWalletAddress from "../../assets/images/icons/AddWalletAddress.svg";
 import LinkIconBtn from "../../assets/images/link.svg";
 import TopBarDropDown from "./TopBarDropDown";
+import {
+  AddConnectExchangeModalOpen,
+  AddWalletAddressModalOpen,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class TopBar extends Component {
   constructor(props) {
@@ -107,6 +112,24 @@ class TopBar extends Component {
       }
     }
   };
+  passAddWalletClick = () => {
+    const pathName = window.location.pathname;
+    AddWalletAddressModalOpen({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: pathName,
+    });
+    this.props.handleAddWalletClick();
+  };
+  passConnectExchangeClick = () => {
+    const pathName = window.location.pathname;
+    AddConnectExchangeModalOpen({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: pathName,
+    });
+    this.props.handleConnectModal();
+  };
 
   render() {
     return (
@@ -118,7 +141,7 @@ class TopBar extends Component {
               list={this.state.walletList}
               showChecked={true}
               relative={true}
-              handleAddWalletClick={this.props.handleAddWalletClick}
+              handleAddWalletClick={this.passAddWalletClick}
               buttonRef={this.props.buttonRef}
               totalWallets={this.state.totalWallets}
               firstWallet={this.state.firstWallet}
@@ -129,7 +152,7 @@ class TopBar extends Component {
             ref={this.props.buttonRef}
             className="topbar-btn maxWidth50"
             id="address-button"
-            onClick={this.props.handleAddWalletClick}
+            onClick={this.passAddWalletClick}
           >
             <Image className="topBarWalletAdd" src={AddWalletAddress} />
             <span className="dotDotText">Add wallet address</span>
@@ -137,7 +160,7 @@ class TopBar extends Component {
         )}
 
         <div
-          onClick={this.props.handleConnectModal}
+          onClick={this.passConnectExchangeClick}
           className="topbar-btn ml-2 maxWidth50"
         >
           {this.state.exchangeList.length > 0 ? (
