@@ -5017,3 +5017,47 @@ export const NetflowSwitchTop = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
 };
+//Top accounts: Intellignece: Netflows: click to show breakdown - done
+
+export const AssetValueEmailNotify = ({ session_id, email_address }) => {
+  const event_name = "Home Page: Asset value email notified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
+};
+
+//Top accounts: Intellignece: Netflows: click to show breakdown - done
+
+export const TopAssetValueEmailNotify = ({ session_id, email_address }) => {
+  const event_name = "Top accounts: Home: Asset value email notified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
+};
+
+export const AssetValueEmailNotifyClicked = ({ session_id, email_address }) => {
+  const event_name = "Home page: Asset value email notified clicked";
+  const eventProperties = {
+    "session id": session_id,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
+};
+
+export const TopAssetValueEmailNotifyClicked = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Top accounts: Home: Asset value email notified clicked";
+  const eventProperties = {
+    "session id": session_id,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
+};

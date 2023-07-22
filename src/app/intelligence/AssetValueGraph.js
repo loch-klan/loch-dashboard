@@ -71,9 +71,24 @@ class AssetValueGraph extends Component {
       this.checkForInactivity();
     }, 900000);
   };
+  callDateGraph = () => {
+    let addressList = [];
+    this.state.userWalletList?.map((wallet) =>
+      addressList.push(wallet.address)
+    );
+    let data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("group_criteria", GROUP_BY_DATE);
+    this.props.getAssetGraphDataApi(data, this, ASSET_VALUE_GRAPH_DAY);
+  };
   componentDidMount() {
+    if (this.props.portfolioState?.assetValueDataLoaded) {
+      this.setState({
+        assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
+      });
+    }
+    this.callDateGraph();
     this.setState({
-      // assetValueData: this.props.portfolioState.assetValueMonth,
       tab: "day",
     });
 
@@ -101,6 +116,14 @@ class AssetValueGraph extends Component {
     };
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.portfolioState?.assetValueDataLoaded !==
+      this.props.portfolioState?.assetValueDataLoaded
+    ) {
+      this.setState({
+        dataLoaded: this.props.portfolioState.assetValueDataLoaded,
+      });
+    }
     // add wallet
 
     if (prevState.apiResponse !== this.state.apiResponse) {
@@ -197,80 +220,36 @@ class AssetValueGraph extends Component {
     // console.log("data a", this.props);
 
     let ActionType = ASSET_VALUE_GRAPH_DAY;
-    let runApi = false;
+
     if (groupByValue === GROUP_BY_MONTH) {
       ActionType = ASSET_VALUE_GRAPH_MONTH;
-      if (this.props.portfolioState.assetValueMonth) {
-        runApi = false;
-        this.setState({
-          // assetValueData: this.props.portfolioState.assetValueMonth,
-          tab: "month",
-        });
-        // console.log("months");
-      } else {
-        runApi = true;
-        this.setState({
-          // assetValueData: this.props.portfolioState.assetValueMonth,
-          tab: "month",
-        });
-      }
+      this.setState({
+        tab: "month",
+      });
     } else if (groupByValue === GROUP_BY_YEAR) {
       ActionType = ASSET_VALUE_GRAPH_YEAR;
-      if (this.props.portfolioState.assetValueYear) {
-        runApi = false;
-        this.setState({
-          // assetValueData: this.props.portfolioState.assetValueYear,
-          tab: "year",
-        });
-        // console.log("year");
-      } else {
-        runApi = true;
-        this.setState({
-          // assetValueData: this.props.portfolioState.assetValueMonth,
-          tab: "year",
-        });
-      }
+      this.setState({
+        tab: "year",
+      });
     } else if (groupByValue === GROUP_BY_DATE) {
       ActionType = ASSET_VALUE_GRAPH_DAY;
-      if (this.props.portfolioState.assetValueDay) {
-        runApi = false;
-        this.setState({
-          // assetValueData: this.props.portfolioState.assetValueDay,
-          tab: "day",
-        });
-        //  console.log("data");
-      } else {
-        runApi = true;
-        this.setState({
-          // assetValueData: this.props.portfolioState.assetValueDay,
-          tab: "day",
-        });
-      }
-    } else {
-      runApi = true;
-      // console.log("api");
+      this.setState({
+        tab: "day",
+      });
     }
 
-    if (runApi) {
-      //  console.log("api");
-      this.setState({ graphLoading: true });
-      let addressList = [];
-      // console.log("wallet addres", this.state.userWalletList);
-      this.state.userWalletList?.map((wallet) =>
-        addressList.push(wallet.address)
-      );
-      // console.log("addressList", this.state.userWalletList);
-      let data = new URLSearchParams();
-      data.append("wallet_addresses", JSON.stringify(addressList));
-      data.append("group_criteria", groupByValue);
-      this.props.getAssetGraphDataApi(data, this, ActionType);
-
-      // if (this.state.assetValueDataLoaded) {
-      //   setTimeout(() => {
-      //     this.props.getAssetGraphDataApi(data, this, ActionType);
-      //   }, 10000);
-      // }
-    }
+    //  console.log("api");
+    this.setState({ graphLoading: true });
+    let addressList = [];
+    // console.log("wallet addres", this.state.userWalletList);
+    this.state.userWalletList?.map((wallet) =>
+      addressList.push(wallet.address)
+    );
+    // console.log("addressList", this.state.userWalletList);
+    let data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("group_criteria", groupByValue);
+    this.props.getAssetGraphDataApi(data, this, ActionType);
   };
 
   handleGroupBy = (value) => {
@@ -377,8 +356,9 @@ class AssetValueGraph extends Component {
                 graphLoading={this.state.graphLoading}
                 isUpdate={this.state.isUpdate}
                 isPage={true}
-                dataLoaded={this.props.portfolioState.assetValueDataLoaded}
+                dataLoaded={this.state.assetValueDataLoaded}
                 updateTimer={this.updateTimer}
+                activeTab={this.state.tab}
               />
             </div>
             {/* <FeedbackForm page={"Asset Value Graph Page"} /> */}
