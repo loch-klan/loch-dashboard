@@ -11,7 +11,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
-class TopBar extends Component {
+class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -135,7 +135,7 @@ class TopBar extends Component {
     return (
       <div className="topBarContainer">
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletDropdownContainer ml-2 maxWidth50">
+          <div className="topWalletDropdownContainer maxWidth50">
             <TopBarDropDown
               class="topWalletDropdown"
               list={this.state.walletList}
@@ -197,4 +197,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopWalletExchangeBar);
