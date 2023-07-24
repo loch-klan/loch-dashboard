@@ -610,13 +610,19 @@ class TopAccountPage extends BaseReactComponent {
                       nameTag: rowData.tagName ? rowData.tagName : "",
                     })
                   );
+                  localStorage.setItem(
+                    "previewAddressGoToWhaleWatch",
+                    JSON.stringify({
+                      goToWhaleWatch: false,
+                    })
+                  );
                   this.props?.TopsetPageFlagDefault();
 
                   // this.getCoinBasedOnWalletAddress(rowData.account);
                   this.props.history.push("/top-accounts/home");
                 }}
                 // style={{ textDecoration: "underline", cursor: "pointer" }}
-                className="resetPreviewAddress"
+                className="top-account-address"
               >
                 {this.TruncateText(rowData.account)}
               </span>

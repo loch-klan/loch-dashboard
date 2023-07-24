@@ -408,7 +408,15 @@ class CohortPage extends BaseReactComponent {
       this.props.getAllWalletListApi(tempData, this);
     }
   }
-
+  getAverageNetWorth = () => {
+    if (
+      this.state.totalNetWorth === 0 ||
+      this.state.walletAddresses.length === 0
+    ) {
+      return 0;
+    }
+    return this.state.totalNetWorth / this.state.walletAddresses.length;
+  };
   getAssetData = (activeFooter, first) => {
     this.setState({
       PurchasedAssetLoader: true,
@@ -769,6 +777,12 @@ class CohortPage extends BaseReactComponent {
         // nameTag: rowData.tagName ? rowData.tagName : "",
       })
     );
+    localStorage.setItem(
+      "previewAddressGoToWhaleWatch",
+      JSON.stringify({
+        goToWhaleWatch: true,
+      })
+    );
     this.props?.TopsetPageFlagDefault();
 
     this.props.history.push("/top-accounts/home");
@@ -985,10 +999,7 @@ class CohortPage extends BaseReactComponent {
                     style={{ display: "flex", alignItems: "center" }}
                   >
                     {CurrencyType(false)}
-                    {numToCurrency(
-                      this.state.totalNetWorth /
-                        this.state.walletAddresses.length
-                    )}
+                    {numToCurrency(this.getAverageNetWorth())}
                     <span className="inter-display-semi-bold f-s-12 grey-ADA m-l-4">
                       {CurrencyType(true)}
                     </span>
@@ -1998,13 +2009,19 @@ class CohortPage extends BaseReactComponent {
                             <div className="address-left">
                               <h4
                                 onClick={() => {
-                                  this.onAccountClick(
-                                    e.wallet_address
-                                      ? e.wallet_address
-                                      : address
-                                  );
+                                  if (!this.state.userId) {
+                                    this.onAccountClick(
+                                      e.wallet_address
+                                        ? e.wallet_address
+                                        : address
+                                    );
+                                  }
                                 }}
-                                className="address-left-address inter-display-medium f-s-13 l-h-16 grey-636"
+                                className={`${
+                                  this.state.userId
+                                    ? ""
+                                    : "address-left-address-click"
+                                } address-left-address inter-display-medium f-s-13 l-h-16 grey-636`}
                               >
                                 {this.getAddress(e)}
                               </h4>
