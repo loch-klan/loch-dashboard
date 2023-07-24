@@ -739,7 +739,7 @@ class PieChart2 extends BaseReactComponent {
                 self.state.assetTotal
               )}  </h1><p class="inter-display-semi-bold f-s-10 lh-12 grey-7C7 pie-chart-middle-text-currency">${CurrencyType(
                 true
-              )}</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total wallet assets</span></div>`,
+              )}</p></div><span class="inter-display-medium f-s-13 lh-16 grey-7C7">Total assets</span></div>`,
               fontMetrics = this.renderer.fontMetrics(16);
             series.data?.map((e, i) => {
               e.dataLabel

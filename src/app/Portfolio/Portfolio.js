@@ -1948,6 +1948,22 @@ class Portfolio extends BaseReactComponent {
         },
       },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.portfolioState) {
+        const tempWallet = this.props.portfolioState.walletTotal
+          ? this.props.portfolioState.walletTotal
+          : 0;
+        const tempCredit = this.props.defiState.totalYield
+          ? this.props.defiState.totalYield
+          : 0;
+        const tempDebt = this.props.defiState.totalDebt
+          ? this.props.defiState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <div>
         {this.state.loader ? (
@@ -1970,16 +1986,17 @@ class Portfolio extends BaseReactComponent {
                   // decrement={true}
 
                   // total network and percentage calculate
-                  assetTotal={
-                    this.props.portfolioState &&
-                    this.props.portfolioState.walletTotal
-                      ? this.props.portfolioState.walletTotal +
-                        this.props.defiState.totalYield -
-                        this.props.defiState.totalDebt
-                      : 0 +
-                        this.props.defiState.totalYield -
-                        this.props.defiState.totalDebt
-                  }
+                  assetTotal={getTotalAssetValue()}
+                  // assetTotal={
+                  //   this.props.portfolioState &&
+                  //   this.props.portfolioState.walletTotal
+                  //     ? this.props.portfolioState.walletTotal +
+                  //       this.props.defiState.totalYield -
+                  //       this.props.defiState.totalDebt
+                  //     : 0 +
+                  //       this.props.defiState.totalYield -
+                  //       this.props.defiState.totalDebt
+                  // }
                   // history
                   history={this.props.history}
                   // add wallet address modal
@@ -2037,12 +2054,7 @@ class Portfolio extends BaseReactComponent {
                       ? Object.values(this.props.OnboardingState.coinsList)
                       : null
                   }
-                  assetTotal={
-                    this.props.portfolioState &&
-                    this.props.portfolioState.walletTotal
-                      ? this.props.portfolioState.walletTotal
-                      : 0
-                  }
+                  assetTotal={getTotalAssetValue()}
                   assetPrice={
                     this.props.portfolioState.assetPrice &&
                     Object.keys(this.props.portfolioState.assetPrice).length > 0
