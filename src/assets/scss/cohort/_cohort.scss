@@ -262,8 +262,9 @@
       align-items: center;
       .address-left-address {
         text-decoration: underline;
+      }
+      .address-left-address-click {
         cursor: pointer;
-
         &:hover {
           font-weight: 600;
         }
