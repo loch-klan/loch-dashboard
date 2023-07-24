@@ -58,6 +58,11 @@ const setLocalStoraage = () => {
     })
   );
 
+  localStorage.setItem(
+    "assetValueLoader",
+    JSON.stringify({ me: false, topaccount: false })
+  );
+
   resetPreviewAddress();
 };
 
