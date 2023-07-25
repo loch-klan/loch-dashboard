@@ -274,13 +274,25 @@ function Sidebar(props) {
 
     // Discover section
     else if (
+      ["/whale-watch"].includes(activeTab) ||
+      activeTab.includes("/whale-watch")
+    ) {
+      let obj = {
+        me: false,
+        discover: true,
+        intelligence: false,
+        topAccount: false,
+        topAccountintelligence: false,
+      };
+      setSubmenu(obj);
+
+      localStorage.setItem("isSubmenu", JSON.stringify(obj));
+    } else if (
       [
-        "/whale-watch",
         "/top-accounts",
         "/top-accounts/home",
         "/top-accounts/decentralized-finance",
-      ].includes(activeTab) ||
-      activeTab.includes("/whale-watch")
+      ].includes(activeTab)
     ) {
       let obj = {
         me: false,
