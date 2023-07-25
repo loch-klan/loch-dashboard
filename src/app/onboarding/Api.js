@@ -152,16 +152,11 @@ export const detectNameTag = (
           if (res.data.data.result[0] && ctx) {
             const resNameTag = res.data.data.result[0];
             ctx.handleSetNameTag({ ...wallet }, resNameTag);
-          } else {
-            ctx.handleSetNameTagLoadingFalse({ ...wallet });
           }
-        } else {
-          ctx.handleSetNameTagLoadingFalse({ ...wallet });
         }
       })
       .catch((err) => {
         // console.log("Catch", err);
-        ctx.handleSetNameTagLoadingFalse({ ...wallet });
       });
   };
 };
