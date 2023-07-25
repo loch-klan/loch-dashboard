@@ -365,6 +365,7 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
       });
   };
 };
+let count = 1;
 
 export const getAssetGraphDataApi = (data, ctx, ActionType) => {
   // console.log("before",data, ctx, ActionType);
@@ -387,13 +388,34 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
             assetValueDataLoaded: !res.data.data.data_loaded,
           });
           ctx.props.getExternalEventsApi(ctx);
-
-          //  run this function until data loaded
           if (!res.data.data.data_loaded) {
-            //  console.log(data, ctx, ActionType, ctx.state?.currentPage);
+            if (ActionType === "ASSET_VALUE_GRAPH_DAY") {
+              ctx.setState({ assetValueDataLoaded: false });
+            }
             setTimeout(() => {
-              ctx.props.getAssetGraphDataApi(data, ctx, ActionType);
+              if (count < 8) {
+                ctx.props.getAssetGraphDataApi(data, ctx, ActionType);
+                count++;
+              } else {
+                if (ActionType === "ASSET_VALUE_GRAPH_DAY") {
+                  ctx.setState({ assetValueDataLoaded: true });
+                }
+              }
             }, 15000);
+          } else {
+            ctx.setState({ assetValueDataLoaded: true });
+            let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+            if (obj) {
+              localStorage.setItem(
+                "assetValueLoader",
+                JSON.stringify({
+                  me: !ctx?.state?.isTopAccountPage ? false : obj?.me,
+                  topaccount: ctx?.state?.isTopAccountPage
+                    ? false
+                    : obj?.topaccount,
+                })
+              );
+            }
           }
         } else {
           toast.error(res.data.message || "Something Went Wrong");
@@ -642,7 +664,6 @@ export const getProtocolBalanceApi = (ctx, data) => {
 
           let totalD = 0;
           DebtValues.map((e) => (totalD = totalD + e.totalPrice));
-          // console.log("Yeild", totalY, "debt", totalD);
 
           setTimeout(() => {
             dispatch({
@@ -671,4 +692,29 @@ export const getProtocolBalanceApi = (ctx, data) => {
         console.log("Catch", err);
       });
   };
+};
+
+export const AssetValueEmail = (data, ctx) => {
+  postLoginInstance
+    .post("wallet/user-wallet/notify-asset-value-chart", data)
+    .then((res) => {
+      if (!res.data.error) {
+        let obj = JSON.parse(localStorage.getItem("assetValueLoader"));
+        localStorage.setItem(
+          "assetValueLoader",
+          JSON.stringify({
+            me: ctx?.props.from === "me" ? true : obj?.me,
+            topaccount:
+              ctx?.props.from === "topaccount" ? true : obj?.topaccount,
+          })
+        );
+        toast.success("Email added");
+        ctx.state.onHide();
+      } else {
+        toast.error(res.data.message || "Something Went Wrong");
+      }
+    })
+    .catch((err) => {
+      console.log("Catch", err);
+    });
 };

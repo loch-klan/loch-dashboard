@@ -16,6 +16,7 @@ import {
   PageViewWhale,
   TimeSpentWhalePod,
   WhaleFilterByChain,
+  WhaleSearch,
   WhaleSortByAmt,
   WhaleSortByDate,
   WhaleSortByName,
@@ -516,6 +517,18 @@ class Cohort extends Component {
       );
 
       this.props.updateCohort(filteredItems);
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+      // timeout;
+      this.timeout = setTimeout(() => {
+        WhaleSearch({
+          email_address: getCurrentUser().email,
+          session_id: getCurrentUser().id,
+          searched_for: event.target.value,
+        });
+      }, 1000);
+
       if (filteredItems.length === 0) {
         this.setState({
           searchNotFound: true,
@@ -701,6 +714,7 @@ class Cohort extends Component {
                   placeholder="Search"
                   onChange={this.handleSearch}
                   className="page-search-input"
+                  value={this.state.search}
                 />
               </div>
             </div>

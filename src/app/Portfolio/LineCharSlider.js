@@ -5,13 +5,9 @@ import { connect } from "react-redux";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import { GraphHeader } from "../common/GraphHeader";
-import CoinBadges from "./../common/CoinBadges";
-import DropDown from "../common/DropDown";
-import TrendingUp from "../../assets/images/icons/TrendingUp.svg";
-import TrendingDown from "../../assets/images/icons/TrendingDown.svg";
 
 import GraphLogo from "../../assets/images/graph-logo.svg";
-import { GroupByOptions, Months } from "../../utils/Constant";
+import { LoaderIcon } from "../../assets/images/icons";
 import {
   AssetValueFilter,
   AssetValueHover,
@@ -25,7 +21,6 @@ import {
   IntlAssetValueMonth,
   IntlAssetValueNavigator,
   IntlAssetValueYear,
-  TitleAssetValueHover,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import moment from "moment";
@@ -44,6 +39,8 @@ import CustomDropdown from "../../utils/form/CustomDropdown";
 import { toast } from "react-toastify";
 import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { BarGraphFooter } from "../common/BarGraphFooter";
+import SwitchButton from "./SwitchButton";
+import AssetValueEmailModal from "./AssetValueEmailModal";
 
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
@@ -64,6 +61,7 @@ class LineChartSlider extends BaseReactComponent {
       rangeSelected: 1,
       isTokenSearchUsed: false,
       isChainSearchUsed: false,
+      emailLoader: false,
     };
   }
   chainSearchIsUsed = () => {
@@ -72,6 +70,11 @@ class LineChartSlider extends BaseReactComponent {
   tokenSearchIsUsed = () => {
     this.setState({ isTokenSearchUsed: true });
   };
+  componentDidMount() {
+    this.setState({
+      emailLoader: !this.props.dataLoaded,
+    });
+  }
   componentDidUpdate(prevProps) {
     if (prevProps.isUpdate !== this.props.isUpdate) {
       // console.log("Something update");
@@ -82,11 +85,14 @@ class LineChartSlider extends BaseReactComponent {
         rangeSelected: 1,
       });
     }
+    if (prevProps.dataLoaded !== this.props.dataLoaded) {
+      this.setState({
+        emailLoader: !this.props.dataLoaded,
+      });
+    }
   }
 
   handleFunction = (badge) => {
-    // console.log("badge", badge)
-
     if (badge?.[0].name === "All") {
       this.setState({
         activeBadge: [{ name: "All", id: "" }],
@@ -202,7 +208,11 @@ class LineChartSlider extends BaseReactComponent {
       });
     // toggleCopied(true)
   };
-
+  handleAskEmail = () => {
+    this.setState({
+      EmailModal: !this.state.EmailModal,
+    });
+  };
   render() {
     const { assetValueData, externalEvents } = this.props;
     // console.log("test")
@@ -1194,7 +1204,6 @@ backdrop-filter: blur(15px);">
       padding: 0,
       boxShadow: "none",
     };
-
     // console.log("selected event",this.state.selectedEvents)
     return (
       <div
@@ -1247,7 +1256,10 @@ backdrop-filter: blur(15px);">
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginBottom: this.props.dataLoaded ? "5rem" : "2rem",
+                        marginBottom:
+                          this.state.emailLoader && this.props.activeTab
+                            ? "5rem"
+                            : "2rem",
                       }}
                     >
                       <div
@@ -1305,19 +1317,24 @@ backdrop-filter: blur(15px);">
                   <span className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis">
                     {CurrencyType()}
                   </span>
-                  {this.props.dataLoaded && (
-                    <h5
-                      className="inter-display-medium f-s-10 lh-14"
+                  {this.state.emailLoader && this.props.activeTab === "day" ? (
+                    <div
                       style={{
                         position: "absolute",
                         right: "0px",
-                        top: !this.props.hideTimeFilter ? "-27px" : "-2px",
+                        top: !this.props.hideTimeFilter ? "-38px" : "-5px",
                         zIndex: 1,
+                        display: "flex",
+                        alignItems: "center",
                       }}
                     >
-                      Don't worry we're still loading all your data
-                    </h5>
-                  )}
+                      <SwitchButton
+                        handleEmail={this.handleAskEmail}
+                        isTopAccount={this.props?.isTopAccountPage}
+                      />
+                      <Image src={LoaderIcon} className="rotate-loader" />
+                    </div>
+                  ) : null}
                   {!this.props.hideTimeFilter && (
                     <>
                       <span
@@ -1566,6 +1583,14 @@ backdrop-filter: blur(15px);">
             </>
           )}
         </>
+        {this.state.EmailModal && (
+          <AssetValueEmailModal
+            show={this.state.EmailModal}
+            onHide={this.handleAskEmail}
+            history={this.props.history}
+            from={this.props?.isTopAccountPage ? "topaccount" : "me"}
+          />
+        )}
       </div>
     );
   }

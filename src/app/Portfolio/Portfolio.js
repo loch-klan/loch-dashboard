@@ -131,7 +131,6 @@ class Portfolio extends BaseReactComponent {
 
       // page loader
       loader: false,
-
       // fix wallet address modal
       fixModal: false,
 
@@ -370,6 +369,11 @@ class Portfolio extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
+    if (this.props.portfolioState?.assetValueDataLoaded) {
+      this.setState({
+        assetValueDataLoaded: this.props.portfolioState.assetValueDataLoaded,
+      });
+    }
     this.setState({
       settings: {
         ...this.state.settings,
@@ -449,6 +453,14 @@ class Portfolio extends BaseReactComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.portfolioState?.assetValueDataLoaded !==
+      this.props.portfolioState?.assetValueDataLoaded
+    ) {
+      this.setState({
+        dataLoaded: this.props.portfolioState.assetValueDataLoaded,
+      });
+    }
     // Wallet update response when press go
     // if (this.state.apiResponse) {
     //   if (this.props.location.state?.noLoad === undefined) {
@@ -621,6 +633,7 @@ class Portfolio extends BaseReactComponent {
 
   apiCall = () => {
     this.props.getAllCoins();
+    this.getGraphData();
     if (this.props.match.params.id) {
       // if share link call this app
       // if (this.state.portfolioLink) {
@@ -2365,10 +2378,9 @@ class Portfolio extends BaseReactComponent {
                         }}
                         hideTimeFilter={true}
                         hideChainFilter={true}
-                        dataLoaded={
-                          this.props.portfolioState.assetValueDataLoaded
-                        }
+                        dataLoaded={this.state.assetValueDataLoaded}
                         updateTimer={this.updateTimer}
+                        activeTab="day"
                       />
                     </div>
                   </Col>
