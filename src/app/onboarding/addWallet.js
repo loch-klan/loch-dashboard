@@ -27,7 +27,6 @@ import {
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import { GetAllPlan, updateUserWalletApi } from "../common/Api";
-import { setHeaderReducer } from "../header/HeaderAction";
 import CustomButton from "../../utils/form/CustomButton";
 import { CustomCoin } from "../../utils/commonComponent";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -673,15 +672,6 @@ class AddWallet extends BaseReactComponent {
     } else {
       let walletAddress = [];
       let addWallet = this.state.walletInput;
-      let addWalletTemp = this.state.walletInput;
-      addWalletTemp?.map((w, i) => {
-        w.id = `wallet${i + 1}`;
-      });
-      if (addWalletTemp) {
-        setTimeout(() => {
-          this.props.setHeaderReducer(addWalletTemp);
-        }, 500);
-      }
       let finalArr = [];
 
       let addressList = [];
@@ -778,9 +768,6 @@ class AddWallet extends BaseReactComponent {
       addWallet?.map((w, i) => {
         w.id = `wallet${i + 1}`;
       });
-      if (addWallet) {
-        this.props.setHeaderReducer(addWallet);
-      }
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
       // this.state?.onHide();
@@ -1342,7 +1329,6 @@ const mapDispatchToProps = {
   detectNameTag,
   createAnonymousUserApi,
   getAllParentChains,
-  setHeaderReducer,
 };
 AddWallet.propTypes = {};
 

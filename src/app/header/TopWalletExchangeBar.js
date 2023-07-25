@@ -11,7 +11,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
-class TopBar extends Component {
+class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,22 +23,14 @@ class TopBar extends Component {
       firstExchange: "",
     };
   }
-
   componentDidMount() {
-    if (this.props.walletState?.walletList) {
-      this.applyWalletList();
-    } else {
-      this.applyTempWalletList();
-    }
+    this.applyWalletList();
   }
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps?.walletState?.walletList !== this.props.walletState?.walletList
     ) {
       this.applyWalletList();
-    }
-    if (prevProps?.HeaderState !== this.props.HeaderState) {
-      this.applyTempWalletList();
     }
   }
   TruncateText = (string) => {
@@ -54,62 +46,36 @@ class TopBar extends Component {
       const tempWalletList = [];
       const tempExchangeList = [];
       const tempExchangeListImages = [];
-      if (walletList) {
-        walletList.map((data) => {
-          if (data?.chains.length === 0) {
-            if (data.protocol) {
-              if (data.protocol.code) {
-                tempExchangeList.push(data.protocol.code);
-              }
-              if (data.protocol.symbol) {
-                tempExchangeListImages.push(data.protocol.symbol);
-              }
+      walletList.map((data) => {
+        if (data?.chains.length === 0) {
+          if (data.protocol) {
+            if (data.protocol.code) {
+              tempExchangeList.push(data.protocol.code);
             }
-          } else {
-            if (data?.nickname) {
-              tempWalletList.push(data.nickname);
-            } else if (data?.tag) {
-              tempWalletList.push(data.tag);
-            } else if (data?.display_address) {
-              tempWalletList.push(data.display_address);
-            } else if (data?.address) {
-              tempWalletList.push(this.TruncateText(data.address));
+            if (data.protocol.symbol) {
+              tempExchangeListImages.push(data.protocol.symbol);
             }
           }
-          return null;
-        });
-        this.setState({
-          firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
-          totalWallets: tempWalletList.length,
-          walletList: tempWalletList,
-          exchangeList: tempExchangeList,
-          firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
-          exchangeListImages: tempExchangeListImages,
-        });
-      }
-    }
-  };
-  applyTempWalletList = () => {
-    if (this.props.HeaderState?.wallet?.length > 0) {
-      const walletList = this.props.HeaderState?.wallet;
-      const tempWalletList = [];
-      if (walletList) {
-        walletList.map((data) => {
+        } else {
           if (data?.nickname) {
             tempWalletList.push(data.nickname);
-          } else if (data?.displayAddress) {
-            tempWalletList.push(data.displayAddress);
+          } else if (data?.tag) {
+            tempWalletList.push(data.tag);
+          } else if (data?.display_address) {
+            tempWalletList.push(data.display_address);
           } else if (data?.address) {
             tempWalletList.push(this.TruncateText(data.address));
           }
-          return null;
-        });
-        this.setState({
-          firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
-          totalWallets: tempWalletList.length,
-          walletList: tempWalletList,
-        });
-      }
+        }
+      });
+      this.setState({
+        firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
+        totalWallets: tempWalletList.length,
+        walletList: tempWalletList,
+        exchangeList: tempExchangeList,
+        firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
+        exchangeListImages: tempExchangeListImages,
+      });
     }
   };
   passAddWalletClick = () => {
@@ -135,7 +101,7 @@ class TopBar extends Component {
     return (
       <div className="topBarContainer">
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletDropdownContainer ml-2 maxWidth50">
+          <div className="topWalletDropdownContainer maxWidth50">
             <TopBarDropDown
               class="topWalletDropdown"
               list={this.state.walletList}
@@ -192,9 +158,10 @@ class TopBar extends Component {
 
 const mapStateToProps = (state) => ({
   walletState: state.WalletState,
-  HeaderState: state.HeaderState,
 });
-
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopWalletExchangeBar);
