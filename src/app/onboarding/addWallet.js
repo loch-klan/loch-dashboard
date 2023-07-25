@@ -27,6 +27,7 @@ import {
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
 import DeleteIcon from "../../assets/images/icons/delete-icon.png";
 import { GetAllPlan, updateUserWalletApi } from "../common/Api";
+import { setHeaderReducer } from "../header/HeaderAction";
 import CustomButton from "../../utils/form/CustomButton";
 import { CustomCoin } from "../../utils/commonComponent";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -61,6 +62,7 @@ class AddWallet extends BaseReactComponent {
               apiAddress: "",
               showNameTag: true,
               nameTag: "",
+              loadingNameTag: false,
             },
           ],
       loading: false,
@@ -155,6 +157,7 @@ class AddWallet extends BaseReactComponent {
             apiAddress: "",
             showNameTag: true,
             nameTag: "",
+            loadingNameTag: false,
           },
         ],
         uploadStatus: "Uploading",
@@ -198,6 +201,7 @@ class AddWallet extends BaseReactComponent {
               apiAddress: e[0],
               showNameTag: true,
               nameTag: "",
+              loadingNameTag: false,
             });
           });
 
@@ -453,6 +457,29 @@ class AddWallet extends BaseReactComponent {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
       for (let i = 0; i < parentCoinList.length; i++) {
+        this.handleSetNameTagLoadingTrue({
+          id: name,
+          coinCode: parentCoinList[i].code,
+          coinSymbol: parentCoinList[i].symbol,
+          coinName: parentCoinList[i].name,
+          address: value,
+          coinColor: parentCoinList[i].color,
+          subChains: parentCoinList[i].sub_chains,
+        });
+        this.props.detectNameTag(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          i
+        );
         this.props.detectCoin(
           {
             id: name,
@@ -465,20 +492,6 @@ class AddWallet extends BaseReactComponent {
           },
           this
         );
-        // this.props.detectNameTag(
-        //   {
-        //     id: name,
-        //     coinCode: parentCoinList[i].code,
-        //     coinSymbol: parentCoinList[i].symbol,
-        //     coinName: parentCoinList[i].name,
-        //     address: value,
-        //     coinColor: parentCoinList[i].color,
-        //     subChains: parentCoinList[i].sub_chains,
-        //   },
-        //   this,
-        //   false,
-        //   i
-        // );
       }
     }
   };
@@ -525,6 +538,34 @@ class AddWallet extends BaseReactComponent {
       walletInput: newAddress,
     });
   };
+  handleSetNameTagLoadingFalse = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: false,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  handleSetNameTagLoadingTrue = (data) => {
+    let newAddress = [...this.state.walletInput];
+    let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+
+    if (index < newAddress.length) {
+      newAddress[index] = {
+        ...this.state.walletInput[index],
+        loadingNameTag: true,
+      };
+    }
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
   handleSetNameTag = (data, nameTag) => {
     let newAddress = [...this.state.walletInput];
     let index = this.state.walletInput.findIndex((obj) => obj.id === data.id);
@@ -533,6 +574,7 @@ class AddWallet extends BaseReactComponent {
       newAddress[index] = {
         ...this.state.walletInput[index],
         nameTag: nameTag,
+        loadingNameTag: false,
       };
     }
     this.setState({
@@ -555,6 +597,7 @@ class AddWallet extends BaseReactComponent {
         showNickname: true,
         showNameTag: true,
         nameTag: "",
+        loadingNameTag: false,
       });
       this.setState({
         walletInput: this.state.walletInput,
@@ -630,6 +673,15 @@ class AddWallet extends BaseReactComponent {
     } else {
       let walletAddress = [];
       let addWallet = this.state.walletInput;
+      let addWalletTemp = this.state.walletInput;
+      addWalletTemp?.map((w, i) => {
+        w.id = `wallet${i + 1}`;
+      });
+      if (addWalletTemp) {
+        setTimeout(() => {
+          this.props.setHeaderReducer(addWalletTemp);
+        }, 500);
+      }
       let finalArr = [];
 
       let addressList = [];
@@ -726,6 +778,9 @@ class AddWallet extends BaseReactComponent {
       addWallet?.map((w, i) => {
         w.id = `wallet${i + 1}`;
       });
+      if (addWallet) {
+        this.props.setHeaderReducer(addWallet);
+      }
       localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
       // this.state?.onHide();
@@ -943,7 +998,7 @@ class AddWallet extends BaseReactComponent {
                               }`}
                             >
                               <div className="awInputContainer">
-                                {/* <div className="awLable">Nickname</div> */}
+                                <div className="awLable">Nickname</div>
                                 <input
                                   name={`wallet${index + 1}`}
                                   value={c.nickname || ""}
@@ -1013,12 +1068,24 @@ class AddWallet extends BaseReactComponent {
                                     return "";
                                   }
                                 })}
-                              {/* {c.showNameTag && c.nameTag ? (
+                              {c.showAddress &&
+                              !c.nameTag &&
+                              c.loadingNameTag ? (
+                                <div className="awBlockContainer">
+                                  <div className="awLable">Name tag</div>
+                                  <CustomCoin
+                                    isStatic
+                                    coins={null}
+                                    isLoaded={false}
+                                  />
+                                </div>
+                              ) : null}
+                              {c.showAddress && c.showNameTag && c.nameTag ? (
                                 <div className="awBlockContainer">
                                   <div className="awLable">Name tag</div>
                                   <div className="awNameTag">{c.nameTag}</div>
                                 </div>
-                              ) : null} */}
+                              ) : null}
                             </div>
                           )}
                         </>
@@ -1275,6 +1342,7 @@ const mapDispatchToProps = {
   detectNameTag,
   createAnonymousUserApi,
   getAllParentChains,
+  setHeaderReducer,
 };
 AddWallet.propTypes = {};
 
