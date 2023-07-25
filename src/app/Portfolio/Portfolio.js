@@ -633,6 +633,7 @@ class Portfolio extends BaseReactComponent {
 
   apiCall = () => {
     this.props.getAllCoins();
+    this.getGraphData();
     if (this.props.match.params.id) {
       // if share link call this app
       // if (this.state.portfolioLink) {
