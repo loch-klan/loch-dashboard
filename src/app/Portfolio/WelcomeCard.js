@@ -106,16 +106,7 @@ export default function WelcomeCard(props) {
       : 0;
   let percent =
     props?.assetTotal && ((difference / props?.assetTotal) * 100).toFixed(2);
-  const changeCurrentAccount = () => {
-    const temp = JSON.parse(
-      localStorage.getItem("previewAddressGoToWhaleWatch")
-    );
-    if (temp && temp.goToWhaleWatch) {
-      props?.history.push("/whale-watch");
-    } else {
-      props?.history.push("/top-accounts");
-    }
-  };
+
   return (
     // <div className="welcome-card-section">
     //   <div className="welcome-card">
@@ -287,7 +278,9 @@ export default function WelcomeCard(props) {
               </div>
               <div
                 className="account-detail-change cp change-text"
-                onClick={changeCurrentAccount}
+                onClick={() => {
+                  props?.history.push("/top-accounts");
+                }}
               >
                 <Image src={ChangeIcon} />
                 <span className="ml-2">Change</span>

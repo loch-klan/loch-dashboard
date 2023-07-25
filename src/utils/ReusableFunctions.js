@@ -3,18 +3,6 @@ import { Image } from "react-bootstrap";
 import { API_LIMIT } from "./Constant";
 import moment from "moment";
 
-// TruncateText
-
-export const TruncateText = (string) => {
-  if (string.length > 6) {
-    return (
-      string.substring(0, 3) +
-      "..." +
-      string.substring(string.length - 3, string.length)
-    );
-  }
-  return string;
-};
 // GET EXTENSION NAME WRAPPER
 export const getExtensionNameWrapper = (
   attachmentName,

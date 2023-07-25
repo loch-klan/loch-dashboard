@@ -182,23 +182,6 @@ export default function WalletCard(props) {
                       )}
                     </>
                   )}
-                  {/* {props.nameTag && (
-                    <>
-                      <span
-                        className="inter-display-regular f-s-13 lh-16"
-                        id="account_number"
-                      >
-                        {props.nameTag}
-                      </span>
-                      {!props.protocol && (
-                        <Image
-                          src={CopyClipboardIcon}
-                          onClick={() => copyContent(props.nameTag)}
-                          className="m-l-10 m-r-12 cp"
-                        />
-                      )}
-                    </>
-                  )} */}
                   {props.wallet_account_number && (
                     <>
                       <span

@@ -291,7 +291,6 @@ class TopPortfolio extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    window.scrollTo(0, 0);
     this.startPageView();
     this.updateTimer(true);
     this.apiCall();

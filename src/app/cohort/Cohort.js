@@ -78,7 +78,6 @@ class Cohort extends Component {
       sortedItem: [],
       isUpdate: 0,
       startTime: "",
-      localCohortState: [],
     };
   }
   startPageView = () => {
@@ -122,11 +121,7 @@ class Cohort extends Component {
     }
     this.startPageView();
     this.updateTimer(true);
-    if (this.props.cohortState) {
-      this.setState({
-        localCohortState: this.props.cohortState,
-      });
-    }
+
     return () => {
       clearInterval(window.checkWhalePodTimer);
     };
@@ -171,14 +166,6 @@ class Cohort extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      this.props.cohortState &&
-      this.props.cohortState !== prevProps.cohortState
-    ) {
-      this.setState({
-        localCohortState: this.props.cohortState,
-      });
-    }
     if (this.state.apiResponse) {
       // console.log("update");
       this.makeApiCall();
@@ -304,7 +291,7 @@ class Cohort extends Component {
       // sortedList: [],
     });
 
-    // this.props.updateCohort([]);
+    this.props.updateCohort([]);
     // if (!this.state.skip) {
     //   this.AddEmailModal();
     // }
@@ -324,7 +311,7 @@ class Cohort extends Component {
   };
 
   sortArray = (key, order) => {
-    let array = this.state.localCohortState?.sortedList; //all data
+    let array = this.props.cohortState?.cardList; //all data
     let sortedList = array.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
@@ -351,12 +338,7 @@ class Cohort extends Component {
     // this.setState({
     //   sortedList,
     // });
-    this.setState({
-      localCohortState: {
-        ...this.props?.cohortState,
-        sortedList: sortedList,
-      },
-    });
+    this.props.updateCohort(sortedList);
   };
 
   handleSort = (e) => {
@@ -449,7 +431,7 @@ class Cohort extends Component {
     }
 
     // console.log("active badge id", activeBadgeIds);
-    let allList = this.state.localCohortState?.cardList; //all data
+    let allList = this.props.cohortState?.cardList; //all data
     let sortedList = [];
     let uniqueitems = [];
 
@@ -483,45 +465,12 @@ class Cohort extends Component {
         : sortedList.length === 0
         ? ""
         : sortedList;
-
-    this.setState({
-      localCohortState: {
-        ...this.props?.cohortState,
-        sortedList: value,
-      },
-    });
+    this.props.updateCohort(value);
   };
 
   // sortByAmount = ()
 
   sortbyUserid = () => {
-    if (this.state.localCohortState.sortedList) {
-      const tempSortedData = this.state.localCohortState.sortedList.sort(
-        (a, b) => {
-          // Compare the user_id property of each object
-          const userA = a.user_id !== null;
-          const userB = b.user_id !== null;
-
-          // If both objects have a user_id, sort them by the user_id value
-          if (userA && userB) {
-            return a.user_id.localeCompare(b.user_id);
-          }
-
-          // If only one of the objects has a user_id, put it first
-          if (userA) {
-            return -1;
-          }
-          if (userB) {
-            return 1;
-          }
-
-          // If neither object has a user_id, maintain their original order
-          return a.id - b.id;
-        }
-      );
-
-      return tempSortedData;
-    }
     const sortedData = this.props.cohortState?.sortedList.sort((a, b) => {
       // Compare the user_id property of each object
       const userA = a.user_id !== null;
@@ -567,12 +516,11 @@ class Cohort extends Component {
         item.name.toLowerCase().includes(event.target.value.toLowerCase())
       );
 
-      this.setState({
-        localCohortState: {
-          ...this.props?.cohortState,
-          sortedList: filteredItems,
-        },
-      });
+      this.props.updateCohort(filteredItems);
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+      // timeout;
       this.timeout = setTimeout(() => {
         WhaleSearch({
           email_address: getCurrentUser().email,
@@ -580,6 +528,7 @@ class Cohort extends Component {
           searched_for: event.target.value,
         });
       }, 1000);
+
       if (filteredItems.length === 0) {
         this.setState({
           searchNotFound: true,
