@@ -527,6 +527,30 @@ export const getProtocolBalanceApi = (ctx, data) => {
 
           const defiData = [];
           tempUserWallet.map((userWalletData) => {
+            let suppliedItems = {
+              type: "Supplied",
+              walletItems: [],
+            };
+            let lentItems = {
+              type: "Lent",
+              walletItems: [],
+            };
+            let rewardItems = {
+              type: "Reward",
+              walletItems: [],
+            };
+            let stakedItems = {
+              type: "Staked",
+              walletItems: [],
+            };
+            let poolItems = {
+              type: "Pool",
+              walletItems: [],
+            };
+            let borrowedItems = {
+              type: "Borrowed",
+              walletItems: [],
+            };
             const curDefiBlock = {
               name: userWalletData.name ? userWalletData.name : "",
               logoUrl: userWalletData.logo_url ? userWalletData.logo_url : "",
@@ -547,75 +571,7 @@ export const getProtocolBalanceApi = (ctx, data) => {
                     return null;
                   });
                 }
-                let type = null;
                 let assetText = "";
-                if (walletItems.supplied) {
-                  totalSuppliedPrice = totalSuppliedPrice + totalUsdValue;
-                  type = "Supplied";
-                  walletItems.supplied.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + "+" + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                } else if (walletItems.lent) {
-                  totalLentPrice = totalLentPrice + totalUsdValue;
-                  type = "Lent";
-                  walletItems.lent.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + "+" + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                } else if (walletItems.reward) {
-                  totalRewardPrice = totalRewardPrice + totalUsdValue;
-                  type = "Reward";
-                  walletItems.reward.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + "+" + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                } else if (walletItems.staked) {
-                  totalStakedPrice = totalStakedPrice + totalUsdValue;
-                  type = "Staked";
-                  walletItems.staked.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + "+" + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                } else if (walletItems.pool) {
-                  totalPoolPrice = totalPoolPrice + totalUsdValue;
-                  type = "Pool";
-                  walletItems.pool.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + " + " + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                } else if (walletItems.borrowed) {
-                  totalBorrowedPrice = totalBorrowedPrice + totalUsdValue;
-                  type = "Borrowed";
-                  walletItems.borrowed.map((tempAssetText) => {
-                    if (assetText) {
-                      assetText = assetText + "+" + tempAssetText;
-                    } else {
-                      assetText = tempAssetText;
-                    }
-                    return null;
-                  });
-                }
                 const tempAllLogos = [];
                 if (walletItems.logo.length > 0) {
                   walletItems.logo.forEach((individualLogos) => {
@@ -624,16 +580,130 @@ export const getProtocolBalanceApi = (ctx, data) => {
                     }
                   });
                 }
-                const tempWalletItem = {
-                  balance: walletItems.balance ? walletItems.balance : [],
-                  logos: tempAllLogos ? tempAllLogos : [],
-                  usdValue: totalUsdValue,
-                  type: type,
-                  asset: assetText,
-                };
-                defiWalletItems.push(tempWalletItem);
+
+                if (walletItems.supplied) {
+                  totalSuppliedPrice = totalSuppliedPrice + totalUsdValue;
+                  walletItems.supplied.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                  const tempWalletItem = {
+                    balance: walletItems.balance ? walletItems.balance : [],
+                    logos: tempAllLogos ? tempAllLogos : [],
+                    usdValue: totalUsdValue,
+                    asset: assetText,
+                  };
+                  suppliedItems.walletItems.push(tempWalletItem);
+                } else if (walletItems.lent) {
+                  totalLentPrice = totalLentPrice + totalUsdValue;
+                  walletItems.lent.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                  const tempWalletItem = {
+                    balance: walletItems.balance ? walletItems.balance : [],
+                    logos: tempAllLogos ? tempAllLogos : [],
+                    usdValue: totalUsdValue,
+                    asset: assetText,
+                  };
+                  lentItems.walletItems.push(tempWalletItem);
+                } else if (walletItems.reward) {
+                  totalRewardPrice = totalRewardPrice + totalUsdValue;
+                  walletItems.reward.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                  const tempWalletItem = {
+                    balance: walletItems.balance ? walletItems.balance : [],
+                    logos: tempAllLogos ? tempAllLogos : [],
+                    usdValue: totalUsdValue,
+                    asset: assetText,
+                  };
+                  rewardItems.walletItems.push(tempWalletItem);
+                } else if (walletItems.staked) {
+                  totalStakedPrice = totalStakedPrice + totalUsdValue;
+                  walletItems.staked.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                  const tempWalletItem = {
+                    balance: walletItems.balance ? walletItems.balance : [],
+                    logos: tempAllLogos ? tempAllLogos : [],
+                    usdValue: totalUsdValue,
+                    asset: assetText,
+                  };
+                  stakedItems.walletItems.push(tempWalletItem);
+                } else if (walletItems.pool) {
+                  totalPoolPrice = totalPoolPrice + totalUsdValue;
+                  walletItems.pool.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + " + " + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                  const tempWalletItem = {
+                    balance: walletItems.balance ? walletItems.balance : [],
+                    logos: tempAllLogos ? tempAllLogos : [],
+                    usdValue: totalUsdValue,
+                    asset: assetText,
+                  };
+                  poolItems.walletItems.push(tempWalletItem);
+                } else if (walletItems.borrowed) {
+                  totalBorrowedPrice = totalBorrowedPrice + totalUsdValue;
+                  walletItems.borrowed.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                  const tempWalletItem = {
+                    balance: walletItems.balance ? walletItems.balance : [],
+                    logos: tempAllLogos ? tempAllLogos : [],
+                    usdValue: totalUsdValue,
+                    asset: assetText,
+                  };
+                  borrowedItems.walletItems.push(tempWalletItem);
+                }
                 return null;
               });
+            }
+            if (suppliedItems.walletItems.length > 0) {
+              defiWalletItems.push(suppliedItems);
+            }
+            if (lentItems.walletItems.length > 0) {
+              defiWalletItems.push(lentItems);
+            }
+            if (rewardItems.walletItems.length > 0) {
+              defiWalletItems.push(rewardItems);
+            }
+            if (stakedItems.walletItems.length > 0) {
+              defiWalletItems.push(stakedItems);
+            }
+            if (poolItems.walletItems.length > 0) {
+              defiWalletItems.push(poolItems);
+            }
+            if (borrowedItems.walletItems.length > 0) {
+              defiWalletItems.push(borrowedItems);
             }
             curDefiBlock.items = defiWalletItems;
             defiData.push(curDefiBlock);
