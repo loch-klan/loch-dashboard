@@ -187,35 +187,37 @@ class TopDefi extends Component {
     }
   }
   sortArray = (key, order) => {
-    let array = this.props.topAccountState?.cardList; //all data
-    let sortedList = array.sort((a, b) => {
-      let valueA = a[key];
-      let valueB = b[key];
-      if (key === "created_on") {
-        valueA = new Date(valueA);
-        valueB = new Date(valueB);
-      } else if (key === "name") {
-        valueA = valueA.toLowerCase();
-        valueB = valueB.toLowerCase();
-        return order
-          ? valueA.localeCompare(valueB)
-          : valueB.localeCompare(valueA);
-      } else if (key === "amount") {
-        valueA = parseFloat(valueA);
-        valueB = parseFloat(valueB);
-      }
-      if (order) {
-        return valueA - valueB;
-      } else {
-        return valueB - valueA;
-      }
-    });
+    let array = this.props.topAccountState?.defiList;
+    if (array) {
+      let sortedList = array.sort((a, b) => {
+        let valueA = a[key];
+        let valueB = b[key];
+        if (key === "created_on") {
+          valueA = new Date(valueA);
+          valueB = new Date(valueB);
+        } else if (key === "name") {
+          valueA = valueA.toLowerCase();
+          valueB = valueB.toLowerCase();
+          return order
+            ? valueA.localeCompare(valueB)
+            : valueB.localeCompare(valueA);
+        } else if (key === "netBalance") {
+          valueA = parseFloat(valueA);
+          valueB = parseFloat(valueB);
+        }
+        if (order) {
+          return valueA - valueB;
+        } else {
+          return valueB - valueA;
+        }
+      });
 
-    // this.setState({
-    //   sortedList,
-    // });
-    // update fun
-    this.props.updateDefiData({ sortedList }, this);
+      // this.setState({
+      //   sortedList,
+      // });
+      // update fun
+      this.props.updateDefiData({ sortedList }, this);
+    }
   };
 
   handleSort = (e) => {
@@ -232,7 +234,7 @@ class TopDefi extends Component {
     });
 
     if (e.title === "Amount") {
-      this.sortArray("totalUsd", isDown);
+      this.sortArray("netBalance", isDown);
       this.setState({
         sortBy: sort,
       });
@@ -346,6 +348,10 @@ class TopDefi extends Component {
   };
 
   render() {
+    console.log(
+      "this.props.topAccountState?.defiList ",
+      this.props.topAccountState
+    );
     return (
       <>
         {/* topbar */}
@@ -601,10 +607,10 @@ class TopDefi extends Component {
 
             {/* start card */}
 
-            {this.props.topAccountState?.sortedList?.length !== 0 &&
-            this.props.topAccountState?.sortedList !== "" ? (
-              this.props.topAccountState?.sortedList?.map((card, index) => {
-                let tableRows = card?.row.sort(
+            {this.props.topAccountState?.defiList?.length !== 0 &&
+            this.props.topAccountState?.defiList !== "" ? (
+              this.props.topAccountState?.defiList?.map((card, index) => {
+                let tableRows = card?.items.sort(
                   (a, b) => b.usdValue - a.usdValue
                 );
 
@@ -612,7 +618,7 @@ class TopDefi extends Component {
                   <div className="defi-card-wrapper">
                     <div className="top-title-wrapper">
                       <div className="heading-image">
-                        <Image src={card?.symbol} />
+                        <Image src={card?.logoUrl} />
                         <h3 className="inter-display-medium f-s-16 lh-19">
                           {card?.name}
                         </h3>
@@ -620,7 +626,7 @@ class TopDefi extends Component {
                       <h3 className="inter-display-medium f-s-16 lh-19">
                         {CurrencyType(false)}
                         {numToCurrency(
-                          card?.totalUsd * (this.state.currency?.rate || 1)
+                          card?.netBalance * (this.state.currency?.rate || 1)
                         )}{" "}
                         <span className="inter-display-medium f-s-10 lh-19 grey-ADA">
                           {CurrencyType(true)}
@@ -701,55 +707,26 @@ class TopDefi extends Component {
                         return (
                           <Row className="table-content-row">
                             <Col md={3}>
-                              {/* <CoinChip
-                    colorCode={"#E84042"}
-                    coin_img_src={Coin}
-                    coin_percent={"Defi"}
-                    type={"cohort"}
-                  /> */}
-                              {item.assets?.length > 1 ? (
-                                <div className="overlap-img">
-                                  {item.assets?.map((e, i) => {
+                              <div className="overlap-img">
+                                {item.logos?.length > 0 &&
+                                  item.logos?.map((e, i) => {
                                     return (
                                       <Image
-                                        src={e?.symbol}
+                                        key={`defiTableRowAsset-${i}`}
+                                        src={e}
                                         style={{
-                                          zIndex: item.assets?.length - i,
+                                          zIndex: item.logos?.length - i,
                                           marginLeft: i === 0 ? "0" : "-1rem",
                                         }}
                                       />
                                     );
                                   })}
-                                </div>
-                              ) : (
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <Image
-                                    src={item.assets[0]?.symbol}
-                                    style={{
-                                      width: "1.7rem",
-                                      borderRadius: "4px",
-                                    }}
-                                  />
-                                  <h3 className="inter-display-medium f-s-13 lh-13 m-l-4">
-                                    {item.assets[0]?.code}
-                                  </h3>
-                                </div>
-                              )}
-                            </Col>
-                            <Col
-                              md={3}
-                              style={{
-                                justifyContent: "center",
-                              }}
-                            >
-                              <div className="gray-chip inter-display-medium f-s-15 lh-15">
-                                {item.type_name}
                               </div>
+                              {item.asset ? (
+                                <h3 className="overlap-img-text inter-display-medium f-s-13 lh-13 ml-2">
+                                  {item.asset}
+                                </h3>
+                              ) : null}
                             </Col>
                             <Col
                               md={3}
@@ -757,18 +734,29 @@ class TopDefi extends Component {
                                 justifyContent: "center",
                               }}
                             >
-                              <div className="gray-chip inter-display-medium f-s-15 lh-15">
+                              {item.type ? (
+                                <div className="gray-chip inter-display-medium f-s-15 lh-15">
+                                  {item.type}
+                                </div>
+                              ) : null}
+                            </Col>
+                            <Col
+                              md={3}
+                              style={{
+                                justifyContent: "center",
+                              }}
+                            >
+                              <div>
                                 {item?.balance.map((e, i) => {
-                                  return `${amountFormat(
-                                    e?.value.toFixed(2) *
-                                      (this.state.currency?.rate || 1),
-                                    "en-US",
-                                    "USD"
-                                  )}  ${
-                                    item.balance?.length > 1 ? " " + e.code : ""
-                                  }  ${
-                                    item.balance?.length - 1 !== i ? " + " : ""
-                                  }`;
+                                  return (
+                                    <div
+                                      className={`${
+                                        i > 0 ? "mt-3" : ""
+                                      } gray-chip inter-display-medium f-s-15 lh-15`}
+                                    >
+                                      <div>{e}</div>
+                                    </div>
+                                  );
                                 })}
                               </div>
                             </Col>

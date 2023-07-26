@@ -513,173 +513,191 @@ export const getAllProtocol = (ctx) => {
 export const getProtocolBalanceApi = (ctx, data) => {
   return function (dispatch, getState) {
     postLoginInstance
-      .post("wallet/user-wallet/get-protocol-balance", data)
+      .post("wallet/user-wallet/get-debank-balance", data)
       .then((res) => {
         if (!res.data.error) {
-          let currency = JSON.parse(localStorage.getItem("currency"));
+          let totalSuppliedPrice = 0;
+          let totalLentPrice = 0;
+          let totalRewardPrice = 0;
+          let totalStakedPrice = 0;
+          let totalPoolPrice = 0;
+          let totalBorrowedPrice = 0;
 
-          let cardList = ctx.props.defiState.cardList || [];
-          let totalYield = ctx.props.defiState.totalYield;
-          let totalDebt = ctx.props.defiState.totalDebt;
+          const tempUserWallet = res.data?.data?.user_wallet;
 
-          let BalanceSheetValue = ctx.props.defiState.BalanceSheetValue || {};
-          // console.log("Yeild before", BalanceSheetValue, cardList);
-          let userWallets = res.data.data.user_wallet;
-
-          userWallets?.map((item) => {
-            let totalUsd = 0;
-            let yeild_total = 0;
-            let debt_total = 0;
-
-            let tableRow = [];
-
-            // getting all type in this array per card
-            let assetTypes = item?.assets?.map((e) => e?.product_type);
-            // console.log("asset types", item?.name, assetTypes);
-
-            let debtTypes = assetTypes.includes(40) ? [30, 50] : [30];
-            if (item.assets?.length !== 0) {
-              item?.assets.map((asset) => {
-                let assetSymbol = [];
-                let userAssetSymbol = [];
-                let balance = [];
-                asset?.tokens?.map((token) => {
-                  balance.push({
-                    value: token.value,
-                    code: token.code,
+          const defiData = [];
+          tempUserWallet.map((userWalletData) => {
+            const curDefiBlock = {
+              name: userWalletData.name ? userWalletData.name : "",
+              logoUrl: userWalletData.logo_url ? userWalletData.logo_url : "",
+              siteUrl: userWalletData.site_url ? userWalletData.site_url : "",
+              netBalance: userWalletData.net_balance
+                ? userWalletData.net_balance
+                : "",
+              tag: userWalletData.tag ? userWalletData.tag : "",
+              items: [],
+            };
+            const defiWalletItems = [];
+            if (userWalletData.items) {
+              userWalletData.items.map((walletItems) => {
+                let totalUsdValue = 0;
+                if (walletItems.usd_value) {
+                  walletItems.usd_value.map((usdAmount) => {
+                    totalUsdValue = totalUsdValue + usdAmount;
+                    return null;
                   });
-                  if (!userAssetSymbol.includes(token.code)) {
-                    assetSymbol.push({
-                      symbol: token.symbol,
-                      code: token.code,
-                    });
-                    userAssetSymbol.push(token.code);
-                  }
-                });
-                // if 50 in debtTypes then add 50 data into borrowed means 30
-                let typename =
-                  asset.product_type === 50 &&
-                  debtTypes.includes(asset.product_type)
-                    ? AssetType.getText(30)
-                    : AssetType.getText(asset.product_type);
-                let type =
-                  asset.product_type === 50 &&
-                  debtTypes.includes(asset.product_type)
-                    ? 30
-                    : asset.product_type;
-                let usdValue = asset.balance_usd;
-                let type_text = "";
-
-                if (!debtTypes.includes(type)) {
-                  yeild_total = yeild_total + usdValue;
-                  type_text = "Yield";
-                } else {
-                  debt_total = debt_total + usdValue;
-                  type_text = "Debt";
                 }
-
-                if (BalanceSheetValue[type] === undefined) {
-                  BalanceSheetValue[type] = {
-                    name: typename,
-                    totalPrice: usdValue,
-                    id: type,
-                    type_text: type_text,
-                  };
-                } else {
-                  BalanceSheetValue[type].totalPrice =
-                    BalanceSheetValue[type]?.totalPrice + usdValue;
+                let type = null;
+                let assetText = "";
+                if (walletItems.supplied) {
+                  totalSuppliedPrice = totalSuppliedPrice + totalUsdValue;
+                  type = "Supplied";
+                  walletItems.supplied.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                } else if (walletItems.lent) {
+                  totalLentPrice = totalLentPrice + totalUsdValue;
+                  type = "Lent";
+                  walletItems.lent.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                } else if (walletItems.reward) {
+                  totalRewardPrice = totalRewardPrice + totalUsdValue;
+                  type = "Reward";
+                  walletItems.reward.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                } else if (walletItems.staked) {
+                  totalStakedPrice = totalStakedPrice + totalUsdValue;
+                  type = "Staked";
+                  walletItems.staked.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                } else if (walletItems.pool) {
+                  totalPoolPrice = totalPoolPrice + totalUsdValue;
+                  type = "Pool";
+                  walletItems.pool.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + " + " + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
+                } else if (walletItems.borrowed) {
+                  totalBorrowedPrice = totalBorrowedPrice + totalUsdValue;
+                  type = "Borrowed";
+                  walletItems.borrowed.map((tempAssetText) => {
+                    if (assetText) {
+                      assetText = assetText + "+" + tempAssetText;
+                    } else {
+                      assetText = tempAssetText;
+                    }
+                    return null;
+                  });
                 }
-
-                tableRow.push({
-                  assets: assetSymbol,
-                  type_name: typename,
+                const tempAllLogos = [];
+                if (walletItems.logo.length > 0) {
+                  walletItems.logo.forEach((individualLogos) => {
+                    if (individualLogos) {
+                      tempAllLogos.push(individualLogos);
+                    }
+                  });
+                }
+                const tempWalletItem = {
+                  balance: walletItems.balance ? walletItems.balance : [],
+                  logos: tempAllLogos ? tempAllLogos : [],
+                  usdValue: totalUsdValue,
                   type: type,
-                  usdValue: usdValue,
-                  balance: balance,
-                });
-              });
-
-              // card total
-              totalUsd = yeild_total - debt_total;
-
-              // balance sheet totals
-              totalYield = totalYield + yeild_total;
-              totalDebt = totalDebt + debt_total;
-              cardList.push({
-                name: item.name,
-                address: item.address,
-                symbol: item.symbol,
-                totalUsd: totalUsd,
-                row: tableRow,
+                  asset: assetText,
+                };
+                defiWalletItems.push(tempWalletItem);
+                return null;
               });
             }
+            curDefiBlock.items = defiWalletItems;
+            defiData.push(curDefiBlock);
+            return null;
           });
-
-          let YieldValues = [];
-          let DebtValues = [];
-
-          Object.keys(BalanceSheetValue).map((key) => {
-            BalanceSheetValue[key].type_text === "Yield"
-              ? YieldValues.push(BalanceSheetValue[key])
-              : DebtValues.push(BalanceSheetValue[key]);
-          });
-          // console.log(BalanceSheetValue);
-
-          let allAssetType = [20, 30, 40, 50, 60, 70];
-          allAssetType.map((e) => {
-            let isfound = false;
-            YieldValues &&
-              YieldValues.map((item) => {
-                if (item.id === e) {
-                  isfound = true;
-                }
-              });
-
-            if (!isfound && ![30].includes(e)) {
-              YieldValues.push({
-                id: e,
-                name: AssetType.getText(e),
-                totalPrice: 0,
-              });
-            }
-          });
-          if (DebtValues.length === 0) {
-            [30]?.map((e) => {
-              DebtValues.push({
-                id: e,
-                name: AssetType.getText(e),
-                totalPrice: 0,
-              });
-            });
-          }
-          let sorted =
-            cardList?.length === 0
-              ? ""
-              : cardList.sort((a, b) => b.totalUsd - a.totalUsd);
-          YieldValues = YieldValues.sort((a, b) => b.totalPrice - a.totalPrice);
-          DebtValues = DebtValues.sort((a, b) => b.totalPrice - a.totalPrice);
-
-          let totalY = 0;
-          YieldValues.map((e) => (totalY = totalY + e.totalPrice));
-
-          let totalD = 0;
-          DebtValues.map((e) => (totalD = totalD + e.totalPrice));
-
+          const YieldValues = [
+            {
+              id: 1,
+              name: "Supplied",
+              totalPrice: totalSuppliedPrice,
+              type_text: "Yield",
+            },
+            {
+              id: 2,
+              name: "Lent",
+              totalPrice: totalLentPrice,
+              type_text: "Yield",
+            },
+            {
+              id: 3,
+              name: "Reward",
+              totalPrice: totalRewardPrice,
+              type_text: "Yield",
+            },
+            {
+              id: 4,
+              name: "Staked",
+              totalPrice: totalStakedPrice,
+              type_text: "Yield",
+            },
+            {
+              id: 5,
+              name: "Pool",
+              totalPrice: totalPoolPrice,
+              type_text: "Yield",
+            },
+          ];
+          const DebtValues = [
+            {
+              id: 6,
+              name: "Borrowed",
+              totalPrice: totalBorrowedPrice,
+            },
+          ];
+          const tempTotalYeild =
+            totalSuppliedPrice +
+            totalLentPrice +
+            totalRewardPrice +
+            totalStakedPrice +
+            totalPoolPrice;
           setTimeout(() => {
             dispatch({
               type: ctx?.state?.isTopAccountPage
                 ? TOP_GET_DEFI_DATA
                 : GET_DEFI_DATA,
               payload: {
-                totalYield: totalY,
-                totalDebt: totalD,
-                cardList,
-                sortedList: sorted,
-                DebtValues,
-                YieldValues,
-                BalanceSheetValue,
+                defiList: defiData,
+                YieldValues: YieldValues,
+                DebtValues: DebtValues,
+                totalYield: tempTotalYeild,
+                totalDebt: totalBorrowedPrice,
               },
             });
+            // GEt rid of this
             ctx.setState({
               defiLoader: false,
             });
@@ -689,7 +707,7 @@ export const getProtocolBalanceApi = (ctx, data) => {
         }
       })
       .catch((err) => {
-        console.log("Catch", err);
+        console.log("getDebankDefiApi error ", err);
       });
   };
 };
