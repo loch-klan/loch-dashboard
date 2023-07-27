@@ -236,10 +236,10 @@ class AddWatchListAddressModal extends BaseReactComponent {
                   className="exit-overlay-body"
                   style={{ padding: "0rem 10.5rem" }}
                 >
-                  <h6 className="inter-display-medium f-s-20 lh-24 ">
+                  <h6 className="inter-display-medium f-s-25">
                     Added to Watchlist
                   </h6>
-                  <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
+                  <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
                     Your address has been added to the Watchlist
                   </p>
                 </div>
@@ -264,10 +264,10 @@ class AddWatchListAddressModal extends BaseReactComponent {
               className="exit-overlay-body"
               style={{ padding: "0rem 10.5rem" }}
             >
-              <h6 className="inter-display-medium f-s-20 lh-24 ">
+              <h6 className="inter-display-medium f-s-25">
                 Add an address to the Watchlist
               </h6>
-              <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
+              <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
                 Keep an eye on an address
               </p>
             </div>
