@@ -185,6 +185,7 @@ class Defi extends Component {
         DebtValues: [],
         YieldValues: [],
         BalanceSheetValue: {},
+        defiList: "",
       });
 
       // set defi page to true
@@ -228,9 +229,8 @@ class Defi extends Component {
     let array = this.props.defiState?.defiList;
     if (array) {
       let sortedList = array.sort((a, b) => {
-        let valueA = a[key];
-        let valueB = b[key];
-
+        let valueA = a[key] ? a[key] : 0;
+        let valueB = b[key] ? b[key] : 0;
         if (key === "created_on") {
           valueA = new Date(valueA);
           valueB = new Date(valueB);
@@ -353,7 +353,49 @@ class Defi extends Component {
     //   DebtValues,
     // });
     // update data
-    this.props.updateDefiData({ sortedList: "", YieldValues, DebtValues });
+    this.props.updateDefiData({
+      sortedList: "",
+      YieldValues: [
+        {
+          id: 1,
+          name: "Supplied",
+          totalPrice: 0,
+          type_text: "Yield",
+        },
+        {
+          id: 2,
+          name: "Lent",
+          totalPrice: 0,
+          type_text: "Yield",
+        },
+        {
+          id: 3,
+          name: "Reward",
+          totalPrice: 0,
+          type_text: "Yield",
+        },
+        {
+          id: 4,
+          name: "Staked",
+          totalPrice: 0,
+          type_text: "Yield",
+        },
+        {
+          id: 5,
+          name: "Pool",
+          totalPrice: 0,
+          type_text: "Yield",
+        },
+      ],
+      DebtValues: [
+        {
+          id: 6,
+          name: "Borrowed",
+          totalPrice: 0,
+        },
+      ],
+      defiList: "",
+    });
   };
   // For add new address
   handleAddModal = () => {
@@ -797,13 +839,10 @@ class Defi extends Component {
                   </div>
                 );
               })
-            ) : this.props.defiState?.sortedList !== "" ? (
+            ) : this.props.defiState?.defiList &&
+              this.props.defiState.defiList.length === 0 ? (
               // <Col md={12}>
-              <div className="defi animation-wrapper">
-                <Loading />
-              </div>
-            ) : (
-              // </Col>
+
               <div
                 className="defi animation-wrapper"
                 style={{ padding: "3rem", textAlign: "center" }}
@@ -811,6 +850,11 @@ class Defi extends Component {
                 <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
                   No data found
                 </h3>
+              </div>
+            ) : (
+              // </Col>
+              <div className="defi animation-wrapper">
+                <Loading />
               </div>
             )}
           </div>

@@ -516,6 +516,10 @@ export const getProtocolBalanceApi = (ctx, data) => {
       .post("wallet/user-wallet/get-debank-balance", data)
       .then((res) => {
         if (!res.data.error) {
+          let defiList = ctx.props.defiState.defiList || [];
+          let totalYield = ctx.props.defiState.totalYield;
+          let totalDebt = ctx.props.defiState.totalDebt;
+
           let totalSuppliedPrice = 0;
           let totalLentPrice = 0;
           let totalRewardPrice = 0;
@@ -753,30 +757,31 @@ export const getProtocolBalanceApi = (ctx, data) => {
             totalLentPrice +
             totalRewardPrice +
             totalStakedPrice +
-            totalPoolPrice;
-          setTimeout(() => {
-            dispatch({
-              type: ctx?.state?.isTopAccountPage
-                ? TOP_GET_DEFI_DATA
-                : GET_DEFI_DATA,
-              payload: {
-                defiList: defiData,
-                YieldValues: YieldValues,
-                DebtValues: DebtValues,
-                totalYield: tempTotalYeild,
-                totalDebt: totalBorrowedPrice,
-              },
-            });
-            // GEt rid of this
-            ctx.setState({
-              defiLoader: false,
-            });
-          }, 100);
+            totalPoolPrice +
+            totalYield;
+          // setTimeout(() => {
+          dispatch({
+            type: ctx?.state?.isTopAccountPage
+              ? TOP_GET_DEFI_DATA
+              : GET_DEFI_DATA,
+            payload: {
+              defiList: [...defiData, ...defiList],
+              YieldValues: YieldValues,
+              DebtValues: DebtValues,
+              totalYield: tempTotalYeild,
+              totalDebt: totalBorrowedPrice + totalDebt,
+            },
+          });
+          // }, 100);
         } else {
           toast.error(res.data.message || "Something Went Wrong");
         }
+        return false;
       })
       .catch((err) => {
+        ctx.setState({
+          defiLoader: false,
+        });
         console.log("getDebankDefiApi error ", err);
       });
   };
