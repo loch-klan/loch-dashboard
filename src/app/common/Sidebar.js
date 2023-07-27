@@ -274,7 +274,7 @@ function Sidebar(props) {
 
     // Discover section
     else if (
-      ["/whale-watch"].includes(activeTab) ||
+      ["/whale-watch", "/watchlist"].includes(activeTab) ||
       activeTab.includes("/whale-watch")
     ) {
       let obj = {
@@ -1369,6 +1369,7 @@ function Sidebar(props) {
                             Twitter influencers
                           </NavLink>
                         </li>
+                        */}
                         <li>
                           <NavLink
                             className={`nav-link`}
@@ -1397,7 +1398,7 @@ function Sidebar(props) {
                             />
                             Watchlist
                           </NavLink>
-                        </li> */}
+                        </li>
                       </>
                     )}
                     {/* <li>
