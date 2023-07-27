@@ -1,60 +1,34 @@
-import React, { Component } from "react";
-import { Image, Row, Col } from "react-bootstrap";
+import React from "react";
+import { Image } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
-import CoinChip from "../wallet/CoinChip";
-import Ethereum from "../../assets/images/icons/ether-coin.svg";
+
 import { connect } from "react-redux";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
   Method,
   API_LIMIT,
   START_INDEX,
-  SEARCH_BY_ASSETS_IN,
   SEARCH_BY_TEXT,
-  SEARCH_BY_TIMESTAMP_IN,
-  SEARCH_BY_METHOD_IN,
   SORT_BY_TIMESTAMP,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
-  SORT_BY_ASSET,
-  SORT_BY_AMOUNT,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_TRANSACTION_FEE,
-  SORT_BY_METHOD,
-  DEFAULT_PRICE,
-  SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
   SORT_BY_ACCOUNT,
   SORT_BY_NETWORTH,
-  SORT_BY_LARGEST_BOUGHT,
-  SORT_BY_LARGEST_SOLD,
-  SORT_BY_TAG_NAME,
   SORT_BY_NET_FLOW,
 } from "../../utils/Constant";
-import { searchTransactionApi, getFilters, getTransactionAsset } from "../intelligence/Api";
-// import { getCoinRate } from "../Portfolio/Api.js";
-import moment from "moment";
+import {
+  searchTransactionApi,
+  getFilters,
+  getTransactionAsset,
+} from "../intelligence/Api";
 import {
   FormElement,
   Form,
   CustomTextControl,
   BaseReactComponent,
 } from "../../utils/form";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import CustomDropdown from "../../utils/form/CustomDropdown";
-import {
-  amountFormat,
-  CurrencyType,
-  lightenDarkenColor,
-  noExponents,
-  numToCurrency,
-  UpgradeTriggered,
-} from "../../utils/ReusableFunctions";
+
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
@@ -65,17 +39,22 @@ import FixAddModal from "../common/FixAddModal";
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  TopsetPageFlagDefault,
+  getUser,
+  setPageFlagDefault,
+} from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
-import { getTopAccounts } from "./Api";
-import DropDown from "../common/DropDown";
+
 import CheckboxCustomTable from "../common/customCheckboxTable";
-import RemarkInput from "./remarkInput";
+import RemarkInput from "../discover/remarkInput";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { WatchlistShare } from "../../utils/AnalyticsFunctions";
+import AddWatchListAddressModal from "./addWatchListAddressModal";
 
-class WishListPage extends BaseReactComponent {
+class WatchListPage extends BaseReactComponent {
   constructor(props) {
     super(props);
     const search = props.location.search;
@@ -83,6 +62,7 @@ class WishListPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      showAddWatchListAddress: false,
       currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
       search: "",
@@ -302,6 +282,11 @@ class WishListPage extends BaseReactComponent {
     });
   };
 
+  handleAddWatchlistAddress = () => {
+    this.setState({
+      showAddWatchListAddress: !this.state.showAddWatchListAddress,
+    });
+  };
   // For add new address
   handleAddModal = () => {
     this.setState({
@@ -330,10 +315,10 @@ class WishListPage extends BaseReactComponent {
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
-   WatchlistShare({
-     session_id: getCurrentUser().id,
-     email_address: getCurrentUser().email,
-   });
+    WatchlistShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     // console.log("share pod", shareLink);
   };
 
@@ -490,6 +475,13 @@ class WishListPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            {this.state.showAddWatchListAddress ? (
+              <AddWatchListAddressModal
+                show={this.state.showAddWatchListAddress}
+                onHide={this.handleAddWatchlistAddress}
+                history={this.props.history}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -524,10 +516,10 @@ class WishListPage extends BaseReactComponent {
               // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}
-              ShareBtn={true}
+              ShareBtn={false}
               handleShare={this.handleShare}
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
+              btnText="Add address"
+              handleBtn={this.handleAddWatchlistAddress}
             />
 
             <div className="fillter_tabs_section">
@@ -629,5 +621,5 @@ const mapDispatchToProps = {
   TopsetPageFlagDefault,
 };
 
-WishListPage.propTypes = {};
-export default connect(mapStateToProps, mapDispatchToProps)(WishListPage);
+WatchListPage.propTypes = {};
+export default connect(mapStateToProps, mapDispatchToProps)(WatchListPage);
