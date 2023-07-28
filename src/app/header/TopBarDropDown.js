@@ -58,13 +58,17 @@ export default function TopBarDropDown(props) {
   });
   const topbarDropdownToggle = useRef();
 
-  const toggleDropdown = (event) => {
-    event.stopPropagation();
-    setShowDropdown(!showDropdown);
+  const openDropdown = (event) => {
+    if (!showDropdown) {
+      event.stopPropagation();
+      setShowDropdown(true);
+    }
   };
   const closeDropdown = (event) => {
-    event.stopPropagation();
-    setShowDropdown(false);
+    if (showDropdown) {
+      event.stopPropagation();
+      setShowDropdown(false);
+    }
   };
   return (
     <div style={props?.relative ? { position: "relative" } : {}}>
@@ -99,7 +103,7 @@ export default function TopBarDropDown(props) {
             {props.totalWallets && props.totalWallets > 1 ? (
               <OutsideClickHandler onOutsideClick={closeDropdown}>
                 <div
-                  onClick={toggleDropdown}
+                  onClick={openDropdown}
                   className="topBarWalletArrowContainer pl-3 h-100 pr-1"
                 >
                   <Image
@@ -111,10 +115,7 @@ export default function TopBarDropDown(props) {
             ) : null}
           </div>
         </Dropdown.Toggle>
-
-        <Dropdown.Menu>
-          <div className="dropdown-menu-list-container">{list}</div>
-        </Dropdown.Menu>
+        <Dropdown.Menu>{list}</Dropdown.Menu>
       </Dropdown>
     </div>
   );
