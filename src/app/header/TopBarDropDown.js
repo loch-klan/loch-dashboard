@@ -115,7 +115,9 @@ export default function TopBarDropDown(props) {
             ) : null}
           </div>
         </Dropdown.Toggle>
-        <Dropdown.Menu>{list}</Dropdown.Menu>
+        <Dropdown.Menu>
+          <div className="dropdown-menu-list-container">{list}</div>
+        </Dropdown.Menu>
       </Dropdown>
     </div>
   );
