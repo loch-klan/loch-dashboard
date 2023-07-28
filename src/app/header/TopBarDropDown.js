@@ -58,13 +58,17 @@ export default function TopBarDropDown(props) {
   });
   const topbarDropdownToggle = useRef();
 
-  const toggleDropdown = (event) => {
-    event.stopPropagation();
-    setShowDropdown(!showDropdown);
+  const openDropdown = (event) => {
+    if (!showDropdown) {
+      event.stopPropagation();
+      setShowDropdown(true);
+    }
   };
   const closeDropdown = (event) => {
-    event.stopPropagation();
-    setShowDropdown(false);
+    if (showDropdown) {
+      event.stopPropagation();
+      setShowDropdown(false);
+    }
   };
   return (
     <div style={props?.relative ? { position: "relative" } : {}}>
@@ -80,25 +84,40 @@ export default function TopBarDropDown(props) {
             className="topbar-btn w-100"
             id="address-button"
           >
-            <Image className="topBarWalletChain" src={AddWalletAddress} />
+            <Image
+              className={`topBarWalletChain ${
+                props.totalWallets && props.totalWallets === 1
+                  ? "topBarWalletChainSingle"
+                  : ""
+              }`}
+              src={AddWalletAddress}
+            />
             <div className="hideText">
-              <span className="ml-1 mr-3">{props.totalWallets}</span>
-              <span className="topBarWalletName">{props.firstWallet}</span>
+              {props.totalWallets && props.totalWallets > 1 ? (
+                <span className="topBarWalletTotalWallets">
+                  {props.totalWallets}
+                </span>
+              ) : null}
+              <span>{props.firstWallet}</span>
             </div>
-            <OutsideClickHandler onOutsideClick={closeDropdown}>
-              <div
-                onClick={toggleDropdown}
-                className="topBarWalletArrowContainer pl-3 h-100 pr-1"
-              >
-                <Image
-                  className="topBarWalletArrow"
-                  src={RoundedArrowDownIcon}
-                />
-              </div>
-            </OutsideClickHandler>
+            {props.totalWallets && props.totalWallets > 1 ? (
+              <OutsideClickHandler onOutsideClick={closeDropdown}>
+                <div
+                  onClick={openDropdown}
+                  className="topBarWalletArrowContainer pl-3 h-100 pr-1"
+                >
+                  <Image
+                    className="topBarWalletArrow"
+                    src={RoundedArrowDownIcon}
+                  />
+                </div>
+              </OutsideClickHandler>
+            ) : null}
           </div>
         </Dropdown.Toggle>
-        <Dropdown.Menu>{list}</Dropdown.Menu>
+        <Dropdown.Menu>
+          <div className="dropdown-menu-list-container">{list}</div>
+        </Dropdown.Menu>
       </Dropdown>
     </div>
   );

@@ -291,6 +291,7 @@ class TopPortfolio extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
+    window.scrollTo(0, 0);
     this.startPageView();
     this.updateTimer(true);
     this.apiCall();
@@ -1575,6 +1576,22 @@ class TopPortfolio extends BaseReactComponent {
         },
       },
     ];
+    const getTotalAssetValue = () => {
+      if (this.props.topAccountState) {
+        const tempWallet = this.props.topAccountState.walletTotal
+          ? this.props.topAccountState.walletTotal
+          : 0;
+        const tempCredit = this.props.topAccountState.totalYield
+          ? this.props.topAccountState.totalYield
+          : 0;
+        const tempDebt = this.props.topAccountState.totalDebt
+          ? this.props.topAccountState.totalDebt
+          : 0;
+
+        return tempWallet + tempCredit - tempDebt;
+      }
+      return 0;
+    };
     return (
       <div>
         {this.state.loader ? (
@@ -1592,16 +1609,17 @@ class TopPortfolio extends BaseReactComponent {
                   // yesterday balance
                   yesterdayBalance={this.props.topAccountState.yesterdayBalance}
                   // total network and percentage calculate
-                  assetTotal={
-                    this.props.topAccountState &&
-                    this.props.topAccountState.walletTotal
-                      ? this.props.topAccountState.walletTotal +
-                        this.props.topAccountState?.totalYield -
-                        this.props.topAccountState?.totalDebt
-                      : 0 +
-                        this.props.topAccountState?.totalYield -
-                        this.props.topAccountState?.totalDebt
-                  }
+                  assetTotal={getTotalAssetValue()}
+                  // assetTotal={
+                  //   this.props.topAccountState &&
+                  //   this.props.topAccountState.walletTotal
+                  //     ? this.props.topAccountState.walletTotal +
+                  //       this.props.topAccountState?.totalYield -
+                  //       this.props.topAccountState?.totalDebt
+                  //     : 0 +
+                  //       this.props.topAccountState?.totalYield -
+                  //       this.props.topAccountState?.totalDebt
+                  // }
                   // history
                   history={this.props.history}
                   // net worth total
@@ -1664,12 +1682,7 @@ class TopPortfolio extends BaseReactComponent {
                       ? Object.values(this.props.OnboardingState.coinsList)
                       : null
                   }
-                  assetTotal={
-                    this.props.topAccountState &&
-                    this.props.topAccountState.walletTotal
-                      ? this.props.topAccountState.walletTotal
-                      : 0
-                  }
+                  assetTotal={getTotalAssetValue()}
                   assetPrice={
                     this.props.topAccountState.assetPrice &&
                     Object.keys(this.props.topAccountState.assetPrice).length >
