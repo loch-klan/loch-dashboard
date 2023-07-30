@@ -36,7 +36,7 @@ class RemarkInput extends BaseReactComponent {
             control={{
               type: CustomTextControl,
               settings: {
-                placeholder: "What do you think of this account?",
+                placeholder: "What do you think of this address?",
               },
             }}
           />

@@ -75,6 +75,7 @@ import {
   TopAccountTimeFilter,
   TopAccountTimeSpent,
 } from "../../utils/AnalyticsFunctions";
+import CheckboxCustomTable from "../common/customCheckboxTable";
 class TopAccountPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -969,6 +970,35 @@ class TopAccountPage extends BaseReactComponent {
               </CustomOverlay>
             ) : (
               "-"
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col"
+            id="isAddedToWatchList"
+            // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Watchlist
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "isAddedToWatchList",
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "isAddedToWatchList") {
+            return (
+              <CheckboxCustomTable isChecked={rowData?.isAddedToWatchList} />
             );
           }
         },

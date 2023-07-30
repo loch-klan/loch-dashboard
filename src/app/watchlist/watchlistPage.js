@@ -361,7 +361,7 @@ class WatchListPage extends BaseReactComponent {
             onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              To analyze
+              To Analyze
             </span>
             <Image
               src={sortByIcon}
@@ -390,7 +390,7 @@ class WatchListPage extends BaseReactComponent {
               //   </div>
               // </CustomOverlay>
               // this.TruncateText(rowData.account)
-              rowData.account
+              <div className="watchListUnderlineText">{rowData.account}</div>
             );
           }
         },
@@ -511,7 +511,7 @@ class WatchListPage extends BaseReactComponent {
             )}
             <PageHeader
               title={"Watchlist"}
-              subTitle={"People to watch"}
+              subTitle={"Addresses to watch"}
               // showpath={true}
               // currentPage={"transaction-history"}
               history={this.props.history}
@@ -531,7 +531,7 @@ class WatchListPage extends BaseReactComponent {
                     justifyContent: "space-between",
                   }}
                 >
-                  <div style={{ width: "60%" }}>
+                  {/* <div style={{ width: "60%" }}>
                     <CustomDropdown
                       filtername="Type"
                       options={[...[{ value: "Allasset", label: "All" }]]}
@@ -541,10 +541,10 @@ class WatchListPage extends BaseReactComponent {
                       }
                       isTopaccount={true}
                     />
-                  </div>
+                  </div> */}
 
                   {/* {fillter_tabs} */}
-                  <div style={{ width: "40%" }}>
+                  <div style={{ width: "100%" }}>
                     <div className="searchBar top-account-search">
                       <Image src={searchIcon} className="search-icon" />
                       <FormElement
