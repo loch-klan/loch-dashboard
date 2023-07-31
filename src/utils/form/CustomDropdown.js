@@ -546,7 +546,9 @@ class CustomDropdown extends Component {
               ).map((e, i) => {
                 return (
                   <span
-                    className={e?.isSelected ? "active" : ""}
+                    className={`${e?.isSelected ? "active" : ""} ${
+                      this.props.isCaptialised ? "text-capitalize" : ""
+                    } `}
                     // title={e.label}
                     key={i}
                     onClick={() => {
