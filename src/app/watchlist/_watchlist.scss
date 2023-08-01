@@ -1,6 +1,34 @@
 .watchListUnderlineText {
   text-decoration: underline;
 }
+.form-groupContainer {
+  width: 100%;
+  .form-group {
+    width: 100%;
+  }
+}
+.watchListTableContainer {
+  .ReactVirtualized__Table__headerColumn {
+    padding: 0 3rem !important;
+    .ReactVirtualized__Table__headerTruncatedText {
+      width: 100%;
+      .goToCenter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .goToRight {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+    }
+  }
+  .ReactVirtualized__Table__rowColumn {
+    padding: 0 3rem !important;
+  }
+}
+
 .addWatchListWrapperParent {
   .addWatchListWrapperContainer {
     width: 100%;

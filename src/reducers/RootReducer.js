@@ -10,6 +10,11 @@ import PortfolioReducer from "../app/Portfolio/PortfolioReducer";
 import WalletReducer from "../app/wallet/WalletReducer";
 import IntelligenceReducer from "../app/intelligence/IntelligenceReducer";
 import TopAccountReducer from "../app/topAccount/TopAccountReducer";
+import {
+  TopAccountsInWatchListReducer,
+  WatchListLoadingReducer,
+  WatchListReducer,
+} from "../app/watchlist/redux/WatchListReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -23,4 +28,7 @@ export default combineReducers({
   WalletState: WalletReducer,
   IntelligenceState: IntelligenceReducer,
   TopAccountState: TopAccountReducer,
+  WatchListState: WatchListReducer,
+  TopAccountsInWatchListState: TopAccountsInWatchListReducer,
+  WatchListLoadingState: WatchListLoadingReducer,
 });
