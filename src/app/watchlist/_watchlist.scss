@@ -7,7 +7,11 @@
     width: 100%;
   }
 }
+
 .watchListTableContainer {
+  .no-hover {
+    cursor: default;
+  }
   .ReactVirtualized__Table__headerColumn {
     padding: 0 3rem !important;
     .ReactVirtualized__Table__headerTruncatedText {

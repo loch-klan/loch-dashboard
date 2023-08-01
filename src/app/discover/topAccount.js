@@ -230,14 +230,16 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   callApi = (page = START_INDEX) => {
-    this.setState({ tableLoading: true });
-    let data = new URLSearchParams();
-    data.append("start", page * API_LIMIT);
-    data.append("conditions", JSON.stringify(this.state.condition));
-    data.append("limit", API_LIMIT);
-    data.append("sorts", JSON.stringify(this.state.sort));
-    getTopAccounts(data, this);
     this.props.getWatchListByUser();
+    this.setState({ tableLoading: true });
+    setTimeout(() => {
+      let data = new URLSearchParams();
+      data.append("start", page * API_LIMIT);
+      data.append("conditions", JSON.stringify(this.state.condition));
+      data.append("limit", API_LIMIT);
+      data.append("sorts", JSON.stringify(this.state.sort));
+      getTopAccounts(data, this);
+    }, 300);
   };
 
   componentDidUpdate(prevProps, prevState) {

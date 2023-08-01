@@ -44,12 +44,9 @@ export const updateAddToWatchList = (data) => {
       .post("wallet/user-wallet/add-update-watchlist", data)
       .then((res) => {
         if (!res.data.error) {
-          console.log("Item added to watchlist ", res);
         }
       })
-      .catch((err) => {
-        console.log("Add Watchlist Error", err);
-      });
+      .catch((err) => {});
   };
 };
 export const removeFromWatchList = (data) => {
@@ -57,13 +54,10 @@ export const removeFromWatchList = (data) => {
     postLoginInstance
       .post("wallet/user-wallet/delete-watchlist", data)
       .then((res) => {
-        console.log("Item removed from watchlist ", res);
         if (!res.data.error) {
         }
       })
-      .catch((err) => {
-        console.log("Add Watchlist Error", err);
-      });
+      .catch((err) => {});
   };
 };
 
@@ -81,8 +75,6 @@ export const getWatchListByUser = (data) => {
           }
         }
       })
-      .catch((err) => {
-        console.log("Add Watchlist Error", err);
-      });
+      .catch((err) => {});
   };
 };
