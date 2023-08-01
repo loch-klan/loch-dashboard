@@ -346,12 +346,7 @@ class WatchListPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
   };
-  updateWatchListRow = (
-    passedAddress,
-    passedNameTag,
-    passedAnalysed,
-    passedRemark
-  ) => {
+  updateWatchListAnalyzed = (passedAddress, passedAnalysed) => {
     let tempUpdateWatchListata = new URLSearchParams();
     tempUpdateWatchListata.append(
       "wallet_address",
@@ -361,11 +356,16 @@ class WatchListPage extends BaseReactComponent {
       "analysed",
       passedAnalysed ? passedAnalysed : false
     );
-    tempUpdateWatchListata.append("remarks", passedRemark ? passedRemark : "");
+
+    this.props.updateAddToWatchList(tempUpdateWatchListata);
+  };
+  updateWatchListRemark = (passedAddress, passedRemark) => {
+    let tempUpdateWatchListata = new URLSearchParams();
     tempUpdateWatchListata.append(
-      "name_tag",
-      passedNameTag ? passedNameTag : ""
+      "wallet_address",
+      passedAddress ? passedAddress : ""
     );
+    tempUpdateWatchListata.append("remarks", passedRemark ? passedRemark : "");
     this.props.updateAddToWatchList(tempUpdateWatchListata);
   };
   render() {
@@ -373,19 +373,12 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToLeft"
+            className="cp history-table-header-col goToLeft no-hover"
             id="Accounts"
-            onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               To Analyze
             </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
-              }
-            />
           </div>
         ),
         dataKey: "account",
@@ -425,12 +418,7 @@ class WatchListPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "isAnalyzed") {
             const passToggleAnalyzed = (isChecked) => {
-              this.updateWatchListRow(
-                rowData.address,
-                rowData.nameTag,
-                isChecked,
-                rowData.remark
-              );
+              this.updateWatchListAnalyzed(rowData.address, isChecked);
             };
             return (
               <CheckboxCustomTable
@@ -466,12 +454,7 @@ class WatchListPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "remark") {
             const passRemarkChanged = (newRemark) => {
-              this.updateWatchListRow(
-                rowData.address,
-                rowData.nameTag,
-                rowData.isAnalyzed,
-                newRemark
-              );
+              this.updateWatchListRemark(rowData.address, newRemark);
             };
             return (
               <RemarkInput
