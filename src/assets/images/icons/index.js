@@ -5,3 +5,5 @@ export { default as RoundedArrowDownIcon } from "./roundedArrowDown.svg";
 export { default as ProfileVectorWhiteIcon } from "./profileVectorWhite.svg";
 export { default as LinkVectorWhiteIcon } from "./linkVectorWhite.svg";
 export { default as BinVectorIcon } from "./binVector.svg";
+export { default as AssetChartInflowIcon } from "./assetChartInflow.svg";
+export { default as AssetChartOutflowIcon } from "./assetChartOutflow.svg";

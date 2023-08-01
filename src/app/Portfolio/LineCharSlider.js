@@ -7,7 +7,11 @@ import HighchartsReact from "highcharts-react-official";
 import { GraphHeader } from "../common/GraphHeader";
 
 import GraphLogo from "../../assets/images/graph-logo.svg";
-import { LoaderIcon } from "../../assets/images/icons";
+import {
+  AssetChartInflowIcon,
+  AssetChartOutflowIcon,
+  LoaderIcon,
+} from "../../assets/images/icons";
 import {
   AssetValueFilter,
   AssetValueHover,
@@ -41,7 +45,7 @@ import CopyClipboardIcon from "../../assets/images/CopyClipboardIcon.svg";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import SwitchButton from "./SwitchButton";
 import AssetValueEmailModal from "./AssetValueEmailModal";
-
+require("highcharts/modules/annotations")(Highcharts);
 class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -388,13 +392,15 @@ class LineChartSlider extends BaseReactComponent {
         type: "area",
         // type: "areaspline",
         fillOpacity: 0.1,
-        color: value.assetDetails.color,
+        // color: value.assetDetails.color,
+        color: "#5ABE7E",
         marker: {
           // enabled: true,
           symbol: "circle",
         },
         showInLegend: true,
-        data: graphData,
+        data: [100, 200, 300, 400, 500, 400, 300, 200, 100],
+        // data: graphData,
         lastValue: graphData[graphData.length - 1],
         assetName: value.assetDetails.name,
         // lastValue: Math.max(...graphData),
@@ -707,7 +713,19 @@ class LineChartSlider extends BaseReactComponent {
             symbol: "circle",
           },
           showInLegend: true,
-          data: otherData,
+          // This annotation works
+          // data: [
+          //   100,
+          //   { y: 200, id: "min" },
+          //   300,
+          //   400,
+          //   { y: 500, id: "max" },
+          //   400,
+          //   300,
+          //   200,
+          //   100,
+          // ],
+          data: [100, 200, 300, 400, 500, 400, 300, 200, 100],
           lastValue: otherData[otherData.length - 1],
           assetName: "Other",
           // lastValue: Math.max(...graphData),
@@ -746,6 +764,7 @@ class LineChartSlider extends BaseReactComponent {
     let selectedValue = null;
 
     var UNDEFINED;
+    console.log("SelectedSeriesData ", SelectedSeriesData);
     const options = {
       title: {
         text: null,
@@ -754,55 +773,55 @@ class LineChartSlider extends BaseReactComponent {
         // type: "column",
         type: "area",
         spacingTop: this.props.hideTimeFilter ? 40 : 10,
-        events: {
-          click: function (event) {
-            if (parent.state.selectedValue !== selectedValue) {
-              if (parent.props.updateTimer) {
-                parent.props.updateTimer();
-              }
-              parent.props.isPage
-                ? IntlAssetValueInternalEvent({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    no_of_events: noOfInternalEvent,
-                  })
-                : AssetValueInternalEvent({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    no_of_events: noOfInternalEvent,
-                  });
+        // events: {
+        //   click: function (event) {
+        //     if (parent.state.selectedValue !== selectedValue) {
+        //       if (parent.props.updateTimer) {
+        //         parent.props.updateTimer();
+        //       }
+        //       parent.props.isPage
+        //         ? IntlAssetValueInternalEvent({
+        //             session_id: getCurrentUser().id,
+        //             email_address: getCurrentUser().email,
+        //             no_of_events: noOfInternalEvent,
+        //           })
+        //         : AssetValueInternalEvent({
+        //             session_id: getCurrentUser().id,
+        //             email_address: getCurrentUser().email,
+        //             no_of_events: noOfInternalEvent,
+        //           });
 
-              parent.setState({
-                selectedEvents: selectedEvents,
-                selectedValue: selectedValue,
-              });
-            } else {
-              parent.setState({
-                selectedEvents: [],
-                selectedValue: null,
-              });
-            }
-          },
-          load: function () {
-            // Get the renderer
-            const renderer = this.renderer;
+        //       parent.setState({
+        //         selectedEvents: selectedEvents,
+        //         selectedValue: selectedValue,
+        //       });
+        //     } else {
+        //       parent.setState({
+        //         selectedEvents: [],
+        //         selectedValue: null,
+        //       });
+        //     }
+        //   },
+        //   load: function () {
+        //     // Get the renderer
+        //     const renderer = this.renderer;
 
-            const chartWidth = this.chartWidth;
-            const chartHeight = this.chartHeight;
-            const imageWidth = 104; // Set the width of the image
-            const imageHeight = 39; // Set the height of the image
-            const x = (chartWidth - imageWidth) / 2;
-            const y = (chartHeight - imageHeight) / 2.5;
+        //     const chartWidth = this.chartWidth;
+        //     const chartHeight = this.chartHeight;
+        //     const imageWidth = 104; // Set the width of the image
+        //     const imageHeight = 39; // Set the height of the image
+        //     const x = (chartWidth - imageWidth) / 2;
+        //     const y = (chartHeight - imageHeight) / 2.5;
 
-            // Add a text element for the watermark
-            renderer
-              .image(GraphLogo, x, y, imageWidth, imageHeight)
-              .attr({
-                zIndex: 99, // Set the zIndex so it appears above the chart
-              })
-              .add();
-          },
-        },
+        //     // Add a text element for the watermark
+        //     renderer
+        //       .image(GraphLogo, x, y, imageWidth, imageHeight)
+        //       .attr({
+        //         zIndex: 99, // Set the zIndex so it appears above the chart
+        //       })
+        //       .add();
+        //   },
+        // },
 
         zoomType: "x",
       },
@@ -995,9 +1014,97 @@ class LineChartSlider extends BaseReactComponent {
         symbolWidth: 10,
         symbolRadius: 6,
       },
-
+      annotations: [
+        // This annotation works
+        // {
+        //   labels: [
+        //     {
+        //       point: "max",
+        //       text: "Max",
+        //     },
+        //     {
+        //       point: "min",
+        //       text: "Min",
+        //       backgroundColor: "white",
+        //     },
+        //   ],
+        // },
+        {
+          draggable: "",
+          labels: [
+            {
+              point: {
+                xAxis: 0,
+                yAxis: 0,
+                x: 2,
+                y: 300,
+              },
+              useHTML: true,
+              formatter: function () {
+                return `<div class="lineChartAnnotationContainer">
+                <img class="lineChartAnnotation" src="${AssetChartInflowIcon}" />
+                <div class="lineChartAnnotationBox top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+                backdrop-filter: blur(15px);">
+                  <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
+                    <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>13 March 22</b> <b class="inter-display-semi-bold m-l-10" style="color:#16182B;">$200</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
+                    <div class="inter-display-medium f-s-13 w-100 pt-3 px-4" style="display:flex; justify-content:space-between" >
+                    <div>
+                      <img style='width:20px; height: 20px; display: inline-block; margin-right: 0.6rem' src="${AssetChartInflowIcon}" />
+                      Inflow
+                    </div>
+                    <div style="color:#16182B">$5</div>
+                    </div>
+                  </div>
+                </div>`;
+              },
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+              className: "highcharts-no-tooltip",
+              x: 0,
+              y: 0,
+              padding: 0,
+              shape: "rect",
+              verticalAlign: "bottom",
+            },
+            {
+              point: {
+                xAxis: 0,
+                yAxis: 0,
+                x: 4,
+                y: 500,
+              },
+              useHTML: true,
+              formatter: function () {
+                return `<div class="lineChartAnnotationContainer">
+                <img class="lineChartAnnotation" src="${AssetChartOutflowIcon}" />
+                <div class="lineChartAnnotationBox top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
+                backdrop-filter: blur(15px);">
+                  <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
+                    <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>13 March 22</b> <b class="inter-display-semi-bold m-l-10" style="color:#16182B;">$500</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
+                    <div class="inter-display-medium f-s-13 w-100 pt-3 px-4" style="display:flex; justify-content:space-between" >
+                    <div>
+                      <img style='width:20px; height: 20px; display: inline-block; margin-right: 0.6rem' src="${AssetChartOutflowIcon}" />
+                      Outflow
+                    </div>
+                    <div style="color:#16182B">$12</div>
+                    </div>
+                  </div>
+                </div>`;
+              },
+              backgroundColor: "transparent",
+              borderColor: "transparent",
+              className: "highcharts-no-tooltip",
+              x: 0,
+              y: 0,
+              padding: 0,
+              shape: "rect",
+              verticalAlign: "bottom",
+            },
+          ],
+        },
+      ],
       tooltip: {
-        shared: true,
+        shared: false,
 
         split: false,
         useHTML: true,
@@ -1057,49 +1164,18 @@ class LineChartSlider extends BaseReactComponent {
             //  if(item.series.userOptions.assetName === "Total"){ net_amount = item.y;}
           });
           tooltipData.sort((a, b) => parseFloat(b.y) - parseFloat(a.y));
-          // console.log("sorted", tooltipData);
 
           const tooltip_title =
             parent.state.title === "Week" || parent.state.title === "Day"
               ? moment(x_value, "DD/MM/YYYY").format("MMMM DD, YYYY")
               : x_value;
           //  console.log("checking date", x_value, this.x, tooltip_title);
-          return `${
-            selectedEvents.length > 0
-              ? `<div class="inter-display-semi-bold f-s-10 w-100 text-center"  style="color:#96979A; background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:8px; margin-bottom:4px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-backdrop-filter: blur(15px); padding:1rem 2rem;">Click to show Transactions</div>`
-              : ""
-          }<div class="top-section py-4" style="background-color:#ffffff; border: 1px solid #E5E5E6; border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
-backdrop-filter: blur(15px);">
-                                <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#96979A; display:flex; justify-content:space-between"><b>${tooltip_title}</b> <b class="inter-display-semi-bold m-l-10" style="color:#16182B;">${CurrencyType(
-            false
-          )}${numToCurrency(
-            net_amount
-          )}</b></div><div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>
-                                ${tooltipData
-                                  ?.map((item) => {
-                                    return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
-                                    <span style='width:10px; height: 10px; border-radius: 50%; background-color:${
-                                      item.color == "#ffffff"
-                                        ? "#16182B"
-                                        : item.color
-                                    }; display: inline-block; margin-right: 0.6rem'> </span>
-                                       ${item.name} <span style="color:${
-                                      item.color == "#ffffff"
-                                        ? "#16182B"
-                                        : item.color
-                                    }"> ${CurrencyType(false)}${numToCurrency(
-                                      item.y
-                                    )}</span>
-                                    </div>`;
-                                  })
-                                  .join(" ")}
-                            </div>
-                        </div>`;
+          return null;
         },
       },
-      series: SelectedSeriesData,
+      // Plotting Data
+      series: [SelectedSeriesData[1]],
+      // Graph Lines
       plotOptions: {
         series: {
           stacking: "normal",
@@ -1132,7 +1208,7 @@ backdrop-filter: blur(15px);">
           },
 
           marker: {
-            enabled: false,
+            enabled: true,
             states: {
               hover: {
                 enabled: false,
@@ -1141,6 +1217,7 @@ backdrop-filter: blur(15px);">
           },
         },
       },
+      // Bottom Scroll Bar
       navigator: {
         margin: 1,
         height: 30,
