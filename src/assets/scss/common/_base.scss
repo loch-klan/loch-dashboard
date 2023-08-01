@@ -1069,7 +1069,11 @@ form {
 // }
 .custom-table {
 }
-
+.dotDotText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .table-wrapper {
   .form-group {
     width: 8rem;

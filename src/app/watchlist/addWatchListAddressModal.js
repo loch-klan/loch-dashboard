@@ -10,7 +10,6 @@ import {
 import { EyeIcon, CloseIcon, CheckIcon } from "../../assets/images/icons";
 import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 import { CustomCoin } from "../../utils/commonComponent";
-import "./_watchlist.scss";
 import { CustomButton } from "../../utils/form";
 
 class AddWatchListAddressModal extends BaseReactComponent {

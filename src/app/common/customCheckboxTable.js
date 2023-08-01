@@ -11,6 +11,9 @@ class CheckboxCustomTable extends Component {
     };
   }
   handleChecked = () => {
+    if (this.props.handleOnClick) {
+      this.props.handleOnClick(!this.state.isChecked);
+    }
     this.setState({
       isChecked: !this.state.isChecked,
     });
