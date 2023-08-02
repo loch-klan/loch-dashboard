@@ -13,6 +13,7 @@ import {
   SORT_BY_ADDRESS,
   SORT_BY_ANALYSED,
   SORT_BY_REMARKS,
+  SORT_BY_NAME_TAG,
 } from "../../utils/Constant";
 import {
   FormElement,
@@ -44,7 +45,17 @@ import TransactionTable from "../intelligence/TransactionTable";
 import CheckboxCustomTable from "../common/customCheckboxTable";
 import RemarkInput from "../discover/remarkInput";
 import WelcomeCard from "../Portfolio/WelcomeCard";
-import { WatchlistShare } from "../../utils/AnalyticsFunctions";
+import {
+  TimeSpentWatchlist,
+  WatchlistAnalyzedCheckbox,
+  WatchlistPage,
+  WatchlistRemarkAdded,
+  WatchlistSearch,
+  WatchlistShare,
+  WatchlistSortByAnalyzed,
+  WatchlistSortByNameTag,
+  WatchlistSortByRemarks,
+} from "../../utils/AnalyticsFunctions";
 import AddWatchListAddressModal from "./addWatchListAddressModal";
 import {
   getWatchList,
@@ -61,6 +72,7 @@ class WatchListPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      initialList: false,
       showAddWatchListAddress: false,
       currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
@@ -79,7 +91,7 @@ class WatchListPage extends BaseReactComponent {
       tableLoading: false,
       tableSortOpt: [
         {
-          title: "account",
+          title: "nameTag",
           up: false,
         },
         {
@@ -108,6 +120,7 @@ class WatchListPage extends BaseReactComponent {
       totalPage: 0,
       timeFIlter: "Time",
       tableData: [],
+      startTime: "",
     };
     this.delayTimer = 0;
   }
@@ -118,7 +131,19 @@ class WatchListPage extends BaseReactComponent {
       userPlan: JSON.parse(localStorage.getItem("currentPlan")),
     });
   };
-
+  startPageView = () => {
+    this.setState({
+      startTime: new Date() * 1,
+    });
+    WatchlistPage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // Inactivity Check
+    window.checkWatchlistTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
   componentDidMount() {
     resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
@@ -128,8 +153,44 @@ class WatchListPage extends BaseReactComponent {
     this.callApi(this.state.currentPage || START_INDEX);
     GetAllPlan();
     getUser();
+    this.startPageView();
+    this.updateTimer(true);
   }
-
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = localStorage.getItem(
+      "watchlistPageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    localStorage.setItem("watchlistPageExpiryTime", tempExpiryTime);
+  };
+  endPageView = () => {
+    clearInterval(window.checkWatchlistTimer);
+    localStorage.removeItem("watchlistPageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      TimeSpentWatchlist({
+        time_spent: TimeSpent,
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = localStorage.getItem("watchlistPageExpiryTime");
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
+  componentWillUnmount() {
+    const tempExpiryTime = localStorage.getItem("watchlistPageExpiryTime");
+    if (tempExpiryTime) {
+      this.endPageView();
+    }
+  }
   callApi = (page = START_INDEX) => {
     this.props.getWatchListLoading();
     this.setState({
@@ -190,6 +251,11 @@ class WatchListPage extends BaseReactComponent {
           };
           tempWatchListArr.push(tempSingleWatchList);
         });
+        if (tempWatchListArr.length > 0 && this.state.initialList === false) {
+          this.setState({
+            initialList: true,
+          });
+        }
         this.setState({
           tableData: tempWatchListArr,
           totalPage: totalItems ? totalItems : 0,
@@ -199,12 +265,23 @@ class WatchListPage extends BaseReactComponent {
   }
 
   onValidSubmit = () => {
-    // Search Here
-    this.setState({
-      condition: [
-        { key: "SEARCH_BY_WALLET_ADDRESS", value: this.state.search },
-      ],
-    });
+    if (
+      (this.state.tableData && this.state.tableData.length > 0) ||
+      this.state.search === ""
+    ) {
+      // Search Here
+      WatchlistSearch({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        search: this.state.search,
+      });
+      this.updateTimer();
+      this.setState({
+        condition: [
+          { key: "SEARCH_BY_WALLET_ADDRESS", value: this.state.search },
+        ],
+      });
+    }
   };
 
   addCondition = (key, value) => {
@@ -255,14 +332,24 @@ class WatchListPage extends BaseReactComponent {
     let obj = [];
     sort?.map((el) => {
       if (el.title === val) {
-        if (val === "account") {
+        if (val === "nameTag") {
+          WatchlistSortByNameTag({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
           obj = [
             {
-              key: SORT_BY_ADDRESS,
+              key: SORT_BY_NAME_TAG,
               value: !el.up,
             },
           ];
         } else if (val === "isAnalyzed") {
+          WatchlistSortByAnalyzed({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
           obj = [
             {
               key: SORT_BY_ANALYSED,
@@ -270,6 +357,11 @@ class WatchListPage extends BaseReactComponent {
             },
           ];
         } else if (val === "remark") {
+          WatchlistSortByRemarks({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.updateTimer();
           obj = [
             {
               key: SORT_BY_REMARKS,
@@ -346,7 +438,14 @@ class WatchListPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
   };
-  updateWatchListAnalyzed = (passedAddress, passedAnalysed) => {
+  updateWatchListAnalyzed = (passedNameTag, passedAddress, passedAnalysed) => {
+    WatchlistAnalyzedCheckbox({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      address: passedNameTag ? passedNameTag : passedAddress,
+      analyzed: passedAnalysed,
+    });
+    this.updateTimer();
     let tempUpdateWatchListata = new URLSearchParams();
     tempUpdateWatchListata.append(
       "wallet_address",
@@ -359,7 +458,14 @@ class WatchListPage extends BaseReactComponent {
 
     this.props.updateAddToWatchList(tempUpdateWatchListata);
   };
-  updateWatchListRemark = (passedAddress, passedRemark) => {
+  updateWatchListRemark = (passedNameTag, passedAddress, passedRemark) => {
+    WatchlistRemarkAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      address: passedNameTag ? passedNameTag : passedAddress,
+      remark: passedRemark,
+    });
+    this.updateTimer();
     let tempUpdateWatchListata = new URLSearchParams();
     tempUpdateWatchListata.append(
       "wallet_address",
@@ -377,18 +483,50 @@ class WatchListPage extends BaseReactComponent {
             id="Accounts"
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              To Analyze
+              Account
             </span>
           </div>
         ),
         dataKey: "account",
         // coumnWidth: 153,
-        coumnWidth: 0.35,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
             return (
-              <div className="dotDotText text-left">{rowData.account}</div>
+              <div className="dotDotText text-left">
+                {TruncateText(rowData.address)}
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col goToLeft"
+            id="Accounts"
+            onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Name Tag
+            </span>
+            <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
+              }
+            />
+          </div>
+        ),
+        dataKey: "account",
+        // coumnWidth: 153,
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "account") {
+            return (
+              <div className="dotDotText text-left">{rowData.nameTag}</div>
             );
           }
         },
@@ -418,7 +556,11 @@ class WatchListPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "isAnalyzed") {
             const passToggleAnalyzed = (isChecked) => {
-              this.updateWatchListAnalyzed(rowData.address, isChecked);
+              this.updateWatchListAnalyzed(
+                rowData.nameTag,
+                rowData.address,
+                isChecked
+              );
             };
             return (
               <CheckboxCustomTable
@@ -454,7 +596,11 @@ class WatchListPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "remark") {
             const passRemarkChanged = (newRemark) => {
-              this.updateWatchListRemark(rowData.address, newRemark);
+              this.updateWatchListRemark(
+                rowData.nameTag,
+                rowData.address,
+                newRemark
+              );
             };
             return (
               <RemarkInput
@@ -603,7 +749,11 @@ class WatchListPage extends BaseReactComponent {
                   <TransactionTable
                     tableData={this.state.tableData}
                     columnList={columnList}
-                    message={"No accounts found"}
+                    message={
+                      this.state.initialList
+                        ? "No addresses found."
+                        : "Add addresses to your watchlist from the Top accounts page."
+                    }
                     totalPage={this.state.totalPage}
                     history={this.props.history}
                     location={this.props.location}
