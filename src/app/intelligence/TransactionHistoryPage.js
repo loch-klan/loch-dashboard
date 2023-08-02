@@ -1518,7 +1518,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                           : "gain"
                       }`}
                     >
-                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
                         {rowData.method}
                       </span>
                     </div>
