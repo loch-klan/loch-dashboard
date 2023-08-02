@@ -1,60 +1,28 @@
-import React, { Component } from "react";
-import { Image, Row, Col } from "react-bootstrap";
+import React from "react";
+import { Image } from "react-bootstrap";
 import PageHeader from "../common/PageHeader";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
-import GainIcon from "../../assets/images/icons/GainIcon.svg";
-import LossIcon from "../../assets/images/icons/LossIcon.svg";
-import CoinChip from "../wallet/CoinChip";
-import Ethereum from "../../assets/images/icons/ether-coin.svg";
+
 import { connect } from "react-redux";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
-  SEARCH_BY_WALLET_ADDRESS_IN,
   Method,
-  API_LIMIT,
   START_INDEX,
-  SEARCH_BY_ASSETS_IN,
   SEARCH_BY_TEXT,
-  SEARCH_BY_TIMESTAMP_IN,
-  SEARCH_BY_METHOD_IN,
-  SORT_BY_TIMESTAMP,
-  SORT_BY_FROM_WALLET,
-  SORT_BY_TO_WALLET,
-  SORT_BY_ASSET,
-  SORT_BY_AMOUNT,
-  SORT_BY_USD_VALUE_THEN,
-  SORT_BY_TRANSACTION_FEE,
-  SORT_BY_METHOD,
-  DEFAULT_PRICE,
-  SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
-  SORT_BY_ACCOUNT,
-  SORT_BY_NETWORTH,
-  SORT_BY_LARGEST_BOUGHT,
-  SORT_BY_LARGEST_SOLD,
-  SORT_BY_TAG_NAME,
-  SORT_BY_NET_FLOW,
+  API_LIMIT,
+  SORT_BY_ADDRESS,
+  SORT_BY_ANALYSED,
+  SORT_BY_REMARKS,
 } from "../../utils/Constant";
-import { searchTransactionApi, getFilters, getTransactionAsset } from "../intelligence/Api";
-// import { getCoinRate } from "../Portfolio/Api.js";
-import moment from "moment";
 import {
   FormElement,
   Form,
   CustomTextControl,
   BaseReactComponent,
 } from "../../utils/form";
-import unrecognizedIcon from "../../assets/images/icons/unrecognisedicon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import CustomDropdown from "../../utils/form/CustomDropdown";
-import {
-  amountFormat,
-  CurrencyType,
-  lightenDarkenColor,
-  noExponents,
-  numToCurrency,
-  UpgradeTriggered,
-} from "../../utils/ReusableFunctions";
+import "./_watchlist.scss";
+
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 
 import Loading from "../common/Loading";
@@ -64,18 +32,28 @@ import FixAddModal from "../common/FixAddModal";
 
 // add wallet
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { getAllCoins } from "../onboarding/Api.js";
-import { GetAllPlan, TopsetPageFlagDefault, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  TopsetPageFlagDefault,
+  getUser,
+  setPageFlagDefault,
+} from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
 import TransactionTable from "../intelligence/TransactionTable";
-import { getTopAccounts } from "./Api";
-import DropDown from "../common/DropDown";
+
 import CheckboxCustomTable from "../common/customCheckboxTable";
-import RemarkInput from "./remarkInput";
+import RemarkInput from "../discover/remarkInput";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { WatchlistShare } from "../../utils/AnalyticsFunctions";
+import AddWatchListAddressModal from "./addWatchListAddressModal";
+import {
+  getWatchList,
+  updateAddToWatchList,
+  getWatchListLoading,
+} from "./redux/WatchListApi";
+import { TruncateText } from "../../utils/ReusableFunctions";
 
-class WishListPage extends BaseReactComponent {
+class WatchListPage extends BaseReactComponent {
   constructor(props) {
     super(props);
     const search = props.location.search;
@@ -83,6 +61,7 @@ class WishListPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      showAddWatchListAddress: false,
       currency: JSON.parse(localStorage.getItem("currency")),
       year: "",
       search: "",
@@ -90,7 +69,7 @@ class WishListPage extends BaseReactComponent {
       asset: "",
       methodsDropdown: Method.opt,
       table: [],
-      sort: [{ key: SORT_BY_TIMESTAMP, value: false }],
+      sort: [{ key: SORT_BY_ADDRESS, value: false }],
       currentPage: page ? parseInt(page, 10) : START_INDEX,
       // assetFilter: [],
       // yearFilter: [],
@@ -126,9 +105,9 @@ class WishListPage extends BaseReactComponent {
       isStatic: false,
       triggerId: 0,
       accountList: [],
-      totalPage: 10,
+      totalPage: 0,
       timeFIlter: "Time",
-      AssetList: [],
+      tableData: [],
     };
     this.delayTimer = 0;
   }
@@ -146,27 +125,25 @@ class WishListPage extends BaseReactComponent {
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
-    this.props.getAllCoins();
     this.callApi(this.state.currentPage || START_INDEX);
-    this.assetList();
     GetAllPlan();
     getUser();
   }
 
-  assetList = () => {
-    let data = new URLSearchParams();
-    // data.append("end_datetime", endDate);
-    getTransactionAsset(data, this);
-  };
-
   callApi = (page = START_INDEX) => {
-    // this.setState({ tableLoading: true });
-    let data = new URLSearchParams();
-    data.append("start", page * API_LIMIT);
-    data.append("conditions", JSON.stringify(this.state.condition));
-    data.append("limit", API_LIMIT);
-    data.append("sorts", JSON.stringify(this.state.sort));
-    // getTopAccounts(data, this);
+    this.props.getWatchListLoading();
+    this.setState({
+      tableLoading: true,
+    });
+    let tempWatchListData = new URLSearchParams();
+    tempWatchListData.append("start", page * API_LIMIT);
+    tempWatchListData.append(
+      "conditions",
+      JSON.stringify(this.state.condition)
+    );
+    tempWatchListData.append("limit", API_LIMIT);
+    tempWatchListData.append("sorts", JSON.stringify(this.state.sort));
+    this.props.getWatchList(tempWatchListData);
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -186,16 +163,52 @@ class WishListPage extends BaseReactComponent {
         currentPage: page,
       });
     }
+    if (this.props.WatchListLoadingState !== prevProps.WatchListLoadingState) {
+      this.setState({
+        tableLoading: this.props.WatchListLoadingState,
+      });
+    }
+    if (this.props.WatchListState !== prevProps.WatchListState) {
+      if (this.props.WatchListState && this.props.WatchListState.watchlist) {
+        const tempWatchListArr = [];
+        let totalItems = 0;
+        if (this.props.WatchListState.total_count) {
+          totalItems = Math.ceil(
+            this.props.WatchListState.total_count / API_LIMIT
+          );
+        }
+
+        this.props.WatchListState.watchlist.forEach((watchListWalletAdd) => {
+          const tempSingleWatchList = {
+            account: watchListWalletAdd.name_tag
+              ? watchListWalletAdd.name_tag
+              : TruncateText(watchListWalletAdd.address),
+            isAnalyzed: watchListWalletAdd.analysed,
+            remark: watchListWalletAdd.remarks,
+            address: watchListWalletAdd.address,
+            nameTag: watchListWalletAdd.name_tag,
+          };
+          tempWatchListArr.push(tempSingleWatchList);
+        });
+        this.setState({
+          tableData: tempWatchListArr,
+          totalPage: totalItems ? totalItems : 0,
+        });
+      }
+    }
   }
 
   onValidSubmit = () => {
-    // console.log("Sbmit")
+    // Search Here
+    this.setState({
+      condition: [
+        { key: "SEARCH_BY_WALLET_ADDRESS", value: this.state.search },
+      ],
+    });
   };
 
   addCondition = (key, value) => {
-    console.log("test", key, value);
     let index = this.state.condition.findIndex((e) => e.key === key);
-    // console.log("index", index);
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -206,19 +219,16 @@ class WishListPage extends BaseReactComponent {
       value !== "AllNetworth" &&
       value !== "Allasset"
     ) {
-      // console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allchain" ||
       value === "AllNetworth" ||
       value === "Allasset"
     ) {
-      // console.log("second if", index);
       if (index !== -1) {
         arr.splice(index, 1);
       }
     } else {
-      // console.log("else", index);
       let obj = {};
       obj = {
         key: key,
@@ -241,7 +251,6 @@ class WishListPage extends BaseReactComponent {
   };
   onChangeMethod = () => {};
   handleSort = (val) => {
-    console.log(val);
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -249,21 +258,21 @@ class WishListPage extends BaseReactComponent {
         if (val === "account") {
           obj = [
             {
-              key: SORT_BY_ACCOUNT,
+              key: SORT_BY_ADDRESS,
               value: !el.up,
             },
           ];
         } else if (val === "isAnalyzed") {
           obj = [
             {
-              key: SORT_BY_NETWORTH,
+              key: SORT_BY_ANALYSED,
               value: !el.up,
             },
           ];
         } else if (val === "remark") {
           obj = [
             {
-              key: SORT_BY_NET_FLOW,
+              key: SORT_BY_REMARKS,
               value: !el.up,
             },
           ];
@@ -273,9 +282,8 @@ class WishListPage extends BaseReactComponent {
         el.up = false;
       }
     });
-
     this.setState({
-      // sort: obj,
+      sort: obj,
       tableSortOpt: sort,
     });
   };
@@ -296,12 +304,16 @@ class WishListPage extends BaseReactComponent {
     if (e.split(" ")[3] !== "undefined") {
       title = title + " " + e.split(" ")[3];
     }
-    console.log("title", title);
     this.setState({
       timeFIlter: title,
     });
   };
 
+  handleAddWatchlistAddress = () => {
+    this.setState({
+      showAddWatchListAddress: !this.state.showAddWatchListAddress,
+    });
+  };
   // For add new address
   handleAddModal = () => {
     this.setState({
@@ -315,7 +327,6 @@ class WishListPage extends BaseReactComponent {
     });
 
     this.props.setPageFlagDefault();
-    // console.log("api respinse", value);
   };
 
   handleShare = () => {
@@ -330,82 +341,54 @@ class WishListPage extends BaseReactComponent {
     navigator.clipboard.writeText(shareLink);
     toast.success("Link copied");
 
-   WatchlistShare({
-     session_id: getCurrentUser().id,
-     email_address: getCurrentUser().email,
-   });
-    // console.log("share pod", shareLink);
+    WatchlistShare({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
   };
-
-  render() {
-    // console.log("value", this.state.methodFilter);
-
-    let chainList = this.props.OnboardingState?.coinsList
-      ?.filter((e) => ["Ethereum", "Polygon", "Avalanche"].includes(e.name))
-      ?.map((e) => ({
-        value: e.id,
-        label: e.name,
-      }));
-
-    let assetList = this.state?.AssetList?.filter((e) =>
-      ["Ethereum", "Polygon", "Avalanche"].includes(e.label)
+  updateWatchListAnalyzed = (passedAddress, passedAnalysed) => {
+    let tempUpdateWatchListata = new URLSearchParams();
+    tempUpdateWatchListata.append(
+      "wallet_address",
+      passedAddress ? passedAddress : ""
+    );
+    tempUpdateWatchListata.append(
+      "analysed",
+      passedAnalysed ? passedAnalysed : false
     );
 
-    // console.log("text", assetList);
-
-    // const tableData = this.state.accountList;
-    const tableData = [
-      {
-        account: "@cryptocobie",
-        isAnalyzed: true,
-        remark: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      },
-      {
-        account: "@cryptocobie2",
-        isAnalyzed: false,
-        remark: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      },
-    ];
-
+    this.props.updateAddToWatchList(tempUpdateWatchListata);
+  };
+  updateWatchListRemark = (passedAddress, passedRemark) => {
+    let tempUpdateWatchListata = new URLSearchParams();
+    tempUpdateWatchListata.append(
+      "wallet_address",
+      passedAddress ? passedAddress : ""
+    );
+    tempUpdateWatchListata.append("remarks", passedRemark ? passedRemark : "");
+    this.props.updateAddToWatchList(tempUpdateWatchListata);
+  };
+  render() {
     const columnList = [
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col goToLeft no-hover"
             id="Accounts"
-            onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              To analyze
+              To Analyze
             </span>
-            <Image
-              src={sortByIcon}
-              className={
-                !this.state.tableSortOpt[0].up ? "rotateDown" : "rotateUp"
-              }
-            />
           </div>
         ),
         dataKey: "account",
         // coumnWidth: 153,
-        coumnWidth: 0.3,
+        coumnWidth: 0.35,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
             return (
-              // <CustomOverlay
-              //   position="top"
-              //   isIcon={false}
-              //   isInfo={true}
-              //   isText={true}
-              //   text={rowData.account}
-              // >
-              //   <div className="inter-display-medium f-s-13 lh-16 grey-313">
-
-              //   </div>
-              // </CustomOverlay>
-              // this.TruncateText(rowData.account)
-              rowData.account
+              <div className="dotDotText text-left">{rowData.account}</div>
             );
           }
         },
@@ -413,7 +396,7 @@ class WishListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col goToCenter"
             id="isAnalyzed"
             onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
@@ -434,16 +417,24 @@ class WishListPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "isAnalyzed") {
-            return <CheckboxCustomTable isChecked={rowData?.isAnalyzed} />;
+            const passToggleAnalyzed = (isChecked) => {
+              this.updateWatchListAnalyzed(rowData.address, isChecked);
+            };
+            return (
+              <CheckboxCustomTable
+                handleOnClick={passToggleAnalyzed}
+                isChecked={rowData?.isAnalyzed}
+              />
+            );
           }
         },
       },
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col goToRight"
             id="remark"
-            onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
+            onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
               Remarks
@@ -451,23 +442,30 @@ class WishListPage extends BaseReactComponent {
             <Image
               src={sortByIcon}
               className={
-                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+                !this.state.tableSortOpt[2].up ? "rotateDown" : "rotateUp"
               }
             />
           </div>
         ),
         dataKey: "remark",
         // coumnWidth: 153,
-        coumnWidth: 0.3,
+        coumnWidth: 0.35,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "remark") {
-            return <RemarkInput />;
+            const passRemarkChanged = (newRemark) => {
+              this.updateWatchListRemark(rowData.address, newRemark);
+            };
+            return (
+              <RemarkInput
+                onSubmit={passRemarkChanged}
+                remark={rowData.remark}
+              />
+            );
           }
         },
       },
     ];
-
     return (
       <>
         {/* topbar */}
@@ -490,6 +488,13 @@ class WishListPage extends BaseReactComponent {
         </div>
         <div className="history-table-section m-t-80">
           <div className="history-table page">
+            {this.state.showAddWatchListAddress ? (
+              <AddWatchListAddressModal
+                show={this.state.showAddWatchListAddress}
+                onHide={this.handleAddWatchlistAddress}
+                history={this.props.history}
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -519,15 +524,15 @@ class WishListPage extends BaseReactComponent {
             )}
             <PageHeader
               title={"Watchlist"}
-              subTitle={"People to watch"}
+              subTitle={"Addresses to watch"}
               // showpath={true}
               // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}
-              ShareBtn={true}
+              ShareBtn={false}
               handleShare={this.handleShare}
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
+              // btnText="Add address"
+              // handleBtn={this.handleAddWatchlistAddress}
             />
 
             <div className="fillter_tabs_section">
@@ -539,7 +544,7 @@ class WishListPage extends BaseReactComponent {
                     justifyContent: "space-between",
                   }}
                 >
-                  <div style={{ width: "60%" }}>
+                  {/* <div style={{ width: "60%" }}>
                     <CustomDropdown
                       filtername="Type"
                       options={[...[{ value: "Allasset", label: "All" }]]}
@@ -549,43 +554,54 @@ class WishListPage extends BaseReactComponent {
                       }
                       isTopaccount={true}
                     />
-                  </div>
+                  </div> */}
 
                   {/* {fillter_tabs} */}
-                  <div style={{ width: "40%" }}>
+                  <div style={{ width: "100%" }}>
                     <div className="searchBar top-account-search">
                       <Image src={searchIcon} className="search-icon" />
-                      <FormElement
-                        valueLink={this.linkState(
-                          this,
-                          "search",
-                          this.onChangeMethod
-                        )}
-                        control={{
-                          type: CustomTextControl,
-                          settings: {
-                            placeholder: "Search",
-                          },
-                        }}
-                        classes={{
-                          inputField: "search-input",
-                          prefix: "search-prefix",
-                          suffix: "search-suffix",
-                        }}
-                      />
+                      <div className="form-groupContainer">
+                        <FormElement
+                          valueLink={this.linkState(
+                            this,
+                            "search",
+                            this.onChangeMethod
+                          )}
+                          control={{
+                            type: CustomTextControl,
+                            settings: {
+                              placeholder: "Search",
+                            },
+                          }}
+                          classes={{
+                            inputField: "search-input watchListSearchInput",
+                            prefix: "search-prefix",
+                            suffix: "search-suffix",
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </Form>
             </div>
 
-            <div className="transaction-history-table">
+            <div className="transaction-history-table watchListTableContainer">
               {this.state.tableLoading ? (
-                <Loading />
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "69rem",
+                  }}
+                >
+                  <Loading />
+                </div>
               ) : (
                 <>
                   <TransactionTable
-                    tableData={tableData}
+                    tableData={this.state.tableData}
                     columnList={columnList}
                     message={"No accounts found"}
                     totalPage={this.state.totalPage}
@@ -594,16 +610,6 @@ class WishListPage extends BaseReactComponent {
                     page={this.state.currentPage}
                     tableLoading={this.state.tableLoading}
                   />
-                  {/* <div className="ShowDust">
-                  <p
-                    onClick={this.showDust}
-                    className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
-                  >
-                    {this.state.showDust
-                      ? "Reveal dust (less than $1)"
-                      : "Hide dust (less than $1)"}
-                  </p>
-                </div> */}
                 </>
               )}
             </div>
@@ -616,18 +622,16 @@ class WishListPage extends BaseReactComponent {
 }
 
 const mapStateToProps = (state) => ({
-  // portfolioState: state.PortfolioState,
-  intelligenceState: state.IntelligenceState,
-  OnboardingState: state.OnboardingState,
+  WatchListState: state.WatchListState,
+  WatchListLoadingState: state.WatchListLoadingState,
 });
 const mapDispatchToProps = {
-  searchTransactionApi,
-  // getCoinRate,
-  getAllCoins,
-  getFilters,
   setPageFlagDefault,
   TopsetPageFlagDefault,
+  getWatchList,
+  updateAddToWatchList,
+  getWatchListLoading,
 };
 
-WishListPage.propTypes = {};
-export default connect(mapStateToProps, mapDispatchToProps)(WishListPage);
+WatchListPage.propTypes = {};
+export default connect(mapStateToProps, mapDispatchToProps)(WatchListPage);

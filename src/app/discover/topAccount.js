@@ -5,6 +5,7 @@ import searchIcon from "../../assets/images/icons/search-icon.svg";
 import GainIcon from "../../assets/images/icons/GainIcon.svg";
 import LossIcon from "../../assets/images/icons/LossIcon.svg";
 import { connect } from "react-redux";
+import { getWatchListByUser } from "../watchlist/redux/WatchListApi";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
   Method,
@@ -75,6 +76,11 @@ import {
   TopAccountTimeFilter,
   TopAccountTimeSpent,
 } from "../../utils/AnalyticsFunctions";
+import CheckboxCustomTable from "../common/customCheckboxTable";
+import {
+  updateAddToWatchList,
+  removeFromWatchList,
+} from "../watchlist/redux/WatchListApi";
 class TopAccountPage extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -88,6 +94,7 @@ class TopAccountPage extends BaseReactComponent {
       search: "",
       method: "",
       asset: "",
+      accountInWatchList: [],
       methodsDropdown: Method.opt,
       table: [],
       sort: [{ key: SORT_BY_AMOUNT, value: false }],
@@ -223,13 +230,16 @@ class TopAccountPage extends BaseReactComponent {
   };
 
   callApi = (page = START_INDEX) => {
+    this.props.getWatchListByUser();
     this.setState({ tableLoading: true });
-    let data = new URLSearchParams();
-    data.append("start", page * API_LIMIT);
-    data.append("conditions", JSON.stringify(this.state.condition));
-    data.append("limit", API_LIMIT);
-    data.append("sorts", JSON.stringify(this.state.sort));
-    getTopAccounts(data, this);
+    setTimeout(() => {
+      let data = new URLSearchParams();
+      data.append("start", page * API_LIMIT);
+      data.append("conditions", JSON.stringify(this.state.condition));
+      data.append("limit", API_LIMIT);
+      data.append("sorts", JSON.stringify(this.state.sort));
+      getTopAccounts(data, this);
+    }, 300);
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -274,6 +284,18 @@ class TopAccountPage extends BaseReactComponent {
           });
           this.updateTimer();
         }
+      }
+    }
+
+    if (
+      this.props.TopAccountsInWatchListState !==
+      prevProps.TopAccountsInWatchListState
+    ) {
+      const tempList = this.props.TopAccountsInWatchListState;
+      if (tempList) {
+        this.setState({
+          accountInWatchList: tempList,
+        });
       }
     }
   }
@@ -499,7 +521,19 @@ class TopAccountPage extends BaseReactComponent {
     });
     this.updateTimer();
   };
-
+  handleAddRemoveFromWatchList = (walletAddress, addItem, tagName) => {
+    let tempWatchListata = new URLSearchParams();
+    if (addItem) {
+      tempWatchListata.append("wallet_address", walletAddress);
+      tempWatchListata.append("analysed", false);
+      tempWatchListata.append("remarks", "");
+      tempWatchListata.append("name_tag", tagName);
+      this.props.updateAddToWatchList(tempWatchListata);
+    } else {
+      tempWatchListata.append("address", walletAddress);
+      this.props.removeFromWatchList(tempWatchListata);
+    }
+  };
   render() {
     let chainList = this.props.OnboardingState?.coinsList
       ?.filter((e) => ["Ethereum", "Polygon", "Avalanche"].includes(e.name))
@@ -973,6 +1007,47 @@ class TopAccountPage extends BaseReactComponent {
           }
         },
       },
+      {
+        labelName: (
+          <div
+            className="history-table-header-col no-hover"
+            id="isAddedToWatchList"
+            // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
+          >
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Watchlist
+            </span>
+            {/* <Image
+              src={sortByIcon}
+              className={
+                !this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "isAddedToWatchList",
+        coumnWidth: 0.2,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "isAddedToWatchList") {
+            const handleOnClick = (addItem) => {
+              this.handleAddRemoveFromWatchList(
+                rowData.account,
+                addItem,
+                rowData.tagName
+              );
+            };
+            return (
+              <CheckboxCustomTable
+                handleOnClick={handleOnClick}
+                isChecked={this.state.accountInWatchList.includes(
+                  rowData.account
+                )}
+              />
+            );
+          }
+        },
+      },
 
       // {
       //   labelName: (
@@ -1244,6 +1319,7 @@ const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
   OnboardingState: state.OnboardingState,
+  TopAccountsInWatchListState: state.TopAccountsInWatchListState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
@@ -1254,6 +1330,9 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   TopsetPageFlagDefault,
   getAllParentChains,
+  getWatchListByUser,
+  removeFromWatchList,
+  updateAddToWatchList,
 };
 
 TopAccountPage.propTypes = {};
