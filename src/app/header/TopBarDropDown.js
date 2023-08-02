@@ -58,11 +58,9 @@ export default function TopBarDropDown(props) {
   });
   const topbarDropdownToggle = useRef();
 
-  const openDropdown = (event) => {
-    if (!showDropdown) {
-      event.stopPropagation();
-      setShowDropdown(true);
-    }
+  const toggleDropdown = (event) => {
+    event.stopPropagation();
+    setShowDropdown(!showDropdown);
   };
   const closeDropdown = (event) => {
     if (showDropdown) {
@@ -103,7 +101,7 @@ export default function TopBarDropDown(props) {
             {props.totalWallets && props.totalWallets > 1 ? (
               <OutsideClickHandler onOutsideClick={closeDropdown}>
                 <div
-                  onClick={openDropdown}
+                  onClick={toggleDropdown}
                   className="topBarWalletArrowContainer pl-3 h-100 pr-1"
                 >
                   <Image
@@ -115,7 +113,6 @@ export default function TopBarDropDown(props) {
             ) : null}
           </div>
         </Dropdown.Toggle>
-
         <Dropdown.Menu>
           <div className="dropdown-menu-list-container">{list}</div>
         </Dropdown.Menu>

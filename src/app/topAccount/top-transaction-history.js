@@ -1361,10 +1361,29 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                 isInfo={true}
                 isText={true}
                 text={rowData.method}
+                isCaptialised
               >
-                <div className="inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
-                  {rowData.method}
-                </div>
+                {rowData.method &&
+                (rowData.method.toLowerCase() === "send" ||
+                  rowData.method.toLowerCase() === "receive") ? (
+                  <div className="gainLossContainer">
+                    <div
+                      className={`gainLoss ${
+                        rowData.method.toLowerCase() === "send"
+                          ? "loss"
+                          : "gain"
+                      }`}
+                    >
+                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                        {rowData.method}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-capitalize inter-display-medium f-s-13 lh-16 black-191 history-table-method transfer ellipsis-div">
+                    {rowData.method}
+                  </div>
+                )}
               </CustomOverlay>
             );
           }
@@ -1466,6 +1485,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                       handleClick={(key, value) =>
                         this.addCondition(key, value)
                       }
+                      isCaptialised
                     />
                   </Col>
                   {/* {fillter_tabs} */}
