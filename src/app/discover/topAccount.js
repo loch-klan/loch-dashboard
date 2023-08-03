@@ -608,13 +608,13 @@ class TopAccountPage extends BaseReactComponent {
       } else if (this.state.timeFIlter === "1 month") {
         return "last month";
       } else if (this.state.timeFIlter === "6 months") {
-        return "in the last 6 months";
+        return "6 months";
       } else if (this.state.timeFIlter === "1 year") {
         return "last year";
       } else if (this.state.timeFIlter === "3 years") {
-        return "in the last 3 years";
+        return "3 years";
       }
-      return "in the last 5 years";
+      return "5 years";
     };
     const columnList = [
       {

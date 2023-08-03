@@ -479,7 +479,7 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToLeft no-hover"
+            className="cp history-table-header-col goToCenter no-hover"
             id="Accounts"
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
@@ -494,7 +494,7 @@ class WatchListPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
             return (
-              <div className="dotDotText text-left">
+              <div className="dotDotText text-center">
                 {TruncateText(rowData.address)}
               </div>
             );
@@ -504,7 +504,7 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToLeft"
+            className="cp history-table-header-col goToCenter"
             id="Accounts"
             onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
@@ -519,14 +519,14 @@ class WatchListPage extends BaseReactComponent {
             />
           </div>
         ),
-        dataKey: "account",
+        dataKey: "nametag",
         // coumnWidth: 153,
         coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "account") {
+          if (dataKey === "nametag") {
             return (
-              <div className="dotDotText text-left">{rowData.nameTag}</div>
+              <div className="dotDotText text-center">{rowData.nameTag}</div>
             );
           }
         },
@@ -574,7 +574,7 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToRight"
+            className="cp history-table-header-col goToCenter"
             id="remark"
             onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
