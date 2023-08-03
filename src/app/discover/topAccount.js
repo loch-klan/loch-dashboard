@@ -58,6 +58,7 @@ import { SORT_BY_NAME } from "../../utils/Constant";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { TimeFilterType } from "../../utils/Constant";
 import {
+  TopAccountAddAccountToWatchList,
   TopAccountClickedAccount,
   TopAccountInflowHover,
   TopAccountNameHover,
@@ -68,6 +69,7 @@ import {
   TopAccountPagePrev,
   TopAccountPageSearch,
   TopAccountPageView,
+  TopAccountRemoveAccountFromWatchList,
   TopAccountSearch,
   TopAccountShare,
   TopAccountSortByNetWorth,
@@ -524,12 +526,24 @@ class TopAccountPage extends BaseReactComponent {
   handleAddRemoveFromWatchList = (walletAddress, addItem, tagName) => {
     let tempWatchListata = new URLSearchParams();
     if (addItem) {
+      TopAccountAddAccountToWatchList({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        address: tagName ? tagName : walletAddress,
+      });
+      this.updateTimer();
       tempWatchListata.append("wallet_address", walletAddress);
       tempWatchListata.append("analysed", false);
       tempWatchListata.append("remarks", "");
       tempWatchListata.append("name_tag", tagName);
       this.props.updateAddToWatchList(tempWatchListata);
     } else {
+      TopAccountRemoveAccountFromWatchList({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        address: tagName ? tagName : walletAddress,
+      });
+      this.updateTimer();
       tempWatchListata.append("address", walletAddress);
       this.props.removeFromWatchList(tempWatchListata);
     }
@@ -588,7 +602,20 @@ class TopAccountPage extends BaseReactComponent {
     //     ],
     //   },
     // ];
-
+    const inflowOutflowTimePeriod = () => {
+      if (this.state.timeFIlter === "1 week") {
+        return "last week";
+      } else if (this.state.timeFIlter === "1 month") {
+        return "last month";
+      } else if (this.state.timeFIlter === "6 months") {
+        return "6 months";
+      } else if (this.state.timeFIlter === "1 year") {
+        return "last year";
+      } else if (this.state.timeFIlter === "3 years") {
+        return "3 years";
+      }
+      return "5 years";
+    };
     const columnList = [
       {
         labelName: (
@@ -852,7 +879,8 @@ class TopAccountPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[3].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Largest inflows
+              <div>Largest inflows</div>
+              <div>{inflowOutflowTimePeriod()}</div>
             </span>
             {/* <Image
               src={sortByIcon}
@@ -935,7 +963,8 @@ class TopAccountPage extends BaseReactComponent {
             // onClick={() => this.handleSort(this.state.tableSortOpt[4].title)}
           >
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Largest outflows
+              <div>Largest outflows</div>
+              <div>{inflowOutflowTimePeriod()}</div>
             </span>
             {/* <Image
               src={sortByIcon}

@@ -1746,6 +1746,16 @@ export const InsightPage = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Insights");
 };
+// Page View: Watch List
+export const WatchlistPage = ({ session_id, email_address }) => {
+  const event_name = "Page View: Watchlist";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Insights");
+};
 
 // Page View: Onboarding
 export const OnboardingPage = () => {
@@ -3856,6 +3866,21 @@ export const TimeSpentInsights = ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Insights: time spent on insights page");
 };
+// Insights: time spent on watchlist page
+
+export const TimeSpentWatchlist = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Watchlist: time spent on watchlist page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // Insights: share - done
 export const InsightsShare = ({ session_id, email_address }) => {
@@ -4515,6 +4540,96 @@ export const TopAccountSearch = ({ session_id, email_address, search }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: search");
 };
+//Watchlist : search
+export const WatchlistSearch = ({ session_id, email_address, search }) => {
+  const event_name = "Watchlist: search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    searched: search,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistSortByNameTag = ({ session_id, email_address }) => {
+  const event_name = "Watchlist: sort by name tag";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistSortByAnalyzed = ({ session_id, email_address }) => {
+  const event_name = "Watchlist: sort by analyzed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistSortByRemarks = ({ session_id, email_address }) => {
+  const event_name = "Watchlist: sort by remarks";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistRemarkAdded = ({
+  session_id,
+  email_address,
+  address,
+  remark,
+}) => {
+  const event_name = "Watchlist: remark added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    remark: remark,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WatchlistAnalyzedCheckbox = ({
+  session_id,
+  email_address,
+  address,
+  analyzed,
+}) => {
+  const event_name = "Watchlist: analyzed checkbox";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+    analyzed: analyzed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TopAccountAddAccountToWatchList = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Top accounts: add account to watch list";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TopAccountRemoveAccountFromWatchList = ({
+  session_id,
+  email_address,
+  address,
+}) => {
+  const event_name = "Top accounts: remove account from watch list";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 //Top accounts: sort by name tag - done
 export const TopAccountSortByTag = ({ session_id, email_address }) => {
@@ -4619,6 +4734,15 @@ export const TopAccountNameHover = ({ session_id, email_address, hover }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: name tag hover");
+};
+export const WatchlistNameHover = ({ session_id, email_address, hover }) => {
+  const event_name = "Watchlist: name tag hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hovered: hover,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //Top accounts: net worth hover - done
