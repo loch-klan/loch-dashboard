@@ -1355,14 +1355,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.method}
-                isCaptialised
-              >
+              <>
                 {rowData.method &&
                 (rowData.method.toLowerCase() === "send" ||
                   rowData.method.toLowerCase() === "receive") ? (
@@ -1374,7 +1367,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                           : "gain"
                       }`}
                     >
-                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313 ml-2">
+                      <span className="text-capitalize inter-display-medium f-s-13 lh-16 grey-313">
                         {rowData.method}
                       </span>
                     </div>
@@ -1384,7 +1377,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                     {rowData.method}
                   </div>
                 )}
-              </CustomOverlay>
+              </>
             );
           }
         },

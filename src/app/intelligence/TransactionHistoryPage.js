@@ -1499,14 +1499,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "method") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.method}
-                isCaptialised
-              >
+              <>
                 {rowData.method &&
                 (rowData.method.toLowerCase() === "send" ||
                   rowData.method.toLowerCase() === "receive") ? (
@@ -1528,7 +1521,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                     {rowData.method}
                   </div>
                 )}
-              </CustomOverlay>
+              </>
             );
           }
         },
