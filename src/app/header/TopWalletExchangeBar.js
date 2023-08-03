@@ -11,7 +11,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
-class TopWalletExchangeBar extends Component {
+class TopBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,14 +23,23 @@ class TopWalletExchangeBar extends Component {
       firstExchange: "",
     };
   }
+
   componentDidMount() {
-    this.applyWalletList();
+    this.applyLocalStorageWalletList();
+    if (this.props.walletState?.walletList) {
+      this.applyWalletList();
+    } else {
+      this.applyTempWalletList();
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps?.walletState?.walletList !== this.props.walletState?.walletList
     ) {
       this.applyWalletList();
+    }
+    if (prevProps?.HeaderState !== this.props.HeaderState) {
+      this.applyTempWalletList();
     }
   }
   TruncateText = (string) => {
@@ -40,42 +49,109 @@ class TopWalletExchangeBar extends Component {
       string.substring(string.length - 3, string.length)
     );
   };
+  applyLocalStorageWalletList = () => {
+    let tempWalletAdd = window.sessionStorage.getItem(
+      "topBarLocalStorageWalletAddresses"
+    );
+    if (tempWalletAdd) {
+      tempWalletAdd = JSON.parse(tempWalletAdd);
+    }
+    if (tempWalletAdd && tempWalletAdd.length > 0) {
+      this.setState({
+        firstWallet: tempWalletAdd.length > 0 ? tempWalletAdd[0] : "",
+        totalWallets: tempWalletAdd.length,
+        walletList: tempWalletAdd,
+      });
+    }
+  };
   applyWalletList = () => {
     if (this.props.walletState?.walletList?.length > 0) {
       const walletList = this.props.walletState.walletList;
       const tempWalletList = [];
       const tempExchangeList = [];
       const tempExchangeListImages = [];
-      walletList.map((data) => {
-        if (data?.chains.length === 0) {
-          if (data.protocol) {
-            if (data.protocol.code) {
-              tempExchangeList.push(data.protocol.code);
+      if (walletList) {
+        walletList.map((data) => {
+          if (data?.chains.length === 0) {
+            if (data.protocol) {
+              if (data.protocol.code) {
+                tempExchangeList.push(data.protocol.code);
+              }
+              if (data.protocol.symbol) {
+                tempExchangeListImages.push(data.protocol.symbol);
+              }
             }
-            if (data.protocol.symbol) {
-              tempExchangeListImages.push(data.protocol.symbol);
+          } else {
+            if (data?.nickname) {
+              tempWalletList.push(data.nickname);
+            } else if (data?.tag) {
+              tempWalletList.push(data.tag);
+            } else if (data?.display_address) {
+              tempWalletList.push(data.display_address);
+            } else if (data?.address) {
+              tempWalletList.push(this.TruncateText(data.address));
             }
           }
-        } else {
+          return null;
+        });
+        tempWalletList.sort().reverse();
+        const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
+        window.sessionStorage.setItem(
+          "topBarLocalStorageWalletAddresses",
+          tempWalletListLoaclPass
+        );
+        this.setState({
+          firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
+          totalWallets: tempWalletList.length,
+          walletList: tempWalletList,
+          exchangeList: tempExchangeList,
+          firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
+          exchangeListImages: tempExchangeListImages,
+        });
+      }
+    }
+  };
+  applyTempWalletList = () => {
+    if (this.props.HeaderState?.wallet?.length > 0) {
+      const walletList = this.props.HeaderState?.wallet;
+      const tempWalletList = [];
+      const regex = /\.eth$/;
+      if (walletList) {
+        walletList.forEach((data) => {
+          let tempAddress = "";
           if (data?.nickname) {
-            tempWalletList.push(data.nickname);
-          } else if (data?.tag) {
-            tempWalletList.push(data.tag);
-          } else if (data?.display_address) {
-            tempWalletList.push(data.display_address);
+            tempAddress = data.nickname;
+          } else if (data?.displayAddress) {
+            tempAddress = data.displayAddress;
+            if (!regex.test(tempAddress)) {
+              tempAddress = this.TruncateText(tempAddress);
+            }
           } else if (data?.address) {
-            tempWalletList.push(this.TruncateText(data.address));
+            tempAddress = data.address;
+            if (!regex.test(tempAddress)) {
+              tempAddress = this.TruncateText(tempAddress);
+            }
+          } else if (data?.apiAddress) {
+            tempAddress = data.apiAddress;
+            if (!regex.test(tempAddress)) {
+              tempAddress = this.TruncateText(tempAddress);
+            }
           }
-        }
-      });
-      this.setState({
-        firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
-        totalWallets: tempWalletList.length,
-        walletList: tempWalletList,
-        exchangeList: tempExchangeList,
-        firstExchange: tempExchangeList.length > 0 ? tempExchangeList[0] : "",
-        exchangeListImages: tempExchangeListImages,
-      });
+
+          tempWalletList.push(tempAddress);
+        });
+        tempWalletList.sort().reverse();
+        const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
+        window.sessionStorage.setItem(
+          "topBarLocalStorageWalletAddresses",
+          tempWalletListLoaclPass
+        );
+        this.setState({
+          firstWallet: tempWalletList.length > 0 ? tempWalletList[0] : "",
+          totalWallets: tempWalletList.length,
+          walletList: tempWalletList,
+        });
+      }
     }
   };
   passAddWalletClick = () => {
@@ -101,7 +177,7 @@ class TopWalletExchangeBar extends Component {
     return (
       <div className="topBarContainer">
         {this.state.walletList.length > 0 ? (
-          <div className="topWalletDropdownContainer maxWidth50">
+          <div className="topWalletDropdownContainer ml-2 maxWidth50">
             <TopBarDropDown
               class="topWalletDropdown"
               list={this.state.walletList}
@@ -158,10 +234,9 @@ class TopWalletExchangeBar extends Component {
 
 const mapStateToProps = (state) => ({
   walletState: state.WalletState,
+  HeaderState: state.HeaderState,
 });
+
 const mapDispatchToProps = {};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopWalletExchangeBar);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

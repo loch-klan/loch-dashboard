@@ -6,6 +6,7 @@ import { ProfileReducer } from "../app/profile";
 import { CommonReducer } from "../app/common";
 import { HomeReducer } from "../app/home";
 import OnboardingReducer from "../app/onboarding/OnboardingReducer";
+import HeaderReducer from "../app//header/HeaderReducer";
 import PortfolioReducer from "../app/Portfolio/PortfolioReducer";
 import WalletReducer from "../app/wallet/WalletReducer";
 import IntelligenceReducer from "../app/intelligence/IntelligenceReducer";
@@ -19,6 +20,7 @@ import {
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
   DefiState: DefiReducer,
+  HeaderState: HeaderReducer,
   CohortState: CohortReducer,
   ProfileState: ProfileReducer,
   CommonState: CommonReducer,
