@@ -48,6 +48,7 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   TimeSpentWatchlist,
   WatchlistAnalyzedCheckbox,
+  WatchlistNameHover,
   WatchlistPage,
   WatchlistRemarkAdded,
   WatchlistSearch,
@@ -63,6 +64,7 @@ import {
   getWatchListLoading,
 } from "./redux/WatchListApi";
 import { TruncateText } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class WatchListPage extends BaseReactComponent {
   constructor(props) {
@@ -526,7 +528,27 @@ class WatchListPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "nametag") {
             return (
-              <div className="dotDotText text-center">{rowData.nameTag}</div>
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={rowData.nameTag}
+              >
+                <span
+                  onMouseEnter={() => {
+                    WatchlistNameHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      hover: rowData.nameTag,
+                    });
+                    this.updateTimer();
+                  }}
+                  className="dotDotText text-center"
+                >
+                  {rowData.nameTag}
+                </span>
+              </CustomOverlay>
             );
           }
         },

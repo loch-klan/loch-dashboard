@@ -4735,6 +4735,15 @@ export const TopAccountNameHover = ({ session_id, email_address, hover }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: name tag hover");
 };
+export const WatchlistNameHover = ({ session_id, email_address, hover }) => {
+  const event_name = "Watchlist: name tag hover";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hovered: hover,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 //Top accounts: net worth hover - done
 export const TopAccountNetHover = ({ session_id, email_address, hover }) => {
