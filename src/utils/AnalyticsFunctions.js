@@ -4713,15 +4713,32 @@ export const TopAccountClickedAccount = ({
   session_id,
   email_address,
   account,
+  name_tag,
 }) => {
   const event_name = "Top accounts: account clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "selected account": account,
+    "name tag": name_tag,
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: account clicked");
+};
+export const WatchlistClickedAccount = ({
+  session_id,
+  email_address,
+  account,
+  name_tag,
+}) => {
+  const event_name = "Watchlist: account clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "selected account": account,
+    "name tag": name_tag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //Top accounts: name tag hover - done
