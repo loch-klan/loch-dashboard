@@ -26,6 +26,7 @@ import {
   DEFAULT_PRICE,
   SEARCH_BY_NOT_DUST,
   BASE_URL_S3,
+  SEARCH_BY_CHAIN_IN,
 } from "../../utils/Constant";
 import { getAllWalletListApi } from "../wallet/Api";
 import { searchTransactionApi, getFilters } from "./Api";
@@ -52,6 +53,7 @@ import {
   TransactionHistoryAssetFilter,
   TransactionHistoryHideDust,
   TransactionHistoryMethodFilter,
+  TransactionHistoryNetworkFilter,
   TransactionHistoryPageBack,
   TransactionHistoryPageNext,
   TransactionHistoryPageSearch,
@@ -175,7 +177,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       startTime: "",
       isTimeSearchUsed: false,
       isAssetSearchUsed: false,
-      isMethodSearchUsed: false,
+      isNetworkSearchUsed: false,
     };
     this.delayTimer = 0;
   }
@@ -185,8 +187,8 @@ class TransactionHistoryPage extends BaseReactComponent {
   assetSearchIsUsed = () => {
     this.setState({ isAssetSearchUsed: true });
   };
-  methodSearchIsUsed = () => {
-    this.setState({ isMethodSearchUsed: true });
+  networkSearchIsUsed = () => {
+    this.setState({ isNetworkSearchUsed: true });
   };
   upgradeModal = () => {
     this.setState({
@@ -293,8 +295,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
 
-    // console.log("prev", prevPage,"cur", page)
-
     if (!this.props.commonState.transactionHistory) {
       this.props.updateWalletListFlag("transactionHistory", true);
       let tempData = new URLSearchParams();
@@ -309,7 +309,6 @@ class TransactionHistoryPage extends BaseReactComponent {
       prevState.condition !== this.state.condition ||
       prevState.sort !== this.state.sort
     ) {
-      // console.log("prev", prevPage, "cur", page);
       this.callApi(page);
       if (prevPage !== page) {
         if (prevPage - 1 === page) {
@@ -339,7 +338,6 @@ class TransactionHistoryPage extends BaseReactComponent {
 
     // add wallet
     if (prevState.apiResponse != this.state.apiResponse) {
-      // console.log("update");
       const address = this.state.walletList?.map((wallet) => {
         return wallet.address;
       });
@@ -383,15 +381,22 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
 
     this.props.setPageFlagDefault();
-    // console.log("api respinse", value);
   };
 
-  onValidSubmit = () => {
-    // console.log("Sbmit")
+  onValidSubmit = () => {};
+  handleFunction = (badge) => {
+    if (badge && badge.length > 0) {
+      const tempArr = [];
+      if (badge[0].name !== "All") {
+        badge.forEach((resData) => tempArr.push(resData.id));
+      }
+      this.addCondition(
+        SEARCH_BY_CHAIN_IN,
+        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
+      );
+    }
   };
-
   addCondition = (key, value) => {
-    // console.log("key, value", key, value);
     if (key === "SEARCH_BY_TIMESTAMP_IN") {
       const tempIsTimeUsed = this.state.isTimeSearchUsed;
       TransactionHistoryYearFilter({
@@ -403,14 +408,11 @@ class TransactionHistoryPage extends BaseReactComponent {
       this.updateTimer();
       this.setState({ isTimeSearchUsed: false });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
-      // console.log("tes", this.props.intelligenceState.assetFilter);
       let assets = [];
-      // console.log("con", value !== "allAssets");
+
       Promise.all([
         new Promise((resolve) => {
-          // console.log("abc");
           if (value !== "allAssets") {
-            console.log("test");
             this.props.intelligenceState?.assetFilter?.map((e) => {
               if (value?.includes(e.value)) {
                 assets.push(e.label);
@@ -420,7 +422,6 @@ class TransactionHistoryPage extends BaseReactComponent {
           resolve(); // Resolve the promise once the code execution is finished
         }),
       ]).then(() => {
-        // console.log("asset arr", assets, value);
         const tempIsAssetUsed = this.state.isAssetSearchUsed;
         TransactionHistoryAssetFilter({
           session_id: getCurrentUser().id,
@@ -431,19 +432,19 @@ class TransactionHistoryPage extends BaseReactComponent {
         this.updateTimer();
         this.setState({ isAssetSearchUsed: false });
       });
-    } else if (key === "SEARCH_BY_METHOD_IN") {
-      const tempIsMethodUsed = this.state.isMethodSearchUsed;
-      TransactionHistoryMethodFilter({
+    } else if (key === "SEARCH_BY_CHAIN_IN") {
+      const tempIsNetworkUsed = this.state.isNetworkSearchUsed;
+      TransactionHistoryNetworkFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        method_filter: value === "allMethod" ? "All method" : value,
-        isSearchUsed: tempIsMethodUsed,
+        method_filter: value === "allNetworks" ? "All networks" : value,
+        isSearchUsed: tempIsNetworkUsed,
       });
       this.updateTimer();
-      this.setState({ isMethodSearchUsed: false });
+      this.setState({ isNetworkSearchUsed: false });
     }
     let index = this.state.condition.findIndex((e) => e.key === key);
-    // console.log("index", index);
+
     let arr = [...this.state.condition];
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
@@ -452,21 +453,20 @@ class TransactionHistoryPage extends BaseReactComponent {
       index !== -1 &&
       value !== "allAssets" &&
       value !== "allMethod" &&
-      value !== "allYear"
+      value !== "allYear" &&
+      value !== "allNetworks"
     ) {
-      // console.log("first if", index);
       arr[index].value = value;
     } else if (
       value === "allAssets" ||
       value === "allMethod" ||
-      value === "allYear"
+      value === "allYear" ||
+      value === "allNetworks"
     ) {
-      // console.log("second if", index);
       if (index !== -1) {
         arr.splice(index, 1);
       }
     } else {
-      // console.log("else", index);
       let obj = {};
       obj = {
         key: key,
@@ -501,7 +501,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 1000);
   };
   handleTableSort = (val) => {
-    // console.log(val)
     let sort = [...this.state.tableSortOpt];
     let obj = [];
     sort?.map((el) => {
@@ -622,7 +621,6 @@ class TransactionHistoryPage extends BaseReactComponent {
       .writeText(text)
       .then(() => {
         toast.success("Copied");
-        // console.log("successfully copied");
       })
       .catch(() => {
         console.log("something went wrong");
@@ -674,12 +672,9 @@ class TransactionHistoryPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
     this.updateTimer();
-
-    // console.log("share pod", shareLink);
   };
 
   render() {
-    // console.log("value", this.state.methodFilter);
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
       this.props.intelligenceState;
     const { walletList, currency } = this.state;
@@ -688,7 +683,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       table?.map((row) => {
         let walletFromData = null;
         let walletToData = null;
-        // console.log("row",row)
+
         walletList &&
           walletList?.map((wallet) => {
             if (
@@ -769,7 +764,7 @@ class TransactionHistoryPage extends BaseReactComponent {
           method: row.method,
         };
       });
-    // console.log('tableData',tableData);
+
     const columnList = [
       {
         labelName: (
@@ -873,7 +868,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                       }
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -901,7 +895,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                         src={rowData.from.wallet_metaData.symbol}
                         className="history-table-icon"
                         onMouseEnter={() => {
-                          // console.log("address", rowData.from.metaData);
                           TransactionHistoryAddress({
                             session_id: getCurrentUser().id,
                             email_address: getCurrentUser().email,
@@ -923,7 +916,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                   ) : rowData.from.metaData?.nickname ? (
                     <span
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -946,7 +938,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                   ) : (
                     <span
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -970,7 +961,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                 ) : rowData.from.metaData?.displayAddress ? (
                   <span
                     onMouseEnter={() => {
-                      // console.log("address", rowData.from.metaData);
                       TransactionHistoryAddress({
                         session_id: getCurrentUser().id,
                         email_address: getCurrentUser().email,
@@ -996,7 +986,6 @@ class TransactionHistoryPage extends BaseReactComponent {
                       src={unrecognizedIcon}
                       className="history-table-icon"
                       onMouseEnter={() => {
-                        // console.log("address", rowData.from.metaData);
                         TransactionHistoryAddress({
                           session_id: getCurrentUser().id,
                           email_address: getCurrentUser().email,
@@ -1044,7 +1033,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
-          // console.log('rowData',rowData);
           if (dataKey === "to") {
             return (
               <CustomOverlay
@@ -1304,7 +1292,6 @@ class TransactionHistoryPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "amount") {
-            // console.log(value)
             // return rowData.amount.value?.toFixed(2)
             return (
               <CustomOverlay
@@ -1368,8 +1355,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   currency?.rate;
               }
             });
-            // console.log('valueToday',valueToday);
-            // console.log('valueThen',valueThen);
+
             return (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <CustomOverlay
@@ -1425,14 +1411,12 @@ class TransactionHistoryPage extends BaseReactComponent {
         coumnWidth: 0.25,
         isCell: true,
         cell: (rowData, dataKey) => {
-          // console.log(rowData)
           if (dataKey === "usdTransactionFee") {
             let chain = Object.entries(assetPriceList);
             let valueToday;
             let valueThen;
             chain.find((chain) => {
               if (chain[0] === rowData.usdTransactionFee.id) {
-                // console.log('chain',chain);
                 valueToday =
                   rowData.usdTransactionFee.value *
                     chain[1].quote.USD.price *
@@ -1620,14 +1604,13 @@ class TransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col md={3}>
                     <CustomDropdown
-                      filtername="All methods"
-                      options={this.props.intelligenceState.methodFilter}
-                      action={SEARCH_BY_METHOD_IN}
-                      handleClick={(key, value) =>
-                        this.addCondition(key, value)
-                      }
-                      searchIsUsed={this.methodSearchIsUsed}
+                      filtername="Networks"
+                      options={this.props.OnboardingState.coinsList}
+                      action={SEARCH_BY_CHAIN_IN}
+                      handleClick={this.handleFunction}
+                      searchIsUsed={this.networkSearchIsUsed}
                       isCaptialised
+                      isGreyChain
                     />
                   </Col>
                   {/* {fillter_tabs} */}
@@ -1697,6 +1680,7 @@ const mapStateToProps = (state) => ({
   // portfolioState: state.PortfolioState,
   intelligenceState: state.IntelligenceState,
   commonState: state.CommonState,
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
   searchTransactionApi,
