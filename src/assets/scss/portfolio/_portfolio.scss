@@ -177,9 +177,6 @@
           display: flex;
           align-items: center;
           .dotDotText {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             .captilasideText {
               text-transform: capitalize;
             }

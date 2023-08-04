@@ -23,7 +23,7 @@ import LPPeace from "./app/home/landing-page-peace";
 import WhopLoader from "./app/common/WhopAccount";
 import TopAccount from "./app/discover/topAccount";
 import twitterInfluencer from "./app/discover/twitterInfluencer";
-import wishlist from "./app/discover/wishlist";
+import WatchList from "./app/watchlist/watchlistPage";
 import appFeature from "./app/common/appFeature";
 import topHome from "./app/topAccount/top-home";
 import topIntelligence from "./app/topAccount/top-intelligence";
@@ -183,7 +183,7 @@ const routes = [
     path: "/watchlist",
     name: "Watchlist",
     type: PrivateRoute,
-    component: wishlist,
+    component: WatchList,
   },
   {
     path: "/decentralized-finance",

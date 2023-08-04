@@ -92,83 +92,81 @@ class FormElementComponent extends BaseReactComponent {
     };
     // console.log('valueLink', valueLink);
     return (
-      <div>
-        <FormGroup
-          controlId={
-            Math.random().toString(36).substring(2, 15) +
-            Math.random().toString(36).substring(2, 15)
-          }
-          // validationState={failedValidation ? "error" : ""}
-          // validated={failedValidation}
-          className={classes.formGroup}
-        >
-          {label &&
-            (required ? (
-              // <ControlLabel className={classes.label}>{label} <span style={requiredStyle}>*</span></ControlLabel>
-              <Form.Label className={classes.label}>
-                {label} <span style={requiredStyle}>*</span>
-              </Form.Label>
-            ) : (
-              // <ControlLabel className={classes.label} > {label}</ControlLabel>
-              <Form.Label className={classes.label}>{label}</Form.Label>
-            ))}
-          <FormElementControl
-            valueLink={valueLink}
-            onBlur={hideOnblur ? this.hideOnblur : this.validate}
-            failedValidation={this.state.failedValidation}
-            classes={classes}
-            disabled={disabled}
-            isValid={isValid || isValidState}
-            isInvalid={isInvalid || isInvalidState}
-            {...settings}
-          />
-          {/* (isValid && failedValidation) || (failedValidation && toolTipText) */}
-          {/* (isInvalid && failedValidation) || (failedValidation && toolTipText) */}
+      <FormGroup
+        controlId={
+          Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15)
+        }
+        // validationState={failedValidation ? "error" : ""}
+        // validated={failedValidation}
+        className={classes.formGroup}
+      >
+        {label &&
+          (required ? (
+            // <ControlLabel className={classes.label}>{label} <span style={requiredStyle}>*</span></ControlLabel>
+            <Form.Label className={classes.label}>
+              {label} <span style={requiredStyle}>*</span>
+            </Form.Label>
+          ) : (
+            // <ControlLabel className={classes.label} > {label}</ControlLabel>
+            <Form.Label className={classes.label}>{label}</Form.Label>
+          ))}
+        <FormElementControl
+          valueLink={valueLink}
+          onBlur={hideOnblur ? this.hideOnblur : this.validate}
+          failedValidation={this.state.failedValidation}
+          classes={classes}
+          disabled={disabled}
+          isValid={isValid || isValidState}
+          isInvalid={isInvalid || isInvalidState}
+          {...settings}
+        />
+        {/* (isValid && failedValidation) || (failedValidation && toolTipText) */}
+        {/* (isInvalid && failedValidation) || (failedValidation && toolTipText) */}
 
-          {(failedValidation || helpText) && (
-            <Form.Text
-              className={`${
-                failedValidation ? "has-error" : ""
-              } custom-form-error`}
-              onClick={() => {
-                if (!isCancel) {
+        {(failedValidation || helpText) && (
+          <Form.Text
+            className={`${
+              failedValidation ? "has-error" : ""
+            } custom-form-error`}
+            onClick={() => {
+              if (!isCancel) {
+                this.setState({
+                  failedValidation: null,
+                  isInvalid: null,
+                  isValid: null,
+                  isInvalidState: null,
+                });
+              }
+            }}
+          >
+            {isCancel && (
+              <Image
+                src={cancelIcon}
+                onClick={() => {
                   this.setState({
                     failedValidation: null,
                     isInvalid: null,
                     isValid: null,
                     isInvalidState: null,
                   });
-                }
-              }}
-            >
-              {isCancel && (
-                <Image
-                  src={cancelIcon}
-                  onClick={() => {
-                    this.setState({
-                      failedValidation: null,
-                      isInvalid: null,
-                      isValid: null,
-                      isInvalidState: null,
-                    });
-                  }}
-                  className="cancel-icon"
-                />
-              )}
-              {failedValidation ? failedValidation.message : helpText + "ab"}
-            </Form.Text>
-          )}
+                }}
+                className="cancel-icon"
+              />
+            )}
+            {failedValidation ? failedValidation.message : helpText + "ab"}
+          </Form.Text>
+        )}
 
-          {toolTipText && (
-            <Form.Control.Feedback
-              tooltip
-              type={`${failedValidation ? "invalid" : "valid"}`}
-            >
-              {failedValidation ? failedValidation.message : toolTipText}
-            </Form.Control.Feedback>
-          )}
-        </FormGroup>
-      </div>
+        {toolTipText && (
+          <Form.Control.Feedback
+            tooltip
+            type={`${failedValidation ? "invalid" : "valid"}`}
+          >
+            {failedValidation ? failedValidation.message : toolTipText}
+          </Form.Control.Feedback>
+        )}
+      </FormGroup>
     );
   }
 }
