@@ -1486,7 +1486,7 @@ class TopTransactionHistoryPage extends BaseReactComponent {
                   </Col>
                   <Col md={3}>
                     <CustomDropdown
-                      filtername="All Networks"
+                      filtername="All networks"
                       options={this.props.OnboardingState.coinsList}
                       action={SEARCH_BY_CHAIN_IN}
                       handleClick={this.handleFunction}
