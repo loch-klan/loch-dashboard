@@ -30,6 +30,7 @@ import {
   TimeSpentDiscountEmail,
   TimeSpentOnboarding,
   LPConnectExchange,
+  LPDiscover,
 } from "../../utils/AnalyticsFunctions";
 import {
   CompassWhiteIcon,
@@ -113,6 +114,10 @@ class Home extends BaseReactComponent {
     this.props.history.push(`/top-accounts`);
   };
   goToDiscover = () => {
+    LPDiscover({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify([]));
     AppFeaturesCreateUser(data, this, this.handleRedirection);
@@ -127,10 +132,7 @@ class Home extends BaseReactComponent {
       },
       () => {
         if (this.state.onboardingConnectExchangeModal) {
-          LPConnectExchange({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          LPConnectExchange();
         }
         let value = this.state.onboardingConnectExchangeModal ? false : true;
         this.setState({
