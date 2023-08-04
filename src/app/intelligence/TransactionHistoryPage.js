@@ -437,7 +437,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       TransactionHistoryNetworkFilter({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        method_filter: value === "allNetworks" ? "All networks" : value,
+        network_filter: value === "allNetworks" ? "All networks" : value,
         isSearchUsed: tempIsNetworkUsed,
       });
       this.updateTimer();
