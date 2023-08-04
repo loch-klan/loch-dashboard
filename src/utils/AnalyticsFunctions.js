@@ -2927,6 +2927,22 @@ export const TransactionHistoryAssetFilter = ({
 };
 
 // Transaction History: methods filter - done
+export const TransactionHistoryNetworkFilter = ({
+  session_id,
+  email_address,
+  network_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Transaction History: networks filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "networks selected": network_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const TransactionHistoryMethodFilter = ({
   session_id,
   email_address,
