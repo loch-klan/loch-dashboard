@@ -529,7 +529,6 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
   localStorage.setItem("lochToken", "jsk");
 
   postLoginInstance.post("organisation/user/create-user", data).then((res) => {
-    console.log("inside create user function", res);
     if (!res.data.error) {
       localStorage.setItem("lochDummyUser", res.data.data.user.link);
       localStorage.setItem("lochToken", res.data.data.token);

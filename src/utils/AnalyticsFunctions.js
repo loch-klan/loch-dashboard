@@ -2353,13 +2353,19 @@ export const Home_CE_OAuthCompleted = ({
 };
 
 // -------- LP connect exchange -----------
-//8. Landing Page Conversion: connect exchange
-export const LPConnectExchange = ({ session_id, email_address }) => {
-  const event_name = "Landing Page Conversion: connect exchange";
+export const LPDiscover = ({ session_id, email_address }) => {
+  const event_name = "Landing Page Conversion: discover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
   };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+//8. Landing Page Conversion: connect exchange
+export const LPConnectExchange = () => {
+  const event_name = "Landing Page Conversion: connect exchange";
+  const eventProperties = {};
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:time spent on onboarding");
 };
