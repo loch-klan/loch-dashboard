@@ -659,7 +659,8 @@ class TopAccountPage extends BaseReactComponent {
                   TopAccountClickedAccount({
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
-                    account: rowData.account,
+                    account: rowData.account ? rowData.account : "",
+                    name_tag: rowData.tagName ? rowData.tagName : "",
                   });
                   this.updateTimer();
                   let obj = JSON.parse(localStorage.getItem("previewAddress"));

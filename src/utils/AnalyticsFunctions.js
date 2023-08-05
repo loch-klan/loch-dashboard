@@ -2353,13 +2353,19 @@ export const Home_CE_OAuthCompleted = ({
 };
 
 // -------- LP connect exchange -----------
-//8. Landing Page Conversion: connect exchange
-export const LPConnectExchange = ({ session_id, email_address }) => {
-  const event_name = "Landing Page Conversion: connect exchange";
+export const LPDiscover = ({ session_id, email_address }) => {
+  const event_name = "Landing Page Conversion: discover";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
   };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Landing Page Conversion:time spent on onboarding");
+};
+//8. Landing Page Conversion: connect exchange
+export const LPConnectExchange = () => {
+  const event_name = "Landing Page Conversion: connect exchange";
+  const eventProperties = {};
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Landing Page Conversion:time spent on onboarding");
 };
@@ -2927,6 +2933,22 @@ export const TransactionHistoryAssetFilter = ({
 };
 
 // Transaction History: methods filter - done
+export const TransactionHistoryNetworkFilter = ({
+  session_id,
+  email_address,
+  network_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Transaction History: networks filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "networks selected": network_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const TransactionHistoryMethodFilter = ({
   session_id,
   email_address,
@@ -4713,15 +4735,32 @@ export const TopAccountClickedAccount = ({
   session_id,
   email_address,
   account,
+  name_tag,
 }) => {
   const event_name = "Top accounts: account clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     "selected account": account,
+    "name tag": name_tag,
   };
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Top accounts: account clicked");
+};
+export const WatchlistClickedAccount = ({
+  session_id,
+  email_address,
+  account,
+  name_tag,
+}) => {
+  const event_name = "Watchlist: account clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "selected account": account,
+    "name tag": name_tag,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 //Top accounts: name tag hover - done

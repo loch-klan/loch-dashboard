@@ -1,0 +1,3 @@
+const LOCAL_WALLET = "LOCAL_WALLET";
+
+export { LOCAL_WALLET };

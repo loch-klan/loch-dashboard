@@ -48,6 +48,7 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   TimeSpentWatchlist,
   WatchlistAnalyzedCheckbox,
+  WatchlistClickedAccount,
   WatchlistNameHover,
   WatchlistPage,
   WatchlistRemarkAdded,
@@ -440,13 +441,20 @@ class WatchListPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
   };
-  updateWatchListAnalyzed = (passedNameTag, passedAddress, passedAnalysed) => {
-    WatchlistAnalyzedCheckbox({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      address: passedNameTag ? passedNameTag : passedAddress,
-      analyzed: passedAnalysed,
-    });
+  updateWatchListAnalyzed = (
+    passedNameTag,
+    passedAddress,
+    passedAnalysed,
+    callMixpanel
+  ) => {
+    if (callMixpanel) {
+      WatchlistAnalyzedCheckbox({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        address: passedNameTag ? passedNameTag : passedAddress,
+        analyzed: passedAnalysed,
+      });
+    }
     this.updateTimer();
     let tempUpdateWatchListata = new URLSearchParams();
     tempUpdateWatchListata.append(
@@ -496,7 +504,46 @@ class WatchListPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "account") {
             return (
-              <div className="dotDotText text-center">
+              <div
+                onClick={() => {
+                  this.updateWatchListAnalyzed(
+                    rowData.nameTag,
+                    rowData.address,
+                    true,
+                    false
+                  );
+                  setTimeout(() => {
+                    resetPreviewAddress();
+                    WatchlistClickedAccount({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      account: rowData.address ? rowData.address : "",
+                      name_tag: rowData.nameTag ? rowData.nameTag : "",
+                    });
+                    this.updateTimer();
+                    let obj = JSON.parse(
+                      localStorage.getItem("previewAddress")
+                    );
+                    localStorage.setItem(
+                      "previewAddress",
+                      JSON.stringify({
+                        ...obj,
+                        address: rowData.address,
+                        nameTag: rowData.nameTag ? rowData.nameTag : "",
+                      })
+                    );
+                    localStorage.setItem(
+                      "previewAddressGoToWhaleWatch",
+                      JSON.stringify({
+                        goToWhaleWatch: false,
+                      })
+                    );
+                    this.props?.TopsetPageFlagDefault();
+                    this.props.history.push("/top-accounts/home");
+                  }, 200);
+                }}
+                className="top-account-address"
+              >
                 {TruncateText(rowData.address)}
               </div>
             );
@@ -527,7 +574,7 @@ class WatchListPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "nametag") {
-            return (
+            return rowData.nameTag ? (
               <CustomOverlay
                 position="top"
                 isIcon={false}
@@ -549,6 +596,8 @@ class WatchListPage extends BaseReactComponent {
                   {rowData.nameTag}
                 </span>
               </CustomOverlay>
+            ) : (
+              "-"
             );
           }
         },
@@ -581,7 +630,8 @@ class WatchListPage extends BaseReactComponent {
               this.updateWatchListAnalyzed(
                 rowData.nameTag,
                 rowData.address,
-                isChecked
+                isChecked,
+                true
               );
             };
             return (
