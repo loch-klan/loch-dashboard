@@ -21,7 +21,7 @@ import LPWhale from "./app/home/landing-page-whale";
 import LPIntelligence from "./app/home/landing-page-intelligence";
 import LPPeace from "./app/home/landing-page-peace";
 import WhopLoader from "./app/common/WhopAccount";
-import TopAccount from "./app/discover/topAccount";
+import TopAccount from "./app/discover/topAccounts/topAccountsPage";
 import twitterInfluencer from "./app/discover/twitterInfluencer";
 import WatchList from "./app/watchlist/watchlistPage";
 import appFeature from "./app/common/appFeature";
