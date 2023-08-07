@@ -855,7 +855,7 @@ class TopAccountPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    {rowData.netflows[type] !== 0 ? (
+                    {rowData.netflows && rowData.netflows[type] !== 0 ? (
                       <Image
                         src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
                       />
