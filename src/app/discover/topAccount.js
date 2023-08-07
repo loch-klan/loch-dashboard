@@ -603,8 +603,8 @@ class TopAccountPage extends BaseReactComponent {
     //   },
     // ];
     const inflowOutflowTimePeriod = () => {
-      if (this.state.timeFIlter === "1 week") {
-        return "last week";
+      if (this.state.timeFIlter === "2 weeks") {
+        return "2 weeks";
       } else if (this.state.timeFIlter === "1 month") {
         return "last month";
       } else if (this.state.timeFIlter === "6 months") {
@@ -1210,7 +1210,7 @@ class TopAccountPage extends BaseReactComponent {
                       class="cohort-dropdown"
                       list={[
                         // "All time",
-                        "1 week",
+                        "2 weeks",
                         "1 month",
                         "6 months",
                         "1 year",
