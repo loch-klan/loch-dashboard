@@ -603,8 +603,8 @@ class TopAccountPage extends BaseReactComponent {
     //   },
     // ];
     const inflowOutflowTimePeriod = () => {
-      if (this.state.timeFIlter === "1 week") {
-        return "last week";
+      if (this.state.timeFIlter === "2 weeks") {
+        return "2 weeks";
       } else if (this.state.timeFIlter === "1 month") {
         return "last month";
       } else if (this.state.timeFIlter === "6 months") {
@@ -659,7 +659,8 @@ class TopAccountPage extends BaseReactComponent {
                   TopAccountClickedAccount({
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
-                    account: rowData.account,
+                    account: rowData.account ? rowData.account : "",
+                    name_tag: rowData.tagName ? rowData.tagName : "",
                   });
                   this.updateTimer();
                   let obj = JSON.parse(localStorage.getItem("previewAddress"));
@@ -855,9 +856,11 @@ class TopAccountPage extends BaseReactComponent {
                       this.updateTimer();
                     }}
                   >
-                    <Image
-                      src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
-                    />
+                    {rowData.netflows && rowData.netflows[type] !== 0 ? (
+                      <Image
+                        src={rowData.netflows[type] < 0 ? LossIcon : GainIcon}
+                      />
+                    ) : null}
                     <span className="inter-display-medium f-s-13 lh-16 grey-313 ml-2">
                       {(rowData.netflows[type] < 0 ? "-" : "") +
                         numToCurrency(
@@ -1195,7 +1198,7 @@ class TopAccountPage extends BaseReactComponent {
                     filtername="Time"
                     options={[
                       { value: "alltime", label: "All time" },
-                      { value: "1week", label: "1 week" },
+                      { value: "1week", label: "2 weeks" },
                       { value: "1month", label: "1 month" },
                       { value: "6months", label: "6 months" },
                       { value: "1year", label: "1 year" },
@@ -1209,7 +1212,7 @@ class TopAccountPage extends BaseReactComponent {
                       class="cohort-dropdown"
                       list={[
                         // "All time",
-                        "1 week",
+                        "2 weeks",
                         "1 month",
                         "6 months",
                         "1 year",

@@ -33,6 +33,7 @@ import topInsights from "./app/topAccount/top-insights";
 import topCosts from "./app/topAccount/top-costs";
 import topDefi from "./app/topAccount/top-defi";
 import topAccountShare from "./app/common/topAccountShare";
+import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 const routes = [
   {
     path: "/",
@@ -172,6 +173,12 @@ const routes = [
     name: "Decentralized Finance",
     type: PrivateRoute,
     component: topDefi,
+  },
+  {
+    path: "/decentralized-finance/yield-opportunities",
+    name: "Yield Opportunities",
+    type: PrivateRoute,
+    component: YieldOpportunitiesPage,
   },
   {
     path: "/twitter-influencers",

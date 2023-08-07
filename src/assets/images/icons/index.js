@@ -9,3 +9,5 @@ export { default as EyeIcon } from "./eyeIcon.svg";
 export { default as CloseIcon } from "./dummyX.svg";
 export { default as DeleteIcon } from "./delete-icon.png";
 export { default as CheckIcon } from "./check.svg";
+export { default as DisclaimerIcon } from "./disclaimer.svg";
+export { default as CompassWhiteIcon } from "./compassWhite.svg";

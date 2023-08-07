@@ -30,12 +30,15 @@ import {
   TimeSpentDiscountEmail,
   TimeSpentOnboarding,
   LPConnectExchange,
+  LPDiscover,
 } from "../../utils/AnalyticsFunctions";
 import {
+  CompassWhiteIcon,
   LinkVectorWhiteIcon,
   ProfileVectorWhiteIcon,
 } from "../../assets/images/icons";
 import LinkIconBtn from "../../assets/images/link.svg";
+import { AppFeaturesCreateUser } from "../onboarding/Api";
 
 class Home extends BaseReactComponent {
   constructor(props) {
@@ -107,6 +110,18 @@ class Home extends BaseReactComponent {
   copyWalletAddress = (copyWallet) => {
     this.setState({ onboardingWalletAddress: copyWallet });
   };
+  handleRedirection = () => {
+    this.props.history.push(`/top-accounts`);
+  };
+  goToDiscover = () => {
+    LPDiscover({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify([]));
+    AppFeaturesCreateUser(data, this, this.handleRedirection);
+  };
 
   onboardingShowConnectModal = (
     address = this.state.onboardingWalletAddress
@@ -117,10 +132,7 @@ class Home extends BaseReactComponent {
       },
       () => {
         if (this.state.onboardingConnectExchangeModal) {
-          LPConnectExchange({
-            session_id: getCurrentUser().id,
-            email_address: getCurrentUser().email,
-          });
+          LPConnectExchange();
         }
         let value = this.state.onboardingConnectExchangeModal ? false : true;
         this.setState({
@@ -433,6 +445,17 @@ class Home extends BaseReactComponent {
                 <Image src={Banner} className="overlay-banner" />
                 <div className="overLayHeader">
                   <div
+                    onClick={this.goToDiscover}
+                    className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
+                  >
+                    <img
+                      className="overLayHeaderOptionsIcons p-1"
+                      src={CompassWhiteIcon}
+                      alt="ProfileVectorIcon"
+                    />
+                    <div>Discover</div>
+                  </div>
+                  <div
                     onClick={this.onboardingShowConnectModal}
                     className="inter-display-medium f-s-13 overLayHeaderOptions overLayHeaderFadedOptions"
                   >
@@ -513,6 +536,7 @@ class Home extends BaseReactComponent {
 
 const mapStateToProps = (state) => ({
   homeState: state.HomeState,
+  OnboardingState: state.OnboardingState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
